@@ -114,6 +114,11 @@ static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             XEvent      *event,
                                             KeySym       keysym);
 
+static gboolean process_keyboard_resize_grab (MetaDisplay *display,
+                                              MetaWindow  *window,
+                                              XEvent      *event,
+                                              KeySym       keysym);
+
 static gboolean process_tab_grab           (MetaDisplay *display,
                                             MetaWindow  *window,
                                             XEvent      *event,
@@ -1120,6 +1125,21 @@ meta_display_process_key_event (MetaDisplay *display,
                       "Processing event for keyboard move\n");
           handled = process_keyboard_move_grab (display, window, event, keysym);
           break;
+
+        case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+        case META_GRAB_OP_KEYBOARD_RESIZING_S:
+        case META_GRAB_OP_KEYBOARD_RESIZING_N:
+        case META_GRAB_OP_KEYBOARD_RESIZING_W:
+        case META_GRAB_OP_KEYBOARD_RESIZING_E:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NW:          
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Processing event for keyboard resize\n");
+          handled = process_keyboard_resize_grab (display, window, event, keysym);
+          break;
+
         case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
         case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
           meta_topic (META_DEBUG_KEYBINDINGS,
@@ -1246,6 +1266,309 @@ process_keyboard_move_grab (MetaDisplay *display,
 
   if (handled)
     meta_window_move (window, TRUE, x, y);
+
+  return handled;
+}
+
+static gboolean
+process_keyboard_resize_grab (MetaDisplay *display,
+                              MetaWindow  *window,
+                              XEvent      *event,
+                              KeySym       keysym)
+{
+  gboolean handled;
+  int height_inc;
+  int width_inc;
+  int x, y;
+  int orig_x, orig_y;
+  int width, height;
+  gboolean smart_snap;
+  int edge;
+  int gravity;
+  
+  handled = FALSE;
+
+  /* don't care about releases, but eat them, don't end grab */
+  if (event->type == KeyRelease)
+    return TRUE;
+
+  /* don't end grab on modifier key presses */
+  if (is_modifier (display, event->xkey.keycode))
+    return TRUE;
+
+  if (keysym == XK_Escape)
+    {
+      /* End resize and restore to original state */
+      meta_window_move_resize (display->grab_window,
+                               TRUE,
+                               display->grab_initial_window_pos.x,
+                               display->grab_initial_window_pos.y,
+                               display->grab_initial_window_pos.width,
+                               display->grab_initial_window_pos.height);
+
+      return TRUE;
+    }
+  
+  switch (display->grab_op)
+    {
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+      switch (keysym)
+        {
+        case XK_Up:
+        case XK_KP_Up:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_N;          
+          handled = TRUE;
+          break;
+        case XK_Down:
+        case XK_KP_Down:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_S;
+          handled = TRUE;
+          break;
+        case XK_Left:
+        case XK_KP_Left:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_W;
+          handled = TRUE;
+          break;
+        case XK_Right:
+        case XK_KP_Right:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_E;
+          handled = TRUE;
+          break;
+        }
+      break;
+      
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+      switch (keysym)
+        {
+        case XK_Left:
+        case XK_KP_Left:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
+          handled = TRUE;
+          break;
+        case XK_Right:
+        case XK_KP_Right:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
+          handled = TRUE;
+          break;
+        }
+      break;
+
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+      switch (keysym)
+        {
+        case XK_Left:
+        case XK_KP_Left:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;
+          handled = TRUE;
+          break;
+        case XK_Right:
+        case XK_KP_Right:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE;
+          handled = TRUE;
+          break;
+        }
+      break;
+      
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+      switch (keysym)
+        {
+        case XK_Up:
+        case XK_KP_Up:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;          
+          handled = TRUE;
+          break;
+        case XK_Down:
+        case XK_KP_Down:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
+          handled = TRUE;
+          break;
+        }
+      break;
+
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+      switch (keysym)
+        {
+        case XK_Up:
+        case XK_KP_Up:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE; 
+          handled = TRUE;
+          break;
+        case XK_Down:
+        case XK_KP_Down:
+          display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
+          handled = TRUE;
+          break;
+        }
+      break;
+      
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+  if (handled)
+    return TRUE;  
+
+  meta_window_get_position (window, &orig_x, &orig_y);
+  x = orig_x;
+  y = orig_y;
+  width = window->rect.width;
+  height = window->rect.height;
+
+  gravity = meta_resize_gravity_from_grab_op (display->grab_op);
+  
+  smart_snap = (event->xkey.state & ShiftMask) != 0;
+
+#define SMALL_INCREMENT 1
+#define NORMAL_INCREMENT 10
+
+  if (smart_snap)
+    {
+      height_inc = 0;
+      width_inc = 0;
+    }
+  else if (event->xkey.state & ControlMask)
+    {
+      if (window->size_hints.width_inc > 1)
+        width_inc = window->size_hints.width_inc;
+      else
+        width_inc = SMALL_INCREMENT;
+
+      if (window->size_hints.height_inc > 1)
+        height_inc = window->size_hints.height_inc;
+      else
+        height_inc = SMALL_INCREMENT;
+    }  
+  else
+    {
+      if (window->size_hints.width_inc > 1)
+        width_inc = window->size_hints.width_inc;
+      else
+        width_inc = NORMAL_INCREMENT;
+
+      if (window->size_hints.height_inc > 1)
+        height_inc = window->size_hints.height_inc;
+      else
+        height_inc = NORMAL_INCREMENT;
+    }
+  
+  /* When moving by increments, we still snap to edges if the move
+   * to the edge is smaller than the increment. This is because
+   * Shift + arrow to snap is sort of a hidden feature. This way
+   * people using just arrows shouldn't get too frustrated.
+   */
+      
+  switch (keysym)
+    {
+    case XK_Up:
+    case XK_KP_Up:
+      switch (gravity)
+        {
+        case NorthGravity:
+        case NorthWestGravity:
+        case NorthEastGravity:
+          /* Move bottom edge up */
+          edge = meta_window_find_next_horizontal_edge (window, TRUE);
+          height -= height_inc;
+          
+          if (smart_snap || ((edge > (y+height)) &&
+                             ABS (edge - (y+height)) < height_inc))
+            height = edge - y;
+          
+          handled = TRUE;
+          break;
+
+        case SouthGravity:
+        case SouthWestGravity:
+        case SouthEastGravity:
+          /* Move top edge up */
+          edge = meta_window_find_next_horizontal_edge (window, FALSE);
+          y -= height_inc;
+          
+          if (smart_snap || ((edge > y) && ABS (edge - y) < height_inc))
+            y = edge;
+          
+          height += (orig_y - y);
+          break;
+
+        case EastGravity:
+        case WestGravity:
+        case CenterGravity:
+          g_assert_not_reached ();
+          break;
+        }
+      
+      handled = TRUE;
+      break;
+
+    case XK_Down:
+    case XK_KP_Down:
+      switch (gravity)
+        {
+        case NorthGravity:
+        case NorthWestGravity:
+        case NorthEastGravity:
+          /* Move bottom edge down */
+          edge = meta_window_find_next_horizontal_edge (window, TRUE);
+          height += height_inc;
+          
+          if (smart_snap || ((edge < (y+height)) &&
+                             ABS (edge - (y+height)) < height_inc))
+            height = edge - y;
+          
+          handled = TRUE;
+          break;
+
+        case SouthGravity:
+        case SouthWestGravity:
+        case SouthEastGravity:
+          /* Move top edge down */
+          edge = meta_window_find_next_horizontal_edge (window, FALSE);
+          y += height_inc;
+          
+          if (smart_snap || ((edge < y) && ABS (edge - y) < height_inc))
+            y = edge;
+          
+          height -= (y - orig_y);
+          break;
+
+        case EastGravity:
+        case WestGravity:
+        case CenterGravity:
+          g_assert_not_reached ();
+          break;
+        }
+      
+      handled = TRUE;
+      break;
+      
+    case XK_Left:
+    case XK_KP_Left:
+      /* FIXME */
+      break;
+    case XK_Right:
+    case XK_KP_Right:
+      /* FIXME */
+      break;
+          
+    default:
+      break;
+    }
+
+  /* fixup hack (just paranoia, not sure it's required) */
+  if (height < 1)
+    height = 1;
+  if (width < 1)
+    width = 1;
+  
+  if (handled)
+    meta_window_move_resize (window, TRUE, x, y, width, height);
 
   return handled;
 }

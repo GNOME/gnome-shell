@@ -5392,7 +5392,13 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_RESIZE:
-          /* FIXME */
+          meta_window_raise (window);
+          meta_display_begin_grab_op (window->display,
+                                      window,
+                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                      FALSE, 0, 0,
+                                      meta_display_get_current_time (window->display),
+                                      0, 0);
           break;
           
         case 0:

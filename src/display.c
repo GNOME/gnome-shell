@@ -2977,6 +2977,9 @@ meta_resize_gravity_from_grab_op (MetaGrabOp op)
     case META_GRAB_OP_RESIZING_W:
       gravity = EastGravity;
       break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+      gravity = CenterGravity;
+      break;
     default:
       break;
     }
