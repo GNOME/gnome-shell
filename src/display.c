@@ -216,10 +216,6 @@ meta_display_open (const char *name)
     "_NET_CLIENT_LIST_STACKING",
     "_NET_WM_STATE_SKIP_TASKBAR",
     "_NET_WM_STATE_SKIP_PAGER",
-    "_WIN_WORKSPACE",
-    "_WIN_LAYER",
-    "_WIN_PROTOCOLS",
-    "_WIN_SUPPORTING_WM_CHECK",
     "_NET_WM_ICON_NAME",
     "_NET_WM_ICON",
     "_NET_WM_ICON_GEOMETRY",
@@ -230,7 +226,6 @@ meta_display_open (const char *name)
     "_NET_ACTIVE_WINDOW",
     "_METACITY_RESTART_MESSAGE",    
     "_NET_WM_STRUT",
-    "_WIN_HINTS",
     "_METACITY_RELOAD_THEME_MESSAGE",
     "_METACITY_SET_KEYBINDINGS_MESSAGE",
     "_NET_WM_STATE_HIDDEN",
@@ -363,59 +358,54 @@ meta_display_open (const char *name)
   display->atom_net_client_list_stacking = atoms[29];
   display->atom_net_wm_state_skip_taskbar = atoms[30];
   display->atom_net_wm_state_skip_pager = atoms[31];
-  display->atom_win_workspace = atoms[32];
-  display->atom_win_layer = atoms[33];
-  display->atom_win_protocols = atoms[34];
-  display->atom_win_supporting_wm_check = atoms[35];
-  display->atom_net_wm_icon_name = atoms[36];
-  display->atom_net_wm_icon = atoms[37];
-  display->atom_net_wm_icon_geometry = atoms[38];
-  display->atom_utf8_string = atoms[39];
-  display->atom_wm_icon_size = atoms[40];
-  display->atom_kwm_win_icon = atoms[41];
-  display->atom_net_wm_moveresize = atoms[42];
-  display->atom_net_active_window = atoms[43];
-  display->atom_metacity_restart_message = atoms[44];
-  display->atom_net_wm_strut = atoms[45];
-  display->atom_win_hints = atoms[46];
-  display->atom_metacity_reload_theme_message = atoms[47];
-  display->atom_metacity_set_keybindings_message = atoms[48];
-  display->atom_net_wm_state_hidden = atoms[49];
-  display->atom_net_wm_window_type_utility = atoms[50];
-  display->atom_net_wm_window_type_splash = atoms[51];
-  display->atom_net_wm_state_fullscreen = atoms[52];
-  display->atom_net_wm_ping = atoms[53];
-  display->atom_net_wm_pid = atoms[54];
-  display->atom_wm_client_machine = atoms[55];
-  display->atom_net_workarea = atoms[56];
-  display->atom_net_showing_desktop = atoms[57];
-  display->atom_net_desktop_layout = atoms[58];
-  display->atom_manager = atoms[59];
-  display->atom_targets = atoms[60];
-  display->atom_multiple = atoms[61];
-  display->atom_timestamp = atoms[62];
-  display->atom_version = atoms[63];
-  display->atom_atom_pair = atoms[64];
-  display->atom_net_desktop_names = atoms[65];
-  display->atom_net_wm_allowed_actions = atoms[66];
-  display->atom_net_wm_action_move = atoms[67];
-  display->atom_net_wm_action_resize = atoms[68];
-  display->atom_net_wm_action_shade = atoms[69];
-  display->atom_net_wm_action_stick = atoms[70];
-  display->atom_net_wm_action_maximize_horz = atoms[71];
-  display->atom_net_wm_action_maximize_vert = atoms[72];
-  display->atom_net_wm_action_change_desktop = atoms[73];
-  display->atom_net_wm_action_close = atoms[74];
-  display->atom_net_wm_state_above = atoms[75];
-  display->atom_net_wm_state_below = atoms[76];
-  display->atom_net_startup_id = atoms[77];
-  display->atom_metacity_toggle_verbose = atoms[78];
-  display->atom_metacity_update_counter = atoms[79];
-  display->atom_sync_counter = atoms[80];
-  display->atom_gnome_panel_action = atoms[81];
-  display->atom_gnome_panel_action_main_menu = atoms[82];
-  display->atom_gnome_panel_action_run_dialog = atoms[83];
-  display->atom_metacity_sentinel = atoms[84];
+  display->atom_net_wm_icon_name = atoms[32];
+  display->atom_net_wm_icon = atoms[33];
+  display->atom_net_wm_icon_geometry = atoms[34];
+  display->atom_utf8_string = atoms[35];
+  display->atom_wm_icon_size = atoms[36];
+  display->atom_kwm_win_icon = atoms[37];
+  display->atom_net_wm_moveresize = atoms[38];
+  display->atom_net_active_window = atoms[39];
+  display->atom_metacity_restart_message = atoms[40];
+  display->atom_net_wm_strut = atoms[41];
+  display->atom_metacity_reload_theme_message = atoms[42];
+  display->atom_metacity_set_keybindings_message = atoms[43];
+  display->atom_net_wm_state_hidden = atoms[44];
+  display->atom_net_wm_window_type_utility = atoms[45];
+  display->atom_net_wm_window_type_splash = atoms[46];
+  display->atom_net_wm_state_fullscreen = atoms[47];
+  display->atom_net_wm_ping = atoms[48];
+  display->atom_net_wm_pid = atoms[49];
+  display->atom_wm_client_machine = atoms[50];
+  display->atom_net_workarea = atoms[51];
+  display->atom_net_showing_desktop = atoms[52];
+  display->atom_net_desktop_layout = atoms[53];
+  display->atom_manager = atoms[54];
+  display->atom_targets = atoms[55];
+  display->atom_multiple = atoms[56];
+  display->atom_timestamp = atoms[57];
+  display->atom_version = atoms[58];
+  display->atom_atom_pair = atoms[59];
+  display->atom_net_desktop_names = atoms[60];
+  display->atom_net_wm_allowed_actions = atoms[61];
+  display->atom_net_wm_action_move = atoms[62];
+  display->atom_net_wm_action_resize = atoms[63];
+  display->atom_net_wm_action_shade = atoms[64];
+  display->atom_net_wm_action_stick = atoms[65];
+  display->atom_net_wm_action_maximize_horz = atoms[66];
+  display->atom_net_wm_action_maximize_vert = atoms[67];
+  display->atom_net_wm_action_change_desktop = atoms[68];
+  display->atom_net_wm_action_close = atoms[69];
+  display->atom_net_wm_state_above = atoms[70];
+  display->atom_net_wm_state_below = atoms[71];
+  display->atom_net_startup_id = atoms[72];
+  display->atom_metacity_toggle_verbose = atoms[73];
+  display->atom_metacity_update_counter = atoms[74];
+  display->atom_sync_counter = atoms[75];
+  display->atom_gnome_panel_action = atoms[76];
+  display->atom_gnome_panel_action_main_menu = atoms[77];
+  display->atom_gnome_panel_action_run_dialog = atoms[78];
+  display->atom_metacity_sentinel = atoms[79];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -563,20 +553,9 @@ meta_display_open (const char *name)
                         display->leader_window,
                         display->atom_net_wm_name,
                         "Metacity");
-
   {
-    /* The legacy GNOME hint is to set a cardinal which is the window
-     * id of the supporting_wm_check window on the supporting_wm_check
-     * window itself
-     */
     gulong data[1];
-
     data[0] = display->leader_window;
-    XChangeProperty (display->xdisplay,
-                     display->leader_window,
-                     display->atom_win_supporting_wm_check,
-                     XA_CARDINAL,
-                     32, PropModeReplace, (guchar*) data, 1);
 
     XChangeProperty (display->xdisplay,
                      display->leader_window,
@@ -584,7 +563,7 @@ meta_display_open (const char *name)
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
   }
-  
+ 
   meta_display_grab (display);
   
   /* Now manage all existing windows */

@@ -75,16 +75,6 @@ set_wm_check_hint (MetaScreen *screen)
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
 
-  /* Legacy GNOME hint (uses cardinal, dunno why) */
-
-  /* do this after setting up window fully, to avoid races
-   * with clients listening to property notify on root.
-   */
-  XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_win_supporting_wm_check,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-  
   return Success;
 }
 
@@ -145,14 +135,6 @@ set_supported_hint (MetaScreen *screen)
                    screen->display->atom_net_supported,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) atoms, N_SUPPORTED);
-
-  /* Set legacy GNOME hints */
-  atoms[0] = screen->display->atom_win_layer;
-  
-  XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_win_protocols,
-                   XA_ATOM,
-                   32, PropModeReplace, (guchar*) atoms, N_WIN_SUPPORTED);
   
   return Success;
 #undef N_SUPPORTED

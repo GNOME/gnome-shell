@@ -213,8 +213,6 @@ struct _MetaWindow
 
   /* Has nonzero struts */
   guint has_struts : 1; 
-  /* Struts are from the _WIN_HINTS do not cover deal */
-  guint do_not_cover : 1;
 
   /* Transient parent is a root window */
   guint transient_parent_is_root_window : 1;

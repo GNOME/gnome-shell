@@ -1,3 +1,34 @@
+2003-06-12  Rob Adams  <robadams@ucla.edu>
+
+	Remove legacy support for Gnome 1 hints, since we deem it unlikely
+	that anyone is running a current metacity with Gnome 1.  The
+	removed hints are _WIN_WORKSPACE, _WIN_LAYER, _WIN_PROTOCOLS,
+	_WIN_SUPPORTING_WM_CHECK, and _WIN_HINTS.
+
+	* display.c (meta_display_open): remove hints
+
+	* display.h: remove atoms for hints
+
+	* screen.c (set_wm_check_hint): don't set legacy hint
+	(set_supported_hint): don't set legacy hint
+
+	* window-props.c (init_win_workspace): removed
+	(reload_win_workspace): removed
+	(meta_display_init_window_prop_hooks): remove hints
+
+	* window.h: remove do_not_cover flag
+	
+	* window.c: remove GnomeWinHints enum
+	(recalc_do_not_cover_struts): removed
+	(meta_window_new): don't initialize removed flags or compute
+	legacy struts
+	(move_resize_cmp): removed
+	(idle_move_resize): Don't bother sorting the idle queue
+	(meta_window_client_message): don't set legacy hint
+	(process_property_notify): remove hints
+	(update_net_wm_type): don't fall back to WIN_LAYER hint
+	(update_struts): remove legacy struts
+	
 2003-06-12  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): make raise-on-click explicitly 

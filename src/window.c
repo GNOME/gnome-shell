@@ -54,16 +54,6 @@ typedef enum
   META_USER_MOVE_RESIZE     = 1 << 2
 } MetaMoveResizeFlags;
 
-typedef enum
-{
-  WIN_HINTS_SKIP_FOCUS      = (1<<0), /* "alt-tab" skips this win */
-  WIN_HINTS_SKIP_WINLIST    = (1<<1), /* not in win list */
-  WIN_HINTS_SKIP_TASKBAR    = (1<<2), /* not on taskbar */
-  WIN_HINTS_GROUP_TRANSIENT = (1<<3), /* ??????? */
-  WIN_HINTS_FOCUS_ON_CLICK  = (1<<4), /* app only accepts focus when clicked */
-  WIN_HINTS_DO_NOT_COVER    = (1<<5)  /* attempt to not cover this window */
-} GnomeWinHints;
-
 static int destroying_windows_disallowed = 0;
 
 
@@ -77,7 +67,6 @@ static void     update_net_wm_type        (MetaWindow     *window);
 static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
-static void     recalc_do_not_cover_struts(MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
 static void     set_wm_state              (MetaWindow     *window,
                                            int             state);
@@ -192,7 +181,7 @@ meta_window_new (MetaDisplay *display,
   MetaWorkspace *space;
   gulong existing_wm_state;
   gulong event_mask;
-#define N_INITIAL_PROPS 13
+#define N_INITIAL_PROPS 12
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   gboolean has_shape;
@@ -491,7 +480,6 @@ meta_window_new (MetaDisplay *display,
   window->type_atom = None;
 
   window->has_struts = FALSE;
-  window->do_not_cover = FALSE;
   window->left_strut = 0;
   window->right_strut = 0;
   window->top_strut = 0;
@@ -520,7 +508,6 @@ meta_window_new (MetaDisplay *display,
   initial_props[i++] = display->atom_net_wm_icon_name;
   initial_props[i++] = XA_WM_ICON_NAME;
   initial_props[i++] = display->atom_net_wm_desktop;
-  initial_props[i++] = display->atom_win_workspace;
   initial_props[i++] = display->atom_net_startup_id;
   initial_props[i++] = display->atom_metacity_update_counter;
   initial_props[i++] = XA_WM_NORMAL_HINTS;
@@ -2609,22 +2596,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
       meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
   
-  /* Update struts for new window size */
-  if (window->do_not_cover && (need_resize_client || need_move_client))
-    {
-      recalc_do_not_cover_struts (window);
-
-      /* Does a resize on all windows on entire current workspace,
-       * would be an infinite loop except for need_resize_client
-       * above. We rely on reaching an equilibrium state, which
-       * is somewhat fragile, though.
-       */
-
-      meta_topic (META_DEBUG_WORKAREA, "Window %s resized so invalidating its work areas\n",
-                  window->desc);
-      invalidate_work_areas (window);
-    }
-
   meta_window_refresh_resize_popup (window);
   
   /* Invariants leaving this function are:
@@ -2799,23 +2770,6 @@ meta_window_fill_vertical (MetaWindow  *window)
 static guint move_resize_idle = 0;
 static GSList *move_resize_pending = NULL;
 
-/* We want to put windows whose size/pos affects other
- * windows earlier in the queue, for efficiency.
- */
-static int
-move_resize_cmp (gconstpointer a, gconstpointer b)
-{
-  MetaWindow *aw = (gpointer) a;
-  MetaWindow *bw = (gpointer) b;
-
-  if (aw->do_not_cover && !bw->do_not_cover)
-    return -1; /* aw before bw */
-  else if (!aw->do_not_cover && bw->do_not_cover)
-    return 1;
-  else
-    return 0;
-}
-
 static gboolean
 idle_move_resize (gpointer data)
 {
@@ -2834,8 +2788,6 @@ idle_move_resize (gpointer data)
   move_resize_idle = 0;
 
   destroying_windows_disallowed += 1;
-
-  copy = g_slist_sort (copy, move_resize_cmp);
   
   tmp = copy;
   while (tmp != NULL)
@@ -3884,46 +3836,6 @@ meta_window_client_message (MetaWindow *window,
 
       return TRUE;
     }
-  else if (event->xclient.message_type ==
-           display->atom_win_hints)
-    {
-      /* gnome-winhints.c seems to indicate that the hints are
-       * in l[1], though god knows why it's like that
-       */
-      gulong data[1];
-      
-      meta_verbose ("_WIN_HINTS client message, hints: %ld\n",
-                    event->xclient.data.l[1]);
-
-      if (event->xclient.data.l[1] & WIN_HINTS_DO_NOT_COVER)
-        {
-          meta_topic (META_DEBUG_WORKAREA,
-                      "Setting WIN_HINTS_DO_NOT_COVER\n");
-          
-          data[0] = WIN_HINTS_DO_NOT_COVER;
-
-          meta_error_trap_push (window->display);
-          XChangeProperty (window->display->xdisplay,
-                           window->xwindow, window->display->atom_win_hints,
-                           XA_CARDINAL, 32, PropModeReplace,
-                           (unsigned char *)data, 1);
-          meta_error_trap_pop (window->display, FALSE);
-        }
-      else
-        {
-          meta_topic (META_DEBUG_WORKAREA,
-                      "Unsetting WIN_HINTS_DO_NOT_COVER\n");
-          
-          data[0] = 0;
-
-          meta_error_trap_push (window->display);
-          XDeleteProperty (window->display->xdisplay,
-                           window->xwindow, window->display->atom_win_hints);
-          meta_error_trap_pop (window->display, FALSE);
-        }
-      
-      return TRUE;
-    }
   
   return FALSE;
 }
@@ -4184,11 +4096,9 @@ process_property_notify (MetaWindow     *window,
       meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
     }
   else if (event->atom ==
-           window->display->atom_net_wm_window_type ||
-           /* update_net_wm_type falls back to this */
-           event->atom == window->display->atom_win_layer)
+           window->display->atom_net_wm_window_type)
     {
-      meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE or WIN_LAYER\n", window->desc);
+      meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE\n", window->desc);
       update_net_wm_type (window);
     }
   else if (event->atom == window->display->atom_net_wm_icon)
@@ -4211,11 +4121,6 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == window->display->atom_net_wm_strut)
     {
       meta_verbose ("Property notify on %s for _NET_WM_STRUT\n", window->desc);
-      update_struts (window);
-    }
-  else if (event->atom == window->display->atom_win_hints)
-    {
-      meta_verbose ("Property notify on %s for _WIN_HINTS\n", window->desc);
       update_struts (window);
     }
   else if (event->atom == window->display->atom_net_startup_id)
@@ -4687,41 +4592,12 @@ update_net_wm_type (MetaWindow *window)
   n_atoms = 0;
   atoms = NULL;
   
-  if (!meta_prop_get_atom_list (window->display, window->xwindow, 
-                                window->display->atom_net_wm_window_type,
-                                &atoms, &n_atoms))
-    {
-      /* Fall back to WIN_LAYER */
-      gulong layer = WIN_LAYER_NORMAL;
+  meta_prop_get_atom_list (window->display, window->xwindow, 
+                           window->display->atom_net_wm_window_type,
+                           &atoms, &n_atoms);
 
-      if (meta_prop_get_cardinal (window->display,
-                                  window->xwindow,
-                                  window->display->atom_win_layer,
-                                  &layer))
-        {
-          meta_verbose ("%s falling back to _WIN_LAYER hint, layer %ld\n",
-                        window->desc, layer);
-          switch (layer)
-            {
-            case WIN_LAYER_DESKTOP:
-              window->type_atom =
-                window->display->atom_net_wm_window_type_desktop;
-              break;
-            case WIN_LAYER_NORMAL:
-              window->type_atom =
-                window->display->atom_net_wm_window_type_normal;
-              break;
-            case WIN_LAYER_DOCK:
-              window->type_atom =
-                window->display->atom_net_wm_window_type_dock;
-              break;
-            default:
-              break;
-            }
-        }
-      
-      recalc_window_type (window);
-    }
+  /* Fall back to a normal window */
+  window->type_atom = window->display->atom_net_wm_window_type_normal;
   
   i = 0;
   while (i < n_atoms)
@@ -4941,7 +4817,6 @@ update_struts (MetaWindow *window)
   gulong *struts = NULL;
   int nitems;
   gboolean old_has_struts;
-  gboolean old_do_not_cover;
   int old_left;
   int old_right;
   int old_top;
@@ -4950,14 +4825,12 @@ update_struts (MetaWindow *window)
   meta_verbose ("Updating struts for %s\n", window->desc);
   
   old_has_struts = window->has_struts;
-  old_do_not_cover = window->do_not_cover;
   old_left = window->left_strut;
   old_right = window->right_strut;
   old_top = window->top_strut;
   old_bottom = window->bottom_strut;  
   
   window->has_struts = FALSE;
-  window->do_not_cover = FALSE;
   window->left_strut = 0;
   window->right_strut = 0;
   window->top_strut = 0;
@@ -5007,42 +4880,8 @@ update_struts (MetaWindow *window)
       meta_verbose ("No _NET_WM_STRUT property for %s\n",
                     window->desc);
     }
-  
-  if (!window->has_struts)
-    {
-      /* Try _WIN_HINTS */
-      gulong hints;
-
-      if (meta_prop_get_cardinal (window->display,
-                                  window->xwindow,
-                                  window->display->atom_win_hints,
-                                  &hints))
-        {
-          if (hints & WIN_HINTS_DO_NOT_COVER)
-            {
-              window->has_struts = TRUE;
-              window->do_not_cover = TRUE;
-              recalc_do_not_cover_struts (window);
-
-              meta_verbose ("Using _WIN_HINTS struts %d %d %d %d for window %s\n",
-                            window->left_strut, window->right_strut,
-                            window->top_strut, window->bottom_strut,
-                            window->desc);              
-            }
-          else
-            {
-              meta_verbose ("DO_NOT_COVER hint not set in _WIN_HINTS\n");
-            }
-        }
-      else
-        {
-          meta_verbose ("No _WIN_HINTS property on %s\n",
-                        window->desc);
-        }
-    }
 
   if (old_has_struts != window->has_struts ||
-      old_do_not_cover != window->do_not_cover ||
       old_left != window->left_strut ||
       old_right != window->right_strut ||
       old_top != window->top_strut ||
@@ -5057,61 +4896,6 @@ update_struts (MetaWindow *window)
     {
       meta_topic (META_DEBUG_WORKAREA,
                   "Struts on %s were unchanged\n", window->desc);
-    }
-}
-
-static void
-recalc_do_not_cover_struts (MetaWindow *window)
-{
-  if (window->do_not_cover)
-    {
-      /* We only understand windows that are aligned to
-       * a screen edge
-       */
-      gboolean horizontal;
-      gboolean on_left_edge;
-      gboolean on_right_edge;
-      gboolean on_bottom_edge;
-      gboolean on_top_edge;      
-
-      window->left_strut = 0;
-      window->right_strut = 0;
-      window->top_strut = 0;
-      window->bottom_strut = 0;
-      
-      on_left_edge = window->rect.x == 0;
-      on_right_edge = (window->rect.x + window->rect.width) ==
-        window->screen->width;
-      on_top_edge = window->rect.y == 0;
-      on_bottom_edge = (window->rect.y + window->rect.height) ==
-        window->screen->height;
-      
-      /* cheesy heuristic to decide where the strut goes */
-      if (on_left_edge && on_right_edge && on_bottom_edge)
-        horizontal = TRUE;
-      else if (on_left_edge && on_right_edge && on_top_edge)
-        horizontal = TRUE;
-      else if (on_top_edge && on_bottom_edge && on_left_edge)
-        horizontal = FALSE;
-      else if (on_top_edge && on_bottom_edge && on_right_edge)
-        horizontal = FALSE;
-      else
-        horizontal = window->rect.width > window->rect.height;
-      
-      if (horizontal)
-        {
-          if (on_top_edge)
-            window->top_strut = window->rect.height;
-          else if (on_bottom_edge)
-            window->bottom_strut = window->rect.height;
-        }
-      else
-        {
-          if (on_left_edge)
-            window->left_strut = window->rect.width;
-          else if (on_right_edge)
-            window->right_strut = window->rect.width;
-        }
     }
 }
 

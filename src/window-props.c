@@ -355,40 +355,6 @@ reload_net_wm_desktop (MetaWindow    *window,
 }
 
 static void
-init_win_workspace (MetaDisplay   *display,
-                    Atom           property,
-                    MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom_win_workspace;
-}
-
-static void
-reload_win_workspace (MetaWindow    *window,
-                      MetaPropValue *value)
-{
-  if (value->type != META_PROP_VALUE_INVALID)
-    {
-      meta_topic (META_DEBUG_PLACEMENT,
-                  "Read legacy GNOME workspace prop %d for %s\n",
-                  (int) value->v.cardinal, window->desc);
-
-      if (window->initial_workspace_set)
-        {
-          meta_topic (META_DEBUG_PLACEMENT,
-                      "Ignoring legacy GNOME workspace prop %d for %s as we already set initial workspace\n",
-                      (int) value->v.cardinal, window->desc);          
-        }
-      else
-        {
-          window->initial_workspace_set = TRUE;
-          window->initial_workspace = value->v.cardinal;
-        }
-    }
-}
-
-
-static void
 init_net_startup_id (MetaDisplay   *display,
                   Atom           property,
                   MetaPropValue *value)
@@ -848,7 +814,7 @@ reload_wm_hints (MetaWindow    *window,
 
 
 
-#define N_HOOKS 25
+#define N_HOOKS 22
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -938,27 +904,12 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_win_layer;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
   hooks[i].property = display->atom_net_wm_desktop;
   hooks[i].init_func = init_net_wm_desktop;
   hooks[i].reload_func = reload_net_wm_desktop;
   ++i;
 
-  hooks[i].property = display->atom_win_workspace;
-  hooks[i].init_func = init_win_workspace;
-  hooks[i].reload_func = reload_win_workspace;
-  ++i;
-
   hooks[i].property = display->atom_net_wm_strut;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom_win_hints;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;

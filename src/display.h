@@ -120,10 +120,6 @@ struct _MetaDisplay
   Atom atom_net_client_list_stacking;
   Atom atom_net_wm_state_skip_taskbar;
   Atom atom_net_wm_state_skip_pager;
-  Atom atom_win_workspace;
-  Atom atom_win_layer;
-  Atom atom_win_protocols;
-  Atom atom_win_supporting_wm_check;
   Atom atom_net_wm_icon_name;
   Atom atom_net_wm_icon;
   Atom atom_net_wm_icon_geometry;
@@ -134,7 +130,6 @@ struct _MetaDisplay
   Atom atom_net_active_window;
   Atom atom_metacity_restart_message;
   Atom atom_net_wm_strut;
-  Atom atom_win_hints;
   Atom atom_metacity_reload_theme_message;
   Atom atom_metacity_set_keybindings_message;
   Atom atom_net_wm_state_hidden;
