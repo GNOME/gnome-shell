@@ -1,5 +1,16 @@
 2002-08-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c (meta_display_process_key_event): filter out 
+	key events that happen on popup menus etc.
+
+	* src/ui.c (meta_ui_window_is_widget): new function to check
+	whether a window belongs to a GtkWidget such as the popup menu
+
+	* src/prefs.c (change_notify): put in a no-op line for AIX
+	compiler, #84252	
+
+2002-08-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_resize): track time to avoid sending a
 	deluge of move/resize requests, suggestion from
 	xavier.bestel@free.fr bug #86830. Not really sure if this will

@@ -1276,8 +1276,13 @@ meta_display_process_key_event (MetaDisplay *display,
 
   if (screen == NULL)
     return; /* event window is destroyed */
+
+  /* ignore key events on popup menus and such. */
+  if (window == NULL &&
+      meta_ui_window_is_widget (screen->ui, event->xany.window))
+    return;
   
-  /* window may be NULL */  
+  /* window may be NULL */
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
 

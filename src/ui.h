@@ -157,6 +157,9 @@ gboolean meta_ui_parse_accelerator (const char          *accel,
                                     unsigned int        *keysym,
                                     MetaVirtualModifier *mask);
 
+gboolean meta_ui_window_is_widget (MetaUI *ui,
+                                   Window  xwindow);
+
 #include "tabpopup.h"
 
 #endif

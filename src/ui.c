@@ -662,3 +662,22 @@ meta_ui_parse_accelerator (const char          *accel,
   
   return TRUE;
 }
+
+gboolean
+meta_ui_window_is_widget (MetaUI *ui,
+                          Window  xwindow)
+{
+  GdkWindow *window;
+
+  window = gdk_xid_table_lookup (xwindow);
+
+  if (window &&
+      gdk_window_get_window_type (window) != GDK_WINDOW_FOREIGN)
+    {
+      void *user_data = NULL;
+      gdk_window_get_user_data (window, &user_data);
+      return user_data != NULL;
+    }
+  else
+    return FALSE;
+}

@@ -542,6 +542,7 @@ change_notify (GConfClient    *client,
   
  out:
   /* nothing */
+  return; /* AIX compiler wants something after a label like out: */
 }
 
 static gboolean
