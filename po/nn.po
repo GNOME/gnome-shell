@@ -1,0 +1,2887 @@
+# translation of nn.po to Norsk nynorsk
+# This file is distributed under the same license as the Metacity package.
+# Copyright (C) 2003 Åsmund Skjæveland.
+# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: nn\n"
+"POT-Creation-Date: 2003-09-13 14:04+0200\n"
+"PO-Revision-Date: 2003-09-20 23:35+0200\n"
+"Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
+"Language-Team: Norsk nynorsk <i18n-nn@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Bruk: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity vart kompilert utan støtte for ordrik modus\n"
+
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/theme-parser.c:467
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kunne ikkje lesa «%s» som eit heiltal"
+
+# TRN: "trailing"?
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/theme-parser.c:476 src/theme-parser.c:530
+#, c-format
+#, fuzzy
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Forstod ikkje dei avsluttande teikna «%s» i strengen «%s»"
+
+#: src/delete.c:126
+#, c-format
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "Kunne ikkje tolka meldinga «%s» frå dialogprosessen\n"
+
+#: src/delete.c:261
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "Feil under lesing frå dialogvisingsprosess: %s\n"
+
+#: src/delete.c:332
+#, c-format
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Kunne ikkje starta metacity-dialogen som spør om å drepa ein applikasjon: %"
+"s\n"
+
+#: src/delete.c:431
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "Kunne ikkje henta vertsnamn: %s\n"
+
+# TRN: "X Window System"?
+#: src/display.c:286
+#, fuzzy, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Kunne ikkje opna X Window System-skjermen «%s»\n"
+
+#: src/errors.c:231
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"Mista tilkoplinga til skjermen «%s».\n"
+"Truleg vart X-tenaren stengt ned, eller vindaugshandsamaren avslutta.\n"
+
+#: src/errors.c:238
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
+
+#: src/frames.c:1015
+msgid "Close Window"
+msgstr "Steng vindauge"
+
+#: src/frames.c:1018
+msgid "Window Menu"
+msgstr "Vindaugemeny"
+
+#: src/frames.c:1021
+msgid "Minimize Window"
+msgstr "Minimer vindauge"
+
+#: src/frames.c:1024
+msgid "Maximize Window"
+msgstr "Maksimer vindauge"
+
+#: src/frames.c:1027
+msgid "Unmaximize Window"
+msgstr "Av-maksimer vindauge"
+
+#: src/keybindings.c:984
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Eit anna program brukar allereie tasten %s med modifikator %x som ein "
+"snøggtast\n"
+
+#: src/keybindings.c:2413
+#, c-format
+msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgstr "Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
+
+#: src/keybindings.c:2444
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "Kommandoen %d er ikkje definert.\n"
+
+#: src/main.c:64
+msgid ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
+msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAMN] [--"
+"display=SKJERM] [--replace] [--version]\n"
+
+# TRN: Skal dette omsetjast i det heile?
+#: src/main.c:71
+#, fuzzy, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"metacity %s\n"
+"Kopirett (C) 2001-2002 Havoc Pennington, Red Hat, Inc., og andre\n"
+"Dette er fri programvare. Sjå kjeldekoden for kopieringsvilkår.\n"
+"Det er INGEN garanti, ikkje ein gong for SALSVERDI eller BRUKSVERDI FOR EIT "
+"GITT FORMÅL.\n"
+
+#: src/main.c:348
+#, c-format
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+
+#: src/main.c:396
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Kunne ikkje starta på nytt: %s\n"
+
+#: src/menu.c:52
+msgid "Mi_nimize"
+msgstr "Min_imer"
+
+#: src/menu.c:53
+msgid "Ma_ximize"
+msgstr "Ma_ksimer"
+
+#: src/menu.c:54
+msgid "Unma_ximize"
+msgstr "G_jenopprett"
+
+#: src/menu.c:55
+msgid "Roll _Up"
+msgstr "Rull _opp"
+
+#: src/menu.c:56
+msgid "_Unroll"
+msgstr "Rull _ut"
+
+#: src/menu.c:57
+msgid "_Move"
+msgstr "_Flytt"
+
+#: src/menu.c:58
+msgid "_Resize"
+msgstr "End_ra storleik"
+
+#. separator
+#: src/menu.c:60
+msgid "_Close"
+msgstr "_Lukk"
+
+#. separator
+#: src/menu.c:62
+msgid "Put on _All Workspaces"
+msgstr "Legg på _alle arbeidsområde"
+
+#: src/menu.c:63
+msgid "Only on _This Workspace"
+msgstr "Berre på de_tte arbeidsområdet"
+
+#: src/menu.c:152 src/prefs.c:1815
+#, c-format
+msgid "Workspace %d"
+msgstr "Arbeidsområde %d"
+
+#.
+#. * Above name is a pointer into the Workspace struct. Here we make
+#. * a copy copy so we can have our wicked way with it.
+#.
+#: src/menu.c:160
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Arbeidsområde %s%d"
+
+#: src/menu.c:345
+#, c-format
+msgid "Only on %s"
+msgstr "Berre på %s"
+
+#: src/menu.c:347
+#, c-format
+msgid "Move to %s"
+msgstr "Flytt til %s"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:105
+msgid "Shift"
+msgstr "Shift"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:111
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:117
+msgid "Alt"
+msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:123
+msgid "Meta"
+msgstr "Meta"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:129
+msgid "Super"
+msgstr "Super"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:135
+msgid "Hyper"
+msgstr "Hyper"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:141
+msgid "Mod2"
+msgstr "Mod2"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:147
+msgid "Mod3"
+msgstr "Mod3"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:153
+msgid "Mod4"
+msgstr "Mod4"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:159
+msgid "Mod5"
+msgstr "Mod5"
+
+#: src/metacity-dialog.c:85
+#, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "Vindauget «%s» svarar ikkje."
+
+#: src/metacity-dialog.c:93
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
+"Dersom du tvingar denne applikasjonen til å avslutta, vil alle ulagra "
+"endringar gå tapt."
+
+#: src/metacity-dialog.c:103
+msgid "_Force Quit"
+msgstr "_Tvungen avslutting"
+
+#: src/metacity-dialog.c:197
+msgid "Title"
+msgstr "Tittel"
+
+#: src/metacity-dialog.c:209
+msgid "Class"
+msgstr "Klasse"
+
+#: src/metacity-dialog.c:233
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+"Desse vindauga støttar ikkje lagring av gjeldande oppsett, og må startast "
+"manuelt neste gong du loggar inn."
+
+#: src/metacity-dialog.c:288
+#, c-format
+msgid ""
+"There was an error running \"%s\":\n"
+"%s."
+msgstr ""
+"Ein fei oppstod under køyring av «%s»:\n"
+"%s."
+
+#: src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
+
+#: src/metacity.schemas.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr ""
+"(Ikkje implementert) Navigering virkar med omsyn på applikasjonar, ikkje "
+"vindauge"
+
+#: src/metacity.schemas.in.h:2
+#, fuzzy
+# TRN: Noko betre for "font description".
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0, however. Also, this option is disabled if the "
+"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
+"is unset, causing Metacity to fall back to the desktop font even if "
+"titlebar_uses_desktop_font is false."
+msgstr ""
+"Ein skrifttypeskildrande streng som skildrar ein skrifttype for "
+"tittelinjene på vindauga. Storleiken frå fontskildringa vil berre "
+"verta brukt dersom valet «titlebar_font_size» er satt til 0. Dessutan "
+"vil dette valet verta ignorert dersom valet «titlebar_uses_desktop_font» "
+"er satt til «true». Til vanleg er «titlebar_font» ikkje satt til noko, "
+"slik at Metacity brukar skrivebordsskrifttype sjølv om "
+"«titlebar_uses_desktop_font» er satt til «false»."
+
+#: src/metacity.schemas.in.h:3
+msgid "Action on title bar double-click"
+msgstr "Handling ved dobbeltklikk på tittellinja"
+
+#: src/metacity.schemas.in.h:4
+msgid "Activate window menu"
+msgstr "Aktiver vindaugsmenyen"
+
+#: src/metacity.schemas.in.h:5
+msgid "Arrangement of buttons on the titlebar"
+msgstr "Plassering av knappane på tittellinja"
+
+#: src/metacity.schemas.in.h:6
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
+"the window from the right corner, and the button names are comma-separated. "
+"Duplicate buttons are not allowed. Unknown button names are silently ignored "
+"so that buttons can be added in future metacity versions without breaking "
+"older versions."
+msgstr ""
+"Korleis knappane vert plasserte på tittellinja. Verdien er ein streng, slik "
+"som «menu:minimize,maxmize,close». Kolonet skil "
+"det venstre hjørnet av vindauget frå det høgre, og namna på knappane er "
+"skilde med komma. Ein knapp kan ikkje stå fleire gonger. Ukjende knappenamn "
+"vert ignorerte utan feilmelding, slik at knappar kan leggjast til i framtidige "
+"versjonar av metacity utan at det øydelegg for gamle versjonar."
+
+#: src/metacity.schemas.in.h:7
+msgid "Automatically raises the focused window"
+msgstr "Løftar opp det fokuserte vindauget automatisk"
+
+#: src/metacity.schemas.in.h:8
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
+"for example."
+msgstr ""
+"Å klikka på eit vindauge medan du held nede denne modifikatortasten vil "
+"flytta vindauget (venstreklikk), endra storleiken på det (midtklikk) eller "
+"visa vindaugsmenyen (høgreklikk). Modifikatoren er til dømes «&lt;Alt&gt;» "
+"eller «&lt;Super&gt;»."
+
+#: src/metacity.schemas.in.h:9
+msgid "Close a window"
+msgstr "Lukk eit vindauge"
+
+#: src/metacity.schemas.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "Kommandoar som skal køyrast som svar på tastarurbindingar"
+
+#: src/metacity.schemas.in.h:11
+msgid "Current theme"
+msgstr "Noverande drakt"
+
+#: src/metacity.schemas.in.h:12
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "Pause i millisekund ved automatisk heving"
+
+#: src/metacity.schemas.in.h:13
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+"Avgjer om applikasjonar eller systemet kan laga høyrlege «pip». Kan brukast "
+"i samband med «visuell bjelle» til å tillate stille «pip»."
+
+#: src/metacity.schemas.in.h:14
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr "Slå av uønskte funksjonar som krevst av gamle eller øydelagte applikasjonar"
+
+#: src/metacity.schemas.in.h:15
+msgid "Enable Visual Bell"
+msgstr "Slå på visuell bjelle"
+
+#: src/metacity.schemas.in.h:16
+msgid "Hide all windows and focus desktop"
+msgstr "Gøym alle vindauga og fokuser på skrivebordet"
+
+#: src/metacity.schemas.in.h:17
+msgid ""
+"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+"focused window will be automatically raised after a delay (the delay is "
+"specified by the auto_raise_delay key)."
+msgstr ""
+"Dersom denne er slått på, og fokusmetode er anten «sloppy» eller «mouse», så "
+"vil det fokuserte vindauget verta heva etter ei kort tid (tida vert bestemt "
+"av auto_raise_delay-nøkkelen)."
+
+#: src/metacity.schemas.in.h:18
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr ""
+"Dersom sann, sjå vekk ifrå «titlebar_font»-valet, og bruk standard-"
+"applikasjonsfonten for vindaugstitlane."
+
+#: src/metacity.schemas.in.h:19
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. The existence of this setting is somewhat "
+"questionable. But it's better than having settings for all the specific "
+"details of application-based vs. window-based, e.g. whether to pass through "
+"clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr ""
+"Dersom sann, så arbeider Metacity med applikasjonar i staden for med "
+"vindauge. Ideen er litt abstrakt, men eit applikasjonsbasert oppsett er meir "
+"likt Mac og mindre likt Windows. Når du fokuserer eit vindauge i "
+"applikasjonsbasert modus, vert alle vindauga i den applikasjonen heva. I "
+"tillegg vert ikkje fokusklikk sendt gjennom til vindauge i andre "
+"applikasjonar. At denne innstillinga finst i det heile, er ikkje heilt "
+"enkelt å rettferdiggjera. Men det er betre enn å ha innstillingar "
+"for alle detaljane i applikasjonsbasert og vindaugsbasert modus, som t.d. "
+"eit klikk for å fokusera eller løfta eit vindauge også skal sendast som eit "
+"klikk i vindauget. Applikasjonsbaset modus er dessutan stort sett ikkje "
+"implementert nett no."
+
+#: src/metacity.schemas.in.h:20
+msgid "Lower window below other windows"
+msgstr "Senk vindauget under andre vindauge"
+
+#: src/metacity.schemas.in.h:21
+msgid "Maximize a window"
+msgstr "Maksimer eit vindauge"
+
+#: src/metacity.schemas.in.h:22
+msgid "Maximize window horizontally"
+msgstr "Maksimer vindauget vassrett"
+
+#: src/metacity.schemas.in.h:23
+msgid "Maximize window vertically"
+msgstr "Maksimer vindauget loddrett"
+
+#: src/metacity.schemas.in.h:24
+msgid "Minimize a window"
+msgstr "Minimer eit vindauge"
+
+# TRN: Kva går den andre "modified" på her? Klikket eller handlinga det fører til?
+#: src/metacity.schemas.in.h:25
+msgid "Modifier to use for modified window click actions"
+msgstr "Modifikatortast som skal brukast ved modifiserte klikk i vindauget"
+
+#: src/metacity.schemas.in.h:26
+msgid "Move a window"
+msgstr "Flytt eit vindauge"
+
+#: src/metacity.schemas.in.h:27
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Flytt bakover mellom panela og skrivebordet med ein gong"
+
+#: src/metacity.schemas.in.h:28
+msgid "Move backwards between panels and the desktop with popup"
+msgstr "Flytt bakover mellom panela og skrivebordet med dialog på skjermen"
+
+#: src/metacity.schemas.in.h:29
+msgid "Move backwards between windows immediately"
+msgstr "Flytt bakover mellom vindauge med ein gong"
+
+#: src/metacity.schemas.in.h:30
+msgid "Move between panels and the desktop immediately"
+msgstr "Flytt mellom panela og skrivebordet med ein gong"
+
+#: src/metacity.schemas.in.h:31
+msgid "Move between panels and the desktop with popup"
+msgstr "Flytt mellom panela og skrivebordet med dialog på skjermen"
+
+#: src/metacity.schemas.in.h:32
+msgid "Move between windows immediately"
+msgstr "Flytt mellom vindauge med ein gong"
+
+#: src/metacity.schemas.in.h:33
+msgid "Move between windows with popup"
+msgstr "Flytt mellom vindauge med dialog på skjermen"
+
+#: src/metacity.schemas.in.h:34
+msgid "Move focus backwards between windows using popup display"
+msgstr "Flytt fokus baklengs mellom vindauge med dialog på skjermen"
+
+#: src/metacity.schemas.in.h:35
+msgid "Move window one workspace down"
+msgstr "Flytt vindauget eitt arbeidsområde ned"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window one workspace to the left"
+msgstr "Flytt vindauget eitt arbeidsområde til venstre"
+
+#: src/metacity.schemas.in.h:37
+msgid "Move window one workspace to the right"
+msgstr "Flytt vindauget eitt arbeidsområde til høgre"
+
+#: src/metacity.schemas.in.h:38
+msgid "Move window one workspace up"
+msgstr "Flytt vindauget eitt arbeidsområde opp"
+
+#: src/metacity.schemas.in.h:39
+msgid "Move window to workspace 1"
+msgstr "Flytt vindauget til arbeidsområde 1"
+
+#: src/metacity.schemas.in.h:40
+msgid "Move window to workspace 10"
+msgstr "Flytt vindauget til arbeidsområde 10"
+
+#: src/metacity.schemas.in.h:41
+msgid "Move window to workspace 11"
+msgstr "Flytt vindauget til arbeidsområde 11"
+
+#: src/metacity.schemas.in.h:42
+msgid "Move window to workspace 12"
+msgstr "Flytt vindauget til arbeidsområde 12"
+
+#: src/metacity.schemas.in.h:43
+msgid "Move window to workspace 2"
+msgstr "Flytt vindauget til arbeidsområde 2"
+
+#: src/metacity.schemas.in.h:44
+msgid "Move window to workspace 3"
+msgstr "Flytt vindauget til arbeidsområde 3"
+
+#: src/metacity.schemas.in.h:45
+msgid "Move window to workspace 4"
+msgstr "Flytt vindauget til arbeidsområde 4"
+
+#: src/metacity.schemas.in.h:46
+msgid "Move window to workspace 5"
+msgstr "Flytt vindauget til arbeidsområde 5"
+
+#: src/metacity.schemas.in.h:47
+msgid "Move window to workspace 6"
+msgstr "Flytt vindauget til arbeidsområde 6"
+
+#: src/metacity.schemas.in.h:48
+msgid "Move window to workspace 7"
+msgstr "Flytt vindauget til arbeidsområde 7"
+
+#: src/metacity.schemas.in.h:49
+msgid "Move window to workspace 8"
+msgstr "Flytt vindauget til arbeidsområde 8"
+
+#: src/metacity.schemas.in.h:50
+msgid "Move window to workspace 9"
+msgstr "Flytt vindauget til arbeidsområde 9"
+
+#: src/metacity.schemas.in.h:51
+msgid "Name of workspace"
+msgstr "Namn på arbeidsområde"
+
+#: src/metacity.schemas.in.h:52
+msgid "Number of workspaces"
+msgstr "Tal på arbeidsområder"
+
+#: src/metacity.schemas.in.h:53
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
+"prevent accidentally destroying your desktop by asking for 34 million "
+"workspaces)."
+msgstr ""
+"Tal på arbeidsområder. Må vera flere enn null, og har ei fast øvre grense "
+"(for å hindra at du ved eit uhell øydelegg skrivebordet ditt ved å spørja "
+"etter 34 millionar arbeidsområder)."
+
+#: src/metacity.schemas.in.h:54
+msgid "Raise obscured window, otherwise lower"
+msgstr "Hev vindauget dersom skjult, ellers senk det"
+
+#: src/metacity.schemas.in.h:55
+msgid "Raise window above other windows"
+msgstr "Hev vindauge over andre vindauge"
+
+#: src/metacity.schemas.in.h:56
+msgid "Resize a window"
+msgstr "Endra storleik på eit windauge"
+
+#: src/metacity.schemas.in.h:57
+msgid "Run a defined command"
+msgstr "Køyr ein definert kommando"
+
+#: src/metacity.schemas.in.h:58
+msgid "Show the panel menu"
+msgstr "Vis panelmenyen"
+
+#: src/metacity.schemas.in.h:59
+msgid "Show the panel run dialog"
+msgstr "Vis køyr-dialogen til panelet"
+
+# TRN: Workaround?
+#: src/metacity.schemas.in.h:60
+#, fuzzy
+msgid ""
+"Some applications break specifications in ways that result in window manager "
+"misfeatures. For example, ideally Metacity would place all dialogs in a "
+"consistent position with respect to their parent window. This requires "
+"ignoring application-specified positions for dialogs. But some versions of "
+"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
+"dialog positioning to allow menus to work in broken Java applications. There "
+"are several other examples like this. This option puts Metacity in full-on "
+"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
+"run any broken apps. Sadly, workarounds must be enabled by default; the real "
+"world is an ugly place. Some of the workarounds are workarounds for "
+"limitations in the specifications themselves, so sometimes a bug in no-"
+"workarounds mode won't be fixable without amending a spec."
+msgstr ""
+"Somme applikasjonar bryt spesifikasjonar på måtar som fører til at "
+"vindaugehandsamaren ikkje oppfører seg ordentleg. Til dømes vil Metacity "
+"gjerne plassera alle dialogane på ein konsistent måte i høve til foreldervindauget. "
+"Det vil seia å oversjå den plasseringa applikasjonen ber om for dialogen. "
+"Men somme versjonar av Java/Swing merkar sprettopp-menyane sine som "
+"dialogar, så Metacity må slå av dialogplassering for at menyar skal virka i "
+"defekte Java-applikasjonar. Det finst fleire slike døme. Dette valet set "
+"Metacity til å vera heilt korrekt, som kanskje vil gje eit litt finare "
+"grensesnitt dersom du ikkje treng å køyra defekte applikasjonar. Diverre må "
+"\"workarounds\" vera på som standard, for røynda er ikkje perfekt. Nokon av "
+"W. er W. for manglar i spesifikasjonen for vindaugshandsamarar (SJEKK "
+"DETTE), så stundom vil ikkje feil i \"NW\"-modus vera råd å retta utan å "
+"fyrst retta spesifikasjonen."
+
+# TRN: «Gå til» betre enn «byt til»?
+#: src/metacity.schemas.in.h:61
+msgid "Switch to workspace 1"
+msgstr "Byt til arbeidsområde 1"
+
+#: src/metacity.schemas.in.h:62
+msgid "Switch to workspace 10"
+msgstr "Byt til arbeidsområde 10"
+
+#: src/metacity.schemas.in.h:63
+msgid "Switch to workspace 11"
+msgstr "Byt til arbeidsområde 11"
+
+#: src/metacity.schemas.in.h:64
+msgid "Switch to workspace 12"
+msgstr "Byt til arbeidsområde 12"
+
+#: src/metacity.schemas.in.h:65
+msgid "Switch to workspace 2"
+msgstr "Byt til arbeidsområde 2"
+
+#: src/metacity.schemas.in.h:66
+msgid "Switch to workspace 3"
+msgstr "Byt til arbeidsområde 3"
+
+#: src/metacity.schemas.in.h:67
+msgid "Switch to workspace 4"
+msgstr "Byt til arbeidsområde 4"
+
+#: src/metacity.schemas.in.h:68
+msgid "Switch to workspace 5"
+msgstr "Byt til arbeidsområde 5"
+
+#: src/metacity.schemas.in.h:69
+msgid "Switch to workspace 6"
+msgstr "Byt til arbeidsområde 6"
+
+#: src/metacity.schemas.in.h:70
+msgid "Switch to workspace 7"
+msgstr "Byt til arbeidsområde 7"
+
+#: src/metacity.schemas.in.h:71
+msgid "Switch to workspace 8"
+msgstr "Byt til arbeidsområde 8"
+
+#: src/metacity.schemas.in.h:72
+msgid "Switch to workspace 9"
+msgstr "Byt til arbeidsområde 9"
+
+#: src/metacity.schemas.in.h:73
+msgid "Switch to workspace above this one"
+msgstr "Byt til arbeidsområdet over dette"
+
+#: src/metacity.schemas.in.h:74
+msgid "Switch to workspace below this one"
+msgstr "Byt til arbeidsområdet under dette"
+
+#: src/metacity.schemas.in.h:75
+msgid "Switch to workspace on the left"
+msgstr "Byt til arbeidsområdet til venstre"
+
+#: src/metacity.schemas.in.h:76
+msgid "Switch to workspace on the right"
+msgstr "Byt til arbeidsområdet til høgre"
+
+#: src/metacity.schemas.in.h:77
+msgid "System Bell is Audible"
+msgstr "Systembjølla lagar lyd"
+
+#: src/metacity.schemas.in.h:78
+msgid "Take a screenshot"
+msgstr "Ta eit skjermbilete"
+
+#: src/metacity.schemas.in.h:79
+msgid "Take a screenshot of a window"
+msgstr "Ta eit bilete av eit vindauge"
+
+# TRN: Skal "fullscreen", "frame_flash" omsetjast?
+#: src/metacity.schemas.in.h:80
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+"Fortel Metacity korleis han skal visa visuelt at systembjølla eller ei "
+"applikasjonsbjølle har blitt ringt med. No er det to moglege val: "
+"«Fullskjerm» gjer at heile skjermen blinkar i svart og kvitt, og "
+"«rammeblink», som gjer at tittellinja til applikasjone som ringte med bjølla "
+"blinkar. Dersom det ikkje er råd å finna ut kva for ein applikasjon som "
+"ringte med bjølla (som oftast tilfelle for systembjølla), så blinkar "
+"tittellinja på det fokuserte vindauget."
+
+#: src/metacity.schemas.in.h:81
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+"Nøklane /apps/metacity/global_keybindings/run_command_N definerer snøggtastar "
+"som svarar til desse kommandoane. Dår du trykker snøggtasten for command_N, "
+"vil command_N bli køyrt."
+
+#: src/metacity.schemas.in.h:82
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"Nøkkelen /apps/metacity/global_keybindings/run_command_screenshot definerer "
+"ein snøggtast som køyrer kommandoen som svarer til denne innstillinga."
+
+#: src/metacity.schemas.in.h:83
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"Nøkkelen /apps/metacity/global_keybindings/run_command_window_screenshot "
+"definerer ein snøggtast som køyrer kommandoen definert av denne innstillinga."
+
+#: src/metacity.schemas.in.h:84
+#, fuzzy
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
+"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
+"there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som køyrer kommandoen med det tilsvarande nummeret i "
+"/apps/metacity/keybinding_commands. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:85
+#, fuzzy
+msgid ""
+"The keybinding that switches to the workspace above the current workspace. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet over det noverande arbeidsområdet. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:86
+#, fuzzy
+msgid ""
+"The keybinding that switches to the workspace below the current workspace. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet under det noverande arbeidsområdet. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:87
+#, fuzzy
+msgid ""
+"The keybinding that switches to the workspace on the left of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
+"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+"the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet til venstre for det noverande "
+"arbeidsområdet. Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;"
+"&lt;Alt&gt;F1». Tolkaren er ganske romsleg, og tillet små og store bokstavar "
+"og forkortingar som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette "
+"valet til den spesielle strengen «disabled», så har denne handlinga ingen "
+"snøggtast."
+
+#: src/metacity.schemas.in.h:88
+#, fuzzy
+msgid ""
+"The keybinding that switches to the workspace on the right of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
+"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+"the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet til høgre for det noverande "
+"arbeidsområdet. Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;"
+"&lt;Alt&gt;F1». Tolkaren er ganske romsleg, og tillet små og store bokstavar "
+"og forkortingar som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette "
+"valet til den spesielle strengen «disabled», så har denne handlinga ingen "
+"snøggtast."
+
+#: src/metacity.schemas.in.h:89
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 1. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet 1. Formatet er på forma «&lt;"
+"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
+"romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
+"og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
+"«disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:90
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 10. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet 10. Formatet er på forma «&lt;"
+"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
+"romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
+"og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
+"«disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:91
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 11. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområdet 11. Formatet er på forma «&lt;"
+"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
+"romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
+"og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
+"«disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:92
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 12. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 12. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:93
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 2. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 2. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:94
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 3. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 3. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:95
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 4. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 4. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:96
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 5. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 5. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:97
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 6. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 6. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:98
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 7. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 7. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:99
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 8. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 8. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:100
+#, fuzzy
+msgid ""
+"The keybinding that switches to workspace 9. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som byter til arbeidsområde 9. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller &lt;Shift&gt;&lt;Alt&gt;F1» Tolkaren er ganske romsleg, "
+"og tillet små og store bokstavar, og også forkortingar slik som «&lt;"
+"Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set valet til den spesielle strengen "
+"«disabled», så vil ikkje denne handlinga ha nokon snøggtast."
+
+#: src/metacity.schemas.in.h:101
+#, fuzzy
+msgid ""
+"The keybinding used to activate the window menu. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som aktiverer vindaugemenyen.Formatet er på forma «&lt;"
+"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
+"romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
+"og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
+"«disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:102
+#, fuzzy
+msgid ""
+"The keybinding used to close a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som lukkar eit vindauge.Formatet er på forma «&lt;Control&gt;a» "
+"eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske romsleg, og tillet "
+"små og store bokstavar og forkortingar som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». "
+"Dersom du set dette valet til den spesielle strengen «disabled», så har "
+"denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:103
+#, fuzzy
+msgid ""
+"The keybinding used to enter \"move mode\" and begin moving a window using "
+"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som går inn i «flyttemodus», som let deg flytta eit vindauge med tastaturet."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:104
+#, fuzzy
+msgid ""
+"The keybinding used to enter \"resize mode\" and begin resizing a window "
+"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som går inn i «modus for å endra storleik» og let deg endra "
+"storleiken på vindauget med tastaturet. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:105
+#, fuzzy
+msgid ""
+"The keybinding used to hide all normal windows and set the focus to the "
+"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som gøymer alle dei normale vindauga og set fokus på skrivebordet. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:106
+#, fuzzy
+msgid ""
+"The keybinding used to maximize a window The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som maksimerer eit vindauge. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:107
+#, fuzzy
+msgid ""
+"The keybinding used to minimize a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som minimerer eit vindauge. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:108
+#, fuzzy
+msgid ""
+"The keybinding used to move a window one workspace down. The format looks "
+"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
+"fairly liberal and allows lower or upper case, and also abbreviations such "
+"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge eitt arbeidsområde ned. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:109
+#, fuzzy
+msgid ""
+"The keybinding used to move a window one workspace to the left. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
+"is fairly liberal and allows lower or upper case, and also abbreviations "
+"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge eitt arbeidsområde til venstre. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:110
+#, fuzzy
+msgid ""
+"The keybinding used to move a window one workspace to the right. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
+"is fairly liberal and allows lower or upper case, and also abbreviations "
+"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge eitt arbeidsområde til høgre. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:111
+#, fuzzy
+msgid ""
+"The keybinding used to move a window one workspace up. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge eitt arbeidsområde opp. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:112
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 1. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 1."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:113
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 10. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 10."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:114
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 11. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 11."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:115
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 12. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 12."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:116
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 2. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 2."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:117
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 3. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 3."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:118
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 4. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 4."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:119
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 5. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 5."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:120
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 6. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 6."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:121
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 7. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 7."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:122
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 8. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 8."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:123
+#, fuzzy
+msgid ""
+"The keybinding used to move a window to workspace 9. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar eit vindauge til arbeidsområde 9."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:124
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between panels and the desktop, "
+"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus baklangs mellom panela og skrivebordet, med ein dialogboks."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:125
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between panels and the desktop, "
+"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus baklengs mellom panela og skrivebordet, utan dialogboks."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:126
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows without a popup "
+"window. Holding \"shift\" together with this binding makes the direction go "
+"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus baklengs mellom vindauga, utan dialogboks. "
+"Å halda «Shift» nede i lag med denne bindinga endrar retninga til framover i lista."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:127
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows, using a popup "
+"window. Holding \"shift\" together with this binding makes the direction go "
+"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus bakover mellom vindauga, med ein dialogboks. "
+"Å halda «Shift» nede i lag med denne bindinga endrar retninga til framover i lista."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:128
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between panels and the desktop, using a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus mellom panela og skrivebordet, med ein dialogboks. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:129
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between panels and the desktop, without a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus mellom panela og skrivebordet, utan dialogboks. "
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:130
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows without a popup window. "
+"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
+"binding reverses the direction of movement. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus mellom vindauga, utan dialogboks. "
+"(Tradisjonelt &lt;Alt&gt;Escape.)"
+"Å halda «Shift» nede i lag med denne bindinga byter retning på rørsla i "
+"vindaugslista."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:131
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows, using a popup window. "
+"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
+"binding reverses the direction of movement. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som flyttar fokus mellom vindauga, med ein dialogboks. "
+"(Tradisjonelt &lt;Alt&gt;Tab.)"
+"Å halda «Shift» nede i lag med denne bindinga byter retning på rørsla i "
+"vindaugslista."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:132
+#, fuzzy
+msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som slår av og på «alltid øvst». Eit vindauge som alltid er øvst, "
+"vil alltid vera synleg over andre overlappande vindauge."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:133
+#, fuzzy
+msgid ""
+"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som slår av og på fullskjermmodus."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:134
+#, fuzzy
+msgid ""
+"The keybinding used to toggle maximization. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som maksimerer og gjenopprettar vindauget."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:135
+#, fuzzy
+msgid ""
+"The keybinding used to toggle shaded/unshaded state. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som slår av og på skuggelagt tilstand for vindauget."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:136
+#, fuzzy
+msgid ""
+"The keybinding used to toggle whether the window is on all workspaces or "
+"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
+"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+"the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Snøggtasten som styrer om vindauget er synleg på alle arbeidsområda eller berre eitt."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:137
+msgid ""
+"The keybinding used to unmaximize a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Snøggtasten som gjenopprettar eit vindauge."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:138
+msgid ""
+"The keybinding which display's the panel's \"Run Program\" dialog box. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Snøggtasten som viser panelet sin «Køyr applikasjon»-dialogboks."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
+
+#: src/metacity.schemas.in.h:139
+msgid ""
+"The keybinding which invokes the panel's screenshot utility to take a "
+"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+
+#: src/metacity.schemas.in.h:140
+msgid ""
+"The keybinding which invokes the panel's screenshot utility. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
+"is fairly liberal and allows lower or upper case, and also abbreviations "
+"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+
+#: src/metacity.schemas.in.h:141
+msgid ""
+"The keybinding which shows the panel's main menu. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+
+#: src/metacity.schemas.in.h:142
+msgid "The name of a workspace."
+msgstr ""
+
+#: src/metacity.schemas.in.h:143
+msgid "The screenshot command"
+msgstr ""
+
+#: src/metacity.schemas.in.h:144
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr ""
+
+#: src/metacity.schemas.in.h:145
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr ""
+
+#: src/metacity.schemas.in.h:146
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr ""
+
+#: src/metacity.schemas.in.h:147
+msgid "The window screenshot command"
+msgstr "Kommandoen for å ta eit skjermbilete"
+
+#: src/metacity.schemas.in.h:148
+#, fuzzy
+msgid ""
+"This keybinding changes whether a window is above or below other windows. If "
+"the window is covered by another window, it raises the window above other "
+"windows. If the window is already fully visible, it lowers the window below "
+"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Denne snøggtasten endrar om eit vindauge er over eller under andre vindauge. "
+"Dersom vindauget er dekt av eit anna vindauge, vert det løfta over dei andre "
+"vindauga. Dersom vindauget allereie er fullstendig synleg, senkar det vindauget "
+"under dei andre vindauga. Formatet ser slik ut: «&lt;Control&gt;a» eller "
+"«&lt;Shift&gt;&lt;Alt&gt;F1». "
+
+#: src/metacity.schemas.in.h:149
+#, fuzzy
+msgid ""
+"This keybinding lowers a window below other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "Denne snøggtasten senkar eit vindauge under andre vindauge. SNØGGTASTFORMAT"
+
+#: src/metacity.schemas.in.h:150
+msgid ""
+"This keybinding raises the window above other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "Denne snøggtastbindinga løftar eit vindauge over dei andre vindauga. SNØGGTASTFORMAT"
+
+#: src/metacity.schemas.in.h:151
+msgid ""
+"This keybinding resizes a window to fill available horizontal space. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Denne snøggtasten endrar storleiken på eit vindauge slik at det brukar "
+"all den tilgjengelege vassrette plassen. SNØGGTASTFORMAT"
+
+#: src/metacity.schemas.in.h:152
+msgid ""
+"This keybinding resizes a window to fill available vertical space. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Denne snøggtasten endrar storleiken på eit vindauge slik at det brukar "
+"all den tilgjengelege loddrette plassen. SNØGGTASTFORMAT"
+
+#: src/metacity.schemas.in.h:153
+# TRN: "toggle_shade", "toggle_maximize"
+#, fuzzy
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr ""
+"Dette valet styrer effekten av å dobbeltklikka på tittellinja. "
+"Gyldige val er «toggle_shade», som vil rulla opp og ned vindauget, "
+"og «toggle_maximize», som vil maksimera og gjenoppretta vindauget."
+
+#: src/metacity.schemas.in.h:154
+msgid "Toggle always on top state"
+msgstr "Slå av/på at vindauget alltid ligg øvst"
+
+#: src/metacity.schemas.in.h:155
+msgid "Toggle fullscreen mode"
+msgstr "Slå av/på fullskjermmodus"
+
+#: src/metacity.schemas.in.h:156
+msgid "Toggle maximization state"
+msgstr ""
+
+#: src/metacity.schemas.in.h:157
+msgid "Toggle shaded state"
+msgstr ""
+
+#: src/metacity.schemas.in.h:158
+msgid "Toggle window on all workspaces"
+msgstr "Slå av/på at vindauget ligg på alle arbeidsområda samstundes"
+
+#: src/metacity.schemas.in.h:159
+#, fuzzy
+# TRN: "bell", "beep"
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments, or when 'audible bell' is off."
+msgstr ""
+"Slår på ein visuell indikator for når ein applikasjon eller systemet "
+"sender «bell» eller «beep». Dette er nyttig for tunghøyrte og i støyande "
+"omgjevnader, eller når den høyrlege bjølla er slått av."
+
+#: src/metacity.schemas.in.h:160
+msgid "Unmaximize a window"
+msgstr "Gjenopprett eit vindauge"
+
+#: src/metacity.schemas.in.h:161
+msgid "Use standard system font in window titles"
+msgstr "Bruk standard systemskrifttype i vindaugstitlar"
+
+#: src/metacity.schemas.in.h:162
+msgid "Visual Bell Type"
+msgstr "Type synleg bjølle"
+
+#: src/metacity.schemas.in.h:163
+msgid "Window focus mode"
+msgstr "Fokuseringsmodus for vindauge"
+
+#: src/metacity.schemas.in.h:164
+msgid "Window title font"
+msgstr "Skrifttype for vindaugstitlar"
+
+#: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
+#: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
+#: src/prefs.c:582 src/prefs.c:598 src/prefs.c:614 src/prefs.c:630
+#: src/prefs.c:646 src/prefs.c:663 src/prefs.c:679 src/prefs.c:695
+#: src/prefs.c:727
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf-nøkkel «%s» er satt til ein ugyldig type\n"
+
+#: src/prefs.c:771
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"«%s» funne i oppsettdatabasen er ikkje ein gyldig verdi for "
+"modifikator for musknapp\n"
+
+#: src/prefs.c:795 src/prefs.c:1205
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf-nøkkel «%s» er satt til ein ugyldig verdi\n"
+
+#: src/prefs.c:922
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Kunne ikkje tolka fontskildringa «%s» frå GConf-nøkkelen %s\n"
+
+#: src/prefs.c:1107
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d lagra i GConf-nøkkelen %s er ikkje eit rimeleg tal på arbeidsområder, "
+"noverande maksimum er %d\n"
+
+#: src/prefs.c:1167
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+
+#: src/prefs.c:1232
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "%d lagra i GConf-nøkkel %s er utanfor området 0 til %d\n"
+
+#: src/prefs.c:1336
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Ein feil oppstod: Kan ikkje setja talet på arbeidsområder til %d: %s\n"
+
+#: src/prefs.c:1579
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"«%s» funnen i oppsettdatabasen er ikkje ein gyldig verdi for "
+"snøggtasten «%s»\n"
+
+#: src/prefs.c:1896
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Ein feil oppstod: Kunne ikkje gje arbeidsområde %d namnet «%s»: %s\n"
+
+#: src/resizepopup.c:126
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: src/screen.c:392
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: src/screen.c:408
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+
+#: src/screen.c:449
+#, c-format
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+
+#: src/screen.c:504
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr ""
+
+#: src/screen.c:674
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr ""
+
+#: src/session.c:274
+#, c-format
+msgid ""
+"Failed to a open connection to a session manager, so window positions will "
+"not be saved: %s\n"
+msgstr ""
+
+#: src/session.c:881 src/session.c:888
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr ""
+
+#: src/session.c:898
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr ""
+
+#: src/session.c:1057
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:1062
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:1137
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr ""
+
+#: src/session.c:1172
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr ""
+
+#: src/session.c:1221
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr ""
+
+#: src/session.c:1234
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr ""
+
+#: src/session.c:1251
+msgid "nested <window> tag"
+msgstr ""
+
+#: src/session.c:1309 src/session.c:1341
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr ""
+
+#: src/session.c:1413
+#, c-format
+msgid "Unknown attribute %s on <maximized> element"
+msgstr ""
+
+#: src/session.c:1473
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr ""
+
+#: src/session.c:1493
+#, c-format
+msgid "Unknown element %s"
+msgstr ""
+
+#: src/session.c:1921
+#, c-format
+msgid ""
+"Error launching metacity-dialog to warn about apps that don't support "
+"session management: %s\n"
+msgstr ""
+
+#: src/theme-parser.c:224 src/theme-parser.c:242
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr ""
+
+#: src/theme-parser.c:396
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:414 src/theme-parser.c:439
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr ""
+
+#: src/theme-parser.c:485
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr ""
+
+#: src/theme-parser.c:493
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr ""
+
+#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr ""
+
+#: src/theme-parser.c:552
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr ""
+
+#: src/theme-parser.c:572
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr ""
+
+#: src/theme-parser.c:638
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr ""
+
+#: src/theme-parser.c:684
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+
+#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
+#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
+#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
+#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
+#: src/theme-parser.c:1020
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr ""
+
+#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr ""
+
+#: src/theme-parser.c:968
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr ""
+
+#: src/theme-parser.c:981
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr ""
+
+#: src/theme-parser.c:1080
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:1091
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:1099
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr ""
+
+#: src/theme-parser.c:1143
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr ""
+
+#: src/theme-parser.c:1152
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr ""
+
+#: src/theme-parser.c:1160
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr ""
+
+#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr ""
+
+#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
+#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
+#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
+#: src/theme-parser.c:3629
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1289 src/theme-parser.c:1376
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr ""
+
+#: src/theme-parser.c:1343
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr ""
+
+#: src/theme-parser.c:1402
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr ""
+
+#: src/theme-parser.c:1446
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1453
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1460
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1467
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1499
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr ""
+
+#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
+#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1662
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1669 src/theme-parser.c:2714
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1676
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1683 src/theme-parser.c:2721
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
+#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
+#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
+#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
+#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
+#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
+#: src/theme-parser.c:2883
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
+#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
+#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
+#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
+#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1903
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:1910
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2090
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2161
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2209
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr ""
+
+#: src/theme-parser.c:2294
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2319 src/theme-parser.c:2827
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2469 src/theme-parser.c:2602
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2476
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:2539 src/theme-parser.c:2661
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:2549
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:2962 src/theme-parser.c:3078
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr ""
+
+#: src/theme-parser.c:2974 src/theme-parser.c:3090
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr ""
+
+#: src/theme-parser.c:3153
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3210
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3219
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr ""
+
+#: src/theme-parser.c:3227
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr ""
+
+#: src/theme-parser.c:3272
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3280 src/theme-parser.c:3384
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3289
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr ""
+
+#: src/theme-parser.c:3298
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr ""
+
+#: src/theme-parser.c:3306
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr ""
+
+#: src/theme-parser.c:3376
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3392
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3401
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr ""
+
+#: src/theme-parser.c:3410
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr ""
+
+#: src/theme-parser.c:3420
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr ""
+
+#: src/theme-parser.c:3430
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3440
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr ""
+
+#: src/theme-parser.c:3450
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+
+#: src/theme-parser.c:3464
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr ""
+
+#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr ""
+
+#: src/theme-parser.c:3536
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: src/theme-parser.c:3574
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: src/theme-parser.c:3612
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+
+#: src/theme-parser.c:3659
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr ""
+
+#: src/theme-parser.c:3679
+#, c-format
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+
+#: src/theme-parser.c:3684
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr ""
+
+#: src/theme-parser.c:3696
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+
+#: src/theme-parser.c:3718
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr ""
+
+#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr ""
+
+#: src/theme-parser.c:3984
+msgid "No draw_ops provided for frame piece"
+msgstr ""
+
+#: src/theme-parser.c:3999
+msgid "No draw_ops provided for button"
+msgstr ""
+
+#: src/theme-parser.c:4014
+msgid "No draw_ops provided for menu icon"
+msgstr ""
+
+#: src/theme-parser.c:4054
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr ""
+
+#: src/theme-parser.c:4109
+msgid "<name> specified twice for this theme"
+msgstr ""
+
+#: src/theme-parser.c:4120
+msgid "<author> specified twice for this theme"
+msgstr ""
+
+#: src/theme-parser.c:4131
+msgid "<copyright> specified twice for this theme"
+msgstr ""
+
+#: src/theme-parser.c:4142
+msgid "<date> specified twice for this theme"
+msgstr ""
+
+#: src/theme-parser.c:4153
+msgid "<description> specified twice for this theme"
+msgstr ""
+
+#: src/theme-parser.c:4348
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr ""
+
+#: src/theme-parser.c:4403
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr ""
+
+#: src/theme.c:202
+msgid "top"
+msgstr ""
+
+#: src/theme.c:204
+msgid "bottom"
+msgstr ""
+
+#: src/theme.c:206
+msgid "left"
+msgstr ""
+
+#: src/theme.c:208
+msgid "right"
+msgstr ""
+
+#: src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr ""
+
+#: src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr ""
+
+#: src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr ""
+
+#: src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr ""
+
+#: src/theme.c:849
+msgid "Gradients should have at least two colors"
+msgstr ""
+
+#: src/theme.c:975
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:989
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:1000
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:1013
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:1043
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+
+#: src/theme.c:1054
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr ""
+
+#: src/theme.c:1064
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+
+#: src/theme.c:1111
+#, c-format
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+
+#: src/theme.c:1122
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr ""
+
+#: src/theme.c:1132
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr ""
+
+#: src/theme.c:1161
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr ""
+
+#: src/theme.c:1423
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr ""
+
+#: src/theme.c:1450
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+
+#: src/theme.c:1464
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr ""
+
+#: src/theme.c:1531
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+
+#: src/theme.c:1588
+msgid "Coordinate expression was empty or not understood"
+msgstr ""
+
+#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+msgid "Coordinate expression results in division by zero"
+msgstr ""
+
+#: src/theme.c:1779
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+
+#: src/theme.c:1836
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+
+#: src/theme.c:1845
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+
+#: src/theme.c:1853
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+
+#: src/theme.c:1863
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+
+#: src/theme.c:1982
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+
+#: src/theme.c:2011
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+
+#: src/theme.c:2074
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr ""
+
+#: src/theme.c:2131
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+
+#: src/theme.c:2142
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+
+#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr ""
+
+#: src/theme.c:3912
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+
+#: src/theme.c:4362 src/theme.c:4394
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+
+#: src/theme.c:4445
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr ""
+
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4629
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+
+#: src/theme.c:4651
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+
+#: src/theme.c:5040 src/theme.c:5102
+#, c-format
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+
+#: src/theme.c:5048 src/theme.c:5110
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr ""
+
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Select how to give focus to windows"
+msgstr ""
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:1
+msgid "Clic_k to give focus"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:2
+msgid "Focus behavior:"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:3
+msgid "Window Focus Preferences"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:4
+msgid "_Point to give focus"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:5
+msgid "_Raise window on focus"
+msgstr ""
+
+#: src/util.c:93
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr ""
+
+#: src/util.c:103
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr ""
+
+#: src/util.c:109
+#, c-format
+msgid "Opened log file %s\n"
+msgstr ""
+
+#: src/util.c:203
+msgid "Window manager: "
+msgstr ""
+
+#: src/util.c:347
+msgid "Bug in window manager: "
+msgstr ""
+
+#: src/util.c:376
+msgid "Window manager warning: "
+msgstr ""
+
+#: src/util.c:400
+msgid "Window manager error: "
+msgstr ""
+
+#: src/window-props.c:162
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr ""
+
+#. first time through
+#: src/window.c:4565
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: src/window.c:5226
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+
+#: src/xprops.c:153
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+
+#: src/xprops.c:399
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr ""
+
+#: src/xprops.c:482
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+
