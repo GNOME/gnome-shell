@@ -5628,7 +5628,6 @@ update_move (MetaWindow  *window,
 {
   int dx, dy;
   int new_x, new_y;
-  int move_threshold;
 
   window->display->grab_latest_motion_x = x;
   window->display->grab_latest_motion_y = y;
@@ -5646,19 +5645,6 @@ update_move (MetaWindow  *window,
       new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
     }
 
-  /* Force a move regardless of time if a certain delta is exceeded,
-   * so we don't get too out of sync with reality when dropping frames
-   */
-  /* FIXME this delta is all wrong, as it's absolute since
-   * the grab started. We want some sort of delta since
-   * we last sent a configure or something.
-   */
-  move_threshold = 30;
-  
-  if (!check_moveresize_frequency (window) &&
-      ABS (dx) < move_threshold && ABS (dy) < move_threshold)
-    return;
-  
   meta_window_move (window, TRUE, new_x, new_y);
 }
 
@@ -5669,7 +5655,6 @@ update_resize (MetaWindow *window,
   int dx, dy;
   int new_w, new_h;
   int gravity;
-  int resize_threshold;
   MetaRectangle old;
   
   window->display->grab_latest_motion_x = x;
@@ -5728,23 +5713,9 @@ update_resize (MetaWindow *window,
       break;
     }
 
-  /* Force a move regardless of time if a certain delta
-   * is exceeded
-   * FIXME this delta is all wrong, as it's absolute since
-   * the grab started. We want some sort of delta since
-   * we last sent a configure or something.
-   */
-#ifdef HAVE_XSYNC
-  if (window->display->grab_update_alarm != None)
-    resize_threshold = 5000; /* disable */
-  else
-#endif /* HAVE_XSYNC */
-    resize_threshold = 30;
-
-  if (!check_moveresize_frequency (window) &&
-      ABS (dx) < resize_threshold && ABS (dy) < resize_threshold)
+  if (!check_moveresize_frequency (window))
     return;
-
+  
   old = window->rect;
   
   /* compute gravity of client during operation */

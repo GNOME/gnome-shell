@@ -1,3 +1,11 @@
+Fri Mar 28 14:13:37 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* src/window.c (update_resize): Only cap refresh rate when not
+	using SYNC. Remove bogus update-if-we-moved-more-than-a-delta.
+
+	* src/window.c (update_move): Don't cap refresh rate during
+	moves. Remove bogus update-if-we-moved-more-than-a-delta.
+
 2003-03-26  Havoc Pennington  <hp@pobox.com>
 
 	* NEWS: update
