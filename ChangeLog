@@ -1,5 +1,11 @@
 2001-08-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/effects.c (meta_effects_draw_box_animation): Get start
+	time after we do the pixbuf from drawable, so we don't count
+	time spent getting pixbuf from drawable in the animation time.
+
+2001-08-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/effects.c: add opaque minimize/shade feature.  The wireframe
 	seemed kind of confusing and unclear from a UI standpoint. 
 	I know, I know. The bloat begins here.

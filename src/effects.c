@@ -186,7 +186,6 @@ meta_effects_draw_box_animation (MetaScreen *screen,
   context->screen = screen;
 
   context->millisecs_duration = seconds_duration * 1000.0;
-  g_get_current_time (&context->start_time);
   context->first_time = TRUE;
   context->start_rect = *initial_rect;
   context->end_rect = *destination_rect;
@@ -237,6 +236,11 @@ meta_effects_draw_box_animation (MetaScreen *screen,
       /* Grab the X server to avoid screen dirt */
       meta_display_grab (context->screen->display);
     }
+
+  /* Do this only after we get the pixbuf from the server,
+   * so that the animation doesn't get truncated.
+   */
+  g_get_current_time (&context->start_time);
   
   /* Add the timeout - a short one, could even use an idle,
    * but this is maybe more CPU-friendly.
