@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-06 04:18+0100\n"
-"PO-Revision-Date: 2004-03-07 01:26+0800\n"
+"POT-Creation-Date: 2004-03-12 04:20+0100\n"
+"PO-Revision-Date: 2004-03-12 23:37+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -467,7 +467,7 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"如果为真，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被自动"
+"如果为 true，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被自动"
 "提升(该延迟时间由 auto_raise_delay 关键字指定)。"
 
 #: src/metacity.schemas.in.h:18
@@ -475,7 +475,7 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"如果为真，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
+"如果为 true，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -485,6 +485,9 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"如果为 true，metacity 将会给用户提供较少的反馈，并且对“直接操纵”也更不敏感，"
+"方法是使用线框、避免动画或者其它途径。这对许多用户来说，可用性大打折扣，但是"
+"这将允许较早的应用程序和终端服务器能够顺利运行。"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -498,7 +501,7 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"如果为真，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，但"
+"如果为 true，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，但"
 "通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您以基于应"
 "用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在基于应用程"
 "序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。这种设置的存在有些问"
@@ -507,7 +510,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "如果为真，则以可用性为代价而降低资源占用"
+msgstr "如果为 true，则以可用性为代价而降低资源占用"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2561,7 +2564,7 @@ msgstr "按钮布局测试 %d"
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "%g 毫秒用来绘制一个窗口框架"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
@@ -2595,7 +2598,7 @@ msgstr "按钮布局"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "基准"
 
 #: src/theme-viewer.c:908
 msgid "Window Title Goes Here"
@@ -2608,14 +2611,16 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟"
+"时间(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "位置表达式测试返回了 TRUE 但设置错误"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "位置表达式测试返回了 FALSE 但并没有设置错误"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2629,22 +2634,22 @@ msgstr "期待错误 %d，但给出了 %d"
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "未期待错误，但返回了错误：%s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "x 值为 %d，但期待 %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "y 值为 %d，但期待 %d "
 
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -3010,4 +3015,3 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
-
