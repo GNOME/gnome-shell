@@ -1,18 +1,18 @@
 # Hungarian translation of metacity.
-# Copyright (C) 2002-2004 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
-# Andras Timar <timar@gnome.hu>, 2002-2003.
+# Andras Timar <timar@gnome.hu>, 2002, 2003.
 # Gabor Sari <saga@externet.hu>, 2003.
-# Gabor Kelemen <kg0021@stud.unideb.hu>, 2004.
 # Laszlo Dvornik <dvornik@gnome.hu>, 2004.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-07-07 14:41+0200\n"
-"Last-Translator: Laszlo Dvornik <dvornik@gnome.hu>\n"
+"POT-Creation-Date: 2005-03-04 06:30+0100\n"
+"PO-Revision-Date: 2005-03-04 14:56+0100\n"
+"Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Hiba a gépnév lekérdezése közben: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -106,17 +106,17 @@ msgid ""
 "binding\n"
 msgstr ""
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
 msgstr ""
 
@@ -193,30 +193,30 @@ msgstr "_Bezárás"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "_Megjelenítés minden munkaterületen"
+msgid "_Always on Visible Workspace"
+msgstr "Mindig a látható m_unkaterületen"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "M_unkaterületre korlátozás"
+msgid "_Only on This Workspace"
+msgstr "_Csak ezen a munkaterületen"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Áthelyezés a balra lévő munkaterületre"
+msgstr "Áthelyezés a _balra lévő munkaterületre"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Áthelyezés a jobbra lévő munkaterületre"
+msgstr "Áthelyezés a _jobbra lévő munkaterületre"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Áthelyezés a felső munkaterületre"
+msgstr "Áthelyezés a _felső munkaterületre"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Áthelyezés az alsó munkaterületre"
+msgstr "Áthelyezés az _alsó munkaterületre"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. munkaterület"
@@ -356,7 +356,7 @@ msgstr ""
 "mentését, emiatt ezeket a legközelebbi bejelentkezéskor manuálisan újra kell "
 "indítania."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -470,7 +470,8 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 
 #: src/metacity.schemas.in.h:20
@@ -492,7 +493,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Ablak más ablakok mögé küldése"
 
 #: src/metacity.schemas.in.h:23
 msgid "Maximize window"
@@ -528,19 +529,19 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "Váltás a panelek és az asztal között azonnal"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "Váltás a panelek és az asztal között felugró ablakkal"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "Váltás az ablakok között azonnal"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "Váltás ablakok között felugró ablakkal"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
@@ -634,11 +635,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "Fedett ablak előtérbe hozása, egyébként háttérbe küldés"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Ablak más ablakok elé hozása"
 
 #: src/metacity.schemas.in.h:58
 msgid "Resize window"
@@ -650,7 +651,7 @@ msgstr "Megadott parancs futtatása"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Terminál futtatása"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1446,7 +1447,7 @@ msgstr "Maximalizált állapot"
 
 #: src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Felgördített állapot átváltása"
 
 #: src/metacity.schemas.in.h:162
 msgid "Toggle window on all workspaces"
@@ -1479,64 +1480,64 @@ msgstr ""
 msgid "Window title font"
 msgstr "Az ablak címsorának betűtípusa"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr ""
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr ""
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2615,7 +2616,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Az alkalmazás hamis _NET_WM_PID-értéket állított be: %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2629,7 +2630,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
