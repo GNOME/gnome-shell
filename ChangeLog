@@ -1,3 +1,12 @@
+2005-03-24  mallum,,,  <mallum@openedhand.com>
+
+	* Makefile:
+	* cltr-photo-grid.c:
+	* cltr-photo-grid.h:
+	* cltr.c: (cltr_window_new), (cltr_main_loop):
+	* cltr.h:
+	Split up cltr.c a bit. start refactoring a bit.
+
 2005-03-23  mallum,,,  <mallum@openedhand.com>
 
 	* cltr.c: (cltr_photo_grid_populate), (cltr_photo_grid_redraw),
