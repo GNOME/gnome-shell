@@ -1,3 +1,7 @@
+2003-01-08  Pauli Virtanen  <pauli.virtanen@hut.fi>
+
+	* fi.po: Fixed a string that had an invalid printf format.
+
 2003-01-09  Abel Cheung  <maddog@linux.org.hk>
 
 	* zh_TW.po: Updated traditional Chinese translation.

@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-28 06:09+0100\n"
-"PO-Revision-Date: 2003-01-05 14:06+0200\n"
+"POT-Creation-Date: 2003-01-08 22:45+0200\n"
+"PO-Revision-Date: 2003-01-08 22:44+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
 "sourceforge.net>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Isäntänimen haku epäonnistui: %s\n"
 
-#: src/display.c:273
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-ikkunointijärjestelmän näytön \"%s\" avaaminen epäonnistui\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Vakava IO-virhe %d (%s) näytöllä \"%s\".\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Ikkunavalikko"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Pienennä ikkuna"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Suurenna ikkuna"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Palauta ikkuna"
 
@@ -199,7 +199,7 @@ msgstr "_Näytä joka työtilassa"
 msgid "Only on _This Workspace"
 msgstr "Näytä _vain tässä työtilassa"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
@@ -1699,7 +1699,7 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
@@ -1718,7 +1718,7 @@ msgstr ""
 "GConf-avaimeen %2$s tallennettu %1$d ei ole järkevä työtilojen määrä. "
 "Nykyinen raja on %3$d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1726,17 +1726,17 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1745,7 +1745,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: src/prefs.c:1725
+#: src/prefs.c:1730
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -1758,7 +1758,7 @@ msgstr "%d × %d"
 #: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Näytön \"%2$s\" ruutu %d ei ole kelvollinen\n"
+msgstr "Näytön \"%2$s\" ruutu %1$d ei ole kelvollinen\n"
 
 #: src/screen.c:408
 #, c-format
@@ -2702,15 +2702,15 @@ msgstr "Lokitiedosto %s avattu\n"
 msgid "Window manager: "
 msgstr "Ikkunointiohjelma:"
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr "Vika ikkunointiohjelmassa."
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "Ikkunointiohjelman varoitus:"
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr "Ikkunointiohjelmavirhe:"
 
@@ -2720,7 +2720,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Sovellus asetti virheellisen _NET_WM_PID:n %ld\n"
 
 #. first time through
-#: src/window.c:4863
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2736,7 +2736,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5423
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
