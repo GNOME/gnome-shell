@@ -124,7 +124,7 @@
 </draw_ops>
 
 <draw_ops name="outer_bevel">
-  <rectangle color="#000000"
+  <rectangle color="gtk:fg[NORMAL]"
              x="0" y="0" width="width" height="height" filled="true"/>
   <rectangle color="gtk:bg[NORMAL]"
              x="1" y="1" width="width-2" height="height-2" filled="true"/>
@@ -160,7 +160,7 @@
 
 <draw_ops name="title_tile_unfocused">
   <line color="blend/gtk:bg[NORMAL]/#000000/0.1" x1="0" y1="0" x2="width" y2="0"/>
-  <line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="0" y1="1" x2="width" y2="1"/>
+  <line color="blend/gtk:bg[NORMAL]/#ffffff/0.2" x1="0" y1="1" x2="width" y2="1"/>
 </draw_ops>
 
 <draw_ops name="title_bg">
@@ -174,7 +174,7 @@
 
 <draw_ops name="title_bg_unfocused">
   <tile name="title_tile_unfocused" tile_width="width" tile_height="2" x="0" y="0" width="width-1" height="height-1"/>
-  <rectangle color="blend/#000000/gtk:bg[NORMAL]/0.7" filled="false" x="0" y="0" width="width-1" height="height-1"/>
+  <rectangle color="blend/#000000/gtk:fg[NORMAL]/0.7" filled="false" x="0" y="0" width="width-1" height="height-1"/>
   <rectangle color="blend/#000000/gtk:bg[NORMAL]/0.8" filled="true" x="0" y="0" width="1" height="1"/>
   <rectangle color="blend/#000000/gtk:bg[NORMAL]/0.8" filled="true" x="width-1" y="0" width="1" height="1"/>
   <rectangle color="blend/#000000/gtk:bg[NORMAL]/0.8" filled="true" x="0" y="height-1" width="1" height="1"/>

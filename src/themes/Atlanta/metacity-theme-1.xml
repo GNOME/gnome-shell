@@ -175,6 +175,11 @@
   <include name="focus_outline"/>
 </draw_ops>
 
+<draw_ops name="background_unfocused">
+  <include name="outer_bevel"/>
+  <include name="focus_outline"/>
+</draw_ops>
+
 <draw_ops name="title_gradient">
   <gradient type="diagonal" x="0" y="0" width="width-SpacerWidth" height="height">
     <color value="blend/gtk:bg[NORMAL]/gtk:bg[SELECTED]/0.6"/>
@@ -245,7 +250,7 @@
 </draw_ops>
 
 <frame_style name="normal_unfocused" geometry="normal">
-  <piece position="entire_background" draw_ops="outer_bevel"/>
+  <piece position="entire_background" draw_ops="background_unfocused"/>
   <piece position="title" draw_ops="title_normal"/>
 
   <!-- we don't specify for prelight, so normal is used -->

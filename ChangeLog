@@ -1,3 +1,10 @@
+2005-01-31  Muktha  <muktha.narayan@wipro.com>
+
+	src/themes/Atlanta/metacity-theme-1.xml:
+	src/themes/Simple/metacity-theme-1.xml:
+	src/themes/Bright/metacity-theme-1.xml:	
+	Make the unfocussed title bar distinguishable. Fixes #125291.
+
 2005-01-28  Elijah Newren  <newren@gmail.com>
 
 	Patch from RHEL-3 (Havoc doesn't remember how it got there) that
