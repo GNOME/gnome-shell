@@ -1,3 +1,7 @@
+2002-07-30  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
+
 2002-07-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Makefile.am (THEMES): add Metabox theme from Garrett
