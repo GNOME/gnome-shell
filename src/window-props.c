@@ -1,7 +1,7 @@
 /* MetaWindow property handling */
 
 /* 
- * Copyright (C) 2001, 2002 Red Hat, Inc.
+ * Copyright (C) 2001, 2002, 2003 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,6 +23,7 @@
 #include "window-props.h"
 #include "xprops.h"
 #include "frame.h"
+#include "group.h"
 #include <X11/Xatom.h>
 
 typedef void (* InitValueFunc)   (MetaDisplay   *display,
@@ -437,7 +438,370 @@ reload_update_counter (MetaWindow    *window,
     }
 }
 
-#define N_HOOKS 24
+
+static void
+init_normal_hints (MetaDisplay   *display,
+                   Atom           property,
+                   MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_SIZE_HINTS;
+  value->atom = XA_WM_NORMAL_HINTS;
+}
+
+
+#define FLAG_TOGGLED_ON(old,new,flag) \
+ (((old)->flags & (flag)) == 0 &&     \
+  ((new)->flags & (flag)) != 0)
+
+#define FLAG_TOGGLED_OFF(old,new,flag) \
+ (((old)->flags & (flag)) != 0 &&      \
+  ((new)->flags & (flag)) == 0)
+
+#define FLAG_CHANGED(old,new,flag) \
+  (FLAG_TOGGLED_ON(old,new,flag) || FLAG_TOGGLED_OFF(old,new,flag))
+
+static void
+spew_size_hints_differences (const XSizeHints *old,
+                             const XSizeHints *new)
+{
+  if (FLAG_CHANGED (old, new, USPosition))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: USPosition now %s\n",
+                FLAG_TOGGLED_ON (old, new, USPosition) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, USSize))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: USSize now %s\n",
+                FLAG_TOGGLED_ON (old, new, USSize) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PPosition))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PPosition now %s\n",
+                FLAG_TOGGLED_ON (old, new, PPosition) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PSize))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PSize now %s\n",
+                FLAG_TOGGLED_ON (old, new, PSize) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PMinSize))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PMinSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PMinSize) ? "set" : "unset",
+                old->min_width, old->min_height,
+                new->min_width, new->min_height);
+  if (FLAG_CHANGED (old, new, PMaxSize))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PMaxSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PMaxSize) ? "set" : "unset",
+                old->max_width, old->max_height,
+                new->max_width, new->max_height);
+  if (FLAG_CHANGED (old, new, PResizeInc))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PResizeInc now %s (width_inc %d -> %d height_inc %d -> %d)\n",
+                FLAG_TOGGLED_ON (old, new, PResizeInc) ? "set" : "unset",
+                old->width_inc, new->width_inc,
+                old->height_inc, new->height_inc);
+  if (FLAG_CHANGED (old, new, PAspect))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PAspect now %s (min %d/%d -> %d/%d max %d/%d -> %d/%d)\n",
+                FLAG_TOGGLED_ON (old, new, PAspect) ? "set" : "unset",
+                old->min_aspect.x, old->min_aspect.y,
+                new->min_aspect.x, new->min_aspect.y,
+                old->max_aspect.x, old->max_aspect.y,
+                new->max_aspect.x, new->max_aspect.y);
+  if (FLAG_CHANGED (old, new, PBaseSize))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PBaseSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PBaseSize) ? "set" : "unset",
+                old->base_width, old->base_height,
+                new->base_width, new->base_height);
+  if (FLAG_CHANGED (old, new, PWinGravity))
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PWinGravity now %s  (%d -> %d)\n",
+                FLAG_TOGGLED_ON (old, new, PWinGravity) ? "set" : "unset",
+                old->win_gravity, new->win_gravity);  
+}
+
+static void
+reload_normal_hints (MetaWindow    *window,
+                     MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      int x, y, w, h;
+      XSizeHints old_hints;
+  
+      meta_topic (META_DEBUG_GEOMETRY, "Updating WM_NORMAL_HINTS for %s\n", window->desc);
+
+      old_hints = window->size_hints;
+  
+      /* Save the last ConfigureRequest, which we put here.
+       * Values here set in the hints are supposed to
+       * be ignored.
+       */
+      x = window->size_hints.x;
+      y = window->size_hints.y;
+      w = window->size_hints.width;
+      h = window->size_hints.height;
+      
+      /* as far as I can tell, value->v.size_hints.flags is just to
+       * check whether we had old-style normal hints without gravity,
+       * base size as returned by XGetNormalHints(), so we don't
+       * really use it as we fixup window->size_hints to have those
+       * fields if they're missing.
+       */
+
+      window->size_hints.flags = 0; /* pointless right? why did I have this here */
+      window->size_hints = * value->v.size_hints.hints;
+  
+      /* Put back saved ConfigureRequest. */
+      window->size_hints.x = x;
+      window->size_hints.y = y;
+      window->size_hints.width = w;
+      window->size_hints.height = h;
+  
+      if (window->size_hints.flags & PBaseSize)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets base size %d x %d\n",
+                      window->desc,
+                      window->size_hints.base_width,
+                      window->size_hints.base_height);
+        }
+      else if (window->size_hints.flags & PMinSize)
+        {
+          window->size_hints.base_width = window->size_hints.min_width;
+          window->size_hints.base_height = window->size_hints.min_height;
+        }
+      else
+        {
+          window->size_hints.base_width = 0;
+          window->size_hints.base_height = 0;
+        }
+      window->size_hints.flags |= PBaseSize;
+  
+      if (window->size_hints.flags & PMinSize)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min size %d x %d\n",
+                      window->desc,
+                      window->size_hints.min_width,
+                      window->size_hints.min_height);
+        }
+      else if (window->size_hints.flags & PBaseSize)
+        {
+          window->size_hints.min_width = window->size_hints.base_width;
+          window->size_hints.min_height = window->size_hints.base_height;
+        }
+      else
+        {
+          window->size_hints.min_width = 0;
+          window->size_hints.min_height = 0;
+        }
+      window->size_hints.flags |= PMinSize;
+  
+      if (window->size_hints.flags & PMaxSize)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets max size %d x %d\n",
+                      window->desc,
+                      window->size_hints.max_width,
+                      window->size_hints.max_height);
+        }
+      else
+        {
+          window->size_hints.max_width = G_MAXINT;
+          window->size_hints.max_height = G_MAXINT;
+          window->size_hints.flags |= PMaxSize;
+        }
+
+      if (window->size_hints.max_width < window->size_hints.min_width)
+        {
+          /* someone is on crack */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets max width %d less than min width %d, disabling resize\n",
+                      window->desc,
+                      window->size_hints.max_width,
+                      window->size_hints.min_width);
+          window->size_hints.max_width = window->size_hints.min_width;
+        }
+
+      if (window->size_hints.max_height < window->size_hints.min_height)
+        {
+          /* another cracksmoker */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets max height %d less than min height %d, disabling resize\n",
+                      window->desc,
+                      window->size_hints.max_height,
+                      window->size_hints.min_height);
+          window->size_hints.max_height = window->size_hints.min_height;
+        }
+  
+      if (window->size_hints.flags & PResizeInc)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets resize width inc: %d height inc: %d\n",
+                      window->desc,
+                      window->size_hints.width_inc,
+                      window->size_hints.height_inc);
+          if (window->size_hints.width_inc == 0)
+            {
+              window->size_hints.width_inc = 1;
+              meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 width_inc to 1\n");
+            }
+          if (window->size_hints.height_inc == 0)
+            {
+              window->size_hints.height_inc = 1;
+              meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 height_inc to 1\n");
+            }
+        }
+      else
+        {
+          window->size_hints.width_inc = 1;
+          window->size_hints.height_inc = 1;
+          window->size_hints.flags |= PResizeInc;
+        }
+  
+      if (window->size_hints.flags & PAspect)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min_aspect: %d/%d max_aspect: %d/%d\n",
+                      window->desc,
+                      window->size_hints.min_aspect.x,
+                      window->size_hints.min_aspect.y,
+                      window->size_hints.max_aspect.x,
+                      window->size_hints.max_aspect.y);
+
+          /* don't divide by 0 */
+          if (window->size_hints.min_aspect.y < 1)
+            window->size_hints.min_aspect.y = 1;
+          if (window->size_hints.max_aspect.y < 1)
+            window->size_hints.max_aspect.y = 1;
+        }
+      else
+        {
+          window->size_hints.min_aspect.x = 1;
+          window->size_hints.min_aspect.y = G_MAXINT;
+          window->size_hints.max_aspect.x = G_MAXINT;
+          window->size_hints.max_aspect.y = 1;
+          window->size_hints.flags |= PAspect;
+        }
+
+      if (window->size_hints.flags & PWinGravity)
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets gravity %d\n",
+                      window->desc,
+                      window->size_hints.win_gravity);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_GEOMETRY, "Window %s doesn't set gravity, using NW\n",
+                      window->desc);
+          window->size_hints.win_gravity = NorthWestGravity;
+          window->size_hints.flags |= PWinGravity;
+        }
+
+      spew_size_hints_differences (&old_hints, &window->size_hints);
+      
+      meta_window_recalc_features (window);
+    }
+}
+
+
+static void
+init_wm_protocols (MetaDisplay   *display,
+                   Atom           property,
+                   MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_ATOM_LIST;
+  value->atom = display->atom_wm_protocols;
+}
+
+static void
+reload_wm_protocols (MetaWindow    *window,
+                     MetaPropValue *value)
+{
+  int i;
+  
+  window->take_focus = FALSE;
+  window->delete_window = FALSE;
+  window->net_wm_ping = FALSE;
+  
+  if (value->type == META_PROP_VALUE_INVALID)    
+    return;
+
+  i = 0;
+  while (i < value->v.atom_list.n_atoms)
+    {
+      if (value->v.atom_list.atoms[i] ==
+          window->display->atom_wm_take_focus)
+        window->take_focus = TRUE;
+      else if (value->v.atom_list.atoms[i] ==
+               window->display->atom_wm_delete_window)
+        window->delete_window = TRUE;
+      else if (value->v.atom_list.atoms[i] ==
+               window->display->atom_net_wm_ping)
+        window->net_wm_ping = TRUE;
+      ++i;
+    }
+  
+  meta_verbose ("New _NET_STARTUP_ID \"%s\" for %s\n",
+                window->startup_id ? window->startup_id : "unset",
+                window->desc);
+}
+
+static void
+init_wm_hints (MetaDisplay   *display,
+               Atom           property,
+               MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_WM_HINTS;
+  value->atom = XA_WM_HINTS;
+}
+
+static void
+reload_wm_hints (MetaWindow    *window,
+                 MetaPropValue *value)
+{
+  Window old_group_leader;
+  
+  old_group_leader = window->xgroup_leader;
+  
+  /* Fill in defaults */
+  window->input = TRUE;
+  window->initially_iconic = FALSE;
+  window->xgroup_leader = None;
+  window->wm_hints_pixmap = None;
+  window->wm_hints_mask = None;
+  
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      const XWMHints *hints = value->v.wm_hints;
+      
+      if (hints->flags & InputHint)
+        window->input = hints->input;
+
+      if (hints->flags & StateHint)
+        window->initially_iconic = (hints->initial_state == IconicState);
+
+      if (hints->flags & WindowGroupHint)
+        window->xgroup_leader = hints->window_group;
+
+      if (hints->flags & IconPixmapHint)
+        window->wm_hints_pixmap = hints->icon_pixmap;
+
+      if (hints->flags & IconMaskHint)
+        window->wm_hints_mask = hints->icon_mask;
+      
+      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx pixmap: 0x%lx mask: 0x%lx\n",
+                    window->input, window->initially_iconic,
+                    window->xgroup_leader,
+                    window->wm_hints_pixmap,
+                    window->wm_hints_mask);
+    }
+
+  if (window->xgroup_leader != old_group_leader)
+    {
+      meta_verbose ("Window %s changed its group leader to 0x%lx\n",
+                    window->desc, window->xgroup_leader);
+      
+      meta_window_group_leader_changed (window);
+    }
+
+  meta_icon_cache_property_changed (&window->icon_cache,
+                                    window->display,
+                                    XA_WM_HINTS);
+
+  meta_window_queue_update_icon (window);
+      
+  meta_window_queue_move_resize (window);  
+}
+
+
+
+#define N_HOOKS 25
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -467,11 +831,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_net_wm_pid;
   ++i;
 
-  hooks[i].property = XA_WM_NORMAL_HINTS;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
   hooks[i].property = display->atom_net_wm_name;
   hooks[i].init_func = init_net_wm_name;
   hooks[i].reload_func = reload_net_wm_name;
@@ -490,11 +849,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = XA_WM_ICON_NAME;
   hooks[i].init_func = init_wm_icon_name;
   hooks[i].reload_func = reload_wm_icon_name;
-  ++i;
-  
-  hooks[i].property = XA_WM_HINTS;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
   ++i;
 
   hooks[i].property = display->atom_net_wm_state;
@@ -570,6 +924,21 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = display->atom_metacity_update_counter;
   hooks[i].init_func = init_update_counter;
   hooks[i].reload_func = reload_update_counter;
+  ++i;
+
+  hooks[i].property = XA_WM_NORMAL_HINTS;
+  hooks[i].init_func = init_normal_hints;
+  hooks[i].reload_func = reload_normal_hints;
+  ++i;
+
+  hooks[i].property = display->atom_wm_protocols;
+  hooks[i].init_func = init_wm_protocols;
+  hooks[i].reload_func = reload_wm_protocols;
+  ++i;
+
+  hooks[i].property = XA_WM_HINTS;
+  hooks[i].init_func = init_wm_hints;
+  hooks[i].reload_func = reload_wm_hints;
   ++i;
   
   if (i != N_HOOKS)

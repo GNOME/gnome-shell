@@ -1,3 +1,16 @@
+2003-02-27  Havoc Pennington  <hp@pobox.com>
+	
+	* src/main.c (main): add more debug spew about conditional 
+	build stuff
+	(main): panic to "Simple" theme
+
+	* src/window.c, src/window-props.c: move WM_NORMAL_HINTS and
+	WM_PROTOCOLS to new property system; don't queue move resize on
+	updating WM_PROTOCOLS; move WM_HINTS to new property system;
+	reload icon in an idle handler.
+
+	Changes made on plane from FOSDEM, syncing from laptop.
+	
 2003-02-28  Mark McLoughlin  <mark@skynet.ie>
 
 	Give me back my keys.

@@ -191,6 +191,9 @@ struct _MetaWindow
 
   /* Are we in the move_resize queue? */
   guint move_resize_queued : 1;
+
+  /* Are we in the update_icon queue? */
+  guint update_icon_queued : 1;
   
   /* Used by keybindings.c */
   guint keys_grabbed : 1;     /* normal keybindings grabbed */
@@ -221,6 +224,9 @@ struct _MetaWindow
 
   /* has a shape mask */
   guint has_shape : 1;
+
+  /* icon props have changed */
+  guint need_reread_icon : 1;
   
 #ifdef HAVE_XSYNC
   /* XSync update counter */
@@ -457,4 +463,12 @@ gboolean meta_window_get_icon_geometry (MetaWindow    *window,
 
 const char* meta_window_get_startup_id (MetaWindow *window);
 
+void meta_window_recalc_features (MetaWindow *window);
+
+void meta_window_queue_update_icon (MetaWindow *window);
+
 #endif
+
+
+
+

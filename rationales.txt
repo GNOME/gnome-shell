@@ -14,3 +14,5 @@ configure click actions, alt+click:
 http://bugzilla.gnome.org/show_bug.cgi?id=83210
 
 system modal dialogs: http://bugzilla.gnome.org/show_bug.cgi?id=83357
+
+workspace wrapping: http://bugzilla.gnome.org/show_bug.cgi?id=89315

@@ -271,6 +271,22 @@ main (int argc, char **argv)
 #else
   meta_topic (META_DEBUG_XINERAMA, " (not using Solaris Xinerama)\n");
 #endif
+#ifdef HAVE_XSYNC
+  meta_verbose ("Compiled with sync extension\n");
+#else
+  meta_verbose ("Compiled without sync extension\n");
+#endif
+#ifdef HAVE_RANDR
+  meta_verbose ("Compiled with randr extension\n");
+#else
+  meta_verbose ("Compiled without randr extension\n");
+#endif
+#ifdef HAVE_STARTUP_NOTIFICATION
+  meta_verbose ("Compiled with startup notification\n");
+#else
+  meta_verbose ("Compiled without startup notification\n");
+#endif
+
   
   /* Load prefs */
   meta_prefs_init ();
@@ -316,6 +332,9 @@ main (int argc, char **argv)
   /* Try some panic stuff, this is lame but we really
    * don't want users to lose their WM :-/
    */
+  if (!meta_ui_have_a_theme ())
+    meta_ui_set_current_theme ("Simple", FALSE);
+  
   if (!meta_ui_have_a_theme ())
     meta_ui_set_current_theme ("Atlanta", FALSE);
 
