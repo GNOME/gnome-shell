@@ -220,7 +220,9 @@ meta_window_place (MetaWindow *window,
    * put it at 1/5 down and horizontally centered
    */
   
-  if (window->xtransient_for != None)
+  if ((window->type == META_WINDOW_DIALOG ||
+       window->type == META_WINDOW_MODAL_DIALOG) &&
+      window->xtransient_for != None)
     {
       /* Center horizontally, at top of parent vertically */
 
@@ -252,6 +254,10 @@ meta_window_place (MetaWindow *window,
         }
     }
 
+  /* FIXME UTILITY with transient set should be stacked up
+   * on the sides of the parent window or something.
+   */
+  
   if (window->type == META_WINDOW_DIALOG ||
       window->type == META_WINDOW_MODAL_DIALOG ||
       window->type == META_WINDOW_SPLASHSCREEN)

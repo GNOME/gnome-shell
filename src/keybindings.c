@@ -269,19 +269,13 @@ reload_modmap (MetaDisplay *display)
 
           while (j < display->keysyms_per_keycode)
             {
-              if (syms[j] == XK_Mode_switch)
+              if (syms[j] == XK_Num_Lock)
                 {
-                  /* This modifier swaps groups */
-                  
                   /* Mod1Mask is 1 << 3 for example, i.e. the
                    * fourth modifier, i / keyspermod is the modifier
                    * index
                    */
                   
-                  display->mode_switch_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-              else if (syms[j] == XK_Num_Lock)
-                {
                   display->num_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
               else if (syms[j] == XK_Scroll_Lock)

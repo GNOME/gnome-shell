@@ -1173,6 +1173,41 @@ you set
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/general/disable_workarounds</key>
+      <applyto>/apps/metacity/general/disable_workarounds</applyto>      
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+         <short>Disable misfeatures that are required by old or broken
+                applications</short>
+         <long> 
+          Some applications break specifications in ways that result
+          in window manager misfeatures. For example, ideally Metacity
+          would place all dialogs in a consistent position with
+          respect to their parent window. This requires ignoring
+          application-specified positions for dialogs. But some
+          versions of Java/Swing mark their popup menus as dialogs, 
+          so Metacity has to disable dialog positioning to allow 
+          menus to work in broken Java applications. There are 
+          several other examples like this.
+
+          This option puts Metacity in full-on Correct mode, which
+          perhaps gives a moderately nicer UI if you don't need to run
+          any broken apps. Sadly, workarounds must be enabled by
+          default; the real world is an ugly place.
+
+          Some of the workarounds are workarounds for limitations in 
+          the specifications themselves, so sometimes a bug 
+          in no-workarounds mode won't be fixable without 
+          amending a spec.
+         </long>
+
+      </locale>
+    </schema>
+
+
   </schemalist>  
 </gconfschemafile>
 

@@ -1,3 +1,28 @@
+2002-04-30  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (recalc_window_features): don't try to decorate
+	toolbars.
+
+	* src/tools/metacity-window-demo.c: add menu and toolbar tests
+
+	* src/place.c (meta_window_place): only dialogs should be centered
+	over parent, not anything with transient for set.
+
+	* src/window.c (meta_window_configure_request): become more
+	fascist about window positioning if workarounds are disabled, and
+	less fascist if they are enabled.
+
+	* src/metacity.schemas: add a "disable_workarounds" option.  Kind
+	of crack-smoking. But we just can't get all applications
+	fixed. And I need no-workarounds mode to monitor which apps are
+	broken and what needs fixing in specs.
+	
+	* src/window.c (meta_window_configure_request): always allow 
+	windows to resize themselves
+
+	* src/keybindings.c (reload_modmap): don't filter out Mode_switch,
+	apparently some people bind window manager shortcuts to that.
+
 2002-04-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): oops, fix

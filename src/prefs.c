@@ -36,6 +36,7 @@
 #define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
+#define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
 
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
@@ -51,6 +52,7 @@ static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
 static gboolean application_based = FALSE;
+static gboolean disable_workarounds = FALSE;
 
 static gboolean update_use_desktop_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
@@ -59,6 +61,7 @@ static gboolean update_focus_mode         (const char *value);
 static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
+static gboolean update_disable_workarounds (gboolean   value);
 static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
@@ -265,6 +268,11 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_application_based (bool_val);
 
+  bool_val = gconf_client_get_bool (default_client, KEY_DISABLE_WORKAROUNDS,
+                                    &err);
+  cleanup_error (&err);
+  update_disable_workarounds (bool_val);
+  
   /* Load keybindings prefs */
   init_bindings ();
   
@@ -424,6 +432,22 @@ change_notify (GConfClient    *client,
 
       if (update_application_based (b))
         queue_changed (META_PREF_APPLICATION_BASED);
+    }
+  else if (strcmp (key, KEY_DISABLE_WORKAROUNDS) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_APPLICATION_BASED);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : disable_workarounds;
+
+      if (update_disable_workarounds (b))
+        queue_changed (META_PREF_DISABLE_WORKAROUNDS);
     }
   else if (str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
     {
@@ -651,6 +675,33 @@ meta_prefs_get_application_based (void)
   return application_based;
 }
 
+static gboolean
+update_disable_workarounds (gboolean value)
+{
+  gboolean old = disable_workarounds;
+
+  disable_workarounds = value;
+
+  {
+    static gboolean first_disable = TRUE;
+    
+    if (disable_workarounds && first_disable)
+      {
+        first_disable = FALSE;
+
+        meta_warning (_("Workarounds for broken applications disabled. Some applications may not behave properly.\n"));
+      }
+  }
+  
+  return old != disable_workarounds;
+}
+
+gboolean
+meta_prefs_get_disable_workarounds (void)
+{
+  return disable_workarounds;
+}
+
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
@@ -679,6 +730,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_WINDOW_KEYBINDINGS:
       return "WINDOW_KEYBINDINGS";
+
+    case META_PREF_DISABLE_WORKAROUNDS:
+      return "DISABLE_WORKAROUNDS";
     }
 
   return "(unknown)";

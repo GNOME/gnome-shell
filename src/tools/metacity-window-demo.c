@@ -260,6 +260,56 @@ utility_cb (gpointer             callback_data,
   gtk_widget_show_all (window);
 }
 
+static void
+toolbar_cb (gpointer             callback_data,
+            guint                callback_action,
+            GtkWidget           *widget)
+{
+  GtkWidget *window;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  set_gtk_window_type (GTK_WINDOW (window), "_NET_WM_WINDOW_TYPE_TOOLBAR");
+  gtk_window_set_title (GTK_WINDOW (window), "Toolbar");
+  
+  gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
+  
+  vbox = gtk_vbox_new (FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  label = gtk_label_new ("FIXME this needs a resize grip, etc.");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  gtk_widget_show_all (window);
+}
+
+static void
+menu_cb (gpointer             callback_data,
+         guint                callback_action,
+         GtkWidget           *widget)
+{
+  GtkWidget *window;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  set_gtk_window_type (GTK_WINDOW (window), "_NET_WM_WINDOW_TYPE_MENU");
+  gtk_window_set_title (GTK_WINDOW (window), "Menu");
+  
+  gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
+  
+  vbox = gtk_vbox_new (FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  label = gtk_label_new ("FIXME this isn't a menu.");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  gtk_widget_show_all (window);
+}
+
 static gboolean
 focus_in_event_cb (GtkWidget *window,
                    GdkEvent  *event,
@@ -470,7 +520,9 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Windows/_Left dock",    NULL,          dock_cb,                 DOCK_LEFT, NULL },
   { "/Windows/_Right dock",   NULL,          dock_cb,                 DOCK_RIGHT, NULL },
   { "/Windows/_All docks",    NULL,          dock_cb,                 DOCK_ALL, NULL },
-  { "/Windows/Des_ktop",      NULL,          desktop_cb,              0, NULL }
+  { "/Windows/Des_ktop",      NULL,          desktop_cb,              0, NULL },
+  { "/Windows/Me_nu",         NULL,          menu_cb,                 0, NULL },
+  { "/Windows/Tool_bar",      NULL,          toolbar_cb,              0, NULL }
 };
 
 static void
@@ -481,8 +533,8 @@ sleep_cb (GtkWidget *button,
 }
 
 static void
-toolbar_cb (GtkWidget *button,
-            gpointer   data)
+clicked_toolbar_cb (GtkWidget *button,
+                    gpointer   data)
 {
   GtkWidget *dialog;
   
@@ -629,7 +681,7 @@ do_appwindow (void)
                             GTK_STOCK_QUIT,
                             "This is a demo button with a 'quit' icon",
                             NULL,
-                            G_CALLBACK (toolbar_cb),
+                            G_CALLBACK (clicked_toolbar_cb),
                             window, /* user data for callback */
                             -1);  /* -1 means "append" */
 

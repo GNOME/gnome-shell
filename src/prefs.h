@@ -35,7 +35,8 @@ typedef enum
   META_PREF_NUM_WORKSPACES,
   META_PREF_APPLICATION_BASED,
   META_PREF_WINDOW_KEYBINDINGS,
-  META_PREF_SCREEN_KEYBINDINGS
+  META_PREF_SCREEN_KEYBINDINGS,
+  META_PREF_DISABLE_WORKAROUNDS
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -57,6 +58,7 @@ const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 int                         meta_prefs_get_titlebar_font_size (void);
 int                         meta_prefs_get_num_workspaces     (void);
 gboolean                    meta_prefs_get_application_based  (void);
+gboolean                    meta_prefs_get_disable_workarounds (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 

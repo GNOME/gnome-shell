@@ -2765,6 +2765,7 @@ meta_window_configure_request (MetaWindow *window,
 {
   int x, y, width, height;
   gboolean only_resize;
+  gboolean allow_position_change;
   
   /* it's essential to use only the explicitly-set fields,
    * and otherwise use our current up-to-date position.
@@ -2778,15 +2779,31 @@ meta_window_configure_request (MetaWindow *window,
   meta_window_get_gravity_position (window, &x, &y);
 
   only_resize = TRUE;
+
+  allow_position_change = FALSE;
   
-  if (((window->type == META_WINDOW_DESKTOP ||
-        window->type == META_WINDOW_DOCK ||
-        window->type == META_WINDOW_TOOLBAR ||
-        window->type == META_WINDOW_MENU ||
-        window->type == META_WINDOW_NORMAL ||
-        window->type == META_WINDOW_UTILITY) &&
-       (window->size_hints.flags & PPosition)) ||
-      (window->size_hints.flags & USPosition))
+  if (meta_prefs_get_disable_workarounds ())
+    {
+      if (window->type == META_WINDOW_DIALOG ||
+          window->type == META_WINDOW_MODAL_DIALOG ||
+          window->type == META_WINDOW_SPLASHSCREEN)
+        ; /* No position change for these */
+      else if ((window->size_hints.flags & PPosition) ||
+               /* USPosition is just stale if window is placed;
+                * no --geometry involved here.
+                */
+               ((window->size_hints.flags & USPosition) &&
+                !window->placed))
+        allow_position_change = TRUE;
+    }
+  else
+    {
+      allow_position_change =
+        (window->size_hints.flags & PPosition) ||
+        (window->size_hints.flags & USPosition);
+    }
+  
+  if (allow_position_change)
     {
       if (event->xconfigurerequest.value_mask & CWX)
         x = event->xconfigurerequest.x;
@@ -2795,25 +2812,24 @@ meta_window_configure_request (MetaWindow *window,
         y = event->xconfigurerequest.y;
 
       if (event->xconfigurerequest.value_mask & (CWX | CWY))
-        only_resize = FALSE;
+        {
+          only_resize = FALSE;
+
+          /* Once manually positioned, windows shouldn't be placed
+           * by the window manager.
+           */
+          window->placed = TRUE;
+        }
     }
 
   width = window->rect.width;
   height = window->rect.height;
 
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_TOOLBAR ||
-      window->type == META_WINDOW_MENU ||
-      window->type == META_WINDOW_NORMAL ||
-      window->type == META_WINDOW_UTILITY)
-    {
-      if (event->xconfigurerequest.value_mask & CWWidth)
-        width = event->xconfigurerequest.width;
+  if (event->xconfigurerequest.value_mask & CWWidth)
+    width = event->xconfigurerequest.width;
       
-      if (event->xconfigurerequest.value_mask & CWHeight)
-        height = event->xconfigurerequest.height;
-    }
+  if (event->xconfigurerequest.value_mask & CWHeight)
+    height = event->xconfigurerequest.height;
 
   /* ICCCM 4.1.5 */
   
@@ -4683,6 +4699,8 @@ recalc_window_features (MetaWindow *window)
   window->has_fullscreen_func = TRUE;
   
   /* Semantic category overrides the MWM hints */
+  if (window->type == META_WINDOW_TOOLBAR)
+    window->decorated = FALSE;
   
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
@@ -4691,6 +4709,15 @@ recalc_window_features (MetaWindow *window)
       window->decorated = FALSE;
       window->has_close_func = FALSE;
       window->has_shade_func = FALSE;
+
+      /* FIXME this keeps panels and things from using
+       * NET_WM_MOVERESIZE; the problem is that some
+       * panels (edge panels) have fixed possible locations,
+       * and others ("floating panels") do not.
+       *
+       * Perhaps we should require edge panels to explicitly
+       * disable movement?
+       */
       window->has_move_func = FALSE;
       window->has_resize_func = FALSE;
     }
