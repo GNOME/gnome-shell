@@ -660,7 +660,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       /* Try to do minimal window moves to get the stack in order */
       /* A point of note: these arrays include frames not client windows,
        * so if a client window has changed frame since last_root_children_stacked
-       * as saved, then we may have inefficiency, but I don't think things
+       * was saved, then we may have inefficiency, but I don't think things
        * break...
        */
       const Window *old_stack = (Window *) stack->last_root_children_stacked->data;
@@ -680,8 +680,8 @@ meta_stack_sync_to_server (MetaStack *stack)
             {
               /* Stacks are the same here, move on */
               ++oldp;
-              ++newp;
               last_window = *newp;
+              ++newp;
             }
           else if (meta_display_lookup_x_window (stack->screen->display,
                                                  *oldp) == NULL)

@@ -1,5 +1,11 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (meta_stack_sync_to_server): assign last_window
+	prior to ++newp, so we don't try to stack windows with respect to
+	themselves. Fixes some obscure stacking bugs.
+
+2002-02-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme-parser.c: try to make more error message strings the
 	same, easier for translators
 
