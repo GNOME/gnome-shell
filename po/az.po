@@ -1,20 +1,22 @@
+# translation of metacity.HEAD.az.po to Azerbaijani
 # translation of metacity.HEAD.az.po to Azerbaijani Turkish
 # Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
 # Mətin Əmirov <metin@karegen.com>, 2002,2003, 2004.
+# Metin Amiroff <metin@karegen.com>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
+"Project-Id-Version: metacity.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
-"PO-Revision-Date: 2004-01-31 21:58+0200\n"
-"Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
-"Language-Team: Azerbaijani Turkish <translation-team-az@lists.sourceforge."
+"POT-Creation-Date: 2004-08-16 12:07+0200\n"
+"PO-Revision-Date: 2004-08-17 21:53+0300\n"
+"Last-Translator: Metin Amiroff <metin@karegen.com>\n"
+"Language-Team: Azerbaijani <translation-team-az@lists.sourceforge.net>\n"
 "net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/tools/metacity-message.c:150
@@ -50,8 +52,7 @@ msgstr "Dialoq ekran gedişatından oxuma xətası: %s\n"
 
 #: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Tə'minatı sonlandırma haqqında metacity-dialoqu başlatma xətası: %s\n"
 
 #: src/delete.c:446
@@ -105,8 +106,7 @@ msgstr "Pəncərəni Balacalaşdır"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq işlədir\n"
+msgstr "Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq işlədir\n"
 
 #: src/keybindings.c:2518
 #, c-format
@@ -145,8 +145,7 @@ msgstr "Örtük qovluğu oxuna bilmədi: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Örtük tapıla bilmədi! %s'in yerində olduğundanə əyani örtüklər daxil "
 "etdiyindən əmin olun."
@@ -332,8 +331,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" pəncərəsi cavab vermir."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Bu tə'minatı çıxışa məcbur etmək qeyd edilməmiş mə'lumatları itirməyə səbəb "
 "olacaq."
@@ -430,9 +428,8 @@ msgstr ""
 "bilər."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "Pəncərəni Bağla"
+msgstr "Pəncərəni bağla"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -523,7 +520,6 @@ msgid "Lower window below other windows"
 msgstr "Pəncərənin digər pəncərələrin arxasına qoy"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "Pəncərəni böyüt"
 
@@ -536,9 +532,8 @@ msgid "Maximize window vertically"
 msgstr "Pəncərəni şaquli istiqamətdə böyüt"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
-msgstr "Pəncərəni Kiçilt"
+msgstr "Pəncərəni kiçilt"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
@@ -577,9 +572,8 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Popup displeyi göstərərək pəncərələr arasında fokusu arxaya doğru daşı"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "Pəncərəni Daşı"
+msgstr "Pəncərəni daşı"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -672,7 +666,6 @@ msgid "Raise window above other windows"
 msgstr "Pəncərəni digər pəncərələrin üstünə gətir"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "Pəncərəni ölçüləndir"
 
@@ -685,7 +678,6 @@ msgid "Show the panel menu"
 msgstr "Panel menyusunu göstər"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "Panel icra dialoqunu göstər"
 
@@ -832,7 +824,6 @@ msgstr ""
 "buaçar ilə müəyyən edilən əmri icra edən qısa yolu müəyyən edir."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -849,7 +840,6 @@ msgstr ""
 "olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -865,7 +855,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -881,7 +870,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -897,7 +885,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -913,7 +900,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -928,7 +914,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -943,7 +928,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -958,7 +942,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -973,7 +956,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -988,7 +970,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1003,7 +984,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1018,7 +998,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1033,7 +1012,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1048,7 +1026,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1063,7 +1040,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1078,7 +1054,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1093,7 +1068,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1108,7 +1082,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1123,7 +1096,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1140,7 +1112,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1157,7 +1128,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1173,7 +1143,6 @@ msgstr ""
 "versəniz , bu gedişat ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1188,7 +1157,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1203,7 +1171,6 @@ msgstr ""
 "bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1219,7 +1186,6 @@ msgstr ""
 "gedişat ilə əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1235,7 +1201,6 @@ msgstr ""
 "əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1251,7 +1216,6 @@ msgstr ""
 "gedişat ilə əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1266,7 +1230,6 @@ msgstr ""
 "gedişat ilə əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1281,7 +1244,6 @@ msgstr ""
 "əlaqəli  heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1296,7 +1258,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1311,7 +1272,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1326,7 +1286,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1341,7 +1300,6 @@ msgstr ""
 "əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1356,7 +1314,6 @@ msgstr ""
 "əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1371,7 +1328,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1386,7 +1342,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1401,7 +1356,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1416,7 +1370,6 @@ msgstr ""
 "əlaqəli heç bir  qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1431,7 +1384,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1446,7 +1398,6 @@ msgstr ""
 "əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1463,7 +1414,6 @@ msgstr ""
 "bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1480,7 +1430,6 @@ msgstr ""
 "olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1499,7 +1448,6 @@ msgstr ""
 "bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1518,7 +1466,6 @@ msgstr ""
 "bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1535,7 +1482,6 @@ msgstr ""
 "heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1552,7 +1498,6 @@ msgstr ""
 "heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1571,7 +1516,6 @@ msgstr ""
 "\"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1590,7 +1534,6 @@ msgstr ""
 "\"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1607,7 +1550,6 @@ msgstr ""
 "\"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1623,7 +1565,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1639,7 +1580,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1654,7 +1594,6 @@ msgstr ""
 "\"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1671,7 +1610,6 @@ msgstr ""
 "olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1687,7 +1625,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1704,7 +1641,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1721,7 +1657,6 @@ msgstr ""
 "üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1738,7 +1673,6 @@ msgstr ""
 "olmayacaq."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1796,7 +1730,6 @@ msgid "The window screenshot command"
 msgstr "Pəncərə görüntüsü əmri"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1817,7 +1750,6 @@ msgstr ""
 "\"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1833,7 +1765,6 @@ msgstr ""
 "qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1849,7 +1780,6 @@ msgstr ""
 "mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1866,7 +1796,6 @@ msgstr ""
 "qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1923,9 +1852,8 @@ msgstr ""
 "ya da 'eşidilə bilən səs' xassəsi bağlı olanlar üçün faydalıdır."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
-msgstr "Pəncərəni Balacalaşdır "
+msgstr "Pəncərəni balacalaşdır"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1957,8 +1885,7 @@ msgstr "GConf açarı \"%s\" hökmsüz növlə tə'yin edilib\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
+msgstr "Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
 
 #: src/prefs.c:834 src/prefs.c:1244
 #, c-format
@@ -2032,10 +1959,8 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
 
 #: src/screen.c:506
 #, c-format
@@ -2079,8 +2004,7 @@ msgstr "Qeyd edilmiş iclas faylı darana bilmədi: %s\n"
 
 #: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
-"<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
+msgstr "<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
 
 #: src/session.c:1236
 #, c-format
@@ -2264,8 +2188,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> elementinin \"value\" atributu yoxdur"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Düymələr üçün button_width/button_height və görünüş nisbətinin ikisi də "
 "verilə bilməz"
@@ -2528,8 +2451,7 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
+msgstr "Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2561,10 +2483,8 @@ msgstr "Örtükdəki outermost elementi <%s> yox <metacity_theme> olmalıdır"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2573,10 +2493,8 @@ msgstr "<%s> elementi <constant> elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2830,8 +2748,7 @@ msgstr "y qiyməti %d oldu, %d gözlənirdi"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
+msgstr "%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2921,10 +2838,8 @@ msgstr "Alfa qiyməti \"%s\" 0.0 ilə 1.0 arasında deyil"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
 
 #: src/theme.c:1122
 #, c-format
@@ -2974,15 +2889,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Birgə ifadə sıfıra bölmə ilə nəticələnir"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Birgə ifadə operand gözlənildiyi yerdə \"%s\" idarəçisinə malikdir"
 
 #: src/theme.c:1845
@@ -3041,10 +2953,8 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -3077,10 +2987,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
@@ -3200,14 +3108,6 @@ msgstr "Property %s on window 0x%lx contained invalid UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "İclas idarəçisi ilə bağlantı qurula bilmədi, ona görə də pəncərələrin "
-#~ "mövqeləri qeyd edilə bilməyəvək: %s\n"
