@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-06-02 23:01-0400\n"
-"PO-Revision-Date: 2002-05-27 10:50+0200\n"
+"POT-Creation-Date: 2002-06-04 02:55+0200\n"
+"PO-Revision-Date: 2002-06-04 02:55+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -166,6 +166,7 @@ msgstr "Flytta till arbetsyta %s%d"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
+"(Inte implementerat) Navigering fungerar i termer av program, inte fönster"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -179,32 +180,31 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:3
 msgid "Activate window menu"
-msgstr ""
+msgstr "Aktivera fönstermeny"
 
 #: src/metacity.schemas.in.h:4
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Höjer automatiskt det fokuserade fönstret"
 
 #: src/metacity.schemas.in.h:5
-#, fuzzy
 msgid "Close a window"
-msgstr "Stäng fönster"
+msgstr "Stäng ett fönster"
 
 #: src/metacity.schemas.in.h:6
 msgid "Current theme"
-msgstr ""
+msgstr "Aktuellt tema"
 
 #: src/metacity.schemas.in.h:7
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Fördröjning i millisekunder "
 
 #: src/metacity.schemas.in.h:8
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Inaktivera trasiga egenskaper som krävs av gamla eller trasiga program"
 
 #: src/metacity.schemas.in.h:9
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Dölj alla fönster och fokusera skrivbordet"
 
 #: src/metacity.schemas.in.h:10
 msgid ""
@@ -233,109 +233,92 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:13
-#, fuzzy
 msgid "Minimize a window"
-msgstr "Minimera fönster"
+msgstr "Minimera ett fönster"
 
 #: src/metacity.schemas.in.h:14
-#, fuzzy
 msgid "Move a window"
-msgstr "Stäng fönster"
+msgstr "Stäng ett fönster"
 
 #: src/metacity.schemas.in.h:15
 msgid "Move focus between panels and the desktop"
-msgstr ""
+msgstr "Flytta fokus mellan paneler och skrivbordet"
 
 #: src/metacity.schemas.in.h:16
 msgid "Move focus between windows"
-msgstr ""
+msgstr "Flytta fokus mellan fönster"
 
 #: src/metacity.schemas.in.h:17
 msgid "Move focus to the previously-focused window"
-msgstr ""
+msgstr "Flytta fokus till det tidigare fokuserade fönstret"
 
 #: src/metacity.schemas.in.h:18
-#, fuzzy
 msgid "Move window one workspace down"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster en arbetsyta nedåt"
 
 #: src/metacity.schemas.in.h:19
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Flytta fönster en arbetsyta åt vänster"
 
 #: src/metacity.schemas.in.h:20
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Flytta fönster en arbetsyta åt höger"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Move window one workspace up"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster en arbetsyta uppåt"
 
 #: src/metacity.schemas.in.h:22
-#, fuzzy
 msgid "Move window to workspace 1"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 1"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Move window to workspace 10"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 10"
 
 #: src/metacity.schemas.in.h:24
-#, fuzzy
 msgid "Move window to workspace 11"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 11"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move window to workspace 12"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 12"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move window to workspace 2"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 2"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move window to workspace 3"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 3"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move window to workspace 4"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 4"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move window to workspace 5"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 5"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move window to workspace 6"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 6"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move window to workspace 7"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 7"
 
 #: src/metacity.schemas.in.h:32
-#, fuzzy
 msgid "Move window to workspace 8"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 8"
 
 #: src/metacity.schemas.in.h:33
-#, fuzzy
 msgid "Move window to workspace 9"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Flytta fönster till arbetsyta 9"
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
 msgid "Number of workspaces"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Antal arbetsytor"
 
 #: src/metacity.schemas.in.h:35
 msgid ""
@@ -343,10 +326,13 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
+"Antal arbetsytor. Måste vara större än noll, och har ett fast maxvärde (för "
+"att förhindra att skrivbordet förstörs genom att 34 miljoner arbetsytor "
+"begärs av misstag)."
 
 #: src/metacity.schemas.in.h:36
 msgid "Raise window if obscured, lowers it otherwise"
-msgstr ""
+msgstr "Höj fönstret om skymt, sänk det annars"
 
 #: src/metacity.schemas.in.h:37
 msgid ""
@@ -365,80 +351,68 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:38
-#, fuzzy
 msgid "Switch to workspace 1"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 1"
 
 #: src/metacity.schemas.in.h:39
-#, fuzzy
 msgid "Switch to workspace 10"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 10"
 
 #: src/metacity.schemas.in.h:40
-#, fuzzy
 msgid "Switch to workspace 11"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 11"
 
 #: src/metacity.schemas.in.h:41
-#, fuzzy
 msgid "Switch to workspace 12"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 12"
 
 #: src/metacity.schemas.in.h:42
-#, fuzzy
 msgid "Switch to workspace 2"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 2"
 
 #: src/metacity.schemas.in.h:43
-#, fuzzy
 msgid "Switch to workspace 3"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 3"
 
 #: src/metacity.schemas.in.h:44
-#, fuzzy
 msgid "Switch to workspace 4"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 4"
 
 #: src/metacity.schemas.in.h:45
-#, fuzzy
 msgid "Switch to workspace 5"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 5"
 
 #: src/metacity.schemas.in.h:46
-#, fuzzy
 msgid "Switch to workspace 6"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 6"
 
 #: src/metacity.schemas.in.h:47
-#, fuzzy
 msgid "Switch to workspace 7"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 7"
 
 #: src/metacity.schemas.in.h:48
-#, fuzzy
 msgid "Switch to workspace 8"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 8"
 
 #: src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Switch to workspace 9"
-msgstr "Flytta till arbetsyta %s%d"
+msgstr "Växla till arbetsyta 9"
 
 #: src/metacity.schemas.in.h:50
 msgid "Switch to workspace above the current space"
-msgstr ""
+msgstr "Växla till arbetsytan ovanför den aktuella arbetsytan"
 
 #: src/metacity.schemas.in.h:51
 msgid "Switch to workspace below the current space"
-msgstr ""
+msgstr "Växla till arbetsytan nedanför den aktuella arbetsytan"
 
 #: src/metacity.schemas.in.h:52
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Växla till arbetsytan till vänster"
 
 #: src/metacity.schemas.in.h:53
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Växla till arbetsytan till höger"
 
 #: src/metacity.schemas.in.h:54
 msgid ""
@@ -914,12 +888,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:108
 msgid "Window focus mode"
-msgstr ""
+msgstr "Fönsterfokusläge"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid "Window title font"
-msgstr "Fönstermeny"
+msgstr "Typsnitt för fönstertitel"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -1090,13 +1063,13 @@ msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
 #: src/session.c:1696
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Fel vid start av metacity-dialog för att fråga om dödandet av ett program: %"
-"s\n"
+"Fel vid start av metacity-dialog för att varna om program som inte stöder "
+"sessionshantering: %s\n"
 
 #: src/theme.c:351
 msgid "top"
@@ -1610,9 +1583,9 @@ msgid "No \"filename\" attribute on element <%s>"
 msgstr "Inget \"filename\"-attribut på element <%s>"
 
 #: src/theme-parser.c:2224 src/theme-parser.c:2671
-#, fuzzy, c-format
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Förstod inte tillståndet \"%s\" för <%s>-element"
+msgstr "Förstod inte fyllnadstypen \"%s\" för <%s>-element"
 
 #: src/theme-parser.c:2306 src/theme-parser.c:2439 src/theme-parser.c:2544
 #, c-format
@@ -1894,27 +1867,35 @@ msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "Metacity"
+
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Change how focus is moved from one window to another"
+msgstr "Ändra hur fokus flyttas från ett fönster till ett annat"
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr "Fönsterfokus"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "Klic_ka för att ge fokus"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Fokusbeteende:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Inställningar för fönsterfokus"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Peka för att ge fokus"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Höj fönster vid fokus"
 
 #~ msgid "No \"name\" attribute on <%s> element"
 #~ msgstr "Inget \"name\"-attribut på <%s>-element"
