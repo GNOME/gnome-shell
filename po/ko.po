@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
-"POT-Creation-Date: 2003-10-01 17:18-0400\n"
-"PO-Revision-Date: 2003-08-24 06:27+0900\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-11 21:16+0900\n"
+"PO-Revision-Date: 2004-01-11 21:42+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: src/display.c:286
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
@@ -79,27 +79,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "디스플레이 '%3$s'에서 치명적인 입출력 오류 %1$d (%2$s).\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "창 닫기"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "창 메뉴"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "창 최소화"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "창 최대화"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "창 최대화 취소"
 
-#: src/keybindings.c:986
+#: src/keybindings.c:987
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,14 +108,14 @@ msgstr ""
 "몇몇 다른 프로그램에서 이미 단축키로 변경 키 %2$x와(과) 키 %1$s을(를) 사용하"
 "고 있습니다\n"
 
-#: src/keybindings.c:2421
+#: src/keybindings.c:2554
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "명령에 대한 오류를 출력하기 위해 metacity-dialog를 실행하는 중 오류가 발생했"
 "습니다: %s\n"
 
-#: src/keybindings.c:2494
+#: src/keybindings.c:2627
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
@@ -143,83 +143,102 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: src/main.c:437
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "테마 디렉토리를 읽는 데 실패했습니다: %s\n"
+
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "테마를 찾을 수 없습니다! %s에 사용할 수 있는 테마가 있는지 확인하십시오."
 
-#: src/main.c:499
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "재시작 실패: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "최소화(_N)"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "최대화(_X)"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "최대화 취소(_X)"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "말아올리기(_U)"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "펴기(_U)"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "위에 놓기(_T)"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "옮기기(_M)"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "크기 조절(_R)"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "닫기(_C)"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "모든 작업 공간에 놓기(_A)"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "이 작업 공간에만 놓기(_T)"
 
-#: src/menu.c:152 src/prefs.c:1815
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "창을 왼쪽 작업 공간으로 옮기기(_L)"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "창을 오른쪽 작업 공간으로 옮기기(_R)"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "창을 위 작업 공간으로 옮기기(_U)"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "창을 아래 작업 공간으로 옮기기(_D)"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "작업 공간 1_0"
+
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
 msgstr "작업 공간 %s%d"
 
-#: src/menu.c:345
-#, c-format
-msgid "Only on %s"
-msgstr "작업 공간 %s에만 놓기"
-
-#: src/menu.c:347
-#, c-format
-msgid "Move to %s"
-msgstr "작업 공간 %s(으)로 옮기기"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "창을 다른 작업 공간으로 옮기기(_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -473,6 +492,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:19
 msgid ""
+"If true, metacity will give the user less feedback and less sense of "
+"\"direct manipulation\", by using wireframes, avoiding animations, or other "
+"means. This is a significant reduction in usability for many users, but may "
+"allow legacy applications and terminal servers to function when they would "
+"otherwise be impractical."
+msgstr "참이면, 이른바 \"직접 제어\"에 대해서 제대로 지원하지 않게 됩니다. 예를 들어 애니메이션을 하지 않고 와이어프레임을 쓴다든지 하는 식입니다. \"직접 제어\"하는 것들은 많은 사용자의 사용성을 떨어뜨리지만, 과거의 프로그램이나 터미널 서버가 동작하는 데 꼭 필요할 수 있습니다."
+
+#: src/metacity.schemas.in.h:20
+msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
 "more like the Mac and less like Windows. When you focus a window in "
@@ -492,139 +520,143 @@ msgstr ""
 "의 모든 설정 하나하나를 만드는 것보다는 낫습니다. 또, 애플리케이션 단위 모드"
 "는 현재 많은 부분이 구현되어 있지 않습니다."
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:21
+msgid "If true, trade off usability for less resource usage"
+msgstr "참이면, 리소스를 덜 사용하는 대신 사용성을 떨어뜨립니다"
+
+#: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
 msgstr "창 낮추기"
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:23
 msgid "Maximize a window"
 msgstr "창 최대화"
 
-#: src/metacity.schemas.in.h:22
+#: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
 msgstr "창 가로로 최대화"
 
-#: src/metacity.schemas.in.h:23
+#: src/metacity.schemas.in.h:25
 msgid "Maximize window vertically"
 msgstr "창 세로로 최대화"
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:26
 msgid "Minimize a window"
 msgstr "창 최소화"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr "변경 창을 누를 때 쓸 변경자"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:28
 msgid "Move a window"
 msgstr "창을 움직입니다"
 
-#: src/metacity.schemas.in.h:27
+#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "패널과 바탕화면 사이에서 반대 방향으로 바로 옮기기"
 
-#: src/metacity.schemas.in.h:28
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "패널과 바탕화면 사이에서 반대 방향으로 팝업으로 옮기기"
 
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:31
 msgid "Move backwards between windows immediately"
 msgstr "창 반대 방향으로 옮기기"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop immediately"
 msgstr "패널과 바탕화면 사이에서 바로 옮기기"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
 msgstr "패널과 바탕화면 사이에서 팝업으로 옮기기"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
 msgstr "창 사이에서 바로 옮기기"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:35
 msgid "Move between windows with popup"
 msgstr "창 사이에서 옮기기"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
 msgstr "창 사이에서 포커스를 팝업으로 옮기기"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
 msgstr "창을 아래의 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
 msgstr "창을 왼쪽의 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
 msgstr "창을 오른쪽의 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
 msgstr "창을 위의 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
 msgstr "창을 1번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
 msgstr "창을 2번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
 msgstr "창을 11번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
 msgstr "창을 12번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
 msgstr "창을 2번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
 msgstr "창을 3번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
 msgstr "창을 4번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
 msgstr "창을 5번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
 msgstr "창을 6번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
 msgstr "창을 7번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
 msgstr "창을 8번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
 msgstr "창을 9번째 작업 공간으로 옮기기"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
 msgstr "작업 공간 이름"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
 msgstr "작업 공간 개수"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:55
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -633,31 +665,31 @@ msgstr ""
 "작업 공간의 개수. 0 보다 큰 고정된 최대값 입니다. (3천 4백만개의 작업 공간을 "
 "사용하려 해지 마십시오. 컴퓨터가 폭발할지 모릅니다.)"
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
 msgstr "창을 띄우고 다른것들을 내려버리기"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
 msgstr "다른창 위에 창 띄우기"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:58
 msgid "Resize a window"
 msgstr "창크기 조절"
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
 msgstr "정의한 명령을 실행합니다"
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
 msgstr "패널 메뉴 보여주기"
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:61
 msgid "Show the panel run dialog"
 msgstr "패널의 실행 대화 상자 보여주기"
 
-#: src/metacity.schemas.in.h:60
+#: src/metacity.schemas.in.h:62
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -685,83 +717,83 @@ msgstr ""
 "창 관리자 규칙 자체의 한계때문에 필요한 것들도 있으므로, 이 옵션을 켤 경우 규"
 "칙을 변경하지 않고는 고칠 수 없는 버그도 있습니다."
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
 msgstr "1번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 10"
 msgstr "10번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 11"
 msgstr "11번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 12"
 msgstr "12번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 2"
 msgstr "2번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 3"
 msgstr "3번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 4"
 msgstr "4번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 5"
 msgstr "5번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 6"
 msgstr "6번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 7"
 msgstr "7번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 8"
 msgstr "8번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 9"
 msgstr "9번째 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace above this one"
 msgstr "위쪽 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace below this one"
 msgstr "아래쪽 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:77
 msgid "Switch to workspace on the left"
 msgstr "왼쪽 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the right"
 msgstr "오른쪽 작업 공간으로 가기"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:79
 msgid "System Bell is Audible"
 msgstr "시스템 삑소리 들림"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:80
 msgid "Take a screenshot"
 msgstr "스크린샷 찍기"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
 msgstr "창의 스크린샷 찍기"
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:82
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -777,7 +809,7 @@ msgstr ""
 "이 깜박입니다. 벨 소리를 보낸 애플리케이션을 알 수 없는 경우 (\"시스템 벨소리"
 "\"인 경우\"), 현재 포커스된 창의 제목이 깜박입니다."
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -787,7 +819,7 @@ msgstr ""
 "키바인딩을 정의합니다. run_command_N의 키바인딩을 누르면 command_N을 실행합니"
 "다."
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -795,7 +827,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_screenshot 키는 이 세팅으로 실"
 "행할 명령어를 실행하는 키바인딩을 정의합니다."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -804,7 +836,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_window_screenshot 키는 이 세팅"
 "으로 실행할 명령어를 실행하는 키바인딩을 정의합니다."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -819,7 +851,7 @@ msgstr ""
 "Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
 "면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -834,7 +866,7 @@ msgstr ""
 "쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바"
 "인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -849,7 +881,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -864,7 +896,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -879,7 +911,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -892,7 +924,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -905,7 +937,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -918,7 +950,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -931,7 +963,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -944,7 +976,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -957,7 +989,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -970,7 +1002,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -983,7 +1015,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -996,7 +1028,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1009,7 +1041,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1022,7 +1054,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1035,7 +1067,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1048,7 +1080,7 @@ msgstr ""
 "고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1061,7 +1093,7 @@ msgstr ""
 "Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 "
 "\"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1076,7 +1108,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으"
 "로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1091,7 +1123,7 @@ msgstr ""
 "\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스"
 "트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1106,7 +1138,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1119,7 +1151,7 @@ msgstr ""
 "고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1132,7 +1164,7 @@ msgstr ""
 "고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -1147,7 +1179,7 @@ msgstr ""
 "습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없"
 "습니다\""
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1162,7 +1194,7 @@ msgstr ""
 "습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없"
 "습니다\""
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1177,7 +1209,7 @@ msgstr ""
 "도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩"
 "은 없습니다\""
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1191,7 +1223,7 @@ msgstr ""
 "습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없"
 "습니다\""
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1205,7 +1237,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1219,7 +1251,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1233,7 +1265,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1247,7 +1279,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1261,7 +1293,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1275,7 +1307,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1289,7 +1321,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1303,7 +1335,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1317,7 +1349,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1331,7 +1363,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1345,7 +1377,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1359,7 +1391,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1374,7 +1406,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으"
 "로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1389,7 +1421,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으"
 "로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1406,7 +1438,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1423,7 +1455,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1438,7 +1470,7 @@ msgstr ""
 "Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
 "면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1453,7 +1485,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1470,7 +1502,7 @@ msgstr ""
 "Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
 "면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1487,7 +1519,7 @@ msgstr ""
 "Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
 "면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1502,7 +1534,7 @@ msgstr ""
 "도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩"
 "은 없습니다\""
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1515,7 +1547,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1528,7 +1560,7 @@ msgstr ""
 "고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1542,7 +1574,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1557,7 +1589,7 @@ msgstr ""
 "Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
 "면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1570,7 +1602,7 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1585,7 +1617,7 @@ msgstr ""
 "도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩"
 "은 없습니다\""
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1600,7 +1632,7 @@ msgstr ""
 "\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액"
 "션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1615,7 +1647,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1628,21 +1660,21 @@ msgstr ""
 "있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
 "을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
 msgstr "작업 공간 이름"
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:145
 msgid "The screenshot command"
 msgstr "스크린샷 명령어"
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "창의 테두리, 제목 등의 모양을 지정하는 테마."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:147
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1650,7 +1682,7 @@ msgstr ""
 "auto_raise가 침일 경우, 창을 올리기 전의 지연 시간. 이 시간은 천분의 일초 단"
 "위로 주어집니다."
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:148
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1663,11 +1695,11 @@ msgstr ""
 "\"는 마우스가 창 위로 들어갈 때 포커스되는 것이고, \"mouse\"는 마우스가 창 위"
 "로 들어가면 포커스되고 마우스가 창 밖으로 나갈 때 포커스가 없어지는 것입니다."
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
 msgstr "창 스크린샷 명령어"
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1686,7 +1718,7 @@ msgstr ""
 "다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니"
 "다\""
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1700,7 +1732,7 @@ msgstr ""
 "습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없"
 "습니다\""
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1714,7 +1746,7 @@ msgstr ""
 "습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없"
 "습니다\""
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1729,7 +1761,7 @@ msgstr ""
 "쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바"
 "인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:154
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1744,7 +1776,7 @@ msgstr ""
 "쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바"
 "인딩은 없습니다\""
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:155
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1754,27 +1786,27 @@ msgstr ""
 "으로, \"toggle_shaded\"는 창을 숨기거나/보여주는 것이고, \"toggle_maximized"
 "\"는 최대화/최대화취소하는 것입니다."
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
 msgstr "창 맨위에 두기 토글"
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
 msgstr "전체 화면 모드 토글"
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
 msgstr "창 최대화 토글"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid "Toggle shaded state"
 msgstr "창 숨기기 토글"
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Toggle window on all workspaces"
 msgstr "모든 작업 공간에 두기 토글"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1784,36 +1816,36 @@ msgstr ""
 "니다; 듣는데 어려움이 있거나, 주위가 시끄럽거나, '삑소리 들림'이 꺼져 있을 "
 "때 유용합니다."
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Unmaximize a window"
 msgstr "창 최대화 취소"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
 msgstr "창 제목에 표준 시스템 글꼴을 사용합니다"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Visual Bell Type"
 msgstr "비주얼 벨 타입"
 
-#: src/metacity.schemas.in.h:163
+#: src/metacity.schemas.in.h:165
 msgid "Window focus mode"
 msgstr "창 초점 모드"
 
-#: src/metacity.schemas.in.h:164
+#: src/metacity.schemas.in.h:166
 msgid "Window title font"
 msgstr "창 제목 글꼴"
 
-#: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
-#: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
-#: src/prefs.c:582 src/prefs.c:598 src/prefs.c:614 src/prefs.c:630
-#: src/prefs.c:646 src/prefs.c:663 src/prefs.c:679 src/prefs.c:695
-#: src/prefs.c:727
+#: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
+#: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
+#: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
+#: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
+#: src/prefs.c:736 src/prefs.c:751
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 키 \"%s\"이(가) 잘못된 형식으로 설정되어 있습니다\n"
 
-#: src/prefs.c:771
+#: src/prefs.c:796
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1822,17 +1854,17 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 마우스 단추 설정 키의 올바른 값이 아"
 "닙니다\n"
 
-#: src/prefs.c:795 src/prefs.c:1205
+#: src/prefs.c:820 src/prefs.c:1230
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 키 '%s'이(가) 잘못된 값으로 설정되어 있습니다\n"
 
-#: src/prefs.c:922
+#: src/prefs.c:947
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf 키 %2$s에서 글꼴 지정 \"%1$s\"을(를) 분석할 수 없습니다\n"
 
-#: src/prefs.c:1107
+#: src/prefs.c:1132
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1841,7 +1873,7 @@ msgstr ""
 "Gconf 키 %2$s에 저장된 %1$d은(는) 사용할 수 없는 작업 공간 번호 입니다, 현재 "
 "최대값은 %3$d 입니다\n"
 
-#: src/prefs.c:1167
+#: src/prefs.c:1192
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1849,17 +1881,17 @@ msgstr ""
 "응용 프로그램에 대한 임시 방편을 막았습니다. 몇몇 응용프로그램들이 제대로 동"
 "작하지 않을것입니다.\n"
 
-#: src/prefs.c:1232
+#: src/prefs.c:1257
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "GConf 키 %2$s에 저장된 %1$d은(는) 0과 %3$d의 범위를 넘었습니다\n"
 
-#: src/prefs.c:1336
+#: src/prefs.c:1375
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "작업 공간의 수를 %d(으)로 설정하는 중 오류: %s\n"
 
-#: src/prefs.c:1579
+#: src/prefs.c:1618
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1868,7 +1900,7 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 단축키 \"%s\"에 대한 올바른 값이 아닙"
 "니다\n"
 
-#: src/prefs.c:1896
+#: src/prefs.c:1935
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s\n"
@@ -1878,12 +1910,12 @@ msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:415
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: src/screen.c:408
+#: src/screen.c:431
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1892,19 +1924,19 @@ msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다; 현재 "
 "창 관리자를 무시하는 -- 바꿈 옵션을 사용해보십시오.\n"
 
-#: src/screen.c:449
+#: src/screen.c:455
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 창 관리 선택을 가질 수 없습니다\n"
 
-#: src/screen.c:504
+#: src/screen.c:513
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
 
-#: src/screen.c:674
+#: src/screen.c:704
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
@@ -2509,6 +2541,200 @@ msgstr "파일 %s에서 테마 읽기 실패: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "테마 파일 %s이(가) root <metacity_theme> 요소를 포함하지 않습니다"
 
+#: src/theme-viewer.c:70
+msgid "/_Windows"
+msgstr "/창(_W)"
+
+#: src/theme-viewer.c:71
+msgid "/Windows/tearoff"
+msgstr "/창/떼어내기"
+
+#: src/theme-viewer.c:72
+msgid "/Windows/_Dialog"
+msgstr "/창/대화 상자(_D)"
+
+#: src/theme-viewer.c:73
+msgid "/Windows/_Modal dialog"
+msgstr "/창/모달 대화 상자(_M)"
+
+#: src/theme-viewer.c:74
+msgid "/Windows/_Utility"
+msgstr "/창/도구(_U)"
+
+#: src/theme-viewer.c:75
+msgid "/Windows/_Splashscreen"
+msgstr "/창/스플래시 화면(_S)"
+
+#: src/theme-viewer.c:76
+msgid "/Windows/_Top dock"
+msgstr "/창/위 도크(_T)"
+
+#: src/theme-viewer.c:77
+msgid "/Windows/_Bottom dock"
+msgstr "/창/아래 도크(_B)"
+
+#: src/theme-viewer.c:78
+msgid "/Windows/_Left dock"
+msgstr "/창/왼쪽 도크(_L)"
+
+#: src/theme-viewer.c:79
+msgid "/Windows/_Right dock"
+msgstr "/창/오른쪽 도크(_R)"
+
+#: src/theme-viewer.c:80
+msgid "/Windows/_All docks"
+msgstr "/창/모든 도크(_A)"
+
+#: src/theme-viewer.c:81
+msgid "/Windows/Des_ktop"
+msgstr "/창/바탕 화면(_K)"
+
+#: src/theme-viewer.c:131
+msgid "Open another one of these windows"
+msgstr "이 창을 하나 더 엽니다"
+
+#: src/theme-viewer.c:138
+msgid "This is a demo button with an 'open' icon"
+msgstr "'열기' 아이콘이 들어 있는 데모 단추입니다"
+
+#: src/theme-viewer.c:145
+msgid "This is a demo button with a 'quit' icon"
+msgstr "'끝내기' 아이콘이 들어 있는 데모 단추입니다"
+
+#: src/theme-viewer.c:241
+msgid "This is a sample message in a sample dialog"
+msgstr "예제 대화 상자의 예제 메세지입니다"
+
+#: src/theme-viewer.c:324
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "가짜 메뉴 항목 %d\n"
+
+#: src/theme-viewer.c:358
+msgid "Border-only window"
+msgstr "테두리만 있는 창"
+
+#: src/theme-viewer.c:360
+msgid "Bar"
+msgstr "모음"
+
+#: src/theme-viewer.c:377
+msgid "Normal Application Window"
+msgstr "보통 프로그램 창"
+
+#: src/theme-viewer.c:382
+msgid "Dialog Box"
+msgstr "대화 상자"
+
+#: src/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "모달 대화 상자"
+
+#: src/theme-viewer.c:392
+msgid "Utility Palette"
+msgstr "도구 팔레트"
+
+#: src/theme-viewer.c:397
+msgid "Torn-off Menu"
+msgstr "떼어내기 메뉴"
+
+#: src/theme-viewer.c:402
+msgid "Border"
+msgstr "테두리"
+
+#: src/theme-viewer.c:731
+#, c-format
+msgid "Button layout test %d"
+msgstr "단추 배치 테스트 %d"
+
+#: src/theme-viewer.c:760
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "창 프레임 하나를 그리는 데 %g ms"
+
+#: src/theme-viewer.c:803
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "사용법: metacity-theme-viewer [테마이름]\n"
+
+#: src/theme-viewer.c:810
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "테마를 읽어들이는 데 오류가 발생했습니다: %s\n"
+
+#: src/theme-viewer.c:816
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "\"%s\" 테마를 읽어들이는 데 %g초\n"
+
+#: src/theme-viewer.c:839
+msgid "Normal Title Font"
+msgstr "보통 제목 글꼴"
+
+#: src/theme-viewer.c:845
+msgid "Small Title Font"
+msgstr "작은 제목 글꼴"
+
+#: src/theme-viewer.c:851
+msgid "Large Title Font"
+msgstr "큰 제목 글꼴"
+
+#: src/theme-viewer.c:856
+msgid "Button Layouts"
+msgstr "단추 배치"
+
+#: src/theme-viewer.c:861
+msgid "Benchmark"
+msgstr "벤치마크"
+
+#: src/theme-viewer.c:908
+msgid "Window Title Goes Here"
+msgstr "창 제목이 여기에 들어갑니다"
+
+#: src/theme-viewer.c:1012
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr "%d개 프레임을 그리는 데 클라이언트 입장에서 %g초가 걸렸습니다 (한 프레임에 %g ms). 그리고 X 서버 리소스까지 포함해 실제 시간으로 %g 초가 걸렸습니다 (한 프레임에 %g ms).\n"
+
+#: src/theme-viewer.c:1227
+msgid "position expression test returned TRUE but set error"
+msgstr "위치 표현식 테스트가 참을 리턴했지만 오류가 발생했습니다"
+
+#: src/theme-viewer.c:1229
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "위치 표현식 테스트가 거짓을 리턴했지만 오류가 발생하지 않았습니다"
+
+#: src/theme-viewer.c:1233
+msgid "Error was expected but none given"
+msgstr "오류가 발생해야 하지만 발생하지 않았습니다"
+
+#: src/theme-viewer.c:1235
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "오류 %d번이 발생해야 하지만 오류 %d번이 발생했습니다"
+
+#: src/theme-viewer.c:1241
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "오류가 발생하면 안 되지만 오류 한 개가 발생했습니다: %s"
+
+#: src/theme-viewer.c:1245
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "가로값이 %d입니다. 와야 하는 값은 %d입니다"
+
+#: src/theme-viewer.c:1248
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "세로값이 %d입니다. 와야 하는 값은 %d입니다"
+
+#: src/theme-viewer.c:1310
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d개의 좌표 표현식을 %g초에 파싱했습니다 (평균 %g초)\n"
+
 #: src/theme.c:202
 msgid "top"
 msgstr "맨 위"
@@ -2816,15 +3042,15 @@ msgstr "로그 파일 %s을(를) 엽니다\n"
 msgid "Window manager: "
 msgstr "창 관리자: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "창 관리자의 벌레: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "창 관리자 주의: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "장 관리자 오류: "
 
@@ -2834,7 +3060,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4566
+#: src/window.c:4730
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2850,7 +3076,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5227
+#: src/window.c:5392
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
