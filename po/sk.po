@@ -5,16 +5,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2001-12-13 14:39+0100\n"
-"PO-Revision-Date: 2001-12-13 14:39CET\n"
+"POT-Creation-Date: 2002-01-09 10:57+0100\n"
+"PO-Revision-Date: 2002-01-09 11:04CET\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 0.9.5\n"
 
-#: src/display.c:155
+#: src/display.c:156
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
@@ -34,136 +34,136 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: src/frames.c:231
+#: src/frames.c:232
 msgid "Left edge"
 msgstr "Ľavý okraj"
 
-#: src/frames.c:231
+#: src/frames.c:232
 msgid "Left window edge width"
 msgstr "Šírka ľavého okraja okna"
 
-#: src/frames.c:232
+#: src/frames.c:233
 msgid "Right edge"
 msgstr "Pravý okraj"
 
-#: src/frames.c:232
+#: src/frames.c:233
 msgid "Right window edge width"
 msgstr "Šírka oravého okraja okna"
 
-#: src/frames.c:233
+#: src/frames.c:234
 msgid "Bottom edge"
 msgstr "Dolný okraj"
 
-#: src/frames.c:233
+#: src/frames.c:234
 msgid "Bottom window edge height"
 msgstr "Šírka oolného okraja okna"
 
-#: src/frames.c:235
+#: src/frames.c:236
 msgid "Title border"
 msgstr "Okraj okolo titulku"
 
-#: src/frames.c:235
+#: src/frames.c:236
 msgid "Border around title area"
 msgstr "Okraj okolo oblasti titulku"
 
-#: src/frames.c:236
+#: src/frames.c:237
 msgid "Text border"
 msgstr "Okraj okolo textu"
 
-#: src/frames.c:236
+#: src/frames.c:237
 msgid "Border around window title text"
 msgstr "Okraj okolo textu titulku okna"
 
-#: src/frames.c:238
+#: src/frames.c:239
 msgid "Spacer padding"
 msgstr "Medzera oddeľovača"
 
-#: src/frames.c:238
+#: src/frames.c:239
 msgid "Padding on either side of spacer"
 msgstr "Medzery na každej strane oddeľovača"
 
-#: src/frames.c:239
+#: src/frames.c:240
 msgid "Spacer width"
 msgstr "Šírka oddeľovača"
 
-#: src/frames.c:239
+#: src/frames.c:240
 msgid "Width of spacer"
 msgstr "Šírka oddeľovača"
 
-#: src/frames.c:240
+#: src/frames.c:241
 msgid "Spacer height"
 msgstr "Výška oddeľovača"
 
-#: src/frames.c:240
+#: src/frames.c:241
 msgid "Height of spacer"
 msgstr "Výška oddeľovača"
 
 #. same as right_width left_width by default
-#: src/frames.c:243
+#: src/frames.c:244
 msgid "Right inset"
 msgstr "Pravá vzdialenosť"
 
-#: src/frames.c:243
+#: src/frames.c:244
 msgid "Distance of buttons from right edge of frame"
 msgstr "Vzdialenosť tlačidiel od pravého okraja rámu"
 
-#: src/frames.c:244
+#: src/frames.c:245
 msgid "Left inset"
 msgstr "Ľavá vzdialenosť"
 
-#: src/frames.c:244
+#: src/frames.c:245
 msgid "Distance of menu button from left edge of frame"
 msgstr "Vzdialenosť tlačidiel od ľavého okraja rámu"
 
-#: src/frames.c:246
+#: src/frames.c:247
 msgid "Button width"
 msgstr "Šírka tlačidiel"
 
-#: src/frames.c:246
+#: src/frames.c:247
 msgid "Width of buttons"
 msgstr "Šírka tlačidiel"
 
-#: src/frames.c:247
+#: src/frames.c:248
 msgid "Button height"
 msgstr "Výška tlačidiel"
 
-#: src/frames.c:247
+#: src/frames.c:248
 msgid "Height of buttons"
 msgstr "Výška tlačidiel"
 
-#: src/frames.c:249
+#: src/frames.c:250
 msgid "Button border"
 msgstr "Okraj tlačidiel"
 
-#: src/frames.c:249
+#: src/frames.c:250
 msgid "Border around buttons"
 msgstr "Okraj okolo tlačidiel"
 
-#: src/frames.c:250
+#: src/frames.c:251
 msgid "Inner button border"
 msgstr "Vnútorný okraj tlačidiel"
 
-#: src/frames.c:250
+#: src/frames.c:251
 msgid "Border around the icon inside buttons"
 msgstr "Okraj okolo ikony na tlačidlách"
 
-#: src/frames.c:891
+#: src/frames.c:892
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: src/frames.c:894
+#: src/frames.c:895
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:897
+#: src/frames.c:898
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: src/frames.c:900
+#: src/frames.c:901
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: src/frames.c:903
+#: src/frames.c:904
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
@@ -173,6 +173,11 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Nepodarilo znovu spustiť: %s\n"
 
 #: src/menu.c:48
 msgid "_Close"
@@ -225,15 +230,50 @@ msgstr "Len na ploche %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Presunúť na plochu %s%d"
 
+#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf kľúč \"%s\" má nastavený neplatný typ\n"
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "GConf kľúč \"%s\" má nastavený neplatnú hodnotu"
+
+#: src/prefs.c:399
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Nepodarilo sa spracovať popis písma \"%s\" z GConf kľúča %s\n"
+
+#: src/prefs.c:436
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr "%d uložená v GConf kľúči %s nie je platná veľkosť písma\n"
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d uložená v GConf kľúči %s nie je rozumný počet pracovných plôch, "
+"momentálne maximum je %d\n"
+
 #: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' nie je platná\n"
 
-#: src/screen.c:189
+#: src/screen.c:190
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Obrazovka %d na displeji '%s' už má správcu okien\n"
+
+#: src/screen.c:268
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "Nepodarilo sa uvoľniť obrazovku %d na displeji '%s'\n"
 
 #: src/session.c:760 src/session.c:767
 #, c-format
@@ -285,7 +325,7 @@ msgid "Unknown element %s"
 msgstr "Neznámy element %s"
 
 #. someone is on crack
-#: src/window.c:2939
+#: src/window.c:3058
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -293,10 +333,24 @@ msgstr ""
 "vypínam zmenu veľkosťi\n"
 
 #. another cracksmoker
-#: src/window.c:2949
+#: src/window.c:3068
 #, c-format
 msgid "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
 "Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
 "vypínam zmenu veľkosťi\n"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"Okno 0x%lx má vlastnosť %s, ktorá má mať typ %s, formát %d a "
+"v skutočnosti má typ %s a formát %d, počet položiek %d\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 
