@@ -246,6 +246,9 @@ struct _MetaDisplay
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
+#ifdef HAVE_XKB
+  int         xkb_base_event_type;
+#endif
 #ifdef HAVE_XSYNC
   /* alarm monitoring client's _METACITY_UPDATE_COUNTER */
   XSyncAlarm  grab_update_alarm;

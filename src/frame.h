@@ -58,6 +58,7 @@ struct _MetaFrame
 
   guint mapped : 1;
   guint need_reapply_frame_shape : 1;
+  guint is_flashing : 1; /* used by the visual bell flash */
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);
