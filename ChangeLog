@@ -1,3 +1,9 @@
+2004-10-19  Anders Carlsson  <andersca@gnome.org>
+
+	* src/frame.c: (meta_window_ensure_frame):
+	Don't try to use an ARGB visual at all if the depth isn't
+	32-bit. This caused major slowdowns with Composite enabled.
+	
 2004-10-16  Elijah Newren  <newren@math.utah.edu>
 
 	Make the "showing desktop" mode be per-workspace instead of
