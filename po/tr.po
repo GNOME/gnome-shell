@@ -1,13 +1,12 @@
-# Turkish translation of metacity.
 # Copyright (C) 2003 Free Software Foundation.
 # This file is distributed under the same license as the metacity package.
 # Sinan İmamoğlu <sinan@myrealbox.com>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: metacity 2.4\n"
 "POT-Creation-Date: 2003-02-04 05:03+0100\n"
-"PO-Revision-Date: 2003-02-08 12:33+0200\n"
+"PO-Revision-Date: 2003-02-09 14:03+0200\n"
 "Last-Translator: Sinan İmamoğlu <sinan@myrealbox.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1044,7 +1043,7 @@ msgstr "Kaydedilmiş %s oturum dosyası okunamadı: %s\n"
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Kaydedilmiş %s oturum dosyası ayrıştırılamadı\n"
+msgstr "Kaydedilmiş oturum dosyası ayrıştırılamadı: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -1122,7 +1121,7 @@ msgstr "\"%s\" bir gerçel sayı olarak ayrıştırılamadı"
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Bool değerleri ancak \"true\" (doğru/açık) ya da \"false\" (yanlış/kapalı) değerlerini alabilir; \"%s\" olmaz"
+msgstr "Mantıksal değerler ancak \"true\" (doğru/açık) ya da \"false\" (yanlış/kapalı) değerlerini alabilir; \"%s\" olmaz"
 
 #: src/theme-parser.c:572
 #, c-format
@@ -1132,7 +1131,7 @@ msgstr "Açı 0.0 ile 360.0 arasında olmalı, %g verilmiş\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfa 0.0 (görünmez) ile 1.0 (bütünüyle donuk/opak) arasında olmalıydı ama %g verilmiş\n"
+msgstr "Alfa 0.0 (görünmez) ile 1.0 (bütünüyle saydamsız) arasında olmalıydı ama %g verilmiş\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1717,12 +1716,12 @@ msgstr "Renk karışımının (blend) doğru biçimi \"blend/artalanrengi/önala
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Renk karışımındaki \"%s\" alfa değeri ayrıştırılamadı"
+msgstr "Karışık rengin \"%s\" alfa değeri ayrıştırılamadı"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Renk karışımının alfa değeri \"%s\", 0.0 ile 1.0 arasında değil"
+msgstr "Karışık rengin alfa değeri \"%s\", 0.0 ile 1.0 arasında değil"
 
 #: src/theme.c:1111
 #, c-format
@@ -1933,7 +1932,7 @@ msgstr "Pencere yöneticisi hatası: "
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "Uygulama _NET_WM_PID'e geçersiz %ld değerini atadı\n"
+msgstr "Uygulama _NET_WM_PID'e bozuk %ld değerini atadı\n"
 
 #. first time through
 #: src/window.c:4897
