@@ -1,3 +1,8 @@
+2002-09-30  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (reload_xinerama_infos): fix compilation on
+	Solaris, patch from Satyajit Kanungo
+
 2002-09-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/eggaccelerators.c: update from libegg to get fix from Ralph

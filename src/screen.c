@@ -253,7 +253,7 @@ reload_xinerama_infos (MetaScreen *screen)
       int i;
 
       n_monitors = 0;
-      result = XineramaGetInfo (screen->xdisplay,
+      result = XineramaGetInfo (screen->display->xdisplay,
                                 screen->number,
 				monitors, hints,
                                 &n_monitors);
