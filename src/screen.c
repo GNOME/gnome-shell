@@ -1115,6 +1115,10 @@ meta_screen_focus_top_window (MetaScreen *screen,
                   "Focusing top window %s\n", window->desc);
 
       meta_window_focus (window, meta_display_get_current_time (screen->display));
+
+      /* Also raise the window if in click-to-focus */
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        meta_window_raise (window);
     }
   else
     {

@@ -1131,12 +1131,28 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
 {
   /* FIXME if stack is frozen this is kind of broken. */
 
-  /* Find the topmost, focusable, mapped, window. */
+  /* Find the topmost, focusable, mapped, window.
+   * not_this_one is being unfocused or going away, so exclude it.
+   * Also, prefer to focus transient parent of not_this_one,
+   * or top window in same group as not_this_one.
+   */
 
   MetaWindow *topmost_dock;
-  int layer = META_LAYER_LAST;  
-
+  MetaWindow *transient_parent;
+  MetaWindow *topmost_in_group;
+  MetaWindow *topmost_overall;
+  MetaGroup *not_this_one_group;
+  int layer;
+  
+  layer = META_LAYER_LAST;
   topmost_dock = NULL;
+  transient_parent = NULL;
+  topmost_in_group = NULL;
+  topmost_overall = NULL;
+  if (not_this_one)
+    not_this_one_group = meta_window_get_group (not_this_one);
+  else
+    not_this_one_group = NULL;
   
   --layer;
   while (layer >= 0)
@@ -1162,8 +1178,31 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
               if (topmost_dock == NULL &&
                   window->type == META_WINDOW_DOCK)
                 topmost_dock = window;
-              else if (window->type != META_WINDOW_DOCK)
-                return window;
+
+              if (not_this_one != NULL)
+                {
+                  if (transient_parent == NULL &&
+                      not_this_one->xtransient_for != None &&
+                      not_this_one->xtransient_for == window->xwindow)
+                    transient_parent = window;
+
+                  if (topmost_in_group == NULL &&
+                      not_this_one_group != NULL &&
+                      not_this_one_group == meta_window_get_group (window))
+                    topmost_in_group = window;
+                }
+
+              /* Note that DESKTOP windows can be topmost_overall so
+               * we prefer focusing desktop or other windows over
+               * focusing dock, even though docks are stacked higher.
+               */
+              if (topmost_overall == NULL &&
+                  window->type != META_WINDOW_DOCK)
+                topmost_overall = window;
+
+              /* We could try to bail out early here for efficiency in
+               * some cases, but it's just not worth the code.
+               */
             }
 
           link = link->next;
@@ -1172,11 +1211,14 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
       --layer;
     }
 
-  /* If we didn't find a window to focus, we use the topmost dock.
-   * Note that we already tried the desktop - so we prefer focusing
-   * desktop to focusing the dock.
-   */
-  return topmost_dock;
+  if (transient_parent)
+    return transient_parent;
+  else if (topmost_in_group)
+    return topmost_in_group;
+  else if (topmost_overall)
+    return topmost_overall;
+  else
+    return topmost_dock;
 }
 
 GList*

@@ -1,5 +1,17 @@
 2002-09-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (meta_screen_focus_top_window): raise the focused
+	window, since it may not be the window on top, given the below
+	change.
+
+	* src/stack.c (meta_stack_get_default_focus_window): make this
+	more complex to prefer to focus the transient parent, followed by
+	other windows in group, followed by topmost non-dock, followed by
+	dock. Previously was just topmost non-dock followed by dock
+	ignoring groups and transiency.
+
+2002-09-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/place.c (constrain_placement): constrain placement to try to
 	keep windows from going offscreen to the right/bottom
 
