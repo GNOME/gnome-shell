@@ -412,104 +412,133 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
 {
   int i, num_workspaces, grid_area;
   int rows, cols;
+  int new_workspace_idx;
+  int up_diff, down_diff, left_diff, right_diff; 
+  int current_row, current_col;
   
   i = meta_workspace_index (workspace);
   num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
   
- meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
-                                    &rows, &cols);
+  meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
+                                     &rows, &cols);
 
   grid_area = rows * cols;
-  
+
   meta_verbose ("Getting neighbor rows = %d cols = %d vert = %d "
                 "current = %d num_spaces = %d neighbor = %d\n",
                 rows, cols, workspace->screen->vertical_workspaces,
                 i, num_workspaces, direction);
-
   
-  /* FIXME someone who's better or more patient at math puzzles
-   * should clean this up. ;-)
-   * This'll have to someone with mega patience 'cause you'll
-   * have to handle screen->starting_corner also.
+  /* ok, we want to setup the distances in the workspace array to go     
+   * in each direction. Remember, there are many ways that a workspace   
+   * array can be setup.                                                 
+   * see http://www.freedesktop.org/standards/wm-spec/1.2/html/x109.html 
+   * and look at the _NET_DESKTOP_LAYOUT section for details.            
+   * For instance:
    */
-  if (workspace->screen->vertical_workspaces)
+  /* starting_corner = META_SCREEN_TOPLEFT                         
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       1234                                    1357            
+   *       5678                                    2468            
+   *                                                               
+   * starting_corner = META_SCREEN_TOPRIGHT                        
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       4321                                    7531            
+   *       8765                                    8642            
+   *                                                               
+   * starting_corner = META_SCREEN_BOTTOMLEFT                      
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       5678                                    2468            
+   *       1234                                    1357            
+   *                                                               
+   * starting_corner = META_SCREEN_BOTTOMRIGHT                     
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       8765                                    8642            
+   *       4321                                    7531            
+   *
+   */
+
+  if (workspace->screen->vertical_workspaces) 
     {
-      switch (direction)
-        {
-        case META_MOTION_LEFT:
-          if (i < rows)
-            {
-              i = grid_area - (i % rows) - 1;
-              while (i >= num_workspaces)
-                i -= rows;
-            }
-          else
-            i -= rows;
-          break;
-        case META_MOTION_RIGHT:
-          if ((i + rows) >= num_workspaces)
-            i = (i % rows + 1) % rows;
-          else
-            i += rows;
-          break;
-        case META_MOTION_UP:
-          --i;
-          if (i == -1)
-            i = num_workspaces - 1;
-          break;
-        case META_MOTION_DOWN:
-          ++i;
-          if (i == num_workspaces)
-            i = 0;
-          break;
-        }
+      up_diff    = -1;
+      down_diff  = 1;
+      left_diff  = -1 * cols;
+      right_diff = cols;
+      current_col = (i / (cols?cols:1)) + 1;
+      current_row = (i % cols) + 1;
     }
-  else
+  else 
     {
-      switch (direction)
-        {
-        case META_MOTION_LEFT:
-          --i;
-          if (i == -1)
-            i = num_workspaces - 1;
-          break;
-        case META_MOTION_RIGHT:
-          ++i;
-          if (i == num_workspaces)
-            i = 0;
-          break;
-        case META_MOTION_UP:
-          if (i < cols)
-            {
-	      if (i == 0)
-		{
-		  /* special case: go to bottom right corner == grid_area - 1 */
-		  i = grid_area - 1;
-		  while (i >= num_workspaces)
-		    /* if we are in a non-existant workspace look up in the column for next workspace */
-		    i -= cols;
-		}
-	      else
-		{
-		  /* calculate new workspace based on the bottom left corner == ((rows - 1) * cols) */
-		  i = ((rows - 1) * cols) + (i - 1);
-		  while (i >= num_workspaces)
-		    /* if we are in a non-existant workspace look up in the column for next workspace */
-		    i -= cols;
-		}
-            }
-          else
-            i -= cols;
-          break;
-        case META_MOTION_DOWN:
-          if ((i + cols) >= num_workspaces)
-            i = (i % cols + 1) % cols;
-          else
-            i += cols;
-          break;
-        }
+      up_diff    = -1 * rows;
+      down_diff  = rows;
+      left_diff  = -1;
+      right_diff = 1;
+      current_col = (i % rows) + 1;
+      current_row = (i / (rows?rows:1)) + 1;
     }
 
+  switch (workspace->screen->starting_corner) 
+    {
+    default:
+    case META_SCREEN_TOPLEFT:
+      /* this was the default case setup in the if() above */
+      break;
+    case META_SCREEN_TOPRIGHT:
+      /* ok, we need to inverse the left/right values      */
+      left_diff  = -1 * left_diff;
+      right_diff = -1 * right_diff;
+      /* also, current column needs to be mirrored         */
+      current_col = rows - ((current_col-1)%rows) ;
+      break;
+    case META_SCREEN_BOTTOMLEFT:
+      /* ok, we need to inverse the up/down values         */
+      up_diff    = -1 * up_diff;
+      down_diff  = -1 * up_diff;
+      /* also, current row needs to be mirrored            */
+      current_row = cols - ((current_row-1)%cols);
+      break;
+    case META_SCREEN_BOTTOMRIGHT:
+      /* in this case, we need to inverse everything       */
+      up_diff    = -1 * up_diff;
+      down_diff  = -1 * up_diff;
+      left_diff  = -1 * left_diff;
+      right_diff = -1 * right_diff;
+      /* also, current column and row need to be reversed  */
+      current_col = rows - ((current_col-1)%rows);
+      current_row = cols - ((current_row-1)%cols);
+      break;
+    }
+
+  /* calculate what we think the next spot should be */
+  new_workspace_idx = i;
+
+  switch (direction) 
+    {
+    case META_MOTION_LEFT:
+      if ((current_col - 1) > 0)
+        new_workspace_idx = i + left_diff;
+      break;
+    case META_MOTION_RIGHT:
+      if ((current_col + 1) <= rows)
+        new_workspace_idx = i + right_diff;
+      break;
+    case META_MOTION_UP:
+      if ((current_row - 1) > 0)
+        new_workspace_idx = i + up_diff;
+      break;
+    case META_MOTION_DOWN:
+      if ((current_row + 1) <= cols)
+        new_workspace_idx = i + down_diff;
+      break;
+    default:
+      new_workspace_idx = 0;
+      break;
+    }
+
+  /* and now make sure we don't over/under flow */
+  if ((new_workspace_idx >= 0) && (new_workspace_idx < num_workspaces)) 
+    i = new_workspace_idx;
+  
   meta_verbose ("Neighbor space is %d\n", i);
   
   return meta_screen_get_workspace_by_index (workspace->screen,
