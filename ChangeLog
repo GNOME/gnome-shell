@@ -1,3 +1,9 @@
+2002-05-27  Anders Carlsson  <andersca@gnu.org>
+
+	* src/themes/Gorilla/metacity-theme-1.xml: Apparently someone
+	thinks my name is Anders Carlsom. Well, it's not.
+	(Thanks to Carl-Johan Kjellander for noticing.)
+
 2002-05-26  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Remove borders from
