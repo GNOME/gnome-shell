@@ -1,7 +1,7 @@
 2002-02-12  Anders Carlsson  <andersca@gnu.org>
 
-	* src/window.c (update_mwm_hints): Only disable functions if
-	MWM_FUNC_ALL _is_ set, not when it isn't.
+	* src/window.c (update_mwm_hints): and MWM_FUNC_ALL 
+	with hints->functions instead of hints->flags.
 
 2002-02-11  Anders Carlsson  <andersca@gnu.org>
 
