@@ -1,9 +1,16 @@
+2003-01-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_calc_workspace_layout): invert
+	vertical_workspaces cases (we want to go down each column if 
+	it's vertical, and across each row if horizontal). Patch 
+	from readams@hmc.edu
+
 2003-01-05  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Macedonian (mk) to ALL_LINGUAS
 
 2003-01-05  Havoc Pennington  <hp@pobox.com>
-	
+
 	* src/frames.c (meta_frames_apply_shapes): put in the
 	HAVE_GTK_MULTIHEAD conditionals so we build with GTK 2.0
 

@@ -1685,21 +1685,6 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
     case META_SCREEN_TOPLEFT:
       if (screen->vertical_workspaces) 
         {
-          r = 0;
-          while (r < rows)
-            {
-              c = 0;
-              while (c < cols)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  ++c;
-                }
-              ++r;
-            }
-        }
-      else
-        {
           c = 0;
           while (c < cols)
             {
@@ -1711,27 +1696,27 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
                   ++r;
                 }
               ++c;
+            }
+        }
+      else
+        {
+          r = 0;
+          while (r < rows)
+            {
+              c = 0;
+              while (c < cols)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  ++c;
+                }
+              ++r;
             }
         }
       break;
     case META_SCREEN_TOPRIGHT:
       if (screen->vertical_workspaces) 
         {
-          r = 0;
-          while (r < rows)
-            {
-              c = cols - 1;
-              while (c >= 0)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  --c;
-                }
-              ++r;
-            }
-        }
-      else
-        {
           c = cols - 1;
           while (c >= 0)
             {
@@ -1745,24 +1730,24 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
               --c;
             }
         }
-      break;
-    case META_SCREEN_BOTTOMLEFT:
-      if (screen->vertical_workspaces) 
+      else
         {
-          r = rows - 1;
-          while (r >= 0)
+          r = 0;
+          while (r < rows)
             {
-              c = 0;
-              while (c < cols)
+              c = cols - 1;
+              while (c >= 0)
                 {
                   grid[r*cols+c] = i;
                   ++i;
-                  ++c;
+                  --c;
                 }
-              --r;
+              ++r;
             }
         }
-      else
+      break;
+    case META_SCREEN_BOTTOMLEFT:
+      if (screen->vertical_workspaces) 
         {
           c = 0;
           while (c < cols)
@@ -1777,24 +1762,24 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
               ++c;
             }
         }
-      break;
-    case META_SCREEN_BOTTOMRIGHT:
-      if (screen->vertical_workspaces) 
+      else
         {
           r = rows - 1;
           while (r >= 0)
             {
-              c = cols - 1;
-              while (c >= 0)
+              c = 0;
+              while (c < cols)
                 {
                   grid[r*cols+c] = i;
                   ++i;
-                  --c;
+                  ++c;
                 }
               --r;
             }
         }
-      else
+      break;
+    case META_SCREEN_BOTTOMRIGHT:
+      if (screen->vertical_workspaces) 
         {
           c = cols - 1;
           while (c >= 0)
@@ -1807,6 +1792,21 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
                   --r;
                 }
               --c;
+            }
+        }
+      else
+        {
+          r = rows - 1;
+          while (r >= 0)
+            {
+              c = cols - 1;
+              while (c >= 0)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  --c;
+                }
+              --r;
             }
         }
       break;
@@ -1852,7 +1852,7 @@ meta_screen_calc_workspace_layout (MetaScreen          *screen,
       r = 0;
       while (r < layout->rows)
         {
-          meta_verbose ("");
+          meta_verbose (" ");
           meta_push_no_msg_prefix ();
           c = 0;
           while (c < layout->cols)
