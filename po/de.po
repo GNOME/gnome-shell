@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Metacity 2.6.2\n"
+"Project-Id-Version: Metacity 2.8.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2004-01-18 10:46+0100\n"
+"POT-Creation-Date: 2004-07-02 21:06+0200\n"
+"PO-Revision-Date: 2004-07-02 21:03+0200\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
@@ -229,21 +229,21 @@ msgstr "Auf Arbeitsfläche darü_ber verschieben"
 msgid "Move to Workspace _Down"
 msgstr "Auf Arbeitsfläche dar_unter verschieben"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Arbeitsfläche 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeitsfläche %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Auf a_ndere Arbeitsfläche verschieben"
 
@@ -369,7 +369,7 @@ msgstr ""
 "Diese Fenster unterstützen das Speichern der aktuellen Einstellungen nicht "
 "und müssen bei der nächsten Anmeldung manuell neu gestartet werden."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -451,8 +451,8 @@ msgstr ""
 "oder zeigt das Fenstermenü (rechte Maustaste). Das Format ist »&lt;Alt&gt;«."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Ein Fenster schließen"
+msgid "Close window"
+msgstr "Fenster schließen"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -562,8 +562,8 @@ msgid "Lower window below other windows"
 msgstr "Fenster hinter die anderen Fenster absenken"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Ein Fenster maximieren"
+msgid "Maximize window"
+msgstr "Fenster maximieren"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -574,55 +574,55 @@ msgid "Maximize window vertically"
 msgstr "Fenster vertikal maximieren"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Ein Fenster minimieren"
+msgid "Minimize window"
+msgstr "Fenster minimieren"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr "Der zum Umschalten der Fensterklick-Aktionen verwendete Umschalter"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Ein Fenster verschieben"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr ""
 "Fokus sofort rückwärts zwischen den Panels und dem Desktop durchreichen"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Fokus rückwärts zwischen den Panels und dem Desktop unter Verwendung der "
 "Fensterliste durchreichen"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Fokus sofort rückwärts zwischen den Fenstern durchreichen"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Fokus sofort zwischen den Panels und dem Desktop durchreichen"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr ""
 "Fokus zwischen den Panels und dem Desktop unter Verwendung der Fensterliste "
 "durchreichen"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Fokus sofort zwischen den Fenstern durchreichen"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr ""
 "Fokus zwischen den Fenstern unter Verwendung der Fensterliste durchreichen"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Fokus zwischen den Fenstern unter Verwendung der Fensterliste durchreichen"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Fenster verschieben"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -715,8 +715,8 @@ msgid "Raise window above other windows"
 msgstr "Fenster vor die anderen Fenster anheben"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
-msgstr "Die Größe eines Fensters ändern"
+msgid "Resize window"
+msgstr "Fenstergröße ändern"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -727,8 +727,8 @@ msgid "Show the panel menu"
 msgstr "Das Panelmenü anzeigen"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
-msgstr "Den Ausführen-Dialog des Panels anzeigen"
+msgid "Show the panel run application dialog"
+msgstr "Den »Anwendung ausführen«-Dialog des Panels anzeigen"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -1736,14 +1736,14 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Die zum Anzeigen des »Programm ausführen«-Dialogs verwendete "
+"Die zum Anzeigen des »Anwendung ausführen«-Dialogs verwendete "
 "Tastenkombination. Das Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;"
 "Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt Groß- "
 "und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
@@ -1967,8 +1967,8 @@ msgstr ""
 "die Arbeit in lauter Umgebung oder wenn die »hörbare Glocke« deaktiviert ist."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
-msgstr "Ein Fenster wiederherstellen"
+msgid "Unmaximize window"
+msgstr "Fenster wiederherstellen"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1990,12 +1990,12 @@ msgstr "Schrift für Fenstertitel"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Typ des GConf-Schlüssels »%s« ungültig\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2004,19 +2004,19 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein zulässiger Wert für "
 "den Maustastenumschalter\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Wert des GConf-Schlüssels »%s« unzulässig\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Schriftbeschreibung »%s« aus GConf-Schlüssel %s konnte nicht verarbeitet "
 "werden\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2025,7 +2025,7 @@ msgstr ""
 "%d, gespeichert in GConf-Schlüssel %s ist keine sinnvolle Anzahl der "
 "Arbeitsflächen; das aktuelle Maximum ist %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2033,18 +2033,18 @@ msgstr ""
 "Provisorien (Workarounds) für defekte Anwendungen abgeschaltet. "
 "Möglicherweise funktionieren manche Anwendungen nicht richtig.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d, gespeichert in GConf-Schlüssel %s, liegt außerhalb des Bereichs 0-%d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fehler beim Festlegen der Anzahl der Arbeitsflächen auf %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2053,7 +2053,7 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein zulässiger Wert für "
 "die Tastenkombination »%s«\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n"
@@ -2096,81 +2096,72 @@ msgstr "Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Bildschirm %d auf Anzeige »%s« konnte nicht freigegeben werden\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Das Öffnen einer Verbindung mit einem Sitzungsverwalter ist fehlgeschlagen, "
-"daher werden die Fensterpositionen nicht gespeichert: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Verzeichnis »%s« konnte nicht angelegt werden: %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Sitzungsdatei »%s« konnte nicht zum Schreiben geöffnet werden: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fehler beim Schreiben der Sitzungsdatei »%s«: %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fehler beim Schließen der Sitzungsdatei »%s«: %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Gespeicherte Sitzungsdatei %s konnte nicht gelesen werden: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Gespeicherte Sitzungsdatei konnte nicht verarbeitet werden: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "Attribut <metacity_session> ist aufgetaucht, obwohl die Sitzungskennung "
 "bereits feststeht"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Unbekanntes Attribut %s in Element <metacity_session>"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "verschachteltes Element <window>"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Unbekanntes Attribut %s in Element <window>"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Unbekanntes Attribut %s in Element <maximized>"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Unbekanntes Attribut %s in Element <geometry>"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Unbekanntes Element %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3247,7 +3238,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3269,7 +3260,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
