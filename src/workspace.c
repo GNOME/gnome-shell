@@ -406,6 +406,42 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
   *area = workspace->work_area;
 }
 
+static char *
+meta_motion_direction_to_string (MetaMotionDirection direction)
+{
+  switch (direction)
+    {
+    case META_MOTION_UP:
+      return "Up";
+    case META_MOTION_DOWN:
+      return "Down";
+    case META_MOTION_LEFT:
+      return "Left";
+    case META_MOTION_RIGHT:
+      return "Right";
+    }
+
+  return "Unknown";
+}
+
+static char *
+meta_screen_corner_to_string (MetaScreenCorner corner)
+{
+  switch (corner)
+    {
+    case META_SCREEN_TOPLEFT:
+      return "TopLeft";
+    case META_SCREEN_TOPRIGHT:
+      return "TopRight";
+    case META_SCREEN_BOTTOMLEFT:
+      return "BottomLeft";
+    case META_SCREEN_BOTTOMRIGHT:
+      return "BottomRight";
+    }
+
+  return "Unknown";
+}
+
 MetaWorkspace*
 meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                              MetaMotionDirection direction)
@@ -422,12 +458,16 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
                                      &rows, &cols);
 
+  g_assert (rows != 0 && cols != 0);
+
   grid_area = rows * cols;
 
-  meta_verbose ("Getting neighbor rows = %d cols = %d vert = %d "
-                "current = %d num_spaces = %d neighbor = %d\n",
-                rows, cols, workspace->screen->vertical_workspaces,
-                i, num_workspaces, direction);
+  meta_verbose ("Getting neighbor rows = %d cols = %d current = %d "
+                "num_spaces = %d vertical = %s direction = %s corner = %s\n",
+                rows, cols, i, num_workspaces,
+                workspace->screen->vertical_workspaces ? "(true)" : "(false)",
+	        meta_motion_direction_to_string (direction),
+                meta_screen_corner_to_string (workspace->screen->starting_corner));
   
   /* ok, we want to setup the distances in the workspace array to go     
    * in each direction. Remember, there are many ways that a workspace   
@@ -462,19 +502,19 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
     {
       up_diff    = -1;
       down_diff  = 1;
-      left_diff  = -1 * cols;
-      right_diff = cols;
-      current_col = (i / (cols?cols:1)) + 1;
-      current_row = (i % cols) + 1;
+      left_diff  = -1 * rows;
+      right_diff = rows;
+      current_col = ((i - 1) / rows) + 1;
+      current_row = ((i - 1) % rows) + 1;
     }
   else 
     {
-      up_diff    = -1 * rows;
-      down_diff  = rows;
+      up_diff    = -1 * cols;
+      down_diff  = cols;
       left_diff  = -1;
       right_diff = 1;
-      current_col = (i % rows) + 1;
-      current_row = (i / (rows?rows:1)) + 1;
+      current_col = (i % cols) + 1;
+      current_row = ((i - 1) / cols) + 1;
     }
 
   switch (workspace->screen->starting_corner) 
@@ -509,25 +549,29 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
       break;
     }
 
+  meta_verbose ("Workspace deltas: up = %d down = %d left = %d right = %d. "
+                "Current col = %d row = %d\n", up_diff, down_diff, left_diff,
+                right_diff, current_col, current_row);
+
   /* calculate what we think the next spot should be */
   new_workspace_idx = i;
 
   switch (direction) 
     {
     case META_MOTION_LEFT:
-      if ((current_col - 1) > 0)
+      if (current_col >= 1)
         new_workspace_idx = i + left_diff;
       break;
     case META_MOTION_RIGHT:
-      if ((current_col + 1) <= rows)
+      if (current_col <= cols)
         new_workspace_idx = i + right_diff;
       break;
     case META_MOTION_UP:
-      if ((current_row - 1) > 0)
+      if (current_row >= 1)
         new_workspace_idx = i + up_diff;
       break;
     case META_MOTION_DOWN:
-      if ((current_row + 1) <= cols)
+      if (current_row <= rows)
         new_workspace_idx = i + down_diff;
       break;
     default:
@@ -539,10 +583,9 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   if ((new_workspace_idx >= 0) && (new_workspace_idx < num_workspaces)) 
     i = new_workspace_idx;
   
-  meta_verbose ("Neighbor space is %d\n", i);
+  meta_verbose ("Neighbor workspace is %d\n", i);
   
-  return meta_screen_get_workspace_by_index (workspace->screen,
-                                             i);
+  return meta_screen_get_workspace_by_index (workspace->screen, i);
 }
 
 const char*

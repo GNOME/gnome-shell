@@ -1,3 +1,11 @@
+2002-11-08  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/workspace.c:
+	(meta_motion_direction_to_string),
+	(meta_screen_corner_to_string): impl for nice debugging.
+	(meta_workspace_get_neighbor): fix broken logic and
+	cleanup debugging.
+
 Thu Nov  7 17:07:21 2002  Jonathan Blandford  <jrb@redhat.com>
 
 	* src/libmetacity-private.pc.in: add a pc file for
