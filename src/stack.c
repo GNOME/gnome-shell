@@ -501,6 +501,8 @@ add_constraint (Constraint **constraints,
                 MetaWindow  *below)
 {
   Constraint *c;
+
+  g_assert (above->screen == below->screen);
   
   /* check if constraint is a duplicate */
   c = constraints[below->stack_position];
@@ -575,7 +577,8 @@ create_constraints (Constraint **constraints,
             {
               MetaWindow *group_window = tmp2->data;
 
-              if (!WINDOW_IN_STACK (group_window))
+              if (!WINDOW_IN_STACK (group_window) ||
+                  w->screen != group_window->screen)
                 {
                   tmp2 = tmp2->next;
                   continue;
@@ -610,7 +613,8 @@ create_constraints (Constraint **constraints,
           parent =
             meta_display_lookup_x_window (w->display, w->xtransient_for);
 
-          if (parent && WINDOW_IN_STACK (parent))
+          if (parent && WINDOW_IN_STACK (parent) &&
+              parent->screen == w->screen)
             {
               meta_topic (META_DEBUG_STACK, "Constraining %s above %s due to transiency\n",
                           w->desc, parent->desc);

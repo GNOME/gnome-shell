@@ -1,4 +1,11 @@
+2003-02-20  Havoc Pennington  <hp@redhat.com>
+
+	* src/stack.c (create_constraints): don't create constraints
+	between windows on different screens, #106086 tracked down 
+	by Arvind
+
 2003-02-14  Arvind Samptur <arvind.samptur@wipro.com>
+
 	* src/screen.c: (meta_screen_new) : Update the workspace
 	names from gconf and set the NET_DESKTOP_NAMES atom.
 	Renamed update_workspace_names() to set_workspace_names().
