@@ -171,33 +171,6 @@ reload_net_wm_pid (MetaWindow    *window,
 }
 
 static void
-init_net_wm_user_time (MetaDisplay   *display,
-                       Atom           property,
-                       MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom_net_wm_user_time;
-}
-
-static void
-reload_net_wm_user_time (MetaWindow    *window,
-                         MetaPropValue *value)
-{
-  if (value->type != META_PROP_VALUE_INVALID)
-    {
-      gulong cardinal = (int) value->v.cardinal;
-      
-      if (cardinal <= 0)
-        meta_warning (_("Application set a bogus _NET_WM_USER_TIME %ld\n"),
-                      cardinal);
-      else
-        {
-          window->net_wm_user_time = cardinal;
-        }
-    }
-}
-
-static void
 set_window_title (MetaWindow *window,
                   const char *title)
 {
@@ -841,7 +814,7 @@ reload_wm_hints (MetaWindow    *window,
 
 
 
-#define N_HOOKS 24
+#define N_HOOKS 23
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -869,16 +842,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = display->atom_net_wm_pid;
   hooks[i].init_func = init_net_wm_pid;
   hooks[i].reload_func = reload_net_wm_pid;
-  ++i;
-
-  hooks[i].property = display->atom_net_wm_user_time;
-  hooks[i].init_func = init_net_wm_user_time;
-  hooks[i].reload_func = reload_net_wm_user_time;
-  ++i;
-
-  hooks[i].property = display->atom_net_wm_user_time;
-  hooks[i].init_func = init_net_wm_user_time;
-  hooks[i].reload_func = reload_net_wm_user_time;
   ++i;
 
   hooks[i].property = display->atom_net_wm_name;

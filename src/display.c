@@ -274,8 +274,7 @@ meta_display_open (const char *name)
     "_METACITY_SENTINEL",
     "_NET_WM_STRUT_PARTIAL",
     "_NET_WM_ACTION_FULLSCREEN",
-    "_NET_WM_ACTION_MINIMIZE",
-    "_NET_WM_USER_TIME"
+    "_NET_WM_ACTION_MINIMIZE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -420,7 +419,6 @@ meta_display_open (const char *name)
   display->atom_net_wm_strut_partial = atoms[80];
   display->atom_net_wm_action_fullscreen = atoms[81];
   display->atom_net_wm_action_minimize = atoms[82];
-  display->atom_net_wm_user_time = atoms[83];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -1170,8 +1168,7 @@ event_callback (XEvent   *event,
   Window modified;
   gboolean frame_was_receiver;
   gboolean filter_out_event;
-  Time event_time;
- 
+  
   display = data;
   
   if (dump_events)
@@ -1324,15 +1321,7 @@ event_callback (XEvent   *event,
   meta_compositor_process_event (display->compositor,
                                  event,
                                  window);
-
-  if (window && 
-      (event->type == KeyPress || 
-       event->type == ButtonPress) &&
-      (CurrentTime != 
-       (event_time = event_get_time (display, event)))) {
-    window->net_wm_user_time = event_time;
-  }
-
+  
   switch (event->type)
     {
     case KeyPress:
@@ -1878,10 +1867,9 @@ event_callback (XEvent   *event,
       {
         MetaGroup *group;
         MetaScreen *screen;
-
-        if (window && !frame_was_receiver) {
+        
+        if (window && !frame_was_receiver)
           meta_window_property_notify (window, event);
-	}
 
         group = meta_display_lookup_group (display,
                                            event->xproperty.window);

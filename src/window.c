@@ -582,17 +582,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_display_grab_window_buttons (window->display, window->xwindow);
   meta_display_grab_focus_window_button (window->display, window);
   
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
-    {
-      /* Change the default, but don't enforce this if the user
-       * focuses the dock/desktop and unsticks it using key shortcuts.
-       * Need to set this before adding to the workspaces so the MRU
-       * lists will be updated.
-       */
-      window->on_all_workspaces = TRUE;
-    }
-
   /* For the workspace, first honor hints,
    * if that fails put transients with parents,
    * otherwise put window on active space
@@ -606,11 +595,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                       "Window %s is initially on all spaces\n",
                       window->desc);
           
-	  /* need to set on_all_workspaces first so that it will be
-	   * added to all the MRU lists
-	   */
-          window->on_all_workspaces = TRUE;
           meta_workspace_add_window (window->screen->active_workspace, window);
+          window->on_all_workspaces = TRUE;
         }
       else
         {
@@ -650,8 +636,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
           tmp_list = parent->workspaces;
           while (tmp_list != NULL)
             {
-	      /* this will implicitly add to the appropriate MRU lists
-	       */
               meta_workspace_add_window (tmp_list->data, window);
               
               tmp_list = tmp_list->next;
@@ -670,6 +654,16 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       meta_workspace_add_window (space, window);
     }
   
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK)
+    {
+      /* Change the default, but don't enforce this if
+       * the user focuses the dock/desktop and unsticks it
+       * using key shortcuts
+       */
+      window->on_all_workspaces = TRUE;
+    }
+
   /* for the various on_all_workspaces = TRUE possible above */
   meta_window_set_current_workspace_hint (window);
   
@@ -4323,21 +4317,7 @@ process_property_notify (MetaWindow     *window,
       meta_window_reload_property (window,
                                    window->display->atom_metacity_update_counter);
     }
-  else if (event->atom == window->display->atom_net_wm_user_time)
-    {
-      meta_verbose ("Property notify on %s for _NET_WM_USER_TIME\n", window->desc);
-      
-      meta_window_reload_property (window,
-                                   window->display->atom_net_wm_user_time);
-    }
-  else if (event->atom == window->display->atom_net_wm_user_time)
-    {      
-      meta_verbose ("Property notify on %s for _NET_WM_USER_TIME\n", window->desc);
-      
-      meta_window_reload_property (window,
-                                   window->display->atom_net_wm_user_time);
-    }
-  
+
   return TRUE;
 }
 
