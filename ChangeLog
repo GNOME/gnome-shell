@@ -1,5 +1,18 @@
 2004-07-31  Rob Adams  <readams@readams.net>
 
+	Fix bug that caused windows to not be focused on unminimizing
+	because of user time support.
+	
+	* src/window.c (meta_window_new_with_attrs): initialize
+	focus_despite_user_time bit
+	(window_takes_focus_on_map): focus if focus_despite_user_time
+	despite user time, interestingly enough
+	(meta_window_show): reset focus_despite_user_time after showing
+
+	* src/window.h (_MetaWindow): add focus_despite_user_time bit
+
+2004-07-31  Rob Adams  <readams@readams.net>
+
 	Fix some support for EWMH hints, and fix USER_TIME support to
 	include the DEMANDS_ATTENTION hint.  Also includes some code for
 	implementing _NET_RESTACK_WINDOW and _NET_MOVERESIZE_WINDOW, but

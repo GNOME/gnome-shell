@@ -456,6 +456,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->initial_workspace_set = FALSE;
   window->initial_timestamp_set = FALSE;
   window->net_wm_user_time_set = FALSE;
+  window->focus_despite_user_time = FALSE;
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
   window->have_focus_click_grab = FALSE;
@@ -1618,6 +1619,8 @@ window_takes_focus_on_map (MetaWindow *window)
     case META_WINDOW_NORMAL:
     case META_WINDOW_DIALOG:
     case META_WINDOW_MODAL_DIALOG:
+      if (window->focus_despite_user_time)
+	return TRUE;
 
       meta_topic (META_DEBUG_STARTUP,
                   "COMPARISON:\n"
@@ -1715,6 +1718,8 @@ meta_window_show (MetaWindow *window)
     meta_window_stack_just_below (window,
                                   window->display->focus_window);
 
+  window->focus_despite_user_time = FALSE;
+ 
   if (!window->placed)
     {
       /* We have to recalc the placement here since other windows may
@@ -1929,6 +1934,8 @@ meta_window_unminimize (MetaWindow  *window)
   if (window->minimized)
     {
       window->minimized = FALSE;
+      window->focus_despite_user_time = TRUE;
+      
       meta_window_queue_calc_showing (window);
 
       meta_window_foreach_transient (window,
