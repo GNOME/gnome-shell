@@ -356,14 +356,7 @@ locate_attributes (GMarkupParseContext *context,
     {
       g_return_val_if_fail (retloc != NULL, FALSE);
 
-      if (n_attrs == MAX_ATTRS)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Element <%s> has more than %d attributes, can't possibly be valid"),
-                     element_name, MAX_ATTRS);
-          retval = FALSE;
-          goto out;
-        }
+      g_assert (n_attrs < MAX_ATTRS);
       
       attrs[n_attrs].name = name;
       attrs[n_attrs].retloc = retloc;
@@ -374,7 +367,6 @@ locate_attributes (GMarkupParseContext *context,
       retloc = va_arg (args, const char**);
     }
 
- out:
   va_end (args);
 
   if (!retval)
@@ -402,7 +394,7 @@ locate_attributes (GMarkupParseContext *context,
                              _("Attribute \"%s\" repeated twice on the same <%s> element"),
                              attrs[j].name, element_name);
                   retval = FALSE;
-                  goto out2;
+                  goto out;
                 }
 
               *retloc = attribute_values[i];
@@ -420,13 +412,13 @@ locate_attributes (GMarkupParseContext *context,
                      _("Attribute \"%s\" is invalid on <%s> element in this context"),
                      attribute_names[i], element_name);
           retval = FALSE;
-          goto out2;
+          goto out;
         }
 
       ++i;
     }
 
- out2:
+ out:
   return retval;
 }
 

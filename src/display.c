@@ -1112,6 +1112,7 @@ event_callback (XEvent   *event,
                   meta_verbose ("Received reload theme request\n");
                   meta_ui_set_current_theme (meta_prefs_get_theme (),
                                              TRUE);
+                  meta_display_retheme_all ();
                 }
             }
         }
@@ -2065,6 +2066,42 @@ meta_display_unshow_desktop (MetaDisplay *display)
   display->showing_desktop = FALSE;
   
   queue_windows_showing (display);
+}
+
+void
+meta_display_queue_retheme_all_windows (MetaDisplay *display)
+{
+  GSList* windows;
+  GSList *tmp;
+
+  windows = meta_display_list_windows (display);
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+      
+      meta_window_queue_move_resize (window);
+      if (window->frame)
+        meta_frame_queue_draw (window->frame);
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (windows);
+}
+
+void
+meta_display_retheme_all (void)
+{
+  GSList *tmp;
+  
+  tmp = meta_displays_list ();
+  while (tmp != NULL)
+    {
+      MetaDisplay *display = tmp->data;
+      meta_display_queue_retheme_all_windows (display);
+      tmp = tmp->next;
+    }
 }
 
 static gboolean is_syncing = FALSE;

@@ -310,6 +310,7 @@ prefs_changed_callback (MetaPreference pref,
     {
     case META_PREF_THEME:
       meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
+      meta_display_retheme_all ();
       break;
 
     default:

@@ -1,5 +1,17 @@
 2002-02-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/main.c (prefs_changed_callback): redo window
+	sizes/appearance when the theme changes
+
+	* src/display.c (meta_display_retheme_all): new function
+
+	* src/theme-parser.c (locate_attributes): remove error handling
+	for MAX_ATTRS reached, add an assert instead, the way this code
+	ended up the attrs in the array depend on the code not the theme
+	file.
+
+2002-02-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/main.c (main): disable custom log handler and fatal mask for
 	now
 

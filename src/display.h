@@ -228,4 +228,7 @@ guint32  meta_display_get_current_time (MetaDisplay *display);
 const char* meta_focus_mode_to_string   (int m);
 const char* meta_focus_detail_to_string (int d);
 
+void meta_display_queue_retheme_all_windows (MetaDisplay *display);
+void meta_display_retheme_all (void);
+
 #endif
