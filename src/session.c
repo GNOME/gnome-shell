@@ -366,6 +366,10 @@ static void
 save_yourself_possibly_done (gboolean shutdown,
                              gboolean successful)
 {
+  meta_topic (META_DEBUG_SM,
+              "save possibly done shutdown = %d success = %d\n",
+              shutdown, successful);
+  
   if (current_state == STATE_SAVING_PHASE_1)
     {
       Status status;
@@ -376,6 +380,9 @@ save_yourself_possibly_done (gboolean shutdown,
 
       if (status)
         current_state = STATE_WAITING_FOR_PHASE_2;
+
+      meta_topic (META_DEBUG_SM,
+                  "Requested phase 2, status = %d\n", status);
     }
 
   if (current_state == STATE_SAVING_PHASE_2 &&
@@ -393,12 +400,17 @@ save_yourself_possibly_done (gboolean shutdown,
 
       if (status)
         current_state = STATE_WAITING_FOR_INTERACT;
+
+      meta_topic (META_DEBUG_SM,
+                  "Requested interact, status = %d\n", status);
     }
   
   if (current_state == STATE_SAVING_PHASE_1 ||
       current_state == STATE_SAVING_PHASE_2 ||
       current_state == STATE_DONE_WITH_INTERACT)
     {
+      meta_topic (META_DEBUG_SM, "Sending SaveYourselfDone\n");
+      
       SmcSaveYourselfDone (session_connection,
                            successful);
       
@@ -414,6 +426,8 @@ save_phase_2_callback (SmcConn smc_conn, SmPointer client_data)
 {
   gboolean shutdown;
 
+  meta_topic (META_DEBUG_SM, "Phase 2 save");
+  
   shutdown = GPOINTER_TO_INT (client_data);
   
   current_state = STATE_SAVING_PHASE_2;
@@ -433,6 +447,8 @@ save_yourself_callback (SmcConn   smc_conn,
 {
   gboolean successful;
 
+  meta_topic (META_DEBUG_SM, "SaveYourself received");
+  
   successful = TRUE;
   
   /* The first SaveYourself after registering for the first time
@@ -480,11 +496,14 @@ static void
 save_complete_callback (SmcConn smc_conn, SmPointer client_data)
 {
   /* nothing */
+  meta_topic (META_DEBUG_SM, "SaveComplete received");
 }
 
 static void
 shutdown_cancelled_callback (SmcConn smc_conn, SmPointer client_data)
 {
+  meta_topic (META_DEBUG_SM, "Shutdown cancelled received");
+  
   if (session_connection != NULL &&
       (current_state != STATE_IDLE && current_state != STATE_FROZEN))
     {
@@ -499,6 +518,8 @@ interact_callback (SmcConn smc_conn, SmPointer client_data)
   /* nothing */
   gboolean shutdown;
 
+  meta_topic (META_DEBUG_SM, "Interaction permission received");
+  
   shutdown = GPOINTER_TO_INT (client_data);
 
   current_state = STATE_DONE_WITH_INTERACT;

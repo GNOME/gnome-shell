@@ -1,3 +1,7 @@
+2002-06-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c: put in more debug spew about the session
+
 2002-05-30  Havoc Pennington  <hp@pobox.com>
 
 	* src/Makefile.am (INCLUDES): use $(prefix)/@DATADIRNAME@/locale
