@@ -219,6 +219,9 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.wmclass_class = NULL;
   attrs.override_redirect = FALSE;
 
+  attrs.width  = width;
+  attrs.height = height;
+
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
   window =

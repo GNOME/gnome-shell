@@ -501,6 +501,9 @@ meta_display_open (const char *name)
   
   display->current_time = CurrentTime;
   display->sentinel_counter = 0;
+
+  display->grab_resize_timeout_id = 0;
+  display->grab_have_keyboard = FALSE;
   
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_wireframe_active = FALSE;

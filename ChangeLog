@@ -1,3 +1,14 @@
+2004-09-22  Elijah Newren  <newren@math.utah.edu>
+
+	Fix some uninitialized variable errors reported by valgrind (see
+	#153338)
+
+	* src/display.c (meta_display_open): initialize
+	display->grab_resize_timeout_id, and display->grab_have_keyboard
+
+	* src/ui.c (meta_ui_create_frame_window): initialize attrs.width
+	and attrs.height
+
 2004-09-17  Elijah Newren  <newren@math.utah.edu>
 
 	* src/workspace.c (meta_workspace_focus_mru_window): Don't focus a
