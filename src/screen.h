@@ -122,4 +122,9 @@ void meta_screen_calc_workspace_layout (MetaScreen *screen,
                                         int        *r,
                                         int        *c);
 
+void meta_screen_resize (MetaScreen *screen,
+                         int         width,
+                         int         height);
+
+
 #endif

@@ -1388,6 +1388,17 @@ event_callback (XEvent   *event,
     case ReparentNotify:
       break;
     case ConfigureNotify:
+      /* Handle screen resize */
+      {
+	MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xconfigure.window);
+	if (screen != NULL)
+	  meta_screen_resize (screen, 
+			      event->xconfigure.width,
+			      event->xconfigure.height);
+      }
       break;
     case ConfigureRequest:
       /* This comment and code is found in both twm and fvwm */

@@ -1,5 +1,16 @@
 2002-09-28  Havoc Pennington  <hp@pobox.com>
 
+        Patch from Keith Packard to handle root window resizes.
+	
+	* src/screen.c (reload_xinerama_infos): factor out Xinerama code
+	(meta_screen_resize): implement this, to be called from display.c
+	on screen resize
+
+	* src/display.c (event_callback): handle ConfigureNotify on root
+	windows
+
+2002-09-28  Havoc Pennington  <hp@pobox.com>
+
 	* src/stack.c (get_standalone_layer): re-enable the FOCUSED_WINDOW
 	layer, should now work correctly.
 
