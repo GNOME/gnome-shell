@@ -1338,6 +1338,7 @@ idle_calc_showing (gpointer data)
   GSList *should_show;
   GSList *should_hide;
   GSList *unplaced;
+  GSList *displays;
   
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Clearing the calc_showing queue\n");
@@ -1361,7 +1362,8 @@ idle_calc_showing (gpointer data)
   should_show = NULL;
   should_hide = NULL;
   unplaced = NULL;
-  
+  displays = NULL;
+
   tmp = copy;
   while (tmp != NULL)
     {
@@ -1438,12 +1440,31 @@ idle_calc_showing (gpointer data)
       
       tmp = tmp->next;
     }
-  
+
+  /* for all displays used in the queue, set a sentinel property on
+   * the root window so that we can ignore EnterNotify events that
+   * occur before the window maps occur.  This avoids a race
+   * condition. */
+  tmp = should_show;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+      
+      if (g_slist_find (displays, window->display) == NULL)
+        {
+          displays = g_slist_prepend (displays, window->display);
+          meta_display_increment_focus_sentinel (window->display);
+        }
+
+      tmp = tmp->next;
+    }
+
   g_slist_free (copy);
 
   g_slist_free (unplaced);
   g_slist_free (should_show);
   g_slist_free (should_hide);
+  g_slist_free (displays);
   
   destroying_windows_disallowed -= 1;
   

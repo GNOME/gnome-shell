@@ -172,6 +172,7 @@ struct _MetaDisplay
   Atom atom_gnome_panel_action;
   Atom atom_gnome_panel_action_main_menu;
   Atom atom_gnome_panel_action_run_dialog;
+  Atom atom_metacity_sentinel;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -248,6 +249,12 @@ struct _MetaDisplay
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
+
+  /* we use property updates as sentinels for certain window focus events
+   * to avoid some race conditions on EnterNotify events
+   */
+  int         sentinel_counter;
+
 #ifdef HAVE_XKB
   int         xkb_base_event_type;
 #endif
@@ -438,5 +445,9 @@ gboolean meta_rectangle_intersect (MetaRectangle *src1,
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,
                                           unsigned int       *mask);
+
+void meta_display_increment_focus_sentinel (MetaDisplay *display);
+void meta_display_decrement_focus_sentinel (MetaDisplay *display);
+gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
 
 #endif

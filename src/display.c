@@ -269,7 +269,8 @@ meta_display_open (const char *name)
     "SYNC_COUNTER",
     "_GNOME_PANEL_ACTION",
     "_GNOME_PANEL_ACTION_MAIN_MENU",
-    "_GNOME_PANEL_ACTION_RUN_DIALOG"
+    "_GNOME_PANEL_ACTION_RUN_DIALOG",
+    "_METACITY_SENTINEL"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -416,6 +417,7 @@ meta_display_open (const char *name)
   display->atom_gnome_panel_action = atoms[81];
   display->atom_gnome_panel_action_main_menu = atoms[82];
   display->atom_gnome_panel_action_run_dialog = atoms[83];
+  display->atom_metacity_sentinel = atoms[84];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -473,6 +475,7 @@ meta_display_open (const char *name)
   display->ungrab_should_not_cause_focus_window = None;
   
   display->current_time = CurrentTime;
+  display->sentinel_counter = 0;
   
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
@@ -1434,7 +1437,8 @@ event_callback (XEvent   *event,
         meta_window_handle_mouse_grab_op_event (window, event);
       /* do this even if window->has_focus to avoid races */
       else if (window && !serial_is_ignored (display, event->xany.serial) &&
-               event->xcrossing.detail != NotifyInferior)
+               event->xcrossing.detail != NotifyInferior &&
+               meta_display_focus_sentinel_clear (display))
         {
           switch (meta_prefs_get_focus_mode ())
             {
@@ -1749,6 +1753,16 @@ event_callback (XEvent   *event,
             else if (event->xproperty.atom ==
                      display->atom_net_desktop_names)
               meta_screen_update_workspace_names (screen);
+
+	    /* we just use this property as a sentinel to avoid
+	     * certain race conditions.  See the comment for the
+	     * sentinel_counter variable declaration in display.h
+	     */
+	    if (event->xproperty.atom ==
+		display->atom_metacity_sentinel)
+	      {
+		meta_display_decrement_focus_sentinel (display);
+	      }
           }
       }
       break;
@@ -3995,4 +4009,35 @@ prefs_changed_callback (MetaPreference pref,
       MetaDisplay *display = data;
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
     }
+}
+
+void
+meta_display_increment_focus_sentinel (MetaDisplay *display)
+{
+  unsigned long data[1];
+
+  data[0] = meta_display_get_current_time (display);
+  
+  XChangeProperty (display->xdisplay,
+                   ((MetaScreen*) display->screens->data)->xroot,
+                   display->atom_metacity_sentinel,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  
+  display->sentinel_counter += 1;
+}
+
+void
+meta_display_decrement_focus_sentinel (MetaDisplay *display)
+{
+  display->sentinel_counter -= 1;
+
+  if (display->sentinel_counter < 0)
+    display->sentinel_counter = 0;
+}
+
+gboolean
+meta_display_focus_sentinel_clear (MetaDisplay *display)
+{
+  return (display->sentinel_counter == 0);
 }

@@ -1,3 +1,38 @@
+2003-05-29  Rob Adams  <robadams@ucla.edu>
+
+	Use a new property _METACITY_SENTINEL to eliminate a race
+	condition that causes focus to behave badly with sloppy/mouse
+	focus when lots of windows are mapped/unmapped, such as with a
+	workspace switch.  The EnterNotify events on a display are ignored
+	until the PropertyNotify sent after all the window maps is
+	received.  This is a fix for #110970.
+	
+	* src/display.[ch]: New _METACITY_SENTINEL atom.
+	(event_callback): ignore EnterNotify if the sentinel isn't clear,
+	and decrement the sentinel counter when the PropertyNotify is
+	received.
+	(meta_display_increment_focus_sentinel): new function.  Increments
+	the sentinel counter and updates the property on a root window on
+	this display.
+	(meta_display_decrement_focus_sentinel): Decrement the sentinel
+	counter.
+	(meta_display_focus_sentinel_clear): returns whether the sentinel
+	counter is zero.
+
+	* src/window.c (idle_calc_showing): after showing windows, call
+	meta_display_increment_focus_sentinel on each display for windows
+	to be shown.
+
+	* src/workspace.[ch] (meta_workspace_activate_with_focus): new
+	function activates a workspace and focuses a particular window
+	after the workspace is activated.
+	(meta_workspace_activate): now just a wrapper for
+	meta_workspace_activate_with_focus
+
+	* src/keybindings.c: use new meta_workspace_activate_with_focus
+	function to ensure that focus will follow the focused window
+	through the workspace switch.
+
 2003-05-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/theme-parser.c (meta_theme_load): s/int/gsize/ for

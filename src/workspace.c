@@ -196,7 +196,8 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
 }
 
 void
-meta_workspace_activate (MetaWorkspace *workspace)
+meta_workspace_activate_with_focus (MetaWorkspace *workspace,
+                                    MetaWindow    *focus_this)
 {
   MetaWorkspace *old;
   
@@ -218,8 +219,24 @@ meta_workspace_activate (MetaWorkspace *workspace)
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
 
-  meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
-  meta_screen_focus_default_window (workspace->screen, NULL);
+  if (focus_this)
+    {
+      meta_window_focus (focus_this,
+                         meta_display_get_current_time (focus_this->display));
+      meta_window_raise (focus_this);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
+      meta_screen_focus_default_window (workspace->screen, NULL);
+    }
+}
+
+void
+meta_workspace_activate (MetaWorkspace *workspace)
+{
+  meta_workspace_activate_with_focus (workspace,
+                                      NULL);
 }
 
 int

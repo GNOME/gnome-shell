@@ -3022,7 +3022,7 @@ do_handle_move_to_workspace  (MetaDisplay    *display,
       /* Activate second, so the window is never unmapped */
       meta_window_change_workspace (window, workspace);
       if (flip)
-        meta_workspace_activate (workspace);
+        meta_workspace_activate_with_focus (workspace, window);
     }
   else
     {
