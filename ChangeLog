@@ -1,11 +1,13 @@
 2001-08-18  Havoc Pennington  <hp@pobox.com>
 
+	* src/ui.c (meta_image_window_set_position): also set the current
+	size. Lame hack of the day.
+
 	* src/effects.c (effects_draw_box_animation_timeout): use the
 	delay exposes feature to avoid the scren dirt
 
-	* src/ui.c (meta_image_window_set_position): use gtk_window_move()
-	to set the position
-	(meta_ui_push_delay_exposes): 
+	* src/ui.c
+	(meta_ui_push_delay_exposes):
 	(meta_ui_pop_delay_exposes): feature to let us delay redraws until
 	after we do server-grabbed draw-on-inferiors effects
 

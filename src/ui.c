@@ -285,7 +285,17 @@ meta_image_window_set_position (MetaImageWindow *iw,
                                 int              x,
                                 int              y)
 {
-  gtk_window_move (iw->window, x, y);
+  /* We want to do move/resize at the same time to avoid ugliness.
+   * Lame hack.
+   */
+  GtkRequisition req;
+
+  g_return_if_fail (GTK_WIDGET_REALIZED (iw->window));
+  
+  gtk_widget_size_request (iw->window, &req);
+  
+  gdk_window_move_resize (GTK_WIDGET (iw->window)->window,
+                          x, y, req.width, req.height);
 }
 
 GdkPixbuf*
