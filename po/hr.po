@@ -1,15 +1,22 @@
 # Translation of metacity to Croatian
 # Copyright (C) Croatian team
 # Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0\n"
-"POT-Creation-Date: 2003-11-06 18:12+0100\n"
-"PO-Revision-Date: 2003-12-30 20:47+CET\n"
-"Last-Translator: auto\n"
+"POT-Creation-Date: 2004-01-02 15:35+0100\n"
+"PO-Revision-Date: 2004-01-02 20:37+CET\n"
+"Last-Translator: Robert Sedak <robert.sedak@sk.tel.hr>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: TransDict server\n"
 
@@ -54,7 +61,7 @@ msgstr "Greška pri pokretanju metacity-dialoga za potvrdu o zatvaranju aplikaci
 msgid "Failed to get hostname: %s\n"
 msgstr "Nije uspjelo dobivanje imena računala: %s\n"
 
-#: src/display.c:287
+#: src/display.c:291
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nije uspjelo otvaranje  X Window System prikaza'%s'\n"
@@ -75,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kobna IO greška %d (%s) na prikazu '%s'.\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "Izbornik Prozor"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "Minimiziraj prozor"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "Maksimiziraj prozor"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "Poništi uvećanje prozora"
 
@@ -134,78 +141,99 @@ msgstr ""
 "Nikakva garancija NE postoji; čak ni garancija o podobnosti za određenu "
 "namjenu.\n"
 
-#: src/main.c:437
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Nisam uspio pretražiti mapu tema: %s\n"
+
+#: src/main.c:459
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "Tema nije pronađena! budite sigurni da %s postoji i sadrži oubičajene teme"
 
-#: src/main.c:499
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nije uspjelo ponovno pokretanje: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "_Minimiziraj"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "_Maksimiziraj"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "Vrati sa _maksimiziranog"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "Otkotrljaj prema _gore"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "_Otkotrljaj"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "Na _vrhu"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "_Pomakni"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "_Promjena veličine"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "_Zatvori"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "Stavi na _sve radne prostore"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "Samo na _ovom radnom prostoru"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "Pomak na _lijevu radnu površinu"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "Pomakn na _desnu radnu površinu"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "Premjesti na _gornju radnu površinu"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "Pomak na _donju radnu površinu"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Radna površina %d"
 
-#. * Above name is a pointer into the Workspace struct. Here we make
-#.  * a copy copy so we can have our wicked way with it.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "Radna površina 1_0"
+
+#: src/menu.c:170
 msgid "Workspace %s%d"
 msgstr "Radna površina %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Samo na %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Premjesti u %s"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "Pomakn na drugu _radnu površinu"
 
 #. This is the text that should appear next to menu accelerators
 #.  * that use the shift key. If the text on this key isn't typically
@@ -439,6 +467,11 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"Ukoliko je postavljeno, metacity će korisniku dati manje povratnih "
+"informacija i manje osjećaja \"direktne manipulacije\", korištenjem žičanih "
+"okvira, izbjegavanjem animacija i drugo. Ovo je značajno smanjenje korisnisti "
+"za mnoge korisnike, ali omogućava nasljeđivanje programa i rad poslužitelja "
+"terminala kada bi oni u suprotnom bili nepraktični."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -455,7 +488,7 @@ msgstr "Ako je aktivirano, onda Metacity radi u okvirima aplikacija umjesto proz
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Ako je postavljno, mijenja se korisnost za manje korištenje resursa"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -1968,12 +2001,12 @@ msgstr "Pogreška prilikom podešavanja imena radne površine %d  u \"%s\": %s\n
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:413
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekran %d na prikazu '%s' je neispravan\n"
 
-#: src/screen.c:408
+#: src/screen.c:429
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1982,17 +2015,17 @@ msgstr ""
 "Ekran %d na prikazu \"%s\" već ima rkovoditelja prozora; pokušajte koristiti --"
 "replace opciju da zamjenite trenutni rukovoditelj prozora.\n"
 
-#: src/screen.c:449
+#: src/screen.c:453
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nije moguće dobiti biranje upravitelja prozora na ekranu %d prikaza \"%s\"\n"
 
-#: src/screen.c:504
+#: src/screen.c:511
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekran %d na prikazu \"%s\" već ima rukovoditelj prozora\n"
 
-#: src/screen.c:687
+#: src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nije moguće izbaciti otpustiti ekran %d na prikazu \"%s\"\n"
@@ -2562,76 +2595,76 @@ msgstr "Datoteka sa temom %s ne sadrži korjenski <metacity_theme> element"
 
 #: src/theme-viewer.c:70
 msgid "/_Windows"
-msgstr ""
+msgstr "/_Prozori"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Windows/otcijepi"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Prozori/_Dijalog"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Prozori/_Modalni dijalog"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Windows/_Alat"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/Windows/_Pozdravni zaslon"
 
 #: src/theme-viewer.c:76
 msgid "/Windows/_Top dock"
-msgstr ""
+msgstr "/Windows/_Gornje sidro"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Prozori/D_onje sidro"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Prozori/_Lijevo sidro"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Prozori/_Desno sidro"
 
 #: src/theme-viewer.c:80
 msgid "/Windows/_All docks"
-msgstr ""
+msgstr "/Prozori/_Sva sidra"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Prozori/_Radna površina"
 
 #: src/theme-viewer.c:131
 msgid "Open another one of these windows"
-msgstr ""
+msgstr "Otvori neki drugi od ovih prozora"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "Ovo je demonstracijski gumb s sličicom 'otvori'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Ovo je demonstacijski gumb s sličicom 'izlaz'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Ovo je primjer poruke u primjeru dijaloga"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Lažna stavka izbornika %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "Prozor samo s okvirom"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
@@ -2639,7 +2672,7 @@ msgstr "Položeni stup."
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Običan prozor programa"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
@@ -2647,15 +2680,15 @@ msgstr "Dijaloški okvir"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Modalni dijaloški prozor"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "Paleta alata"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "Isključi izbornik"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2664,7 +2697,7 @@ msgstr "Rub"
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "Test izgleda gumba %d"
 
 #: src/theme-viewer.c:760
 #, c-format
@@ -2673,41 +2706,41 @@ msgstr "%g milisekundi za crtanje jednog okvira okna"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "Uporaba: metacity-theme-viewer [NAZIV_TEME]\n"
 
 #: src/theme-viewer.c:810
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr ""
+msgstr "Greška tijekom učitavanja teme: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "Tema \"%s\" je učitana za %g sekundi.\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr ""
+msgstr "Obično pismo naslova"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr ""
+msgstr "Malo pismo naslova"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr ""
+msgstr "Veliko pismo naslova"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "Izgled gumba"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "Mjerilo"
 
 #: src/theme-viewer.c:908
 msgid "Window Title Goes Here"
-msgstr ""
+msgstr "Ovdje ide naziv prozora"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2716,38 +2749,41 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"Na korisničkoj strani sam nacrtao %d okvira za %g sekundi (%g milisekundi "
+"po okviru) i %g sekundi ukupnog vremena uključujući resurse poslužitelja X-a "
+"(%g milisekundi po okviru)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "Ispitivanje mjesta izraza je rezultiralo izrazom \"TRUE\", ali je postavljena greška"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "Ispitivanje mjesta izraza je rezultiralo izrazom \"FALSE\", ali nije postavljena greška"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "Očekivana je greška, ali nije niti jedna prijavljena"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "Očekivana je greška %d, ali je dobivena %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "Nije očekivana greška, ali je prijavljena: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "vrijednost za x je bila %d, a očekivana je %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "vrijednost za y je bila %d, a očekivana je %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
@@ -3032,15 +3068,15 @@ msgstr "Otvorena zapisnička datoteka %s\n"
 msgid "Window manager: "
 msgstr "Upravitelj prozora:"
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "Greška u upravitelju prozora: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "Upozorenje upravitelja prozora: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "Greška upravitelja prozora: "
 
@@ -3050,7 +3086,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacija je postavila prividan _NETWM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4647
+#: src/window.c:4689
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
@@ -3064,7 +3100,7 @@ msgstr ""
 #.  * leads to e.g. us not fullscreening their windows.  Apps that set
 #.  * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #.  * about these apps but make them work.
-#: src/window.c:5308
+#: src/window.c:5351
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
@@ -3096,4 +3132,12 @@ msgstr "Svojstvo %s na prozoru 0x%lx je sadržalo neispravni UTF-8\n"
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "Svojstvo %s na prozoru 0x%lx sadrži neispravni UTF-8 za predmet %d na popisu\n"
+
+#, c-format
+#~ msgid "Only on %s"
+#~ msgstr "Samo na %s"
+
+#, c-format
+#~ msgid "Move to %s"
+#~ msgstr "Premjesti u %s"
 
