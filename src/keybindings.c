@@ -2409,7 +2409,7 @@ handle_toggle_fullscreen  (MetaDisplay    *display,
     {
       if (window->fullscreen)
         meta_window_unmake_fullscreen (window);
-      else
+      else if (window->has_resize_func)
         meta_window_make_fullscreen (window);
     }
 }
@@ -2424,7 +2424,7 @@ handle_toggle_maximize    (MetaDisplay    *display,
     {
       if (window->maximized)
         meta_window_unmaximize (window);
-      else
+      else if (window->has_maximize_func)
         meta_window_maximize (window);
     }
 }
@@ -2439,7 +2439,7 @@ handle_toggle_shade       (MetaDisplay    *display,
     {
       if (window->shaded)
         meta_window_unshade (window);
-      else
+      else if (window->has_shade_func)
         meta_window_shade (window);
     }
 }
