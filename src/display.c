@@ -25,6 +25,7 @@
 #include "screen.h"
 #include "window.h"
 #include "frame.h"
+#include "errors.h"
 
 static GSList *all_displays = NULL;
 static void   meta_spew_event           (MetaDisplay    *display,
@@ -180,26 +181,24 @@ meta_display_close (MetaDisplay *display)
   g_hash_table_foreach (display->window_ids,
                         listify_func,
                         &winlist);
-  
-  g_hash_table_destroy (display->window_ids);
 
   winlist = g_slist_sort (winlist, ptrcmp);
 
   tmp = winlist;
   while (tmp != NULL)
-    {
-      /* If the next node doesn't contain this window
-       * a second time, delete the window.
-       */
-      g_assert (tmp->data != NULL);
-      
+    {      
       if (tmp->next == NULL ||
           (tmp->next && tmp->next->data != tmp->data))
         meta_window_free (tmp->data);
       
-      tmp = tmp->data;
+      tmp = tmp->next;
     }
   g_slist_free (winlist);
+
+  /* Must be after all calls to meta_window_free() since they
+   * unregister windows
+   */
+  g_hash_table_destroy (display->window_ids);
   
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);
@@ -352,12 +351,34 @@ event_queue_callback (MetaEventQueue *queue,
     case MotionNotify:
       break;
     case EnterNotify:
+      /* We handle it here if an undecorated window
+       * is involved, otherwise we handle it in frame.c
+       */
+      /* do this even if window->has_focus to avoid races */
+      if (window)
+        meta_window_focus (window, event->xcrossing.time);
       break;
     case LeaveNotify:
       break;
     case FocusIn:
+      if (window)
+        {
+          if (window != window->display->focus_window)
+            window->display->focus_window = window;
+          window->has_focus = TRUE;
+          if (window->frame)
+            meta_frame_queue_draw (window->frame);
+        }
       break;
     case FocusOut:
+      if (window)
+        {
+          if (window == window->display->focus_window)
+            window->display->focus_window = NULL;
+          window->has_focus = FALSE;
+          if (window->frame)
+            meta_frame_queue_draw (window->frame);
+        }
       break;
     case KeymapNotify:
       break;
@@ -470,8 +491,6 @@ event_get_modified_window (MetaDisplay *display,
     case ButtonPress:
     case ButtonRelease:
     case MotionNotify:
-    case EnterNotify:
-    case LeaveNotify:
     case FocusIn:
     case FocusOut:
     case KeymapNotify:
@@ -486,8 +505,10 @@ event_get_modified_window (MetaDisplay *display,
     case SelectionNotify:
     case ColormapNotify:
     case ClientMessage:
+    case EnterNotify:
+    case LeaveNotify:
       return event->xany.window;
-
+      
     case CreateNotify:
       return event->xcreatewindow.window;
       
@@ -558,9 +579,21 @@ meta_spew_event (MetaDisplay *display,
           break;
         case EnterNotify:
           name = "EnterNotify";
+          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d\n",
+                                   event->xcrossing.window,
+                                   event->xcrossing.root,
+                                   event->xcrossing.subwindow,
+                                   event->xcrossing.mode,
+                                   event->xcrossing.detail);
           break;
         case LeaveNotify:
           name = "LeaveNotify";
+          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d\n",
+                                   event->xcrossing.window,
+                                   event->xcrossing.root,
+                                   event->xcrossing.subwindow,
+                                   event->xcrossing.mode,
+                                   event->xcrossing.detail);
           break;
         case FocusIn:
           name = "FocusIn";

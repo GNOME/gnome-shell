@@ -33,6 +33,7 @@ static void     constrain_size            (MetaWindow             *window,
 static int      update_size_hints         (MetaWindow             *window);
 static int      update_title              (MetaWindow             *window);
 static int      update_protocols          (MetaWindow             *window);
+static int      update_wm_hints           (MetaWindow             *window);
 static gboolean process_configure_request (MetaWindow             *window,
                                            int x, int y, int width, int height,
                                            int border_width);
@@ -63,7 +64,13 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   XAddToSaveSet (display->xdisplay, xwindow);
 
   XSelectInput (display->xdisplay, xwindow,
-                PropertyChangeMask);
+                PropertyChangeMask |
+                EnterWindowMask | LeaveWindowMask |
+                FocusChangeMask);  
+
+  /* Get rid of any borders */
+  if (attrs.border_width != 0)
+    XSetWindowBorderWidth (display->xdisplay, xwindow, 0);
   
   if (meta_error_trap_pop (display) != Success)
     {
@@ -96,12 +103,15 @@ meta_window_new (MetaDisplay *display, Window xwindow)
     }
   
   g_assert (window->screen);
-  
+
+  /* Remember this rect is the actual window size */
   window->rect.x = attrs.x;
   window->rect.y = attrs.y;
   window->rect.width = attrs.width;
   window->rect.height = attrs.height;
 
+  /* And border width, size_hints are the "request" */
+  window->border_width = attrs.border_width;
   window->size_hints.x = attrs.x;
   window->size_hints.y = attrs.y;
   window->size_hints.width = attrs.width;
@@ -116,13 +126,15 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
   window->frame = NULL;
+  window->has_focus = FALSE;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
   update_size_hints (window);
   update_title (window);
   update_protocols (window);  
-
+  update_wm_hints (window);
+  
   meta_window_resize (window, window->size_hints.width, window->size_hints.height);
   
   meta_window_ensure_frame (window);
@@ -189,6 +201,82 @@ meta_window_resize (MetaWindow  *window,
     }
 }
 
+void
+meta_window_delete (MetaWindow  *window,
+                    Time         timestamp)
+{
+  meta_error_trap_push (window->display);
+  meta_window_send_icccm_message (window,
+                                  window->display->atom_wm_delete_window,
+                                  timestamp);
+  meta_error_trap_pop (window->display);
+}
+
+void
+meta_window_focus (MetaWindow  *window,
+                   Time         timestamp)
+{
+  meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
+                window->desc, window->input, window->take_focus);
+  
+  if (window->input)
+    {
+      meta_error_trap_push (window->display);
+      if (window->take_focus)
+        {
+          meta_window_send_icccm_message (window,
+                                          window->display->atom_wm_take_focus,
+                                          timestamp);
+        }
+      else
+        {
+          XSetInputFocus (window->display->xdisplay,
+                          window->xwindow,
+                          RevertToParent,
+                          timestamp);
+        }
+      meta_error_trap_pop (window->display);
+    }
+}
+
+void
+meta_window_send_icccm_message (MetaWindow *window,
+                                Atom        atom,
+                                Time        timestamp)
+{
+  /* This comment and code are from twm, copyright
+   * Open Group, Evans & Sutherland, etc.
+   */
+  
+  /*
+   * ICCCM Client Messages - Section 4.2.8 of the ICCCM dictates that all
+   * client messages will have the following form:
+   *
+   *     event type	ClientMessage
+   *     message type	_XA_WM_PROTOCOLS
+   *     window		tmp->w
+   *     format		32
+   *     data[0]		message atom
+   *     data[1]		time stamp
+   */
+  
+    XClientMessageEvent ev;
+
+    /* This should always be error trapped. */
+    g_return_if_fail (window->display->error_traps != NULL);
+    
+    ev.type = ClientMessage;
+    ev.window = window->xwindow;
+    ev.message_type = window->display->atom_wm_protocols;
+    ev.format = 32;
+    ev.data.l[0] = atom;
+    ev.data.l[1] = timestamp;
+    
+    XSendEvent (window->display->xdisplay,
+                window->xwindow, False, 0, (XEvent*) &ev);
+}
+
+
 gboolean
 meta_window_configure_request (MetaWindow *window,
                                XEvent     *event)
@@ -206,100 +294,6 @@ meta_window_property_notify (MetaWindow *window,
                              XEvent     *event)
 {
   return process_property_notify (window, &event->xproperty);  
-}
-
-
-
-gboolean
-meta_window_event (MetaWindow  *window,
-                   XEvent      *event)
-{
-
-  if (event->xany.window != window->xwindow)
-    return FALSE;
-  
-  switch (event->type)
-    {
-    case KeyPress:
-      break;
-    case KeyRelease:
-      break;
-    case ButtonPress:
-      break;
-    case ButtonRelease:
-      break;
-    case MotionNotify:
-      break;
-    case EnterNotify:
-      break;
-    case LeaveNotify:
-      break;
-    case FocusIn:
-      break;
-    case FocusOut:
-      break;
-    case KeymapNotify:
-      break;
-    case Expose:
-      break;
-    case GraphicsExpose:
-      break;
-    case NoExpose:
-      break;
-    case VisibilityNotify:
-      break;
-    case CreateNotify:
-      break;
-    case DestroyNotify:
-
-      return TRUE;
-      break;
-    case UnmapNotify:
-      /* Window withdrawn */
-      meta_window_free (window);
-      return TRUE;
-      break;
-    case MapNotify:
-      break;
-    case MapRequest:
-      break;
-    case ReparentNotify:
-      break;
-    case ConfigureNotify:
-
-      break;
-    case ConfigureRequest:
-
-      break;
-    case GravityNotify:
-      break;
-    case ResizeRequest:
-      break;
-    case CirculateNotify:
-      break;
-    case CirculateRequest:
-      break;
-    case PropertyNotify:
-
-      break;
-    case SelectionClear:
-      break;
-    case SelectionRequest:
-      break;
-    case SelectionNotify:
-      break;
-    case ColormapNotify:
-      break;
-    case ClientMessage:
-      break;
-    case MappingNotify:
-      break;
-    default:
-      break;
-    }  
-  
-  /* Didn't use this event */
-  return FALSE;
 }
 
 static gboolean
@@ -383,8 +377,7 @@ process_configure_request (MetaWindow *window,
   /* Note that x, y is the corner of the window border,
    * and width, height is the size of the window inside
    * its border, but that we always deny border requests
-   * because we don't believe in clients who use lame-ass
-   * X features like that.
+   * and give windows a border of 0
    */
   window->border_width = border_width;
 
@@ -723,6 +716,30 @@ update_protocols (MetaWindow *window)
 
   meta_verbose ("Window %s has take_focus = %d delete_window = %d\n",
                 window->desc, window->take_focus, window->delete_window);
+  
+  return meta_error_trap_pop (window->display);
+}
+
+static int
+update_wm_hints (MetaWindow *window)
+{
+  XWMHints *hints;
+
+  /* Fill in defaults */
+  window->input = FALSE;
+  
+  meta_error_trap_push (window->display);
+  
+  hints = XGetWMHints (window->display->xdisplay,
+                       window->xwindow);
+  if (hints)
+    {
+      window->input = (hints->flags & InputHint) != 0;
+      
+      /* FIXME there are a few others there. */
+
+      XFree (hints);
+    }
   
   return meta_error_trap_pop (window->display);
 }

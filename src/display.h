@@ -42,6 +42,11 @@ struct _MetaDisplay
   Atom atom_wm_protocols;
   Atom atom_wm_take_focus;
   Atom atom_wm_delete_window;
+
+  /* This is the actual window from focus events,
+   * not the one we last set
+   */
+  MetaWindow *focus_window;
   
   /*< private-ish >*/
   MetaEventQueue *events;
@@ -60,7 +65,6 @@ MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 PangoContext* meta_display_get_pango_context   (MetaDisplay *display);
-
 
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.

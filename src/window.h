@@ -41,7 +41,14 @@ struct _MetaWindow
   guint iconic : 1;
   guint take_focus : 1;
   guint delete_window : 1;
-
+  /* Globally active / No input */
+  guint input : 1;
+  
+  /* this flag tracks receipt of focus_in focus_out and
+   * determines whether we draw the focus
+   */
+  guint has_focus : 1;
+  
   /* The size we set the window to last. */
   MetaRectangle rect;
   
@@ -59,6 +66,16 @@ void        meta_window_hide      (MetaWindow  *window);
 void        meta_window_resize    (MetaWindow  *window,
                                    int          w,
                                    int          h);
+void        meta_window_delete    (MetaWindow  *window,
+                                   Time         timestamp);
+void        meta_window_focus     (MetaWindow  *window,
+                                   Time         timestamp);
+
+/* Sends a client message */
+void meta_window_send_icccm_message (MetaWindow *window,
+                                     Atom        atom,
+                                     Time        timestamp);
+
 
 gboolean meta_window_configure_request (MetaWindow *window,
                                         XEvent     *event);

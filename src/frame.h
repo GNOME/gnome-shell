@@ -50,8 +50,11 @@ struct _MetaFrame
   gulong bg_pixel;
   
   MetaFrameAction action;
-  /* reference point for drags */
-  int last_x, last_y;
+  /* initial mouse position for drags */
+  int start_root_x, start_root_y;
+  /* initial window size or initial window position for drags */
+  int start_window_x, start_window_y;
+  /* button doing the dragging */
   int start_button;
 
   guint theme_acquired : 1;

@@ -55,6 +55,9 @@ struct _DefaultScreenData
   GC fg_gc;
   GC light_gc;
   GC dark_gc;
+  GC black_gc;
+  GC selected_gc;
+  GC selected_text_gc;
 };
 
 /* FIXME store this on the screen */
@@ -69,13 +72,13 @@ default_acquire_frame (MetaFrameInfo *info)
   
   if (screen_data == NULL)
     {
+      PangoColor color;
+      
       screen_data = g_new (DefaultScreenData, 1);      
 
       vals.foreground = meta_get_x_pixel (info->screen,
                                           &info->colors->fg[META_STATE_NORMAL]);
-      /* FIXME memory-inefficient, could use the same one for all frames
-       * w/ the same root window
-       */
+
       screen_data->text_gc = XCreateGC (info->display,
                                         RootWindowOfScreen (info->screen),
                                         GCForeground,
@@ -98,6 +101,27 @@ default_acquire_frame (MetaFrameInfo *info)
                                         RootWindowOfScreen (info->screen),
                                         GCForeground,
                                         &vals);
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->bg[META_STATE_SELECTED]);
+      screen_data->selected_gc = XCreateGC (info->display,
+                                            RootWindowOfScreen (info->screen),
+                                            GCForeground,
+                                            &vals);
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->fg[META_STATE_SELECTED]);
+      screen_data->selected_text_gc = XCreateGC (info->display,
+                                                 RootWindowOfScreen (info->screen),
+                                                 GCForeground,
+                                                 &vals);
+      
+      color.red = color.green = color.blue = 0;
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &color);
+      screen_data->black_gc = XCreateGC (info->display,
+                                         RootWindowOfScreen (info->screen),
+                                         GCForeground,
+                                         &vals);
     }
   
   d = g_new (DefaultFrameData, 1);
@@ -126,13 +150,15 @@ default_release_frame (MetaFrameInfo *info,
   g_free (d);
 }
 
-#define VERTICAL_TITLE_PAD 2
-#define HORIZONTAL_TITLE_PAD 3
+#define ABOVE_TITLE_PAD 4
+#define BELOW_TITLE_PAD 3
+#define RIGHT_TITLE_PAD 4
+#define LEFT_TITLE_PAD 3
 #define VERTICAL_TEXT_PAD 2
 #define HORIZONTAL_TEXT_PAD 2
-#define LEFT_WIDTH 2
-#define RIGHT_WIDTH 2
-#define BOTTOM_HEIGHT 5
+#define LEFT_WIDTH 6
+#define RIGHT_WIDTH 6
+#define BOTTOM_HEIGHT 7
 #define SPACER_SPACING 3
 #define SPACER_WIDTH 2
 #define SPACER_HEIGHT 10
@@ -149,7 +175,7 @@ calc_geometry (MetaFrameInfo *info,
   int button_y;
   int title_right_edge;
   
-  fgeom->top_height = MAX (d->layout_height + VERTICAL_TITLE_PAD * 2 + VERTICAL_TEXT_PAD * 2,
+  fgeom->top_height = MAX (d->layout_height + VERTICAL_TEXT_PAD * 2 + ABOVE_TITLE_PAD + BELOW_TITLE_PAD,
                            BUTTON_HEIGHT + BUTTON_PAD * 2);
   
   fgeom->left_width = LEFT_WIDTH;
@@ -229,7 +255,7 @@ calc_geometry (MetaFrameInfo *info,
       fgeom->spacer_rect.height = 0;
     }
 
-  title_right_edge = x - HORIZONTAL_TITLE_PAD;
+  title_right_edge = x - RIGHT_TITLE_PAD;
 
   /* Now x changes to be position from the left */
   x = fgeom->left_width;
@@ -251,10 +277,10 @@ calc_geometry (MetaFrameInfo *info,
       fgeom->menu_rect.height = 0;
     }
 
-  fgeom->title_rect.x = x + BUTTON_PAD;
-  fgeom->title_rect.y = VERTICAL_TITLE_PAD;
+  fgeom->title_rect.x = x + LEFT_TITLE_PAD;
+  fgeom->title_rect.y = ABOVE_TITLE_PAD;
   fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
-  fgeom->title_rect.height = fgeom->top_height - VERTICAL_TITLE_PAD * 2;
+  fgeom->title_rect.height = fgeom->top_height - ABOVE_TITLE_PAD - BELOW_TITLE_PAD;
 
   if (fgeom->title_rect.width < 0)
     fgeom->title_rect.width = 0;  
@@ -299,10 +325,11 @@ draw_vline (MetaFrameInfo *info,
             int            y2,
             int            x)
 {
-  /* From GTK+ */
   int thickness_light;
   int thickness_dark;
   int i;
+
+  /* From GTK+ */
   
   thickness_light = 1;
   thickness_dark = 1;  
@@ -413,11 +440,56 @@ default_expose_frame (MetaFrameInfo *info,
   xoff = info->xoffset;
   yoff = info->yoffset;
 
+  /* Black line around outside to give definition */
+  XDrawRectangle (info->display,
+                  info->drawable,
+                  screen_data->black_gc,
+                  xoff, yoff,
+                  info->width - 1,
+                  info->height - 1);
+
+  /* Light GC on top/left edges */
+  XDrawLine (info->display,
+             info->drawable,
+             screen_data->light_gc,
+             xoff + 1, yoff + 1,
+             xoff + 1, yoff + info->height - 2);
+  XDrawLine (info->display,
+             info->drawable,
+             screen_data->light_gc,
+             xoff + 1, yoff + 1,
+             xoff + info->width - 2, yoff + 1);
+
+  /* Dark GC on bottom/right edges */
+  XDrawLine (info->display,
+             info->drawable,
+             screen_data->dark_gc,
+             xoff + info->width - 2, yoff + 1,
+             xoff + info->width - 2, yoff + info->height - 2);
+  XDrawLine (info->display,
+             info->drawable,
+             screen_data->dark_gc,
+             xoff + 1, yoff + info->height - 2,
+             xoff + info->width - 2, yoff + info->height - 2);  
+
+  if (info->flags & META_FRAME_HAS_FOCUS)
+    {
+      /* Black line around inside while we have focus */
+      XDrawRectangle (info->display,
+                      info->drawable,
+                      screen_data->black_gc,
+                      xoff + fgeom.left_width - 1,
+                      yoff + fgeom.top_height - 1,
+                      info->width - fgeom.right_width - fgeom.left_width + 1,
+                      info->height - fgeom.bottom_height - fgeom.top_height + 1);
+    }
+  
   if (fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
     {
       int layout_y;
       MetaRectangle clip;
-
+      GC layout_gc;
+      
       /* center vertically */
       layout_y = fgeom.title_rect.y +
         (fgeom.title_rect.height - d->layout_height) / 2;
@@ -426,17 +498,28 @@ default_expose_frame (MetaFrameInfo *info,
       clip.x += xoff;
       clip.y += yoff;
       clip.width -= HORIZONTAL_TEXT_PAD;
+
+      layout_gc = screen_data->text_gc;
       
-      set_clip (info->display, screen_data->text_gc, &clip);
       if (info->flags & META_FRAME_HAS_FOCUS)
         {
-          /* FIXME use STATE_SELECTED */
+          layout_gc = screen_data->selected_text_gc;
 
+          /* Draw blue background */
+          XFillRectangle (info->display,
+                          info->drawable,
+                          screen_data->selected_gc,
+                          xoff + fgeom.title_rect.x,
+                          yoff + fgeom.title_rect.y,
+                          fgeom.title_rect.width,
+                          fgeom.title_rect.height);
         }
-      
+
+      set_clip (info->display, layout_gc, &clip);
+            
       pango_x_render_layout (info->display,
                              info->drawable,
-                             screen_data->text_gc,
+                             layout_gc,
                              d->layout,
                              xoff + fgeom.title_rect.x + HORIZONTAL_TEXT_PAD,
                              yoff + layout_y);
@@ -580,6 +663,11 @@ default_release_screen (Screen *screen)
     {
       XFreeGC (DisplayOfScreen (screen), screen_data->text_gc);
       XFreeGC (DisplayOfScreen (screen), screen_data->fg_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->selected_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->selected_text_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->black_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->light_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->dark_gc);
     }
 }
 

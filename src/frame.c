@@ -32,6 +32,9 @@ meta_frame_init_info (MetaFrame     *frame,
     META_FRAME_ALLOWS_DELETE | META_FRAME_ALLOWS_MENU |
     META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE |
     META_FRAME_ALLOWS_RESIZE;
+
+  if (frame->window->has_focus)
+    info->flags |= META_FRAME_HAS_FOCUS;
   
   info->drawable = None;
   info->xoffset = 0;
@@ -142,6 +145,9 @@ meta_frame_calc_geometry (MetaFrame *frame,
   frame->rect.width = frame->rect.width + geom.left_width + geom.right_width;
   frame->rect.height = frame->rect.height + geom.top_height + geom.bottom_height;
 
+  meta_debug_spew ("Added top %d and bottom %d totalling %d over child height %d\n",
+                   geom.top_height, geom.bottom_height, frame->rect.height, child_height);
+  
   frame->bg_pixel = geom.background_pixel;
   
   *geomp = geom;
@@ -157,6 +163,18 @@ set_background_none (MetaFrame *frame)
                            frame->xwindow,
                            CWBackPixmap,
                            &attrs);
+
+  meta_debug_spew ("Frame size %d,%d %dx%d window size %d,%d %dx%d window pos %d,%d\n",
+                   frame->rect.x,
+                   frame->rect.y,
+                   frame->rect.width,
+                   frame->rect.height,
+                   frame->window->rect.x,
+                   frame->window->rect.y,
+                   frame->window->rect.width,
+                   frame->window->rect.height,
+                   frame->child_x,
+                   frame->child_y);
 }
 
 static void
@@ -211,8 +229,9 @@ meta_window_ensure_frame (MetaWindow *window)
   attrs.background_pixel = frame->bg_pixel;
   attrs.event_mask =
     StructureNotifyMask | SubstructureNotifyMask | ExposureMask |
-    ButtonPressMask | ButtonReleaseMask | OwnerGrabButtonMask |
-    PointerMotionMask | PointerMotionHintMask;
+    ButtonPressMask | ButtonReleaseMask |
+    PointerMotionMask | PointerMotionHintMask |
+    EnterWindowMask | LeaveWindowMask;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
                                   window->screen->xroot,
@@ -230,9 +249,6 @@ meta_window_ensure_frame (MetaWindow *window)
   meta_verbose ("Frame is 0x%lx\n", frame->xwindow);
   
   frame->action = META_FRAME_ACTION_NONE;
-  frame->last_x = 0;
-  frame->last_y = 0;
-  frame->start_button = 0;
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
@@ -502,31 +518,32 @@ static void
 update_move (MetaFrame *frame)
 {
   int x, y;
-  int new_x, new_y;
+  int dx, dy;
+  
   frame_query_root_pointer (frame, &x, &y);
   
-  new_x = frame->rect.x + (x - frame->last_x);
-  new_y = frame->rect.y + (y - frame->last_y);
-  frame->last_x = x;
-  frame->last_y = y;
+  dx = x - frame->start_root_x;
+  dy = y - frame->start_root_y;
   
-  meta_frame_move (frame, new_x, new_y);
+  meta_frame_move (frame,
+                   frame->start_window_x + dx,
+                   frame->start_window_y + dy);
 }
 
 static void
 update_resize_se (MetaFrame *frame)
 {
   int x, y;
-  int new_w, new_h;
-
+  int dx, dy;
+  
   frame_query_root_pointer (frame, &x, &y);
   
-  new_w = frame->window->rect.width + (x - frame->last_x);
-  new_h = frame->window->rect.height + (y - frame->last_y);
-  frame->last_x = x;
-  frame->last_y = y;
+  dx = x - frame->start_root_x;
+  dy = y - frame->start_root_y;
   
-  meta_window_resize (frame->window, new_w, new_h);
+  meta_window_resize (frame->window,
+                      frame->start_window_x + dx,
+                      frame->start_window_y + dy);
 }
 
 gboolean
@@ -555,8 +572,10 @@ meta_frame_event (MetaFrame *frame,
               meta_verbose ("Begin move on %s\n",
                             frame->window->desc);
               frame->action = META_FRAME_ACTION_MOVING;
-              frame->last_x = event->xbutton.x_root;
-              frame->last_y = event->xbutton.y_root;
+              frame->start_root_x = event->xbutton.x_root;
+              frame->start_root_y = event->xbutton.y_root;
+              frame->start_window_x = frame->rect.x;
+              frame->start_window_y = frame->rect.y;
               frame->start_button = event->xbutton.button; 
             }
           else if (control == META_FRAME_CONTROL_DELETE &&
@@ -565,6 +584,7 @@ meta_frame_event (MetaFrame *frame,
               /* FIXME delete event */
               meta_verbose ("Close control clicked on %s\n",
                             frame->window->desc);
+              meta_window_delete (frame->window, event->xbutton.time);
             }
           else if (control == META_FRAME_CONTROL_RESIZE_SE &&
                    event->xbutton.button == 1)
@@ -572,8 +592,10 @@ meta_frame_event (MetaFrame *frame,
               meta_verbose ("Resize control clicked on %s\n",
                             frame->window->desc);
               frame->action = META_FRAME_ACTION_RESIZING_SE;
-              frame->last_x = event->xbutton.x_root;
-              frame->last_y = event->xbutton.y_root;
+              frame->start_root_x = event->xbutton.x_root;
+              frame->start_root_y = event->xbutton.y_root;
+              frame->start_window_x = frame->window->rect.width;
+              frame->start_window_y = frame->window->rect.height;
               frame->start_button = event->xbutton.button;
             }
         }
@@ -622,6 +644,12 @@ meta_frame_event (MetaFrame *frame,
         }
       break;
     case EnterNotify:
+      /* We handle it here if a decorated window
+       * is involved, otherwise we handle it in display.c
+       */
+      /* do this even if window->has_focus to avoid races */
+      meta_window_focus (frame->window,
+                         event->xcrossing.time);
       break;
     case LeaveNotify:
       break;
