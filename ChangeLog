@@ -1,4 +1,9 @@
 2003-01-05  Havoc Pennington  <hp@pobox.com>
+	
+	* src/frames.c (meta_frames_apply_shapes): put in the
+	HAVE_GTK_MULTIHEAD conditionals so we build with GTK 2.0
+
+2003-01-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_show): focus new windows even in 
 	mouse focus mode, #89981, patch from readams@hmc.edu

@@ -835,15 +835,21 @@ meta_frames_apply_shapes (MetaFrames *frames,
       Window shape_window;
       Window client_window;
       Region client_xregion;
+#ifdef HAVE_GTK_MULTIHEAD
       GdkScreen *screen;
+#endif
       int screen_number;
       
       meta_topic (META_DEBUG_SHAPES,
                   "Frame 0x%lx needs to incorporate client shape\n",
                   frame->xwindow);
-      
+
+#ifdef HAVE_GTK_MULTIHEAD
       screen = gtk_widget_get_screen (GTK_WIDGET (frames));
       screen_number = gdk_x11_screen_get_screen_number (screen);
+#else
+      screen_number = DefaultScreen (gdk_display);
+#endif
       
       attrs.override_redirect = True;
       
