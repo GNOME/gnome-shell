@@ -1,0 +1,223 @@
+Metacity is not a meta-City as in an urban center, but rather
+Meta-ness as in the state of being meta. i.e. metacity : meta as
+opacity : opaque. Also it may have something to do with the Meta key
+on UNIX keyboards.
+
+The first release of Metacity is version 2.3. Metacity has no need for
+your petty hangups about version numbers.
+
+METACITY FEATURES
+===
+
+ - Boring window manager for the adult in you. Many window managers
+   are like Marshmallow Froot Loops; Metacity is like Cheerios.
+
+ - Uses GTK+ 2.0 for drawing window frames. This means colors, fonts, 
+   etc. come from GTK+ theme.
+
+ - There are 6 workspaces.
+
+ - Global keybindings:
+    Alt-F1 to Alt-F6  switch workspaces
+    Alt-1  to Alt-6   switch workspaces
+    Alt-Tab           forward cycle window focus
+    Alt-Shift-Tab     backward cycle focus
+    Alt-Escape        focus previous window
+
+ - Window keybindings:
+    Alt-space         window menu
+
+    Mnemonics work in the menu. That is, Alt-space then underlined
+    letter in the menu item works.
+
+    Choose Move from menu, and arrow keys to move the window.
+    While moving, hold down Control to move slower, and 
+      Shift to snap to edges.
+    Choose Resize from menu, and nothing happens yet, but 
+      eventually I might implement something.   
+
+ - Window mouse bindings:
+
+    Clicking anywhere on frame with button 1 will raise/focus window
+    
+    If you click a window control, such as the close button, then the 
+     control will activate on button release if you are still over it
+     on release (as with most GUI toolkits)
+
+    If you click and drag borders with button 1 it resizes the window
+    
+    If you click and drag the titlebar with button 1 it moves the 
+     window.
+
+    If you click anywhere on the frame with button 2 it moves the window,
+     without raising it.
+
+    If you click anywhere on the frame with button 3 it shows the 
+     window menu.
+
+    If you hold down Alt and click inside a window, it will move the 
+     window (buttons 1 and 2) or show menu (button 3).
+
+    If you pick up a window with button 1 and then switch desktops
+     the window will come with you to the new desktop, this is 
+     a feature copied from Enlightenment.
+
+ - Session management:
+
+    Metacity connects to the session manager and will set itself up 
+     to be respawned.
+
+ - Here is an example of how you can configure the Metacity 
+   window border appearance in ~/.gtkrc-2.0:
+
+       style "metacity-style"
+       {
+          font_name = "Sans 16"
+          MetaFrames::title_border = { 7, 7, 7, 7 }
+          MetaFrames::button_width = 25
+          bg[NORMAL] = { 0.0, 0.0, 0.0 }
+       }
+
+       class "MetaFrames" style "metacity-style"
+
+   You get the idea. It is just your basic GTK+ rc file, the 
+   window borders are a widget called MetaFrames, 
+   look in frames.c:meta_frames_class_init() for all the style
+   properties that you can configure.
+
+ - Metacity implements much of the new window manager spec from
+   freedesktop.org, and much of the ICCCM. But then there are 
+   parts of each that it doesn't implement, just because I haven't
+   yet.
+
+METACITY BUGS, NON-FEATURES, AND CAVEATS
+===
+
+ - Metacity creates a big file in your home directory called
+   ~/metacity.log with a bunch of debug spew.
+
+ - If you want a number of workspaces which is not 6, you have to 
+   edit screen.c and recompile.
+
+ - If you want keybindings which are not the ones mentioned above
+   as features, you have to edit keybindings.c and recompile.
+
+ - Metacity does not have any way to unminimize a window. So 
+   clicking the minimize button is sort of a bad idea.
+
+ - Metacity uses the new window manager spec, but only random bits
+   of the old GNOME spec. It correctly advertises exactly which 
+   parts of the GNOME spec it supports, but it does not support 
+   enough of it to make the GNOME task list and desk guide happy,
+   and they do not support the new spec. I don't want anyone to 
+   spend time sending me patches to support the old GNOME spec; 
+   instead, send patches to the task list and desk guide to support
+   the new spec. As far as I know, Metacity does support enough 
+   of the new spec to allow a working tasklist and pager.
+
+   Upshot: task list and desk guide DO NOT WORK with Metacity.
+
+ - Metacity turns off its keybindings for Emacs, because I use 
+   Alt-space in Emacs, and getting a window menu annoys me.
+   
+ - Cycling windows with Alt-Tab is flickery, AFAIK because
+   Metacity passes the entire window stack to XRestackWindows() 
+   every time you restack. Instead it should probably only restack 
+   windows that have changed their stacking with respect to one 
+   another.
+
+ - Various operations, such as minimize, maximize, etc., should 
+   have simple animations to make them clearer to users.
+
+ - Metacity registers with the session manager, but doesn't actually 
+   remember window sizes and positions. 
+
+ - I haven't even read the ICCCM section about colormaps. So if you 
+   have an 8-bit display you are basically screwed.
+
+ - Metacity doesn't properly claim the window manager selection
+   as described in the ICCCM. But then, most other window managers
+   don't handle this correctly either.
+
+ - I know there's at least one race condition involving rapidly 
+   created and destroyed windows that will crash Metacity.
+
+ - Window placement is always cascade for now; I want to implement 
+   "first fit, falling back to cascade if no fit." 
+   (Configurable placement algorithms are stupid though, don't 
+   send me patches for any bogus ones.)
+
+ - Maximization and movement constraints do not take the 
+   GNOME panel into account. Most of the code already handles
+   this (using workspace->workarea in workspace.h), but 
+   workspace->workarea isn't ever actually calculated.
+   Metacity needs to keep this area up-to-date using the hints the
+   panel sets.
+
+COMPILING METACITY
+===
+
+You need GTK+ 1.3.x (to become 2.0). See configure.in for the exact
+version you need. Metacity is a fairly trivial 6000-line C program, so
+once you get GTK+ built it should be no problem to build Metacity.
+
+REPORTING BUGS
+===
+
+Report new bugs to hp@redhat.com for now. Will switch to Bugzilla
+sometime probably.
+
+FAQ
+===
+
+Q: Will you add my feature?
+
+A: Probably not, unless it makes sense to turn on by unconditionally,
+   or is genuinely a harmless preference that I would not 
+   be embarrassed to put in a user-friendly configuration dialog.
+
+   Metacity has a "no crackrock" policy, with some exceptions 
+   I'm mildly embarrassed about. For example, multiple workspaces
+   probably constitute crackrock, they confuse most users
+   and really are not that useful if you have a decent tasklist and 
+   so on. But I am too used to them to turn them off.
+   Sloppy focus is probably crackrock too. Oh, and my Alt-1 thru Alt-6
+   keybindings are definitely on crack.
+
+   But don't think unlimited crack is OK just because I slipped up a
+   little. No slippery slope here.
+
+Q: How do I add a configuration option?
+
+A: You don't, until GConf 2 is relatively easy to compile and I feel 
+   like adding it as a dependency.
+
+Q: Will Metacity be part of GNOME?
+
+A: If Metacity is ever better than the other options, and the GNOME
+   Project so chooses. But Metacity may continue to suck forever 
+   because I might get tired of it; or Metacity's conservative 
+   nature might not make sense for the snazzy world of
+   GNOME. Who knows. I'm not worrying about this, and you shouldn't
+   either.
+
+Q: Why can't I move XMMS?
+
+A: Because XMMS is broken and is trying to move itself. Metacity 
+   does not tolerate insolent windows who believe they can
+   self-manage. Use Alt-button1 to move XMMS using Metacity.
+
+Q: Did you spend a lot of time on this?
+
+A: Metacity is about 6000 lines of code, which took a few weekends and
+   evenings to write. If it ever becomes more polished it will
+   probably grow 2-3 more thousand lines of code and suck a few more
+   weekends of time. If I started adding all kinds of features and 
+   crack-ridden configuration options, it might take more time than that. 
+
+Q: How can you claim that you are anti-crack, while still 
+   writing a window manager?
+
+A: I have no comment on that.
+
+
