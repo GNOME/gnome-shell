@@ -1,5 +1,16 @@
 2002-11-20  Havoc Pennington  <hp@pobox.com>
 
+	* src/window-props.c (set_icon_title): remove unused variable
+
+	* src/screen.c (meta_screen_new): read an existing
+	_NET_CURRENT_DESKTOP and restore it if set. Makes a restart even
+	less visible.
+
+	* src/workspace.c (set_active_space_hint): don't set the hint 
+	during the process of unmanaging a screen
+
+2002-11-20  Havoc Pennington  <hp@pobox.com>
+
 	* configure.in: add doc/Makefile
 
 	* doc/metacity-theme.dtd: add DTD for themes from Ross Burton

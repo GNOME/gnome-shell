@@ -279,6 +279,15 @@ static void
 set_active_space_hint (MetaScreen *screen)
 {
   unsigned long data[1];
+
+  /* this is because we destroy the spaces in order,
+   * so we always end up setting a current desktop of
+   * 0 when closing a screen, so lose the current desktop
+   * on restart. By doing this we keep the current
+   * desktop on restart.
+   */
+  if (screen->closing > 0)
+    return;
   
   data[0] = meta_workspace_index (screen->active_workspace);
 

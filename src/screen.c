@@ -367,6 +367,7 @@ meta_screen_new (MetaDisplay *display,
   Atom wm_sn_atom;
   char buf[128];
   Time manager_timestamp;
+  gulong current_workspace;
   
   replace_current_wm = meta_get_replace_current_wm ();
   
@@ -567,13 +568,24 @@ meta_screen_new (MetaDisplay *display,
 
   meta_screen_update_workspace_layout (screen);
   meta_screen_update_workspace_names (screen);
+
+  /* Get current workspace */
+  current_workspace = 0;
+  if (meta_prop_get_cardinal (screen->display,
+                              screen->xroot,
+                              screen->display->atom_net_current_desktop,
+                              &current_workspace))
+    meta_verbose ("Read existing _NET_CURRENT_DESKTOP = %d\n",
+                  (int) current_workspace);
+  else
+    meta_verbose ("No _NET_CURRENT_DESKTOP present\n");
   
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
    */
   meta_workspace_activate (meta_workspace_new (screen));
   update_num_workspaces (screen);
-
+  
   screen->all_keys_grabbed = FALSE;
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
@@ -597,6 +609,17 @@ meta_screen_new (MetaDisplay *display,
   screen->startup_sequences = NULL;
   screen->startup_sequence_timeout = 0;
 #endif
+
+  /* Switch to the _NET_CURRENT_DESKTOP workspace */
+  {
+    MetaWorkspace *space;
+    
+    space = meta_screen_get_workspace_by_index (screen,
+                                                current_workspace);
+    
+    if (space != NULL)
+      meta_workspace_activate (space);
+  }
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);  

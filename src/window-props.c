@@ -259,8 +259,6 @@ static void
 set_icon_title (MetaWindow *window,
                 const char *title)
 {
-  char *str;
-  
   g_free (window->icon_name);
   
   if (title == NULL)
@@ -309,7 +307,7 @@ init_wm_icon_name (MetaDisplay   *display,
 
 static void
 reload_wm_icon_name (MetaWindow    *window,
-                MetaPropValue *value)
+                     MetaPropValue *value)
 {
   if (window->using_net_wm_icon_name)
     {
