@@ -40,6 +40,8 @@ metacity_SOURCES= 				\
 	stack.h					\
 	tabpopup.c				\
 	tabpopup.h				\
+	theme.c					\
+	theme.h					\
 	ui.c					\
 	ui.h					\
 	util.c					\

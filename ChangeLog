@@ -1,5 +1,14 @@
 2002-01-05  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (meta_frames_expose_event): draw titlebar highlight 
+	with snazzy gradient that needs some tweaking to be less 
+	dumb-looking
+
+	* src/theme.c: replace old theme.[hc] contents with newer stuff
+	that doesn't do anything 
+	
+2002-01-05  Havoc Pennington  <hp@pobox.com>
+
         GTK 1.2 plug/socket clients still broken, don't know why.
 	
 	* src/screen.c (meta_screen_new): select focus change on root

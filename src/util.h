@@ -45,7 +45,8 @@ void meta_fatal      (const char *format,
 
 typedef enum
 {
-  META_DEBUG_FOCUS
+  META_DEBUG_FOCUS,
+  META_DEBUG_GRADIENT_CACHE
 
 } MetaDebugTopic;
 

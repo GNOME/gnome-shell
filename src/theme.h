@@ -1,4 +1,4 @@
-/* Metacity Theme Engine Header */
+/* Metacity Theme Rendering */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -22,118 +22,22 @@
 #ifndef META_THEME_H
 #define META_THEME_H
 
-/* don't add any internal headers here; theme.h is an installed/public
- * header.
+#include "frames.h"
+
+/* theme.[hc] is basically responsible for drawing parts of the UI using
+ * theme data
  */
-#include <X11/Xlib.h>
-#include <glib.h>
-#include "api.h"
-
-typedef struct _MetaFrameInfo       MetaFrameInfo;
-typedef struct _MetaFrameGeometry   MetaFrameGeometry;
-typedef struct _MetaThemeEngine     MetaThemeEngine;
 
 typedef enum
 {
-  META_FRAME_ALLOWS_DELETE    = 1 << 0,
-  META_FRAME_ALLOWS_MENU      = 1 << 1,
-  META_FRAME_ALLOWS_ICONIFY   = 1 << 2,
-  META_FRAME_ALLOWS_MAXIMIZE  = 1 << 3, 
-  META_FRAME_ALLOWS_RESIZE    = 1 << 4,
-  META_FRAME_TRANSIENT        = 1 << 5,
-  META_FRAME_HAS_FOCUS        = 1 << 6,
-  META_FRAME_SHADED           = 1 << 7,
-  META_FRAME_STUCK            = 1 << 8
-} MetaFrameFlags;
+  META_GRADIENT_VERTICAL,
+  META_GRADIENT_HORIZONTAL
+} MetaGradientType;
 
-typedef enum
-{
-  META_FRAME_CONTROL_NONE,
-  META_FRAME_CONTROL_TITLE,
-  META_FRAME_CONTROL_DELETE,
-  META_FRAME_CONTROL_MENU,
-  META_FRAME_CONTROL_ICONIFY,
-  META_FRAME_CONTROL_MAXIMIZE,
-  META_FRAME_CONTROL_RESIZE_SE,
-  META_FRAME_CONTROL_RESIZE_S,
-  META_FRAME_CONTROL_RESIZE_SW,
-  META_FRAME_CONTROL_RESIZE_N,
-  META_FRAME_CONTROL_RESIZE_NE,
-  META_FRAME_CONTROL_RESIZE_NW,
-  META_FRAME_CONTROL_RESIZE_W,
-  META_FRAME_CONTROL_RESIZE_E
-} MetaFrameControl;
-
-struct _MetaFrameInfo
-{
-  /* These are read-only to engines */
-  MetaFrameFlags flags;
-  Window drawable; /* == None except in expose */
-  int xoffset, yoffset; /* add to frame coords to get drawable coords */
-  Display *display;
-  Screen *screen;
-  Visual *visual;
-  int depth;
-
-  const char *title;  
-
-  const MetaUIColors *colors;
-
-  MetaFrameControl current_control;
-  MetaUIState current_control_state;
-  
-  /* Equal to child size before fill_frame_geometry
-   * has been called
-   */
-  int width;
-  int height;
-};
-
-struct _MetaFrameGeometry
-{  
-  /* border sizes (space between frame and child) */
-  int left_width;
-  int right_width;
-  int top_height;
-  int bottom_height;
-
-  /* background color */
-  unsigned long background_pixel;
-
-  Pixmap shape_mask;
-  /* FIXME shape region? */
-};
-
-struct _MetaThemeEngine
-{
-  void             (* unload_engine)       (void);
-  
-  /* returns frame_data to use */
-  gpointer         (* acquire_frame)       (MetaFrameInfo *info);
-  /* should free frame_data */
-  void             (* release_frame)       (MetaFrameInfo *info,
-                                            gpointer       frame_data);
-  
-  void             (* fill_frame_geometry) (MetaFrameInfo     *info,
-                                            MetaFrameGeometry *geom,
-                                            gpointer           frame_data);
-
-  void             (* expose_frame)        (MetaFrameInfo *info,
-                                            int x, int y,
-                                            int width, int height,
-                                            gpointer frame_data);
-
-  MetaFrameControl (* get_control)         (MetaFrameInfo *info,
-                                            int x, int y,
-                                            gpointer frame_data);
-
-  void             (* get_control_rect)    (MetaFrameInfo *info,
-                                            MetaFrameControl control,
-                                            int *x, int *y,
-                                            int *width, int *height,
-                                            gpointer frame_data);
-};
-
-extern MetaThemeEngine meta_default_engine;
+GdkPixbuf* meta_theme_get_gradient (MetaGradientType  type,
+                                    const GdkColor   *color_one,
+                                    const GdkColor   *color_two,
+                                    int               width,
+                                    int               height);
 
 #endif

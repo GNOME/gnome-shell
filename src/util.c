@@ -175,6 +175,9 @@ topic_name (MetaDebugTopic topic)
     case META_DEBUG_FOCUS:
       return "FOCUS";
       break;
+    case META_DEBUG_GRADIENT_CACHE:
+      return "GRADIENT_CACHE";
+      break;
     }
 
   return "Window manager";
