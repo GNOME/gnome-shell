@@ -32,6 +32,7 @@
 /* Plainly we'll want some more configurable keybinding system
  * eventually.
  */
+static gboolean all_bindings_disabled = FALSE;
 
 typedef void (* MetaKeyHandler) (MetaDisplay *display,
                                  MetaWindow  *window,
@@ -77,7 +78,6 @@ static void handle_spew_mark          (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
-
 
 static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             MetaWindow  *window,
@@ -129,7 +129,7 @@ static MetaKeyBinding screen_bindings[] = {
 };
 
 static MetaKeyBinding debug_bindings[] = {
-  { XK_m, Mod1Mask | ControlMask | ShiftMask, KeyPress, handle_spew_mark, NULL, 0 },  
+  { XK_m, Mod1Mask | ControlMask | ShiftMask, KeyPress, handle_spew_mark, NULL, 0 },
   { None, 0, 0, NULL, NULL, 0 }
 };
   
@@ -208,7 +208,7 @@ meta_change_keygrab (MetaDisplay *display,
                   modmask | ignored_mask,
                   xwindow,
                   True,
-                  GrabModeAsync, GrabModeAsync);
+                  GrabModeAsync, GrabModeSync);
       else
         XUngrabKey (display->xdisplay, keycode,
                     modmask | ignored_mask,
@@ -542,7 +542,13 @@ meta_display_process_key_event (MetaDisplay *display,
   KeySym keysym;
   gboolean handled;
 
-  /* window may be NULL */
+  XAllowEvents (display->xdisplay,
+                all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
+                event->xkey.time);
+  if (all_bindings_disabled)
+    return;
+  
+  /* window may be NULL */  
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
   
@@ -1116,4 +1122,19 @@ handle_spew_mark (MetaDisplay *display,
 {
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
+
+void
+meta_set_keybindings_disabled (gboolean setting)
+{
+  if (meta_is_debugging ())
+    {
+      all_bindings_disabled = setting;
+      meta_verbose ("Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
+    }
+  else
+    {
+      meta_verbose ("Ignoring keybindings disable message, not in debug mode\n");
+    }
+}
+
 

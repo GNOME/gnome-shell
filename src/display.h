@@ -107,6 +107,7 @@ struct _MetaDisplay
   Atom atom_net_wm_strut;
   Atom atom_win_hints;
   Atom atom_metacity_reload_theme_message;
+  Atom atom_metacity_set_keybindings_message;
   
   /* This is the actual window from focus events,
    * not the one we last set

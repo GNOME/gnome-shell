@@ -1085,11 +1085,13 @@ void
 meta_window_show (MetaWindow *window)
 {
   gboolean did_placement;
+  gboolean did_show;
   
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
               window->desc, window->shaded, window->iconic, window->placed);
 
+  did_show = FALSE;
   did_placement = FALSE;
   if (!window->placed)
     {
@@ -1155,7 +1157,8 @@ meta_window_show (MetaWindow *window)
           meta_error_trap_push (window->display);
           XMapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display);
-        }
+          did_show = TRUE;
+        }      
       
       if (window->iconic)
         {
@@ -1189,6 +1192,17 @@ meta_window_show (MetaWindow *window)
       if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
         meta_window_focus (window,
                            meta_display_get_current_time (window->display));
+    }
+
+  if (did_show)
+    {
+      if (window->has_struts)
+        {
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Mapped window %s with struts, so invalidating work areas\n",
+                      window->desc);
+          invalidate_work_areas (window);
+        }
     }
 }
 

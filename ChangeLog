@@ -1,3 +1,24 @@
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_show): when mapping a window with
+	struts, invalidate the work areas it's on. Should fix at least
+	part of the problem with windows maximizing over panels.
+
+	* src/workspace.c (meta_workspace_invalidate_work_area): also
+	queue move/resize on sticky windows
+
+	* src/tools/Makefile.am: consolidate reload-theme, restart into a
+	"metacity-message" app and add enable/disable keybindings to the
+	messages it knows about.	
+
+	* src/keybindings.c:
+	(meta_change_keygrab): grab keyboard synchronously
+	(meta_display_process_key_event): if all keybindings are toggled
+	off, ReplayKeyboard, else AsyncKeyboard, except that the debug
+	binding for toggling back on is always processed
+	(meta_set_keybindings_disabled): function to disable/enable 
+	all keybindings
+
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/run-metacity.sh: if DEMO_TEST is set then run the window

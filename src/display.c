@@ -142,7 +142,8 @@ meta_display_open (const char *name)
     "_METACITY_RESTART_MESSAGE",    
     "_NET_WM_STRUT",
     "_WIN_HINTS",
-    "_METACITY_RELOAD_THEME_MESSAGE"
+    "_METACITY_RELOAD_THEME_MESSAGE",
+    "_METACITY_SET_KEYBINDINGS_MESSAGE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -239,6 +240,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_strut = atoms[45];
   display->atom_win_hints = atoms[46];
   display->atom_metacity_reload_theme_message = atoms[47];
+  display->atom_metacity_set_keybindings_message = atoms[48];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1115,6 +1117,13 @@ event_callback (XEvent   *event,
                   meta_ui_set_current_theme (meta_prefs_get_theme (),
                                              TRUE);
                   meta_display_retheme_all ();
+                }
+              else if (event->xclient.message_type ==
+                       display->atom_metacity_set_keybindings_message)
+                {
+                  meta_verbose ("Received set keybindings request = %d\n",
+                                (int) event->xclient.data.l[0]);
+                  meta_set_keybindings_disabled (!event->xclient.data.l[0]);
                 }
             }
         }

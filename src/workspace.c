@@ -334,7 +334,8 @@ void
 meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 {
   GList *tmp;
-
+  GList *windows;
+  
   if (workspace->work_area_invalid)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -350,15 +351,18 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   workspace->work_area_invalid = TRUE;
 
   /* redo the size/position constraints on all windows */
-  tmp = workspace->windows;
+  windows = meta_workspace_list_windows (workspace);
+  tmp = windows;
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
 
       meta_window_queue_move_resize (w);
-          
+      
       tmp = tmp->next;
     }
+
+  g_list_free (windows);
 }
 
 void
