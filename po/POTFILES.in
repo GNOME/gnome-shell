@@ -1,8 +1,13 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
 src/display.c
 src/errors.c
 src/frames.c
 src/keybindings.c
+src/main.c
 src/menu.c
+src/prefs.c
 src/screen.c
 src/session.c
 src/window.c
+src/xprops.c

@@ -1,21 +1,21 @@
 # Swedish messages for metacity.
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001.
+# Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001, 2002.
 #
 # $Id$
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2001-12-15 17:11+0100\n"
-"PO-Revision-Date: 2001-12-15 17:11+0100\n"
+"POT-Creation-Date: 2002-01-05 19:14+0100\n"
+"PO-Revision-Date: 2002-01-05 19:14+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:155
+#: src/display.c:156
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -178,6 +178,11 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Misslyckades med att starta om: %s\n"
+
 #: src/menu.c:48
 msgid "_Close"
 msgstr "_Stäng"
@@ -229,6 +234,36 @@ msgstr "Endast på arbetsyta %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Flytta till arbetsyta %s%d"
 
+#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "GConf-nyckeln \"%s\" är satt till ogiltigt värde"
+
+#: src/prefs.c:399
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
+
+#: src/prefs.c:436
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr "%d lagrad i GConf-nyckeln %s är inte en giltig typsnittsstorlek\n"
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt "
+"maxvärde är %d\n"
+
 #: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
@@ -238,6 +273,11 @@ msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
+
+#: src/screen.c:257
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
 
 #: src/session.c:760 src/session.c:767
 #, c-format
@@ -289,7 +329,7 @@ msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
 #. someone is on crack
-#: src/window.c:2939
+#: src/window.c:3020
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -297,10 +337,24 @@ msgstr ""
 "stänger av storleksändring\n"
 
 #. another cracksmoker
-#: src/window.c:2949
+#: src/window.c:3030
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
 "Fönstret %s ställer in största höjden %d mindre än minsta höjden %d, stänger "
 "av storleksändring\n"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"Fönster 0x%lx har egenskap %s som förväntades ha typen %s format %d och har "
+"i verkligheten typ %s format %d n_items %d\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
