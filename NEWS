@@ -1,3 +1,15 @@
+2.9.8
+==
+
+This is a brown paper bag release to cover up the crash I introduced
+in version 2.9.5.  Thanks to Sebastien Bacher and the bleeding edge
+Ubuntu users for quickly catching the occasional crash that my fix in
+#123576 could cause, and for verifying that the patch I made fixed
+this issue (I couldn't duplicate).
+
+ - Don't forget to initialize display->grab_old_window_stacking
+   [#165093]
+
 2.9.5
 ==
 

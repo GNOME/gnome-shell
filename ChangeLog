@@ -1,5 +1,9 @@
 2005-01-24  Elijah Newren  <newren@gmail.com>
 
+	* NEWS: Metacity 2.9.8 unstable release
+
+2005-01-24  Elijah Newren  <newren@gmail.com>
+
 	* src/display.c: (meta_display_begin_grab_op): don't forget to
 	initialize display->grab_old_window_stacking.  Thanks to Sebastien
 	Bacher and the bleeding edge Ubuntu users for catching the
