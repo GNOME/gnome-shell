@@ -32,6 +32,10 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xrender.h>
 
+#if COMPOSITE_MAJOR > 0 || COMPOSITE_MINOR >= 2
+#define HAVE_NAME_WINDOW_PIXMAP 1
+#endif
+
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #define SHADOW_OFFSET 3
@@ -62,13 +66,17 @@ typedef struct
   
   Picture         picture;
   XserverRegion   border_size;
+
+#if HAVE_NAME_WINDOW_PIXMAP
+  Pixmap          pixmap;
+#endif
   
   unsigned int managed : 1;
   unsigned int damaged : 1;
   unsigned int viewable : 1;
 
   unsigned int screen_index : 8;
-  
+
 #endif  
 } MetaCompositorWindow;
 
@@ -92,6 +100,9 @@ struct MetaCompositor
   guint have_composite : 1;
   guint have_damage : 1;
   guint have_fixes : 1;
+#if HAVE_NAME_WINDOW_PIXMAP
+  guint have_name_window_pixmap : 1;
+#endif
 };
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -99,13 +110,20 @@ static void
 meta_compositor_window_free (MetaCompositorWindow *cwindow)
 {
   g_assert (cwindow->damage != None);
-
+  
+  meta_error_trap_push (cwindow->compositor->display);
   /* This seems to cause an error if the window
    * is destroyed?
    */
-  meta_error_trap_push (cwindow->compositor->display);
   XDamageDestroy (cwindow->compositor->display->xdisplay,
                   cwindow->damage);
+
+#if HAVE_NAME_WINDOW_PIXMAP
+  /* Free our window pixmap name */
+  if (cwindow->pixmap != None)
+    XFreePixmap (cwindow->compositor->display->xdisplay,
+                 cwindow->pixmap);
+#endif
   meta_error_trap_pop (cwindow->compositor->display, FALSE);
   
   g_free (cwindow);
@@ -140,7 +158,19 @@ meta_compositor_new (MetaDisplay *display)
       compositor->composite_error_base = 0;
     }
   else
-    compositor->have_composite = TRUE;
+    {
+      int composite_major, composite_minor;
+      
+      compositor->have_composite = TRUE;
+
+#if HAVE_NAME_WINDOW_PIXMAP
+      XCompositeQueryVersion (display->xdisplay,
+                              &composite_major, &composite_minor);
+      
+      if (composite_major > 0 || composite_minor >= 2)
+	compositor->have_name_window_pixmap = TRUE;
+#endif
+    }
 
   meta_topic (META_DEBUG_COMPOSITOR, "Composite extension event base %d error base %d\n",
               compositor->composite_event_base,
@@ -254,6 +284,31 @@ window_extents (MetaCompositorWindow *cwindow)
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
+window_get_paint_bounds (MetaCompositorWindow *cwindow,
+                         int *x,
+                         int *y,
+                         int *w,
+                         int *h)
+{
+#ifdef HAVE_NAME_WINDOW_PIXMAP
+  if (cwindow->pixmap != None)
+    {
+      *x = cwindow->x;
+      *y = cwindow->y;
+      *w = cwindow->width + cwindow->border_width * 2;
+      *h = cwindow->height + cwindow->border_width * 2;
+    }
+  else
+#endif
+    {
+      *x = cwindow->x + cwindow->border_width;
+      *y = cwindow->y + cwindow->border_width;
+      *w = cwindow->width;
+      *h = cwindow->height;
+    }
+}
+
+static void
 paint_screen (MetaCompositor *compositor,
               MetaScreen     *screen,
               XserverRegion   damage_region)
@@ -361,20 +416,24 @@ paint_screen (MetaCompositor *compositor,
            meta_grab_op_is_moving (compositor->display->grab_op)))
         {
           /* Draw window transparent while resizing */
+          int x, y, w, h;
+
+          window_get_paint_bounds (cwindow, &x, &y, &w, &h);
+          
           XRenderComposite (xdisplay,
                             PictOpOver, /* PictOpOver for alpha, PictOpSrc without */
                             cwindow->picture,
                             screen->trans_picture,
                             buffer_picture,
                             0, 0, 0, 0,
-                            cwindow->x + cwindow->border_width,
-                            cwindow->y + cwindow->border_width,
-                            cwindow->width,
-                            cwindow->height);
+                            x, y, w, h);
         }
       else
         {
           /* Draw window normally */
+          int x, y, w, h;
+          
+          window_get_paint_bounds (cwindow, &x, &y, &w, &h);
           
           /* superlame drop shadow */
           XRenderFillRectangle (xdisplay, PictOpOver,
@@ -390,10 +449,7 @@ paint_screen (MetaCompositor *compositor,
                             None,
                             buffer_picture,
                             0, 0, 0, 0,
-                            cwindow->x + cwindow->border_width,
-                            cwindow->y + cwindow->border_width,
-                            cwindow->width,
-                            cwindow->height);
+                            x, y, w, h);
         }
 
     next:
@@ -1071,6 +1127,16 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   cwindow->height = attrs->height;
   cwindow->border_width = attrs->border_width;
 
+#if HAVE_NAME_WINDOW_PIXMAP
+  if (compositor->have_name_window_pixmap)
+    {
+      meta_error_trap_push (compositor->display);
+      cwindow->pixmap = XCompositeNameWindowPixmap (compositor->display->xdisplay,
+                                                    cwindow->xwindow);
+      meta_error_trap_pop (compositor->display, FALSE);
+    }
+#endif
+  
   /* viewable == mapped for the root window, since root can't be unmapped */
   cwindow->viewable = (attrs->map_state == IsViewable);
   g_assert (attrs->map_state != IsUnviewable);
@@ -1078,11 +1144,17 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   pa.subwindow_mode = IncludeInferiors;
 
   if (attrs->class != InputOnly)
-    {
+    {      
       format = XRenderFindVisualFormat (compositor->display->xdisplay,
                                         attrs->visual);
       cwindow->picture = XRenderCreatePicture (compositor->display->xdisplay,
-                                               xwindow,
+#if HAVE_NAME_WINDOW_PIXMAP
+                                               cwindow->pixmap != None ?
+                                               cwindow->pixmap :
+                                               cwindow->xwindow,
+#else
+                                               cwindow->xwindow,
+#endif
                                                format,
                                                CPSubwindowMode,
                                                &pa);
@@ -1282,7 +1354,3 @@ meta_compositor_damage_window (MetaCompositor *compositor,
                                    window_extents (cwindow));
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
-
-
-
-

@@ -1,5 +1,15 @@
 2004-08-26  Havoc Pennington  <hp@redhat.com>
 
+	* src/frame.c: delete extra copy of find_argb_visual so things
+	compile
+
+	* src/compositor.c (HAS_NAME_WINDOW_PIXMAP): copy the
+	XCompositeNameWindowPixmap() stuff from xcompmgr, though I can't
+	say I really know what it's supposed to help with (painting the
+	window border?)
+
+2004-08-26  Havoc Pennington  <hp@redhat.com>
+
 	* src/frame.c, src/theme.c: couple of cosmetic tweaks from
 	resolving my local patch with the bugzilla patch from the 8-19
 	entry below
