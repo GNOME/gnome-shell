@@ -26,6 +26,8 @@
 #include <X11/Xlib.h>
 #include <glib.h>
 
+typedef struct _MetaResizePopup MetaResizePopup;
+
 typedef enum
 {
   META_FRAME_ALLOWS_DELETE            = 1 << 0,

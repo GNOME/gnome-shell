@@ -367,4 +367,6 @@ gboolean meta_window_same_application (MetaWindow *window,
 #define META_WINDOW_IN_TAB_CHAIN(w) \
   ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
 
+void meta_window_refresh_resize_popup (MetaWindow *window);
+
 #endif

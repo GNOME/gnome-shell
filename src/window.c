@@ -32,6 +32,7 @@
 #include "session.h"
 #include "effects.h"
 #include "prefs.h"
+#include "resizepopup.h"
 #include "xprops.h"
 
 #include <X11/Xatom.h>
@@ -2112,6 +2113,8 @@ meta_window_move_resize_internal (MetaWindow  *window,
                   window->desc);
       invalidate_work_areas (window);
     }
+
+  meta_window_refresh_resize_popup (window);
   
   /* Invariants leaving this function are:
    *   a) window->rect and frame->rect reflect the actual
@@ -5271,37 +5274,8 @@ update_resize (MetaWindow *window,
     }
 
   /* compute gravity of client during operation */
-  gravity = -1;
-  switch (window->display->grab_op)
-    {
-    case META_GRAB_OP_RESIZING_SE:
-      gravity = NorthWestGravity;
-      break;
-    case META_GRAB_OP_RESIZING_S:
-      gravity = NorthGravity;
-      break;
-    case META_GRAB_OP_RESIZING_SW:
-      gravity = NorthEastGravity;
-      break;      
-    case META_GRAB_OP_RESIZING_N:
-      gravity = SouthGravity;
-      break;
-    case META_GRAB_OP_RESIZING_NE:
-      gravity = SouthWestGravity;
-      break;
-    case META_GRAB_OP_RESIZING_NW:
-      gravity = SouthEastGravity;
-      break;
-    case META_GRAB_OP_RESIZING_E:
-      gravity = WestGravity;
-      break;
-    case META_GRAB_OP_RESIZING_W:
-      gravity = EastGravity;
-      break;
-    default:
-      g_assert_not_reached ();
-      break;
-    }
+  gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
+  g_assert (gravity >= 0);
 
   meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
 }
@@ -5463,4 +5437,87 @@ meta_window_same_application (MetaWindow *window,
   return (window->xgroup_leader != None &&
           other_window->xgroup_leader != None &&
           window->xgroup_leader == other_window->xgroup_leader);
+}
+
+void
+meta_window_refresh_resize_popup (MetaWindow *window)
+{
+  if (window->display->grab_op == META_GRAB_OP_NONE)
+    return;
+
+  if (window->display->grab_window != window)
+    return;
+
+  switch (window->display->grab_op)
+    {
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:
+    case META_GRAB_OP_RESIZING_SW:
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+      break;
+
+    default:
+      /* Not resizing */
+      return;
+    }
+      
+  if (window->display->grab_resize_popup == NULL)
+    {
+      /* FIXME only create it if width_inc > 1 or height_inc > 1 */
+      window->display->grab_resize_popup = meta_ui_resize_popup_new ();
+    }
+  
+  if (window->display->grab_resize_popup != NULL)
+    {
+      int gravity;
+      int x, y;
+      MetaFrameGeometry fgeom;
+
+      if (window->frame)
+        meta_frame_calc_geometry (window->frame, &fgeom);
+      else
+        {
+          fgeom.left_width = 0;
+          fgeom.right_width = 0;
+          fgeom.top_height = 0;
+          fgeom.bottom_height = 0;
+        }
+      
+      gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
+      g_assert (gravity >= 0);
+
+      meta_window_get_position (window, &x, &y);
+      
+      meta_ui_resize_popup_set (window->display->grab_resize_popup,
+                                gravity,
+                                x, y,
+                                window->rect.width,
+                                window->rect.height,
+                                window->size_hints.base_width,
+                                window->size_hints.base_height,
+                                window->size_hints.min_width,
+                                window->size_hints.min_height,
+                                window->size_hints.width_inc,
+                                window->size_hints.height_inc,
+                                fgeom.left_width,
+                                fgeom.right_width,
+                                fgeom.top_height,
+                                fgeom.bottom_height);
+
+      meta_ui_resize_popup_set_showing (window->display->grab_resize_popup,
+                                        TRUE);
+    }
 }

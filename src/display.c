@@ -29,6 +29,7 @@
 #include "errors.h"
 #include "keybindings.h"
 #include "prefs.h"
+#include "resizepopup.h"
 #include "workspace.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
@@ -389,6 +390,7 @@ meta_display_open (const char *name)
   
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
+  display->grab_resize_popup = NULL;
   
   set_utf8_string_hint (display,
                         display->leader_window,
@@ -2039,8 +2041,17 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
   /* Do this last, after everything is set up. */
-  if (op == META_GRAB_OP_KEYBOARD_TABBING)
-    meta_screen_ensure_tab_popup (window->screen);
+  switch (op)
+    {
+    case META_GRAB_OP_KEYBOARD_TABBING:
+      meta_screen_ensure_tab_popup (window->screen);
+      break;
+      
+    default:
+      break;
+    }
+
+  meta_window_refresh_resize_popup (display->grab_window);
   
   return TRUE;
 }
@@ -2081,6 +2092,12 @@ meta_display_end_grab_op (MetaDisplay *display,
   display->grab_window = NULL;
   display->grab_xwindow = None;
   display->grab_op = META_GRAB_OP_NONE;
+
+  if (display->grab_resize_popup)
+    {
+      meta_ui_resize_popup_free (display->grab_resize_popup);
+      display->grab_resize_popup = NULL;
+    }
 }
 
 #define IGNORED_MODIFIERS (LockMask | Mod2Mask | Mod3Mask | Mod4Mask | Mod5Mask)
@@ -2656,4 +2673,51 @@ meta_display_get_tab_next (MetaDisplay   *display,
     return find_tab_forward (display, workspace,
                              display->mru_list);
 #endif
+}
+
+int
+meta_resize_gravity_from_grab_op (MetaGrabOp op)
+{
+  int gravity;
+  
+  gravity = -1;
+  switch (op)
+    {
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+      gravity = NorthWestGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_RESIZING_S:
+      gravity = NorthGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_RESIZING_SW:
+      gravity = NorthEastGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_RESIZING_N:
+      gravity = SouthGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NE:
+      gravity = SouthWestGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_NW:
+      gravity = SouthEastGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_RESIZING_E:
+      gravity = WestGravity;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_RESIZING_W:
+      gravity = EastGravity;
+      break;
+    default:
+      break;
+    }
+
+  return gravity;
 }

@@ -1,5 +1,11 @@
 2002-03-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/resizepopup.c: Add some total crackrock resize-grid 
+	indication for windows that have width_inc/height_inc
+	so I can debug gnome-terminal sizing.
+
+2002-03-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/session.c (set_clone_restart_commands): use proper property
 	name for SmDiscardCommand (instead of setting the clone command to
 	"rm"). Also fix typo that iterated over clonev not discardv to

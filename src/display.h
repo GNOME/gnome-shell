@@ -187,6 +187,7 @@ struct _MetaDisplay
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   MetaRectangle grab_initial_window_pos;
+  MetaResizePopup *grab_resize_popup;
 };
 
 gboolean      meta_display_open                (const char  *name);
@@ -281,5 +282,7 @@ MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
                                        MetaWorkspace *workspace,
                                        MetaWindow    *window,
                                        gboolean       backward);
+
+int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 #endif

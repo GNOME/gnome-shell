@@ -36,6 +36,8 @@ metacity_SOURCES= 				\
 	place.h					\
 	prefs.c					\
 	prefs.h					\
+	resizepopup.c				\
+	resizepopup.h				\
 	screen.c				\
 	screen.h				\
 	session.c				\
