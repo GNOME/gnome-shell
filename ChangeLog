@@ -1,3 +1,17 @@
+2002-10-25  Havoc Pennington  <hp@pobox.com>
+
+        Add "busy cursor on app startup" support, conditionally - works 
+	only if libstartup-notification is found, and in practice requires
+	a GTK patch that's not in yet.
+	
+	* src/screen.c: monitor startup events and set busy cursor if
+	appropriate
+
+	* src/display.c (meta_display_open): create SnDisplay
+
+	* configure.in: check for startup notification, 
+	and add the cute "configure summary" at the end
+
 2002-10-24  Havoc Pennington  <hp@redhat.com>
 
 	* src/theme.c (meta_frame_layout_calc_geometry): if only one

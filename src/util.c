@@ -258,6 +258,8 @@ topic_name (MetaDebugTopic topic)
       return "SYNC";
     case META_DEBUG_ERRORS:
       return "ERRORS";
+    case META_DEBUG_STARTUP:
+      return "STARTUP";
     }
 
   return "Window manager";

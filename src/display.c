@@ -138,6 +138,27 @@ remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
   g_slist_free (dead);
 }
 
+
+static void
+sn_error_trap_push (SnDisplay *sn_display,
+                    Display   *xdisplay)
+{
+  MetaDisplay *display;
+  display = meta_display_for_x_display (xdisplay);
+  if (display != NULL)
+    meta_error_trap_push (display);
+}
+
+static void
+sn_error_trap_pop (SnDisplay *sn_display,
+                   Display   *xdisplay)
+{
+  MetaDisplay *display;
+  display = meta_display_for_x_display (xdisplay);
+  if (display != NULL)
+    meta_error_trap_pop (display, FALSE);
+}
+
 gboolean
 meta_display_open (const char *name)
 {
@@ -372,6 +393,12 @@ meta_display_open (const char *name)
   display->groups_by_leader = NULL;
 
   display->screens = NULL;
+
+#ifdef HAVE_STARTUP_NOTIFICATION
+  display->sn_display = sn_display_new (display->xdisplay,
+                                        sn_error_trap_push,
+                                        sn_error_trap_pop);
+#endif
   
 #ifdef USE_GDK_DISPLAY
   display->events = NULL;
@@ -594,14 +621,14 @@ meta_display_close (MetaDisplay *display)
       g_source_remove (display->autoraise_timeout_id);
       display->autoraise_timeout_id = 0;
     }
-
+  
 #ifdef USE_GDK_DISPLAY
   /* Stop caring about events */
   meta_ui_remove_event_func (display->xdisplay,
                              event_callback,
                              display);
 #endif
-
+  
   /* Free all screens */
   tmp = display->screens;
   while (tmp != NULL)
@@ -613,6 +640,14 @@ meta_display_close (MetaDisplay *display)
 
   g_slist_free (display->screens);
   display->screens = NULL;
+
+#ifdef HAVE_STARTUP_NOTIFICATION
+  if (display->sn_display)
+    {
+      sn_display_unref (display->sn_display);
+      display->sn_display = NULL;
+    }
+#endif
   
   /* Must be after all calls to meta_window_free() since they
    * unregister windows
@@ -967,6 +1002,10 @@ event_callback (XEvent   *event,
   
   if (dump_events)
     meta_spew_event (display, event);
+
+#ifdef HAVE_STARTUP_NOTIFICATION
+  sn_display_process_event (display->sn_display, event);
+#endif
   
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
@@ -2192,7 +2231,10 @@ meta_display_create_x_cursor (MetaDisplay *display,
     case META_CURSOR_RESIZE_WINDOW:
       glyph = XC_fleur;
       break;
-
+    case META_CURSOR_BUSY:
+      glyph = XC_watch;
+      break;
+      
     default:
       g_assert_not_reached ();
       glyph = 0; /* silence compiler */

@@ -60,7 +60,8 @@ typedef enum
   META_DEBUG_XINERAMA     = 1 << 11,
   META_DEBUG_KEYBINDINGS  = 1 << 12,
   META_DEBUG_SYNC         = 1 << 13,
-  META_DEBUG_ERRORS       = 1 << 14
+  META_DEBUG_ERRORS       = 1 << 14,
+  META_DEBUG_STARTUP      = 1 << 15
 
 } MetaDebugTopic;
 

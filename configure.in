@@ -91,13 +91,27 @@ ALL_LINGUAS="az ca cs da de el es fr gl hu it ja ko lv ms no pl pt pt_BR ro ru s
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9)
 PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_PROPS, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libglade-2.0)
 
+STARTUP_NOTIFICATION_VERSION=0.2
+if $PKG_CONFIG --atleast-version $STARTUP_NOTIFICATION_VERSION libstartup-notification-1.0; then
+  echo "Building with libstartup-notification"
+  PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION)
+  AC_DEFINE(HAVE_STARTUP_NOTIFICATION)
+  with_startup_notification=yes
+else
+  echo "Building without libstartup-notification"
+  PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9)
+  with_startup_notification=no
+fi
+
 if $PKG_CONFIG --atleast-version 2.1.0 gtk+-2.0; then
    AC_DEFINE(HAVE_GTK_MULTIHEAD,,[gtk+ with multihead support found])
+   with_multihead=yes
+else
+   with_multihead=no
 fi
 
 AC_PATH_XTRA
@@ -108,6 +122,8 @@ ALL_X_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 metacity_save_cppflags="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $X_CFLAGS"
 
+use_solaris_xinerama=no
+use_xfree_xinerama=no
 case "$host" in
     *-*-solaris*)
         # Check for solaris
@@ -150,25 +166,25 @@ esac
 CPPFLAGS="$metacity_save_cppflags"
 
 SHAPE_LIBS=
-found_shape=false
+found_shape=no
 AC_CHECK_LIB(Xext, XShapeQueryExtension,
                [AC_CHECK_HEADERS(X11/extensions/shape.h,
-                                 SHAPE_LIBS=-lXext found_shape=true)],
+                                 SHAPE_LIBS=-lXext found_shape=yes)],
                , $ALL_X_LIBS)
 
-if test "$found_shape" = "true"; then
+if test "$found_shape" = "no"; then
    AC_DEFINE(HAVE_SHAPE)
 fi
 
 RANDR_LIBS=
-found_randr=false
+found_randr=no
 AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
                [AC_CHECK_HEADERS(X11/extensions/Xrandr.h,
-                                 RANDR_LIBS=-lXrandr, found_randr=true,
+                                 RANDR_LIBS=-lXrandr, found_randr=yes,
 				 [#include <X11/Xlib.h>])],
                , -lXrender $ALL_X_LIBS)
 
-if test "$found_randr" = "true"; then
+if test "$found_randr" = "yes"; then
    AC_DEFINE(HAVE_RANDR)
 fi
 
@@ -177,24 +193,24 @@ METACITY_MESSAGE_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_MESSAGE
 METACITY_WINDOW_DEMO_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_WINDOW_DEMO_LIBS"
 METACITY_PROPS_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_PROPS_LIBS"
 
-found_sm=false
+found_sm=no
 case "$METACITY_LIBS" in
  *-lSM*)
-    found_sm=true
+    found_sm=yes
     ;;
  *)
   AC_CHECK_LIB(SM, SmcSaveYourselfDone, 
                [AC_CHECK_HEADERS(X11/SM/SMlib.h,
-                                METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=true)],
+                                METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=no)],
                , $METACITY_LIBS)
     ;;
 esac
 
-if test "$found_sm" = "true"; then
+if test "$found_sm" = "yes"; then
    AC_DEFINE(HAVE_SM)
 fi
 
-AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "true") 
+AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "yes") 
 
 HOST_ALIAS=$host_alias
 AC_SUBST(HOST_ALIAS)
@@ -230,3 +246,21 @@ src/themes/Makefile
 po/Makefile.in
 metacity.spec
 ])
+
+dnl ==========================================================================
+echo "
+metacity-$VERSION:
+
+	prefix:                 ${prefix}
+	source code location:	${srcdir}
+	compiler:		${CC}
+
+	XFree86 Xinerama:       ${use_xfree_xinerama}
+	Solaris Xinerama:       ${use_solaris_xinerama}
+	Multihead:              ${with_multihead}
+	Startup notification:   ${with_startup_notification}
+	Session management:     ${found_sm}
+	Shape extension:        ${found_shape}
+	Resize-and-rotate:      ${found_randr}
+
+"

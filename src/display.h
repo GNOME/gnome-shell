@@ -27,6 +27,10 @@
 #include "eventqueue.h"
 #include "common.h"
 
+#ifdef HAVE_STARTUP_NOTIFICATION
+#include <libsn/sn.h>
+#endif
+
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
 
 /* this doesn't really belong here, oh well. */
@@ -149,6 +153,10 @@ struct _MetaDisplay
   Atom atom_net_wm_action_close;
   Atom atom_net_wm_state_above;
   Atom atom_net_wm_state_below;
+
+#ifdef HAVE_STARTUP_NOTIFICATION
+  SnDisplay *sn_display;
+#endif
   
   /* This is the actual window from focus events,
    * not the one we last set
