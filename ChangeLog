@@ -1,5 +1,10 @@
 2002-03-13  Havoc Pennington  <hp@pobox.com>
 
+	* src/main.c (main): put back --sm-client-id argument, needed
+	for including us in a default session
+
+2002-03-13  Havoc Pennington  <hp@pobox.com>
+
 	* src/session.c (meta_session_init): don't save a file here, only
 	in response to SaveYourself. Change the code to properly use a
 	unique state file for each SaveYourself. Totally, totally

@@ -138,6 +138,28 @@ main (int argc, char **argv)
         }
       else if (strcmp (arg, "--display") == 0)
         ; /* wait for next arg */
+      else if (strstr (arg, "--sm-client-id=") == arg)
+        {
+          const char *id;
+
+          if (client_id)
+            meta_fatal ("Can't specify client ID twice\n");
+          
+          id = strchr (arg, '=');
+          ++id;
+
+          client_id = g_strdup (id);
+        }
+      else if (prev_arg &&
+               strcmp (prev_arg, "--sm-client-id") == 0)
+        {
+          if (client_id)
+            meta_fatal ("Can't specify client ID twice\n");
+
+          client_id = g_strdup (arg);
+        }
+      else if (strcmp (arg, "--sm-client-id") == 0)
+        ; /* wait for next arg */
       else if (strstr (arg, "--sm-save-file=") == arg)
         {
           const char *file;
@@ -167,7 +189,10 @@ main (int argc, char **argv)
       
       ++i;
     }
-    
+
+  if (save_file && client_id)
+    meta_fatal ("Can't specify both SM save file and SM client id\n");
+  
   meta_main_loop = g_main_loop_new (NULL, FALSE);
   
   if (display_name == NULL &&
@@ -243,7 +268,7 @@ main (int argc, char **argv)
    * info
    */
   if (!disable_sm)
-    meta_session_init (save_file);
+    meta_session_init (client_id, save_file);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);

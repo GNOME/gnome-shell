@@ -28,7 +28,8 @@
 
 #ifndef HAVE_SM
 void
-meta_session_init (const char *save_file)
+meta_session_init (const char *client_id,
+                   const char *save_file)
 {
   meta_topic (META_DEBUG_SM, "Compiled without session management support\n");
 }
@@ -68,8 +69,7 @@ static void new_ice_connection (IceConn connection, IcePointer client_data,
 				Bool opening, IcePointer *watch_data);
 
 static void        save_state         (void);
-static void        load_state         (const char *previous_save_file);
-static const char* get_previous_id    (void);
+static char*       load_state         (const char *previous_save_file);
 static void        regenerate_save_file (void);
 static const char* full_save_file       (void);
 static const char* base_save_file       (void);
@@ -208,21 +208,27 @@ static gpointer session_connection = NULL;
 static ClientState current_state = STATE_DISCONNECTED;
 
 void
-meta_session_init (const char *previous_save_file)
+meta_session_init (const char *previous_client_id,
+                   const char *previous_save_file)
 {
   /* Some code here from twm */
   char buf[256];
   unsigned long mask;
   SmcCallbacks callbacks;
-  const char *previous_id;
+  char *saved_client_id;
   
   meta_topic (META_DEBUG_SM, "Initializing session with save file '%s'\n",
               previous_save_file ? previous_save_file : "(none)");
 
   if (previous_save_file)
-    load_state (previous_save_file);
-  
-  previous_id = get_previous_id (); /* from the file if any, null otherwise */
+    {
+      saved_client_id = load_state (previous_save_file);
+      previous_client_id = saved_client_id;
+    }
+  else
+    {
+      saved_client_id = NULL;
+    }
   
   ice_init ();
   
@@ -254,14 +260,15 @@ meta_session_init (const char *previous_save_file)
                        SmProtoMinor,
                        mask,
                        &callbacks,
-                       (char*) previous_id,
+                       (char*) previous_client_id,
                        &client_id,
                        255, buf);
   
   if (session_connection == NULL)
     {
       meta_warning ("Failed to open connection to session manager: %s\n", buf);
-      return;
+
+      goto out;
     }
   else
     {
@@ -270,7 +277,7 @@ meta_session_init (const char *previous_save_file)
       meta_topic (META_DEBUG_SM, "Obtained session ID '%s'\n", client_id);
     }
 
-  if (previous_id && strcmp (previous_id, client_id) == 0)
+  if (previous_client_id && strcmp (previous_client_id, client_id) == 0)
     current_state = STATE_IDLE;
   else
     current_state = STATE_REGISTERING;
@@ -338,6 +345,9 @@ meta_session_init (const char *previous_save_file)
     
     SmcSetProperties (session_connection, 6, props);
   }
+
+ out:
+  g_free (saved_client_id);
 }
 
 static void
@@ -925,7 +935,7 @@ typedef enum
 typedef struct
 {
   MetaWindowSessionInfo *info;
-  
+  char *previous_id;
 } ParseData;
 
 static void                   session_info_free (MetaWindowSessionInfo *info);
@@ -956,9 +966,8 @@ static GMarkupParser metacity_session_parser = {
 };
 
 static GSList *window_info_list = NULL;
-static char* previous_id = NULL;
 
-static void
+static char*
 load_state (const char *previous_save_file)
 {
   GMarkupParseContext *context;
@@ -983,7 +992,7 @@ load_state (const char *previous_save_file)
                     session_file, error->message);
       g_error_free (error);
       g_free (session_file);
-      return;
+      return NULL;
     }
 
   meta_topic (META_DEBUG_SM, "Parsing saved session file %s\n", session_file);
@@ -991,6 +1000,7 @@ load_state (const char *previous_save_file)
   session_file = NULL;
   
   parse_data.info = NULL;
+  parse_data.previous_id = NULL;
   
   context = g_markup_parse_context_new (&metacity_session_parser,
                                         0, &parse_data, NULL);
@@ -1019,10 +1029,15 @@ load_state (const char *previous_save_file)
 
   if (parse_data.info)
     session_info_free (parse_data.info);
+
+  g_free (parse_data.previous_id);
+  parse_data.previous_id = NULL;
   
  out:
   
   g_free (text);
+
+  return parse_data.previous_id;
 }
 
 /* FIXME this isn't very robust against bogus session files */
@@ -1052,7 +1067,7 @@ start_element_handler  (GMarkupParseContext *context,
           name = attribute_names[i];
           val = attribute_values[i];
 
-          if (previous_id)
+          if (pd->previous_id)
             {
               g_set_error (error,
                            G_MARKUP_ERROR,
@@ -1063,7 +1078,7 @@ start_element_handler  (GMarkupParseContext *context,
           
           if (strcmp (name, "id") == 0)
             {
-              previous_id = decode_text_from_utf8 (val);
+              pd->previous_id = decode_text_from_utf8 (val);
             }
           else
             {
@@ -1295,12 +1310,6 @@ text_handler           (GMarkupParseContext *context,
   /* Right now we don't have any elements where we care about their
    * content
    */
-}
-
-static const char*
-get_previous_id (void)
-{
-  return previous_id;
 }
 
 static gboolean
