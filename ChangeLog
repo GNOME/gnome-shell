@@ -1,3 +1,8 @@
+2003-05-20  Anders Carlsson  <andersca@codefactory.se>
+
+	* src/metacity-dialog.c: (kill_window_question):
+	Fix the wording and HIGify the dialog.
+	
 2003-05-18  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (unminimize_window_and_all_transient_parents):

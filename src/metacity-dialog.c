@@ -81,17 +81,19 @@ kill_window_question (const char *window_name,
   GtkWidget *dialog;
   
   dialog = gtk_message_dialog_new (NULL, 0,
-                                   GTK_MESSAGE_QUESTION,
+                                   GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
-                                   _("The window \"%s\" is not responding.\n"
-                                     "Force this application to exit?\n"
-                                     "(Any open documents will be lost.)"),
+				   _("<b>The window \"%s\" is not responding.</b>\n\n"
+				     "Forcing this application to quit will "
+				     "cause you to lose any unsaved changes."),
                                    window_name);
+  gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
                           GTK_STOCK_CANCEL,
                           GTK_RESPONSE_REJECT,
-                          _("Kill application"),
+                          _("_Force Quit"),
                           GTK_RESPONSE_ACCEPT,
                           NULL);
   
