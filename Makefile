@@ -4,12 +4,12 @@ CFLAGS=`pkg-config --cflags pangoft2 pango glib-2.0 gthread-2.0`
 .c.o:
 	$(CC) -g -Wall $(CFLAGS) $(INCS) -c $*.c
 
-OBJS=cltr.o pixbuf.o util.o fonts.o cltr-photo-grid.o cltr-tex.o
+OBJS=cltr.o pixbuf.o util.o fonts.o cltr-photo-grid.o cltr-texture.o
 
 clutter: $(OBJS)
 	$(CC) -g -Wall -o $@ $(OBJS) $(LIBS)
 
-$(OBJS): pixbuf.h util.h fonts.h cltr.h cltr-photo-grid.h cltr-tex.h
+$(OBJS): pixbuf.h util.h fonts.h cltr.h cltr-photo-grid.h cltr-texture.h
 
 clean:
 	rm -fr *.o clutter test

@@ -241,7 +241,7 @@ cltr_texture_new(Pixbuf *pixb)
 
   CLTR_MARK();
 
-  img = g_malloc0(sizeof(CltrImage));
+  texture = g_malloc0(sizeof(CltrTexture));
 
   texture->width  = pixb->width;
   texture->height = pixb->height;
@@ -249,7 +249,7 @@ cltr_texture_new(Pixbuf *pixb)
 
   pixbuf_ref(pixb);
 
-  init_tiles (img);
+  init_tiles (texture);
 
   for (x=0; x < texture->n_x_tiles; x++)
     for (y=0; y < texture->n_y_tiles; y++)
@@ -307,5 +307,5 @@ cltr_texture_new(Pixbuf *pixb)
 
       }
 
-  return img;
+  return texture;
 }

@@ -412,7 +412,6 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	{
 	  ClutterPhotoGridCell *cell = (ClutterPhotoGridCell *)cell_item->data;
 	  Pixbuf *pixb = NULL;
-	  float   tx, ty;
 	  int     x1, x2, y1, y2, thumb_w, thumb_h;
 	  int     ns_border, ew_border;
 
@@ -449,9 +448,6 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
 	  x2 = x1 + thumb_w;
 	  y2 = y1 + thumb_h;
-
-	  tx = (float) pixb->width  / grid->tex_w;
-	  ty = (float) pixb->height / grid->tex_h;
 
 	  glPushMatrix();
 
@@ -564,11 +560,6 @@ cltr_photo_grid_new(ClutterWindow *win,
   grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0) - 0.3;
 
   /* Below needs to go else where - some kind of texture manager/helper */
-
-  grid->tex_w    = 1024;   
-  grid->tex_h    = 512;
-
-  grid->tex_data = malloc (grid->tex_w * grid->tex_h * 4);
 
   Mutex_GRID = g_mutex_new();
 

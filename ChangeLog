@@ -1,5 +1,15 @@
 2005-03-30  mallum,,,  <mallum@openedhand.com>
 
+	* Makefile:
+	* cltr-photo-grid.c: (cltr_photo_grid_redraw),
+	(cltr_photo_grid_new):
+	* cltr-tex.c:
+	* cltr-tex.h:
+	* cltr-texture.c: (cltr_texture_new):
+	More renaming
+
+2005-03-30  mallum,,,  <mallum@openedhand.com>
+
 	* cltr-photo-grid.c: (cltr_photo_grid_populate),
 	(cltr_photo_grid_redraw), (cltr_photo_grid_new):
 	* cltr-photo-grid.h:
