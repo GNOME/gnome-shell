@@ -1,3 +1,13 @@
+2002-05-28  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_configure_request): handle CWStackMode
+	in configure requests
+	(meta_window_new): if a window is opened at 0,0 and screen size,
+	put it in the fullscreen state.
+	(meta_window_new): remove old code that set the window position to 
+	0,0 if PPosition/USPosition unset, that will be handled by whether 
+	we place the window or not.
+
 2002-05-28  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in: Added "zh_TW" to ALL_LINGUAS.

@@ -443,14 +443,11 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_struts (window);
 
   update_net_wm_state (window);
-  /* Initially maximize if window is fullscreen; FIXME
-   * assume fullscreen state instead once we have that state...
-   */
-  if (!window->maximized &&
-      attrs.x == 0 && attrs.y == 0 &&
+
+  if (attrs.x == 0 && attrs.y == 0 &&
       attrs.width == window->screen->width &&
       attrs.height == window->screen->height)
-    window->maximized = TRUE;
+    window->fullscreen = TRUE;
   
   update_mwm_hints (window);
   update_wm_class (window);
@@ -461,15 +458,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_initial_workspace (window);
   update_icon_name (window);
   update_icon (window);
-
-  if (!window->mapped &&
-      (window->size_hints.flags & PPosition) == 0 &&
-      (window->size_hints.flags & USPosition) == 0)
-    {
-      /* ignore current window position */
-      window->size_hints.x = 0;
-      window->size_hints.y = 0;
-    }
   
   if (window->initially_iconic)
     {
@@ -2992,6 +2980,37 @@ meta_window_configure_request (MetaWindow *window,
                                     window->size_hints.width,
                                     window->size_hints.height);
 
+  /* Handle stacking. We only handle raises/lowers, mostly because
+   * stack.c really can't deal with anything else.  I guess we'll fix
+   * that if a client turns up that really requires it. Only a very
+   * few clients even require the raise/lower (and in fact all client
+   * attempts to deal with stacking order are essentially broken,
+   * since they have no idea what other clients are involved or how
+   * the stack looks).
+   *
+   * I'm pretty sure no interesting client uses TopIf, BottomIf, or
+   * Opposite anyway, so the only possible missing thing is
+   * Above/Below with a sibling set. For now we just pretend there's
+   * never a sibling set and always do the full raise/lower instead of
+   * the raise-just-above/below-sibling.
+   */
+  if (event->xconfigurerequest.value_mask & CWStackMode)
+    {
+      switch (event->xconfigurerequest.detail)
+        {
+        case Above:
+          meta_window_raise (window);
+          break;
+        case Below:
+          meta_window_lower (window);
+          break;
+        case TopIf:
+        case BottomIf:
+        case Opposite:
+          break;
+        }
+    }      
+  
   return TRUE;
 }
 
