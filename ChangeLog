@@ -1,3 +1,7 @@
+2003-09-17  Fatih Demir <kabalak@gtranslator.org>
+
+	* configure.in: Added "ta" (Tamil) to the languages' list.
+
 Wed Sep 10 15:38:09 2003  Jonathan Blandford  <jrb@redhat.com>
 
 	* configure.in: Rerelease 2.4.0.1 to fix glib-gettext problem.
