@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.5.1\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-05-10 02:08+0200\n"
+"Project-Id-Version: metacity 2.5.2\n"
+"POT-Creation-Date: 2003-06-06 14:20+0200\n"
+"PO-Revision-Date: 2003-06-06 14:22+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "És impossible d'obtenir el nom de l'ordinador central: %s\n"
 
-#: src/display.c:286
+#: src/display.c:287
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "És impossible d'obrir la pantalla del Sistema de la Finestra X '%s'\n"
@@ -147,7 +147,7 @@ msgstr ""
 "No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
 "o ADEQUACIÓ PER UN PROPÒSIT PARTICULAR.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -155,7 +155,7 @@ msgstr ""
 "No s'ha trobat cap tema! Assegureu-vos que %s existeix i conté els temes "
 "habituals."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No s'ha pogut reiniciar: %s\n"
@@ -317,18 +317,18 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: src/metacity-dialog.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "L'ordre de captura de finestra"
+msgstr "La finestra «%s» no està responent."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgstr "Si forceu la sortida d'aquesta aplicació es perdran els canvis no desats."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Força la sortida"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -2906,7 +2906,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'aplicació ha definit un _NET_WM_PID %ld fals\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4603
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2922,7 +2922,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5286
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
