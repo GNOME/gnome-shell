@@ -1,3 +1,10 @@
+2003-01-09  Havoc Pennington  <hp@redhat.com>
+
+	* src/metacity.schemas.in: change Windows+click back to Alt+click,
+	Windows+click just surprised everybody and didn't work half the
+	time. Maya users can configure it, and GTK DND can change its
+	default.
+
 2003-01-08  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity.schemas.in: assign Alt+F12 to shade window, 

@@ -8,7 +8,7 @@
       <applyto>/apps/metacity/general/mouse_button_modifier</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Super&gt;</default>
+      <default>&lt;Alt&gt;</default>
       <locale name="C">
          <short>Modifier to use for modified window click actions</short>
          <long>
