@@ -94,10 +94,15 @@ noinst_PROGRAMS=testgradient
 testgradient_LDADD= @METACITY_LIBS@
 
 desktopfilesdir=$(datadir)/gnome/wm-properties
-desktopfiles_DATA=metacity.desktop
+desktopfiles_in_files=metacity.desktop.in
+desktopfiles_DATA = $(desktopfiles_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = metacity.schemas
+schema_in_files = metacity.schemas.in
+schema_DATA = $(schema_in_files:.schemas.in=.schemas)
+
+@INTLTOOL_SCHEMAS_RULE@
 
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)

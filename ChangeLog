@@ -20,7 +20,6 @@
 	the problem where the spacing between the icon & the title
 	got larger as the fontsize went up.
 
->>>>>>> 1.269
 2002-05-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Atlanta/metacity-theme-1.xml: totally drop the
