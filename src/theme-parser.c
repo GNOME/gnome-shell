@@ -2071,9 +2071,10 @@ parse_draw_op_element (GMarkupParseContext  *context,
 	{
 	  colorize_spec = meta_color_spec_new_from_string (colorize, error);
 
-	  if (colorize == NULL)
+	  if (colorize_spec == NULL)
 	    {
 	      add_context_to_error (error, context);
+              g_object_unref (G_OBJECT (pixbuf));
 	      return;
 	    }
 	}

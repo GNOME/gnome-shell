@@ -260,6 +260,8 @@ struct _MetaDrawOp
       char *y;
       char *width;
       char *height;
+      guint32 colorize_cache_pixel;
+      GdkPixbuf *colorize_cache_pixbuf;
     } image;
     
     struct {

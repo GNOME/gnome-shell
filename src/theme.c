@@ -28,58 +28,81 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define GDK_COLOR_RGBA(color)                                   \
-                         (0xff                         |        \
-                         (((color).red / 256) << 24)   |        \
-                         (((color).green / 256) << 16) |        \
-                         (((color).blue / 256) << 8))
+#define GDK_COLOR_RGBA(color)                                           \
+                         ((guint32) (0xff                         |     \
+                                     (((color).red / 256) << 24)   |    \
+                                     (((color).green / 256) << 16) |    \
+                                     (((color).blue / 256) << 8)))
 
-#define GDK_COLOR_RGB(color)                                    \
-                         ((((color).red / 256) << 16)   |        \
-                          (((color).green / 256) << 8)  |        \
-                          (((color).blue / 256)))
+#define GDK_COLOR_RGB(color)                                            \
+                         ((guint32) ((((color).red / 256) << 16)   |    \
+                                     (((color).green / 256) << 8)  |    \
+                                     (((color).blue / 256))))
 
 #define ALPHA_TO_UCHAR(d) ((unsigned char) ((d) * 255))
 
 #define DEBUG_FILL_STRUCT(s) memset ((s), 0xef, sizeof (*(s)))
 #define INTENSITY(r, g, b) (r * 0.30 + g * 0.59 + b * 0.11)
+#define CLAMP_UCHAR(v) ((guchar) (CLAMP (((int)v), (int)0, (int)255)))
 
 static GdkPixbuf *
-colorize_pixbuf (GdkPixbuf *orig, GdkColor *new_color)
+colorize_pixbuf (GdkPixbuf *orig,
+                 GdkColor  *new_color)
 {
   GdkPixbuf *pixbuf;
   double intensity;
   int x, y;
   guchar r, g, b;
-  guchar *src, *dest;
-
+  const guchar *src;
+  guchar *dest;
+  int orig_rowstride;
+  int dest_rowstride;
+  int width, height;
+  gboolean has_alpha;
+  const guchar *src_pixels;
+  guchar *dest_pixels;
+  
   r = new_color->red / 256;
   g = new_color->green / 256;
   b = new_color->blue / 256;
-
+  
   pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
 			   gdk_pixbuf_get_bits_per_sample (orig),
 			   gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
+
+  orig_rowstride = gdk_pixbuf_get_rowstride (orig);
+  dest_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+  has_alpha = gdk_pixbuf_get_has_alpha (orig);
+  src_pixels = gdk_pixbuf_get_pixels (orig);
+  dest_pixels = gdk_pixbuf_get_pixels (pixbuf);
   
-  for (y = 0; y < gdk_pixbuf_get_height (pixbuf); y++)
+  for (y = 0; y < height; y++)
     {
-      src = gdk_pixbuf_get_pixels (orig) + y * gdk_pixbuf_get_rowstride (orig);
-      dest = gdk_pixbuf_get_pixels (pixbuf) + y * gdk_pixbuf_get_rowstride (pixbuf);
+      src = src_pixels + y * orig_rowstride;
+      dest = dest_pixels + y * dest_rowstride;
 
-      for (x = 0; x < gdk_pixbuf_get_width (pixbuf); x++) {
-
-	intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
-	
-	dest[0] = (guchar)(r * intensity);
-	dest[1] = g * intensity;
-	dest[2] = b * intensity;
-
-	if (gdk_pixbuf_get_has_alpha (orig))
-	  dest[3] = src[3];
-
-	src += gdk_pixbuf_get_has_alpha (orig) ? 4 : 3;
-	dest += gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3;
-      }
+      for (x = 0; x < width; x++)
+        {
+          intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
+          
+          dest[0] = CLAMP_UCHAR (r * intensity);
+          dest[1] = CLAMP_UCHAR (g * intensity);
+          dest[2] = CLAMP_UCHAR (b * intensity);
+          
+          if (has_alpha)
+            {
+              dest[3] = src[3];
+              src += 4;
+              dest += 4;
+            }
+          else
+            {
+              src += 3;
+              dest += 3;
+            }
+        }
     }
 
   return pixbuf;
@@ -2151,6 +2174,8 @@ meta_draw_op_free (MetaDrawOp *op)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
       if (op->data.image.colorize_spec)
 	meta_color_spec_free (op->data.image.colorize_spec);
+      if (op->data.image.colorize_cache_pixbuf)
+        g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
       g_free (op->data.image.x);
       g_free (op->data.image.y);
       g_free (op->data.image.width);
@@ -2345,7 +2370,6 @@ scale_and_alpha_pixbuf (GdkPixbuf     *src,
 
   pixbuf = NULL;
 
-
   pixbuf = src;
   if (gdk_pixbuf_get_width (pixbuf) == width &&
       gdk_pixbuf_get_height (pixbuf) == height)
@@ -2445,18 +2469,31 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       {
 	if (op->data.image.colorize_spec)
 	  {
-	    GdkPixbuf *tmp_pixbuf;
 	    GdkColor color;
 
-	     meta_color_spec_render (op->data.image.colorize_spec,
-				     widget, &color);
-	     tmp_pixbuf = colorize_pixbuf (op->data.image.pixbuf,
-					   &color);
-
-	     pixbuf = scale_and_alpha_pixbuf (tmp_pixbuf,
-					      op->data.image.alpha,
-					      width, height);
-	     g_object_unref (tmp_pixbuf);
+            meta_color_spec_render (op->data.image.colorize_spec,
+                                    widget, &color);
+            
+            if (op->data.image.colorize_cache_pixbuf == NULL ||
+                op->data.image.colorize_cache_pixel != GDK_COLOR_RGB (color))
+              {
+                if (op->data.image.colorize_cache_pixbuf)
+                  g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
+                
+                /* const cast here */
+                ((MetaDrawOp*)op)->data.image.colorize_cache_pixbuf =
+                  colorize_pixbuf (op->data.image.pixbuf,
+                                   &color);
+                ((MetaDrawOp*)op)->data.image.colorize_cache_pixel =
+                  GDK_COLOR_RGB (color);
+              }
+            
+            if (op->data.image.colorize_cache_pixbuf)
+              {
+                pixbuf = scale_and_alpha_pixbuf (op->data.image.colorize_cache_pixbuf,
+                                                 op->data.image.alpha,
+                                                 width, height);
+              }
 	  }
 	else
 	  {

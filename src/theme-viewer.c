@@ -28,13 +28,15 @@
 #include <time.h>
 #include <stdlib.h>
 
-static int client_width = 200;
-static int client_height = 200;
+#define CLIENT_WIDTH 200
+#define CLIENT_HEIGHT 200
 
 static MetaTheme *global_theme = NULL;
 
 static void run_position_expression_tests (void);
 static void run_position_expression_timings (void);
+static void run_theme_benchmark (int client_width,
+                                 int client_height);
 
 static MetaFrameFlags
 get_flags (GtkWidget *widget)
@@ -139,8 +141,8 @@ set_widget_to_frame_size (GtkWidget *widget)
                                 &right_width);  
 
   gtk_widget_set_size_request (widget,
-                               client_width + left_width + right_width,
-                               client_height + top_height + bottom_height);
+                               CLIENT_WIDTH + left_width + right_width,
+                               CLIENT_HEIGHT + top_height + bottom_height);
 }
 
 static gboolean
@@ -176,7 +178,7 @@ expose_handler (GtkWidget *widget,
                          0, 0,
                          META_FRAME_TYPE_NORMAL,
                          get_flags (widget),
-                         client_width, client_height,
+                         CLIENT_WIDTH, CLIENT_HEIGHT,
                          layout,
                          get_text_height (widget),
                          button_states,
@@ -189,7 +191,7 @@ expose_handler (GtkWidget *widget,
                       widget->style->white_gc,
                       TRUE,
                       left_width, top_height,
-                      client_width, client_height);
+                      CLIENT_WIDTH, CLIENT_HEIGHT);
 
   g_object_unref (G_OBJECT (layout));
   
@@ -241,6 +243,8 @@ main (int argc, char **argv)
            global_theme->name,
            (end - start) / (double) CLOCKS_PER_SEC);
 
+  run_theme_benchmark (CLIENT_WIDTH, CLIENT_HEIGHT);
+  
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (window), 270, 270);
 
@@ -283,6 +287,78 @@ main (int argc, char **argv)
   gtk_main ();
 
   return 0;
+}
+
+static void
+run_theme_benchmark (int client_width,
+                     int client_height)
+{
+  GtkWidget* widget;
+  GdkPixmap *pixmap;
+  int top_height, bottom_height, left_width, right_width;
+  MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
+  {
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL
+  };
+  PangoLayout *layout;
+  clock_t start;
+  clock_t end;
+  int i;
+#define ITERATIONS 100
+  
+  widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_widget_realize (widget);
+  
+  meta_theme_get_frame_borders (global_theme,
+                                META_FRAME_TYPE_NORMAL,
+                                get_text_height (widget),
+                                get_flags (widget),
+                                &top_height,
+                                &bottom_height,
+                                &left_width,
+                                &right_width);
+  
+  pixmap = gdk_pixmap_new (widget->window,
+                           client_width + left_width + right_width,
+                           client_height + top_height + bottom_height,
+                           -1);
+  
+  layout = create_title_layout (widget);
+
+  start = clock ();
+
+  i = 0;
+  while (i < ITERATIONS)
+    {
+      meta_theme_draw_frame (global_theme,
+                             widget,
+                             pixmap,
+                             NULL,
+                             0, 0,
+                             META_FRAME_TYPE_NORMAL,
+                             get_flags (widget),
+                             client_width, client_height,
+                             layout,
+                             get_text_height (widget),
+                             button_states,
+                             get_mini_icon (),
+                             get_icon ());
+      ++i;
+    }
+
+  end = clock ();
+
+  g_print ("Drew %d frames for %dx%d clients in %g seconds (%g seconds per frame)\n",
+           ITERATIONS, client_width, client_height,
+           ((double)end - (double)start) / CLOCKS_PER_SEC,
+           ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
+  
+  g_object_unref (G_OBJECT (layout));
+  g_object_unref (G_OBJECT (pixmap));
+  gtk_widget_destroy (widget);
 }
 
 typedef struct

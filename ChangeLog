@@ -1,3 +1,17 @@
+2002-02-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme-viewer.c: benchmark theme on startup
+
+	* src/theme-parser.c (parse_draw_op_element): fix "colorize !=
+	NULL" to "colorize_spec != NULL" and free pixbuf on color spec
+	failure
+
+	* src/theme.c (colorize_pixbuf): minor reformatting, raise
+	function calls out of inner loop, clamp r/g/b values to uchar
+	range before assigning to uchar
+	(draw_op_as_pixbuf): cache the colorized pixbuf
+	(meta_draw_op_free): free the cache pixbuf
+
 2002-02-07  Anders Carlsson  <andersca@gnu.org>
 
 	* src/theme-parser.c: (parse_draw_op_element):
