@@ -1865,13 +1865,37 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   int client_move_x;
   int client_move_y;
-  
-  /* We don't need it in the idle queue anymore. */
-  meta_window_unqueue_move_resize (window);
+  const MetaXineramaScreenInfo *xinerama;
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
+
+  xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                  window);
+
+  /* Try to guess if a client meant to be fullscreen and use
+   * the real fullscreen state
+   */
+  if (is_configure_request &&
+      !window->decorated &&
+      window->has_fullscreen_func &&
+      w == xinerama->width &&
+      h == xinerama->height &&
+      root_x_nw == xinerama->x_origin &&
+      root_y_nw == xinerama->y_origin)
+    {
+      /* This queues a move resize again, which is why it's
+       * called before the following unqueue_move_resize
+       */
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Guessing that window %s meant to be fullscreen\n",
+                  window->desc);
+      meta_window_make_fullscreen (window);
+    }
+  
+  /* We don't need it in the idle queue anymore. */
+  meta_window_unqueue_move_resize (window);  
   
   {
     int oldx, oldy;
