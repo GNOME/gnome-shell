@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2001-10-11 10:35+0200\n"
-"PO-Revision-Date: 2001-10-11 10:36+0200\n"
+"POT-Creation-Date: 2001-10-11 12:59+0200\n"
+"PO-Revision-Date: 2001-10-11 13:04+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Tappade anslutningen till displayen \"%s\";\n"
 "troligtvis stängdes X-servern ner, eller så dödade/förstörde du\n"
-"fönstrehanteraren.\n"
+"fönsterhanteraren.\n"
 
 #: src/errors.c:99
 #, c-format
@@ -58,7 +58,7 @@ msgstr "Nederkant"
 
 #: src/frames.c:231
 msgid "Bottom window edge height"
-msgstr "Höjd på nedre fnsterkant"
+msgstr "Höjd på nedre fönsterkant"
 
 #: src/frames.c:233
 msgid "Title border"
@@ -74,11 +74,11 @@ msgstr "Textram"
 
 #: src/frames.c:234
 msgid "Border around window title text"
-msgstr "Ram runt fönstertiteltexten"
+msgstr "Ram runt fönstertiteln"
 
 #: src/frames.c:236
 msgid "Spacer padding"
-msgstr "Utfyllnad"
+msgstr "Utfyllnadsmellanrum"
 
 #: src/frames.c:236
 msgid "Padding on either side of spacer"

@@ -1,5 +1,10 @@
 2001-10-11  Christian Rose  <menthos@menthos.com>
 
+	* sv.po: Fixed some typos. Thanks to Tomas Ögren <stric@ing.umu.se>
+	for spotting many of them.
+
+2001-10-11  Christian Rose  <menthos@menthos.com>
+
 	* sv.po: Added Swedish translation.
 	* POTFILES.in: Added files.
 	* .cvsignore: Added messages and *.pot.
