@@ -1,5 +1,13 @@
 2004-08-06  Elijah Newren  <newren@math.utah.edu>
 
+	* src/display.c (event_callback): Focusing a window upon unshowing
+	the desktop in various ways (panel applet or keybinding) was
+	inconsistent for sloppy and click focus modes.  Fix this by
+	calling meta_workspace_focus_default_window after unshowing the
+	desktop via a _NET_SHOWING_DESKTOP message.  (resolves #149543)
+
+2004-08-06  Elijah Newren  <newren@math.utah.edu>
+
 	* src/workspace.c (meta_workspace_focus_default_window): prevent
 	keyboard from "getting locked" upon workspace switch, by making
 	sure that the no_focus_window has focus if no other window does.

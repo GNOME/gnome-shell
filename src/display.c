@@ -2086,7 +2086,10 @@ event_callback (XEvent   *event,
 		  if (showing_desktop)
 		    meta_screen_show_desktop (screen);
 		  else
-		    meta_screen_unshow_desktop (screen);
+		    {
+		      meta_screen_unshow_desktop (screen);
+		      meta_workspace_focus_default_window (screen->active_workspace, NULL);
+		    }
 		}
               else if (event->xclient.message_type ==
                        display->atom_metacity_restart_message)
