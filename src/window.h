@@ -66,13 +66,16 @@ struct _MetaWindow
   MetaWindowType type;
   Atom type_atom;
   
-  /* NOTE these four are not in UTF-8, we just treat them as random
+  /* NOTE these five are not in UTF-8, we just treat them as random
    * binary data
    */
   char *res_class;
   char *res_name;
   char *role;
   char *sm_client_id;
+  char *wm_client_machine;
+
+  int net_wm_pid;
   
   Window xtransient_for;
   Window xgroup_leader;
@@ -236,6 +239,10 @@ struct _MetaWindow
   /* Managed by stack.c */
   MetaStackLayer layer;
   MetaStackOp *stack_op;
+
+  /* Current dialog open for this window */
+  int dialog_pid;
+  int dialog_pipe;
 };
 
 MetaWindow* meta_window_new                (MetaDisplay *display,
@@ -313,6 +320,7 @@ void        meta_window_get_outer_rect       (MetaWindow    *window,
                                               MetaRectangle *rect);
 void        meta_window_delete             (MetaWindow  *window,
                                             Time         timestamp);
+void        meta_window_kill               (MetaWindow  *window);
 void        meta_window_focus              (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_raise              (MetaWindow  *window);
@@ -371,5 +379,7 @@ gboolean meta_window_same_application (MetaWindow *window,
   (! META_WINDOW_IN_NORMAL_TAB_CHAIN (w))
 
 void meta_window_refresh_resize_popup (MetaWindow *window);
+
+void meta_window_free_delete_dialog (MetaWindow *window);
 
 #endif

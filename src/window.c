@@ -134,7 +134,6 @@ void meta_window_flush_move_resize    (MetaWindow *window);
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
-
 static const char*
 wm_state_to_string (int state)
 {
@@ -160,6 +159,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
+  char *str;
+  unsigned long cardinal;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
@@ -265,6 +266,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   window = g_new (MetaWindow, 1);
 
+  window->dialog_pid = -1;
+  window->dialog_pipe = -1;
+  
   window->xwindow = xwindow;
 
   /* this is in window->screen->display, but that's too annoying to
@@ -380,6 +384,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->res_name = NULL;
   window->role = NULL;
   window->sm_client_id = NULL;
+  window->wm_client_machine = NULL;
+
+  window->net_wm_pid = -1;
   
   window->xtransient_for = None;
   window->xgroup_leader = None;
@@ -399,6 +406,32 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
 
+  if (meta_prop_get_latin1_string (window->display, window->xwindow,
+                                   window->display->atom_wm_client_machine,
+                                   &str))
+    {
+      window->wm_client_machine = g_strdup (str);
+      meta_XFree (str);
+
+      meta_verbose ("Window has client machine \"%s\"\n",
+                    window->wm_client_machine);
+    }
+
+  if (meta_prop_get_cardinal (window->display, window->xwindow,
+                              window->display->atom_net_wm_pid,
+                              &cardinal))
+    {
+      if (cardinal <= 0)
+        meta_warning (_("Application set a bogus _NET_WM_PID %ld\n"),
+                      cardinal);
+      else
+        {
+          window->net_wm_pid = cardinal;
+          meta_verbose ("Window has _NET_WM_PID %d\n",
+                        window->net_wm_pid);
+        }
+    }
+    
   update_size_hints (window);
   update_title (window);
   update_protocols (window);
@@ -771,6 +804,7 @@ meta_window_free (MetaWindow  *window)
   
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
+  meta_window_free_delete_dialog (window);
   
   tmp = window->workspaces;
   while (tmp != NULL)
@@ -846,6 +880,7 @@ meta_window_free (MetaWindow  *window)
   meta_icon_cache_free (&window->icon_cache);
   
   g_free (window->sm_client_id);
+  g_free (window->wm_client_machine);
   g_free (window->role);
   g_free (window->res_class);
   g_free (window->res_name);
@@ -2481,110 +2516,6 @@ meta_window_get_outer_rect (MetaWindow    *window,
     *rect = window->frame->rect;
   else
     *rect = window->rect;
-}
-
-static void
-delete_ping_reply_func (MetaDisplay *display,
-                        Window       xwindow,
-                        void        *user_data)
-{
-  MetaWindow *window = user_data;
-
-  meta_topic (META_DEBUG_PING,
-              "Got reply to delete ping for %s\n",
-              window->desc);
-
-  /* we do nothing */
-}
-
-static void
-delete_ping_timeout_func (MetaDisplay *display,
-                          Window       xwindow,
-                          void        *user_data)
-{
-  MetaWindow *window = user_data;
-  GError *err;
-  int child_pid;
-  int outpipe;
-  char *argv[4];
-  
-  meta_topic (META_DEBUG_PING,
-              "Got delete ping timeout for %s\n",
-              window->desc);
-
-#if 0
-  argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
-  argv[1] = "--kill-window-question";
-  argv[2] = window->title;
-  argv[3] = NULL;
-  
-  err = NULL;
-  if (!g_spawn_async_with_pipes ("/",
-                                 argv,
-                                 NULL,
-                                 0,
-                                 NULL, NULL,
-                                 &child_pid,
-                                 NULL,
-                                 &outpipe,
-                                 NULL,
-                                 &err))
-    {
-      meta_warning (_("Error launching metacity-dialog to ask about killing an application: %s\n"),
-                    err->message);
-      g_error_free (err);
-      return;
-    }
-#endif
-}
-
-void
-meta_window_delete (MetaWindow  *window,
-                    Time         timestamp)
-{
-  meta_error_trap_push (window->display);
-  if (window->delete_window)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with delete_window request\n",
-                  window->desc);
-      meta_window_send_icccm_message (window,
-                                      window->display->atom_wm_delete_window,
-                                      timestamp);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Deleting %s with explicit kill\n",
-                  window->desc);
-      XKillClient (window->display->xdisplay, window->xwindow);
-    }
-  meta_error_trap_pop (window->display);
-
-  meta_display_ping_window (window->display,
-                            window,
-                            timestamp,
-                            delete_ping_reply_func,
-                            delete_ping_timeout_func,
-                            window);
-  
-  if (window->has_focus)
-    {
-      /* This is unfortunately going to result in weirdness
-       * if the window doesn't respond to the delete event.
-       * I don't know how to avoid that though.
-       */
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing top window because focus window %s was deleted/killed\n",
-                  window->desc);
-      meta_screen_focus_top_window (window->screen, window);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_FOCUS,
-                  "Window %s was deleted/killed but didn't have focus\n",
-                  window->desc);
-    }
 }
 
 void

@@ -7,6 +7,7 @@ metacity_SOURCES= 				\
 	common.h				\
 	core.c					\
 	core.h					\
+	delete.c				\
 	display.c				\
 	display.h				\
 	effects.c				\

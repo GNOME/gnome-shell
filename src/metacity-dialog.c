@@ -23,13 +23,60 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
+#include <gdk/gdkx.h>
+
+static Window
+window_from_string (const char *str)
+{
+  char *end;
+  unsigned long l;
+
+  end = NULL;
+  
+  l = strtoul (str, &end, 16);
+
+  if (end == NULL || end == str)
+    {
+      g_printerr (_("Could not parse \"%s\" as an integer"),
+                  str);
+      return None;
+    }
+
+  if (*end != '\0')
+    {
+      g_printerr (_("Did not understand trailing characters \"%s\" in string \"%s\""),
+                  end, str);
+      return None;
+    }
+
+  return l;
+}
+
+static void
+on_realize (GtkWidget *dialog,
+            void      *data)
+{
+  const char *parent_str = data;
+  Window xwindow;
+
+  xwindow = window_from_string (parent_str);
+
+  gdk_error_trap_push ();
+  XSetTransientForHint (gdk_display, GDK_WINDOW_XID (dialog->window),
+                        xwindow);
+  XSync (gdk_display, False);
+  gdk_error_trap_pop ();
+}
+
 static int
-kill_window_question (const char *window_name)
+kill_window_question (const char *window_name,
+                      const char *parent_str)
 {
   GtkWidget *dialog;
   
@@ -37,7 +84,8 @@ kill_window_question (const char *window_name)
                                    GTK_MESSAGE_QUESTION,
                                    GTK_BUTTONS_NONE,
                                    _("The window \"%s\" is not responding.\n"
-                                     "Force this application to exit?"),
+                                     "Force this application to exit?\n"
+                                     "(Any open documents will be lost.)"),
                                    window_name);
   
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
@@ -46,14 +94,17 @@ kill_window_question (const char *window_name)
                           _("Kill application"),
                           GTK_RESPONSE_ACCEPT,
                           NULL);
-
+  
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_REJECT);
 
-  /* return 0 if we should kill the application */
+  g_signal_connect (G_OBJECT (dialog), "realize",
+                    G_CALLBACK (on_realize), (char*) parent_str);
+  
+  /* return our PID, then window ID that should be killed */
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-    g_print ("Y");
+    g_print ("%d\n%s\n", (int) getpid (), parent_str);
   else
-    g_print ("N");
+    g_print ("%d\n0x0\n", (int) getpid ());
 
   return 0;
 }
@@ -75,13 +126,13 @@ main (int argc, char **argv)
   
   if (strcmp (argv[1], "--kill-window-question") == 0)
     {
-      if (argc < 3)
+      if (argc < 4)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
         }
 
-      return kill_window_question (argv[2]);
+      return kill_window_question (argv[2], argv[3]);
     }
 
   g_printerr ("bad args to metacity-dialog\n");

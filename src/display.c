@@ -2409,7 +2409,7 @@ meta_set_syncing (gboolean setting)
     }
 }
 
-#define PING_TIMEOUT_DELAY 3000
+#define PING_TIMEOUT_DELAY 2250
 
 static gboolean
 meta_display_ping_timeout (gpointer data)
