@@ -1,5 +1,11 @@
 2002-04-21  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_send_icccm_message): add error trap,
+	fixes a possible BadWindow if a window closed itself in response
+	to the delete window message prior to us sending the ping message.
+
+2002-04-21  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_move_resize_now): never revert to
 	user_rect.width, user_rect.height. Maybe fixes assorted resize
 	screwups e.g. with gnome-terminal.

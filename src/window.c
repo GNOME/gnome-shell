@@ -2746,9 +2746,11 @@ meta_window_send_icccm_message (MetaWindow *window,
     ev.format = 32;
     ev.data.l[0] = atom;
     ev.data.l[1] = timestamp;
-    
+
+    meta_error_trap_push (window->display);
     XSendEvent (window->display->xdisplay,
                 window->xwindow, False, 0, (XEvent*) &ev);
+    meta_error_trap_pop (window->display);
 }
 
 gboolean
