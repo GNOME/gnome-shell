@@ -1,3 +1,8 @@
+2002-06-03  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* src/tools/metacity-properties.desktop.in: Someone forgot to mark
+	the two strings in here for translation :)
+	
 2002-06-02  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in: 2.3.610

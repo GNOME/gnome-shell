@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Window Focus
-Comment=Change how focus is moved from one window to another
+_Name=Window Focus
+_Comment=Change how focus is moved from one window to another
 Exec=metacity-properties
 Icon=metacity-properties.png
 Terminal=0
