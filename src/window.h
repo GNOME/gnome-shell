@@ -248,6 +248,14 @@ void        meta_window_queue_move_resize  (MetaWindow  *window);
 void        meta_window_get_position       (MetaWindow  *window,
                                             int         *x,
                                             int         *y);
+/* gets position we need to set to stay in current position,
+ * assuming position will be gravity-compensated. i.e.
+ * this is the position a client would send in a configure
+ * request.
+ */
+void        meta_window_get_gravity_position (MetaWindow  *window,
+                                              int         *x,
+                                              int         *y);
 void        meta_window_delete             (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_focus              (MetaWindow  *window,

@@ -1,3 +1,3 @@
 
-SUBDIRS=src intl po
+SUBDIRS=src 
 

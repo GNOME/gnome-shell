@@ -418,7 +418,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       window->type == META_WINDOW_TOOLBAR ||
       window->type == META_WINDOW_MENU)
     {
-      if ((window->size_hints.flags & PPosition) == 0)
+      if (window->size_hints.flags & PPosition)
         {
           window->placed = TRUE;
           meta_verbose ("Not placing non-normal non-dialog window with PPosition set\n");
@@ -1721,14 +1721,17 @@ meta_window_configure_request (MetaWindow *window,
 
   meta_window_get_gravity_position (window, &x, &y);
 
-  if (FALSE && /* For now, always ignore program-specified positions. */
+  if ((window->type == META_WINDOW_DESKTOP ||
+       window->type == META_WINDOW_DOCK ||
+       window->type == META_WINDOW_TOOLBAR ||
+       window->type == META_WINDOW_MENU) &&
       (window->size_hints.flags & PPosition))
     {
-     if (event->xconfigurerequest.value_mask & CWX)
-       x = event->xconfigurerequest.x;
-     
-     if (event->xconfigurerequest.value_mask & CWY)
-       y = event->xconfigurerequest.y;
+      if (event->xconfigurerequest.value_mask & CWX)
+        x = event->xconfigurerequest.x;
+      
+      if (event->xconfigurerequest.value_mask & CWY)
+        y = event->xconfigurerequest.y;
     }
 
   width = window->rect.width;

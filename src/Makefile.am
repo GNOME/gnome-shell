@@ -2,6 +2,7 @@
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" 
 
 metacity_SOURCES= 				\
+	common.h				\
 	core.c					\
 	core.h					\
 	display.c				\
