@@ -1,11 +1,13 @@
 
+History
+====
+
 Focus windows on map: see http://bugzilla.gnome.org/show_bug.cgi?id=82921
 Keep panel always on top: http://bugzilla.gnome.org/show_bug.cgi?id=81551
 Edge flipping: http://bugzilla.gnome.org/show_bug.cgi?id=82917
 Opaque resize: http://bugzilla.gnome.org/show_bug.cgi?id=92618
 Super+click to resize: http://bugzilla.gnome.org/show_bug.cgi?id=79315
 minimized windows in Alt+tab: http://bugzilla.gnome.org/show_bug.cgi?id=89416
-raise windows on click: http://bugzilla.gnome.org/show_bug.cgi?id=86108
 dialogs above entire app group: http://bugzilla.gnome.org/show_bug.cgi?id=88926
 display window size/position: http://bugzilla.gnome.org/show_bug.cgi?id=85213, 
 http://bugzilla.gnome.org/show_bug.cgi?id=106645
@@ -16,3 +18,16 @@ http://bugzilla.gnome.org/show_bug.cgi?id=83210
 system modal dialogs: http://bugzilla.gnome.org/show_bug.cgi?id=83357
 
 workspace wrapping: http://bugzilla.gnome.org/show_bug.cgi?id=89315
+
+raise windows on click:
+  http://bugzilla.gnome.org/show_bug.cgi?id=86108
+  http://bugzilla.gnome.org/show_bug.cgi?id=115072
+  http://bugzilla.gnome.org/show_bug.cgi?id=115753
+
+
+Tracking bugs
+====
+
+session management: http://bugzilla.gnome.org/show_bug.cgi?id=107063
+
+revise theme format: http://bugzilla.gnome.org/show_bug.cgi?id=102547
