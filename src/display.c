@@ -1784,7 +1784,7 @@ event_callback (XEvent   *event,
           switch (meta_prefs_get_focus_mode ())
             {
             case META_FOCUS_MODE_MOUSE:
-              if (window->has_focus &&
+              if (window == display->expected_focus_window &&
                   (window->frame == NULL || frame_was_receiver) &&
 		  event->xcrossing.mode != NotifyGrab && 
 		  event->xcrossing.mode != NotifyUngrab &&

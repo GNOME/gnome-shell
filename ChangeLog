@@ -1,8 +1,19 @@
 2004-10-08  Elijah Newren  <newren@math.utah.edu>
 
-         Alter the meaning of expected_focus_window; doesn't affect
-	 current operation but assists in fixing some other bugs
-	 (#154598)
+	Fix middle-frame-click-to-lower focus inconsistency (#154601)
+
+	* src/core.c (meta_core_user_lower_and_unfocus): focus the default
+	window in all focus modes, not just click-to-focus (EnterNotify
+	events will not handle this case for sloppy and mouse focus)
+
+	* src/display.c (event_callback): replace window->has_focus with
+	window == display->expected_focus_window to avoid a race issue
+
+2004-10-08  Elijah Newren  <newren@math.utah.edu>
+
+        Alter the meaning of expected_focus_window; doesn't affect
+	current operation but assists in fixing some other bugs
+	(#154598)
 	
 	* src/display.c (meta_display_focus_the_no_focus_window): set the
 	expected_focus_window to NULL.

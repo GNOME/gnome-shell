@@ -275,13 +275,13 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
             g_list_append (window->screen->active_workspace->mru_list, 
                            window);
         }
-
-      /* focus on the (new) topmost window */
-      if (window->has_focus)
-        meta_workspace_focus_default_window (window->screen->active_workspace,
-                                             window,
-                                             timestamp);
     }
+
+  /* focus the default window, if needed */
+  if (window->has_focus)
+    meta_workspace_focus_default_window (window->screen->active_workspace,
+                                         NULL,
+                                         timestamp);
 }
 
 void
