@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 08:27-0700\n"
-"PO-Revision-Date: 2004-07-30 20:40+0200\n"
+"POT-Creation-Date: 2004-11-23 13:41+0100\n"
+"PO-Revision-Date: 2004-11-23 13:49+0100\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,8 @@ msgstr "Fejl ved læsning fra vinduesprocessen: %s\n"
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Fejl ved start af metacity-dialog for at spørge om at dræbe et program: %s\n"
+"Fejl ved start af metacity-dialog for at spørge om at afslutte et program: %"
+"s\n"
 
 #: src/delete.c:452
 #, c-format
@@ -74,7 +75,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Mistede forbindelsen til terminalen '%s';\n"
-"sandsynligvis blev X-serveren lukket ned eller du dræbte\n"
+"sandsynligvis blev X-serveren lukket ned eller du afsluttede\n"
 "vindueshåndteringen.\n"
 
 #: src/errors.c:238
@@ -122,9 +123,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Ingen kommando %d er blevet defineret.\n"
+msgstr "Ingen terminal-kommando er blevet defineret.\n"
 
 #: src/main.c:69
 msgid ""
@@ -701,7 +701,7 @@ msgstr "Kør en defineret kommando"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Start en terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1719,7 +1719,6 @@ msgstr ""
 "tastaturgenvej til denne handling."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1727,7 +1726,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Denne tastaturgenvej aktiverer panelets hovedmenu. Formatet ser ud som \"&lt;"
+"Tastaturgenvejen som aktiverer en terminal. Formatet ser ud som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
