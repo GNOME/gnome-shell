@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "POT-Creation-Date: 2003-05-10 13:36+0900\n"
-"PO-Revision-Date: 2003-05-10 14:53+0900\n"
+"PO-Revision-Date: 2003-05-10 15:01+0900\n"
 "Last-Translator: KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -516,35 +516,35 @@ msgstr "ウィンドウを移動"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr "パネルとデスクトップの間を後方へ直接移動"
+msgstr "パネルとデスクトップの間のフォーカスを後方へ直接移動"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "パネルとデスクトップの間をポップアップで後方へ移動"
+msgstr "パネルとデスクトップの間のフォーカスをポップアップを使って後方へ移動"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
-msgstr "ウィンドウ間を直接後方へ移動"
+msgstr "ウィンドウ間のフォーカスを後方へ直接移動"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
-msgstr "パネルとデスクトップの間を直接移動"
+msgstr "パネルとデスクトップの間のフォーカスをを直接移動"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
-msgstr "パネルとデスクトップの間をポップアップで移動"
+msgstr "パネルとデスクトップの間のフォーカスをポップアップを使って移動"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
-msgstr "ウィンドウの間を直接移動"
+msgstr "ウィンドウ間のフォーカスを直接移動"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows with popup"
-msgstr "ウィンドウの間をポップアップを表示して移動"
+msgstr "ウィンドウ間のフォーカスをポップアップを使って移動"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr "ウィンドウ間のフォーカスを，ポップアップを表示して後方へ移動"
+msgstr "ウィンドウ間のフォーカスをポップアップを使って後方へ移動"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
