@@ -31,6 +31,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static void meta_window_present_delete_dialog (MetaWindow *window);
 
@@ -295,7 +296,8 @@ delete_ping_timeout_func (MetaDisplay *display,
   GError *err;
   int child_pid;
   int outpipe;
-  char *argv[5];
+  char *argv[7];
+  char numbuf[32];
   char *window_id_str;
   GIOChannel *channel;
   
@@ -310,12 +312,16 @@ delete_ping_timeout_func (MetaDisplay *display,
     }
   
   window_id_str = g_strdup_printf ("0x%lx", window->xwindow);
+
+  sprintf (numbuf, "%d", window->screen->number);
   
   argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
-  argv[1] = "--kill-window-question";
-  argv[2] = window->title;
-  argv[3] = window_id_str;
-  argv[4] = NULL;
+  argv[1] = "--screen";
+  argv[2] = numbuf;
+  argv[3] = "--kill-window-question";
+  argv[4] = window->title;
+  argv[5] = window_id_str;
+  argv[6] = NULL;
   
   err = NULL;
   if (!g_spawn_async_with_pipes ("/",

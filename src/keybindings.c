@@ -30,6 +30,8 @@
 
 #include <X11/keysym.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static gboolean all_bindings_disabled = FALSE;
 
@@ -2380,23 +2382,29 @@ handle_activate_workspace (MetaDisplay    *display,
 static void
 error_on_command (int         command_index,
                   const char *command,
-                  const char *message)
+                  const char *message,
+                  int         screen_number)
 {
   GError *err;
-  char *argv[6];
+  char *argv[8];
   char *key;
+  char numbuf[32];
   
   meta_warning ("Error on command %d \"%s\": %s\n",
                 command_index, command, message);  
 
   key = meta_prefs_get_gconf_key_for_command (command_index);
+
+  sprintf (numbuf, "%d", screen_number);
   
   argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
-  argv[1] = "--command-failed-error";
-  argv[2] = key;
-  argv[3] = (char*) (command ? command : "");
-  argv[4] = (char*) message;
-  argv[5] = NULL;
+  argv[1] = "--screen";
+  argv[2] = numbuf;
+  argv[3] = "--command-failed-error";
+  argv[4] = key;
+  argv[5] = (char*) (command ? command : "");
+  argv[6] = (char*) message;
+  argv[7] = NULL;
   
   err = NULL;
   if (!g_spawn_async_with_pipes ("/",
@@ -2417,6 +2425,48 @@ error_on_command (int         command_index,
   
   g_free (key);
 }
+
+static void
+set_display_setup_func (void *data)
+{
+  const char *screen_name = data;
+  char *full;
+
+  full = g_strdup_printf ("DISPLAY=%s", screen_name);
+
+  putenv (full);
+
+  /* do not free full, because putenv is lame */
+} 
+
+static gboolean
+meta_spawn_command_line_async_on_screen (const gchar *command_line,
+                                         MetaScreen  *screen,
+                                         GError     **error)
+{
+  gboolean retval;
+  gchar **argv = 0;
+
+  g_return_val_if_fail (command_line != NULL, FALSE);
+
+  if (!g_shell_parse_argv (command_line,
+                           NULL, &argv,
+                           error))
+    return FALSE;
+  
+  retval = g_spawn_async (NULL,
+                          argv,
+                          NULL,
+                          G_SPAWN_SEARCH_PATH,
+                          set_display_setup_func,
+                          screen->screen_name,
+                          NULL,
+                          error);
+  g_strfreev (argv);
+
+  return retval;
+}
+
 
 static void
 handle_run_command (MetaDisplay    *display,
@@ -2443,16 +2493,16 @@ handle_run_command (MetaDisplay    *display,
       
       s = g_strdup_printf (_("No command %d has been defined.\n"),
                            which + 1);
-      error_on_command (which, NULL, s);
+      error_on_command (which, NULL, s, screen->number);
       g_free (s);
       
       return;
     }
 
   err = NULL;
-  if (!g_spawn_command_line_async (command, &err))
+  if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_command (which, command, err->message);
+      error_on_command (which, command, err->message, screen->number);
       
       g_error_free (err);
     }

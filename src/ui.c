@@ -515,6 +515,7 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
   GdkColormap *cmap;
   
   retval = NULL;
+  cmap = NULL;
   
   drawable = gdk_xid_table_lookup (xpixmap);
 

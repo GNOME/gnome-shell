@@ -1,3 +1,22 @@
+2003-09-29  Havoc Pennington  <hp@redhat.com>
+
+	* src/main.c (find_accessibility_module): fix warnings (one was a
+	real bug)
+	
+	* src/ui.c (meta_gdk_pixbuf_get_from_pixmap): fix warning that
+	probably explains remaining crash on bug #116923. Jeez, need to 
+	use -Werror here or something.
+
+        Fix #103575, spawn child processes on proper screen.
+	
+	* src/keybindings.c (error_on_command): pass --screen to
+	metacity-dialog
+	(handle_run_command): launch user command with DISPLAY reflecting 
+	the screen you launch it from
+
+	* src/delete.c (delete_ping_timeout_func): pass --screen to
+	metacity-dialog
+
 2003-09-26  Havoc Pennington  <hp@redhat.com>
 
 	* src/display.c (event_callback): when focus on root window

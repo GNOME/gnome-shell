@@ -86,11 +86,12 @@ version (void)
 static char *
 find_accessibility_module (const char *libname)
 {
-  char *sub;
   char *path;
   char *fname;
   char *retval;
 
+  retval = NULL;
+  
   fname = g_strconcat (libname, "." G_MODULE_SUFFIX, NULL);
   path = g_strconcat (METACITY_LIBDIR"/gtk-2.0/modules", G_DIR_SEPARATOR_S, fname, NULL);
 
