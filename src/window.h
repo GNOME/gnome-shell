@@ -75,8 +75,14 @@ struct _MetaWindow
   int initial_workspace;  
   
   Pixmap icon_pixmap;
-  Pixmap icon_mask;  
+  Pixmap icon_mask;
 
+  /* these are legacy and should die once we have _NET_WM_ICON in
+   * most apps
+   */
+  Pixmap kwm_pixmap;
+  Pixmap kwm_mask;
+  
   /* Whether ->icon is from NET_WM_ICON instead of pixmap */
   guint using_rgb_icon : 1;
   
