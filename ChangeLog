@@ -1,3 +1,9 @@
+2003-01-10  Havoc Pennington  <hp@pobox.com>
+
+	* NEWS: update
+
+	* configure.in: bump to 2.4.13, require 2.2.0 for multihead
+
 2003-01-09  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Use a line for the titlebar

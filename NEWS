@@ -1,1 +1,26 @@
-See README.
+2.4.13
+===
+
+ - we were making all dialogs skip the taskbar, even non-transient 
+   ones, though this was supposedly fixed a while ago. Now really
+   fixed.
+ - change back to Alt+click by default for the window drag feature.
+ - assign Alt+F12 to shade window
+ - fix not deleting enough workspaces when the number 
+   was reduced via the pager config dialog (readams@hmc.edu)
+ - don't allow windows under the top panel ever, even if they 
+   are tall windows (Arvind)
+ - fix up the window layout for directional workspace nav, 
+   so you always stop at the edges and always end up 
+   where you expect (hp, with tweaks from readams@hmc.edu)
+ - focus new windows in mouse focus mode (readams@hmc.edu)
+ - support xeyes, oclock, etc. by applying shape mask 
+   to the window manager frame (yeah it resizes slow, deal)
+ - fix vertical/horizontal maximize
+ - handle crossing events resizing for more opaque resize goodness
+   (Soeren)
+ - add wacky _METACITY_UPDATE_COUNTER experimental extension 
+   to do nice opaque resizing (does nothing without a GTK patch)
+ - fix a crash setting workspace names
+ - fix internationalized WM_NAME reading
+

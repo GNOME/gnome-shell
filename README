@@ -10,7 +10,7 @@ COMPILING METACITY
 ===
 
 You need GTK+ 2.0, ideally the latest in the 2.0.x series.  For
-multihead/Xinerama support to work, you need GTK+ 2.1.x or 2.2.  For
+multihead/Xinerama support to work, you need GTK+ 2.2.  For
 startup notification to work you need libstartup-notification at
 http://www.freedesktop.org/software/startup-notification/ or on the
 GNOME ftp site. You also need GConf 1.2 (unless building a funky 
@@ -212,6 +212,20 @@ METACITY FEATURES
  - does basic colormap handling
 
  - and much more! well, maybe not a lot more.
+
+HOW TO ADD EXTERNAL FEATURES
+===
+
+You can write a metacity "plugin" such as a pager, window list, icon
+box, task menu, or even things like "window matching" using the
+Extended Window Manager Hints. See http://www.freedesktop.org for the
+EWMH specification. An easy-to-use library called "libwnck" is
+available that uses the EWMH and is specifically designed for writing
+WM accessories.
+
+You might be interested in existing accessories such as "Devil's Pie"
+by Ross Burton, which add features to Metacity (or other
+EWMH-compliant WMs).
 
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
