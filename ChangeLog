@@ -1,3 +1,8 @@
+2002-09-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (save_state): escape the window title before 
+	saving in the session file, reported by Jos Vos
+
 2002-09-12  Havoc Pennington  <hp@redhat.com>
 
 	* src/workspace.c (meta_workspace_screen_index)

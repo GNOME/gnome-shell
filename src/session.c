@@ -944,6 +944,7 @@ save_state (void)
               char *res_class;
               char *res_name;
               char *role;
+              char *title;
 
               /* client id, class, name, role are not expected to be
                * in UTF-8 (I think they are in XPCS which is Latin-1?
@@ -957,6 +958,10 @@ save_state (void)
                 encode_text_as_utf8_markup (window->res_name) : NULL;
               role = window->role ?
                 encode_text_as_utf8_markup (window->role) : NULL;
+              if (window->title)
+                title = g_markup_escape_text (window->title, -1);
+              else
+                title = NULL;
               
               meta_topic (META_DEBUG_SM, "Saving session managed window %s, client ID '%s'\n",
                           window->desc, window->sm_client_id);
@@ -966,7 +971,7 @@ save_state (void)
                        sm_client_id,
                        res_class ? res_class : "",
                        res_name ? res_name : "",
-                       window->title ? window->title : "",
+                       title ? title : "",
                        role ? role : "",
                        window_type_to_string (window->type),
                        stack_position);
@@ -975,6 +980,7 @@ save_state (void)
               g_free (res_class);
               g_free (res_name);
               g_free (role);
+              g_free (title);
               
               /* Sticky */
               if (window->on_all_workspaces)
