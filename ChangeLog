@@ -1,3 +1,12 @@
+2003-05-16  Rob Adams  <robadams@ucla.edu>
+
+	* src/keybindings.c (do_handle_move_to_workspace): new function
+	moves a window to a workspace with the option to flip to that workspace.
+	(handle_move_to_workspace): Use new do_handle_move_to_workspace
+	function without flipping (a keybinding)
+	(handle_move_to_workspace_flip): Use new do_handle_move_to_workspace
+	function with flipping (a keybinding)
+
 2003-05-16  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (meta_frames_paint_to_drawable): fix for 
@@ -39,7 +48,7 @@
 
 	* configure.in: Added "cy" (Welsh) to ALL_LINGUAS.
 
-2003-05-06  Danilo Šegan  <dsegan@gmx.net>
+2003-05-06  Danilo Å egan  <dsegan@gmx.net>
 
 	* configure.in: Added "sr" and "sr@Latn" to ALL_LINGUAS.
 
@@ -3402,7 +3411,7 @@ Thu Nov  7 17:07:21 2002  Jonathan Blandford  <jrb@redhat.com>
 	don't get focused automatically. Now how do we keep them out of
 	the task list?
 
-2002-06-04  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
+2002-06-04  Gustavo GirÃ¡ldez  <gustavo.giraldez@gmx.net>
 
 	* src/theme.c (draw_op_as_pixbuf): Use icon's instead of image's
 	fill_type when type is META_DRAW_ICON.
@@ -3748,7 +3757,7 @@ Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 2002-05-21  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): fix positioning in fullscreen
-	mode, patch from Gustavo Giráldez
+	mode, patch from Gustavo GirÃ¡ldez
 
 2002-05-20  Alessio Frusciante  <algol@firenze.linux.it>
 
@@ -4091,7 +4100,7 @@ Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 2002-04-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): oops, fix
-	maximization. Pointed out by Gustavo Giráldez
+	maximization. Pointed out by Gustavo GirÃ¡ldez
 
 Tue Apr 30 06:24:09 2002  Jonathan Blandford  <jrb@gnome.org>
 
@@ -5515,7 +5524,7 @@ Tue Nov 20 18:49:16 2001  Owen Taylor  <otaylor@redhat.com>
 	it to current workspace, instead of moving user to the 
 	window's workspace.
 
-2001-10-14  Héctor García Álvarez <hector@scouts-es.org>
+2001-10-14  HÃ©ctor GarcÃ­a Ãlvarez <hector@scouts-es.org>
 
 	* configure.in: Added "es" to ALL_LINGUAS for Spanish translation.
 

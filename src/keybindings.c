@@ -134,6 +134,11 @@ static void handle_move_to_workspace  (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_move_to_workspace_flip  (MetaDisplay    *display,
+                                            MetaScreen     *screen,
+                                            MetaWindow     *window,
+                                            XEvent         *event,
+                                            MetaKeyBinding *binding);
 static void handle_workspace_switch   (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -381,13 +386,13 @@ static const MetaKeyHandler window_handlers[] = {
     GINT_TO_POINTER (10) },
   { META_KEYBINDING_MOVE_WORKSPACE_12, handle_move_to_workspace,
     GINT_TO_POINTER (11) },
-  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, handle_move_to_workspace,
+  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, handle_move_to_workspace_flip,
     GINT_TO_POINTER (META_MOTION_LEFT) },
-  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, handle_move_to_workspace,
+  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, handle_move_to_workspace_flip,
     GINT_TO_POINTER (META_MOTION_RIGHT) },
-  { META_KEYBINDING_MOVE_WORKSPACE_UP, handle_move_to_workspace,
+  { META_KEYBINDING_MOVE_WORKSPACE_UP, handle_move_to_workspace_flip,
     GINT_TO_POINTER (META_MOTION_UP) },
-  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, handle_move_to_workspace,
+  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, handle_move_to_workspace_flip,
     GINT_TO_POINTER (META_MOTION_DOWN) },
   { META_KEYBINDING_RAISE_OR_LOWER, handle_raise_or_lower, NULL},
   { META_KEYBINDING_RAISE, handle_raise, NULL},
@@ -2986,11 +2991,12 @@ handle_toggle_sticky      (MetaDisplay    *display,
 }
 
 static void
-handle_move_to_workspace  (MetaDisplay    *display,
-                           MetaScreen     *screen,
-                           MetaWindow     *window,
-                           XEvent         *event,
-                           MetaKeyBinding *binding)
+do_handle_move_to_workspace  (MetaDisplay    *display,
+                              MetaScreen     *screen,
+                              MetaWindow     *window,
+                              XEvent         *event,
+                              MetaKeyBinding *binding,
+                              gboolean        flip)
 {
   int which;
   MetaWorkspace *workspace;
@@ -3015,14 +3021,42 @@ handle_move_to_workspace  (MetaDisplay    *display,
     {
       /* Activate second, so the window is never unmapped */
       meta_window_change_workspace (window, workspace);
-#if 0
-      meta_workspace_activate (workspace);
-#endif
+      if (flip)
+        meta_workspace_activate (workspace);
     }
   else
     {
       /* We could offer to create it I suppose */
     }  
+}
+
+static void
+handle_move_to_workspace  (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  do_handle_move_to_workspace (display,
+                               screen,
+                               window,
+                               event,
+                               binding,
+                               FALSE);
+}
+static void
+handle_move_to_workspace_flip  (MetaDisplay    *display,
+                                MetaScreen     *screen,
+                                MetaWindow     *window,
+                                XEvent         *event,
+                                MetaKeyBinding *binding)
+{
+  do_handle_move_to_workspace (display,
+                               screen,
+                               window,
+                               event,
+                               binding,
+                               TRUE);
 }
 
 static void 
