@@ -1,3 +1,9 @@
+2004-05-04  Elijah Newren  <newren@math.utah.edu>
+
+	* configure.in: 2.8.1
+
+	* NEWS: update
+
 2004-05-02  Rob Adams  <readams@readams.net>
 
 	* src/metacity-dialog.c (warn_about_no_sm_support): make the no sm

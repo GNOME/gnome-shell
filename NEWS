@@ -1,3 +1,17 @@
+2.8.1
+===
+
+Thanks to Olivier Crete, Jarrod Johnson, Neil Muller, Elijah Newren,
+Mark McLoughlin, Rob Adams, and foser AT gentoo.org for fixes in this
+release.
+
+  - make the --enable-xinerama switch work properly
+  - prevent unwanted grab op from occurring
+  - don't down-size nitems from a gulong to an int
+  - add a value type check for the visual/audible bell gconf settings
+  - make the no sm support warning resizable
+  - more translations
+
 2.8.0
 ===
 
