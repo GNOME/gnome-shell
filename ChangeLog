@@ -1,5 +1,9 @@
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
+	* autogen.sh: unbreak
+
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_grab_focus_window_button): grab
 	buttons 2 and 3 also, so you can focus a window with those, 
 	#70840
