@@ -1,5 +1,9 @@
 2005-02-21  Elijah Newren  <newren@gmail.com>
 
+	* NEWS: Metacity 2.9.21 unstable release
+
+2005-02-21  Elijah Newren  <newren@gmail.com>
+
 	Handle keynav vs. mousenav in mouse and sloppy focus modes.  Fixes
 	#167545.
 

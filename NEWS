@@ -1,3 +1,50 @@
+2.9.21
+==
+
+This is an unstable release heading towards Gnome 2.10.  Since there
+have been an awful lot of fixes since Gnome 2.10 Beta 2, we are hoping
+to get an extra week of wider testing of all these changes before hard
+code freeze.
+
+Thanks to Aidan Delaney, Crispin Flowerday, Elijah Newren, and Joe
+Marcus Clarke for fixes in this release.
+
+ - Make sure we get a valid timestamp if one doesn't come with the
+   _NET_ACTIVE_WINDOW message (Elijah, Crispin) [#166728]
+ - Avoid sending CurrentTime to our XSetInputFocus wrappers, but
+   handle it better in case we miss any cases (Elijah) [#166732]
+ - Remove useless function call (Aidan) [#166730]
+ - Avoid new windows being obscured by the focus window and thus
+   possibly lost (Elijah) [#166524]
+ - Don't unconditionally place not-to-be-focused windows, such as
+   splashscreens, below the focus window (Elijah) [#167042]
+ - Raise the ancestor of a window instead of the window itself
+   (Elijah) [#166894]
+ - Cover half a dozen issues needed to fix a variety of rare timestamp
+   bugs (Elijah) [#167358]
+ - Fix a possible crash on logout (Joe) [#167935]
+ - Fix an obscure xinerama placement bug with windows that are too
+   large to fit in the workarea in both dimensions (Elijah) [#166757]
+ - Ignore all focus and focus-stealing-prevention code in
+   meta_window_show when not showing the window for the first time
+   (Elijah) [#167199]
+ - when receiving a _NET_ACTIVE_WINDOW message, switch to the desktop
+   where the window is located before activating instead of moving the
+   window to the current desktop (Elijah) [#128380]
+ - Handle _NET_CURRENT_DESKTOP messages that come with timestamps
+   (Elijah) [#161361]
+ - Handle keynav vs. mousenav in mouse and sloppy focus modes (Elijah)
+   [#167545]
+
+Translations
+  Jordi Mallach (ca), Martin Willemoes Hansen (da), 
+  Kostas Papadimas (el), David Lodge (en_GB), 
+  Francisco Javier F.  Serrador (es), Tõivo Leedjärv (et),
+  Christophe Merlet (RedFox) (fr), Takeshi AIHANA (ja), 
+  Young-Ho, Cha (ko), Kjartan Maraas (nb), Michiel Sikkes (nl),
+  Kjartan Maraas (no), Duarte Loreto (pt), Leonid Kanter (ru), 
+  Marcel Telka (sk), Laurent Dhima (sq), Maxim Dziumanenko (uk)
+
 2.9.13
 ==
 
