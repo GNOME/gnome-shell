@@ -648,7 +648,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       parent = meta_display_lookup_x_window (window->display,
                                              window->xtransient_for);
 
-      if (parent)
+      if (parent && parent->workspace)
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Putting window %s on same workspace as parent %s\n",
