@@ -1684,8 +1684,6 @@ meta_window_make_fullscreen (MetaWindow  *window)
 {
   if (!window->fullscreen)
     {
-      MetaGroup *group;
-      
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Fullscreening %s\n", window->desc);
 
@@ -1695,11 +1693,7 @@ meta_window_make_fullscreen (MetaWindow  *window)
       window->fullscreen = TRUE;
 
       meta_stack_freeze (window->screen->stack);
-      group = meta_window_get_group (window);
-      if (group)
-        meta_group_update_layers (group);
-      else
-        meta_stack_update_layer (window->screen->stack, window);
+      meta_window_update_layer (window);
       
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
@@ -1725,20 +1719,12 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 {
   if (window->fullscreen)
     {
-      MetaGroup *group;
-      
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unfullscreening %s\n", window->desc);
       
       window->fullscreen = FALSE;
 
-      meta_stack_freeze (window->screen->stack);
-      group = meta_window_get_group (window);
-      if (group)
-        meta_group_update_layers (group);
-      else
-        meta_stack_update_layer (window->screen->stack, window);      
-      meta_stack_thaw (window->screen->stack);
+      meta_window_update_layer (window);
       
       meta_window_move_resize (window,
                                TRUE,
@@ -3732,6 +3718,9 @@ meta_window_notify_focus (MetaWindow *window,
           XInstallColormap (window->display->xdisplay,
                             window->colormap);
           meta_error_trap_pop (window->display);
+
+          /* move into FOCUSED_WINDOW layer */
+          meta_window_update_layer (window);
         }
     }
   else if (event->type == FocusOut ||
@@ -3765,6 +3754,9 @@ meta_window_notify_focus (MetaWindow *window,
           XUninstallColormap (window->display->xdisplay,
                               window->colormap);
           meta_error_trap_pop (window->display);
+
+          /* move out of FOCUSED_WINDOW layer */
+          meta_window_update_layer (window);
         }
     }
 
@@ -5234,7 +5226,7 @@ recalc_window_type (MetaWindow *window)
         meta_window_destroy_frame (window);
       
       /* update stacking constraints */
-      meta_stack_update_layer (window->screen->stack, window);
+      meta_window_update_layer (window);
     }
 }
 
@@ -6606,8 +6598,9 @@ meta_window_begin_grab_op (MetaWindow *window,
                               y + y_offset);
 }
 
-void meta_window_update_resize_grab_op (MetaWindow *window,
-                                        gboolean    update_cursor)
+void
+meta_window_update_resize_grab_op (MetaWindow *window,
+                                   gboolean    update_cursor)
 {
   int x, y, x_offset, y_offset;
 
@@ -6634,3 +6627,16 @@ void meta_window_update_resize_grab_op (MetaWindow *window,
     }
 }
 
+void
+meta_window_update_layer (MetaWindow *window)
+{
+  MetaGroup *group;
+  
+  meta_stack_freeze (window->screen->stack);
+  group = meta_window_get_group (window);
+  if (group)
+    meta_group_update_layers (group);
+  else
+    meta_stack_update_layer (window->screen->stack, window);
+  meta_stack_thaw (window->screen->stack);
+}

@@ -421,4 +421,6 @@ void meta_window_begin_grab_op (MetaWindow *window,
 void meta_window_update_resize_grab_op (MetaWindow *window,
                                         gboolean    update_cursor);
 
+void meta_window_update_layer (MetaWindow *window);
+
 #endif

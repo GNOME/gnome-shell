@@ -24,6 +24,7 @@
 #include "errors.h"
 #include "frame.h"
 #include "group.h"
+#include "prefs.h"
 #include "workspace.h"
 
 #include <X11/Xatom.h>
@@ -310,15 +311,19 @@ compute_layer (MetaWindow *window)
       break;
       
     default:
-      if (group_member_is_fullscreen (window))
+      if (window->has_focus &&
+          meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        window->layer = META_LAYER_FOCUSED_WINDOW;
+      else if (group_member_is_fullscreen (window))
         window->layer = META_LAYER_FULLSCREEN;
       else
         window->layer = META_LAYER_NORMAL;
       break;
     }
   
-  meta_topic (META_DEBUG_STACK, "Window %s on layer %d\n",
-              window->desc, window->layer);
+  meta_topic (META_DEBUG_STACK, "Window %s on layer %d type = %d has_focus = %d\n",
+              window->desc, window->layer,
+              window->type, window->has_focus);
 }
 
 static GList*
