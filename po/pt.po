@@ -1,19 +1,19 @@
 # metacity's Portuguese Translation
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-02-08 01:59-0500\n"
-"PO-Revision-Date: 2002-01-08 23:52+0000\n"
+"POT-Creation-Date: 2002-02-11 00:16+0000\n"
+"PO-Revision-Date: 2002-02-11 00:20+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <none@none.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:160
+#: src/display.c:163
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã Sistema Janelas X '%s'\n"
@@ -34,23 +34,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
 
-#: src/frames.c:555
+#: src/frames.c:638
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: src/frames.c:558
+#: src/frames.c:641
 msgid "Window Menu"
 msgstr "Menu Janela"
 
-#: src/frames.c:561
+#: src/frames.c:644
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: src/frames.c:564
+#: src/frames.c:647
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: src/frames.c:567
+#: src/frames.c:650
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
@@ -66,7 +66,7 @@ msgstr ""
 #: src/main.c:227
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
-msgstr ""
+msgstr "Incapaz de encontrar um tema! Certifique-se que %s sai e contém os temas normais."
 
 #: src/main.c:273
 #, c-format
@@ -154,299 +154,832 @@ msgstr ""
 "%d armazenado na chave GConf %s não é um número razoável de ambientes de "
 "trabalho, o número máximo actual é %d\n"
 
-#: src/screen.c:174
+#: src/screen.c:177
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: src/screen.c:190
+#: src/screen.c:193
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Ecrã %d no monitor '%s' já tem um gestor de janelas\n"
 
-#: src/screen.c:268
+#: src/screen.c:271
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Incapaz libertar ecrã %d no monitor '%s'\n"
 
-#: src/session.c:760 src/session.c:767
+#: src/session.c:770 src/session.c:777
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Incapaz de criar directório '%s': %s\n"
 
-#: src/session.c:777
+#: src/session.c:787
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Incapaz de abrir ficheiro de sessão '%s' para escrita: %s\n"
 
-#: src/session.c:909
+#: src/session.c:919
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro ao escrever ficheiro de sessão '%s': %s\n"
 
-#: src/session.c:914
+#: src/session.c:924
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro ao fechar ficheiro de sessão '%s': %s\n"
 
-#: src/session.c:988
+#: src/session.c:998
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Falha ao ler ficheiro de sessão gravado %s: %s\n"
 
-#: src/session.c:1022
+#: src/session.c:1032
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Falha ao parsear ficheiro de sessão gravado: %s\n"
 
-#: src/session.c:1060
+#: src/session.c:1070
 msgid "nested <window> tag"
-msgstr "etiqueta de <janela> encadeada"
+msgstr "etiqueta de <window> encadeada"
 
-#: src/session.c:1110 src/session.c:1142
+#: src/session.c:1120 src/session.c:1152
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "Atributo %s desconhecido no elemento de <janela>"
+msgstr "Atributo %s desconhecido no elemento de <window>"
 
-#: src/session.c:1202
+#: src/session.c:1212
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Atributo %s desconhecido no elemento de <geometria>"
+msgstr "Atributo %s desconhecido no elemento de <geometry>"
 
-#: src/session.c:1222
+#: src/session.c:1232
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s desconhecido"
 
-#: src/theme.c:348
-msgid "top"
+#: src/theme-parser.c:223 src/theme-parser.c:241
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Linha %d caracter %d: %s"
+
+#: src/theme-parser.c:395
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "Atributo \"%s\" repetido duas vezes no mesmo elemento <%s>"
+
+#: src/theme-parser.c:413 src/theme-parser.c:438
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "Atributo \"%s\" é inválido no elemento <%s> neste contexto"
+
+#: src/theme-parser.c:466
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Incapaz de parsear \"%s\" como um inteiro"
+
+#: src/theme-parser.c:475 src/theme-parser.c:529
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Incapaz de compreender últimos caracteres \"%s\" na expressão \"%s\""
+
+#: src/theme-parser.c:484
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "Inteiro %ld tem de ser positivo"
+
+#: src/theme-parser.c:492
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "Inteiro %ld é demasiado grande, máx actual é %d"
+
+#: src/theme-parser.c:520
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "Incapaz de parsear \"%s\" como um númerico decimal"
+
+#: src/theme-parser.c:551
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "Valores boleanos têm de ser \"true\" ou \"false\" não \"%s\""
+
+#: src/theme-parser.c:571
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "Ângulo tem de ser entre 0.0 e 360.0, era %g\n"
+
+#: src/theme-parser.c:591
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr "Alfa tem de ser entre 0.0 (invisível) e 1.0 (completamente opaco), era %g\n"
+
+#: src/theme-parser.c:624
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 msgstr ""
+"Título de escala \"%s\" inválido (tem de ser um de xx-pequeno, x-pequeno, "
+"pequeno, médio, grande, x-grande, xx-grande)\n"
+
+#: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
+#: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Nenhum atributo \"%s\" no elemento <%s>"
+
+#: src/theme-parser.c:735 src/theme-parser.c:799 src/theme-parser.c:837
+#: src/theme-parser.c:914 src/theme-parser.c:964 src/theme-parser.c:972
+#: src/theme-parser.c:1028 src/theme-parser.c:1036
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr "Nenhum atributo \"%s\" no elemento <%s>"
+
+#: src/theme-parser.c:751 src/theme-parser.c:807 src/theme-parser.c:845
+#: src/theme-parser.c:922
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "Nome \"%s\" de <%s> utilizado uma segunda vez"
+
+#: src/theme-parser.c:763 src/theme-parser.c:857 src/theme-parser.c:934
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "Pai \"%s\" de <%s> não foi definido"
+
+#: src/theme-parser.c:870
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "Geometria \"%s\" de <%s> não foi definida"
+
+#: src/theme-parser.c:883
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> tem de especificar ou uma geometria ou um pai que tenha geometria"
+
+#: src/theme-parser.c:982
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "Tipo \"%s\" desconhecido no elemento <%s>"
+
+#: src/theme-parser.c:993
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "Style_set \"%s\" desconhecido no elemento <%s>"
+
+#: src/theme-parser.c:1001
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "Tipo de janela \"%s\" já tem um tipo de estilo atribuido"
+
+#: src/theme-parser.c:1045
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr "Função \"%s\" desconhecida para ícone de menu"
+
+#: src/theme-parser.c:1054
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr "Estado \"%s\" desconhecido para ícone de menu"
+
+#: src/theme-parser.c:1062
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr "Tema já tem um ícone de menu para a função %s estado %s"
+
+#: src/theme-parser.c:1079 src/theme-parser.c:2949 src/theme-parser.c:3028
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "Nenhum <draw_ops> com o nome \"%s\" foi definido"
+
+#: src/theme-parser.c:1094 src/theme-parser.c:1158 src/theme-parser.c:1356
+#: src/theme-parser.c:2829 src/theme-parser.c:2883 src/theme-parser.c:3043
+#: src/theme-parser.c:3220 src/theme-parser.c:3258 src/theme-parser.c:3296
+#: src/theme-parser.c:3334
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "Elemento <%s> no é permitido abaixo de <%s>"
+
+#: src/theme-parser.c:1184 src/theme-parser.c:1258
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr "Nenhum atributo \"name\" no elemento <%s>"
+
+#: src/theme-parser.c:1191
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr "Nenhum atributo \"value\" no elemento <%s>"
+
+#: src/theme-parser.c:1221
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "Distância \"%s\" é desconhecida"
+
+#: src/theme-parser.c:1265
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr "Nenhum atributo \"top\" no elemento <%s>"
+
+#: src/theme-parser.c:1272
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr "Nenhum atributo \"bottom\" no elemento <%s>"
+
+#: src/theme-parser.c:1279
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr "Nenhum atributo \"left\" no elemento <%s>"
+
+#: src/theme-parser.c:1286
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr "Nenhum atributo \"right\" no elemento <%s>"
+
+#: src/theme-parser.c:1318
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "Margem \"%s\" é desconhecida"
+
+#: src/theme-parser.c:1466 src/theme-parser.c:1576 src/theme-parser.c:1679
+#: src/theme-parser.c:1866 src/theme-parser.c:2574
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr "Nenhum atributo \"color\" no elemento <%s>"
+
+#: src/theme-parser.c:1473
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr "Nenhum atributo \"x1\" no elemento <%s>"
+
+#: src/theme-parser.c:1480 src/theme-parser.c:2437
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr "Nenhum atributo \"y1\" no elemento <%s>"
+
+#: src/theme-parser.c:1487
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr "Nenhum atributo \"x2\" no elemento <%s>"
+
+#: src/theme-parser.c:1494 src/theme-parser.c:2444
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr "Nenhum atributo \"y2\" no elemento <%s>"
+
+#: src/theme-parser.c:1583 src/theme-parser.c:1686 src/theme-parser.c:1792
+#: src/theme-parser.c:1873 src/theme-parser.c:1975 src/theme-parser.c:2068
+#: src/theme-parser.c:2206 src/theme-parser.c:2332 src/theme-parser.c:2430
+#: src/theme-parser.c:2501 src/theme-parser.c:2581
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr "Nenhum atributo \"x\" no elemento <%s>"
+
+#: src/theme-parser.c:1590 src/theme-parser.c:1693 src/theme-parser.c:1799
+#: src/theme-parser.c:1880 src/theme-parser.c:1982 src/theme-parser.c:2075
+#: src/theme-parser.c:2213 src/theme-parser.c:2339 src/theme-parser.c:2508
+#: src/theme-parser.c:2588
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr "Nenhum atributo \"y\" no elemento <%s>"
+
+#: src/theme-parser.c:1597 src/theme-parser.c:1700 src/theme-parser.c:1806
+#: src/theme-parser.c:1887 src/theme-parser.c:1989 src/theme-parser.c:2082
+#: src/theme-parser.c:2220 src/theme-parser.c:2346 src/theme-parser.c:2515
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr "Nenhum atributo \"width\" no elemento <%s>"
+
+#: src/theme-parser.c:1604 src/theme-parser.c:1707 src/theme-parser.c:1813
+#: src/theme-parser.c:1894 src/theme-parser.c:1996 src/theme-parser.c:2089
+#: src/theme-parser.c:2227 src/theme-parser.c:2353 src/theme-parser.c:2522
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr "Nenhum atributo \"height\" no elemento <%s>"
+
+#: src/theme-parser.c:1714
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr "Nenhum atributo \"start_angle\" no elemento <%s>"
+
+#: src/theme-parser.c:1721
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr "Nenhum atributo \"extent_angle\" no elemento <%s>"
+
+#: src/theme-parser.c:1901
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr "Nenhum atributo \"alpha\" no elemento <%s>"
+
+#: src/theme-parser.c:1968
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr "Nenhum atributo \"type\" no elemento <%s>"
+
+#: src/theme-parser.c:2020
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "Incapaz de compreender valor \"%s\" para tipo de gradiente"
+
+#: src/theme-parser.c:2096
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr "Nenhum atributo \"filename\" no elemento <%s>"
+
+#: src/theme-parser.c:2185 src/theme-parser.c:2318 src/theme-parser.c:2423
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr "Nenhum atributo \"state\" no elemento <%s>"
+
+#: src/theme-parser.c:2192 src/theme-parser.c:2325
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr "Nenhum atributo \"shadow\" no elemento <%s>"
+
+#: src/theme-parser.c:2199
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr "Nenhum atributo \"arrow\" no elemento <%s>"
+
+#: src/theme-parser.c:2252 src/theme-parser.c:2374 src/theme-parser.c:2462
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "Incapaz de compreender estado \"%s\" para elemento <%s>"
+
+#: src/theme-parser.c:2262 src/theme-parser.c:2384
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "Incapaz de compreender sombra \"%s\" para elemento <%s>"
+
+#: src/theme-parser.c:2272
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "Incapaz de compreender seta \"%s\" para elemento <%s>"
+
+#: src/theme-parser.c:2667 src/theme-parser.c:2783
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "Nenhum <draw_ops> chamado \"%s\" foi definido"
+
+#: src/theme-parser.c:2679 src/theme-parser.c:2795
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "Incluir aqui draw_ops \"%s\" iria criar uma referência circular"
+
+#: src/theme-parser.c:2858
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr "Nenhum atributo \"value\" no elemento <%s>"
+
+#: src/theme-parser.c:2915
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr "Nenhum atributo \"position\" no elemento <%s>"
+
+#: src/theme-parser.c:2924
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "Posição \"%s\" desconhecida para peça de moldura"
+
+#: src/theme-parser.c:2932
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "Estilo de moldura já tem uma peça na posição %s"
+
+#: src/theme-parser.c:2977
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr "Nenhum atributo \"function\" no elemento <%s>"
+
+#: src/theme-parser.c:2985 src/theme-parser.c:3089
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr "Nenhum atributo \"state\" no elemento <%s>"
+
+#: src/theme-parser.c:2994
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "Função \"%s\" desconhecida para botão"
+
+#: src/theme-parser.c:3003
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "Estado \"%s\" desconhecido para botão"
+
+#: src/theme-parser.c:3011
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "Estilo de moldura já tem um botão para função %s estado %s"
+
+#: src/theme-parser.c:3081
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "Nenhum atributo \"focus\" no elemento <%s>"
+
+#: src/theme-parser.c:3097
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr "Nenhum atributo \"style\" no elemento <%s>"
+
+#: src/theme-parser.c:3106
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" não é um valor válido para o atributo focus"
+
+#: src/theme-parser.c:3115
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" não é um valor válido para o atributo estado"
+
+#: src/theme-parser.c:3125
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "Um estilo chamado \"%s\" não foi definido"
+
+#: src/theme-parser.c:3135
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "Nenhum atributo \"resize\" no elemento <%s>"
+
+#: src/theme-parser.c:3145
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" não é um valor válido para o atributo redimensionar"
+
+#: src/theme-parser.c:3155
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Não deveria ter atributo \"resize\" no elemento <%s> para os estados "
+"maximizado/sombreado"
+
+#: src/theme-parser.c:3169
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "Estilo já foi especificado para o estado %s redimensionamento %s focus %s"
+
+#: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "Estilo já foi especificado para o estado %s focus %s"
+
+#: src/theme-parser.c:3241
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Não pode ter dois draw_ops num elemento <piece> (tema especificou um atributo "
+"draw_ops e também um elemento <draw_ops>, ou especificou dois elementos)"
+
+#: src/theme-parser.c:3279
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Não pode ter dois draw_ops num elemento <button> (tema especificou um atributo "
+"draw_ops e também um elemento <draw_ops>, ou especificou dois elementos)"
+
+#: src/theme-parser.c:3317
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Não pode ter dois draw_ops num elemento <menu_icon> (tema especificou um atributo "
+"draw_ops e também um elemento <draw_ops>, ou especificou dois elementos)"
+
+#: src/theme-parser.c:3364
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "Elemento mais externo tem de ser <metacity_theme> não <%s>"
+
+#: src/theme-parser.c:3384
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Elemento <%s> não é permitido dentro de um elemento nome/autor/data/descrição"
+
+#: src/theme-parser.c:3389
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "Elemento <%s> não é permitido dentro de um elemento <constant>"
+
+#: src/theme-parser.c:3400
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border element"
+msgstr "Elemento <%s> não é permitido dentro de um elemento distância/margem"
+
+#: src/theme-parser.c:3422
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "Elemento <%s> não é permitido dentro de um elemento operação desenho"
+
+#: src/theme-parser.c:3432 src/theme-parser.c:3462 src/theme-parser.c:3467
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "Elemento <%s> não é permitido dentro de um elemento <%s>"
+
+#: src/theme-parser.c:3684
+msgid "No draw_ops provided for frame piece"
+msgstr "Nenhum draw_ops indicado para peça de moldura"
+
+#: src/theme-parser.c:3699
+msgid "No draw_ops provided for button"
+msgstr "Nenhum draw_ops indicado para botão"
+
+#: src/theme-parser.c:3714
+msgid "No draw_ops provided for menu icon"
+msgstr "Nenhum draw_ops indicado para ícone menu"
+
+#: src/theme-parser.c:3754
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "Não é permitido texto dentro do elemento <%s>"
+
+#: src/theme-parser.c:3809
+msgid "<name> specified twice for this theme"
+msgstr "<name> especificado duas vezes para este tema"
+
+#: src/theme-parser.c:3820
+msgid "<author> specified twice for this theme"
+msgstr "<author> especificado duas vezes para este tema"
+
+#: src/theme-parser.c:3831
+msgid "<copyright> specified twice for this theme"
+msgstr "<copyright> especificado duas vezes para este tema"
+
+#: src/theme-parser.c:3842
+msgid "<date> specified twice for this theme"
+msgstr "<date> especificado duas vezes para este tema"
+
+#: src/theme-parser.c:3853
+msgid "<description> specified twice for this theme"
+msgstr "<description> especificado duas vezes para este tema"
+
+#: src/theme-parser.c:4055
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr "Falha ao ler tema de ficheiro %s: %s\n"
+
+#: src/theme-parser.c:4110
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "Ficheiro de tema %s não continha um elemento raiz <metacity_theme>"
 
 #: src/theme.c:350
-msgid "bottom"
-msgstr ""
+msgid "top"
+msgstr "topo"
 
 #: src/theme.c:352
-msgid "left"
-msgstr ""
+msgid "bottom"
+msgstr "base"
 
 #: src/theme.c:354
-msgid "right"
-msgstr ""
+msgid "left"
+msgstr "esquerda"
 
-#: src/theme.c:368
+#: src/theme.c:356
+msgid "right"
+msgstr "direita"
+
+#: src/theme.c:370
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "geometria de moldura não especifica dimensão \"%s\""
 
-#: src/theme.c:387
+#: src/theme.c:389
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "geometria de moldura não especifica dimensão \"%s\" para margem \"%s\""
 
-#: src/theme.c:738
+#: src/theme.c:743
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Gradientes deverão ter pelo menos duas cores"
 
-#: src/theme.c:828
+#: src/theme.c:833
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"Especificação de cor GTK tem de ter o estado em parentesis rectos, por ex. "
+"gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de parsear \"%s\""
 
-#: src/theme.c:842
+#: src/theme.c:847
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"Especificação de cor GTK tem de ter um parentesis recto de fecho após o estado, "
+"por ex. gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de parsear \"%s\""
 
-#: src/theme.c:853
+#: src/theme.c:858
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Incapaz de compreender o estado \"%s\" na especificação de cor"
 
-#: src/theme.c:866
+#: src/theme.c:871
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Incapaz de compreender componente de cor \"%s\" na especificação de cor"
 
-#: src/theme.c:896
+#: src/theme.c:901
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"Formato de mistura é \"blend/bg_color/fg_color/alpha\", \"%s\" não cumpre "
+"o formato"
 
-#: src/theme.c:907
+#: src/theme.c:912
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Incapaz de parsear o valor alfa \"%s\" na mistura de cor"
 
-#: src/theme.c:917
+#: src/theme.c:922
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Valor alfa \"%s\" na mistura de cor não está entre 0.0 e 1.0"
 
-#: src/theme.c:956
-#, fuzzy, c-format
+#: src/theme.c:961
+#, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Incapaz de criar directório '%s': %s\n"
+msgstr "Incapaz de parsear cor \"%s\""
 
-#: src/theme.c:1206
+#: src/theme.c:1211
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Expressão de coordenada contém caracter '%s' que não é permitido"
 
-#: src/theme.c:1233
+#: src/theme.c:1238
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"Expressão de coordenada contém número decimal '%s' que não pode ser parseado"
 
-#: src/theme.c:1247
+#: src/theme.c:1252
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
+"Expressão de coordenada contém número inteiro '%s' que não pode ser parseado"
 
-#: src/theme.c:1314
+#: src/theme.c:1319
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Expressão de coordenada contém operador desconhecido no início deste texto: "
+"\"%s\""
 
-#: src/theme.c:1371
+#: src/theme.c:1376
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Expressão de coordenada está vazia ou não foi compreendida"
 
-#: src/theme.c:1510 src/theme.c:1520 src/theme.c:1554
+#: src/theme.c:1515 src/theme.c:1525 src/theme.c:1559
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Expressão de coordenada resulta em divisão por zero"
 
-#: src/theme.c:1562
+#: src/theme.c:1567
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
+"Expressão de coordenada tenta utilizar operador mod num númeor decimal"
 
-#: src/theme.c:1619
+#: src/theme.c:1624
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"Expressão de coordenada tem um operador \"%s\" onde era esperado um operando"
 
-#: src/theme.c:1628
+#: src/theme.c:1633
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Expressão de coordenada tem um operando onde era esperado um operador"
 
-#: src/theme.c:1636
+#: src/theme.c:1641
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Expressão de coordenada terminou com um operador em vez de um operando"
 
-#: src/theme.c:1646
+#: src/theme.c:1651
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Expressão de coordenada tem o operador \"%c\" seguido do operador \"%c\" sem "
+"um operando entre os dois"
 
-#: src/theme.c:1765
+#: src/theme.c:1770
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Parseador de expressão de coordenada transbordou o buffer, o que é um bug "
+"do Metacity, mas tem a certeza de que precisa de uma expressão tão grande?"
 
-#: src/theme.c:1794
+#: src/theme.c:1799
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Expressão de coordenada tem um fecho de parentesis sem a respectiva abertura"
 
-#: src/theme.c:1857
+#: src/theme.c:1862
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Expressão de coordenada tem uma variável ou constante \"%s\" desconhecida"
 
-#: src/theme.c:1914
+#: src/theme.c:1919
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Expressão de coordenada tem uma abertura de parentesis sem o respectivo fecho"
 
-#: src/theme.c:1925
+#: src/theme.c:1930
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Expressão de coordenada não aparenta ter operadores nem operandos"
 
-#: src/theme.c:2169 src/theme.c:2191 src/theme.c:2212
+#: src/theme.c:2174 src/theme.c:2196 src/theme.c:2217
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Tema contém uma expressão \"%s\" que resultou num erro: %s\n"
 
-#: src/theme.c:3376
+#: src/theme.c:3472
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"qualquercoisa\"/> tem "
+"de ser especificado para este estilo de moldura"
 
-#: src/theme.c:3785 src/theme.c:3817
+#: src/theme.c:3881 src/theme.c:3913
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
+"Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"qualquercoisa\"/>"
 
-#: src/theme.c:3868
-#, fuzzy, c-format
-msgid "Failed to load theme \"%s\": %s"
-msgstr "Falha ao ler ficheiro de sessão gravado %s: %s\n"
+#: src/theme.c:3964
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Falha ao ler tema \"%s\": %s\n"
 
-#: src/theme.c:4013
+#: src/theme.c:4110
 #, c-format
 msgid "No <name> set for theme \"%s\""
-msgstr ""
+msgstr "Nenhum <name> definido para o tema \"%s\""
 
-#: src/theme.c:4020
+#: src/theme.c:4117
 #, c-format
 msgid "No <author> set for theme \"%s\""
-msgstr ""
+msgstr "Nenhum <author> definido para o tema \"%s\""
 
-#: src/theme.c:4027
+#: src/theme.c:4124
 #, c-format
 msgid "No <date> set for theme \"%s\""
-msgstr ""
+msgstr "Nenhum <date> definido para o tema \"%s\""
 
-#: src/theme.c:4034
+#: src/theme.c:4131
 #, c-format
 msgid "No <description> set for theme \"%s\""
-msgstr ""
+msgstr "Nenhum <description> definido para o tema \"%s\""
 
-#: src/theme.c:4041
+#: src/theme.c:4138
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
-msgstr ""
+msgstr "Nenhum <copyright> definido para o tema \"%s\""
 
-#: src/theme.c:4051
+#: src/theme.c:4148
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Nenhum estilo de moldura definido para tipo de janela \"%s\" no tema \"%s\", "
+"adicione um elemento <window type=\"%s\" style_set=\"qualquer\"/>"
 
-#: src/theme.c:4073
+#: src/theme.c:4170
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"qualquer\"/> tem de ser "
+"especificado para este tema"
 
-#: src/theme.c:4424 src/theme.c:4484
+#: src/theme.c:4539 src/theme.c:4599
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
+"Constante definida pelo utilizador tem de começar com uma maiúscula; \"%s\" não começa"
 
-#: src/theme.c:4432 src/theme.c:4492
+#: src/theme.c:4547 src/theme.c:4607
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Constante \"%s\" já foi definida"
 
 #: src/xprops.c:53
 #, c-format
