@@ -23,7 +23,7 @@ msgstr "\"%s\"を整数としてパースできませんでした"
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "文字列 \"%2$s\" 内の文字 \"%1$s\" に引きずられて理解できませんでした"
+msgstr "文字列 \"%2$s\" の末尾の \"%1$s\" が理解できませんでした"
 
 #: src/delete.c:125
 #, c-format
