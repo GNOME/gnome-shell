@@ -1,3 +1,8 @@
+2001-10-24  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_new): support initial
+	on-all-workspaces setting
+
 2001-10-22  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (meta_stack_sync_to_server): fix to keep desktop

@@ -427,13 +427,21 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   if (window->initial_workspace_set)
     {
-      space =
-        meta_display_get_workspace_by_screen_index (window->display,
-                                                    window->screen,
-                                                    window->initial_workspace);
-
-      if (space)
-        meta_workspace_add_window (space, window);
+      if (window->initial_workspace == 0xFFFFFFFF)
+        {
+          meta_workspace_add_window (window->screen->active_workspace, window);
+          window->on_all_workspaces = TRUE;
+        }
+      else
+        {
+          space =
+            meta_display_get_workspace_by_screen_index (window->display,
+                                                        window->screen,
+                                                        window->initial_workspace);
+          
+          if (space)
+            meta_workspace_add_window (space, window);
+        }
     }
   
   if (window->workspaces == NULL && 
