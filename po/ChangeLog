@@ -1,3 +1,7 @@
+2002-02-08  Christian Rose  <menthos@menthos.com>
+
+	* POTFILES.in: Added missing file.
+
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
 	* da.po: fix a missing newline that made build fail once po was
