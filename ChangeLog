@@ -1,3 +1,9 @@
+2002-09-05  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in (ALL_LINGUAS): remove 'ro' from ALL_LINGUAS, it
+	contained invalid XML and broke the build. No <> in the
+	translations of gconf keys!
+
 2002-09-04  Marius Andreiana <mandreiana@yahoo.com>
 
 	* configure.in: added 'ro' to ALL_LINGUAS
