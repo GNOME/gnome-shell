@@ -3,11 +3,13 @@
 
 #include "cltr.h"
 
-typedef struct ClutterPhotoGrid ClutterPhotoGrid;
+typedef struct CltrPhotoGrid CltrPhotoGrid;
 
-typedef struct ClutterPhotoGridCell ClutterPhotoGridCell;
+typedef struct CltrPhotoGridCell CltrPhotoGridCell;
 
-typedef enum ClutterPhotoGridState
+#define CLTR_PHOTO_GRID(w) (CltrPhotoGrid*)(w)
+
+typedef enum CltrPhotoGridState
 {
   CLTR_PHOTO_GRID_STATE_LOADING       ,
   CLTR_PHOTO_GRID_STATE_LOAD_COMPLETE ,
@@ -18,90 +20,44 @@ typedef enum ClutterPhotoGridState
   CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE   ,
   CLTR_PHOTO_GRID_STATE_SCROLLED_MOVE ,
 } 
-ClutterPhotoGridState;
+CltrPhotoGridState;
 
-typedef enum ClutterPhotoGridCellState
+typedef enum CltrPhotoGridCellState
 {
   CLTR_PHOTO_GRID_CELL_STATE_APPEARING,
   CLTR_PHOTO_GRID_CELL_STATE_STATIC,
 } 
-ClutterPhotoGridCellState;
+CltrPhotoGridCellState;
 
 
-struct ClutterPhotoGridCell
-{
-  Pixbuf      *pixb;
-  float        angle;
-  CltrTexture *texture;
-  gint         anim_step;
-
-  ClutterPhotoGridCellState state;
-};
-
-struct ClutterPhotoGrid
-{
-  /* XXX should be base widget stuff  */
-  int            x,y;
-  int            width;
-  int            height;
-  ClutterWindow *parent;
-
-  /* ****** */
-
-  gchar         *img_path;
-
-  int            n_rows;
-  int            n_cols;
-  int            row_offset; 	/* for scrolling */
-
-  int            cell_width;
-  int            cell_height;
-
-  GList         *cells_tail;
-  GList         *cell_active;
-
-  /* animation / zoom etc stuff  */
-
-  int            anim_n_steps, anim_step;
-
-  float          zoom_min, zoom_max, zoom_step;
-
-  float          view_min_x, view_max_x, view_min_y, view_max_y; 
-
-  float          scroll_dist;
-
-  ClutterPhotoGridState  state;
-
-  int                    scroll_state, scroll_step; /* urg */
-
-};
-
-ClutterPhotoGridCell*
-cltr_photo_grid_cell_new(ClutterPhotoGrid *grid,
+CltrPhotoGridCell*
+cltr_photo_grid_cell_new(CltrPhotoGrid *grid,
 			 Pixbuf           *pixb,
 			 const gchar      *filename);
 
 void
-cltr_photo_grid_append_cell(ClutterPhotoGrid     *grid,
-			    ClutterPhotoGridCell *cell);
+cltr_photo_grid_append_cell(CltrPhotoGrid     *grid,
+			    CltrPhotoGridCell *cell);
 
 void
-cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
+cltr_photo_grid_navigate(CltrPhotoGrid *grid,
 			 CltrDirection     direction) ;
 
 void 				/* bleh badly named */
-cltr_photo_grid_activate_cell(ClutterPhotoGrid *grid);
+cltr_photo_grid_activate_cell(CltrPhotoGrid *grid);
 
 gpointer
 cltr_photo_grid_populate(gpointer data) ;
 
 void
-cltr_photo_grid_redraw(ClutterPhotoGrid *grid);
+cltr_photo_grid_redraw(CltrPhotoGrid *grid);
 
-ClutterPhotoGrid*
-cltr_photo_grid_new(ClutterWindow *win, 
+CltrWidget*
+cltr_photo_grid_new(int            width, 
+		    int            height,
 		    int            n_cols,
 		    int            n_rows,
-		    const gchar   *imgs_path);
+		    const gchar   *img_path);
+
 
 #endif

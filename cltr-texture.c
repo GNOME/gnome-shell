@@ -1,4 +1,5 @@
 #include "cltr-texture.h"
+#include "cltr-private.h"
 
 /* 
    IDEAS or less memory

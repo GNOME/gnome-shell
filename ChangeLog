@@ -1,3 +1,30 @@
+2005-04-03  mallum,,,  <mallum@openedhand.com>
+
+	* Makefile:
+	* cltr-core.c:
+	* cltr-core.h:
+	* cltr-events.c:
+	* cltr-events.h:
+	* cltr-photo-grid.c: (cltr_photo_grid_handle_xkeyevent),
+	(cltr_photo_grid_handle_xevent), (cltr_photo_grid_cell_new),
+	(cltr_photo_grid_append_cell), (ctrl_photo_grid_cell_to_coords),
+	(ctrl_photo_grid_get_zoomed_coords), (cell_is_offscreen),
+	(cltr_photo_grid_idle_cb), (cltr_photo_grid_navigate),
+	(cltr_photo_grid_activate_cell), (cltr_photo_grid_populate),
+	(cltr_photo_grid_paint), (cltr_photo_grid_show),
+	(cltr_photo_grid_new):
+	* cltr-photo-grid.h:
+	* cltr-private.h:
+	* cltr-texture.c:
+	* cltr-texture.h:
+	* cltr-widget.c:
+	* cltr-widget.h:
+	* cltr-window.c:
+	* cltr-window.h:
+	* cltr.c:
+	* cltr.h:
+	Add very basic initial toolkit infrastructure
+
 2005-03-31  mallum,,,  <mallum@openedhand.com>
 
 	* cltr-photo-grid.c: (cltr_photo_grid_append_cell),

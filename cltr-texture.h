@@ -3,6 +3,24 @@
 
 #include "cltr.h"
 
+typedef struct CltrTexture CltrTexture;
+
+struct CltrTexture
+{
+  Pixbuf *pixb;
+
+  int    width, height;
+
+  int     n_x_tiles, n_y_tiles;
+  int    *tile_x_position, *tile_x_size, *tile_x_waste;
+  int    *tile_y_position, *tile_y_size, *tile_y_waste;
+
+  GLuint *tiles;
+
+  gint    refcnt; 
+};
+
+
 CltrTexture*
 cltr_texture_new(Pixbuf *pixb);
 
