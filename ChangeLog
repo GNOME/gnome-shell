@@ -1,3 +1,9 @@
+2003-06-09  Rob Adams  <robadams@ucla.edu>
+
+	* src/metacity-dialog.c (warn_about_no_sm_support): install an
+	alarm to timeout the no-sm-dialog after 4 minutes of inactivity.
+	Patch from Ximian.  See #114789.
+
 2003-06-07  Rob Adams  <robadams@ucla.edu>
 
 	* src/window.c (meta_window_new): call meta_group_compute_group

@@ -236,6 +236,9 @@ warn_about_no_sm_support (char **lame_apps)
                     G_CALLBACK (gtk_main_quit),
                     NULL);
 
+  /* Wait 4 minutes then force quit, so we don't wait around all night */
+  g_timeout_add (4 * 60 * 1000, (GSourceFunc) gtk_main_quit, NULL);
+
   gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_CLOSE);     
   list = create_lame_apps_list (lame_apps);
 
