@@ -1,3 +1,8 @@
+2003-07-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme-viewer.c (run_theme_benchmark): also measure wall
+	clock time, and run over a number of window sizes.
+
 2003-07-15  Havoc Pennington  <hp@redhat.com>
 
 	* NEWS: update

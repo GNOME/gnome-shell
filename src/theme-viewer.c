@@ -44,9 +44,6 @@
 #define BUTTON_LAYOUT_COMBINATIONS ((MAX_BUTTONS_PER_CORNER+1)*(MAX_BUTTONS_PER_CORNER+1))
 #endif
 
-#define CLIENT_WIDTH 200
-#define CLIENT_HEIGHT 200
-
 enum
 {
   FONT_SIZE_SMALL,
@@ -57,11 +54,11 @@ enum
 
 static MetaTheme *global_theme = NULL;
 static GtkWidget *previews[META_FRAME_TYPE_LAST*FONT_SIZE_LAST + BUTTON_LAYOUT_COMBINATIONS] = { NULL, };
+static double milliseconds_to_draw_frame = 0.0;
 
 static void run_position_expression_tests (void);
 static void run_position_expression_timings (void);
-static void run_theme_benchmark (int client_width,
-                                 int client_height);
+static void run_theme_benchmark (void);
 
 
 static GtkItemFactoryEntry menu_items[] =
@@ -747,6 +744,20 @@ previews_of_button_layouts (void)
   return sw;
 }
 
+static GtkWidget*
+benchmark_summary (void)
+{
+  char *msg;
+  GtkWidget *label;
+  
+  msg = g_strdup_printf ("%g milliseconds to draw one window frame",
+                         milliseconds_to_draw_frame);
+  label = gtk_label_new (msg);
+  g_free (msg);
+
+  return label;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -797,7 +808,7 @@ main (int argc, char **argv)
            global_theme->name,
            (end - start) / (double) CLOCKS_PER_SEC);
 
-  run_theme_benchmark (CLIENT_WIDTH, CLIENT_HEIGHT);
+  run_theme_benchmark ();
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (window), 350, 350);
@@ -834,6 +845,11 @@ main (int argc, char **argv)
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
                             gtk_label_new ("Button Layouts"));
+
+  collection = benchmark_summary ();
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+                            collection,
+                            gtk_label_new ("Benchmark"));
   
   i = 0;
   while (i < (int) G_N_ELEMENTS (previews))
@@ -886,8 +902,7 @@ create_title_layout (GtkWidget *widget)
 }
 
 static void
-run_theme_benchmark (int client_width,
-                     int client_height)
+run_theme_benchmark (void)
 {
   GtkWidget* widget;
   GdkPixmap *pixmap;
@@ -902,9 +917,13 @@ run_theme_benchmark (int client_width,
   PangoLayout *layout;
   clock_t start;
   clock_t end;
+  GTimer *timer;
   int i;
   MetaButtonLayout button_layout;
 #define ITERATIONS 100
+  int client_width;
+  int client_height;
+  int inc;
   
   widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_realize (widget);
@@ -917,11 +936,6 @@ run_theme_benchmark (int client_width,
                                 &bottom_height,
                                 &left_width,
                                 &right_width);
-  
-  pixmap = gdk_pixmap_new (widget->window,
-                           client_width + left_width + right_width,
-                           client_height + top_height + bottom_height,
-                           -1);
   
   layout = create_title_layout (widget);
   
@@ -938,12 +952,27 @@ run_theme_benchmark (int client_width,
   button_layout.right_buttons[0] = META_BUTTON_FUNCTION_MINIMIZE;
   button_layout.right_buttons[1] = META_BUTTON_FUNCTION_MAXIMIZE;
   button_layout.right_buttons[2] = META_BUTTON_FUNCTION_CLOSE;
-  
+
+  timer = g_timer_new ();
   start = clock ();
 
+  client_width = 50;
+  client_height = 50;
+  inc = 1000 / ITERATIONS; /* Increment to grow width/height,
+                            * eliminates caching effects.
+                            */
+  
   i = 0;
   while (i < ITERATIONS)
     {
+      /* Creating the pixmap in the loop is right, since
+       * GDK does the same with its double buffering.
+       */
+      pixmap = gdk_pixmap_new (widget->window,
+                               client_width + left_width + right_width,
+                               client_height + top_height + bottom_height,
+                               -1);
+
       meta_theme_draw_frame (global_theme,
                              widget,
                              pixmap,
@@ -958,18 +987,28 @@ run_theme_benchmark (int client_width,
                              button_states,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
+
+      g_object_unref (G_OBJECT (pixmap));
+      
       ++i;
+      client_width += inc;
+      client_height += inc;
     }
 
   end = clock ();
+  g_timer_stop (timer);
 
-  g_print ("Drew %d frames for %dx%d clients in %g seconds (%g seconds per frame)\n",
-           ITERATIONS, client_width, client_height,
-           ((double)end - (double)start) / CLOCKS_PER_SEC,
-           ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
+  milliseconds_to_draw_frame = (g_timer_elapsed (timer, NULL) / (double) ITERATIONS) * 1000;
   
+  g_print ("Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n",
+           ITERATIONS,
+           ((double)end - (double)start) / CLOCKS_PER_SEC,
+           (((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS) * 1000,
+           g_timer_elapsed (timer, NULL),
+           milliseconds_to_draw_frame);
+
+  g_timer_destroy (timer);
   g_object_unref (G_OBJECT (layout));
-  g_object_unref (G_OBJECT (pixmap));
   gtk_widget_destroy (widget);
 
 #undef ITERATIONS
