@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-12-06 12:29-0700\n"
-"PO-Revision-Date: 2004-09-14 08:26+0700\n"
+"PO-Revision-Date: 2004-12-20 20:41+0700\n"
 "Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: Gnome-Vi <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -116,9 +116,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Không có lệnh %d nào được định nghĩa.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Không có lệnh %d nào được định nghĩa.\n"
+msgstr "Không có lệnh terminal nào được định nghĩa.\n"
 
 #: src/main.c:69
 msgid ""
@@ -688,7 +687,7 @@ msgstr "Chạy lệnh đã định nghĩa"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Chạy terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1653,19 +1652,13 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Phím nóng dùng để hiện menu chính của panel. Dạng thức tương tự như \"&lt;"
-"Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ "
-"hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;"
-"Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím "
-"nóng nào thực hiện hành động này."
+msgstr "Phím nóng dùng để gọi terminal. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -2760,12 +2753,12 @@ msgstr ""
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "giá trị x là %d, mong đợi giá trị %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "giá trị y là %d, mong đợi giá trị %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
