@@ -1,3 +1,10 @@
+2002-05-04  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (update_net_wm_type): correctly print things if the
+	type_atom is unset
+	(meta_window_new): with workarounds disabled, always allow 
+	self-placement for windows with PPosition or USPosition set.
+
 2002-05-03  Havoc Pennington  <hp@redhat.com>
 
 	* src/Makefile.am: fix for automake 1.5, patch from Tomasz Kloczko 

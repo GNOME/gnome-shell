@@ -572,30 +572,55 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
       meta_workspace_add_window (space, window);
     }
-  
-  /* Only accept USPosition on normal windows because the app is full
-   * of shit claiming the user set -geometry for a dialog or dock
-   */
-  if (window->type == META_WINDOW_NORMAL &&
-      (window->size_hints.flags & USPosition))
-    {
-      /* don't constrain with placement algorithm */
-      window->placed = TRUE;
-      meta_topic (META_DEBUG_PLACEMENT,
-                  "Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
-    }
 
-  /* Assume the app knows best how to place these. */
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_TOOLBAR ||
-      window->type == META_WINDOW_MENU ||
-      window->type == META_WINDOW_UTILITY)
+  if (meta_prefs_get_disable_workarounds ())
     {
-      if (window->size_hints.flags & PPosition)
+      switch (window->type)
+        {
+          /* Only accept USPosition on normal windows because the app is full
+           * of shit claiming the user set -geometry for a dialog or dock
+           */
+        case META_WINDOW_NORMAL:
+          if (window->size_hints.flags & USPosition)
+            {
+              /* don't constrain with placement algorithm */
+              window->placed = TRUE;
+              meta_topic (META_DEBUG_PLACEMENT,
+                          "Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
+            }
+          break;
+
+          /* Ignore even USPosition on dialogs, splashscreen */
+        case META_WINDOW_DIALOG:
+        case META_WINDOW_MODAL_DIALOG:
+        case META_WINDOW_SPLASHSCREEN:
+          break;
+          
+          /* Assume the app knows best how to place these. */
+        case META_WINDOW_DESKTOP:
+        case META_WINDOW_DOCK:
+        case META_WINDOW_TOOLBAR:
+        case META_WINDOW_MENU:
+        case META_WINDOW_UTILITY:
+          if (window->size_hints.flags & PPosition)
+            {
+              window->placed = TRUE;
+              meta_topic (META_DEBUG_PLACEMENT,
+                          "Not placing non-normal non-dialog window with PPosition set\n");
+            }
+          break;
+        }
+    }
+  else
+    {
+      /* workarounds enabled */
+      
+      if ((window->size_hints.flags & PPosition) ||
+          (window->size_hints.flags & USPosition))
         {
           window->placed = TRUE;
-          meta_verbose ("Not placing non-normal non-dialog window with PPosition set\n");
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Not placing window with PPosition or USPosition set\n");
         }
     }
   
@@ -4176,7 +4201,7 @@ update_role (MetaWindow *window)
     }
 
   meta_verbose ("Updated role of %s to '%s'\n",
-                window->desc, window->role ? window->role : "(null)");
+                window->desc, window->role ? window->role : "null");
 }
 
 static int
@@ -4324,10 +4349,13 @@ update_net_wm_type (MetaWindow *window)
     {
       char *str;
 
-      meta_error_trap_push (window->display);
-      str = XGetAtomName (window->display->xdisplay, window->type_atom);
-      if (meta_error_trap_pop (window->display))
-        str = NULL;
+      str = NULL;
+      if (window->type_atom != None)
+        {
+          meta_error_trap_push (window->display);
+          str = XGetAtomName (window->display->xdisplay, window->type_atom);
+          meta_error_trap_pop (window->display);
+        }
 
       meta_verbose ("Window %s type atom %s\n", window->desc,
                     str ? str : "(none)");
