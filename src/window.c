@@ -6315,61 +6315,78 @@ update_resize (MetaWindow *window,
 
 typedef struct
 {
-  XEvent prev_event;
-  gboolean done;
+  const XEvent *current_event;
   int count;
-} CompressEventData;
+  Time last_time;
+} EventScannerData;
 
 static Bool
-compress_event_predicate (Display  *display,
+find_last_time_predicate (Display  *display,
                           XEvent   *xevent,
                           XPointer  arg)
 {
-  CompressEventData *ced = (void*) arg;
-  
-  if (ced->done)
-    return False;
-  else if (ced->prev_event.type == xevent->type &&
-           ced->prev_event.xany.window == xevent->xany.window)
+  EventScannerData *esd = (void*) arg;
+
+  if (esd->current_event->type == xevent->type &&
+      esd->current_event->xany.window == xevent->xany.window)
     {
-      ced->count += 1;
-      return True;
+      esd->count += 1;
+      esd->last_time = xevent->xmotion.time;
     }
-  else if (xevent->type != Expose &&
-           xevent->type != ConfigureNotify &&
-           xevent->type != PropertyNotify)
-    {
-      /* Don't compress across most unrelated events, just to be safe */
-      ced->done = TRUE;
-      return False;
-    }
-  else
-    return False;
+
+  return False;
 }
 
-static void
-maybe_replace_with_newer_event (MetaWindow *window,
-                                XEvent     *event)
+static gboolean
+check_use_this_motion_notify (MetaWindow *window,
+                              XEvent     *event)
 {
-  XEvent new_event;
-  CompressEventData ced;
+  EventScannerData esd;
+  XEvent useless;
+
+  /* This code is copied from Owen's GDK code. */
   
-  /* Chew up all events of the same type on the same window */
-
-  ced.count = 0;
-  ced.done = FALSE;
-  ced.prev_event = *event;
-  while (XCheckIfEvent (window->display->xdisplay,
-                        &new_event,
-                        compress_event_predicate,
-                        (void*) &ced.prev_event))
-    ced.prev_event = new_event;
-
-  if (ced.count > 0)
+  if (window->display->grab_motion_notify_time != 0)
     {
-      meta_topic (META_DEBUG_RESIZING,
-                  "Compressed %d motion events\n", ced.count);
-      *event = ced.prev_event;
+      /* == is really the right test, but I'm all for paranoia */
+      if (window->display->grab_motion_notify_time <=
+          event->xmotion.time)
+        {
+          meta_topic (META_DEBUG_RESIZING,
+                      "Arrived at event with time %lu (waiting for %lu), using it\n",
+                      (unsigned long) event->xmotion.time,
+                      (unsigned long) window->display->grab_motion_notify_time);
+          window->display->grab_motion_notify_time = 0;
+          return TRUE;
+        }
+      else
+        return FALSE; /* haven't reached the saved timestamp yet */
+    }
+  
+  esd.current_event = event;
+  esd.count = 0;
+  esd.last_time = 0;
+
+  /* "useless" isn't filled in because the predicate never returns True */
+  XCheckIfEvent (window->display->xdisplay,
+                 &useless,
+                 find_last_time_predicate,
+                 (XPointer) &esd);
+
+  if (esd.count > 0)
+    meta_topic (META_DEBUG_RESIZING,
+                "Will skip %d motion events and use the event with time %lu\n",
+                esd.count, (unsigned long) esd.last_time);
+  
+  if (esd.last_time == 0)
+    return TRUE;
+  else
+    {
+      /* Save this timestamp, and ignore all motion notify
+       * until we get to the one with this stamp.
+       */
+      window->display->grab_motion_notify_time = esd.last_time;
+      return FALSE;
     }
 }
 
@@ -6443,21 +6460,23 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         {
           if (event->xmotion.root == window->screen->xroot)
             {
-              maybe_replace_with_newer_event (window, event);
-              update_move (window,
-                           event->xmotion.state,
-                           event->xmotion.x_root,
-                           event->xmotion.y_root);
+              if (check_use_this_motion_notify (window,
+                                                event))
+                update_move (window,
+                             event->xmotion.state,
+                             event->xmotion.x_root,
+                             event->xmotion.y_root);
             }
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           if (event->xmotion.root == window->screen->xroot)
             {
-              maybe_replace_with_newer_event (window, event);
-              update_resize (window,
-                             event->xmotion.x_root,
-                             event->xmotion.y_root);
+              if (check_use_this_motion_notify (window,
+                                                event))
+                update_resize (window,
+                               event->xmotion.x_root,
+                               event->xmotion.y_root);
             }
         }
       break;

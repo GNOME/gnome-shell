@@ -118,9 +118,16 @@ MetaWindow* meta_stack_get_above  (MetaStack  *stack,
 MetaWindow* meta_stack_get_below  (MetaStack  *stack,
                                    MetaWindow *window,
                                    gboolean    only_within_layer);
-MetaWindow* meta_stack_get_default_focus_window (MetaStack *stack,
-                                                 MetaWorkspace *workspace,
-                                                 MetaWindow    *not_this_one);
+
+MetaWindow* meta_stack_get_default_focus_window          (MetaStack     *stack,
+                                                          MetaWorkspace *workspace,
+                                                          MetaWindow    *not_this_one);
+MetaWindow* meta_stack_get_default_focus_window_at_point (MetaStack     *stack,
+                                                          MetaWorkspace *workspace,
+                                                          MetaWindow    *not_this_one,
+                                                          int            root_x,
+                                                          int            root_y);
+
 GList*      meta_stack_list_windows (MetaStack *stack,
                                      MetaWorkspace *workspace);
 				       

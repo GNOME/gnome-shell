@@ -2798,6 +2798,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
+  display->grab_motion_notify_time = 0;
 #ifdef HAVE_XSYNC
   display->grab_update_alarm = None;
 #endif

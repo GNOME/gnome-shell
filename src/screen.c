@@ -1220,6 +1220,66 @@ meta_screen_focus_top_window (MetaScreen *screen,
     }
 }
 
+void
+meta_screen_focus_mouse_window (MetaScreen  *screen,
+                                MetaWindow  *not_this_one)
+{
+  MetaWindow *window;
+  Window root_return, child_return;
+  int root_x_return, root_y_return;
+  int win_x_return, win_y_return;
+  unsigned int mask_return;
+  
+  if (not_this_one)
+    meta_topic (META_DEBUG_FOCUS,
+                "Focusing mouse window excluding %s\n", not_this_one->desc);
+
+  meta_error_trap_push (screen->display);
+  XQueryPointer (screen->display->xdisplay,
+                 screen->xroot,
+                 &root_return,
+                 &child_return,
+                 &root_x_return,
+                 &root_y_return,
+                 &win_x_return,
+                 &win_y_return,
+                 &mask_return);
+  meta_error_trap_pop (screen->display, TRUE);
+
+  window = meta_stack_get_default_focus_window_at_point (screen->stack,
+                                                         screen->active_workspace,
+                                                         not_this_one,
+                                                         root_x_return,
+                                                         root_y_return);
+
+  /* FIXME I'm a loser on the CurrentTime front */
+  if (window)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing mouse window %s\n", window->desc);
+
+      meta_window_focus (window, meta_display_get_current_time (screen->display));
+
+      /* Also raise the window if in click-to-focus */
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        meta_window_raise (window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "No mouse window to focus found\n");
+    }
+}
+
+void
+meta_screen_focus_default_window (MetaScreen *screen,
+                                  MetaWindow *not_this_one)
+{
+  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+    meta_screen_focus_top_window (screen, not_this_one);
+  else
+    meta_screen_focus_mouse_window (screen, not_this_one);
+}
+
 const MetaXineramaScreenInfo*
 meta_screen_get_xinerama_for_window (MetaScreen *screen,
 				     MetaWindow *window)

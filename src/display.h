@@ -245,6 +245,7 @@ struct _MetaDisplay
   MetaRectangle grab_current_window_pos;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
+  Time        grab_motion_notify_time;
 #ifdef HAVE_XSYNC
   /* alarm monitoring client's _METACITY_UPDATE_COUNTER */
   XSyncAlarm  grab_update_alarm;

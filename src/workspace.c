@@ -216,11 +216,8 @@ meta_workspace_activate (MetaWorkspace *workspace)
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
 
-  /* in mouse focus modes, this will probably get undone by an EnterNotify,
-   * but that's OK
-   */
-  meta_topic (META_DEBUG_FOCUS, "Focusing top window on new workspace\n");
-  meta_screen_focus_top_window (workspace->screen, NULL);
+  meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
+  meta_screen_focus_default_window (workspace->screen, NULL);
 }
 
 int

@@ -1,3 +1,23 @@
+2003-01-21  Havoc Pennington  <hp@pobox.com>
+
+        Fix for the "mangles focus window when switching workspaces 
+	and using mouse focus" bug
+	
+	* src/stack.c (meta_stack_get_default_focus_window_at_point): new
+	function
+
+	* src/screen.c (meta_screen_focus_mouse_window): new function
+	(meta_screen_focus_default_window): new function
+	
+	* src/workspace.c (meta_workspace_activate): use the 
+	new meta_screen_focus_default_window()
+
+2003-01-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_handle_mouse_grab_op_event): fix event
+	compression code to use GDK algorithm suggested by Owen, should be 
+	more efficient.
+
 2003-01-22  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "mn" to ALL_LINGUAS.

@@ -124,8 +124,12 @@ void          meta_screen_ensure_tab_popup    (MetaScreen                 *scree
 
 void          meta_screen_ensure_workspace_popup (MetaScreen *screen);
 
-void          meta_screen_focus_top_window    (MetaScreen                 *screen,
-                                               MetaWindow                 *not_this_one);
+void          meta_screen_focus_top_window     (MetaScreen                 *screen,
+                                                MetaWindow                 *not_this_one);
+void          meta_screen_focus_mouse_window   (MetaScreen                 *screen,
+                                                MetaWindow                 *not_this_one);
+void          meta_screen_focus_default_window (MetaScreen                 *screen,
+                                                MetaWindow                 *not_this_one);
 
 const MetaXineramaScreenInfo* meta_screen_get_current_xinerama (MetaScreen *screen);
 const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen *screen,
