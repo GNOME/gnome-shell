@@ -32,12 +32,13 @@ typedef struct _MetaStackOp MetaStackOp;
 /* These MUST be in the order of stacking */
 typedef enum
 {
-  META_LAYER_DESKTOP   = 0,
-  META_LAYER_BOTTOM    = 1,
-  META_LAYER_NORMAL    = 2,
-  META_LAYER_TOP       = 3,
-  META_LAYER_DOCK      = 4,
-  META_LAYER_LAST      = 5
+  META_LAYER_DESKTOP    = 0,
+  META_LAYER_BOTTOM     = 1,
+  META_LAYER_NORMAL     = 2,
+  META_LAYER_TOP        = 3,
+  META_LAYER_DOCK       = 4,
+  META_LAYER_FULLSCREEN = 5,
+  META_LAYER_LAST       = 6
 } MetaStackLayer;
 
 struct _MetaStack

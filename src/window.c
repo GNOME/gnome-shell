@@ -286,7 +286,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->calc_placement = FALSE;
   
   window->unmaps_pending = 0;
-
+  
   window->mwm_decorated = TRUE;
   window->mwm_has_close_func = TRUE;
   window->mwm_has_minimize_func = TRUE;
@@ -1287,7 +1287,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   int pos_dx;
   int pos_dy;
   int frame_size_dx;
-  int frame_size_dy;
+  int frame_size_dy;  
   
   {
     int oldx, oldy;
@@ -1297,7 +1297,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
                   is_configure_request ? " (configure request)" : "",
                   oldx, oldy, window->rect.width, window->rect.height);
   }  
-
+  
   if (window->frame)
     meta_frame_calc_geometry (window->frame,
                               &fgeom);
@@ -3817,6 +3817,13 @@ recalc_window_type (MetaWindow *window)
       window->wm_state_modal)
     window->type = META_WINDOW_MODAL_DIALOG;
 
+  if (window->type == META_WINDOW_NORMAL &&
+      !window->mwm_decorated &&
+      (window->rect.x == 0 && window->rect.y == 0 &&
+       window->rect.width == window->screen->width &&
+       window->rect.height == window->screen->height))
+    window->type = META_WINDOW_FULLSCREEN;
+  
   meta_verbose ("Calculated type %d for %s, old type %d\n",
                 window->type, window->desc, old_type);
 
@@ -3853,7 +3860,8 @@ recalc_window_features (MetaWindow *window)
   /* Semantic category overrides the MWM hints */
   
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_FULLSCREEN)
     {
       window->decorated = FALSE;
       window->has_close_func = FALSE;
@@ -3910,8 +3918,19 @@ constrain_size (MetaWindow *window,
 #define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
   
   /* Get the allowed size ranges, considering maximized, etc. */
-  fullw = window->screen->active_workspace->workarea.width;
-  fullh = window->screen->active_workspace->workarea.height;
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_FULLSCREEN)
+    {
+      fullw = window->screen->width;
+      fullh = window->screen->height;
+    }
+  else
+    {
+      fullw = window->screen->active_workspace->workarea.width;
+      fullh = window->screen->active_workspace->workarea.height;
+    }
+
   if (window->frame)
     {
       fullw -= fgeom->left_width + fgeom->right_width;

@@ -1,5 +1,14 @@
 2001-08-19  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c: add a "fullscreen" semantic type; if a window
+	requests the screen size exactly, and is undecorated, and is not a
+	desktop window, we consider it a fullscreen window and keep it on
+	top.
+
+	Totally untested.
+
+2001-08-19  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (set_supported_hint): we support _NET_WM_ICON
 
 	* src/wm-tester/main.c: add stuff to test _NET_WM_ICON

@@ -36,7 +36,8 @@ typedef enum
   META_WINDOW_DIALOG,
   META_WINDOW_MODAL_DIALOG,
   META_WINDOW_TOOLBAR,
-  META_WINDOW_MENU
+  META_WINDOW_MENU,
+  META_WINDOW_FULLSCREEN
 } MetaWindowType;
 
 struct _MetaWindow
@@ -116,7 +117,7 @@ struct _MetaWindow
   guint delete_window : 1;
   /* Globally active / No input */
   guint input : 1;
-
+  
   /* MWM hints about features of window */
   guint mwm_decorated : 1;
   guint mwm_has_close_func : 1;
