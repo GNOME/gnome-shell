@@ -94,7 +94,10 @@ static void handle_move_to_workspace  (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
-
+static void handle_raise_or_lower     (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 
 /* debug */
 static void handle_spew_mark          (MetaDisplay *display,
@@ -217,6 +220,7 @@ static const MetaKeyHandler window_handlers[] = {
     GINT_TO_POINTER (META_MOTION_UP) },
   { META_KEYBINDING_MOVE_WORKSPACE_DOWN, handle_move_to_workspace,
     GINT_TO_POINTER (META_MOTION_DOWN) },
+  { META_KEYBINDING_RAISE_OR_LOWER, handle_raise_or_lower, NULL},
   { NULL, NULL, NULL }
 };
 
@@ -1696,6 +1700,57 @@ handle_move_to_workspace  (MetaDisplay    *display,
     }  
 }
 
+static void 
+handle_raise_or_lower (MetaDisplay    *display,
+		       MetaWindow     *window,
+		       XEvent         *event,
+		       MetaKeyBinding *binding)
+{
+  /* Get window at pointer */
+
+  MetaScreen *screen;
+
+  screen = meta_display_screen_for_root (display, event->xbutton.root);
+  if (screen == NULL)
+    return;
+  
+  if (window)
+    {
+      MetaWindow *above = NULL;
+      
+      /* Check if top */
+      if (meta_stack_get_top (window->screen->stack) == window)
+	{
+	  meta_window_lower (window);
+	  return;
+	}
+      
+      /* else check if windows in same layer are intersecting it */
+      
+      above = meta_stack_get_above (window->screen->stack, window, TRUE); 
+
+      while (above)
+	{
+	  MetaRectangle tmp, win_rect, above_rect;
+
+	  meta_window_get_outer_rect (window, &win_rect);
+	  meta_window_get_outer_rect (above, &above_rect);
+	  
+	  /* Check if obscured */
+	  if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))
+	    {
+	      meta_window_raise (window);
+	      return;
+	    }
+	  
+	  above = meta_stack_get_above (window->screen->stack, above, TRUE); 
+	}
+
+      /* window is not obscured */
+      meta_window_lower (window);
+    }
+}
+
 static void
 handle_spew_mark (MetaDisplay    *display,
                   MetaWindow     *window,
@@ -1720,5 +1775,3 @@ meta_set_keybindings_disabled (gboolean setting)
                   "Ignoring keybindings disable message, not in debug mode\n");
     }
 }
-
-

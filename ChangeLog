@@ -1,5 +1,21 @@
 2002-05-28  Havoc Pennington  <hp@pobox.com>
 
+        Patch from Erwann Chenede for raise_or_lower keybinding
+	
+	* src/display.c, src/common.h: POINT_IN_RECT moved to a common
+	location, removed from here
+	(meta_rectangle_intersect): move here and make it public
+
+	* src/prefs.c: add raise_or_lower keybinding
+	
+	* src/stack.c (meta_stack_get_below, meta_stack_get_above): add an
+	arg to only get windows within the same layer
+
+	* src/keybindings.c (handle_raise_or_lower): add handling for a 
+	"raise window if obscured, else lower" keybinding
+
+2002-05-28  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_configure_request): handle CWStackMode
 	in configure requests
 	(meta_window_new): if a window is opened at 0,0 and screen size,

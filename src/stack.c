@@ -938,7 +938,8 @@ meta_stack_get_bottom (MetaStack  *stack)
 
 MetaWindow*
 meta_stack_get_above (MetaStack      *stack,
-                      MetaWindow     *window)
+                      MetaWindow     *window,
+                      gboolean        only_within_layer)
 {
   GList *link;
 
@@ -951,13 +952,16 @@ meta_stack_get_above (MetaStack      *stack,
 
   if (link->prev)
     return link->prev->data;
+  else if (only_within_layer)
+    return NULL;
   else
     return find_next_above_layer (stack, window->layer);
 }
 
 MetaWindow*
 meta_stack_get_below (MetaStack      *stack,
-                      MetaWindow     *window)
+                      MetaWindow     *window,
+                      gboolean        only_within_layer)
 {
   GList *link;
 
@@ -970,6 +974,8 @@ meta_stack_get_below (MetaStack      *stack,
 
   if (link->next)
     return link->next->data;
+  else if (only_within_layer)
+    return NULL;
   else
     return find_prev_below_layer (stack, window->layer);
 }                               

@@ -690,6 +690,33 @@ you set
       </locale>
     </schema>
 
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/raise_or_lower</key>
+      <applyto>/apps/metacity/window_keybindings/raise_or_lower</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Raise window if obscured, lowers it otherwise</short>
+         <long>
+            This keybinding changes whether a window is above or below
+            other windows. If the window is covered by another window, it raises
+            the window above other windows. If the window is already fully visible, 
+            it lowers the window below other windows.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
     <!-- Global Keybindings -->
 
 
@@ -1178,7 +1205,6 @@ you set
          </long>
       </locale>
     </schema>
-
 
     <!-- Not used and/or crackrock -->
 

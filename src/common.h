@@ -151,6 +151,12 @@ typedef enum
 #define META_PRIORITY_PREFS_NOTIFY   (G_PRIORITY_DEFAULT_IDLE + 10)
 #define META_PRIORITY_WORK_AREA_HINT (G_PRIORITY_DEFAULT_IDLE + 15)
 
+#define POINT_IN_RECT(xcoord, ycoord, rect) \
+ ((xcoord) >= (rect).x &&                   \
+  (xcoord) <  ((rect).x + (rect).width) &&  \
+  (ycoord) >= (rect).y &&                   \
+  (ycoord) <  ((rect).y + (rect).height))
+
 #endif
 
 

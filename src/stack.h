@@ -93,12 +93,15 @@ void       meta_stack_thaw      (MetaStack      *stack);
 MetaWindow* meta_stack_get_top    (MetaStack  *stack);
 MetaWindow* meta_stack_get_bottom (MetaStack  *stack);
 MetaWindow* meta_stack_get_above  (MetaStack  *stack,
-                                   MetaWindow *window);
+                                   MetaWindow *window,
+                                   gboolean    only_within_layer);
 MetaWindow* meta_stack_get_below  (MetaStack  *stack,
-                                   MetaWindow *window);
+                                   MetaWindow *window,
+                                   gboolean    only_within_layer);
 MetaWindow* meta_stack_get_default_focus_window (MetaStack *stack,
                                                  MetaWorkspace *workspace,
                                                  MetaWindow    *not_this_one);
+				       
 
 /* -1 if a < b, etc. */
 int         meta_stack_windows_cmp  (MetaStack  *stack,

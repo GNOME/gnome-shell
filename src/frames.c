@@ -1596,12 +1596,6 @@ control_rect (MetaFrameControl control,
   return rect;
 }
 
-#define POINT_IN_RECT(xcoord, ycoord, rect) \
- ((xcoord) >= (rect).x &&                   \
-  (xcoord) <  ((rect).x + (rect).width) &&  \
-  (ycoord) >= (rect).y &&                   \
-  (ycoord) <  ((rect).y + (rect).height))
-
 #define RESIZE_EXTENDS 15
 static MetaFrameControl
 get_control (MetaFrames *frames,

@@ -318,4 +318,8 @@ MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
 
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
+gboolean meta_rectangle_intersect (MetaRectangle *src1,
+                                   MetaRectangle *src2,
+                                   MetaRectangle *dest);
+
 #endif
