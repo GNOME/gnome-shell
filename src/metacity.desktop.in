@@ -1,6 +1,11 @@
 [Desktop Entry]
 _Name=Metacity
 Exec=metacity
+# name of loadable control center module
+X-GNOME-WMSettingsModule=metacity
+# name we put on the WM spec check window
+X-GNOME-WMName=Metacity
+# back compat only 
 X-GnomeWMSettingsLibrary=metacity
 
 [Window Manager]

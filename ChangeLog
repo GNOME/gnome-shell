@@ -1,5 +1,20 @@
 2002-10-26  Havoc Pennington  <hp@pobox.com>
 
+	* src/iconcache.c: include config.h
+
+	* src/group.c: include config.h
+
+	* src/frame.c: include config.h
+
+	* src/core.c: include config.h so it doesn't crash all over the
+	place due to #ifdef HAVE_STARTUP_NOTIFICATION
+
+	* src/util.c (meta_print_backtrace): export from this file
+
+	* src/main.c (log_handler): print backtrace here
+
+2002-10-26  Havoc Pennington  <hp@pobox.com>
+
 	* src/wm-tester/main.c (evil_timeout): make windows randomly
 	transient for each other http://bugzilla.gnome.org/show_bug.cgi?id=96928
 

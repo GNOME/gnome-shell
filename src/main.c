@@ -55,6 +55,7 @@ log_handler (const gchar   *log_domain,
              gpointer       user_data)
 {
   meta_warning ("Log level %d: %s\n", log_level, message);
+  meta_print_backtrace ();
 }
 
 static void

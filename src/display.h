@@ -22,6 +22,10 @@
 #ifndef META_DISPLAY_H
 #define META_DISPLAY_H
 
+#ifndef PACKAGE
+#error "config.h not included"
+#endif
+
 #include <glib.h>
 #include <X11/Xlib.h>
 #include "eventqueue.h"
@@ -153,10 +157,6 @@ struct _MetaDisplay
   Atom atom_net_wm_action_close;
   Atom atom_net_wm_state_above;
   Atom atom_net_wm_state_below;
-
-#ifdef HAVE_STARTUP_NOTIFICATION
-  SnDisplay *sn_display;
-#endif
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -258,6 +258,15 @@ struct _MetaDisplay
 
   /* Managed by group.c */
   GHashTable *groups_by_leader;
+
+  
+#ifdef HAVE_STARTUP_NOTIFICATION
+  /* This is at the end in case someone doesn't include config.h before this file
+   * the results won't be catastrophic
+   */
+  SnDisplay *sn_display;
+#endif
+
 };
 
 gboolean      meta_display_open                (const char  *name);

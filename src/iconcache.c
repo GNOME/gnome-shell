@@ -19,6 +19,7 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "iconcache.h"
 #include "ui.h"
 #include "errors.h"
