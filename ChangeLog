@@ -1,5 +1,10 @@
 2002-05-26  Havoc Pennington  <hp@pobox.com>
 
+	* src/themes/Atlanta/metacity-theme-1.xml: totally drop the
+	borders off of maximized windows.
+
+2002-05-26  Havoc Pennington  <hp@pobox.com>
+
         Patch from Gaute Lindkvist so you can't move the panel or desktop
 	to only one workspace.
 	

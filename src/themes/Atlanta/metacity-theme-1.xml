@@ -23,11 +23,11 @@
 
 <!-- strip borders off the normal geometry -->
 <frame_geometry name="normal_small_borders" parent="normal">
-  <distance name="left_width" value="4"/>
-  <distance name="right_width" value="4"/>
-  <distance name="bottom_height" value="5"/>
-  <distance name="left_titlebar_edge" value="4"/>
-  <distance name="right_titlebar_edge" value="4"/>
+  <distance name="left_width" value="0"/>
+  <distance name="right_width" value="0"/>
+  <distance name="bottom_height" value="0"/>
+  <distance name="left_titlebar_edge" value="0"/>
+  <distance name="right_titlebar_edge" value="0"/>
 </frame_geometry>
 
 <frame_geometry name="utility" title_scale="xx-small">
