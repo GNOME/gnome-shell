@@ -117,7 +117,6 @@ typedef enum
   META_GRAB_OP_CLICKING_MENU
 } MetaGrabOp;
 
-
 typedef enum
 {
   META_CURSOR_DEFAULT,
@@ -168,6 +167,32 @@ typedef enum
   META_VIRTUAL_MOD4_MASK     = 1 << 13,
   META_VIRTUAL_MOD5_MASK     = 1 << 14
 } MetaVirtualModifier;
+
+
+/* Function a window button can have.  Note, you can't add stuff here
+ * without extending the theme format to draw a new function and
+ * breaking all existing themes.
+ */
+typedef enum
+{
+  META_BUTTON_FUNCTION_MENU,
+  META_BUTTON_FUNCTION_MINIMIZE,
+  META_BUTTON_FUNCTION_MAXIMIZE,
+  META_BUTTON_FUNCTION_CLOSE,
+  META_BUTTON_FUNCTION_LAST
+} MetaButtonFunction;
+
+#define MAX_BUTTONS_PER_CORNER META_BUTTON_FUNCTION_LAST
+
+typedef struct _MetaButtonLayout MetaButtonLayout;
+struct _MetaButtonLayout
+{
+  /* buttons in the group on the left side */
+  MetaButtonFunction left_buttons[MAX_BUTTONS_PER_CORNER];
+  
+  /* buttons in the group on the right side */
+  MetaButtonFunction right_buttons[MAX_BUTTONS_PER_CORNER];
+};
 
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32

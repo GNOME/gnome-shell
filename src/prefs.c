@@ -799,6 +799,10 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_COMMANDS:
       return "COMMANDS";
+
+    case META_PREF_BUTTON_LAYOUT:
+      return "BUTTON_LAYOUT";
+      break;
     }
 
   return "(unknown)";
@@ -1140,6 +1144,27 @@ meta_prefs_get_gconf_key_for_command (int i)
   key = g_strdup_printf (KEY_COMMAND_PREFIX"%d", i + 1);
   
   return key;
+}
+
+void
+meta_prefs_get_button_layout (MetaButtonLayout *button_layout)
+{
+  /* FIXME */
+  int i;
+
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      button_layout->left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      button_layout->right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      ++i;
+    }
+  
+  button_layout->left_buttons[0] = META_BUTTON_FUNCTION_MENU;
+
+  button_layout->right_buttons[0] = META_BUTTON_FUNCTION_MINIMIZE;
+  button_layout->right_buttons[1] = META_BUTTON_FUNCTION_MAXIMIZE;
+  button_layout->right_buttons[2] = META_BUTTON_FUNCTION_CLOSE;
 }
 
 void

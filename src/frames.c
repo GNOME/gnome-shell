@@ -73,7 +73,9 @@ static void meta_frames_ensure_layout (MetaFrames      *frames,
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
                                                Window      xwindow);
 
-static void meta_frames_font_changed (MetaFrames *frames);
+static void meta_frames_font_changed          (MetaFrames *frames);
+static void meta_frames_button_layout_changed (MetaFrames *frames);
+
 
 static GdkRectangle*    control_rect (MetaFrameControl   control,
                                       MetaFrameGeometry *fgeom);
@@ -161,12 +163,19 @@ unsigned_long_hash (gconstpointer v)
 }
 
 static void
-font_changed_callback (MetaPreference pref,
-		       void          *data)
+prefs_changed_callback (MetaPreference pref,
+                        void          *data)
 {
-  if (pref == META_PREF_TITLEBAR_FONT)
+  switch (pref)
     {
+    case META_PREF_TITLEBAR_FONT:
       meta_frames_font_changed (META_FRAMES (data));
+      break;
+    case META_PREF_BUTTON_LAYOUT:
+      meta_frames_button_layout_changed (META_FRAMES (data));
+      break;
+    default:
+      break;
     }
 }
 
@@ -185,7 +194,7 @@ meta_frames_init (MetaFrames *frames)
 
   gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
 
-  meta_prefs_add_listener (font_changed_callback, frames);
+  meta_prefs_add_listener (prefs_changed_callback, frames);
 }
 
 static void
@@ -237,7 +246,7 @@ meta_frames_finalize (GObject *object)
   
   frames = META_FRAMES (object);
 
-  meta_prefs_remove_listener (font_changed_callback, frames);
+  meta_prefs_remove_listener (prefs_changed_callback, frames);
   
   g_hash_table_destroy (frames->text_heights);
   
@@ -290,6 +299,31 @@ meta_frames_font_changed (MetaFrames *frames)
   g_hash_table_foreach (frames->frames,
                         queue_recalc_func, frames);
 
+}
+
+static void
+queue_draw_func (gpointer key, gpointer value, gpointer data)
+{
+  MetaUIFrame *frame;
+  MetaFrames *frames;
+
+  frames = META_FRAMES (data);
+  frame = value;
+
+  /* If a resize occurs it will cause a redraw, but the
+   * resize may not actually be needed so we always redraw
+   * in case of color change.
+   */
+  gtk_style_set_background (GTK_WIDGET (frames)->style,
+                            frame->window, GTK_STATE_NORMAL);
+  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+}
+
+static void
+meta_frames_button_layout_changed (MetaFrames *frames)
+{
+  g_hash_table_foreach (frames->frames,
+                        queue_draw_func, frames);
 }
 
 static void
@@ -394,6 +428,7 @@ meta_frames_calc_geometry (MetaFrames        *frames,
   int width, height;
   MetaFrameFlags flags;
   MetaFrameType type;
+  MetaButtonLayout button_layout;
   
   meta_core_get_client_size (gdk_display, frame->xwindow,
                              &width, &height);
@@ -402,12 +437,15 @@ meta_frames_calc_geometry (MetaFrames        *frames,
   type = meta_core_get_frame_type (gdk_display, frame->xwindow);
 
   meta_frames_ensure_layout (frames, frame);
+
+  meta_prefs_get_button_layout (&button_layout);
   
   meta_theme_calc_geometry (meta_theme_get_current (),
                             type,
                             frame->text_height,
                             flags,
                             width, height,
+                            &button_layout,
                             fgeom);
 }
 
@@ -1524,6 +1562,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   GdkRectangle *areas;
   int n_areas;
   int screen_width, screen_height;
+  MetaButtonLayout button_layout;
   
   widget = GTK_WIDGET (frames);
 
@@ -1656,10 +1695,12 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   /* Now draw remaining portion of region */
   gdk_region_get_rectangles (edges, &areas, &n_areas);
+
+  meta_prefs_get_button_layout (&button_layout);
   
   i = 0;
   while (i < n_areas)
-    {      
+    {
       if (GDK_IS_WINDOW (drawable))
         gdk_window_begin_paint_rect (drawable, &areas[i]);
       
@@ -1673,6 +1714,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                              w, h,
                              frame->layout,
                              frame->text_height,
+                             &button_layout,
                              button_states,
                              mini_icon, icon);
 

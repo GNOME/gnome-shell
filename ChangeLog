@@ -1,3 +1,28 @@
+2002-10-03  Havoc Pennington  <hp@pobox.com>
+
+        Button-reordering patch. Has all the code except actually
+	installing a gconf schema and reading the gconf key in prefs.c.
+	metacity-theme-viewer displays the button layouts for testing 
+	themes.
+	
+	* src/preview-widget.c (meta_preview_size_request): make up a
+	width/height if no child widget
+
+	* src/prefs.c (meta_prefs_get_button_layout): new function
+
+	* src/frames.c: get the button layout from prefs and 
+	use it when drawing
+
+	* src/theme.c (meta_frame_layout_calc_geometry): enhance to be
+	able to lay out buttons in different arrangements
+	(button_rect): draw the new button background rectangles
+	(meta_theme_draw_frame): require a button layout argument
+	(meta_theme_calc_geometry): pass in the button layout
+
+	* src/preview-widget.h: mod to handle button layouts
+
+	* src/theme-viewer.c: mod to handle button layouts
+	
 2002-10-03  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: 2.4.2

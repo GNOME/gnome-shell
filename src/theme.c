@@ -390,20 +390,100 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
     }
 }
 
-void
-meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
-                                 int                    text_height,
-                                 MetaFrameFlags         flags,
-                                 int                    client_width,
-                                 int                    client_height,
-                                 MetaFrameGeometry     *fgeom)
+static GdkRectangle*
+rect_for_function (MetaFrameGeometry *fgeom,
+                   MetaFrameFlags     flags,
+                   MetaButtonFunction function)
 {
+  switch (function)
+    {
+    case META_BUTTON_FUNCTION_MENU:
+      if (flags & META_FRAME_ALLOWS_MENU)
+        return &fgeom->menu_rect;
+      else
+        return NULL;
+    case META_BUTTON_FUNCTION_MINIMIZE:
+      if (flags & META_FRAME_ALLOWS_MINIMIZE)
+        return &fgeom->min_rect;
+      else
+        return NULL;
+    case META_BUTTON_FUNCTION_MAXIMIZE:
+      if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+        return &fgeom->max_rect;
+      else
+        return NULL;
+    case META_BUTTON_FUNCTION_CLOSE:
+      if (flags & META_FRAME_ALLOWS_DELETE)
+        return &fgeom->close_rect;
+      else
+        return NULL;
+    case META_BUTTON_FUNCTION_LAST:
+      return NULL;
+    }
+
+  return NULL;
+}
+
+static gboolean
+strip_button (GdkRectangle *func_rects[MAX_BUTTONS_PER_CORNER],
+              GdkRectangle *bg_rects[MAX_BUTTONS_PER_CORNER],
+              int          *n_rects,
+              GdkRectangle *to_strip)
+{
+  int i;
+  
+  i = 0;
+  while (i < *n_rects)
+    {
+      if (func_rects[i] == to_strip)
+        {
+          *n_rects -= 1;
+
+          /* shift the other rects back in the array */
+          while (i < *n_rects)
+            {
+              func_rects[i] = func_rects[i+1];
+              bg_rects[i] = bg_rects[i+1];
+
+              ++i;
+            }
+
+          func_rects[i] = NULL;
+          bg_rects[i] = NULL;
+          
+          return TRUE;
+        }
+
+      ++i;
+    }
+
+  return FALSE; /* did not strip anything */
+}
+
+void
+meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
+                                 int                     text_height,
+                                 MetaFrameFlags          flags,
+                                 int                     client_width,
+                                 int                     client_height,
+                                 const MetaButtonLayout *button_layout,
+                                 MetaFrameGeometry      *fgeom)
+{
+  int i, n_left, n_right;
   int x;
   int button_y;
   int title_right_edge;
   int width, height;
   int button_width, button_height;
   int min_size_for_rounding;
+  
+  /* the left/right rects in order; the max # of rects
+   * is the number of button functions
+   */
+  GdkRectangle *left_func_rects[MAX_BUTTONS_PER_CORNER];
+  GdkRectangle *right_func_rects[MAX_BUTTONS_PER_CORNER];
+  GdkRectangle *left_bg_rects[MAX_BUTTONS_PER_CORNER];
+  GdkRectangle *right_bg_rects[MAX_BUTTONS_PER_CORNER];
   
   meta_frame_layout_get_borders (layout, text_height,
                                  flags,
@@ -425,8 +505,6 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
   fgeom->left_titlebar_edge = layout->left_titlebar_edge;
   fgeom->right_titlebar_edge = layout->right_titlebar_edge;
 
-  x = width - layout->right_titlebar_edge;
-
   /* gcc warnings */
   button_width = -1;
   button_height = -1;
@@ -446,110 +524,202 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
       break;
     }
 
+  /* FIXME all this code sort of pretends that duplicate buttons
+   * with the same function are allowed, but that breaks the
+   * code in frames.c, so isn't really allowed right now.
+   * Would need left_close_rect, right_close_rect, etc.
+   */
+  
+  /* Init all button rects to 0, lame hack */
+  memset (ADDRESS_OF_BUTTON_RECTS (fgeom), '\0',
+          LENGTH_OF_BUTTON_RECTS);
+  
+  n_left = 0;
+  n_right = 0;
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      /* NULL all unused */
+      left_func_rects[i] = NULL;
+      right_func_rects[i] = NULL;
+
+      /* Try to fill in rects */
+      if (button_layout->left_buttons[i] != META_BUTTON_FUNCTION_LAST)
+        {
+          left_func_rects[n_left] = rect_for_function (fgeom, flags,
+                                                       button_layout->left_buttons[i]);
+          if (left_func_rects[n_left] != NULL)
+            ++n_left;
+        }
+      
+      if (button_layout->right_buttons[i] != META_BUTTON_FUNCTION_LAST)
+        {
+          right_func_rects[n_right] = rect_for_function (fgeom, flags,
+                                                         button_layout->right_buttons[i]);
+          if (right_func_rects[n_right] != NULL)
+            ++n_right;
+        }
+      
+      ++i;
+    }
+
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      left_bg_rects[i] = NULL;
+      right_bg_rects[i] = NULL;
+
+      ++i;
+    }
+  
+  i = 0;
+  while (i < n_left)
+    {
+      if (i == 0)
+        left_bg_rects[i] = &fgeom->left_left_background;
+      else if (i == (n_left - 1))
+        left_bg_rects[i] = &fgeom->left_right_background;
+      else
+        left_bg_rects[i] = &fgeom->left_middle_backgrounds[i-1];
+
+      ++i;
+    }
+
+  i = 0;
+  while (i < n_right)
+    {
+      if (i == 0)
+        right_bg_rects[i] = &fgeom->right_left_background;
+      else if (i == (n_right - 1))
+        right_bg_rects[i] = &fgeom->right_right_background;
+      else
+        right_bg_rects[i] = &fgeom->right_middle_backgrounds[i-1];
+
+      ++i;
+    }
+
+  /* Be sure buttons fit */
+  while (n_left > 0 || n_right > 0)
+    {
+      int space_used_by_buttons;
+      int space_available;
+
+      space_available = fgeom->width - layout->left_titlebar_edge - layout->right_titlebar_edge;
+      
+      space_used_by_buttons = 0;
+      
+      i = 0;
+      while (i < n_left)
+        {
+          space_used_by_buttons += button_width;
+
+          if (i != n_left)
+            space_used_by_buttons += layout->button_border.left + layout->button_border.right;
+          
+          ++i;
+        }
+
+      i = 0;
+      while (i < n_right)
+        {
+          space_used_by_buttons += button_width;
+
+          if (i != n_right)
+            space_used_by_buttons += layout->button_border.left + layout->button_border.right;
+          
+          ++i;
+        }
+
+      if (space_used_by_buttons <= space_available)
+        break; /* Everything fits, bail out */
+      
+      /* Otherwise we need to shave out a button. Shave
+       * min, max, close, then menu (menu is most useful);
+       * prefer the default button locations.
+       */
+      if (strip_button (left_func_rects, left_bg_rects,
+                        &n_left, &fgeom->min_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->min_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
+                             &n_left, &fgeom->max_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->max_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
+                             &n_left, &fgeom->close_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->close_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->menu_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
+                             &n_left, &fgeom->menu_rect))
+        continue;
+      else
+        {
+          meta_bug ("Could not find a button to strip. n_left = %d n_right = %d\n",
+                    n_left, n_right);
+        }
+    }
+  
   /* center buttons vertically */
   button_y = (fgeom->top_height -
               (button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top;
+
+  /* right edge of farthest-right button */
+  x = width - layout->right_titlebar_edge;
   
-  if ((flags & META_FRAME_ALLOWS_DELETE) &&
-      x >= 0)
+  i = n_right - 1;
+  while (i >= 0)
     {
-      fgeom->close_rect.x = x - layout->button_border.right - button_width;
-      fgeom->close_rect.y = button_y;
-      fgeom->close_rect.width = button_width;
-      fgeom->close_rect.height = button_height;
+      GdkRectangle *rect;
 
-      x = fgeom->close_rect.x - layout->button_border.left;
-    }
-  else
-    {
-      fgeom->close_rect.x = 0;
-      fgeom->close_rect.y = 0;
-      fgeom->close_rect.width = 0;
-      fgeom->close_rect.height = 0;
-    }
+      if (x < 0) /* if we go negative, leave the buttons we don't get to as 0-width */
+        break;
+      
+      rect = right_func_rects[i];
 
-  if ((flags & META_FRAME_ALLOWS_MAXIMIZE) &&
-      x >= 0)
-    {
-      fgeom->max_rect.x = x - layout->button_border.right - button_width;
-      fgeom->max_rect.y = button_y;
-      fgeom->max_rect.width = button_width;
-      fgeom->max_rect.height = button_height;
+      rect->x = x - layout->button_border.right - button_width;
+      rect->y = button_y;
+      rect->width = button_width;
+      rect->height = button_height;
 
-      x = fgeom->max_rect.x - layout->button_border.left;
-    }
-  else
-    {
-      fgeom->max_rect.x = 0;
-      fgeom->max_rect.y = 0;
-      fgeom->max_rect.width = 0;
-      fgeom->max_rect.height = 0;
+      *(right_bg_rects[i]) = *rect;
+      
+      x = rect->x - layout->button_border.left;
+      
+      --i;
     }
 
-  if ((flags & META_FRAME_ALLOWS_MINIMIZE) &&
-      x >= 0)
-    {
-      fgeom->min_rect.x = x - layout->button_border.right - button_width;
-      fgeom->min_rect.y = button_y;
-      fgeom->min_rect.width = button_width;
-      fgeom->min_rect.height = button_height;
-
-      x = fgeom->min_rect.x - layout->button_border.left;
-    }
-  else
-    {
-      fgeom->min_rect.x = 0;
-      fgeom->min_rect.y = 0;
-      fgeom->min_rect.width = 0;
-      fgeom->min_rect.height = 0;
-    }
-
+  /* save right edge of titlebar for later use */
   title_right_edge = x - layout->title_border.right;
 
-  /* Now x changes to be position from the left */
+  /* Now x changes to be position from the left and we go through
+   * the left-side buttons
+   */
   x = layout->left_titlebar_edge;
 
-  if (flags & META_FRAME_ALLOWS_MENU)
+  i = 0;
+  while (i < n_left)
     {
-      fgeom->menu_rect.x = x + layout->button_border.left;
-      fgeom->menu_rect.y = button_y;
-      fgeom->menu_rect.width = button_width;
-      fgeom->menu_rect.height = button_height;
-
-      x = fgeom->menu_rect.x + fgeom->menu_rect.width + layout->button_border.right;
-    }
-  else
-    {
-      fgeom->menu_rect.x = 0;
-      fgeom->menu_rect.y = 0;
-      fgeom->menu_rect.width = 0;
-      fgeom->menu_rect.height = 0;
-    }
-
-  /* If menu overlaps close button, then the menu wins since it
-   * lets you perform any operation including close
-   */
-  if (fgeom->close_rect.width > 0 &&
-      fgeom->close_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->close_rect.width = 0;
-      fgeom->close_rect.height = 0;
-    }
-
-  /* Check for maximize overlap */
-  if (fgeom->max_rect.width > 0 &&
-      fgeom->max_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->max_rect.width = 0;
-      fgeom->max_rect.height = 0;
-    }
-
-  /* Check for minimize overlap */
-  if (fgeom->min_rect.width > 0 &&
-      fgeom->min_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->min_rect.width = 0;
-      fgeom->min_rect.height = 0;
+      GdkRectangle *rect;
+      
+      rect = left_func_rects[i];
+      
+      rect->x = x + layout->button_border.left;
+      rect->y = button_y;
+      rect->width = button_width;
+      rect->height = button_height;
+      
+      x = rect->x + rect->width + layout->button_border.right;
+      
+      ++i;
     }
 
   /* We always fill as much vertical space as possible with title rect,
@@ -3594,38 +3764,50 @@ meta_frame_style_validate (MetaFrameStyle    *style,
 }
 
 static void
-button_rect (MetaButtonType type,
+button_rect (MetaButtonType           type,
              const MetaFrameGeometry *fgeom,
-             GdkRectangle *rect)
+             GdkRectangle            *rect)
 {
   switch (type)
     {
+    case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
+      *rect = fgeom->left_left_background;
+      break;
+
+    case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
+      /* FIXME */
+      break;
+      
+    case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
+      *rect = fgeom->left_right_background;
+      break;
+      
+    case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
+      *rect = fgeom->right_left_background;
+      break;
+      
+    case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
+      /* FIXME */
+      break;
+      
     case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
+      *rect = fgeom->right_right_background;
+      break;
+      
     case META_BUTTON_TYPE_CLOSE:
       *rect = fgeom->close_rect;
       break;
 
-    case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
     case META_BUTTON_TYPE_MAXIMIZE:
       *rect = fgeom->max_rect;
       break;
 
-    case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
     case META_BUTTON_TYPE_MINIMIZE:
       *rect = fgeom->min_rect;
       break;
 
-    case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
     case META_BUTTON_TYPE_MENU:
       *rect = fgeom->menu_rect;
-      break;
-
-    case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
-    case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
-      rect->x = 0;
-      rect->y = 0;
-      rect->width = 0;
-      rect->height = 0;
       break;
       
     case META_BUTTON_TYPE_LAST:
@@ -4445,21 +4627,22 @@ meta_theme_get_title_scale (MetaTheme     *theme,
 }
 
 void
-meta_theme_draw_frame (MetaTheme          *theme,
-                       GtkWidget          *widget,
-                       GdkDrawable        *drawable,
-                       const GdkRectangle *clip,
-                       int                 x_offset,
-                       int                 y_offset,
-                       MetaFrameType       type,
-                       MetaFrameFlags      flags,
-                       int                 client_width,
-                       int                 client_height,
-                       PangoLayout        *title_layout,
-                       int                 text_height,
-                       MetaButtonState     button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf          *mini_icon,
-                       GdkPixbuf          *icon)
+meta_theme_draw_frame (MetaTheme              *theme,
+                       GtkWidget              *widget,
+                       GdkDrawable            *drawable,
+                       const GdkRectangle     *clip,
+                       int                     x_offset,
+                       int                     y_offset,
+                       MetaFrameType           type,
+                       MetaFrameFlags          flags,
+                       int                     client_width,
+                       int                     client_height,
+                       PangoLayout            *title_layout,
+                       int                     text_height,
+                       const MetaButtonLayout *button_layout,
+                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                       GdkPixbuf              *mini_icon,
+                       GdkPixbuf              *icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameStyle *style;
@@ -4476,6 +4659,7 @@ meta_theme_draw_frame (MetaTheme          *theme,
                                    text_height,
                                    flags,
                                    client_width, client_height,
+                                   button_layout,
                                    &fgeom);  
 
   meta_frame_style_draw (style,
@@ -4562,13 +4746,14 @@ meta_theme_get_frame_borders (MetaTheme      *theme,
 }
 
 void
-meta_theme_calc_geometry (MetaTheme         *theme,
-                          MetaFrameType      type,
-                          int                text_height,
-                          MetaFrameFlags     flags,
-                          int                client_width,
-                          int                client_height,
-                          MetaFrameGeometry *fgeom)
+meta_theme_calc_geometry (MetaTheme              *theme,
+                          MetaFrameType           type,
+                          int                     text_height,
+                          MetaFrameFlags          flags,
+                          int                     client_width,
+                          int                     client_height,
+                          const MetaButtonLayout *button_layout,
+                          MetaFrameGeometry      *fgeom)
 {
   MetaFrameStyle *style;
 
@@ -4584,6 +4769,7 @@ meta_theme_calc_geometry (MetaTheme         *theme,
                                    text_height,
                                    flags,
                                    client_width, client_height,
+                                   button_layout,
                                    fgeom);
 }
 

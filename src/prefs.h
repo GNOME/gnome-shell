@@ -38,7 +38,8 @@ typedef enum
   META_PREF_WINDOW_KEYBINDINGS,
   META_PREF_SCREEN_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
-  META_PREF_COMMANDS
+  META_PREF_COMMANDS,
+  META_PREF_BUTTON_LAYOUT
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -65,6 +66,8 @@ int                         meta_prefs_get_auto_raise_delay   (void);
 const char*                 meta_prefs_get_command            (int i);
 
 char*                       meta_prefs_get_gconf_key_for_command (int i);
+
+void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 

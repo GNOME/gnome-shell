@@ -52,6 +52,7 @@ struct _MetaPreview
   int top_height;
   int bottom_height;
 
+  MetaButtonLayout button_layout;
 };
 
 struct _MetaPreviewClass
@@ -63,14 +64,17 @@ struct _MetaPreviewClass
 GtkType    meta_preview_get_type (void) G_GNUC_CONST;
 GtkWidget* meta_preview_new	 (void);
 
-void meta_preview_set_theme       (MetaPreview    *preview,
-                                   MetaTheme      *theme);
-void meta_preview_set_title       (MetaPreview    *preview,
-                                   const char     *title);
-void meta_preview_set_frame_type  (MetaPreview    *preview,
-                                   MetaFrameType   type);
-void meta_preview_set_frame_flags (MetaPreview    *preview,
-                                   MetaFrameFlags  flags);
+void meta_preview_set_theme         (MetaPreview            *preview,
+                                     MetaTheme              *theme);
+void meta_preview_set_title         (MetaPreview            *preview,
+                                     const char             *title);
+void meta_preview_set_frame_type    (MetaPreview            *preview,
+                                     MetaFrameType           type);
+void meta_preview_set_frame_flags   (MetaPreview            *preview,
+                                     MetaFrameFlags          flags);
+void meta_preview_set_button_layout (MetaPreview            *preview,
+                                     const MetaButtonLayout *button_layout);
+
 
 GdkPixbuf* meta_preview_get_icon (void);
 GdkPixbuf* meta_preview_get_mini_icon (void);

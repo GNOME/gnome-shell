@@ -28,6 +28,22 @@
 #include <time.h>
 #include <stdlib.h>
 
+/* We need to compute all different button arrangements
+ * in terms of button location. We don't care about
+ * different arrangements in terms of button function.
+ *
+ * So if dups are allowed, from 0-4 buttons on the left, from 0-4 on
+ * the right, 5x5=25 combinations.
+ *
+ * If no dups, 0-4 on left determines the number on the right plus
+ * we have a special case for the "no buttons on either side" case.
+ */
+#ifndef ALLOW_DUPLICATE_BUTTONS
+#define BUTTON_LAYOUT_COMBINATIONS (MAX_BUTTONS_PER_CORNER + 1 + 1)
+#else
+#define BUTTON_LAYOUT_COMBINATIONS ((MAX_BUTTONS_PER_CORNER+1)*(MAX_BUTTONS_PER_CORNER+1))
+#endif
+
 #define CLIENT_WIDTH 200
 #define CLIENT_HEIGHT 200
 
@@ -40,7 +56,7 @@ enum
 };
 
 static MetaTheme *global_theme = NULL;
-static GtkWidget *previews[META_FRAME_TYPE_LAST*FONT_SIZE_LAST] = { NULL, };
+static GtkWidget *previews[META_FRAME_TYPE_LAST*FONT_SIZE_LAST + BUTTON_LAYOUT_COMBINATIONS] = { NULL, };
 
 static void run_position_expression_tests (void);
 static void run_position_expression_timings (void);
@@ -547,6 +563,190 @@ preview_collection (int font_size,
   return sw;
 }
 
+static MetaButtonLayout different_layouts[BUTTON_LAYOUT_COMBINATIONS];
+
+static void
+init_layouts (void)
+{
+  int i;
+
+  /* Blank out all the layouts */
+  i = 0;
+  while (i < (int) G_N_ELEMENTS (different_layouts))
+    {
+      int j;
+
+      j = 0;
+      while (j < MAX_BUTTONS_PER_CORNER)
+        {
+          different_layouts[i].left_buttons[j] = META_BUTTON_FUNCTION_LAST;
+          different_layouts[i].right_buttons[j] = META_BUTTON_FUNCTION_LAST;
+          ++j;
+        }
+      ++i;
+    }
+  
+#ifndef ALLOW_DUPLICATE_BUTTONS
+  i = 0;
+  while (i <= MAX_BUTTONS_PER_CORNER)
+    {
+      int j;
+      
+      j = 0;
+      while (j < i)
+        {
+          different_layouts[i].right_buttons[j] = (MetaButtonFunction) j;
+          ++j;
+        }
+      while (j < MAX_BUTTONS_PER_CORNER)
+        {
+          different_layouts[i].left_buttons[j-i] = (MetaButtonFunction) j;
+          ++j;
+        }
+      
+      ++i;
+    }
+
+  /* Special extra case for no buttons on either side */
+  different_layouts[i].left_buttons[0] = META_BUTTON_FUNCTION_LAST;
+  different_layouts[i].right_buttons[0] = META_BUTTON_FUNCTION_LAST;
+  
+#else
+  /* FIXME this code is if we allow duplicate buttons,
+   * which we currently do not
+   */
+  int left;
+  int i;
+  
+  left = 0;
+  i = 0;
+
+  while (left < MAX_BUTTONS_PER_CORNER)
+    {
+      int right;
+      
+      right = 0;
+      
+      while (right < MAX_BUTTONS_PER_CORNER)
+        {
+          int j;
+          
+          static MetaButtonFunction left_functions[MAX_BUTTONS_PER_CORNER] = {
+            META_BUTTON_FUNCTION_MENU,
+            META_BUTTON_FUNCTION_MINIMIZE,
+            META_BUTTON_FUNCTION_MAXIMIZE,
+            META_BUTTON_FUNCTION_CLOSE
+          };
+          static MetaButtonFunction right_functions[MAX_BUTTONS_PER_CORNER] = {
+            META_BUTTON_FUNCTION_MINIMIZE,
+            META_BUTTON_FUNCTION_MAXIMIZE,
+            META_BUTTON_FUNCTION_CLOSE,
+            META_BUTTON_FUNCTION_MENU
+          };
+
+          g_assert (i < BUTTON_LAYOUT_COMBINATIONS);
+          
+          j = 0;
+          while (j <= left)
+            {
+              different_layouts[i].left_buttons[j] = left_functions[j];
+              ++j;
+            }
+
+          j = 0;
+          while (j <= right)
+            {
+              different_layouts[i].right_buttons[j] = right_functions[j];
+              ++j;
+            }
+          
+          ++i;
+          
+          ++right;
+        }
+      
+      ++left;
+    }
+#endif
+}
+
+
+static GtkWidget*
+previews_of_button_layouts (void)
+{
+  static gboolean initted = FALSE;
+  GtkWidget *box;
+  GtkWidget *sw;
+  GdkColor desktop_color;
+  int i;
+  GtkWidget *eventbox;
+  
+  if (!initted)
+    {
+      init_layouts ();
+      initted = TRUE;
+    }
+  
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+                                  GTK_POLICY_AUTOMATIC,
+                                  GTK_POLICY_AUTOMATIC);
+
+  box = gtk_vbox_new (FALSE, 0);
+  gtk_box_set_spacing (GTK_BOX (box), 20);
+  gtk_container_set_border_width (GTK_CONTAINER (box), 20);
+
+  eventbox = gtk_event_box_new ();
+  gtk_container_add (GTK_CONTAINER (eventbox), box);
+  
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), eventbox);
+
+  desktop_color.red = 0x5144;
+  desktop_color.green = 0x75D6;
+  desktop_color.blue = 0xA699;
+
+  gtk_widget_modify_bg (eventbox, GTK_STATE_NORMAL, &desktop_color);
+
+  i = 0;
+  while (i < BUTTON_LAYOUT_COMBINATIONS)
+    {
+      GtkWidget *align;
+      double xalign, yalign;
+      GtkWidget *eventbox2;
+      GtkWidget *preview;
+      char *title;
+
+      eventbox2 = gtk_event_box_new ();
+  
+      preview = meta_preview_new ();
+  
+      gtk_container_add (GTK_CONTAINER (eventbox2), preview);  
+  
+      meta_preview_set_theme (META_PREVIEW (preview), global_theme);
+
+      title = g_strdup_printf ("Button layout test %d", i+1);
+      meta_preview_set_title (META_PREVIEW (preview), title);
+      g_free (title);
+
+      meta_preview_set_button_layout (META_PREVIEW (preview),
+                                      &different_layouts[i]);
+  
+      xalign = 0.5;
+      yalign = 0.5;
+      
+      align = gtk_alignment_new (0.0, 0.0, xalign, yalign);
+      gtk_container_add (GTK_CONTAINER (align), eventbox2);
+  
+      gtk_box_pack_start (GTK_BOX (box), align, TRUE, TRUE, 0);
+
+      previews[META_FRAME_TYPE_LAST*FONT_SIZE_LAST + i] = preview;
+      
+      ++i;
+    }
+  
+  return sw;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -630,6 +830,11 @@ main (int argc, char **argv)
                             collection,
                             gtk_label_new ("Large Title Font"));
 
+  collection = previews_of_button_layouts ();
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+                            collection,
+                            gtk_label_new ("Button Layouts"));
+  
   i = 0;
   while (i < (int) G_N_ELEMENTS (previews))
     {
@@ -698,6 +903,7 @@ run_theme_benchmark (int client_width,
   clock_t start;
   clock_t end;
   int i;
+  MetaButtonLayout button_layout;
 #define ITERATIONS 100
   
   widget = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -718,7 +924,21 @@ run_theme_benchmark (int client_width,
                            -1);
   
   layout = create_title_layout (widget);
+  
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      button_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      button_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      ++i;
+    }
+  
+  button_layout.left_buttons[0] = META_BUTTON_FUNCTION_MENU;
 
+  button_layout.right_buttons[0] = META_BUTTON_FUNCTION_MINIMIZE;
+  button_layout.right_buttons[1] = META_BUTTON_FUNCTION_MAXIMIZE;
+  button_layout.right_buttons[2] = META_BUTTON_FUNCTION_CLOSE;
+  
   start = clock ();
 
   i = 0;
@@ -734,6 +954,7 @@ run_theme_benchmark (int client_width,
                              client_width, client_height,
                              layout,
                              get_text_height (widget),
+                             &button_layout,
                              button_states,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());

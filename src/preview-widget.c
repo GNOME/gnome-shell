@@ -79,8 +79,24 @@ meta_preview_class_init (MetaPreviewClass *class)
 static void
 meta_preview_init (MetaPreview *preview)
 {
+  int i;
+  
   GTK_WIDGET_SET_FLAGS (preview, GTK_NO_WINDOW);
 
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      preview->button_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      preview->button_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      ++i;
+    }
+  
+  preview->button_layout.left_buttons[0] = META_BUTTON_FUNCTION_MENU;
+
+  preview->button_layout.right_buttons[0] = META_BUTTON_FUNCTION_MINIMIZE;
+  preview->button_layout.right_buttons[1] = META_BUTTON_FUNCTION_MAXIMIZE;
+  preview->button_layout.right_buttons[2] = META_BUTTON_FUNCTION_CLOSE;
+  
   preview->type = META_FRAME_TYPE_NORMAL;
   preview->flags =
     META_FRAME_ALLOWS_DELETE |
@@ -218,7 +234,7 @@ meta_preview_expose (GtkWidget      *widget,
   if (client_width < 0)
     client_width = 1;
   if (client_height < 0)
-    client_height = 1;
+    client_height = 1;  
   
   if (preview->theme)
     {
@@ -235,6 +251,7 @@ meta_preview_expose (GtkWidget      *widget,
                              client_width, client_height,
                              preview->layout,
                              preview->text_height,
+                             &preview->button_layout,
                              button_states,
                              meta_preview_get_mini_icon (),
                              meta_preview_get_icon ());
@@ -266,6 +283,13 @@ meta_preview_size_request (GtkWidget      *widget,
 
       req->width += child_requisition.width;
       req->height += child_requisition.height;
+    }
+  else
+    {
+#define NO_CHILD_WIDTH 80
+#define NO_CHILD_HEIGHT 20
+      req->width += NO_CHILD_WIDTH;
+      req->height += NO_CHILD_HEIGHT;
     }
 
   req->width += GTK_CONTAINER (widget)->border_width * 2;
@@ -367,6 +391,17 @@ meta_preview_set_frame_flags (MetaPreview    *preview,
   clear_cache (preview);
 
   gtk_widget_queue_resize (GTK_WIDGET (preview));
+}
+
+void
+meta_preview_set_button_layout (MetaPreview            *preview,
+                                const MetaButtonLayout *button_layout)
+{
+  g_return_if_fail (META_IS_PREVIEW (preview));
+  
+  preview->button_layout = *button_layout;  
+  
+  gtk_widget_queue_draw (GTK_WIDGET (preview));
 }
 
 #include "inlinepixbufs.h"

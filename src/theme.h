@@ -103,7 +103,6 @@ struct _MetaFrameLayout
   guint bottom_right_corner_rounded : 1;
 };
 
-
 /* Calculated actual geometry of the frame */
 struct _MetaFrameGeometry
 {
@@ -113,12 +112,8 @@ struct _MetaFrameGeometry
   int bottom_height;
 
   int width;
-  int height;
-  
-  GdkRectangle close_rect;
-  GdkRectangle max_rect;
-  GdkRectangle min_rect;
-  GdkRectangle menu_rect;
+  int height;  
+
   GdkRectangle title_rect;
 
   int left_titlebar_edge;
@@ -126,6 +121,25 @@ struct _MetaFrameGeometry
   int top_titlebar_edge;
   int bottom_titlebar_edge;
 
+  /* used for a memset hack */
+#define ADDRESS_OF_BUTTON_RECTS(fgeom) (((char*)(fgeom)) + G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
+#define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, right_right_background) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
+  
+  /* The button rects (if changed adjust memset hack) */
+  GdkRectangle close_rect;
+  GdkRectangle max_rect;
+  GdkRectangle min_rect;
+  GdkRectangle menu_rect;
+
+#define MAX_MIDDLE_BACKGROUNDS (MAX_BUTTONS_PER_CORNER - 2)
+  GdkRectangle left_left_background;
+  GdkRectangle left_middle_backgrounds[MAX_MIDDLE_BACKGROUNDS];
+  GdkRectangle left_right_background;
+  GdkRectangle right_left_background;
+  GdkRectangle right_middle_backgrounds[MAX_MIDDLE_BACKGROUNDS];
+  GdkRectangle right_right_background;
+  /* End of button rects (if changed adjust memset hack) */
+  
   /* Round corners */
   guint top_left_corner_rounded : 1;
   guint top_right_corner_rounded : 1;
@@ -582,12 +596,13 @@ void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
                                                   int                   *bottom_height,
                                                   int                   *left_width,
                                                   int                   *right_width);
-void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
-                                                  int                    text_height,
-                                                  MetaFrameFlags         flags,
-                                                  int                    client_width,
-                                                  int                    client_height,
-                                                  MetaFrameGeometry     *fgeom);
+void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
+                                                  int                     text_height,
+                                                  MetaFrameFlags          flags,
+                                                  int                     client_width,
+                                                  int                     client_height,
+                                                  const MetaButtonLayout *button_layout,
+                                                  MetaFrameGeometry      *fgeom);
 
 gboolean         meta_frame_layout_validate      (const MetaFrameLayout *layout,
                                                   GError               **error);
@@ -710,21 +725,22 @@ double meta_theme_get_title_scale (MetaTheme     *theme,
                                    MetaFrameType  type,
                                    MetaFrameFlags flags);
 
-void meta_theme_draw_frame (MetaTheme          *theme,
-                            GtkWidget          *widget,
-                            GdkDrawable        *drawable,
-                            const GdkRectangle *clip,
-                            int                 x_offset,
-                            int                 y_offset,
-                            MetaFrameType       type,
-                            MetaFrameFlags      flags,
-                            int                 client_width,
-                            int                 client_height,
-                            PangoLayout        *title_layout,
-                            int                 text_height,
-                            MetaButtonState     button_states[META_BUTTON_TYPE_LAST],
-                            GdkPixbuf          *mini_icon,
-                            GdkPixbuf          *icon);
+void meta_theme_draw_frame (MetaTheme              *theme,
+                            GtkWidget              *widget,
+                            GdkDrawable            *drawable,
+                            const GdkRectangle     *clip,
+                            int                     x_offset,
+                            int                     y_offset,
+                            MetaFrameType           type,
+                            MetaFrameFlags          flags,
+                            int                     client_width,
+                            int                     client_height,
+                            PangoLayout            *title_layout,
+                            int                     text_height,
+                            const MetaButtonLayout *button_layout,
+                            MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                            GdkPixbuf              *mini_icon,
+                            GdkPixbuf              *icon);
 
 void meta_theme_draw_menu_icon (MetaTheme          *theme,
                                 GtkWidget          *widget,
@@ -744,14 +760,14 @@ void meta_theme_get_frame_borders (MetaTheme         *theme,
                                    int               *bottom_height,
                                    int               *left_width,
                                    int               *right_width);
-void meta_theme_calc_geometry     (MetaTheme         *theme,
-                                   MetaFrameType      type,
-                                   int                text_height,
-                                   MetaFrameFlags     flags,
-                                   int                client_width,
-                                   int                client_height,
-                                   MetaFrameGeometry *fgeom);
-
+void meta_theme_calc_geometry (MetaTheme              *theme,
+                               MetaFrameType           type,
+                               int                     text_height,
+                               MetaFrameFlags          flags,
+                               int                     client_width,
+                               int                     client_height,
+                               const MetaButtonLayout *button_layout,
+                               MetaFrameGeometry      *fgeom);
                                    
 MetaFrameLayout*   meta_theme_lookup_layout       (MetaTheme         *theme,
                                                    const char        *name);
