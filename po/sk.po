@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-01-30 16:10+0100\n"
-"PO-Revision-Date: 2002-01-09 11:04CET\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
+"POT-Creation-Date: 2002-01-30 16:19+0100\n"
+"PO-Revision-Date: 2002-01-30 16:23CET\n"
+"Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: src/display.c:158
 #, c-format
@@ -172,8 +172,7 @@ msgstr "Odmaximalizovať okno"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
 #: src/main.c:252
 #, c-format
@@ -328,46 +327,44 @@ msgstr "Neznámy element %s"
 #: src/theme.c:378
 #, c-format
 msgid "Coordinate expression contains character '%c' which is not allowed"
-msgstr ""
+msgstr "Výraz umiestnenia obsahuje znak '%c', ktorý nie je povolený"
 
 #: src/theme.c:405
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
+msgstr "Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:419
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:524
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Výraz umiestnenia je prázdny alebo nerozpoznaný"
 
 #: src/theme.c:663 src/theme.c:673 src/theme.c:698
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
 #: src/theme.c:706
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
 #: src/theme.c:754
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%c\" where an operand was expected"
-msgstr ""
+msgid "Coordinate expression has an operator \"%c\" where an operand was expected"
+msgstr "Výraz umiestnenie obsahuje operátor \"%c\" tam, kde sa očakáva operand"
 
 #: src/theme.c:763
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Výraz umiestnenie obsahuje operand tam, kde sa očakáva operátor"
 
 #: src/theme.c:771
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Výraz umiestnenie skončil operátorom namiesto operandom"
 
 #: src/theme.c:781
 #, c-format
@@ -375,34 +372,38 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Výraz umiestnenie obsahuje operátor \"%c\" za operátorom \"%c\" bez "
+"operandov medzi nimi."
 
 #: src/theme.c:883
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Pri spracovaní výrazu umiestnenia bola pretečená pamäť. Toto je "
+"chyba Metacity, ale naozaj potrebujete taký veľký výraz?"
 
 #: src/theme.c:912
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Výraz umiestnenie obsahuje zatváraciu zátvorku bez otváracej zátvorky"
 
 #: src/theme.c:927
 #, c-format
 msgid "Coordinate expression had unknown variable \"%s\""
-msgstr ""
+msgstr "Výraz umiestnenie obsahuje neznámu premennú \"%s\""
 
 #: src/theme.c:984
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Výraz umiestnenie má otváraciu zátvorku bez zatváracej zátvorky"
 
 #: src/theme.c:995
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Výraz umiestnenie asi neobsahuje žiadne operátory ani operandy"
 
 #: src/theme.c:1163 src/theme.c:1187 src/theme.c:1209
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Téma obsahuje výraz \"%s\", ktorý vrátil chybu: %s\n"
 
 #. someone is on crack
 #: src/window.c:3411
@@ -415,8 +416,7 @@ msgstr ""
 #. another cracksmoker
 #: src/window.c:3421
 #, c-format
-msgid ""
-"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgid "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
 "Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
 "vypínam zmenu veľkosťi\n"
@@ -434,3 +434,4 @@ msgstr ""
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
+
