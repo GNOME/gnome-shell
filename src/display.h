@@ -27,6 +27,8 @@
 #include "eventqueue.h"
 #include "common.h"
 
+#define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
+
 /* this doesn't really belong here, oh well. */
 typedef struct _MetaRectangle MetaRectangle;
 

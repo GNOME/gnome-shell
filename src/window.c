@@ -65,8 +65,8 @@ static void     update_mwm_hints          (MetaWindow     *window);
 static int      update_wm_class           (MetaWindow     *window);
 static int      update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
-static int      update_role               (MetaWindow     *window);
-static int      update_net_wm_type        (MetaWindow     *window);
+static void     update_role               (MetaWindow     *window);
+static void     update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
 static int      update_icon_name          (MetaWindow     *window);
 static int      update_icon               (MetaWindow     *window,
@@ -105,16 +105,7 @@ static void meta_window_move_resize_internal (MetaWindow         *window,
 
 void meta_window_move_resize_now (MetaWindow  *window);
 
-static gboolean get_cardinal (MetaDisplay *display,
-                              Window       xwindow,
-                              Atom         atom,
-                              gulong      *val);
-
 static char*    get_text_property (MetaDisplay *display,
-                                   Window       xwindow,
-                                   Atom         atom);
-
-static char*    get_utf8_property (MetaDisplay *display,
                                    Window       xwindow,
                                    Atom         atom);
 
@@ -176,10 +167,11 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       /* Only manage if WM_STATE is IconicState or NormalState */
       gulong state;
 
-      /* FIXME WM_STATE isn't a cardinal, it's type WM_STATE */
-      if (!(get_cardinal (display, xwindow,
-                          display->atom_wm_state,
-                          &state) &&
+      /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
+      if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,
+                                                   display->atom_wm_state,
+                                                   display->atom_wm_state,
+                                                   &state) &&
             (state == IconicState || state == NormalState)))
         {
           meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
@@ -2441,10 +2433,8 @@ meta_window_client_message (MetaWindow *window,
                         str1 ? str1 : "(unknown)",
                         str2 ? str2 : "(unknown)");
 
-          if (str1)
-            XFree (str1);
-          if (str2)
-            XFree (str2);
+          meta_XFree (str1);
+          meta_XFree (str2);
         }
 
       if (first == display->atom_net_wm_state_shaded ||
@@ -3111,6 +3101,8 @@ update_size_hints (MetaWindow *window)
 static int
 update_title (MetaWindow *window)
 {
+  char *str;
+  
   meta_error_trap_push (window->display);
   
   if (window->title)
@@ -3119,9 +3111,13 @@ update_title (MetaWindow *window)
       window->title = NULL;
     }  
 
-  window->title = get_utf8_property (window->display,
-                                     window->xwindow,
-                                     window->display->atom_net_wm_name);
+  str = NULL;
+  meta_prop_get_utf8_string (window->display,
+                             window->xwindow,
+                             window->display->atom_net_wm_name,
+                             &str);
+  window->title = g_strdup (str);
+  meta_XFree (str);
 
   if (window->title)
     {
@@ -3183,8 +3179,7 @@ update_protocols (MetaWindow *window)
           ++i;
         }
 
-      if (protocols)
-        XFree (protocols);
+      meta_XFree (protocols);
     }
 
   meta_verbose ("Window %s has take_focus = %d delete_window = %d\n",
@@ -3243,7 +3238,7 @@ update_wm_hints (MetaWindow *window)
                     window->xgroup_leader, window->icon_pixmap,
                     window->icon_mask);
       
-      XFree (hints);
+      meta_XFree (hints);
     }
   
   return meta_error_trap_pop (window->display);
@@ -3284,7 +3279,7 @@ update_net_wm_state (MetaWindow *window)
           ++i;
         }
   
-      XFree (atoms);
+      meta_XFree (atoms);
     }
   
   recalc_window_type (window);
@@ -3392,7 +3387,7 @@ update_mwm_hints (MetaWindow *window)
   else
     meta_verbose ("Functions flag unset\n");
 
-  XFree (hints);
+  meta_XFree (hints);
 
   recalc_window_features (window);
 }
@@ -3413,7 +3408,7 @@ meta_window_get_icon_geometry (MetaWindow    *window,
         {
           meta_verbose ("_NET_WM_ICON_GEOMETRY on %s has %d values instead of 4\n",
                         window->desc, nitems);
-          XFree (geometry);
+          meta_XFree (geometry);
           return FALSE;
         }
   
@@ -3425,7 +3420,7 @@ meta_window_get_icon_geometry (MetaWindow    *window,
           rect->height = geometry[3];
         }
 
-      XFree (geometry);
+      meta_XFree (geometry);
 
       return TRUE;
     }
@@ -3475,71 +3470,15 @@ update_wm_class (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
-static int
-read_string_prop (MetaDisplay *display,
-                  Window       xwindow,
-                  Atom         atom,
-                  char       **strp)
-{
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *str;
-  int result;  
-  
-  meta_error_trap_push (display);
-  str = NULL;
-  XGetWindowProperty (display->xdisplay,
-                      xwindow, atom,
-                      0, G_MAXLONG,
-		      False, XA_STRING, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&str);  
-
-  result = meta_error_trap_pop (display);
-  if (result != Success)
-    return result;
-  
-  if (type != XA_STRING)
-    return -1; /* whatever */
-
-  *strp = g_strdup (str);
-  
-  XFree (str);
-  
-  return Success;
-}
-
 static Window
 read_client_leader (MetaDisplay *display,
                     Window       xwindow)
 {
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  Window *leader;
-  int result;
-  Window retval;
+  Window retval = None;
   
-  meta_error_trap_push (display);
-  leader = NULL;
-  XGetWindowProperty (display->xdisplay, xwindow,
-		      display->atom_wm_client_leader,
-                      0, G_MAXLONG,
-		      False, XA_WINDOW, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&leader);  
-
-  result = meta_error_trap_pop (display);
-  if (result != Success)
-    return None;
-  
-  if (type != XA_WINDOW)
-    return None;
-
-  retval = *leader;
-  
-  XFree (leader);
+  meta_prop_get_window (display, xwindow,
+                        display->atom_wm_client_leader,
+                        &retval);
 
   return retval;
 }
@@ -3577,36 +3516,45 @@ update_sm_hints (MetaWindow *window)
       
   if (leader)
     {
+      char *str;
+      
       window->xclient_leader = leader;
-      read_string_prop (window->display, leader,
-                        window->display->atom_sm_client_id,
-                        &window->sm_client_id);
+
+      if (meta_prop_get_latin1_string (window->display, leader,
+                                       window->display->atom_sm_client_id,
+                                       &str))
+        {
+          window->sm_client_id = g_strdup (str);
+          meta_XFree (str);
+        }
 
       meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
                     window->desc, window->xclient_leader,
-		    window->sm_client_id ? window->sm_client_id : "(null)");
+                    window->sm_client_id ? window->sm_client_id : "(null)");
     }
   else
     meta_verbose ("Didn't find a client leader for %s\n", window->desc);
 }
 
-static int
+static void
 update_role (MetaWindow *window)
 {
-  int result;
+  char *str;
   
   if (window->role)
     g_free (window->role);
   window->role = NULL;
 
-  result = read_string_prop (window->display, window->xwindow,
-                             window->display->atom_wm_window_role,
-                             &window->role);
+  if (meta_prop_get_latin1_string (window->display, window->xwindow,
+                                   window->display->atom_wm_window_role,
+                                   &str))
+    {
+      window->role = g_strdup (str);
+      meta_XFree (str);
+    }
 
   meta_verbose ("Updated role of %s to '%s'\n",
                 window->desc, window->role ? window->role : "(null)");
-  
-  return Success;
 }
 
 static int
@@ -3634,42 +3582,6 @@ update_transient_for (MetaWindow *window)
   meta_stack_update_transient (window->screen->stack, window);
   
   return meta_error_trap_pop (window->display);
-}
-
-
-static gboolean
-get_cardinal (MetaDisplay *display,
-              Window      xwindow,
-              Atom        atom,
-              gulong     *val)
-{  
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
-  int err;
-  
-  meta_error_trap_push (display);
-  type = None;
-  XGetWindowProperty (display->xdisplay,
-                      xwindow,
-                      atom,
-                      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&num);  
-  err = meta_error_trap_pop (display);
-  if (err != Success)
-    return FALSE;
-  
-  if (type != XA_CARDINAL)
-    return FALSE; /* FIXME free num ? */
-
-  *val = *num;
-  
-  XFree (num);
-
-  return TRUE;
 }
 
 static char*
@@ -3704,61 +3616,6 @@ get_text_property (MetaDisplay *display,
   return retval;
 }
 
-static char*
-get_utf8_property (MetaDisplay *display,
-                   Window       xwindow,
-                   Atom         atom)
-{
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *val;
-  int err;
-  char *retval;
-  
-  meta_error_trap_push (display);
-  type = None;
-  val = NULL;
-  XGetWindowProperty (display->xdisplay,
-                      xwindow,
-                      atom,
-                      0, G_MAXLONG,
-		      False, display->atom_utf8_string,
-                      &type, &format, &nitems,
-		      &bytes_after, (guchar **)&val);  
-  err = meta_error_trap_pop (display);
-
-  if (err != Success)
-    return NULL;
-  
-  if (type != display->atom_utf8_string ||
-      format != 8 ||
-      nitems == 0)
-    {
-      if (val)
-        XFree (val);
-      return NULL;
-    }
-
-  if (!g_utf8_validate (val, nitems, NULL))
-    {
-      char *name;
-      name = XGetAtomName (display->xdisplay, atom);
-      meta_warning ("Property %s contained invalid UTF-8\n",
-                    name);
-      XFree (name);
-      XFree (val);
-      return NULL;
-    }
-  
-  retval = g_strndup (val, nitems);
-  
-  XFree (val);
-  
-  return retval;
-}
-
 /* some legacy cruft */
 typedef enum
 {
@@ -3770,37 +3627,28 @@ typedef enum
   WIN_LAYER_ABOVE_DOCK  = 10
 } GnomeWinLayer;
 
-static int
+static void
 update_net_wm_type (MetaWindow *window)
 {
-  Atom type;
-  int format;
-  gulong n_atoms;
-  gulong bytes_after;
+  int n_atoms;
   Atom *atoms;
-  int result;
   int i;
 
   window->type_atom = None;
+  n_atoms = 0;
+  atoms = NULL;
   
-  meta_error_trap_push (window->display);
-  XGetWindowProperty (window->display->xdisplay, window->xwindow,
-		      window->display->atom_net_wm_window_type,
-                      0, G_MAXLONG,
-		      False, XA_ATOM, &type, &format, &n_atoms,
-		      &bytes_after, (guchar **)&atoms);  
-
-  result = meta_error_trap_pop (window->display);
-  if (result != Success ||
-      type != XA_ATOM)
+  if (!meta_prop_get_atom_list (window->display, window->xwindow, 
+                                window->display->atom_net_wm_window_type,
+                                &atoms, &n_atoms))
     {
       /* Fall back to WIN_LAYER */
       gulong layer = WIN_LAYER_NORMAL;
 
-      if (get_cardinal (window->display,
-                        window->xwindow,
-                        window->display->atom_win_layer,
-                        &layer))
+      if (meta_prop_get_cardinal (window->display,
+                                  window->xwindow,
+                                  window->display->atom_win_layer,
+                                  &layer))
         {
           meta_verbose ("%s falling back to _WIN_LAYER hint, layer %ld\n",
                         window->desc, layer);
@@ -3824,9 +3672,8 @@ update_net_wm_type (MetaWindow *window)
         }
       
       recalc_window_type (window);
-      return result;
     }
-
+  
   i = 0;
   while (i < n_atoms)
     {
@@ -3847,7 +3694,7 @@ update_net_wm_type (MetaWindow *window)
       ++i;
     }
   
-  XFree (atoms);
+  meta_XFree (atoms);
 
   if (meta_is_verbose ())
     {
@@ -3862,11 +3709,10 @@ update_net_wm_type (MetaWindow *window)
                     str ? str : "(none)");
 
       if (str)
-        XFree (str);
+        meta_XFree (str);
     }
   
   recalc_window_type (window);
-  return Success;
 }
 
 static int
@@ -3880,18 +3726,18 @@ update_initial_workspace (MetaWindow *window)
    * is just to be nice when restarting from old Sawfish basically,
    * should nuke it eventually
    */  
-  if (get_cardinal (window->display,
-                    window->xwindow,
-                    window->display->atom_net_wm_desktop,
-                    &val))
+  if (meta_prop_get_cardinal (window->display,
+                              window->xwindow,
+                              window->display->atom_net_wm_desktop,
+                              &val))
     {
       window->initial_workspace_set = TRUE;
       window->initial_workspace = val;
     }
-  else if (get_cardinal (window->display,
-                         window->xwindow,
-                         window->display->atom_win_workspace,
-                         &val))
+  else if (meta_prop_get_cardinal (window->display,
+                                   window->xwindow,
+                                   window->display->atom_win_workspace,
+                                   &val))
     {
       window->initial_workspace_set = TRUE;
       window->initial_workspace = val;
@@ -3903,6 +3749,8 @@ update_initial_workspace (MetaWindow *window)
 static int
 update_icon_name (MetaWindow *window)
 {
+  char *str;
+  
   meta_error_trap_push (window->display);
   
   if (window->icon_name)
@@ -3911,9 +3759,15 @@ update_icon_name (MetaWindow *window)
       window->icon_name = NULL;
     }  
 
-  window->icon_name = get_utf8_property (window->display, window->xwindow,
-                                         window->display->atom_net_wm_icon_name);
+  str = NULL;
+  meta_prop_get_utf8_string (window->display, window->xwindow,
+                             window->display->atom_net_wm_icon_name,
+                             &str);
 
+  window->icon_name = g_strdup (str);
+  if (str)
+    meta_XFree (str);
+  
   if (window->icon_name)
     {
       meta_verbose ("Using _NET_WM_ICON_NAME for new icon name of %s: '%s'\n",
@@ -4085,23 +3939,19 @@ read_rgb_icon (MetaWindow    *window,
   gulong *best;
   int w, h;
   gulong *best_mini;
-  int mini_w, mini_h;
-  
-  if (sizeof (gulong) != 4)
-    meta_warning ("%s: Whoops, I think this function may be broken on 64-bit\n",
-                  G_GNUC_FUNCTION);
+  int mini_w, mini_h;  
   
   meta_error_trap_push (window->display);
   type = None;
   data = NULL;
-  XGetWindowProperty (window->display->xdisplay,
-		      window->xwindow,
-		      window->display->atom_net_wm_icon,
-		      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, ((guchar **)&data));
+  result = XGetWindowProperty (window->display->xdisplay,
+                               window->xwindow,
+                               window->display->atom_net_wm_icon,
+                               0, G_MAXLONG,
+                               False, XA_CARDINAL, &type, &format, &nitems,
+                               &bytes_after, ((guchar **)&data));
   
-  result = meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display);
   
   if (result != Success || type != XA_CARDINAL)
     {
@@ -4113,14 +3963,14 @@ read_rgb_icon (MetaWindow    *window,
   if (!find_best_size (data, nitems, META_ICON_WIDTH, META_ICON_HEIGHT,
                        &w, &h, &best))
     {
-      XFree (data);
+      meta_XFree (data);
       return FALSE;
     }
 
   if (!find_best_size (data, nitems, META_MINI_ICON_WIDTH, META_MINI_ICON_HEIGHT,
                        &mini_w, &mini_h, &best_mini))
     {
-      XFree (data);
+      meta_XFree (data);
       return FALSE;
     }
   
@@ -4133,7 +3983,7 @@ read_rgb_icon (MetaWindow    *window,
   argbdata_to_pixdata (best, w * h, pixdata);
   argbdata_to_pixdata (best_mini, mini_w * mini_h, mini_pixdata);
 
-  XFree (data);
+  meta_XFree (data);
   
   return TRUE;
 }
@@ -4460,26 +4310,26 @@ update_kwm_icon (MetaWindow *window)
   
   meta_error_trap_push (window->display);
   icons = NULL;
-  XGetWindowProperty (window->display->xdisplay, window->xwindow,
-		      window->display->atom_kwm_win_icon,
-                      0, G_MAXLONG,
-		      False, window->display->atom_kwm_win_icon,
-                      &type, &format, &nitems,
-		      &bytes_after, (guchar **)&icons);  
+  result = XGetWindowProperty (window->display->xdisplay, window->xwindow,
+                               window->display->atom_kwm_win_icon,
+                               0, G_MAXLONG,
+                               False, window->display->atom_kwm_win_icon,
+                               &type, &format, &nitems,
+                               &bytes_after, (guchar **)&icons);  
 
-  result = meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display);
   if (result != Success)
     return result;
   
   if (type != window->display->atom_kwm_win_icon)
     return -1; /* FIXME mem leak? */
-  
+
   window->kwm_pixmap = icons[0];
   window->kwm_mask = icons[1];
 
   meta_verbose ("Found KWM_WIN_ICON 0x%lx\n", window->kwm_pixmap);
   
-  XFree (icons);
+  meta_XFree (icons);
 
   return Success;
 }

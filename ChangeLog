@@ -1,5 +1,27 @@
 2002-01-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c: use meta_XFree not XFree
+
+	* src/display.h (meta_XFree): add null-safe XFree
+
+	* src/util.c (meta_warning): have message prefix indicate that
+	it's a warning
+	(meta_fatal): indicate it's an error
+
+	* src/window.c (update_sm_hints): clean up using
+	meta_prop_get_latin1_string
+	(update_role): ditto
+	(read_client_leader): clean up using meta_prop_get_window
+	(update_net_wm_type): clean up using meta_prop_get_cardinal
+	(update_initial_workspace): ditto
+	(update_net_wm_type): clean up using meta_prop_get_atom_list
+	(read_rgb_icon): get result from XGetWindowProperty return value
+	not from error trap
+	(update_kwm_icon): ditto
+	(meta_window_new): fix to read WM_STATE correctly
+
+2002-01-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_net_wm_state): clean up using
 	meta_prop_get_atom_list
 	(update_mwm_hints): clean up using meta_prop_get_motif_hints

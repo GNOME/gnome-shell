@@ -252,7 +252,7 @@ meta_warning (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager: ", out);
+    fputs ("Window manager warning: ", out);
   fputs (str, out);
   
   g_free (str);
@@ -274,7 +274,7 @@ meta_fatal (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager: ", out);
+    fputs ("Window manager error: ", out);
   fputs (str, out);
 
   fflush (out);
