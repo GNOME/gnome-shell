@@ -1,3 +1,9 @@
+2002-07-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (constrain_position): don't center vertically for 
+	maximized windows that don't fill the screen, just leave them at
+	the top.
+
 2002-07-06  Havoc Pennington  <hp@pobox.com>
 
 	* src/tabpopup.c (selectable_workspace_new): increase the size of 

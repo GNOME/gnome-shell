@@ -5269,13 +5269,10 @@ constrain_position (MetaWindow        *window,
 
       /* If the window's geometry gridding (e.g. for a terminal)
        * prevents full maximization, center the window within
-       * the maximized area.
+       * the maximized area horizontally.
        */
       x += (work_area.width - window->rect.width -
             (window->frame ? (fgeom->left_width + fgeom->right_width) : 0)) / 2;
-
-      y += (work_area.height - window->rect.height -
-            (window->frame ? (fgeom->top_height + fgeom->bottom_height) : 0)) / 2;
     }
   else
     {
