@@ -1331,6 +1331,8 @@ meta_window_show (MetaWindow *window)
             case META_WINDOW_DESKTOP:
             case META_WINDOW_UTILITY:
             case META_WINDOW_SPLASHSCREEN:
+            case META_WINDOW_TOOLBAR:
+            case META_WINDOW_MENU:
               /* don't focus these */
               break;
             case META_WINDOW_NORMAL:
@@ -5023,7 +5025,16 @@ constrain_position (MetaWindow *window,
   if (!window->placed && window->calc_placement)
     meta_window_place (window, fgeom, x, y, &x, &y);
 
-  if (window->fullscreen)
+  if (window->type == META_WINDOW_DESKTOP)
+    {
+      x = 0;
+      y = 0;
+    }
+  else if (window->type == META_WINDOW_DOCK)
+    {
+      ; /* let it do whatever */
+    }
+  else if (window->fullscreen)
     {
       x = 0;
       y = 0;
@@ -5058,8 +5069,7 @@ constrain_position (MetaWindow *window,
       y += (work_area.height - window->rect.height -
             (window->frame ? (fgeom->top_height + fgeom->bottom_height) : 0)) / 2;
     }
-  else if (window->type != META_WINDOW_DESKTOP &&
-           window->type != META_WINDOW_DOCK)
+  else
     {
       int nw_x, nw_y;
       int se_x, se_y;

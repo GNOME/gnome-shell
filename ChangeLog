@@ -1,5 +1,9 @@
 2002-05-16  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (constrain_position): lock desktop to position 0,0
+
+2002-05-16  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (meta_window_show): don't focus dock, desktop,
 	etc. windows on initial map, only windows that should have focus.
 
