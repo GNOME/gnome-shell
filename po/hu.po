@@ -6,19 +6,28 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-10-18 16:17+0200\n"
+"POT-Creation-Date: 2003-01-10 14:53+0100\n"
+"PO-Revision-Date: 2003-01-10 14:58+0100\n"
 "Last-Translator: Andras Timar <timar@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Használat: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
+
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "\"%s\" nem értelmezhető egész számként"
 
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
@@ -47,7 +56,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr ""
 
-#: src/display.c:270
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -65,23 +74,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr ""
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Ablak bezárása"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Ablak menü"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Ablak minimalizálása"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Ablak maximalizálása"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Ablak eredeti mérete"
 
@@ -106,7 +115,7 @@ msgstr ""
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
 "replace] [--version]\n"
-msgstr ""
+msgstr "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -171,10 +180,10 @@ msgstr "_Minden munkaterületre"
 msgid "Only on _This Workspace"
 msgstr "_Csak erre a munkaterületre"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "%d. munkaterület"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -238,7 +247,7 @@ msgstr "Meta"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -247,7 +256,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -256,7 +265,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -265,7 +274,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -274,7 +283,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -283,7 +292,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -292,6 +301,9 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"A(z) \"%s\" ablak nem válaszol.\n"
+"Kilépsz az alkalmazásból?\n"
+"(Minden megnyitott dokumentum elvész.)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
@@ -429,18 +441,16 @@ msgid "Maximize a window"
 msgstr ""
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "Ablak maximalizálása"
+msgstr "Ablak vízszintes maximalizálása"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "Ablak maximalizálása"
+msgstr "Ablak függőleges maximalizálása"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
-msgstr ""
+msgstr "Ablak minimalizálása"
 
 #: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
@@ -1260,9 +1270,8 @@ msgid "Toggle shaded state"
 msgstr ""
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "_Minden munkaterületre"
+msgstr "Ablak kirakása minden munkaterületre"
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
@@ -1295,7 +1304,7 @@ msgid ""
 "modifier\n"
 msgstr ""
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr ""
@@ -1312,30 +1321,30 @@ msgid ""
 "maximum is %d\n"
 msgstr ""
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
 
-#: src/prefs.c:1720
+#: src/prefs.c:1730
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -1343,7 +1352,7 @@ msgstr ""
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:392
 #, c-format
@@ -2233,23 +2242,19 @@ msgstr ""
 msgid "Opened log file %s\n"
 msgstr ""
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr ""
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr ""
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr ""
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr ""
 
@@ -2259,7 +2264,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2273,30 +2278,30 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-
-#~ msgid "Workspace %u"
-#~ msgstr "%u. munkaterület"
