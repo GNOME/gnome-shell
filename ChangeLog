@@ -1,3 +1,12 @@
+2002-12-13  Havoc Pennington  <hp@redhat.com>
+
+	* src/tools/Makefile.am (Desktop_in_files): only install .desktop
+	file for metacity-properties if we actually install
+	metacity-properties
+
+	* src/display.c (event_callback): not focusing on button 2 click
+	was crack, revert that change.
+
 2002-12-09  Havoc Pennington  <hp@pobox.com>
 
 	* AUTHORS: add myself here, bug #100789

@@ -1225,14 +1225,14 @@ event_callback (XEvent   *event,
            */
           unmodified = (event->xbutton.state & grab_mask) == 0;
           
-          if ((unmodified && event->xbutton.button != 2) ||
+          if (unmodified ||
               event->xbutton.button == 1)
             {
               if (!frame_was_receiver)
                 {
-                  /* don't focus if frame received, will be
-                   * done in frames.c if the click wasn't on
-                   * the minimize/close button.
+                  /* don't focus if frame received, will be lowered in
+                   * frames.c or special-cased if the click was on a
+                   * minimize/close button.
                    */
                   meta_window_raise (window);
                   

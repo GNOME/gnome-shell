@@ -34,9 +34,15 @@ ui_DATA=metacity-properties.glade
 propicondir=$(datadir)/pixmaps
 propicon_DATA=metacity-properties.png
 
+METACITY_PROPERTIES_DESKTOP_IN=metacity-properties.desktop.in
+if BUILD_CONFIG_DIALOG
+METACITY_PROPERTIES_DESKTOP=metacity-properties.desktop
+else
+METACITY_PROPERTIES_DESKTOP=
+endif
+
 desktopdir=$(datadir)/control-center-2.0/capplets
-Desktop_in_files=metacity-properties.desktop.in
-desktop_DATA=$(Desktop_in_files:.desktop.in=.desktop)
+desktop_DATA=$(METACITY_PROPERTIES_DESKTOP)
 
 if BUILD_CONFIG_DIALOG
 CONFIG_DIALOG=metacity-properties
@@ -57,5 +63,5 @@ if BUILD_CONFIG_DIALOG
 metacity_properties_LDADD= @METACITY_PROPS_LIBS@
 endif
 
-EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA) $(Desktop_in_files)
+EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA) $(METACITY_PROPERTIES_DESKTOP_IN)
 
