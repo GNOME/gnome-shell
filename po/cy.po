@@ -21,40 +21,42 @@ msgstr "Defnydd: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Crynhowyd Metacity heb gynhaliaeth ar gyfer modd llafar\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "Methu dehongli \"%s\" fel cyfanrif"
 
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "Methu deall nodau dilynnol \"%s\" yn y llinyn \"%s\""
 
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "Methu dehongli'r neges \"%s\" o broses deialog\n"
 
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Gwall wrth ddarllen o broses dangos deialog: %s\n"
 
 #: src/delete.c:331
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
+"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: "
+"%s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr ""
+msgstr "Methu cyrchu'r enw gwesteiwr: %s\n"
 
 #: src/display.c:286
 #, c-format
@@ -68,31 +70,34 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
+"Collwyd y cysylltiad i'r dangosydd '%s'; \n"
+"mwy na thebyg fe derfynnwyd y gweinydd X ne cafodd y rheolydd ffenestri "
+"ei derfynnu ganddoch.\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "Gwall IO marwol %d (%s) ar y dangosydd '%s'.\n"
 
 #: src/frames.c:998
 msgid "Close Window"
-msgstr "Cau Ffenest"
+msgstr "Cau'r Ffenest"
 
 #: src/frames.c:1001
 msgid "Window Menu"
-msgstr "Dwislen Ffenest"
+msgstr "Dewislen Ffenest"
 
 #: src/frames.c:1004
 msgid "Minimize Window"
-msgstr "Lleihau Ffenest"
+msgstr "Lleihau'r Ffenest"
 
 #: src/frames.c:1007
 msgid "Maximize Window"
-msgstr "Ehangu Ffenest"
+msgstr "Ehangu'r Ffenest"
 
 #: src/frames.c:1010
 msgid "Unmaximize Window"
-msgstr "Dadehangu Ffenest"
+msgstr "Dadehangu'r Ffenest"
 
 #: src/keybindings.c:973
 #, c-format
@@ -100,22 +105,27 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
+"Mae rhaglen arall yn defnyddio'r bysell %s gyfa'r addasyddion %x fel "
+"rhwymiad eisioes\n"
 
 #: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch "
+"gorchymyn: %s\n"
 
 #: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
 
 #: src/main.c:64
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=ENWFFEIL] [--"
+"display=DANGOSYDD] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -126,17 +136,24 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
+"Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
+"Does DIM GWARANT; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD "
+"AR GYFER PWRPAS PENODOL.\n"
 
 #: src/main.c:345
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
+"Methu canfod thema! Sicrhewch fod %s yn bodoli ac yn cynnwys y themâu "
+"arferol."
 
 #: src/main.c:393
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "Methu ailddechrau: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
@@ -322,6 +339,8 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
+"Dyw'r ffenestri yma ddim yn cynnal \"arbed y gosodiad cyfredol\" a bydd "
+"rhaid eu ail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
 
 #: src/metacity-dialog.c:276
 #, c-format
@@ -329,7 +348,7 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"Roedd gwall yn gweithredu \"%s\":\n"
+"Roedd gwall wrth weithredu \"%s\":\n"
 "%s."
 
 #: src/metacity.desktop.in.h:1
@@ -356,11 +375,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Gweithredu'r dewislen ffenest"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Trefniant y botymau ar y bar teitl"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -374,7 +393,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Codi'r ffenest wedi ffocysu'n awtomatig"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -390,7 +409,7 @@ msgstr "Cau ffenest"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "Gorchmynion i'w gweithredu yn ôl bysellrhwymiadau"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
@@ -416,7 +435,7 @@ msgstr "Galluogi Cloch Gweladwy"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Cuddio pob ffenest a ffocysu cefndir y bwrdd gwaith"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -474,55 +493,55 @@ msgstr "Symud ffenest"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
+msgstr "Symud yn ôl rhwng y paneli a chefndir y bwrdd gwaith ar unwaith"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
+msgstr "Symud yn ôl rhwng y paneli a chefndir y bwrdd geaith gyda bryslen"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
-msgstr ""
+msgstr "Symud yn ôl rhwng ffenestri ar unwaith"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "Symud rhwng paneli a chefndir y bwrdd gwaith ar unwaith"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "Symud rhwng paneli a chefndir y bwrth gwaith gyda bryslen"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "Symud rhwng ffenestri ar unwaith"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "Symud rhwng ffenestri gyda bryslen"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
+msgstr "Symud ffocws yn ôl rhwng ffenestri gan ddangos bryslen"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "Symud y ffenest un gweithfan i lawr"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Symud y ffenest un gweithfan i'r chwith"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Symud y ffenest un gweithfan i'r dde"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "Symud y ffenest un gweithfan i fyny"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
-msgstr "Sumud y ffenest at weithle "
+msgstr "Sumud y ffenest at weithle 1"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
@@ -582,18 +601,21 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
+"Nifer y gweithfannau. Rhaid ei fod yn fwy na sero, a mae uchafswm gosodedig "
+"(er mwyn rhwystro dinistrio eich bwrdd gwaith yn ddamweiniol gan ofyn am 34 "
+"miliwn o fyrddau gwaith)."
 
 #: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "Codi ffenest cudd, gostwng fel arall"
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Codi ffenest uwchven y gweddill"
 
 #: src/metacity.schemas.in.h:56
 msgid "Resize a window"
-msgstr "Ailfeintio Ffenest"
+msgstr "Ailfeintio ffenest"
 
 #: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
@@ -625,79 +647,79 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "Newid i weithfan 1"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "Newid i weithfan 10"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "Newid i weithfan 11"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "Newid i weithfan 12"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "Newid i weithfan 2"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "Newid i weithfan 3"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "Newid i weithfan 4"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "Newid i weithfan 5"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "Newid i weithfan 6"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "Newid i weithfan 7"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "Newid i weithfan 8"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "Newid i weithfan 9"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Newid i'r gweithfan uwchben hwn"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Newid i'r gweithfan islaw hwn"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Newid i'r gweithfan i'r chwith"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Newid i'r gweithfan i'r dde"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Clock y System yn Glywadwy"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Cymryd sgrîn-lun"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Cymryd sgrîn-lun o ffenest"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -1272,17 +1294,19 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:141
 msgid "The name of a workspace."
-msgstr ""
+msgstr "Enw gweithfan."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Y gorchymyn sgrîn-lun"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
+"Mae'r thema yn penodi edrychiad borderi ffenestri, y bar teitl, ac yn y "
+"blaen."
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1301,7 +1325,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Y gorchymyn sgrîn-lun ffenest"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1393,15 +1417,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Math Cloch Gweladwy"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
-msgstr ""
+msgstr "Modd ffocysu ffenestri"
 
 #: src/metacity.schemas.in.h:162
 msgid "Window title font"
-msgstr ""
+msgstr "Ffont teitl ffenestri"
 
 #: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
 #: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
@@ -1462,7 +1486,7 @@ msgstr ""
 #: src/prefs.c:1895
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Gwall wrth osod enw y gweithle %d i \"%s\": %s\n"
+msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1472,7 +1496,7 @@ msgstr "%d x %d"
 #: src/screen.c:407
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Mae sgrïn %d ar y dangosydd '%s' yn annilys\n"
+msgstr "Mae sgrîn %d ar y dangosydd '%s' yn annilys\n"
 
 #: src/screen.c:423
 #, c-format
@@ -1490,12 +1514,12 @@ msgstr ""
 #: src/screen.c:520
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Mae gan y sgrïn %d ar y dangosydd \"%s\" rheolwr ffenestri eisioes\n"
+msgstr "Mae gan y sgrîn %d ar y dangosydd \"%s\" rheolwr ffenestri eisioes\n"
 
 #: src/screen.c:690
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Methu rhyddhau sgrïn %d ar y dangosydd \"%s\"\n"
+msgstr "Methu rhyddhau sgrîn %d ar y dangosydd \"%s\"\n"
 
 #: src/session.c:274
 #, c-format
@@ -2290,7 +2314,7 @@ msgstr "Methu llwytho'r thema \"%s\": %s\n"
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Dim <%s> wedi ei osod ar gyfer y thema \"%s\""
 
 #: src/theme.c:4629
 #, c-format
@@ -2315,23 +2339,23 @@ msgstr ""
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Diffiniwyd y cysonyn \"%s\" eisioes"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Dewis sut i rhoi ffocws i ffenestri"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Ffocws Ffenestri"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "_Clicio er mwyn rhoi ffocws"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Ymddygiad ffocysu:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
@@ -2348,17 +2372,17 @@ msgstr ""
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Methu agor cofnod dadchwilennu: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Methu defnyddio fdopen() ar y cofnod %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Agorwyd ffeil llogi %s\n"
+msgstr "Agorwyd cofnod %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
@@ -2379,7 +2403,7 @@ msgstr "Gwall rheolwr ffenestri: "
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "Gosododd rhaglen _NET_WM_PID drwg %ld\n"
+msgstr "Gosododd rhaglen _NET_WM_PID drŵg %ld\n"
 
 #. first time through
 #: src/window.c:4540
@@ -2402,6 +2426,9 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Mae'r ffenest %s yn gosod awgrym MWM yn dynodi ni ellir newid ei faint, ond "
+"yn gosod maint lleiaf %d x %d a maint mwyaf %d x %d; nid yw hyn yn gwneud "
+"llawer o synnwyr.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2416,10 +2443,13 @@ msgstr ""
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Roedd y priodoledd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Roedd y priodoledd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
+"eitem %d yn y rhestr\n"
+
