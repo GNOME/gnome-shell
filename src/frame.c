@@ -52,14 +52,19 @@ meta_frame_init_info (MetaFrame     *frame,
 {
   info->flags =
     META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_DELETE |
-    META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE |
     META_FRAME_ALLOWS_RESIZE;
 
+  if (frame->window->type == META_WINDOW_NORMAL)
+    info->flags |= (META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE);
+  
   if (frame->window->has_focus)
     info->flags |= META_FRAME_HAS_FOCUS;
 
   if (frame->window->shaded)
     info->flags |= META_FRAME_SHADED;
+
+  if (frame->window->on_all_workspaces)
+    info->flags |= META_FRAME_STUCK;
   
   info->drawable = None;
   info->xoffset = 0;
@@ -257,6 +262,8 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->right_width = 0;
   frame->bg_pixel = 0;  
 
+  frame->mapped = FALSE;
+  
   attrs.event_mask = EVENT_MASK;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
@@ -355,19 +362,37 @@ meta_window_destroy_frame (MetaWindow *window)
 }
 
 void
-meta_frame_sync_to_window (MetaFrame *frame)
+meta_frame_sync_to_window (MetaFrame *frame,
+                           gboolean   need_move,
+                           gboolean   need_resize)
 {
   meta_verbose ("Syncing frame geometry %d,%d %dx%d pixel %ld\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
                 frame->bg_pixel);
+
+  /* set bg to none to avoid flicker */
   set_background_none (frame);
-  XMoveResizeWindow (frame->window->display->xdisplay,
-                     frame->xwindow,
-                     frame->rect.x,
-                     frame->rect.y,
-                     frame->rect.width,
-                     frame->rect.height);
+
+  if (need_move && need_resize)
+    XMoveResizeWindow (frame->window->display->xdisplay,
+                       frame->xwindow,
+                       frame->rect.x,
+                       frame->rect.y,
+                       frame->rect.width,
+                       frame->rect.height);
+  else if (need_move)
+    XMoveWindow (frame->window->display->xdisplay,
+                 frame->xwindow,
+                 frame->rect.x,
+                 frame->rect.y);
+  else if (need_resize)
+    XResizeWindow (frame->window->display->xdisplay,
+                   frame->xwindow,
+                   frame->rect.width,
+                   frame->rect.height);
+  
+  /* also syncs bg_pixel */
   set_background_color (frame);
   meta_frame_queue_draw (frame);
 }
@@ -703,6 +728,11 @@ get_menu_items (MetaFrame *frame,
   else
     *ops |= META_MESSAGE_MENU_SHADE;
 
+  if (frame->window->on_all_workspaces)
+    *ops |= META_MESSAGE_MENU_UNSTICK;
+  else
+    *ops |= META_MESSAGE_MENU_STICK;
+  
   *ops |= (META_MESSAGE_MENU_DELETE | META_MESSAGE_MENU_WORKSPACES | META_MESSAGE_MENU_MINIMIZE);
 
   if (!(info->flags & META_FRAME_CONTROL_ICONIFY))

@@ -39,7 +39,8 @@ void           meta_workspace_add_window    (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_remove_window (MetaWorkspace *workspace,
                                              MetaWindow    *window);
-
+gboolean       meta_workspace_contains_window (MetaWorkspace *workspace,
+                                               MetaWindow  *window);
 void           meta_workspace_activate      (MetaWorkspace *workspace);
 int            meta_workspace_index         (MetaWorkspace *workspace);
 int            meta_workspace_screen_index  (MetaWorkspace *workspace);

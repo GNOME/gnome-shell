@@ -25,8 +25,8 @@
 
 void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
-static int set_current_workspace_hint (MetaWindow *window);
 static int set_number_of_spaces_hint  (MetaScreen *screen);
+static int set_active_space_hint      (MetaScreen *screen);
 
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
@@ -82,12 +82,12 @@ void
 meta_workspace_add_window (MetaWorkspace *workspace,
                            MetaWindow    *window)
 {
-  g_return_if_fail (g_list_find (workspace->windows, window) == NULL);
-
+  g_return_if_fail (!meta_workspace_contains_window (workspace, window));
+  
   workspace->windows = g_list_prepend (workspace->windows, window);
   window->workspaces = g_list_prepend (window->workspaces, workspace);
 
-  set_current_workspace_hint (window);
+  meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
 }
@@ -96,14 +96,21 @@ void
 meta_workspace_remove_window (MetaWorkspace *workspace,
                               MetaWindow    *window)
 {
-  g_return_if_fail (g_list_find (workspace->windows, window) != NULL);
+  g_return_if_fail (meta_workspace_contains_window (workspace, window));
 
   workspace->windows = g_list_remove (workspace->windows, window);
   window->workspaces = g_list_remove (window->workspaces, workspace);
 
-  set_current_workspace_hint (window);
+  meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
+}
+
+gboolean
+meta_workspace_contains_window (MetaWorkspace *workspace,
+                                MetaWindow    *window)
+{
+  return g_list_find (workspace->windows, window) != NULL;
 }
 
 void
@@ -135,6 +142,8 @@ meta_workspace_activate (MetaWorkspace *workspace)
   
   workspace->screen->active_workspace = workspace;
 
+  set_active_space_hint (workspace->screen);
+  
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
 }
@@ -184,32 +193,6 @@ meta_workspace_screen_index  (MetaWorkspace *workspace)
   meta_bug ("Workspace does not exist to index!\n");
 }
 
-
-static int
-set_current_workspace_hint (MetaWindow *window)
-{
-  /* if on more than one workspace, we claim to be "sticky" */
-  unsigned long data[1];
-
-  if (window->workspaces == NULL)
-    return Success; /* this happens when destroying windows */
-  
-  if (g_list_length (window->workspaces) > 1)
-    data[0] = 0xFFFFFFFF;
-  else
-    data[0] = meta_workspace_screen_index (window->workspaces->data);
-
-  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %ld\n",
-                window->desc, data[0]);
-  
-  meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_net_wm_desktop,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-  return meta_error_trap_pop (window->display);
-}
-
 static int
 set_number_of_spaces_hint (MetaScreen *screen)
 {
@@ -222,6 +205,23 @@ set_number_of_spaces_hint (MetaScreen *screen)
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_number_of_desktops,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (screen->display);
+}
+
+static int
+set_active_space_hint (MetaScreen *screen)
+{
+  unsigned long data[1];
+  
+  data[0] = meta_workspace_screen_index (screen->active_workspace);
+
+  meta_verbose ("Setting _NET_CURRENT_DESKTOP to %ld\n", data[0]);
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_current_desktop,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   return meta_error_trap_pop (screen->display);

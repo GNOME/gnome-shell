@@ -51,8 +51,6 @@ struct _MetaScreen
 
   guint showing_tooltip : 1;
   
-  /*< private >*/
-
   /* we only need one since we only draw to a single visual (that of
    * root window)
    */

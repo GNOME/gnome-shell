@@ -54,7 +54,10 @@ static MenuItem menuitems[] = {
   { META_MESSAGE_MENU_MAXIMIZE, NULL, N_("Ma_ximize") },
   { META_MESSAGE_MENU_UNMAXIMIZE, NULL, N_("_Unmaximize") },
   { META_MESSAGE_MENU_SHADE, NULL, N_("_Shade") },
-  { META_MESSAGE_MENU_UNSHADE, NULL, N_("U_nshade") }
+  { META_MESSAGE_MENU_UNSHADE, NULL, N_("U_nshade") },
+  { 0, NULL, NULL }, /* separator */
+  { META_MESSAGE_MENU_STICK, NULL, N_("Put on _All Workspaces") },
+  { META_MESSAGE_MENU_UNSTICK, NULL, N_("Only on _This Workspace") }
 };
 
 static void
@@ -105,6 +108,32 @@ get_num_desktops (void)
   return result;
 }
 
+static gint
+get_active_desktop (void)
+{  
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  int result;
+  
+  XGetWindowProperty (gdk_display, gdk_root_window,
+                      gdk_atom_intern ("_NET_CURRENT_DESKTOP", FALSE),
+                      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&num);  
+
+  if (type != XA_CARDINAL)
+    return 0; 
+
+  result = *num;
+  
+  XFree (num);
+
+  return result;
+}
+
 static gulong
 get_current_desktop (GdkWindow *window)
 {  
@@ -130,7 +159,7 @@ get_current_desktop (GdkWindow *window)
   if (type != XA_CARDINAL)
     {
       meta_ui_warning ("_NET_WM_DESKTOP has wrong type %s\n", gdk_atom_name (type));
-      return -1;
+      return 0xFFFFFFFF; /* sticky */
     }
 
   result = *num;
@@ -172,40 +201,47 @@ meta_window_menu_show (gulong xwindow,
   i = 0;
   while (i < G_N_ELEMENTS (menuitems))
     {
-      if (ops & menuitems[i].op)
+      if (ops & menuitems[i].op || menuitems[i].op == 0)
         {
           GtkWidget *mi;
           MenuData *md;
-          
-          if (menuitems[i].stock_id)
+
+          if (menuitems[i].op == 0)
             {
-              GtkWidget *image;
-              
-              mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
-              image = gtk_image_new_from_stock (menuitems[i].stock_id,
-                                                GTK_ICON_SIZE_MENU);
-              gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
-                                             image);
-              gtk_widget_show (image);
+              mi = gtk_separator_menu_item_new ();
             }
           else
             {
-              mi = gtk_menu_item_new_with_mnemonic (menuitems[i].label);
+              if (menuitems[i].stock_id)
+                {
+                  GtkWidget *image;
+                  
+                  mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
+                  image = gtk_image_new_from_stock (menuitems[i].stock_id,
+                                                    GTK_ICON_SIZE_MENU);
+                  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
+                                                 image);
+                  gtk_widget_show (image);
+                }
+              else
+                {
+                  mi = gtk_menu_item_new_with_mnemonic (menuitems[i].label);
+                }
+              
+              if (insensitive & menuitems[i].op)
+                gtk_widget_set_sensitive (mi, FALSE);
+              
+              md = g_new (MenuData, 1);
+              
+              md->window = window;
+              md->op = menuitems[i].op;
+              
+              gtk_signal_connect (GTK_OBJECT (mi),
+                                  "activate",
+                                  GTK_SIGNAL_FUNC (activate_cb),
+                                  md);
             }
-
-          if (insensitive & menuitems[i].op)
-            gtk_widget_set_sensitive (mi, FALSE);
-
-          md = g_new (MenuData, 1);
-
-          md->window = window;
-          md->op = menuitems[i].op;
           
-          gtk_signal_connect (GTK_OBJECT (mi),
-                              "activate",
-                              GTK_SIGNAL_FUNC (activate_cb),
-                              md);
-
           gtk_menu_shell_append (GTK_MENU_SHELL (menu),
                                  mi);
           
@@ -222,22 +258,22 @@ meta_window_menu_show (gulong xwindow,
       meta_ui_warning ("Creating %d workspace menu current %d\n",
                        n_workspaces, current_workspace);
       
-      if (n_workspaces > 0 && current_workspace >= 0)
+      if (n_workspaces > 0)
         {
           GtkWidget *mi;
-
-          mi = gtk_separator_menu_item_new ();
-          gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
-          gtk_widget_show (mi);
           
           i = 0;
           while (i < n_workspaces)
             {
               char *label;
               MenuData *md;
-              
-              label = g_strdup_printf (_("Move to workspace _%d\n"),
-                                       i + 1);
+
+              if (current_workspace == 0xFFFFFFFF)
+                label = g_strdup_printf (_("Only on workspace _%d\n"),
+                                         i + 1);
+              else
+                label = g_strdup_printf (_("Move to workspace _%d\n"),
+                                         i + 1);
           
               mi = gtk_menu_item_new_with_mnemonic (label);
 
@@ -428,6 +464,14 @@ activate_cb (GtkWidget *menuitem, gpointer data)
 
         wmspec_change_desktop (md->window, workspace);
       }
+      break;
+
+    case META_MESSAGE_MENU_STICK:
+      wmspec_change_desktop (md->window, 0xFFFFFFFF);
+      break;
+
+    case META_MESSAGE_MENU_UNSTICK:
+      wmspec_change_desktop (md->window, get_active_desktop ());
       break;
       
     default:

@@ -62,6 +62,7 @@ struct _MetaFrame
   guint tooltip_timeout;
   
   guint theme_acquired : 1;
+  guint mapped : 1;
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);
@@ -84,7 +85,9 @@ void meta_frame_adjust_for_gravity (int                win_gravity,
                                     int                y,
                                     int               *win_root_x,
                                     int               *win_root_y);
-void meta_frame_sync_to_window     (MetaFrame         *frame);
+void meta_frame_sync_to_window     (MetaFrame         *frame,
+                                    gboolean           need_move,
+                                    gboolean           need_resize);
 
 
 #endif

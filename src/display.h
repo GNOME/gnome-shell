@@ -62,6 +62,17 @@ struct _MetaDisplay
   Atom atom_sm_client_id;
   Atom atom_wm_client_leader;
   Atom atom_wm_window_role;
+  Atom atom_net_current_desktop;
+  Atom atom_net_supporting_wm_check;
+  Atom atom_net_wm_supported;
+  Atom atom_net_wm_window_type;
+  Atom atom_net_wm_window_type_desktop;
+  Atom atom_net_wm_window_type_dock;
+  Atom atom_net_wm_window_type_toolbar;
+  Atom atom_net_wm_window_type_menu;
+  Atom atom_net_wm_window_type_dialog;
+  Atom atom_net_wm_window_type_normal;
+  Atom atom_net_wm_state_modal;
   
   /* This is the actual window from focus events,
    * not the one we last set

@@ -30,6 +30,7 @@
 #include "keybindings.h"
 
 #include <X11/cursorfont.h>
+#include <X11/Xatom.h>
 #include <locale.h>
 #include <string.h>
 
@@ -39,6 +40,53 @@ static void  ui_slave_func   (MetaUISlave *uislave,
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
+
+static int
+set_wm_check_hint (MetaScreen *screen)
+{
+  unsigned long data[1];
+
+  data[0] = screen->display->leader_window;
+
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_supporting_wm_check,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return Success;
+}
+
+static int
+set_supported_hint (MetaScreen *screen)
+{
+#define N_SUPPORTED 17
+  Atom atoms[N_SUPPORTED];
+
+  atoms[0] = screen->display->atom_net_wm_name;
+  atoms[1] = screen->display->atom_net_close_window;
+  atoms[2] = screen->display->atom_net_wm_state;
+  atoms[3] = screen->display->atom_net_wm_state_shaded;
+  atoms[4] = screen->display->atom_net_wm_state_maximized_vert;
+  atoms[5] = screen->display->atom_net_wm_state_maximized_horz;
+  atoms[6] = screen->display->atom_net_wm_desktop;
+  atoms[7] = screen->display->atom_net_number_of_desktops;
+  atoms[8] = screen->display->atom_net_current_desktop;
+  atoms[9] = screen->display->atom_net_wm_window_type;
+  atoms[10] = screen->display->atom_net_wm_window_type_desktop;
+  atoms[11] = screen->display->atom_net_wm_window_type_dock;
+  atoms[12] = screen->display->atom_net_wm_window_type_toolbar;
+  atoms[13] = screen->display->atom_net_wm_window_type_menu;
+  atoms[14] = screen->display->atom_net_wm_window_type_dialog;
+  atoms[15] = screen->display->atom_net_wm_window_type_normal;
+  atoms[16] = screen->display->atom_net_wm_state_modal;
+  
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_wm_supported,
+                   XA_ATOM,
+                   32, PropModeReplace, (guchar*) atoms, N_SUPPORTED);
+
+  return Success;
+#undef N_SUPPORTED
+}
 
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
@@ -104,6 +152,10 @@ meta_screen_new (MetaDisplay *display,
 
   screen->showing_tooltip = FALSE;
 
+  set_supported_hint (screen);
+  
+  set_wm_check_hint (screen);
+  
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
    */

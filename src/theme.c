@@ -179,10 +179,10 @@ default_release_frame (MetaFrameInfo *info,
 #define SPACER_SPACING 3
 #define SPACER_WIDTH 2
 #define SPACER_HEIGHT 10
-#define BUTTON_WIDTH 12
-#define BUTTON_HEIGHT 12
-#define BUTTON_PAD 2
-#define INNER_BUTTON_PAD 1
+#define BUTTON_WIDTH 14
+#define BUTTON_HEIGHT 14
+#define BUTTON_PAD 1
+#define INNER_BUTTON_PAD 3
 static void
 calc_geometry (MetaFrameInfo *info,
                DefaultFrameData *d,

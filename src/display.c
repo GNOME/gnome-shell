@@ -28,6 +28,8 @@
 #include "errors.h"
 #include "keybindings.h"
 #include "workspace.h"
+#include <X11/Xatom.h>
+#include <string.h>
 
 static GSList *all_displays = NULL;
 static void   meta_spew_event           (MetaDisplay    *display,
@@ -61,6 +63,19 @@ unsigned_long_hash (gconstpointer v)
 #endif
 }
 
+static int
+set_string_hint (MetaDisplay *display,
+                 Window xwindow,
+                 Atom atom,
+                 const char *val)
+{
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, 
+                   xwindow, atom,
+                   XA_STRING,
+                   8, PropModeReplace, (guchar*) val, strlen (val) + 1);
+  return meta_error_trap_pop (display);
+}
 
 gboolean
 meta_display_open (const char *name)
@@ -90,7 +105,18 @@ meta_display_open (const char *name)
     "WM_CHANGE_STATE",
     "SM_CLIENT_ID",
     "WM_CLIENT_LEADER",
-    "WM_WINDOW_ROLE"
+    "WM_WINDOW_ROLE",
+    "_NET_CURRENT_DESKTOP",
+    "_NET_SUPPORTING_WM_CHECK",
+    "_NET_WM_SUPPORTED",
+    "_NET_WM_WINDOW_TYPE",
+    "_NET_WM_WINDOW_TYPE_DESKTOP",
+    "_NET_WM_WINDOW_TYPE_DOCK",
+    "_NET_WM_WINDOW_TYPE_TOOLBAR",
+    "_NET_WM_WINDOW_TYPE_MENU",
+    "_NET_WM_WINDOW_TYPE_DIALOG",
+    "_NET_WM_WINDOW_TYPE_NORMAL",
+    "_NET_WM_STATE_MODAL"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -144,6 +170,17 @@ meta_display_open (const char *name)
   display->atom_sm_client_id = atoms[14];
   display->atom_wm_client_leader = atoms[15];
   display->atom_wm_window_role = atoms[16];
+  display->atom_net_current_desktop = atoms[17];
+  display->atom_net_supporting_wm_check = atoms[18];
+  display->atom_net_wm_supported = atoms[19];
+  display->atom_net_wm_window_type = atoms[20];
+  display->atom_net_wm_window_type_desktop = atoms[21];
+  display->atom_net_wm_window_type_dock = atoms[22];
+  display->atom_net_wm_window_type_toolbar = atoms[23];
+  display->atom_net_wm_window_type_menu = atoms[24];
+  display->atom_net_wm_window_type_dialog = atoms[25];
+  display->atom_net_wm_window_type_normal = atoms[26];
+  display->atom_net_wm_state_modal = atoms[27];
   
   screens = NULL;
   i = 0;
@@ -190,6 +227,11 @@ meta_display_open (const char *name)
     XCreateSimpleWindow (display->xdisplay,
                          ((MetaScreen*)display->screens->data)->xroot,
                          -100, -100, 1, 1, 0, 0, 0);
+
+  set_string_hint (display,
+                   display->leader_window,
+                   display->atom_net_supporting_wm_check,
+                   "Metacity");
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -560,7 +602,39 @@ event_queue_callback (MetaEventQueue *queue,
       break;
     case ClientMessage:
       if (window)
-        meta_window_client_message (window, event);
+        {
+          meta_window_client_message (window, event);
+        }
+      else
+        {
+          MetaScreen *screen;
+
+          screen = meta_display_screen_for_root (display,
+                                                 event->xclient.window);
+          
+          if (screen &&
+              event->xclient.message_type ==
+              display->atom_net_current_desktop)
+            {
+              int space;
+              MetaWorkspace *workspace;
+              
+              space = event->xclient.data.l[0];
+              
+              meta_verbose ("Request to change current workspace to %d\n",
+                            space);
+              
+              workspace =
+                meta_display_get_workspace_by_screen_index (display,
+                                                            screen,
+                                                            space);
+
+              if (workspace)
+                meta_workspace_activate (workspace);
+              else
+                meta_verbose ("Don't know about workspace %d\n", space);
+            }
+        }
       break;
     case MappingNotify:
       break;

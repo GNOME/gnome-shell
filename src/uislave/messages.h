@@ -136,7 +136,9 @@ typedef enum
   META_MESSAGE_MENU_MAXIMIZE    = 1 << 3,
   META_MESSAGE_MENU_UNSHADE     = 1 << 4,
   META_MESSAGE_MENU_SHADE       = 1 << 5,
-  META_MESSAGE_MENU_WORKSPACES  = 1 << 6
+  META_MESSAGE_MENU_UNSTICK     = 1 << 6,
+  META_MESSAGE_MENU_STICK       = 1 << 7,
+  META_MESSAGE_MENU_WORKSPACES  = 1 << 8
 } MetaMessageWindowMenuOps;
 
 struct _MetaMessageShowWindowMenu

@@ -26,6 +26,17 @@
 #include "util.h"
 #include <X11/Xutil.h>
 
+typedef enum
+{
+  META_WINDOW_NORMAL,
+  META_WINDOW_DESKTOP,
+  META_WINDOW_DOCK,
+  META_WINDOW_DIALOG,
+  META_WINDOW_MODAL_DIALOG,
+  META_WINDOW_TOOLBAR,
+  META_WINDOW_MENU
+} MetaWindowType;
+
 struct _MetaWindow
 {
   MetaDisplay *display;
@@ -39,6 +50,9 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
+  MetaWindowType type;
+  Atom type_atom;
+  
   /* NOTE these four are not in UTF-8, we just treat them as random
    * binary data
    */
@@ -56,6 +70,12 @@ struct _MetaWindow
 
   /* Whether we're shaded */
   guint shaded : 1;
+
+  /* Whether we're sticky in the multi-workspace sense
+   * (vs. the not-scroll-with-viewport sense, we don't
+   * have no stupid viewports)
+   */
+  guint on_all_workspaces : 1;
   
   /* Mapped is what we think the mapped state should be;
    * so if we get UnmapNotify and mapped == TRUE then
@@ -88,6 +108,9 @@ struct _MetaWindow
   guint has_minimize_func : 1;
   guint has_maximize_func : 1;
 
+  /* Weird "_NET_WM_STATE_MODAL" flag */
+  guint wm_state_modal : 1;
+  
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus
    */
@@ -126,6 +149,8 @@ void        meta_window_shade              (MetaWindow  *window);
 void        meta_window_unshade            (MetaWindow  *window);
 void        meta_window_change_workspace   (MetaWindow  *window,
                                             MetaWorkspace *workspace);
+void        meta_window_stick              (MetaWindow  *window);
+void        meta_window_unstick            (MetaWindow  *window);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
@@ -167,4 +192,6 @@ gboolean meta_window_property_notify   (MetaWindow *window,
                                         XEvent     *event);
 gboolean meta_window_client_message    (MetaWindow *window,
                                         XEvent     *event);
+
+int      meta_window_set_current_workspace_hint (MetaWindow *window);
 #endif
