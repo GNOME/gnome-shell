@@ -1,5 +1,13 @@
 2002-08-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (update_sm_hints): hack around bug in kmail etc.
+	where SM_CLIENT_ID was set on the window, not the client leader.
+
+	* src/theme.c (meta_frame_layout_calc_geometry): don't round
+	corners unless we have enough frame to chop off.
+
+2002-08-24  Havoc Pennington  <hp@redhat.com>
+
 	* src/util.c: translate some strings that should have been, and
 	convert to locale encoding before printing stuff.
 

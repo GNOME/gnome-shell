@@ -4606,13 +4606,36 @@ update_sm_hints (MetaWindow *window)
           window->sm_client_id = g_strdup (str);
           meta_XFree (str);
         }
-
-      meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
-                    window->desc, window->xclient_leader,
-                    window->sm_client_id ? window->sm_client_id : "(null)");
     }
   else
-    meta_verbose ("Didn't find a client leader for %s\n", window->desc);
+    {
+      meta_verbose ("Didn't find a client leader for %s\n", window->desc);
+
+      if (!meta_prefs_get_disable_workarounds ())
+        {
+          /* Some broken apps (kdelibs fault?) set SM_CLIENT_ID on the app
+           * instead of the client leader
+           */
+          char *str;
+
+          str = NULL;
+          if (meta_prop_get_latin1_string (window->display, window->xwindow,
+                                           window->display->atom_sm_client_id,
+                                           &str))
+            {
+              if (window->sm_client_id == NULL) /* first time through */
+                meta_warning (_("Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"),
+                              window->desc);
+              
+              window->sm_client_id = g_strdup (str);
+              meta_XFree (str);
+            }
+        }
+    }
+
+  meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
+                window->desc, window->xclient_leader,
+                window->sm_client_id ? window->sm_client_id : "(null)");
 }
 
 static void
