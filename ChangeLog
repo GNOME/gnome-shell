@@ -1,5 +1,13 @@
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
+	* src/run-metacity.sh: if DEMO_TEST is set then run the window
+	demo
+
+	* src/tools/metacity-window-demo.c: Create an app with all the
+	semantic window types, for testing and for designing themes.
+
+2002-02-07  Havoc Pennington  <hp@pobox.com>
+
         Throughout: move to meta_topic rather than meta_verbose so
 	metacity.log can start being more useful
 	

@@ -34,6 +34,10 @@ if test -n "$ICON_TEST"; then
   TEST_CLIENT='./wm-tester/wm-tester --icon-windows'
 fi
 
+if test -n "$DEMO_TEST"; then
+  TEST_CLIENT='./tools/metacity-window-demo'
+fi
+
 if test -z "$ONLY_WM"; then
   echo "Launching Xnest"
   Xnest -ac $XNEST_DISPLAY -scrns $SCREENS -geometry 640x480 -bw 15 &
