@@ -1,3 +1,9 @@
+2003-05-01  Rob Adams  <robadams@ucla.edu>
+
+	* src/constraints.c (constraint_onscreen_applies_func): Don't
+	apply onscreen constraints to full screen windows.  Fix for
+	#110048
+
 2003-04-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/bell.h: include Xlib.h before XKBlib.h which is required on

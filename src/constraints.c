@@ -338,6 +338,7 @@ static gboolean
 constraint_onscreen_applies_func (MetaWindow *window)
 {
   return
+    !window->fullscreen &&
     window->type != META_WINDOW_DESKTOP &&
     window->type != META_WINDOW_DOCK;
 }
