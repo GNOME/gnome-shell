@@ -218,6 +218,22 @@ meta_core_user_raise (Display *xdisplay,
 }
 
 void
+meta_core_user_lower (Display *xdisplay,
+                      Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+  meta_window_lower (window);
+}
+
+void
 meta_core_user_focus (Display *xdisplay,
                       Window   frame_xwindow,
                       Time     timestamp)

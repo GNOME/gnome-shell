@@ -1071,7 +1071,7 @@ event_callback (XEvent   *event,
            */
           unmodified = (event->xbutton.state & grab_mask) == 0;
           
-          if (unmodified ||
+          if ((unmodified && event->xbutton.button != 2) ||
               event->xbutton.button == 1)
             {
               if (!frame_was_receiver)
@@ -1087,33 +1087,6 @@ event_callback (XEvent   *event,
                               window->desc, event->xbutton.button);
                   meta_window_focus (window, event->xbutton.time);
                 }
-
-              if (!frame_was_receiver && unmodified)
-                {
-                  /* This is from our synchronous grab since
-                   * it has no modifiers and was on the client window
-                   */
-                  int mode;
-
-                  /* When clicking a different app in click-to-focus
-                   * in application-based mode, and the different
-                   * app is not a dock or desktop, eat the focus click.
-                   */
-                  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
-                      meta_prefs_get_application_based () &&
-                      !window->has_focus &&
-                      window->type != META_WINDOW_DOCK &&
-                      window->type != META_WINDOW_DESKTOP &&
-                      (display->focus_window == NULL ||
-                       !meta_window_same_application (window,
-                                                      display->focus_window)))
-                    mode = AsyncPointer; /* eat focus click */
-                  else
-                    mode = ReplayPointer; /* give event back */
-                  
-                  XAllowEvents (display->xdisplay,
-                                mode, event->xbutton.time);
-                }
               
               /* you can move on alt-click but not on
                * the click-to-focus
@@ -1121,7 +1094,7 @@ event_callback (XEvent   *event,
               if (!unmodified)
                 begin_move = TRUE;
             }
-          else if (event->xbutton.button == 2)
+          else if (!unmodified && event->xbutton.button == 2)
             {
               if (window->has_resize_func)
                 {
@@ -1165,6 +1138,33 @@ event_callback (XEvent   *event,
                                      event->xbutton.time);
             }
 
+          if (!frame_was_receiver && unmodified)
+            {
+              /* This is from our synchronous grab since
+               * it has no modifiers and was on the client window
+               */
+              int mode;
+              
+              /* When clicking a different app in click-to-focus
+               * in application-based mode, and the different
+               * app is not a dock or desktop, eat the focus click.
+               */
+              if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+                  meta_prefs_get_application_based () &&
+                  !window->has_focus &&
+                  window->type != META_WINDOW_DOCK &&
+                  window->type != META_WINDOW_DESKTOP &&
+                  (display->focus_window == NULL ||
+                   !meta_window_same_application (window,
+                                                  display->focus_window)))
+                mode = AsyncPointer; /* eat focus click */
+              else
+                mode = ReplayPointer; /* give event back */
+              
+              XAllowEvents (display->xdisplay,
+                            mode, event->xbutton.time);
+            }
+          
           if (begin_move && window->has_move_func)
             {
               meta_display_begin_grab_op (display,
@@ -1882,9 +1882,23 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ButtonPress:
       name = "ButtonPress";
+      extra = g_strdup_printf ("button %d state 0x%x x %d y %d root 0x%lx same_screen %d",
+                               event->xbutton.button,
+                               event->xbutton.state,
+                               event->xbutton.x,
+                               event->xbutton.y,
+                               event->xbutton.root,
+                               event->xbutton.same_screen);
       break;
     case ButtonRelease:
       name = "ButtonRelease";
+      extra = g_strdup_printf ("button %d state 0x%x x %d y %d root 0x%lx same_screen %d",
+                               event->xbutton.button,
+                               event->xbutton.state,
+                               event->xbutton.x,
+                               event->xbutton.y,
+                               event->xbutton.root,
+                               event->xbutton.same_screen);
       break;
     case MotionNotify:
       name = "MotionNotify";

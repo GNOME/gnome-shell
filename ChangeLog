@@ -1,3 +1,13 @@
+2002-10-11  Havoc Pennington  <hp@redhat.com>
+
+	* src/display.c (event_callback): don't raise window on button 2
+	click, only on button 1 and button 3.
+
+	* src/frames.c (meta_frames_button_press_event): lower on button 2
+	press on frame
+
+	* src/core.c (meta_core_user_lower): new function
+
 2002-10-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (window_is_fullscreen_size): make the checks here

@@ -1228,6 +1228,10 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                    event->y_root);
         }
     }
+  else if (event->button == 2)
+    {
+      meta_core_user_lower (gdk_display, frame->xwindow);
+    }
   else if (event->button == 3)
     {
       meta_core_show_window_menu (gdk_display,
