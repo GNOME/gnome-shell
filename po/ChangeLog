@@ -1,3 +1,7 @@
+2003-02-25  Pablo Gonzalo del Campo <pablodc@bigfoot.com>
+
+	* es.po: Fixed a translation string to match with libwnck.
+
 2003-02-22  Rob Adams <robadams@ucla.edu>
 
 	* *.po: change toggle_maximized to toggle_maximize and
