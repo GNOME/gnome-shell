@@ -5,20 +5,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.3.34\n"
-"POT-Creation-Date: 2001-11-25 07:48-0500\n"
-"PO-Revision-Date: 2001-11-26 21:25+0100\n"
+"POT-Creation-Date: 2001-12-19 07:30-0500\n"
+"PO-Revision-Date: 2001-12-19 21:25+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:153
+#: src/display.c:155
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Fallo ao abrir o sistema X Window, display '%s'\n"
 
-#: src/errors.c:92
+#: src/errors.c:93
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -29,270 +29,276 @@ msgstr ""
 "o máis seguro é que se saise do servidor de X ou que\n"
 "matase/destruise o xestor de fiestras.\n"
 
-#: src/errors.c:99
+#: src/errors.c:100
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro fatal de E/S %d (%s) no display '%s'.\n"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left edge"
 msgstr "Beira esquerda"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left window edge width"
 msgstr "Anchura da beira esquerda da fiestra"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right edge"
 msgstr "Beira dereita"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right window edge width"
 msgstr "Anchura da beira dereita da fiestra"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom edge"
 msgstr "Beira inferior"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom window edge height"
 msgstr "Anchura da beira inferior da fiestra"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Title border"
 msgstr "Bordo do título"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Border around title area"
 msgstr "Bordo arredor da área do título"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Text border"
 msgstr "Bordo do texto"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Border around window title text"
 msgstr "Bordo arredor do texto de título da fiestra"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Spacer padding"
 msgstr "Recheo do espaciador"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Padding on either side of spacer"
 msgstr "Recheo a calquera lado do espaciador"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Spacer width"
 msgstr "Anchura do espaciador"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Width of spacer"
 msgstr "Anchura do espaciador"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Spacer height"
 msgstr "Altura do espaciador"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Height of spacer"
 msgstr "Altura do espaciador"
 
 #. same as right_width left_width by default
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Right inset"
 msgstr "Inserción dereita"
 
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Distance of buttons from right edge of frame"
 msgstr "Distancia dos botóns desde a beira dereita do cadro"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Left inset"
 msgstr "Inserción esquerda"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Distance of menu button from left edge of frame"
 msgstr "Distancia do botón de menú desde a beira esquerda do cadro"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Button width"
 msgstr "Anchura dos botóns"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Width of buttons"
 msgstr "Anchura dos botóns"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Button height"
 msgstr "Altura dos botóns"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Height of buttons"
 msgstr "Altura dos botóns"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Button border"
 msgstr "Bordo dos botóns"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Border around buttons"
 msgstr "Bordo arredor dos botóns"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Inner button border"
 msgstr "Bordo interior dos botóns"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Border around the icon inside buttons"
 msgstr "Bordo arredor do icono dentro dos botóns"
 
-#: src/frames.c:889
+#: src/frames.c:891
 msgid "Close Window"
 msgstr "Pechar Fiestra"
 
-#: src/frames.c:892
+#: src/frames.c:894
 msgid "Window Menu"
 msgstr "Menú da Fiestra"
 
-#: src/frames.c:895
+#: src/frames.c:897
 msgid "Minimize Window"
 msgstr "Minimizar Fiestra"
 
-#: src/frames.c:898
+#: src/frames.c:900
 msgid "Maximize Window"
 msgstr "Maximizar Fiestra"
 
-#: src/frames.c:901
+#: src/frames.c:903
 msgid "Unmaximize Window"
 msgstr "Restaurar Fiestra"
 
-#: src/keybindings.c:210
+#: src/keybindings.c:215
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Algún outro programa está usando xa a tecla %s cos modificadores %x como asignación (binding)\n"
+msgstr ""
+"Algún outro programa está usando xa a tecla %s cos modificadores %x como "
+"asignación (binding)\n"
 
-#: src/menu.c:47
+#: src/menu.c:48
 msgid "_Close"
 msgstr "_Pechar"
 
-#: src/menu.c:48
+#: src/menu.c:49
 msgid "_Minimize"
 msgstr "_Minimizar"
 
-#: src/menu.c:49
+#: src/menu.c:50
 msgid "Ma_ximize"
 msgstr "Ma_ximizar"
 
-#: src/menu.c:50
+#: src/menu.c:51
 msgid "_Unmaximize"
 msgstr "Resta_urar"
 
-#: src/menu.c:51
+#: src/menu.c:52
 msgid "_Shade"
 msgstr "_Enrolar"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "U_nshade"
 msgstr " Dese_nrolar"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mo_ve"
 msgstr "Mo_ver"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "_Resize"
 msgstr "_Redimensionar"
 
 #. separator
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Put on _All Workspaces"
 msgstr "Poñer en _Todos os Escritorios"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "Only on _This Workspace"
 msgstr "Namais _Neste Escritorio"
 
-#: src/menu.c:260
+#: src/menu.c:261
 #, c-format
-msgid "Only on workspace _%d"
-msgstr "Namais no Escritorio _%d"
+msgid "Only on workspace %s%d"
+msgstr "Namais no escritorio %s%d"
 
-#: src/menu.c:263
+#: src/menu.c:264
 #, c-format
-msgid "Move to workspace _%d"
-msgstr "Mover ao Escritorio _%d"
+msgid "Move to workspace %s%d"
+msgstr "Mover ao escritorio %s%d"
 
-#: src/screen.c:168
+#: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d no display '%s' non é válida\n"
 
-#: src/screen.c:183
+#: src/screen.c:189
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "A pantalla %d no display '%s' ten xa un xestor de fiestras\n"
 
-#: src/session.c:746 src/session.c:753
+#: src/session.c:760 src/session.c:767
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Non se puido crear o directorio '%s': %s\n"
 
-#: src/session.c:763
+#: src/session.c:777
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Non se puido abrir o ficheiro de sesión '%s' para escritura: %s\n"
 
-#: src/session.c:895
+#: src/session.c:909
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro escribindo o ficheiro de sesión '%s': %s\n"
 
-#: src/session.c:900
+#: src/session.c:914
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro pechando o ficheiro de sesión '%s': %s\n"
 
-#: src/session.c:974
+#: src/session.c:988
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Fallo ao ler o ficheiro de sesión gardada '%s': %s\n"
 
-#: src/session.c:1008
+#: src/session.c:1022
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Fallo ao interpretar o ficheiro de sesión gardada: %s\n"
 
-#: src/session.c:1046
+#: src/session.c:1060
 msgid "nested <window> tag"
 msgstr "etiqueta <window> aniñada"
 
-#: src/session.c:1096 src/session.c:1128
+#: src/session.c:1110 src/session.c:1142
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo %s descoñecido no elemento <window>"
 
-#: src/session.c:1188
+#: src/session.c:1202
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo %s descoñecido no elemento <geometry>"
 
-#: src/session.c:1208
+#: src/session.c:1222
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s descoñecido"
 
 #. someone is on crack
-#: src/window.c:2934
+#: src/window.c:2939
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
-msgstr "A fiestra %s establece a anchura máxima en %d, menor que a anchura mínima %d, desactivando o redimensionamento\n"
+msgstr ""
+"A fiestra %s establece a anchura máxima en %d, menor que a anchura mínima %"
+"d, desactivando o redimensionamento\n"
 
 #. another cracksmoker
-#: src/window.c:2944
+#: src/window.c:2949
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
-msgstr "A fiestra %s establece a altura máxima en %d, menor que a altura mínima %d, desactivando o redimensionamento\n"
+msgstr ""
+"A fiestra %s establece a altura máxima en %d, menor que a altura mínima %d, "
+"desactivando o redimensionamento\n"
