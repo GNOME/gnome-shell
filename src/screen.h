@@ -36,6 +36,8 @@ struct _MetaScreen
   char *screen_name;
   Screen *xscreen;
   Window xroot;
+  int width;
+  int height;
   MetaUI *ui;
 
   MetaWorkspace *active_workspace;

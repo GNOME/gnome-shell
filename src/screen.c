@@ -163,7 +163,9 @@ meta_screen_new (MetaDisplay *display,
   screen->screen_name = get_screen_name (display, number);
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
-
+  screen->width = WidthOfScreen (screen->xscreen);
+  screen->height = HeightOfScreen (screen->xscreen);
+  
   if (display->leader_window == None)
     display->leader_window = XCreateSimpleWindow (display->xdisplay,
                                                   screen->xroot,

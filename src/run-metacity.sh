@@ -1,4 +1,5 @@
 #! /bin/bash
+
 if test -z "$SCREENS"; then
   SCREENS=1
 fi

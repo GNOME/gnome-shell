@@ -718,28 +718,33 @@ meta_frames_manage_window (MetaFrames *frames,
     int i = 1;
     while (i < 4)
       {
-        if (XGrabButton (gdk_display, i, Mod1Mask,
-                         xwindow, False,
-                         ButtonPressMask | ButtonReleaseMask |    
-                         PointerMotionMask | PointerMotionHintMask,
-                         GrabModeAsync, GrabModeAsync,
-                         False, None) != Success)
-          meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx\n",
-                        i, xwindow);
+        int result;
+        
+        result = XGrabButton (gdk_display, i, Mod1Mask,
+                              xwindow, False,
+                              ButtonPressMask | ButtonReleaseMask |    
+                              PointerMotionMask | PointerMotionHintMask,
+                              GrabModeAsync, GrabModeAsync,
+                              False, None);
+
+        if (result != Success)
+          meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx error code %d\n",
+                        i, xwindow, result);
 
 #if 0
         /* This is just for debugging, since I end up moving
          * the Xnest otherwise ;-)
          */
-        if (XGrabButton (gdk_display, i, ControlMask,
-                         xwindow, False,
-                         ButtonPressMask | ButtonReleaseMask |    
-                         PointerMotionMask | PointerMotionHintMask,
-                         GrabModeAsync, GrabModeAsync,
-                         False, None) != Success)
-          meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx\n",
-                        i, xwindow);
+        result = XGrabButton (gdk_display, i, ControlMask,
+                              xwindow, False,
+                              ButtonPressMask | ButtonReleaseMask |    
+                              PointerMotionMask | PointerMotionHintMask,
+                              GrabModeAsync, GrabModeAsync,
+                              False, None);
 
+        if (result != Success)
+          meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx error code %d\n",
+                        i, xwindow, result);        
 #endif
         
         ++i;

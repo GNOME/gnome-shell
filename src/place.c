@@ -195,9 +195,7 @@ find_first_fit (MetaWindow *window,
                 int        *new_x,
                 int        *new_y)
 {
-
-
-
+  
 }
 
 void
@@ -256,8 +254,8 @@ meta_window_place (MetaWindow *window,
       int w, h;
 
       /* I think whole screen will look nicer than workarea */
-      w = WidthOfScreen (window->screen->xscreen);
-      h = HeightOfScreen (window->screen->xscreen);
+      w = window->screen->width;
+      h = window->screen->height;
 
       x = (w - window->rect.width) / 2;
       y = (y - window->rect.height) / 2;

@@ -45,8 +45,8 @@ meta_workspace_new (MetaScreen *screen)
    */
   workspace->workarea.x = 0;
   workspace->workarea.y = 0;
-  workspace->workarea.width = WidthOfScreen (screen->xscreen);
-  workspace->workarea.height = HeightOfScreen (screen->xscreen);
+  workspace->workarea.width = screen->width;
+  workspace->workarea.height = screen->height;
 
   /* Update hint for current number of workspaces */
   set_number_of_spaces_hint (screen);
