@@ -1,3 +1,8 @@
+2002-04-25  jacob berkman  <jacob@ximian.com>
+
+	* src/session.c (load_state): g_file_get_contents() takes a gsize
+	not int (fixes bus error on 64-bit platforms)
+
 2002-04-22  Havoc Pennington  <hp@redhat.com>
 
 	* src/main.c (main): call setlocale ourselves because due to a

@@ -976,7 +976,7 @@ load_state (const char *previous_save_file)
   GError *error;
   ParseData parse_data;
   char *text;
-  int length;
+  gsize length;
   char *session_file;
 
   session_file = g_strconcat (g_get_home_dir (),
