@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2003-12-23 01:53-0200\n"
+"POT-Creation-Date: 2004-07-22 15:08-0400\n"
+"PO-Revision-Date: 2004-07-22 14:42-0300\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: GNOME-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter o nome da máquina: %s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição '%s' do X Window System\n"
@@ -225,21 +225,21 @@ msgstr "Mover para Área de Trabalho _Acima"
 msgid "Move to Workspace _Down"
 msgstr "Mover para Área de Trabalho A_baixo"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Área de Trabalho 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de Trabalho %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Mover para _Outra Área de Trabalho"
 
@@ -366,7 +366,7 @@ msgstr ""
 "\" e precisarão ser reiniciadas manualmente na próxima vez que você efetuar "
 "logon."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -448,8 +448,8 @@ msgstr ""
 "\"&lt;Super&gt;\" por exemplo."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Fechar uma janela"
+msgid "Close window"
+msgstr "Fechar janela"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -551,8 +551,8 @@ msgid "Lower window below other windows"
 msgstr "Colocar janela atrás das outras"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Maximizar uma janela"
+msgid "Maximize window"
+msgstr "Maximizar janela"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -563,51 +563,51 @@ msgid "Maximize window vertically"
 msgstr "Maximizar janela verticalmente"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Minimizar uma janela"
+msgid "Minimize window"
+msgstr "Minimizar janela"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr "Modificador a ser usado para ações modificadas de clique em janela"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Mover uma janela"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Mover na direção contrária entre os painéis e o desktop imediatamente"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Mover na direção contrária entre os painéis e o desktop usando uma janela "
 "popup"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Mover o foco na direção contrária entre janelas imadiatamente"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Mover entre os painéis e o desktop imadiatamente"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Mover entre os painéis e o desktop usando uma janela popup"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Mover entre janelas imediatamente"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Mover entre janelas usando uma janela popup"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Mover o foco na direção contrária entre janelas usando uma janela popup"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Mover janela"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -700,8 +700,8 @@ msgid "Raise window above other windows"
 msgstr "Eleva a janela para frente das outras"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
-msgstr "Redimensionar uma janela"
+msgid "Resize window"
+msgstr "Redimensionar janela"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -712,7 +712,7 @@ msgid "Show the panel menu"
 msgstr "Mostrar o menu do painel"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
+msgid "Show the panel run application dialog"
 msgstr "Mostrar o diálogo Executar do painel"
 
 #: src/metacity.schemas.in.h:62
@@ -1708,9 +1708,9 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1936,8 +1936,8 @@ msgstr ""
 "quando a campainha audível está desligada."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
-msgstr "Desmaximizar uma janela"
+msgid "Unmaximize window"
+msgstr "Desmaximizar janela"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1959,12 +1959,12 @@ msgstr "Fonte do título da janela"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "A chave GConf \"%s\" está definida como um tipo inválido\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1973,19 +1973,19 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para o modificador de botão do mouse\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "A chave GConf '%s' está definida com um valor inválido\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Não foi possível analisar a descrição da fonte \"%s\" a partir da chave "
 "GConf %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1994,7 +1994,7 @@ msgstr ""
 "%d armazenado na chave GConf %s não é um número razoável de áreas de "
 "trabalho; o máximo atual é %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2002,17 +2002,17 @@ msgstr ""
 "As alternativas para aplicações quebradas estão desabilitadas. É possível "
 "que algumas aplicações não funcionem de maneira adequada.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d armazenado na chave GConf %s está fora do intervalo de 0 a %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir o número de áreas de trabalho como %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2021,7 +2021,7 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para a vinculação de teclas \"%s\"\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2064,79 +2064,70 @@ msgstr "A tela %d na exibição \"%s\" já possui um gerenciador de janelas\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Não foi possível liberar a tela %d na exibição \"%s\"\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Falha em uma conexão aberta com um gerenciador de sessão; portanto, as "
-"posições das janelas não serão salvas: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Não foi possível criar o diretório '%s': %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Não foi possível abrir o arquivo de sessão '%s' para gravação: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erro ao gravar o arquivo de sessão'%s': %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erro ao fechar o arquivo de sessão '%s': %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Falha ao ler o arquivo de sessão salvo %s: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Falha ao analisar o arquivo de sessão salvo: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "O atributo <sessão_do_metacity> foi visto, mas já temos a ID da sessão"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atributo %s desconhecido no elemento <sessão_do_metacity>"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "marca de <janela> aninhada"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo %s desconhecido no elemento <window>"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Atributo %s desconhecido no elemento <maximized>"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo %s desconhecido no elemento <geometry>"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s desconhecido"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3211,7 +3202,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "A aplicação definiu um _NET_WM_PID %ld inválido\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3227,7 +3218,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3265,6 +3256,13 @@ msgid ""
 msgstr ""
 "A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
 "lista\n"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Falha em uma conexão aberta com um gerenciador de sessão; portanto, as "
+#~ "posições das janelas não serão salvas: %s\n"
 
 #~ msgid "Only on %s"
 #~ msgstr "Apenas na %s"
