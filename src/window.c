@@ -5603,7 +5603,7 @@ constrain_size (MetaWindow *window,
 
   if (min_aspect * height > width)
     {
-      delta = FLOOR (height - width * min_aspect, window->size_hints.height_inc);
+      delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
       if (height - delta >= window->size_hints.min_height)
         height -= delta;
       else

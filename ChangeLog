@@ -1,3 +1,8 @@
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (constrain_size): fix min aspect handling, 
+	patch from Martin Garton #94943
+
 2002-10-18  Andras Timar  <timar@gnome.hu>
 
 	* configure.in: Added hu to ALL_LINGUAS.
