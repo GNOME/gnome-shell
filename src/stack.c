@@ -661,3 +661,102 @@ meta_stack_sync_to_server (MetaStack *stack)
   /* That was scary... */
 }
 
+static MetaWindow*
+find_next_above_layer (MetaStack *stack,
+                       int        layer)
+{
+  ++layer;
+  while (layer < META_LAYER_LAST)
+    {
+      GList *link;
+
+      g_assert (layer >= 0 && layer < META_LAYER_LAST);
+
+      /* bottom of this layer is at the end of the list */
+      link = g_list_last (stack->layers[layer]);
+      
+      if (link)
+        return link->data;
+      
+      ++layer;
+    }
+
+  return NULL;
+}
+
+static MetaWindow*
+find_prev_below_layer (MetaStack     *stack,
+                       int            layer)
+{
+  --layer;
+  while (layer >= 0)
+    {
+      GList *link;
+
+      g_assert (layer >= 0 && layer < META_LAYER_LAST);
+
+      /* top of this layer is at the front of the list */
+      link = stack->layers[layer];
+      
+      if (link)
+        return link->data;
+      
+      --layer;
+    }
+
+  return NULL;
+}
+
+MetaWindow*
+meta_stack_get_top (MetaStack *stack)
+{
+  /* FIXME if stack is frozen this is kind of broken. */
+  
+  return find_prev_below_layer (stack, META_LAYER_LAST);
+}
+
+MetaWindow*
+meta_stack_get_bottom (MetaStack  *stack)
+{
+  /* FIXME if stack is frozen this is kind of broken. */
+  
+  return find_next_above_layer (stack, -1);
+}
+
+MetaWindow*
+meta_stack_get_above (MetaStack      *stack,
+                      MetaWindow     *window)
+{
+  GList *link;
+
+  /* FIXME if stack is frozen this is kind of broken. */
+  
+  g_assert (window->layer >= 0 && window->layer < META_LAYER_LAST);
+  link = g_list_find (stack->layers[window->layer], window);
+  if (link == NULL)
+    return NULL;
+
+  if (link->prev)
+    return link->prev->data;
+  else
+    return find_next_above_layer (stack, window->layer);
+}
+
+MetaWindow*
+meta_stack_get_below (MetaStack      *stack,
+                      MetaWindow     *window)
+{
+  GList *link;
+
+  /* FIXME if stack is frozen this is kind of broken. */
+
+  g_assert (window->layer >= 0 && window->layer < META_LAYER_LAST);
+  link = g_list_find (stack->layers[window->layer], window);
+  if (link == NULL)
+    return NULL;
+
+  if (link->next)
+    return link->next->data;
+  else
+    return find_prev_below_layer (stack, window->layer);
+}

@@ -26,6 +26,7 @@
 #include "util.h"
 #include "stack.h"
 #include <X11/Xutil.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef enum
 {
@@ -51,6 +52,9 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
+  char *icon_name;
+  GdkPixbuf *icon;
+  
   MetaWindowType type;
   Atom type_atom;
   
@@ -61,11 +65,14 @@ struct _MetaWindow
   char *res_name;
   char *role;
   char *sm_client_id;
-
+  
   Window xtransient_for;
   Window xgroup_leader;
   Window xclient_leader;
 
+  Pixmap icon_pixmap;
+  Pixmap icon_mask;
+  
   /* Initial workspace property */
   int initial_workspace;
   

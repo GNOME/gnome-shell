@@ -52,6 +52,10 @@ static void handle_tab_backward       (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
+static void handle_focus_previous     (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 
 typedef struct _MetaKeyBinding MetaKeyBinding;
 
@@ -88,6 +92,7 @@ static MetaKeyBinding window_bindings[] = {
   { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, NULL, 0 },
   { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
   { None, 0, 0, NULL, NULL, 0 }
 };
 
@@ -264,7 +269,7 @@ meta_display_process_key_event (MetaDisplay *display,
 
 static void
 handle_activate_workspace (MetaDisplay *display,
-                           MetaWindow  *window,
+                           MetaWindow  *event_window,
                            XEvent      *event,
                            gpointer     data)
 {
@@ -287,7 +292,7 @@ handle_activate_workspace (MetaDisplay *display,
 
 static void
 handle_activate_menu (MetaDisplay *display,
-                      MetaWindow  *window,
+                      MetaWindow  *event_window,
                       XEvent      *event,
                       gpointer     data)
 {
@@ -307,10 +312,12 @@ handle_activate_menu (MetaDisplay *display,
 
 static void
 handle_tab_forward (MetaDisplay *display,
-                    MetaWindow  *window,
+                    MetaWindow  *event_window,
                     XEvent      *event,
                     gpointer     data)
 {
+  MetaWindow *window;
+  
   meta_verbose ("Tab forward\n");
   
   window = NULL;
@@ -322,7 +329,20 @@ handle_tab_forward (MetaDisplay *display,
     }
 
   if (window == NULL)
-    window = meta_stack_get_bottom (display->focus_window->screen->stack);
+    {
+      if (event_window)
+        window = meta_stack_get_bottom (event_window->screen->stack);
+      else
+        {
+          MetaScreen *screen;
+          
+          screen = meta_display_screen_for_root (display,
+                                                 event->xkey.window);
+          
+          if (screen)
+            window = meta_stack_get_bottom (screen->stack);
+        }
+    }
 
   if (window && window != display->focus_window)
     meta_window_focus (window, event->xkey.time);
@@ -330,10 +350,12 @@ handle_tab_forward (MetaDisplay *display,
 
 static void
 handle_tab_backward (MetaDisplay *display,
-                     MetaWindow  *window,
+                     MetaWindow  *event_window,
                      XEvent      *event,
                      gpointer     data)
 {
+  MetaWindow *window;
+  
   meta_verbose ("Tab backward\n");
   
   window = NULL;
@@ -345,8 +367,40 @@ handle_tab_backward (MetaDisplay *display,
     }
   
   if (window == NULL)
-    window = meta_stack_get_top (display->focus_window->screen->stack);
+    {
+      if (event_window)
+        window = meta_stack_get_top (event_window->screen->stack);
+
+      if (window == NULL)
+        {
+          MetaScreen *screen;
+          
+          screen = meta_display_screen_for_root (display,
+                                                 event->xkey.window);
+          
+          if (screen)
+            window = meta_stack_get_top (screen->stack);
+        }
+    }
 
   if (window && window != display->focus_window)
     meta_window_focus (window, event->xkey.time);
 }
+
+static void
+handle_focus_previous (MetaDisplay *display,
+                       MetaWindow  *event_window,
+                       XEvent      *event,
+                       gpointer     data)
+{
+  MetaWindow *window;
+
+  meta_verbose ("Focus previous window\n");
+  
+  window = display->prev_focus_window;
+
+  if (window)
+    meta_window_focus (window, event->xkey.time);
+}
+
+

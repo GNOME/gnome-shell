@@ -381,6 +381,9 @@ meta_window_free (MetaWindow  *window)
 
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
+
+  if (window->display->prev_focus_window == window)
+    window->display->prev_focus_window = NULL;
   
   meta_window_unqueue_calc_showing (window);
   
@@ -1599,10 +1602,38 @@ meta_window_notify_focus (MetaWindow *window,
    * we focus the frame for shaded windows
    */
 
+  /* We don't ever want to set prev_focus_window to NULL,
+   * though it may be NULL due to e.g. only one window ever
+   * getting focus, or a window disappearing.
+   */
+
+  /* We ignore grabs, though this is questionable.
+   * It may be better to increase the intelligence of
+   * the focus window tracking.
+   *
+   * The problem is that keybindings for windows are done
+   * with XGrabKey, which means focus_window disappears
+   * and prev_focus_window gets confused from what the
+   * user expects once a keybinding is used.
+   */
+  if (event->xfocus.mode == NotifyGrab ||
+      event->xfocus.mode == NotifyUngrab)
+    return TRUE;
+    
   if (event->type == FocusIn)
     {
       if (window != window->display->focus_window)
-        window->display->focus_window = window;
+        {
+          if (window == window->display->prev_focus_window &&
+              window->display->focus_window != NULL)
+            {
+              meta_verbose ("%s is now the previous focus window due to another window focused in\n",
+                            window->display->focus_window->desc);
+              window->display->prev_focus_window = window->display->focus_window;
+            }
+          meta_verbose ("New focus window %s\n", window->desc);
+          window->display->focus_window = window;
+        }
       window->has_focus = TRUE;
       if (window->frame)
         meta_frame_queue_draw (window->frame);
@@ -1610,7 +1641,13 @@ meta_window_notify_focus (MetaWindow *window,
   else if (event->type == FocusOut)
     {
       if (window == window->display->focus_window)
-        window->display->focus_window = NULL;
+        {
+          meta_verbose ("%s is now the previous focus window due to being focused out\n",
+                        window->desc);
+          window->display->prev_focus_window = window;
+
+          window->display->focus_window = NULL;
+        }
       window->has_focus = FALSE;
       if (window->frame)
         meta_frame_queue_draw (window->frame);

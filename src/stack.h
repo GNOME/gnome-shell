@@ -85,6 +85,14 @@ void       meta_stack_lower     (MetaStack      *stack,
 void       meta_stack_freeze    (MetaStack      *stack);
 void       meta_stack_thaw      (MetaStack      *stack);
 
+MetaWindow* meta_stack_get_top    (MetaStack  *stack);
+MetaWindow* meta_stack_get_bottom (MetaStack  *stack);
+MetaWindow* meta_stack_get_above  (MetaStack  *stack,
+                                   MetaWindow *window);
+MetaWindow* meta_stack_get_below  (MetaStack  *stack,
+                                   MetaWindow *window);
+
+
 #endif
 
 

@@ -127,7 +127,9 @@ meta_display_open (const char *name)
     "_WIN_WORKSPACE",
     "_WIN_LAYER",
     "_WIN_PROTOCOLS",
-    "_WIN_SUPPORTING_WM_CHECK"
+    "_WIN_SUPPORTING_WM_CHECK",
+    "_NET_WM_ICON_NAME",
+    "_NET_WM_ICON"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -204,6 +206,8 @@ meta_display_open (const char *name)
   display->atom_win_layer = atoms[33];
   display->atom_win_protocols = atoms[34];
   display->atom_win_supporting_wm_check = atoms[35];
+  display->atom_net_wm_icon_name = atoms[36];
+  display->atom_net_wm_icon = atoms[37];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -551,9 +555,8 @@ event_callback (XEvent   *event,
   switch (event->type)
     {
     case KeyPress:
-      meta_display_process_key_press (display, window, event);
-      break;
     case KeyRelease:
+      meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
       break;

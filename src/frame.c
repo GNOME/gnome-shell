@@ -21,6 +21,7 @@
 
 #include "frame.h"
 #include "errors.h"
+#include "keybindings.h"
 
 #define EVENT_MASK (SubstructureRedirectMask |                     \
                     StructureNotifyMask | SubstructureNotifyMask | \
@@ -282,10 +283,9 @@ meta_frame_event (MetaFrame *frame,
   switch (event->type)
     {
     case KeyPress:
-      meta_display_process_key_press (frame->window->display,
-                                      frame->window, event);
-      break;
     case KeyRelease:
+      meta_display_process_key_event (frame->window->display,
+                                      frame->window, event);
       break;
     case ButtonPress:
       break;
