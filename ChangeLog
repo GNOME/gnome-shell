@@ -1,3 +1,15 @@
+2002-07-23  Havoc Pennington  <hp@redhat.com>
+
+	* src/keybindings.c (meta_display_process_key_event): handle 
+	NULL screen from screen_for_xwindow
+
+	* src/display.c (meta_display_screen_for_xwindow): put an error
+	trap around the XGetWindowAttributes(), should fix the popular 
+	"closing a window results in a crash" bug.
+
+	* src/util.c (print_backtrace): support optional backtrace
+	feature using gnu libc backtrace() call
+
 2002-07-15  jacob berkman  <jacob@ximian.com>
 
 	* src/update-from-egg.sh: steal from profterm to fix build

@@ -1273,6 +1273,9 @@ meta_display_process_key_event (MetaDisplay *display,
   screen = meta_display_screen_for_xwindow (display,
                                             event->xany.window);
 
+  if (screen == NULL)
+    return; /* event window is destroyed */
+  
   /* window may be NULL */  
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);

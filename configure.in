@@ -82,6 +82,11 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
+
+## try definining HAVE_BACKTRACE
+AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
+
+
 ALL_LINGUAS="az ca da de es fr gl it ja ko lv ms no pl pt ru sk sv tr uk zh_TW"
 AM_GLIB_GNU_GETTEXT
 

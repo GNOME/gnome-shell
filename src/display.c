@@ -640,8 +640,11 @@ meta_display_screen_for_xwindow (MetaDisplay *display,
 {
   XWindowAttributes attr;
 
+  meta_error_trap_push (display);
   XGetWindowAttributes (display->xdisplay, xwindow, &attr);
-
+  if (meta_error_trap_pop (display) != Success)
+    return NULL;
+  
   return meta_display_screen_for_x_screen (display, attr.screen);
 }
 

@@ -29,6 +29,37 @@
 #include <errno.h>
 #include <string.h>
 
+#ifdef HAVE_BACKTRACE
+#include <execinfo.h>
+static void
+print_backtrace (void)
+{
+  void *bt[500];
+  int bt_size;
+  int i;
+  char **syms;
+  
+  bt_size = backtrace (bt, 500);
+
+  syms = backtrace_symbols (bt, bt_size);
+  
+  i = 0;
+  while (i < bt_size)
+    {
+      meta_verbose ("  %s\n", syms[i]);
+      ++i;
+    }
+
+  free (syms);
+}
+#else
+static void
+print_backtrace (void)
+{
+  meta_verbose ("Not compiled with backtrace support\n");
+}
+#endif
+
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
@@ -264,6 +295,8 @@ meta_bug (const char *format, ...)
   
   g_free (str);
 
+  print_backtrace ();
+  
   /* stop us in a debugger */
   abort ();
 }

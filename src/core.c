@@ -525,6 +525,8 @@ meta_core_begin_grab_op (Display    *xdisplay,
   screen = meta_display_screen_for_xwindow (display, frame_xwindow);
   window = meta_display_lookup_x_window (display, frame_xwindow);
 
+  g_assert (screen != NULL);
+  
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
