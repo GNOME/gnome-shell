@@ -57,6 +57,13 @@ typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 #define _NET_WM_STATE_ADD           1    /* add/set property */
 #define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
 
+/* This is basically a bogus number, just has to be large enough
+ * to handle the expected case of the alt+tab operation, where
+ * we want to ignore serials from UnmapNotify on the tab popup,
+ * and the LeaveNotify/EnterNotify from the pointer ungrab
+ */
+#define N_IGNORED_SERIALS           4
+
 struct _MetaDisplay
 {
   char *name;
@@ -155,8 +162,13 @@ struct _MetaDisplay
   int last_button_num;
   guint is_double_click : 1;
 
-  unsigned long last_ignored_unmap_serial;
-
+  /* serials of leave/unmap events that may
+   * correspond to an enter event we should
+   * ignore
+   */
+  unsigned long ignored_serials[N_IGNORED_SERIALS];
+  Window ungrab_should_not_cause_focus_window;
+  
   guint32 current_time;
 
   /* Pings which we're waiting for a reply from */
@@ -165,6 +177,7 @@ struct _MetaDisplay
   /* current window operation */
   MetaGrabOp  grab_op;
   MetaWindow *grab_window;
+  Window      grab_xwindow;
   int         grab_button;
   int         grab_root_x;
   int         grab_root_y;
@@ -243,8 +256,8 @@ void     meta_display_unshow_desktop (MetaDisplay *display);
 guint32  meta_display_get_current_time (MetaDisplay *display);
 
 /* utility goo */
-const char* meta_focus_mode_to_string   (int m);
-const char* meta_focus_detail_to_string (int d);
+const char* meta_event_mode_to_string   (int m);
+const char* meta_event_detail_to_string (int d);
 
 void meta_display_queue_retheme_all_windows (MetaDisplay *display);
 void meta_display_retheme_all (void);

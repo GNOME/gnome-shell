@@ -3151,9 +3151,9 @@ meta_window_notify_focus (MetaWindow *window,
               "frame window" :
               "unknown window",
               event->type != UnmapNotify ?
-              meta_focus_mode_to_string (event->xfocus.mode) : "n/a",
+              meta_event_mode_to_string (event->xfocus.mode) : "n/a",
               event->type != UnmapNotify ?
-              meta_focus_detail_to_string (event->xfocus.detail) : "n/a");
+              meta_event_detail_to_string (event->xfocus.detail) : "n/a");
   
   if ((event->type == FocusIn ||
        event->type == FocusOut) &&

@@ -143,6 +143,7 @@ meta_display_open (const char *name)
   Display *xdisplay;
   GSList *screens;
   GSList *tmp;
+  int i;
   /* Remember to edit code that assigns each atom to display struct
    * when adding an atom name here.
    */
@@ -376,7 +377,14 @@ meta_display_open (const char *name)
   display->last_button_num = 0;
   display->is_double_click = FALSE;
 
-  display->last_ignored_unmap_serial = 0;
+  i = 0;
+  while (i < N_IGNORED_SERIALS)
+    {
+      display->ignored_serials[i] = 0;
+      ++i;
+    }
+  display->ungrab_should_not_cause_focus_window = None;
+  
   display->current_time = CurrentTime;
   
   display->grab_op = META_GRAB_OP_NONE;
@@ -721,6 +729,58 @@ meta_display_get_current_time (MetaDisplay *display)
   return display->current_time;
 }
 
+static void
+add_ignored_serial (MetaDisplay  *display,
+                    unsigned long serial)
+{
+  int i;
+
+  /* don't add the same serial more than once */
+  if (display->ignored_serials[N_IGNORED_SERIALS-1] == serial)
+    return;
+  
+  /* shift serials to the left */
+  i = 0;
+  while (i < (N_IGNORED_SERIALS - 1))
+    {
+      display->ignored_serials[i] = display->ignored_serials[i+1];
+      ++i;
+    }
+  /* put new one on the end */
+  display->ignored_serials[i] = serial;
+}
+
+static gboolean
+serial_is_ignored (MetaDisplay  *display,
+                   unsigned long serial)
+{
+  int i;
+
+  i = 0;
+  while (i < N_IGNORED_SERIALS)
+    {
+      if (display->ignored_serials[i] == serial)
+        return TRUE;
+      ++i;
+    }
+  return FALSE;
+}
+
+static void
+reset_ignores (MetaDisplay *display)
+{
+  int i;
+
+  i = 0;
+  while (i < N_IGNORED_SERIALS)
+    {
+      display->ignored_serials[i] = 0;
+      ++i;
+    }
+
+  display->ungrab_should_not_cause_focus_window = None;
+}
+
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -738,6 +798,8 @@ event_callback (XEvent   *event,
 
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
+
+  modified = event_get_modified_window (display, event);
   
   if (event->type == ButtonPress)
     {
@@ -768,16 +830,23 @@ event_callback (XEvent   *event,
   else if (event->type == UnmapNotify)
     {
       if (meta_ui_window_should_not_cause_focus (display->xdisplay,
-                                                 event->xunmap.window))
+                                                 modified))
         {
-          display->last_ignored_unmap_serial = event->xany.serial;
+          add_ignored_serial (display, event->xany.serial);
           meta_topic (META_DEBUG_FOCUS,
-                      "Will not focus on EnterNotify with serial %lu\n",
-                      display->last_ignored_unmap_serial);
+                      "Adding EnterNotify serial %lu to ignored focus serials\n",
+                      event->xany.serial);
         }
     }
-  
-  modified = event_get_modified_window (display, event);
+  else if (event->type == LeaveNotify &&
+           event->xcrossing.mode == NotifyUngrab &&
+           modified == display->ungrab_should_not_cause_focus_window)
+    {
+      add_ignored_serial (display, event->xany.serial);
+      meta_topic (META_DEBUG_FOCUS,
+                  "Adding LeaveNotify serial %lu to ignored focus serials\n",
+                  event->xany.serial);
+    }
 
   if (modified != None)
     window = meta_display_lookup_x_window (display, modified);
@@ -914,7 +983,7 @@ event_callback (XEvent   *event,
       break;
     case EnterNotify:
       /* do this even if window->has_focus to avoid races */
-      if (window && event->xany.serial != display->last_ignored_unmap_serial)
+      if (window && !serial_is_ignored (display, event->xany.serial))
         {
           switch (meta_prefs_get_focus_mode ())
             {
@@ -924,9 +993,12 @@ event_callback (XEvent   *event,
                   window->type != META_WINDOW_DESKTOP)
                 {
                   meta_topic (META_DEBUG_FOCUS,
-                              "Focusing %s due to enter notify\n",
-                              window->desc);
+                              "Focusing %s due to enter notify with serial %lu\n",
+                              window->desc, event->xany.serial);
                   meta_window_focus (window, event->xcrossing.time);
+
+                  /* stop ignoring stuff */
+                  reset_ignores (display);
                 }
               break;
             case META_FOCUS_MODE_CLICK:
@@ -985,8 +1057,8 @@ event_callback (XEvent   *event,
                       event->type == FocusOut ? "out" :
                       "???",
                       event->xany.window,
-                      meta_focus_mode_to_string (event->xfocus.mode),
-                      meta_focus_detail_to_string (event->xfocus.mode));
+                      meta_event_mode_to_string (event->xfocus.mode),
+                      meta_event_detail_to_string (event->xfocus.mode));
         }
       else if (meta_display_screen_for_root (display,
                                              event->xany.window) != NULL)
@@ -998,8 +1070,8 @@ event_callback (XEvent   *event,
                       event->type == FocusOut ? "out" :
                       "???",
                       event->xany.window,
-                      meta_focus_mode_to_string (event->xfocus.mode),
-                      meta_focus_detail_to_string (event->xfocus.mode));
+                      meta_event_mode_to_string (event->xfocus.mode),
+                      meta_event_detail_to_string (event->xfocus.mode));
         }
       break;
     case KeymapNotify:
@@ -1358,7 +1430,7 @@ event_get_time (MetaDisplay *display,
 }
 
 const char*
-meta_focus_detail_to_string (int d)
+meta_event_detail_to_string (int d)
 {
   const char *detail = "???";
   switch (d)
@@ -1395,7 +1467,7 @@ meta_focus_detail_to_string (int d)
 }
 
 const char*
-meta_focus_mode_to_string (int m)
+meta_event_mode_to_string (int m)
 {
   const char *mode = "???";
   switch (m)
@@ -1473,33 +1545,35 @@ meta_spew_event (MetaDisplay *display,
       break;
     case EnterNotify:
       name = "EnterNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d",
                                event->xcrossing.window,
                                event->xcrossing.root,
                                event->xcrossing.subwindow,
-                               event->xcrossing.mode,
-                               event->xcrossing.detail);
+                               meta_event_mode_to_string (event->xcrossing.mode),
+                               meta_event_detail_to_string (event->xcrossing.detail),
+                               event->xcrossing.focus);
       break;
     case LeaveNotify:
       name = "LeaveNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d",
                                event->xcrossing.window,
                                event->xcrossing.root,
                                event->xcrossing.subwindow,
-                               event->xcrossing.mode,
-                               event->xcrossing.detail);
+                               meta_event_mode_to_string (event->xcrossing.mode),
+                               meta_event_detail_to_string (event->xcrossing.detail),
+                               event->xcrossing.focus);
       break;
     case FocusIn:
       name = "FocusIn";
       extra = g_strdup_printf ("detail: %s mode: %s\n",
-                               meta_focus_detail_to_string (event->xfocus.detail),
-                               meta_focus_mode_to_string (event->xfocus.mode));
+                               meta_event_detail_to_string (event->xfocus.detail),
+                               meta_event_mode_to_string (event->xfocus.mode));
       break;
     case FocusOut:
       name = "FocusOut";
       extra = g_strdup_printf ("detail: %s mode: %s\n",
-                               meta_focus_detail_to_string (event->xfocus.detail),
-                               meta_focus_mode_to_string (event->xfocus.mode));
+                               meta_event_detail_to_string (event->xfocus.detail),
+                               meta_event_mode_to_string (event->xfocus.mode));
       break;
     case KeymapNotify:
       name = "KeymapNotify";
@@ -1631,8 +1705,8 @@ meta_spew_event (MetaDisplay *display,
       name = "MappingNotify";
       break;
     default:
-      meta_verbose ("Unknown event type %d\n", event->xany.type);
-      name = "Unknown event type";
+      name = "(Unknown event)";
+      extra = g_strdup_printf ("type: %d", event->xany.type); 
       break;
     }
 
@@ -1644,8 +1718,9 @@ meta_spew_event (MetaDisplay *display,
     winname = g_strdup_printf ("0x%lx", event->xany.window);
       
   meta_topic (META_DEBUG_EVENTS,
-              "%s on %s%s %s serial %lu\n", name, winname,
+              "%s on %s%s %s %sserial %lu\n", name, winname,
               extra ? ":" : "", extra ? extra : "",
+              event->xany.send_event ? "SEND " : "",
               event->xany.serial);
 
   g_free (winname);
@@ -1832,14 +1907,12 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          root_x,
                             int          root_y)
 {
-  Window grabwindow;
+  Window grab_xwindow;
   Cursor cursor;
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
               op, window->desc, button, pointer_already_grabbed);
-  
-  grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
@@ -1848,6 +1921,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
+  grab_xwindow  = window->frame ? window->frame->xwindow : window->xwindow;
+  
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
       
@@ -1858,7 +1933,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   meta_error_trap_push (display);
   if (XGrabPointer (display->xdisplay,
-                    grabwindow,
+                    grab_xwindow,
                     False,
                     GRAB_MASK,
                     GrabModeAsync, GrabModeAsync,
@@ -1903,6 +1978,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   display->grab_op = op;
   display->grab_window = window;
+  display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_root_x = root_x;
   display->grab_root_y = root_y;
@@ -1936,15 +2012,30 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_ui_tab_popup_free (display->grab_window->screen->tab_popup);
       display->grab_window->screen->tab_popup = NULL;
+
+      /* If the ungrab here causes an EnterNotify, ignore it for
+       * sloppy focus
+       */
+      display->ungrab_should_not_cause_focus_window = display->grab_xwindow;
     }
   
   if (display->grab_have_pointer)
-    XUngrabPointer (display->xdisplay, timestamp);    
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Ungrabbing pointer with timestamp %lu\n",
+                  timestamp);
+      XUngrabPointer (display->xdisplay, timestamp);
+    }
 
   if (display->grab_have_keyboard)
-    meta_window_ungrab_all_keys (display->grab_window);
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Ungrabbing all keys\n");
+      meta_window_ungrab_all_keys (display->grab_window);
+    }
   
   display->grab_window = NULL;
+  display->grab_xwindow = None;
   display->grab_op = META_GRAB_OP_NONE;
 }
 

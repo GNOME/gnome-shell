@@ -165,7 +165,8 @@ topic_name (MetaDebugTopic topic)
       return "PLACEMENT";
     case META_DEBUG_GEOMETRY:
       return "GEOMETRY";
-      break;
+    case META_DEBUG_PING:
+      return "PING";
     }
 
   return "Window manager";

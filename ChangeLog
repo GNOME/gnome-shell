@@ -1,3 +1,11 @@
+2002-03-02  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c: Add hacking to fix the problem that we made our
+	XGrabPointer() during Alt+Tab actually succeed, so on popping down
+	Alt+Tab we got an EnterNotify from the ungrab, which resulted in
+	focusing the window under the mouse. i.e. Alt+Tab didn't work with
+	sloppy focus.
+
 2002-02-26  Havoc Pennington  <hp@pobox.com>
 
         Screw around with Anders's ping patch so he'll get plenty of CVS

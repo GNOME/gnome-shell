@@ -258,6 +258,8 @@ free_entry (gpointer data, gpointer user_data)
 void
 meta_ui_tab_popup_free (MetaTabPopup *popup)
 {
+  meta_verbose ("Destroying tab popup window\n");
+  
   gtk_widget_destroy (popup->outline_window);
   gtk_widget_destroy (popup->window);
   
@@ -273,9 +275,12 @@ meta_ui_tab_popup_set_showing (MetaTabPopup *popup,
                                gboolean      showing)
 {
   if (showing)
-    gtk_widget_show_all (popup->window);
+    {
+      gtk_widget_show_all (popup->window);
+    }
   else
     {
+      meta_verbose ("Hiding tab popup window\n");
       gtk_widget_hide (popup->window);
       meta_core_increment_event_serial (gdk_display);
     }

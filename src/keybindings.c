@@ -426,17 +426,21 @@ meta_window_ungrab_all_keys (MetaWindow  *window)
   if (window->all_keys_grabbed)
     {
       Window grabwindow;
+      Time timestamp;
 
       grabwindow = (window->frame && window->grab_on_frame) ?
         window->frame->xwindow : window->xwindow;
+
+      timestamp = meta_display_get_current_time (window->display);
       
       meta_error_trap_push (window->display);
       XUngrabKey (window->display->xdisplay,
                   AnyKey, AnyModifier,
                   grabwindow);
 
-      XUngrabKeyboard (window->display->xdisplay,
-                       meta_display_get_current_time (window->display));
+      meta_verbose ("Ungrabbing keyboard with timestamp %lu\n",
+                    timestamp);
+      XUngrabKeyboard (window->display->xdisplay, timestamp);
       meta_error_trap_pop (window->display);
       
       window->grab_on_frame = FALSE;
