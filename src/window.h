@@ -207,6 +207,9 @@ struct _MetaWindow
   /* Have we placed this window? */
   guint placed : 1;
 
+  /* Has this window not ever been shown yet? */
+  guint showing_for_first_time : 1;
+
   /* Are we in meta_window_free()? */
   guint unmanaging : 1;
 

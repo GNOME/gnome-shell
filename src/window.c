@@ -438,6 +438,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->minimized = FALSE;
   window->iconic = FALSE;
   window->mapped = attrs->map_state != IsUnmapped;
+  /* if already mapped, no need to worry about focus-on-first-time-showing */
+  window->showing_for_first_time = !window->mapped;
   /* if already mapped we don't want to do the placement thing */
   window->placed = window->mapped;
   if (window->placed)
@@ -1761,8 +1763,13 @@ meta_window_show (MetaWindow *window)
         }
     }
 
-  if (did_placement)
+  /* We don't want to worry about all cases from inside
+   * implement_showing(); we only want to worry about focus if this
+   * window has not been shown before.
+   */
+  if (window->showing_for_first_time)
     {
+      window->showing_for_first_time = FALSE;
       if (takes_focus_on_map)
         {                
           meta_window_focus (window,

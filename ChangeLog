@@ -1,5 +1,19 @@
 2004-12-27  Elijah Newren  <newren@gmail.com>
 
+	Focus windows that manually position themselves too (fixes
+	#107347).
+
+	* src/window.h (struct _MetaWindow): add a new
+	showing_for_first_time flag
+
+	* src/window.c (meta_window_new_with_attrs): initialize
+	showing_for_first_time flag to !mapped, (meta_window_show):
+	replace did_placement with showing_for_first_time in the section
+	to decided whether to focus since did_placement isn't quite what
+	we want
+
+2004-12-27  Elijah Newren  <newren@gmail.com>
+
 	* src/display.c (meta_display_set_input_focus_window,
 	meta_display_focus_the_no_focus_window): Spew warning if
 	CurrentTime is passed to the function, but don't exit prematurely.
