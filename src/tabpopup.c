@@ -287,6 +287,4 @@ meta_ui_tab_popup_select (MetaTabPopup *popup,
       
       tmp = tmp->next;
     }
-
-  meta_bug ("Selected nonexistent entry 0x%lx in tab popup\n", xwindow);
 }

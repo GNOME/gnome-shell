@@ -333,6 +333,41 @@ meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
   return retval;
 }
 
+GdkPixbuf*
+meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
+                                 Pixmap       xpixmap,
+                                 int          src_x,
+                                 int          src_y,
+                                 int          dest_x,
+                                 int          dest_y,
+                                 int          width,
+                                 int          height)
+{
+  GdkDrawable *drawable;
+  GdkPixbuf *retval;
+
+  retval = NULL;
+  
+  drawable = gdk_xid_table_lookup (xpixmap);
+
+  if (drawable)
+    g_object_ref (G_OBJECT (drawable));
+  else
+    drawable = gdk_pixmap_foreign_new (xpixmap);
+      
+  retval = gdk_pixbuf_get_from_drawable (dest,
+                                         drawable,
+                                         /* We assume root window cmap */
+                                         gdk_colormap_get_system (),
+                                         src_x, src_y,
+                                         dest_x, dest_y,
+                                         width, height);
+  
+  g_object_unref (G_OBJECT (drawable));
+
+  return retval;
+}
+
 void
 meta_ui_push_delay_exposes (MetaUI *ui)
 {

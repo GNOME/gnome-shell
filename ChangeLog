@@ -1,5 +1,21 @@
 2001-08-19  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (set_supported_hint): we support _NET_WM_ICON
+
+	* src/wm-tester/main.c: add stuff to test _NET_WM_ICON
+	(but it doesn't work, so it isn't tested yet)
+	
+	* src/window.c (update_icon): read _NET_WM_ICON
+
+	* src/screen.c (meta_screen_new): set the WM_ICON_SIZE hint
+
+	* src/tabpopup.c (meta_ui_tab_popup_select): remove assertion
+
+	* src/window.c (meta_window_get_icon_geometry): fix obscure
+	memleak
+
+2001-08-19  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_grab_window_buttons): remove XSync,
 	error traps already do that
 	(meta_display_grab_window_buttons): implement

@@ -28,11 +28,12 @@
 #include <unistd.h>
 
 static void set_up_the_evil (void);
+static void set_up_icon_windows (void);
 
 static void
 usage (void)
 {
-  g_print ("wm-tester [--evil]\n");
+  g_print ("wm-tester [--evil] [--icon-windows]\n");
   exit (0);
 }
 
@@ -41,10 +42,12 @@ main (int argc, char **argv)
 {
   int i;
   gboolean do_evil;
-
+  gboolean do_icon_windows;
+  
   gtk_init (&argc, &argv);
   
   do_evil = FALSE;
+  do_icon_windows = FALSE;
   
   i = 1;
   while (i < argc)
@@ -57,6 +60,8 @@ main (int argc, char **argv)
         usage ();
       else if (strcmp (arg, "--evil") == 0)
         do_evil = TRUE;
+      else if (strcmp (arg, "--icon-windows") == 0)
+        do_icon_windows = TRUE;
       else
         usage ();
       
@@ -64,12 +69,15 @@ main (int argc, char **argv)
     }
 
   /* Be sure some option was provided */
-  if (! (do_evil))
+  if (! (do_evil || do_icon_windows))
     return 1;
   
   if (do_evil)
     set_up_the_evil ();
-    
+
+  if (do_icon_windows)
+    set_up_icon_windows ();
+  
   gtk_main ();
 
   return 0;
@@ -156,3 +164,64 @@ set_up_the_evil (void)
   g_timeout_add (40, evil_timeout, NULL);
 }
 
+static void
+set_up_icon_windows (void)
+{
+  int i;
+  int n_windows;
+
+  /* Create some windows */
+  n_windows = 9;
+  
+  i = 0;
+  while (i < n_windows)
+    {
+      GtkWidget *w;
+      GtkWidget *c;
+      GList *icons;
+      GdkPixbuf *pix;
+      
+      w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      c = gtk_button_new_with_label ("Icon window");
+      gtk_container_add (GTK_CONTAINER (w), c);
+
+      gtk_widget_realize (w);
+
+      icons = NULL;
+
+      pix = gtk_widget_render_icon (w,
+                                    GTK_STOCK_SAVE,
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR,
+                                    NULL);
+      
+      icons = g_list_append (icons, pix);
+
+      if (i % 2)
+        {
+          pix = gtk_widget_render_icon (w,
+                                        GTK_STOCK_SAVE,
+                                        GTK_ICON_SIZE_DIALOG,
+                                        NULL);
+          icons = g_list_append (icons, pix);
+        }
+
+      if (i % 3)
+        {
+          pix = gtk_widget_render_icon (w,
+                                        GTK_STOCK_SAVE,
+                                        GTK_ICON_SIZE_MENU,
+                                        NULL);
+          icons = g_list_append (icons, pix);
+        }
+      
+      if (!gdk_window_set_icon_list (w->window, icons))
+        g_warning ("_NET_WM_ICON not supported?");
+
+      g_list_foreach (icons, (GFunc) g_object_unref, NULL);
+      g_list_free (icons);
+      
+      gtk_widget_show_all (w);
+      
+      ++i;
+    }
+}

@@ -59,7 +59,8 @@ static int      update_role               (MetaWindow     *window);
 static int      update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
 static int      update_icon_name          (MetaWindow     *window);
-static int      update_icon               (MetaWindow     *window);
+static int      update_icon               (MetaWindow     *window,
+                                           gboolean        reread_rgb_icon);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
@@ -317,6 +318,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   window->icon_pixmap = None;
   window->icon_mask = None;
+
+  window->using_rgb_icon = FALSE;
   
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
@@ -328,7 +331,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   update_size_hints (window);
   update_title (window);
-  update_protocols (window);  
+  update_protocols (window);
   update_wm_hints (window);
   update_net_wm_state (window);
   update_mwm_hints (window);
@@ -339,7 +342,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_net_wm_type (window);
   update_initial_workspace (window);
   update_icon_name (window);
-  update_icon (window);
+  /* should come after wm_hints */
+  update_icon (window, TRUE);
 
   if (!window->mapped &&
       (window->size_hints.flags & PPosition) == 0 &&
@@ -2331,7 +2335,6 @@ process_property_notify (MetaWindow     *window,
       meta_verbose ("Property notify on %s for WM_HINTS\n", window->desc);
       
       update_wm_hints (window);
-      update_icon (window);
       
       meta_window_queue_move_resize (window);
     }
@@ -2395,7 +2398,7 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == window->display->atom_net_wm_icon)
     {
       meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
-      update_icon (window);
+      update_icon (window, TRUE);
     }
   
   return TRUE;
@@ -2742,7 +2745,12 @@ static int
 update_wm_hints (MetaWindow *window)
 {
   XWMHints *hints;
+  Pixmap old_icon;
+  Pixmap old_mask;
 
+  old_icon = window->icon_pixmap;
+  old_mask = window->icon_mask;
+  
   /* Fill in defaults */
   window->input = FALSE;
   window->initially_iconic = FALSE;
@@ -2769,6 +2777,14 @@ update_wm_hints (MetaWindow *window)
 
       if (hints->flags & IconMaskHint)
         window->icon_mask = hints->icon_mask;
+
+      if (window->icon_pixmap != old_icon ||
+          window->icon_mask != old_mask)
+        {
+          meta_verbose ("Icon pixmap or mask changed in WM_HINTS for %s\n",
+                        window->desc);
+          update_icon (window, FALSE);
+        }
       
       meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%ld\n",
                     window->input, window->initially_iconic,
@@ -3025,8 +3041,14 @@ meta_window_get_icon_geometry (MetaWindow    *window,
   
   result = meta_error_trap_pop (window->display);
   
-  if (result != Success || type != XA_CARDINAL || nitems != 4)
-    return FALSE;  
+  if (result != Success || type != XA_CARDINAL)
+    return FALSE;
+
+  if (nitems != 4)
+    {
+      XFree (geometry);
+      return FALSE;
+    }
   
   if (rect)
     {
@@ -3442,7 +3464,7 @@ update_icon_name (MetaWindow *window)
       text.format == 8 && 
       g_utf8_validate (text.value, text.nitems, NULL))
     {
-      meta_verbose ("Using _NET_WM_ICON_NAME for new title of %s: '%s'\n",
+      meta_verbose ("Using _NET_WM_ICON_NAME for new icon name of %s: '%s'\n",
                     window->desc, text.value);
 
       window->icon_name = g_strdup (text.value);
@@ -3498,26 +3520,266 @@ update_icon_name (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
-static int
-update_icon (MetaWindow *window)
-{  
-  meta_error_trap_push (window->display);
+static gboolean
+find_best_size (gulong  *data,
+                gulong   nitems,
+                int     *width,
+                int     *height,
+                gulong **start)
+{
+  int best_w;
+  int best_h;
+  gulong *best_start;
 
-#if 0
+  best_w = 0;
+  best_h = 0;
+  best_start = NULL;
+  
+  while (nitems > 0)
+    {
+      int w, h;
+      gboolean replace;
+
+      replace = FALSE;
+      
+      if (nitems < 3)
+        {
+          meta_verbose ("_NET_WM_ICON contained too little data\n"); 
+          return FALSE;
+        }
+      
+      w = data[0];
+      h = data[1];
+      
+      if (nitems < ((w * h) + 2))
+        {
+          meta_verbose ("_NET_WM_ICON contained too little data\n"); 
+          return FALSE;
+        }
+
+      if (best_start == NULL)
+        {
+          replace = TRUE;
+        }
+      else
+        {
+          /* work with averages */
+          const int ideal_size = META_ICON_WIDTH * META_ICON_HEIGHT;
+          int best_size = (best_w + best_h) / 2;
+          int this_size = (w + h) / 2;
+          
+          /* larger than desired is always better than smaller */
+          if (best_size < ideal_size &&
+              this_size >= ideal_size)
+            replace = TRUE;
+          /* if we have too small, pick anything bigger */
+          else if (best_size < ideal_size &&
+                   this_size > best_size)
+            replace = TRUE;
+          /* if we have too large, pick anything smaller
+           * but still >= the ideal
+           */
+          else if (best_size > ideal_size &&
+                   this_size >= ideal_size &&
+                   this_size < best_size)
+            replace = TRUE;          
+        }
+
+      if (replace)
+        {
+          best_start = data + 2;
+          best_w = w;
+          best_h = h;
+        }
+      
+      nitems -= (w * h) + 2;
+    }
+
+  if (best_start)
+    {
+      *start = best_start;
+      *width = best_w;
+      *height = best_h;
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
+read_rgb_icon (MetaWindow    *window,
+               int           *width,
+               int           *height,
+               guchar       **pixdata)
+{
+  Atom type;
+  int format;
+  gulong nitems;
+  gulong bytes_after;
+  int result;
+  gulong *data; /* FIXME should be guint? */
+  gulong *best;
+  int i;
+  int w, h;
+  guchar *p;
+  
+  if (sizeof (gulong) != 4)
+    meta_warning ("%s: Whoops, I think this function may be broken on 64-bit\n",
+                  __FUNCTION__);
+  
+  meta_error_trap_push (window->display);
+  type = None;
+  data = NULL;
+  XGetWindowProperty (window->display->xdisplay,
+		      window->xwindow,
+		      window->display->atom_net_wm_icon,
+		      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, ((guchar **)&data));
+  
+  result = meta_error_trap_pop (window->display);
+  
+  if (result != Success || type != XA_CARDINAL)
+    {
+      meta_verbose ("%s doesn't seem to set _NET_WM_ICON\n",
+                    window->desc);
+      return FALSE;
+    }
+
+  if (!find_best_size (data, nitems, &w, &h, &best))
+    {
+      XFree (data);
+      return FALSE;
+    }
+
+  *width = w;
+  *height = h;
+
+  *pixdata = g_new (guchar, w * h);
+  p = *pixdata;
+
+  /* One could speed this up a lot. */
+  i = 0;
+  while (i < w * h)
+    {
+      guint argb;
+      guint rgba;
+      
+      argb = best[i];
+      rgba = (argb << 8) & (argb >> 24);
+      
+      *p = rgba >> 24;
+      ++p;
+      *p = (rgba >> 16) & 0xff;
+      ++p;
+      *p = (rgba >> 8) & 0xff;
+      ++p;
+      *p = rgba & 0xff;
+      ++p;
+      
+      ++i;
+    }
+
+  XFree (data);
+  
+  return TRUE;
+}
+
+static void
+clear_icon (MetaWindow *window)
+{
   if (window->icon)
     {
       g_object_unref (G_OBJECT (window->icon));
       window->icon = NULL;
     }
-#endif
-  
-  /* FIXME */
+}
 
-  /* Fallback */
+static void
+free_pixels (guchar *pixels, gpointer data)
+{
+  g_free (pixels);
+}
+
+static int
+update_icon (MetaWindow *window,
+             gboolean    reload_rgb_icon)
+{
+
+  if (reload_rgb_icon)
+    {
+      guchar *pixdata;     
+      int w, h;
+      
+      pixdata = NULL;
+      
+      if (read_rgb_icon (window, &w, &h, &pixdata))
+        {
+          GdkPixbuf *unscaled;
+
+          meta_verbose ("successfully read RGBA icon fro _NET_WM_ICON\n");
+          
+          window->using_rgb_icon = TRUE;
+
+          clear_icon (window);
+
+          unscaled = gdk_pixbuf_new_from_data (pixdata,
+                                               GDK_COLORSPACE_RGB,
+                                               TRUE,
+                                               8,
+                                               w, h, w,
+                                               free_pixels,
+                                               NULL);
+
+          if (w != META_ICON_WIDTH || h != META_ICON_HEIGHT)
+            {
+              /* FIXME should keep aspect ratio, but for now assuming
+               * a square source icon
+               */              
+              window->icon = gdk_pixbuf_scale_simple (unscaled,
+                                                      META_ICON_WIDTH,
+                                                      META_ICON_HEIGHT,
+                                                      GDK_INTERP_BILINEAR);
+              
+              g_object_unref (G_OBJECT (unscaled));
+            }
+          else
+            {
+              window->icon = unscaled;
+            }
+          
+          return Success; 
+        }
+      else
+        {
+          if (window->using_rgb_icon)
+            clear_icon (window);
+          window->using_rgb_icon = FALSE;
+
+          /* We'll try to fall back to something else below. */
+        }
+    }
+  else if (window->using_rgb_icon)
+    {
+      /* There's no way we want to use the fallbacks,
+       * keep using this.
+       */
+      return Success;
+    }
+  
+  /* Fallback to pixmap + mask */
+  /* FIXME well, I'm not sure how to deal with the mask */
+  /* FIXME for that matter, I don't know how we get the
+   * icon pixmap as pixbuf without knowing if it's a bitmap,
+   * so we may be entirely hosed. I guess we can try to get it
+   * with a nice error trap.
+   */
+
+  /* Fallback to a default icon */
   if (window->icon == NULL)
     window->icon = meta_ui_get_default_window_icon (window->screen->ui);
   
-  return meta_error_trap_pop (window->display);
+  return Success;
 }
 
 static void

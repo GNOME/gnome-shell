@@ -22,6 +22,10 @@ if test -n "$EVIL_TEST"; then
   TEST_CLIENT='./wm-tester/wm-tester --evil'
 fi
 
+if test -n "$ICON_TEST"; then
+  TEST_CLIENT='./wm-tester/wm-tester --icon-windows'
+fi
+
 if test -z "$ONLY_WM"; then
   Xnest -ac :1 -scrns $SCREENS -geometry 640x480 -bw 15 &
   ## usleep 800000

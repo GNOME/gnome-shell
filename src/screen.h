@@ -26,6 +26,11 @@
 #include <X11/Xutil.h>
 #include "ui.h"
 
+
+/* should investigate changing these to whatever most apps use */
+#define META_ICON_WIDTH 32
+#define META_ICON_HEIGHT 32
+
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);
 

@@ -72,7 +72,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 21
+#define N_SUPPORTED 22
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -97,6 +97,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[18] = screen->display->atom_net_client_list_stacking;
   atoms[19] = screen->display->atom_net_wm_state_skip_taskbar;
   atoms[20] = screen->display->atom_net_wm_state_skip_pager;
+  atoms[21] = screen->display->atom_net_wm_icon;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_wm_supported,
@@ -113,6 +114,29 @@ set_supported_hint (MetaScreen *screen)
   
   return Success;
 #undef N_SUPPORTED
+}
+
+static int
+set_wm_icon_size_hint (MetaScreen *screen)
+{
+#define N_VALS 6
+  gulong vals[N_VALS];
+
+  /* min width, min height, max w, max h, width inc, height inc */
+  vals[0] = META_ICON_WIDTH;
+  vals[1] = META_ICON_HEIGHT;
+  vals[2] = META_ICON_WIDTH;
+  vals[3] = META_ICON_HEIGHT;
+  vals[4] = 0;
+  vals[5] = 0;
+  
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_wm_icon_size,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) vals, N_VALS);
+  
+  return Success;
+#undef N_VALS
 }
 
 MetaScreen*
@@ -177,6 +201,8 @@ meta_screen_new (MetaDisplay *display,
     display->leader_window = XCreateSimpleWindow (display->xdisplay,
                                                   screen->xroot,
                                                   -100, -100, 1, 1, 0, 0, 0);
+
+  set_wm_icon_size_hint (screen);
   
   set_supported_hint (screen);
   

@@ -70,11 +70,14 @@ struct _MetaWindow
   Window xgroup_leader;
   Window xclient_leader;
 
-  Pixmap icon_pixmap;
-  Pixmap icon_mask;
-  
   /* Initial workspace property */
-  int initial_workspace;
+  int initial_workspace;  
+  
+  Pixmap icon_pixmap;
+  Pixmap icon_mask;  
+
+  /* Whether ->icon is from NET_WM_ICON instead of pixmap */
+  guint using_rgb_icon : 1;
   
   /* Whether we're maximized */
   guint maximized : 1;
