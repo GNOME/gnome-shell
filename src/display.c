@@ -528,7 +528,7 @@ meta_display_open (const char *name)
     meta_error_trap_push (display);
 
     focus = None;
-    ret_to = RevertToNone;
+    ret_to = RevertToPointerRoot;
     XGetInputFocus (display->xdisplay, &focus, &ret_to);
 
     /* Force a new FocusIn (does this work?) */

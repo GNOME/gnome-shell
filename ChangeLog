@@ -1,3 +1,15 @@
+2002-11-22  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_change_workspace): patch from 
+	Hidetoshi Tajima to move a window's transients when moving 
+	the window between workspaces. #98900
+
+2002-11-21  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_open): init ret_to to
+	RevertToPointerRoot out of sheer paranoia; don't want no 
+	RevertToNone in my code!
+
 2002-11-21  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (update_initial_workspace): delete

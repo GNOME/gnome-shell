@@ -2960,9 +2960,9 @@ meta_window_focus (MetaWindow  *window,
     }
 }
 
-void
-meta_window_change_workspace (MetaWindow    *window,
-                              MetaWorkspace *workspace)
+static void
+meta_window_change_workspace_without_transients (MetaWindow    *window,
+                                                 MetaWorkspace *workspace)
 {
   GList *next;
   
@@ -2995,6 +2995,23 @@ meta_window_change_workspace (MetaWindow    *window,
   /* list size == 1 */
   g_assert (window->workspaces != NULL);
   g_assert (window->workspaces->next == NULL);
+}
+
+static void
+change_workspace_foreach (MetaWindow *window,
+                          void       *data)
+{
+  meta_window_change_workspace_without_transients (window, data);
+}
+
+void
+meta_window_change_workspace (MetaWindow    *window,
+                              MetaWorkspace *workspace)
+{
+  meta_window_change_workspace_without_transients (window, workspace);
+
+  meta_window_foreach_transient (window, change_workspace_foreach,
+                                 workspace);
 }
 
 void
