@@ -132,14 +132,11 @@ typedef enum
 {
   META_MESSAGE_MENU_DELETE      = 1 << 0,
   META_MESSAGE_MENU_MINIMIZE    = 1 << 1,
-  META_MESSAGE_MENU_MAXIMIZE    = 1 << 2,
-  META_MESSAGE_MENU_SHADE       = 1 << 3,
-  META_MESSAGE_MENU_WORKSPACES  = 1 << 4,
-  META_MESSAGE_MENU_ALL         = META_MESSAGE_MENU_DELETE |
-                                  META_MESSAGE_MENU_MINIMIZE |
-                                  META_MESSAGE_MENU_MAXIMIZE |
-                                  META_MESSAGE_MENU_SHADE |
-                                  META_MESSAGE_MENU_WORKSPACES
+  META_MESSAGE_MENU_UNMAXIMIZE  = 1 << 2,
+  META_MESSAGE_MENU_MAXIMIZE    = 1 << 3,
+  META_MESSAGE_MENU_UNSHADE     = 1 << 4,
+  META_MESSAGE_MENU_SHADE       = 1 << 5,
+  META_MESSAGE_MENU_WORKSPACES  = 1 << 6
 } MetaMessageWindowMenuOps;
 
 struct _MetaMessageShowWindowMenu

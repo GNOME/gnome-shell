@@ -34,6 +34,10 @@ typedef struct _MetaUISlave   MetaUISlave;
 typedef struct _MetaWindow    MetaWindow;
 typedef struct _MetaWorkspace MetaWorkspace;
 
+#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
+#define _NET_WM_STATE_ADD           1    /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
+
 struct _MetaDisplay
 {
   char *name;

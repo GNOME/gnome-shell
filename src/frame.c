@@ -752,6 +752,37 @@ ungrab_action (MetaFrame      *frame,
   queue_tip (frame);
 }
 
+static void
+get_menu_items (MetaFrame *frame,
+                MetaFrameInfo *info,
+                MetaMessageWindowMenuOps *ops,
+                MetaMessageWindowMenuOps *insensitive)
+{
+  *ops = 0;
+  *insensitive = 0;
+  
+  if (info->flags & META_FRAME_CONTROL_MAXIMIZE)
+    {
+      if (frame->window->maximized)
+        *ops |= META_MESSAGE_MENU_UNMAXIMIZE;
+      else
+        *ops |= META_MESSAGE_MENU_MAXIMIZE;
+    }
+
+  if (frame->window->shaded)
+    *ops |= META_MESSAGE_MENU_UNSHADE;
+  else
+    *ops |= META_MESSAGE_MENU_SHADE;
+
+  *ops |= (META_MESSAGE_MENU_DELETE | META_MESSAGE_MENU_WORKSPACES | META_MESSAGE_MENU_MINIMIZE);
+
+  if (!(info->flags & META_FRAME_CONTROL_MINIMIZE))
+    *insensitive |= META_MESSAGE_MENU_MINIMIZE;
+  
+  if (!(info->flags & META_FRAME_CONTROL_DELETE))
+    *insensitive |= META_MESSAGE_MENU_DELETE;
+}
+
 gboolean
 meta_frame_event (MetaFrame *frame,
                   XEvent    *event)
@@ -846,7 +877,9 @@ meta_frame_event (MetaFrame *frame,
             {
               int x, y, width, height;      
               MetaFrameInfo info;
-
+              MetaMessageWindowMenuOps ops;
+              MetaMessageWindowMenuOps insensitive;
+              
               meta_verbose ("Menu control clicked on %s\n",
                             frame->window->desc);
               
@@ -863,14 +896,15 @@ meta_frame_event (MetaFrame *frame,
                */
               XUngrabPointer (frame->window->display->xdisplay,
                               event->xbutton.time);
+
+              get_menu_items (frame, &info, &ops, &insensitive);
               
               meta_ui_slave_show_window_menu (frame->window->screen->uislave,
                                               frame->window,
                                               frame->rect.x + x,
                                               frame->rect.y + y + height,
                                               event->xbutton.button,
-                                              META_MESSAGE_MENU_ALL,
-                                              META_MESSAGE_MENU_MINIMIZE,
+                                              ops, insensitive,
                                               event->xbutton.time);      
             }
         }

@@ -543,38 +543,7 @@ event_queue_callback (MetaEventQueue *queue,
       break;
     case ClientMessage:
       if (window)
-        {
-          if (event->xclient.message_type ==
-              display->atom_net_close_window)
-            {
-              /* I think the wm spec should maybe put a time
-               * in this message, CurrentTime here is sort of
-               * bogus. But it rarely matters most likely.
-               */
-              meta_window_delete (window, CurrentTime);
-            }
-          else if (event->xclient.message_type ==
-                   display->atom_net_wm_desktop)
-            {
-              int space;
-              MetaWorkspace *workspace;
-              
-              space = event->xclient.data.l[0];
-              
-              meta_verbose ("Request to move %s to screen workspace %d\n",
-                            window->desc, space);
-
-              workspace =
-                meta_display_get_workspace_by_screen_index (display,
-                                                            window->screen,
-                                                            space);
-
-              if (workspace)
-                meta_window_change_workspace (window, workspace);
-              else
-                meta_verbose ("No such workspace %d for screen\n", space);
-            }
-        }
+        meta_window_client_message (window, event);
       break;
     case MappingNotify:
       break;

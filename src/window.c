@@ -723,6 +723,119 @@ meta_window_property_notify (MetaWindow *window,
   return process_property_notify (window, &event->xproperty);  
 }
 
+gboolean
+meta_window_client_message (MetaWindow *window,
+                            XEvent     *event)
+{
+  MetaDisplay *display;
+
+  display = window->display;
+  
+  if (event->xclient.message_type ==
+      display->atom_net_close_window)
+    {
+      /* I think the wm spec should maybe put a time
+       * in this message, CurrentTime here is sort of
+       * bogus. But it rarely matters most likely.
+       */
+      meta_window_delete (window, CurrentTime);
+
+      return TRUE;
+    }
+  else if (event->xclient.message_type ==
+           display->atom_net_wm_desktop)
+    {
+      int space;
+      MetaWorkspace *workspace;
+              
+      space = event->xclient.data.l[0];
+              
+      meta_verbose ("Request to move %s to screen workspace %d\n",
+                    window->desc, space);
+
+      workspace =
+        meta_display_get_workspace_by_screen_index (display,
+                                                    window->screen,
+                                                    space);
+
+      if (workspace)
+        meta_window_change_workspace (window, workspace);
+      else
+        meta_verbose ("No such workspace %d for screen\n", space);
+
+      return TRUE;
+    }
+  else if (event->xclient.message_type ==
+           display->atom_net_wm_state)
+    {
+      gulong action;
+      Atom first;
+      Atom second;
+
+      action = event->xclient.data.l[0];
+      first = event->xclient.data.l[1];
+      second = event->xclient.data.l[2];
+      
+      if (meta_is_verbose ())
+        {
+          char *str1;
+          char *str2;
+
+          meta_error_trap_push (display);
+          str1 = XGetAtomName (display->xdisplay, first);
+          if (meta_error_trap_pop (display))
+            str1 = NULL;
+
+          meta_error_trap_push (display);
+          str2 = XGetAtomName (display->xdisplay, second); 
+          if (meta_error_trap_pop (display))
+            str2 = NULL;
+          
+          meta_verbose ("Request to change _NET_WM_STATE action %ld atom1: %s atom2: %s\n",
+                        action,
+                        str1 ? str1 : "(unknown)",
+                        str2 ? str2 : "(unknown)");
+
+          if (str1)
+            XFree (str1);
+          if (str2)
+            XFree (str2);
+        }
+
+      if (first == display->atom_net_wm_state_shaded ||
+          second == display->atom_net_wm_state_shaded)
+        {
+          gboolean shade;
+
+          shade = (action == _NET_WM_STATE_ADD ||
+                   (action == _NET_WM_STATE_TOGGLE && !window->shaded));
+          if (shade)
+            meta_window_shade (window);
+          else
+            meta_window_unshade (window);
+        }
+
+      if (first == display->atom_net_wm_state_maximized_horz ||
+          second == display->atom_net_wm_state_maximized_horz ||
+          first == display->atom_net_wm_state_maximized_vert ||
+          second == display->atom_net_wm_state_maximized_vert)
+        {
+          gboolean max;
+
+          max = (action == _NET_WM_STATE_ADD ||
+                 (action == _NET_WM_STATE_TOGGLE && !window->maximized));
+          if (max)
+            meta_window_maximize (window);
+          else
+            meta_window_unmaximize (window);
+        }
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)

@@ -144,9 +144,6 @@ gboolean meta_window_configure_request (MetaWindow *window,
                                         XEvent     *event);
 gboolean meta_window_property_notify   (MetaWindow *window,
                                         XEvent     *event);
-
-
-
-
-
+gboolean meta_window_client_message    (MetaWindow *window,
+                                        XEvent     *event);
 #endif

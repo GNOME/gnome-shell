@@ -24,6 +24,10 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
+#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
+#define _NET_WM_STATE_ADD           1    /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
+
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 
@@ -48,7 +52,9 @@ static MenuItem menuitems[] = {
   { META_MESSAGE_MENU_DELETE, GTK_STOCK_CLOSE, N_("_Close") },
   { META_MESSAGE_MENU_MINIMIZE, NULL, N_("_Minimize") },
   { META_MESSAGE_MENU_MAXIMIZE, NULL, N_("Ma_ximize") },
-  { META_MESSAGE_MENU_SHADE, NULL, N_("_Shade") }
+  { META_MESSAGE_MENU_UNMAXIMIZE, NULL, N_("_Unmaximize") },
+  { META_MESSAGE_MENU_SHADE, NULL, N_("_Shade") },
+  { META_MESSAGE_MENU_UNSHADE, NULL, N_("U_nshade") }
 };
 
 static void
@@ -218,11 +224,16 @@ meta_window_menu_show (gulong xwindow,
       
       if (n_workspaces > 0 && current_workspace >= 0)
         {
+          GtkWidget *mi;
+
+          mi = gtk_separator_menu_item_new ();
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
+          gtk_widget_show (mi);
+          
           i = 0;
           while (i < n_workspaces)
             {
               char *label;
-              GtkWidget *mi;
               MenuData *md;
               
               label = g_strdup_printf (_("Move to workspace _%d\n"),
@@ -322,12 +333,12 @@ wmspec_change_state (gboolean   add,
                      GdkAtom    state2)
 {
   XEvent xev;
-  Atom op;
+  gulong op;
 
   if (add)
-    op = gdk_atom_intern ("_NET_WM_STATE_ADD", FALSE);
+    op = _NET_WM_STATE_ADD;
   else
-    op = gdk_atom_intern ("_NET_WM_STATE_REMOVE", FALSE);
+    op = _NET_WM_STATE_REMOVE;
   
   xev.xclient.type = ClientMessage;
   xev.xclient.serial = 0;
@@ -381,21 +392,33 @@ activate_cb (GtkWidget *menuitem, gpointer data)
       break;
 
     case META_MESSAGE_MENU_MINIMIZE:
+      gdk_window_iconify (md->window);
       break;
 
+    case META_MESSAGE_MENU_UNMAXIMIZE:
+      wmspec_change_state (FALSE, md->window,
+                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_HORZ", FALSE),
+                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_VERT", FALSE));
+      break;
+      
     case META_MESSAGE_MENU_MAXIMIZE:
-      gdk_error_trap_push ();
-      gdk_window_maximize (md->window);
-      gdk_flush ();
-      gdk_error_trap_pop ();
+      wmspec_change_state (TRUE, md->window,
+                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_HORZ", FALSE),
+                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_VERT", FALSE));
       break;
 
+    case META_MESSAGE_MENU_UNSHADE:
+      wmspec_change_state (FALSE, md->window,
+                           gdk_atom_intern ("_NET_WM_STATE_SHADED", FALSE),
+                           0);
+      break;
+      
     case META_MESSAGE_MENU_SHADE:
       wmspec_change_state (TRUE, md->window,
                            gdk_atom_intern ("_NET_WM_STATE_SHADED", FALSE),
                            0);
       break;
-
+      
     case META_MESSAGE_MENU_WORKSPACES:
       {
         int workspace;
