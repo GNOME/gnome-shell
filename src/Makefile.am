@@ -97,6 +97,7 @@ libmetacity_private_la_SOURCES=	\
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
 libmetacityinclude_HEADERS =	\
+	common.h		\
 	gradient.h		\
 	preview-widget.h	\
 	theme.h			\
