@@ -1,3 +1,8 @@
+2002-12-18  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_new): select ColormapChangeMask 
+	on toplevel windows, maybe a partial fix for #101478
+
 Tue Dec 17 17:50:19 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* src/themes/AgingGorilla/metacity-theme-1.xml: added support for

@@ -244,7 +244,8 @@ meta_window_new (MetaDisplay *display,
   XSelectInput (display->xdisplay, xwindow,
                 PropertyChangeMask |
                 EnterWindowMask | LeaveWindowMask |
-                FocusChangeMask);  
+                FocusChangeMask |
+                ColormapChangeMask);
 
   /* Get rid of any borders */
   if (attrs.border_width != 0)
