@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.0\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-04-29 20:03+0200\n"
+"POT-Creation-Date: 2003-05-21 05:23+0200\n"
+"PO-Revision-Date: 2003-05-21 10:43+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -309,18 +309,19 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: src/metacity-dialog.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "Příkaz pro zachycení obrázku okna"
+msgstr "Okno \"%s\" neodpovídá."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Vynucené unkončení této aplikace způsobí, že přijdete o neuložené změny."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Vynutit ukončení"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -2898,15 +2899,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 pro položku %d seznamu\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Okno \"%s\" neodpovídá.\n"
-#~ "Vynutit ukončení této aplikace?\n"
-#~ "(Neuložené dokumenty budou ztraceny.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Zabít aplikaci"
