@@ -953,7 +953,7 @@ gboolean
 meta_window_visible_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)
 {
-  return window->on_all_workspaces ||
+  return (window->on_all_workspaces && window->screen == workspace->screen) ||
     meta_workspace_contains_window (workspace, window);
 }
 

@@ -285,8 +285,7 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
     {
       MetaWindow *window = tmp->data;
 
-      if (window->on_all_workspaces ||
-          meta_workspace_contains_window (workspace, window))
+      if (meta_window_visible_on_workspace (window, workspace))
         workspace_windows = g_list_prepend (workspace_windows,
                                             window);
 

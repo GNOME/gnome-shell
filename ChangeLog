@@ -1,3 +1,12 @@
+2002-06-20  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/window.c: (meta_window_visible_on_workspace): sticky
+	windows aren't visibile on all screens. Check the workspace
+	is on the same screen as the window.
+	
+	* src/workspace.c: (meta_workspace_list_windows): use
+	meta_window_visible_on_workspace here.
+
 2002-06-19  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_resize_gravity_from_grab_op): handle UNKNOWN
