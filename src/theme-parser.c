@@ -4261,7 +4261,7 @@ meta_theme_load (const char *theme_name,
   GError *error;
   ParseInfo info;
   char *text;
-  int length;
+  gsize length;
   char *theme_file;
   char *theme_dir;
   MetaTheme *retval;

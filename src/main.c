@@ -346,7 +346,7 @@ main (int argc, char **argv)
 
   if (!meta_ui_have_a_theme ())
     meta_fatal (_("Could not find a theme! Be sure %s exists and contains the usual themes."),
-                METACITY_PKGDATADIR"/themes");
+                METACITY_DATADIR"/themes");
   
   /* Connect to SM as late as possible - but before managing display,
    * or we might try to manage a window before we have the session

@@ -1,3 +1,12 @@
+2003-05-29  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme-parser.c (meta_theme_load): s/int/gsize/ for
+	g_file_get_contents() (found independently by 
+	marcus@freebsd.org on SPARC and James Laska on s390x; 
+	#113661
+
+	* src/main.c (main): fix theme location mentioned in error message
+
 2003-05-29  Ray Strode  <halfline@hawaii.rr.com>
 
 	Get and use double-click speed from GtkSettings (Bug #103218).
