@@ -1,3 +1,8 @@
+2004-06-21  Anders Carlsson  <andersca@gnome.org>
+
+	* src/window.c: (meta_window_client_message):
+	Get the timestamp from the client message.
+
 Sat Jun 19 02:21:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	Fix bug 143333, support for update counter spec, and 109362,

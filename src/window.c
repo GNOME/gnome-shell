@@ -3696,11 +3696,14 @@ meta_window_client_message (MetaWindow *window,
   if (event->xclient.message_type ==
       display->atom_net_close_window)
     {
-      /* I think the wm spec should maybe put a time
-       * in this message, CurrentTime here is sort of
-       * bogus. But it rarely matters most likely.
-       */
-      meta_window_delete (window, meta_display_get_current_time (window->display));
+      Time timestamp;
+
+      if (event->xclient.data.l[0] != 0)
+	timestamp = event->xclient.data.l[0];
+      else
+	timestamp = meta_display_get_current_time (window->display);
+      
+      meta_window_delete (window, timestamp);
 
       return TRUE;
     }
