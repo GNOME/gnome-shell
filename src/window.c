@@ -24,6 +24,7 @@
 #include "frame.h"
 #include "errors.h"
 #include "workspace.h"
+#include "stack.h"
 
 #include <X11/Xatom.h>
 
@@ -235,6 +236,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
                                     window->size_hints.width,
                                     window->size_hints.height);
 
+  meta_stack_add (window->screen->stack, 
+                  window);
+                  
   meta_window_queue_calc_showing (window);
   
   return window;
@@ -262,6 +266,8 @@ meta_window_free (MetaWindow  *window)
 
   g_assert (window->workspaces == NULL);
 
+  meta_stack_remove (window->screen->stack, window);
+  
   /* FIXME restore original size if window has maximized */
   
   set_wm_state (window, WithdrawnState);  
@@ -896,19 +902,7 @@ meta_window_raise (MetaWindow  *window)
 {
   meta_verbose ("Raising window %s\n", window->desc);
 
-  if (window->frame == NULL)
-    {
-      meta_error_trap_push (window->display);
-      
-      XRaiseWindow (window->display->xdisplay, window->xwindow);
-      
-      meta_error_trap_pop (window->display);
-    }
-  else
-    {
-      XRaiseWindow (window->display->xdisplay,
-                    window->frame->xwindow);
-    }
+  meta_stack_raise (window->screen->stack, window);
 }
 
 void
@@ -1149,7 +1143,7 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == XA_WM_TRANSIENT_FOR)
     {
       update_transient_for (window);
-      
+
       meta_window_queue_move_resize (window);
     }
   else if (event->atom ==
@@ -1888,6 +1882,10 @@ update_transient_for (MetaWindow *window)
 
   /* may now be a dialog */
   recalc_window_type (window);
+
+  /* update stacking constraints */
+  meta_stack_update_transient (window->screen->stack, window);
+  meta_stack_update_layer (window->screen->stack, window);
   
   return meta_error_trap_pop (window->display);
 }
@@ -1999,6 +1997,9 @@ recalc_window_type (MetaWindow *window)
     window->type = META_WINDOW_MODAL_DIALOG;
 
   meta_verbose ("Calculated type %d for %s\n", window->type, window->desc);
+
+  /* update stacking constraints */
+  meta_stack_update_layer (window->screen->stack, window);
 }
 
 static void
@@ -2118,34 +2119,57 @@ constrain_position (MetaWindow *window,
                     int         y,
                     int        *new_x,
                     int        *new_y)
-{
-  int nw_x, nw_y;
-
+{  
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry
    */
-  
-  /* find furthest northwest corner */
-  nw_x = window->screen->active_workspace->workarea.x;
-  nw_y = window->screen->active_workspace->workarea.y;
-  if (window->frame)
-    {
-      nw_x += fgeom->left_width;
-      nw_y += fgeom->top_height;
-    }
 
-  /* don't allow moving titlebar off the top or left */
-  if (x < nw_x)
-    x = nw_x;
-  if (y < nw_y)
-    y = nw_y;
-
-  if (window->maximized)
+  if (window->type != META_WINDOW_DESKTOP &&
+      window->type != META_WINDOW_DOCK)
     {
-      if (x != nw_x)
+      int nw_x, nw_y;
+      int se_x, se_y;
+
+      /* find furthest northwest corner */
+      nw_x = window->screen->active_workspace->workarea.x;
+      nw_y = window->screen->active_workspace->workarea.y;
+      if (window->frame)
+        {
+          nw_x += fgeom->left_width;
+          nw_y += fgeom->top_height;
+        }
+      
+      /* don't allow moving titlebar off the top or left */
+      if (x < nw_x)
         x = nw_x;
-      if (y != nw_y)
+      if (y < nw_y)
         y = nw_y;
+      
+      /* keep titlebar on bottom right as well (but not entire window) */
+      se_x = window->screen->active_workspace->workarea.x +
+        window->screen->active_workspace->workarea.width;
+      se_y = window->screen->active_workspace->workarea.y +
+        window->screen->active_workspace->workarea.height;
+
+      if (window->frame)
+        {
+#define TITLEBAR_LENGTH_ONSCREEN 10
+          se_x -= (fgeom->left_width + TITLEBAR_LENGTH_ONSCREEN);
+          se_y -= fgeom->top_height;
+        }
+
+      if (x > se_x)
+        x = se_x;
+      if (y > se_y)
+        y = se_y;
+      
+      if (window->maximized)
+        {
+          if (x != nw_x)
+            x = nw_x;
+          if (y != nw_y)
+            y = nw_y;
+        }
     }
 
   *new_x = x;

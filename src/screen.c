@@ -28,6 +28,7 @@
 #include "frame.h"
 #include "workspace.h"
 #include "keybindings.h"
+#include "stack.h"
 
 #include <X11/cursorfont.h>
 #include <X11/Xatom.h>
@@ -180,6 +181,8 @@ meta_screen_new (MetaDisplay *display,
   screen->uislave = meta_ui_slave_new (screen->screen_name,
                                        ui_slave_func,
                                        screen);
+
+  screen->stack = meta_stack_new (screen);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);  
@@ -189,11 +192,13 @@ meta_screen_new (MetaDisplay *display,
 
 void
 meta_screen_free (MetaScreen *screen)
-{
+{  
   meta_screen_ungrab_keys (screen);
   
   meta_ui_slave_free (screen->uislave);
 
+  meta_stack_free (screen->stack);
+  
   XFreeGC (screen->display->xdisplay,
            screen->scratch_gc);
   

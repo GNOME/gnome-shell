@@ -730,6 +730,11 @@ meta_spew_event (MetaDisplay *display,
       char *extra = NULL;
       char *winname;
       MetaScreen *screen;
+
+      /* filter overnumerous events */
+      if (event->type == Expose || event->type == MotionNotify ||
+          event->type == NoExpose)
+        return;
       
       switch (event->type)
         {
