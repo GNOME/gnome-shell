@@ -130,6 +130,15 @@ struct _MetaWindow
    */
   guint user_has_resized : 1;
   guint user_has_moved : 1;
+
+  /* Have we placed this window? */
+  guint placed : 1;
+
+  /* Are we in meta_window_free()? */
+  guint unmanaging : 1;
+
+  /* Are we in the calc_showing queue? */
+  guint calc_showing_queued : 1;
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client

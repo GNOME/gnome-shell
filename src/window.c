@@ -76,6 +76,8 @@ static void   meta_window_move_resize_internal (MetaWindow  *window,
                                                 int          w,
                                                 int          h);
 
+void meta_window_unqueue_calc_showing (MetaWindow *window);
+
 MetaWindow*
 meta_window_new (MetaDisplay *display, Window xwindow,
                  gboolean must_be_viewable)
@@ -203,8 +205,12 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
   window->iconic = FALSE;
-  window->mapped = FALSE;
-
+  window->mapped = attrs.map_state != IsUnmapped;
+  /* if already mapped we don't want to do the placement thing */
+  window->placed = window->mapped;
+  window->unmanaging = FALSE;
+  window->calc_showing_queued = FALSE;
+  
   window->unmaps_pending = 0;
   
   window->decorated = TRUE;
@@ -271,6 +277,18 @@ meta_window_new (MetaDisplay *display, Window xwindow,
     space = window->screen->active_workspace;
   
   meta_workspace_add_window (space, window);
+
+  /* Ignore USPosition on transients because the app is full
+   * of shit claiming the user set -geometry for a dialog
+   */
+  if (window->type != META_WINDOW_DIALOG &&
+      window->type != META_WINDOW_MODAL_DIALOG &&
+      (window->size_hints.flags & USPosition))
+    {
+      /* don't constrain with placement algorithm */
+      window->placed = TRUE;
+      meta_verbose ("Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
+    }
   
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
@@ -302,6 +320,10 @@ meta_window_free (MetaWindow  *window)
   
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
+  window->unmanaging = TRUE;
+  
+  meta_window_unqueue_calc_showing (window);
+  
   tmp = window->workspaces;
   while (tmp != NULL)
     {
@@ -459,12 +481,74 @@ meta_window_calc_showing (MetaWindow  *window)
       meta_window_show (window);
     }
 }
-     
+
+
+static guint calc_showing_idle = 0;
+static GSList *calc_showing_pending = NULL;
+
+static gboolean
+idle_calc_showing (gpointer data)
+{
+  GSList *tmp;
+
+  tmp = calc_showing_pending;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+      
+      meta_window_calc_showing (window);
+      window->calc_showing_queued = FALSE;
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (calc_showing_pending);
+  calc_showing_pending = NULL;
+  
+  calc_showing_idle = 0;
+  return FALSE;
+}
+
+void
+meta_window_unqueue_calc_showing (MetaWindow *window)
+{
+  if (!window->calc_showing_queued)
+    return;
+
+  meta_verbose ("Removing %s from the calc_showing queue\n",
+                window->desc);
+  
+  calc_showing_pending = g_slist_remove (calc_showing_pending, window);
+  window->calc_showing_queued = FALSE;
+  
+  if (calc_showing_pending == NULL &&
+      calc_showing_idle != 0)
+    {
+      g_source_remove (calc_showing_idle);
+      calc_showing_idle = 0;
+    }
+}
+
 void
 meta_window_queue_calc_showing (MetaWindow  *window)
 {
-  /* FIXME */
-  meta_window_calc_showing (window);
+  if (window->unmanaging)
+    return;
+
+  if (window->calc_showing_queued)
+    return;
+
+  meta_verbose ("Putting %s in the calc_showing queue\n",
+                window->desc);
+  
+  window->calc_showing_queued = TRUE;
+  
+  if (calc_showing_idle == 0)
+    calc_showing_idle = g_idle_add (idle_calc_showing, NULL);
+
+  calc_showing_pending = g_slist_prepend (calc_showing_pending, window);
 }
 
 void
@@ -473,6 +557,9 @@ meta_window_show (MetaWindow *window)
   meta_verbose ("Showing window %s, shaded: %d iconic: %d\n",
                 window->desc, window->shaded, window->iconic);
 
+  /* don't ever do the initial position constraint thing again */
+  window->placed = TRUE;
+  
   /* Shaded means the frame is mapped but the window is not */
   
   if (window->frame && !window->frame->mapped)
@@ -2599,6 +2686,66 @@ constrain_position (MetaWindow *window,
    * MetaFrameGeometry
    */
 
+  if (!window->placed)
+    {
+      gboolean found_transient = FALSE;
+
+      meta_verbose ("Placing window %s\n", window->desc);
+      
+      /* "Origin" placement algorithm */
+      x = 0;
+      y = 0;
+      
+      if (window->xtransient_for != None)
+        {
+          /* Center horizontally, at top of parent vertically */
+
+          MetaWindow *parent;
+          
+          parent =
+            meta_display_lookup_x_window (window->display,
+                                          window->xtransient_for);
+
+          if (parent)
+            {
+              int w;              
+
+              meta_window_get_position (parent, &x, &y);
+              w = parent->rect.width;
+
+              /* center of parent */
+              x = x + w / 2;
+              /* center of child over center of parent */
+              x -= window->rect.width / 2;
+
+              y += fgeom->top_height;
+              
+              found_transient = TRUE;
+
+              meta_verbose ("Centered window %s over transient parent\n",
+                            window->desc);
+            }
+        }
+
+      if (!found_transient &&
+          (window->type == META_WINDOW_DIALOG ||
+           window->type == META_WINDOW_MODAL_DIALOG))
+        {
+          /* Center on screen */
+          int w, h;
+
+          /* I think whole screen will look nicer than workarea */
+          w = WidthOfScreen (window->screen->xscreen);
+          h = HeightOfScreen (window->screen->xscreen);
+
+          x = (w - window->rect.width) / 2;
+          y = (y - window->rect.height) / 2;
+
+          meta_verbose ("Centered window %s on screen\n",
+                        window->desc);
+        }
+    }
+  
   if (window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
     {
