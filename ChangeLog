@@ -1,5 +1,12 @@
 2002-02-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (colorize_pixbuf): handle out-of-memory creating
+	target pixbuf
+
+	* src/themes/Crux/*.png: convert the green-channel images to grayscale
+
+2002-02-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/prefs.c (change_notify): s/update_focus_mode/update_theme/
 	in case of theme key changing
 

@@ -70,6 +70,9 @@ colorize_pixbuf (GdkPixbuf *orig,
 			   gdk_pixbuf_get_bits_per_sample (orig),
 			   gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
 
+  if (pixbuf == NULL)
+    return NULL;
+  
   orig_rowstride = gdk_pixbuf_get_rowstride (orig);
   dest_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   width = gdk_pixbuf_get_width (pixbuf);
