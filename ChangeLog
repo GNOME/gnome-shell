@@ -1,3 +1,8 @@
+2002-06-14  Jayaraj Rajappan <jayaraj.rajappan@wipro.com>
+
+	* src/delete.c (io_from_ping_dialog): Check for NULL string
+	before calling strlen(). Fixes the core dump issue reported in #84873.
+
 2002-06-13  Anders Carlsson  <andersca@gnu.org>
 
 	* src/theme.c (meta_frame_layout_calc_geometry): Set client height
