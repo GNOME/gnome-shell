@@ -194,8 +194,10 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Should support click-to-focus as an option.
 
- - There is some sort of race condition with Alt-Tab that can
-   sometimes result in the focus not moving.
+ - With Alt+Tab, if the mouse pointer is over the tab popup window,
+   when the tab popup window closes the window under the pointer will get
+   an enter event and thus take the focus, instead of the window you 
+   just tabbed to.
 
  - The focus rectangle around the icons in the Alt-Tab popup
    is ugly, should use a GTK-like focus rectangle, or maybe
