@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-01-29 00:34+0100\n"
-"PO-Revision-Date: 2002-01-29 00:35+0100\n"
+"POT-Creation-Date: 2002-01-29 00:37+0100\n"
+"PO-Revision-Date: 2002-01-29 00:38+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -325,6 +325,85 @@ msgstr "Ukjent attributt %s på <geometry>-element"
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
+
+#: src/theme.c:378
+#, c-format
+msgid "Coordinate expression contains character '%c' which is not allowed"
+msgstr "Koordinatuttrykk inneholder tegn «%c» som ikke er tillatt"
+
+#: src/theme.c:405
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "Koordinatuttrykk inneholder flyttall «%s» som ikke kunne tolkes"
+
+#: src/theme.c:419
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
+
+#: src/theme.c:524
+msgid "Coordinate expression was empty or not understood"
+msgstr ""
+
+#: src/theme.c:663 src/theme.c:673 src/theme.c:698
+msgid "Coordinate expression results in division by zero"
+msgstr ""
+
+#: src/theme.c:706
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+
+#: src/theme.c:754
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%c\" where an operand was expected"
+msgstr ""
+
+#: src/theme.c:763
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+
+#: src/theme.c:771
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+
+#: src/theme.c:781
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+
+#: src/theme.c:883
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+
+#: src/theme.c:912
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+
+#: src/theme.c:927
+#, c-format
+msgid "Coordinate expression had unknown variable \"%s\""
+msgstr ""
+
+#: src/theme.c:984
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+
+#: src/theme.c:995
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+
+#: src/theme.c:1163 src/theme.c:1187 src/theme.c:1209
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr ""
 
 #. someone is on crack
 #: src/window.c:3411

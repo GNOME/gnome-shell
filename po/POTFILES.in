@@ -9,5 +9,6 @@ src/menu.c
 src/prefs.c
 src/screen.c
 src/session.c
+src/theme.c
 src/window.c
 src/xprops.c
