@@ -24,6 +24,18 @@
   <border name="button_border" left="0" right="0" top="9" bottom="0"/>
 </frame_geometry>
 
+<frame_geometry name="border" has_title="false">
+  <distance name="left_width" value="4"/>
+  <distance name="right_width" value="4"/>
+  <distance name="bottom_height" value="4"/>
+  <distance name="left_titlebar_edge" value="0"/>
+  <distance name="right_titlebar_edge" value="0"/>
+  <distance name="button_width" value="0"/>
+  <distance name="button_height" value="0"/>
+  <distance name="title_vertical_pad" value="4"/>
+  <border name="title_border" left="0" right="0" top="0" bottom="0"/>
+  <border name="button_border" left="0" right="0" top="0" bottom="0"/>
+</frame_geometry>
 
 <!-- Buttons -->
 
@@ -217,12 +229,31 @@
 <frame focus="no" state="maximized_and_shaded" style="normal_shaded"/>
 </frame_style_set>
 
+<draw_ops name="blank">
+<!-- nothing -->
+</draw_ops>
+
+<frame_style name="border" geometry="border" parent="normal">
+  <piece position="title" draw_ops="blank"/>
+</frame_style>
+
+<frame_style_set name="border">
+<frame focus="yes" state="normal" resize="both" style="border"/>
+<frame focus="no" state="normal" resize="both" style="border"/>
+<frame focus="yes" state="maximized" style="border"/>
+<frame focus="no" state="maximized" style="border"/>
+<frame focus="yes" state="shaded" style="border"/>
+<frame focus="no" state="shaded" style="border"/>
+<frame focus="yes" state="maximized_and_shaded" style="border"/>
+<frame focus="no" state="maximized_and_shaded" style="border"/>
+</frame_style_set>
+
 <window type="normal" style_set="normal"/>
 <window type="dialog" style_set="normal"/>
 <window type="modal_dialog" style_set="normal"/>
 <window type="menu" style_set="normal"/>
 <window type="utility" style_set="normal"/>
-<window type="border" style_set="normal"/>
+<window type="border" style_set="border"/>
 
 <menu_icon function="maximize" state="normal">
   <draw_ops>
