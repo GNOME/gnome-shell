@@ -1,3 +1,7 @@
+2002-09-09  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: 2.4.1
+
 2002-09-09  Christian Neumair  <chris@gnome-de.org>
 
 	* src/keybindings.c: Make virtual desktops apply
