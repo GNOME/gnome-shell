@@ -1,5 +1,15 @@
 2002-06-22  Havoc Pennington  <hp@pobox.com>
 
+	Partially fix Jacob's SM bugs.
+	
+	* src/window.c (meta_window_apply_session_info): restore the extra
+	stuff we're saving, except stack position I didn't figure out yet.
+
+	* src/session.c: save stack position, minimized, maximized, 
+	in the session file.
+
+2002-06-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/workspace.c (set_number_of_spaces_hint): do nothing if
 	screen is being unmanaged, we don't want to blow away state, 
 	we want to remember it for the next window manager.

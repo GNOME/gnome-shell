@@ -826,6 +826,24 @@ decode_text_from_utf8 (const char *text)
   return g_string_free (str, FALSE);
 }
 
+static int
+stack_cmp (const void *a,
+           const void *b)
+{
+  MetaWindow *aw = (void*) a;
+  MetaWindow *bw = (void*) b;
+
+  if (aw->screen == bw->screen)
+    return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
+  /* Then assume screens are stacked by number */
+  else if (aw->screen->number < bw->screen->number)
+    return -1;
+  else if (aw->screen->number > bw->screen->number)
+    return 1;
+  else
+    return 0; /* not reached in theory, if windows on same display */
+}
+
 static void
 save_state (void)
 {
@@ -872,10 +890,10 @@ save_state (void)
 
   /* The file format is:
    * <metacity_session id="foo">
-   *   <window id="bar" class="XTerm" name="xterm" title="/foo/bar" role="blah" type="normal">
+   *   <window id="bar" class="XTerm" name="xterm" title="/foo/bar" role="blah" type="normal" stacking="5">
    *     <workspace index="2"/>
    *     <workspace index="4"/>
-   *     <sticky/>
+   *     <sticky/> <minimized/> <maximized/>
    *     <geometry x="100" y="100" width="200" height="200" gravity="northwest"/>
    *   </window>
    * </metacity_session>
@@ -895,8 +913,12 @@ save_state (void)
     {
       GSList *windows;
       GSList *tmp;
-
+      int stack_position;
+      
       windows = meta_display_list_windows (display_iter->data);
+      windows = g_slist_sort (windows, stack_cmp);
+
+      stack_position = 0;
       tmp = windows;
       while (tmp != NULL)
         {
@@ -928,13 +950,14 @@ save_state (void)
                           window->desc, window->sm_client_id);
 
               fprintf (outfile,
-                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\">\n",
+                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\" stacking=\"%d\">\n",
                        sm_client_id,
                        res_class ? res_class : "",
                        res_name ? res_name : "",
                        window->title ? window->title : "",
                        role ? role : "",
-                       window_type_to_string (window->type));
+                       window_type_to_string (window->type),
+                       stack_position);
 
               g_free (sm_client_id);
               g_free (res_class);
@@ -945,6 +968,14 @@ save_state (void)
               if (window->on_all_workspaces)
                 fputs ("    <sticky/>\n", outfile);
 
+              /* Minimized */
+              if (window->minimized)
+                fputs ("    <minimized/>\n", outfile);
+
+              /* Maximized */
+              if (window->maximized)
+                fputs ("    <maximized/>\n", outfile);
+              
               /* Workspaces we're on */
               {
                 GList *w;
@@ -980,6 +1011,7 @@ save_state (void)
             }
           
           tmp = tmp->next;
+          ++stack_position;
         }
       
       g_slist_free (windows);
@@ -1016,6 +1048,8 @@ typedef enum
   WINDOW_TAG_NONE,
   WINDOW_TAG_DESKTOP,
   WINDOW_TAG_STICKY,
+  WINDOW_TAG_MINIMIZED,
+  WINDOW_TAG_MAXIMIZED,
   WINDOW_TAG_GEOMETRY
 } WindowTag;
 
@@ -1234,6 +1268,14 @@ start_element_handler  (GMarkupParseContext *context,
               if (*val)
                 pd->info->type = window_type_from_string (val);
             }
+          else if (strcmp (name, "stacking") == 0)
+            {
+              if (*val)
+                {
+                  pd->info->stack_position = atoi (val);
+                  pd->info->stack_position_set = TRUE;
+                }
+            }
           else
             {
               g_set_error (error,
@@ -1286,6 +1328,16 @@ start_element_handler  (GMarkupParseContext *context,
       pd->info->on_all_workspaces = TRUE;
       pd->info->on_all_workspaces_set = TRUE;
     }
+  else if (strcmp (element_name, "minimized") == 0)
+    {
+      pd->info->minimized = TRUE;
+      pd->info->minimized_set = TRUE;
+    }
+  else if (strcmp (element_name, "maximized") == 0)
+    {
+      pd->info->maximized = TRUE;
+      pd->info->maximized_set = TRUE;
+    }  
   else if (strcmp (element_name, "geometry") == 0)
     {
       int i;

@@ -628,6 +628,35 @@ static void
 meta_window_apply_session_info (MetaWindow *window,
                                 const MetaWindowSessionInfo *info)
 {
+  if (info->stack_position_set)
+    {
+      meta_topic (META_DEBUG_SM,
+                  "Restoring stack position %d for window %s\n",
+                  info->stack_position, window->desc);
+
+      /* FIXME well, I'm not sure how to do this. */
+    }
+
+  if (info->minimized_set)
+    {
+      meta_topic (META_DEBUG_SM,
+                  "Restoring minimized state %d for window %s\n",
+                  info->minimized, window->desc);
+
+      if (window->has_minimize_func && info->minimized)
+        meta_window_minimize (window);
+    }
+
+  if (info->maximized_set)
+    {
+      meta_topic (META_DEBUG_SM,
+                  "Restoring maximized state %d for window %s\n",
+                  info->maximized, window->desc);
+      
+      if (window->has_maximize_func && info->maximized)
+        meta_window_maximize (window);
+    }
+  
   if (info->on_all_workspaces_set)
     {
       window->on_all_workspaces = info->on_all_workspaces;

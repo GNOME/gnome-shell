@@ -40,6 +40,8 @@ struct _MetaWindowSessionInfo
   /* Information we restore */
   
   GSList *workspace_indices;  
+
+  int stack_position;
   
   /* width/height should be multiplied by resize inc and
    * added to base size; position should be interpreted in
@@ -49,9 +51,14 @@ struct _MetaWindowSessionInfo
   int gravity;
   MetaRectangle rect;
   guint on_all_workspaces : 1;
+  guint minimized : 1;
+  guint maximized : 1;
 
+  guint stack_position_set : 1;
   guint geometry_set : 1;
   guint on_all_workspaces_set : 1;
+  guint minimized_set : 1;
+  guint maximized_set : 1;
 };
 
 /* If lookup_saved_state returns something, it should be used,
