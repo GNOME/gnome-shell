@@ -273,14 +273,16 @@ msgstr "Vinkelen må være mellom 0.0 og 360.0, var %g\n"
 #: src/theme-parser.c:591
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n\n"
+msgstr "Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n"
 
 #: src/theme-parser.c:624
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
-msgstr "Ingen"
+msgstr ""
+"Ugyldig skalering av tittel «%s» (må være en av xx-small,x-small,small,"
+"medium,large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
 #: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
