@@ -33,7 +33,10 @@
 #include "workspace.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
-#ifdef HAVE_XINERAMA
+#ifdef HAVE_SOLARIS_XINERAMA
+#include <X11/extensions/xinerama.h>
+#endif
+#ifdef HAVE_XFREE_XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
 #include <string.h>
@@ -238,18 +241,6 @@ meta_display_open (const char *name)
 
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);
-
-#if 0
-  /* this was debug cruft */
-#ifdef HAVE_XINERAMA
-  if (XineramaIsActive (xdisplay))
-    meta_topic (META_DEBUG_XINERAMA, "Xinerama active on display\n");
-  else
-    meta_topic (META_DEBUG_XINERAMA, "Xinerama not active on display\n");
-#else
-  meta_topic (META_DEBUG_XINERAMA, "No Xinerama support compiled in\n");
-#endif
-#endif
   
   display = g_new (MetaDisplay, 1);
 

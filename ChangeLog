@@ -1,5 +1,17 @@
 2002-09-27  Havoc Pennington  <hp@redhat.com>
 
+        Try to handle Solaris Xinerama, all coded blind, someone 
+	on Solaris will need to debug the typos.
+	
+	* src/display.c: updates for Solaris Xinerama
+
+	* src/screen.c: updates for Solaris Xinerama
+
+	* configure.in: make Xinerama check more complicated to catch
+	Solaris Xinerama
+
+2002-09-27  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (update_transient_for): keep a flag 
 	transient_parent_is_root_window for whether the
 	root-window-as-parent convention was used.

@@ -256,9 +256,19 @@ main (int argc, char **argv)
   meta_verbose ("Compiled without shape extension\n");
 #endif
 #ifdef HAVE_XINERAMA
-  meta_verbose ("Compiled with Xinerama extension\n");
+  meta_topic (META_DEBUG_XINERAMA, "Compiled with Xinerama extension\n");
 #else
-  meta_verbose ("Compiled without Xinerama extension\n");
+  meta_topic (META_DEBUG_XINERAMA, "Compiled without Xinerama extension\n");
+#endif
+#ifdef HAVE_XFREE_XINERAMA
+  meta_topic (META_DEBUG_XINERAMA, " (using XFree86 Xinerama)\n");
+#else
+  meta_topic (META_DEBUG_XINERAMA, " (not using XFree86 Xinerama)\n");
+#endif
+#ifdef HAVE_SOLARIS_XINERAMA
+  meta_topic (META_DEBUG_XINERAMA, " (using Solaris Xinerama)\n");
+#else
+  meta_topic (META_DEBUG_XINERAMA, " (not using Solaris Xinerama)\n");
 #endif
   
   /* Load prefs */
