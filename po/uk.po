@@ -1,13 +1,14 @@
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Yuriy Syrota <rasta@renome.rovno.ua>, 2001, 2002.
+# Maxim Dziumanenko <mvd@mylinux.com.ua>, 2004
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-23 11:49+0300\n"
 "PO-Revision-Date: 2003-02-05 03:08--500\n"
-"Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
+"Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,19 +22,19 @@ msgstr "Використання: %s\n"
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
-"\"Метасіті\" було скомпільовано без підтримки режиму докладних повідомлень\n"
+"\"Метасіті\" скомпільовано без підтримки режиму докладних повідомлень\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Не вдалось проаналізувати як ціле \"%s\""
+msgstr "Не вдається проаналізувати як ціле \"%s\""
 
 #: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Не вдалось розпізнати останні символи \"%s\" у рядку \"%s\""
+msgstr "Не вдається розпізнати останні символи \"%s\" у рядку \"%s\""
 
 #: src/delete.c:127
 #, c-format
@@ -59,7 +60,7 @@ msgstr "Збій при отриманні назви комп'ютера: %s\n"
 #: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Не вдалось відкрити дисплей X Window System \"%s\"\n"
+msgstr "Не вдається відкрити дисплей X Window System \"%s\"\n"
 
 #: src/errors.c:231
 #, c-format
@@ -106,14 +107,14 @@ msgstr ""
 "Якась програма вже використовує клавішу %s з модифікатором %x в якості "
 "прив'язки\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2524
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Помилка при відкриванні діалогу виводу повідомлення про помилку у команді: %"
 "s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2597
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команду %d не визначено.\n"
@@ -137,7 +138,7 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
-"Це - вільне програмне забезпечення; умови копіювання дивіться у тестах "
+"Це - вільне програмне забезпечення; умови копіювання дивіться у текстах "
 "програми.\n"
 "Не надається НІЯКИХ гарантій; навіть ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ чи "
 "ВІДПОВІДНОСТІ ПЕВНІЙ МЕТІ.\n"
@@ -208,19 +209,19 @@ msgstr "Лише на _цій робочій області"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Перенести у робочу область _ліворуч"
+msgstr "Перемістити у робочу область _ліворуч"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Перенести у робочу область _праворуч"
+msgstr "Перемістити у робочу область _праворуч"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Перенести у робочу область в_верху"
+msgstr "Перемістити у робочу область в_верху"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Перенести у робочу область в_низу"
+msgstr "Перемістити у робочу область в_низу"
 
 #: src/menu.c:162 src/prefs.c:1868
 #, c-format
@@ -238,7 +239,7 @@ msgstr "Робоча область %s%d"
 
 #: src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr "Перенести у іншу робочу область"
+msgstr "Перемістити у іншу _робочу область"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -438,7 +439,6 @@ msgstr ""
 "наприклад так  \"&lt;Alt&gt;\" or \"&lt;Super&gt;\""
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
 msgstr "Закрити вікно"
 
@@ -452,7 +452,7 @@ msgstr "Поточна тема"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Затримка у мілісекундах для параметра автоматичного піднімання вікна"
+msgstr "Затримка у мілісекундах для параметру автоматичного піднімання вікна"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
@@ -538,10 +538,9 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr "Перенести вікна нижче усіх вікон"
+msgstr "Перемістити вікна нижче усіх вікон"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "Максимізувати вікно"
 
@@ -554,7 +553,6 @@ msgid "Maximize window vertically"
 msgstr "Максимізувати вікно вертикально"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
 msgstr "Мінімізувати вікно"
 
@@ -598,73 +596,72 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Передача фокусу у зворотному напрямку між вікнами з появою меню"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "Перенести вікно"
+msgstr "Перемістити вікно"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr "Перенести вікно на робочу область нижче"
+msgstr "Перемістити вікно на робочу область нижче"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr "Перенести вікно у робочу область ліворуч"
+msgstr "Перемістити вікно у робочу область ліворуч"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr "Перенести вікно у робочу область праворуч"
+msgstr "Перемістити вікно у робочу область праворуч"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr "Перенести вікно на робочу область вище"
+msgstr "Перемістити вікно на робочу область вище"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
-msgstr "Перенести вікно на робочу область 1"
+msgstr "Перемістити вікно на робочу область 1"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
-msgstr "Перенести вікно на робочу область 10"
+msgstr "Перемістити вікно на робочу область 10"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
-msgstr "Перенести вікно на робочу область 11"
+msgstr "Перемістити вікно на робочу область 11"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
-msgstr "Перенести вікно на робочу область 12"
+msgstr "Перемістити вікно на робочу область 12"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
-msgstr "Перенести вікно на робочу область 2"
+msgstr "Перемістити вікно на робочу область 2"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
-msgstr "Перенести вікно на робочу область 3"
+msgstr "Перемістити вікно на робочу область 3"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
-msgstr "Перенести вікно на робочу область 4"
+msgstr "Перемістити вікно на робочу область 4"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
-msgstr "Перенести вікно на робочу область 5"
+msgstr "Перемістити вікно на робочу область 5"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
-msgstr "Перенести вікно на робочу область 6"
+msgstr "Перемістити вікно на робочу область 6"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
-msgstr "Перенести вікно на робочу область 7"
+msgstr "Перемістити вікно на робочу область 7"
 
 #: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
-msgstr "Перенести вікно на робочу область 8"
+msgstr "Перемістити вікно на робочу область 8"
 
 #: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
-msgstr "Перенести вікно на робочу область 9"
+msgstr "Перемістити вікно на робочу область 9"
 
 #: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
@@ -693,7 +690,6 @@ msgid "Raise window above other windows"
 msgstr "Підняти вікно над іншими"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "Змінити розміри вікна"
 
@@ -706,7 +702,6 @@ msgid "Show the panel menu"
 msgstr "Показати меню панелі"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "Показати діалог запуску панелі"
 
@@ -725,7 +720,7 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"Деякі програми програми порушують специфікації, о призводить до неправильної "
+"Деякі програми програми порушують специфікації, що призводить до неправильної "
 "роботи менеджера вікон. Наприклад, у ідеалі Метасіті повинен розміщувати всі "
 "діалогові вікна у послідовних позиціях по відношенню до батьківського вікна. "
 "Для цього потрібно ігнорувати координати діалогових вікон визначені у "
@@ -809,7 +804,7 @@ msgstr "Системний гудок озвучується"
 
 #: src/metacity.schemas.in.h:80
 msgid "Take a screenshot"
-msgstr "Зробити знімок екрана"
+msgstr "Зробити знімок екрану"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
@@ -860,7 +855,6 @@ msgstr ""
 "визначає комбінацію клавіш, що викликає команду вказану в цьому параметрі. "
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -871,13 +865,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш для запуску команд з відповідним номером у ключі  /apps/"
 "metacity/keybinding_commands Використовується формат \"&lt;Control&gt;a\" "
-"або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -887,14 +880,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область розташовану вище поточної. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -904,14 +896,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область розташовану нижче "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -921,14 +912,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область розташовану ліворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -938,14 +928,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область розташовану праворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -954,14 +943,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 1. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -970,14 +958,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 10. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -986,14 +973,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 11. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1002,14 +988,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 12. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1018,14 +1003,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 2. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1034,14 +1018,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 3. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1050,14 +1033,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 4. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1066,14 +1048,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 5. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1082,14 +1063,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 6. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1098,14 +1078,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 7. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1114,14 +1093,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 8. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1130,14 +1108,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що перемикає на робочу область з номером 9. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1146,14 +1123,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш активації меню вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1162,14 +1138,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш закривання вікна. Використовується формат \"&lt;Control&gt;"
-"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та "
+"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та "
 "дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
 "\"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у "
 "спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1180,14 +1155,13 @@ msgid ""
 msgstr ""
 "Комбінація клавіш переходу у режим \"переміщення\", у цьому режимі вікно "
 "переміщується клавішами клавіатури. Використовується формат \"&lt;Control&gt;"
-"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та "
+"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та "
 "дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
 "\"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у "
 "спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1198,14 +1172,13 @@ msgid ""
 msgstr ""
 "Комбінація клавіш переходу у режим \"зміни розмірів\", у цьому режимі "
 "клавішами клавіатури змінюється розмір вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1215,14 +1188,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш приховування всіх звичайних вікон та передачі фокусу вводу "
-"стільниці. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"стільниці. Використовується формат \"&lt;Control&gt;a\" або \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1231,14 +1203,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш максимізації вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1247,14 +1218,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш мінімізації вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1264,14 +1234,13 @@ msgid ""
 "action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області розташованої під "
-"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1281,14 +1250,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області розташованої ліворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1298,14 +1266,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області розташованої праворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1314,14 +1281,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області розташованої над "
-"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання "
+"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання "
 "верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
 "\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
 "\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1330,14 +1296,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 1. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1346,14 +1311,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 10. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1362,14 +1326,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 11. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1378,14 +1341,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 12. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1394,14 +1356,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 2. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1410,14 +1371,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 3. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1426,14 +1386,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 4. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1442,14 +1401,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 5. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1458,14 +1416,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 6. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1474,14 +1431,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 7. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1490,14 +1446,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 8. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1506,14 +1461,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш переміщення вікна до робочої області з номером 9. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1524,13 +1478,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш передачі фокусу вводу у зворотному напрямку між панелями "
 "та стільницею з появою меню. Використовується формат \"&lt;Control&gt;a\" "
-"або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1541,13 +1494,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш передачі фокусу вводу у зворотному напрямку між панелями "
 "та стільницею без появи меню. Використовується формат \"&lt;Control&gt;a\" "
-"або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1560,13 +1512,12 @@ msgstr ""
 "Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами "
 "без появи меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
 "перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1579,13 +1530,12 @@ msgstr ""
 "Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами з "
 "появою меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
 "перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1596,13 +1546,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш передачі фокусу вводу у прямому напрямку між панелями та "
 "стільницею з появою меню. Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1613,13 +1562,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш передачі фокусу вводу у прямому напрямку між панелями та "
 "стільницею без появи меню. Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1632,14 +1580,13 @@ msgstr ""
 "Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами без "
 "появи меню. (Зазвичай це &lt;Alt&gt;Escape) При утримуванні \"Shift\" разом "
 "з цією комбінацією напрямок перемикається на зворотний.Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор "
+"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
 "достатньо гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1652,14 +1599,13 @@ msgstr ""
 "Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами з "
 "появою меню. (Зазвичай це &lt;Alt&gt;Tab) При утримуванні \"Shift\" разом з "
 "цією комбінацією напрямок перемикається на зворотний.Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1669,14 +1615,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш перемикання стану чи показувати вікно завжди на верху. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1685,14 +1630,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш перемикання у повноекранний режим. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1701,14 +1645,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш перемикання максимізації. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1717,14 +1660,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш перемикання стану згорнутості. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1735,13 +1677,12 @@ msgid ""
 msgstr ""
 "Комбінація клавіш перемикання стану чи показувати вікно на усіх робочих "
 "областях, чи лише на одній. Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє "
 "використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1750,14 +1691,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш перемикання мінімізації вікна. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1767,14 +1707,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що викликає діалог панелі для запуску програм. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1784,14 +1723,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що викликає утиліту панелі для створення знімку вікна. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад  \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1801,14 +1739,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що викликає утиліту панелі для створення знімку екрана. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
+"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього та "
 "нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1817,7 +1754,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що показує головне меню панелі. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор достатньо "
+"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
 "гнучкий та дозволяє використання верхнього і нижнього регістру та скорочень, "
 "наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити "
 "у спеціальне значення \"disabled\", то для цієї дії не буде призначено "
@@ -1829,7 +1766,7 @@ msgstr "Назва робочої області"
 
 #: src/metacity.schemas.in.h:145
 msgid "The screenshot command"
-msgstr "Команда створення знімку екрана"
+msgstr "Команда створення знімку екрану"
 
 #: src/metacity.schemas.in.h:146
 msgid ""
@@ -1865,7 +1802,6 @@ msgid "The window screenshot command"
 msgstr "Команда створення знімку вікна"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1879,14 +1815,13 @@ msgstr ""
 "Комбінація клавіш що визначає, чи вікно розташовується над чи під іншими "
 "вікнами. Якщо вікно перекрите іншим вікном, вона піднімає вікно над іншими "
 "вікнами. Якщо вікно не перекрите ніякими вікнами - опускає нижче інших "
-"вікон. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього "
+"вікон. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та дозволяє використання верхнього "
 "та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;"
 "Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення \"disabled\", "
 "то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1895,14 +1830,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що опускає вікно нижче інших вікон. Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор "
+"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
 "достатньо гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1911,14 +1845,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Комбінація клавіш, що піднімає вікно над іншими вікнами. Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1. Аналізатор "
+"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
 "достатньо гнучкий та дозволяє використання верхнього та нижнього регістру та "
 "скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1928,14 +1861,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що змінює розмір вікна, щоб заповнити весь горизонтальний "
-"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього "
+"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього "
 "та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;"
 "Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення \"disabled\", "
 "то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1945,8 +1877,8 @@ msgid ""
 "for this action."
 msgstr ""
 "Комбінація клавіш, що змінює розмір вікна, щоб заповнити весь вертикальний "
-"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Аналізатор достатньо гнучкий та дозволяє використання верхнього "
+"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Аналізатор достатньо гнучкий та дозволяє використання верхнього "
 "та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;"
 "Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення \"disabled\", "
 "то для цієї дії не буде призначено комбінації клавіш."
@@ -1991,7 +1923,6 @@ msgstr ""
 "і в разі вимкнення звуку системного гудка."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "Демаксимізація вікна"
 
@@ -2104,7 +2035,7 @@ msgstr ""
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
+"Не вдається одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "\"%s\"\n"
 
 #: src/screen.c:506
@@ -2115,17 +2046,17 @@ msgstr "Екран %d на дисплеї \"%s\" вже контролюєтьс
 #: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Не вдалось повернути екран %d на дисплеї \"%s\"\n"
+msgstr "Не вдається повернути екран %d на дисплеї \"%s\"\n"
 
 #: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Не вдалось створити каталог \"%s\": %s\n"
+msgstr "Не вдається створити каталог \"%s\": %s\n"
 
 #: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Не вдалось відкрити для запису файл сеансу \"%s\": %s\n"
+msgstr "Не вдається відкрити для запису файл сеансу \"%s\": %s\n"
 
 #: src/session.c:1059
 #, c-format
@@ -2387,22 +2318,22 @@ msgstr "Немає ознаки \"color\" у елементі <%s>"
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "Немає ознаки \"x1\" елементі <%s>"
+msgstr "Немає ознаки \"x1\" у елементі <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "Немає ознаки \"y1\" елементі <%s>"
+msgstr "Немає ознаки \"y1\" у елементі <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "Немає ознаки \"x2\" елементі <%s>"
+msgstr "Немає ознаки \"x2\" у елементі <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "Немає ознаки \"y2\" елементі <%s>"
+msgstr "Немає ознаки \"y2\" у елементі <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -2410,7 +2341,7 @@ msgstr "Немає ознаки \"y2\" елементі <%s>"
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "Немає ознаки \"x\" елементі <%s>"
+msgstr "Немає ознаки \"x\" у елементі <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -2418,14 +2349,14 @@ msgstr "Немає ознаки \"x\" елементі <%s>"
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "Немає ознаки \"y\" елементі <%s>"
+msgstr "Немає ознаки \"y\" у елементі <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "Немає ознаки \"width\" елементі <%s>"
+msgstr "Немає ознаки \"width\" у елементі <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
@@ -2457,7 +2388,7 @@ msgstr "Немає ознаки \"type\" у елементі <%s>"
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Не вдалось розпізнати значення \"%s\" типу градієнту"
+msgstr "Не вдається розпізнати значення \"%s\" типу градієнту"
 
 #: src/theme-parser.c:2294
 #, c-format
@@ -2467,7 +2398,7 @@ msgstr "Немає ознаки \"filename\" у елементі <%s>"
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Не вдалось розпізнати тип заповнення \"%s\" у елементі <%s>"
+msgstr "Не вдається розпізнати тип заповнення \"%s\" у елементі <%s>"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
@@ -2487,17 +2418,17 @@ msgstr "Немає ознаки \"arrow\" елементі <%s>"
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Не вдалось розпізнати режим \"%s\" у елементі <%s>"
+msgstr "Не вдається розпізнати режим \"%s\" у елементі <%s>"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Не вдалось розпізнати тінь \"%s\" у елементі <%s>"
+msgstr "Не вдається розпізнати тінь \"%s\" у елементі <%s>"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Не вдалось розпізнати стрілку \"%s\" у елементі <%s>"
+msgstr "Не вдається розпізнати стрілку \"%s\" у елементі <%s>"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
@@ -2900,7 +2831,7 @@ msgstr "Очікувалась помилка %d, але трапилась по
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Помилка не виконувалась, але її повернуто: %s"
+msgstr "Помилка не очікувалась, але її повернуто: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
@@ -2998,12 +2929,12 @@ msgstr ""
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Неможливо розібрати значення альфа-канала \"%s\" у змішаному кольорі"
+msgstr "Неможливо розібрати значення альфа-каналу \"%s\" у змішаному кольорі"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Значення альфа-канала \"%s\" у змішаному кольорі поза межами 0.0 - 1.0"
+msgstr "Значення альфа-каналу \"%s\" у змішаному кольорі поза межами 0.0 - 1.0"
 
 #: src/theme.c:1111
 #, c-format
@@ -3015,7 +2946,7 @@ msgstr ""
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Не вдалось проаналізувати компонент тіні \"%s\" у затіненому кольорі"
+msgstr "Не вдається проаналізувати компонент тіні \"%s\" у затіненому кольорі"
 
 #: src/theme.c:1132
 #, c-format
@@ -3025,7 +2956,7 @@ msgstr "Компонент тіні \"%s\" у затіненому кольор�
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Не вдалось проаналізувати колір \"%s\""
+msgstr "Не вдається проаналізувати колір \"%s\""
 
 #: src/theme.c:1423
 #, c-format
@@ -3244,7 +3175,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Додаток встановив неправильне значення _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4951
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3260,7 +3191,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5622
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3296,10 +3227,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Властивість %s вікна 0x%lx містить неправильний UTF-8 у пункті %d списку\n"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Неможливо відкрити з'єднання до менеджера сесій, тому позиції вікон не "
-#~ "будуть збережені: %s\n"
