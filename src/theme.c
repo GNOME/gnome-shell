@@ -1267,25 +1267,37 @@ meta_frame_style_set_new (void)
   return style_set;
 }
 
+static void
+free_focus_styles (MetaFrameStyle *focus_styles[META_WINDOW_FOCUS_LAST])
+{
+  int i;
+
+  i = 0;
+  while (i < META_WINDOW_FOCUS_LAST)
+    {
+      if (focus_styles[i])
+        meta_frame_style_unref (focus_styles[i]);
+
+      ++i;
+    }
+}
+
 void
 meta_frame_style_set_free (MetaFrameStyleSet *style_set)
 {
-  int i, j;
+  int i;
 
   i = 0;
-  while (i < META_WINDOW_TYPE_LAST)
+  while (i < META_WINDOW_RESIZE_LAST)
     {
-      j = 0;
-      while (j < META_WINDOW_STATE_LAST)
-        {
-          if (style_set->styles[i][j])
-            meta_frame_style_unref (style_set->styles[i][j]);
-          
-          ++j;
-        }
+      free_focus_styles (style_set->normal_styles[i]);
 
       ++i;
     }
 
+  free_focus_styles (style_set->maximized_styles);
+  free_focus_styles (style_set->shaded_styles);
+  free_focus_styles (style_set->maximized_and_shaded_styles);
+  
   g_free (style_set);
 }

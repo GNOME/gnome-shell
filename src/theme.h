@@ -33,6 +33,7 @@ typedef struct _MetaGradientSpec MetaGradientSpec;
 typedef struct _MetaColorSpec MetaColorSpec;
 typedef struct _MetaFrameLayout MetaFrameLayout;
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
+typedef struct _MetaTheme MetaTheme;
 
 /* Parameters used to calculate the geometry of the frame */
 struct _MetaFrameLayout
@@ -265,40 +266,61 @@ struct _MetaFrameStyle
 };
 
 
+/* FIXME dammit, these are not mutually exclusive; how to handle
+ * the mess...
+ *
+ *  normal ->   noresize / vert only / horz only / both
+ *              focused / unfocused
+ *  max    ->   focused / unfocused
+ *  shaded ->   focused / unfocused
+ *  max/shaded -> focused / unfocused
+ *
+ *  so 4 states with 8 sub-states in one, 2 sub-states in the other 3,
+ *  meaning 14 total
+ *
+ * 14 window states times 7 or 8 window types. Except some
+ * window types never get a frame so that narrows it down a bit.
+ * 
+ */
 typedef enum
 {
-  /* FIXME dammit, these are not mutually exclusive; how to handle
-   * the mess...
-   *
-   *  normal ->   noresize / vert only / horz only / both
-                  focused / unfocused
-   *  max    ->   focused / unfocused
-   *  shaded ->   focused / unfocused
-   *  max/shaded -> focused / unfocused
-   *
-   *  so 4 states with 8 sub-states in one, 2 sub-states in the other 3,
-   *  meaning 14 total
-   *
-   * 14 window states times 7 or 8 window types.
-   * 
-   *
-   * MetaFrameStyleSet needs rearranging to think of it this way.
-   * 
-   */
+  META_WINDOW_STATE_NORMAL,
   META_WINDOW_STATE_MAXIMIZED,
   META_WINDOW_STATE_SHADED,
   META_WINDOW_STATE_MAXIMIZED_AND_SHADED,
-  META_WINDOW_STATE_RESIZE_VERTICAL,
-  META_WINDOW_STATE_RESIZE_HORIZONTAL,
-  META_WINDOW_STATE_RESIZE_BOTH,
-  META_WINDOW_STATE_UNFOCUSED,
-  META_WINDOW_STATE_FOCUSED,
   META_WINDOW_STATE_LAST
 } MetaWindowState;
 
+typedef enum
+{
+  META_WINDOW_RESIZE_NONE,
+  META_WINDOW_RESIZE_VERTICAL,
+  META_WINDOW_RESIZE_HORIZONTAL,
+  META_WINDOW_RESIZE_BOTH,
+  META_WINDOW_RESIZE_LAST
+} MetaWindowResize;
+
+typedef enum
+{
+  META_WINDOW_FOCUS_NO,
+  META_WINDOW_FOCUS_YES,
+  META_WINDOW_FOCUS_LAST
+} MetaWindowFocus;
+
+/* One StyleSet per window type (for window types that get a frame) */
 struct _MetaFrameStyleSet
 {
-  MetaFrameStyle *styles[META_WINDOW_TYPE_LAST][META_WINDOW_STATE_LAST];
+  MetaFrameStyle *normal_styles[META_WINDOW_RESIZE_LAST][META_WINDOW_FOCUS_LAST];
+  MetaFrameStyle *maximized_styles[META_WINDOW_FOCUS_LAST];
+  MetaFrameStyle *shaded_styles[META_WINDOW_FOCUS_LAST];
+  MetaFrameStyle *maximized_and_shaded_styles[META_WINDOW_FOCUS_LAST];
+};
+
+struct _MetaTheme
+{
+  char *name;
+  char *filename;
+  MetaFrameStyleSet *style_sets[META_FRAME_TYPE_LAST];
 };
 
 MetaFrameLayout* meta_frame_layout_new           (void);

@@ -2101,28 +2101,19 @@ get_control (MetaFrames *frames,
 
   if (has_vert || has_horiz)
     {
-      if (y < fgeom.top_height && x < RESIZE_EXTENDS)
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_NW;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_N;
-          else
-            return META_FRAME_CONTROL_RESIZE_W;
+      int bottom_of_titlebar;
 
-        }
-      else if (y < fgeom.top_height && x >= (fgeom.width - RESIZE_EXTENDS))
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_NE;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_N;
-          else
-            return META_FRAME_CONTROL_RESIZE_E;
+      bottom_of_titlebar = fgeom.title_rect.y + fgeom.title_rect.height;
 
-        }
-      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-               x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
+      if (y < bottom_of_titlebar)
+        goto noresize;
+      
+      /* South resize always has priority over north resize,
+       * in case of overlap.
+       */
+
+      if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+          x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
         {
           if (has_vert && has_horiz)
             return META_FRAME_CONTROL_RESIZE_SE;
@@ -2141,15 +2132,35 @@ get_control (MetaFrames *frames,
           else
             return META_FRAME_CONTROL_RESIZE_W;
         }
-      else if (y < fgeom.top_height)
+      else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
+               x < RESIZE_EXTENDS)
         {
-          if (has_vert)
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_NW;
+          else if (has_vert)
             return META_FRAME_CONTROL_RESIZE_N;
+          else
+            return META_FRAME_CONTROL_RESIZE_W;
+        }
+      else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
+               x >= (fgeom.width - RESIZE_EXTENDS))
+        {
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_NE;
+          else if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_N;
+          else
+            return META_FRAME_CONTROL_RESIZE_E;
         }
       else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
         {
           if (has_vert)
             return META_FRAME_CONTROL_RESIZE_S;
+        }
+      else if (y >= bottom_of_titlebar && y < fgeom.top_height)
+        {
+          if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_N;
         }
       else if (x <= fgeom.left_width)
         {
@@ -2162,6 +2173,8 @@ get_control (MetaFrames *frames,
             return META_FRAME_CONTROL_RESIZE_E;
         }
     }
+
+ noresize:
   
   return META_FRAME_CONTROL_NONE;
 }

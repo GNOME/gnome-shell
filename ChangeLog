@@ -1,5 +1,19 @@
 2002-01-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (get_control): Only consider the bottom of the
+	titlebar a resize control; I keep accidentally resizing windows
+	instead of activating them. Also, give south resizing priority
+	over north, if the window is so small the active regions overlap
+
+	* src/theme.c: add MetaTheme, get MetaFrameStyleSet into 
+	a usable state
+
+	* src/common.h: move window type back to window.h, decided 
+	not to use it on frame side
+	(MetaFrameType): add this instead
+
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.h, src/theme.c: implement all kinds of crazy
 	compositing-one-texture-onto-another BS.
 

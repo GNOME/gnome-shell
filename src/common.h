@@ -121,7 +121,6 @@ typedef enum
 
 } MetaCursor;
 
-
 typedef enum
 {
   META_FOCUS_MODE_CLICK,
@@ -131,16 +130,14 @@ typedef enum
 
 typedef enum
 {
-  META_WINDOW_NORMAL,
-  META_WINDOW_DESKTOP,
-  META_WINDOW_DOCK,
-  META_WINDOW_DIALOG,
-  META_WINDOW_MODAL_DIALOG,
-  META_WINDOW_TOOLBAR,
-  META_WINDOW_MENU,
-  META_WINDOW_TYPE_LAST
-} MetaWindowType;
-
+  META_FRAME_TYPE_NORMAL,
+  META_FRAME_TYPE_DIALOG,
+  META_FRAME_TYPE_MODAL_DIALOG,
+  META_FRAME_TYPE_UTILITY,
+  META_FRAME_TYPE_MENU,
+  META_FRAME_TYPE_TOOLBAR,
+  META_FRAME_TYPE_LAST
+} MetaFrameType;
 
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32
