@@ -29,6 +29,7 @@
 #include <X11/Xatom.h>
 
 static void constrain_size     (MetaWindow        *window,
+                                MetaFrameGeometry *fgeom,
                                 int                width,
                                 int                height,
                                 int               *new_width,
@@ -82,18 +83,31 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   GSList *tmp;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
+
+  /* Grab server */
+  meta_display_grab (display);
   
-  /* round trip */
   meta_error_trap_push (display);
   
-  if (XGetWindowAttributes (display->xdisplay,
-                            xwindow, &attrs) == Success &&
-      attrs.override_redirect)
+  XGetWindowAttributes (display->xdisplay,
+                        xwindow, &attrs);
+
+  if (meta_error_trap_pop (display))
     {
-      meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
-      meta_error_trap_pop (display);
+      meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                    xwindow);
+      meta_display_ungrab (display);
       return NULL;
     }
+  
+  if (attrs.override_redirect)
+    {
+      meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
+      meta_display_ungrab (display);
+      return NULL;
+    }
+
+  meta_error_trap_push (display);
   
   XAddToSaveSet (display->xdisplay, xwindow);
 
@@ -110,9 +124,11 @@ meta_window_new (MetaDisplay *display, Window xwindow)
     {
       meta_verbose ("Window 0x%lx disappeared just as we tried to manage it\n",
                     xwindow);
-      
+      meta_display_ungrab (display);
       return NULL;
     }
+
+  g_assert (!attrs.override_redirect);
   
   window = g_new (MetaWindow, 1);
 
@@ -139,6 +155,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   
   g_assert (window->screen);
 
+  /* avoid tons of stack updates */
+  meta_stack_freeze (window->screen->stack);
+  
   /* Remember this rect is the actual window size */
   window->rect.x = attrs.x;
   window->rect.y = attrs.y;
@@ -165,6 +184,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->frame = NULL;
   window->has_focus = FALSE;
 
+  window->user_has_resized = FALSE;
+  window->user_has_moved = FALSE;
+  
   window->maximized = FALSE;
   window->on_all_workspaces = FALSE;
   window->shaded = FALSE;
@@ -173,6 +195,8 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->iconic = FALSE;
   window->mapped = FALSE;
 
+  window->unmaps_pending = 0;
+  
   window->decorated = TRUE;
   window->has_close_func = TRUE;
   window->has_minimize_func = TRUE;
@@ -220,7 +244,8 @@ meta_window_new (MetaDisplay *display, Window xwindow)
    * change it again.
    */
   set_wm_state (window, window->iconic ? IconicState : NormalState);
-
+  set_net_wm_state (window);
+  
   if (window->decorated)
     meta_window_ensure_frame (window);
 
@@ -238,8 +263,13 @@ meta_window_new (MetaDisplay *display, Window xwindow)
 
   meta_stack_add (window->screen->stack, 
                   window);
-                  
+
+  /* Sync stack changes */
+  meta_stack_thaw (window->screen->stack);
+  
   meta_window_queue_calc_showing (window);
+
+  meta_display_ungrab (display);
   
   return window;
 }
@@ -294,18 +324,54 @@ static int
 set_wm_state (MetaWindow *window,
               int         state)
 {
-  unsigned long data[1];
+  unsigned long data[2];
 
   /* twm sets the icon window as data[1], I couldn't find that in
    * ICCCM.
    */
   data[0] = state;
+  data[1] = None;
 
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
                    window->display->atom_wm_state,
                    window->display->atom_wm_state,
-                   32, PropModeReplace, (guchar*) data, 1);
+                   32, PropModeReplace, (guchar*) data, 2);
+  return meta_error_trap_pop (window->display);
+}
+
+static int
+set_net_wm_state (MetaWindow *window)
+{
+  int i;
+  unsigned long data[10];
+
+  i = 0;
+  if (window->shaded)
+    {
+      data[i] = window->display->atom_net_wm_state_shaded;
+      ++i;
+    }
+  if (window->wm_state_modal)
+    {
+      data[i] = window->display->atom_net_wm_state_modal;
+      ++i;
+    }
+  if (window->maximized)
+    {
+      data[i] = window->display->atom_net_wm_state_maximized_horz;
+      ++i;
+      data[i] = window->display->atom_net_wm_state_maximized_vert;
+      ++i;
+    }
+
+  meta_verbose ("Setting _NET_WM_STATE with %d atoms\n", i);
+  
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom_net_wm_state,
+                   XA_ATOM,
+                   32, PropModeReplace, (guchar*) data, i);
   return meta_error_trap_pop (window->display);
 }
 
@@ -370,6 +436,7 @@ meta_window_show (MetaWindow *window)
         {
           meta_verbose ("%s actually needs unmap\n", window->desc);
           window->mapped = FALSE;
+          window->unmaps_pending += 1;
           meta_error_trap_push (window->display);
           XUnmapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display);
@@ -416,6 +483,7 @@ meta_window_hide (MetaWindow *window)
     {
       meta_verbose ("%s actually needs unmap\n", window->desc);
       window->mapped = FALSE;
+      window->unmaps_pending += 1;
       XUnmapWindow (window->display->xdisplay, window->xwindow);
     }
 
@@ -464,6 +532,8 @@ meta_window_maximize (MetaWindow  *window)
       /* move_resize with new maximization constraints
        */
       meta_window_queue_move_resize (window);
+
+      set_net_wm_state (window);
     }
 }
 
@@ -479,6 +549,8 @@ meta_window_unmaximize (MetaWindow  *window)
                                window->saved_rect.y,
                                window->saved_rect.width,
                                window->saved_rect.height);
+
+      set_net_wm_state (window);
     }
 }
 
@@ -490,6 +562,8 @@ meta_window_shade (MetaWindow  *window)
       window->shaded = TRUE;
       meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
+
+      set_net_wm_state (window);
     }
 }
 
@@ -504,6 +578,142 @@ meta_window_unshade (MetaWindow  *window)
       /* focus the window */
       /* FIXME CurrentTime is bogus */
       meta_window_focus (window, CurrentTime);
+
+      set_net_wm_state (window);
+    }
+}
+
+
+/* returns values suitable for meta_window_move */
+void
+adjust_for_gravity (MetaWindow        *window,
+                    MetaFrameGeometry *fgeom,
+                    gboolean           coords_assume_border,
+                    int                x,
+                    int                y,
+                    int               *xp,
+                    int               *yp)
+{
+  int ref_x, ref_y;
+  int bw;
+  int child_x, child_y;
+  int frame_width, frame_height;
+  
+  if (coords_assume_border)
+    bw = window->border_width;
+  else
+    bw = 0;
+
+  if (fgeom)
+    {
+      child_x = fgeom->left_width;
+      child_y = fgeom->top_height;
+      frame_width = child_x + window->rect.width + fgeom->right_width;
+      frame_height = child_y + window->rect.height + fgeom->bottom_height;
+    }
+  else
+    {
+      child_x = 0;
+      child_y = 0;
+      frame_width = window->rect.width;
+      frame_height = window->rect.height;
+    }
+  
+  /* We're computing position to pass to window_move, which is
+   * the position of the client window (StaticGravity basically)
+   *
+   * (see WM spec description of gravity computation, but note that
+   * their formulas assume we're honoring the border width, rather
+   * than compensating for having turned it off)
+   */
+  switch (window->size_hints.win_gravity)
+    {
+    case NorthWestGravity:
+      ref_x = x;
+      ref_y = y;
+      break;
+    case NorthGravity:
+      ref_x = x + window->rect.width / 2 + bw;
+      ref_y = y;
+      break;
+    case NorthEastGravity:
+      ref_x = x + window->rect.width + bw * 2;
+      ref_y = y;
+      break;
+    case WestGravity:
+      ref_x = x;
+      ref_y = y + window->rect.height / 2 + bw;
+      break;
+    case CenterGravity:
+      ref_x = x + window->rect.width / 2 + bw;
+      ref_y = y + window->rect.height / 2 + bw;
+      break;
+    case EastGravity:
+      ref_x = x + window->rect.width + bw * 2;
+      ref_y = y + window->rect.height / 2 + bw;
+      break;
+    case SouthWestGravity:
+      ref_x = x;
+      ref_y = y + window->rect.height + bw * 2;
+      break;
+    case SouthGravity:
+      ref_x = x + window->rect.width / 2 + bw;
+      ref_y = y + window->rect.height + bw * 2;
+      break;
+    case SouthEastGravity:
+      ref_x = x + window->rect.width + bw * 2;
+      ref_y = y + window->rect.height + bw * 2;
+      break;
+    case StaticGravity:
+    default:
+      ref_x = x;
+      ref_y = y;
+      break;
+    }
+
+  switch (window->size_hints.win_gravity)
+    {
+    case NorthWestGravity:
+      *xp = ref_x + child_x;
+      *yp = ref_y + child_y;
+      break;
+    case NorthGravity:
+      *xp = ref_x - frame_width / 2 + child_x;
+      *yp = ref_y + child_y;
+      break;
+    case NorthEastGravity:
+      *xp = ref_x - frame_width + child_x;
+      *yp = ref_y + child_y;
+      break;
+    case WestGravity:
+      *xp = ref_x + child_x;
+      *yp = ref_y - frame_height / 2 + child_y;
+      break;
+    case CenterGravity:
+      *xp = ref_x - frame_width / 2 + child_x;
+      *yp = ref_y - frame_height / 2 + child_y;
+      break;
+    case EastGravity:
+      *xp = ref_x - frame_width + child_x;
+      *yp = ref_y - frame_height / 2 + child_y;
+      break;
+    case SouthWestGravity:
+      *xp = ref_x + child_x;
+      *yp = ref_y - frame_height + child_y;
+      break;
+    case SouthGravity:
+      *xp = ref_x - frame_width / 2 + child_x;
+      *yp = ref_y - frame_height + child_y;
+      break;
+    case SouthEastGravity:
+      *xp = ref_x - frame_width + child_x;
+      *yp = ref_y - frame_height + child_y;
+      break;
+    case StaticGravity:
+    default:
+      *xp = ref_x;
+      *yp = ref_y;
+      break;
     }
 }
 
@@ -524,10 +734,22 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean need_resize_client = FALSE;
   gboolean need_resize_frame = FALSE;
   
-  meta_verbose ("Move/resize %s to %d,%d %dx%d\n",
-                window->desc, root_x_nw, root_y_nw, w, h);  
+  meta_verbose ("Move/resize %s to %d,%d %dx%d%s\n",
+                window->desc, root_x_nw, root_y_nw, w, h,
+                is_configure_request ? " (configure request)" : "");
   
-  constrain_size (window, w, h, &w, &h);
+  /* FIXME we're passing old window size to calc_geometry,
+   * I believe the right fix is to remove window size
+   * args from calc_geometry and remove any dependency
+   * on that in frame code.
+   */
+  if (window->frame)
+    meta_frame_calc_geometry (window->frame,
+                              window->rect.width,
+                              window->rect.height,
+                              &fgeom);
+  
+  constrain_size (window, &fgeom, w, h, &w, &h);
   meta_verbose ("Constrained resize of %s to %d x %d\n", window->desc, w, h);
 
   if (w != window->rect.width ||
@@ -540,11 +762,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
   if (window->frame)
     {
       int new_w, new_h;
-      
-      meta_frame_calc_geometry (window->frame,
-                                window->rect.width,
-                                window->rect.height,
-                                &fgeom);
 
       new_w = window->rect.width + fgeom.left_width + fgeom.right_width;
 
@@ -563,23 +780,25 @@ meta_window_move_resize_internal (MetaWindow  *window,
       meta_verbose ("Calculated frame size %dx%d\n",
                     window->frame->rect.width,
                     window->frame->rect.height);
-
-      if (is_configure_request)
-        {
-          meta_frame_adjust_for_gravity (window->size_hints.win_gravity,
-                                         window->frame->rect.width,
-                                         window->frame->rect.height,
-                                         &fgeom,
-                                         root_x_nw,
-                                         root_y_nw,
-                                         &root_x_nw,
-                                         &root_y_nw);
-          
-          meta_verbose ("Compensated position for gravity, new pos %d,%d\n",
-                        root_x_nw, root_y_nw);
-        }
     }
+
+  if (is_configure_request)
+    {
+      adjust_for_gravity (window,
+                          window->frame ? &fgeom : NULL,
+                          /* configure request coords assume
+                           * the border width existed
+                           */
+                          is_configure_request,
+                          root_x_nw,
+                          root_y_nw,
+                          &root_x_nw,
+                          &root_y_nw);
       
+      meta_verbose ("Compensated position for gravity, new pos %d,%d\n",
+                    root_x_nw, root_y_nw);
+    }
+  
   constrain_position (window,
                       window->frame ? &fgeom : NULL,
                       root_x_nw, root_y_nw,
@@ -1079,6 +1298,18 @@ meta_window_client_message (MetaWindow *window,
             meta_window_unmaximize (window);
         }
 
+      if (first == display->atom_net_wm_state_modal ||
+          second == display->atom_net_wm_state_modal)
+        {
+          window->wm_state_modal =
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_modal);
+          
+          recalc_window_type (window);
+          meta_window_queue_move_resize (window);
+          set_net_wm_state (window);
+        }
+
       return TRUE;
     }
   else if (event->xclient.message_type ==
@@ -1244,6 +1475,9 @@ static int
 update_size_hints (MetaWindow *window)
 {
   int x, y, w, h;
+  gulong supplied;
+
+  meta_verbose ("Updating WM_NORMAL_HINTS\n");
   
   /* Save the last ConfigureRequest, which we put here.
    * Values here set in the hints are supposed to
@@ -1255,11 +1489,19 @@ update_size_hints (MetaWindow *window)
   h = window->size_hints.height;
   
   window->size_hints.flags = 0;
+  supplied = 0;
   
   meta_error_trap_push (window->display);
-  XGetNormalHints (window->display->xdisplay,
-                   window->xwindow,
-                   &window->size_hints);
+  XGetWMNormalHints (window->display->xdisplay,
+                     window->xwindow,
+                     &window->size_hints,
+                     &supplied);
+
+  /* as far as I can tell, "supplied" is just
+   * to check whether we had old-style normal hints
+   * without gravity, base size as returned by
+   * XGetNormalHints()
+   */
   
   /* Put it back. */
   window->size_hints.x = x;
@@ -1375,6 +1617,8 @@ update_size_hints (MetaWindow *window)
     }
   else
     {
+      meta_verbose ("Window %s doesn't set gravity, using NW\n",
+                    window->desc);
       window->size_hints.win_gravity = NorthWestGravity;
       window->size_hints.flags |= PWinGravity;
     }
@@ -1885,7 +2129,6 @@ update_transient_for (MetaWindow *window)
 
   /* update stacking constraints */
   meta_stack_update_transient (window->screen->stack, window);
-  meta_stack_update_layer (window->screen->stack, window);
   
   return meta_error_trap_pop (window->display);
 }
@@ -2004,6 +2247,7 @@ recalc_window_type (MetaWindow *window)
 
 static void
 constrain_size (MetaWindow *window,
+                MetaFrameGeometry *fgeom,
                 int width, int height,
                 int *new_width, int *new_height)
 {
@@ -2023,19 +2267,25 @@ constrain_size (MetaWindow *window,
   /* frame member variables should NEVER be used in here */
   
 #define FLOOR(value, base)	( ((gint) ((value) / (base))) * (base) )
-
+  
   /* Get the allowed size ranges, considering maximized, etc. */
   fullw = window->screen->active_workspace->workarea.width;
   fullh = window->screen->active_workspace->workarea.height;
   if (window->frame)
     {
-      fullw -= window->frame->child_x + window->frame->right_width;
-      fullh -= window->frame->child_y + window->frame->bottom_height;
+      fullw -= fgeom->left_width + fgeom->right_width;
+      fullh -= fgeom->top_height + fgeom->bottom_height;
     }
   
   maxw = window->size_hints.max_width;
   maxh = window->size_hints.max_height;
-  if (window->maximized)
+
+  /* If user hasn't resized or moved, then try to shrink the window to
+   * fit onscreen, while not violating the min size, just as
+   * we do for maximize
+   */
+  if (window->maximized ||
+      !(window->user_has_resized || window->user_has_moved))
     {
       maxw = MIN (maxw, fullw);
       maxh = MIN (maxh, fullh);
@@ -2043,12 +2293,21 @@ constrain_size (MetaWindow *window,
 
   minw = window->size_hints.min_width;
   minh = window->size_hints.min_height;
+  
+  /* Check that fullscreen doesn't go under app-specified min size, if
+   * so snap back to min size
+   */
+  if (maxw < minw)
+    maxw = minw;
+  if (maxh < minh)
+    maxh = minh;
+  
   if (window->maximized)
     {
       minw = MAX (minw, fullw);
       minh = MAX (minh, fullh);
     }
-
+  
   /* Check that fullscreen doesn't exceed max width hint,
    * if so then snap back to max width hint
    */

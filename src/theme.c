@@ -309,7 +309,7 @@ calc_geometry (MetaFrameInfo *info,
   if (fgeom->title_rect.width < 0)
     fgeom->title_rect.width = 0;  
 }
-
+     
 static void
 default_fill_frame_geometry (MetaFrameInfo *info,
                              MetaFrameGeometry *geom,

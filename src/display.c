@@ -370,6 +370,8 @@ meta_display_grab (MetaDisplay *display)
     }
   XSync (display->xdisplay, False);
   display->server_grab_count += 1;
+  meta_verbose ("Grabbing display, grab count now %d\n",
+                display->server_grab_count);
 }
 
 void
@@ -384,10 +386,13 @@ meta_display_ungrab (MetaDisplay *display)
       /* FIXME we want to purge all pending "queued" stuff
        * at this point, such as window hide/show
        */
-      
+      XSync (display->xdisplay, False);
       XUngrabServer (display->xdisplay);
     }
   XSync (display->xdisplay, False);
+
+  meta_verbose ("Ungrabbing display, grab count now %d\n",
+                display->server_grab_count);
 }
 
 MetaDisplay*
@@ -532,16 +537,23 @@ event_queue_callback (MetaEventQueue *queue,
         meta_window_free (window); /* Unmanage destroyed window */
       break;
     case UnmapNotify:
-      if (window && window->mapped)
+      if (window)
         {
-          meta_verbose ("Window %s withdrawn\n",
-                        window->desc);
-          meta_window_free (window); /* Unmanage withdrawn window */
+          if (window->unmaps_pending == 0)
+            {
+              meta_verbose ("Window %s withdrawn\n",
+                            window->desc);
+              meta_window_free (window); /* Unmanage withdrawn window */
+            }
+          else
+            {
+              window->unmaps_pending -= 1;
+              meta_verbose ("Received pending unmap, %d now pending\n",
+                            window->unmaps_pending);
+            }
         }
       break;
     case MapNotify:
-      if (window)
-        window->mapped = TRUE;
       break;
     case MapRequest:
       if (window == NULL)
@@ -809,7 +821,7 @@ meta_spew_event (MetaDisplay *display,
           break;
         case EnterNotify:
           name = "EnterNotify";
-          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d\n",
+          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
                                    event->xcrossing.window,
                                    event->xcrossing.root,
                                    event->xcrossing.subwindow,
@@ -818,7 +830,7 @@ meta_spew_event (MetaDisplay *display,
           break;
         case LeaveNotify:
           name = "LeaveNotify";
-          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d\n",
+          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
                                    event->xcrossing.window,
                                    event->xcrossing.root,
                                    event->xcrossing.subwindow,
@@ -903,7 +915,29 @@ meta_spew_event (MetaDisplay *display,
           name = "CirculateRequest";
           break;
         case PropertyNotify:
-          name = "PropertyNotify";
+          {
+            char *str;
+            const char *state;
+            
+            name = "PropertyNotify";
+            
+            meta_error_trap_push (display);
+            str = XGetAtomName (display->xdisplay,
+                                event->xproperty.atom);
+            meta_error_trap_pop (display);
+
+            if (event->xproperty.state == PropertyNewValue)
+              state = "PropertyNewValue";
+            else if (event->xproperty.state == PropertyDelete)
+              state = "PropertyDelete";
+            else
+              state = "(????)";
+            
+            extra = g_strdup_printf ("atom: %s state: %s",
+                                     str ? str : "(unknown atom)",
+                                     state);
+            XFree (str);
+          }
           break;
         case SelectionClear:
           name = "SelectionClear";

@@ -77,17 +77,15 @@ struct _MetaWindow
    * have no stupid viewports)
    */
   guint on_all_workspaces : 1;
-  
-  /* Mapped is what we think the mapped state should be;
-   * so if we get UnmapNotify and mapped == TRUE then
-   * it's a withdraw, if mapped == FALSE the UnmapNotify
-   * is caused by us.
-   */
-  guint mapped : 1  ;
 
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
 
+  /* Whether the window is mapped; actual server-side state
+   * see also unmaps_pending
+   */
+  guint mapped : 1;
+  
   /* Iconic is the state in WM_STATE; happens for workspaces/shading
    * in addition to minimize
    */
@@ -116,7 +114,20 @@ struct _MetaWindow
    * determines whether we draw the focus
    */
   guint has_focus : 1;
-  
+
+  /* Track whether the user has ever manually modified
+   * the window; if so, we remove some constraints
+   * that exist on program modifications.
+   */
+  guint user_has_resized : 1;
+  guint user_has_moved : 1;
+
+  /* Number of UnmapNotify that are caused by us, if
+   * we get UnmapNotify with none pending then the client
+   * is withdrawing the window.
+   */
+  int unmaps_pending;
+
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
    * the actual server-side x,y so are relative to the frame

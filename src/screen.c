@@ -239,7 +239,8 @@ meta_screen_manage_all_windows (MetaScreen *screen)
       meta_display_ungrab (screen->display);
       return;
     }
-  
+
+  meta_stack_freeze (screen->stack);
   i = 0;
   while (i < n_children)
     {
@@ -247,6 +248,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 
       ++i;
     }
+  meta_stack_thaw (screen->stack);
 
   meta_display_ungrab (screen->display);
   

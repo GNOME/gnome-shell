@@ -76,15 +76,6 @@ void meta_frame_calc_geometry      (MetaFrame         *frame,
                                     int                child_width,
                                     int                child_height,
                                     MetaFrameGeometry *geomp);
-/* returns values suitable for meta_window_move */
-void meta_frame_adjust_for_gravity (int                win_gravity,
-                                    int                frame_width,
-                                    int                frame_height,
-                                    MetaFrameGeometry *fgeom,
-                                    int                x,
-                                    int                y,
-                                    int               *win_root_x,
-                                    int               *win_root_y);
 void meta_frame_sync_to_window     (MetaFrame         *frame,
                                     gboolean           need_move,
                                     gboolean           need_resize);

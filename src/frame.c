@@ -84,74 +84,24 @@ meta_frame_init_info (MetaFrame     *frame,
     info->current_control_state = META_STATE_PRELIGHT;
 }
 
-
-/* returns values suitable for meta_window_move */
-void
-meta_frame_adjust_for_gravity (int                win_gravity,
-                               int                frame_width,
-                               int                frame_height,
-                               MetaFrameGeometry *fgeom,
-                               int                child_root_x,
-                               int                child_root_y,
-                               int               *win_root_x,
-                               int               *win_root_y)
+static void
+pango_hack_start (MetaDisplay *display)
 {
-  int x, y;
-
-  /* NW coordinate of the frame. We should just
-   * compute NW coordinate to return from the start,
-   * but I wrote it this way first and am now lazy
-   */
-  x = 0;
-  y = 0;
-  
-  switch (win_gravity)
+  if (display->server_grab_count > 0)
     {
-    case NorthWestGravity:
-      x = child_root_x;
-      y = child_root_y;
-      break;
-    case NorthGravity:
-      x = child_root_x - frame_width / 2;
-      y = child_root_y;
-      break;
-    case NorthEastGravity:
-      x = child_root_x - frame_width;
-      y = child_root_y;
-      break;
-    case WestGravity:
-      x = child_root_x;
-      y = child_root_y - frame_height / 2;
-      break;
-    case CenterGravity:
-      x = child_root_x - frame_width / 2;
-      y = child_root_y - frame_height / 2;
-      break;
-    case EastGravity:
-      x = child_root_x - frame_width;
-      y = child_root_y - frame_height / 2;
-      break;
-    case SouthWestGravity:
-      x = child_root_x;
-      y = child_root_y - frame_height;
-      break;
-    case SouthGravity:
-      x = child_root_x - frame_width / 2;
-      y = child_root_y - frame_height;
-      break;
-    case SouthEastGravity:
-      x = child_root_x - frame_width;
-      y = child_root_y - frame_height;
-      break;
-    case StaticGravity:
-    default:
-      x = child_root_x - fgeom->left_width;
-      y = child_root_y - fgeom->top_height;
-      break;
+      meta_verbose ("Pango workaround, ungrabbing server\n");
+      XUngrabServer (display->xdisplay);
     }
+}
 
-  *win_root_x = x + fgeom->left_width;
-  *win_root_y = y + fgeom->top_height;
+static void
+pango_hack_end (MetaDisplay *display)
+{
+  if (display->server_grab_count > 0)
+    {
+      meta_verbose ("Pango workaround, regrabbing server\n");
+      XGrabServer (display->xdisplay);
+    }
 }
 
 void
@@ -193,8 +143,10 @@ meta_frame_calc_geometry (MetaFrame *frame,
 
   geom.shape_mask = None;
 
+  pango_hack_start (frame->window->display);
   window->screen->engine->fill_frame_geometry (&info, &geom,
                                                frame->theme_data);
+  pango_hack_end (frame->window->display);
   
   *geomp = geom;
 }
@@ -242,6 +194,8 @@ meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   XSetWindowAttributes attrs;
+
+  g_return_if_fail (window->display->server_grab_count > 0);
   
   if (window->frame)
     return;
@@ -286,16 +240,16 @@ meta_window_ensure_frame (MetaWindow *window)
   /* Reparent the client window; it may be destroyed,
    * thus the error trap. We'll get a destroy notify later
    * and free everything. Comment in FVWM source code says
-   * we need the server grab or the child can get its MapNotify
+   * we need a server grab or the child can get its MapNotify
    * before we've finished reparenting and getting the decoration
-   * window onscreen.
+   * window onscreen, so ensure_frame must be called with
+   * a grab.
    */
-  meta_display_grab (window->display);
-
   meta_error_trap_push (window->display);
   window->mapped = FALSE; /* the reparent will unmap the window,
                            * we don't want to take that as a withdraw
                            */
+  window->unmaps_pending += 1;
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
@@ -304,11 +258,6 @@ meta_window_ensure_frame (MetaWindow *window)
   
   /* stick frame to the window */
   window->frame = frame;
-
-  /* Ungrab server (FIXME after fixing Pango not to lock us up,
-   * we need to recalc geometry before ungrabbing)
-   */
-  meta_display_ungrab (window->display);
 }
 
 void
@@ -339,6 +288,7 @@ meta_window_destroy_frame (MetaWindow *window)
                            * can identify a withdraw initiated
                            * by the client.
                            */
+  window->unmaps_pending += 1;
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    window->screen->xroot,
@@ -366,9 +316,11 @@ meta_frame_sync_to_window (MetaFrame *frame,
                            gboolean   need_move,
                            gboolean   need_resize)
 {
-  meta_verbose ("Syncing frame geometry %d,%d %dx%d pixel %ld\n",
+  meta_verbose ("Syncing frame geometry %d,%d %dx%d (SE: %d,%d) pixel %ld\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
+                frame->rect.x + frame->rect.width,
+                frame->rect.y + frame->rect.height,
                 frame->bg_pixel);
 
   /* set bg to none to avoid flicker */
@@ -439,10 +391,12 @@ meta_frame_draw_now (MetaFrame *frame,
   info.drawable = p;
   info.xoffset = - x;
   info.yoffset = - y;
+  pango_hack_start (frame->window->display);
   frame->window->screen->engine->expose_frame (&info,
                                                0, 0, width, height,
                                                frame->theme_data);  
-
+  pango_hack_end (frame->window->display);
+  
 
   XCopyArea (frame->window->display->xdisplay,
              p, frame->xwindow,
@@ -609,7 +563,8 @@ update_move (MetaFrame *frame,
   
   dx = x - frame->grab->start_root_x;
   dy = y - frame->grab->start_root_y;
-  
+
+  frame->window->user_has_moved = TRUE;
   meta_window_move (frame->window,
                     frame->grab->start_window_x + dx,
                     frame->grab->start_window_y + dy);
@@ -623,7 +578,8 @@ update_resize_se (MetaFrame *frame,
   
   dx = x - frame->grab->start_root_x;
   dy = y - frame->grab->start_root_y;
-  
+
+  frame->window->user_has_resized = TRUE;
   meta_window_resize (frame->window,
                       frame->grab->start_window_x + dx,
                       frame->grab->start_window_y + dy);
