@@ -1,5 +1,10 @@
 2003-06-12  Rob Adams  <robadams@ucla.edu>
 
+	* src/Makefile.am: honor --disable-schemas-install.  Fix for
+	#106123 from Julio Merino
+
+2003-06-12  Rob Adams  <robadams@ucla.edu>
+
 	Remove legacy support for Gnome 1 hints, since we deem it unlikely
 	that anyone is running a current metacity with Gnome 1.  The
 	removed hints are _WIN_WORKSPACE, _WIN_LAYER, _WIN_PROTOCOLS,

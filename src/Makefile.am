@@ -148,8 +148,12 @@ schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 
 @INTLTOOL_SCHEMAS_RULE@
 
+if GCONF_SCHEMAS_INSTALL
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
+else
+install-data-local:
+endif
 
 IMAGES=default_icon.png stock_maximize.png stock_minimize.png stock_delete.png
 VARIABLES=default_icon_data $(srcdir)/default_icon.png \
