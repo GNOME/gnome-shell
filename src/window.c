@@ -4046,10 +4046,10 @@ meta_window_notify_focus (MetaWindow *window,
           window->has_focus = TRUE;
 
           /* Move to the front of the focusing workspace's MRU list
+           * FIXME is the active workspace guaranteed to be the
+           * focusing workspace?
            */
-          if (window->screen->active_workspace &&
-              g_list_find (window->screen->active_workspace->mru_list,
-                           window))
+          if (window->screen->active_workspace)
             {
               window->screen->active_workspace->mru_list = 
                 g_list_remove (window->screen->active_workspace->mru_list, 

@@ -1,3 +1,7 @@
+2003-11-20  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_notify_focus): revert the change here
+	
 2003-11-17  Rob Adams  <readams@readams.net
 
 	* src/window.c (set_allowed_actions_hint): increment i between
