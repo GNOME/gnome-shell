@@ -1,17 +1,20 @@
+# metacity.HEAD.az.po faylının Azərbaycan dilinə tərcüməsi
 # Metacity faylının Azərbaycan dilinə tərcüməsi.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Mətin Əmirov <metin@karegen.com>, 2002.
+# Copyright (C) 2002,2003 Free Software Foundation, Inc.
+# Mətin Əmirov <metin@karegen.com>, 2002,2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
-"PO-Revision-Date: 2003-08-11 17:50+0200\n"
+"Project-Id-Version: metacity.HEAD.az\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-18 20:28+0200\n"
+"PO-Revision-Date: 2003-09-19 22:07+0300\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
-"Language-Team: Azerbaijani Turkic <gnome@azitt.com>\n"
+"Language-Team: Azərbaycan <gnome@azitt.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -20,35 +23,34 @@ msgstr "İstifadə Qaydası: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Metacity interaaktiv mod dəstəyi olmadan dərlənib\n"
 
 #: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "\"%s\" integer olaraq oxuna bilmədi"
 
 #: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "\"%2$s\" qatarının sonundakı \"%1$s\" hərfləri başa düşülmədi"
 
 #: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "Dialoq prosesindən gələn \"%s\" ismarışı oxuna bilmədi\n"
 
 #: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Dialoq ekran gedişatından oxuma xətası: %s\n"
 
 #: src/delete.c:332
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Tə'minatı sonlandırma haqqında metacity-dialoqu başlatma xətası: %s\n"
 
 #: src/delete.c:431
 #, c-format
@@ -108,12 +110,12 @@ msgstr ""
 #: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "Əmr haqqında xəta metacity-dialoqu başlatma xətası: %s\n"
 
 #: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "%d əmri tə'yin edilməyib.\n"
 
 #: src/main.c:64
 msgid ""
@@ -140,9 +142,8 @@ msgstr ""
 
 #: src/main.c:348
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Örtük tapıla bilmədi! %s'in yerində olduğundanə əyani örtüklər daxil etdiyindən əmin olun."
 
 #: src/main.c:396
 #, c-format
@@ -308,12 +309,11 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "\"%s\" pəncərəsi cavab vermir."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "Bu tə'minatı çıxışa məcbur etmək qeyd edilməmiş mə'lumatları itirməyə səbəb olacaq."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -331,7 +331,7 @@ msgstr "Sinif"
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr ""
+msgstr "Bu pəncərələr \"hazırkı iclası qeyd et\" xassəsini dəstəkləmir və növbəti girişdə əllə başladılmalıdır."
 
 #: src/metacity-dialog.c:288
 #, c-format
@@ -339,6 +339,8 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"\"%s\" icra edilərkən xəta yarandı:\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -346,7 +348,7 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(Yazılmayıb) Naviqasiya tə'minatlar qaydasında işləyir, pəncərələr qaydasında yox"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -360,15 +362,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Başlıq çubuğuna cüt tıqlama gedişatı"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Pəncərə menyusunu fəallaşdır"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Başlıq çubuğundakı düymələrin ardıcıllığı"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -379,10 +381,14 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"Başlıq çubuğundakı düymələrin ardıcıllığı. Bu qiymət buna bənzər olmalıdır: "
+"\"menu:minimize,maximize,close\"; İki nöqtə üst üstə pəncərənin sağ tərəfi "
+" ilə sol tərəfi ayırır. Və düymə adlarının arasında vergül yer alır. Eyni düymə "
+" birdən çox dəfə yer ala bilməz. Namə'lum düymə adları göstərilməyəcək."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Fokus sahibi olan pəncərəni avtomatik olaraq üstə gətirir"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -398,7 +404,7 @@ msgstr "Pəncərəni Bağla"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "Klaviatura qısa yollarına cavabla icra ediləcək əmrlər"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
@@ -406,7 +412,7 @@ msgstr "Hazırkı örtük"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Avtomatik üstə gəlmə xassəsi üçün millisaniyə olaraq gecikmə"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
@@ -416,15 +422,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Köhnə pozulmuş tə'minatların pis xassələrini qeyri-fəallaşdırır"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Əyani Zəngi Fəallaşdır"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Bütün pəncərələri gizlət və masa üstünü fokusa al"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -454,7 +460,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Pəncərənin digər pəncərələrin arxasına qoy"
 
 #: src/metacity.schemas.in.h:21
 msgid "Maximize a window"
@@ -482,31 +488,31 @@ msgstr "Pəncərəni Daşı"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
+msgstr "Panellər və masa üstü arasında cəld geri hərəkət et"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
+msgstr "Panellər və masa üstü arasında popup ilə geri hərəkət et"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
-msgstr ""
+msgstr "Pəncərələr arasında cəld geri hərəkət et"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "Panellər və masa üstü arasında cəld hərəkət et"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "Panellər və masa üstü arasında popup ilə hərəkət et"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "Pəncərələr arasında cəld hərəkət et"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "Pəncərələr arasında popup ilə hərəkət et"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
@@ -518,11 +524,11 @@ msgstr "Pəncərəni bir iş sahəsi aşağı daşı"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Pəncərəni bir iş sahəsi sola daşı"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Pəncərəni bir iş sahəsi sağa daşı"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
@@ -597,7 +603,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Pəncərəni digər pəncərələrin üstünə gətir"
 
 #: src/metacity.schemas.in.h:56
 msgid "Resize a window"
@@ -605,7 +611,7 @@ msgstr "Pəncərəni Ölçüləndir"
 
 #: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
-msgstr ""
+msgstr "Tə'yin edilmiş əmri icra et"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
@@ -613,7 +619,7 @@ msgstr "Panel menyusunu göstər"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Panel icra dialoqunu göstər"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -689,15 +695,15 @@ msgstr "Altdakı iş sahəsinə keç"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Soldakı iş sahəsinə keç"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Sağdakı iş sahəsinə keç"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Sistem Zəngi Eşidilsin"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
@@ -757,6 +763,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Üstdəki iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər, "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da "
+" işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə "
+"əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -767,6 +778,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Altdakı iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+" \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -777,6 +793,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Soldakı iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -787,6 +808,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Sağdakı iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+" \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da "
+"işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə "
+"əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -796,6 +822,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"1ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -805,6 +836,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"10cu iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -814,6 +850,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"11ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -823,6 +864,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"12ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -832,6 +878,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"2ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -841,6 +892,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"3cü iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -850,6 +906,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"4cü iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -859,6 +920,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"5ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -868,6 +934,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"6cı iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -877,6 +948,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"7ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -886,6 +962,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"8ci iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -895,6 +976,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"9cu iş sahəsinə keçiş qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -904,6 +990,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərə menyusunu açma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da "
+"işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə "
+"əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -913,6 +1004,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni bağlama qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -923,6 +1019,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"\"hərəkət modu\"na keçiş və klaviatura vasitəsiylə pəncərəni daşıma qısa yolu. "
+"Format \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük "
+" hərf istifadə edilə bilər, və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" "
+"kimi qısaltmalar da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , "
+"bu gedişat ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -933,6 +1034,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"\"ölçüləndirmə modu\"na keçiş və klaviatura vasitəsiylə pəncərəni ölçüləndirmə "
+" qısa yolu. Format \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya "
+" da böyük hərf istifadə edilə bilər, və eyni zamanda  \"&lt;Ctl&gt;\" və "
+"\"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə bilər. Əgər bu qiymətə \"disabled\" "
+"versəniz , bu gedişat ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -943,6 +1049,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Bütün normal pəncərələri gizlədib fokusu masa üstünə vermə qısa yolu. "
+"Format \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya "
+"da böyük hərf istifadə edilə bilər, və eyni zamanda  \"&lt;Ctl&gt;\" və "
+" \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə bilər. Əgər bu qiymətə "
+"\"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir qısa yol mövcud "
+"olmayacaq."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -952,6 +1064,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni böyütmə qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+" və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -961,6 +1078,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni kiçiltmə qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar "
+"da işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat "
+"ilə əlaqəli heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -971,6 +1093,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Pəncərəni bir altdakı iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -981,6 +1108,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Pəncərəni bir soldakı iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+"ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -991,6 +1123,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Pəncərəni bir sağdakı iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1000,6 +1137,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni bir üstdəki iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1009,6 +1151,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 1ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da "
+" işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli "
+" heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1018,6 +1165,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 10cu iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+"ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1027,6 +1179,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 11ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" "
+"ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1036,6 +1193,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 12ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1045,6 +1207,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 2ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1054,6 +1221,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 3cü iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+" bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1063,6 +1235,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 4cü iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1072,6 +1249,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 5ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1081,6 +1263,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 6cı iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1090,6 +1277,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 7ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+" qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1099,6 +1291,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 8ci iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da "
+"işlədilə bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli "
+"heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1108,6 +1305,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni 9cu iş sahəsinə daşıma qısa yolu. Format \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Kiçik ya da böyük hərf istifadə edilə bilər "
+"və eyni zamanda  \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmalar da işlədilə "
+"bilər. Əgər bu qiymətə \"disabled\" versəniz , bu gedişat ilə əlaqəli heç bir "
+"qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1380,19 +1582,19 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
-msgstr ""
+msgstr "Həmişə üstdə modunu aç"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Tam ekran nümayiş modunu aç"
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Maksimumlaşdırma vəziyyətini aç"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Burulu vəziyyəti aç"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
@@ -1411,15 +1613,15 @@ msgstr "Pəncərəni Balacalaşdır "
 
 #: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "Pəncərə başlıqlarında standart sistem yazı növünü işlət"
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Əyani Zəng Növü"
 
 #: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
-msgstr ""
+msgstr "Pəncərə Fokus Modu"
 
 #: src/metacity.schemas.in.h:164
 msgid "Window title font"
@@ -1505,15 +1707,13 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
 #: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
-"\"%2$s\" displeyindəki %1$d ekranı onsuz da pəncərə idarəçisinə malikdir\n"
+msgstr "\"%2$s\" displeyindəki %1$d ekranı onsuz da pəncərə idarəçisinə malikdir\n"
 
 #: src/screen.c:674
 #, c-format
@@ -1737,19 +1937,18 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr ""
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" uzaqlığı namə'lumdur"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" nisbəti namə'lumdur"
 
 #: src/theme-parser.c:1446
 #, c-format
@@ -1774,7 +1973,7 @@ msgstr "<%s> elementi üstündə \"sağ\" atributu yoxdur"
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" kənarı namə'lumdur"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
@@ -1855,7 +2054,7 @@ msgstr "<%s> elementi üstündə \"növ\" atributu yoxdur"
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Rəng keçiş növü üçün \"%s\" qiyməti başa düşülmədi "
 
 #: src/theme-parser.c:2294
 #, c-format
@@ -1865,7 +2064,7 @@ msgstr "<%s> elementi üstündə \"fayl adı\" atributu yoxdur"
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%s> elementi üçün \"%s\" doldurma növü başa düşülmədi "
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
@@ -1885,17 +2084,17 @@ msgstr "<%s> elementi üstündə \"ox\" atributu yoxdur"
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%s> elementi üçün \"%s\" vəziyyəti başa düşülmədi "
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%s> elementi üçün \"%s\" kölgəsi başa düşülmədi "
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%s> elementi üçün \"%s\" oxu başa düşülmədi "
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
@@ -2029,67 +2228,65 @@ msgstr ""
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "<%s> elementi <constant> elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "<%s> elementi draw gedişat elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "<%s> ielementi <%s> elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Çərçivə hissəsi üçün draw_ops verilməyib"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Düymə üçün draw_ops verilməyib"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Menyu timsalı üçün draw_ops verilməyib"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "<%s> elementi içində mətnə icazə yoxdur"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "bu örtük üçün <name> iki dəfə verilib"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "bu örtük üçün <author> iki dəfə verilib"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "bu örtük üçün <copyright> iki dəfə verilib"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "bu örtük üçün <date> iki dəfə verilib"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "bu örtük üçün <description> iki dəfə verilib"
 
 #: src/theme-parser.c:4348
 #, c-format
@@ -2134,11 +2331,11 @@ msgstr ""
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Çərçivə quruluşu düymələrin böyüklüyünü bildirmir"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Rəng keçişləri ən az iki rəngə malik olmalıdır"
 
 #: src/theme.c:975
 #, c-format
@@ -2183,8 +2380,7 @@ msgstr ""
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
 #: src/theme.c:1122
@@ -2200,7 +2396,7 @@ msgstr ""
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "\"%s\" rəngi oxuna bilmədi"
 
 #: src/theme.c:1423
 #, c-format
@@ -2235,14 +2431,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
 #: src/theme.c:1845
@@ -2294,12 +2488,13 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"Bu örtük növü üçün <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
+"tə'yin edilməlidir"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2325,11 +2520,12 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"Bu örtük üçün <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
+"tə'yin edilməlidir"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -2440,6 +2636,6 @@ msgstr ""
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
