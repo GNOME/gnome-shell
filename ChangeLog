@@ -1,3 +1,7 @@
+2002-09-04  Marius Andreiana <mandreiana@yahoo.com>
+
+	* configure.in: added 'ro' to ALL_LINGUAS
+
 2002-09-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_get_tab_current): new function
