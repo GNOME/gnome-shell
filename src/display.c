@@ -25,6 +25,7 @@
 #include "main.h"
 #include "screen.h"
 #include "window.h"
+#include "window-props.h"
 #include "frame.h"
 #include "errors.h"
 #include "keybindings.h"
@@ -383,6 +384,9 @@ meta_display_open (const char *name)
   display->atom_net_wm_action_close = atoms[74];
   display->atom_net_wm_state_above = atoms[75];
   display->atom_net_wm_state_below = atoms[76];
+
+  display->prop_hooks = NULL;
+  meta_display_init_window_prop_hooks (display);
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -663,6 +667,8 @@ meta_display_close (MetaDisplay *display)
     XDestroyWindow (display->xdisplay, display->leader_window);
 
   XFlush (display->xdisplay);
+
+  meta_display_free_window_prop_hooks (display);
   
 #ifndef USE_GDK_DISPLAY
   meta_event_queue_free (display->events);

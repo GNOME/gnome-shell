@@ -199,6 +199,9 @@ void meta_prop_get_values (MetaDisplay   *display,
                            MetaPropValue *values,
                            int            n_values);
 
+void meta_prop_free_values (MetaPropValue *values,
+                            int            n_values);
+
 #endif
 
 

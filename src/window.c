@@ -36,6 +36,7 @@
 #include "resizepopup.h"
 #include "xprops.h"
 #include "group.h"
+#include "window-props.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -160,19 +161,9 @@ meta_window_new (MetaDisplay *display,
   MetaWorkspace *space;
   gulong existing_wm_state;
 #define N_INITIAL_PROPS 2
-  MetaPropValue initial_props[N_INITIAL_PROPS];
+  Atom initial_props[N_INITIAL_PROPS];
   
   g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
-
-  memset (initial_props, '\0', sizeof (initial_props));
-  
-#define INITIAL_PROP_WM_CLIENT_MACHINE 0
-  initial_props[0].type = META_PROP_VALUE_STRING;
-  initial_props[0].atom = display->atom_wm_client_machine;
-
-#define INITIAL_PROP_NET_WM_PID 1
-  initial_props[1].type = META_PROP_VALUE_CARDINAL;
-  initial_props[1].atom = display->atom_net_wm_pid;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
@@ -436,37 +427,13 @@ meta_window_new (MetaDisplay *display,
   window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
-
-  meta_prop_get_values (display, window->xwindow,
-                        initial_props, N_INITIAL_PROPS);
   
-  if (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].type !=
-      META_PROP_VALUE_INVALID)
-    {
-      window->wm_client_machine =
-        g_strdup (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].v.str);
-
-      meta_XFree (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].v.str);
-
-      meta_verbose ("Window has client machine \"%s\"\n",
-                    window->wm_client_machine);
-    }
-
-  if (initial_props[INITIAL_PROP_NET_WM_PID].type !=
-      META_PROP_VALUE_INVALID)
-    {
-      gulong cardinal = (int) initial_props[INITIAL_PROP_NET_WM_PID].v.cardinal;
-
-      if (cardinal <= 0)
-        meta_warning (_("Application set a bogus _NET_WM_PID %ld\n"),
-                      cardinal);
-      else
-        {
-          window->net_wm_pid = cardinal;
-          meta_verbose ("Window has _NET_WM_PID %d\n",
-                        window->net_wm_pid);
-        }
-    }
+  /* Fill these in the order we want them to be gotten */
+  initial_props[0] = display->atom_wm_client_machine;
+  initial_props[1] = display->atom_net_wm_pid;
+  g_assert (N_INITIAL_PROPS == 2);
+  
+  meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
     
   update_size_hints (window);
   update_title (window);
@@ -1187,8 +1154,8 @@ implement_showing (MetaWindow *window,
                    gboolean    showing)
 {
   /* Actually show/hide the window */
-  meta_verbose ("Implement showing = %d for window %s\n", window->desc,
-                showing);
+  meta_verbose ("Implement showing = %d for window %s\n",
+                showing, window->desc);
   
   if (!showing)
     {

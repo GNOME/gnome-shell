@@ -1,5 +1,21 @@
 2002-11-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_new): use window-props.h stuff for a
+	couple of properties 
+	(implement_showing): fix printf string
+
+	* src/xprops.c (meta_prop_free_values): new function
+
+	* src/window-props.h, src/window-props.c: start moving code that
+	handles loading window properties into this file.
+
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (create_constraints): filter out windows that aren't
+	in the stack for whatever reason, avoids a crash
+
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_calc_showing): split into "see if we
 	should be showing" and "actually show/hide" functions
 	(idle_calc_showing): rework to first unmap all newly-hidden

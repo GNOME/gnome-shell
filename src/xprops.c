@@ -1042,3 +1042,64 @@ meta_prop_get_values (MetaDisplay   *display,
   g_free (tasks);
 }
 
+static void
+free_value (MetaPropValue *value)
+{
+  switch (value->type)
+    {
+    case META_PROP_VALUE_INVALID:          
+      break;
+    case META_PROP_VALUE_UTF8:
+      meta_XFree (value->v.str);
+      break;
+    case META_PROP_VALUE_STRING:
+      meta_XFree (value->v.str);
+      break;
+    case META_PROP_VALUE_MOTIF_HINTS:
+      meta_XFree (value->v.motif_hints);
+      break;          
+    case META_PROP_VALUE_CARDINAL:
+      break;
+    case META_PROP_VALUE_WINDOW:          
+      break;
+    case META_PROP_VALUE_ATOM_LIST:
+      meta_XFree (value->v.atom_list.atoms);
+      break;
+    case META_PROP_VALUE_TEXT_PROPERTY:
+      meta_XFree (value->v.str);
+      break;
+    case META_PROP_VALUE_WM_HINTS:
+      meta_XFree (value->v.wm_hints);
+      break;
+    case META_PROP_VALUE_CLASS_HINT:
+      meta_XFree (value->v.class_hint.res_class);
+      meta_XFree (value->v.class_hint.res_name);
+      break;
+    case META_PROP_VALUE_SIZE_HINTS:
+      meta_XFree (value->v.size_hints.hints);
+      break;
+    case META_PROP_VALUE_UTF8_LIST:
+      g_strfreev (value->v.string_list.strings);
+      break;
+    case META_PROP_VALUE_CARDINAL_LIST:
+      meta_XFree (value->v.cardinal_list.cardinals);
+      break;
+    }
+}
+
+void
+meta_prop_free_values (MetaPropValue *values,
+                       int            n_values)
+{
+  int i;
+
+  i = 0;
+  while (i < n_values)
+    {
+      free_value (&values[i]);
+      ++i;
+    }
+
+  /* Zero the whole thing to quickly detect breakage */
+  memset (values, '\0', sizeof (MetaPropValue) * n_values);
+}

@@ -72,6 +72,8 @@ metacity_SOURCES= 				\
 	util.h					\
 	window.c				\
 	window.h				\
+	window-props.c				\
+	window-props.h				\
 	workspace.c				\
 	workspace.h				\
 	xprops.c				\

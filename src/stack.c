@@ -522,6 +522,8 @@ add_constraint (Constraint **constraints,
            w->transient_parent_is_root_window) &&       \
           WINDOW_HAS_TRANSIENT_TYPE (w))
 
+#define WINDOW_IN_STACK(w) (w->stack_position >= 0)
+
 static void
 create_constraints (Constraint **constraints,
                     GList       *windows)
@@ -532,6 +534,12 @@ create_constraints (Constraint **constraints,
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
+
+      if (!WINDOW_IN_STACK (w))
+        {
+          tmp = tmp->next;
+          continue;
+        }
       
       if (WINDOW_TRANSIENT_FOR_WHOLE_GROUP (w))
         {
@@ -552,6 +560,12 @@ create_constraints (Constraint **constraints,
             {
               MetaWindow *group_window = tmp2->data;
 
+              if (!WINDOW_IN_STACK (group_window))
+                {
+                  tmp2 = tmp2->next;
+                  continue;
+                }
+              
 #if 0
               /* old way of doing it */
               if (!(meta_window_is_ancestor_of_transient (w, group_window)) &&
@@ -581,7 +595,7 @@ create_constraints (Constraint **constraints,
           parent =
             meta_display_lookup_x_window (w->display, w->xtransient_for);
 
-          if (parent)
+          if (parent && WINDOW_IN_STACK (parent))
             {
               meta_topic (META_DEBUG_STACK, "Constraining %s above %s due to transiency\n",
                           w->desc, parent->desc);

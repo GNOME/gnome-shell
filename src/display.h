@@ -57,6 +57,8 @@ typedef struct _MetaUISlave    MetaUISlave;
 typedef struct _MetaWindow     MetaWindow;
 typedef struct _MetaWorkspace  MetaWorkspace;
 
+typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
+
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
 				     gpointer     user_data);
@@ -262,6 +264,9 @@ struct _MetaDisplay
   /* currently-active window menu if any */
   MetaWindowMenu *window_menu;
   MetaWindow *window_with_menu;
+
+  /* Managed by window-props.c */
+  MetaWindowPropHooks *prop_hooks;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   /* This is at the end in case someone doesn't include config.h before this file
@@ -269,7 +274,6 @@ struct _MetaDisplay
    */
   SnDisplay *sn_display;
 #endif
-
 };
 
 gboolean      meta_display_open                (const char  *name);
