@@ -1643,12 +1643,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Tämä valinta määrittelee otsikkopalkin kaksoisnapsautuksen toiminnan. "
-"Nykyisiä kelvollisia valintoja ovat \"toggle_shaded\", joka rullaa ikkunan "
-"tai avaa rullauksen; \"toggle_maximized\", joka suurentaa tai palauttaa "
+"Nykyisiä kelvollisia valintoja ovat \"toggle_shade\", joka rullaa ikkunan "
+"tai avaa rullauksen; \"toggle_maximize\", joka suurentaa tai palauttaa "
 "ikkunan."
 
 #: src/metacity.schemas.in.h:137

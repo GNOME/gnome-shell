@@ -937,7 +937,7 @@ msgid "This keybinding resizes a window to fill available vertical space. The fo
 msgstr "Šī taustiņsasaiste maina loga izmēru, lai aizpildītu pieejamo vertikālo vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:136
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shaded', which will shade/unshade the window, and 'toggle_maximized' which will maximize/unmaximize the window."
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr "Šī opcija nosaka dubultklikšķa efektu uz virsrakstjoslas. Šobrīd derīgas opcijas ir 'toggle_shade', kas ēnos/atēnos logu, un 'toggle_maximize', kas maksimizēs/atmaksimizēs logu."
 
 #: src/metacity.schemas.in.h:137

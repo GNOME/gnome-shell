@@ -1,5 +1,16 @@
 2003-02-22  Rob Adams <robadams@ucla.edu>
 
+	* src/metacity.schemas.in: change toggle_maximized to
+	toggle_maximize and toggle_shaded to toggle_shade in
+	action_double_click_titlebar long description to match the values
+	used by metacity
+
+	* po/*.po: change toggle_maximized to toggle_maximize and
+	toggle_shaded to toggle_shade in action_double_click_titlebar long
+	description to match the values used by metacity
+
+2003-02-22  Rob Adams <robadams@ucla.edu>
+
 	* window.c (set_wm_state): modify comment to explain why the icon
 	window element is set to None.  Fix for #97357 thanks to Gregory
 	Merchan.

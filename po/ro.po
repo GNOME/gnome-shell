@@ -1672,11 +1672,11 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Această opţiune determină efectele unui dublu-click pe bara de titlu. Opţiunile "
-"valide curente sunt 'toggle_shaded', care va umbri/deumbri fereastra, şi 'toggle_maximized' "
+"valide curente sunt 'toggle_shade', care va umbri/deumbri fereastra, şi 'toggle_maximize' "
 "care va maximiza/demaximiza fereastra."
 
 #: src/metacity.schemas.in.h:137

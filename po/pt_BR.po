@@ -1704,12 +1704,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Essa opção determina os efeitos do duplo-clique na barra de título. As "
-"opções válidas são 'toggle_shaded', que irá sombrear/dessombrear a janela e "
-"'toggle_maximized' que irá maximizar/desmaximizar a janela."
+"opções válidas são 'toggle_shade', que irá sombrear/dessombrear a janela e "
+"'toggle_maximize' que irá maximizar/desmaximizar a janela."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"

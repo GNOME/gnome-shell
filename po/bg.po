@@ -1658,12 +1658,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Тази настройка определя ефекта на двойното щракване върху заглавната лента. "
-"Засега валидни стойности са \"toggle_shaded\", която навива/развива "
-"прозореца, и \"toggle_maximized\", която максимизира/демаксимизира прозореца."
+"Засега валидни стойности са \"toggle_shade\", която навива/развива "
+"прозореца, и \"toggle_maximize\", която максимизира/демаксимизира прозореца."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"

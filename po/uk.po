@@ -894,8 +894,8 @@ msgid "This keybinding resizes a window to fill available vertical space. The fo
 msgstr "Комбінація клавіш, що змінює розмір вікна, щоб заповнити весь вертикальний простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1.Аналізатор достатньо гнучкий та дозволяє використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:140
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shaded', which will shade/unshade the window, and 'toggle_maximized' which will maximize/unmaximize the window."
-msgstr "Цей параметр визначає ефект від подвійного клацання по заголовку вікна. Поточними можливими значеннями є 'toggle_shaded' - згортає і розгортає вікно, та 'toggle_maximized' - максимізує і відновлює вікно."
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr "Цей параметр визначає ефект від подвійного клацання по заголовку вікна. Поточними можливими значеннями є 'toggle_shade' - згортає і розгортає вікно, та 'toggle_maximize' - максимізує і відновлює вікно."
 
 #: src/metacity.schemas.in.h:141
 msgid "Toggle fullscreen mode"

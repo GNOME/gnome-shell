@@ -1611,12 +1611,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Цонхны нэрийн талбар дээр давхар товшиход (double click) ямар үйлдэл хийгдэхийг "
-"тодорхойлно. Үүнд дараахи үйлдлүүд орно: »toggle_shaded« гэвэл цонх хуйлагдан "
-"эсвэл эсрэгээр дэлгэгдэж харин »toggle_maximized« гэвэл цонхыг томсгож багасгах болно."
+"тодорхойлно. Үүнд дараахи үйлдлүүд орно: »toggle_shade« гэвэл цонх хуйлагдан "
+"эсвэл эсрэгээр дэлгэгдэж харин »toggle_maximize« гэвэл цонхыг томсгож багасгах болно."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"

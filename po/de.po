@@ -1725,12 +1725,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Was soll bei einem Doppelklick auf die Titelleiste passieren? Folgende Werte "
-"sind zur Zeit gültig: „toggle_shaded” hat zur Folge, dass das Fenster ein- "
-"oder ausgerollt wird und „toggle_maximized” bewirkt, dass das Fenster "
+"sind zur Zeit gültig: „toggle_shade” hat zur Folge, dass das Fenster ein- "
+"oder ausgerollt wird und „toggle_maximize” bewirkt, dass das Fenster "
 "maximiert bzw. wiederhergestellt wird."
 
 #: src/metacity.schemas.in.h:137

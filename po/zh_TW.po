@@ -1684,12 +1684,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:140
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "本選項決定在標題列上 double-click 的效果。目前有效的選項為：\n"
-"‘toggle_shaded’會捲起/放下視窗，及\n"
-"‘toggle_maximized’會切換視窗是否最大化。"
+"‘toggle_shade’會捲起/放下視窗，及\n"
+"‘toggle_maximize’會切換視窗是否最大化。"
 
 #: src/metacity.schemas.in.h:141
 msgid "Toggle fullscreen mode"

@@ -1682,12 +1682,12 @@ msgstr ""
 #: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Deze optie bepaalt het effect van dubbelklikken op de titelbalk. Momenteel "
-"geldige waardes zijn 'toggle_shaded', welke het venster zal oprollen/"
-"afrollen, en 'toggle_maximized' welke het venster zal maximaliseren/"
+"geldige waardes zijn 'toggle_shade', welke het venster zal oprollen/"
+"afrollen, en 'toggle_maximize' welke het venster zal maximaliseren/"
 "herstellen."
 
 #: src/metacity.schemas.in.h:137
