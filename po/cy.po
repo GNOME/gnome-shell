@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-13 21:09+0200\n"
+"POT-Creation-Date: 2003-07-25 01:15+0100\n"
 "PO-Revision-Date: 2003-05-31 16:54+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -50,8 +50,8 @@ msgstr "Gwall wrth ddarllen o broses dangos deialog: %s\n"
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: "
-"%s\n"
+"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: %"
+"s\n"
 
 #: src/delete.c:429
 #, c-format
@@ -71,8 +71,8 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Collwyd y cysylltiad i'r dangosydd '%s'; \n"
-"mwy na thebyg fe derfynnwyd y gweinydd X neu cafodd y rheolydd ffenestri "
-"ei derfynnu ganddoch.\n"
+"mwy na thebyg fe derfynnwyd y gweinydd X neu cafodd y rheolydd ffenestri ei "
+"derfynnu ganddoch.\n"
 
 #: src/errors.c:238
 #, c-format
@@ -99,7 +99,7 @@ msgstr "Ehangu'r Ffenest"
 msgid "Unmaximize Window"
 msgstr "Dadehangu'r Ffenest"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:984
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,13 +108,14 @@ msgstr ""
 "Mae rhaglen arall yn defnyddio'r bysell %s gyfa'r addasyddion %x fel "
 "rhwymiad eisioes\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch "
-"gorchymyn: %s\n"
+msgstr ""
+"Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch gorchymyn: "
+"%s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
@@ -139,10 +140,10 @@ msgstr ""
 "metacity %s\n"
 "Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
 "Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
-"Does DIM GWARANT; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD "
-"AR GYFER PWRPAS PENODOL.\n"
+"Does DIM GWARANT; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD AR "
+"GYFER PWRPAS PENODOL.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -150,7 +151,7 @@ msgstr ""
 "Methu canfod thema! Sicrhewch fod %s yn bodoli ac yn cynnwys y themâu "
 "arferol."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Methu ailddechrau: %s\n"
@@ -197,7 +198,7 @@ msgstr "Rhoi ar _Pob Gweithfan"
 msgid "Only on _This Workspace"
 msgstr "Ar y Gweithfan _Yma'n Unig"
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Gweithfan %d"
@@ -311,30 +312,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "Nid yw'r ffenest \"%s\" yn ymateb."
+
+#: src/metacity-dialog.c:92
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Nid yw'r ffenest \"%s\" yn ymateb.\n"
-"Gorfodu'r rhaglen yma i derfynnu?\n"
-"(Fe gaiff unrhyw ddogfenni ar agor eu colli.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Terfynnu'r rhaglen"
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Teitl"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Dosbarth"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -342,7 +342,7 @@ msgstr ""
 "Dyw'r ffenestri yma ddim yn cynnal \"arbed y gosodiad cyfredol\" a bydd "
 "rhaid eu ail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -368,10 +368,16 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
+"Llinyn disgrifio ffont sy'n disgrifio ffont ar gyfer barau teitl ffenestr. "
+"Caiff y main o'r disgrifiad ei ddefnyddio ons os mae'r opsiwn "
+"titlebar_font_size wedi ei osod i 0, fodd bynnag. Hefyd, mae'r opsiwn hwn "
+"wedi ei analluogi os mae'r opsiwn titlebar_uses_desktop_font wedi ei osod yn "
+"wir. Yn rhagosodedig, mae titlebar_font wedi ei ddatosod, sy'n achosi i "
+"Metacity i gwympo'n ôl hyd yn oed os mae titlebar_uses_desktop_font yn anwir."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Gweithred pan mae clic ddwbl ar far teitl"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
@@ -390,6 +396,12 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"Trefniant botymau ar y bar teitl. Dylai'r gwerth yma fod yn llinyn megis "
+"\"menu:minimize,maximize,close\"; Mae'r colon yn gwahannu cornel chwith y "
+"ffenest o'r gornel dde, a mae enwau y botymau wedi eu gwahannu gan goma. Ni "
+"chaniateir botymau dyblyg. Anwybyddir enwau botymau ni adnabyddir fel y "
+"gellir ychwanegu botymau newydd mewn fesiynau dyfodol o Metacity heb dorri "
+"fersiynau hŷn."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -402,6 +414,10 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
+"Fe fydd clocio ffenest gan ddal y bysell assasu hwn yn symud y ffenest (clic "
+"chwith), newid maint y ffenest (clic ganol), neu'n dangos y dewislen ffenest "
+"(clic dde). Mynegir yr addasydd fel \"&lt;Alt&gt;\" neu \"&lt;Super&gt;\" er "
+"enghraifft."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -417,17 +433,21 @@ msgstr "Thema cyfredol"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Saib mewn milfedau eilad ar gyfer yr opsiwn codi awtomatig"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Penodi a ydi rhaglenni neu'r system yn gallu gwneud 'bîp' clywadwy; gellir "
+"ei ddefnyddio efo 'cloch gweladwy' er mwyn caniatáu 'bîpiau' distaw."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
+"Analluogi camnodweddion sy'n angenrheidiol ar gyfer rhaglenni sy'n hen neu "
+"wedi torri"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -738,6 +758,9 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"Mae'r allweddi /apps/metacity/global_keybindings/run_command_N yn diffinio "
+"bysellrhwymiadau sy'n cyferbynnu i'r gorchmyion hyn. Fe fydd gwasgu'r "
+"bysellrwymiad ar gyfer run_command_N yn gweithredu command_N."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -1209,16 +1232,17 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:132
 msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
 #: src/metacity.schemas.in.h:133
 msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
+"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -1227,6 +1251,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:134
 msgid ""
+"The keybinding used to toggle maximization. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
+"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+
+#: src/metacity.schemas.in.h:135
+msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
@@ -1234,7 +1267,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1244,7 +1277,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1253,7 +1286,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1263,7 +1296,7 @@ msgid ""
 "for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1273,7 +1306,7 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1283,7 +1316,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1292,15 +1325,15 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
 msgstr "Enw gweithfan."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
 msgstr "Y gorchymyn sgrîn-lun"
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1308,13 +1341,13 @@ msgstr ""
 "Mae'r thema yn penodi edrychiad borderi ffenestri, y bar teitl, ac yn y "
 "blaen."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1323,11 +1356,11 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
 msgstr "Y gorchymyn sgrîn-lun ffenest"
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1339,7 +1372,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1348,7 +1381,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1357,7 +1390,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1367,7 +1400,7 @@ msgid ""
 "for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1377,53 +1410,57 @@ msgid ""
 "for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 
-#: src/metacity.schemas.in.h:153
-msgid "Toggle fullscreen mode"
-msgstr ""
-
 #: src/metacity.schemas.in.h:154
-msgid "Toggle maximization state"
+msgid "Toggle always on top state"
 msgstr ""
 
 #: src/metacity.schemas.in.h:155
-msgid "Toggle shaded state"
+msgid "Toggle fullscreen mode"
 msgstr ""
 
 #: src/metacity.schemas.in.h:156
-msgid "Toggle window on all workspaces"
+msgid "Toggle maximization state"
 msgstr ""
 
 #: src/metacity.schemas.in.h:157
+msgid "Toggle shaded state"
+msgstr ""
+
+#: src/metacity.schemas.in.h:158
+msgid "Toggle window on all workspaces"
+msgstr ""
+
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr ""
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr ""
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
 msgstr "Math Cloch Gweladwy"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Modd ffocysu ffenestri"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Ffont teitl ffenestri"
 
@@ -1476,14 +1513,14 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Gwall wrth osod y nifer o weithfannau i %d: %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
@@ -1493,30 +1530,30 @@ msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Mae sgrîn %d ar y dangosydd '%s' yn annilys\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:520
+#: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Mae gan y sgrîn %d ar y dangosydd \"%s\" rheolwr ffenestri eisioes\n"
 
-#: src/screen.c:690
+#: src/screen.c:675
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Methu rhyddhau sgrîn %d ar y dangosydd \"%s\"\n"
@@ -1562,8 +1599,8 @@ msgstr "Methu dehongle ffeil sesiwn wedi cadw: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn "
-"eisioes"
+msgstr ""
+"gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn eisioes"
 
 #: src/session.c:1234
 #, c-format
@@ -1979,17 +2016,17 @@ msgstr ""
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Nid oes arddull o'r enw \"%s\" wedi ei ddiffinio"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "Dim priodwedd \"resize\" gan elfen <%s>"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "Nid yw \"%s\" yn werth dilys ar gyfer y priodwedd \"resize\""
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2095,12 +2132,12 @@ msgstr ""
 msgid "<description> specified twice for this theme"
 msgstr ""
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr ""
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr ""
@@ -2236,7 +2273,7 @@ msgstr ""
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Mae'r mynegiant cyfesurun yn "
 
 #: src/theme.c:1779
 msgid ""
@@ -2248,14 +2285,15 @@ msgstr ""
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"Roedd gan y mynegiant cyfesurun weithredydd \"%s\" lle disgwylwyd operand"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Roedd gan y meynegiant cyfesurun operand lle disgwylwyd gweithredydd"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Gorffenodd y mynegiant cyfesurun efo gweithredydd yn lle operand"
 
 #: src/theme.c:1863
 #, c-format
@@ -2263,6 +2301,8 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Mae gan fynegiant cyfesurun y gweithredydd \"%c\" yn dilyn y gweithredydd \"%"
+"c\" efo dim operand rhyngddynt"
 
 #: src/theme.c:1982
 msgid ""
@@ -2272,25 +2312,27 @@ msgstr ""
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Roedd gan y mynegiant cyfesurun cromfach cau heb gromfach agor"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Roedd gan y mynegiant cyfesurun gysonyn neu newidyn anhysbys \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Roedd gan y mynegiant cyfesurun cromfach agor heb gromfach cau"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
+"Ymddengys nad oes gan y mynegiant cyfesurun unrhyw weithredyddion neu "
+"operandau"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Roedd y thema yn cynnwys mynegiant \"%s\" a achosodd gwall: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2298,12 +2340,16 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"Rhaid penodi <button function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"/> ar "
+"gyfer yr arddull ffrâm hwn"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
+"Mae yna <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"rhywbwth\"/> "
+"ar goll"
 
 #: src/theme.c:4445
 #, c-format
@@ -2329,12 +2375,16 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"rhaid penodi <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"> "
+"ar gyfer y thema hwn"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
+"Mae'n rhaid i gysonion a ddiffiniwyd gan y defnyddiwr gychwyn efo "
+"priflythyren; nid yw \"%s\""
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
@@ -2359,15 +2409,15 @@ msgstr "Ymddygiad ffocysu:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Hoffterau Ffocws Ffenestri"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Pwyntio er mwyn rhoi ffocws"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Codi'r ffenest wrth ffocysu"
 
 #: src/util.c:93
 #, c-format
@@ -2406,7 +2456,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Gosododd rhaglen _NET_WM_PID drŵg %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4534
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2420,7 +2470,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2443,13 +2493,12 @@ msgstr ""
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Roedd y priodoledd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys\n"
+msgstr "Roedd y priodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Roedd y priodoledd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
+"Roedd y priodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
 "eitem %d yn y rhestr\n"
-
