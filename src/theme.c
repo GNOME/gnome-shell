@@ -25,6 +25,32 @@
 #include <gtk/gtkwidget.h>
 #include <string.h>
 
+#define GDK_COLOR_RGBA(color)                                   \
+                         (0xff                         |        \
+                         (((color).red / 256) << 24)   |        \
+                         (((color).green / 256) << 16) |        \
+                         (((color).blue / 256) << 8))
+
+#define GDK_COLOR_RGB(color)                                    \
+                         ((((color).red / 256) << 16)   |        \
+                          (((color).green / 256) << 8)  |        \
+                          (((color).blue / 256)))
+
+static void
+color_composite (const GdkColor *bg,
+                 const GdkColor *fg,
+                 double          alpha_d,
+                 GdkColor       *color)
+{
+  guint16 alpha;
+  
+  *color = *bg;
+  alpha = alpha_d * 0xffff;
+  color->red = color->red + (((fg->red - color->red) * alpha + 0x8000) >> 16);
+  color->green = color->green + (((fg->green - color->green) * alpha + 0x8000) >> 16);
+  color->blue = color->blue + (((fg->blue - color->blue) * alpha + 0x8000) >> 16);
+}
+
 MetaFrameLayout*
 meta_frame_layout_new  (void)
 {
@@ -418,17 +444,12 @@ meta_color_spec_render (MetaColorSpec *spec,
 
     case META_COLOR_SPEC_BLEND:
       {
-        GdkColor fg, bg;
-        int alpha;
-        
-        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
-        meta_color_spec_render (spec->data.blend.background, widget, &bg);
+        GdkColor bg, fg;
 
-        *color = fg;
-        alpha = spec->data.blend.alpha * 0xffff;
-        color->red = color->red + (((bg.red - color->red) * alpha + 0x8000) >> 16);
-        color->green = color->green + (((bg.green - color->green) * alpha + 0x8000) >> 16);
-        color->blue = color->blue + (((bg.blue - color->blue) * alpha + 0x8000) >> 16);        
+        meta_color_spec_render (spec->data.blend.background, widget, &bg);
+        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+
+        color_composite (&bg, &fg, spec->data.blend.alpha, color);
       }
       break;
     }
@@ -457,6 +478,11 @@ meta_texture_spec_new (MetaTextureType type)
     case META_TEXTURE_IMAGE:
       size += sizeof (dummy.data.image);
       break;
+
+    case META_TEXTURE_COMPOSITE:
+      size += sizeof (dummy.data.composite);
+      break;
+      
     }
   
   spec = g_malloc0 (size);
@@ -487,6 +513,12 @@ meta_texture_spec_free (MetaTextureSpec *spec)
       if (spec->data.image.pixbuf)
         g_object_unref (G_OBJECT (spec->data.image.pixbuf));
       break;
+
+    case META_TEXTURE_COMPOSITE:
+      if (spec->data.composite.background)
+        meta_texture_spec_free (spec->data.composite.background);
+      if (spec->data.composite.foreground)
+        meta_texture_spec_free (spec->data.composite.foreground);
     }
 
   g_free (spec);
@@ -536,42 +568,130 @@ render_pixbuf (GdkDrawable        *drawable,
 }
 
 
-void
-meta_texture_spec_draw   (const MetaTextureSpec *spec,
+static void
+render_pixbuf_aligned (GdkDrawable        *drawable,
+                       const GdkRectangle *clip,
+                       GdkPixbuf          *pixbuf,
+                       double              xalign,
+                       double              yalign,
+                       int                 x,
+                       int                 y,
+                       int                 width,
+                       int                 height)
+{
+  int pix_width;
+  int pix_height;
+  int rx, ry;
+  
+  pix_width = gdk_pixbuf_get_width (pixbuf);
+  pix_height = gdk_pixbuf_get_height (pixbuf);
+  
+  rx = x + (width - pix_width) * xalign;
+  ry = y + (height - pix_height) * yalign;
+  
+  render_pixbuf (drawable, clip, pixbuf, rx, ry);
+}
+
+static GdkPixbuf*
+multiply_alpha (GdkPixbuf *pixbuf,
+                guchar     alpha)
+{
+  GdkPixbuf *new_pixbuf;
+  guchar *pixels;
+  int rowstride;
+  int height;
+  int row;
+  
+  if (alpha == 255)
+    return pixbuf;
+
+  if (!gdk_pixbuf_get_has_alpha (pixbuf))
+    {
+      new_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
+      g_object_unref (G_OBJECT (pixbuf));
+      pixbuf = new_pixbuf;
+    }
+  
+  pixels = gdk_pixbuf_get_pixels (pixbuf);
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+
+  row = 0;
+  while (row < height)
+    {
+      guchar *p;
+      guchar *end;
+
+      p = pixels + row * rowstride;
+      end = p + rowstride;
+
+      while (p != end)
+        {
+          p += 3; /* skip RGB */
+
+          /* multiply the two alpha channels. not sure this is right.
+           * but some end cases are that if the pixbuf contains 255,
+           * then it should be modified to contain "alpha"; if the
+           * pixbuf contains 0, it should remain 0.
+           */
+          *p = (*p * alpha) / 65025; /* (*p / 255) * (alpha / 255); */
+          
+          ++p; /* skip A */
+        }
+      
+      ++row;
+    }
+
+  return pixbuf;
+}
+
+static GdkPixbuf*
+meta_texture_spec_render (const MetaTextureSpec *spec,
                           GtkWidget             *widget,
-                          GdkDrawable           *drawable,
-                          const GdkRectangle    *clip,
                           MetaTextureDrawMode    mode,
-                          int                    x,
-                          int                    y,
+                          guchar                 alpha,
                           int                    width,
                           int                    height)
 {
-  g_return_if_fail (spec != NULL);
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_DRAWABLE (drawable));
-  g_return_if_fail (widget->style != NULL);
+  GdkPixbuf *pixbuf;
+
+  pixbuf = NULL;
+
+  g_return_val_if_fail (spec != NULL, NULL);
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (widget->style != NULL, NULL);
   
   switch (spec->type)
     {
     case META_TEXTURE_SOLID:
       {
-        GdkGC *gc;
-        GdkGCValues values;
-
-        g_return_if_fail (spec->data.solid.color_spec != NULL);
+        GdkColor color;
         
+        g_return_val_if_fail (spec->data.solid.color_spec != NULL,
+                              NULL);
+
         meta_color_spec_render (spec->data.solid.color_spec,
-                                widget,
-                                &values.foreground);
-        
-        gdk_rgb_find_color (widget->style->colormap, &values.foreground);
-        gc = gdk_gc_new_with_values (drawable, &values, GDK_GC_FOREGROUND);
-                         
-        gdk_draw_rectangle (drawable,
-                            gc, TRUE, x, y, width, height);
+                                widget, &color);
 
-        g_object_unref (G_OBJECT (gc));
+        if (alpha == 255)
+          {
+            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                     FALSE,
+                                     8, width, height);
+            gdk_pixbuf_fill (pixbuf, GDK_COLOR_RGBA (color));
+          }
+        else
+          {
+            guint32 rgba;
+            
+            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                     TRUE,
+                                     8, width, height);
+            rgba = GDK_COLOR_RGBA (color);
+            rgba &= ~0xff;
+            rgba |= alpha;
+            gdk_pixbuf_fill (pixbuf, rgba);
+          }
       }
       break;
 
@@ -579,25 +699,22 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
       {
         GdkPixbuf *pixbuf;
         
-        g_return_if_fail (spec->data.gradient.gradient_spec != NULL);
+        g_return_val_if_fail (spec->data.gradient.gradient_spec != NULL,
+                              NULL);
 
         pixbuf = meta_gradient_spec_render (spec->data.gradient.gradient_spec,
                                             widget, width, height);
 
-        if (pixbuf == NULL)
-          return;
-        
-        render_pixbuf (drawable, clip, pixbuf, x, y);
-        
-        g_object_unref (G_OBJECT (pixbuf));
-      }      
+        pixbuf = multiply_alpha (pixbuf, alpha);
+      }
       break;
 
     case META_TEXTURE_IMAGE:
       {
         GdkPixbuf *pixbuf;
         
-        g_return_if_fail (spec->data.image.pixbuf != NULL);
+        g_return_val_if_fail (spec->data.image.pixbuf != NULL,
+                              NULL);
 
         pixbuf = NULL;
         
@@ -619,8 +736,6 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
                                                   gdk_pixbuf_get_width (pixbuf),
                                                   height,
                                                   GDK_INTERP_BILINEAR);
-                if (pixbuf == NULL)
-                  return;
               }
             break;
           case META_TEXTURE_DRAW_SCALED_HORIZONTALLY:
@@ -635,8 +750,6 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
                                                   width,
                                                   gdk_pixbuf_get_height (pixbuf),
                                                   GDK_INTERP_BILINEAR);
-                if (pixbuf == NULL)
-                  return;
               }
             break;
           case META_TEXTURE_DRAW_SCALED_BOTH:
@@ -651,17 +764,422 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
                 pixbuf = gdk_pixbuf_scale_simple (pixbuf,
                                                   width, height,
                                                   GDK_INTERP_BILINEAR);
-                if (pixbuf == NULL)
-                  return;
               }
             break;
           }
 
-        g_return_if_fail (pixbuf != NULL);
+        pixbuf = multiply_alpha (pixbuf, alpha);
+      }
+      break;
+
+    case META_TEXTURE_COMPOSITE:
+      break;
+    }
+
+  return pixbuf;
+}
+
+static void
+draw_color_rectangle (GtkWidget   *widget,
+                      GdkDrawable *drawable,
+                      GdkColor    *color,
+                      const GdkRectangle *clip,
+                      int          x,
+                      int          y,
+                      int          width,
+                      int          height)
+{
+  GdkGC *gc;
+  GdkGCValues values;  
+
+  values.foreground = *color;
+  gdk_rgb_find_color (widget->style->colormap, &values.foreground);  
+  
+  gc = gdk_gc_new_with_values (drawable, &values, GDK_GC_FOREGROUND);
+
+  if (clip)
+    gdk_gc_set_clip_rectangle (gc,
+                               (GdkRectangle*) clip); /* const cast */
+  
+  gdk_draw_rectangle (drawable,
+                      gc, TRUE, x, y, width, height);
+  
+  g_object_unref (G_OBJECT (gc));
+}
+
+static void
+draw_bg_solid_composite (const MetaTextureSpec *bg,
+                         const MetaTextureSpec *fg,
+                         double                 alpha,
+                         GtkWidget             *widget,
+                         GdkDrawable           *drawable,
+                         const GdkRectangle    *clip,
+                         MetaTextureDrawMode    mode,
+                         double                 xalign,
+                         double                 yalign,
+                         int                    x,
+                         int                    y,
+                         int                    width,
+                         int                    height)
+{
+  GdkColor bg_color;
+  
+  g_assert (bg->type == META_TEXTURE_SOLID);
+  g_assert (fg->type != META_TEXTURE_COMPOSITE);
+
+  meta_color_spec_render (bg->data.solid.color_spec,
+                          widget,
+                          &bg_color);  
+  
+  switch (fg->type)
+    {
+    case META_TEXTURE_SOLID:
+      {
+        GdkColor fg_color;
+
+        meta_color_spec_render (fg->data.solid.color_spec,
+                                widget,
+                                &fg_color);
+
+        color_composite (&bg_color, &fg_color,
+                         alpha, &fg_color);
+
+        draw_color_rectangle (widget, drawable, &fg_color, clip,
+                              x, y, width, height);
+      }
+      break;
+
+    case META_TEXTURE_GRADIENT:
+      /* FIXME I think we could just composite all the colors in
+       * the gradient prior to generating the gradient?
+       */
+      /* FALL THRU */
+    case META_TEXTURE_IMAGE:
+      {
+        GdkPixbuf *pixbuf;
+        GdkPixbuf *composited;
         
-        render_pixbuf (drawable, clip, pixbuf, x, y);
+        pixbuf = meta_texture_spec_render (fg, widget, mode, 255,
+                                           width, height);
+
+        if (pixbuf == NULL)
+          return;
+        
+        composited = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                     gdk_pixbuf_get_has_alpha (pixbuf), 8,
+                                     gdk_pixbuf_get_width (pixbuf),
+                                     gdk_pixbuf_get_height (pixbuf));
+
+        if (composited == NULL)
+          {
+            g_object_unref (G_OBJECT (pixbuf));
+            return;
+          }
+        
+        gdk_pixbuf_composite_color (pixbuf,
+                                    composited,
+                                    0, 0,
+                                    gdk_pixbuf_get_width (pixbuf),
+                                    gdk_pixbuf_get_height (pixbuf),
+                                    0.0, 0.0, /* offsets */
+                                    1.0, 1.0, /* scale */
+                                    GDK_INTERP_BILINEAR,
+                                    255 * alpha,
+                                    0, 0,     /* check offsets */
+                                    0,        /* check size */
+                                    GDK_COLOR_RGB (bg_color),
+                                    GDK_COLOR_RGB (bg_color));
+
+        /* Need to draw background since pixbuf is not
+         * necessarily covering the whole thing
+         */
+        draw_color_rectangle (widget, drawable, &bg_color, clip,
+                              x, y, width, height);
+        
+        render_pixbuf_aligned (drawable, clip, composited,
+                               xalign, yalign,
+                               x, y, width, height);
         
         g_object_unref (G_OBJECT (pixbuf));
+        g_object_unref (G_OBJECT (composited));
+      }
+      break;
+
+    case META_TEXTURE_COMPOSITE:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+static void
+draw_bg_gradient_composite (const MetaTextureSpec *bg,
+                            const MetaTextureSpec *fg,
+                            double                 alpha,
+                            GtkWidget             *widget,
+                            GdkDrawable           *drawable,
+                            const GdkRectangle    *clip,
+                            MetaTextureDrawMode    mode,
+                            double                 xalign,
+                            double                 yalign,
+                            int                    x,
+                            int                    y,
+                            int                    width,
+                            int                    height)
+{
+  g_assert (bg->type == META_TEXTURE_GRADIENT);
+  g_assert (fg->type != META_TEXTURE_COMPOSITE);
+  
+  switch (fg->type)
+    {
+    case META_TEXTURE_SOLID:
+    case META_TEXTURE_GRADIENT:
+    case META_TEXTURE_IMAGE:
+      {
+        GdkPixbuf *bg_pixbuf;
+        GdkPixbuf *fg_pixbuf;
+        GdkPixbuf *composited;
+        int fg_width, fg_height;
+        
+        bg_pixbuf = meta_texture_spec_render (bg, widget, mode, 255,
+                                              width, height);
+
+        if (bg_pixbuf == NULL)
+          return;
+
+        fg_pixbuf = meta_texture_spec_render (fg, widget, mode, 255,
+                                              width, height);
+
+        if (fg_pixbuf == NULL)
+          {
+            g_object_unref (G_OBJECT (bg_pixbuf));            
+            return;
+          }
+
+        /* gradients always fill the entire target area */
+        g_assert (gdk_pixbuf_get_width (bg_pixbuf) == width);
+        g_assert (gdk_pixbuf_get_height (bg_pixbuf) == height);
+        
+        composited = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                     gdk_pixbuf_get_has_alpha (bg_pixbuf), 8,
+                                     gdk_pixbuf_get_width (bg_pixbuf),
+                                     gdk_pixbuf_get_height (bg_pixbuf));
+
+        if (composited == NULL)
+          {
+            g_object_unref (G_OBJECT (bg_pixbuf));
+            g_object_unref (G_OBJECT (fg_pixbuf));
+            return;
+          }
+
+        fg_width = gdk_pixbuf_get_width (fg_pixbuf);
+        fg_height = gdk_pixbuf_get_height (fg_pixbuf);
+
+        /* If we wanted to be all cool we could deal with the
+         * offsets and try to composite only in the clip rectangle,
+         * but I just don't care enough to figure it out.
+         */
+        
+        gdk_pixbuf_composite (fg_pixbuf,
+                              composited,
+                              x + (width - fg_width) * xalign,
+                              y + (height - fg_height) * yalign,
+                              gdk_pixbuf_get_width (fg_pixbuf),
+                              gdk_pixbuf_get_height (fg_pixbuf),
+                              0.0, 0.0, /* offsets */
+                              1.0, 1.0, /* scale */
+                              GDK_INTERP_BILINEAR,
+                              255 * alpha);
+        
+        render_pixbuf (drawable, clip, composited, x, y);
+        
+        g_object_unref (G_OBJECT (bg_pixbuf));
+        g_object_unref (G_OBJECT (fg_pixbuf));
+        g_object_unref (G_OBJECT (composited));
+      }
+      break;
+
+    case META_TEXTURE_COMPOSITE:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+static void
+draw_bg_image_composite (const MetaTextureSpec *bg,
+                         const MetaTextureSpec *fg,
+                         double                 alpha,
+                         GtkWidget             *widget,
+                         GdkDrawable           *drawable,
+                         const GdkRectangle    *clip,
+                         MetaTextureDrawMode    mode,
+                         double                 xalign,
+                         double                 yalign,
+                         int                    x,
+                         int                    y,
+                         int                    width,
+                         int                    height)
+{
+  g_assert (bg->type == META_TEXTURE_IMAGE);
+  g_assert (fg->type != META_TEXTURE_COMPOSITE);
+
+  /* This one is tricky since the image doesn't cover the entire x,y
+   * width, height rectangle, so we need to handle the fact that there
+   * may be existing stuff in the uncovered portions of the drawable
+   * that we need to composite over the top of.
+   *
+   * i.e. the "bg" we are compositing onto is equivalent to the image
+   * composited over the top of whatever is already in the drawable.
+   *
+   * To implement this we just draw the background to drawable, then
+   * render the foreground to a pixbuf, multiply its alpha channel by
+   * the composite alpha, then composite the foreground onto the
+   * drawable.
+   */
+  
+  switch (fg->type)
+    {
+    case META_TEXTURE_SOLID:
+    case META_TEXTURE_GRADIENT:
+    case META_TEXTURE_IMAGE:
+      {
+        GdkPixbuf *bg_pixbuf, *fg_pixbuf;
+        
+        bg_pixbuf = meta_texture_spec_render (bg, widget, mode, 255,
+                                              width, height);
+
+        if (bg_pixbuf == NULL)
+          return;
+
+        /* fg_pixbuf has its alpha multiplied, note */
+        fg_pixbuf = meta_texture_spec_render (fg, widget, mode,
+                                              255 * alpha,
+                                              width, height);
+
+        if (fg_pixbuf == NULL)
+          {
+            g_object_unref (G_OBJECT (bg_pixbuf));            
+            return;
+          }
+
+        render_pixbuf_aligned (drawable, clip, bg_pixbuf,
+                               xalign, yalign,
+                               x, y, width, height);
+
+        render_pixbuf_aligned (drawable, clip, fg_pixbuf,
+                               xalign, yalign,
+                               x, y, width, height);
+        
+        g_object_unref (G_OBJECT (bg_pixbuf));
+        g_object_unref (G_OBJECT (fg_pixbuf));
+      }
+      break;
+
+    case META_TEXTURE_COMPOSITE:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+void
+meta_texture_spec_draw   (const MetaTextureSpec *spec,
+                          GtkWidget             *widget,
+                          GdkDrawable           *drawable,
+                          const GdkRectangle    *clip,
+                          MetaTextureDrawMode    mode,
+                          double                 xalign,
+                          double                 yalign,
+                          int                    x,
+                          int                    y,
+                          int                    width,
+                          int                    height)
+{
+  g_return_if_fail (spec != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+  g_return_if_fail (widget->style != NULL);
+  
+  switch (spec->type)
+    {
+    case META_TEXTURE_SOLID:
+      {
+        GdkColor color;
+
+        g_return_if_fail (spec->data.solid.color_spec != NULL);
+        
+        meta_color_spec_render (spec->data.solid.color_spec,
+                                widget, &color);
+
+        draw_color_rectangle (widget, drawable, &color, clip,
+                              x, y, width, height);
+      }
+      break;
+
+    case META_TEXTURE_GRADIENT:
+    case META_TEXTURE_IMAGE:
+      {
+        GdkPixbuf *pixbuf;
+        
+        g_return_if_fail (spec->data.gradient.gradient_spec != NULL);
+
+        pixbuf = meta_texture_spec_render (spec, widget, mode, 255,
+                                           width, height);
+
+        if (pixbuf == NULL)
+          return;
+        
+        render_pixbuf_aligned (drawable, clip, pixbuf,
+                               xalign, yalign,
+                               x, y, width, height);
+        
+        g_object_unref (G_OBJECT (pixbuf));
+      }
+      break;
+
+    case META_TEXTURE_COMPOSITE:
+      {
+        MetaTextureSpec *fg;
+        MetaTextureSpec *bg;
+        
+        /* We could just render both things to a pixbuf then squish them
+         * but we are instead going to try to be all optimized for
+         * certain cases.
+         */
+
+        fg = spec->data.composite.foreground;
+        bg = spec->data.composite.background;
+
+        g_return_if_fail (fg != NULL);
+        g_return_if_fail (bg != NULL);
+        g_return_if_fail (fg->type != META_TEXTURE_COMPOSITE);
+        g_return_if_fail (bg->type != META_TEXTURE_COMPOSITE);
+        
+        switch (bg->type)
+          {
+          case META_TEXTURE_SOLID:
+            draw_bg_solid_composite (bg, fg, spec->data.composite.alpha,
+                                     widget, drawable, clip, mode,
+                                     xalign, yalign,
+                                     x, y, width, height);
+            break;
+
+          case META_TEXTURE_GRADIENT:
+            draw_bg_gradient_composite (bg, fg, spec->data.composite.alpha,
+                                        widget, drawable, clip, mode,
+                                        xalign, yalign,
+                                        x, y, width, height);
+            break;
+            
+          case META_TEXTURE_IMAGE:
+            draw_bg_image_composite (bg, fg, spec->data.composite.alpha,
+                                     widget, drawable, clip, mode,
+                                     xalign, yalign,
+                                     x, y, width, height);
+            break;
+
+          case META_TEXTURE_COMPOSITE:
+            g_assert_not_reached ();
+            break;
+          }
       }
       break;
     }  

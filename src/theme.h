@@ -130,7 +130,8 @@ typedef enum
 {
   META_TEXTURE_SOLID,
   META_TEXTURE_GRADIENT,
-  META_TEXTURE_IMAGE
+  META_TEXTURE_IMAGE,
+  META_TEXTURE_COMPOSITE
 } MetaTextureType;
 
 typedef enum
@@ -156,6 +157,11 @@ struct _MetaTextureSpec
     struct {
       GdkPixbuf *pixbuf;
     } image;
+    struct {
+      MetaTextureSpec *background;
+      MetaTextureSpec *foreground;
+      double alpha;
+    } composite;
   } data;
 };
 
@@ -334,6 +340,11 @@ void             meta_texture_spec_draw   (const MetaTextureSpec *desc,
                                            GdkDrawable           *drawable,
                                            const GdkRectangle    *clip,
                                            MetaTextureDrawMode    mode,
+                                           /* How to align a texture
+                                            * smaller than the given area
+                                            */
+                                           double                 xalign,
+                                           double                 yalign,
                                            /* logical region being drawn,
                                             * scale to this area if in SCALED
                                             * mode

@@ -1,5 +1,10 @@
 2002-01-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.h, src/theme.c: implement all kinds of crazy
+	compositing-one-texture-onto-another BS.
+
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (event_callback): make the check for whether to
 	eat focus click a lot more complicated
 
