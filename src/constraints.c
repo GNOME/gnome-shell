@@ -1358,9 +1358,7 @@ meta_window_constrain (MetaWindow          *window,
     {
       int center_x;
 
-      center_x = info.xinerama->x_origin + (info.xinerama->width / 2);
-      center_x -= OUTER_WIDTH (current) / 2;
-
+      current = *new;
       constrain_resize_bottom (window, &info, &current,
                                (info.xinerama->height - OUTER_HEIGHT (current)),
                                new);
@@ -1373,19 +1371,12 @@ meta_window_constrain (MetaWindow          *window,
       current = *new;
 
       constrain_move (window, &info, &current,
-                      center_x - current.x + info.fgeom.left_width,
+                      info.xinerama->x_origin - current.x + info.fgeom.left_width,
                       info.xinerama->y_origin - current.y + info.fgeom.top_height,
                       new);
-
-      current = *new;
     }
   else if (window->maximized)
     {
-      int center_x;
-
-      center_x = info.work_area_xinerama.x + (info.work_area_xinerama.width / 2);
-      center_x -= OUTER_WIDTH (current) / 2;
-
       constrain_resize_bottom (window, &info, &current,
                                (info.work_area_xinerama.height - OUTER_HEIGHT (current)),
                                new);
@@ -1398,7 +1389,7 @@ meta_window_constrain (MetaWindow          *window,
       current = *new;
 
       constrain_move (window, &info, &current,
-                      center_x - current.x + info.fgeom.left_width,
+                      info.work_area_xinerama.x - current.x + info.fgeom.left_width,
                       info.work_area_xinerama.y - current.y + info.fgeom.top_height,
                       new);
 
