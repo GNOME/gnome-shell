@@ -99,10 +99,12 @@ metacity_theme_viewer_LDADD= @METACITY_LIBS@
 metacity_dialog_LDADD=@METACITY_LIBS@
 
 testgradient_SOURCES=gradient.h gradient.c testgradient.c
+testasyncgetprop_SOURCES=async-getprop.h async-getprop.c testasyncgetprop.c
 
-noinst_PROGRAMS=testgradient
+noinst_PROGRAMS=testgradient testasyncgetprop
 
 testgradient_LDADD= @METACITY_LIBS@
+testasyncgetprop_LDADD= @METACITY_LIBS@
 
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_in_files=metacity.desktop.in
