@@ -8,7 +8,7 @@ License: GPL
 Group: User Interface/Desktops
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: gtk2-devel >= 2.0.0
-BuildRequires: GConf-devel >= 1.1.9
+BuildRequires: GConf2-devel >= 1.1.9
 
 %description
 
@@ -35,7 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 %{_libexecdir}/*
 %{_datadir}/gnome/wm-properties/metacity.desktop
-%{_sysconfdir}/schemas/*.schemas
+%{_sysconfdir}/gconf/schemas/*.schemas
 %{_datadir}/metacity
 
 %changelog
