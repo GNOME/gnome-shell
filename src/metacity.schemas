@@ -1049,7 +1049,7 @@ you set
       <applyto>/apps/metacity/global_keybindings/switch_to_workspace_left</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;Left</default>
+      <default>&lt;Control&gt;&lt;Alt&gt;Left</default>
       <locale name="C">
          <short>Switch to workspace on the left</short>
          <long>
@@ -1075,7 +1075,7 @@ you set
       <applyto>/apps/metacity/global_keybindings/switch_to_workspace_right</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;Right</default>
+      <default>&lt;Control&gt;&lt;Alt&gt;Right</default>
       <locale name="C">
          <short>Switch to workspace on the right</short>
          <long>

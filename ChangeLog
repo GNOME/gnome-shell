@@ -1,3 +1,9 @@
+2002-05-02  Bastien Nocera  <hadess@hadess.net>
+
+	* src/metacity.schemas: change the default for switch_to_workspace_*
+	to be <Control><Alt>arrow as just <Alt>arrow collides with some apps
+	(especially web browsers)
+
 2002-05-01  Havoc Pennington  <hp@redhat.com>
 
 	* src/screen.c (meta_screen_new): Xlib doesn't like NULL for out
