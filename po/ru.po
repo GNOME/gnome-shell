@@ -21,7 +21,7 @@ msgstr "Использование: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "\"Метасити\" был собран без поддержки режима подробных собщений"
+msgstr "\"Метасити\" был собран без поддержки режима подробных собщений\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
