@@ -835,9 +835,7 @@ meta_window_place (MetaWindow        *window,
       if (outer.width >= workarea.width &&
           outer.height >= workarea.height)
         {
-          outer.x = x;
-          outer.y = y;
-          meta_window_maximize_internal (window, &outer);
+          window->maximize_after_placement = TRUE;
         }
     }
   
