@@ -381,6 +381,7 @@ meta_frame_set_screen_cursor (MetaFrame	*frame,
     { 
       xcursor = meta_display_create_x_cursor (frame->window->display, cursor);
       XDefineCursor (frame->window->display->xdisplay, frame->xwindow, xcursor);
+      XFlush (frame->window->display->xdisplay);
       XFreeCursor (frame->window->display->xdisplay, xcursor);
     }
 }

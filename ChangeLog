@@ -1,3 +1,8 @@
+Sun Aug  8 14:20:00 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* src/frame.c (meta_frame_set_screen_cursor): Flush after setting
+	cursor. (Rest of #149413).
+
 2004-08-07  Elijah Newren  <newren@math.utah.edu>
 
 	* src/display.c (event_callback): activating the current workspace
