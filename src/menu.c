@@ -20,6 +20,7 @@
  */
 
 #include <config.h>
+#include <stdio.h>
 #include "menu.h"
 #include "main.h"
 #include "util.h"
@@ -152,6 +153,69 @@ menu_icon_expose_func (MetaArea       *area,
                              type);
 }
 
+/*
+ * Given a Display and an index, get the workspace name and add any
+ * accelerators. At the moment this means adding a _ if the name is of
+ * the form "Workspace n" where n is less than 10, and escaping any
+ * other '_'s so they do not create inadvertant accelerators.
+ * 
+ * The calling code owns the string, and is reponsible to free the
+ * memory after use.
+ */
+static char *
+get_workspace_name_with_accel (Display *display,
+                               int index)
+{
+  char *name;
+  unsigned int number;
+
+  name = meta_core_get_workspace_name_with_index (display, index);
+
+  /*
+   * If the name is of the form "Workspace x" where x is an unsigned
+   * integer, insert a '_' before the number if it is less than 10 and
+   * return it
+   */
+  if (sscanf (name, _("Workspace %u"), &number) == 1)
+    {
+      /*
+       * Above name is a pointer into the Workspace struct. Here we make
+       * a copy copy so we can have our wicked way with it.
+       */
+      name = g_strdup_printf (_("Workspace %s%d"),
+                              number < 10 ? "_" : "",
+                              number);
+      return name;
+    }
+  else
+    {
+      /*
+       * Otherwise this is just a normal name to which we cannot really
+       * add accelerators. Escape any _ characters so that the user's
+       * workspace names do not get mangled.
+       */
+      char *new_name, *source, *dest;
+      source = name;
+      /*
+       * Assume the worst case, that every character is a _
+       */
+      dest = new_name = g_malloc0 (strlen (name) * 2);
+      /*
+       * Now iterate down the strings, adding '_' to escape as we go
+       */
+      while (*source != '\0')
+        {
+          if (*source == '_')
+            *dest++ = '_';
+          *dest++ = *source++;
+        }
+      /*
+       * We don't free *name as we don't own it, and pass ownership of
+       * *new_name to the calling code.
+       */
+      return new_name;
+  }
+}
 
 MetaWindowMenu*
 meta_window_menu_new   (MetaFrames         *frames,
@@ -290,22 +354,24 @@ meta_window_menu_new   (MetaFrames         *frames,
       if (n_workspaces > 0)
         {
           GtkWidget *mi;
-          
+          Display *display;
+
+          display = gdk_x11_drawable_get_xdisplay(GTK_WIDGET(frames)->window);
+
           i = 0;
           while (i < n_workspaces)
             {
-              char *label;
+              char *label, *name;
               MenuData *md;
 
+              name = get_workspace_name_with_accel (display, i);
               if (ops & META_MENU_OP_UNSTICK)
-                label = g_strdup_printf (_("Only on workspace %s%d"),
-                                         i < 9 ? "_" : "", i + 1);
+                label = g_strdup_printf (_("Only on %s"), name);
               else
-                label = g_strdup_printf (_("Move to workspace %s%d"),
-                                         i < 9 ? "_" : "", i + 1);
-              
+                label = g_strdup_printf(_("Move to %s"), name);
               mi = gtk_menu_item_new_with_mnemonic (label);
 
+              g_free (name);
               g_free (label);
 
               if (!(ops & META_MENU_OP_UNSTICK) &&

@@ -506,6 +506,18 @@ meta_core_show_window_menu (Display *xdisplay,
   meta_window_show_menu (window, root_x, root_y, button, timestamp);
 }
 
+char *
+meta_core_get_workspace_name_with_index (Display *xdisplay,
+                                         int index)
+{
+  MetaDisplay *display;
+  MetaWorkspace *workspace;
+
+  display = meta_display_for_x_display (xdisplay);
+  workspace = meta_display_get_workspace_by_index (display, index);
+  return (workspace != NULL) ? workspace->name : NULL;
+}
+
 gboolean
 meta_core_begin_grab_op (Display    *xdisplay,
                          Window      frame_xwindow,

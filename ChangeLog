@@ -1,3 +1,8 @@
+2002-07-23  Ross Burton  <ross@burtonini.com>
+
+	* src/menu.c (meta_window_menu_new): Use the real workspace names
+	instead of making up numbers.
+
 2002-07-23  Havoc Pennington  <hp@redhat.com>
 
 	* src/keybindings.c (meta_display_process_key_event): handle 
