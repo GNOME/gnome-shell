@@ -79,14 +79,20 @@ kill_window_question (const char *window_name,
                       const char *parent_str)
 {
   GtkWidget *dialog;
+  char *str, *tmp;
+
+  str = g_strdup_printf (_("The window \"%s\" is not responding."),
+			 window_name);
   
   dialog = gtk_message_dialog_new (NULL, 0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
-				   _("<b>The window \"%s\" is not responding.</b>\n\n"
-				     "Forcing this application to quit will "
-				     "cause you to lose any unsaved changes."),
-                                   window_name);
+				   "<b>%s</b>\n\n%s",
+				   str,
+				   _("Forcing this application to quit will "
+				     "cause you to lose any unsaved changes."));
+  g_free (str);
+  
   gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   
