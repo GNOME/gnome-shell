@@ -1,5 +1,14 @@
 2002-08-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/xprops.c (meta_prop_get_motif_hints): allow Motif hints to
+	be smaller than expected; GLUT for example seems to set a smaller
+	struct. #89841
+
+	* src/window.c (update_mwm_hints): use g_free on motif hints as we
+	don't use the XGetWindowProperty return directly anymore
+
+2002-08-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_free): be sure window is 
 	mapped if we unmanage it and it's not withdrawn; 
 	bug #90369

@@ -166,14 +166,17 @@ meta_prop_get_motif_hints (MetaDisplay   *display,
   gulong bytes_after;
   MotifWmHints *hints;
   gulong n_items;
-
-#define EXPECTED_ITEMS sizeof (MotifWmHints)/sizeof (gulong)
+  int real_size, max_size;
+  
+#define MAX_ITEMS sizeof (MotifWmHints)/sizeof (gulong)
   
   *hints_p = NULL;
-  
+
+  hints = NULL;
+  n_items = 0;
   meta_error_trap_push (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
-                          0, EXPECTED_ITEMS,
+                          0, MAX_ITEMS,
                           False, AnyPropertyType, &type, &format, &n_items,
                           &bytes_after, (guchar **)&hints) != Success ||
       type == None)
@@ -185,14 +188,25 @@ meta_prop_get_motif_hints (MetaDisplay   *display,
   if (meta_error_trap_pop (display) != Success)
     return FALSE;
   
-  if (type == None || n_items != EXPECTED_ITEMS)
+  if (type == None || n_items <= 0)
     {
       meta_verbose ("Motif hints had unexpected type or n_items\n");
       XFree (hints);
       return FALSE;
     }
 
-  *hints_p = hints;
+  g_assert (hints != NULL);
+
+  /* The issue here is that some old crufty code will set a smaller
+   * MotifWmHints than the one we expect, apparently.  I'm not sure of
+   * the history behind it. See bug #89841 for example.
+   */
+  *hints_p = g_new0 (MotifWmHints, 1);
+  real_size = n_items * sizeof (gulong);
+  max_size = MAX_ITEMS * sizeof (gulong);
+  memcpy (*hints_p, hints, MIN (real_size, max_size));
+
+  XFree (hints);
   
   return TRUE;
 }

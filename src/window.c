@@ -4385,7 +4385,7 @@ update_mwm_hints (MetaWindow *window)
   else
     meta_verbose ("Functions flag unset\n");
 
-  meta_XFree (hints);
+  g_free (hints);
 
   recalc_window_features (window);
 }
