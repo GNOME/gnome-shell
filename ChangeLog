@@ -69,7 +69,7 @@ Sun Aug  8 14:20:00 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	Have newly mapped windows that are denied focus appear after the
 	focused window in the alt-tab list.  This allows one to switch to
-	such a window with a single alt-tab press.
+	such a window with a single alt-tab press.  (fixes #149366)
 	
 	* src/window.c (ensure_mru_position_after): new function,
 	(meta_window_show): If newly mapped window is denied focus, call
