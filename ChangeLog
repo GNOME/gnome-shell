@@ -1,3 +1,8 @@
+2003-04-23  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c (process_keyboard_move_grab): support
+	diagonal keypad keybindings, from Dafydd Harries
+
 2003-04-21  Havoc Pennington  <hp@redhat.com>
 
 	* purge HAVE_GTK_MULTIHEAD from the source code, not just from

@@ -1694,14 +1694,26 @@ process_keyboard_move_grab (MetaDisplay *display,
   else
     incr = NORMAL_INCREMENT;
 
+  if (keysym == XK_Escape)
+    {
+      /* End move and restore to original position */
+      meta_window_move_resize (display->grab_window,
+                               TRUE,
+                               display->grab_initial_window_pos.x,
+                               display->grab_initial_window_pos.y,
+                               display->grab_initial_window_pos.width,
+                               display->grab_initial_window_pos.height);
+    }
+  
   /* When moving by increments, we still snap to edges if the move
    * to the edge is smaller than the increment. This is because
    * Shift + arrow to snap is sort of a hidden feature. This way
    * people using just arrows shouldn't get too frustrated.
    */
-      
   switch (keysym)
     {
+    case XK_KP_Home:
+    case XK_KP_Prior:
     case XK_Up:
     case XK_KP_Up:
       edge = meta_window_find_next_horizontal_edge (window, FALSE);
@@ -1712,6 +1724,8 @@ process_keyboard_move_grab (MetaDisplay *display,
           
       handled = TRUE;
       break;
+    case XK_KP_End:
+    case XK_KP_Next:
     case XK_Down:
     case XK_KP_Down:
       edge = meta_window_find_next_horizontal_edge (window, TRUE);
@@ -1722,6 +1736,12 @@ process_keyboard_move_grab (MetaDisplay *display,
           
       handled = TRUE;
       break;
+    }
+  
+  switch (keysym)
+    {
+    case XK_KP_Home:
+    case XK_KP_End:
     case XK_Left:
     case XK_KP_Left:
       edge = meta_window_find_next_vertical_edge (window, FALSE);
@@ -1732,6 +1752,8 @@ process_keyboard_move_grab (MetaDisplay *display,
 
       handled = TRUE;
       break;
+    case XK_KP_Prior:
+    case XK_KP_Next:
     case XK_Right:
     case XK_KP_Right:
       edge = meta_window_find_next_vertical_edge (window, TRUE);
@@ -1739,19 +1761,6 @@ process_keyboard_move_grab (MetaDisplay *display,
       if (smart_snap || ((edge < x) && ABS (edge - x) < incr))
         x = edge;
       handled = TRUE;
-      break;
-
-    case XK_Escape:
-      /* End move and restore to original position */
-      meta_window_move_resize (display->grab_window,
-                               TRUE,
-                               display->grab_initial_window_pos.x,
-                               display->grab_initial_window_pos.y,
-                               display->grab_initial_window_pos.width,
-                               display->grab_initial_window_pos.height);
-      break;
-          
-    default:
       break;
     }
 
