@@ -227,7 +227,8 @@ warn_about_no_sm_support (char **lame_apps)
                     "response",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
-      
+
+  gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_CLOSE);     
   list = create_lame_apps_list (lame_apps);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
