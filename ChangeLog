@@ -1,7 +1,15 @@
+2002-08-07  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_unmake_fullscreen): update layer
+	(meta_window_make_fullscreen): update layer
+
+	* src/stack.c (compute_layer): put window on fullscreen layer if
+	fullscreen
+
 2002-08-06  Craig Black  <blackc@speakeasy.net>
 
 	* src/window.c: (meta_window_client_message): implement
-  _NET_WM_MOVERESIZE enhancements, see #90077.
+	_NET_WM_MOVERESIZE enhancements, see #90077.
 
 2002-08-06  Havoc Pennington  <hp@redhat.com>
 

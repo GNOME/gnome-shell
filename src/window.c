@@ -1632,7 +1632,7 @@ meta_window_make_fullscreen (MetaWindow  *window)
       
       window->fullscreen = TRUE;
 
-      /* FIXME why did I put this here? */
+      meta_window_update_layer (window);
       meta_window_raise (window);
       
       /* save size/pos as appropriate args for move_resize */
@@ -1661,6 +1661,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       
       window->fullscreen = FALSE;
 
+      meta_window_update_layer (window);
+      
       meta_window_move_resize (window,
                                TRUE,
                                window->saved_rect.x,

@@ -275,10 +275,13 @@ compute_layer (MetaWindow *window)
       break;
       
     default:
-      window->layer = META_LAYER_NORMAL;
+      if (window->fullscreen)
+        window->layer = META_LAYER_FULLSCREEN;
+      else
+        window->layer = META_LAYER_NORMAL;
       break;
-    }
-
+    }  
+  
   meta_topic (META_DEBUG_STACK, "Window %s on layer %d\n",
               window->desc, window->layer);
 }
