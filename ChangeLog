@@ -1,3 +1,8 @@
+2002-02-11  Bastien Nocera  <hadess@hadess.net>
+
+	* src/theme-viewer.c: (main): change default theme to be Atlanta
+	like in the .schema file
+
 2002-02-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/tools/Makefile.am (EXTRA_DIST): add $(icon_DATA)

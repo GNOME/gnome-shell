@@ -222,7 +222,7 @@ main (int argc, char **argv)
   start = clock ();
   err = NULL;
   if (argc == 1)
-    global_theme = meta_theme_load ("Default", &err);
+    global_theme = meta_theme_load ("Atlanta", &err);
   else if (argc == 2)
     global_theme = meta_theme_load (argv[1], &err);
   else
