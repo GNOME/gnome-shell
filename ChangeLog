@@ -1,3 +1,8 @@
+2004-12-20  Elijah Newren  <newren@gmail.com>
+
+	* configure.in: re-add the note	about Fibonacci sequence micro
+	version numbers that was lost with 2.8.5
+
 2004-12-19  Elijah Newren  <newren@gmail.com>
 
 	Thanks to Baptiste Mille-Mathias for this fix.
@@ -48,7 +53,7 @@
 	* po/POTFILES.in: Remove reference to metacity-properties.* files
 	since Alex removed them in his 2004-12-07 commit.
 
-2004-12-13  Elijah Newren  <newren@math.utah.edu>
+2004-12-13  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.9.2 that I forgot
 	to do last week (oops)
