@@ -1,6 +1,13 @@
 2002-05-30  Stephen Browne <stephen.browne@sun.com>
 
-	* src/tools/metacity-properties.glade
+	* src/tools/metacity-properties.c:
+	Some day I'll make all my changes in one commit :)
+	Needed to rip out code for adding icon to the dialog since it was
+	removed from teh galde file in my previous change.
+
+2002-05-30  Stephen Browne <stephen.browne@sun.com>
+
+	* src/tools/metacity-properties.glade:
 	Some UI changes demanded by Pat and Calum.
 	Make Close default response
 	Change mnemonic for Click so as not to clash with Close

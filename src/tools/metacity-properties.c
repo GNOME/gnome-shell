@@ -105,7 +105,7 @@ main (int argc, char **argv)
 {
   GladeXML *xml;
   GdkPixbuf *pixbuf;
-  GtkWidget *window, *icon;
+  GtkWidget *window;
 
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -120,13 +120,11 @@ main (int argc, char **argv)
   point_radio = glade_xml_get_widget (xml, "Pointfocus");
   autoraise_check = glade_xml_get_widget (xml, "Autoraise");
   window = glade_xml_get_widget (xml, "Mainwindow");
-  icon = glade_xml_get_widget (xml, "Icon");
 
   pixbuf = gdk_pixbuf_new_from_file (METACITY_PROPS_ICON_DIR 
                                      "/metacity-properties.png", NULL);
 	
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-  gtk_image_set_from_pixbuf (GTK_IMAGE(icon) , pixbuf);
   g_object_unref (G_OBJECT (pixbuf));
 
   gconf_client = gconf_client_get_default ();
