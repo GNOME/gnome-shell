@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
-"POT-Creation-Date: 2002-06-06 16:41+0200\n"
-"PO-Revision-Date: 2002-06-06 21:29GMT -03:00\n"
+"POT-Creation-Date: 2002-06-09 20:43+0200\n"
+"PO-Revision-Date: 2002-06-09 22:11GMT -03:00\n"
 "Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: español <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,40 +20,40 @@ msgstr ""
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "No se pudo analizar \"%s\" como un entero"
+msgstr "No se ha podido analizar «%s» como un entero"
 
 #: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "No entiendo los caracteres sobrantes \"%s\" en la cadena \"%s\""
+msgstr "No se comprenden los caracteres sobrantes «%s» en la cadena «%s»"
 
 #: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Error al analizar el mensaje \"%s\" desde el proceso de dialogo\n"
+msgstr "Ocurrió un error al analizar el mensaje «%s» desde el proceso de dialogo\n"
 
 #: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Error leyendo desde el proceso de muestra de dialogo: %s\n"
+msgstr "Ocurrió un error leyendo desde el proceso de muestra de dialogo: %s\n"
 
 #: src/delete.c:333
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Error ejecutando metacity-dialog para preguntar acerca de eliminar una "
+"Ocurrió un error ejecutando metacity-dialog para preguntar acerca de eliminar una "
 "aplicación: %s\n"
 
 #: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Error para obtener el nombre del equipo: %s\n"
+msgstr "Ocurrió un error al obtener el nombre del equipo: %s\n"
 
-#: src/display.c:231
+#: src/display.c:243
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Error al abrir la pantalla del Sistema de Ventanas X '%s'\n"
+msgstr "Ocurrió un error al abrir la pantalla del Sistema de Ventanas X «%s»\n"
 
 #: src/errors.c:154
 #, c-format
@@ -62,15 +62,14 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"Conexión perdida con la pantalla '%s'; \n"
+"Conexión perdida con la pantalla «%s»; \n"
 "Parecería que el servidor X fué dado de baja o que usted ha matado o "
-"destruido\n"
-"el manejador de ventanas.\n"
+"destruido el manejador de ventanas.\n"
 
 #: src/errors.c:161
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Error fatal de ES %d (%s) en la pantalla '%s'.\n"
+msgstr "Error fatal de ES %d (%s) en la pantalla «%s».\n"
 
 #: src/frames.c:862
 msgid "Close Window"
@@ -92,7 +91,7 @@ msgstr "Maximizar la ventana"
 msgid "Unmaximize Window"
 msgstr "Restaurar la ventana"
 
-#: src/keybindings.c:630
+#: src/keybindings.c:639
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -101,17 +100,17 @@ msgstr ""
 "Algún otro programa está usando la clave %s con el modificador %x como "
 "referencia\n"
 
-#: src/main.c:288
+#: src/main.c:290
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
-"¡No se puedo encontrar un tema!. Asegúrese que %s existe y contiene los "
+"¡No se ha podido encontrar un tema!. Asegúrese que %s existe y contiene los "
 "temas usuales."
 
-#: src/main.c:334
+#: src/main.c:338
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Error al reiniciar: %s\n"
+msgstr "Ocurrió un error al reiniciar: %s\n"
 
 #: src/menu.c:49
 msgid "_Close"
@@ -152,7 +151,7 @@ msgstr "Poner en todas l_as áreas de trabajo"
 
 #: src/menu.c:59
 msgid "Only on _This Workspace"
-msgstr "Poner en es_ta área de trabajo"
+msgstr "Sólo en es_ta área de trabajo"
 
 #: src/menu.c:301
 #, c-format
@@ -179,13 +178,14 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"Una cadena de descripción de fuente tipográfica describiendo una tipografía para "
-"los títulos de las ventanas. El tamaño de una descripción sólo será usado si la "
-"opción titlebar_font_size esta configurada como 0, de la misma manerar, esta "
-"opción también es deshabilitada si la opción titlebar_uses_desktop_font esta "
-"configurada como verdadera. Por omisión titlebar_font no esta configurada "
-"causando que Metacity utilice la tipografía del escritorio aún si "
-"titlebar_uses_desktop esta configurada como falsa."
+"Una cadena de descripción de tipográfia describiendo una tipografía "
+"para los títulos de las ventanas. El tamaño de una descripción sólo será "
+"usado si la opción titlebar_font_size esta configurada como 0, de la misma "
+"manerar, esta opción también es deshabilitada si la opción "
+"titlebar_uses_desktop_font esta configurada como verdadera. Por omisión "
+"titlebar_font no esta configurada causando que Metacity utilice la "
+"tipografía del escritorio aún si titlebar_uses_desktop esta configurada como "
+"falsa."
 
 #: src/metacity.schemas.in.h:3
 msgid "Activate window menu"
@@ -223,7 +223,7 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"Si es verdadero y el modo del foco es \"sloppy\" o \"mouse\" entonces la "
+"Si es verdadero y el modo del foco es «sloppy» o «mouse» entonces la "
 "ventana con el foco será automáticamente desplegada luego de un retardo (el "
 "retardo se especifica en la clave auto_raise_delay)."
 
@@ -232,7 +232,7 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Si es verdadero ignora la opción titlebar_font y usa la fuente estándar de "
+"Si es verdadero ignora la opción titlebar_font y usa la tipografía estándar de "
 "la aplicación para los títulos de las ventanas."
 
 #: src/metacity.schemas.in.h:12
@@ -281,19 +281,19 @@ msgstr "Cambiar el foco a la ventana previamente seleccionada"
 
 #: src/metacity.schemas.in.h:18
 msgid "Move window one workspace down"
-msgstr "Mover la ventana un área de trabajo hacia abajo"
+msgstr "Mover la ventana una área de trabajo hacia abajo"
 
 #: src/metacity.schemas.in.h:19
 msgid "Move window one workspace to the left"
-msgstr "Mover la ventana un área de trabajo hacia la izquierda"
+msgstr "Mover la ventana una área de trabajo hacia la izquierda"
 
 #: src/metacity.schemas.in.h:20
 msgid "Move window one workspace to the right"
-msgstr "Mover la ventana un área de trabajo hacia la derecha"
+msgstr "Mover la ventana una área de trabajo hacia la derecha"
 
 #: src/metacity.schemas.in.h:21
 msgid "Move window one workspace up"
-msgstr "Mover la ventana un área de trabajo hacia arriba"
+msgstr "Mover la ventana una área de trabajo hacia arriba"
 
 #: src/metacity.schemas.in.h:22
 msgid "Move window to workspace 1"
@@ -465,10 +465,10 @@ msgid ""
 "for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo encima de la actual. El "
-"formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El "
+"formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El "
 "parser (NT: analizador) es bastante liberal y permite tanto mayúsculas como "
-"minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;"
-"Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled\" "
+"minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:55
@@ -481,11 +481,11 @@ msgid ""
 "for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo por debajo de la actual. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:56
 msgid ""
@@ -497,11 +497,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo hacia la izquierda de la "
-"actual. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"actual. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:57
 msgid ""
@@ -513,11 +513,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo hacia la derecha de la "
-"actual. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"actual. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:58
 msgid ""
@@ -528,10 +528,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 1. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:59
@@ -543,10 +543,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 10. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:60
@@ -558,10 +558,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 11. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:61
@@ -573,10 +573,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 12. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:62
@@ -588,10 +588,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 2. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:63
@@ -603,10 +603,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 3. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:64
@@ -618,10 +618,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 4. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:65
@@ -633,10 +633,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 5. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:66
@@ -648,10 +648,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 6. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:67
@@ -663,10 +663,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 7. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:68
@@ -678,10 +678,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 8. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:69
@@ -693,10 +693,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado que cambia al área de trabajo 9. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:70
@@ -708,10 +708,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para activar el menu de la ventana. El formato se "
-"ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:71
@@ -723,10 +723,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para cerrar una ventana. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:72
@@ -738,12 +738,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"El atajo de teclado usado para activar el \"modo mover\" y poder mover una "
-"ventana utilizando el teclado. El formato se ve como \"&lt;Control&gt;a\" o "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es bastante liberal "
+"El atajo de teclado usado para activar el «modo mover» y poder mover una "
+"ventana utilizando el teclado. El formato se ve como «&lt;Control&gt;a» o "
+"«&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es bastante liberal "
 "y permite tanto mayúsculas como minúsculas además de abreviaciones como por "
-"ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la "
-"cadena especial \"disabled\" entonces no habrá acelerador para esa acción."
+"ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la "
+"cadena especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:73
 msgid ""
@@ -754,12 +754,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"El atajo de teclado usado para activar el \"modo redimensionar\" y poder "
-"redimensionar una ventana utilizando el teclado. El formato se ve como \"&lt;"
-"Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es "
+"El atajo de teclado usado para activar el «modo redimensionar» y poder "
+"redimensionar una ventana utilizando el teclado. El formato se ve como «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es "
 "bastante liberal y permite tanto mayúsculas como minúsculas además de "
-"abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si "
-"configura esta opción con la cadena especial \"disabled\" entonces no habrá "
+"abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
+"configura esta opción con la cadena especial «disabled» entonces no habrá "
 "acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:74
@@ -772,11 +772,11 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para ocultar todas las ventanas y darle el foco al "
-"fondo del escritorio. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es bastante liberal y "
+"fondo del escritorio. El formato se ve como «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es bastante liberal y "
 "permite tanto mayúsculas como minúsculas además de abreviaciones como por "
-"ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la "
-"cadena especial \"disabled\" entonces no habrá acelerador para esa acción."
+"ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la "
+"cadena especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:75
 msgid ""
@@ -787,10 +787,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para minimizar una ventana. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:76
@@ -803,11 +803,11 @@ msgid ""
 "action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana un área de trabajo hacia "
-"abajo. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"abajo. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:77
 msgid ""
@@ -819,11 +819,11 @@ msgid ""
 "action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana un área de trabajo hacia la "
-"izquierda. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"izquierda. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:78
 msgid ""
@@ -835,11 +835,11 @@ msgid ""
 "action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana un área de trabajo hacia la "
-"derecha. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"derecha. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:79
 msgid ""
@@ -850,11 +850,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana un área de trabajo hacia "
-"arriba. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"arriba. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -865,11 +865,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 1. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -880,11 +880,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo "
-"10. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"10. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -895,11 +895,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo "
-"11. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"11. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -910,11 +910,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo "
-"12. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"12. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -925,11 +925,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 2. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -940,11 +940,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 3. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -955,11 +955,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 4. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -970,11 +970,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 5. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -985,11 +985,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 6. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -1000,11 +1000,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 7. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -1015,11 +1015,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 8. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -1030,11 +1030,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para mover una ventana hacia el área de trabajo 9. "
-"El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y "
-"\"&lt;Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled"
-"\" entonces no habrá acelerador para esa acción."
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled"
+"» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -1046,11 +1046,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para devolverle el foco a la última ventana que lo "
-"tuvo anteriormente. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es bastante liberal y "
+"tuvo anteriormente. El formato se ve como «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es bastante liberal y "
 "permite tanto mayúsculas como minúsculas además de abreviaciones como por "
-"ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la "
-"cadena especial \"disabled\" entonces no habrá acelerador para esa acción."
+"ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la "
+"cadena especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -1062,11 +1062,11 @@ msgid ""
 "action."
 msgstr ""
 "El atajo de teclado usado para cambiar el foco entre los paneles y el "
-"escritorio. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. El parser (NT: analizador) es bastante liberal y permite tanto "
-"mayúsculas como minúsculas además de abreviaciones como por ejemplo \"&lt;"
-"Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la cadena "
-"especial \"disabled\" entonces no habrá acelerador para esa acción."
+"escritorio. El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». El parser (NT: analizador) es bastante liberal y permite tanto "
+"mayúsculas como minúsculas además de abreviaciones como por ejemplo «&lt;"
+"Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena "
+"especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -1078,11 +1078,11 @@ msgid ""
 "for this action."
 msgstr ""
 "El atajo de teclado usado para cambiar el foco entre ventanas "
-"(Tradicionalmente &lt;Alt&gt;Tab). El formato se ve como \"&lt;Control&gt;a"
-"\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es bastante "
+"(Tradicionalmente &lt;Alt&gt;Tab). El formato se ve como «&lt;Control&gt;a"
+"» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es bastante "
 "liberal y permite tanto mayúsculas como minúsculas además de abreviaciones "
-"como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta "
-"opción con la cadena especial \"disabled\" entonces no habrá acelerador para "
+"como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta "
+"opción con la cadena especial «disabled» entonces no habrá acelerador para "
 "esa acción."
 
 #: src/metacity.schemas.in.h:95
@@ -1094,10 +1094,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para activar el modo de pantalla completa. El "
-"formato se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El "
+"formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El "
 "parser (NT: analizador) es bastante liberal y permite tanto mayúsculas como "
-"minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;"
-"Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled\" "
+"minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:96
@@ -1109,10 +1109,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para maximizar la ventana. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:97
@@ -1124,10 +1124,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para enrollar o desenrollar la ventana. El formato "
-"se ve como \"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser "
+"se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser "
 "(NT: analizador) es bastante liberal y permite tanto mayúsculas como "
-"minúsculas además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;"
-"Ctrl&gt;\". Si configura esta opción con la cadena especial \"disabled\" "
+"minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:98
@@ -1140,11 +1140,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "El atajo de teclado usado para activar una ventana en todas las áreas de "
-"trabajo o sólo en una. El formato se ve como \"&lt;Control&gt;a\" o \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. El parser (NT: analizador) es bastante liberal y "
+"trabajo o sólo en una. El formato se ve como «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) es bastante liberal y "
 "permite tanto mayúsculas como minúsculas además de abreviaciones como por "
-"ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". Si configura esta opción con la "
-"cadena especial \"disabled\" entonces no habrá acelerador para esa acción."
+"ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la "
+"cadena especial «disabled» entonces no habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -1171,9 +1171,9 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 "El modo de foco de la ventana indica como son activadas las ventanas. Tiene "
-"tres valores posibles; \"clic\" significa que la ventana debe ser "
-"seleccionada para obtener el foco, luego \"sloppy\" significa que ventanas "
-"obtienen el foco cuando el ratón entra en la ventana y \"mouse\" significa "
+"tres valores posibles; «clic» significa que la ventana debe ser "
+"seleccionada para obtener el foco, luego «sloppy» significa que ventanas "
+"obtienen el foco cuando el ratón entra en la ventana y «mouse» significa "
 "que la ventanas obtienen el foco cuando el ratón entra en la ventana y lo "
 "pierden cuando el mouse deja la ventana."
 
@@ -1192,10 +1192,10 @@ msgstr ""
 "ventanas. Si la ventana esta tapada por otras ventanas este despliega la "
 "ventana por encima de ellas. Si la ventana ya esta completamente visible "
 "este coloca la ventana debajo de las otras ventanas. El formato se ve como "
-"\"&lt;Control&gt;a\" o \"&lt;Shift&gt;&lt;Alt&gt;F1. El parser (NT: "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
 "analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo \"&lt;Ctl&gt;\" y \"&lt;Ctrl&gt;\". "
-"Si configura esta opción con la cadena especial \"disabled\" entonces no "
+"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no "
 "habrá acelerador para esa acción."
 
 #: src/metacity.schemas.in.h:103
@@ -1216,7 +1216,7 @@ msgstr "Activa si una ventana esta en todas las áreas de trabajo"
 
 #: src/metacity.schemas.in.h:107
 msgid "Use standard system font in window titles"
-msgstr "Usar fuente estándar del sistema en los títulos de la ventana"
+msgstr "Usar tipografía estándar del sistema en los títulos de la ventana"
 
 #: src/metacity.schemas.in.h:108
 msgid "Window focus mode"
@@ -1224,7 +1224,7 @@ msgstr "Modo de foco de la ventana"
 
 #: src/metacity.schemas.in.h:109
 msgid "Window title font"
-msgstr "Fuente del título de la ventana"
+msgstr "Tipografía del título de la ventana"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -1233,7 +1233,7 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
-"La ventana \"%s\" no esta respondiendo.\n"
+"La ventana «%s» no esta respondiendo.\n"
 "¿Forzar esta aplicación a terminar?\n"
 "(Cualquier documento abierto se perderá.)"
 
@@ -1254,7 +1254,7 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Estas ventanas no soportar \"guardar la configuración actual\" y tendrán que "
+"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
 "ser restauradas manualmente la próxima vez que inicie una sesión."
 
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
@@ -1262,17 +1262,17 @@ msgstr ""
 #: src/prefs.c:467 src/prefs.c:483 src/prefs.c:499
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "La clave GConf \"%s\" esta configurada con un tipo inválido\n"
+msgstr "La clave GConf «%s» esta configurada con un tipo inválido\n"
 
 #: src/prefs.c:533
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
-msgstr "La clave GConf '%s' esta configurada con un valor inválido"
+msgstr "La clave GConf «%s» esta configurada con un valor inválido"
 
 #: src/prefs.c:605
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "No se pudo analizar la descripción de la fuente \"%s\" de la clave GConf %s\n"
+msgstr "No se ha podido analizar la descripción de la tipografía «%s» de la clave GConf %s\n"
 
 #: src/prefs.c:644
 #, c-format
@@ -1299,7 +1299,7 @@ msgstr "%d almacenado en la clave GConf %s esta fuera de rango 0 hasta %d\n"
 #: src/prefs.c:796
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Error configurando el número de áreas de trabajo para %d: %s\n"
+msgstr "Ocurrió un error configurando el número de áreas de trabajo para %d: %s\n"
 
 #: src/prefs.c:926
 #, c-format
@@ -1307,30 +1307,44 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\""
 msgstr ""
-"\"%s\" encontrado en la base de datos de configuración no es un valor válido "
-"para el atajo de teclado \"%s\""
+"«%s» encontrado en la base de datos de configuración no es un valor válido "
+"para el atajo de teclado «%s»"
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:191
+#: src/screen.c:195
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "La ventana %d en la pantalla '%s' no es válida\n"
+msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: src/screen.c:212
+#: src/screen.c:211
 #, c-format
-msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr "La ventana %d en la pantalla '%s' ya tiene un gestor de ventanas\n"
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to override the current window manager.\n"
+msgstr ""
+"La ventana %d en la pantalla «%s» ya tiene un manejador de ventanas, intente "
+"usar la opción «--replace» para anular el manejador de ventanas actual.\n"
 
-#: src/screen.c:370
+#: src/screen.c:252
 #, c-format
-msgid "Could not release screen %d on display '%s'\n"
-msgstr "No se pudo liberar la ventana %d en la pantalla '%s' \n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "No se ha podido obtener la selección del manejador de ventanas en la ventana %d en la pantalla «%s»\n"
 
-#: src/session.c:267
+#: src/screen.c:307
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
+
+#: src/screen.c:510
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "No se ha podido liberar la ventana %d en la pantalla «%s»\n"
+
+#: src/session.c:273
 #, c-format
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
@@ -1339,74 +1353,74 @@ msgstr ""
 "Hubo una falla al abrir una conexión con el manejador de sesiones, por esto "
 "las posiciones de las ventanas no podrás se guardadas: %s\n"
 
-#: src/session.c:820 src/session.c:827
+#: src/session.c:851 src/session.c:858
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "No pude crear el directorio '%s': %s\n"
+msgstr "No se ha podido crear el directorio «%s»: %s\n"
 
-#: src/session.c:837
+#: src/session.c:868
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "No pude abrir el archivo de sesión '%s'para escritura: %s\n"
+msgstr "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:969
+#: src/session.c:1000
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Error escribiendo el archivo de sesión '%s': %s\n"
+msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:974
+#: src/session.c:1005
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Error cerrando el archivo de sesión '%s': %s\n"
+msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:1047
+#: src/session.c:1078
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Error al leer el archivo de sesión guardado %s: %s\n"
+msgstr "Ocurrió un error al leer el archivo de sesión guardado %s: %s\n"
 
-#: src/session.c:1082
+#: src/session.c:1113
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Error al analizar el archivo de sesión guardado: %s\n"
+msgstr "Ocurrió un error al analizar el archivo de sesión guardado: %s\n"
 
-#: src/session.c:1131
+#: src/session.c:1162
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
-"El atributo <metacity_session> ha sido visto pero ya tenemos el ID de la "
-"sesión"
+"El atributo <metacity_session> ha sido visto pero ya tenemos el ID "
+"de la sesión"
 
-#: src/session.c:1144
+#: src/session.c:1175
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atributo desconocido %s en el elemento <metacity_session>"
 
-#: src/session.c:1161
+#: src/session.c:1192
 msgid "nested <window> tag"
 msgstr "Tag <window> anidada"
 
-#: src/session.c:1211 src/session.c:1243
+#: src/session.c:1242 src/session.c:1274
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo desconocido %s en el elemento <window>"
 
-#: src/session.c:1303
+#: src/session.c:1334
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo desconocido %s en el elemento <geometry>"
 
-#: src/session.c:1323
+#: src/session.c:1354
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
-#: src/session.c:1696
+#: src/session.c:1727
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Error ejecutando metacity-dialog para advertir acerca de las aplicaciones "
-"que no soportan manejo de sesión: %s\n"
+"Ocurrió un error al ejecutar metacity-dialog para advertir acerca de "
+"las aplicaciones que no soportan manejo de sesión: %s\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -1427,12 +1441,12 @@ msgstr "derecha"
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "La geometría del marco no especifica la dimensión \"%s\""
+msgstr "La geometría del marco no especifica la dimensión «%s»"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "La geometría del marco no especifica la dimensión \"%s\" para el borde \"%s\""
+msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
 
 #: src/theme.c:278
 #, c-format
@@ -1443,147 +1457,149 @@ msgstr "El tamaño del aspecto del botón %g no es razonable"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometría del marco no especifica el tamaño de los botones"
 
-#: src/theme.c:642
+#: src/theme.c:654
 msgid "Gradients should have at least two colors"
 msgstr "Los degradados debe tener al menos dos colores"
 
-#: src/theme.c:768
+#: src/theme.c:780
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "La especificación de color GTK debe tener el estado entre llave, ejemplo. "
-"gtk:fg[NORMAL] donde NORMAL es el estado ; no se pudo analizar \"%s\""
+"gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido analizar «%s»"
 
-#: src/theme.c:782
+#: src/theme.c:794
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "La especificación de color GTK debe tener una llave cerrada luego del "
-"estado, ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se pudo "
-"analizar \"%s\""
+"estado, ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido "
+"analizar «%s»"
 
-#: src/theme.c:793
+#: src/theme.c:805
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "No se entiende el estado \"%s\" en la especificación del color"
+msgstr "No se entiende el estado «%s» en la especificación del color"
 
-#: src/theme.c:806
+#: src/theme.c:818
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "No se entiende el componente de color \"%s\" en la especificación del color"
+msgstr "No se entiende el componente de color «%s» en la especificación del color"
 
-#: src/theme.c:836
+#: src/theme.c:848
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"El formato Blend es \"blend/bg_color/fg_color/alpha\", \"%s\" no entre en "
+"El formato Blend es «blend/bg_color/fg_color/alpha», «%s» no entre en "
 "este formato"
 
-#: src/theme.c:847
+#: src/theme.c:859
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "No se pudo analizar el valor alpha \"%s\" en el color blended"
+msgstr "No se ha podido analizar el valor alpha «%s» en el color blended"
 
-#: src/theme.c:857
+#: src/theme.c:869
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "El valor alpha \"%s\" en el color blended no esta entre 0.0 y 1.0"
+msgstr "El valor alpha «%s» en el color blended no esta entre 0.0 y 1.0"
 
-#: src/theme.c:904
+#: src/theme.c:916
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "El formato Shade es \"shade/base_color/factor\", \"%s\" no coincide con el formato"
+msgstr ""
+"El formato Shade es «shade/base_color/factor», «%s» no coincide con el "
+"formato"
 
-#: src/theme.c:915
+#: src/theme.c:927
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "No se pudo analizar el valor shade \"%s\" en el color del sombreado"
+msgstr "No se ha podido analizar el valor shade «%s» en el color del sombreado"
 
-#: src/theme.c:925
+#: src/theme.c:937
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "El factor Shade \"%s\" en el color del sombreado es negativo"
+msgstr "El factor Shade «%s» en el color del sombreado es negativo"
 
-#: src/theme.c:954
+#: src/theme.c:966
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "No se pudo analizar el color \"%s\""
+msgstr "No se ha podido analizar el color «%s»"
 
-#: src/theme.c:1216
+#: src/theme.c:1228
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
-"La expresión de coordenadas contenía un caracter '%s' en cual no esta "
+"La expresión de coordenadas contenía un caracter «%s» en cual no esta "
 "permitido"
 
-#: src/theme.c:1243
+#: src/theme.c:1255
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"La expresión de coordenadas contenía un número de coma flotante '%s' en cual "
+"La expresión de coordenadas contenía un número de coma flotante «%s» en cual "
 "no pudo ser analizado"
 
-#: src/theme.c:1257
+#: src/theme.c:1269
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "La expresión de coordenadas contenía un entero '%s' que no pudo ser analizado"
+msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
-#: src/theme.c:1324
+#: src/theme.c:1336
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
 "La expresión de coordenadas contenía un operador inválido al inicio de su "
-"texto: \"%s\""
+"texto: «%s»"
 
-#: src/theme.c:1381
+#: src/theme.c:1393
 msgid "Coordinate expression was empty or not understood"
 msgstr "La expresión de coordenadas estuvo vacía o no fué entendida"
 
-#: src/theme.c:1520 src/theme.c:1530 src/theme.c:1564
+#: src/theme.c:1532 src/theme.c:1542 src/theme.c:1576
 msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
-#: src/theme.c:1572
+#: src/theme.c:1584
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar una operador mod con un número de "
 "punto flotante"
 
-#: src/theme.c:1629
+#: src/theme.c:1641
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
-"La expresión de coordenadas tiene un operador  '\"%s\" donde se esperaba un "
+"La expresión de coordenadas tiene un operador  ««%s» donde se esperaba un "
 "operando"
 
-#: src/theme.c:1638
+#: src/theme.c:1650
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
-#: src/theme.c:1646
+#: src/theme.c:1658
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
 
-#: src/theme.c:1656
+#: src/theme.c:1668
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"La expresión de coordenadas tiene el operador \"%c\" seguido del operador \"%c\" "
+"La expresión de coordenadas tiene el operador «%c» seguido del operador «%c» "
 "sin un operando entre ellos"
 
-#: src/theme.c:1775
+#: src/theme.c:1787
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -1592,33 +1608,33 @@ msgstr ""
 "realmente es un error de Metacity pero ¿está seguro que necesita una "
 "expresión tan grande como esa?"
 
-#: src/theme.c:1804
+#: src/theme.c:1816
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "La expresión de coordenadas tiene un parentesis cerrado sin un parentesis "
 "abierto"
 
-#: src/theme.c:1867
+#: src/theme.c:1879
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "La expresión de coordenadas tiene una variable o constante desconocida  \"%s\""
+msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
 
-#: src/theme.c:1924
+#: src/theme.c:1936
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "La expresión de coordenadas tiene un parentesis abierto sin un parentesis "
 "cerrado"
 
-#: src/theme.c:1935
+#: src/theme.c:1947
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
 
-#: src/theme.c:2179 src/theme.c:2201 src/theme.c:2222
+#: src/theme.c:2191 src/theme.c:2213 src/theme.c:2234
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "El tema contenía una expresión \"%s\" que ha resultado en un error: %s\n"
+msgstr "El tema contenía una expresión «%s» que ha resultado en un error: %s\n"
 
-#: src/theme.c:3552
+#: src/theme.c:3564
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1627,51 +1643,51 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este estilo de marco"
 
-#: src/theme.c:3961 src/theme.c:3993
+#: src/theme.c:3973 src/theme.c:4005
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4044
+#: src/theme.c:4056
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Error la cargar el tema \"%s\": %s\n"
+msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
 
-#: src/theme.c:4190
+#: src/theme.c:4202
 #, c-format
 msgid "No <name> set for theme \"%s\""
-msgstr "No se configuró <name> en el tema \"%s\""
+msgstr "No se configuró <name> en el tema «%s»"
 
-#: src/theme.c:4197
+#: src/theme.c:4209
 #, c-format
 msgid "No <author> set for theme \"%s\""
-msgstr "No se configuró <author> en el tema \"%s\""
+msgstr "No se configuró <author> en el tema «%s»"
 
-#: src/theme.c:4204
+#: src/theme.c:4216
 #, c-format
 msgid "No <date> set for theme \"%s\""
-msgstr "No se configuró <date> en el tema \"%s\""
+msgstr "No se configuró <date> en el tema «%s»"
 
-#: src/theme.c:4211
+#: src/theme.c:4223
 #, c-format
 msgid "No <description> set for theme \"%s\""
-msgstr "No se configuró <description> en el tema \"%s\""
+msgstr "No se configuró <description> en el tema «%s»"
 
-#: src/theme.c:4218
+#: src/theme.c:4230
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
-msgstr "No se configuró <copyright> en el tema \"%s\""
+msgstr "No se configuró <copyright> en el tema «%s»"
 
-#: src/theme.c:4228
+#: src/theme.c:4240
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"No hay estilo de marco para el tipo de ventana \"%s\" en el tema \"%s\", "
+"No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», "
 "agregue un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4250
+#: src/theme.c:4262
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1680,17 +1696,17 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este tema"
 
-#: src/theme.c:4633 src/theme.c:4693
+#: src/theme.c:4645 src/theme.c:4705
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
-"mayúscula; \"%s\" no lo hace"
+"mayúscula; «%s» no lo hace"
 
-#: src/theme.c:4641 src/theme.c:4701
+#: src/theme.c:4653 src/theme.c:4713
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "La constante \"%s\" ya ha sido definida"
+msgstr "La constante «%s» ya ha sido definida"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -1700,12 +1716,12 @@ msgstr "Línea %d caracter %d: %s"
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "El atributo \"%s\" se ha repetido dos veces en el mismo elemento <%s>"
+msgstr "El atributo «%s» se ha repetido dos veces en el mismo elemento <%s>"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "El atributo \"%s\" es inválido en el elemento <%s> en este contexto"
+msgstr "El atributo «%s» es inválido en el elemento <%s> en este contexto"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -1720,12 +1736,12 @@ msgstr "El entero %ld es demasiado grande. El máximo actual es %d"
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "No se pudo analizar \"%s\" como un número de punto flotante"
+msgstr "No se ha podido analizar «%s» como un número de punto flotante"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Los valores booleanos deben ser \"true\" o \"false\" no \"%s\""
+msgstr "Los valores booleanos deben ser «true» o «false» no «%s»"
 
 #: src/theme-parser.c:572
 #, c-format
@@ -1745,37 +1761,37 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Escala de título inválida \"%s\" (debe ser una de xx-small,x-small,small, "
+"Escala de título inválida «%s» (debe ser una de xx-small,x-small,small, "
 "medium, large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2872
 #: src/theme-parser.c:2961 src/theme-parser.c:2968 src/theme-parser.c:2975
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "No hay atributo \"%s\" en el elemento <%s>"
+msgstr "No hay atributo «%s» en el elemento <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "No hay atributo \"%s\" en el elemento <%s>"
+msgstr "No hay atributo «%s» en el elemento <%s>"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> nombre \"%s\" usado una segunda vez"
+msgstr "<%s> nombre «%s» usado una segunda vez"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "El <%s> padre \"%s\" no ha sido definido"
+msgstr "El <%s> padre «%s» no ha sido definido"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "La <%s> geometría \"%s\" no ha sido definida"
+msgstr "La <%s> geometría «%s» no ha sido definida"
 
 #: src/theme-parser.c:981
 #, c-format
@@ -1785,27 +1801,27 @@ msgstr "<%s> debe especificar o una geometría o un padre para tenga una geometr
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Tipo desconocido \"%s\" en el elemento <%s>"
+msgstr "Tipo desconocido «%s» en el elemento <%s>"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "style_set desconocido \"%s\" en el elemento <%s>"
+msgstr "style_set desconocido «%s» en el elemento <%s>"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Tipo de ventana \"%s\" ya ha sido asignada a un conjunto de estilo"
+msgstr "Tipo de ventana «%s» ya ha sido asignada a un conjunto de estilo"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Función desconocida \"%s\" para el icono del menú"
+msgstr "Función desconocida «%s» para el icono del menú"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Estado desconocido \"%s\" para el icono del menú"
+msgstr "Estado desconocido «%s» para el icono del menú"
 
 #: src/theme-parser.c:1160
 #, c-format
@@ -1815,7 +1831,7 @@ msgstr "El tema ya tiene un icono de menú para la función %s estado %s"
 #: src/theme-parser.c:1177 src/theme-parser.c:3180 src/theme-parser.c:3259
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "No se ha definida una <draw_ops> con el nombre \"%s\""
+msgstr "No se ha definida una <draw_ops> con el nombre «%s»"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3060 src/theme-parser.c:3114 src/theme-parser.c:3274
@@ -1828,79 +1844,79 @@ msgstr "El elemento <%s> no esta permitido debajo de <%s>"
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "No hay atributo \"name\" en el elemento <%s>"
+msgstr "No hay atributo «name» en el elemento <%s>"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "No hay atributo \"value\" en el elemento <%s>"
+msgstr "No hay atributo «value» en el elemento <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
-"No se debe especificar ambos \"button_width/button_height\" y \"aspect ratio"
-"\" para los botones"
+"No se debe especificar ambos «button_width/button_height» y «aspect ratio» "
+"para los botones"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "La distancia \"%s\" es desconocida"
+msgstr "La distancia «%s» es desconocida"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "El tamaño de aspecto \"%s\" es desconocido"
+msgstr "El tamaño de aspecto «%s» es desconocido"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "No hay atributo \"top\" en el elemento <%s>"
+msgstr "No hay atributo «top» en el elemento <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "No hay atributo \"bottom\" en el elemento <%s>"
+msgstr "No hay atributo «bottom» en el elemento <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "No hay atributo \"left\" en el elemento <%s>"
+msgstr "No hay atributo «left» en el elemento <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "No hay atributo \"right\" en el elemento <%s>"
+msgstr "No hay atributo «right» en el elemento <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "El borde \"%s\" es desconocido"
+msgstr "El borde «%s» es desconocido"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2805
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "No hay atributo \"color\" en el elemento <%s>"
+msgstr "No hay atributo «color» en el elemento <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "No hay atributo \"x1\" en el elemento <%s>"
+msgstr "No hay atributo «x1» en el elemento <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2650
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "No hay atributo \"y1\" en el elemento <%s>"
+msgstr "No hay atributo «y1» en el elemento <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "No hay atributo \"x2\" en el elemento <%s>"
+msgstr "No hay atributo «x2» en el elemento <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2657
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "No hay atributo \"y2\" en el elemento <%s>"
+msgstr "No hay atributo «y2» en el elemento <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2263
@@ -1908,7 +1924,7 @@ msgstr "No hay atributo \"y2\" en el elemento <%s>"
 #: src/theme-parser.c:2717 src/theme-parser.c:2812
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "No hay atributo \"x\" en el elemento <%s>"
+msgstr "No hay atributo «x» en el elemento <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2270
@@ -1916,111 +1932,111 @@ msgstr "No hay atributo \"x\" en el elemento <%s>"
 #: src/theme-parser.c:2819
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "No hay atributo \"y\" en el elemento <%s>"
+msgstr "No hay atributo «y» en el elemento <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2277
 #: src/theme-parser.c:2433 src/theme-parser.c:2559 src/theme-parser.c:2731
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "No hay atributo \"width\" en el elemento <%s>"
+msgstr "No hay atributo «width» en el elemento <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2284
 #: src/theme-parser.c:2440 src/theme-parser.c:2566 src/theme-parser.c:2738
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr "No hay atributo \"height\" en el elemento <%s>"
+msgstr "No hay atributo «height» en el elemento <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "No hay atributo \"start_angle\" en el elemento <%s>"
+msgstr "No hay atributo «start_angle» en el elemento <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "No hay atributo \"extent_angle\" en el elemento <%s>"
+msgstr "No hay atributo «extent_angle» en el elemento <%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr "No hay atributo \"alpha\" en el elemento <%s>"
+msgstr "No hay atributo «alpha» en el elemento <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "No hay atributo \"type\" en el elemento <%s>"
+msgstr "No hay atributo «type» en el elemento <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "No se entendió el valor \"%s\" para el tipo de gradiente"
+msgstr "No se entendió el valor «%s» para el tipo de gradiente"
 
 #: src/theme-parser.c:2291
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr "No hay atributo \"filename\" en el elemento <%s>"
+msgstr "No hay atributo «filename» en el elemento <%s>"
 
 #: src/theme-parser.c:2316 src/theme-parser.c:2763
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "No se entendió en tipo de relleno \"%s\" para el elemento <%s>"
+msgstr "No se entendió en tipo de relleno «%s» para el elemento <%s>"
 
 #: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr "No hay atributo \"state\" en el elemento <%s>"
+msgstr "No hay atributo «state» en el elemento <%s>"
 
 #: src/theme-parser.c:2405 src/theme-parser.c:2538
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr "No hay atributo \"shadow\" en el elemento <%s>"
+msgstr "No hay atributo «shadow» en el elemento <%s>"
 
 #: src/theme-parser.c:2412
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "No hay atributo \"arrow\" en el elemento <%s>"
+msgstr "No hay atributo «arrow» en el elemento <%s>"
 
 #: src/theme-parser.c:2465 src/theme-parser.c:2587 src/theme-parser.c:2675
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "No se entendió estado \"%s\" para el elemento <%s>"
+msgstr "No se entendió estado «%s» para el elemento <%s>"
 
 #: src/theme-parser.c:2475 src/theme-parser.c:2597
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "No se entendió enrollar \"%s\" para el elemento <%s>"
+msgstr "No se entendió enrollar «%s» para el elemento <%s>"
 
 #: src/theme-parser.c:2485
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "No se entendió la flecha \"%s\" para el elemento <%s>"
+msgstr "No se entendió la flecha «%s» para el elemento <%s>"
 
 #: src/theme-parser.c:2898 src/theme-parser.c:3014
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "No se ha definido una <draw_ops> llamada \"%s\""
+msgstr "No se ha definido una <draw_ops> llamada «%s»"
 
 #: src/theme-parser.c:2910 src/theme-parser.c:3026
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Incluir el draw_ops \"%s\" acá podría crear una referencia circular"
+msgstr "Incluir el draw_ops «%s» acá podría crear una referencia circular"
 
 #: src/theme-parser.c:3089
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "No se definió el atributo \"value\" en el elemento <%s>"
+msgstr "No se definió el atributo «value» en el elemento <%s>"
 
 #: src/theme-parser.c:3146
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "No se definió el atributo \"position\" en el elemento <%s>"
+msgstr "No se definió el atributo «position» en el elemento <%s>"
 
 #: src/theme-parser.c:3155
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "Posición desconocida \"%s\" para la pieza del marco"
+msgstr "Posición desconocida «%s» para la pieza del marco"
 
 #: src/theme-parser.c:3163
 #, c-format
@@ -2030,22 +2046,22 @@ msgstr "El estilo del marco ya tiene una pieza en la posición %s"
 #: src/theme-parser.c:3208
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "No se definió el atributo \"function\" en el elemento <%s>"
+msgstr "No se definió el atributo «function» en el elemento <%s>"
 
 #: src/theme-parser.c:3216 src/theme-parser.c:3320
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "No se definió el atributo \"state\" en el elemento <%s>"
+msgstr "No se definió el atributo «state» en el elemento <%s>"
 
 #: src/theme-parser.c:3225
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Función desconocida \"%s\" para el botón"
+msgstr "Función desconocida «%s» para el botón"
 
 #: src/theme-parser.c:3234
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "Estado desconocido \"%s\" para el botón"
+msgstr "Estado desconocido «%s» para el botón"
 
 #: src/theme-parser.c:3242
 #, c-format
@@ -2055,37 +2071,37 @@ msgstr "El estilo del marcos ya tiene un botón para la función %s estado %s"
 #: src/theme-parser.c:3312
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "No se definió el atributo \"focus\" en el elemento <%s>"
+msgstr "No se definió el atributo «focus» en el elemento <%s>"
 
 #: src/theme-parser.c:3328
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "No se definió el atributo \"style\" en el elemento <%s>"
+msgstr "No se definió el atributo «style» en el elemento <%s>"
 
 #: src/theme-parser.c:3337
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" no es valor válido para el atributo foco"
+msgstr "«%s» no es valor válido para el atributo foco"
 
 #: src/theme-parser.c:3346
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" no es valor válido para el atributo estado"
+msgstr "«%s» no es un valor válido para el atributo estado"
 
 #: src/theme-parser.c:3356
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "No se ha definido ningún estilo llamado \"%s\""
+msgstr "No se ha definido ningún estilo llamado «%s»"
 
 #: src/theme-parser.c:3366
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "No hay un atributo \"resize\" en el elemento <%s>"
+msgstr "No hay un atributo «resize» en el elemento <%s>"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" no es un estado válido para el atributo resize"
+msgstr "«%s» no es un estado válido para el atributo resize"
 
 #: src/theme-parser.c:3386
 #, c-format
@@ -2093,7 +2109,7 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"No debería tener un atributo \"resize\" en el elemento <%s> para los estados "
+"No debería tener un atributo «resize» en el elemento <%s> para los estados "
 "maximizado/enrollado"
 
 #: src/theme-parser.c:3400
@@ -2111,7 +2127,7 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No se puede tener dos draw_ops para un elemento <piece> (el tema ha "
+"No puede tener dos draw_ops para un elemento <piece> (el tema ha "
 "especificado un atributo draw_ops y también un elemento <draw_ops> o ha "
 "especificado los dos elementos)"
 
@@ -2120,7 +2136,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No se puede tener dos draw_ops para un elemento <button> (el tema ha "
+"No puede tener dos draw_ops para un elemento <button> (el tema ha "
 "especificado un atributo draw_ops y también un elemento <draw_ops> o ha "
 "especificado los dos elementos)"
 
@@ -2129,7 +2145,7 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"No se puede tener dos draw_ops para un elemento <menu_icon> (el tema ha "
+"No puede tener dos draw_ops para un elemento <menu_icon> (el tema ha "
 "especificado un atributo draw_ops y también un elemento <draw_ops> o ha "
 "especificado los dos elementos)"
 
@@ -2209,29 +2225,29 @@ msgstr "<description> especificada dos veces para este tema"
 #: src/theme-parser.c:4294
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Error al leer el tema desde el archivo %s: %s\n"
+msgstr "Ocurrió un error al leer el tema desde el archivo %s: %s\n"
 
 #: src/theme-parser.c:4349
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "El archivo de tema %s no contiene un elemento raíz <metacity_theme>"
 
-#: src/util.c:59
+#: src/util.c:60
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Error al abrir el registro de errores: %s\n"
+msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
 
-#: src/util.c:69
+#: src/util.c:70
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Error al hacer fdopen() en el archivo de registro %s: %s\n"
+msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
 
-#: src/util.c:75
+#: src/util.c:76
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Archivo de registro %s abierto\n"
 
-#: src/window.c:429
+#: src/window.c:430
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "La aplicación configuro un _NET_WM_PID %ld erróneo\n"
@@ -2268,11 +2284,11 @@ msgstr "Cli_c para dar el foco"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr "Comportamiento del Foco:"
+msgstr "Comportamiento del foco:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr "Preferencias del Foco de Ventana"
+msgstr "Preferencias del foco de ventana"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
