@@ -1,3 +1,15 @@
+2002-07-02  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/keybindings.c:
+	(grab_keyboard), (ungrab_keyboard): rename from
+	{un}grab_all_keys_and_keyboard and only do an XKeyboardGrab,
+	the XKeyGrab isn't neccessary.
+	(meta_screen_grab_all_keys), (meta_screen_ungrab_all_keys),
+	(meta_window_grab_all_keys), (meta_window_ungrab_all_keys):
+	update for above change.
+	(handle_workspace_switch): don't use a MetaWindow when
+	workspace switching, use the root window instead.
+
 2002-07-01  Mark McLoughlin  <mark@skynet.ie>
 
 	Fix broken workspace switching from my previous commit.

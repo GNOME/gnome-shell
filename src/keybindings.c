@@ -785,25 +785,12 @@ meta_window_ungrab_keys (MetaWindow  *window)
 }
 
 static gboolean
-grab_all_keys_and_keyboard (MetaDisplay *display,
-                            Window       xwindow)
+grab_keyboard (MetaDisplay *display,
+               Window       xwindow)
 {
   int result;
 
-  meta_error_trap_push (display);
-  XGrabKey (display->xdisplay, AnyKey, AnyModifier,
-            xwindow, True,
-            GrabModeAsync, GrabModeAsync);
-  
-  result = meta_error_trap_pop (display);
-  if (result != Success)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Global key grab failed\n");
-      return FALSE;
-    }
-
-  /* Also grab the keyboard, so we get key releases and all key
+  /* Grab the keyboard, so we get key releases and all key
    * presses
    */
   meta_error_trap_push (display);
@@ -827,17 +814,13 @@ grab_all_keys_and_keyboard (MetaDisplay *display,
 }
 
 static void
-ungrab_all_keys_and_keyboard (MetaDisplay *display,
-                              Window       xwindow)
+ungrab_keyboard (MetaDisplay *display)
 {
   Time timestamp;
 
   timestamp = meta_display_get_current_time (display);
       
   meta_error_trap_push (display);
-  XUngrabKey (display->xdisplay,
-              AnyKey, AnyModifier,
-              xwindow);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ungrabbing keyboard with timestamp %lu\n",
@@ -859,8 +842,7 @@ meta_screen_grab_all_keys (MetaScreen *screen)
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on RootWindow\n");
-  retval = grab_all_keys_and_keyboard (screen->display,
-                                       screen->xroot);
+  retval = grab_keyboard (screen->display, screen->xroot);
   if (retval)
     screen->all_keys_grabbed = TRUE;
   else
@@ -874,8 +856,7 @@ meta_screen_ungrab_all_keys (MetaScreen *screen)
 {
   if (screen->all_keys_grabbed)
     {
-      ungrab_all_keys_and_keyboard (screen->display,
-                                    screen->xroot);
+      ungrab_keyboard (screen->display);
 
       screen->all_keys_grabbed = FALSE;
       screen->keys_grabbed = FALSE;
@@ -910,7 +891,7 @@ meta_window_grab_all_keys (MetaWindow  *window)
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on window %s\n", window->desc);
-  retval = grab_all_keys_and_keyboard (window->display, grabwindow);
+  retval = grab_keyboard (window->display, grabwindow);
   if (retval)
     {
       window->keys_grabbed = FALSE;
@@ -922,16 +903,11 @@ meta_window_grab_all_keys (MetaWindow  *window)
 }
 
 void
-meta_window_ungrab_all_keys (MetaWindow  *window)
+meta_window_ungrab_all_keys (MetaWindow *window)
 {
   if (window->all_keys_grabbed)
     {
-      Window grabwindow;
-
-      grabwindow = (window->frame && window->grab_on_frame) ?
-        window->frame->xwindow : window->xwindow;
-
-      ungrab_all_keys_and_keyboard (window->display, grabwindow);
+      ungrab_keyboard (window->display);
 
       window->grab_on_frame = FALSE;
       window->all_keys_grabbed = FALSE;
@@ -2336,26 +2312,12 @@ handle_workspace_switch  (MetaDisplay    *display,
   if (screen == NULL)
     return;
 
-  /* FIXME this is all broken, that you need a window to grab on.
-   * There's no reason we need a window here, in fact it's broken
-   * that you have to have one.
-   */
-  
-  if (display->focus_window != NULL)
-    {
-      window = display->focus_window;
-    }
-  else if (window == NULL)
-    {
-      window = get_previous_focus_window (display, screen);
-    }
-      
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Starting tab between workspaces, showing popup\n");
 
   if (meta_display_begin_grab_op (display,
                                   screen,
-                                  window,
+                                  NULL,
                                   META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
                                   FALSE,
                                   0,
@@ -2365,16 +2327,13 @@ handle_workspace_switch  (MetaDisplay    *display,
     {
       MetaWorkspace *next;
       
-      next = meta_workspace_get_neighbor (window->screen->active_workspace,
-                                          motion);
+      next = meta_workspace_get_neighbor (screen->active_workspace, motion);
       g_assert (next); 
       
-      meta_ui_tab_popup_select (window->screen->tab_popup,
-                                (MetaTabEntryKey) next);
+      meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
       
       /* only after selecting proper window */
-      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                     TRUE);
+      meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
     }
 }
 
