@@ -127,6 +127,9 @@ METACITY FEATURES
    to help users see what is happening. Should probably 
    have a few more of these.
 
+ - if you have the proper X setup, set the GDK_USE_XFT=1 
+   environment variable to get antialiased window titles.
+
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
@@ -194,15 +197,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Should support click-to-focus as an option.
 
- - With Alt+Tab, if the mouse pointer is over the tab popup window,
-   when the tab popup window closes the window under the pointer will get
-   an enter event and thus take the focus, instead of the window you 
-   just tabbed to.
-
- - The focus rectangle around the icons in the Alt-Tab popup
-   is ugly, should use a GTK-like focus rectangle, or maybe
-   make it look selected, not sure.
-
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left
    locale. I assume the window titles should be right-justified;
@@ -257,10 +251,8 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    setting the new non-legacy type hint, but a panel with that 
    patch hasn't been released yet.
 
- - The minimize/shade animation leaves "dirt" on Metacity's own frames, 
-   because Metacity handles exposes on its own frames during the 
-   animation. We could fix this with a horrible GDK hack of some kind.
-   I'm not sure of the best way yet.
+ - If you run a GLX/DRI 3D game or application, Metacity will 
+   crash, for reasons I do not yet understand.
 
 FAQ
 ===

@@ -23,6 +23,7 @@
 #include "frames.h"
 #include "util.h"
 #include "menu.h"
+#include "core.h"
 
 struct _MetaUI
 {

@@ -1,3 +1,8 @@
+2001-08-31  Havoc Pennington  <hp@pobox.com>
+
+	* src/tabpopup.c (meta_ui_tab_popup_new): fix args to
+	gtk_alignment_new()
+
 2001-08-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): avoid focusing a window on tab

@@ -169,7 +169,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   gtk_container_add (GTK_CONTAINER (frame),
                      vbox);
 
-  align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
+  align = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
   
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
