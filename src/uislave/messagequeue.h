@@ -1,4 +1,4 @@
-/* Metacity UI Slave */
+/* Metacity IPC message source for main loop */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,44 +19,38 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_UI_SLAVE_H
-#define META_UI_SLAVE_H
+#ifndef META_MESSAGE_QUEUE_H
+#define META_MESSAGE_QUEUE_H
 
-#include "util.h"
+#include <glib.h>
+
+#ifdef METACITY_COMPILE
 #include "uislave/messages.h"
-#include "display.h"
+#else
+#include "messages.h"
+#endif
 
-typedef void (* MetaUISlaveFunc) (MetaUISlave *uislave,
-                                  MetaMessage *message,
-                                  gpointer     data);
+typedef struct _MetaMessageQueue MetaMessageQueue;
 
-struct _MetaUISlave
+typedef void (* MetaMessageQueueFunc) (MetaMessageQueue *mq,
+                                       MetaMessage      *message,
+                                       gpointer          data);
+
+struct _MetaMessageQueue
 {
   GSource source;
-  
-  char *display_name;
-  int child_pid;
-  int in_pipe;
-  int err_pipe;
+
   GPollFD out_poll;
-  GIOChannel *err_channel;
-  unsigned int errwatch;
   GQueue *queue;
   GString *buf;
   GString *current_message;
   int current_required_len;
   int last_serial;
-  /* if we determine that our available slave is hosed,
-   * set this bit.
-   */
-  guint no_respawn : 1;
 };
 
-MetaUISlave* meta_ui_slave_new     (const char      *display_name,
-                                    MetaUISlaveFunc  func,
-                                    gpointer         data);
-void         meta_ui_slave_free    (MetaUISlave     *uislave);
-void         meta_ui_slave_disable (MetaUISlave     *uislave);
-
+MetaMessageQueue* meta_message_queue_new  (int                   fd,
+                                           MetaMessageQueueFunc  func,
+                                           gpointer              data);
+void              meta_message_queue_free (MetaMessageQueue     *mq);
 
 #endif

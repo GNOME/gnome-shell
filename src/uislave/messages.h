@@ -24,11 +24,14 @@
 
 #include <glib.h>
 
+/* This thing badly violates the KISS principle. */
+
 /* This header is shared between the WM and the UI slave */
 /* Note that our IPC can be kind of lame; we trust both sides
  * of the connection, and assume that they were compiled at the
  * same time vs. the same libs on the same arch
  */
+/* (and lo and behold, our IPC is kind of lame) */
 
 /* We increment this when we change this header, so we can
  * check for mismatched UI slave and WM
@@ -45,11 +48,19 @@
 /* len includes nul byte which is a required part of the escape */
 #define META_MESSAGE_ESCAPE_LEN 15
 
+/* This is totally useless of course. Playing around. */
+#define META_MESSAGE_CHECKSUM(msg) ((msg)->header.length | (msg)->header.serial << 16) 
+#define META_MESSAGE_FOOTER(msg) ((MetaMessageFooter*) (((char*)(msg)) + ((msg)->header.length - sizeof (MetaMessageFooter))));
+
+#define META_MESSAGE_MAX_SIZE (sizeof(MetaMessage));
+
 #define META_MESSAGE_MAX_VERSION_LEN 15
 #define META_MESSAGE_MAX_HOST_ALIAS_LEN 50
+#define META_MESSAGE_MAX_TIP_TEXT 128
 
 typedef union  _MetaMessage         MetaMessage;
 typedef struct _MetaMessageHeader   MetaMessageHeader;
+typedef struct _MetaMessageFooter   MetaMessageFooter;
 typedef struct _MetaMessageCheck    MetaMessageCheck;
 typedef struct _MetaMessageShowTip  MetaMessageShowTip;
 typedef struct _MetaMessageHideTip  MetaMessageHideTip;
@@ -69,6 +80,13 @@ struct _MetaMessageHeader
 {
   MetaMessageCode message_code;
   int length;
+  int serial;
+};
+
+/* The footer thing was pretty much just a debug hack and could die. */
+struct _MetaMessageFooter
+{
+  int checksum;
 };
 
 /* just a ping to see if we have the right
@@ -84,6 +102,8 @@ struct _MetaMessageCheck
   char metacity_version[META_MESSAGE_MAX_VERSION_LEN + 1];
   char host_alias[META_MESSAGE_MAX_HOST_ALIAS_LEN + 1];
   int messages_version;
+
+  MetaMessageFooter footer;
 };
 
 struct _MetaMessageShowTip
@@ -91,13 +111,15 @@ struct _MetaMessageShowTip
   MetaMessageHeader header;
   int root_x;
   int root_y;
-  /* Then a nul-terminated string follows */
+  char markup[META_MESSAGE_MAX_TIP_TEXT];
+  MetaMessageFooter footer;
 };
 
 struct _MetaMessageHideTip
 {
   MetaMessageHeader header;
   /* just hides the current tip */
+  MetaMessageFooter footer;
 };
 
 union _MetaMessage

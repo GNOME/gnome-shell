@@ -4,7 +4,9 @@ INCLUDES=@UISLAVE_CFLAGS@ -DHOST_ALIAS=\"@HOST_ALIAS@\"
 metacity_uislave_SOURCES = 	\
 	main.c			\
 	messages.c		\
-	messages.h
+	messages.h		\
+	messagequeue.c		\
+	messagequeue.h
 
 libexec_PROGRAMS=metacity-uislave
 

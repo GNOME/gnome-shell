@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <config.h>
 
 typedef enum
@@ -41,14 +42,17 @@ static ReadResult read_data       (GString       *str,
 
 static void send_message (MetaMessage *message);
 
+#define META_MESSAGE_LENGTH(real_type) \
+   (G_STRUCT_OFFSET (real_type, footer) + sizeof (MetaMessageFooter))
+
 void
 meta_message_send_check (void)
 {
   MetaMessageCheck check;
 
-  memset (&check, 0, sizeof (check));
+  memset (&check, 0, META_MESSAGE_LENGTH (MetaMessageCheck));
   check.header.message_code = MetaMessageCheckCode;
-  check.header.length = sizeof (check);
+  check.header.length = META_MESSAGE_LENGTH (MetaMessageCheck);
   strcpy (check.metacity_version, VERSION);
   strcpy (check.host_alias, HOST_ALIAS);
   check.metacity_version[META_MESSAGE_MAX_VERSION_LEN] = '\0';
@@ -62,33 +66,76 @@ static int
 write_bytes (void *buf, int bytes)
 {
   const char *p;
+  int left;
 
+  left = bytes;
   p = (char*) buf;
-  while (bytes > 0)
+  while (left > 0)
     {
       int written;
 
-      written = write (1, p, bytes);
+      written = write (1, p, left);
 
       if (written < 0)
         return -1;
 
-      bytes -= written;
+      left -= written;
       p += written;
     }
 
+  g_assert (p == ((char*)buf) + bytes); 
+  
   return 0;
 }
+
+#if 0
+static void
+print_mem (int fd, void *mem, int len)
+{
+  char *p = (char*) mem;
+  int i;
+  char unknown = 'Z';
+  char null = 'n';
+  
+  i = 0;
+  while (i < len)
+    {
+      if (p[i] == '\0')
+        write (fd, &null, 1);
+      else if (isascii (p[i]))
+        write (fd, p + i, 1);
+      else
+        write (fd, &unknown, 1);
+      
+      ++i;
+    }
+}
+#endif
 
 static void
 send_message (MetaMessage *message)
 {
-  /* Not much point checking for errors here. We can't
-   * really report them anyway.
-   */
+  static int serial = 0;
+  MetaMessageFooter *footer;
+  
+  message->header.serial = serial;
+  footer = META_MESSAGE_FOOTER (message);
+  
+  footer->checksum = META_MESSAGE_CHECKSUM (message);
+  ++serial;
 
-  write_bytes (META_MESSAGE_ESCAPE, META_MESSAGE_ESCAPE_LEN);
-  write_bytes (message, message->header.length);
+#if 0
+  meta_ui_warning ("'");
+  print_mem (2, message, message->header.length);
+  meta_ui_warning ("'\n");
+#endif
+  
+  if (write_bytes (META_MESSAGE_ESCAPE, META_MESSAGE_ESCAPE_LEN) < 0)
+    meta_ui_warning ("Failed to write escape sequence: %s\n",
+                     g_strerror (errno));
+  if (write_bytes (message, message->header.length) < 0)
+    meta_ui_warning ("Failed to write message: %s\n",
+                     g_strerror (errno));
 }
 
 static ReadResult

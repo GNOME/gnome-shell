@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <gtk/gtk.h>
 
@@ -50,13 +51,15 @@ main (int argc, char **argv)
 
   /* report our nature to the window manager */
   meta_message_send_check ();
-
+  write (1, "abcdefghijklmnopqrstuvwxyz", 27);
+  
 #if 1
   /* Try breaking message queue system. */
   i = 0;
-  while (i < 100)
+  while (i < 1500)
     {
       meta_message_send_check ();
+      write (1, "abcdefghijklmnopqrstuvwxyz", 27);
       if (g_random_boolean ())
         {
           int j;
