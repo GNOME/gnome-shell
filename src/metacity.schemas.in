@@ -288,7 +288,7 @@
          <short>Activate window menu</short>
          <long>
           The keybinding used to activate the window menu.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -310,7 +310,7 @@ you set
          <short>Toggle fullscreen mode</short>
          <long>
           The keybinding used to toggle fullscreen mode.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -333,7 +333,7 @@ you set
 
           The keybinding used to toggle always on top.  A window that
 	  is always on top will always be visible over other overlapping windows.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -354,7 +354,7 @@ you set
          <short>Toggle maximization state</short>
          <long>
           The keybinding used to toggle maximization.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -375,7 +375,7 @@ you set
          <short>Maximize window</short>
          <long>
           The keybinding used to maximize a window
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If you set
@@ -395,7 +395,7 @@ you set
          <short>Unmaximize window</short>
          <long>
           The keybinding used to unmaximize a window.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If you set
@@ -415,7 +415,7 @@ you set
          <short>Toggle shaded state</short>
          <long>
           The keybinding used to toggle shaded/unshaded state.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -436,7 +436,7 @@ you set
          <short>Close window</short>
          <long>
           The keybinding used to close a window.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -457,7 +457,7 @@ you set
          <short>Minimize window</short>
          <long>
           The keybinding used to minimize a window.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -479,7 +479,7 @@ you set
          <long>
           The keybinding used to enter "move mode" and begin moving a
         window using the keyboard.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -501,7 +501,7 @@ you set
          <long>
           The keybinding used to enter "resize mode" and begin resizing a
         window using the keyboard.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -523,7 +523,7 @@ you set
          <long>
           The keybinding used to toggle whether the window is on all 
           workspaces or just one.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also
           abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
@@ -546,7 +546,7 @@ you set
           The keybinding used to move a window to workspace 1.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -569,7 +569,7 @@ you set
           The keybinding used to move a window to workspace 2.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -592,7 +592,7 @@ you set
           The keybinding used to move a window to workspace 3.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -615,7 +615,7 @@ you set
           The keybinding used to move a window to workspace 4.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -638,7 +638,7 @@ you set
           The keybinding used to move a window to workspace 5.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -661,7 +661,7 @@ you set
           The keybinding used to move a window to workspace 6.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -685,7 +685,7 @@ you set
           The keybinding used to move a window to workspace 7.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -708,7 +708,7 @@ you set
           The keybinding used to move a window to workspace 8.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -731,7 +731,7 @@ you set
           The keybinding used to move a window to workspace 9.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -754,7 +754,7 @@ you set
           The keybinding used to move a window to workspace 10.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -777,7 +777,7 @@ you set
           The keybinding used to move a window to workspace 11.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -800,7 +800,7 @@ you set
           The keybinding used to move a window to workspace 12.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -824,7 +824,7 @@ you set
           The keybinding used to move a window one workspace to the left.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -849,7 +849,7 @@ you set
           The keybinding used to move a window one workspace to the right.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -873,7 +873,7 @@ you set
           The keybinding used to move a window one workspace up.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -897,7 +897,7 @@ you set
           The keybinding used to move a window one workspace down.  
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -924,7 +924,7 @@ you set
             it lowers the window below other windows.
 
             The format looks like "&lt;Control&gt;a" or
-            "&lt;Shift&gt;&lt;Alt&gt;F1.
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
 
             The parser is fairly liberal and allows lower or upper case,
             and also abbreviations such as "&lt;Ctl&gt;" and
@@ -947,7 +947,7 @@ you set
             This keybinding raises the window above other windows.
 
             The format looks like "&lt;Control&gt;a" or
-            "&lt;Shift&gt;&lt;Alt&gt;F1.
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
 
             The parser is fairly liberal and allows lower or upper case,
             and also abbreviations such as "&lt;Ctl&gt;" and
@@ -970,7 +970,7 @@ you set
             This keybinding lowers a window below other windows.
 
             The format looks like "&lt;Control&gt;a" or
-            "&lt;Shift&gt;&lt;Alt&gt;F1.
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
 
             The parser is fairly liberal and allows lower or upper case,
             and also abbreviations such as "&lt;Ctl&gt;" and
@@ -993,7 +993,7 @@ you set
             This keybinding resizes a window to fill available vertical space.
 
             The format looks like "&lt;Control&gt;a" or
-            "&lt;Shift&gt;&lt;Alt&gt;F1.
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
 
             The parser is fairly liberal and allows lower or upper case,
             and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1016,7 +1016,7 @@ you set
             This keybinding resizes a window to fill available horizontal space.
 
             The format looks like "&lt;Control&gt;a" or
-            "&lt;Shift&gt;&lt;Alt&gt;F1.
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
 
             The parser is fairly liberal and allows lower or upper case,
             and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1045,7 +1045,7 @@ you set
           while using this binding reverses the direction of movement.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1070,7 +1070,7 @@ you set
           binding makes the direction go forward again.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1094,7 +1094,7 @@ you set
           the desktop, using a popup window.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1118,7 +1118,7 @@ you set
           and the desktop, using a popup window.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1144,7 +1144,7 @@ you set
           while using this binding reverses the direction of movement.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1169,7 +1169,7 @@ you set
           binding makes the direction go forward again.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1193,7 +1193,7 @@ you set
           the desktop, without a popup window.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1217,7 +1217,7 @@ you set
           the desktop, without a popup window.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1241,7 +1241,7 @@ you set
           focus to the desktop background.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1264,7 +1264,7 @@ you set
           The keybinding that switches to workspace 1.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1287,7 +1287,7 @@ you set
           The keybinding that switches to workspace 2.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1310,7 +1310,7 @@ you set
           The keybinding that switches to workspace 3.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1334,7 +1334,7 @@ you set
           The keybinding that switches to workspace 4.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1358,7 +1358,7 @@ you set
           The keybinding that switches to workspace 5.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1383,7 +1383,7 @@ you set
           The keybinding that switches to workspace 6.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1408,7 +1408,7 @@ you set
           The keybinding that switches to workspace 7.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1432,7 +1432,7 @@ you set
           The keybinding that switches to workspace 8.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1457,7 +1457,7 @@ you set
           The keybinding that switches to workspace 9.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1482,7 +1482,7 @@ you set
           The keybinding that switches to workspace 10.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1506,7 +1506,7 @@ you set
           The keybinding that switches to workspace 11.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1529,7 +1529,7 @@ you set
           The keybinding that switches to workspace 12.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1554,7 +1554,7 @@ you set
           of the current workspace.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1580,7 +1580,7 @@ you set
           of the current workspace.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1605,7 +1605,7 @@ you set
           the current workspace.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1630,7 +1630,7 @@ you set
           the current workspace.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1653,7 +1653,7 @@ you set
           The keybinding which shows the panel's main menu.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1677,7 +1677,7 @@ you set
           box.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1700,7 +1700,7 @@ you set
           The keybinding which invokes the panel's screenshot utility.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1724,7 +1724,7 @@ you set
           to take a screenshot of a window.
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and
@@ -1759,7 +1759,7 @@ you set
           command in /apps/metacity/keybinding_commands
 
           The format looks like "&lt;Control&gt;a" or
-          "&lt;Shift&gt;&lt;Alt&gt;F1.
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
 
           The parser is fairly liberal and allows lower or upper case,
           and also abbreviations such as "&lt;Ctl&gt;" and

@@ -1,3 +1,8 @@
+2004-07-22  Rob Adams  <readams@readams.net>
+
+	* src/metacity.schemas.in: Add trailing quotes to keybinding
+	explanation text.  Patch from Emil Soleyman-Zomalan.
+
 Fri Jun 25 17:41:53 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* configure.in: Require startup-notification 0.7
