@@ -1233,6 +1233,7 @@ meta_window_constrain (MetaWindow          *window,
 {
   ConstraintInfo info;
   MetaRectangle current;
+  gboolean did_placement;
 
 #define OUTER_WIDTH(rect) ((rect).width + info.fgeom.left_width + info.fgeom.right_width)
 #define OUTER_HEIGHT(rect) ((rect).height + info.fgeom.top_height + info.fgeom.bottom_height)
@@ -1272,6 +1273,7 @@ meta_window_constrain (MetaWindow          *window,
    * maximized/fullscreen windows until they are unmaximized
    * and unfullscreened
    */
+  did_placement = FALSE;
   if (!window->placed &&
       window->calc_placement &&
       !window->maximized &&
@@ -1281,6 +1283,7 @@ meta_window_constrain (MetaWindow          *window,
 
       meta_window_place (window, orig_fgeom, current.x, current.y,
                          &placed_rect.x, &placed_rect.y);
+      did_placement = TRUE;
 
       /* placing the window may have changed the xinerama.  Find the
        * new xinerama and update the ConstraintInfo
@@ -1305,7 +1308,7 @@ meta_window_constrain (MetaWindow          *window,
     }
 
   if (window->maximize_after_placement &&
-      window->placed)
+      (window->placed || did_placement))
     {
       window->maximize_after_placement = FALSE;
       meta_window_maximize_internal (window, new);

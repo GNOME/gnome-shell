@@ -1,3 +1,8 @@
+2003-06-29  Rob Adams  <robadams@ucla.edu>
+
+	* src/constraints.c (meta_window_constrain): Actually maximize
+	after placement.  See #116285.
+	
 2003-06-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/workspace.c (meta_workspace_invalidate_work_area): nuke the
