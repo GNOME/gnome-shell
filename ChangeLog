@@ -3,13 +3,10 @@
 	Try 2 to correct misleading and inaccurate wording.  Hopefully,
 	really fixes #165380.
 
-	* src/menu.c: Change wording of menu to "Always on Current
-	Workspace" from "Put on All Workspaces", remove a quick-key
-	conflict between "On _Top" and "Only on _This Workspace" by
-	switching the latter to "_Only on This Workspace"
-
-	* src/window.c: Remove a comment that is no longer necessary
-	(since bug 87531 has been fixed)
+	* src/menu.c: Change wording of menu from "Always on Current
+	Workspace" to "Always on Visible Workspace".  "Always on Current
+	Workspace" could sound like a synonym of "Only on This Workspace"
+	when it was supposed to be the opposite.
 
 2005-01-31  Elijah Newren  <newren@gmail.com>
 
