@@ -65,6 +65,7 @@ meta_ui_init (int *argc, char ***argv)
     
     pango_font_metrics_unref (metrics);
     pango_font_description_free (font_desc);
+    g_object_unref (G_OBJECT (context));
   }
 }
 
