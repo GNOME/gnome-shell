@@ -2493,7 +2493,7 @@ msgstr "ウィンドウフォーカス"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr "フォーカスを与えるためにクリックする(_k)"
+msgstr "マウスクリックでフォーカス(_K)"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
@@ -2505,7 +2505,7 @@ msgstr "ウィンドウフォーカスの設定"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr "フォーカスを与えるために差す(_P)"
+msgstr "マウスのポイントでフォーカス(_P)"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
