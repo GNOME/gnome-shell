@@ -1053,8 +1053,8 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
                               MetaTabList type)
 {
   MetaTabEntry *entries;
-  GSList *tab_list;
-  GSList *tmp;
+  GList *tab_list;
+  GList *tmp;
   int len;
   int i;
 
@@ -1066,7 +1066,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
                                         screen,
                                         screen->active_workspace);
   
-  len = g_slist_length (tab_list);
+  len = g_list_length (tab_list);
 
   entries = g_new (MetaTabEntry, len + 1);
   entries[len].key = NULL;
@@ -1133,7 +1133,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
                                              TRUE);
   g_free (entries);
 
-  g_slist_free (tab_list);
+  g_list_free (tab_list);
   
   /* don't show tab popup, since proper window isn't selected yet */
 }

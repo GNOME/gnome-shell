@@ -3381,7 +3381,7 @@ find_tab_forward (MetaDisplay   *display,
                   MetaTabList    type,
 		  MetaScreen    *screen, 
                   MetaWorkspace *workspace,
-                  GList         *start)
+                  GList        *start)
 {
   GList *tmp;
 
@@ -3458,13 +3458,13 @@ find_tab_backward (MetaDisplay   *display,
   return NULL;
 }
 
-GSList*
+GList*
 meta_display_get_tab_list (MetaDisplay   *display,
                            MetaTabList    type,
                            MetaScreen    *screen,
                            MetaWorkspace *workspace)
 {
-  GSList *tab_list;
+  GList *tab_list;
 
   /* workspace can be NULL for all workspaces */  
 
@@ -3485,7 +3485,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
             IN_TAB_CHAIN (window, type) &&
             (workspace == NULL ||
              meta_window_visible_on_workspace (window, workspace)))
-          tab_list = g_slist_prepend (tab_list, window);
+          tab_list = g_list_prepend (tab_list, window);
         
         tmp = tmp->next;
       }
@@ -3504,13 +3504,13 @@ meta_display_get_tab_list (MetaDisplay   *display,
             IN_TAB_CHAIN (window, type) &&
             (workspace == NULL ||
              meta_window_visible_on_workspace (window, workspace)))
-          tab_list = g_slist_prepend (tab_list, window);
+          tab_list = g_list_prepend (tab_list, window);
         
         tmp = tmp->next;
       }
   }
 
-  tab_list = g_slist_reverse (tab_list);
+  tab_list = g_list_reverse (tab_list);
   
   return tab_list;
 }
@@ -3518,12 +3518,18 @@ meta_display_get_tab_list (MetaDisplay   *display,
 MetaWindow*
 meta_display_get_tab_next (MetaDisplay   *display,
                            MetaTabList    type,
-			   MetaScreen    *screen,
+                           MetaScreen    *screen,
                            MetaWorkspace *workspace,
                            MetaWindow    *window,
                            gboolean       backward)
 {
-  if (display->mru_list == NULL)
+  GList *tab_list;
+  tab_list = meta_display_get_tab_list(display,
+                                       type,
+                                       screen,
+                                       workspace);
+
+  if (tab_list == NULL)
     return NULL;
   
   if (window != NULL)
@@ -3532,20 +3538,22 @@ meta_display_get_tab_next (MetaDisplay   *display,
       
       if (backward)
         return find_tab_backward (display, type, screen, workspace,
-                                  g_list_find (display->mru_list,
+                                  g_list_find (tab_list,
                                                window));
       else
         return find_tab_forward (display, type, screen, workspace,
-                                 g_list_find (display->mru_list,
+                                 g_list_find (tab_list,
                                               window));
     }
   
   if (backward)
     return find_tab_backward (display, type, screen, workspace,
-                              display->mru_list);
+                              tab_list);
   else
     return find_tab_forward (display, type, screen, workspace,
-                             display->mru_list);
+                             tab_list);
+
+  g_list_free (tab_list);
 }
 
 MetaWindow*
