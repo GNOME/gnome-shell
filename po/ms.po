@@ -191,12 +191,12 @@ msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Tak dapat menghantar huraian font \"%s\" daripada kekunci GConf %s\n"
 
 #: src/prefs.c:617
-#, c-format
+#, fuzzy, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d yang disimpan pada kekunci GConf adalah saiz font tidak sah\n"
 
 #: src/prefs.c:643
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
@@ -286,12 +286,12 @@ msgid "nested <window> tag"
 msgstr "tag <window> bersarang"
 
 #: src/session.c:1157 src/session.c:1189
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atirbut tidak dikenali pada unsur <window>"
 
 #: src/session.c:1249
-#, c-format
+#, fuzzy; c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atirbut tidak dikenali pada unsur <geometry>"
 
@@ -1047,7 +1047,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #: src/xprops.c:53
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"

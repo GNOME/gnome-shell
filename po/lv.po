@@ -188,12 +188,12 @@ msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nespēja parsēt fontu aprakstu \"%s\" no GConf taustiņa %s\n"
 
 #: src/prefs.c:617
-#, c-format
+#, fuzzy, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "Uz GConf atslēgu %s glabātajam %d nav pareizs fontu izmērs\n"
 
 #: src/prefs.c:643
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
@@ -225,17 +225,17 @@ msgid "%d x %d"
 msgstr ""
 
 #: src/screen.c:191
-#, c-format
+#, fuzzy, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Displeja '%s' ekrāns %d  ir nepareizs\n"
 
 #: src/screen.c:212
-#, c-format
+#, fuzzy, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Displeja '%s' ekrānam %d  jau ir logu menedžeris\n"
 
 #: src/screen.c:370
-#, c-format
+#, fuzzy, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Nevarēja izlaist displeja '%s' ekrānu %d\n"
 
@@ -1045,7 +1045,7 @@ msgstr ""
 "īstenībā bija ar tipu %s formātu %d priekšmetiem (n_items) %d\n"
 
 #: src/xprops.c:281
-#, c-format
+#, fuzzy, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Loga 0x%lx Rekvizīts %s saturēja nepareizu UTF-8\n"
 

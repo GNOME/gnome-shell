@@ -1,3 +1,8 @@
+2002-05-20  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* ca.po: Added Catalan file
+	* az.po,es.po,ms.po,lv.po: Corrected syntax errors
+
 2002-05-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Updated Norwegian (bokmål) translation.
