@@ -1,0 +1,17 @@
+2001-08-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (event_callback): push error trap around configure 
+	of withdrawn window, fixes a crash caused by rapidly
+	creating/destroying a window.
+
+	* src/window.c (recalc_window_features): don't allow shading
+	undecorated windows.
+
+	* src/wm-tester/main.c: add a program to torture window managers.
+	
+2001-08-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (recalc_window_features): if a window isn't
+	resizeable, turn off maximize function. If min size is equal to
+	max size, turn off resize function.
+

@@ -18,9 +18,17 @@ if test -z "$SM_CLIENTS"; then
   SM_CLIENTS=0
 fi
 
+if test -n "$EVIL_TEST"; then
+  TEST_CLIENT='./wm-tester/wm-tester --evil'
+fi
+
 if test -z "$ONLY_WM"; then
   Xnest -ac :1 -scrns $SCREENS -geometry 640x480 -bw 15 &
   usleep 500000
+
+  if test -n "$TEST_CLIENT"; then
+    DISPLAY=:1 $TEST_CLIENT &
+  fi
 
   if test $CLIENTS != 0; then
     for I in `seq 1 $CLIENTS`; do
@@ -40,5 +48,5 @@ if test -z "$ONLY_WM"; then
 fi
 
 if test -z "$ONLY_SETUP"; then
-  METACITY_DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity $OPTIONS
+  METACITY_DEBUG_BUTTON_GRABS=1 METACITY_DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity $OPTIONS
 fi

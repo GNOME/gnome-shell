@@ -2491,6 +2491,8 @@ update_size_hints (MetaWindow *window)
       window->size_hints.flags |= PWinGravity;
     }
 
+  recalc_window_features (window);
+  
   return meta_error_trap_pop (window->display);
 }
 
@@ -2552,7 +2554,7 @@ update_title (MetaWindow *window)
                                   &err);
           if (err != NULL)
             {
-              meta_warning ("WM_NAME property for %s contained stuff we are too dumb to figure out: %s\n", window->desc, err->message);
+              meta_warning ("WM_NAME property for %s contained stuff window manager is too dumb to figure out: %s\n", window->desc, err->message);
               g_error_free (err);
             }
 
@@ -3441,6 +3443,19 @@ recalc_window_features (MetaWindow *window)
       window->has_maximize_func = FALSE;
     }
 
+  /* If min_size == max_size, then don't allow resize */
+  if (window->size_hints.min_width == window->size_hints.max_width &&
+      window->size_hints.min_height == window->size_hints.max_height)
+    window->has_resize_func = FALSE;
+  
+  /* don't allow maximize if we can't resize */
+  if (!window->has_resize_func)
+    window->has_maximize_func = FALSE;
+
+  /* no shading if not decorated */
+  if (!window->decorated)
+    window->has_shade_func = FALSE;
+  
   /* FIXME perhaps should ensure if we don't have a shade func,
    * we aren't shaded, etc.
    */

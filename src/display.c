@@ -825,8 +825,10 @@ event_callback (XEvent   *event,
 
           meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d (some values may not be in mask)\n",
                         xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
+          meta_error_trap_push (display);
           XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
                             xwcm, &xwc);
+          meta_error_trap_pop (display);
         }
       else
         {

@@ -177,12 +177,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - There are probably other ICCCM-compliance issues.
 
- - I know there's at least one race condition involving rapidly
-   created and destroyed windows that will crash Metacity.  I think a
-   small test app that did a lot of rapid show/hide on a GtkWindow,
-   in combination with the METACITY_SYNC environment variable and
-   Metacity in a debugger, would turn this up quickly.
-
  - Window placement is always cascade for now; I want to implement 
    "first fit, falling back to cascade if no fit." 
    (Configurable placement algorithms are stupid though, don't 
@@ -245,6 +239,24 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
     then Metacity can see the panel and handle it properly. Look at
     xstuff.c:xstuff_is_compliant_wm() in the panel to get started on
     how the panel deals with this.)
+
+ - If you have "put panel below other windows" turned on 
+   in panel Global Preferences, Miscellaneous tab, you need to change  
+   this to "Put panel on top of other windows." That's because
+   Metacity uses semantic categories, not the legacy layer system 
+   in the GNOME spec. It treats things in the legacy "dock" layer
+   as semantic type dock, but if you have the panel set to be 
+   in another layer, Metacity will think it's a normal window.
+
+   You can diagnose this problem because Metacity will put panels in 
+   the wrong place, and Alt+rightclick will let you perform operations
+   like minimize/maximize, and Alt+leftclick will let you move the panel.
+   If Metacity has detected that the panel is a panel, then none of 
+   this will be enabled.
+
+   I put a patch in the CVS version of the panel to fix this by 
+   setting the new non-legacy type hint, but a panel with that 
+   patch hasn't been released yet.
 
 FAQ
 ===
