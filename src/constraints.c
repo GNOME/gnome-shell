@@ -1348,6 +1348,14 @@ meta_window_constrain (MetaWindow          *window,
     {
       window->maximize_after_placement = FALSE;
       meta_window_maximize_internal (window, new);
+
+      /* maximization may have changed frame geometry */
+      if (orig_fgeom && !window->fullscreen)
+        {
+          meta_frame_calc_geometry (window->frame,
+                                    orig_fgeom);
+          info.fgeom = *orig_fgeom;
+        }
     }
 
   /* Maximization, fullscreen, etc. are defined as a resize followed by
@@ -1356,8 +1364,6 @@ meta_window_constrain (MetaWindow          *window,
    */
   if (window->fullscreen)
     {
-      int center_x;
-
       current = *new;
       constrain_resize_bottom (window, &info, &current,
                                (info.xinerama->height - OUTER_HEIGHT (current)),

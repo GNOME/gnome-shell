@@ -1,3 +1,9 @@
+2003-08-18  Rob Adams  <robadams@ucla.edu>
+
+	* src/constraints.c (meta_window_constrain): recalculate frame
+	geometry if the window gets maximized after placement, since it's
+	likely to change.  Fix for #120117.
+
 2003-08-17  Ray Strode  <halfline@hawaii.rr.com>
 
 	* src/delete.c (meta_window_delete): Use MRU list to find focusing 
