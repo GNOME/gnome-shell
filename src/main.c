@@ -77,7 +77,12 @@ main (int argc, char **argv)
   act.sa_handler = SIG_IGN;
   act.sa_mask    = empty_mask;
   act.sa_flags   = 0;
-  sigaction (SIGPIPE,  &act, 0);
+  if (sigaction (SIGPIPE,  &act, 0) < 0)
+    g_printerr ("Failed to register SIGPIPE handler: %s\n", strerror (errno));
+#ifdef SIGXFSZ
+  if (sigaction (SIGXFSZ,  &act, 0) < 0)
+    g_printerr ("Failed to register SIGXFSZ handler: %s\n", strerror (errno));
+#endif
   
   g_set_prgname (argv[0]);
 

@@ -1,3 +1,11 @@
+2002-03-04  Havoc Pennington  <hp@pobox.com>
+
+	* src/main.c (main): try ignoring SIGXFSZ, though I'm not 
+	sure what that does exactly. I'm hoping it gives me EFBIG.
+
+	* src/util.c (ensure_logfile): log to a file in /tmp instead 
+	of to ~/metacity.log.
+
 2002-03-04  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: fix configure.in since GTK no longer gives us 

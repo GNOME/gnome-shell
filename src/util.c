@@ -19,12 +19,15 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "util.h"
 #include "main.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
@@ -36,23 +39,43 @@ ensure_logfile (void)
 {
   if (logfile == NULL)
     {
-      const char *dir;
-      char *str;
+      char *filename = NULL;
+      char *tmpl;
+      int fd;
+      GError *err;
       
-      dir = g_get_home_dir ();
-      str = g_strconcat (dir, "/", "metacity.log", NULL);
+      tmpl = g_strdup_printf ("metacity-%d-debug-log-XXXXXX",
+                              (int) getpid ());
 
-      /* we want to replace not truncate any old logfile */
-      unlink (str);
+      err = NULL;
+      fd = g_file_open_tmp (tmpl,
+                            &filename,
+                            &err);
+
+      g_free (tmpl);
       
-      logfile = fopen (str, "w");
-
+      if (err != NULL)
+        {
+          meta_warning (_("Failed to open debug log: %s\n"),
+                        err->message);
+          g_error_free (err);
+          return;
+        }
+      
+      logfile = fdopen (fd, "w");
+      
       if (logfile == NULL)
-        meta_warning ("Failed to open log file %s\n", str);
+        {
+          meta_warning (_("Failed to fdopen() log file %s: %s\n"),
+                        filename, strerror (errno));
+          close (fd);
+        }
       else
-        meta_verbose ("Opened log file %s\n", str);
+        {
+          g_print (_("Opened log file %s\n"), filename);
+        }
       
-      g_free (str);
+      g_free (filename);
     }
 }
 
