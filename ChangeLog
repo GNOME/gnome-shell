@@ -1,3 +1,13 @@
+2004-02-23  Rob Adams  <readams@readams.net>
+
+	Add my copyright notice to a number of files on which it should
+	already exist.
+	
+	* src/window.c (meta_window_notify_focus): modify code to move to
+	front of MRU list so that we can have an assert that it was there
+	in the first place.  This code may be causing some crashes.  See
+	#131196.
+	
 2004-02-22  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "en_CA" to ALL_LINGUAS.
