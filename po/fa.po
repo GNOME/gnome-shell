@@ -1,4 +1,4 @@
-# Persian translation of metacity
+# Persian translation of metacity.
 # Copyright (C) 2003, 2005 Sharif FarsiWeb, Inc.
 # Roozbeh Pournader <roozbeh@farsiweb.info>, 2003.
 # Elnaz Sarbar <elnaz@farsiweb.info>, 2005.
@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-19 12:31+0100\n"
-"PO-Revision-Date: 2005-02-20 15:01+0330\n"
+"POT-Creation-Date: 2005-02-28 07:24+0100\n"
+"PO-Revision-Date: 2005-02-28 13:48+0330\n"
 "Last-Translator: Elnaz Sarbar <elnaz@farsiweb.info>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
 "MIME-Version: 1.0\n"
@@ -27,18 +27,18 @@ msgstr "متاسیتی بدون پشتیبانی حالت مفصل ترجمه ش
 #: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
-msgid "Could not parse «%s» as an integer"
+msgid "Could not parse \"%s\" as an integer"
 msgstr "«%s»به عنوان عدد صحیح قابل تجزیه نیست "
 
 #: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
-msgid "Did not understand trailing characters «%s» in string «%s»"
-msgstr ""
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "نویسه‌ی «%s» در رشته‌ی «%s» قابل درک نیست"
 
 #: src/delete.c:128
 #, c-format
-msgid "Failed to parse message «%s» from dialog process\n"
+msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "شکست در تجزیه پیغام «%s» از پردازش محاوره\n"
 
 #: src/delete.c:263
@@ -50,14 +50,16 @@ msgstr "خطا در خواندن از پردازش نمایش محاوره: %s\n
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "خطا در راه‌اندازی metacity-dialog برای پرسش درباره کشتن یک برنامه‌ی کاربردی: %s\n"
+msgstr ""
+"خطا در راه‌اندازی metacity-dialog برای پرسش درباره کشتن یک برنامه‌ی کاربردی: %"
+"s\n"
 
 #: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "شکست در گرفتن نام میزبان: %s\n"
 
-#: src/display.c:306
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "شکست در باز کردن نمایش «%s» سیستم پنجره‌ی X\n"
@@ -103,20 +105,20 @@ msgstr "ناحداکثر کردن پنجره"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "برنامه‌ی دیگری کلید %s را با تغییردهنده‌های %x برای مقیدسازی به کار می‌برد\n"
-""
+msgstr ""
+"برنامه‌ی دیگری کلید %s را با تغییردهنده‌های %x برای مقیدسازی به کار می‌برد\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطا در راه‌اندازی metacity-dialog برای چاپ خطا درباره‌ی یک فرمان: %s\n"
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr " فرمان %Id تعریف نشده است.\n"
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
 msgstr "هیچ فرمان پایانه‌ای تعریف نشده است.\n"
 
@@ -124,7 +126,8 @@ msgstr "هیچ فرمان پایانه‌ای تعریف نشده است.\n"
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
-msgstr "metacity [--sm-disable] [--sm-client-id=شناسه] [--sm-save-file=نام فایل] [--"
+msgstr ""
+"metacity [--sm-disable] [--sm-client-id=شناسه] [--sm-save-file=نام فایل] [--"
 "display=نمایش] [--replace] [--version]\n"
 
 #: src/main.c:76
@@ -139,8 +142,8 @@ msgstr ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
 "این نرم‌افزار آزاد است؛ برای دیدن شرایط نسخه‌برداری متن برنامه را ببینید.\n"
-"هیچ تضمینی وجود ندارد؛ حتی در مورد قابلیت تجاری یا مناسبت برای\n "
-"یک هدف به خصوص.\n"
+"هیچ تضمینی وجود ندارد؛ حتی در مورد قابلیت تجاری یا مناسبت برای\n"
+" یک هدف به خصوص.\n"
 
 #: src/main.c:443
 #, c-format
@@ -197,37 +200,37 @@ msgstr "بستن"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "قرار دادن در همه‌ی فضاهای کاری"
+msgid "_Always on Visible Workspace"
+msgstr "_همیشه در فضای کاری قابل مشاهده"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "فقط در این فضای کاری"
+msgid "_Only on This Workspace"
+msgstr "_فقط در این فضای کاری"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "نقل‌مکان به فضای کاری چپ"
+msgstr "نقل‌مکان به فضای کاری _چپ"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "نقل‌مکان به فضای کاری راست"
+msgstr "نقل‌مکان به فضای کاری _راست"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "نقل‌مکان به فضای کاری بالا "
+msgstr "نقل‌مکان به فضای کاری _بالا "
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "نقل‌مکان به فضای کاری پایین"
+msgstr "نقل‌مکان به فضای کاری _پایین"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "فضای کاری %Id"
 
 #: src/menu.c:171
 msgid "Workspace 1_0"
-msgstr "فضای کاری ۱۰"
+msgstr "فضای کاری ۱_۰"
 
 #: src/menu.c:173
 #, c-format
@@ -330,7 +333,7 @@ msgstr "Mod5"
 
 #: src/metacity-dialog.c:110
 #, c-format
-msgid "The window «%s» is not responding."
+msgid "The window \"%s\" is not responding."
 msgstr "پنجره‌ی «%s» پاسخ نمی‌دهد."
 
 #: src/metacity-dialog.c:118
@@ -352,17 +355,19 @@ msgstr "رده"
 
 #: src/metacity-dialog.c:262
 msgid ""
-"These windows do not support «save current setup» and will have to be "
+"These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr "این پنجره‌ها «ذخیره‌ی برپاسازی فعلی» را پشتیبانی نمی‌کنند و باید در ورود بعدی به سیستم"
-"به صورت دستی راه‌اندازی مجدد شوند.  "
+msgstr ""
+"این پنجره‌ها «ذخیره‌ی برپاسازی فعلی» را پشتیبانی نمی‌کنند و باید در ورود بعدی "
+"به سیستم به صورت دستی راه‌اندازی مجدد شوند.  "
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
-"There was an error running «%s»:\n"
+"There was an error running \"%s\":\n"
 "%s."
-msgstr "شکست هنگام اجرای «%s»:\n"
+msgstr ""
+"شکست هنگام اجرای «%s»:\n"
 "%s."
 
 #: src/metacity.desktop.in.h:1
@@ -383,12 +388,12 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"رشته‌ی شرح قلم که قلم نوارهای عنوان پنجره را شرح می‌دهد. اما تنها زمانی"
-"که گزینه‌ی titlebar_font_size، 0 تنظیم شده باشد، اندازه‌ی شرح استفاده می‌شود. "
-"به علاوه در صورتی که گزینه‌ی titlebar_uses_desktop_font درست تنظیم شده باشد"
-"این گزینه از کار انداخته می‌شود. طبق پیش فرض، titlebar_font تنظیم نشده"
-"است که باعث می‌شود متاسیتی از قلم رومیزی استفاده کند حتی اگر titlebar_uses_desktop_font"
-"نادرست باشد."
+"رشته‌ی شرح قلم که قلم نوارهای عنوان پنجره را شرح می‌دهد. اما تنها زمانیکه "
+"گزینه‌ی titlebar_font_size، 0 تنظیم شده باشد، اندازه‌ی شرح استفاده می‌شود. به "
+"علاوه در صورتی که گزینه‌ی titlebar_uses_desktop_font درست تنظیم شده باشداین "
+"گزینه از کار انداخته می‌شود. طبق پیش فرض، titlebar_font تنظیم نشدهاست که باعث "
+"می‌شود متاسیتی از قلم رومیزی استفاده کند حتی اگر "
+"titlebar_uses_desktop_fontنادرست باشد."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -405,17 +410,17 @@ msgstr "آرایش دکمه‌ها روی نوار عنوان"
 #: src/metacity.schemas.in.h:6
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
-"as «menu:minimize,maximize,close\"; the colon separates the left corner of "
+"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
 "the window from the right corner, and the button names are comma-separated. "
 "Duplicate buttons are not allowed. Unknown button names are silently ignored "
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
-msgstr "آرایش دکمه‌ها روی نوار عنوان. مقدار باید یک رشته باشد."
-"مثل «menu:minimize,maximize,close»؛ دونقطه، گوشه‌ی چپ پنجره را از"
-"گوشه‌ی راست جدا می‌کند و نام دکمه‌ها با ویرگول از هم جدا می‌شوند."
-"دکمه تکراری مجاز نیست. دکمه‌های ناشناس در سکوت نادیده گرفته می‌شوند تا دکمه‌های"
-"جدید بدون از کار انداختن نسخه‌های قدیمی‌تر به نسخه‌های آینده‌ی متاسیتی اضافه شوند."
-""
+msgstr ""
+"آرایش دکمه‌ها روی نوار عنوان. مقدار باید یک رشته باشد. مثلاً «menu:minimize,"
+"maximize,close»؛ دونقطه، گوشه‌ی چپ پنجره را ازگوشه‌ی راست جدا می‌کند و نام "
+"دکمه‌ها با ویرگول از هم جدا می‌شوند.دکمه تکراری مجاز نیست. دکمه‌های ناشناس در "
+"سکوت نادیده گرفته می‌شوند تا دکمه‌های جدید بدون از کار انداختن نسخه‌های قدیمی‌تر "
+"به نسخه‌های آینده‌ی متاسیتی اضافه شوند."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -428,9 +433,10 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"کلیک کردن روی یک پنجره در حین پایین نگه داشتن این کلید تغییردهنده، باعث حرکت پنجره (کلیک چپ)، "
-"تغییر اندازه‌ی پنجره (کلیک وسط) یا نمایش منوی پنجره (کلیک راست) می‌شود. تغییردهنده به صورت مثلاً"
-"«&lt;Alt&gt;» یا «&lt;Super&gt;» نمایش داده می‌شود." 
+"کلیک کردن روی یک پنجره در حین پایین نگه داشتن این کلید تغییردهنده، باعث حرکت "
+"پنجره (کلیک چپ)، تغییر اندازه‌ی پنجره (کلیک وسط) یا نمایش منوی پنجره (کلیک "
+"راست) می‌شود. تغییردهنده به صورت مثلاً«&lt;Alt&gt;» یا «&lt;Super&gt;» نمایش "
+"داده می‌شود."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close window"
@@ -458,7 +464,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "از کار انداختن امکانات معیوبی که مورد نیاز برنامه‌های قدمی یا از کارافتاده‌اند "
+msgstr ""
+"از کار انداختن امکانات معیوبی که مورد نیاز برنامه‌های قدمی یا از کارافتاده‌اند "
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -474,17 +481,16 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"اگر درست باشد و حالت تمرکز «sloppy» یا «mouse» باشد، پنجره‌ی"
-"مورد تمرکز به طور خودکار بعد از تاخیری که با auto_raise_delay مشخص"
-"می‌شود، پیش کشیده می‌شود."
+"اگر درست باشد و حالت تمرکز «sloppy» یا «mouse» باشد، پنجره‌یمورد تمرکز به طور "
+"خودکار بعد از تاخیری که با auto_raise_delay مشخصمی‌شود، پیش کشیده می‌شود."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"اگر درست باشد گزینه‌ی titlebar_font نادیده گرفته شده و "
-"برای عنوان پنجره‌ها از قلم استاندارد برنامه استفاده می‌شود."
+"اگر درست باشد گزینه‌ی titlebar_font نادیده گرفته شده و برای عنوان پنجره‌ها از "
+"قلم استاندارد برنامه استفاده می‌شود."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -492,11 +498,15 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"اگر درست باشد، متاسیتی با استفاده از چارچوب‌های سیمی یا وسائل دیگر، بازخوردهای کمتر و حس «دستکاری مستقیم» کمتری به کاربر می‌دهد. "
-"این کار باعث تقلیل محسوس قابلیت کاربری برای بسیاری از کاربران می‌شود، ولی شاید برنامه‌ها و کارگزارهای پایانه‌ی قدیمی را قادر کند"
-"در شرایطی کار کنند که در غیر این صورت کار نمی‌کردند."
+"اگر درست باشد، متاسیتی با استفاده از چارچوب‌های سیمی، نشان ندادن پویانمایی‌ها یا به طرق دیگر، "
+"بازخوردهای کمتر و حس «دستکاری مستقیم» کمتری به کاربر می‌دهد. این کار باعث "
+"تقلیل محسوس قابلیت کاربری برای بسیاری از کاربران می‌شود، ولی شاید برنامه‌ها و "
+"کارگزارهای پایانه‌ی قدیمی را قادر سازد در شرایطی کار کنند که در غیر این صورت "
+"کار نمی‌کردند. به هر حال هنگامی که دسترسی‌پذیری روشن است برای "
+" جلوگیری از خرابی‌های غیرعادی رومیزی، امکانات چارچوب‌های سیمی از کار انداخته می‌شود."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -510,15 +520,19 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"اگر درست باشد، متاسیتی بر مبنای برنامه‌ها کار می‌کند نه پنجره‌ها. این مفهوم کمی مجرد است، ولی عموماً برپاسازی بر پایه‌ی برنامه "
-"بیشتر شبیه مکینتاش و کمتر شبیه ویندوز است. در حالت بر پایه‌ی برنامه وقتی روی یک پنجره تمرکز می‌کنید، همه‌ی پنجره‌های برنامه پیش می‌آیند. "
-"همچنین، در حالت بر پایه‌ی برنامه، کلیک‌های تمرکز به پنجره‌های برنامه‌های دیگر رد نمی‌شوند. وجود این تنظیمات تا حدودی سؤال برانگیز است. "
-"ولی بهتر از داشتن تنظیمات برای همه‌ی جزئیات خاص بر پایه‌ی برنامه در برابر بر پایه‌ی پنجره است، مثلاً این که کلیک ‌ها رد بشوند یا نه. "
-"همچنین، حالت بر پایه‌ی برنامه در حال حاضر تا حدود زیادی پیاده‌سازی نشده است."
+"اگر درست باشد، متاسیتی بر مبنای برنامه‌ها کار می‌کند نه پنجره‌ها. این مفهوم کمی "
+"مجرد است، ولی عموماً برپاسازی بر پایه‌ی برنامه بیشتر شبیه مکینتاش و کمتر شبیه "
+"ویندوز است. در حالت بر پایه‌ی برنامه وقتی روی یک پنجره تمرکز می‌کنید، همه‌ی "
+"پنجره‌های برنامه پیش می‌آیند. همچنین، در حالت بر پایه‌ی برنامه، کلیک‌های تمرکز "
+"به پنجره‌های برنامه‌های دیگر رد نمی‌شوند. وجود این تنظیمات تا حدودی سؤال "
+"برانگیز است. ولی بهتر از داشتن تنظیمات برای همه‌ی جزئیات خاص بر پایه‌ی برنامه "
+"در برابر بر پایه‌ی پنجره است، مثلاً این که کلیک ‌ها رد بشوند یا نه. در ضمن، "
+"حالت بر پایه‌ی برنامه در حال حاضر تا حدود زیادی پیاده‌سازی نشده است."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "اگر درست بود از قابلیت کاربری در قبال استفاده‌ی کمتر از منابع صرف نظر شود"
+msgstr ""
+"اگر درست بود از قابلیت کاربری در قبال استفاده‌ی کمتر از منابع صرف نظر شود"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -542,7 +556,8 @@ msgstr "حداقل کردن پنجره"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr "تغییردهنده‌ای که برای کنش‌های کلیک روی پنجره‌ی تغییر داده شده به کار می‌رود"
+msgstr ""
+"تغییردهنده‌ای که برای کنش‌های کلیک روی پنجره‌ی تغییر داده شده به کار می‌رود"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
@@ -658,9 +673,9 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"تعداد فضاهای کاری. باید بیش از صفر باشد و حداکثر مشخصی"
-"دارد (برای این که اتفاقی رومیزی‌تان را با درخواست ۳۴ میلیون"
-"فضای کاری از بین نبرید)."
+"تعداد فضاهای کاری. باید بیش از صفر باشد و حداکثر مشخصی دارد (برای این که "
+"اتفاقی رومیزی‌تان را با درخواست ۳۴ میلیون فضای کاری از بین نبرید)."
+
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
 msgstr ""
@@ -704,6 +719,14 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
+"بعضی از برنامه‌ها قواعد جزئی را طوری نقض می‌کنند که به بد کار کردن مدیر پنجره‌ها منجر می‌شود. "
+"به عنوان مثال، متاسیتی در وضع مطلوب تمام محاوره‌ها را در وضعیت سازگار با پنجره‌ی والد آن‌ها قرار می‌دهد. "
+"این مسأله نیازمند نادیده گرفتن مشخصات برنامه‌ها برای وضعیت محاوره‌ها است. اما بعضی از نسخه‌های Java/Swing "
+"منوهای واشو را به عنوان محاوره ثبت می‌کنند و متاسیتی مجبور است برای کار کردن منوها در برنامه‌های خراب جاوا "
+"جاگذاری محاوره را از کار بیاندازد. مثال‌های مختلف دیگری نیز از این دست وجود دارند. این گزینه متاسیتی را در حالت درست با همه‌ی گزینه‌ها قرار می‌دهد "
+"که احتمالاً اگر نیاز به اجرای برنامه‌های خراب نداشته باشید، واسط کاربر بهتری خواهد داشت. متأسفانه دور زدن‌ها را باید به طور پیش فرض به کار "
+"انداخت؛ دنیای واقعی جای زشتی است. بعضی از دور زدن‌ها دورزدن کمبودهای خود قواعد جزئی هستند، بنابراین بعضی وقت‌ها اشکال در حالت "
+"دور زدن بدون دستکاری قواعد قبل رفع نیست."
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
@@ -791,10 +814,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"به متاسیتی می‌گوید چطور شاخص تصویری‌ای که زنگ سیستم یا برنامه‌ی شاخص «زنگ» دیگری به صدا در آمده است را پیاده‌سازی کند. "
-"در حال حاضر دو مقدار معتبر وجود دارند، «fullscreen» که سبب یک جرقه‌ی سیاه و سفید تمام‌صفحه می‌شود، و «frame_flsh» که سبب می‌شود "
-"نوار عنوان برنامه‌ای که سیگنال زنگ را ارسال کرده جرقه بزند. اگر برنامه‌ای که سیگنال زنگ را فرستاده نامعلوم باشد (که معمولاً در مورد "
-"برای «بوق سیستم» پیش‌فرض این طور است)، نوار عنوان پنجره‌ای که فعلاً مورد تمرکز است جرقه می‌زند."
+"به متاسیتی می‌گوید چطور شاخص تصویری‌ای که زنگ سیستم یا برنامه‌ی شاخص «زنگ» "
+"دیگری به صدا در آمده است را پیاده‌سازی کند. در حال حاضر دو مقدار معتبر وجود "
+"دارند، «fullscreen» که سبب یک جرقه‌ی سیاه و سفید تمام‌صفحه می‌شود، و "
+"«frame_flsh» که سبب می‌شود نوار عنوان برنامه‌ای که سیگنال زنگ را ارسال کرده "
+"جرقه بزند. اگر برنامه‌ای که سیگنال زنگ را فرستاده نامعلوم باشد (که معمولاً در "
+"مورد برای «بوق سیستم» پیش‌فرض این طور است)، نوار عنوان پنجره‌ای که فعلاً مورد "
+"تمرکز است جرقه می‌زند."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -802,16 +828,17 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"کلیدهای /apps/metacity/global_keybindings/run_command_N کلیدهای مقیدی تعریف می‌کنند که "
-"متناظر با این فرمان‌ها هستند. فشار دادن کلید مقید برای run_command_N، command_N را اجرا خواهد کرد."
+"کلیدهای /apps/metacity/global_keybindings/run_command_N کلیدهای مقیدی تعریف "
+"می‌کنند که متناظر با این فرمان‌ها هستند. فشار دادن کلید مقید برای "
+"run_command_N، command_N را اجرا خواهد کرد."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"کلید /apps/metacity/global_keybindings/run_command_screenshot کلید مقیدی تعریف می‌کند "
-"که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
+"کلید /apps/metacity/global_keybindings/run_command_screenshot کلید مقیدی "
+"تعریف می‌کند که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -819,8 +846,9 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"کلید /apps/metacity/global_keybindings/run_command_window_screenshot کلید مقیدی "
-"تعریف می‌کند که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
+"کلید /apps/metacity/global_keybindings/run_command_window_screenshot کلید "
+"مقیدی تعریف می‌کند که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
+
 #: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -830,12 +858,12 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که فرمان correspondingly-numbered را در/apps"
-"metacity/keybinding_commands اجرا می‌کند: قالب آن به شکل«&lt;Control&gt;a»"
-" یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است "
-"و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که فرمان correspondingly-numbered را در/appsmetacity/"
+"keybinding_commands اجرا می‌کند: قالب آن به شکل«&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -846,12 +874,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری بالایی تعویض می‌کند؛ "
-"قالب آن به شکل«&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری بالایی تعویض می‌کند؛ قالب آن "
+"به شکل«&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به "
+"نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و "
+"«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -862,12 +889,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری پایینی تعویض می‌کند؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»"
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری پایینی تعویض می‌کند؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»است. این تجزیه‌گر به "
+"نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل «&lt;Ctl&gt;» و "
+"«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -878,12 +904,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری چپش تعویض می‌کند؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»"
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری چپش تعویض می‌کند؛ قالب آن به "
+"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»است. این تجزیه‌گر به "
+"نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و "
+"«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -894,12 +919,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری راستش تعویض می‌کند؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»"
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که فضای کاری فعلی را با فضای کاری راستش تعویض می‌کند؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1»است. این تجزیه‌گر به "
+"نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و "
+"«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -909,11 +933,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۱. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید برای تعویض به فضای کاری ۱. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -923,12 +947,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۱۰. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۱۰. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -938,12 +961,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۱۱. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۱۱. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -953,12 +975,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۱۲. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۱۲. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -968,12 +989,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۲. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۲. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -983,12 +1003,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۳. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۳. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -998,12 +1017,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۴. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۴. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -1013,12 +1031,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۵. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۵. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -1028,12 +1045,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری۶. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری۶. قالب آن به شکل «&lt;Control&gt;a» یا "
+"«&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -1043,12 +1059,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۷. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۷. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -1058,12 +1073,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۸. قالب آن به "
-"شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» "
-"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
-"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلید برای تعویض به فضای کاری ۸. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -1073,11 +1087,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید برای تعویض به فضای کاری ۹. قالب آن به شکل «&lt;"
-"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت"
-"آسان‌گیر است و حروف بزرگ یا کوچک  و خلاصه کردن  به شکل"
-"«&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی"
-"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید برای تعویض به فضای کاری ۹. قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبتآسان‌گیر است و حروف "
+"بزرگ یا کوچک  و خلاصه کردن  به شکل«&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی«disabled» قرار دهید، کلید مقیدی "
+"برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1087,12 +1101,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای فعال‌سازی منوی پنجره به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای فعال‌سازی منوی پنجره به کار می‌رود؛ قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1102,12 +1115,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای بستن پنجره به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای بستن پنجره به کار می‌رود؛ قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1118,12 +1130,12 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای وارد شدن به «حالت جابه‌جایی» و شروع جابه‌جایی پنجره با استفاده از صفحه‌کلید به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای وارد شدن به «حالت جابه‌جایی» و شروع جابه‌جایی پنجره با "
+"استفاده از صفحه‌کلید به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1134,12 +1146,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای وارد شدن به «حالت تغییر اندازه» و شروع تغییر اندازه‌ی پنجره با استفاده از صفحه‌کلید به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای وارد شدن به «حالت تغییر اندازه» و شروع تغییر اندازه‌ی "
+"پنجره با استفاده از صفحه‌کلید به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1150,12 +1162,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای پنهان کردن تمام پنجره‌های عادی و قرار دادن تمرکز بر پس‌زمینه‌ی رومیزی به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای پنهان کردن تمام پنجره‌های عادی و قرار دادن تمرکز بر "
+"پس‌زمینه‌ی رومیزی به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1165,12 +1177,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای حداکثر کردن پنجره به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای حداکثر کردن پنجره به کار می‌رود؛ قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1180,12 +1191,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای حداقل کردن پنجره به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای حداقل کردن پنجره به کار می‌رود؛ قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1197,11 +1207,10 @@ msgid ""
 "action."
 msgstr ""
 "مقیدسازی کلیدی که برای جابه‌جایی پنجره به یک فضای کاری پایین‌تر به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1212,12 +1221,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری چپش به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری چپش به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1228,12 +1236,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری راستش به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با  رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری راستش به کار می‌رود؛ قالب "
+"آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با  رشته‌ی "
+"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1244,11 +1251,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "مقیدسازی کلیدی که برای جابه‌جایی پنجره به یک فضای کاری بالاتر به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1258,12 +1264,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1273,12 +1278,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۰ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۰ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1288,12 +1292,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۱ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۱ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1303,12 +1306,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۲ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۱۲ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1318,12 +1320,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۲ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۲ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1333,12 +1334,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۳ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۳ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1348,12 +1348,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۴ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۴ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1363,12 +1362,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۵ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۵ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1378,12 +1376,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۶ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۶ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1393,12 +1390,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۷ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۷ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1408,12 +1404,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۸ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۸ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1423,12 +1418,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۹ به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی پنجره به فضای کاری ۹ به کار می‌رود؛ قالب آن "
+"به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر "
+"به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» "
+"و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
+"«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1439,13 +1433,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین تابلوها و رومیزی، با استفاده از یک پنجره‌ی واشو به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین تابلوها و رومیزی، با "
+"استفاده از یک پنجره‌ی واشو به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا "
+"«&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1456,12 +1449,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین تابلوها و رومیزی، بدون استفاده از پنجره‌ی واشو به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین تابلوها و رومیزی، بدون "
+"استفاده از پنجره‌ی واشو به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا "
+"«&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1473,13 +1466,13 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین پنجره‌ها بدون استفاده از پنجره‌ی واشو به کار می‌رود؛ "
-"نگه داشتن «تبدیل» همراه با این کلید مقید سبب رو به جلو شدن جهت می‌شود. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین پنجره‌ها بدون استفاده از "
+"پنجره‌ی واشو به کار می‌رود؛ نگه داشتن «تبدیل» همراه با این کلید مقید سبب رو به "
+"جلو شدن جهت می‌شود. قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;"
+"Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه "
+"کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را "
+"برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
+"نخواهد داشت."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1491,13 +1484,13 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین پنجره‌ها، با استفاده از یک پنجره‌ی واشو به کار می‌رود؛ "
-"نگه داشتن «تبدیل» همراه با این کلید مقید سبب رو به جلو شدن جهت می‌شود. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز به عقب بین پنجره‌ها، با استفاده از یک "
+"پنجره‌ی واشو به کار می‌رود؛ نگه داشتن «تبدیل» همراه با این کلید مقید سبب رو به "
+"جلو شدن جهت می‌شود. قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;"
+"Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه "
+"کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را "
+"برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
+"نخواهد داشت."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1508,14 +1501,12 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین تابلوها و رومیزی، با استفاده از یک پنجره‌ی واشو به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
-
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین تابلوها و رومیزی، با استفاده از یک "
+"پنجره‌ی واشو به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;"
+"&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و "
+"خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این "
+"گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش "
+"وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1526,13 +1517,12 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین تابلوها و رومیزی، بدون استفاده از پنجره‌ی واشو به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین تابلوها و رومیزی، بدون استفاده از "
+"پنجره‌ی واشو به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;"
+"&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و "
+"خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این "
+"گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش "
+"وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1544,13 +1534,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-
-"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین پنجره‌ها بدون استفاده از پنجره‌ی واشو به کار می‌رود؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین پنجره‌ها بدون استفاده از پنجره‌ی "
+"واشو به کار می‌رود؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;"
+"Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه "
+"کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را "
+"برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
+"نخواهد داشت."
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1563,12 +1552,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "مقیدسازی کلیدی که برای جابه‌جایی تمرکز بین پنجره‌ها با استفاده از پنجره‌ی واشو "
-"به کار می‌رود؛ (&lt;Alt&gt;Tab طبق سنت) نگهداشتن کلید «تبدیل» هنگام استفاده از این کلید مقید جهت حرکت را برعکس می‌کند."
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"به کار می‌رود؛ (&lt;Alt&gt;Tab طبق سنت) نگهداشتن کلید «تبدیل» هنگام استفاده "
+"از این کلید مقید جهت حرکت را برعکس می‌کند.قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1579,12 +1568,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید ضامن همیشه بالا. پنجره‌ای که همیشه بالا است، روی تمام پنجره‌هایی که هم‌پوشانی دارند دیده خواهد شد؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید ضامن همیشه بالا. پنجره‌ای که همیشه بالا است، روی تمام پنجره‌هایی "
+"که هم‌پوشانی دارند دیده خواهد شد؛ قالب آن به شکل «&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1594,12 +1583,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید ضامن حالت تمام صفحه. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید ضامن حالت تمام صفحه. قالب آن به شکل «&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1609,12 +1597,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید ضامن حداکثر کردن. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید ضامن حداکثر کردن. قالب آن به شکل «&lt;Control&gt;a» یا «&lt;"
+"Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا "
+"کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر "
+"این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
+"کنش وجود نخواهد داشت."
+
 #: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
@@ -1623,12 +1611,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلید ضامن وضعیت سایه‌دار با بدون سایه. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید ضامن وضعیت سایه‌دار با بدون سایه. قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
+
 #: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
@@ -1638,12 +1626,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"مقیدسازی کلید ضامن وجود پنجره در تمام فضاهای کاری یا فقط یک فضای کاری. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلید ضامن وجود پنجره در تمام فضاهای کاری یا فقط یک فضای کاری. قالب "
+"آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1653,12 +1640,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که برای ناحداکثر کردن پنجره به کار می‌رود. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که برای ناحداکثر کردن پنجره به کار می‌رود. قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1669,12 +1655,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"مقیدسازی کلیدی که جعبه‌ی محاوره‌ی «اجرای برنامه»ی تابلو را نمایش می‌دهد؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که جعبه‌ی محاوره‌ی «اجرای برنامه»ی تابلو را نمایش می‌دهد؛ قالب "
+"آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:142
 msgid ""
@@ -1684,12 +1669,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که یک پایانه احضار می‌کند؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید،"
-" کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که یک پایانه احضار می‌کند؛ قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1700,6 +1684,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"مقیدسازی کلیدی که برنامه‌ی عکس از صفحه را احضار می‌کند تا یک عکس از صفحه‌ی پنجره بگیرد؛ قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1710,6 +1699,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"مقیدسازی کلیدی که برنامه‌ی عکس از صفحه را احضار می‌کند؛ قالب آن به شکل «&lt;Control&gt;a» "
+"یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف "
+"بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+"می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+"مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:145
 msgid ""
@@ -1719,12 +1713,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"مقیدسازی کلیدی که منوی اصلی تابلو را نشان می‌دهد؛ "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» "
-"است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک"
-" و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» "
-"را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، "
-"کلید مقیدی برای این کنش وجود نخواهد داشت."
+"مقیدسازی کلیدی که منوی اصلی تابلو را نشان می‌دهد؛ قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
@@ -1738,14 +1731,16 @@ msgstr "فرمان عکس از صفحه"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "تم، قیافه‌ی حاشیه‌ی پنجره‌ها، نوار عنوان و چیزهایی از این دست را تعیین می‌کند. "
+msgstr ""
+"تم، قیافه‌ی حاشیه‌ی پنجره‌ها، نوار عنوان و چیزهایی از این دست را تعیین می‌کند. "
 
 #: src/metacity.schemas.in.h:149
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr "تأخیر زمانی قبل از پیش کشیدن پنجره در صورتی که auto_raise روی درست تنظیم شده باشد. "
-"تأخیر به هزارم ثانیه داده شده است."
+msgstr ""
+"تأخیر زمانی قبل از پیش کشیدن پنجره در صورتی که auto_raise روی درست تنظیم شده "
+"باشد. تأخیر به هزارم ثانیه داده شده است."
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1757,9 +1752,9 @@ msgid ""
 msgstr ""
 "حالت تمرکز پنجره نحوه‌ی فعال‌سازی پنجره‌ها را نشان می‌دهد. سه مقدار می‌تواند "
 "بگیرد؛ «click» یعنی برای تمرکز روی پنجره‌ها رویشان کلیک شود، «sloppy» یعنی "
-"وقتی ماوس وارد پنجره‌ای شد تمرکز روی آن پنجره قرار بگیرد و «mouse» یعنی "
-"وقتی ماوس وارد پنجره‌ای شد تمرکز روی آن قرار بگیرد و وقتی خارج شد تمرکز "
-"از روی آن برداشته شود."
+"وقتی موشی وارد پنجره‌ای شد تمرکز روی آن پنجره قرار بگیرد و «mouse» یعنی وقتی "
+"موشی وارد پنجره‌ای شد تمرکز روی آن قرار بگیرد و وقتی خارج شد تمرکز از روی آن "
+"برداشته شود."
 
 #: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
@@ -1776,14 +1771,13 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"این کلید مقید زیر یا رو بودن یک پنجره را نسبت به بقیه پنجره‌ها "
-"تغییر می‌دهد. اگر پنجره با پنجره‌ی دیگری پوشیده شده باشد، آن را پیش می‌آورد. "
-"اگر پنجره به طور کامل دیده شود، آن را زیر پنجره‌های دیگر قرار می‌دهد. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. "
-"این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به "
-"شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
-"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-""
+"این کلید مقید زیر یا رو بودن یک پنجره را نسبت به بقیه پنجره‌ها تغییر می‌دهد. "
+"اگر پنجره با پنجره‌ی دیگری پوشیده شده باشد، آن را پیش می‌آورد. اگر پنجره به "
+"طور کامل دیده شود، آن را زیر پنجره‌های دیگر قرار می‌دهد. قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به شکل «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1793,11 +1787,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"این کلید مقید یک پنجره را زیر پنجره‌های دیگر قرار می‌دهد. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. "
-"این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به "
-"شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
-"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
+"این کلید مقید یک پنجره را زیر پنجره‌های دیگر قرار می‌دهد. قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به شکل «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:154
 msgid ""
@@ -1807,11 +1801,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"این کلید مقید یک پنجره را روی پنجره‌های دیگر پیش می‌آورد. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. "
-"این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به "
-"شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
-"ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
+"این کلید مقید یک پنجره را روی پنجره‌های دیگر پیش می‌آورد. قالب آن به شکل «&lt;"
+"Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت "
+"آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به شکل «&lt;Ctl&gt;» و «&lt;"
+"Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
+"قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1823,11 +1817,10 @@ msgid ""
 "for this action."
 msgstr ""
 "این کلید مقید اندازه‌ی یک پنجره را تغییر می‌دهد تا فضای افقی موجود را پر کند. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. "
-"این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به "
-"شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به شکل «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-""
 
 #: src/metacity.schemas.in.h:156
 msgid ""
@@ -1839,11 +1832,10 @@ msgid ""
 "for this action."
 msgstr ""
 "این کلید مقید اندازه‌ی یک پنجره را تغییر می‌دهد تا فضای عمودی موجود را پر کند. "
-"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. "
-"این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به "
-"شکل «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
+"قالب آن به شکل «&lt;Control&gt;a» یا «&lt;Shift&gt;&lt;Alt&gt;F1» است. این "
+"تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ یا کوچک یا خلاصه کردن به شکل «&lt;"
+"Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
-""
 
 #: src/metacity.schemas.in.h:157
 msgid ""
@@ -1851,9 +1843,9 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"گزینه‌ای که تأثیر دوبار کلیک روی نوار عنوان را تعیین می‌کند. "
-"گزینه‌های معتبر فعلی «toggle_shade» که پنجره را سایه خورده یا بدون سایه می‌کند "
-"و «toggle_maximize» که پنجره را حداکثر یا ناحداکثر می‌کند هستند."
+"گزینه‌ای که تأثیر دوبار کلیک روی نوار عنوان را تعیین می‌کند. گزینه‌های معتبر "
+"فعلی «toggle_shade» که پنجره را سایه خورده یا بدون سایه می‌کند و "
+"«toggle_maximize» که پنجره را حداکثر یا ناحداکثر می‌کند هستند."
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
@@ -1881,9 +1873,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"هنگامی که یک برنامه یا سیستم «زنگ»‌ یا «بوق» می‌زند، یک شاخص تصویری را روشن می‌کند: "
-"مفید برای گوش‌های سنگین و برای استفاده در محیط‌های پر سر و صدا یا زمانی که «زنگ شنیداری» خاموش است."
-""
+"هنگامی که یک برنامه یا سیستم «زنگ»‌ یا «بوق» می‌زند، یک شاخص تصویری را روشن "
+"می‌کند: مفید برای گوش‌های سنگین و برای استفاده در محیط‌های پر سر و صدا یا زمانی "
+"که «زنگ شنیداری» خاموش است."
 
 #: src/metacity.schemas.in.h:164
 msgid "Unmaximize window"
@@ -1905,69 +1897,74 @@ msgstr "حالت تمرکز پنجره"
 msgid "Window title font"
 msgstr "قلم عنوان پنجره"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "کلید «%s» GConf از نوع نامعتبری تنظیم شده است\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "«%s» پیدا شده در پایگاه‌داده‌ی پیکربندی مقدار معتبری برای تغییردهنده‌ی دکمه‌ی ماوس نیست\n"
+msgstr ""
+"«%s» پیدا شده در پایگاه‌داده‌ی پیکربندی مقدار معتبری برای تغییردهنده‌ی دکمه‌ی "
+"موشی نیست\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "کلید \"%s\" GCon به مقدار نامعتبری تنظیم شده است\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "تجزیه‌ی شرح قلم «%s» از کلید GConf %s ممکن نیست\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
-msgstr "%Id ذخیره شده در کلید %s GConf عدد معقولی برای تعداد فضاهای کاری نیست، حداکثر فعلی %Id است\n"
+msgstr ""
+"%Id ذخیره شده در کلید %s GConf عدد معقولی برای تعداد فضاهای کاری نیست، "
+"حداکثر فعلی %Id است\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"دور زدن برنامه‌های از کار افتاده، از کار انداخته شده است. بعضی از برنامه‌ها ممکن است رفتار مناسبی نداشته باشند.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%Id ذخیره شده در کلید GConf %s خارج از محدوده‌ی ۰ تا %Id است\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "خطای تنظیم تعداد فضاهای کاری به %Id: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"«%s» که در پایگاه داده‌ی پیکربندی پیدا شده مقدار معتبری برای کلید مقید «%s» نیست\n"
+"«%s» که در پایگاه داده‌ی پیکربندی پیدا شده مقدار معتبری برای کلید مقید «%s» "
+"نیست\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
-"خطای تنظیم نام فضای کاری %Id به \"%s\": %s\n"
+msgstr "خطای تنظیم نام فضای کاری %Id به \"%s\": %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1985,14 +1982,15 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"صفحه‌ی %Id روی نمایشگر «%s» مدیر پنجره‌ها دارد. برای جایگزین کردن"
-"مدیر پنجره‌های فعلی از گزینه‌ی --replace استفاده کنید.\n"
+"صفحه‌ی %Id روی نمایشگر «%s» مدیر پنجره‌ها دارد. برای جایگزین کردنمدیر پنجره‌های "
+"فعلی از گزینه‌ی --replace استفاده کنید.\n"
 
 #: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
+"انتخاب مدیر پنجره‌ها روی صفحه‌ی %Id نمایش «%s»\n"
 
 #: src/screen.c:506
 #, c-format
@@ -2072,9 +2070,9 @@ msgstr "عنصر %s نامعلوم است"
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr "خطا در راه‌اندازی metacity-dialog برای هشدار در مورد برنامه‌هایی که "
-"مدیریت نشست را پشتیبانی نمی‌کنند: %s\n"
-""
+msgstr ""
+"خطا در راه‌اندازی metacity-dialog برای هشدار در مورد برنامه‌هایی که مدیریت "
+"نشست را پشتیبانی نمی‌کنند: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2119,15 +2117,16 @@ msgstr "زاویه %Ig بود، باید بین ۰٫۰ و ۳۶۰٫۰ باشد\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"آلفا %Ig بود، باید بین ۰٫۰ (نامرئی) و ۱٫۰ (به تمامی تیره) باشد\n"
+msgstr "آلفا %Ig بود، باید بین ۰٫۰ (نامرئی) و ۱٫۰ (به تمامی تیره) باشد\n"
 
 #: src/theme-parser.c:684
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
-msgstr "مقیاس عنوان «%s» نامعتبر است (باید xx-small یا x-small یا small یا medium یا large یا x-large یا xx-large باشد)\n"
+msgstr ""
+"مقیاس عنوان «%s» نامعتبر است (باید xx-small یا x-small یا small یا medium یا "
+"large یا x-large یا xx-large باشد)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -2142,27 +2141,26 @@ msgstr "مشخصه‌ی «%s» روی عنصر <%s> وجود ندارد"
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "مشخصه‌ی «%s» روی عنصر <%s> وجود ندارد"
 
-
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> نام «%s» برای بار دوم استفاده شده است"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> والد «%s» تعریف نشده است"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> پیکربندی ظاهری «%s» تعریف نشده است"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> باید پیکربندی ظاهری یا والدی که پیکربندی ظاهری داشته باشد مشخص شود"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2175,9 +2173,9 @@ msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "style_set «%s» روی عنصر <%s> نامعلوم است"
 
 #: src/theme-parser.c:1099
-#, fuzzy, c-format
+#, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "مجموعه‌ی سبک برای نوع پنجره‌ی «%s» از قبل تعیین شده است"
+msgstr " نوع پنجره‌ی «%s» قبلاً به یک مجموعه‌ی سبک تخصیص داد شده است"
 
 #: src/theme-parser.c:1143
 #, c-format
@@ -2220,7 +2218,9 @@ msgstr "عنصر <%s> مشخصه‌ی «value» ندارد"
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "button_width/button_height   و نسبت عرض به ارتفاع دکمه‌ها هم زمان مشخص نمی‌شوند "
+msgstr ""
+"button_width/button_height   و نسبت عرض به ارتفاع دکمه‌ها هم زمان مشخص "
+"نمی‌شوند "
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2383,9 +2383,8 @@ msgstr "پیکان «%s» برای عنصر <%s> قابل درک نیست"
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "<draw_ops> با نام «%s» تعریف نشده است"
 
-
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
-#, fuzzy, c-format
+#, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "گنجاندن draw_ops «%s» در اینجا، مرجع دوری ایجاد می‌کند"
 
@@ -2429,7 +2428,6 @@ msgstr "تابع «%s» برای دکمه نامعلوم است"
 msgid "Unknown state \"%s\" for button"
 msgstr "وضعیت «%s» برای دکمه نامعلوم است"
 
-
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
@@ -2455,7 +2453,6 @@ msgstr "«%s» مقدار معتبری برای مشخصه‌ی تمرکز نی�
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "«%s» مقدار معتبری برای مشخصه‌ی وضعیت نیست"
 
-
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
@@ -2470,7 +2467,6 @@ msgstr "عنصر <%s> مشخصه‌ی «resize» ندارد"
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "«%s» مقدار معتبری برای مشخصه‌ی تغییر اندازه نیست"
-
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2490,35 +2486,41 @@ msgstr "سبک، در حال حاضر، برای وضعیت %s تغییر اند
 msgid "Style has already been specified for state %s focus %s"
 msgstr "سبک، در حال حاضر، برای وضعیت %s تمرکز %s مشخص شده است"
 
-
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"عنصر <piece> نمی‌تواند دو draw_ops داشته باشد. "
+"(تم یک مشخصه‌ی draw_ops و یک عنصر  <draw_ops> یا دو عنصر مشخص کرده است) "
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"عنصر <button> نمی‌تواند دو draw_ops داشته باشد. "
+"(تم یک مشخصه‌ی draw_ops و یک عنصر  <draw_ops> یا دو عنصر مشخص کرده است) "
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"عنصر <menu_icon> نمی‌تواند دو draw_ops داشته باشد. "
+"(تم یک مشخصه‌ی draw_ops و یک عنصر  <draw_ops> یا دو عنصر مشخص کرده است) "
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "بیرونی‌ترین عنصر تم باید <metacity_theme> باشد نه <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "عنصر <%s> درون عنصرهای name یا  author یا date یا description جایز نیست"
+msgstr ""
+"عنصر <%s> درون عنصرهای name یا  author یا date یا description جایز نیست"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2534,7 +2536,7 @@ msgstr "عنصر <%s> درون عنصرهای disanceیا  border یا aspect_ra
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "عنصر <%s> داخل عنصر عملیات رسم مجاز نیست"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
@@ -2543,15 +2545,15 @@ msgstr "عنصر <%s> درون یک عنصر <%s> جایز نیست"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "draw_ops برای قطعه‌ی چارچوب منظور نشده است"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "draw_ops برای دکمه منظور نشده است"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "draw_ops برای شمایل منو منظور نشده است"
 
 #: src/theme-parser.c:4054
 #, c-format
@@ -2594,7 +2596,7 @@ msgstr "/پنجره‌ها"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "پنجره‌ها/کنده‌شدنی"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
@@ -2602,11 +2604,11 @@ msgstr "/پنجره‌ها/محاوره"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "پنجره‌ها/محاوره‌ی وجهی"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "پنجره‌ها/برنامه"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
@@ -2680,13 +2682,12 @@ msgid "Modal Dialog Box"
 msgstr "جعبه‌ی محاوره‌ی وجهی"
 
 #: src/theme-viewer.c:392
-#, fuzzy
 msgid "Utility Palette"
-msgstr "تخته‌رنگ برنامه‌های سودمند"
+msgstr "تخته‌رنگ برنامه‌"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "منوی کنده شدنی"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2695,7 +2696,7 @@ msgstr "حاشیه"
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr "آزمایش %d چیدمان دکمه‌ها"
+msgstr "آزمایش %Id چیدمان دکمه‌ها"
 
 #: src/theme-viewer.c:760
 #, c-format
@@ -2747,16 +2748,16 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%Id چارچوب در %Ig ثانیه‌ی سمت مخدوم (%Ig میلی ثانیه برای هر چارچوب) و "
-"%Ig ثانیه‌ی ساعت دیواری شامل منابع خادم X (%Ig میلی ثانیه برای هر چارچوب)\n"
+"%Id چارچوب در %Ig ثانیه‌ی سمت مخدوم (%Ig میلی ثانیه برای هر چارچوب) و %Ig "
+"ثانیه‌ی ساعت دیواری شامل منابع خادم X (%Ig میلی ثانیه برای هر چارچوب)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "آزمایش عبارت وضعیت، درست بازگرداند ولی خطا تنظیم کرد"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "آزمایش عبارت وضعیت، نادرست بازگرداند ولی خطایی تنظیم نکرد"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2841,8 +2842,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"در مشخصه‌ی رنگ GTK باید بعد از وضعیت، قلاب بسته داشته باشد، به طور مثال gtk:fg[NORMAL] "
-"که NORMAL وضعیت است: »%s» قابل تجزیه نیست"
+"در مشخصه‌ی رنگ GTK باید بعد از وضعیت، قلاب بسته داشته باشد، به طور مثال gtk:fg"
+"[NORMAL] که NORMAL وضعیت است: »%s» قابل تجزیه نیست"
 
 #: src/theme.c:1000
 #, c-format
@@ -2860,32 +2861,34 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"قالب ترکیب «blend/bg_color/fg_color/alpha» است، «%s» در قالب اندازه نمی‌شود"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "ارزش آلفای «%s» در رنگ ترکیب شده قابل تجزیه نیست"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "ارزش آلفای «%s» در رنگ ترکیب شده بین ۰٫۰ و ۱٫۰ نیست"
 
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
+"قالب سایه «shade/base_color/factor» است، «%s» در قالب اندازه نمی‌شود"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "‌عامل سایه‌ی «%s» در رنگ سایه خورده قابل تجزیه نیست"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "عامل سایه‌ی «%s» در رنگ سایه خورده منفی است"
 
 #: src/theme.c:1161
 #, c-format
@@ -2927,7 +2930,7 @@ msgstr "عبارت مختصاتی موجب تقسیم به صفر می‌شود"
 #: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "عبارت مختصاتی سعی دارد از عملگر باقی مانده روی عدد اعشاری ممیز شناوری استفاد کند"
 
 #: src/theme.c:1840
 #, c-format
@@ -2941,7 +2944,7 @@ msgstr "عبارت مختصاتی در جایی که انتظار عملگر "
 
 #: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "عبارت مختصاتی به جای عملوند با عملگر تمام می‌شود"
 
 #: src/theme.c:1867
 #, c-format
@@ -2949,34 +2952,37 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"در عبارت مختصاتی، عملگر «%c» بدون هیچ عملوندی به دنبال عملگر «%c» آمده است"
 
 #: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"تجزیه‌گر عبارت مختصاتی میانگیرش را سریز کرد، این واقعاً اشکال متاسیتی است، اما شما "
+"مطمئنید که به چنین عبارت بزرگی نیاز دارید؟"
 
 #: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "عبارت مختصاتی پرانتر بسته‌ای دارد که پرانتز باز ندارد"
 
 #: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "عبارت مختصاتی متغییر یا ثابت «%s» نامعلوم دارد"
 
 #: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "عبارت مختصاتی پرانتر بازی دارد که پرانتز بسته ندارد"
 
 #: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "به نظر نمی‌رسد که عبارت مختصاتی عملگر یا عملوندی داشته باشد"
 
 #: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "تم شامل عبارت «%s» است که منجر به خطا می‌شود: %s\n"
 
 #: src/theme.c:3919
 #, c-format
@@ -2984,30 +2990,33 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>"
+"باید برای این سبک چارچوب مشخص شود"
 
 #: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> نبود"
 
 #: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "شکست در بارکردن تم «%s»: %s\n"
 
 #: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
 #: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "<%s> برای تم «%s» تنظیم نشده است"
 
 #: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
+msgstr "سبک جارچوب برای نوع پنجره «%s» در تم «%s» تنظیم نشده است، "
+"یک عنصر <window type=\"%s\" style_set=\"whatever\"/>  اضافه کنید"
 
 #: src/theme.c:4658
 #, c-format
@@ -3015,17 +3024,18 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> باید برای این تم مشخص شود "
 
 #: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgstr "ثابت‌هایی که کاربر تعریف کرده اسن باید با حروف بزرگ شروع شوند؛ «%s» این طور نیست "
 
 #: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "ثابت «%s» قبلاً تعریف شده است"
 
 #: src/util.c:93
 #, c-format
@@ -3035,12 +3045,12 @@ msgstr "شکست در بازکردن ثبت وقایع اشکال‌زدایی: 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "شکست در انجام fdopen() پرونده‌ی ثبتی %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "پرونده‌ی ثبتی %s باز شد\n"
 
 #: src/util.c:203
 msgid "Window manager: "
@@ -3061,15 +3071,18 @@ msgstr "خطای مدیر پنجره‌ها: "
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "برنامه  _NET_WM_PID %Ild جعلی تنظیم کرده است\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"پنجره %s  به جای تنظیم SM_CLIENT_ID روی پنجره‌ی WM_CLIENT_LEADER "
+"طبق ICCCM   آن را روی خودش تنظیم کرده است.\n"
+
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3078,12 +3091,14 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"پنجره‌ی %s یک راهنمای MWM تنظیم می‌کند که نشان می‌دهد امکان تغییر اندازه ندارد، اما "
+"اندازه‌ی حداقل را %Id × %Id و اندازه‌ی حداکثر را %Id × %Id تنظیم می‌کند؛ این منطقی نیست.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -3094,17 +3109,27 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"پنجره‌ی 0x%lx ویژگی %s را دارد که \n"
+"انتظار می‌رفت از نوع %s قالب %Id باشد\n"
+"اما از نوع %s قالب %Id  n_items %Id بود.\n"
+"این به احتمال زیاد اشکال برنامه است نه اشکال مدیر پنجره‌ها.\n"
+"در این پنجره  title=«%s» class=«%s» name=«%s» است\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
+"ویژگی %s روی پنجره‌ی 0x%lx UTf-8 نامعتبر دارد\n"
 
 #: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"ویژگی %s روی پنجره‌ی 0x%lx برای مورد %Id در فهرست، UTf-8 نامعتبر دارد\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "قرار دادن در همه‌ی فضاهای کاری"
 
 #~ msgid "Move to %s"
 #~ msgstr "نقل‌مکان به %s"
