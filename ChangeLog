@@ -1,3 +1,10 @@
+2004-01-09  Calum Benson  <calum.benson@sun.com>
+
+	* src/themes/Atlanta/metacity-theme-1.xml:
+
+	Ensure Atlanta window buttons get larger when using large
+	print themes.
+
 2003-01-04  Rob Adams  <readams@readams.net>
 
 	Maintain the button grab for sloppy and mouse focus all the time.
