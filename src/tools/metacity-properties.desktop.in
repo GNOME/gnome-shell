@@ -1,8 +1,0 @@
-[Desktop Entry]
-_Name=Window Focus
-_Comment=Select how to give focus to windows
-Exec=metacity-properties
-Icon=metacity-properties.png
-Terminal=0
-Type=Application
-Categories=Application;Settings;

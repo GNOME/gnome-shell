@@ -1,3 +1,17 @@
+2004-12-07  Alex Duggan  <aldug@astrolinux.com>
+
+	* configure.in:
+	* src/tools/Makefile.am:
+	
+	Remove deprecated capplet from GNOME 2.0
+	
+	* src/tools/metacity-properties.c:
+	* src/tools/metacity-properties.desktop.in:
+	* src/tools/metacity-properties.glade:
+	* src/tools/metacity-properties.png:
+	
+	Removed from cvs
+	
 2004-11-01  Elijah Newren  <newren@math.utah.edu>
 
 	* NEWS: Metacity 2.9.1 unstable release

@@ -100,16 +100,6 @@ changequote([,])dnl
 
 METACITY_PC_MODULES='gtk+-2.0 >= 2.2.0 pango >= 1.2.0'
 
-AC_ARG_ENABLE(config-dialog,
-  AC_HELP_STRING([--enable-config-dialog],
-                 [enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)]),,
-  enable_config_dialog=no)
-
-AM_CONDITIONAL(BUILD_CONFIG_DIALOG, test x$enable_config_dialog = xyes)
-if test x$enable_config_dialog = xyes; then
-    AC_DEFINE(BUILD_CONFIG_DIALOG,1,[Build configuration dialog])
-fi
-
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
                  [disable gconf usage, for embedded/size-sensitive non-GNOME builds]),,
@@ -168,10 +158,6 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.2.0)
 PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.2.0)
-
-if test x$enable_config_dialog = xyes; then
-   PKG_CHECK_MODULES(METACITY_PROPS, gtk+-2.0 >= 2.2.0 gconf-2.0 >= 1.1.9 libglade-2.0)
-fi
 
 if $PKG_CONFIG --atleast-version 1.2.0 pangoxft; then
    echo "pangoxft found"
@@ -508,7 +494,6 @@ metacity-$VERSION:
 	Resize-and-rotate:        ${found_randr}
 	Xsync:                    ${found_xsync}
 	Render:                   ${have_xrender}
-        Deprecated config dialog: ${enable_config_dialog}
 "
 echo "This is the UNSTABLE branch of metacity"
 echo "Use 2.8.x (where x > 5) for stable (gnome-2-8 branch in CVS)"
