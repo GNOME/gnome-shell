@@ -5311,7 +5311,7 @@ meta_window_update_struts (MetaWindow *window)
           new_has_struts = TRUE;
           new_left.width = (int) struts[0] + MIN (0, gap/2);
           new_right.width = (int) struts[1] + MIN (0, gap/2);
-          gap = window->screen->width - struts[0] - struts[1];
+          gap = window->screen->height - struts[2] - struts[3];
           gap -= MIN_EMPTY;
           new_top.height = (int)struts[2] + MIN (0, gap/2);
           new_bottom.height = (int)struts[3] + MIN (0, gap/2);
@@ -5364,7 +5364,7 @@ meta_window_update_struts (MetaWindow *window)
               new_has_struts = TRUE;
               new_left.width = (int) struts[0] + MIN (0, gap/2);
               new_right.width = (int) struts[1] + MIN (0, gap/2);
-              gap = window->screen->width - struts[0] - struts[1];
+              gap = window->screen->height - struts[2] - struts[3];
               gap -= MIN_EMPTY;
               new_top.height = (int)struts[2] + MIN (0, gap/2);
               new_bottom.height = (int)struts[3] + MIN (0, gap/2);

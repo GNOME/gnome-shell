@@ -1,5 +1,10 @@
 2004-08-15  Rob Adams  <readams@readams.net>
 
+	* src/windows.c (meta_window_update_struts): use height and
+	top/bottom struts to compute gap (copy/paste bug).
+
+2004-08-15  Rob Adams  <readams@readams.net>
+
 	* src/window.c (meta_window_update_struts): Allow struts larger
 	than 1/2 the screen width/height, as long as there's a minimum
 	sized gap between them.  Patch from Bill Haneman <billh@gnome.org>
