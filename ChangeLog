@@ -1,3 +1,9 @@
+2003-06-20  Rob Adams  <robadams@ucla.edu>
+
+	* src/window.c (meta_window_unmaximize): Update grab state when we
+	unmaximize so double-clicking doesn't cause weird window-jumping
+	problems.  See #116292.
+
 2003-06-29  Rob Adams  <robadams@ucla.edu>
 
 	* src/constraints.c (meta_window_constrain): Actually maximize

@@ -1855,6 +1855,17 @@ meta_window_unmaximize (MetaWindow  *window)
       
       window->maximized = FALSE;
 
+      /* When we unmaximize, if we're doing a mouse move also we could
+       * get the window suddenly jumping to the upper left corner of
+       * the workspace, since that's where it was when the grab op
+       * started.  So we need to update the grab state.
+       */
+      if (meta_grab_op_is_moving (window->display->grab_op) &&
+          window->display->grab_window == window)
+        {
+          window->display->grab_initial_window_pos = window->saved_rect;
+        }
+
       meta_window_move_resize (window,
                                TRUE,
                                window->saved_rect.x,
