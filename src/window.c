@@ -1638,11 +1638,7 @@ meta_window_show (MetaWindow *window)
             }
         }
 
-      /* In sloppy focus, new windows aren't focused unless
-       * they are under the pointer.
-       */
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
-          window_takes_focus_on_map (window))
+      if (window_takes_focus_on_map (window))
         {                
           meta_window_focus (window,
                              meta_display_get_current_time (window->display));

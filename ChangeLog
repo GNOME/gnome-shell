@@ -1,5 +1,10 @@
 2003-01-05  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_show): focus new windows even in 
+	mouse focus mode, #89981, patch from readams@hmc.edu
+
+2003-01-05  Havoc Pennington  <hp@pobox.com>
+
 	* src/workspace.c (meta_workspace_get_neighbor): redo using new
 	calc_workspace_layout to fix #98302
 	
