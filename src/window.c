@@ -672,9 +672,15 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
+
+  /* disable show desktop mode unless we're a desktop component */
+  if (window->display->showing_desktop &&
+      window->type != META_WINDOW_DESKTOP &&
+      window->type != META_WINDOW_DOCK)
+    meta_display_unshow_desktop (window->display);
   
   meta_window_queue_calc_showing (window);
-
+  
   meta_display_ungrab (display);
   
   return window;

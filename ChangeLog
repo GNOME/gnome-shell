@@ -1,5 +1,12 @@
 2002-05-11  Havoc Pennington  <hp@pobox.com>
 
+	* src/main.c: include locale.h, fix from Hidetoshi Tajima
+
+	* src/window.c (meta_window_new): disable show desktop mode when a
+	new window is managed.
+
+2002-05-11  Havoc Pennington  <hp@pobox.com>
+
 	* src/fixedtip.c (meta_fixed_tip_show): keep the tooltip 
 	on the screen horizontally, #76825
 

@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <locale.h>
 
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
