@@ -1383,14 +1383,22 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
   /* set/unset the prelight cursor */
   meta_core_set_screen_cursor (gdk_display,
                                frame->xwindow,
-                               cursor);
-  
-  /* Only prelight buttons */
-  if (control != META_FRAME_CONTROL_MENU &&
-      control != META_FRAME_CONTROL_MINIMIZE &&
-      control != META_FRAME_CONTROL_MAXIMIZE &&
-      control != META_FRAME_CONTROL_DELETE)
-    control = META_FRAME_CONTROL_NONE;
+                               cursor);  
+
+  switch (control)
+    {
+    case META_FRAME_CONTROL_MENU:
+    case META_FRAME_CONTROL_MINIMIZE:
+    case META_FRAME_CONTROL_MAXIMIZE:
+    case META_FRAME_CONTROL_DELETE:
+    case META_FRAME_CONTROL_UNMAXIMIZE:
+      /* leave control set */
+      break;
+    default:
+      /* Only prelight buttons */
+      control = META_FRAME_CONTROL_NONE;
+      break;
+    }      
 
   if (control == frame->prelit_control)
     return;
@@ -1537,6 +1545,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRELIGHT;
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
+    case META_FRAME_CONTROL_UNMAXIMIZE:
       button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
       break;
     case META_FRAME_CONTROL_DELETE:
@@ -1561,9 +1570,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
             META_BUTTON_STATE_PRESSED;
           break;
         case META_GRAB_OP_CLICKING_MAXIMIZE:
-          button_states[META_BUTTON_TYPE_MAXIMIZE] =
-            META_BUTTON_STATE_PRESSED;
-          break;
         case META_GRAB_OP_CLICKING_UNMAXIMIZE:
           button_states[META_BUTTON_TYPE_MAXIMIZE] =
             META_BUTTON_STATE_PRESSED;
