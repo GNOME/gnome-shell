@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-22 15:08-0400\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-07-22 14:42-0300\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: GNOME-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter o nome da máquina: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição '%s' do X Window System\n"
@@ -869,13 +869,14 @@ msgstr ""
 "configuração ser executado."
 
 #: src/metacity.schemas.in.h:86
+#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que executa o comando com número correspondente em /"
 "apps/metacity/keybinding_commands. O formato é semelhante a \"&lt;Control&gt;"
@@ -885,10 +886,11 @@ msgstr ""
 "\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:87
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -901,10 +903,11 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:88
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -917,12 +920,13 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:89
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho à esquerda da "
@@ -933,12 +937,13 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:90
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho à direita da "
@@ -949,11 +954,12 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:91
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 1. O formato é "
@@ -964,11 +970,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:92
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 10. O formato é "
@@ -979,11 +986,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:93
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 11. O formato é "
@@ -994,11 +1002,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:94
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 12. O formato é "
@@ -1009,11 +1018,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:95
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 2. O formato é "
@@ -1024,11 +1034,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:96
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 3. O formato é "
@@ -1039,11 +1050,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:97
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 4. O formato é "
@@ -1054,11 +1066,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:98
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 5. O formato é "
@@ -1069,11 +1082,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:99
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 6. O formato é "
@@ -1084,11 +1098,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:100
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 7. O formato é "
@@ -1099,11 +1114,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:101
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 8. O formato é "
@@ -1114,11 +1130,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:102
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas que alterna para a área de trabalho 9. O formato é "
@@ -1129,11 +1146,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:103
+#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para ativar o menu da janela. O formato é "
@@ -1144,11 +1162,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:104
+#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para fechar uma janela. O formato é semelhante "
@@ -1158,13 +1177,14 @@ msgstr ""
 "string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:105
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para entrar em \"modo de movimentação\" e "
 "começar a mover uma janela usando o teclado. O formato é semelhante a \"&lt;"
@@ -1174,10 +1194,11 @@ msgstr ""
 "especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:106
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1190,10 +1211,11 @@ msgstr ""
 "string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:107
+#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1206,11 +1228,12 @@ msgstr ""
 "especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:108
+#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para maximizar uma janela. O formato é "
@@ -1221,11 +1244,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para minimizar uma janela. O formato é "
@@ -1236,9 +1260,10 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:110
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
+"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
 "fairly liberal and allows lower or upper case, and also abbreviations such "
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
@@ -1252,13 +1277,14 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:111
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "A vinculação de teclas usada para mover uma janela uma área de trabalho à "
 "esquerda. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
@@ -1268,13 +1294,14 @@ msgstr ""
 "vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:112
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "A vinculação de teclas usada para mover uma janela uma área de trabalho à "
 "direita. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
@@ -1284,9 +1311,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:113
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1299,9 +1327,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:114
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1314,9 +1343,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:115
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1329,9 +1359,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:116
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1344,9 +1375,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:117
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1359,9 +1391,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:118
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1374,9 +1407,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:119
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1389,9 +1423,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:120
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1404,9 +1439,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:121
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1419,9 +1455,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:122
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1434,9 +1471,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:123
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1449,9 +1487,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:124
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1464,9 +1503,10 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:125
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1479,10 +1519,11 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:126
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1495,10 +1536,11 @@ msgstr ""
 "especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:127
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1511,14 +1553,15 @@ msgstr ""
 "especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:128
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco na direção contrária entre "
 "janelas sem uma janela popup. O formato é semelhante a \"&lt;Control&gt;a\" "
@@ -1528,14 +1571,15 @@ msgstr ""
 "\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:129
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco na direção contrária entre "
 "janelas usando uma janela popup. O formato é semelhante a \"&lt;Control&gt;a"
@@ -1545,13 +1589,14 @@ msgstr ""
 "\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:130
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre painéis e o desktop, "
 "usando uma janela popup. O formato é semelhante a \"&lt;Control&gt;a\" ou "
@@ -1561,13 +1606,14 @@ msgstr ""
 "haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:131
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre painéis e o desktop, "
 "sem uma janela popup. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;"
@@ -1577,13 +1623,14 @@ msgstr ""
 "vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre janelas sem uma "
@@ -1596,13 +1643,14 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:133
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre janelas usando uma "
@@ -1614,10 +1662,11 @@ msgstr ""
 "string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:134
+#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1631,11 +1680,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:135
+#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o modo de tela inteira. O formato "
@@ -1646,11 +1696,12 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:136
+#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar a maximização. O formato é "
@@ -1661,9 +1712,10 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:137
+#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1676,12 +1728,13 @@ msgstr ""
 "vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:138
+#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar entre a exibição da janela em "
@@ -1692,11 +1745,12 @@ msgstr ""
 "especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:139
+#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para desmaximizar uma janela. O formato é "
@@ -1707,10 +1761,11 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:140
+#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1723,10 +1778,11 @@ msgstr ""
 "de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:141
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1739,13 +1795,14 @@ msgstr ""
 "\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:142
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "A vinculação de teclas que inicia o programa de captura de tela do painel. O "
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -1755,9 +1812,10 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:143
+#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1813,15 +1871,16 @@ msgid "The window screenshot command"
 msgstr "O comando para captura de janela"
 
 #: src/metacity.schemas.in.h:150
+#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
 "windows. If the window is already fully visible, it lowers the window below "
 "other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Esta vinculação de teclas alterna entre o posicionamento da janela acima ou "
 "abaixo de outras janelas. Se a janela estiver coberta por outra, ela será "
@@ -1834,9 +1893,10 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:151
+#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1849,9 +1909,10 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:152
+#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1864,10 +1925,11 @@ msgstr ""
 "para essa ação."
 
 #: src/metacity.schemas.in.h:153
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1880,10 +1942,11 @@ msgstr ""
 "vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:154
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -2032,12 +2095,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A tela %d na exibição '%s' é inválida\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2046,7 +2109,7 @@ msgstr ""
 "A tela %d na exibição \"%s\" já possui um gerenciador de janelas; tente usar "
 "a opção --replace para substituir o gerenciador de janelas atual.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2054,12 +2117,12 @@ msgstr ""
 "Não foi possível obter a seleção do gerenciador de janelas na exibição \"%2$s"
 "\" da tela %1$d\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A tela %d na exibição \"%s\" já possui um gerenciador de janelas\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Não foi possível liberar a tela %d na exibição \"%s\"\n"
@@ -3202,7 +3265,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "A aplicação definiu um _NET_WM_PID %ld inválido\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3218,7 +3281,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

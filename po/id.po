@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-04 17:03+0700\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2003-06-26 22:41+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Gagal mendapatkan alamat host: %s\n"
 
-#: src/display.c:297
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka tampilan X Window System '%s'\n"
@@ -146,7 +146,7 @@ msgstr ""
 #: src/main.c:443
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Gagal memeriksa direktori tema: %s\n" 
+msgstr "Gagal memeriksa direktori tema: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -215,29 +215,29 @@ msgstr "Pindahkan jendela ini ke area kerja sebelah kanan"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Pindahkan jendela ini ke area kerja atas" 
+msgstr "Pindahkan jendela ini ke area kerja atas"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Pindahkan jendela ini ke area kerja bawah" 
+msgstr "Pindahkan jendela ini ke area kerja bawah"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Area kerja 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Area Kerja %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr "Pindahkan jendela ini ke area kerja _lain" 
+msgstr "Pindahkan jendela ini ke area kerja _lain"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -361,7 +361,7 @@ msgstr ""
 "Window ini tidak bisa \"menyimpan setingan aktif saat ini\" dan bila login "
 "kali lain Anda harus menjalankan ulang."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -441,7 +441,8 @@ msgstr ""
 "Alt;&gt; atau \"&lt;Super&gt;\""
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
+#, fuzzy
+msgid "Close window"
 msgstr "Tutup window"
 
 #: src/metacity.schemas.in.h:10
@@ -503,10 +504,10 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
-"Pilih jika ingin metacity memberi reaksi yang lebih sedikit dan "
-"melakukan manipulasi langsung dengan menggunakan bingkai kawat, tidak "
-"menjalankan animasi, dan sebagainya. Ini berarti akan kurang berdaya guna "
-"menurut sebagian pemakai, tapi cukup baik pada kondisi-kondisi tertentu."
+"Pilih jika ingin metacity memberi reaksi yang lebih sedikit dan melakukan "
+"manipulasi langsung dengan menggunakan bingkai kawat, tidak menjalankan "
+"animasi, dan sebagainya. Ini berarti akan kurang berdaya guna menurut "
+"sebagian pemakai, tapi cukup baik pada kondisi-kondisi tertentu."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -527,20 +528,23 @@ msgstr ""
 "Juga klik yang berasal dari klik tidak akan diberikan pada jendla milik "
 "aplikasi lain. Keberadaan setting ini patut dipertanyakan. Namun ini lebih "
 "baik ketimbang membuatkan setting untuk semua detil spesifik pada modus "
-"aplikasi vs modus jendela, misalnya menentukan apakah harus membagi fokus via "
-"klik. Lagipula mode aplikasi belum selesai diimplementasikan secara penuh "
-"pada saat ini."
+"aplikasi vs modus jendela, misalnya menentukan apakah harus membagi fokus "
+"via klik. Lagipula mode aplikasi belum selesai diimplementasikan secara "
+"penuh pada saat ini."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Pilih jika Anda mementingkan penggunaan memori yang lebih kecil dari pada daya guna"
+msgstr ""
+"Pilih jika Anda mementingkan penggunaan memori yang lebih kecil dari pada "
+"daya guna"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
 msgstr "Turunkan jendela di bawah jendela lain"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
+#, fuzzy
+msgid "Maximize window"
 msgstr "Maksimalkan ukuran jendela"
 
 #: src/metacity.schemas.in.h:24
@@ -552,7 +556,8 @@ msgid "Maximize window vertically"
 msgstr "Maksimalkan ukuran jendela secara vertikal"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
+#, fuzzy
+msgid "Minimize window"
 msgstr "Kecilkan jendela"
 
 #: src/metacity.schemas.in.h:27
@@ -561,40 +566,41 @@ msgstr ""
 "Tombol yang digunakan untuk menjalankan suatu perintah apabila jendela diklik"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Pindahkan jendela"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Pindahkan langsung ke belakang antara panel dan desktop"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Pindahkan ke belakang antara  panel dan desktop dengan popup"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Pindahkan langsung ke belakang antara window"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Pindahkan langsung antara panel dan desktop"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Pindahkan antara panel dan desktop dengan popup"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
-msgstr "Pindahkan langsung antara jendela-jendela" 
+msgstr "Pindahkan langsung antara jendela-jendela"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Pindahkan antara jendela dengan popup"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "Pindahkan fokus ke belakang antara jendela dengan menampilkan popup"
+
+#: src/metacity.schemas.in.h:36
+#, fuzzy
+msgid "Move window"
+msgstr "Pindahkan jendela"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -687,7 +693,8 @@ msgid "Raise window above other windows"
 msgstr "Naikan jendela ini di atas jendela-jendela lain"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
+#, fuzzy
+msgid "Resize window"
 msgstr "Rubah ukuran jendela"
 
 #: src/metacity.schemas.in.h:59
@@ -699,7 +706,8 @@ msgid "Show the panel menu"
 msgstr "Tampilkan menu panel"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
+#, fuzzy
+msgid "Show the panel run application dialog"
 msgstr "Tampilkkan kotak dialog panel untuk menjalankan aplikasi"
 
 #: src/metacity.schemas.in.h:62
@@ -818,14 +826,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Menentukan cara Metacity menyajikan indikasi visual saat bel sistem "
-"atau aplikasi sedang dibunyikan. Ada dua cara yang digunakan, yaitu "
-"\"fullscreen\"yang akan menampilkan kilatan hitam putih di seluruh area "
-"layar, dan \"frame_flash\"yang akan menampikan kilatan pada kotak judul "
-"window aplikasi yang membunyikan bel.Jika tidak diketahui aplikasi mana yang "
-"membunyikan bel (biasanya karena inimerupakan bel sistem standar) maka "
-"kilatan akan ditampilkan pada kotak judul window yang sedang memiliki fokus "
-"saat ini."
+"Menentukan cara Metacity menyajikan indikasi visual saat bel sistem atau "
+"aplikasi sedang dibunyikan. Ada dua cara yang digunakan, yaitu \"fullscreen"
+"\"yang akan menampilkan kilatan hitam putih di seluruh area layar, dan "
+"\"frame_flash\"yang akan menampikan kilatan pada kotak judul window aplikasi "
+"yang membunyikan bel.Jika tidak diketahui aplikasi mana yang membunyikan bel "
+"(biasanya karena inimerupakan bel sistem standar) maka kilatan akan "
+"ditampilkan pada kotak judul window yang sedang memiliki fokus saat ini."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -855,13 +862,14 @@ msgstr ""
 "menentukan kombinasi tombol untuk menjalankan perintah ini."
 
 #: src/metacity.schemas.in.h:86
+#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol yang menjalankan perintah yang sesuai dengan nomor "
 "panggilnya pada /apps/metacity/keybinding_commands. Format penulisannya "
@@ -873,10 +881,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:87
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -890,10 +899,11 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:88
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -907,12 +917,13 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:89
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace yang ada di sebelah "
@@ -924,12 +935,13 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:90
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace yang ada di sebelah "
@@ -941,11 +953,12 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:91
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 1. Format "
@@ -957,11 +970,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:92
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 10. Format "
@@ -973,11 +987,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:93
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 11. Format "
@@ -989,11 +1004,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:94
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 12. Format "
@@ -1005,11 +1021,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:95
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 2. Format "
@@ -1021,11 +1038,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:96
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 3. Format "
@@ -1037,11 +1055,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:97
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 4. Format "
@@ -1053,11 +1072,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:98
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 5. Format "
@@ -1069,11 +1089,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:99
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 6. Format "
@@ -1085,11 +1106,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:100
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 7. Format "
@@ -1101,11 +1123,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:101
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 8. Format "
@@ -1117,11 +1140,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:102
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengganti workspace ke workspace nomor 9. Format "
@@ -1133,11 +1157,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:103
+#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengaktifkan menu window. Format penulisannya seperti "
@@ -1148,11 +1173,12 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:104
+#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk menutup window. Format penulisannya seperti \"&lt;"
@@ -1163,13 +1189,14 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:105
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengaktifkan \"modus perpindahan\" dan Anda bisa "
 "memindahkan window menggunakan panah di keyboard. Format penulisannya "
@@ -1181,10 +1208,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:106
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1199,10 +1227,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:107
+#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1217,11 +1246,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:108
+#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk memaksimalkan ukuran window. Format penulisannya "
@@ -1233,11 +1263,12 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengecilkan window hingga minimal. Format "
@@ -1249,9 +1280,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:110
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
+"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
 "fairly liberal and allows lower or upper case, and also abbreviations such "
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
@@ -1266,13 +1298,14 @@ msgstr ""
 "kombinasi tombol."
 
 #: src/metacity.schemas.in.h:111
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Kombinasi tombol untuk memindahkan window ke workspace sebelah kiri. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -1283,13 +1316,14 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:112
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Kombinasi tombol untuk memindahkan window ke workspace sebelah kanan. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -1300,9 +1334,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:113
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1316,9 +1351,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:114
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1332,9 +1368,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:115
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1348,9 +1385,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:116
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1364,9 +1402,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:117
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1380,9 +1419,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:118
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1396,9 +1436,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:119
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1412,9 +1453,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:120
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1428,9 +1470,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:121
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1444,9 +1487,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:122
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1460,9 +1504,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:123
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1476,9 +1521,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:124
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1492,9 +1538,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:125
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1508,10 +1555,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:126
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1525,10 +1573,11 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:127
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1542,14 +1591,15 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:128
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk memindahkan fokus ke belakang antara window tanpa "
 "menampilkan window popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
@@ -1562,14 +1612,15 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:129
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk memindahkan fokus ke belakang antara window dengan "
 "menampilkan window popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
@@ -1582,13 +1633,14 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:130
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus antara panel dan window dengan "
 "menampilkan window popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
@@ -1599,13 +1651,14 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:131
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus antara panel dan window tanpa "
 "menampilkan window popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
@@ -1616,13 +1669,14 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus antara window tanpa menampilkan "
@@ -1636,13 +1690,14 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:133
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus antara window dengan menampilkan "
@@ -1656,28 +1711,30 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:134
+#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk togel apakah jendela diletakkan selalu di atas "
-"atau tidak. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat "
-"fleksibel dan memperbolehkan digunakannya huruf besar dan huruf kecil, juga "
-"memperbolehkan digunakannya singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;"
-"Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka perintah ini "
-"tidak memiliki kombinasi tombol."
+"Kombinasi tombol untuk togel apakah jendela diletakkan selalu di atas atau "
+"tidak. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat fleksibel dan "
+"memperbolehkan digunakannya huruf besar dan huruf kecil, juga memperbolehkan "
+"digunakannya singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan "
+"apabila Anda menuliskan kata \"disabled\" maka perintah ini tidak memiliki "
+"kombinasi tombol."
 
 #: src/metacity.schemas.in.h:135
+#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk togel modus layar penuh. Format penulisannya seperti "
@@ -1688,11 +1745,12 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:136
+#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk togel ukuran window maksimum. Format penulisannya "
@@ -1704,9 +1762,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:137
+#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1720,12 +1779,13 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:138
+#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk togel apakah window diletakkan pada semua workspace "
@@ -1737,11 +1797,12 @@ msgstr ""
 "tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:139
+#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengembalikan ukuran window menjadi semula. Format "
@@ -1753,10 +1814,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:140
+#, fuzzy
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1770,10 +1832,11 @@ msgstr ""
 "kombinasi tombol."
 
 #: src/metacity.schemas.in.h:141
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1787,13 +1850,14 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:142
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Kombinasi tombol untuk menangkap screenshot. Format penulisannya seperti "
 "\"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
@@ -1803,9 +1867,10 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:143
+#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1861,15 +1926,16 @@ msgid "The window screenshot command"
 msgstr "Perintah screenshot pada window"
 
 #: src/metacity.schemas.in.h:150
+#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
 "windows. If the window is already fully visible, it lowers the window below "
 "other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk merubah apakah letak suatu window ada di bawah/atas "
 "window lain. Bila window tersebut ditutupi window lain, maka window tersebut "
@@ -1884,9 +1950,10 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:151
+#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1900,9 +1967,10 @@ msgstr ""
 "kombinasi tombol."
 
 #: src/metacity.schemas.in.h:152
+#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1916,10 +1984,11 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:153
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1933,10 +2002,11 @@ msgstr ""
 "tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:154
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1991,7 +2061,8 @@ msgstr ""
 "komputer dimatikan."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
+#, fuzzy
+msgid "Unmaximize window"
 msgstr "Kembalikan ukuran window kembali semula"
 
 #: src/metacity.schemas.in.h:163
@@ -2014,12 +2085,12 @@ msgstr "Jenis huruf yang dipakai pada judul window"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Key \"%s\" GConf tipenya salah\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2028,17 +2099,17 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
 "tombol mouse.\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Key GConf '%s' bernilai salah\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Tidak dapat membaca deskripsi font \"%s\" dari key GConf %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2047,7 +2118,7 @@ msgstr ""
 "%d yang ada pada key GConf %s berisi angka yang tidak lazim sebagai jumlah "
 "workspace, karena sudah ditentukan maksimumnya adlaah %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2055,18 +2126,18 @@ msgstr ""
 "Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. Mungkin "
 "nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d yang disimpan pada key GConf %s berada di luar jangkauan 0 hingga %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ada error saat mengeset jumlah workspace ke %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2075,7 +2146,7 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
 "kombinasi tombol \"%s\"\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
@@ -2085,12 +2156,12 @@ msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Layar %d pada tampilah '%s' tidak benar\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2099,7 +2170,7 @@ msgstr ""
 "Layar %d pada tampilan \"%s\" sudah memiliki manajer window. Cobalah gunakan "
 "pilihan --replace untuk mengganti manajer window yang aktif.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2107,89 +2178,80 @@ msgstr ""
 "Tidak dapat mendapatkan pilihan manajer window pada layar %d tampilan \"%s"
 "\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Layar %d pada tampilan \"%s\" sudah ada manajer windownya\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Layar %d pada display \"%s\" tidak dapat dilepas\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Gagal membuka koneksi ke manajer sesi akibatnya posisi window tidak akan "
-"disimpan: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Tidak dapat membuat direktori '%s': %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Tidak dapat menulis ke dalam  file sesi '%s': %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Ada error saat menulisi file sesi '%s': %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Ada error saat menutup file sesi '%s': %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Gagal saat membaca file sesi simpanan %s: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Gagal membaca file sesi simpanan: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Atribut <metacity_session> ada tapi session ID sudah ada sebelumnya"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atribut %s tidak dikenal pada elemen <metacity_session>"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "Ada tag <window> bersarang"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atribut %s tidak dikenal pada elemen <window>"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Atribut %s tidak dikenal pada elemen <maximized>"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atribut %s tidak dikenal pada elemen <geometry>"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemen %s tidak dikenal"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2838,7 +2900,7 @@ msgstr "Cara pakai: metacity-theme-viewer [NAMA TEMA]\n"
 #: src/theme-viewer.c:810
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Ada error saat membaca tema: %s\n" 
+msgstr "Ada error saat membaca tema: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
@@ -2876,8 +2938,8 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d frame dibuat dalam %g detik dalam waktu klien (%g milidetik per frame) dan "
-"%g detik dalam waktu sebenarnya (%g milidetik per frame)\n"
+"%d frame dibuat dalam %g detik dalam waktu klien (%g milidetik per frame) "
+"dan %g detik dalam waktu sebenarnya (%g milidetik per frame)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -3243,7 +3305,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikasi telah membuat _NET_WM_PID %ld bohongan\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3259,7 +3321,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3296,4 +3358,9 @@ msgid ""
 msgstr ""
 "Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
 
-
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Gagal membuka koneksi ke manajer sesi akibatnya posisi window tidak akan "
+#~ "disimpan: %s\n"

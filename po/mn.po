@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-01-03 15:09+0100\n"
 "Last-Translator: Sanlig Badral <Badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Хостын нэрийг олж чадсангүй: %s\n"
 
-#: src/display.c:297
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Цонхны системийн дэлгэц »%s« нээгдсэнгүй\n"
@@ -230,21 +230,21 @@ msgstr "Ажлын талбарын дээш зөө"
 msgid "Move to Workspace _Down"
 msgstr "Ажлын талбарын доош зөө"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Ажлын талбар %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Ажлын талбар 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Ажлын талбар %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Өөр _ажлын талбар руу зөө"
 
@@ -369,7 +369,7 @@ msgstr ""
 "Эдгээр цонхнууд одоогийн тохиргоонуудыг хадгалахад оролцохгүй бөгөөд "
 "дараагийн асаалтаар гараар шинээр эхлэх хэрэгтэй."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -447,7 +447,8 @@ msgstr ""
 "товчлуур)Modifier нь дараахи хэлбэрээр илэрхийлэгдэнэ »&lt;Alt&gt;«."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
+#, fuzzy
+msgid "Close window"
 msgstr "Цонх хаах"
 
 #: src/metacity.schemas.in.h:10
@@ -550,7 +551,8 @@ msgid "Lower window below other windows"
 msgstr "Цонхыг бусад цонхуудын цагуур шургуулах"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
+#, fuzzy
+msgid "Maximize window"
 msgstr "Цонхыг томсгох "
 
 #: src/metacity.schemas.in.h:24
@@ -562,7 +564,8 @@ msgid "Maximize window vertically"
 msgstr "Цонхыг босоо чигт томсгох "
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
+#, fuzzy
+msgid "Minimize window"
 msgstr "Цонхыг агшаах"
 
 #: src/metacity.schemas.in.h:27
@@ -570,40 +573,41 @@ msgid "Modifier to use for modified window click actions"
 msgstr "Сайжруулсан цонхон дээр товшиход хэрэглэгдэх туслах товчлуур"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Цонхыг зөөх"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Самбар ажлын талбар хоёрын хооронд ухрах"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Самбар ажлын талбар хоёрын хооронд ухрахдаа цонхны цэсийг үзүүлэх"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Цонхнуудын хооронд шууд ухарч очих"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Шууд самбар ажлын талбарын хооронд очих"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Самбар ажлын талбарын хооронд ухраахдаа цонхны цэсийг үзүүлэх"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Цонхнуудын хооронд шууд ухарч очих"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Цэсийг дэлгэж харуулсан байдлаар цонхнуудын хооронд очих"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "Цэсний туслалцаатайгаар цонхнуудын хооронд ухарч очих"
+
+#: src/metacity.schemas.in.h:36
+#, fuzzy
+msgid "Move window"
+msgstr "Цонхыг зөөх"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -697,7 +701,8 @@ msgid "Raise window above other windows"
 msgstr "Цонхыг бусад цонхны өмнө гаргах"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
+#, fuzzy
+msgid "Resize window"
 msgstr "Цонхны хэмжээг өөрчлөх"
 
 #: src/metacity.schemas.in.h:59
@@ -709,7 +714,8 @@ msgid "Show the panel menu"
 msgstr "Удирдах самбар харуулах"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
+#, fuzzy
+msgid "Show the panel run application dialog"
 msgstr "Самбарт ажиллуулах диалогийг харуулах"
 
 #: src/metacity.schemas.in.h:62
@@ -864,13 +870,14 @@ msgstr ""
 "оруулснаар command_window_screenshot гүйцэтгэгдэнэ."
 
 #: src/metacity.schemas.in.h:86
+#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
 msgstr ""
 "Харгалзсан дугаартай /apps/metacity/keybinding_commands командыг гүйцэтгэх "
 "товчлуурын комбинаци. Бичих хэлбэр нь »&lt;Control&gt;« эсвэл »&lt;Shift&gt;"
@@ -880,10 +887,11 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:87
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -897,10 +905,11 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:88
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -914,12 +923,13 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:89
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын зүүн талд нь "
@@ -930,12 +940,13 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:90
+#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын баруун талд нь "
@@ -946,11 +957,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:91
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 1-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -960,11 +972,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:92
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 10-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
@@ -974,11 +987,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:93
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 11-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
@@ -988,11 +1002,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:94
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 12-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
@@ -1002,11 +1017,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:95
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 2-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1016,11 +1032,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:96
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 3-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1030,11 +1047,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:97
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 4-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1044,11 +1062,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:98
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 5-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1058,11 +1077,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:99
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 6-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1072,11 +1092,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:100
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 7-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1086,11 +1107,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:101
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 8-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1100,11 +1122,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:102
+#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ажлын талбар 9-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
@@ -1114,11 +1137,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:103
+#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхны цэсийг идэвхжүүлж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
@@ -1128,11 +1152,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:104
+#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
@@ -1142,13 +1167,14 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:105
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "»Зөөх«-горимд шилжүүлэн цонхыг гарын (keyboard) тусламжтайгаар зөөж "
 "боломжтой болгодог товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« эсвэл "
@@ -1158,10 +1184,11 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:106
+#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1174,10 +1201,11 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:107
+#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1189,11 +1217,12 @@ msgstr ""
 "дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:108
+#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхны хэмжээг томсгох товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« "
@@ -1203,11 +1232,12 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхны хэмжээг багасгах товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« "
@@ -1217,9 +1247,10 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:110
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
+"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
 "fairly liberal and allows lower or upper case, and also abbreviations such "
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
@@ -1233,13 +1264,14 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:111
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Цонхны байршлыг нэг ажлын талбараар зүүн гар тийш зөөж шилжүүлэх товчлуурын "
 "комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
@@ -1249,13 +1281,14 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:112
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Цонхны байршлыг нэг ажлын талбараар баруун тийш зөөж шилжүүлэх товчлуурын "
 "комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
@@ -1265,9 +1298,10 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:113
+#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1280,9 +1314,10 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:114
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1294,9 +1329,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:115
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1308,9 +1344,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:116
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1322,9 +1359,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:117
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1336,9 +1374,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:118
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1350,9 +1389,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:119
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1364,9 +1404,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:120
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1378,9 +1419,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:121
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1392,9 +1434,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:122
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1406,9 +1449,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:123
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1420,9 +1464,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:124
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1434,9 +1479,10 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:125
+#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1448,10 +1494,11 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:126
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1464,10 +1511,11 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:127
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1480,14 +1528,15 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:128
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Popup цонхгүйгээр фокусыг ухраан ажлын цонхнуудын хооронд аваачих товчлуурын "
 "комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;"
@@ -1497,14 +1546,15 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:129
+#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
 "forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Popup цонх ашиглан фокусыг ухраан ажлын цонхнуудын хооронд аваачих "
 "товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;"
@@ -1514,13 +1564,14 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:130
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Popup цонхны тусламжтайгаар фокусыг самбар-ажлын талбар хоёрын хооронд "
 "аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
@@ -1530,13 +1581,14 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:131
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд "
 "аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
@@ -1546,13 +1598,14 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд "
@@ -1563,13 +1616,14 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:133
+#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
 "binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Popup цонхны тусламжтайгаар фокусыг цонхны хооронд аваачих товчлуурын "
@@ -1581,10 +1635,11 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:134
+#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1598,11 +1653,12 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:135
+#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Бүтэн дэлгэцийн горимд оруулж гаргах товчлуурын комбинаци. Хэлбэр нь  »&lt; "
@@ -1612,11 +1668,12 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:136
+#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхыг томсгох товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл "
@@ -1626,9 +1683,10 @@ msgstr ""
 "товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:137
+#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1640,12 +1698,13 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:138
+#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
 "Цонхыг бүх ажлын хавтгай дээр эсвэл бүгд дээр байршуулахад ашиглах "
@@ -1656,11 +1715,12 @@ msgstr ""
 "комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:139
+#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхыг хэмжээг багасгах товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« "
@@ -1670,10 +1730,11 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:140
+#, fuzzy
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1686,10 +1747,11 @@ msgstr ""
 "комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:141
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
@@ -1702,13 +1764,14 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:142
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Удирдах самбарын агшин дэлгэцийн хэрэгсэл дуудахад хэрэглэх товчилуурын "
 "хослол. Хэлбэр нь »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
@@ -1718,9 +1781,10 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:143
+#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1774,15 +1838,16 @@ msgid "The window screenshot command"
 msgstr "Цонхны агшин дэлгэц тушаал"
 
 #: src/metacity.schemas.in.h:150
+#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
 "windows. If the window is already fully visible, it lowers the window below "
 "other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
 msgstr ""
 "Цонхыг бусад цонхнуудын өмнүүр эсвэл араар нь байршуулахад ашиглах "
 "товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
@@ -1792,9 +1857,10 @@ msgstr ""
 "комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:151
+#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1807,9 +1873,10 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:152
+#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
@@ -1822,10 +1889,11 @@ msgstr ""
 "тавигдахгүй."
 
 #: src/metacity.schemas.in.h:153
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1838,10 +1906,11 @@ msgstr ""
 "комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:154
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1894,7 +1963,8 @@ msgstr ""
 "эсвэл маш чимээгүй орчинд ажилладаг эсвэл дүлий хүмүүст их тустай."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
+#, fuzzy
+msgid "Unmaximize window"
 msgstr "Цонхыг багасгах"
 
 #: src/metacity.schemas.in.h:163
@@ -1917,12 +1987,12 @@ msgstr "Цонхны нэрийн үсгийн хэв"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-key »%s«-д хүчингүй төрөл өгөгдсөн байна\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1931,17 +2001,17 @@ msgstr ""
 "Конфигурацийн сангаас олдсон »%s« утга нь хулганын товчлуурын сэлгүүрт "
 "тохирох утга биш\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-key »%s«-д хүчингүй утга өгөгдсөн байна\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Фонтын тайлбар »%s«-ыг GConf-key %s-с ялгаж чадсангүй\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1950,7 +2020,7 @@ msgstr ""
 "%d нь GConf-key %s дотор хадгалагдсан ба ажлын талбарын тоог үнэмшилтэйгээр "
 "төлөөлж чадахгүй; одоогоор максимум утга %d байна\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1958,18 +2028,18 @@ msgstr ""
 "Эвдрэлтэй х.программын Workarounds-ийг идэвхгүйжүүллээ. Магадгүй зарим х."
 "программууд буруу ажиллаж магадгүй.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "%d дээрхи ажлын талбарын тоог оруулахад алдаа гарлаа: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1977,7 +2047,7 @@ msgid ""
 msgstr ""
 "Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өөрчлөхөд алдаа гарлаа: %s\n"
@@ -1987,12 +2057,12 @@ msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өө�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d дэлгэц Display »%s« дээрх байгаа ба хүчингүй байна\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2002,7 +2072,7 @@ msgstr ""
 "байна; »--replace«-ийг сонгож одоо актуаль байгаа цонхны менежерийг сольж "
 "туршина уу\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2010,89 +2080,80 @@ msgstr ""
 "дэлгэц %d-ийн (Display »%s« дээрх ) цонхны менежерийн тэмдэглэл хүлээж "
 "авахад алдаа гарлаа\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d » (%s« джжрхи) цонхны менежертэй байна\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d нь »%s« дэлгэцэн дээр гаргагдаж чадсангүй\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Session manager-тэй холбоо тогтоож болоогүй учир цонхнуудын байрлалыг "
-"сануулж чадсангүй: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "»%s« каталог зохиож чадсангүй: %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Session файл »%s«-ийг шинэчилж бичихийн тулд нээж чадсангүй: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Session файл »%s«-ийг зохиоход алдаа гарлаа: %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Session »%s« файлыг хаахад алдаа гарлаа : %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Session %s файлыг боловсруулж уншиж болсонгүй: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Session файлыг боловсруулж хөрвүүлж болсонгүй: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Session ID идэвхтэй байгаа ч <metacity_session> аттрибут гарч ирлээ"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> элементэд үл таних аттрибут %s байна"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "үүрэн <window> элемент"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> элементэд үл таних аттрибут %s байна"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> элементэд үл таних аттрибут %s байна"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> элементэд үл таних аттрибут %s байна"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Үл таних элемент %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3158,7 +3219,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3180,7 +3241,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3216,3 +3277,10 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Session manager-тэй холбоо тогтоож болоогүй учир цонхнуудын байрлалыг "
+#~ "сануулж чадсангүй: %s\n"

@@ -1,3 +1,30 @@
+2.8.3
+==
+
+Some important bug fixes in this release, including somy a11y bugs,
+and a compile issue on Solaris.
+
+Thanks to Rob Adams, Bill Haneman, Peter O'Shea, Mike Castle, Soeren
+Sandman, Elijah Newren, and Havoc Pennington for fixes in this
+release.
+
+Fixes
+  * Adjust the MRU list when preventing focus stealing (Elijah)
+  * Ensure that we maintain a focus window when switching workspaces
+    in mouse focus mode (Elijah)
+  * Some improvements in the showing desktop mode, and window
+    activation (Elijah)
+  * Make sure cursors changes are handled correctly (Havoc, Soeren)
+  * Some fixes to the window menu (Rob)
+  * Fix a compile issue on Solaris (Peter, Mike)
+  * Allow struts to go past the middle of the screen, provided there's
+    a gap between them, fixing an issue with gnome magnifier (Bill)
+
+Translations
+  * fi (Pauli Virtanen), ja (Takeshi AIHANA), ko (Young-Ho, Cha), 
+    pl (Gnome PL Team), ru (Dmitry G. Mastrukov), sr (Danilo Å≈Å†egan),
+    tk (Gurban M. Tewekgeli), zh_CN (Funda Wang)
+
 2.8.2
 ===
 

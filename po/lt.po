@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-23 13:33+0300\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-07-23 14:20+0300\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -52,15 +52,15 @@ msgstr "Įvyko klaida skaitant duomenis iš dialogo išvedimo proceso: %s\n"
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Įvyko klaida paleidžiant metacity-dialog, klausiantį apie programos "
-"veikimo sustabdymą: %s\n"
+"Įvyko klaida paleidžiant metacity-dialog, klausiantį apie programos veikimo "
+"sustabdymą: %s\n"
 
 #: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepavyko gauti kompiuterio vardo: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atidaryti X Window sistemos ekrano '%s'\n"
@@ -144,8 +144,8 @@ msgstr ""
 "ir kitiems.\n"
 "Tai yra laisva programinė įranga; platinimo sąlygos yra aprašytos \n"
 "programos pradiniuose tekstuose.\n"
-"Nėra JOKIOS garantijos; net dėl PREKIAVIMO ar TAM TIKRO PANAUDOJIMO "
-"TIKSLO ATITIKIMO.\n"
+"Nėra JOKIOS garantijos; net dėl PREKIAVIMO ar TAM TIKRO PANAUDOJIMO TIKSLO "
+"ATITIKIMO.\n"
 
 #: src/main.c:443
 #, c-format
@@ -493,16 +493,16 @@ msgid ""
 "specified by the auto_raise_delay key)."
 msgstr ""
 "Jei reikšmė teigiama, o aktyvavimo režimas yra \"sloppy\" arba \"mouse\", "
-"tada aktyvuojamas langas bus automatiškai iškeltas po nustatytos "
-"uždelsimo pauzės (uždelsimas nustatomas auto_raise_delay požymiu)."
+"tada aktyvuojamas langas bus automatiškai iškeltas po nustatytos uždelsimo "
+"pauzės (uždelsimas nustatomas auto_raise_delay požymiu)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Jei reikšmė teigiamaa, nekreipti dėmesio į titlebar_font požymį ir "
-"naudoti įprastą darbo aplinkos šriftą skirtą langų antraštėms."
+"Jei reikšmė teigiamaa, nekreipti dėmesio į titlebar_font požymį ir naudoti "
+"įprastą darbo aplinkos šriftą skirtą langų antraštėms."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -2034,12 +2034,12 @@ msgstr "Įvyko klaida pervadinant darbo lauką %d į „%s“: %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje '%s' yra nepriimtinas\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2048,19 +2048,19 @@ msgstr ""
 "Ekranas %d vaizduoklyje „%s“ jau turi langų tvarkyklę; pabandykite "
 "pasinaudoti --replace raktu kad pakeisti esamą langų tvarkyklę.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nepavyko aptikti langų tvarkyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų tvarkyklę\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
@@ -3203,7 +3203,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programa nustatė apgaulingą _NET_WM_PID %ld požymį\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3219,7 +3219,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

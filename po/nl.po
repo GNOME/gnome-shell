@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-27 15:08+0200\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-07-27 18:02+0100\n"
 "Last-Translator: Michiel Sikkes <michiel@eyesopened.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -2011,12 +2011,12 @@ msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2025,19 +2025,19 @@ msgstr ""
 "Scherm %d op display \"%s\" heeft al een windowmanager; probeer de optie: --"
 "replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon windowmanager-selectie niet verkrijgen op scherm %d display \"%s\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
@@ -3179,7 +3179,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3195,7 +3195,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

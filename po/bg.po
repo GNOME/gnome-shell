@@ -9,13 +9,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-26 04:43+0200\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-07-26 16:34+0300\n"
 "Last-Translator: Rostislav Raykov <zbrox@i-space.org>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Не успях да получа името на хоста: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не успях да отворя дисплея на X Window \"%s\"\n"
@@ -465,8 +465,9 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
-"Определя дали програми или системата може да генерират звукови \"бибиткания\";"
-"може да се използва наедно с \"визуален звънец\", за да се позволят тихи \"бибиткания\"."
+"Определя дали програми или системата може да генерират звукови \"бибиткания"
+"\";може да се използва наедно с \"визуален звънец\", за да се позволят тихи "
+"\"бибиткания\"."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -508,11 +509,11 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
-"Ако е включено, metacity ще даде на потребителя по-малко обратна връзка и по-малко "
-"усещане за \"директна манипулация\", като се използват wireframes, избягват се анимации, или чрез "
-"други средства. Това е значимо намаление на използваемостта за много потребители, но може "
-"да позволи на специфични програми и терминални сървъри да работят, което иначе би било"
-"невъзможно."
+"Ако е включено, metacity ще даде на потребителя по-малко обратна връзка и по-"
+"малко усещане за \"директна манипулация\", като се използват wireframes, "
+"избягват се анимации, или чрез други средства. Това е значимо намаление на "
+"използваемостта за много потребители, но може да позволи на специфични "
+"програми и терминални сървъри да работят, което иначе би билоневъзможно."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -539,7 +540,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Ако е включено, се жертва част от използваемостта за повече свободни ресурси"
+msgstr ""
+"Ако е включено, се жертва част от използваемостта за повече свободни ресурси"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -850,8 +852,8 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Ключа /apps/metacity/global_keybindings/run_command_screenshot определя бързия клавиш, "
-"който при натискането си пуска указаната програма."
+"Ключа /apps/metacity/global_keybindings/run_command_screenshot определя "
+"бързия клавиш, който при натискането си пуска указаната програма."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -859,8 +861,8 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Ключа /apps/metacity/global_keybindings/run_command_windows_screenshot определя бързия клавиш, "
-"който при натискането си пуска указаната програма."
+"Ключа /apps/metacity/global_keybindings/run_command_windows_screenshot "
+"определя бързия клавиш, който при натискането си пуска указаната програма."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -1875,9 +1877,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"Включва визуална индикация, когато програма или системата се обърнат към \"звънец\" "
-"или \"бибиткане\"; полезно при хора със затруднен слух и при шумно обкръжение, или "
-"когато \"звуковия звънец\" е изключен."
+"Включва визуална индикация, когато програма или системата се обърнат към "
+"\"звънец\" или \"бибиткане\"; полезно при хора със затруднен слух и при "
+"шумно обкръжение, или когато \"звуковия звънец\" е изключен."
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize window"
@@ -1973,12 +1975,12 @@ msgstr "Грешка при задаване на името на работно
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екранът %d на дисплей '%s' е невалиден\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1987,7 +1989,7 @@ msgstr ""
 "Екранът %d на дисплей \"%s\" вече има мениджър на прозорци; пробвайте с "
 "опцията --replace да го замените.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1995,12 +1997,12 @@ msgstr ""
 "Не успях да получа избрания мениджър за прозорци на екран %d, дисплей \"%s"
 "\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплей \"%s\" вече има мениджър за прозорци\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не успях да отстъпя екран %d на дисплей \"%s\"\n"
@@ -3124,7 +3126,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3140,7 +3142,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

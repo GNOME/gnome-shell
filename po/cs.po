@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-23 15:31+0200\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-07-23 19:42+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -57,7 +57,7 @@ msgstr "Chyba při spouštění metacity-dialog pro dotaz o zabití aplikace: %s
 msgid "Failed to get hostname: %s\n"
 msgstr "Nemohu získat jméno počítače: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nemohu otevřít displej X Window System '%s'\n"
@@ -944,7 +944,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Klávesová zkratka, která přepne na pracovní plochu 10. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Klávesová zkratka, která přepne na pracovní plochu 10. Formát je jako \"&lt;"
+"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
+"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
+"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
+"tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -1458,7 +1463,13 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "Klávesová zkratka pro přepínání zpět mezi okny bez pomocného okna. Držení \"shift\" spolu s touto zkratou přepne směr zase vpřed. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Klávesová zkratka pro přepínání zpět mezi okny bez pomocného okna. Držení "
+"\"shift\" spolu s touto zkratou přepne směr zase vpřed. Formát je jako \"&lt;"
+"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
+"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
+"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
+"tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1469,7 +1480,13 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "Klávesová zkratka pro přepínání zpět mezi okny s pomocným oknem. Držení \"shift\" spolu s touto zkratkou přepne směr zase vpřed. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Klávesová zkratka pro přepínání zpět mezi okny s pomocným oknem. Držení "
+"\"shift\" spolu s touto zkratkou přepne směr zase vpřed. Formát je jako "
+"\"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
+"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
+"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
+"tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1935,12 +1952,12 @@ msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' je neplatná\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1949,18 +1966,18 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" již má manažera oken; zkuste nahradit "
 "aktuálního manažera oken pomocí volby --replace.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nemohu získat výběr manažera oken na obrazovce %d displeje \"%s\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má manažera oken\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nemohu uvolnit obrazovku %d na displeji \"%s\"\n"
@@ -3076,7 +3093,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3092,7 +3109,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

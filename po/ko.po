@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-29 05:43+0900\n"
+"POT-Creation-Date: 2004-08-15 10:32-0700\n"
 "PO-Revision-Date: 2004-08-15 10:59+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: src/display.c:298
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
@@ -478,7 +478,10 @@ msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
-msgstr "포커스 모드가 \"최종 마우스 위치\" 또는 \"마우스 위치\"이면서 참일 때 지연시간 후 자동으로 포커스가 있는 창이 떠오르게 합니다. (지연 시간은 auto_raise_delay 키에 지정되어 있습니다)."
+msgstr ""
+"포커스 모드가 \"최종 마우스 위치\" 또는 \"마우스 위치\"이면서 참일 때 지연시"
+"간 후 자동으로 포커스가 있는 창이 떠오르게 합니다. (지연 시간은 "
+"auto_raise_delay 키에 지정되어 있습니다)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
@@ -846,7 +849,12 @@ msgid ""
 "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
-msgstr "/apps/metacity/keybinding_commands의 해당 번호의 명령어를 실행하는 키바인딩. \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
+msgstr ""
+"/apps/metacity/keybinding_commands의 해당 번호의 명령어를 실행하는 키바인딩. "
+"\"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;Alt&gt;F1\"과 같이 씁니다. 파서"
+"는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"&lt;Ctl&gt;\"나 \"&lt;"
+"Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하"
+"면, 이 액션에 대한 키바인딩은 없습니다."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -1907,12 +1915,12 @@ msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1921,19 +1929,19 @@ msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다; 현재 "
 "창 관리자를 무시하는 -- 바꿈 옵션을 사용해보십시오.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 창 관리 선택을 가질 수 없습니다\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
@@ -3051,7 +3059,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4931
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3067,7 +3075,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5602
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
