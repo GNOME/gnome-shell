@@ -1,3 +1,133 @@
+2002-12-16 Bill Haneman <bill.haneman@sun.com>
+   
+	* configure.in:
+	Check for XKB extension.
+
+	* src/Makefile.am: 
+	Added bell.c and bell.h to metacity sources.
+
+	* src/common.h:
+	(MetaFrameFlags):
+	Added META_FRAME_IS_FLASHING flag.
+
+	* src/frame.h:
+	(MetaFrame): Added is_flashing field.
+	
+	* src/frame.c:
+	(meta_window_ensure_frame):
+	Initialize the is_flashing flag to FALSE.
+	(meta_frame_get_flags):
+	Handle the FRAME_IS_FLASHING flag.
+	(meta_window_destroy_frame):
+	Call meta_bell_notify_frame_destroy.
+	
+	* src/prefs.h:
+	(MetaPreference):
+	Added META_PREF_VISUAL_BELL, META_PREF_AUDIBLE_BELL,
+	META_PREF_VISUAL_BELL_TYPE.
+	(MetaVisualBellType): New enum.
+	(meta_prefs_get_visual_bell, meta_prefs_bell_is_audible): 
+	(meta_prefs_get_visual_bell_type): 
+	New accessor declarations.
+	
+	* src/prefs.c:
+	(#includes): Include "display.h", since we now call
+	meta_displays_list() in our update func.
+	(#defines):
+	Define KEY_VISUAL_BELL, KEY_AUDIBLE_BELL,
+	and KEY_VISUAL_BELL_TYPE.
+	(provide_visual_bell, bell_is_audible, visual_bell_type):
+	New static state variables.	
+	(update_visual_bell): New method to update visual-bell
+	boolean settings from keys "visual_bell" and "audible_bell".
+	(update_visual_bell_type): 
+	New method to update visual-bell type setting.
+	(visual_bell_type_from_string) : 
+	New method to convert from gconf string to visual-bell
+	type enum.  Only currently recognized values are "fullscreen"
+	and "frame_flash".
+	(change_notify):
+	Handle changes to visual and audible bell properties.
+	(meta_prefs_get_visual_bell, meta_prefs_bell_is_audible): 
+	(meta_prefs_get_visual_bell_type): 
+	New accessor definitions.
+	(meta_prefs_init): Added a second call to notify_add,
+	listens to "/desktop/gnome/interface" as well as "apps/metacity".
+	Also call the update funcs for the new visual-bell gconf keys.
+	(meta_preference_to_string):
+	Handle the visual/audible bell cases.
+
+	* src/bell.h:
+	(meta_bell_notify);
+	New method, calls a visual notifucation
+	method based on the visual-bell-type, or none if the type
+	is unrecognized or invalid.
+	(meta_bell_set_audible): 
+	New public method for setting the audible bell setting,
+	used in updater for new gconf key "audible_bell".
+	(meta_bell_init):
+	Initialize the bell notification for a display.
+	(meta_bell_shutdown):
+	Shutdown the bell notification for a display.
+	(meta_bell_notify_frame_destroy):
+	Remove pending idle handlers on notification.
+
+	* src/bell.c:
+	Include "bell.h", and conditionally include <Xll/Xkblib.h>.
+	(meta_bell_set_audible):
+	If XKB is present, enable/disable the audible system 
+	bell based on the gconf key /desktop/gnome/interface/audible_bell.
+	(meta_bell_init):
+	Query and initialize XKB if present, register for notification
+	on the bell, and set audible bell according to gconf settings.
+	(meta_bell_flash_screen):
+	Maps and unmaps a fullscreen X window (painted white, then
+	black), which causes a fullscreen 'flash' transient.	
+	(meta_bell_flash_window_frame):
+	Flashes the titlebar of a specified window.
+	(meta_bell_flash_frame):
+	Calls meta_bell_flash_window_frame on the window which 
+	was the source of the current bell event, or the currently 
+	focussed window if the event source cannot be determined.
+	(meta_bell_unflash_frame):
+	Restore the frame's appearance to normal.
+	(meta_bell_flash_fullscreen):
+	Call meta_bell_flash_fullscreen for all screens.
+	(meta_bell_shutdown):
+	New method.
+	(meta_bell_notify_frame_destroy):
+	Remove pending idle handlers on notification, 
+	testing for frame->is_flashing first.
+	
+	* src/display.h:
+	(MetaDisplay): Added xkb_base_event_type field.
+	
+	* src/display.c:
+	Check for XKB and include "X11/XKBlib.h" if present.
+	(meta_display_open): Call meta_bell_init.
+	(event_callback): Call meta_bell_notify
+	when event comes from XKB and is XkbBellNotify
+	(prefs_changed_callback): 
+	Handle META_PREF_AUDIBLE_BELL notification.
+
+	* src/screen.h:
+	(MetaScreen): Add flash_window field.
+	
+	* src/screen.c:
+	(meta_screen_new):
+	Initialize flash_window field.
+
+	* src/theme.c:
+	(theme_get_style):
+	New heuristic for focus-style, to invert sense of focus
+	flag when META_FRAME_IS_FLASHING flag is set.
+	
+	* src/metacity.schemas.in:
+	Added scheme information for 
+	/apps/metacity/general/visual_bell,
+	/apps/metacity/general/audible_bell, and
+	/apps/metacity/general/visual_bell_type.
+	
 2002-12-16  Havoc Pennington  <hp@pobox.com>
 
 	* src/window-props.c (init_wm_name): argh, screwed that up. get

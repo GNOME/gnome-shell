@@ -70,6 +70,8 @@ struct _MetaScreen
 
   MetaCursor current_cursor;
 
+  Window flash_window;
+
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
   Time wm_sn_timestamp;

@@ -21,6 +21,7 @@
 
 #include <config.h>
 #include "frame.h"
+#include "bell.h"
 #include "errors.h"
 #include "keybindings.h"
 
@@ -58,6 +59,7 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->current_cursor = 0;
 
   frame->mapped = FALSE;
+  frame->is_flashing = FALSE;
   
   attrs.event_mask = EVENT_MASK;
 
@@ -159,6 +161,7 @@ meta_window_destroy_frame (MetaWindow *window)
 
   frame = window->frame;
   
+  meta_bell_notify_frame_destroy (frame);
   meta_ui_remove_frame (window->screen->ui, frame->xwindow);
   
   /* Unparent the client window; it may be destroyed,
@@ -254,6 +257,9 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (frame->window->fullscreen)
     flags |= META_FRAME_FULLSCREEN;
+
+  if (frame->is_flashing)
+    flags |= META_FRAME_IS_FLASHING;
 
   return flags;
 }

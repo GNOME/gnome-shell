@@ -4760,8 +4760,10 @@ theme_get_style (MetaTheme     *theme,
       resize = META_FRAME_RESIZE_LAST; /* compiler */
       break;
     }
-
-  if (flags & META_FRAME_HAS_FOCUS)
+  
+  /* re invert the styles used for focus/unfocussed while flashing a frame */
+  if (((flags & META_FRAME_HAS_FOCUS) && !(flags & META_FRAME_IS_FLASHING))
+      || (!(flags & META_FRAME_HAS_FOCUS) && (flags & META_FRAME_IS_FLASHING)))
     focus = META_FRAME_FOCUS_YES;
   else
     focus = META_FRAME_FOCUS_NO;

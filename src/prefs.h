@@ -42,7 +42,10 @@ typedef enum
   META_PREF_DISABLE_WORKAROUNDS,
   META_PREF_COMMANDS,
   META_PREF_BUTTON_LAYOUT,
-  META_PREF_WORKSPACE_NAMES
+  META_PREF_WORKSPACE_NAMES,
+  META_PREF_VISUAL_BELL,
+  META_PREF_AUDIBLE_BELL,
+  META_PREF_VISUAL_BELL_TYPE
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -212,6 +215,18 @@ MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 void meta_prefs_get_window_binding (const char          *name,
                                     unsigned int        *keysym,
                                     MetaVirtualModifier *modifiers);
+
+typedef enum
+{
+  META_VISUAL_BELL_INVALID = 0,
+  META_VISUAL_BELL_FULLSCREEN_FLASH,
+  META_VISUAL_BELL_FRAME_FLASH
+
+} MetaVisualBellType;
+
+gboolean           meta_prefs_get_visual_bell      (void);
+gboolean           meta_prefs_bell_is_audible      (void);
+MetaVisualBellType meta_prefs_get_visual_bell_type (void);
 
 #endif
 

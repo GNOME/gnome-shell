@@ -54,6 +54,10 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
+#define KEY_VISUAL_BELL "/apps/metacity/general/visual_bell"
+#define KEY_AUDIBLE_BELL "/apps/metacity/general/audible_bell"
+#define KEY_VISUAL_BELL_TYPE "/apps/metacity/general/visual_bell_type"
+
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
 static GList *changes = NULL;
@@ -73,6 +77,9 @@ static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
+static gboolean provide_visual_bell = TRUE;
+static gboolean bell_is_audible = TRUE;
+static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_INVALID;
 static MetaButtonLayout button_layout = {
   {
     META_BUTTON_FUNCTION_MENU,
@@ -98,6 +105,8 @@ static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
 static gboolean update_focus_mode         (const char *value);
 static gboolean update_theme              (const char *value);
+static gboolean update_visual_bell        (gboolean v1, gboolean v2);
+static gboolean update_visual_bell_type   (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
@@ -273,7 +282,7 @@ meta_prefs_init (void)
   GError *err = NULL;
   char *str_val;
   int int_val;
-  gboolean bool_val;
+  gboolean bool_val, bool_val_2;
   
   if (default_client != NULL)
     return;
@@ -360,6 +369,20 @@ meta_prefs_init (void)
   g_free (str_val);
 #endif /* HAVE_GCONF */
   
+  bool_val = gconf_client_get_bool (default_client, KEY_VISUAL_BELL,
+                                    &err);
+  cleanup_error (&err);
+  bool_val_2 = gconf_client_get_bool (default_client, KEY_AUDIBLE_BELL,
+                                    &err);
+  cleanup_error (&err);
+  update_visual_bell (bool_val, bool_val_2);
+
+  str_val = gconf_client_get_string (default_client, KEY_VISUAL_BELL_TYPE,
+                                     &err);
+  cleanup_error (&err);
+  update_visual_bell_type (str_val);
+  g_free (str_val);
+
   /* Load keybindings prefs */
   init_bindings ();
 
@@ -375,7 +398,7 @@ meta_prefs_init (void)
                            NULL,
                            NULL,
                            &err);
-  cleanup_error (&err);
+  cleanup_error (&err);  
 #endif /* HAVE_GCONF */
 }
 
@@ -674,6 +697,37 @@ change_notify (GConfClient    *client,
       if (update_button_layout (str))
         queue_changed (META_PREF_BUTTON_LAYOUT);
     }
+  else if (strcmp (key, KEY_VISUAL_BELL) == 0)
+    {
+      gboolean b;
+
+      b = value ? gconf_value_get_bool (value) : provide_visual_bell;      
+      if (update_visual_bell (b, bell_is_audible))
+	queue_changed (META_PREF_VISUAL_BELL);	    
+    }
+  else if (strcmp (key, KEY_AUDIBLE_BELL) == 0)
+    {
+      gboolean b;
+
+      b = value ? gconf_value_get_bool (value) : bell_is_audible;      
+      if (update_visual_bell (provide_visual_bell, b))
+	queue_changed (META_PREF_AUDIBLE_BELL);
+    }
+  else if (strcmp (key, KEY_VISUAL_BELL_TYPE) == 0)
+    {
+      const char * str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_VISUAL_BELL_TYPE);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+      if (update_visual_bell_type (str))
+	queue_changed (META_PREF_VISUAL_BELL_TYPE);
+    }
   else
     {
       meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
@@ -803,7 +857,47 @@ update_use_system_font (gboolean value)
 
   return old != value;
 }
+
+static MetaVisualBellType
+visual_bell_type_from_string (const char *value)
+{
+  if (!strcmp (value, "fullscreen")) 
+    {
+      return META_VISUAL_BELL_FULLSCREEN_FLASH;
+    }
+  else if (!strcmp (value, "frame_flash"))
+    {
+      return META_VISUAL_BELL_FRAME_FLASH;
+    }
+  return META_VISUAL_BELL_FULLSCREEN_FLASH;
+}
+
+static gboolean
+update_visual_bell_type (const char *value)
+{
+  MetaVisualBellType old_bell_type;
+
+  old_bell_type = visual_bell_type;
+  visual_bell_type = visual_bell_type_from_string (value);
+
+  return (visual_bell_type != old_bell_type);
+}
 #endif /* HAVE_GCONF */
+
+static gboolean
+update_visual_bell (gboolean visual_bell, gboolean audible_bell)
+{
+  gboolean old_visual = provide_visual_bell;
+  gboolean old_audible = bell_is_audible;
+  gboolean has_changed;
+
+  provide_visual_bell = visual_bell;
+  bell_is_audible = audible_bell;
+  has_changed = (old_visual != provide_visual_bell) || 
+    (old_audible != bell_is_audible);
+
+  return has_changed;
+}
 
 #ifdef HAVE_GCONF
 static gboolean
@@ -1185,6 +1279,18 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_WORKSPACE_NAMES:
       return "WORKSPACE_NAMES";
+      break;
+
+    case META_PREF_VISUAL_BELL:
+      return "VISUAL_BELL";
+      break;
+
+    case META_PREF_AUDIBLE_BELL:
+      return "AUDIBLE_BELL";
+      break;
+
+    case META_PREF_VISUAL_BELL_TYPE:
+      return "VISUAL_BELL_TYPE";
       break;
     }
 
@@ -1748,6 +1854,24 @@ void
 meta_prefs_get_button_layout (MetaButtonLayout *button_layout_p)
 {
   *button_layout_p = button_layout;
+}
+
+gboolean
+meta_prefs_get_visual_bell ()
+{
+  return provide_visual_bell;
+}
+
+gboolean
+meta_prefs_bell_is_audible ()
+{
+  return bell_is_audible;
+}
+
+MetaVisualBellType
+meta_prefs_get_visual_bell_type ()
+{
+  return visual_bell_type;
 }
 
 void
