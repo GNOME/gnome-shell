@@ -190,6 +190,7 @@ typedef enum
   STATE_SAVING_PHASE_2,
   STATE_WAITING_FOR_INTERACT,
   STATE_DONE_WITH_INTERACT,
+  STATE_SKIPPING_GLOBAL_SAVE,
   STATE_FROZEN,
   STATE_REGISTERING
 } ClientState;
@@ -432,7 +433,8 @@ save_yourself_possibly_done (gboolean shutdown,
   
   if (current_state == STATE_SAVING_PHASE_1 ||
       current_state == STATE_SAVING_PHASE_2 ||
-      current_state == STATE_DONE_WITH_INTERACT)
+      current_state == STATE_DONE_WITH_INTERACT ||
+      current_state == STATE_SKIPPING_GLOBAL_SAVE)
     {
       meta_topic (META_DEBUG_SM, "Sending SaveYourselfDone\n");
       
@@ -496,6 +498,20 @@ save_yourself_callback (SmcConn   smc_conn,
 	}
     }
 #endif
+
+  /* ignore Global style saves
+   * 
+   * This interpretaion of the Local/Global/Both styles
+   * was discussed extensively on the xdg-list. See:
+   *
+   * https://listman.redhat.com/pipermail/xdg-list/2002-July/000615.html
+   */
+  if (save_style == SmSaveGlobal)
+    {
+      current_state = STATE_SKIPPING_GLOBAL_SAVE;
+      save_yourself_possibly_done (shutdown, successful);
+      return;
+    }
 
   interaction_allowed = interact_style != SmInteractStyleNone;
   

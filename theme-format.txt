@@ -219,7 +219,7 @@ Themes are in a simple XML-subset format.
 </frame_style_set>
 
 <!-- Each window type needs a style set 
-     Types: normal, dialog, modal_dialog, toolbar, menu, utility
+     Types: normal, dialog, modal_dialog, menu, utility, border
   -->
 <window type="normal" style_set="normal"/>
 

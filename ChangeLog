@@ -1,3 +1,13 @@
+2002-08-01  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/session.c:
+	(save_yourself_possibly_done): send a SaveYourselfDone
+	if we're skipping this global save.
+	(save_yourself_callback): don't not save session state
+	if the save style is Global. Fixes #89390.
+
+	* theme-format.txt: update.
+
 2002-07-30  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
