@@ -124,7 +124,6 @@ static gboolean process_keyboard_resize_grab (MetaDisplay *display,
                                               KeySym       keysym);
 
 static gboolean process_tab_grab           (MetaDisplay *display,
-                                            MetaWindow  *window,
                                             XEvent      *event,
                                             KeySym       keysym);
 
@@ -1349,8 +1348,7 @@ meta_display_process_key_event (MetaDisplay *display,
         case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard tabbing/cycling\n");
-          g_assert (window != NULL);
-          handled = process_tab_grab (display, window, event, keysym);
+          handled = process_tab_grab (display, event, keysym);
           break;
           
         case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
@@ -1855,7 +1853,6 @@ process_keyboard_resize_grab (MetaDisplay *display,
 
 static gboolean
 process_tab_grab (MetaDisplay *display,
-                  MetaWindow  *window,
                   XEvent      *event,
                   KeySym       keysym)
 {
@@ -1863,9 +1860,7 @@ process_tab_grab (MetaDisplay *display,
   MetaKeyBindingAction action;
   gboolean popup_not_showing;
   
-  window = NULL; /* be sure we don't use this, it's irrelevant */
-
-  screen = display->grab_window->screen;
+  screen = display->grab_screen;
 
   g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
   
@@ -2323,7 +2318,7 @@ do_choose_window (MetaDisplay    *display,
     {
       window = meta_display_get_tab_next (display,
                                           type,
-					  display->focus_window->screen,
+                                          display->focus_window->screen,
                                           display->focus_window->screen->active_workspace,
                                           display->focus_window,
                                           backward);
@@ -2343,7 +2338,7 @@ do_choose_window (MetaDisplay    *display,
         {
           window = meta_display_get_tab_next (screen->display,
                                               type,
-					      screen,
+                                              screen,
                                               screen->active_workspace,
                                               NULL,
                                               backward);
@@ -2357,8 +2352,7 @@ do_choose_window (MetaDisplay    *display,
       
       if (meta_display_begin_grab_op (window->display,
                                       window->screen,
-                                      display->focus_window ?
-                                      display->focus_window : window,
+                                      NULL,
                                       show_popup ?
                                       tab_op_from_tab_type (type) :
                                       cycle_op_from_tab_type (type),
