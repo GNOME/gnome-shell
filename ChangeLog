@@ -1,5 +1,11 @@
 2003-01-11  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_handle_mouse_grab_op_event): implement
+	compression of motion events (drop all but the most recently
+	received), guessing at fixes for #103009
+
+2003-01-11  Havoc Pennington  <hp@pobox.com>
+
 	* configure.in: add ability to --disable-shape
 
 2003-01-11  Akira TAGOH  <tagoh@gnome.gr.jp>

@@ -6309,6 +6309,66 @@ update_resize (MetaWindow *window,
     clear_moveresize_time (window);
 }
 
+typedef struct
+{
+  XEvent prev_event;
+  gboolean done;
+  int count;
+} CompressEventData;
+
+static Bool
+compress_event_predicate (Display  *display,
+                          XEvent   *xevent,
+                          XPointer  arg)
+{
+  CompressEventData *ced = (void*) arg;
+  
+  if (ced->done)
+    return False;
+  else if (ced->prev_event.type == xevent->type &&
+           ced->prev_event.xany.window == xevent->xany.window)
+    {
+      ced->count += 1;
+      return True;
+    }
+  else if (xevent->type != Expose &&
+           xevent->type != ConfigureNotify &&
+           xevent->type != PropertyNotify)
+    {
+      /* Don't compress across most unrelated events, just to be safe */
+      ced->done = TRUE;
+      return False;
+    }
+  else
+    return False;
+}
+
+static void
+maybe_replace_with_newer_event (MetaWindow *window,
+                                XEvent     *event)
+{
+  XEvent new_event;
+  CompressEventData ced;
+  
+  /* Chew up all events of the same type on the same window */
+
+  ced.count = 0;
+  ced.done = FALSE;
+  ced.prev_event = *event;
+  while (XCheckIfEvent (window->display->xdisplay,
+                        &new_event,
+                        compress_event_predicate,
+                        (void*) &ced.prev_event))
+    ced.prev_event = new_event;
+
+  if (ced.count > 0)
+    {
+      meta_topic (META_DEBUG_RESIZING,
+                  "Compressed %d motion events\n", ced.count);
+      *event = ced.prev_event;
+    }
+}
+
 void
 meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                         XEvent     *event)
@@ -6378,17 +6438,23 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
           if (event->xmotion.root == window->screen->xroot)
-            update_move (window,
-                         event->xmotion.state,
-                         event->xmotion.x_root,
-                         event->xmotion.y_root);
+            {
+              maybe_replace_with_newer_event (window, event);
+              update_move (window,
+                           event->xmotion.state,
+                           event->xmotion.x_root,
+                           event->xmotion.y_root);
+            }
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           if (event->xmotion.root == window->screen->xroot)
-            update_resize (window,
-                           event->xmotion.x_root,
-                           event->xmotion.y_root);
+            {
+              maybe_replace_with_newer_event (window, event);
+              update_resize (window,
+                             event->xmotion.x_root,
+                             event->xmotion.y_root);
+            }
         }
       break;
 
