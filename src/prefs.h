@@ -30,7 +30,8 @@ typedef enum
 {
   META_PREF_FOCUS_MODE,
   META_PREF_TITLEBAR_FONT,
-  META_PREF_TITLEBAR_FONT_SIZE
+  META_PREF_TITLEBAR_FONT_SIZE,
+  META_PREF_NUM_WORKSPACES
 
 } MetaPreference;
 
@@ -50,6 +51,7 @@ MetaFocusMode               meta_prefs_get_focus_mode         (void);
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 /* returns 0 if default should be used */
 int                         meta_prefs_get_titlebar_font_size (void);
+int                         meta_prefs_get_num_workspaces     (void);
 
 #endif
 

@@ -2200,12 +2200,9 @@ meta_window_configure_request (MetaWindow *window,
   if (((window->type == META_WINDOW_DESKTOP ||
         window->type == META_WINDOW_DOCK ||
         window->type == META_WINDOW_TOOLBAR ||
-        window->type == META_WINDOW_MENU) &&
+        window->type == META_WINDOW_MENU ||
+        window->type == META_WINDOW_NORMAL) &&
        (window->size_hints.flags & PPosition)) ||
-      /* This is here exactly until some crap app annoys me
-       * by misusing it. ;-) Then I remove it and only honor
-       * USPosition at map time.
-       */
       (window->size_hints.flags & USPosition))
     {
       if (event->xconfigurerequest.value_mask & CWX)
@@ -2224,7 +2221,8 @@ meta_window_configure_request (MetaWindow *window,
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
       window->type == META_WINDOW_TOOLBAR ||
-      window->type == META_WINDOW_MENU)
+      window->type == META_WINDOW_MENU ||
+      window->type == META_WINDOW_NORMAL)
     {
       if (event->xconfigurerequest.value_mask & CWWidth)
         width = event->xconfigurerequest.width;

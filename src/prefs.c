@@ -32,6 +32,7 @@
 #define KEY_USE_DESKTOP_FONT  "/apps/metacity/general/titlebar_uses_desktop_font"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
+#define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 
 static GConfClient *client = NULL;
 static GList *listeners = NULL;
@@ -41,11 +42,13 @@ static gboolean use_desktop_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
 static int titlebar_font_size = 0;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
+static int num_workspaces = 4;
 
 static gboolean update_use_desktop_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_titlebar_font_size (int         value);
 static gboolean update_focus_mode         (const char *value);
+static gboolean update_num_workspaces     (int         value);
 
 static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
@@ -174,7 +177,7 @@ cleanup_error (GError **error)
 {
   if (*error)
     {
-      meta_warning ("%s", (*error)->message);
+      meta_warning ("%s\n", (*error)->message);
       
       g_error_free (*error);
       *error = NULL;
@@ -206,6 +209,11 @@ meta_prefs_init (void)
   update_focus_mode (str_val);
   g_free (str_val);  
 
+  /* If the keys aren't set in the database, we use essentially
+   * bogus values instead of any kind of default. This is
+   * just lazy. But they keys ought to be set, anyhow.
+   */
+  
   bool_val = gconf_client_get_bool (client, KEY_USE_DESKTOP_FONT,
                                     &err);
   cleanup_error (&err);
@@ -222,6 +230,11 @@ meta_prefs_init (void)
   update_titlebar_font (str_val);
   g_free (str_val);
 
+  int_val = gconf_client_get_int (client, KEY_NUM_WORKSPACES,
+                                  &err);
+  cleanup_error (&err);
+  update_num_workspaces (int_val);
+  
   gconf_client_notify_add (client, "/apps/metacity",
                            change_notify,
                            NULL,
@@ -309,6 +322,23 @@ change_notify (GConfClient    *client,
        */
       if (update_use_desktop_font (b))
         queue_changed (META_PREF_TITLEBAR_FONT);
+    }
+  else if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
+    {
+      int d;
+
+      if (value && value->type != GCONF_VALUE_INT)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_NUM_WORKSPACES);
+          goto out;
+        }
+
+      /* 4 is a fallback that should never be used */
+      d = value ? gconf_value_get_int (value) : 4;
+
+      if (update_num_workspaces (d))
+        queue_changed (META_PREF_NUM_WORKSPACES);
     }
   else
     meta_verbose ("Key %s doesn't mean anything to Metacity\n",
@@ -419,6 +449,35 @@ meta_prefs_get_titlebar_font_size (void)
   return titlebar_font_size;
 }
 
+
+#define MAX_REASONABLE_WORKSPACES 32
+
+static gboolean
+update_num_workspaces (int value)
+{
+  int old = num_workspaces;
+
+  if (value < 1 || value > MAX_REASONABLE_WORKSPACES)
+    {
+      meta_warning (_("%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"),
+                    value, KEY_NUM_WORKSPACES, MAX_REASONABLE_WORKSPACES);
+      if (value < 1)
+        value = 1;
+      else if (value > MAX_REASONABLE_WORKSPACES)
+        value = MAX_REASONABLE_WORKSPACES;
+    }
+  
+  num_workspaces = value;
+
+  return old != num_workspaces;
+}
+
+int
+meta_prefs_get_num_workspaces (void)
+{
+  return num_workspaces;
+}
+
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
@@ -434,6 +493,10 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_TITLEBAR_FONT_SIZE:
       return "TITLEBAR_FONT_SIZE";
+      break;
+
+    case META_PREF_NUM_WORKSPACES:
+      return "NUM_WORKSPACES";
       break;
     }
 

@@ -76,6 +76,22 @@
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/general/num_workspaces</key>
+      <applyto>/apps/metacity/general/num_workspaces</applyto>      
+      <owner>metacity</owner>
+      <type>int</type>
+      <default>4</default>
+      <locale name="C">
+         <short>Number of workspaces</short>
+         <long>
+          Number of workspaces. Must be more than zero, and 
+          has a fixed maximum (to prevent accidentally destroying 
+          your desktop by asking for 34 million workspaces).
+         </long>
+      </locale>
+    </schema>
+
     <!-- Keybindings -->
 
     <schema>

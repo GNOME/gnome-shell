@@ -1,5 +1,22 @@
 2001-12-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/workspace.c (meta_workspace_free): update number of
+	workspaces hint
+
+	* src/screen.c (update_num_workspaces): implement number of
+	workspaces setting
+
+	* src/window.c (meta_window_configure_request): honor configure
+	requests on windows of type NORMAL, but still be mean to those of
+	type DIALOG
+
+	* src/main.c (main): add more log domains to those we set a log
+	handler for, and only set warnings fatal in debug mode
+
+	* src/metacity.schemas: add number of workspaces setting
+
+2001-12-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (event_callback): in click-to-focus mode don't
 	focus on enter notify. Implement unfocusing on LeaveNotify in
 	mouse focus mode. Click to focus just ends up working if we 

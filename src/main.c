@@ -49,7 +49,7 @@ log_handler (const gchar   *log_domain,
              const gchar   *message,
              gpointer       user_data)
 {
-  meta_warning ("GLib log level %d: %s\n", log_level, message);
+  meta_warning ("Log level %d: %s\n", log_level, message);
 }
 
 static void
@@ -184,8 +184,28 @@ main (int argc, char **argv)
   g_log_set_handler (NULL,
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
-  g_log_set_always_fatal (G_LOG_LEVEL_MASK);
+  g_log_set_handler ("Gtk",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_handler ("Gdk",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_handler ("GLib",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_handler ("Pango",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_handler ("GLib-GObject",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_handler ("GThread",
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
 
+  if (meta_is_debugging ())
+    g_log_set_always_fatal (G_LOG_LEVEL_MASK);
+  
   /* Connect to SM as late as possible - but before managing display,
    * or we might try to manage a window before we have the session
    * info

@@ -25,6 +25,7 @@
 #include "errors.h"
 #include "window.h"
 #include "frame.h"
+#include "prefs.h"
 #include "workspace.h"
 #include "keybindings.h"
 #include "stack.h"
@@ -36,6 +37,9 @@
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
+static void update_num_workspaces  (MetaScreen *screen);
+static void prefs_changed_callback (MetaPreference pref,
+                                    gpointer       data);
 
 static int
 set_wm_check_hint (MetaScreen *screen)
@@ -231,6 +235,8 @@ meta_screen_new (MetaDisplay *display,
   screen->tab_popup = NULL;
   
   screen->stack = meta_stack_new (screen);
+
+  meta_prefs_add_listener (prefs_changed_callback, screen);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);  
@@ -240,7 +246,9 @@ meta_screen_new (MetaDisplay *display,
 
 void
 meta_screen_free (MetaScreen *screen)
-{  
+{
+  meta_prefs_remove_listener (prefs_changed_callback, screen);
+  
   meta_screen_ungrab_keys (screen);
 
   meta_ui_free (screen->ui);
@@ -302,6 +310,19 @@ meta_screen_for_x_screen (Screen *xscreen)
   
   return meta_display_screen_for_x_screen (display, xscreen);
 }
+
+static void
+prefs_changed_callback (MetaPreference pref,
+                        gpointer       data)
+{
+  MetaScreen *screen = data;
+  
+  if (pref == META_PREF_NUM_WORKSPACES)
+    {
+      update_num_workspaces (screen);
+    }
+}
+
 
 static char*
 get_screen_name (MetaDisplay *display,
@@ -437,7 +458,91 @@ meta_screen_get_n_workspaces (MetaScreen *screen)
     }
 
   return i;
+}
 
+static void
+update_num_workspaces (MetaScreen *screen)
+{
+  int new_num;
+  GList *tmp;
+  int i;
+  GList *extras;
+  MetaWorkspace *last_remaining;
+  gboolean need_change_space;
+  
+  new_num = meta_prefs_get_num_workspaces ();
+
+  g_assert (new_num > 0);
+
+  last_remaining = NULL;
+  extras = NULL;
+  i = 0;
+  tmp = screen->display->workspaces;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      if (w->screen == screen)
+        {          
+          ++i;
+
+          if (i > new_num)
+            extras = g_list_prepend (extras, w);
+          else
+            last_remaining = w;
+        }
+      
+      tmp = tmp->next;
+    }
+
+  g_assert (last_remaining);
+  
+  /* Get rid of the extra workspaces by moving all their windows
+   * to last_remaining, then activating last_remaining if
+   * one of the removed workspaces was active. This will be a bit
+   * wacky if the config tool for changing number of workspaces
+   * is on a removed workspace ;-)
+   */
+  need_change_space = FALSE;
+  tmp = extras;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      meta_workspace_relocate_windows (w, last_remaining);      
+
+      if (w == screen->active_workspace)
+        need_change_space = TRUE;
+      
+      tmp = tmp->next;
+    }
+
+  if (need_change_space)
+    meta_workspace_activate (last_remaining);
+
+  /* Should now be safe to free the workspaces */
+  tmp = extras;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      g_assert (w->windows == NULL);
+      meta_workspace_free (w);
+      
+      tmp = tmp->next;
+    }
+  
+  g_list_free (extras);
+  
+  /* Add missing workspaces. FIXME This will keep setting the
+   * number-of-workspaces root window property on each workspace
+   * creation, kind of a lame thing
+   */
+  while (i < new_num)
+    {
+      meta_workspace_new (screen);
+      ++i;
+    }
 }
 
 void

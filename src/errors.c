@@ -51,7 +51,7 @@ meta_error_trap_push (MetaDisplay *display)
 int
 meta_error_trap_pop (MetaDisplay *display)
 {
-  /* just use GDK trap */
+  /* just use GDK trap, but we do the sync since GDK doesn't */
   XSync (display->xdisplay, False);
 
   return gdk_error_trap_pop ();

@@ -58,24 +58,39 @@ void
 meta_workspace_free (MetaWorkspace *workspace)
 {
   GList *tmp;
+  MetaScreen *screen;
+
+  g_return_if_fail (workspace != workspace->screen->active_workspace);
+
+  /* Here we assume all the windows are already on another workspace
+   * as well, so they won't be "orphaned"
+   */
   
   tmp = workspace->windows;
   while (tmp != NULL)
     {
       GList *next;
+      MetaWindow *window = tmp->data;
       next = tmp->next;
-      /* pop front of list */
-      meta_workspace_remove_window (workspace, tmp->data);
+
+      /* pop front of list we're iterating over */
+      meta_workspace_remove_window (workspace, window);
+      g_assert (window->workspaces != NULL);
 
       tmp = next;
     }
 
   g_assert (workspace->windows == NULL);
+
+  screen = workspace->screen;
   
   workspace->screen->display->workspaces =
     g_list_remove (workspace->screen->display->workspaces, workspace);
 
   g_free (workspace);
+
+  /* Update hint for current number of workspaces */
+  set_number_of_spaces_hint (screen);
 }
 
 void
@@ -104,6 +119,34 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
+}
+
+void
+meta_workspace_relocate_windows (MetaWorkspace *workspace,
+                                 MetaWorkspace *new_home)
+{
+  GList *tmp;
+  GList *copy;
+  
+  g_return_if_fail (workspace != new_home);
+
+  /* can't modify list we're iterating over */
+  copy = g_list_copy (workspace->windows);
+  
+  tmp = copy;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+
+      meta_workspace_add_window (new_home, window);
+      meta_workspace_remove_window (workspace, window);
+      
+      tmp = tmp->next;
+    }
+
+  g_list_free (copy);
+  
+  g_assert (workspace->windows == NULL);
 }
 
 gboolean
@@ -226,6 +269,3 @@ set_active_space_hint (MetaScreen *screen)
                    32, PropModeReplace, (guchar*) data, 1);
   return meta_error_trap_pop (screen->display);
 }
-
-
-
