@@ -1,3 +1,9 @@
+2003-01-06  Arvind Samptur <arvind.samptur@wipro.com>
+	* src/window.c: (constrain_position) don't apply
+	offscreen height difference. This would get the
+	window under the panel on a resize or a move.
+	Fixes #102418
+
 2003-01-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (meta_screen_calc_workspace_layout): invert
