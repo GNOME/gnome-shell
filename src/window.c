@@ -698,6 +698,9 @@ meta_window_free (MetaWindow  *window)
                   "Unmanaging window %s which doesn't currently have focus\n",
                   window->desc);
     }
+
+  if (window->has_struts)
+    invalidate_work_areas (window);
   
   if (window->display->grab_window == window)
     meta_display_end_grab_op (window->display,
@@ -1085,7 +1088,9 @@ meta_window_show (MetaWindow *window)
     {
       if (window->mapped)
         {          
-          meta_verbose ("%s actually needs unmap\n", window->desc);
+          meta_verbose ("%s actually needs unmap (shaded)\n", window->desc);
+          meta_verbose ("Incrementing unmaps_pending on %s for shade\n",
+                        window->desc);
           window->mapped = FALSE;
           window->unmaps_pending += 1;
           meta_error_trap_push (window->display);
@@ -1148,29 +1153,43 @@ meta_window_show (MetaWindow *window)
 void
 meta_window_hide (MetaWindow *window)
 {
+  gboolean did_hide;
+  
   meta_verbose ("Hiding window %s\n", window->desc);
+
+  did_hide = FALSE;
   
   if (window->frame && window->frame->mapped)
     {
       meta_verbose ("Frame actually needs unmap\n");
       window->frame->mapped = FALSE;
       meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
+      did_hide = TRUE;
     }
 
   if (window->mapped)
     {
       meta_verbose ("%s actually needs unmap\n", window->desc);
+      meta_verbose ("Incrementing unmaps_pending on %s for hide\n",
+                    window->desc);
       window->mapped = FALSE;
       window->unmaps_pending += 1;
-      meta_error_trap_push (window->display);
+      meta_error_trap_push (window->display);      
       XUnmapWindow (window->display->xdisplay, window->xwindow);
       meta_error_trap_pop (window->display);
+      did_hide = TRUE;
     }
 
   if (!window->iconic)
     {
       window->iconic = TRUE;
       set_wm_state (window, IconicState);
+    }
+
+  if (did_hide)
+    {
+      if (window->has_struts)
+        invalidate_work_areas (window);
     }
 }
 
@@ -2787,7 +2806,7 @@ meta_window_notify_focus (MetaWindow *window,
               window->display->prev_focus_window = window->display->focus_window;
             }
           meta_topic (META_DEBUG_FOCUS,
-                      "New focus window %s\n", window->desc);
+                      "* Focus --> %s\n", window->desc);
           window->display->focus_window = window;
           window->has_focus = TRUE;
           if (window->frame)
@@ -2816,7 +2835,7 @@ meta_window_notify_focus (MetaWindow *window,
           window->display->prev_focus_window = window;
 
           meta_topic (META_DEBUG_FOCUS,
-                      "Clearing focus window (was %s)\n", window->desc);
+                      "* Focus --> NULL (was %s)\n", window->desc);
           
           window->display->focus_window = NULL;
           window->has_focus = FALSE;

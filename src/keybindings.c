@@ -71,7 +71,14 @@ static void handle_toggle_desktop     (MetaDisplay *display,
                                        XEvent      *event,
                                        gpointer     data);
 
-                                      
+
+/* debug */
+static void handle_spew_mark          (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
+
+
 static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             MetaWindow  *window,
                                             XEvent      *event,
@@ -114,13 +121,18 @@ static MetaKeyBinding screen_bindings[] = {
   { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
-  { XK_Left, Mod1Mask, KeyPress, handle_workspace_left, NULL, 0 },
-  { XK_Right, Mod1Mask, KeyPress, handle_workspace_right, NULL, 0 },
+  { XK_Left, Mod1Mask | ControlMask, KeyPress, handle_workspace_left, NULL, 0 },
+  { XK_Right, Mod1Mask | ControlMask, KeyPress, handle_workspace_right, NULL, 0 },
   /* I don't like this binding, but haven't picked the right one yet */
   { XK_d, Mod1Mask | ControlMask, KeyPress, handle_toggle_desktop, NULL, 0 },  
   { None, 0, 0, NULL, NULL, 0 }
 };
 
+static MetaKeyBinding debug_bindings[] = {
+  { XK_m, Mod1Mask | ControlMask | ShiftMask, KeyPress, handle_spew_mark, NULL, 0 },  
+  { None, 0, 0, NULL, NULL, 0 }
+};
+  
 static MetaKeyBinding window_bindings[] = {
   { XK_space, Mod1Mask, KeyPress, handle_activate_menu, NULL, 0 },
   { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, NULL, 0 },
@@ -151,6 +163,7 @@ meta_display_init_keys (MetaDisplay *display)
 {
   init_bindings (display, screen_bindings);
   init_bindings (display, window_bindings);
+  init_bindings (display, debug_bindings);
 }
 
 /* Grab/ungrab, ignoring all annoying modifiers like NumLock etc. */
@@ -287,12 +300,16 @@ void
 meta_screen_grab_keys (MetaScreen  *screen)
 {
   grab_keys (screen_bindings, screen->display, screen->xroot);
+  if (meta_is_debugging ())
+    grab_keys (debug_bindings, screen->display, screen->xroot);    
 }
 
 void
 meta_screen_ungrab_keys (MetaScreen  *screen)
 {
   ungrab_keys (screen_bindings, screen->display, screen->xroot);
+  if (meta_is_debugging ())
+    ungrab_keys (debug_bindings, screen->display, screen->xroot);
 }
 
 void
@@ -538,6 +555,8 @@ meta_display_process_key_event (MetaDisplay *display,
     {
       /* Do the normal keybindings */
       process_event (screen_bindings, display, NULL, event, keysym);
+      if (meta_is_debugging ())
+        process_event (debug_bindings, display, NULL, event, keysym);
 
       if (window)
         process_event (window_bindings, display, window, event, keysym);
@@ -1085,3 +1104,14 @@ handle_focus_previous (MetaDisplay *display,
       meta_window_focus (window, event->xkey.time);
     }
 }
+
+
+static void
+handle_spew_mark (MetaDisplay *display,
+                  MetaWindow  *window,
+                  XEvent      *event,
+                  gpointer     data)
+{
+  meta_verbose ("-- MARK MARK MARK MARK --\n");
+}
+

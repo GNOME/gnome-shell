@@ -100,10 +100,14 @@ meta_window_ensure_frame (MetaWindow *window)
    * a grab.
    */
   meta_error_trap_push (window->display);
-  window->mapped = FALSE; /* the reparent will unmap the window,
-                           * we don't want to take that as a withdraw
-                           */
-  window->unmaps_pending += 1;
+  if (window->mapped)
+    {
+      window->mapped = FALSE; /* the reparent will unmap the window,
+                               * we don't want to take that as a withdraw
+                               */
+      meta_verbose ("Incrementing unmaps_pending on %s for reparent\n", window->desc);
+      window->unmaps_pending += 1;
+    }
   /* window was reparented to this position */
   window->rect.x = 0;
   window->rect.y = 0;
@@ -148,11 +152,15 @@ meta_window_destroy_frame (MetaWindow *window)
    * thus the error trap.
    */
   meta_error_trap_push (window->display);
-  window->mapped = FALSE; /* Keep track of unmapping it, so we
-                           * can identify a withdraw initiated
-                           * by the client.
-                           */
-  window->unmaps_pending += 1;
+  if (window->mapped)
+    {
+      window->mapped = FALSE; /* Keep track of unmapping it, so we
+                               * can identify a withdraw initiated
+                               * by the client.
+                               */
+      meta_verbose ("Incrementing unmaps_pending on %s for reparent back to root\n", window->desc);
+      window->unmaps_pending += 1;
+    }
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    window->screen->xroot,

@@ -1,3 +1,25 @@
+2002-01-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/frame.c (meta_window_destroy_frame): only bump
+	unmaps_pending if the window was mapped
+	(meta_window_ensure_frame): ditto
+
+	* src/keybindings.c: change arrow key bindings to use Ctrl+Alt not
+	just Alt, and add debug mode key bindings	
+
+	* src/stack.c (meta_stack_get_default_focus_window): don't choose
+	a default focus window with unmaps pending, since we probably just
+	unmapped it.
+
+	* src/display.c (event_callback): move notify_focus on UnmapNotify
+	after the window_free check, so we can move focus to another
+	window when we unmanage	
+
+	* src/window.c (meta_window_hide): invalidate work areas when 
+	hiding a window with struts
+	(meta_window_free): invalidate work areas when unmanaging a window
+	with struts
+
 2002-01-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c, src/window.h: store strut information, 

@@ -952,11 +952,7 @@ event_callback (XEvent   *event,
     case UnmapNotify:
       if (display->grab_op != META_GRAB_OP_NONE &&
           display->grab_window == window)
-        meta_display_end_grab_op (display, CurrentTime);
-      
-      /* Unfocus on UnmapNotify */
-      if (window)
-        meta_window_notify_focus (window, event);
+        meta_display_end_grab_op (display, CurrentTime);      
       
       if (!frame_was_receiver && window)
         {
@@ -966,6 +962,7 @@ event_callback (XEvent   *event,
                             window->desc);
               window->withdrawn = TRUE;
               meta_window_free (window); /* Unmanage withdrawn window */
+              window = NULL;
             }
           else
             {
@@ -974,6 +971,13 @@ event_callback (XEvent   *event,
                             window->unmaps_pending);
             }
         }
+
+      /* Unfocus on UnmapNotify, do this after the possible
+       * window_free above so that window_free can see if window->has_focus
+       * and move focus to another window
+       */
+      if (window)
+        meta_window_notify_focus (window, event);
       break;
     case MapNotify:
       break;
