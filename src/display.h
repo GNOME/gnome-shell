@@ -205,7 +205,6 @@ struct _MetaDisplay
   Window no_focus_window;
   
   /* for double click */
-  int double_click_time;
   Time last_button_time;
   Window last_button_xwindow;
   int last_button_num;

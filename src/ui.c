@@ -765,3 +765,23 @@ meta_stock_icons_init (void)
 
   g_object_unref (G_OBJECT (factory));
 }
+
+int
+meta_ui_get_double_click_timeout (void)
+{
+  GtkSettings *settings;
+  GObjectClass *klass;
+  int timeout = 0;
+
+  settings = gtk_settings_get_default ();
+
+  klass = G_OBJECT_CLASS (GTK_SETTINGS_GET_CLASS (settings));
+  if (g_object_class_find_property (klass, "gtk-double-click-time") == NULL) 
+    {
+      return 250;
+    }
+
+  g_object_get (G_OBJECT (settings), "gtk-double-click-time", &timeout, NULL);
+
+  return timeout;
+}

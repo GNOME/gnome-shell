@@ -1,3 +1,15 @@
+2003-05-29  Ray Strode  <halfline@hawaii.rr.com>
+
+	Get and use double-click speed from GtkSettings (Bug #103218).
+
+	* src/ui.c, src/ui.h: 
+	add function meta_ui_get_double_click_timeout for looking up
+	the global double-click speed.
+
+	* src/display.c, src/display.h: remove double_click_time
+	field from MetaDisplay and use meta_ui_get_double_click_timeout 
+	instead.
+
 2003-05-29  Rob Adams  <robadams@ucla.edu>
 
 	* src/main.c (main): chdir to the user's home directory on

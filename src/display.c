@@ -459,7 +459,6 @@ meta_display_open (const char *name)
   display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
                                           meta_unsigned_long_equal);
   
-  display->double_click_time = 250;
   display->last_button_time = 0;
   display->last_button_xwindow = None;
   display->last_button_num = 0;
@@ -1152,7 +1151,7 @@ event_callback (XEvent   *event,
       /* mark double click events, kind of a hack, oh well. */
       if (((int)event->xbutton.button) ==  display->last_button_num &&
           event->xbutton.window == display->last_button_xwindow &&
-          event->xbutton.time < (display->last_button_time + display->double_click_time))
+          event->xbutton.time < (display->last_button_time + meta_ui_get_double_click_timeout ()))
         {
           display->is_double_click = TRUE;
           meta_topic (META_DEBUG_EVENTS,
