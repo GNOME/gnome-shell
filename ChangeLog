@@ -1,4 +1,9 @@
-2004-02-14  Elijah Newren  <newren@math.utah.edu
+2004-02-15  Anders Carlsson  <andersca@gnome.org>
+
+	* src/menu.c (meta_window_menu_new): Actually translate a message,
+	don't just mark it for translation.
+
+2004-02-14  Elijah Newren  <newren@math.utah.edu>
 
 	* src/workspace.c: When moving a window to a different workspace,
 	prepend it to the mru list insted of appending it.  Fixes #134368.

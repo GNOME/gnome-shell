@@ -362,7 +362,7 @@ meta_window_menu_new   (MetaFrames         *frames,
       xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
 
       submenu = gtk_menu_new ();
-      submenuitem = menu_item_new (N_("Move to Another _Workspace"), FALSE, FALSE, 0, 0);
+      submenuitem = menu_item_new (_("Move to Another _Workspace"), FALSE, FALSE, 0, 0);
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (submenuitem), submenu);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
 			     submenuitem);
