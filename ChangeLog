@@ -1,5 +1,10 @@
 2002-06-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme-parser.c (parse_aspect_ratio): fix error message about
+	bad aspect ratio name.
+
+2002-06-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/themes/Esco/metacity-theme-1.xml: test button aspect ratio
 	instead of hardcoded button size, James feel free to revert if you 
 	don't like it this way.

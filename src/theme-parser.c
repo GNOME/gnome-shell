@@ -1399,7 +1399,7 @@ parse_aspect_ratio (GMarkupParseContext  *context,
   else
     {
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Distance \"%s\" is unknown"), name);
+                 _("Aspect ratio \"%s\" is unknown"), name);
       return;
     }
 }
