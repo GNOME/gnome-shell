@@ -286,7 +286,7 @@ topic_name (MetaDebugTopic topic)
       return "SHAPES";
     }
 
-  return "Window manager";
+  return "WM";
 }
 
 static int sync_count = 0;

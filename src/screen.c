@@ -1068,7 +1068,8 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       entries[i].key = (MetaTabEntryKey) window->xwindow;
       entries[i].title = window->title;
       entries[i].icon = window->icon;
-
+      entries[i].blank = FALSE;
+      
       if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
         meta_window_get_outer_rect (window, &r);
       
@@ -1124,79 +1125,66 @@ void
 meta_screen_ensure_workspace_popup (MetaScreen *screen)
 {
   MetaTabEntry *entries;
-  int len, rows, cols;
+  int len;
   int i;
-
+  MetaWorkspaceLayout layout;
+  int n_workspaces;
+  int current_workspace;
+  
   if (screen->tab_popup)
     return;
 
-  len = meta_screen_get_n_workspaces (screen);
+  current_workspace = meta_workspace_index (screen->active_workspace);
+  n_workspaces = meta_screen_get_n_workspaces (screen);
 
+  meta_screen_calc_workspace_layout (screen, n_workspaces,
+                                     current_workspace, &layout);
+
+  len = layout.grid_area;
+  
   entries = g_new (MetaTabEntry, len + 1);
   entries[len].key = NULL;
   entries[len].title = NULL;
   entries[len].icon = NULL;
-  
-  meta_screen_calc_workspace_layout (screen, len, &rows, &cols);
 
-  /* FIXME: handle screen->starting_corner
-   */
-  if (screen->vertical_workspaces)
+  i = 0;
+  while (i < len)
     {
-      int j, k, iter;
-
-      for (i = 0, iter = 0; i < rows; ++i)
-        {
-          for (j = 0; j < cols; ++j)
-            {
-              MetaWorkspace *workspace;
-
-              k = i + (j * rows);
-              if (k >= len)
-                break;
-
-              workspace = meta_screen_get_workspace_by_index (screen, k);
-              g_assert (workspace);
-
-              entries[iter].key = (MetaTabEntryKey) workspace;
-              entries[iter].title = meta_workspace_get_name (workspace);
-              entries[iter].icon = NULL;
-
-              g_assert (entries[iter].title != NULL);
-              
-              iter++;
-            }
-        }
-
-      g_assert (iter == len);
-    }
-  else
-    {
-      for (i = 0; i < len; ++i)
+      if (layout.grid[i] >= 0)
         {
           MetaWorkspace *workspace;
-
-          workspace = meta_screen_get_workspace_by_index (screen, i);
-
-          g_assert (workspace);
-
+          
+          workspace = meta_screen_get_workspace_by_index (screen,
+                                                          layout.grid[i]);
+          
           entries[i].key = (MetaTabEntryKey) workspace;
           entries[i].title = meta_workspace_get_name (workspace);
           entries[i].icon = NULL;
-
+          entries[i].blank = FALSE;
+          
           g_assert (entries[i].title != NULL);
         }
+      else
+        {
+          entries[i].key = NULL;
+          entries[i].title = NULL;
+          entries[i].icon = NULL;
+          entries[i].blank = TRUE;
+        }
+
+      ++i;
     }
 
   screen->tab_popup = meta_ui_tab_popup_new (entries, 
                                              screen->number,
                                              len,
-                                             cols,
+                                             layout.cols,
                                              FALSE);      
 
   g_free (entries);
+  meta_screen_free_workspace_layout (&layout);
 
-  /* don't show tab popup, since proper window isn't selected yet */
+  /* don't show tab popup, since proper space isn't selected yet */
 }
 
 /* Focus top window on active workspace */
@@ -1594,36 +1582,39 @@ meta_screen_queue_workarea_recalc (MetaScreen *screen)
     }
 }
 
-void
-meta_screen_calc_workspace_layout (MetaScreen *screen,
-                                   int         num_workspaces,
-                                   int        *r,
-                                   int        *c)
-{
-  int cols, rows;
 
-  /*
-   * 3 rows, 4 columns, horizontal layout
-   * and starting from top left:
-   *  +--+--+--+--+
-   *  | 1| 2| 3| 4|
-   *  +--+--+--+--+
-   *  | 5| 6| 7| 8|
-   *  +--+--+--+--+
-   *  | 9|10|11|12|
-   *  +--+--+--+--+
-   *
-   * vertical layout:
-   *  +--+--+--+--+
-   *  | 1| 4| 7|10|
-   *  +--+--+--+--+
-   *  | 2| 5| 8|11|
-   *  +--+--+--+--+
-   *  | 3| 6| 9|12|
-   *  +--+--+--+--+
-   *
-   */
-     
+#ifdef WITH_VERBOSE_MODE
+static char *
+meta_screen_corner_to_string (MetaScreenCorner corner)
+{
+  switch (corner)
+    {
+    case META_SCREEN_TOPLEFT:
+      return "TopLeft";
+    case META_SCREEN_TOPRIGHT:
+      return "TopRight";
+    case META_SCREEN_BOTTOMLEFT:
+      return "BottomLeft";
+    case META_SCREEN_BOTTOMRIGHT:
+      return "BottomRight";
+    }
+
+  return "Unknown";
+}
+#endif /* WITH_VERBOSE_MODE */
+
+void
+meta_screen_calc_workspace_layout (MetaScreen          *screen,
+                                   int                  num_workspaces,
+                                   int                  current_space,
+                                   MetaWorkspaceLayout *layout)
+{
+  int rows, cols;
+  int grid_area;
+  int *grid;
+  int i, r, c;
+  int current_row, current_col;
+  
   rows = screen->rows_of_workspaces;
   cols = screen->columns_of_workspaces;
   if (rows <= 0 && cols <= 0)
@@ -1640,8 +1631,251 @@ meta_screen_calc_workspace_layout (MetaScreen *screen,
   if (cols < 1)
     cols = 1;
 
-  *r = rows;
-  *c = cols;
+  g_assert (rows != 0 && cols != 0);
+  
+  grid_area = rows * cols;
+  
+  meta_verbose ("Getting layout rows = %d cols = %d current = %d "
+                "num_spaces = %d vertical = %s corner = %s\n",
+                rows, cols, current_space, num_workspaces,
+                screen->vertical_workspaces ? "(true)" : "(false)",
+                meta_screen_corner_to_string (screen->starting_corner));
+  
+  /* ok, we want to setup the distances in the workspace array to go     
+   * in each direction. Remember, there are many ways that a workspace   
+   * array can be setup.                                                 
+   * see http://www.freedesktop.org/standards/wm-spec/1.2/html/x109.html 
+   * and look at the _NET_DESKTOP_LAYOUT section for details.            
+   * For instance:
+   */
+  /* starting_corner = META_SCREEN_TOPLEFT                         
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       1234                                    1357            
+   *       5678                                    2468            
+   *                                                               
+   * starting_corner = META_SCREEN_TOPRIGHT                        
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       4321                                    7531            
+   *       8765                                    8642            
+   *                                                               
+   * starting_corner = META_SCREEN_BOTTOMLEFT                      
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       5678                                    2468            
+   *       1234                                    1357            
+   *                                                               
+   * starting_corner = META_SCREEN_BOTTOMRIGHT                     
+   *  vertical_workspaces = 0                 vertical_workspaces=1
+   *       8765                                    8642            
+   *       4321                                    7531            
+   *
+   */
+  /* keep in mind that we could have a ragged layout, e.g. the "8"
+   * in the above grids could be missing
+   */
+
+  
+  grid = g_new (int, grid_area);
+
+  current_row = -1;
+  current_col = -1;
+  i = 0;
+  
+  switch (screen->starting_corner) 
+    {
+    case META_SCREEN_TOPLEFT:
+      if (screen->vertical_workspaces) 
+        {
+          r = 0;
+          while (r < rows)
+            {
+              c = 0;
+              while (c < cols)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  ++c;
+                }
+              ++r;
+            }
+        }
+      else
+        {
+          c = 0;
+          while (c < cols)
+            {
+              r = 0;
+              while (r < rows)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  ++r;
+                }
+              ++c;
+            }
+        }
+      break;
+    case META_SCREEN_TOPRIGHT:
+      if (screen->vertical_workspaces) 
+        {
+          r = 0;
+          while (r < rows)
+            {
+              c = cols - 1;
+              while (c >= 0)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  --c;
+                }
+              ++r;
+            }
+        }
+      else
+        {
+          c = cols - 1;
+          while (c >= 0)
+            {
+              r = 0;
+              while (r < rows)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  ++r;
+                }
+              --c;
+            }
+        }
+      break;
+    case META_SCREEN_BOTTOMLEFT:
+      if (screen->vertical_workspaces) 
+        {
+          r = rows - 1;
+          while (r >= 0)
+            {
+              c = 0;
+              while (c < cols)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  ++c;
+                }
+              --r;
+            }
+        }
+      else
+        {
+          c = 0;
+          while (c < cols)
+            {
+              r = rows - 1;
+              while (r >= 0)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  --r;
+                }
+              ++c;
+            }
+        }
+      break;
+    case META_SCREEN_BOTTOMRIGHT:
+      if (screen->vertical_workspaces) 
+        {
+          r = rows - 1;
+          while (r >= 0)
+            {
+              c = cols - 1;
+              while (c >= 0)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  --c;
+                }
+              --r;
+            }
+        }
+      else
+        {
+          c = cols - 1;
+          while (c >= 0)
+            {
+              r = rows - 1;
+              while (r >= 0)
+                {
+                  grid[r*cols+c] = i;
+                  ++i;
+                  --r;
+                }
+              --c;
+            }
+        }
+      break;
+    }  
+
+  if (i != grid_area)
+    meta_bug ("did not fill in the whole workspace grid in %s (%d filled)\n",
+              G_GNUC_FUNCTION, i);
+  
+  current_row = 0;
+  current_col = 0;
+  r = 0;
+  while (r < rows)
+    {
+      c = 0;
+      while (c < cols)
+        {
+          if (grid[r*cols+c] == current_space)
+            {
+              current_row = r;
+              current_col = c;
+            }
+          else if (grid[r*cols+c] >= num_workspaces)
+            {
+              /* flag nonexistent spaces with -1 */
+              grid[r*cols+c] = -1;
+            }
+          ++c;
+        }
+      ++r;
+    }
+
+  layout->rows = rows;
+  layout->cols = cols;
+  layout->grid = grid;
+  layout->grid_area = grid_area;
+  layout->current_row = current_row;
+  layout->current_col = current_col;
+
+#ifdef WITH_VERBOSE_MODE
+  if (meta_is_verbose ())
+    {
+      r = 0;
+      while (r < layout->rows)
+        {
+          meta_verbose ("");
+          meta_push_no_msg_prefix ();
+          c = 0;
+          while (c < layout->cols)
+            {
+              if (r == layout->current_row &&
+                  c == layout->current_col)
+                meta_verbose ("*%2d ", layout->grid[r*layout->cols+c]);
+              else
+                meta_verbose ("%3d ", layout->grid[r*layout->cols+c]);
+              ++c;
+            }
+          meta_verbose ("\n");
+          meta_pop_no_msg_prefix ();
+          ++r;
+        }
+    }
+#endif /* WITH_VERBOSE_MODE */
+}
+
+void
+meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout)
+{
+  g_free (layout->grid);
 }
 
 static void

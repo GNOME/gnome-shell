@@ -39,6 +39,7 @@ struct _MetaTabEntry
   GdkPixbuf       *icon;
   int              x, y, width, height;
   int              inner_x, inner_y, inner_width, inner_height;
+  guint            blank : 1;
 };
 
 MetaTabPopup*   meta_ui_tab_popup_new          (const MetaTabEntry *entries,

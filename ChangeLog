@@ -1,3 +1,14 @@
+2003-01-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_get_neighbor): redo using new
+	calc_workspace_layout to fix #98302
+	
+	* src/util.c (topic_name): shorten default prefix
+
+	* src/screen.c (meta_screen_calc_workspace_layout): enhance this
+	to handle all the funky layouts and calculate more information
+	than before
+
 2003-01-05  Pauli Virtanen <pauli.virtanen@hut.fi>
 
 	* configure.in (ALL_LINGUAS): Added "fi" (Finnish).

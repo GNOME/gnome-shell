@@ -44,6 +44,7 @@ struct _TabEntry
   GtkWidget       *widget;
   GdkRectangle     rect;
   GdkRectangle     inner_rect;
+  guint blank : 1;
 };
 
 struct _MetaTabPopup
@@ -160,6 +161,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       te->title = g_strdup (entries[i].title);
       te->widget = NULL;
       te->icon = entries[i].icon;
+      te->blank = entries[i].blank;
       if (te->icon)
         g_object_ref (G_OBJECT (te->icon));
 
@@ -227,8 +229,13 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
           TabEntry *te;
 
           te = tmp->data;
-       
-          if (outline)
+
+          if (te->blank)
+            {
+              /* just stick a widget here to avoid special cases */
+              image = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+            }
+          else if (outline)
             {
               image = selectable_image_new (te->icon);
 

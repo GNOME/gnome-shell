@@ -138,10 +138,23 @@ void          meta_screen_queue_workarea_recalc   (MetaScreen             *scree
 Window meta_create_offscreen_window (Display *xdisplay,
                                      Window   parent);
 
-void meta_screen_calc_workspace_layout (MetaScreen *screen,
-                                        int         num_workspaces,
-                                        int        *r,
-                                        int        *c);
+typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
+
+struct MetaWorkspaceLayout
+{
+  int rows;
+  int cols;
+  int *grid;
+  int grid_area;
+  int current_row;
+  int current_col;
+};
+
+void meta_screen_calc_workspace_layout (MetaScreen          *screen,
+                                        int                  num_workspaces,
+                                        int                  current_space,
+                                        MetaWorkspaceLayout *layout);
+void meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout);
 
 void meta_screen_resize (MetaScreen *screen,
                          int         width,
