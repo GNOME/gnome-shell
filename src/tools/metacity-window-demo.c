@@ -185,6 +185,26 @@ dialog_cb (gpointer             callback_data,
 }
 
 static void
+modal_dialog_cb (gpointer             callback_data,
+                 guint                callback_action,
+                 GtkWidget           *widget)
+{
+  GtkWidget *dialog;
+  
+  dialog = gtk_message_dialog_new (GTK_WINDOW (callback_data),
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_INFO,
+                                   GTK_BUTTONS_CLOSE,
+                                   "Here is a MODAL dialog");
+
+  set_gtk_window_type (GTK_WINDOW (dialog), "_NET_WM_WINDOW_TYPE_MODAL_DIALOG");
+  
+  gtk_dialog_run (GTK_DIALOG (dialog));
+
+  gtk_widget_destroy (dialog);
+}
+
+static void
 utility_cb (gpointer             callback_data,
             guint                callback_action,
             GtkWidget           *widget)
@@ -420,6 +440,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/_Windows",              NULL,         NULL,                     0, "<Branch>" },
   { "/Windows/tearoff",       NULL,         NULL,                     0, "<Tearoff>" },
   { "/Windows/_Dialog",       "<control>d",  dialog_cb,               0, NULL },
+  { "/Windows/_Modal dialog", NULL,          modal_dialog_cb,         0, NULL },
   { "/Windows/_Utility",      "<control>u",  utility_cb,              0, NULL },
   { "/Windows/_Splashscreen", "<control>s",  splashscreen_cb,         0, NULL },
   { "/Windows/_Top dock",     NULL,          dock_cb,                 DOCK_TOP, NULL },

@@ -1,5 +1,9 @@
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/tools/metacity-window-demo.c (menu_items): add modal dialog test
+
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_show): when mapping a window with
 	struts, invalidate the work areas it's on. Should fix at least
 	part of the problem with windows maximizing over panels.
