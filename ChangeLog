@@ -1,3 +1,12 @@
+2002-05-27  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* autogen.sh: Hook up intltoolize here.
+	* configure.in: Initialize intltool.
+	* src/metacity.schemas.in: Add this.
+	* src/metacity.desktop.in: Add this too
+	* src/Makefile.am: Hook up intltool support for .schemas and .desktop.
+	* Makefile.am: Dist the intltool files.
+			
 2002-05-27  Anders Carlsson  <andersca@gnu.org>
 
 	* src/themes/Gorilla/metacity-theme-1.xml: Apparently someone
@@ -11,6 +20,7 @@
 	the problem where the spacing between the icon & the title
 	got larger as the fontsize went up.
 
+>>>>>>> 1.269
 2002-05-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Atlanta/metacity-theme-1.xml: totally drop the

@@ -25,3 +25,4 @@ INSTALL
 intl
 ABOUT-NLS
 COPYING
+intltool-*
