@@ -86,7 +86,11 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_MAXIMIZED_HORZ",
     "_NET_WM_STATE_MAXIMIZED_VERT",
     "_NET_WM_DESKTOP",
-    "_NET_NUMBER_OF_DESKTOPS"
+    "_NET_NUMBER_OF_DESKTOPS",
+    "WM_CHANGE_STATE",
+    "SM_CLIENT_ID",
+    "WM_CLIENT_LEADER",
+    "WM_WINDOW_ROLE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -136,6 +140,10 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_maximized_vert = atoms[10];
   display->atom_net_wm_desktop = atoms[11];
   display->atom_net_number_of_desktops = atoms[12];
+  display->atom_wm_change_state = atoms[13];
+  display->atom_sm_client_id = atoms[14];
+  display->atom_wm_client_leader = atoms[15];
+  display->atom_wm_window_role = atoms[16];
   
   screens = NULL;
   i = 0;
@@ -175,6 +183,13 @@ meta_display_open (const char *name)
   display->last_button_xwindow = None;
   display->last_button_num = 0;
   display->is_double_click = FALSE;
+
+  /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK
+   */
+  display->leader_window =
+    XCreateSimpleWindow (display->xdisplay,
+                         ((MetaScreen*)display->screens->data)->xroot,
+                         -100, -100, 1, 1, 0, 0, 0);
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -241,6 +256,8 @@ meta_display_close (MetaDisplay *display)
    * unregister windows
    */
   g_hash_table_destroy (display->window_ids);
+
+  XDestroyWindow (display->xdisplay, display->leader_window);
   
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);

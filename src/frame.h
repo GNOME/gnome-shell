@@ -66,14 +66,25 @@ struct _MetaFrame
 
 void     meta_window_ensure_frame           (MetaWindow *window);
 void     meta_window_destroy_frame          (MetaWindow *window);
-void     meta_frame_child_configure_request (MetaFrame  *frame);
-void     meta_frame_recalc_now              (MetaFrame  *frame);
-void     meta_frame_queue_recalc            (MetaFrame  *frame);
 void     meta_frame_queue_draw              (MetaFrame  *frame);
 gboolean meta_frame_event                   (MetaFrame  *frame,
                                              XEvent     *event);
 
-
+/* These three should ONLY be called from meta_window_move_resize_internal */
+void meta_frame_calc_geometry      (MetaFrame         *frame,
+                                    int                child_width,
+                                    int                child_height,
+                                    MetaFrameGeometry *geomp);
+/* returns values suitable for meta_window_move */
+void meta_frame_adjust_for_gravity (int                win_gravity,
+                                    int                frame_width,
+                                    int                frame_height,
+                                    MetaFrameGeometry *fgeom,
+                                    int                x,
+                                    int                y,
+                                    int               *win_root_x,
+                                    int               *win_root_y);
+void meta_frame_sync_to_window     (MetaFrame         *frame);
 
 
 #endif

@@ -43,6 +43,8 @@ struct _MetaDisplay
   char *name;
   Display *xdisplay;
 
+  Window leader_window;
+  
   Atom atom_net_wm_name;
   Atom atom_wm_protocols;
   Atom atom_wm_take_focus;
@@ -56,6 +58,10 @@ struct _MetaDisplay
   Atom atom_net_wm_state_maximized_vert;
   Atom atom_net_wm_desktop;
   Atom atom_net_number_of_desktops;
+  Atom atom_wm_change_state;
+  Atom atom_sm_client_id;
+  Atom atom_wm_client_leader;
+  Atom atom_wm_window_role;
   
   /* This is the actual window from focus events,
    * not the one we last set

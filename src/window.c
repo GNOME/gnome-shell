@@ -27,17 +27,28 @@
 
 #include <X11/Xatom.h>
 
-static void     constrain_size            (MetaWindow     *window,
-                                           int             width,
-                                           int             height,
-                                           int            *new_width,
-                                           int            *new_height);
+static void constrain_size     (MetaWindow        *window,
+                                int                width,
+                                int                height,
+                                int               *new_width,
+                                int               *new_height);
+static void constrain_position (MetaWindow        *window,
+                                MetaFrameGeometry *fgeom,
+                                int                x,
+                                int                y,
+                                int               *new_x,
+                                int               *new_y);
+
 static int      update_size_hints         (MetaWindow     *window);
 static int      update_title              (MetaWindow     *window);
 static int      update_protocols          (MetaWindow     *window);
 static int      update_wm_hints           (MetaWindow     *window);
 static int      update_net_wm_state       (MetaWindow     *window);
 static int      update_mwm_hints          (MetaWindow     *window);
+static int      update_wm_class           (MetaWindow     *window);
+static int      update_transient_for      (MetaWindow     *window);
+static void     update_sm_hints           (MetaWindow     *window);
+static int      update_role               (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
 static void     send_configure_notify     (MetaWindow     *window);
@@ -52,6 +63,14 @@ static gboolean process_property_notify   (MetaWindow     *window,
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
+static void   meta_window_move_resize_internal (MetaWindow  *window,
+                                                gboolean     move,
+                                                gboolean     resize,
+                                                gboolean     is_configure_request,
+                                                int          root_x_nw,
+                                                int          root_y_nw,
+                                                int          w,
+                                                int          h);
 
 MetaWindow*
 meta_window_new (MetaDisplay *display, Window xwindow)
@@ -155,6 +174,15 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->has_close_func = TRUE;
   window->has_minimize_func = TRUE;
   window->has_maximize_func = TRUE;
+
+  window->res_class = NULL;
+  window->res_name = NULL;
+  window->role = NULL;
+  window->sm_client_id = NULL;
+  
+  window->xtransient_for = None;
+  window->xgroup_leader = None;
+  window->xclient_leader = None;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
@@ -164,6 +192,10 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   update_wm_hints (window);
   update_net_wm_state (window);
   update_mwm_hints (window);
+  update_wm_class (window);
+  update_transient_for (window);
+  update_sm_hints (window); /* must come after transient_for */
+  update_role (window);
   
   if (window->initially_iconic)
     {
@@ -171,10 +203,6 @@ meta_window_new (MetaDisplay *display, Window xwindow)
       window->minimized = TRUE;
       meta_verbose ("Window %s asked to start out minimized\n", window->desc);
     }
-  
-  meta_window_resize (window,
-                      window->size_hints.width,
-                      window->size_hints.height);
 
   /* FIXME we have a tendency to set this then immediately
    * change it again.
@@ -186,7 +214,16 @@ meta_window_new (MetaDisplay *display, Window xwindow)
 
   meta_workspace_add_window (window->screen->active_workspace, window);
   
-  /* Put our state back where it should be */
+  /* Put our state back where it should be,
+   * passing TRUE for is_configure_request, ICCCM says
+   * initial map is handled same as configure request
+   */
+  meta_window_move_resize_internal (window, TRUE, TRUE, TRUE,
+                                    window->size_hints.x,
+                                    window->size_hints.y,
+                                    window->size_hints.width,
+                                    window->size_hints.height);
+
   meta_window_queue_calc_showing (window);
   
   return window;
@@ -371,34 +408,19 @@ meta_window_maximize (MetaWindow  *window)
 {
   if (!window->maximized)
     {
-      int x, y;
-      
       window->maximized = TRUE;
       
-      /* save size/pos */
+      /* save size/pos as appropriate args for move_resize */
       window->saved_rect = window->rect;
       if (window->frame)
         {
           window->saved_rect.x += window->frame->rect.x;
           window->saved_rect.y += window->frame->rect.y;
         }
-
-      /* find top left corner */
-      x = window->screen->active_workspace->workarea.x;
-      y = window->screen->active_workspace->workarea.y;
-      if (window->frame)
-        {
-          x += window->frame->child_x;
-          y += window->frame->child_y;
-        }
-
       
-      /* resize to current size with new maximization constraint,
-       * and move to top-left corner
+      /* move_resize with new maximization constraints
        */
-      
-      meta_window_move_resize (window, x, y,
-                               window->rect.width, window->rect.height);
+      meta_window_queue_move_resize (window);
     }
 }
 
@@ -423,8 +445,7 @@ meta_window_shade (MetaWindow  *window)
   if (!window->shaded)
     {
       window->shaded = TRUE;
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
     }
 }
@@ -435,9 +456,11 @@ meta_window_unshade (MetaWindow  *window)
   if (window->shaded)
     {
       window->shaded = FALSE;
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
+      /* focus the window */
+      /* FIXME CurrentTime is bogus */
+      meta_window_focus (window, CurrentTime);
     }
 }
 
@@ -445,17 +468,29 @@ static void
 meta_window_move_resize_internal (MetaWindow  *window,
                                   gboolean     move,
                                   gboolean     resize,
+                                  gboolean     is_configure_request,
                                   int          root_x_nw,
                                   int          root_y_nw,
                                   int          w,
                                   int          h)
-{  
+{
+  XWindowChanges values;
+  unsigned int mask;
+  gboolean need_configure_notify;
+  MetaFrameGeometry fgeom;
+  
   if (resize)
     meta_verbose ("Resizing %s to %d x %d\n", window->desc, w, h);
   if (move)
     meta_verbose ("Moving %s to %d,%d\n", window->desc,
                   root_x_nw, root_y_nw);
 
+  
+  
+  /* remember that root_x_nw, root_y_nw are bogus if not moving,
+   * and w, h are bogus if not resizing
+   */
+  
   if (resize)
     {
       constrain_size (window, w, h, &w, &h);
@@ -468,24 +503,78 @@ meta_window_move_resize_internal (MetaWindow  *window,
       window->rect.height = h;
     }
 
+  if (window->frame)
+    {
+      int new_w, new_h;
+      
+      meta_frame_calc_geometry (window->frame,
+                                window->rect.width,
+                                window->rect.height,
+                                &fgeom);
+
+      new_w = window->rect.width + fgeom.left_width + fgeom.right_width;
+
+      if (window->shaded)
+        new_h = fgeom.top_height;
+      else
+        new_h = window->rect.height + fgeom.top_height + fgeom.bottom_height;
+
+      /* FIXME could check to avoid XResizeWindow on frame */
+      
+      window->frame->rect.width = new_w;
+      window->frame->rect.height = new_h;
+
+      meta_verbose ("Calculated frame size %dx%d\n",
+                    window->frame->rect.width,
+                    window->frame->rect.height);
+    }
+  
   if (move)
     {
+      if (is_configure_request && window->frame)
+        {
+          meta_frame_adjust_for_gravity (window->size_hints.win_gravity,
+                                         window->frame->rect.width,
+                                         window->frame->rect.height,
+                                         &fgeom,
+                                         root_x_nw,
+                                         root_y_nw,
+                                         &root_x_nw,
+                                         &root_y_nw);
+
+          meta_verbose ("Compensated position for gravity, new pos %d,%d\n",
+                        root_x_nw, root_y_nw);
+        }
+      
+      constrain_position (window,
+                          window->frame ? &fgeom : NULL,
+                          root_x_nw, root_y_nw,
+                          &root_x_nw, &root_y_nw);
+
+      meta_verbose ("Constrained position to %d,%d\n",
+                    root_x_nw, root_y_nw);
+      
       if (window->frame)
         {
           int new_x, new_y;
           
-          new_x = root_x_nw - window->frame->child_x;
-          new_y = root_y_nw - window->frame->child_y;
+          new_x = root_x_nw - fgeom.left_width;
+          new_y = root_y_nw - fgeom.top_height;
       
           if (new_x == window->frame->rect.x &&
-              new_y == window->frame->rect.y)
+              new_y == window->frame->rect.y &&
+              window->rect.x == fgeom.left_width &&
+              window->rect.y == fgeom.top_height)
             move = FALSE;
           
           window->frame->rect.x = new_x;
           window->frame->rect.y = new_y;
-          /* window->rect.x, window->rect.y remain relative to frame,
+          
+          /* window->rect.x, window->rect.y are relative to frame,
            * remember they are the server coords
            */
+          window->rect.x = fgeom.left_width;
+          window->rect.y = fgeom.top_height;
         }
       else
         {
@@ -498,47 +587,61 @@ meta_window_move_resize_internal (MetaWindow  *window,
         }
     }
 
+  /* Fill in other frame member variables */
+  if (window->frame)
+    {
+      window->frame->child_x = fgeom.left_width;
+      window->frame->child_y = fgeom.top_height;
+      window->frame->right_width = fgeom.right_width;
+      window->frame->bottom_height = fgeom.bottom_height;
+      window->frame->bg_pixel = fgeom.background_pixel;
+    }
+  
+  /* If this is a configure request and we change nothing, then we
+   * must send configure notify. In all cases we must send configure
+   * notify if we don't resize. ICCCM 4.1.5
+   */
+  need_configure_notify =
+    (!resize) ||
+    (is_configure_request && !(move || resize || window->border_width != 0));
+  
   /* Sync our new size/pos with X as efficiently as possible */
 
-  if (move && window->frame)
-    {
-      XMoveWindow (window->display->xdisplay,
-                   window->frame->xwindow,
-                   window->frame->rect.x,
-                   window->frame->rect.y);
-    }
-
-  meta_error_trap_push (window->display);
-  if ((move && window->frame == NULL) && resize)
-    {
-      XMoveResizeWindow (window->display->xdisplay,
-                         window->xwindow,
-                         window->rect.x,
-                         window->rect.y,
-                         window->rect.width,
-                         window->rect.height);
-    }
-  else if (move && window->frame == NULL)
-    {
-      XMoveWindow (window->display->xdisplay,
-                   window->xwindow,
-                   window->rect.x,
-                   window->rect.y);
-    }
-  else if (resize)
-    {
-      XResizeWindow (window->display->xdisplay,
-                     window->xwindow,
-                     w, h);
-
-    }
-  meta_error_trap_pop (window->display);
+  values.border_width = 0;
+  values.x = window->rect.x;
+  values.y = window->rect.y;
+  values.width = window->rect.width;
+  values.height = window->rect.height;
   
+  mask = 0;
+  if (is_configure_request && window->border_width != 0)
+    mask |= CWBorderWidth; /* must force to 0 */
   if (move)
-    send_configure_notify (window);
+    mask |= (CWX | CWY);
+  if (resize)
+    mask |= (CWWidth | CWHeight);
 
-  if (window->frame && resize)
-    meta_frame_queue_recalc (window->frame);
+  if (mask != 0)
+    {
+      meta_verbose ("Syncing new geometry to client, border: %s pos: %s size: %s\n",
+                    mask & CWBorderWidth ? "true" : "false",
+                    mask & CWX ? "true" : "false",
+                    mask & CWWidth ? "true" : "false");
+      
+      meta_error_trap_push (window->display);
+      XConfigureWindow (window->display->xdisplay,
+                        window->xwindow,
+                        mask,
+                        &values);
+      meta_error_trap_pop (window->display);
+    }
+
+  /* Now do the frame */
+  if (window->frame)
+    meta_frame_sync_to_window (window->frame);
+
+  if (need_configure_notify)
+    send_configure_notify (window);
 }
 
 void
@@ -546,7 +649,7 @@ meta_window_resize (MetaWindow  *window,
                     int          w,
                     int          h)
 {
-  meta_window_move_resize_internal (window, FALSE, TRUE, -1, -1, w, h);
+  meta_window_move_resize_internal (window, FALSE, TRUE, FALSE, -1, -1, w, h);
 }
 
 void
@@ -554,7 +657,7 @@ meta_window_move (MetaWindow  *window,
                   int          root_x_nw,
                   int          root_y_nw)
 {
-  meta_window_move_resize_internal (window, TRUE, FALSE,
+  meta_window_move_resize_internal (window, TRUE, FALSE, FALSE, 
                                     root_x_nw, root_y_nw, -1, -1);
 }
 
@@ -565,9 +668,38 @@ meta_window_move_resize (MetaWindow  *window,
                          int          w,
                          int          h)
 {
-  meta_window_move_resize_internal (window, TRUE, TRUE,
+  meta_window_move_resize_internal (window, TRUE, TRUE, FALSE,
                                     root_x_nw, root_y_nw,
                                     w, h);
+}
+
+void
+meta_window_queue_move_resize (MetaWindow  *window)
+{
+  /* FIXME actually queue */
+  int x, y;
+  
+  meta_window_get_position (window, &x, &y);
+  
+  meta_window_move_resize (window, x, y,
+                           window->rect.width, window->rect.height);
+}
+
+void
+meta_window_get_position (MetaWindow  *window,
+                          int         *x,
+                          int         *y)
+{
+  if (window->frame)
+    {
+      *x = window->frame->rect.x + window->frame->child_x;
+      *y = window->frame->rect.y + window->frame->child_y;
+    }
+  else
+    {
+      *x = window->rect.x;
+      *y = window->rect.y;
+    }
 }
 
 void
@@ -832,7 +964,17 @@ meta_window_client_message (MetaWindow *window,
 
       return TRUE;
     }
+  else if (event->xclient.message_type ==
+           display->atom_wm_change_state)
+    {
+      meta_verbose ("WM_CHANGE_STATE client message, state: %ld\n",
+                    event->xclient.data.l[0]);
+      if (event->xclient.data.l[0] == IconicState)
+        meta_window_minimize (window);
 
+      return TRUE;
+    }
+  
   return FALSE;
 }
 
@@ -844,30 +986,27 @@ process_property_notify (MetaWindow     *window,
       event->atom == window->display->atom_net_wm_name)
     {
       update_title (window);
-      
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+
+      meta_window_queue_move_resize (window);
     }
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
       update_size_hints (window);
 
       /* See if we need to constrain current size */
-      meta_window_resize (window, window->rect.width, window->rect.height);
+      meta_window_queue_move_resize (window);
     }
   else if (event->atom == window->display->atom_wm_protocols)
     {
       update_protocols (window);
 
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_move_resize (window);
     }
   else if (event->atom == XA_WM_HINTS)
     {
       update_wm_hints (window);
 
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_move_resize (window);
     }
   else if (event->atom == window->display->atom_motif_wm_hints)
     {
@@ -878,8 +1017,29 @@ process_property_notify (MetaWindow     *window,
       else
         meta_window_destroy_frame (window);
 
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_move_resize (window);
+    }
+  else if (event->atom == XA_WM_CLASS)
+    {
+      update_wm_class (window);
+    }
+  else if (event->atom == XA_WM_TRANSIENT_FOR)
+    {
+      update_transient_for (window);
+
+      meta_window_queue_move_resize (window);
+    }
+  else if (event->atom ==
+           window->display->atom_wm_window_role)
+    {
+      update_role (window);
+    }
+  else if (event->atom ==
+           window->display->atom_wm_client_leader ||
+           event->atom ==
+           window->display->atom_sm_client_id)
+    {
+      meta_warning ("Broken client changed client leader window or SM client ID\n");
     }
   
   return TRUE;
@@ -891,6 +1051,9 @@ send_configure_notify (MetaWindow *window)
   XEvent event;
 
   /* from twm */
+
+  meta_verbose ("Sending synthetic ConfigureNotify to %s\n",
+                window->desc);
   
   event.type = ConfigureNotify;
   event.xconfigure.display = window->display->xdisplay;
@@ -929,9 +1092,6 @@ process_configure_request (MetaWindow *window,
                            int border_width)
 {
   /* ICCCM 4.1.5 */
-  XWindowChanges values;
-  unsigned int mask;
-  int client_x, client_y;
   
   /* Note that x, y is the corner of the window border,
    * and width, height is the size of the window inside
@@ -948,74 +1108,13 @@ process_configure_request (MetaWindow *window,
   window->size_hints.y = y;
   window->size_hints.width = width;
   window->size_hints.height = height;
-  
-  constrain_size (window,
-                  window->size_hints.width,
-                  window->size_hints.height,
-                  &window->size_hints.width,
-                  &window->size_hints.height);
 
-  meta_verbose ("Constrained configure request size to %d x %d\n",
-                window->size_hints.width, window->size_hints.height);
+  meta_window_move_resize_internal (window, TRUE, TRUE, TRUE,
+                                    window->size_hints.x,
+                                    window->size_hints.y,
+                                    window->size_hints.width,
+                                    window->size_hints.height);
   
-  if (window->frame)
-    {
-      meta_frame_child_configure_request (window->frame);
-      client_x = window->frame->child_x;
-      client_y = window->frame->child_y;
-      meta_verbose ("Will place client window %s inside frame at %d,%d\n",
-                    window->desc, client_x, client_y);
-    }
-  else
-    {
-      client_x = window->size_hints.x;
-      client_y = window->size_hints.y;
-      meta_verbose ("Will place client window %s at root coordinate %d,%d\n",
-                    window->desc, client_x, client_y);
-    }
-  
-  values.border_width = 0;
-  values.x = client_x;
-  values.y = client_y;
-  values.width = window->size_hints.width;
-  values.height = window->size_hints.height;
-  
-  mask = 0;
-  if (window->border_width != 0)
-    mask |= CWBorderWidth;
-  if (values.x != window->rect.x)
-    mask |= CWX;
-  if (values.y != window->rect.y)
-    mask |= CWY;
-  if (values.width != window->rect.width)
-    mask |= CWWidth;
-  if (values.height != window->rect.height)
-    mask |= CWHeight;
-  
-  window->rect.x = values.x;
-  window->rect.y = values.y;
-  window->rect.width = values.width;
-  window->rect.height = values.height;
-  
-  meta_error_trap_push (window->display);
-  XConfigureWindow (window->display->xdisplay,
-                    window->xwindow,
-                    mask,
-                    &values);
-  meta_error_trap_pop (window->display);
-  
-  if (mask & (CWBorderWidth | CWWidth | CWHeight))
-    {
-      /* Resizing, no synthetic ConfigureNotify, third case in 4.1.5 */      
-    }
-  else
-    {
-      /* Moving but not resizing, second case in 4.1.5, or
-       * have to send the ConfigureNotify, first case in 4.1.5
-       */
-      send_configure_notify (window);
-    }
-    
   return TRUE;
 }
 
@@ -1296,12 +1395,15 @@ update_wm_hints (MetaWindow *window)
     {
       window->input = (hints->flags & InputHint) != 0;
 
-      window->initially_iconic = (hints->initial_state == IconicState);
-      
-      /* FIXME there are a few others there. */
+      if (hints->flags & StateHint)
+        window->initially_iconic = (hints->initial_state == IconicState);
 
-      meta_verbose ("Read WM_HINTS input: %d iconic: %d\n",
-                    window->input, window->initially_iconic);
+      if (hints->flags & WindowGroupHint)
+        window->xgroup_leader = hints->window_group;
+
+      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%ld\n",
+                    window->input, window->initially_iconic,
+                    window->xgroup_leader);
       
       XFree (hints);
     }
@@ -1452,6 +1554,202 @@ update_mwm_hints (MetaWindow *window)
   return Success;
 }
 
+static int
+update_wm_class (MetaWindow *window)
+{
+  XClassHint ch;
+  
+  if (window->res_class)
+    g_free (window->res_class);
+  if (window->res_name)
+    g_free (window->res_name);
+
+  window->res_class = NULL;
+  window->res_name = NULL;
+
+  meta_error_trap_push (window->display);
+
+  ch.res_name = NULL;
+  ch.res_class = NULL;
+
+  XGetClassHint (window->display->xdisplay,
+                 window->xwindow,
+                 &ch);
+
+  if (ch.res_name)
+    {
+      window->res_name = g_strdup (ch.res_name);
+      XFree (ch.res_name);
+    }
+
+  if (ch.res_class)
+    {
+      window->res_class = g_strdup (ch.res_class);
+      XFree (ch.res_class);
+    }
+
+  meta_verbose ("Window %s class: '%s' name: '%s'\n",
+                window->desc,
+                window->res_class ? window->res_class : "(null)",
+                window->res_name ? window->res_name : "(null)");
+  
+  return meta_error_trap_pop (window->display);
+}
+
+static int
+read_string_prop (MetaDisplay *display,
+                  Window       xwindow,
+                  Atom         atom,
+                  char       **strp)
+{
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  guchar *str;
+  int result;  
+  
+  meta_error_trap_push (display);
+  str = NULL;
+  XGetWindowProperty (display->xdisplay,
+                      xwindow, atom,
+                      0, G_MAXLONG,
+		      False, XA_STRING, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&str);  
+
+  result = meta_error_trap_pop (display);
+  if (result != Success)
+    return result;
+  
+  if (type != XA_STRING)
+    return -1; /* whatever */
+
+  *strp = g_strdup (str);
+  
+  XFree (str);
+  
+  return Success;
+}
+
+static Window
+read_client_leader (MetaDisplay *display,
+                    Window       xwindow)
+{
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  Window *leader;
+  int result;
+  Window retval;
+  
+  meta_error_trap_push (display);
+  leader = NULL;
+  XGetWindowProperty (display->xdisplay, xwindow,
+		      display->atom_wm_client_leader,
+                      0, G_MAXLONG,
+		      False, XA_WINDOW, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&leader);  
+
+  result = meta_error_trap_pop (display);
+  if (result != Success)
+    return None;
+  
+  if (type != XA_WINDOW)
+    return None;
+
+  retval = *leader;
+  
+  XFree (leader);
+
+  return retval;
+}
+
+static void
+update_sm_hints (MetaWindow *window)
+{
+  MetaWindow *w;
+  Window leader;
+  
+  window->xclient_leader = None;
+  window->sm_client_id = NULL;
+
+  /* If not on the current window, we can get the client
+   * leader from transient parents. If we find a client
+   * leader, we read the SM_CLIENT_ID from it.
+   */
+  leader = None;
+  w = window;
+  while (w != NULL)
+    {
+      leader = read_client_leader (window->display, w->xwindow);
+
+      if (leader != None)
+        break;
+      
+      if (w->xtransient_for == None)
+        break;
+
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+
+      if (w == window)
+        break; /* Cute, someone thought they'd make a transient_for cycle */
+    }
+      
+  if (leader)
+    {
+      window->xclient_leader = leader;
+      read_string_prop (window->display, leader,
+                        window->display->atom_sm_client_id,
+                        &window->sm_client_id);
+
+      meta_verbose ("Window %s client leader: 0x%ld SM_CLIENT_ID: '%s'\n",
+                    window->desc, window->xclient_leader, window->sm_client_id);
+    }
+  else
+    meta_verbose ("Didn't find a client leader for %s\n", window->desc);
+}
+
+static int
+update_role (MetaWindow *window)
+{
+  int result;
+  
+  if (window->role)
+    g_free (window->role);
+  window->role = NULL;
+
+  result = read_string_prop (window->display, window->xwindow,
+                             window->display->atom_wm_window_role,
+                             &window->role);
+
+  meta_verbose ("Updated role of %s to '%s'\n",
+                window->desc, window->role ? window->role : "(null)");
+  
+  return Success;
+}
+
+static int
+update_transient_for (MetaWindow *window)
+{
+  Window w;
+
+  meta_error_trap_push (window->display);
+  w = None;
+  XGetTransientForHint (window->display->xdisplay,
+                        window->xwindow,
+                        &w);
+  window->xtransient_for = w;
+
+  if (window->xtransient_for != None)
+    meta_verbose ("Window %s transient for 0x%ld\n", window->desc,
+                  window->xtransient_for);
+  else
+    meta_verbose ("Window %s is not transient\n", window->desc);
+  
+  return meta_error_trap_pop (window->display);
+}
+
 static void
 constrain_size (MetaWindow *window,
                 int width, int height,
@@ -1469,6 +1767,8 @@ constrain_size (MetaWindow *window,
   int delta;
   double min_aspect, max_aspect;
   int minw, minh, maxw, maxh, fullw, fullh;
+
+  /* frame member variables should NEVER be used in here */
   
 #define FLOOR(value, base)	( ((gint) ((value) / (base))) * (base) )
 
@@ -1560,3 +1860,43 @@ constrain_size (MetaWindow *window,
   *new_height = height;
 }
 
+static void
+constrain_position (MetaWindow *window,
+                    MetaFrameGeometry *fgeom,
+                    int         x,
+                    int         y,
+                    int        *new_x,
+                    int        *new_y)
+{
+  int nw_x, nw_y;
+
+  /* frame member variables should NEVER be used in here, only
+   * MetaFrameGeometry
+   */
+  
+  /* find furthest northwest corner */
+  nw_x = window->screen->active_workspace->workarea.x;
+  nw_y = window->screen->active_workspace->workarea.y;
+  if (window->frame)
+    {
+      nw_x += fgeom->left_width;
+      nw_y += fgeom->top_height;
+    }
+
+  /* don't allow moving titlebar off the top or left */
+  if (x < nw_x)
+    x = nw_x;
+  if (y < nw_y)
+    y = nw_y;
+
+  if (window->maximized)
+    {
+      if (x != nw_x)
+        x = nw_x;
+      if (y != nw_y)
+        y = nw_y;
+    }
+
+  *new_x = x;
+  *new_y = y;
+}

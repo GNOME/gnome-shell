@@ -79,61 +79,77 @@ meta_frame_init_info (MetaFrame     *frame,
     info->current_control_state = META_STATE_PRELIGHT;
 }
 
-static void
-meta_frame_calc_initial_pos (MetaFrame *frame,
-                             int child_root_x, int child_root_y)
+
+/* returns values suitable for meta_window_move */
+void
+meta_frame_adjust_for_gravity (int                win_gravity,
+                               int                frame_width,
+                               int                frame_height,
+                               MetaFrameGeometry *fgeom,
+                               int                child_root_x,
+                               int                child_root_y,
+                               int               *win_root_x,
+                               int               *win_root_y)
 {
-  MetaWindow *window;
+  int x, y;
+
+  /* NW coordinate of the frame. We should just
+   * compute NW coordinate to return from the start,
+   * but I wrote it this way first and am now lazy
+   */
+  x = 0;
+  y = 0;
   
-  window = frame->window;
-  
-  switch (window->size_hints.win_gravity)
+  switch (win_gravity)
     {
     case NorthWestGravity:
-      frame->rect.x = child_root_x;
-      frame->rect.y = child_root_y;
+      x = child_root_x;
+      y = child_root_y;
       break;
     case NorthGravity:
-      frame->rect.x = child_root_x - frame->rect.width / 2;
-      frame->rect.y = child_root_y;
+      x = child_root_x - frame_width / 2;
+      y = child_root_y;
       break;
     case NorthEastGravity:
-      frame->rect.x = child_root_x - frame->rect.width;
-      frame->rect.y = child_root_y;
+      x = child_root_x - frame_width;
+      y = child_root_y;
       break;
     case WestGravity:
-      frame->rect.x = child_root_x;
-      frame->rect.y = child_root_y - frame->rect.height / 2;
+      x = child_root_x;
+      y = child_root_y - frame_height / 2;
       break;
     case CenterGravity:
-      frame->rect.x = child_root_x - frame->rect.width / 2;
-      frame->rect.y = child_root_y - frame->rect.height / 2;
+      x = child_root_x - frame_width / 2;
+      y = child_root_y - frame_height / 2;
       break;
     case EastGravity:
-      frame->rect.x = child_root_x - frame->rect.width;
-      frame->rect.y = child_root_y - frame->rect.height / 2;
+      x = child_root_x - frame_width;
+      y = child_root_y - frame_height / 2;
       break;
     case SouthWestGravity:
-      frame->rect.x = child_root_x;
-      frame->rect.y = child_root_y - frame->rect.height;
+      x = child_root_x;
+      y = child_root_y - frame_height;
       break;
     case SouthGravity:
-      frame->rect.x = child_root_x - frame->rect.width / 2;
-      frame->rect.y = child_root_y - frame->rect.height;
+      x = child_root_x - frame_width / 2;
+      y = child_root_y - frame_height;
       break;
     case SouthEastGravity:
-      frame->rect.x = child_root_x - frame->rect.width;
-      frame->rect.y = child_root_y - frame->rect.height;
+      x = child_root_x - frame_width;
+      y = child_root_y - frame_height;
       break;
     case StaticGravity:
     default:
-      frame->rect.x = child_root_x - frame->child_x;
-      frame->rect.y = child_root_y - frame->child_y;
+      x = child_root_x - fgeom->left_width;
+      y = child_root_y - fgeom->top_height;
       break;
     }
+
+  *win_root_x = x + fgeom->left_width;
+  *win_root_y = y + fgeom->top_height;
 }
 
-static void
+void
 meta_frame_calc_geometry (MetaFrame *frame,
                           int child_width, int child_height,
                           MetaFrameGeometry *geomp)
@@ -143,20 +159,22 @@ meta_frame_calc_geometry (MetaFrame *frame,
   MetaWindow *window;  
   
   /* Remember this is called from the constructor
-   * pre-window-creation.
+   * pre-X-window-creation.
    */
 
   window = frame->window;
 
-  frame->rect.width = child_width;
-  
-  if (window->shaded)
-    frame->rect.height = 0;
-  else
-    frame->rect.height = child_height;
+  /* frame->rect isn't useful yet */
   
   meta_frame_init_info (frame, &info);
 
+  /* these were from frame->rect so fix them up */
+  info.width = child_width;
+  if (window->shaded)
+    info.height = 0;
+  else
+    info.height = child_height;
+  
   if (!frame->theme_acquired)
     frame->theme_data = window->screen->engine->acquire_frame (&info);
   
@@ -172,19 +190,6 @@ meta_frame_calc_geometry (MetaFrame *frame,
 
   window->screen->engine->fill_frame_geometry (&info, &geom,
                                                frame->theme_data);
-
-  frame->child_x = geom.left_width;
-  frame->child_y = geom.top_height;
-  frame->right_width = geom.right_width;
-  frame->bottom_height = geom.bottom_height;
-  
-  frame->rect.width = frame->rect.width + geom.left_width + geom.right_width;
-  frame->rect.height = frame->rect.height + geom.top_height + geom.bottom_height;
-
-  meta_debug_spew ("Added top %d and bottom %d totalling %d over child height %d\n",
-                   geom.top_height, geom.bottom_height, frame->rect.height, child_height);
-  
-  frame->bg_pixel = geom.background_pixel;
   
   *geomp = geom;
 }
@@ -232,7 +237,6 @@ meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   XSetWindowAttributes attrs;
-  MetaFrameGeometry geom;
   
   if (window->frame)
     return;
@@ -245,25 +249,14 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->grab = NULL;
   frame->current_control = META_FRAME_CONTROL_NONE;
   frame->tooltip_timeout = 0;
-  
-  /* This fills in frame->rect as well. */
-  meta_frame_calc_geometry (frame,
-                            window->rect.width,
-                            window->rect.height,
-                            &geom);
 
-  meta_frame_calc_initial_pos (frame, window->rect.x, window->rect.y);
-                               
-  meta_verbose ("Will create frame %d,%d %dx%d around window %s %d,%d %dx%d with child position inside frame %d,%d and gravity %d\n",
-                frame->rect.x, frame->rect.y,
-                frame->rect.width, frame->rect.height,
-                window->desc,
-                window->rect.x, window->rect.y,
-                window->rect.width, window->rect.height,
-                frame->child_x, frame->child_y,
-                window->size_hints.win_gravity);
-  
-  attrs.background_pixel = frame->bg_pixel;
+  frame->rect = window->rect;
+  frame->child_x = 0;
+  frame->child_y = 0;
+  frame->bottom_height = 0;
+  frame->right_width = 0;
+  frame->bg_pixel = 0;  
+
   attrs.event_mask = EVENT_MASK;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
@@ -276,10 +269,10 @@ meta_window_ensure_frame (MetaWindow *window)
                                   window->depth,
                                   InputOutput,
                                   window->xvisual,
-                                  CWBackPixel | CWEventMask,
+                                  CWEventMask,
                                   &attrs);
 
-  meta_verbose ("Frame is 0x%lx\n", frame->xwindow);
+  meta_verbose ("Frame for %s is 0x%lx\n", frame->window->desc, frame->xwindow);
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
@@ -299,21 +292,15 @@ meta_window_ensure_frame (MetaWindow *window)
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
-                   frame->child_x,
-                   frame->child_y);
+                   0, 0);
   meta_error_trap_pop (window->display);
-
-  /* Update window's location */
-  window->rect.x = frame->child_x;
-  window->rect.y = frame->child_y;
   
   /* stick frame to the window */
   window->frame = frame;
 
-  /* Put our state back where it should be */
-  meta_window_queue_calc_showing (window);
-  
-  /* Ungrab server */
+  /* Ungrab server (FIXME after fixing Pango not to lock us up,
+   * we need to recalc geometry before ungrabbing)
+   */
   meta_display_ungrab (window->display);
 }
 
@@ -367,80 +354,22 @@ meta_window_destroy_frame (MetaWindow *window)
   meta_window_queue_calc_showing (window);
 }
 
-/* Just a chunk of process_configure_event in window.c,
- * moved here since it's the part that deals with
- * the frame.
- */
 void
-meta_frame_child_configure_request (MetaFrame *frame)
+meta_frame_sync_to_window (MetaFrame *frame)
 {
-  MetaFrameGeometry geom;
-  
-  /* This fills in frame->rect as well. */
-  meta_frame_calc_geometry (frame,
-                            frame->window->size_hints.width,
-                            frame->window->size_hints.height,
-                            &geom);
-
-  meta_frame_calc_initial_pos (frame,
-                               frame->window->size_hints.x,
-                               frame->window->size_hints.y);
-
-  set_background_none (frame);
-  XMoveResizeWindow (frame->window->display->xdisplay,
-                     frame->xwindow,
-                     frame->rect.x,
-                     frame->rect.y,
-                     frame->rect.width,
-                     frame->rect.height);
-  set_background_color (frame);
-}
-
-void
-meta_frame_recalc_now (MetaFrame *frame)
-{
-  int old_child_x, old_child_y;
-  MetaFrameGeometry geom;
-
-  old_child_x = frame->child_x;
-  old_child_y = frame->child_y;
-  
-  /* This fills in frame->rect as well. */
-  meta_frame_calc_geometry (frame,
-                            frame->window->rect.width,
-                            frame->window->rect.height,
-                            &geom);
-
-  /* See if we need to move the frame to keep child in
-   * a constant position
-   */
-  if (old_child_x != frame->child_x)
-    frame->rect.x += (frame->child_x - old_child_x);
-  if (old_child_y != frame->child_y)
-    frame->rect.y += (frame->child_y - old_child_y);
-
-  set_background_none (frame);
-  XMoveResizeWindow (frame->window->display->xdisplay,
-                     frame->xwindow,
-                     frame->rect.x,
-                     frame->rect.y,
-                     frame->rect.width,
-                     frame->rect.height);
-  set_background_color (frame);
-  
-  meta_verbose ("Frame of %s recalculated to %d,%d %d x %d child %d,%d\n",
-                frame->window->desc, frame->rect.x, frame->rect.y,
+  meta_verbose ("Syncing frame geometry %d,%d %dx%d pixel %ld\n",
+                frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
-                frame->child_x, frame->child_y);
-
+                frame->bg_pixel);
+  set_background_none (frame);
+  XMoveResizeWindow (frame->window->display->xdisplay,
+                     frame->xwindow,
+                     frame->rect.x,
+                     frame->rect.y,
+                     frame->rect.width,
+                     frame->rect.height);
+  set_background_color (frame);
   meta_frame_queue_draw (frame);
-}
-
-void
-meta_frame_queue_recalc (MetaFrame *frame)
-{
-  /* FIXME, actually queue */
-  meta_frame_recalc_now (frame);
 }
 
 static void
@@ -776,7 +705,7 @@ get_menu_items (MetaFrame *frame,
 
   *ops |= (META_MESSAGE_MENU_DELETE | META_MESSAGE_MENU_WORKSPACES | META_MESSAGE_MENU_MINIMIZE);
 
-  if (!(info->flags & META_FRAME_CONTROL_MINIMIZE))
+  if (!(info->flags & META_FRAME_CONTROL_ICONIFY))
     *insensitive |= META_MESSAGE_MENU_MINIMIZE;
   
   if (!(info->flags & META_FRAME_CONTROL_DELETE))

@@ -39,6 +39,18 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
+  /* NOTE these four are not in UTF-8, we just treat them as random
+   * binary data
+   */
+  char *res_class;
+  char *res_name;
+  char *role;
+  char *sm_client_id;
+
+  Window xtransient_for;
+  Window xgroup_leader;
+  Window xclient_leader;
+  
   /* Whether we're maximized */
   guint maximized : 1;
 
@@ -127,6 +139,15 @@ void        meta_window_move_resize        (MetaWindow  *window,
                                             int          root_y_nw,
                                             int          w,
                                             int          h);
+/* This recalcs the window/frame size, and recalcs the frame
+ * size/contents as well.
+ */
+void        meta_window_queue_move_resize  (MetaWindow  *window);
+
+/* this gets root coords */
+void        meta_window_get_position       (MetaWindow  *window,
+                                            int         *x,
+                                            int         *y);
 void        meta_window_delete             (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_focus              (MetaWindow  *window,
