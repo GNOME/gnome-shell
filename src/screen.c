@@ -108,7 +108,11 @@ meta_screen_new (MetaDisplay *display,
    * so create that required workspace.
    */
   screen->active_workspace = meta_workspace_new (screen);
-  /* FIXME, for debugging create another one. */
+  /* FIXME, for now there are always 6 workspaces... */
+  meta_workspace_new (screen);
+  meta_workspace_new (screen);
+  meta_workspace_new (screen);
+  meta_workspace_new (screen);
   meta_workspace_new (screen);
   
   meta_screen_init_visual_info (screen);

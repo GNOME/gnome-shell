@@ -71,12 +71,10 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
 void          meta_screen_queue_frame_redraws (MetaScreen                 *screen);
-
 void          meta_screen_show_tip            (MetaScreen                 *screen,
                                                int                         root_x,
                                                int                         root_y,
                                                const char                 *markup);
-
 void          meta_screen_hide_tip            (MetaScreen                 *screen);
 
 #endif

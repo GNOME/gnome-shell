@@ -20,6 +20,7 @@
  */
 
 #include "uislave.h"
+#include "window.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -316,4 +317,43 @@ meta_ui_slave_hide_tip (MetaUISlave *uislave)
   hidetip.header.length = META_MESSAGE_LENGTH (MetaMessageHideTip);
 
   send_message (uislave, (MetaMessage*)&hidetip);
+}
+
+void
+meta_ui_slave_show_window_menu (MetaUISlave             *uislave,
+                                MetaWindow              *window,
+                                int                      root_x,
+                                int                      root_y,
+                                int                      button,
+                                MetaMessageWindowMenuOps ops,
+                                MetaMessageWindowMenuOps insensitive,
+                                Time                     timestamp)
+{
+  MetaMessageShowWindowMenu showmenu;
+
+  memset (&showmenu, 0, META_MESSAGE_LENGTH (MetaMessageShowWindowMenu));
+  showmenu.header.message_code = MetaMessageShowWindowMenuCode;
+  showmenu.header.length = META_MESSAGE_LENGTH (MetaMessageShowWindowMenu);
+
+  showmenu.window = window->xwindow;
+  showmenu.root_x = root_x;
+  showmenu.root_y = root_y;
+  showmenu.button = button;
+  showmenu.ops = ops;
+  showmenu.insensitive = insensitive;
+  showmenu.timestamp = timestamp;
+  
+  send_message (uislave, (MetaMessage*)&showmenu);
+}
+
+void
+meta_ui_slave_hide_window_menu (MetaUISlave *uislave)
+{
+  MetaMessageHideWindowMenu hidemenu;
+
+  memset (&hidemenu, 0, META_MESSAGE_LENGTH (MetaMessageHideWindowMenu));
+  hidemenu.header.message_code = MetaMessageHideWindowMenuCode;
+  hidemenu.header.length = META_MESSAGE_LENGTH (MetaMessageHideWindowMenu);
+
+  send_message (uislave, (MetaMessage*)&hidemenu);
 }

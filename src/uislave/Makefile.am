@@ -5,6 +5,8 @@ metacity_uislave_SOURCES = 	\
 	fixedtip.h		\
 	fixedtip.c		\
 	main.c			\
+	menu.c			\
+	menu.h			\
 	messages.c		\
 	messages.h		\
 	messagequeue.c		\

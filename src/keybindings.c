@@ -52,7 +52,17 @@ struct _MetaKeyBinding
 
 static MetaKeyBinding bindings[] = {
   { XK_F1, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
-  { XK_F2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 }
+  { XK_F2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
+  { XK_F3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
+  { XK_F4, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
+  { XK_F5, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
+  { XK_F6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
+  { XK_1, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
+  { XK_2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
+  { XK_3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
+  { XK_4, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
+  { XK_5, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
+  { XK_6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 }
 };
 
 void

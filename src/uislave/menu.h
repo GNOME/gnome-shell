@@ -1,4 +1,4 @@
-/* Metacity UI slave main() */
+/* Metacity window menu */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,14 +19,21 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_UI_MAIN_H
-#define META_UI_MAIN_H
+#ifndef META_MENU_H
+#define META_MENU_H
 
-void meta_ui_warning (const char *format, ...);
+#include <gtk/gtk.h>
+#include "messages.h"
+void meta_window_menu_show (gulong                   xwindow,
+                            int                      root_x,
+                            int                      root_y,
+                            int                      button,
+                            MetaMessageWindowMenuOps ops,
+                            MetaMessageWindowMenuOps insensitive,
+                            guint32                  timestamp);
+void meta_window_menu_hide (void);
 
-/* FIXME */
-#define _(x) x
-#define N_(x) x
+
 
 
 #endif

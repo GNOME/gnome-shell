@@ -64,4 +64,15 @@ void         meta_ui_slave_show_tip (MetaUISlave    *uislave,
                                      const char     *markup_text);
 void         meta_ui_slave_hide_tip (MetaUISlave    *uislave);
 
+void meta_ui_slave_show_window_menu (MetaUISlave             *uislave,
+                                     MetaWindow              *window,
+                                     int                      root_x,
+                                     int                      root_y,
+                                     int                      button,
+                                     MetaMessageWindowMenuOps ops,
+                                     MetaMessageWindowMenuOps insensitive,
+                                     Time                     timestamp);
+void meta_ui_slave_hide_window_menu (MetaUISlave             *uislave);
+
 #endif
+

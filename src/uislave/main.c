@@ -23,6 +23,7 @@
 #include "messagequeue.h"
 #include "fixedtip.h"
 #include "main.h"
+#include "menu.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -67,6 +68,20 @@ message_callback (MetaMessageQueue *mq,
     case MetaMessageHideTipCode:
       meta_fixed_tip_hide ();
       break;
+
+    case MetaMessageShowWindowMenuCode:
+      meta_window_menu_show (message->show_menu.window,
+                             message->show_menu.root_x,
+                             message->show_menu.root_y,
+                             message->show_menu.button,
+                             message->show_menu.ops,
+                             message->show_menu.insensitive,
+                             message->show_menu.timestamp);
+      break;
+      
+    case MetaMessageHideWindowMenuCode:
+      meta_window_menu_hide ();
+      break;
       
     default:
       meta_ui_warning ("Unhandled message code %d\n",
@@ -88,6 +103,7 @@ meta_ui_warning (const char *format, ...)
   va_end (args);
   
   fputs (str, stderr);
+  fflush (stderr); /* though stderr is unbuffered right */
   
   g_free (str);
 }

@@ -35,6 +35,16 @@ struct _MetaFrameActionGrab
   int start_button;
 };
 
+/* This lacks ButtonReleaseMask to avoid the auto-grab
+ * since it breaks our popup menu
+ */
+#define EVENT_MASK (StructureNotifyMask | SubstructureNotifyMask | \
+                    ExposureMask |                                 \
+                    ButtonPressMask | ButtonReleaseMask |          \
+                    PointerMotionMask | PointerMotionHintMask |    \
+                    EnterWindowMask | LeaveWindowMask)
+
+
 static void clear_tip (MetaFrame *frame);
 
 static void
@@ -244,14 +254,7 @@ meta_window_ensure_frame (MetaWindow *window)
                 window->size_hints.win_gravity);
   
   attrs.background_pixel = frame->bg_pixel;
-  attrs.event_mask =
-    StructureNotifyMask | SubstructureNotifyMask | ExposureMask |
-    /* We need OwnerGrabButtonMask because during a button
-     * press we may need to transfer control to the UI slave.
-     */
-    ButtonPressMask | ButtonReleaseMask | OwnerGrabButtonMask |
-    PointerMotionMask | PointerMotionHintMask |
-    EnterWindowMask | LeaveWindowMask;
+  attrs.event_mask = EVENT_MASK;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
                                   window->screen->xroot,
@@ -803,6 +806,38 @@ meta_frame_event (MetaFrame *frame,
               frame->grab->start_window_x = frame->window->rect.width;
               frame->grab->start_window_y = frame->window->rect.height;
               frame->grab->start_button = event->xbutton.button;
+            }
+          else if (control == META_FRAME_CONTROL_MENU &&
+                   event->xbutton.button == 1)
+            {
+              int x, y, width, height;      
+              MetaFrameInfo info;
+
+              meta_verbose ("Menu control clicked on %s\n",
+                            frame->window->desc);
+              
+              meta_frame_init_info (frame, &info);
+              frame->window->screen->engine->get_control_rect (&info,
+                                                               META_FRAME_CONTROL_MENU,
+                                                               &x, &y, &width, &height,
+                                                               frame->theme_data);
+
+              /* Let the menu get a grab. The user could release button
+               * before the menu gets the grab, in which case the
+               * menu gets somewhat confused, but it's not that
+               * disastrous.
+               */
+              XUngrabPointer (frame->window->display->xdisplay,
+                              event->xbutton.time);
+              
+              meta_ui_slave_show_window_menu (frame->window->screen->uislave,
+                                              frame->window,
+                                              frame->rect.x + x,
+                                              frame->rect.y + y + height,
+                                              event->xbutton.button,
+                                              META_MESSAGE_MENU_ALL,
+                                              META_MESSAGE_MENU_MINIMIZE,
+                                              event->xbutton.time);      
             }
         }
       break;

@@ -60,12 +60,14 @@
 #define META_MESSAGE_MAX_HOST_ALIAS_LEN 50
 #define META_MESSAGE_MAX_TIP_LEN 128
 
-typedef union  _MetaMessage         MetaMessage;
-typedef struct _MetaMessageHeader   MetaMessageHeader;
-typedef struct _MetaMessageFooter   MetaMessageFooter;
-typedef struct _MetaMessageCheck    MetaMessageCheck;
-typedef struct _MetaMessageShowTip  MetaMessageShowTip;
-typedef struct _MetaMessageHideTip  MetaMessageHideTip;
+typedef union  _MetaMessage               MetaMessage;
+typedef struct _MetaMessageHeader         MetaMessageHeader;
+typedef struct _MetaMessageFooter         MetaMessageFooter;
+typedef struct _MetaMessageCheck          MetaMessageCheck;
+typedef struct _MetaMessageShowTip        MetaMessageShowTip;
+typedef struct _MetaMessageHideTip        MetaMessageHideTip;
+typedef struct _MetaMessageShowWindowMenu MetaMessageShowWindowMenu;
+typedef struct _MetaMessageHideWindowMenu MetaMessageHideWindowMenu;
 
 typedef enum
 {
@@ -75,7 +77,9 @@ typedef enum
   MetaMessageNullCode,
   MetaMessageCheckCode,
   MetaMessageShowTipCode,
-  MetaMessageHideTipCode
+  MetaMessageHideTipCode,
+  MetaMessageShowWindowMenuCode,
+  MetaMessageHideWindowMenuCode
 } MetaMessageCode;
 
 struct _MetaMessageHeader
@@ -124,12 +128,42 @@ struct _MetaMessageHideTip
   MetaMessageFooter footer;
 };
 
+typedef enum
+{
+  META_MESSAGE_MENU_DELETE      = 1 << 0,
+  META_MESSAGE_MENU_MINIMIZE    = 1 << 1,
+  META_MESSAGE_MENU_MAXIMIZE    = 1 << 2,
+  META_MESSAGE_MENU_ALL         = META_MESSAGE_MENU_DELETE | META_MESSAGE_MENU_MINIMIZE | META_MESSAGE_MENU_MAXIMIZE
+} MetaMessageWindowMenuOps;
+
+struct _MetaMessageShowWindowMenu
+{
+  MetaMessageHeader header;
+  MetaMessageWindowMenuOps ops;
+  MetaMessageWindowMenuOps insensitive;
+  gulong window;
+  int root_x;
+  int root_y;
+  guint32 timestamp;
+  int button;
+  MetaMessageFooter footer;
+};
+
+struct _MetaMessageHideWindowMenu
+{
+  MetaMessageHeader header;
+
+  MetaMessageFooter footer;
+};
+
 union _MetaMessage
 {
   MetaMessageHeader header;
   MetaMessageCheck check;
   MetaMessageShowTip show_tip;
   MetaMessageShowTip hide_tip;
+  MetaMessageShowWindowMenu show_menu;
+  MetaMessageHideWindowMenu hide_menu;
 };
 
 /* Slave-side message send/read code */
