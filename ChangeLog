@@ -1,3 +1,8 @@
+2002-05-16  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_show): don't focus dock, desktop,
+	etc. windows on initial map, only windows that should have focus.
+
 2002-05-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/workspace.c (meta_workspace_get_neighbor): use the layout

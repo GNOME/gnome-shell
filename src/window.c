@@ -1324,8 +1324,23 @@ meta_window_show (MetaWindow *window)
 
       /* Always focus new windows in click-to-focus */
       if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        meta_window_focus (window,
-                           meta_display_get_current_time (window->display));
+        {
+          switch (window->type)
+            {
+            case META_WINDOW_DOCK:
+            case META_WINDOW_DESKTOP:
+            case META_WINDOW_UTILITY:
+            case META_WINDOW_SPLASHSCREEN:
+              /* don't focus these */
+              break;
+            case META_WINDOW_NORMAL:
+            case META_WINDOW_DIALOG:
+            case META_WINDOW_MODAL_DIALOG:
+              meta_window_focus (window,
+                                 meta_display_get_current_time (window->display));
+              break;
+            }
+        }
     }
 
   if (did_show)
