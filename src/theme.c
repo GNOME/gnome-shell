@@ -27,6 +27,7 @@
 #include <gtk/gtkwidget.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define GDK_COLOR_RGBA(color)                                           \
                          ((guint32) (0xff                         |     \
@@ -45,153 +46,15 @@
 #define CLAMP_UCHAR(v) ((guchar) (CLAMP (((int)v), (int)0, (int)255)))
 #define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
 
-/* Converts from HSV to RGB */
-static void
-hsv_to_rgb (gdouble *h,
-	    gdouble *s,
-	    gdouble *v)
-{
-  gdouble hue, saturation, value;
-  gdouble f, p, q, t;
-  
-  if (*s == 0.0)
-    {
-      *h = *v;
-      *s = *v;
-      *v = *v; /* heh */
-    }
-  else
-    {
-      hue = *h * 6.0;
-      saturation = *s;
-      value = *v;
-      
-      if (hue == 6.0)
-	hue = 0.0;
-      
-      f = hue - (int) hue;
-      p = value * (1.0 - saturation);
-      q = value * (1.0 - saturation * f);
-      t = value * (1.0 - saturation * (1.0 - f));
-      
-      switch ((int) hue)
-	{
-	case 0:
-	  *h = value;
-	  *s = t;
-	  *v = p;
-	  break;
-	  
-	case 1:
-	  *h = q;
-	  *s = value;
-	  *v = p;
-	  break;
-	  
-	case 2:
-	  *h = p;
-	  *s = value;
-	  *v = t;
-	  break;
-	  
-	case 3:
-	  *h = p;
-	  *s = q;
-	  *v = value;
-	  break;
-	  
-	case 4:
-	  *h = t;
-	  *s = p;
-	  *v = value;
-	  break;
-	  
-	case 5:
-	  *h = value;
-	  *s = p;
-	  *v = q;
-	  break;
-	  
-	default:
-	  g_assert_not_reached ();
-	}
-    }
-}
-
-/* Converts from RGB to HSV */
-static void
-rgb_to_hsv (gdouble *r,
-	    gdouble *g,
-	    gdouble *b)
-{
-  gdouble red, green, blue;
-  gdouble h, s, v;
-  gdouble min, max;
-  gdouble delta;
-  
-  red = *r;
-  green = *g;
-  blue = *b;
-  
-  h = 0.0;
-  
-  if (red > green)
-    {
-      if (red > blue)
-	max = red;
-      else
-	max = blue;
-      
-      if (green < blue)
-	min = green;
-      else
-	min = blue;
-    }
-  else
-    {
-      if (green > blue)
-	max = green;
-      else
-	max = blue;
-      
-      if (red < blue)
-	min = red;
-      else
-	min = blue;
-    }
-  
-  v = max;
-  
-  if (max != 0.0)
-    s = (max - min) / max;
-  else
-    s = 0.0;
-  
-  if (s == 0.0)
-    h = 0.0;
-  else
-    {
-      delta = max - min;
-      
-      if (red == max)
-	h = (green - blue) / delta;
-      else if (green == max)
-	h = 2 + (blue - red) / delta;
-      else if (blue == max)
-	h = 4 + (red - green) / delta;
-      
-      h /= 6.0;
-      
-      if (h < 0.0)
-	h += 1.0;
-      else if (h > 1.0)
-	h -= 1.0;
-    }
-  
-  *r = h;
-  *g = s;
-  *b = v;
-}
+static void gtk_style_shade		(GdkColor	 *a,
+					 GdkColor	 *b,
+					 gdouble	  k);
+static void rgb_to_hls			(gdouble	 *r,
+					 gdouble	 *g,
+					 gdouble	 *b);
+static void hls_to_rgb			(gdouble	 *h,
+					 gdouble	 *l,
+					 gdouble	 *s);
 
 static GdkPixbuf *
 colorize_pixbuf (GdkPixbuf *orig,
@@ -208,12 +71,6 @@ colorize_pixbuf (GdkPixbuf *orig,
   gboolean has_alpha;
   const guchar *src_pixels;
   guchar *dest_pixels;
-  double dh, ds, dv;
-
-  dh = new_color->red / 65535.0;
-  ds = new_color->green / 65535.0;
-  dv = new_color->blue / 65535.0;
-  rgb_to_hsv (&dh, &ds, &dv);
   
   pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
 			   gdk_pixbuf_get_bits_per_sample (orig),
@@ -241,13 +98,6 @@ colorize_pixbuf (GdkPixbuf *orig,
           
           intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
 
-#if 0
-          /* black to new_color */
-          dr = dh;
-          dg = intensity;
-          db = intensity;
-          hsv_to_rgb (&dr, &dg, &db);
-#else
           if (intensity <= 0.5)
             {
               /* Go from black at intensity = 0.0 to new_color at intensity = 0.5 */
@@ -262,7 +112,6 @@ colorize_pixbuf (GdkPixbuf *orig,
               dg = (new_color->green + (65535 - new_color->green) * (intensity - 0.5) * 2.0) / 65535.0;
               db = (new_color->blue + (65535 - new_color->blue) * (intensity - 0.5) * 2.0) / 65535.0;
             }
-#endif
           
           dest[0] = CLAMP_UCHAR (255 * dr);
           dest[1] = CLAMP_UCHAR (255 * dg);
@@ -563,6 +412,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
 
   x = width - layout->right_titlebar_edge;
 
+  /* gcc warnings */
+  button_width = -1;
+  button_height = -1;
+  
   switch (layout->button_sizing)
     {
     case META_BUTTON_SIZING_ASPECT:
@@ -575,9 +428,6 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
       break;
     case META_BUTTON_SIZING_LAST:
       g_assert_not_reached ();
-      /* gcc warnings */
-      button_width = -1;
-      button_height = -1;
       break;
     }
 
@@ -844,6 +694,10 @@ meta_color_spec_new (MetaColorSpecType type)
     case META_COLOR_SPEC_BLEND:
       size += sizeof (dummy.data.blend);
       break;
+
+    case META_COLOR_SPEC_SHADE:
+      size += sizeof (dummy.data.shade);
+      break;
     }
 
   spec = g_malloc0 (size);
@@ -874,6 +728,12 @@ meta_color_spec_free (MetaColorSpec *spec)
       if (spec->data.blend.background)
         meta_color_spec_free (spec->data.blend.background);
       DEBUG_FILL_STRUCT (&spec->data.blend);
+      break;
+
+    case META_COLOR_SPEC_SHADE:
+      if (spec->data.shade.base)
+        meta_color_spec_free (spec->data.shade.base);
+      DEBUG_FILL_STRUCT (&spec->data.shade);
       break;
     }
 
@@ -1025,6 +885,64 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.blend.background = bg;
       spec->data.blend.foreground = fg;
     }
+  else if (str[0] == 's' && str[1] == 'h' && str[2] == 'a' && str[3] == 'd' &&
+           str[4] == 'e' && str[5] == '/')
+    {
+      /* shade */
+      char **split;
+      double factor;
+      char *end;
+      MetaColorSpec *base;
+      
+      split = g_strsplit (str, "/", 3);
+      
+      if (split[0] == NULL || split[1] == NULL ||
+          split[2] == NULL)
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"),
+                       str);
+          g_strfreev (split);
+          return NULL;
+        }
+
+      factor = g_ascii_strtod (split[2], &end);
+      if (end == split[2])
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("Could not parse shade factor \"%s\" in shaded color"),
+                       split[2]);
+          g_strfreev (split);
+          return NULL;
+        }
+
+      if (factor < (0.0 - 1e6))
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("Shade factor \"%s\" in shaded color is negative"),
+                       split[2]);
+          g_strfreev (split);
+          return NULL;
+        }
+      
+      base = NULL;
+
+      base = meta_color_spec_new_from_string (split[1], err);
+      if (base == NULL)
+        {
+          g_strfreev (split);
+          return NULL;
+        }
+
+      g_strfreev (split);
+      
+      spec = meta_color_spec_new (META_COLOR_SPEC_SHADE);
+      spec->data.shade.factor = factor;
+      spec->data.shade.base = base;
+    }
   else
     {
       spec = meta_color_spec_new (META_COLOR_SPEC_BASIC);
@@ -1115,6 +1033,18 @@ meta_color_spec_render (MetaColorSpec *spec,
         meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
 
         color_composite (&bg, &fg, spec->data.blend.alpha, color);
+      }
+      break;
+
+    case META_COLOR_SPEC_SHADE:
+      {
+        GdkColor base;
+        
+        meta_color_spec_render (spec->data.shade.base, widget, &base);
+        
+        gtk_style_shade (&base, &base, spec->data.shade.factor);
+
+        *color = base;
       }
       break;
     }
@@ -5369,6 +5299,191 @@ meta_image_fill_type_to_string (MetaImageFillType fill_type)
     }
   
   return "<unknown>";
+}
+
+/* gtkstyle.c cut-and-pastage */
+static void
+gtk_style_shade (GdkColor *a,
+                 GdkColor *b,
+                 gdouble   k)
+{
+  gdouble red;
+  gdouble green;
+  gdouble blue;
+  
+  red = (gdouble) a->red / 65535.0;
+  green = (gdouble) a->green / 65535.0;
+  blue = (gdouble) a->blue / 65535.0;
+  
+  rgb_to_hls (&red, &green, &blue);
+  
+  green *= k;
+  if (green > 1.0)
+    green = 1.0;
+  else if (green < 0.0)
+    green = 0.0;
+  
+  blue *= k;
+  if (blue > 1.0)
+    blue = 1.0;
+  else if (blue < 0.0)
+    blue = 0.0;
+  
+  hls_to_rgb (&red, &green, &blue);
+  
+  b->red = red * 65535.0;
+  b->green = green * 65535.0;
+  b->blue = blue * 65535.0;
+}
+
+static void
+rgb_to_hls (gdouble *r,
+            gdouble *g,
+            gdouble *b)
+{
+  gdouble min;
+  gdouble max;
+  gdouble red;
+  gdouble green;
+  gdouble blue;
+  gdouble h, l, s;
+  gdouble delta;
+  
+  red = *r;
+  green = *g;
+  blue = *b;
+  
+  if (red > green)
+    {
+      if (red > blue)
+        max = red;
+      else
+        max = blue;
+      
+      if (green < blue)
+        min = green;
+      else
+        min = blue;
+    }
+  else
+    {
+      if (green > blue)
+        max = green;
+      else
+        max = blue;
+      
+      if (red < blue)
+        min = red;
+      else
+        min = blue;
+    }
+  
+  l = (max + min) / 2;
+  s = 0;
+  h = 0;
+  
+  if (max != min)
+    {
+      if (l <= 0.5)
+        s = (max - min) / (max + min);
+      else
+        s = (max - min) / (2 - max - min);
+      
+      delta = max -min;
+      if (red == max)
+        h = (green - blue) / delta;
+      else if (green == max)
+        h = 2 + (blue - red) / delta;
+      else if (blue == max)
+        h = 4 + (red - green) / delta;
+      
+      h *= 60;
+      if (h < 0.0)
+        h += 360;
+    }
+  
+  *r = h;
+  *g = l;
+  *b = s;
+}
+
+static void
+hls_to_rgb (gdouble *h,
+            gdouble *l,
+            gdouble *s)
+{
+  gdouble hue;
+  gdouble lightness;
+  gdouble saturation;
+  gdouble m1, m2;
+  gdouble r, g, b;
+  
+  lightness = *l;
+  saturation = *s;
+  
+  if (lightness <= 0.5)
+    m2 = lightness * (1 + saturation);
+  else
+    m2 = lightness + saturation - lightness * saturation;
+  m1 = 2 * lightness - m2;
+  
+  if (saturation == 0)
+    {
+      *h = lightness;
+      *l = lightness;
+      *s = lightness;
+    }
+  else
+    {
+      hue = *h + 120;
+      while (hue > 360)
+        hue -= 360;
+      while (hue < 0)
+        hue += 360;
+      
+      if (hue < 60)
+        r = m1 + (m2 - m1) * hue / 60;
+      else if (hue < 180)
+        r = m2;
+      else if (hue < 240)
+        r = m1 + (m2 - m1) * (240 - hue) / 60;
+      else
+        r = m1;
+      
+      hue = *h;
+      while (hue > 360)
+        hue -= 360;
+      while (hue < 0)
+        hue += 360;
+      
+      if (hue < 60)
+        g = m1 + (m2 - m1) * hue / 60;
+      else if (hue < 180)
+        g = m2;
+      else if (hue < 240)
+        g = m1 + (m2 - m1) * (240 - hue) / 60;
+      else
+        g = m1;
+      
+      hue = *h - 120;
+      while (hue > 360)
+        hue -= 360;
+      while (hue < 0)
+        hue += 360;
+      
+      if (hue < 60)
+        b = m1 + (m2 - m1) * hue / 60;
+      else if (hue < 180)
+        b = m2;
+      else if (hue < 240)
+        b = m1 + (m2 - m1) * (240 - hue) / 60;
+      else
+        b = m1;
+      
+      *h = r;
+      *l = g;
+      *s = b;
+    }
 }
 
 #if 0

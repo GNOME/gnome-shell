@@ -143,7 +143,8 @@ typedef enum
 {
   META_COLOR_SPEC_BASIC,
   META_COLOR_SPEC_GTK,
-  META_COLOR_SPEC_BLEND
+  META_COLOR_SPEC_BLEND,
+  META_COLOR_SPEC_SHADE
 } MetaColorSpecType;
 
 typedef enum
@@ -176,6 +177,10 @@ struct _MetaColorSpec
       MetaColorSpec *background;
       double alpha;
     } blend;
+    struct {
+      MetaColorSpec *base;
+      double factor;
+    } shade;
   } data;
 };
 

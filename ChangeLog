@@ -1,3 +1,14 @@
+2002-06-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (meta_color_spec_new_from_string): parse 
+	"shade/foo/factor" as a color
+	(colorize_pixbuf): remove the unused hsv_to_rgb and vice-versa
+	stuff, add the gtk_style_shade stuff.
+	(meta_color_spec_render): render the shaded color spec
+
+	* src/theme.h (struct _MetaColorSpec): add "shade" mode to 
+	MetaColorSpec.
+
 2002-06-04  Seth Nickell  <snickell@stanford.edu>
 
 	* src/metacity.desktop.in:
