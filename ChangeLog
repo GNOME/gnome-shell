@@ -1,3 +1,8 @@
+2002-10-24  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_get_tab_list): put minimized windows
+	at the end of Alt+Tab, #89416
+
 2002-10-23  Havoc Pennington  <hp@redhat.com>
 
 	* src/theme.c (meta_frame_layout_calc_geometry): initialize the 

@@ -4,3 +4,5 @@ Keep panel always on top: http://bugzilla.gnome.org/show_bug.cgi?id=81551
 Edge flipping: http://bugzilla.gnome.org/show_bug.cgi?id=82917
 Opaque resize: http://bugzilla.gnome.org/show_bug.cgi?id=92618
 Super+click to resize: http://bugzilla.gnome.org/show_bug.cgi?id=79315
+minimized windows in Alt+tab: http://bugzilla.gnome.org/show_bug.cgi?id=89416
+

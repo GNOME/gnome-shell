@@ -3009,7 +3009,9 @@ meta_display_get_tab_list (MetaDisplay   *display,
 
   /* workspace can be NULL for all workspaces */  
 
-  /* Windows sellout mode - MRU order */
+  /* Windows sellout mode - MRU order. Collect unminimized windows
+   * then minimized so minimized windows aren't in the way so much.
+   */
   {
     GList *tmp;
     
@@ -3019,7 +3021,8 @@ meta_display_get_tab_list (MetaDisplay   *display,
       {
         MetaWindow *window = tmp->data;
         
-        if (window->screen == screen &&
+        if (!window->minimized &&
+            window->screen == screen &&
             IN_TAB_CHAIN (window, type) &&
             (workspace == NULL ||
              meta_window_visible_on_workspace (window, workspace)))
@@ -3027,9 +3030,29 @@ meta_display_get_tab_list (MetaDisplay   *display,
         
         tmp = tmp->next;
       }
-    tab_list = g_slist_reverse (tab_list);
   }
 
+  {
+    GList *tmp;
+    
+    tmp = screen->display->mru_list;
+    while (tmp != NULL)
+      {
+        MetaWindow *window = tmp->data;
+        
+        if (window->minimized &&
+            window->screen == screen &&
+            IN_TAB_CHAIN (window, type) &&
+            (workspace == NULL ||
+             meta_window_visible_on_workspace (window, workspace)))
+          tab_list = g_slist_prepend (tab_list, window);
+        
+        tmp = tmp->next;
+      }
+  }
+
+  tab_list = g_slist_reverse (tab_list);
+  
   return tab_list;
 }
 
