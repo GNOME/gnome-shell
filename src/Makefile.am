@@ -8,6 +8,8 @@ EGGFILES=			\
 	eggaccelerators.h
 
 metacity_SOURCES= 				\
+	async-getprop.c				\
+	async-getprop.h				\
 	common.h				\
 	core.c					\
 	core.h					\

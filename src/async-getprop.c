@@ -635,3 +635,9 @@ ag_get_next_completed_task (Display *display)
 
   return (AgGetPropertyTask*) dd->completed_tasks;
 }
+
+void*
+ag_Xmalloc (unsigned long bytes)
+{
+  return (void*) Xmalloc (bytes);
+}

@@ -1,3 +1,18 @@
+2002-10-26  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_new): use multi-value-get on a couple
+	of properties for testing
+
+	* src/xprops.c (meta_prop_get_values): implement multi-value-get
+
+	* src/window.c (update_mwm_hints): XFree motif hints as we changed
+	it to use Xmalloc
+
+	* src/xprops.c: massively rework this to set up a
+	get-multiple-properties-at-once API.
+
+	* src/async-getprop.c (ag_Xmalloc): new function
+
 2002-10-25  Havoc Pennington  <hp@pobox.com>
 
         Add "busy cursor on app startup" support, conditionally - works 

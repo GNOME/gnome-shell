@@ -108,6 +108,65 @@ gboolean meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
                                                 Atom           prop_type,
                                                 gulong        *cardinal_p);
 
+typedef enum
+{
+  META_PROP_VALUE_INVALID,
+  META_PROP_VALUE_UTF8,
+  META_PROP_VALUE_STRING,
+  META_PROP_VALUE_MOTIF_HINTS,
+  META_PROP_VALUE_CARDINAL,
+  META_PROP_VALUE_WINDOW,
+  META_PROP_VALUE_CARDINAL_LIST,
+  META_PROP_VALUE_UTF8_LIST,
+  META_PROP_VALUE_ATOM_LIST
+} MetaPropValueType;
+
+/* used to request/return/store property values */
+typedef struct
+{
+  MetaPropValueType type;
+  Atom atom;
+  Atom required_type; /* autofilled if None */
+  
+  union
+  {
+    char *str;
+    MotifWmHints *motif_hints;
+    Window xwindow;
+    gulong cardinal;
+    
+    struct
+    {
+      gulong *cardinals;
+      int     n_cardinals;
+    } cardinal_list;
+
+    struct
+    {
+      char **strings;
+      int    n_strings;
+    } string_list;
+
+    struct
+    {
+      Atom *atoms;
+      int   n_atoms;
+    } atom_list;
+    
+  } v;
+
+} MetaPropValue;
+
+/* Each value has type and atom initialized. If there's an error,
+ * or property is unset, type comes back as INVALID;
+ * else type comes back as it originated, and the data
+ * is filled in.
+ */
+void meta_prop_get_values (MetaDisplay   *display,
+                           Window         xwindow,
+                           MetaPropValue *values,
+                           int            n_values);
+
 #endif
 
 

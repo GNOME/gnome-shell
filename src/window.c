@@ -153,16 +153,29 @@ wm_state_to_string (int state)
 }
 
 MetaWindow*
-meta_window_new (MetaDisplay *display, Window xwindow,
-                 gboolean must_be_viewable)
+meta_window_new (MetaDisplay *display,
+                 Window       xwindow,
+                 gboolean     must_be_viewable)
 {
   MetaWindow *window;
   XWindowAttributes attrs;
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
-  char *str;
-  unsigned long cardinal;
+#define N_INITIAL_PROPS 2
+  MetaPropValue initial_props[N_INITIAL_PROPS];
+  
+  g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
+
+  memset (initial_props, '\0', sizeof (initial_props));
+  
+#define INITIAL_PROP_WM_CLIENT_MACHINE 0
+  initial_props[0].type = META_PROP_VALUE_STRING;
+  initial_props[0].atom = display->atom_wm_client_machine;
+
+#define INITIAL_PROP_NET_WM_PID 1
+  initial_props[1].type = META_PROP_VALUE_CARDINAL;
+  initial_props[1].atom = display->atom_net_wm_pid;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
@@ -427,21 +440,26 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
 
-  if (meta_prop_get_latin1_string (window->display, window->xwindow,
-                                   window->display->atom_wm_client_machine,
-                                   &str))
+  meta_prop_get_values (display, window->xwindow,
+                        initial_props, N_INITIAL_PROPS);
+  
+  if (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].type !=
+      META_PROP_VALUE_INVALID)
     {
-      window->wm_client_machine = g_strdup (str);
-      meta_XFree (str);
+      window->wm_client_machine =
+        g_strdup (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].v.str);
+
+      meta_XFree (initial_props[INITIAL_PROP_WM_CLIENT_MACHINE].v.str);
 
       meta_verbose ("Window has client machine \"%s\"\n",
                     window->wm_client_machine);
     }
 
-  if (meta_prop_get_cardinal (window->display, window->xwindow,
-                              window->display->atom_net_wm_pid,
-                              &cardinal))
+  if (initial_props[INITIAL_PROP_NET_WM_PID].type !=
+      META_PROP_VALUE_INVALID)
     {
+      gulong cardinal = (int) initial_props[INITIAL_PROP_NET_WM_PID].v.cardinal;
+
       if (cardinal <= 0)
         meta_warning (_("Application set a bogus _NET_WM_PID %ld\n"),
                       cardinal);
@@ -4491,7 +4509,7 @@ update_mwm_hints (MetaWindow *window)
   else
     meta_verbose ("Functions flag unset\n");
 
-  g_free (hints);
+  meta_XFree (hints);
 
   recalc_window_features (window);
 }

@@ -54,6 +54,9 @@ Display* ag_task_get_display  (AgGetPropertyTask *task);
 
 AgGetPropertyTask* ag_get_next_completed_task (Display *display);
 
+/* so other headers don't have to include internal Xlib goo */
+void*    ag_Xmalloc (unsigned long bytes);
+
 #endif
 
 
