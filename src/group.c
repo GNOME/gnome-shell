@@ -85,6 +85,9 @@ meta_group_unref (MetaGroup *group)
 MetaGroup*
 meta_window_get_group (MetaWindow *window)
 {
+  if (window->unmanaging)
+    return NULL;
+  
   if (window->cached_group == NULL &&
       window->xgroup_leader != None) /* some windows have no group */
     {

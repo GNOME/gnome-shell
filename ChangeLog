@@ -1,3 +1,12 @@
+2002-10-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_free): move
+	meta_window_shutdown_group() much earlier in the destroy process.
+	May fix #96928 tracked down by Kjartan Maraas and Martin Garton.
+
+	* src/group.c (meta_window_get_group): never add window to a group 
+	after we've started unmanaging the window
+
 2002-10-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/iconcache.c: include config.h

@@ -840,7 +840,12 @@ meta_window_free (MetaWindow  *window)
         meta_group_update_layers (group);
       meta_stack_thaw (window->screen->stack);
     }
-    
+
+  meta_window_shutdown_group (window); /* safe to do this early as
+                                        * group.c won't re-add to the
+                                        * group if window->unmanaging
+                                        */
+  
   /* If we have the focus, focus some other window.
    * This is done first, so that if the unmap causes
    * an EnterNotify the EnterNotify will have final say
@@ -985,8 +990,6 @@ meta_window_free (MetaWindow  *window)
     g_object_unref (G_OBJECT (window->mini_icon));
 
   meta_icon_cache_free (&window->icon_cache);
-
-  meta_window_shutdown_group (window);
   
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
