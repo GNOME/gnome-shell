@@ -1,5 +1,17 @@
 2002-10-18  Havoc Pennington  <hp@redhat.com>
 
+	* src/keybindings.c (do_choose_window): don't start the cycle
+	process if the binding for switching windows has no modifier bits, 
+	just focus the window immediately.
+
+	* src/prefs.c, src/keybindings.c: add a keybinding to move between
+	windows that goes in the opposite direction.  This is mostly
+	useful if you want to bind unmodified keys to the switch windows
+	functions, e.g. if you have "Forward" and "Back" keys on your
+	keyboard. Patch from Shilad Sen <shilad sourcelight com>
+
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
 	* src/prefs.c, src/frames.c: add "what happens when you double
 	click the titlebar" setting, patch from Sean Middleditch bug
 	#95625.  This is basically an "add Windows emulation mode" patch.

@@ -54,7 +54,17 @@ static void handle_tab_forward        (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_tab_backward       (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_cycle_forward      (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_cycle_backward     (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -229,11 +239,19 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (META_MOTION_DOWN) },
   { META_KEYBINDING_SWITCH_WINDOWS, handle_tab_forward,
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
+  { META_KEYBINDING_SWITCH_WINDOWS_BACKWARD, handle_tab_backward,
+    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
   { META_KEYBINDING_SWITCH_PANELS, handle_tab_forward,
+    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
+  { META_KEYBINDING_SWITCH_PANELS_BACKWARD, handle_tab_backward,
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
   { META_KEYBINDING_CYCLE_WINDOWS, handle_cycle_forward,
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
+  { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, handle_cycle_backward,
+    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
   { META_KEYBINDING_CYCLE_PANELS, handle_cycle_forward,
+    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
+  { META_KEYBINDING_CYCLE_PANELS_BACKWARD, handle_cycle_backward,
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
   { META_KEYBINDING_SHOW_DESKTOP, handle_toggle_desktop,
     NULL },
@@ -1903,6 +1921,8 @@ process_tab_grab (MetaDisplay *display,
 {
   MetaKeyBindingAction action;
   gboolean popup_not_showing;
+  gboolean backward;
+  gboolean key_used;
 
   if (screen != display->grab_screen)
     return FALSE;
@@ -1961,22 +1981,48 @@ process_tab_grab (MetaDisplay *display,
    */
   
   popup_not_showing = FALSE;
+  key_used = FALSE;
+  backward = FALSE;
+
   switch (action)
     {
     case META_KEYBINDING_ACTION_CYCLE_PANELS:
     case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
       popup_not_showing = TRUE;
-      /* FALL THRU */
+      key_used = TRUE;
+      break;
+    case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
+    case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
+      popup_not_showing = TRUE;
+      key_used = TRUE;
+      backward = TRUE;
+      break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+      key_used = TRUE;
+      break;
+    case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+      key_used = TRUE;
+      backward = TRUE;
+      break;
+    default:
+      break;
+    }
+  
+  if (key_used)
+    {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Key pressed, moving tab focus in popup\n");
 
       if (event->xkey.state & ShiftMask)
+        backward = !backward;
+
+      if (backward)
         meta_ui_tab_popup_backward (screen->tab_popup);
       else
         meta_ui_tab_popup_forward (screen->tab_popup);
-
+      
       if (popup_not_showing)
         {
           /* We can't actually change window focus, due to the grab.
@@ -1995,17 +2041,15 @@ process_tab_grab (MetaDisplay *display,
               meta_window_raise (target_window);
             }
         }
-      return TRUE;
-      break;
-
-    default:
-      break;
     }
-
-  /* end grab */
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ending tabbing/cycling, uninteresting key pressed\n");
-  return FALSE;
+  else
+    {
+      /* end grab */
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Ending tabbing/cycling, uninteresting key pressed\n");
+    }
+  
+  return key_used;
 }
 
 static void
@@ -2344,10 +2388,10 @@ do_choose_window (MetaDisplay    *display,
                   MetaWindow     *event_window,
                   XEvent         *event,
                   MetaKeyBinding *binding,
+                  gboolean        backward,
                   gboolean        show_popup)
 {
   MetaTabList type;
-  gboolean backward;
   MetaWindow *initial_selection;
   
   type = GPOINTER_TO_INT (binding->handler->data);
@@ -2355,9 +2399,10 @@ do_choose_window (MetaDisplay    *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Tab list = %d show_popup = %d\n", type, show_popup);
   
-  /* backward if shift is down, this isn't configurable */
-  backward = (event->xkey.state & ShiftMask) != 0;
-
+  /* reverse direction if shift is down */
+  if (event->xkey.state & ShiftMask)
+    backward = !backward;
+  
   initial_selection = meta_display_get_tab_next (display,
                                                  type,
                                                  screen,
@@ -2374,28 +2419,39 @@ do_choose_window (MetaDisplay    *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Initially selecting window %s\n",
               initial_selection ? initial_selection->desc : "(none)");  
-  
-  if (initial_selection != NULL &&
-      meta_display_begin_grab_op (display,
-                                  screen,
-                                  NULL,
-                                  show_popup ?
-                                  tab_op_from_tab_type (type) :
-                                  cycle_op_from_tab_type (type),
-                                  FALSE,
-                                  0,
-                                  event->xkey.state & ~(display->ignored_modifier_mask),
-                                  event->xkey.time,
-                                  0, 0))
-    {      
-      meta_ui_tab_popup_select (screen->tab_popup,
-                                (MetaTabEntryKey) initial_selection->xwindow);
 
-      if (show_popup)
-        meta_ui_tab_popup_set_showing (screen->tab_popup,
-                                       TRUE);
-      else
-        meta_window_raise (initial_selection);
+  if (initial_selection != NULL)
+    {
+      if (binding->mask == 0)
+        {
+          /* If no modifiers, we can't do the "hold down modifier to keep
+           * moving" thing, so we just instaswitch by one window.
+           */
+          meta_topic (META_DEBUG_FOCUS, "Activating %s due to switch/cycle windows with no modifiers\n",
+                      initial_selection->desc);
+          meta_window_activate (initial_selection, event->xkey.time);
+        }
+      else if (meta_display_begin_grab_op (display,
+                                           screen,
+                                           NULL,
+                                           show_popup ?
+                                           tab_op_from_tab_type (type) :
+                                           cycle_op_from_tab_type (type),
+                                           FALSE,
+                                           0,
+                                           binding->mask,
+                                           event->xkey.time,
+                                           0, 0))
+        {      
+          meta_ui_tab_popup_select (screen->tab_popup,
+                                    (MetaTabEntryKey) initial_selection->xwindow);
+          
+          if (show_popup)
+            meta_ui_tab_popup_set_showing (screen->tab_popup,
+                                           TRUE);
+          else
+            meta_window_raise (initial_selection);
+        }
     }
 }
 
@@ -2407,7 +2463,18 @@ handle_tab_forward (MetaDisplay    *display,
                     MetaKeyBinding *binding)
 {
   do_choose_window (display, screen,
-                    event_window, event, binding, TRUE);
+                    event_window, event, binding, FALSE, TRUE);
+}
+
+static void
+handle_tab_backward (MetaDisplay    *display,
+                     MetaScreen     *screen,
+                     MetaWindow     *event_window,
+                     XEvent         *event,
+                     MetaKeyBinding *binding)
+{
+  do_choose_window (display, screen,
+                    event_window, event, binding, TRUE, TRUE);
 }
 
 static void
@@ -2418,7 +2485,18 @@ handle_cycle_forward (MetaDisplay    *display,
                       MetaKeyBinding *binding)
 {
   do_choose_window (display, screen,
-                    event_window, event, binding, FALSE); 
+                    event_window, event, binding, FALSE, FALSE); 
+}
+
+static void
+handle_cycle_backward (MetaDisplay    *display,
+                       MetaScreen     *screen,
+                       MetaWindow     *event_window,
+                       XEvent         *event,
+                       MetaKeyBinding *binding)
+{
+  do_choose_window (display, screen,
+                    event_window, event, binding, TRUE, FALSE); 
 }
 
 static void

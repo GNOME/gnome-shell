@@ -874,7 +874,8 @@ you set
          <long>
           The keybinding used to move focus between windows, using 
           a popup window.
-          (Traditionally &lt;Alt&gt;Tab)
+          (Traditionally &lt;Alt&gt;Tab) Holding the "shift" key
+          while using this binding reverses the direction of movement.
 
           The format looks like "&lt;Control&gt;a" or
           "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -887,7 +888,32 @@ you set
          </long>
       </locale>
     </schema>
-        
+ 
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_windows_backward</key>
+      <applyto>/apps/metacity/global_keybindings/switch_windows_backward</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move focus backwards between windows using popup display</short>
+         <long>
+          The keybinding used to move focus backwards between windows, using 
+          a popup window. Holding "shift" together with this
+          binding makes the direction go forward again.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
     <schema>
       <key>/schemas/apps/metacity/global_keybindings/switch_panels</key>
       <applyto>/apps/metacity/global_keybindings/switch_panels</applyto>
@@ -913,17 +939,16 @@ you set
     </schema>
 
     <schema>
-      <key>/schemas/apps/metacity/global_keybindings/cycle_windows</key>
-      <applyto>/apps/metacity/global_keybindings/cycle_windows</applyto>
+      <key>/schemas/apps/metacity/global_keybindings/switch_panels_backward</key>
+      <applyto>/apps/metacity/global_keybindings/switch_panels_backward</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;Escape</default>
+      <default>disabled</default>
       <locale name="C">
-         <short>Move focus between windows immediately</short>
+         <short>Move focus backwards between panels and the desktop using popup display</short>
          <long>
-          The keybinding used to move focus between windows without 
-          a popup window.
-          (Traditionally &lt;Alt&gt;Escape)
+          The keybinding used to move focus backwards between panels
+          and the desktop, using a popup window.
 
           The format looks like "&lt;Control&gt;a" or
           "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -936,7 +961,58 @@ you set
          </long>
       </locale>
     </schema>
-        
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_windows</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_windows</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Escape</default>
+      <locale name="C">
+         <short>Move focus between windows immediately</short>
+         <long>
+          The keybinding used to move focus between windows without 
+          a popup window.
+          (Traditionally &lt;Alt&gt;Escape) Holding the "shift" key
+          while using this binding reverses the direction of movement.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_windows_backward</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_windows_backward</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move focus backwards between windows immediately</short>
+         <long>
+          The keybinding used to move focus backwards between windows
+          without a popup window. Holding "shift" together with this
+          binding makes the direction go forward again.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
     <schema>
       <key>/schemas/apps/metacity/global_keybindings/cycle_panels</key>
       <applyto>/apps/metacity/global_keybindings/cycle_panels</applyto>
@@ -947,6 +1023,30 @@ you set
          <short>Move focus between panels and the desktop immediately</short>
          <long>
           The keybinding used to move focus between panels and 
+          the desktop, without a popup window.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_panels_backward</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_panels_backward</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Control&gt;&lt;Alt&gt;Escape</default>
+      <locale name="C">
+         <short>Move focus backward between panels and the desktop immediately</short>
+         <long>
+          The keybinding used to move focus backwards between panels and 
           the desktop, without a popup window.
 
           The format looks like "&lt;Control&gt;a" or
