@@ -6,10 +6,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: metacity 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-30 02:59+0200\n"
-"PO-Revision-Date: 2004-05-30 12:40+0300\n"
+"POT-Creation-Date: 2004-07-01 05:26+0200\n"
+"PO-Revision-Date: 2004-07-01 21:12+0300\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Употреба: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Метасити е компилиран без поддръжка на подробен режим\n"
+msgstr "Metacity е компилиран без поддръжка на подробен режим\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -52,15 +52,15 @@ msgstr "Грешка при четене от процеса за изобраз
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Грешка при стартиране на диалога на Метасити, който пита дали да се убие "
-"приложение: %s\n"
+"Грешка при стартиране на диалога на Metacity, който пита дали да се убие "
+"приложението: %s\n"
 
 #: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Не успях да получа името на хоста: %s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не успях да отворя дисплея на X Window \"%s\"\n"
@@ -83,7 +83,7 @@ msgstr "Фатална вх./изх. грешка %d (%s) на дисплей \"
 
 #: src/frames.c:1016
 msgid "Close Window"
-msgstr "Затвори прозореца"
+msgstr "Затваряне на прозореца"
 
 #: src/frames.c:1019
 msgid "Window Menu"
@@ -91,15 +91,15 @@ msgstr "Меню за прозорците"
 
 #: src/frames.c:1022
 msgid "Minimize Window"
-msgstr "Минимизирай прозореца"
+msgstr "Минимизиране на прозореца"
 
 #: src/frames.c:1025
 msgid "Maximize Window"
-msgstr "Максимизирай прозореца"
+msgstr "Максимизиране на прозореца"
 
 #: src/frames.c:1028
 msgid "Unmaximize Window"
-msgstr "Демаксимизирай прозореца"
+msgstr "Демаксимизиране на прозореца"
 
 #: src/keybindings.c:989
 #, c-format
@@ -164,23 +164,23 @@ msgstr "Не успях да рестартирам: %s\n"
 
 #: src/menu.c:54
 msgid "Mi_nimize"
-msgstr "Ми_нимизира"
+msgstr "Ми_нимизиране"
 
 #: src/menu.c:55
 msgid "Ma_ximize"
-msgstr "_Максимизира"
+msgstr "_Максимизиране"
 
 #: src/menu.c:56
 msgid "Unma_ximize"
-msgstr "_Демаксимизира"
+msgstr "_Демаксимизиране"
 
 #: src/menu.c:57
 msgid "Roll _Up"
-msgstr "На_вива"
+msgstr "На_виване"
 
 #: src/menu.c:58
 msgid "_Unroll"
-msgstr "_Развива"
+msgstr "_Развиване"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
@@ -188,21 +188,21 @@ msgstr "_Отгоре"
 
 #: src/menu.c:61
 msgid "_Move"
-msgstr "_Премества"
+msgstr "_Преместване"
 
 #: src/menu.c:62
 msgid "_Resize"
-msgstr "_Оразмерява"
+msgstr "_Оразмеряване"
 
 #. separator
 #: src/menu.c:64
 msgid "_Close"
-msgstr "_Затваря"
+msgstr "_Затваряне"
 
 #. separator
 #: src/menu.c:66
 msgid "Put on _All Workspaces"
-msgstr "Постави на _всички работни места"
+msgstr "Поставяне на _всички работни места"
 
 #: src/menu.c:67
 msgid "Only on _This Workspace"
@@ -210,37 +210,37 @@ msgstr "_Само на това работно място"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Премества до _Лявото Работно място"
+msgstr "Преместване до _Лявото Работно място"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Премества до _Дясното Работно място"
+msgstr "Преместване до _Дясното Работно място"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Премества до _Горното Работно място"
+msgstr "Преместване до _Горното Работно място"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Премества до _Долното Работно място"
+msgstr "Преместване до _Долното Работно място"
 
-#: src/menu.c:160 src/prefs.c:1868
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Работно място %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Работно място·1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Работно място %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr "Премества в Друго _Работно място"
+msgstr "Преместване в Друго _Работно място"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -341,7 +341,8 @@ msgstr "Прозорецът·\"%s\"·не отговаря."
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Принудителното спиране на тази програма, ще доведе до загуба на всякакви незапазени промени."
+"Принудителното спиране на тази програма, ще доведе до загуба на всякакви "
+"незапазени промени."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -379,7 +380,7 @@ msgstr "Metacity"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(Все още не е осъществено) Навигацията работи в рамките на приложенията, а "
+"(Все още не е осъществено) Навигацията работи в рамките на програмите, а "
 "не на прозорците"
 
 #: src/metacity.schemas.in.h:2
@@ -395,7 +396,7 @@ msgstr ""
 "ще се използва, само ако настройката titlebar_font_size е установена на 0. "
 "Тази настройка е неактивна, ако настройката titlebar_uses_desktop_font "
 "option е включена. По подразбиране titlebar_font не е зададена, което "
-"принуждава Метасити да използва шрифта за работното място, дори ако "
+"принуждава Metacity да използва шрифта за работното място, дори ако "
 "titlebar_uses_desktop_font не е зададено като истина."
 
 #: src/metacity.schemas.in.h:3
@@ -404,7 +405,7 @@ msgstr "Действие при двойно щракване върху заг�
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Активира менюто за прозорци"
+msgstr "Активиране на менюто за прозорците"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -423,12 +424,12 @@ msgstr ""
 "\"menu:minimize,maximize,close\". С \";\" се разделят левия от десния ъгъл "
 "на прозореца, а със \",\" - имената на бутоните. Не са позволени повторения "
 "на бутоните. Непознатите имена се игнорират, така че в бъдещи версии на "
-"Метасити  да могат да се добавят нови бутони без да се пречи на старите "
+"Metacity да могат да се добавят нови бутони без да се пречи на старите "
 "версии."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "Автоматично издига фокусирания прозорец"
+msgstr "Автоматично издигане на фокусирания прозорец"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -443,8 +444,8 @@ msgstr ""
 "от вида \"&lt;Alt&gt;\" или \"&lt;Super&gt;\" например."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Затваря прозорец"
+msgid "Close window"
+msgstr "Затваряне на прозореца"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -476,7 +477,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "Скрий всички прозорци и фокусирай работното място"
+msgstr "Скриване на всички прозорци и фокусиране на работното място"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -517,9 +518,9 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Ако е истина, Метасити работи на базата на приложения, а не на прозорци. "
+"Ако е истина, Metacity работи на базата на приложения, а не на прозорци. "
 "Идеята е малко абстрактна, но като цяло подходът базиран на приложения е по-"
-"близък до Макинтош отколкото до Уиндоус. Когато фокусирате прозорец при "
+"близък до Macintosh отколкото до Windows. Когато фокусирате прозорец при "
 "подход базиран на приложения, всички прозорци на приложението ще се "
 "издигнат. При този подход щракванията за фокусиране не се предават на "
 "прозорците на други приложения. Съществуването на тази настройка е под "
@@ -534,23 +535,23 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr "Понижава прозореца под другите прозорци"
+msgstr "Понижаване на прозореца под другите прозорци"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Максимизира прозорец"
+msgid "Maximize window"
+msgstr "Максимизиране на прозорец"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
-msgstr "Максимизира прозорец хоризонтално"
+msgstr "Максимизиране на прозореца хоризонтално"
 
 #: src/metacity.schemas.in.h:25
 msgid "Maximize window vertically"
-msgstr "Максимизира прозорец вертикално"
+msgstr "Максимизиране прозореца вертикално"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Минимизира прозорец"
+msgid "Minimize window"
+msgstr "Минимизиране на прозореца"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
@@ -559,49 +560,49 @@ msgstr ""
 "прозорците"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Премества прозорец"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място в обратен ред"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място в обратен ред, "
 "като се използва изскачащ прозорец"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Премества незабавно фокуса между прозорците в обратен ред"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Премества незабавно фокуса между панелите и работното място"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място, като се "
 "използва изскачащ прозорец"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Премества незабавно фокуса между прозорците "
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr ""
 "Премества незабавно фокуса между прозорците, като се използва изскачащ "
 "прозорец"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Премества незабавно фокуса между прозорците в обратен ред, като се използва "
 "изскачащ прозорец"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Преместване на прозорец"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -691,22 +692,22 @@ msgstr "Ако прозорецът е под друг, го издига, ин�
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
-msgstr "Издига прозореца над другите"
+msgstr "Издигане на прозореца над другите"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
-msgstr "Оразмерява прозорец"
+msgid "Resize window"
+msgstr "Оразмеряване на прозорец"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
-msgstr "Изпълнява дефинирана команда"
+msgstr "Изпълняване на определена команда"
 
 #: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
-msgstr "Показва менюто на панела"
+msgstr "Показване на менюто на панела"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
+msgid "Show the panel run application dialog"
 msgstr ""
 
 #: src/metacity.schemas.in.h:62
@@ -724,84 +725,84 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"Някои програми нарушават спецификациите по начини, които предизвикват "
-"грешно поведение на мениджъра на прозорци. Например в идеалния случай "
-"Metacity поставя всички диалогови прозорци на подходящо място спрямо "
-"предизвикалия ги прозорец. Това изисква заявките от програмите за "
-"разполагането на диалоговите кутии да се игнорират. Някои версии на Java/"
-"Swing обозначават изскачащите си прозорци като диалози, така че Metacity "
-"трябва да изключи позиционирането на диалоговите кутии, за да позволи на "
-"менютата от развалените Java приложения да работят. Има още подобни примери. "
-"Тази настройка кара Metacity да работи в изцяло правилен режим, което дава "
-"малко по-добър потребителски интерфейс, ако няма да стартирате развалени "
-"приложения. За жалост неправилното поведение е включено по подразбиране. "
+"Някои програми нарушават спецификациите по начини, които предизвикват грешно "
+"поведение на мениджъра на прозорци. Например в идеалния случай Metacity "
+"поставя всички диалогови прозорци на подходящо място спрямо предизвикалия ги "
+"прозорец. Това изисква заявките от програмите за разполагането на "
+"диалоговите кутии да се игнорират. Някои версии на Java/Swing обозначават "
+"изскачащите си прозорци като диалози, така че Metacity трябва да изключи "
+"позиционирането на диалоговите кутии, за да позволи на менютата от "
+"развалените Java приложения да работят. Има още подобни примери. Тази "
+"настройка кара Metacity да работи в изцяло правилен режим, което дава малко "
+"по-добър потребителски интерфейс, ако няма да стартирате развалени "
+"програми. За жалост неправилното поведение е включено по подразбиране. "
 "Светът е гаден. Понякога заобикалянето на правилното поведение е "
 "предизвикано от ограниченията в самите спецификации, така че грешките в този "
 "режим, не могат да се оправят без изменение на стандарта."
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
-msgstr "Превключва към работно място 1"
+msgstr "Превключване към работно място 1"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 10"
-msgstr "Превключва към работно място 10"
+msgstr "Превключване към работно място 10"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 11"
-msgstr "Превключва към работно място 11"
+msgstr "Превключване към работно място 11"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 12"
-msgstr "Превключва към работно място 12"
+msgstr "Превключване към работно място 12"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 2"
-msgstr "Превключва към работно място 2"
+msgstr "Превключване към работно място 2"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 3"
-msgstr "Превключва към работно място 3"
+msgstr "Превключване към работно място 3"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 4"
-msgstr "Превключва към работно място 4"
+msgstr "Превключване към работно място 4"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 5"
-msgstr "Превключва към работно място 5"
+msgstr "Превключване към работно място 5"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 6"
-msgstr "Превключва към работно място 6"
+msgstr "Превключване към работно място 6"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 7"
-msgstr "Превключва към работно място 7"
+msgstr "Превключване към работно място 7"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 8"
-msgstr "Превключва към работно място 8"
+msgstr "Превключване към работно място 8"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 9"
-msgstr "Превключва към работно място 9"
+msgstr "Превключване към работно място 9"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace above this one"
-msgstr "Превключва към работното място отгоре"
+msgstr "Превключване към работното място отгоре"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace below this one"
-msgstr "Превключва към работното място отдолу"
+msgstr "Превключване към работното място отдолу"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace on the left"
-msgstr "Превключва към работното място вляво"
+msgstr "Превключване към работното място вляво"
 
 #: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the right"
-msgstr "Превключва към работното място вдясно"
+msgstr "Превключване към работното място вдясно"
 
 #: src/metacity.schemas.in.h:79
 msgid "System Bell is Audible"
@@ -1644,9 +1645,9 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1721,7 +1722,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Командата са снимане на прозорец"
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1838,8 +1839,8 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
-msgstr "Демаксимизира прозорец"
+msgid "Unmaximize window"
+msgstr "Демаксимизиране на прозорец"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1899,7 +1900,7 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Триковете за развалените приложения са изключени. Някои приложения могат да "
+"Триковете за развалените програми са изключени. Някои програми могат да "
 "са с неправилно поведение.\n"
 
 #: src/prefs.c:1271
@@ -1963,86 +1964,77 @@ msgstr "Екран %d на дисплей \"%s\" вече има мениджъ�
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не успях да отстъпя екран %d на дисплей \"%s\"\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Не успях да създам връзка към мениджъра на сесии, затова позициите на "
-"прозорците няма да се запомнят: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не успях да създам директорията \"%s\": %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не успях да отворя сесийния файл \"%s\" за запис: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Грешка при записване на сесийния файл \"%s\": %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Грешка при затваряне на сесийния файл \"%s\": %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Не успях да прочета записания сесиен файл %s: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Не успях да анализирам записания сесиен файл: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Атрибутът <metacity_session> е видян, но вече имаме сесийния ID"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Непознат атрибут %s на елемента <metacity_session>"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "вложен <window> етикет"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Непознат атрибут %s на елемента <window>"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Непознат атрибут%s на елемента <maximized>"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Непознат атрибут%s на елемента <geometry>"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Непознат елемент %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Грешка при стартиране на диалога на Метасити, който предупреждава за "
-"приложения, които не поддържат управление на сесиите: %s\n"
+"Грешка при стартиране на диалога на Metacity, който предупреждава за "
+"програми, които не поддържат управление на сесиите: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2620,11 +2612,11 @@ msgstr ""
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Това е демо бутон с икона \"изход\""
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Това е примерно съобщение в примерен диалогов прозорец"
 
 #: src/theme-viewer.c:324
 #, c-format
@@ -2649,7 +2641,7 @@ msgstr "Диалогова Кутия"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Модална Диалогова Кутия"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
@@ -2657,7 +2649,7 @@ msgstr "Палитра на Инструментите"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr "Изключва Менюто"
+msgstr "Откъсва Менюто"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2749,7 +2741,7 @@ msgstr "стойността x·беше·%d,·%d·беше очакваното
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr "стойността y неше %d,·%d·беше очаквана"
+msgstr "стойността y беше %d,·%d·беше очаквана"
 
 #: src/theme-viewer.c:1310
 #, c-format
@@ -2793,7 +2785,7 @@ msgstr "Геометрията на рамката не указва разме�
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr "Градиентите трябва да имат поне два цвята"
+msgstr "Преливките трябва да имат поне два цвята"
 
 #: src/theme.c:975
 #, c-format
@@ -2926,7 +2918,7 @@ msgstr ""
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Изразът за координати завършва с оператор вместо  с операнд"
+msgstr "Изразът за координати завършва с оператор вместо с операнд"
 
 #: src/theme.c:1863
 #, c-format
@@ -3018,7 +3010,7 @@ msgstr ""
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"Константите дефинирани от потребителя трябва да започват с главна буква, а "
+"Константите определени от потребителя трябва да започват с главна буква, а "
 "\"%s\" не започва така"
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -3036,7 +3028,7 @@ msgstr "Фокусиране на прозорци"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr "_Щракни, за да фокусираш"
+msgstr "_Щракване, за фокусиране"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
@@ -3048,11 +3040,11 @@ msgstr "Настройки на фокусирането на прозорцит
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr "_Посочи, за да фокусираш"
+msgstr "_Посочване, за фокусиране"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr "_Издигни прозореца при фокусиране"
+msgstr "_Издигане на прозореца при фокусиране"
 
 #: src/util.c:93
 #, c-format
@@ -3091,7 +3083,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3107,7 +3099,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3144,6 +3136,13 @@ msgid ""
 msgstr ""
 "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
 "списъка\n"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Не успях да създам връзка към мениджъра на сесии, затова позициите на "
+#~ "прозорците няма да се запомнят: %s\n"
 
 #~ msgid "Only on %s"
 #~ msgstr "Само на %s"
