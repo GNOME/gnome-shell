@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-12-24 14:24+0200\n"
-"PO-Revision-Date: 2002-12-24 06:25--500\n"
+"PO-Revision-Date: 2002-12-24 08:22--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -383,7 +383,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Сховати всі вікна і сфокусувати стільницю"
 
 #: src/metacity.schemas.in.h:15
 msgid "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay (the delay is specified by the auto_raise_delay key)."
