@@ -4036,7 +4036,7 @@ update_wm_hints (MetaWindow *window)
   XWMHints *hints;
   
   /* Fill in defaults */
-  window->input = FALSE;
+  window->input = TRUE;
   window->initially_iconic = FALSE;
   window->xgroup_leader = None;
   window->wm_hints_pixmap = None;
@@ -4048,7 +4048,8 @@ update_wm_hints (MetaWindow *window)
                        window->xwindow);
   if (hints)
     {
-      window->input = ((hints->flags & InputHint) != 0) && hints->input;
+      if (hints->flags & InputHint)
+        window->input = hints->input;
 
       if (hints->flags & StateHint)
         window->initially_iconic = (hints->initial_state == IconicState);
