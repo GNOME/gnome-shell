@@ -56,7 +56,7 @@ static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
 static void meta_frames_paint_to_drawable (MetaFrames   *frames,
                                            MetaUIFrame  *frame,
                                            GdkDrawable  *drawable,
-                                           GdkRectangle *area);
+                                           GdkRegion    *region);
 
 static void meta_frames_calc_geometry (MetaFrames        *frames,
                                        MetaUIFrame         *frame,
@@ -166,6 +166,8 @@ meta_frames_init (MetaFrames *frames)
   frames->tooltip_timeout = 0;
 
   frames->expose_delay_count = 0;
+
+  gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
 }
 
 static void
@@ -1275,7 +1277,7 @@ meta_frames_expose_event (GtkWidget           *widget,
       return TRUE;
     }
 
-  meta_frames_paint_to_drawable (frames, frame, frame->window, &event->area);
+  meta_frames_paint_to_drawable (frames, frame, frame->window, event->region);
 
   return TRUE;
 }
@@ -1284,7 +1286,7 @@ static void
 meta_frames_paint_to_drawable (MetaFrames   *frames,
                                MetaUIFrame  *frame,
                                GdkDrawable  *drawable,
-                               GdkRectangle *area)
+                               GdkRegion    *region)
 {
   GtkWidget *widget;
   MetaFrameFlags flags;
@@ -1295,6 +1297,12 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   MetaButtonState button_states[META_BUTTON_TYPE_LAST];
   Window grab_frame;
   int i;
+  int top, bottom, left, right;
+  GdkRegion *edges;
+  GdkRegion *client;
+  GdkRectangle area;
+  GdkRectangle *areas;
+  int n_areas;
   
   widget = GTK_WIDGET (frames);
 
@@ -1364,19 +1372,51 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                              &w, &h);
 
   meta_frames_ensure_layout (frames, frame);
+
+  meta_theme_get_frame_borders (meta_theme_get_current (),
+                                type, frame->text_height, flags, 
+                                &top, &bottom, &left, &right);
+
+  /* Repaint each side of the frame */
   
-  meta_theme_draw_frame (meta_theme_get_current (),
-                         widget,
-                         drawable,
-                         area,
-                         0, 0,
-                         type,
-                         flags,
-                         w, h,
-                         frame->layout,
-                         frame->text_height,
-                         button_states,
-                         mini_icon, icon);
+  edges = gdk_region_copy (region);
+  area.x = left;
+  area.y = top;
+  area.width = w;
+  area.height = h;
+  client = gdk_region_rectangle (&area);
+  gdk_region_subtract (edges, client);
+  gdk_region_destroy (client);
+
+  gdk_region_get_rectangles (edges, &areas, &n_areas);
+  
+  i = 0;
+  while (i < n_areas)
+    {
+      if (GDK_IS_WINDOW (drawable))
+        gdk_window_begin_paint_rect (drawable, &areas[i]);
+      
+      meta_theme_draw_frame (meta_theme_get_current (),
+                             widget,
+                             drawable,
+                             &areas[i],
+                             0, 0,
+                             type,
+                             flags,
+                             w, h,
+                             frame->layout,
+                             frame->text_height,
+                             button_states,
+                             mini_icon, icon);
+
+      if (GDK_IS_WINDOW (drawable))
+        gdk_window_end_paint (drawable);
+      
+      ++i;
+    }
+
+  gdk_region_destroy (edges);
+  g_free (areas);
 }
 
 static gboolean
