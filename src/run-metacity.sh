@@ -15,7 +15,7 @@ if test -z "$CLIENTS"; then
 fi
 
 if test -z "$ONLY_WM"; then
-  Xnest -ac :1 -scrns $SCREENS -geometry 640x600 -bw 15 &
+  Xnest -ac :1 -scrns $SCREENS -geometry 640x400 -bw 15 &
   usleep 100000
 
   if test $CLIENTS != 0; then
