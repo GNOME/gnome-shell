@@ -3,6 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2003, 2004 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -286,6 +287,7 @@ struct _MetaWindow
 
   /* Managed by stack.c */
   MetaStackLayer layer;
+  MetaStackLayer tmp_layer;
   int stack_position; /* see comment in stack.h */
   
   /* Current dialog open for this window */

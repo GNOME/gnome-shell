@@ -1,3 +1,23 @@
+2004-02-27  Rob Adams  <readams@readams.net>
+
+	Handle layer promotion of transient descendants of layer-promoted
+	windows to also be layer promoted, using a simple iterative
+	algorithm.
+
+	* src/stack.c (compute_layer): change name to promote_layer, and
+	convert to simply perform any necessary layer promotion without
+	computing the standalone layer.
+	(max_layer_func): use window->layer instead of
+	get_standalone_layer
+	(get_maximum_layer_of_ancestor): use window->layer instead of
+	get_standalone_layer
+	(meta_stack_ensure_sorted): implement iterative algorithm,
+	explained in a long comment.
+	
+	* src/window.h: add a tmp_layer field used by stack.c for
+	determining if the stack is dirty or not, since maintaining this
+	information in meta_stack_ensure_sorted is no longer practical.
+
 2004-02-23  Rob Adams  <readams@readams.net>
 
 	Add my copyright notice to a number of files on which it should

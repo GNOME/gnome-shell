@@ -3,6 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002, 2003 Red Hat, Inc.
+ * Copyright (C) 2004 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -290,11 +291,9 @@ max_layer_func (MetaWindow *window,
                 void       *data)
 {
   MaxLayerData *d = data;
-  MetaStackLayer layer;
   
-  layer = get_standalone_layer (window);
-  if (layer > d->max)
-    d->max = layer;
+  if (window->layer > d->max)
+    d->max = window->layer;
 
   return TRUE;
 }
@@ -304,7 +303,7 @@ get_maximum_layer_of_ancestor (MetaWindow *window)
 {
   MaxLayerData d;
 
-  d.max = get_standalone_layer (window);
+  d.max = window->layer;
   meta_window_foreach_ancestor (window, max_layer_func, &d);
   
   return d.max;
@@ -349,10 +348,8 @@ get_maximum_layer_in_group (MetaWindow *window)
 }
 
 static void
-compute_layer (MetaWindow *window)
+promote_layer (MetaWindow *window)
 {
-  window->layer = get_standalone_layer (window);
-  
   /* We can only do promotion-due-to-group for dialogs and other
    * transients, or weird stuff happens like the desktop window and
    * nautilus windows getting in the same layer, or all gnome-terminal
@@ -387,16 +384,6 @@ compute_layer (MetaWindow *window)
            * and a dialog transient for the normal window; you don't want the dialog
            * above the dock if it wouldn't normally be.
            */
-
-          /* FIXME when promoting a window here,
-           * it's necessary to promote its transient children
-           * (or other windows constrained to be above it)
-           * as well, but we aren't handling that, and it's
-           * somewhat hard to fix.
-           *
-           * http://bugzilla.gnome.org/show_bug.cgi?id=96140
-           */
-          
           MetaStackLayer group_max;
           
           group_max = get_maximum_layer_in_group (window);
@@ -913,34 +900,99 @@ meta_stack_ensure_sorted (MetaStack *stack)
   /* Update the layers that windows are in */
   if (stack->need_relayer)
     {
+      gint layers_dirty;
+
       meta_topic (META_DEBUG_STACK,
                   "Recomputing layers\n");
-      
-      tmp = stack->sorted;
 
+      tmp = stack->sorted;
+      while (tmp != NULL)
+	{
+	  MetaWindow *w;
+	  w = tmp->data;
+
+	  w->tmp_layer = w->layer;
+	  w->layer = get_standalone_layer(w);
+
+	  tmp = tmp->next;
+	}
+
+      /* Keep track of group or transient-induced layer promotion;
+       * iterate until we reach a fixed point.
+       *
+       * Note that we know this will terminate because in each
+       * iteration at least one window is promoted, and each window
+       * can only be promoted a fixed number of times.  So we can
+       * iterate at most only O(n) times where n is the number of
+       * windows.  More precisely, though, it will iterate at most
+       * once for each window in the longest chain of transient
+       * dependents, which in general won't be more than 2-3 windows
+       * long.
+       *
+       * Overall though, since promote_layer is potentially O(n)
+       * itself, this is worst-case O(n^3) in the case where every
+       * window is in a chain of transients starting at a dock window
+       * and the windows are in reverse order in the stack order to
+       * begin with.  In practice, this will never happen, and for
+       * real users the complexity behaves like O(n), since for real
+       * desktops the number of levels of transience is
+       * constant-bounded.  This could be done in overall worst-case
+       * O(n lg n) time by constructing a constraint graph and
+       * serializing it in the same way that the stacking works for
+       * windows within a layer, but I suspect this would often be
+       * slower than this algorithm.
+       *
+       * We don't need to constrain as constraining purely operates in
+       * terms of stack_position not layer
+       */
+      layers_dirty = TRUE;
+
+      while (layers_dirty)
+        {
+          layers_dirty = FALSE;
+          tmp = stack->sorted;
+
+          while (tmp != NULL)
+            {
+              MetaWindow *w;
+              MetaStackLayer old_layer;
+              
+              w = tmp->data;
+              old_layer = w->layer;
+              
+              promote_layer (w);
+              
+              if (w->layer != old_layer)
+                {
+                  /* if we promoted a window in this iteration, and
+                   * that window has a transient descendant, we'll
+                   * have to do another iteration.  Unfortunately,
+                   * finding out if a window has transient descendants
+                   * is just as expensive as simply doing another
+                   * iteration, so we'll just always do the iteration.
+                   */
+                  layers_dirty = TRUE;
+                }
+              
+              tmp = tmp->next;
+            }
+        }
+
+      tmp = stack->sorted;
       while (tmp != NULL)
         {
           MetaWindow *w;
-          MetaStackLayer old_layer;
-
           w = tmp->data;
-          old_layer = w->layer;
 
-          compute_layer (w);
-
-          if (w->layer != old_layer)
+          if (w->tmp_layer != w->layer)
             {
               meta_topic (META_DEBUG_STACK,
                           "Window %s moved from layer %d to %d\n",
-                          w->desc, old_layer, w->layer);
-              
+                          w->desc, w->tmp_layer, w->layer);
+                     
               stack->need_resort = TRUE;
-              /* don't need to constrain as constraining
-               * purely operates in terms of stack_position
-               * not layer
-               */
             }
-          
+
           tmp = tmp->next;
         }
 
