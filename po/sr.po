@@ -1,5 +1,5 @@
 # Serbian translation of metacity
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004, 2005.
 #
 # This file is distributed under the same license as the metacity package.
 #
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-10-15 23:15+0200\n"
+"POT-Creation-Date: 2005-03-02 23:37+0100\n"
+"PO-Revision-Date: 2005-03-02 23:38+0100\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Нисам успео да сазнам име компјутера: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим X Window System  екран „%s“\n"
@@ -111,19 +111,19 @@ msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x за неку "
 "функцију\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
 msgstr "Није дефинисана наредба терминала.\n"
 
@@ -207,12 +207,12 @@ msgstr "Затвори"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Постави на све радне површине"
+msgid "_Always on Visible Workspace"
+msgstr "_Увек на приказаној радној површини"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Само на овој радној површини"
+msgid "_Only on This Workspace"
+msgstr "Само на _овој радној површини"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -230,7 +230,7 @@ msgstr "Премести на радни простор _изнад"
 msgid "Move to Workspace _Down"
 msgstr "Премести на радни простор ис_под"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
@@ -368,7 +368,7 @@ msgstr ""
 "Ови прозори не подржавају могућност „сними тренутна подешавања“ па ћете "
 "морати да их ручно поново покренете када се следећи пут пријавите."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -503,13 +503,9 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
-msgstr ""
-"Ако је постављено, Метасити ће кориснику приказати мање података и мање "
-"осећаја о „непосредном управљању“, употребом линија, избегавањем анимација "
-"или другим средствима. Ово је значајни недостатак по питању употребљивости "
-"за многе кориснике, али може омогућити старим програмима и терминалским "
-"серверима да раде када би иначе били непрактични."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
+msgstr "Ако је постављено, Метасити ће кориснику приказати мање података и мање осећаја о „непосредном управљању“, употребом линија, избегавањем анимација или другим средствима. Ово је значајни недостатак по питању употребљивости за многе кориснике, али може омогућити старим програмима и терминалским серверима да раде када би иначе били непрактични. Такође, употреба линија је онемогућена када је укључена приступачност да би се избегли чудни проблеми."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1195,9 +1191,7 @@ msgstr ""
 "подесите опцију на нарочити низ знакова „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-# bug: missing dot
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1957,17 +1951,17 @@ msgstr "Начин фокуса прозора"
 msgid "Window title font"
 msgstr "Фонт наслова прозора"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Кључ „%s“ у гном подешавањима је подешен на непрописни тип\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1976,17 +1970,17 @@ msgstr ""
 "“%s“ је пронађен у бази подешавања што није исправна вредност за типку која "
 "мења понашање тастера миша\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Кључ „%s“ у гном подешавањима је подешен на непрописну вредност\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Нисам могао да обрадим опис „%s“ из кључа %s у гном подешавањима\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1995,7 +1989,7 @@ msgstr ""
 "%d сачувано у кључу %s у гном подешавањима није разуман број радних "
 "површина, тренутни максимум је %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2003,25 +1997,25 @@ msgstr ""
 "Компромиси за лоше програме су искључени. Неке апликације се могу понашати "
 "чудно.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "Вредност %d из кључа „%s“ у гном подешавањима је ван распона од 0 до %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка приликом постављања броја радних површина на %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "“%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка приликом постављања имена за радну површину %d у „%s“: %s\n"
@@ -3150,7 +3144,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3166,7 +3160,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3202,6 +3196,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Особина %s прозора 0x%lx садржи неисправан UTF-8 за ставку %d у листи\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Постави на све радне површине"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Изаберизе како желите да дате фокус прозору"
