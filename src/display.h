@@ -250,6 +250,7 @@ struct _MetaDisplay
   guint       grab_wireframe_active : 1;
   guint       grab_was_cancelled : 1;
   MetaRectangle grab_wireframe_rect;
+  MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;

@@ -3241,6 +3241,26 @@ meta_window_get_outer_rect (MetaWindow    *window,
     *rect = window->rect;
 }
 
+void
+meta_window_get_xor_rect (MetaWindow          *window,
+                          const MetaRectangle *grab_wireframe_rect,
+                          MetaRectangle       *xor_rect)
+{
+  if (window->frame)
+    {
+      xor_rect->x = grab_wireframe_rect->x - window->frame->child_x;
+      xor_rect->y = grab_wireframe_rect->y - window->frame->child_y;
+      xor_rect->width = grab_wireframe_rect->width + window->frame->child_x + window->frame->right_width;
+
+      if (window->shaded)
+        xor_rect->height = window->frame->child_y;
+      else
+        xor_rect->height = grab_wireframe_rect->height + window->frame->child_y + window->frame->bottom_height;
+    }
+  else
+    *xor_rect = *grab_wireframe_rect;
+}
+
 const char*
 meta_window_get_startup_id (MetaWindow *window)
 {
@@ -6224,14 +6244,18 @@ update_move (MetaWindow  *window,
        * constraints
        */
       MetaRectangle new_xor;
-      new_xor = window->display->grab_wireframe_rect;
-      new_xor.x = new_x;
-      new_xor.y = new_y;
+
+      window->display->grab_wireframe_rect.x = new_x;
+      window->display->grab_wireframe_rect.y = new_y;
+
+      meta_window_get_xor_rect (window,
+                                &window->display->grab_wireframe_rect,
+                                &new_xor);
 
       meta_effects_update_wireframe (window->screen,
-                                     &window->display->grab_wireframe_rect,
+                                     &window->display->grab_wireframe_last_xor_rect,
                                      &new_xor);
-      window->display->grab_wireframe_rect = new_xor;
+      window->display->grab_wireframe_last_xor_rect = new_xor;
     }
   else
     {
@@ -6381,15 +6405,18 @@ update_resize (MetaWindow *window,
       if ((new_x + new_w <= new_x) || (new_y + new_h <= new_y))
         return;
       
-      new_xor.x = new_x;
-      new_xor.y = new_y;
-      new_xor.width = new_w;
-      new_xor.height = new_h;
+      window->display->grab_wireframe_rect.x = new_x;
+      window->display->grab_wireframe_rect.y = new_y;
+      window->display->grab_wireframe_rect.width = new_w;
+      window->display->grab_wireframe_rect.height = new_h;
 
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &new_xor);
+      
       meta_effects_update_wireframe (window->screen,
-                                     &window->display->grab_wireframe_rect,
+                                     &window->display->grab_wireframe_last_xor_rect,
                                      &new_xor);
-      window->display->grab_wireframe_rect = new_xor;
+      window->display->grab_wireframe_last_xor_rect = new_xor;
 
       /* do this after drawing the wires, so we don't draw over it */
       meta_window_refresh_resize_popup (window);

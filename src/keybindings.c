@@ -1822,14 +1822,16 @@ process_keyboard_move_grab (MetaDisplay *display,
         {
           MetaRectangle new_xor;
 
-          new_xor = display->grab_wireframe_rect;
-          new_xor.x = x;
-          new_xor.y = y;
+          display->grab_wireframe_rect.x = x;
+          display->grab_wireframe_rect.y = y;
+          
+          meta_window_get_xor_rect (window, &display->grab_wireframe_rect,
+                                    &new_xor);
           
           meta_effects_update_wireframe (window->screen,
-                                         &display->grab_wireframe_rect,
+                                         &display->grab_wireframe_last_xor_rect,
                                          &new_xor);
-          display->grab_wireframe_rect = new_xor;
+          display->grab_wireframe_last_xor_rect = new_xor;
         }
       else
         {
@@ -2281,15 +2283,19 @@ process_keyboard_resize_grab (MetaDisplay *display,
         {
           MetaRectangle new_xor;
       
-          new_xor.x = x;
-          new_xor.y = y;
-          new_xor.width = width;
-          new_xor.height = height;
+          window->display->grab_wireframe_rect.x = x;
+          window->display->grab_wireframe_rect.y = y;
+          window->display->grab_wireframe_rect.width = width;
+          window->display->grab_wireframe_rect.height = height;
 
+          meta_window_get_xor_rect (window,
+                                    &window->display->grab_wireframe_rect,
+                                    &new_xor);
+          
           meta_effects_update_wireframe (window->screen,
-                                         &window->display->grab_wireframe_rect,
+                                         &window->display->grab_wireframe_last_xor_rect,
                                          &new_xor);
-          window->display->grab_wireframe_rect = new_xor;
+          window->display->grab_wireframe_last_xor_rect = new_xor;
 
           /* do this after drawing the wires, so we don't draw over it */
           meta_window_refresh_resize_popup (window);

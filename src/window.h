@@ -417,6 +417,9 @@ void        meta_window_get_geometry         (MetaWindow  *window,
                                               int         *height);
 void        meta_window_get_outer_rect       (MetaWindow    *window,
                                               MetaRectangle *rect);
+void        meta_window_get_xor_rect         (MetaWindow          *window,
+                                              const MetaRectangle *grab_wireframe_rect,
+                                              MetaRectangle       *xor_rect);
 void        meta_window_delete             (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_kill               (MetaWindow  *window);

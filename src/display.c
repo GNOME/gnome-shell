@@ -3136,10 +3136,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
       
       if (display->grab_wireframe_active)
         {
-          /* FIXME we should really display the outer frame rect,
-           * but that complicates all the move/resize code since
-           * it works in terms of window rect.
-           */
+          MetaRectangle xor_rect;
+          
           display->grab_wireframe_rect = window->rect;
           if (window->frame)
             {
@@ -3148,8 +3146,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
             }
           
           meta_window_calc_showing (display->grab_window);
+
+          meta_window_get_xor_rect (window, &display->grab_wireframe_rect,
+                                    &xor_rect);
+          
           meta_effects_begin_wireframe (display->grab_window->screen,
-                                        &display->grab_wireframe_rect);
+                                        &xor_rect);
+          display->grab_wireframe_last_xor_rect = xor_rect;
         }
       
 #ifdef HAVE_XSYNC
@@ -3312,7 +3315,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       display->grab_wireframe_active = FALSE;
       meta_effects_end_wireframe (display->grab_window->screen,
-                                  &display->grab_wireframe_rect);
+                                  &display->grab_wireframe_last_xor_rect);
       if (!display->grab_was_cancelled)
         meta_window_move_resize (display->grab_window,
                                  TRUE,
