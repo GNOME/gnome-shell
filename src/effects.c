@@ -21,12 +21,11 @@
 
 #include "effects.h"
 #include "display.h"
+#include "ui.h"
 
 typedef struct
 {
   MetaScreen *screen;
-  
-  GC gc;
 
   double millisecs_duration;
   GTimeVal start_time;
@@ -38,6 +37,18 @@ typedef struct
 
   /* rect to erase */
   MetaRectangle last_rect;
+
+  /* used instead of the global flag, since
+   * we don't want to change midstream.
+   */
+  gboolean use_opaque;
+  
+  /* For wireframe */
+  GC gc;
+
+  /* For opaque */
+  MetaImageWindow *image_window;
+  GdkPixbuf       *orig_pixbuf;
   
 } BoxAnimationContext;
 
@@ -51,12 +62,15 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   
   if (!context->first_time)
     {
-      /* Restore the previously drawn background */
-      XDrawRectangle (context->screen->display->xdisplay,
-                      context->screen->xroot,
-                      context->gc,
-                      context->last_rect.x, context->last_rect.y,
-                      context->last_rect.width, context->last_rect.height);
+      if (!context->use_opaque)
+        {
+          /* Restore the previously drawn background */
+          XDrawRectangle (context->screen->display->xdisplay,
+                          context->screen->xroot,
+                          context->gc,
+                          context->last_rect.x, context->last_rect.y,
+                          context->last_rect.width, context->last_rect.height);
+        }
     }
 
   context->first_time = FALSE;
@@ -78,9 +92,18 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   if (elapsed > context->millisecs_duration)
     {
       /* All done */
-      meta_display_ungrab (context->screen->display);
-      XFreeGC (context->screen->display->xdisplay,
-               context->gc);
+      if (context->use_opaque)
+        {
+          g_object_unref (G_OBJECT (context->orig_pixbuf));
+          meta_image_window_free (context->image_window);
+        }
+      else
+        {
+          meta_display_ungrab (context->screen->display);
+          XFreeGC (context->screen->display->xdisplay,
+                   context->gc);
+        }
+      
       g_free (context);
       return FALSE;
     }
@@ -96,23 +119,53 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   draw_rect.width += (context->end_rect.width - context->start_rect.width) * fraction;
   draw_rect.height += (context->end_rect.height - context->start_rect.height) * fraction;
 
-  /* don't confuse X with bogus rectangles */
+  /* don't confuse X or gdk-pixbuf with bogus rectangles */
   if (draw_rect.width < 1)
     draw_rect.width = 1;
   if (draw_rect.height < 1)
     draw_rect.height = 1;
   
   context->last_rect = draw_rect;
-  
-  /* Draw the rectangle */
-  XDrawRectangle (context->screen->display->xdisplay,
-                  context->screen->xroot,
-                  context->gc,
-                  draw_rect.x, draw_rect.y,
-                  draw_rect.width, draw_rect.height);
 
+  if (context->use_opaque)
+    {
+      GdkPixbuf *scaled;
+
+      scaled = gdk_pixbuf_scale_simple (context->orig_pixbuf,
+                                        draw_rect.width,
+                                        draw_rect.height,
+                                        GDK_INTERP_BILINEAR);
+      meta_image_window_set_image (context->image_window,
+                                   scaled);
+      meta_image_window_set_position (context->image_window,
+                                      draw_rect.x, draw_rect.y);
+      g_object_unref (G_OBJECT (scaled));
+    }
+  else
+    {
+      /* Draw the rectangle */
+      XDrawRectangle (context->screen->display->xdisplay,
+                      context->screen->xroot,
+                      context->gc,
+                      draw_rect.x, draw_rect.y,
+                      draw_rect.width, draw_rect.height);
+    }
+
+  /* kick changes onto the server */
+  XFlush (context->screen->display->xdisplay);
+  
   return TRUE;
 }
+
+
+/* I really don't want this to be a configuration option,
+ * but I think the wireframe is sucky from a UI standpoint
+ * (more confusing than opaque), but the opaque is maybe
+ * too slow on some systems; so perhaps we could autodetect
+ * system beefiness or someting, or have some global
+ * "my system is slow" config option.
+ */
+static gboolean use_opaque_animations = TRUE;
 
 void
 meta_effects_draw_box_animation (MetaScreen *screen,
@@ -121,7 +174,6 @@ meta_effects_draw_box_animation (MetaScreen *screen,
                                  double         seconds_duration)
 {
   BoxAnimationContext *context;
-  XGCValues gc_values;
 
   g_return_if_fail (seconds_duration > 0.0);
 
@@ -129,26 +181,62 @@ meta_effects_draw_box_animation (MetaScreen *screen,
     seconds_duration *= 10; /* slow things down */
   
   /* Create the animation context */
-  context = g_new (BoxAnimationContext, 1);
-	
-  gc_values.subwindow_mode = IncludeInferiors;
-  gc_values.function = GXinvert;
-	
-  /* Create a gc for the root window */
+  context = g_new0 (BoxAnimationContext, 1);	
+
   context->screen = screen;
-  context->gc = XCreateGC (screen->display->xdisplay,
-                           screen->xroot,
-                           GCSubwindowMode | GCFunction,
-                           &gc_values);
 
   context->millisecs_duration = seconds_duration * 1000.0;
   g_get_current_time (&context->start_time);
   context->first_time = TRUE;
   context->start_rect = *initial_rect;
   context->end_rect = *destination_rect;
-  
-  /* Grab the X server to avoid screen dirt */
-  meta_display_grab (context->screen->display);
+
+  context->use_opaque = use_opaque_animations;
+
+  if (context->use_opaque)
+    {
+      GdkPixbuf *pix;
+
+      pix = meta_gdk_pixbuf_get_from_window (NULL,
+                                             screen->xroot,
+                                             initial_rect->x,
+                                             initial_rect->y,
+                                             0, 0,
+                                             initial_rect->width,
+                                             initial_rect->height);
+
+      if (pix == NULL)
+        {
+          /* Fall back to wireframe */
+          context->use_opaque = FALSE;
+        }
+      else
+        {
+          context->image_window = meta_image_window_new ();
+          context->orig_pixbuf = pix;
+          meta_image_window_set_position (context->image_window,
+                                          initial_rect->x,
+                                          initial_rect->y);
+          meta_image_window_set_showing (context->image_window, TRUE);
+        }
+    }
+
+  /* Not an else, so that fallback works */
+  if (!context->use_opaque)
+    {
+      XGCValues gc_values;
+      
+      gc_values.subwindow_mode = IncludeInferiors;
+      gc_values.function = GXinvert;
+
+      context->gc = XCreateGC (screen->display->xdisplay,
+                               screen->xroot,
+                               GCSubwindowMode | GCFunction,
+                               &gc_values);
+      
+      /* Grab the X server to avoid screen dirt */
+      meta_display_grab (context->screen->display);
+    }
   
   /* Add the timeout - a short one, could even use an idle,
    * but this is maybe more CPU-friendly.
@@ -157,3 +245,6 @@ meta_effects_draw_box_animation (MetaScreen *screen,
                  (GSourceFunc)effects_draw_box_animation_timeout,
                  context);
 }
+
+
+

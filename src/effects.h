@@ -25,8 +25,8 @@
 #include "util.h"
 #include "screen.h"
 
-#define META_MINIMIZE_ANIMATION_LENGTH 0.3
-#define META_SHADE_ANIMATION_LENGTH 0.15
+#define META_MINIMIZE_ANIMATION_LENGTH 0.5
+#define META_SHADE_ANIMATION_LENGTH 0.2
 
 void meta_effects_draw_box_animation (MetaScreen    *screen,
                                       MetaRectangle *initial_rect,

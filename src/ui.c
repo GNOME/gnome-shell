@@ -232,3 +232,94 @@ meta_ui_window_menu_free (MetaWindowMenu *menu)
   meta_window_menu_free (menu);
 }
 
+struct _MetaImageWindow
+{
+  GtkWidget *window;
+  GtkWidget *image;
+};
+
+MetaImageWindow*
+meta_image_window_new (void)
+{
+  MetaImageWindow *iw;
+
+  iw = g_new (MetaImageWindow, 1);
+  iw->window = gtk_window_new (GTK_WINDOW_POPUP);
+  iw->image = g_object_new (GTK_TYPE_IMAGE, NULL);
+
+  gtk_container_add (GTK_CONTAINER (iw->window), iw->image);
+
+  /* Ensure we auto-shrink to fit image */
+  gtk_window_set_resizable (GTK_WINDOW (iw->window),
+                            FALSE);
+  
+  return iw;
+}
+
+void
+meta_image_window_free (MetaImageWindow *iw)
+{
+  gtk_widget_destroy (iw->window);
+  g_free (iw);
+}
+
+void
+meta_image_window_set_showing  (MetaImageWindow *iw,
+                                gboolean         showing)
+{
+  if (showing)
+    gtk_widget_show_all (iw->window);
+  else
+    gtk_widget_hide (iw->window);
+}
+
+void
+meta_image_window_set_image (MetaImageWindow *iw,
+                             GdkPixbuf       *pixbuf)
+{
+  gtk_image_set_from_pixbuf (GTK_IMAGE (iw->image), pixbuf);
+}
+
+void
+meta_image_window_set_position (MetaImageWindow *iw,
+                                int              x,
+                                int              y)
+{
+  gtk_widget_set_uposition (iw->window, x, y);
+}
+
+GdkPixbuf*
+meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
+                                 Window       xwindow,
+                                 int          src_x,
+                                 int          src_y,
+                                 int          dest_x,
+                                 int          dest_y,
+                                 int          width,
+                                 int          height)
+{
+  GdkDrawable *drawable;
+  GdkPixbuf *retval;
+
+  retval = NULL;
+  
+  drawable = gdk_xid_table_lookup (xwindow);
+
+  if (drawable)
+    g_object_ref (G_OBJECT (drawable));
+  else
+    drawable = gdk_window_foreign_new (xwindow);
+      
+  retval = gdk_pixbuf_get_from_drawable (dest,
+                                         drawable,
+                                         /* We assume root window cmap */
+                                         gdk_colormap_get_system (),
+                                         src_x, src_y,
+                                         dest_x, dest_y,
+                                         width, height);
+  
+  g_object_unref (G_OBJECT (drawable));
+
+  return retval;
+}
+

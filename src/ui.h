@@ -22,12 +22,15 @@
 #ifndef META_UI_H
 #define META_UI_H
 
-/* Don't include gtk.h here */
+/* Don't include gtk.h or gdk.h here */
 #include "common.h"
 #include <X11/Xlib.h>
 #include <glib.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef struct _MetaUI MetaUI;
+
+typedef struct _MetaImageWindow MetaImageWindow;
 
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
@@ -88,5 +91,22 @@ void            meta_ui_window_menu_popup (MetaWindowMenu     *menu,
 void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
 
 
+MetaImageWindow* meta_image_window_new          (void);
+void             meta_image_window_free         (MetaImageWindow *iw);
+void             meta_image_window_set_showing  (MetaImageWindow *iw,
+                                                 gboolean         showing);
+void             meta_image_window_set_image    (MetaImageWindow *iw,
+                                                 GdkPixbuf       *pixbuf);
+void             meta_image_window_set_position (MetaImageWindow *iw,
+                                                 int              x,
+                                                 int              y);
 
+GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
+                                            Window       xwindow,
+                                            int          src_x,
+                                            int          src_y,
+                                            int          dest_x,
+                                            int          dest_y,
+                                            int          width,
+                                            int          height);
 #endif

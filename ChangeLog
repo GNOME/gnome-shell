@@ -1,10 +1,19 @@
 2001-08-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/effects.c: add opaque minimize/shade feature.  The wireframe
+	seemed kind of confusing and unclear from a UI standpoint. 
+	I know, I know. The bloat begins here.
+
+	Also, we don't need to grab the server during opaque min/shade, 
+	which has some nice implications.
+	
+	* src/ui.c: Add features to render a window with an image in it, 
+	and also wrap pixbuf_from_drawable
+
 	* src/effects.c (meta_effects_draw_box_animation): 
 	modify to be smoother (at least theoretically) by 
 	syncing to current time and "dropping frames" 
-	as appropriate. A precursor to flashier animations
-	that take more CPU to do.
+	as appropriate.
 
 	* src/window.c (meta_window_shade): draw animation 
 	for shading too

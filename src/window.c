@@ -1063,22 +1063,26 @@ meta_window_shade (MetaWindow  *window)
   meta_verbose ("Shading %s\n", window->desc);
   if (!window->shaded)
     {
-      {
-        /* Animation */
-        MetaRectangle starting_size;
-        MetaRectangle titlebar_size;
-
-        meta_window_get_outer_rect (window, &starting_size);
-        if (window->frame)
-          starting_size.y += window->frame->child_y;
-        titlebar_size = starting_size;
-        titlebar_size.height = 0;
-
-        meta_effects_draw_box_animation (window->screen,
-                                         &starting_size,
-                                         &titlebar_size,
-                                         META_SHADE_ANIMATION_LENGTH);
-      }
+      if (window->mapped)
+        {
+          /* Animation */
+          MetaRectangle starting_size;
+          MetaRectangle titlebar_size;
+          
+          meta_window_get_outer_rect (window, &starting_size);
+          if (window->frame)
+            {
+              starting_size.y += window->frame->child_y;
+              starting_size.height -= window->frame->child_y;
+            }
+          titlebar_size = starting_size;
+          titlebar_size.height = 0;
+          
+          meta_effects_draw_box_animation (window->screen,
+                                           &starting_size,
+                                           &titlebar_size,
+                                           META_SHADE_ANIMATION_LENGTH);
+        }
 
       window->shaded = TRUE;
       
