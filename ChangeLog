@@ -1,5 +1,10 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c (meta_window_ungrab_keys): set keys_grabbed to
+	FALSE, patch from Jayaraj for #81857
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/xprops.c (meta_prop_get_utf8_string): don't die on bad atom
 	name
 
@@ -15,7 +20,7 @@
 	atom
 
 	* src/main.c (main): add --replace option to replace existing
-	window manager.
+	window manager.	
 
 	* src/screen.c: implement holding manager selection.
 
