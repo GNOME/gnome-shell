@@ -2248,6 +2248,7 @@ xcursor_for_op (MetaDisplay *display,
 
 void
 meta_display_set_grab_op_cursor (MetaDisplay *display,
+                                 MetaScreen  *screen,
                                  MetaGrabOp   op,
                                  gboolean     change_pointer,
                                  Window       grab_xwindow,
@@ -2279,7 +2280,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                         False,
                         GRAB_MASK,
                         GrabModeAsync, GrabModeAsync,
-                        None,
+                        screen->xroot,
                         cursor,
                         timestamp) == GrabSuccess)
         {
@@ -2341,7 +2342,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
       
-  meta_display_set_grab_op_cursor (display, op, FALSE, grab_xwindow, timestamp);
+  meta_display_set_grab_op_cursor (display, screen, op, FALSE, grab_xwindow,
+                                   timestamp);
 
   if (!display->grab_have_pointer)
     {

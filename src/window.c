@@ -6475,6 +6475,7 @@ void meta_window_update_resize_grab_op (MetaWindow *window,
   if (update_cursor)
     {
       meta_display_set_grab_op_cursor (window->display,
+                                       NULL,
                                        window->display->grab_op,
                                        TRUE,
                                        window->display->grab_xwindow,
