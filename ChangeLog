@@ -1,3 +1,9 @@
+2003-01-22  Havoc Pennington  <hp@pobox.com>
+	
+	* src/window.c (update_struts): be robust against the panel's 
+	lame "set a negative number for struts" thing, even though 
+	we'll also fix the panel.
+
 2003-01-21  Havoc Pennington  <hp@pobox.com>
 
         Fix for the "mangles focus window when switching workspaces 

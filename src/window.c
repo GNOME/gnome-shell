@@ -5173,6 +5173,20 @@ update_struts (MetaWindow *window)
       window->top_strut = struts[2];
       window->bottom_strut = struts[3];
 
+      meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
+                    window->left_strut, window->right_strut,
+                    window->top_strut, window->bottom_strut,
+                    window->desc);
+      
+      if (window->left_strut < 0)
+        window->left_strut = 0;
+      if (window->right_strut < 0)
+        window->right_strut = 0;
+      if (window->top_strut < 0)
+        window->top_strut = 0;
+      if (window->bottom_strut < 0)
+        window->bottom_strut = 0;
+      
       meta_verbose ("Using _NET_WM_STRUT struts %d %d %d %d for window %s\n",
                     window->left_strut, window->right_strut,
                     window->top_strut, window->bottom_strut,
