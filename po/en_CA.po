@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
-"PO-Revision-Date: 2004-08-02 18:28-0400\n"
+"POT-Creation-Date: 2004-09-26 11:24-0400\n"
+"PO-Revision-Date: 2004-09-26 18:28-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,19 +40,19 @@ msgstr "Did not understand trailing characters \"%s\" in string \"%s\""
 #: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Failed to parse message \"%s\" from dialog process\n"
+msgstr "Failed to parse message \"%s\" from dialogue process\n"
 
 #: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Error reading from dialog display process: %s\n"
+msgstr "Error reading from dialogue display process: %s\n"
 
 #: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"Error launching metacity-dialogue to ask about killing an application: %s\n"
 
 #: src/delete.c:452
 #, c-format
@@ -80,23 +80,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IO error %d (%s) on display '%s'.\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "Close Window"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "Window Menu"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "Minimize Window"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "Maximize Window"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "Unmaximize Window"
 
@@ -113,7 +113,7 @@ msgstr ""
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Error launching metacity-dialog to print an error about a command: %s\n"
+"Error launching metacity-dialogue to print an error about a command: %s\n"
 
 #: src/keybindings.c:2602
 #, c-format
@@ -697,7 +697,7 @@ msgstr "Show the panel menu"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel run application dialog"
-msgstr "Show the panel run application dialog"
+msgstr "Show the panel run application dialogue"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -715,11 +715,11 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 "Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
+"misfeatures. For example, ideally Metacity would place all dialogues in a "
 "consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
+"ignoring application-specified positions for dialogues. But some versions of "
+"Java/Swing mark their popup menus as dialogues, so Metacity has to disable "
+"dialogue positioning to allow menus to work in broken Java applications. There "
 "are several other examples like this. This option puts Metacity in full-on "
 "Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
 "run any broken apps. Sadly, workarounds must be enabled by default; the real "
@@ -1664,7 +1664,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
+"The keybinding which display's the panel's \"Run Program\" dialogue box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
@@ -2073,7 +2073,7 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Error launching metacity-dialog to warn about apps that don't support "
+"Error launching metacity-dialogue to warn about apps that don't support "
 "session management: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
@@ -2603,11 +2603,11 @@ msgstr "/Windows/tearoff"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr "/Windows/_Dialog"
+msgstr "/Windows/_Dialogue"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr "/Windows/_Modal dialog"
+msgstr "/Windows/_Modal dialogue"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
@@ -2655,7 +2655,7 @@ msgstr "This is a demo button with a 'quit' icon"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr "This is a sample message in a sample dialog"
+msgstr "This is a sample message in a sample dialogue"
 
 #: src/theme-viewer.c:324
 #, c-format
@@ -2676,11 +2676,11 @@ msgstr "Normal Application Window"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr "Dialog Box"
+msgstr "Dialogue Box"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr "Modal Dialog Box"
+msgstr "Modal Dialogue Box"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
@@ -2930,32 +2930,32 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coordinate expression was empty or not understood"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "Coordinate expression results in division by zero"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Coordinate expression had an operand where an operator was expected"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Coordinate expression ended with an operator instead of an operand"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2964,7 +2964,7 @@ msgstr ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2972,30 +2972,30 @@ msgstr ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Coordinate expression had a close parenthesis with no open parenthesis"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coordinate expression had unknown variable or constant \"%s\""
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Coordinate expression had an open parenthesis with no close parenthesis"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coordinate expression doesn't seem to have any operators or operands"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3004,25 +3004,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Failed to load theme \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No <%s> set for theme \"%s\""
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3031,7 +3031,7 @@ msgstr ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3040,14 +3040,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" has already been defined"
@@ -3117,7 +3117,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application set a bogus _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4957
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3133,7 +3133,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5628
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
