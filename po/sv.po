@@ -7,13 +7,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-11-05 01:16+0100\n"
+"POT-Creation-Date: 2002-12-13 04:57+0100\n"
+"PO-Revision-Date: 2002-12-13 04:57+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Användning: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity kompilerades utan stöd för utförligt läge\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -51,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:270
+#: src/display.c:273
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -493,14 +502,12 @@ msgid "Maximize a window"
 msgstr "Maximera ett fönster"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "Maximera ett fönster"
+msgstr "Maximera fönster horisontellt"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "Maximera ett fönster"
+msgstr "Maximera fönster vertikalt"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
@@ -515,42 +522,34 @@ msgid "Move a window"
 msgstr "Flytta ett fönster"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Flytta fokus baklänges mellan paneler och skrivbordet omedelbart"
+msgstr "Flytta baklänges mellan paneler och skrivbordet omedelbart"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
-"Flytta fokus baklänges mellan paneler och skrivbordet genom användning av "
+"Flytta baklänges mellan paneler och skrivbordet genom användning av "
 "popupfönster"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "Flytta fokus baklänges mellan fönster omedelbart"
+msgstr "Flytta baklänges mellan fönster omedelbart"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
-msgstr "Flytta fokus mellan paneler och skrivbordet omedelbart"
+msgstr "Flytta mellan paneler och skrivbordet omedelbart"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
-msgstr ""
-"Flytta fokus mellan paneler och skrivbordet genom användning av popupfönster"
+msgstr "Flytta mellan paneler och skrivbordet genom användning av popupfönster"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between windows immediately"
-msgstr "Flytta fokus mellan fönster omedelbart"
+msgstr "Flytta mellan fönster omedelbart"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between windows with popup"
-msgstr "Flytta fokus mellan fönster genom användning av popupfönster"
+msgstr "Flytta mellan fönster genom användning av popupfönster"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
@@ -639,7 +638,6 @@ msgstr ""
 "begärs av misstag)."
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
 msgstr "Höj fönstret om skymt, sänk det annars"
 
@@ -734,14 +732,12 @@ msgid "Switch to workspace 9"
 msgstr "Växla till arbetsyta 9"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
-msgstr "Växla till arbetsytan ovanför den aktuella arbetsytan"
+msgstr "Växla till arbetsytan ovanför denna"
 
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
-msgstr "Växla till arbetsytan nedanför den aktuella arbetsytan"
+msgstr "Växla till arbetsytan nedanför denna"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
@@ -1674,7 +1670,6 @@ msgstr ""
 "för denna åtgärd."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1683,15 +1678,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Denna tangentbindning höjer fönstret ovanför andra fönster. Formatet ser ut "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
-"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
-"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
-"specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
-"för denna åtgärd."
+"Denna tangentbindning ändrar storleken på ett fönster för att fylla "
+"tillgängligt horisontellt utrymme. Formatet ser ut som \"&lt;Control&gt;a\" "
+"eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och "
+"tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och "
+"\"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
+"\"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1700,23 +1694,22 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Denna tangentbindning höjer fönstret ovanför andra fönster. Formatet ser ut "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
-"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
-"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
-"specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
-"för denna åtgärd."
+"Denna tangentbindning ändrar storleken på ett fönster för att fylla "
+"tillgängligt vertikalt utrymme. Formatet ser ut som \"&lt;Control&gt;a\" "
+"eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och "
+"tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och "
+"\"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
+"\"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
 "Denna åtgärd avgör effekterna av dubbelklick på titelraden. Aktuella giltiga "
-"alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, och "
-"\"toggle_maximize\" som kommer att maximera/avmaximera fönstret."
+"alternativ är \"toggle_shaded\" som kommer att skugga/avskugga fönstret, och "
+"\"toggle_maximized\" som kommer att maximera/avmaximera fönstret."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
@@ -1731,7 +1724,6 @@ msgid "Toggle shaded state"
 msgstr "Växla skuggat tillstånd"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
 msgstr "Växla huruvida fönstret är på alla arbetsytor"
 
@@ -2799,23 +2791,19 @@ msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Öppnade loggfilen %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Fönsterhanterare: "
 
-#: src/util.c:343
+#: src/util.c:345
 msgid "Bug in window manager: "
 msgstr "Fel i fönsterhanterare: "
 
-#: src/util.c:372
+#: src/util.c:374
 msgid "Window manager warning: "
 msgstr "Fönsterhanterarvarning: "
 
-#: src/util.c:396
+#: src/util.c:398
 msgid "Window manager error: "
 msgstr "Fönsterhanterarfel: "
 
@@ -2825,7 +2813,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4859
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2841,7 +2829,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5419
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
