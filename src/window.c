@@ -3784,7 +3784,7 @@ update_mwm_hints (MetaWindow *window)
        * at least, I think so
        */
       
-      if ((hints->flags & MWM_FUNC_ALL) == 0)
+      if ((hints->flags & MWM_FUNC_ALL) != 0)
         {
           toggle_value = TRUE;
 
