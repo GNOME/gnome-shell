@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2002-09-20 13:40+0200\n"
+"POT-Creation-Date: 2002-09-25 20:54+0200\n"
 "PO-Revision-Date: 2002-09-20 13:40+0100\n"
-"Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
+"Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +67,7 @@ msgstr ""
 #: src/errors.c:161
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Fataler E/A-Fehler %d (%s) auf Anzeige »%s«.\n"
+msgstr "Schwerwiegender E/A-Fehler %d (%s) auf Anzeige »%s«.\n"
 
 #: src/frames.c:862
 msgid "Close Window"
@@ -113,12 +113,29 @@ msgstr "Es wurde kein Befehl %d festgelegt.\n"
 #: src/main.c:63
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace]\n"
+"replace] [--version]\n"
 msgstr ""
 "metacity [--disable-sm] [--sm-save-file=DATEINAME] [--display=ANZEIGE] [--"
-"replace]\n"
+"replace] [--version]\n"
 
-#: src/main.c:299
+# CHECK
+#: src/main.c:70
+#, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., und andere\n"
+"Dies ist freie Software; schauen sie in den Quelltext für weitere "
+"Informationen.\n"
+"Es gibt KEINE Garantie der MARKTREIFE oder EIGNUNG für einen BESTIMMTEN "
+"ZWECK.\n"
+
+#: src/main.c:312
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -126,13 +143,13 @@ msgstr ""
 "Es konnte kein Thema gefunden werden! Stellen Sie sicher, dass %s existiert "
 "und die Standardthemen enthält."
 
-#: src/main.c:347
+#: src/main.c:360
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Neustart fehlgeschlagen: %s\n"
 
 #: src/menu.c:51
-msgid "_Minimize"
+msgid "Mi_nimize"
 msgstr "_Minimieren"
 
 #: src/menu.c:52
@@ -144,15 +161,15 @@ msgid "Unma_ximize"
 msgstr "_Wiederherstellen"
 
 #: src/menu.c:54
-msgid "_Shade"
-msgstr "_Aufrollen"
+msgid "Roll _Up"
+msgstr "Auf_rollen"
 
 #: src/menu.c:55
-msgid "Un_shade"
+msgid "_Unroll"
 msgstr "_Entrollen"
 
 #: src/menu.c:56
-msgid "Mo_ve"
+msgid "_Move"
 msgstr "_Verschieben"
 
 #: src/menu.c:57
@@ -162,7 +179,7 @@ msgstr "_Größe ändern"
 #. separator
 #: src/menu.c:59
 msgid "_Close"
-msgstr "_Schließen"
+msgstr "S_chließen"
 
 #. separator
 #: src/menu.c:61
@@ -2373,30 +2390,11 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Thema »%s« konnte nicht geladen werden: %s\n"
 
-#: src/theme.c:4232
-#, c-format
-msgid "No <name> set for theme \"%s\""
-msgstr "Kein <name> für Thema »%s« angegeben"
-
-#: src/theme.c:4239
-#, c-format
-msgid "No <author> set for theme \"%s\""
-msgstr "Kein <author> für Thema »%s« angegeben"
-
-#: src/theme.c:4246
-#, c-format
-msgid "No <date> set for theme \"%s\""
-msgstr "Kein <date> für Thema »%s« angegeben"
-
-#: src/theme.c:4253
-#, c-format
-msgid "No <description> set for theme \"%s\""
-msgstr "Keine <description> für Thema »%s« angegeben"
-
+#: src/theme.c:4232 src/theme.c:4239 src/theme.c:4246 src/theme.c:4253
 #: src/theme.c:4260
 #, c-format
-msgid "No <copyright> set for theme \"%s\""
-msgstr "Kein <copyright> für Thema »%s« angegeben"
+msgid "No <%s> set for theme \"%s\""
+msgstr "Kein <%s> für Thema »%s« festgelegt"
 
 #: src/theme.c:4270
 #, c-format
@@ -2488,13 +2486,13 @@ msgstr "Fenstermanager-Warnung:"
 msgid "Window manager error: "
 msgstr "Fenstermanager-Fehler:"
 
-#: src/window.c:436
+#: src/window.c:438
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4664
+#: src/window.c:4661
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2516,7 +2514,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5342
+#: src/window.c:5339
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
