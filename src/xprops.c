@@ -897,6 +897,24 @@ get_task (MetaDisplay        *display,
                          False, req_type);
 }
 
+static char*
+latin1_to_utf8 (const char *text)
+{
+  GString *str;
+  const char *p;
+  
+  str = g_string_new ("");
+
+  p = text;
+  while (*p)
+    {
+      g_string_append_unichar (str, *p);
+      ++p;
+    }
+
+  return g_string_free (str, FALSE);
+}
+
 void
 meta_prop_get_values (MetaDisplay   *display,
                       Window         xwindow,
@@ -936,6 +954,7 @@ meta_prop_get_values (MetaDisplay   *display,
               values[i].required_type = display->atom_utf8_string;
               break;
             case META_PROP_VALUE_STRING:
+            case META_PROP_VALUE_STRING_AS_UTF8:
               values[i].required_type = XA_STRING;
               break;
             case META_PROP_VALUE_MOTIF_HINTS:
@@ -1047,6 +1066,27 @@ meta_prop_get_values (MetaDisplay   *display,
                                            &values[i].v.str))
             values[i].type = META_PROP_VALUE_INVALID;
           break;
+        case META_PROP_VALUE_STRING_AS_UTF8:
+          if (!latin1_string_from_results (&results,
+                                           &values[i].v.str))
+            values[i].type = META_PROP_VALUE_INVALID;
+          else
+            {
+              char *new_str;
+              char *xmalloc_new_str;
+
+              new_str = latin1_to_utf8 (values[i].v.str);
+              xmalloc_new_str = ag_Xmalloc (strlen (new_str) + 1);
+              if (xmalloc_new_str != NULL)
+                {
+                  strcpy (xmalloc_new_str, new_str);
+                  meta_XFree (values[i].v.str);
+                  values[i].v.str = xmalloc_new_str;
+                }
+
+              g_free (new_str);
+            }
+          break;
         case META_PROP_VALUE_MOTIF_HINTS:
           if (!motif_hints_from_results (&results,
                                          &values[i].v.motif_hints))
@@ -1119,9 +1159,8 @@ free_value (MetaPropValue *value)
     case META_PROP_VALUE_INVALID:          
       break;
     case META_PROP_VALUE_UTF8:
-      meta_XFree (value->v.str);
-      break;
     case META_PROP_VALUE_STRING:
+    case META_PROP_VALUE_STRING_AS_UTF8:
       meta_XFree (value->v.str);
       break;
     case META_PROP_VALUE_MOTIF_HINTS:

@@ -1,3 +1,11 @@
+2002-12-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/window-props.c: use META_PROP_VALUE_STRING_AS_UTF8 so 
+	we convert old Latin-1 WM_NAME to UTF-8
+
+	* src/xprops.h (enum): add META_PROP_VALUE_STRING_AS_UTF8 to get a
+	latin1 string then convert.
+
 2002-12-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_new): get window name before anything

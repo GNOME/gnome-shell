@@ -228,7 +228,7 @@ init_wm_name (MetaDisplay   *display,
                   Atom           property,
                   MetaPropValue *value)
 {
-  value->type = META_PROP_VALUE_STRING;
+  value->type = META_PROP_VALUE_STRING_AS_UTF8;
   value->atom = XA_WM_NAME;
 }
 
@@ -302,7 +302,7 @@ init_wm_icon_name (MetaDisplay   *display,
                   Atom           property,
                   MetaPropValue *value)
 {
-  value->type = META_PROP_VALUE_STRING;
+  value->type = META_PROP_VALUE_STRING_AS_UTF8;
   value->atom = XA_WM_ICON_NAME;
 }
 
