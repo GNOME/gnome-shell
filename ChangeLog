@@ -71,7 +71,6 @@
 	the calc_showing, don't focus it, it's probably on another
 	workspace or something.
 
->>>>>>> 1.239
 2002-05-09  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (show_tip_now): DefaultScreen() returns the screen
