@@ -27,7 +27,6 @@
 #include "util.h"
 #include "core.h"
 #include "themewidget.h"
-#include "stock-icons.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;

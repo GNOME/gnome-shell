@@ -1,3 +1,7 @@
+2002-08-11  Havoc Pennington  <hp@pobox.com>
+
+	* src/menu.c: don't include nonexistent stock-icons.h file
+
 2002-08-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity.schemas.in: default keybindings for move, resize, 
