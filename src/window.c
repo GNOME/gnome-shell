@@ -2896,9 +2896,7 @@ meta_window_configure_request (MetaWindow *window,
     }
   else
     {
-      allow_position_change =
-        (window->size_hints.flags & PPosition) ||
-        (window->size_hints.flags & USPosition);
+      allow_position_change = TRUE;
     }
   
   if (allow_position_change)
@@ -2918,6 +2916,14 @@ meta_window_configure_request (MetaWindow *window,
            */
           window->placed = TRUE;
         }
+    }
+  else
+    {
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Not allowing position change for window %s PPosition 0x%lx USPosition 0x%lx type %d\n", 
+		  window->desc, window->size_hints.flags & PPosition, 
+		  window->size_hints.flags & USPosition,
+		  window->type);     
     }
 
   width = window->rect.width;
