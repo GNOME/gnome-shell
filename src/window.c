@@ -5817,6 +5817,37 @@ window_query_root_pointer (MetaWindow *window,
     *y = root_y_return;
 }
 
+static gboolean
+check_moveresize_frequency (MetaWindow *window)
+{
+  GTimeVal current_time;
+  double elapsed;
+  
+  g_get_current_time (&current_time);
+
+  /* use milliseconds, 1000 milliseconds/second */
+  elapsed =
+    ((((double)current_time.tv_sec - window->display->grab_last_moveresize_time.tv_sec) * G_USEC_PER_SEC +
+      (current_time.tv_usec - window->display->grab_last_moveresize_time.tv_usec))) / 1000.0;
+
+#define MAX_RESIZES_PER_SECOND 30.0
+  if (elapsed < (1000.0 / MAX_RESIZES_PER_SECOND))
+    return FALSE;
+
+  /* store latest time */
+  window->display->grab_last_moveresize_time = current_time;
+
+  return TRUE;
+}
+
+static void
+clear_moveresize_time (MetaWindow *window)
+{
+  /* Forces the next update to actually do something */
+  window->display->grab_last_moveresize_time.tv_sec = 0;
+  window->display->grab_last_moveresize_time.tv_usec = 0;
+}
+
 static void
 update_move (MetaWindow  *window,
              unsigned int mask,
@@ -5838,6 +5869,14 @@ update_move (MetaWindow  *window,
       new_x = meta_window_find_nearest_vertical_edge (window, new_x);
       new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
     }
+
+  /* Force a move regardless of time if a certain delta is exceeded,
+   * so we don't get too out of sync with reality when dropping frames
+   */
+#define MOVE_THRESHOLD 15
+  if (!check_moveresize_frequency (window) &&
+      ABS (dx) < MOVE_THRESHOLD && ABS (dy) < MOVE_THRESHOLD)
+    return;
   
   meta_window_move (window, TRUE, new_x, new_y);
 }
@@ -5903,6 +5942,14 @@ update_resize (MetaWindow *window,
       break;
     }
 
+  /* Force a move regardless of time if a certain delta
+   * is exceeded
+   */
+#define RESIZE_THRESHOLD 15
+  if (!check_moveresize_frequency (window) &&
+      ABS (dx) < RESIZE_THRESHOLD && ABS (dy) < RESIZE_THRESHOLD)
+    return;
+  
   /* compute gravity of client during operation */
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
   g_assert (gravity >= 0);
@@ -5921,6 +5968,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         {
         case META_GRAB_OP_MOVING:
         case META_GRAB_OP_KEYBOARD_MOVING:
+          clear_moveresize_time (window);
           update_move (window, event->xbutton.state,
                        event->xbutton.x_root, event->xbutton.y_root);
           break;
@@ -5941,6 +5989,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_RESIZING_NE:
         case META_GRAB_OP_KEYBOARD_RESIZING_SW:
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+          clear_moveresize_time (window);
           update_resize (window, event->xbutton.x_root, event->xbutton.y_root);
           break;
 

@@ -1,5 +1,17 @@
 2002-08-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (update_resize): track time to avoid sending a
+	deluge of move/resize requests, suggestion from
+	xavier.bestel@free.fr bug #86830. Not really sure if this will
+	make a difference or not. We'll see I guess.
+	(update_move): do same on move though it seems less important
+	here.
+
+	* src/display.h (struct _MetaDisplay): store the 
+	last time we sent a move/resize event.
+
+2002-08-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_notify_focus): add a FIXME comment 
 	with a link to bug #90382
 

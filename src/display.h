@@ -219,7 +219,8 @@ struct _MetaDisplay
   MetaRectangle grab_initial_window_pos;
   MetaRectangle grab_current_window_pos;
   MetaResizePopup *grab_resize_popup;
-
+  GTimeVal    grab_last_moveresize_time;
+  
 
   /* Keybindings stuff */
   MetaKeyBinding *screen_bindings;

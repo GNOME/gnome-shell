@@ -2396,6 +2396,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_initial_root_y = root_y;
   display->grab_current_root_x = root_x;
   display->grab_current_root_y = root_y;
+  display->grab_last_moveresize_time.tv_sec = 0;
+  display->grab_last_moveresize_time.tv_usec = 0;
+
   if (display->grab_window)
     {
       display->grab_initial_window_pos = display->grab_window->rect;
