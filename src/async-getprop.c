@@ -36,7 +36,6 @@
 #include "async-getprop.h"
 
 #define NEED_REPLIES
-#include <X11/Xproto.h>
 #include <X11/Xlibint.h>
 
 #ifndef NULL
