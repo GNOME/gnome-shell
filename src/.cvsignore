@@ -3,3 +3,5 @@ Makefile.in
 Makefile
 .deps
 metacity
+metacity-theme-viewer
+testgradient

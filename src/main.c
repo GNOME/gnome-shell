@@ -82,6 +82,8 @@ main (int argc, char **argv)
   g_set_prgname (argv[0]);
 
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
   
   meta_set_verbose (TRUE);
   meta_set_debugging (TRUE);
