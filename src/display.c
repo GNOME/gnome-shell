@@ -771,13 +771,18 @@ event_callback (XEvent   *event,
                    */
                   int mode;
 
-                  /* Eat clicks used to focus a window, except
-                   * pass through when focusing a dock/desktop
+                  /* When clicking a different app in click-to-focus
+                   * in application-based mode, and the different
+                   * app is not a dock or desktop, eat the focus click.
                    */
                   if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+                      meta_prefs_get_application_based () &&
                       !window->has_focus &&
                       window->type != META_WINDOW_DOCK &&
-                      window->type != META_WINDOW_DESKTOP)
+                      window->type != META_WINDOW_DESKTOP &&
+                      (display->focus_window == NULL ||
+                       !meta_window_same_application (window,
+                                                      display->focus_window)))
                     mode = AsyncPointer; /* eat focus click */
                   else
                     mode = ReplayPointer; /* give event back */

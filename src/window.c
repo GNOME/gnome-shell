@@ -5740,3 +5740,12 @@ meta_window_get_work_area (MetaWindow    *window,
   meta_verbose ("Window %s has work area %d,%d %d x %d\n",
                 window->desc, area->x, area->y, area->width, area->height);
 }
+
+gboolean
+meta_window_same_application (MetaWindow *window,
+                              MetaWindow *other_window)
+{
+  return (window->xgroup_leader != None &&
+          other_window->xgroup_leader != None &&
+          window->xgroup_leader == other_window->xgroup_leader);
+}

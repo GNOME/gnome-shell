@@ -1,5 +1,19 @@
 2002-01-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (event_callback): make the check for whether to
+	eat focus click a lot more complicated
+
+	* src/window.c (meta_window_same_application): new function
+
+	* src/prefs.h, src/prefs.c: add application based pref
+
+	* src/metacity.schemas: add "application_based" setting to 
+	give me a mode to fool with being application based, 
+	without being unusable in the meantime. Yeah the crack flows
+	freely these days. Everyone knew it would happen.
+
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/frames.c: separate code to draw frame from the 
 	expose_event handler, so in principle we can draw the 
 	frame to a pixmap, but this isn't used yet.

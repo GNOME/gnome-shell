@@ -33,6 +33,7 @@
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
+#define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 
 static GConfClient *client = NULL;
 static GList *listeners = NULL;
@@ -43,12 +44,14 @@ static PangoFontDescription *titlebar_font = NULL;
 static int titlebar_font_size = 0;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static int num_workspaces = 4;
+static gboolean application_based = FALSE;
 
 static gboolean update_use_desktop_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_titlebar_font_size (int         value);
 static gboolean update_focus_mode         (const char *value);
 static gboolean update_num_workspaces     (int         value);
+static gboolean update_application_based  (gboolean    value);
 
 static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
@@ -234,6 +237,11 @@ meta_prefs_init (void)
                                   &err);
   cleanup_error (&err);
   update_num_workspaces (int_val);
+
+  bool_val = gconf_client_get_bool (client, KEY_APPLICATION_BASED,
+                                    &err);
+  cleanup_error (&err);
+  update_application_based (bool_val);
   
   gconf_client_notify_add (client, "/apps/metacity",
                            change_notify,
@@ -334,16 +342,33 @@ change_notify (GConfClient    *client,
           goto out;
         }
 
-      /* 4 is a fallback that should never be used */
-      d = value ? gconf_value_get_int (value) : 4;
+      d = value ? gconf_value_get_int (value) : num_workspaces;
 
       if (update_num_workspaces (d))
         queue_changed (META_PREF_NUM_WORKSPACES);
     }
-  else
-    meta_verbose ("Key %s doesn't mean anything to Metacity\n",
-                  key);
+  else if (strcmp (key, KEY_APPLICATION_BASED) == 0)
+    {
+      gboolean b;
 
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_APPLICATION_BASED);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : application_based;
+
+      if (update_application_based (b))
+        queue_changed (META_PREF_APPLICATION_BASED);
+    }
+  else
+    {
+      meta_verbose ("Key %s doesn't mean anything to Metacity\n",
+                    key);
+    }
+  
  out:
   /* nothing */
 }
@@ -478,6 +503,22 @@ meta_prefs_get_num_workspaces (void)
   return num_workspaces;
 }
 
+static gboolean
+update_application_based (gboolean value)
+{
+  gboolean old = application_based;
+
+  application_based = value;
+
+  return old != application_based;
+}
+
+gboolean
+meta_prefs_get_application_based (void)
+{
+  return application_based;
+}
+
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
@@ -497,6 +538,10 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_NUM_WORKSPACES:
       return "NUM_WORKSPACES";
+      break;
+
+    case META_PREF_APPLICATION_BASED:
+      return "APPLICATION_BASED";
       break;
     }
 

@@ -349,4 +349,7 @@ gboolean meta_window_visible_on_workspace (MetaWindow    *window,
 void meta_window_get_work_area (MetaWindow    *window,
                                 MetaRectangle *area);
 
+gboolean meta_window_same_application (MetaWindow *window,
+                                       MetaWindow *other_window);
+
 #endif

@@ -116,6 +116,32 @@
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/general/application_based</key>
+      <applyto>/apps/metacity/general/application_based</applyto>      
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+         <short>Navigation works in terms of applications not windows</short>
+         <long> 
+         If true, then Metacity works in terms of applications rather 
+         than windows. The concept is a bit abstract, but 
+         in general an application-based setup is more like  
+         the Mac and less like Windows. When you focus a window 
+         in application-based mode, all the windows in the 
+         application will be raised. Also, in application-based 
+         mode, focus clicks are not passed through to windows 
+         in other applications. 
+         The existence of this setting is somewhat questionable. 
+         But it's better than having settings for all the specific 
+         details of application-based vs. window-based, e.g. 
+         whether to pass through clicks. Also, application-based mode
+         is largely unimplemented at the moment.
+         </long>
+      </locale>
+    </schema>
+
   </schemalist>  
 </gconfschemafile>
 
