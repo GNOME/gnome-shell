@@ -390,4 +390,4 @@ metacity-$VERSION:
 	Xsync:                    ${found_xsync}
         Deprecated config dialog: ${enable_config_dialog}
 "
-echo "This is the UNSTABLE branch of metacity, use 2.4.x for stable (gnome-2-2 branch in CVS)"
+## echo "This is the UNSTABLE branch of metacity, use 2.4.x for stable (gnome-2-2 branch in CVS)"
