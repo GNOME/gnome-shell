@@ -41,6 +41,7 @@ meta_workspace_new (MetaScreen *screen)
   workspace->screen->workspaces =
     g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
+  workspace->mru_list = NULL;
 
   workspace->work_areas = NULL;
   workspace->work_areas_invalid = TRUE;
@@ -113,6 +114,8 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   workspace->windows = g_list_prepend (workspace->windows, window);
   window->workspaces = g_list_prepend (window->workspaces, workspace);
 
+  workspace->mru_list = g_list_append (workspace->mru_list, window);
+
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
@@ -138,6 +141,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
 
   workspace->windows = g_list_remove (workspace->windows, window);
   window->workspaces = g_list_remove (window->workspaces, workspace);
+  workspace->mru_list = g_list_remove (workspace->mru_list, window);
 
   meta_window_set_current_workspace_hint (window);
   
@@ -239,7 +243,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   else
     {
       meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
-      meta_screen_focus_default_window (workspace->screen, NULL);
+      meta_workspace_focus_default_window (workspace, NULL);
     }
 }
 
@@ -686,4 +690,92 @@ const char*
 meta_workspace_get_name (MetaWorkspace *workspace)
 {
   return meta_prefs_get_workspace_name (meta_workspace_index (workspace));
+}
+
+void
+meta_workspace_focus_default_window (MetaWorkspace *workspace,
+                                     MetaWindow *not_this_one)
+{
+  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+    meta_workspace_focus_mru_window (workspace, not_this_one);
+  else
+    meta_screen_focus_mouse_window (workspace->screen, not_this_one);
+}
+
+/* Focus MRU window (or top window if failed) on active workspace */
+void
+meta_workspace_focus_mru_window (MetaWorkspace *workspace,
+                                 MetaWindow *not_this_one)
+{
+  MetaWindow *window = NULL;
+  GList *tmp;
+
+  if (not_this_one)
+    meta_topic (META_DEBUG_FOCUS,
+                "Focusing MRU window excluding %s\n", not_this_one->desc);
+  
+  tmp = workspace->mru_list;  
+
+  while (tmp)
+    {
+      if (((MetaWindow*) tmp->data) != not_this_one)
+        {
+          window = tmp->data;
+	  break;
+        }
+
+      tmp = tmp->next;
+    }
+
+  if (window)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing workspace MRU window %s\n", window->desc);
+      
+      meta_window_focus (window,
+                         meta_display_get_current_time (workspace->screen->display));
+
+      /* Also raise the window if in click-to-focus */
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        meta_window_raise (window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found\n");
+      meta_workspace_focus_top_window (workspace, not_this_one);
+    }
+}
+
+/* Focus top window on workspace */
+void
+meta_workspace_focus_top_window (MetaWorkspace *workspace,
+                                 MetaWindow    *not_this_one)
+{
+  MetaWindow *window;
+
+  if (not_this_one)
+    meta_topic (META_DEBUG_FOCUS,
+                "Focusing top window excluding %s\n", not_this_one->desc);
+  
+  window = meta_stack_get_default_focus_window (workspace->screen->stack,
+                                                workspace,
+                                                not_this_one);
+
+  /* FIXME I'm a loser on the CurrentTime front */
+  if (window)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing top window %s\n", window->desc);
+
+      meta_window_focus (window, 
+	                 meta_display_get_current_time (workspace->screen->display));
+
+      /* Also raise the window if in click-to-focus */
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        meta_window_raise (window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "No top window to focus found\n");
+    }
 }

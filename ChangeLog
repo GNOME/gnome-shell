@@ -1,3 +1,60 @@
+2003-08-15  Ray Strode  <halfline@hawaii.rr.com>
+
+	Changed MRU list to be per workspace instead of per display, so
+	sticky windows don't hijack the window focus after workspace 
+	switching (Bug #97635).
+
+	* src/delete.c (meta_window_delete): Use 
+	meta_workspace_focus_top_window instead of 
+	meta_screen_focus_top_window.
+
+	* src/display.c (meta_display_open): Stop using display->mru_list.
+	(find_tab_forward): 
+	(find_tab_backward): 
+	(meta_display_get_tab_list): Use workspace->mru_list instead of 
+	display->mru_list and remove unneeded calls to 
+	meta_window_visible_on_workspace 
+
+	* src/display.h: Remove mru_list from MetaDisplay
+
+	* src/keybindings.c (handle_toggle_desktop): Use 
+	meta_workspace_focus_top_window instead of 
+	meta_screen_focus_top_window.
+
+	* src/screen.c (meta_screen_focus_top_window): 
+	(meta_screen_focus_default_window): Remove functions.
+	(meta_screen_show_desktop): Use meta_workspace_focus_top_window
+	instead of meta_screen_focus_top_window.
+
+	* src/screen.h: Remove meta_screen_focus_top_window and 
+	meta_screen_focus_default_window declarations.
+
+	* src/window.c (meta_window_new): Stop using display->mru_list.
+	(meta_window_free): Use meta_workspace_focus_top_window
+	instead of meta_screen_focus_top_window and stop using 
+	display->mru_list.
+	(meta_window_stick): Add sticky window to all workspace MRU lists.
+	(meta_window_unstick): Remove non-sticky window from the workspace
+	MRU lists it doesn't belong in.
+	(meta_window_notify_focus): Move newly focused window to the front
+	of active workspace's MRU list.
+
+	* src/workspace.c (meta_workspace_new): Initialize 
+	workspace->mru_list to NULL.
+	(meta_workspace_add_window): Add window to workspace's MRU list.
+	(meta_workspace_remove_window): Remove window from workspace's MRU 
+	list.
+	(meta_workspace_activate_with_focus): Use 
+	meta_workspace_focus_default_window instead of 
+	meta_screen_focus_default_window.
+	(meta_workspace_focus_default_window):
+	(meta_workspace_focus_mru_window):
+	(meta_workspace_focus_top_window): Add functions.
+
+	* src/workspace.h: Add mru_list to MetaWorkspace and add function
+	declarations for meta_workspace_focus_default_window, 
+	meta_workspace_focus_mru_window, meta_workspace_focus_top_window.
+
 2003-08-14  Rob Adams  <robadams@ucla.edu>
 
 	Allow windows that are too tall for the workarea to break the

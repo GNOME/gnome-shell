@@ -179,11 +179,6 @@ struct _MetaDisplay
    */
   MetaWindow *expected_focus_window;
 
-  /* Most recently focused list. Always contains all
-   * live windows.
-   */
-  GList *mru_list;  
-
   guint static_gravity_works : 1;
   
   /*< private-ish >*/

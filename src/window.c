@@ -657,10 +657,6 @@ meta_window_new (MetaDisplay *display,
                                     window->size_hints.width,
                                     window->size_hints.height);
 
-  /* add to MRU list */
-  window->display->mru_list =
-    g_list_append (window->display->mru_list, window);
-  
   meta_stack_add (window->screen->stack, 
                   window);
 
@@ -883,7 +879,7 @@ meta_window_free (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing top window since we're unmanaging %s\n",
                   window->desc);
-      meta_screen_focus_top_window (window->screen, window);
+      meta_workspace_focus_top_window (window->screen->active_workspace, window);
     }
   else if (window->display->expected_focus_window == window)
     {
@@ -891,7 +887,7 @@ meta_window_free (MetaWindow  *window)
                   "Focusing top window since expected focus window freed %s\n",
                   window->desc);
       window->display->expected_focus_window = NULL;
-      meta_screen_focus_top_window (window->screen, window);
+      meta_workspace_focus_top_window (window->screen->active_workspace, window);
     }
   else
     {
@@ -920,9 +916,6 @@ meta_window_free (MetaWindow  *window)
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
-  window->display->mru_list =
-    g_list_remove (window->display->mru_list, window);
-  
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
   meta_window_unqueue_update_icon (window);
@@ -1763,7 +1756,7 @@ meta_window_minimize (MetaWindow  *window)
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing top window due to minimization of focus window %s\n",
                       window->desc);
-          meta_screen_focus_top_window (window->screen, window);
+          meta_workspace_focus_top_window (window->screen->active_workspace, window);
         }
       else
         {
@@ -3194,6 +3187,9 @@ meta_window_change_workspace (MetaWindow    *window,
 void
 meta_window_stick (MetaWindow  *window)
 {
+  GList *tmp; 
+  MetaWorkspace *workspace;
+
   meta_verbose ("Sticking window %s current on_all_workspaces = %d\n",
                 window->desc, window->on_all_workspaces);
   
@@ -3206,6 +3202,18 @@ meta_window_stick (MetaWindow  *window)
    */
   window->on_all_workspaces = TRUE;
 
+  /* We do, however, change the MRU lists of all the workspaces
+   */
+  tmp = window->workspaces;
+  while (tmp)
+    {
+      workspace = (MetaWorkspace *) tmp->data;
+      if (!g_list_find (workspace->mru_list, window))
+          g_list_append (workspace->mru_list, window);
+
+      tmp = tmp->next;
+    }
+
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
@@ -3214,12 +3222,25 @@ meta_window_stick (MetaWindow  *window)
 void
 meta_window_unstick (MetaWindow  *window)
 {
+  GList *tmp;
+  MetaWorkspace *workspace;
+
   if (!window->on_all_workspaces)
     return;
 
   /* Revert to window->workspaces */
 
   window->on_all_workspaces = FALSE;
+
+  /* Remove window from MRU lists that it doesn't belong in */
+  tmp = window->workspaces;
+  while (tmp)
+    {
+      workspace = (MetaWorkspace *) tmp->data;
+      if (!meta_workspace_contains_window (workspace, window))
+          g_list_remove (workspace->mru_list, window);
+      tmp = tmp->next;
+    }
 
   /* We change ourselves to the active workspace, since otherwise you'd get
    * a weird window-vaporization effect. Once we have UI for being
@@ -3946,11 +3967,21 @@ meta_window_notify_focus (MetaWindow *window,
                       "* Focus --> %s\n", window->desc);
           window->display->focus_window = window;
           window->has_focus = TRUE;
-          /* Move to the front of the MRU list */
-          window->display->mru_list =
-            g_list_remove (window->display->mru_list, window);
-          window->display->mru_list =
-            g_list_prepend (window->display->mru_list, window);
+
+          /* Move to the front of the focusing workspace's MRU list
+	   * FIXME: is the active workspace guaranteed to be the focusing
+	   *        workspace?
+           */
+          if (window->screen->active_workspace)
+            {
+              window->screen->active_workspace->mru_list = 
+                g_list_remove (window->screen->active_workspace->mru_list, 
+                               window);
+              window->screen->active_workspace->mru_list = 
+                g_list_prepend (window->screen->active_workspace->mru_list, 
+                                window);
+            }
+
           if (window->frame)
             meta_frame_queue_draw (window->frame);
           

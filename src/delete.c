@@ -23,6 +23,7 @@
 #include "util.h"
 #include "window.h"
 #include "errors.h"
+#include "workspace.h"
 
 #include <sys/types.h>
 #include <signal.h>
@@ -387,7 +388,8 @@ meta_window_delete (MetaWindow  *window,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing top window because focus window %s was deleted/killed\n",
                   window->desc);
-      meta_screen_focus_top_window (window->screen, window);
+      meta_workspace_focus_top_window (window->screen->active_workspace,
+                                       window);
     }
   else
     {

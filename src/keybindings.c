@@ -2609,7 +2609,7 @@ handle_toggle_desktop (MetaDisplay    *display,
   if (screen->showing_desktop)
     {
       meta_screen_unshow_desktop (screen);
-      meta_screen_focus_top_window (screen, NULL);
+      meta_workspace_focus_top_window (screen->active_workspace, NULL);
     }
   else
     meta_screen_show_desktop (screen);

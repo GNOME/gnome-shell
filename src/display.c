@@ -310,7 +310,6 @@ meta_display_open (const char *name)
   display->autoraise_timeout_id = 0;
   display->focus_window = NULL;
   display->expected_focus_window = NULL;
-  display->mru_list = NULL;
 
 #ifdef HAVE_XSYNC
   display->grab_update_alarm = None;
@@ -3417,6 +3416,7 @@ find_tab_forward (MetaDisplay   *display,
   GList *tmp;
 
   g_return_val_if_fail (start != NULL, NULL);
+  g_return_val_if_fail (workspace != NULL, NULL);
 
   tmp = start->next;
   while (tmp != NULL)
@@ -3424,22 +3424,18 @@ find_tab_forward (MetaDisplay   *display,
       MetaWindow *window = tmp->data;
 
       if (window->screen == screen &&
-	  IN_TAB_CHAIN (window, type) &&
-          (workspace == NULL ||
-           meta_window_visible_on_workspace (window, workspace)))
+	  IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->next;
     }
 
-  tmp = display->mru_list;
+  tmp = workspace->mru_list;
   while (tmp != start)
     {
       MetaWindow *window = tmp->data;
 
-      if (IN_TAB_CHAIN (window, type) &&
-          (workspace == NULL ||
-           meta_window_visible_on_workspace (window, workspace)))
+      if (IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->next;
@@ -3458,6 +3454,7 @@ find_tab_backward (MetaDisplay   *display,
   GList *tmp;
 
   g_return_val_if_fail (start != NULL, NULL);
+  g_return_val_if_fail (workspace != NULL, NULL);
   
   tmp = start->prev;
   while (tmp != NULL)
@@ -3465,22 +3462,18 @@ find_tab_backward (MetaDisplay   *display,
       MetaWindow *window = tmp->data;
 
       if (window->screen == screen &&
-	  IN_TAB_CHAIN (window, type) &&
-          (workspace == NULL ||
-           meta_window_visible_on_workspace (window, workspace)))
+	  IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->prev;
     }
 
-  tmp = g_list_last (display->mru_list);
+  tmp = g_list_last (workspace->mru_list);
   while (tmp != start)
     {
       MetaWindow *window = tmp->data;
 
-      if (IN_TAB_CHAIN (window, type) &&
-          (workspace == NULL ||
-           meta_window_visible_on_workspace (window, workspace)))
+      if (IN_TAB_CHAIN (window, type))
         return window;
 
       tmp = tmp->prev;
@@ -3497,7 +3490,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
 {
   GList *tab_list;
 
-  /* workspace can be NULL for all workspaces */  
+  g_return_val_if_fail (workspace != NULL, NULL);
 
   /* Windows sellout mode - MRU order. Collect unminimized windows
    * then minimized so minimized windows aren't in the way so much.
@@ -3506,16 +3499,14 @@ meta_display_get_tab_list (MetaDisplay   *display,
     GList *tmp;
     
     tab_list = NULL;
-    tmp = screen->display->mru_list;
+    tmp = workspace->mru_list;
     while (tmp != NULL)
       {
         MetaWindow *window = tmp->data;
         
         if (!window->minimized &&
             window->screen == screen &&
-            IN_TAB_CHAIN (window, type) &&
-            (workspace == NULL ||
-             meta_window_visible_on_workspace (window, workspace)))
+            IN_TAB_CHAIN (window, type))
           tab_list = g_list_prepend (tab_list, window);
         
         tmp = tmp->next;
@@ -3525,16 +3516,14 @@ meta_display_get_tab_list (MetaDisplay   *display,
   {
     GList *tmp;
     
-    tmp = screen->display->mru_list;
+    tmp = workspace->mru_list;
     while (tmp != NULL)
       {
         MetaWindow *window = tmp->data;
         
         if (window->minimized &&
             window->screen == screen &&
-            IN_TAB_CHAIN (window, type) &&
-            (workspace == NULL ||
-             meta_window_visible_on_workspace (window, workspace)))
+            IN_TAB_CHAIN (window, type))
           tab_list = g_list_prepend (tab_list, window);
         
         tmp = tmp->next;
