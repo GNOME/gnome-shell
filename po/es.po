@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
-"POT-Creation-Date: 2002-11-26 11:08+0000\n"
+"POT-Creation-Date: 2002-12-04 06:08+0100\n"
 "PO-Revision-Date: 2002-11-14 12:09-0300\n"
 "Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ocurrió un error al obtener el nombre del equipo: %s\n"
 
-#: src/display.c:267
+#: src/display.c:269
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla del Sistema de Ventanas X «%s»\n"
@@ -423,7 +423,7 @@ msgstr "Cerrar ventana"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "Comandos para ejecutar en respuesta a atajos de teclados"
+msgstr "Comandos a ejecutar en respuesta a combinaciones de teclas"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
@@ -1776,12 +1776,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:391
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: src/screen.c:407
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1790,7 +1790,7 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un manejador de ventanas, intente "
 "usar la opción «--replace» para reemplazar el manejador de ventanas actual.\n"
 
-#: src/screen.c:448
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1798,12 +1798,12 @@ msgstr ""
 "No se ha podido obtener la selección del manejador de ventanas en la ventana "
 "%d en la pantalla «%s»\n"
 
-#: src/screen.c:504
+#: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: src/screen.c:672
+#: src/screen.c:673
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No se ha podido liberar la ventana %d en la pantalla «%s»\n"
@@ -2742,29 +2742,29 @@ msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Archivo de registro %s abierto\n"
 
-#: src/util.c:191
+#: src/util.c:194
 msgid "Window manager: "
 msgstr "Administrador de ventanas: "
 
-#: src/util.c:324
+#: src/util.c:329
 msgid "Bug in window manager: "
 msgstr "Error en el administrador de ventanas: "
 
-#: src/util.c:353
+#: src/util.c:358
 msgid "Window manager warning: "
 msgstr "Advertencia del administrador de ventanas: "
 
-#: src/util.c:377
+#: src/util.c:382
 msgid "Window manager error: "
 msgstr "Error del administrador de ventanas: "
 
-#: src/window-props.c:160
+#: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "La aplicación configuro un _NET_WM_PID %ld erróneo\n"
 
 #. first time through
-#: src/window.c:4733
+#: src/window.c:4763
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2780,7 +2780,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5293
+#: src/window.c:5323
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
