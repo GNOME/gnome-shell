@@ -4,5 +4,6 @@ Makefile
 .deps
 metacity
 metacity-theme-viewer
+metacity-dialog
 testgradient
 inlinepixbufs.h
