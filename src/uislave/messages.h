@@ -24,6 +24,43 @@
 
 #include <glib.h>
 
+/* General shared types */
+
+typedef enum
+{
+  META_FRAME_ALLOWS_DELETE    = 1 << 0,
+  META_FRAME_ALLOWS_MENU      = 1 << 1,
+  META_FRAME_ALLOWS_MINIMIZE  = 1 << 2,
+  META_FRAME_ALLOWS_MAXIMIZE  = 1 << 3, 
+  META_FRAME_ALLOWS_RESIZE    = 1 << 4,
+  META_FRAME_TRANSIENT        = 1 << 5,
+  META_FRAME_HAS_FOCUS        = 1 << 6,
+  META_FRAME_SHADED           = 1 << 7,
+  META_FRAME_STUCK            = 1 << 8
+} MetaFrameFlags;
+
+typedef enum
+{
+  META_FRAME_CONTROL_NONE,
+  META_FRAME_CONTROL_TITLE,
+  META_FRAME_CONTROL_DELETE,
+  META_FRAME_CONTROL_MENU,
+  META_FRAME_CONTROL_MINIMIZE,
+  META_FRAME_CONTROL_MAXIMIZE,
+  META_FRAME_CONTROL_RESIZE_SE,
+  META_FRAME_CONTROL_RESIZE_S,
+  META_FRAME_CONTROL_RESIZE_SW,
+  META_FRAME_CONTROL_RESIZE_N,
+  META_FRAME_CONTROL_RESIZE_NE,
+  META_FRAME_CONTROL_RESIZE_NW,
+  META_FRAME_CONTROL_RESIZE_W,
+  META_FRAME_CONTROL_RESIZE_E
+} MetaFrameControl;
+
+
+
+/* Now the IPC mess */
+
 /* This thing badly violates the KISS principle. */
 
 /* This header is shared between the WM and the UI slave */

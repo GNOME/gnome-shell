@@ -23,6 +23,8 @@
 #define META_FRAMES_H
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
+#include "messages.h"
 
 /* This is one widget that manages all the window frames
  * as subwindows.
@@ -38,10 +40,19 @@
 typedef struct _MetaFrames        MetaFrames;
 typedef struct _MetaFramesClass   MetaFramesClass;
 
+typedef struct _MetaFrame           MetaFrame;
+typedef struct _MetaFrameProperties MetaFrameProperties;
+
 struct _MetaFrames
 {
   GtkWindow parent_instance;
 
+  /* If we did a widget per frame, we wouldn't want to cache this. */
+  MetaFrameProperties *props;
+
+  int text_height;
+
+  GHashTable *frames;
 };
 
 struct _MetaFramesClass
@@ -55,6 +66,12 @@ GType        meta_frames_get_type               (void) G_GNUC_CONST;
 MetaFrames *meta_frames_new (void);
 
 void meta_frames_manage_window (MetaFrames *frames,
-                                GdkWindow  *window);
+                                Window      xwindow);
+void meta_frames_unmanage_window (MetaFrames *frames,
+                                  Window      xwindow);
+
+void meta_frames_set_title (MetaFrames *frames,
+                            Window      xwindow,
+                            const char *title);
 
 #endif
