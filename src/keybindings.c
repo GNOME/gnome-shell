@@ -169,7 +169,11 @@ meta_change_keygrab (MetaDisplay *display,
    * all combinations of IGNORED_MODIFIERS.
    * X provides no better way to do this.
    */
-
+  /* Instead of this hacky mess copied from fvwm, WindowMaker just
+   * grabs with all numlock/scrolllock combinations and doesn't grab
+   * for other weird bits.
+   */
+  
   /* modmask can't contain any non-interesting modifiers */
   g_return_if_fail ((modmask & INTERESTING_MODIFIERS) == modmask);
   

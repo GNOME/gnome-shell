@@ -546,17 +546,9 @@ update_num_workspaces (MetaScreen *screen)
 }
 
 static void
-update_grabs_func (MetaScreen *screen, MetaWindow *window,
-                   gpointer user_data)
-{
-  meta_window_update_unfocused_button_grabs (window);
-}
-
-
-static void
 update_focus_mode (MetaScreen *screen)
 {
-  meta_screen_foreach_window (screen, update_grabs_func, NULL);
+  /* nothing to do anymore */ ;
 }
 
 void

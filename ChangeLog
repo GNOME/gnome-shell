@@ -1,5 +1,21 @@
 2001-12-10  Havoc Pennington  <hp@pobox.com>
 
+        Rework the click-client-area-to-focus support to use synchronous
+	grabs, avoids a big mess, lets us pass through click when
+	required (for dock/desktop). Disadvantage is all left-button
+	clicks now require window manager approval. ;-)
+	
+	* src/display.c (event_callback): don't focus dock/desktop when
+	the mouse enters them; require a click.
+	(meta_change_button_grab): allow sync grabs
+	(meta_display_grab_unfocused_window_buttons): establish a
+	synchronous grab and maintain it all the time, rename to
+	meta_display_grab_focus_window_button
+
+	* src/window.c: change to reflect display.c
+	
+2001-12-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_update_unfocused_button_grabs): oops, 
 	unbreak this _again_ - reported by Josh Barrow
 

@@ -304,7 +304,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
   window->all_keys_grabbed = FALSE;
-  window->unfocused_buttons_grabbed = FALSE;
   window->withdrawn = FALSE;
   window->initial_workspace_set = FALSE;
   window->calc_placement = FALSE;
@@ -423,7 +422,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   meta_window_grab_keys (window);
   meta_display_grab_window_buttons (window->display, window->xwindow);
-  meta_window_update_unfocused_button_grabs (window);
+  meta_display_grab_focus_window_button (window->display, window->xwindow);
   
   /* For the workspace, first honor hints,
    * if that fails put transients with parents,
@@ -696,6 +695,7 @@ meta_window_free (MetaWindow  *window)
 
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);
+  meta_display_ungrab_focus_window_button (window->display, window->xwindow);
   
   meta_display_unregister_x_window (window->display, window->xwindow);
   
@@ -2025,59 +2025,6 @@ meta_window_focus (MetaWindow  *window,
 }
 
 void
-meta_window_update_unfocused_button_grabs (MetaWindow *window)
-{
-  /* Grab buttons if we're unfocused and in click-to-focus mode,
-   * ungrab otherwise, never grab on panels, menus, etc.
-   */
-  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-    {
-      if (window->unfocused_buttons_grabbed)
-        {
-          if (window->has_focus)
-            {
-              /* Focused so undo grab */
-              meta_verbose ("Ungrabbing on focused window %s\n",
-                            window->desc);
-              meta_display_ungrab_unfocused_window_buttons (window->display,
-                                                            window->xwindow);
-              window->unfocused_buttons_grabbed = FALSE;
-            }
-        }
-      else
-        {
-          /* FIXME This type thing is a temporary hack; what we need to
-           * do is focus these windows, but pass thru click. What we
-           * do now is ignore clicks on them.
-           */
-          if (!window->has_focus &&
-              window->type != META_WINDOW_DOCK &&
-              window->type != META_WINDOW_DESKTOP)
-            {
-              /* Not focused so grab */
-              meta_verbose ("Grabbing on unfocused window %s since mode is click-to-focus\n",
-                            window->desc);
-              meta_display_grab_unfocused_window_buttons (window->display,
-                                                          window->xwindow);
-              window->unfocused_buttons_grabbed = TRUE;
-            }
-        }
-    }
-  else
-    {
-      if (window->unfocused_buttons_grabbed)
-        {
-          /* Not in click-to-focus so undo grab */
-          meta_verbose ("Ungrabbing on window %s since mode is not click-to-focus\n",
-                        window->desc);
-          meta_display_ungrab_unfocused_window_buttons (window->display,
-                                                        window->xwindow);
-          window->unfocused_buttons_grabbed = FALSE;
-        }
-    }
-}
-
-void
 meta_window_change_workspace (MetaWindow    *window,
                               MetaWorkspace *workspace)
 {
@@ -2665,7 +2612,6 @@ meta_window_notify_focus (MetaWindow *window,
       window->has_focus = TRUE;
       if (window->frame)
         meta_frame_queue_draw (window->frame);
-      meta_window_update_unfocused_button_grabs (window);
     }
   else if (event->type == FocusOut ||
            event->type == UnmapNotify)
@@ -2681,7 +2627,6 @@ meta_window_notify_focus (MetaWindow *window,
       window->has_focus = FALSE;
       if (window->frame)
         meta_frame_queue_draw (window->frame);
-      meta_window_update_unfocused_button_grabs (window);
     }
 
   /* Now set _NET_ACTIVE_WINDOW hint */

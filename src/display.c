@@ -704,24 +704,58 @@ event_callback (XEvent   *event,
           if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
             grab_mask |= ControlMask;
           
-          if (!window->unfocused_buttons_grabbed &&
-              (event->xbutton.state & grab_mask) == 0)
+          if ((event->xbutton.state & grab_mask) == 0 &&
+              event->xbutton.button != 1)
             {
-              ; /* nothing, not getting event from our button grabs,
-                 * rather from a client that just let button presses
-                 * pass through to our frame, and we don't have
-                 * the click-to-focus first-click-to-raise grab
-                 */
+              /* Two possible sources of an unmodified event;
+               * one is a client that's letting button presses
+               * pass through to the frame, the other is
+               * our focus_window_grab on unmodified button 1.
+               * In this case, we are not button 1, so we just
+               * ignore the whole thing.
+               */
+              ;
             }
           else if (event->xbutton.button == 1)
             {
-              meta_window_raise (window);
+              /* We always raise in click-to-focus, and
+               * raise only if Alt is down for sloppy/mouse 
+               * (sloppy/mouse allow left-click without raising).
+               * I'm not sure I have a rationale for this.
+               */
+              if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
+                  ((event->xbutton.state & grab_mask) != 0))
+                meta_window_raise (window);
+
               meta_window_focus (window, event->xbutton.time);
 
+              if (!frame_was_receiver && 
+                  (event->xbutton.state & grab_mask) == 0)
+                {
+                  /* This is from our synchronous grab since
+                   * it has no modifiers and was on the client window
+                   */
+                  int mode;
+
+                  /* Eat clicks used to focus a window, except
+                   * pass through when focusing a dock/desktop
+                   */
+                  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+                      !window->has_focus &&
+                      window->type != META_WINDOW_DOCK &&
+                      window->type != META_WINDOW_DESKTOP)
+                    mode = AsyncPointer; /* eat focus click */
+                  else
+                    mode = ReplayPointer; /* give event back */
+                  
+                  XAllowEvents (display->xdisplay,
+                                mode, event->xbutton.time);
+                }
+              
               /* you can move on alt-click but not on
-               * first-unmodified-click
+               * the click-to-focus
                */
-              if (!window->unfocused_buttons_grabbed)
+              if ((event->xbutton.state & grab_mask) != 0)
                 begin_move = TRUE;
             }
           else if (event->xbutton.button == 2)
@@ -769,7 +803,9 @@ event_callback (XEvent   *event,
             {
             case META_FOCUS_MODE_SLOPPY:
             case META_FOCUS_MODE_MOUSE:
-              meta_window_focus (window, event->xcrossing.time);
+              if (window->type != META_WINDOW_DOCK &&
+                  window->type != META_WINDOW_DESKTOP)
+                meta_window_focus (window, event->xcrossing.time);
               break;
             case META_FOCUS_MODE_CLICK:
               break;
@@ -1644,9 +1680,14 @@ static void
 meta_change_button_grab (MetaDisplay *display,
                          Window       xwindow,
                          gboolean     grab,
+                         gboolean     sync,
                          int          button,
                          int          modmask)
 {
+  /* Instead of this hacky mess copied from fvwm, WindowMaker just
+   * grabs with all numlock/scrolllock combinations and doesn't grab
+   * for other weird bits.
+   */
   int ignored_mask;
 
   g_return_if_fail ((modmask & INTERESTING_MODIFIERS) == modmask);
@@ -1671,7 +1712,8 @@ meta_change_button_grab (MetaDisplay *display,
                      xwindow, False,
                      ButtonPressMask | ButtonReleaseMask |    
                      PointerMotionMask | PointerMotionHintMask,
-                     GrabModeAsync, GrabModeAsync,
+                     sync ? GrabModeSync : GrabModeAsync,
+                     GrabModeAsync,
                      False, None);
       else
         XUngrabButton (display->xdisplay, button, modmask | ignored_mask,
@@ -1709,6 +1751,7 @@ meta_display_grab_window_buttons (MetaDisplay *display,
         meta_change_button_grab (display,
                                  xwindow,
                                  TRUE,
+                                 FALSE,
                                  i, Mod1Mask);
                                  
 
@@ -1718,6 +1761,7 @@ meta_display_grab_window_buttons (MetaDisplay *display,
         if (debug)
           meta_change_button_grab (display, xwindow,
                                    TRUE,
+                                   FALSE,
                                    i, ControlMask);
         
         ++i;
@@ -1734,10 +1778,10 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
   while (i < 4)
     {
       meta_change_button_grab (display, xwindow,
-                               FALSE, i, Mod1Mask);
+                               FALSE, FALSE, i, Mod1Mask);
       if (debug)
         meta_change_button_grab (display, xwindow,
-                                 FALSE, i, ControlMask);
+                                 FALSE, FALSE, i, ControlMask);
       
       ++i;
     }
@@ -1745,8 +1789,8 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
 
 /* Grab buttons we only grab while unfocused in click-to-focus mode */
 void
-meta_display_grab_unfocused_window_buttons (MetaDisplay *display,
-                                            Window       xwindow)
+meta_display_grab_focus_window_button (MetaDisplay *display,
+                                       Window       xwindow)
 {
   /* Grab button 1 for activating unfocused windows */
   meta_verbose ("Grabbing unfocused window buttons for 0x%lx\n", xwindow);
@@ -1762,7 +1806,7 @@ meta_display_grab_unfocused_window_buttons (MetaDisplay *display,
       {
         meta_change_button_grab (display,
                                  xwindow,
-                                 TRUE, i, 0);
+                                 TRUE, TRUE, i, 0);
         
         ++i;
       }
@@ -1770,8 +1814,8 @@ meta_display_grab_unfocused_window_buttons (MetaDisplay *display,
 }
 
 void
-meta_display_ungrab_unfocused_window_buttons (MetaDisplay *display,
-                                              Window       xwindow)
+meta_display_ungrab_focus_window_button (MetaDisplay *display,
+                                         Window       xwindow)
 {
   meta_verbose ("Ungrabbing unfocused window buttons for 0x%lx\n", xwindow);
 
@@ -1780,7 +1824,7 @@ meta_display_ungrab_unfocused_window_buttons (MetaDisplay *display,
     while (i < 2)
       {
         meta_change_button_grab (display, xwindow,
-                                 FALSE, i, 0);
+                                 FALSE, TRUE, i, 0);
         
         ++i;
       }
