@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 08:27-0700\n"
-"PO-Revision-Date: 2004-07-23 14:20+0300\n"
+"POT-Creation-Date: 2004-11-13 11:47+0200\n"
+"PO-Revision-Date: 2004-11-13 12:03+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -123,9 +123,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Komanda %d neaprašyta.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Komanda %d neaprašyta.\n"
+msgstr "Terminalo komanda nebuvo nurodyta.\n"
 
 #: src/main.c:69
 msgid ""
@@ -713,7 +712,7 @@ msgstr "Paleisti nurodytą komandą"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Paleisti terminalą"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1740,7 +1739,6 @@ msgstr ""
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1748,9 +1746,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri iškviečia skydelio pagrindinį meniu. Klavišų "
+"Klavišų kombinacija, kuri iškviečia terminalą. Klavišų "
 "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
+"Shift&gt;&lt;Alt&gt;F1. Sistema, apdorojanti aprašymą, yra gana laisva ir "
 "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
