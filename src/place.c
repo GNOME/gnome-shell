@@ -216,7 +216,9 @@ meta_window_place (MetaWindow *window,
   
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry. But remember fgeom == NULL
-   * for undecorated windows.
+   * for undecorated windows. Also, this function should
+   * NEVER have side effects other than computing the
+   * placement coordinates.
    */
   
   meta_verbose ("Placing window %s\n", window->desc);      
@@ -252,12 +254,6 @@ meta_window_place (MetaWindow *window,
 
           meta_verbose ("Centered window %s over transient parent\n",
                         window->desc);
-
-          if (parent->has_focus)
-            {
-              meta_verbose ("Focusing transient window since parent had focus\n");
-              meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
-            }
           
           goto done;
         }

@@ -1,3 +1,13 @@
+2001-10-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (idle_calc_showing): handle queue/unqueue of 
+	calc showings as we are iterating over the pending list
+	(meta_window_show): focus placed transients in here instead
+	of in meta_window_place - now it should actually work, yay
+
+	* src/place.c (meta_window_place): remove focusing of transient
+	child from here; this was really broken
+
 2001-10-29  Yuriy Syrota <rasta@renome.rovno.ua>
 
 	* configure.in: Added "uk" to ALL_LINGUAS.

@@ -907,17 +907,26 @@ static gboolean
 idle_calc_showing (gpointer data)
 {
   GSList *tmp;
+  GSList *copy;
 
   meta_verbose ("Clearing the calc_showing queue\n");
+
+  /* Work with a copy, for reentrancy. The allowed reentrancy isn't
+   * complete; destroying a window while we're in here would result in
+   * badness. But it's OK to queue/unqueue calc_showings.
+   */
+  copy = g_slist_copy (calc_showing_pending);
+  g_slist_free (calc_showing_pending);
+  calc_showing_pending = NULL;
+  calc_showing_idle = 0;
   
   /* sort them from bottom to top, so we map the
    * bottom windows first, so that placement (e.g. cascading)
    * works properly
    */
-  calc_showing_pending = g_slist_sort (calc_showing_pending,
-                                       stackcmp);
+  copy = g_slist_sort (copy, stackcmp);
   
-  tmp = calc_showing_pending;
+  tmp = copy;
   while (tmp != NULL)
     {
       MetaWindow *window;
@@ -930,10 +939,8 @@ idle_calc_showing (gpointer data)
       tmp = tmp->next;
     }
 
-  g_slist_free (calc_showing_pending);
-  calc_showing_pending = NULL;
+  g_slist_free (copy);
   
-  calc_showing_idle = 0;
   return FALSE;
 }
 
@@ -945,7 +952,7 @@ meta_window_unqueue_calc_showing (MetaWindow *window)
 
   meta_verbose ("Removing %s from the calc_showing queue\n",
                 window->desc);
-  
+
   calc_showing_pending = g_slist_remove (calc_showing_pending, window);
   window->calc_showing_queued = FALSE;
   
@@ -990,9 +997,12 @@ meta_window_queue_calc_showing (MetaWindow  *window)
 void
 meta_window_show (MetaWindow *window)
 {
+  gboolean did_placement;
+  
   meta_verbose ("Showing window %s, shaded: %d iconic: %d placed: %d\n",
                 window->desc, window->shaded, window->iconic, window->placed);
 
+  did_placement = FALSE;
   if (!window->placed)
     {
       /* We have to recalc the placement here since other windows may
@@ -1011,7 +1021,8 @@ meta_window_show (MetaWindow *window)
        * This is toggled here so that initially-iconified windows
        * still get placed when they are ultimately shown.
        */
-      window->placed = TRUE;      
+      window->placed = TRUE;
+      did_placement = TRUE;
     }
   
   /* Shaded means the frame is mapped but the window is not */
@@ -1056,6 +1067,26 @@ meta_window_show (MetaWindow *window)
         {
           window->iconic = FALSE;
           set_wm_state (window, NormalState);
+        }
+    }
+
+
+  if (did_placement)
+    {
+      if (window->xtransient_for != None)
+        {
+          MetaWindow *parent;
+
+          parent =
+            meta_display_lookup_x_window (window->display,
+                                          window->xtransient_for);
+          
+          if (parent && parent->has_focus)
+            {
+              meta_verbose ("Focusing transient window '%s' since parent had focus\n",
+                            window->desc);
+              meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
+            }
         }
     }
 }
