@@ -5,20 +5,53 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-02-08 01:59-0500\n"
-"PO-Revision-Date: 2002-03-28 20:59+0100\n"
+"POT-Creation-Date: 2002-04-22 12:57+0200\n"
+"PO-Revision-Date: 2002-04-22 13:00+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:160
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/theme-parser.c:466
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kunne ikke lese «%s» som et heltall"
+
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/theme-parser.c:475 src/theme-parser.c:529
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
+
+#: src/delete.c:127
+#, c-format
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "Feil under tolking av melding «%s» fra dialog-prosess\n"
+
+#: src/delete.c:262
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "Feil under lesing fra dialog-skjermprosess: %s\n"
+
+#: src/delete.c:333
+#, c-format
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Feil under oppstart av metacity-dialog for å spørre om terminering av en applikasjone: %s\n"
+
+#: src/delete.c:431
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "Feil under henting av vertsnavn: %s\n"
+
+#: src/display.c:221
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: src/errors.c:93
+#: src/errors.c:154
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -29,32 +62,32 @@ msgstr ""
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
 "vindushåndtereren.\n"
 
-#: src/errors.c:100
+#: src/errors.c:161
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
 
-#: src/frames.c:555
+#: src/frames.c:661
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: src/frames.c:558
+#: src/frames.c:664
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: src/frames.c:561
+#: src/frames.c:667
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: src/frames.c:564
+#: src/frames.c:670
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: src/frames.c:567
+#: src/frames.c:673
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:228
+#: src/keybindings.c:237
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -63,14 +96,14 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/main.c:227
+#: src/main.c:263
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene."
 
-#: src/main.c:273
+#: src/main.c:309
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -126,6 +159,21 @@ msgstr "Kun på arbeidsområde %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Flytt til arbeidsområde %s%d"
 
+#: src/metacity-dialog.c:86
+#, c-format
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+"Vinduet «%s» svarer ikke.\n"
+"Tving denne applikasjonen til å avslutte?\n"
+"(Alle åpne dokumenter vil gå tapt.)"
+
+#: src/metacity-dialog.c:94
+msgid "Kill application"
+msgstr "Terminer applikasjon"
+
 #: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
 #: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
 #, c-format
@@ -156,101 +204,120 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: src/screen.c:174
+#: src/prefs.c:639
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
+
+#: src/resizepopup.c:168
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: src/screen.c:184
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: src/screen.c:190
+#: src/screen.c:200
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
 
-#: src/screen.c:268
+#: src/screen.c:347
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
-#: src/session.c:760 src/session.c:767
+#: src/session.c:766 src/session.c:773
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: src/session.c:777
+#: src/session.c:783
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: src/session.c:909
+#: src/session.c:915
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:914
+#: src/session.c:920
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:988
+#: src/session.c:993
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: src/session.c:1022
+#: src/session.c:1028
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: src/session.c:1060
+#: src/session.c:1077
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
+
+#: src/session.c:1090
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr "Ukjent attributt %s på <metacity_session>-element"
+
+#: src/session.c:1107
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: src/session.c:1110 src/session.c:1142
+#: src/session.c:1157 src/session.c:1189
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjent attributt %s på <window>-element"
 
-#: src/session.c:1202
+#: src/session.c:1249
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukjent attributt %s på <geometry>-element"
 
-#: src/session.c:1222
+#: src/session.c:1269
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: src/theme.c:348
+#: src/theme.c:351
 msgid "top"
 msgstr "topp"
 
-#: src/theme.c:350
+#: src/theme.c:353
 msgid "bottom"
 msgstr "bunn"
 
-#: src/theme.c:352
+#: src/theme.c:355
 msgid "left"
 msgstr "venstre"
 
-#: src/theme.c:354
+#: src/theme.c:357
 msgid "right"
 msgstr "høyre"
 
-#: src/theme.c:368
+#: src/theme.c:371
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "rammegeometrien spesifiserer ikke «%s»-dimensjon"
 
-#: src/theme.c:387
+#: src/theme.c:390
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "rammegeometri spesifiserer ikke dimensjon «%s» for kant «%s»"
 
-#: src/theme.c:738
+#: src/theme.c:744
 msgid "Gradients should have at least two colors"
 msgstr "Gradienter må ha minst to farger"
 
-#: src/theme.c:828
+#: src/theme.c:834
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -259,7 +326,7 @@ msgstr ""
 "GTK-fargespesifikasjon må ha tilstand i klammer, f.eks. gtk:fg[NORMAL], hvor "
 "NORMAL er tilstanden; kunne ikke lese «%s»"
 
-#: src/theme.c:842
+#: src/theme.c:848
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -268,17 +335,17 @@ msgstr ""
 "GTK-fargespesifikasjon må ha en avsluttende klamme etter tilstanden, f.eks. "
 "gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
 
-#: src/theme.c:853
+#: src/theme.c:859
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Forsto ikke tilstand «%s» i fargespesifikasjonen"
 
-#: src/theme.c:866
+#: src/theme.c:872
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Forsto ikke fargekomponent «%s» i fargespesifikasjonen"
 
-#: src/theme.c:896
+#: src/theme.c:902
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -287,39 +354,39 @@ msgstr ""
 "Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i "
 "formatet"
 
-#: src/theme.c:907
+#: src/theme.c:913
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Kunne ikke lese alpha-verdi «%s» i blandet farge"
 
-#: src/theme.c:917
+#: src/theme.c:923
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alpha-verdi «%s» i blandet farge er ikke mellom 0.0 og 1.0"
 
-#: src/theme.c:956
+#: src/theme.c:962
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kunne ikke lese farge «%s»"
 
-#: src/theme.c:1206
+#: src/theme.c:1212
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinatuttrykk inneholder tegn «%s» som ikke er tillatt"
 
-#: src/theme.c:1233
+#: src/theme.c:1239
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "Koordinatuttrykk inneholder flyttall «%s» som ikke kunne tolkes"
 
-#: src/theme.c:1247
+#: src/theme.c:1253
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
 
-#: src/theme.c:1314
+#: src/theme.c:1320
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -328,34 +395,34 @@ msgstr ""
 "Koordinatuttrykket inneholdt en ukjent operator ved begynnelsen av denne "
 "teksten: «%s»"
 
-#: src/theme.c:1371
+#: src/theme.c:1377
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinatuttrykket var tomt eller ble ikke forstått"
 
-#: src/theme.c:1510 src/theme.c:1520 src/theme.c:1554
+#: src/theme.c:1516 src/theme.c:1526 src/theme.c:1560
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrykket resulterer i divisjon med null"
 
-#: src/theme.c:1562
+#: src/theme.c:1568
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrykket prøver å bruke mod-operator på et flyttall"
 
-#: src/theme.c:1619
+#: src/theme.c:1625
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrykket har en operator «%s» hvor en operand var ventet"
 
-#: src/theme.c:1628
+#: src/theme.c:1634
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinatuttrykket hadde en operand hvor en operator var ventet"
 
-#: src/theme.c:1636
+#: src/theme.c:1642
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinatuttrykket sluttet med en operator i stedet for en operand"
 
-#: src/theme.c:1646
+#: src/theme.c:1652
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -364,7 +431,7 @@ msgstr ""
 "Koordinatuttrykket har en operator «%c» etter en operator «%c» og ingen "
 "operand mellom dem."
 
-#: src/theme.c:1765
+#: src/theme.c:1771
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -372,30 +439,30 @@ msgstr ""
 "Koordinatuttrykkets tolkeprosess overfløt bufferen sin. Dette er virkelig en "
 "Metacity feil, men er du sikker på at du trenger så store uttrykk?"
 
-#: src/theme.c:1794
+#: src/theme.c:1800
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Koordinatuttrykket hadde en parantes slutt uten parantes start"
 
-#: src/theme.c:1857
+#: src/theme.c:1863
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinatuttrykket haddeen ukjent variabel eller konstant «%s»"
 
-#: src/theme.c:1914
+#: src/theme.c:1920
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinatuttrykket hadde en åpen parantes uten en avsluttende parantes"
 
-#: src/theme.c:1925
+#: src/theme.c:1931
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Koordinatuttrykket ser ikke ut til å ha noen operatorer eller operander"
 
-#: src/theme.c:2169 src/theme.c:2191 src/theme.c:2212
+#: src/theme.c:2175 src/theme.c:2197 src/theme.c:2218
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
 
-#: src/theme.c:3376
+#: src/theme.c:3485
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -404,44 +471,44 @@ msgstr ""
 "<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må "
 "spesifiseres for denne rammestilen"
 
-#: src/theme.c:3785 src/theme.c:3817
+#: src/theme.c:3894 src/theme.c:3926
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
 
-#: src/theme.c:3868
-#, fuzzy, c-format
-msgid "Failed to load theme \"%s\": %s"
+#: src/theme.c:3977
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Klarte ikke å laste tema «%s»: %s\n"
 
-#: src/theme.c:4013
+#: src/theme.c:4123
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "<name> er ikke satt for tema «%s»"
 
-#: src/theme.c:4020
+#: src/theme.c:4130
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "<author> er ikke satt for tema «%s»"
 
-#: src/theme.c:4027
+#: src/theme.c:4137
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "<date> er ikke satt for tema «%s»"
 
-#: src/theme.c:4034
+#: src/theme.c:4144
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "<description> er ikks satt for tema «%s»"
 
-#: src/theme.c:4041
+#: src/theme.c:4151
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "<copyright> er ikke satt for tema «%s»"
 
-#: src/theme.c:4051
+#: src/theme.c:4161
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -450,7 +517,7 @@ msgstr ""
 "Ingen rammestil satt for vindustype «%s» i tema «%s», legg til et <window "
 "type=«%s» style_set=«ett-eller-annet»/>-element"
 
-#: src/theme.c:4073
+#: src/theme.c:4183
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -459,17 +526,541 @@ msgstr ""
 "<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være "
 "spesifisert for dette temaet"
 
-#: src/theme.c:4424 src/theme.c:4484
+#: src/theme.c:4566 src/theme.c:4626
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
 
-#: src/theme.c:4432 src/theme.c:4492
+#: src/theme.c:4574 src/theme.c:4634
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstant «%s» er allerede definert"
+
+#: src/theme-parser.c:223 src/theme-parser.c:241
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Linje %d tegn %d: %s"
+
+#: src/theme-parser.c:395
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "Attributt «%s» gjentatt to ganger på samme <%s>-element"
+
+#: src/theme-parser.c:413 src/theme-parser.c:438
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "Attributt «%s» er ugyldig på <%s>-element i denne konteksten"
+
+#: src/theme-parser.c:484
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "Heltall %ld må være positivt"
+
+#: src/theme-parser.c:492
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "Heltall %ld er for stort, maksimalverdien er %d"
+
+#: src/theme-parser.c:520
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "Kunne ikke lese «%s» som et flyttall"
+
+#: src/theme-parser.c:551
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "Bolske verdier må være «sann» eller «usann» ikke «%s»"
+
+#: src/theme-parser.c:571
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "Vinkelen må være mellom 0.0 og 360.0, var %g\n"
+
+#: src/theme-parser.c:591
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr ""
+"Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n"
+
+#: src/theme-parser.c:624
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"Ugyldig skalering av tittel «%s» (må være en av xx-small,x-small,small,"
+"medium,large,x-large,xx-large)\n"
+
+#: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
+#: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Ingen attributt «%s» på element <%s>"
+
+#: src/theme-parser.c:735 src/theme-parser.c:799 src/theme-parser.c:837
+#: src/theme-parser.c:914 src/theme-parser.c:964 src/theme-parser.c:972
+#: src/theme-parser.c:1028 src/theme-parser.c:1036
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr "Ingen attributt «%s» på <%s>-element"
+
+#: src/theme-parser.c:751 src/theme-parser.c:807 src/theme-parser.c:845
+#: src/theme-parser.c:922
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "<%s> navn «%s» brukt på nytt"
+
+#: src/theme-parser.c:763 src/theme-parser.c:857 src/theme-parser.c:934
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "<%s> opphav «%s» er ikke definert"
+
+#: src/theme-parser.c:870
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "<%s> geometri «%s» er ikke definert"
+
+#: src/theme-parser.c:883
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> må spesifisere enten en geometri eller et opphav som har geometri"
+
+#: src/theme-parser.c:982
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "Ukjent type «%s» på <%s>-element"
+
+#: src/theme-parser.c:993
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "Ukjent style_set «%s» på <%s>-element"
+
+#: src/theme-parser.c:1001
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "Vindutype «%s» er allerede tildelt et stilsett"
+
+#: src/theme-parser.c:1045
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr "Ukjent funksjon for «%s» for menyikon"
+
+#: src/theme-parser.c:1054
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr "Ukjent tilstand «%s» for menyikon"
+
+#: src/theme-parser.c:1062
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr "Tema har allerede et menyikon for funksjon %s tilstand %s"
+
+#: src/theme-parser.c:1079 src/theme-parser.c:2949 src/theme-parser.c:3028
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "Ingen <draw_ops> med navn «%s» er definert"
+
+#: src/theme-parser.c:1094 src/theme-parser.c:1158 src/theme-parser.c:1356
+#: src/theme-parser.c:2829 src/theme-parser.c:2883 src/theme-parser.c:3043
+#: src/theme-parser.c:3220 src/theme-parser.c:3258 src/theme-parser.c:3296
+#: src/theme-parser.c:3334
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "Element <%s> er ikke tillatt under <%s>"
+
+#: src/theme-parser.c:1184 src/theme-parser.c:1258
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr "Ingen «name»-attributt <%s>-element"
+
+#: src/theme-parser.c:1191
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr "Ingen «value»-attributt på element <%s>"
+
+#: src/theme-parser.c:1221
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "Avstand «%s» er ukjent"
+
+#: src/theme-parser.c:1265
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr "Ingen «top»-attributt på element <%s>"
+
+#: src/theme-parser.c:1272
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr "Ingen «bottom»-attributt på element <%s>"
+
+#: src/theme-parser.c:1279
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr "Ingen «left»-attributt på element <%s>"
+
+#: src/theme-parser.c:1286
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr "Ingen «right»-attributt på element <%s>"
+
+#: src/theme-parser.c:1318
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "Grense «%s» er ukjent"
+
+#: src/theme-parser.c:1466 src/theme-parser.c:1576 src/theme-parser.c:1679
+#: src/theme-parser.c:1866 src/theme-parser.c:2574
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr "Ingen «color»-attributt på element <%s>"
+
+#: src/theme-parser.c:1473
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr "Ingen «x1»-attributt på <%s>-element"
+
+#: src/theme-parser.c:1480 src/theme-parser.c:2437
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr "Ingen «y1»-attributt på element <%s>"
+
+#: src/theme-parser.c:1487
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr "Ingen «x2»-attributt på element <%s>"
+
+#: src/theme-parser.c:1494 src/theme-parser.c:2444
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr "Ingen «y2»-attributt på element <%s>"
+
+#: src/theme-parser.c:1583 src/theme-parser.c:1686 src/theme-parser.c:1792
+#: src/theme-parser.c:1873 src/theme-parser.c:1975 src/theme-parser.c:2068
+#: src/theme-parser.c:2206 src/theme-parser.c:2332 src/theme-parser.c:2430
+#: src/theme-parser.c:2501 src/theme-parser.c:2581
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr "Ingen «x»-attributt på element <%s>"
+
+#: src/theme-parser.c:1590 src/theme-parser.c:1693 src/theme-parser.c:1799
+#: src/theme-parser.c:1880 src/theme-parser.c:1982 src/theme-parser.c:2075
+#: src/theme-parser.c:2213 src/theme-parser.c:2339 src/theme-parser.c:2508
+#: src/theme-parser.c:2588
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr "Ingen «y»-attributt på element <%s>"
+
+#: src/theme-parser.c:1597 src/theme-parser.c:1700 src/theme-parser.c:1806
+#: src/theme-parser.c:1887 src/theme-parser.c:1989 src/theme-parser.c:2082
+#: src/theme-parser.c:2220 src/theme-parser.c:2346 src/theme-parser.c:2515
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr "Ingen «width»-attributt på element <%s>"
+
+#: src/theme-parser.c:1604 src/theme-parser.c:1707 src/theme-parser.c:1813
+#: src/theme-parser.c:1894 src/theme-parser.c:1996 src/theme-parser.c:2089
+#: src/theme-parser.c:2227 src/theme-parser.c:2353 src/theme-parser.c:2522
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr "Ingen «height»-attributt på element <%s>"
+
+#: src/theme-parser.c:1714
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr "Ingen «start_angle»-attributt på element <%s>"
+
+#: src/theme-parser.c:1721
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr "Ingen «extent_angle»-attributt <%s>-element"
+
+#: src/theme-parser.c:1901
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr "Ingen «alpha»-attributt på element <%s>"
+
+#: src/theme-parser.c:1968
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr "Ingen «type»-attributt på element <%s>"
+
+#: src/theme-parser.c:2020
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "Forsto ikke verdi «%s» for gradienttype"
+
+#: src/theme-parser.c:2096
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr "Ingen «filname»-attributt på element <%s>"
+
+#: src/theme-parser.c:2185 src/theme-parser.c:2318 src/theme-parser.c:2423
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr "Ingen «state»-attributt på element <%s>"
+
+#: src/theme-parser.c:2192 src/theme-parser.c:2325
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr "Ingen «shadow»-attributt på element <%s>"
+
+#: src/theme-parser.c:2199
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr "Ingen «arrow»-attributt på element <%s>"
+
+#: src/theme-parser.c:2252 src/theme-parser.c:2374 src/theme-parser.c:2462
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "Forsto ikke tilstand «%s» for element <%s>"
+
+#: src/theme-parser.c:2262 src/theme-parser.c:2384
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "Forsto ikke skygge «%s» for element <%s>"
+
+#: src/theme-parser.c:2272
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "Forsto ikke pil «%s» for element <%s>"
+
+#: src/theme-parser.c:2667 src/theme-parser.c:2783
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "Ingen <draw_ops> kalt «%s» er definert"
+
+#: src/theme-parser.c:2679 src/theme-parser.c:2795
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "Hvis du tar med draw_ops «%s» her vil dette lage en sirkulær referanse"
+
+#: src/theme-parser.c:2858
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr "Ingen «value»-attributt på <%s>-element"
+
+#: src/theme-parser.c:2915
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr "Ingen «position»-attributt på <%s>-element"
+
+#: src/theme-parser.c:2924
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "Ukjent posisjon «%s» for rammesdel"
+
+#: src/theme-parser.c:2932
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "Rammestil har allerede en del i posisjon %s"
+
+#: src/theme-parser.c:2977
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr "Ingen «function»-attributt på <%s>-element"
+
+#: src/theme-parser.c:2985 src/theme-parser.c:3089
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr "Ingen «state»-attributt på <%s>-element"
+
+#: src/theme-parser.c:2994
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "Ukjent funksjon «%s» for knapp"
+
+#: src/theme-parser.c:3003
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "Ukjent tilstand «%s» for knapp"
+
+#: src/theme-parser.c:3011
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "Rammestil har allerede en knapp for funksjon %s tilstand %s"
+
+#: src/theme-parser.c:3081
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "Ingen «focus»-attributt på <%s>-element"
+
+#: src/theme-parser.c:3097
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr "Ingen «style»-attributt på <%s>-element"
+
+#: src/theme-parser.c:3106
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "«%s» er ikke en gyldig verdi for fokusattributt"
+
+#: src/theme-parser.c:3115
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "«%s» er ikke en gyldig verdi for tilstandsattributt"
+
+#: src/theme-parser.c:3125
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "En stil med navn «%s» er ikke definert"
+
+#: src/theme-parser.c:3135
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "Ingen «resize»-attributt på <%s>-element"
+
+#: src/theme-parser.c:3145
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "«%s» er ikke en gyldig verdi for attributt for endring av størrelse"
+
+#: src/theme-parser.c:3155
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Skal ikke være noen «resize»-attributt på <%s>-element for maksimert/"
+"skyggelagt tilstand"
+
+#: src/theme-parser.c:3169
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr ""
+"Stil er allerede spesifisert for tilstand %s størrelsesendring %s fokus %s"
+
+#: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "Stil er allerede spesifisert for tilstand %s fokus %s"
+
+#: src/theme-parser.c:3241
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kan ikke ha to draw_ops for et <piece>-element (tema spesifiserte en "
+"draw_ops-attributt i tillegg til et <draw_ops>-element, eller så "
+"spesifiserte det to elementer)"
+
+#: src/theme-parser.c:3279
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kan ikke ha to draw_ops for et <button>-element (tema spesifiserte en "
+"draw_ops-attributt i tillegg til et <draw_ops>-element, eller det "
+"spesifiserte to elementer)"
+
+#: src/theme-parser.c:3317
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kan ikke ha to draw_ops for et <menu_icon>-element (tema spesifiserte en "
+"draw_ops-attributt i tillegg til et <draw_ops>-element, eller det "
+"spesifiserte to elementer)"
+
+#: src/theme-parser.c:3364
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "Ytterste element i temaet må være <metacity_theme> ikke <%s>"
+
+#: src/theme-parser.c:3384
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Element <%s> er ikke tillatt inne i et name/author/date/description element"
+
+#: src/theme-parser.c:3389
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "Element <%s> er ikke tillatt inne i et <constand> element"
+
+#: src/theme-parser.c:3400
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border element"
+msgstr "Element <%s> er ikke tillatt inne i et avstands/kant element"
+
+#: src/theme-parser.c:3422
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "Element <%s> er ikke tillatt inne i et element for tegneoperasjon"
+
+#: src/theme-parser.c:3432 src/theme-parser.c:3462 src/theme-parser.c:3467
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "Element <%s> er ikke tillatt inne i et <%s>-element"
+
+#: src/theme-parser.c:3684
+msgid "No draw_ops provided for frame piece"
+msgstr "Ingen draw_ops tilbys for rammedelen"
+
+#: src/theme-parser.c:3699
+msgid "No draw_ops provided for button"
+msgstr "Ingen draw_ops tilbys for knappen"
+
+#: src/theme-parser.c:3714
+msgid "No draw_ops provided for menu icon"
+msgstr "Ingen draw_ops tilbys for menyikonet"
+
+#: src/theme-parser.c:3754
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "Ingen tekst er tillatt inne i element <%s>"
+
+#: src/theme-parser.c:3809
+msgid "<name> specified twice for this theme"
+msgstr "<name> spesifisert to ganger for dette tema"
+
+#: src/theme-parser.c:3820
+msgid "<author> specified twice for this theme"
+msgstr "<author> spesifisert to ganger for dette tema"
+
+#: src/theme-parser.c:3831
+msgid "<copyright> specified twice for this theme"
+msgstr "<copyright> spesifisert to ganger for dette tema"
+
+#: src/theme-parser.c:3842
+msgid "<date> specified twice for this theme"
+msgstr "<date> spesifisert to ganger for dette tema"
+
+#: src/theme-parser.c:3853
+msgid "<description> specified twice for this theme"
+msgstr "<description> spesifisert to ganger for dette tema"
+
+#: src/theme-parser.c:4055
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr "Feil under lesing av tema fra fil %s: %s\n"
+
+#: src/theme-parser.c:4110
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
+
+#: src/util.c:59
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "Feil under åpning av feilsøkingslogg: %s\n"
+
+#: src/util.c:69
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "Feil under fdopen() av loggfil %s: %s\n"
+
+#: src/util.c:75
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "Åpnet loggfil %s\n"
+
+#: src/window.c:425
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
 #: src/xprops.c:53
 #, c-format
@@ -484,334 +1075,3 @@ msgstr ""
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8\n"
-
-#~ msgid "Error setting number of workspaces to %d: %s\n"
-#~ msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
-
-#~ msgid "<metacity_session> attribute seen but we already have the session ID"
-#~ msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
-
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Ukjent attributt %s på <metacity_session>-element"
-
-#~ msgid "Line %d character %d: %s"
-#~ msgstr "Linje %d tegn %d: %s"
-
-#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-#~ msgstr "Attributt «%s» gjentatt to ganger på samme <%s>-element"
-
-#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-#~ msgstr "Attributt «%s» er ugyldig på <%s>-element i denne konteksten"
-
-#~ msgid "Could not parse \"%s\" as an integer"
-#~ msgstr "Kunne ikke lese «%s» som et heltall"
-
-#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-#~ msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
-
-#~ msgid "Integer %ld must be positive"
-#~ msgstr "Heltall %ld må være positivt"
-
-#~ msgid "Integer %ld is too large, current max is %d"
-#~ msgstr "Heltall %ld er for stort, maksimalverdien er %d"
-
-#~ msgid "Could not parse \"%s\" as a floating point number"
-#~ msgstr "Kunne ikke lese «%s» som et flyttall"
-
-#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-#~ msgstr "Bolske verdier må være «sann» eller «usann» ikke «%s»"
-
-#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
-#~ msgstr "Vinkelen må være mellom 0.0 og 360.0, var %g\n"
-
-#~ msgid ""
-#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-#~ msgstr ""
-#~ "Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n"
-
-#~ msgid ""
-#~ "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-#~ "large,x-large,xx-large)\n"
-#~ msgstr ""
-#~ "Ugyldig skalering av tittel «%s» (må være en av xx-small,x-small,small,"
-#~ "medium,large,x-large,xx-large)\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Ingen attributt «%s» på element <%s>"
-
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Ingen attributt «%s» på <%s>-element"
-
-#~ msgid "<%s> name \"%s\" used a second time"
-#~ msgstr "<%s> navn «%s» brukt på nytt"
-
-#~ msgid "<%s> parent \"%s\" has not been defined"
-#~ msgstr "<%s> opphav «%s» er ikke definert"
-
-#~ msgid "<%s> geometry \"%s\" has not been defined"
-#~ msgstr "<%s> geometri «%s» er ikke definert"
-
-#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
-#~ msgstr ""
-#~ "<%s> må spesifisere enten en geometri eller et opphav som har geometri"
-
-#~ msgid "Unknown type \"%s\" on <%s> element"
-#~ msgstr "Ukjent type «%s» på <%s>-element"
-
-#~ msgid "Unknown style_set \"%s\" on <%s> element"
-#~ msgstr "Ukjent style_set «%s» på <%s>-element"
-
-#~ msgid "Window type \"%s\" has already been assigned a style set"
-#~ msgstr "Vindutype «%s» er allerede tildelt et stilsett"
-
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Ukjent funksjon for «%s» for menyikon"
-
-#~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "Ukjent tilstand «%s» for menyikon"
-
-#~ msgid "Theme already has a menu icon for function %s state %s"
-#~ msgstr "Tema har allerede et menyikon for funksjon %s tilstand %s"
-
-#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
-#~ msgstr "Ingen <draw_ops> med navn «%s» er definert"
-
-#~ msgid "Element <%s> is not allowed below <%s>"
-#~ msgstr "Element <%s> er ikke tillatt under <%s>"
-
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Ingen «name»-attributt <%s>-element"
-
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Ingen «value»-attributt på element <%s>"
-
-#~ msgid "Distance \"%s\" is unknown"
-#~ msgstr "Avstand «%s» er ukjent"
-
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "Ingen «top»-attributt på element <%s>"
-
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "Ingen «bottom»-attributt på element <%s>"
-
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "Ingen «left»-attributt på element <%s>"
-
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "Ingen «right»-attributt på element <%s>"
-
-#~ msgid "Border \"%s\" is unknown"
-#~ msgstr "Grense «%s» er ukjent"
-
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "Ingen «color»-attributt på element <%s>"
-
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Ingen «x1»-attributt på <%s>-element"
-
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Ingen «y1»-attributt på element <%s>"
-
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Ingen «x2»-attributt på element <%s>"
-
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Ingen «y2»-attributt på element <%s>"
-
-#~ msgid "No \"x\" attribute on element <%s>"
-#~ msgstr "Ingen «x»-attributt på element <%s>"
-
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Ingen «y»-attributt på element <%s>"
-
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Ingen «width»-attributt på element <%s>"
-
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "Ingen «height»-attributt på element <%s>"
-
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "Ingen «start_angle»-attributt på element <%s>"
-
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr "Ingen «extent_angle»-attributt <%s>-element"
-
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "Ingen «alpha»-attributt på element <%s>"
-
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "Ingen «type»-attributt på element <%s>"
-
-#~ msgid "Did not understand value \"%s\" for type of gradient"
-#~ msgstr "Forsto ikke verdi «%s» for gradienttype"
-
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "Ingen «filname»-attributt på element <%s>"
-
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "Ingen «state»-attributt på element <%s>"
-
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "Ingen «shadow»-attributt på element <%s>"
-
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Ingen «arrow»-attributt på element <%s>"
-
-#~ msgid "Did not understand state \"%s\" for <%s> element"
-#~ msgstr "Forsto ikke tilstand «%s» for element <%s>"
-
-#~ msgid "Did not understand shadow \"%s\" for <%s> element"
-#~ msgstr "Forsto ikke skygge «%s» for element <%s>"
-
-#~ msgid "Did not understand arrow \"%s\" for <%s> element"
-#~ msgstr "Forsto ikke pil «%s» for element <%s>"
-
-#~ msgid "No <draw_ops> called \"%s\" has been defined"
-#~ msgstr "Ingen <draw_ops> kalt «%s» er definert"
-
-#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
-#~ msgstr ""
-#~ "Hvis du tar med draw_ops «%s» her vil dette lage en sirkulær referanse"
-
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Ingen «value»-attributt på <%s>-element"
-
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Ingen «position»-attributt på <%s>-element"
-
-#~ msgid "Unknown position \"%s\" for frame piece"
-#~ msgstr "Ukjent posisjon «%s» for rammesdel"
-
-#~ msgid "Frame style already has a piece at position %s"
-#~ msgstr "Rammestil har allerede en del i posisjon %s"
-
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Ingen «function»-attributt på <%s>-element"
-
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Ingen «state»-attributt på <%s>-element"
-
-#~ msgid "Unknown function \"%s\" for button"
-#~ msgstr "Ukjent funksjon «%s» for knapp"
-
-#~ msgid "Unknown state \"%s\" for button"
-#~ msgstr "Ukjent tilstand «%s» for knapp"
-
-#~ msgid "Frame style already has a button for function %s state %s"
-#~ msgstr "Rammestil har allerede en knapp for funksjon %s tilstand %s"
-
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Ingen «focus»-attributt på <%s>-element"
-
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Ingen «style»-attributt på <%s>-element"
-
-#~ msgid "\"%s\" is not a valid value for focus attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for fokusattributt"
-
-#~ msgid "\"%s\" is not a valid value for state attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for tilstandsattributt"
-
-#~ msgid "A style called \"%s\" has not been defined"
-#~ msgstr "En stil med navn «%s» er ikke definert"
-
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Ingen «resize»-attributt på <%s>-element"
-
-#~ msgid "\"%s\" is not a valid value for resize attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for attributt for endring av størrelse"
-
-#~ msgid ""
-#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-#~ "states"
-#~ msgstr ""
-#~ "Skal ikke være noen «resize»-attributt på <%s>-element for maksimert/"
-#~ "skyggelagt tilstand"
-
-#~ msgid "Style has already been specified for state %s resize %s focus %s"
-#~ msgstr ""
-#~ "Stil er allerede spesifisert for tilstand %s størrelsesendring %s fokus %s"
-
-#~ msgid "Style has already been specified for state %s focus %s"
-#~ msgstr "Stil er allerede spesifisert for tilstand %s fokus %s"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Kan ikke ha to draw_ops for et <piece>-element (tema spesifiserte en "
-#~ "draw_ops-attributt i tillegg til et <draw_ops>-element, eller så "
-#~ "spesifiserte det to elementer)"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <button> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Kan ikke ha to draw_ops for et <button>-element (tema spesifiserte en "
-#~ "draw_ops-attributt i tillegg til et <draw_ops>-element, eller det "
-#~ "spesifiserte to elementer)"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Kan ikke ha to draw_ops for et <menu_icon>-element (tema spesifiserte en "
-#~ "draw_ops-attributt i tillegg til et <draw_ops>-element, eller det "
-#~ "spesifiserte to elementer)"
-
-#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-#~ msgstr "Ytterste element i temaet må være <metacity_theme> ikke <%s>"
-
-#~ msgid ""
-#~ "Element <%s> is not allowed inside a name/author/date/description element"
-#~ msgstr ""
-#~ "Element <%s> er ikke tillatt inne i et name/author/date/description "
-#~ "element"
-
-#~ msgid "Element <%s> is not allowed inside a <constant> element"
-#~ msgstr "Element <%s> er ikke tillatt inne i et <constand> element"
-
-#~ msgid "Element <%s> is not allowed inside a distance/border element"
-#~ msgstr "Element <%s> er ikke tillatt inne i et avstands/kant element"
-
-#~ msgid "Element <%s> is not allowed inside a draw operation element"
-#~ msgstr "Element <%s> er ikke tillatt inne i et element for tegneoperasjon"
-
-#~ msgid "Element <%s> is not allowed inside a <%s> element"
-#~ msgstr "Element <%s> er ikke tillatt inne i et <%s>-element"
-
-#~ msgid "No draw_ops provided for frame piece"
-#~ msgstr "Ingen draw_ops tilbys for rammedelen"
-
-#~ msgid "No draw_ops provided for button"
-#~ msgstr "Ingen draw_ops tilbys for knappen"
-
-#~ msgid "No draw_ops provided for menu icon"
-#~ msgstr "Ingen draw_ops tilbys for menyikonet"
-
-#~ msgid "No text is allowed inside element <%s>"
-#~ msgstr "Ingen tekst er tillatt inne i element <%s>"
-
-#~ msgid "<name> specified twice for this theme"
-#~ msgstr "<name> spesifisert to ganger for dette tema"
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "<author> spesifisert to ganger for dette tema"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "<copyright> spesifisert to ganger for dette tema"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "<date> spesifisert to ganger for dette tema"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "<description> spesifisert to ganger for dette tema"
-
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "Feil under lesing av tema fra fil %s: %s\n"
-
-#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
-#~ msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
