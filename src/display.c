@@ -1838,10 +1838,14 @@ event_callback (XEvent   *event,
           if (event->type == FocusIn &&
               event->xfocus.detail == NotifyDetailNone)
             {
+              MetaScreen * screen;
+              screen = 
+                meta_display_screen_for_root (display, event->xany.window);
+
               meta_topic (META_DEBUG_FOCUS, 
                           "Focus got set to None, probably due to brain-damage in the X protocol (see bug 125492).  Setting the default focus window.\n");
 
-              meta_workspace_focus_default_window (screen->active_workspace, NULL, meta_display_thou_shalt_return_a_timestamp (display));
+              meta_workspace_focus_default_window (screen->active_workspace, NULL, meta_display_get_current_time_roundtrip (display));
             }
         }
       break;
