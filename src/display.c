@@ -469,7 +469,7 @@ meta_display_open (const char *name)
     XChangeProperty (display->xdisplay,
                      display->leader_window,
                      display->atom_net_supporting_wm_check,
-                     XA_CARDINAL,
+                     XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
   }
 
