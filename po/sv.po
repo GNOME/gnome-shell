@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-07-25 18:13+0200\n"
-"PO-Revision-Date: 2002-07-25 18:13+0200\n"
+"POT-Creation-Date: 2002-07-25 20:24+0200\n"
+"PO-Revision-Date: 2002-07-25 20:24+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -233,8 +233,8 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Dessa fönster stöder inte \"save current setup\" och kommer att behöva "
-"startas om manuellt nästa gång du loggar in."
+"Dessa fönster stöder inte \"spara nuvarande inställningar\" och kommer att "
+"behöva startas om manuellt nästa gång du loggar in."
 
 #: src/metacity-dialog.c:275
 #, c-format
