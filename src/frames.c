@@ -458,18 +458,22 @@ meta_frames_style_set  (GtkWidget *widget,
   *(frames->props) = props;
 
   {
-    PangoFontMetrics metrics;
+    PangoFontMetrics *metrics;
     PangoFont *font;
     PangoLanguage *lang;
 
     font = pango_context_load_font (gtk_widget_get_pango_context (widget),
                                     widget->style->font_desc);
     lang = pango_context_get_language (gtk_widget_get_pango_context (widget));
-    pango_font_get_metrics (font, lang, &metrics);
+    metrics = pango_font_get_metrics (font, lang);
     
     g_object_unref (G_OBJECT (font));
     
-    frames->text_height = PANGO_PIXELS (metrics.ascent + metrics.descent);
+    frames->text_height = 
+      PANGO_PIXELS (pango_font_metrics_get_ascent (metrics) + 
+		    pango_font_metrics_get_descent (metrics));
+
+    pango_font_metrics_unref (metrics);
   }
 
   /* Queue a draw/resize on all frames */

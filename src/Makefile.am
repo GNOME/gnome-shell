@@ -21,6 +21,7 @@ metacity_SOURCES= 				\
 	frame.h					\
 	frames.c				\
 	frames.h				\
+	inlinepixbufs.h				\
 	keybindings.c				\
 	keybindings.h				\
 	main.c					\

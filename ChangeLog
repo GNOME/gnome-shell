@@ -1,3 +1,11 @@
+2001-09-21  Alex Graveley  <alex@ximian.com>
+
+	* src/Makefile.am (metacity_SOURCES): Add inlinepixbufs.h so
+	that it gets generated.
+
+	* src/frames.c (meta_frames_style_set): Update for new opaque
+	PangoFontMetrics.
+
 2001-09-17  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_ui_init): add hackaround for the warning about
