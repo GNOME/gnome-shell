@@ -1,3 +1,39 @@
+2.5.3
+===
+
+ Thanks to Jordi Mallach, Padraig O'Briain, Rob Adams, Julio Merino,
+ Ben Jansens, Jurg Billeter, Ray Strode, marcus@freebsd.org, James
+ Laska, for contributions to this release. Thanks also to 
+ all the tireless translators.
+
+ - fixups to .desktop file
+ - activate window prior to grab end, avoiding
+   extra focus events
+ - add support for partial-width panels (fixes corner panel 
+   and xinerama window position constraints)
+ - added keybinding to toggle window as "always on top"
+ - support --disable-schemas-install option to configure
+ - destroy support for legacy GNOME 1.x hints; metacity 
+   no longer works with GNOME 1.x
+ - disable raise-on-click for mouse focus modes
+ - fix bug that broke many Javascript popup menus with mozilla
+ - allow "shaking loose" maximized windows, to move them 
+   between Xinerama heads or whatever
+ - honor desktop-wide double click timeout
+ - handle window placement properly for windows that 
+   start out maximized
+ - integrate Ximian patch to go ahead and log out after 4 minutes
+   even if a dialog is open
+ - fix a segfault
+ - fix bug where window groups weren't always kept up to date
+ - fix bug where focus got confused when switching workspaces
+   with mouse focus mode
+ - fix 64-bit crash on s390x
+ - chdir to user's homedir on startup
+ - keep window in fullscreen layer when its transients are focused
+ - fix keybindings bug when you had ScrollLock enabled
+ - many translation updates
+
 2.5.2
 ===
 

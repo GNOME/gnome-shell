@@ -1,3 +1,9 @@
+2003-07-15  Havoc Pennington  <hp@redhat.com>
+
+	* NEWS: update
+
+	* configure.in: 2.5.3
+	
 2003-07-12  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Walloon (wa) to ALL_LINGUAS
