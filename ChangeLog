@@ -1,3 +1,7 @@
+2003-02-05  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in: Added "en_GB" and "nl" to ALL_LINGUAS.
+
 2003-02-05  Akira TAGOH  <tagoh@gnome.gr.jp>
 
 	* src/main.c (usage): fix a typo and missing option. (#105186)
