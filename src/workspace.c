@@ -521,6 +521,8 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   
   i = meta_workspace_index (workspace);
   num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
+
+  /* FIXME this code is entirely broken */
   
   /*
    * 3 rows, 4 columns, horizontal layout:
