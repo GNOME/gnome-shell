@@ -1,5 +1,11 @@
 2002-05-24  Havoc Pennington  <hp@pobox.com>
 
+	* src/metacity.schemas: add minimize window binding
+
+	* src/keybindings.c (handle_minimize_window): add minimize keybinding
+
+2002-05-24  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_show): change how focusing windows 
 	on initial map works, so that we only steal focus from our 
 	transient parent or from a panel/desktop, never from other 

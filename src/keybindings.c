@@ -74,6 +74,10 @@ static void handle_close_window       (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_minimize_window    (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_begin_move         (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -177,6 +181,7 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_TOGGLE_MAXIMIZE, handle_toggle_maximize, NULL },
   { META_KEYBINDING_TOGGLE_SHADE, handle_toggle_shade, NULL },
   { META_KEYBINDING_CLOSE, handle_close_window, NULL },
+  { META_KEYBINDING_MINIMIZE, handle_minimize_window, NULL },
   { META_KEYBINDING_BEGIN_MOVE, handle_begin_move, },
   { META_KEYBINDING_BEGIN_RESIZE, handle_begin_resize, },
   { META_KEYBINDING_TOGGLE_STICKY, handle_toggle_sticky, },
@@ -1601,6 +1606,16 @@ handle_close_window       (MetaDisplay    *display,
 {
   if (window)
     meta_window_delete (window, event->xkey.time);
+}
+
+static void
+handle_minimize_window (MetaDisplay    *display,
+                        MetaWindow     *window,
+                        XEvent         *event,
+                        MetaKeyBinding *binding)
+{
+  if (window)
+    meta_window_minimize (window);
 }
 
 static void
