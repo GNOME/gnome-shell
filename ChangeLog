@@ -1,3 +1,8 @@
+2005-01-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* src/Makefile.am (install-data-local): Install schema data from
+	builddir not srcdir.
+
 2005-01-02  Elijah Newren  <newren@gmail.com>
 
 	Provide more documentation to make it easier for people to
