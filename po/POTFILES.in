@@ -17,6 +17,7 @@ src/resizepopup.c
 src/screen.c
 src/session.c
 src/theme-parser.c
+src/theme-viewer.c
 src/theme.c
 src/tools/metacity-properties.desktop.in
 src/tools/metacity-properties.glade

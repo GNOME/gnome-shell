@@ -28,6 +28,10 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include <libintl.h>
+#define _(x) dgettext (GETTEXT_PACKAGE, x)
+#define N_(x) x
+
 /* We need to compute all different button arrangements
  * in terms of button location. We don't care about
  * different arrangements in terms of button function.
@@ -63,18 +67,18 @@ static void run_theme_benchmark (void);
 
 static GtkItemFactoryEntry menu_items[] =
 {
-  { "/_Windows",              NULL,         NULL,                     0, "<Branch>" },
-  { "/Windows/tearoff",       NULL,         NULL,                     0, "<Tearoff>" },
-  { "/Windows/_Dialog",       "<control>d",  NULL,               0, NULL },
-  { "/Windows/_Modal dialog", NULL,          NULL,         0, NULL },
-  { "/Windows/_Utility",      "<control>u",  NULL,              0, NULL },
-  { "/Windows/_Splashscreen", "<control>s",  NULL,         0, NULL },
-  { "/Windows/_Top dock",     NULL,          NULL,                 0, NULL },
-  { "/Windows/_Bottom dock",  NULL,          NULL,                 0, NULL },
-  { "/Windows/_Left dock",    NULL,          NULL,                 0, NULL },
-  { "/Windows/_Right dock",   NULL,          NULL,                 0, NULL },
-  { "/Windows/_All docks",    NULL,          NULL,                 0, NULL },
-  { "/Windows/Des_ktop",      NULL,          NULL,              0, NULL }
+  { N_("/_Windows"),              NULL,         NULL,                     0, "<Branch>" },
+  { N_("/Windows/tearoff"),       NULL,         NULL,                     0, "<Tearoff>" },
+  { N_("/Windows/_Dialog"),       "<control>d",  NULL,               0, NULL },
+  { N_("/Windows/_Modal dialog"), NULL,          NULL,         0, NULL },
+  { N_("/Windows/_Utility"),      "<control>u",  NULL,              0, NULL },
+  { N_("/Windows/_Splashscreen"), "<control>s",  NULL,         0, NULL },
+  { N_("/Windows/_Top dock"),     NULL,          NULL,                 0, NULL },
+  { N_("/Windows/_Bottom dock"),  NULL,          NULL,                 0, NULL },
+  { N_("/Windows/_Left dock"),    NULL,          NULL,                 0, NULL },
+  { N_("/Windows/_Right dock"),   NULL,          NULL,                 0, NULL },
+  { N_("/Windows/_All docks"),    NULL,          NULL,                 0, NULL },
+  { N_("/Windows/Des_ktop"),      NULL,          NULL,              0, NULL }
 };
 
 static GtkWidget *
@@ -95,6 +99,9 @@ normal_contents (void)
    */
       
   item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", NULL);
+
+  gtk_item_factory_set_translate_func(item_factory,
+				      (GtkTranslateFunc)gettext, NULL, NULL);
 
   /* Set up item factory to go away */
   g_object_ref (item_factory);
@@ -121,21 +128,21 @@ normal_contents (void)
 
   gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
                             GTK_STOCK_NEW,
-                            "Open another one of these windows",
+                            _("Open another one of these windows"),
                             NULL,
                             NULL, NULL,
                             -1);  /* -1 means "append" */
   
   gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
                             GTK_STOCK_OPEN,
-                            "This is a demo button with an 'open' icon",
+                            _("This is a demo button with an 'open' icon"),
                             NULL,
                             NULL, NULL,
                             -1);  /* -1 means "append" */
 
   gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
                             GTK_STOCK_QUIT,
-                            "This is a demo button with a 'quit' icon",
+                            _("This is a demo button with a 'quit' icon"),
                             NULL,
                             NULL, NULL,
                             -1);  /* -1 means "append" */
@@ -231,7 +238,7 @@ dialog_contents (void)
 
   update_spacings (vbox, action_area);
 
-  label = gtk_label_new ("This is a sample message in a sample dialog");
+  label = gtk_label_new (_("This is a sample message in a sample dialog"));
   image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO,
                                     GTK_ICON_SIZE_DIALOG);
   gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
@@ -314,7 +321,7 @@ menu_contents (void)
   i = 0;
   while (i < 10)
     {
-      char *str = g_strdup_printf ("Fake menu item %d\n", i + 1);
+      char *str = g_strdup_printf (_("Fake menu item %d\n"), i + 1);
       mi = gtk_label_new (str);
       gtk_misc_set_alignment (GTK_MISC (mi), 0.0, 0.5);
       g_free (str);
@@ -348,9 +355,9 @@ border_only_contents (void)
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 3);
   
-  w = gtk_label_new ("Border-only window");
+  w = gtk_label_new (_("Border-only window"));
   gtk_box_pack_start (GTK_BOX (vbox), w, FALSE, FALSE, 0);
-  w = gtk_button_new_with_label ("Bar");
+  w = gtk_button_new_with_label (_("Bar"));
   gtk_box_pack_start (GTK_BOX (vbox), w, FALSE, FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (event_box), vbox);
@@ -367,32 +374,32 @@ get_window_contents (MetaFrameType  type,
   switch (type)
     {
     case META_FRAME_TYPE_NORMAL:
-      *title = "Normal Application Window";
+      *title = _("Normal Application Window");
       return normal_contents ();
       break;
 
     case META_FRAME_TYPE_DIALOG:
-      *title = "Dialog Box";
+      *title = _("Dialog Box");
       return dialog_contents ();
       break;
 
     case META_FRAME_TYPE_MODAL_DIALOG:
-      *title = "Modal Dialog Box";
+      *title = _("Modal Dialog Box");
       return dialog_contents ();
       break;
 
     case META_FRAME_TYPE_UTILITY:
-      *title = "Utility Palette";
+      *title = _("Utility Palette");
       return utility_contents ();
       break;
 
     case META_FRAME_TYPE_MENU:
-      *title = "Torn-off Menu";
+      *title = _("Torn-off Menu");
       return menu_contents ();
       break;
 
     case META_FRAME_TYPE_BORDER:
-      *title = "Border";
+      *title = _("Border");
       return border_only_contents ();
       break;
       
@@ -721,7 +728,7 @@ previews_of_button_layouts (void)
   
       meta_preview_set_theme (META_PREVIEW (preview), global_theme);
 
-      title = g_strdup_printf ("Button layout test %d", i+1);
+      title = g_strdup_printf (_("Button layout test %d"), i+1);
       meta_preview_set_title (META_PREVIEW (preview), title);
       g_free (title);
 
@@ -750,7 +757,7 @@ benchmark_summary (void)
   char *msg;
   GtkWidget *label;
   
-  msg = g_strdup_printf ("%g milliseconds to draw one window frame",
+  msg = g_strdup_printf (_("%g milliseconds to draw one window frame"),
                          milliseconds_to_draw_frame);
   label = gtk_label_new (msg);
   g_free (msg);
@@ -769,6 +776,8 @@ main (int argc, char **argv)
   int i;
   
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  textdomain(GETTEXT_PACKAGE);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 
   run_position_expression_tests ();
 #if 0
@@ -791,20 +800,20 @@ main (int argc, char **argv)
     global_theme = meta_theme_load (argv[1], &err);
   else
     {
-      g_printerr ("Usage: metacity-theme-viewer [THEMENAME]\n");
+      g_printerr (_("Usage: metacity-theme-viewer [THEMENAME]\n"));
       exit (1);
     }
   end = clock ();
 
   if (global_theme == NULL)
     {
-      g_printerr ("Error loading theme: %s\n",
+      g_printerr (_("Error loading theme: %s\n"),
                   err->message);
       g_error_free (err);
       exit (1);
     }
 
-  g_print ("Loaded theme \"%s\" in %g seconds\n",
+  g_print (_("Loaded theme \"%s\" in %g seconds\n"),
            global_theme->name,
            (end - start) / (double) CLOCKS_PER_SEC);
 
@@ -827,29 +836,29 @@ main (int argc, char **argv)
                                    window->style->font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
-                            gtk_label_new ("Normal Title Font"));
+                            gtk_label_new (_("Normal Title Font")));
   
   collection = preview_collection (FONT_SIZE_SMALL,
                                    window->style->font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
-                            gtk_label_new ("Small Title Font"));
+                            gtk_label_new (_("Small Title Font")));
   
   collection = preview_collection (FONT_SIZE_LARGE,
                                    window->style->font_desc);
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
-                            gtk_label_new ("Large Title Font"));
+                            gtk_label_new (_("Large Title Font")));
 
   collection = previews_of_button_layouts ();
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
-                            gtk_label_new ("Button Layouts"));
+                            gtk_label_new (_("Button Layouts")));
 
   collection = benchmark_summary ();
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
                             collection,
-                            gtk_label_new ("Benchmark"));
+                            gtk_label_new (_("Benchmark")));
   
   i = 0;
   while (i < (int) G_N_ELEMENTS (previews))
@@ -896,7 +905,7 @@ create_title_layout (GtkWidget *widget)
 {
   PangoLayout *layout;
 
-  layout = gtk_widget_create_pango_layout (widget, "Window Title Goes Here");
+  layout = gtk_widget_create_pango_layout (widget, _("Window Title Goes Here"));
 
   return layout;
 }
@@ -1000,7 +1009,7 @@ run_theme_benchmark (void)
 
   milliseconds_to_draw_frame = (g_timer_elapsed (timer, NULL) / (double) ITERATIONS) * 1000;
   
-  g_print ("Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n",
+  g_print (_("Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"),
            ITERATIONS,
            ((double)end - (double)start) / CLOCKS_PER_SEC,
            (((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS) * 1000,
@@ -1215,28 +1224,28 @@ run_position_expression_tests (void)
                                                &err);
 
       if (retval && err)
-        g_error ("position expression test returned TRUE but set error");
+        g_error (_("position expression test returned TRUE but set error"));
       if (!retval && err == NULL)
-        g_error ("position expression test returned FALSE but didn't set error");
+        g_error (_("position expression test returned FALSE but didn't set error"));
       if (((int) test->expected_error) != NO_ERROR)
         {
           if (err == NULL)
-            g_error ("Error was expected but none given");
+            g_error (_("Error was expected but none given"));
           if (err->code != (int) test->expected_error)
-            g_error ("Error %d was expected but %d given",
+            g_error (_("Error %d was expected but %d given"),
                      test->expected_error, err->code);
         }
       else
         {
           if (err)
-            g_error ("Error not expected but one was returned: %s",
+            g_error (_("Error not expected but one was returned: %s"),
                      err->message);
 
           if (x != test->expected_x)
-            g_error ("x value was %d, %d was expected", x, test->expected_x);
+            g_error (_("x value was %d, %d was expected"), x, test->expected_x);
 
           if (y != test->expected_y)
-            g_error ("y value was %d, %d was expected", y, test->expected_y);
+            g_error (_("y value was %d, %d was expected"), y, test->expected_y);
         }
 
       if (err)
@@ -1298,7 +1307,7 @@ run_position_expression_timings (void)
 
   end = clock ();
 
-  g_print ("%d coordinate expressions parsed in %g seconds (%g seconds average)\n",
+  g_print (_("%d coordinate expressions parsed in %g seconds (%g seconds average)\n"),
            ITERATIONS,
            ((double)end - (double)start) / CLOCKS_PER_SEC,
            ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
