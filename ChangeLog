@@ -1,3 +1,7 @@
+2004-11-01  Elijah Newren  <newren@math.utah.edu>
+
+	* NEWS: Metacity 2.9.1 unstable release
+
 2004-12-06  Benjamin Kahn <xkahn@novell.com>
 
 	* src/default_icon.png: Use a better default application

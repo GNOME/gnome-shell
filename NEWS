@@ -1,3 +1,22 @@
+2.9.1
+==
+
+This is an unstable release heading towards Gnome 2.10, released a
+little late for Gnome 2.9.2 but there weren't many changes anyway this
+time...
+
+Thanks to Benjamin Kahn, Marco Pesenti Gritti, James Henstridge, and
+Vincent Untz for fixes/features in this release.
+
+ - gnome-panel-screenshot was renamed to gnome-screenshot (Vincent) [#157529]
+ - Update build stuff (use newer automake, etc.) (James)
+ - Fix build out of src directory (Marco) [#158325]
+ - Use a better default application icon (Benjamin) [#160373]
+
+Translations
+ da (Martin Willemoes Hansen), fr(Christophe Merlet, Baptiste
+ Mille-Mathias), lt(´ygimantas Berucka), ja(Takeshi AIHANA)
+
 2.9.0
 ==
 
