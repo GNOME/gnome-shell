@@ -2678,6 +2678,7 @@ xcursor_for_op (MetaDisplay *display,
     case META_GRAB_OP_KEYBOARD_RESIZING_E:
       cursor = META_CURSOR_EAST_RESIZE;
       break;
+    case META_GRAB_OP_MOVING:
     case META_GRAB_OP_KEYBOARD_MOVING:
       cursor = META_CURSOR_MOVE_WINDOW;
       break;

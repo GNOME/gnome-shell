@@ -1,3 +1,8 @@
+2003-08-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (xcursor_for_op): fix cursor for
+	META_GRAB_OP_MOVING, #111943
+
 2003-08-15  Rob Adams  <robadams@ucla.edu>
 
 	* src/constraints.c (meta_window_constrain): move to upper left
