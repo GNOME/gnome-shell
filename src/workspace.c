@@ -27,6 +27,7 @@ void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
 static int set_number_of_spaces_hint  (MetaScreen *screen);
 static int set_active_space_hint      (MetaScreen *screen);
+static int set_workarea_hint          (MetaScreen *screen);
 
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
@@ -310,6 +311,43 @@ set_number_of_spaces_hint (MetaScreen *screen)
                    screen->display->atom_net_number_of_desktops,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (screen->display);
+}
+
+static int
+set_workarea_hint (MetaScreen *screen)
+{
+  int num_workspaces;
+  GList *tmp_list;
+  unsigned long *data, *tmp;
+  MetaRectangle area;
+  
+  num_workspaces = g_list_length (screen->display->workspaces);
+  data = g_new (unsigned long, num_workspaces);
+  tmp_list = screen->display->workspaces;
+  tmp = data;
+  
+  while (tmp_list != NULL)
+    {
+      MetaWorkspace *workspace = tmp_list->data;
+
+      meta_workspace_get_work_area (workspace, &area);
+      tmp[0] = area.x;
+      tmp[1] = area.y;
+      tmp[2] = area.width;
+      tmp[3] = area.height;
+      
+      tmp += sizeof (unsigned long) * 4;
+      
+      tmp_list = tmp_list->next;
+    }
+
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+		   screen->display->atom_net_wm_workarea,
+		   XA_CARDINAL, 32, PropModeReplace,
+		   (guchar*) data, num_workspaces * 4);
+  g_free (data);
   return meta_error_trap_pop (screen->display);
 }
 

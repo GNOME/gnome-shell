@@ -128,6 +128,7 @@ struct _MetaDisplay
   Atom atom_net_wm_pid;
   Atom atom_wm_client_machine;
   Atom atom_net_wm_state_fullscreen;
+  Atom atom_net_wm_workarea;
   
   /* This is the actual window from focus events,
    * not the one we last set

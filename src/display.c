@@ -204,7 +204,8 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_FULLSCREEN",
     "_NET_WM_PING",
     "_NET_WM_PID",
-    "WM_CLIENT_MACHINE"
+    "WM_CLIENT_MACHINE",
+    "_NET_WM_WORKAREA"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -311,7 +312,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_ping = atoms[53];
   display->atom_net_wm_pid = atoms[54];
   display->atom_wm_client_machine = atoms[55];
-
+  display->atom_net_wm_workarea = atoms[56];
+  
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */

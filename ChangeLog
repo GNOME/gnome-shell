@@ -1,3 +1,13 @@
+2002-04-28  Anders Carlsson  <andersca@gnu.org>
+
+	* src/display.c: (meta_display_open):
+	* src/display.h:
+	* src/screen.c: (set_supported_hint):
+	* src/workspace.c: (set_number_of_spaces_hint),
+	(set_workarea_hint):
+	Add support for setting the _NET_WM_WORKAREA hint. No code
+	does it yet though.
+	
 2002-04-28  Havoc Pennington  <hp@pobox.com>
 
 	* README: remove caveats about keybindings
