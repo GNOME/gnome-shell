@@ -4,7 +4,8 @@ THEMES=			\
 	Crux		\
 	Esco		\
 	AgingGorilla	\
-	Metabox
+	Metabox		\
+	Simple
 
 THEME_DIR=$(datadir)/themes
 THEME_SUBDIR=metacity-1

@@ -1,3 +1,10 @@
+Thu Jan 30 22:55:16 2003  Jonathan Blandford  <jrb@redhat.com>
+
+	* src/themes/Makefile.am (THEMES): add Simple to the list of
+	themes.
+
+	* src/metacity.schemas.in: change default theme to Simple.
+
 2003-01-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/menu.c (meta_window_menu_new): don't create workspaces
