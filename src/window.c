@@ -1106,12 +1106,12 @@ meta_window_visible_on_workspace (MetaWindow    *window,
     meta_workspace_contains_window (workspace, window);
 }
 
-void
-meta_window_calc_showing (MetaWindow  *window)
+static gboolean
+window_should_be_showing (MetaWindow  *window)
 {
   gboolean showing, on_workspace;
 
-  meta_verbose ("Calc showing for window %s\n", window->desc);
+  meta_verbose ("Should be showing for window %s\n", window->desc);
 
   /* 1. See if we're on the workspace */
   
@@ -1179,10 +1179,24 @@ meta_window_calc_showing (MetaWindow  *window)
         }
     }
 
+  return showing;
+}
+
+static void
+implement_showing (MetaWindow *window,
+                   gboolean    showing)
+{
   /* Actually show/hide the window */
+  meta_verbose ("Implement showing = %d for window %s\n", window->desc,
+                showing);
   
   if (!showing)
     {
+      gboolean on_workspace;
+
+      on_workspace = meta_window_visible_on_workspace (window, 
+                                                       window->screen->active_workspace);
+  
       /* Really this effects code should probably
        * be in meta_window_hide so the window->mapped
        * test isn't duplicated here. Anyhow, we animate
@@ -1226,6 +1240,11 @@ meta_window_calc_showing (MetaWindow  *window)
     }
 }
 
+void
+meta_window_calc_showing (MetaWindow  *window)
+{
+  implement_showing (window, window_should_be_showing (window));
+}
 
 static guint calc_showing_idle = 0;
 static GSList *calc_showing_pending = NULL;
@@ -1248,7 +1267,10 @@ idle_calc_showing (gpointer data)
 {
   GSList *tmp;
   GSList *copy;
-
+  GSList *should_show;
+  GSList *should_hide;
+  GSList *unplaced;
+  
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Clearing the calc_showing queue\n");
 
@@ -1263,11 +1285,14 @@ idle_calc_showing (gpointer data)
 
   destroying_windows_disallowed += 1;
   
-  /* sort them from bottom to top, so we map the
-   * bottom windows first, so that placement (e.g. cascading)
-   * works properly
+  /* We map windows from top to bottom and unmap from bottom to
+   * top, to avoid extra expose events. The exception is
+   * for unplaced windows, which have to be mapped from bottom to
+   * top so placement works.
    */
-  copy = g_slist_sort (copy, stackcmp);
+  should_show = NULL;
+  should_hide = NULL;
+  unplaced = NULL;
   
   tmp = copy;
   while (tmp != NULL)
@@ -1275,8 +1300,66 @@ idle_calc_showing (gpointer data)
       MetaWindow *window;
 
       window = tmp->data;
+
+      if (!window->placed)
+        unplaced = g_slist_prepend (unplaced, window);
+      else if (window_should_be_showing (window))
+        should_show = g_slist_prepend (should_show, window);
+      else
+        should_hide = g_slist_prepend (should_hide, window);
       
+      tmp = tmp->next;
+    }
+
+  /* bottom to top */
+  unplaced = g_slist_sort (unplaced, stackcmp);
+  should_hide = g_slist_sort (should_hide, stackcmp);
+  /* top to bottom */
+  should_show = g_slist_sort (should_show, stackcmp);
+  should_show = g_slist_reverse (should_show);
+  
+  tmp = unplaced;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+
       meta_window_calc_showing (window);
+      
+      tmp = tmp->next;
+    }
+
+  tmp = should_hide;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+
+      implement_showing (window, FALSE);
+      
+      tmp = tmp->next;
+    }
+  
+  tmp = should_show;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+
+      implement_showing (window, TRUE);
+      
+      tmp = tmp->next;
+    }
+  
+  tmp = copy;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
 
       /* important to set this here for reentrancy -
        * if we queue a window again while it's in "copy",
@@ -1287,9 +1370,13 @@ idle_calc_showing (gpointer data)
       
       tmp = tmp->next;
     }
-
+  
   g_slist_free (copy);
 
+  g_slist_free (unplaced);
+  g_slist_free (should_show);
+  g_slist_free (should_hide);
+  
   destroying_windows_disallowed -= 1;
   
   return FALSE;

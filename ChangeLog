@@ -1,5 +1,13 @@
 2002-11-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_calc_showing): split into "see if we
+	should be showing" and "actually show/hide" functions
+	(idle_calc_showing): rework to first unmap all newly-hidden
+	windows from bottom to top then map all newly-showing windows from
+	top to bottom resulting in fewer exposes, #95220
+
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (meta_frame_layout_calc_geometry): fix from Garrett
 	LeSage for which button backgrounds we draw when
 
