@@ -458,6 +458,8 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   
   /* FIXME someone who's better or more patient at math puzzles
    * should clean this up. ;-)
+   * This'll have to someone with mega patience 'cause you'll
+   * have to handle screen->starting_corner also.
    */
   if (workspace->screen->vertical_workspaces)
     {

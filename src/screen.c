@@ -524,6 +524,7 @@ meta_screen_new (MetaDisplay *display,
   screen->rows_of_workspaces = 1;
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
+  screen->starting_corner = META_SCREEN_TOPLEFT;
 
   screen->xinerama_infos = NULL;
   screen->n_xinerama_infos = 0;
@@ -1059,6 +1060,8 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   
   meta_screen_calc_workspace_layout (screen, len, &rows, &cols);
 
+  /* FIXME: handle screen->starting_corner
+   */
   if (screen->vertical_workspaces)
     {
       int j, k, iter;
@@ -1242,6 +1245,11 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
 #define _NET_WM_ORIENTATION_HORZ 0
 #define _NET_WM_ORIENTATION_VERT 1
 
+#define _NET_WM_TOPLEFT     0
+#define _NET_WM_TOPRIGHT    1
+#define _NET_WM_BOTTOMRIGHT 2
+#define _NET_WM_BOTTOMLEFT  3
+
 void
 meta_screen_update_workspace_layout (MetaScreen *screen)
 {
@@ -1256,7 +1264,7 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
                                    screen->display->atom_net_desktop_layout,
                                    &list, &n_items))
     {
-      if (n_items == 3)
+      if (n_items == 3 || n_items == 4)
         {
           int cols, rows;
           
@@ -1273,8 +1281,8 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
               break;
             }
 
-          rows = list[1];
-          cols = list[2];
+          cols = list[1];
+          rows = list[2];
 
           if (rows <= 0 && cols <= 0)
             {
@@ -1292,20 +1300,43 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
               else
                 screen->columns_of_workspaces = -1;
             }
+
+          if (n_items == 4)
+            {
+              switch (list[3])
+                {
+                  case _NET_WM_TOPLEFT:
+                    screen->starting_corner = META_SCREEN_TOPLEFT;
+                    break;
+                  case _NET_WM_TOPRIGHT:
+                    screen->starting_corner = META_SCREEN_TOPRIGHT;
+                    break;
+                  case _NET_WM_BOTTOMRIGHT:
+                    screen->starting_corner = META_SCREEN_BOTTOMRIGHT;
+                    break;
+                  case _NET_WM_BOTTOMLEFT:
+                    screen->starting_corner = META_SCREEN_BOTTOMLEFT;
+                    break;
+                  default:
+                    meta_warning ("Someone set a weird starting corner in _NET_DESKTOP_LAYOUT\n");
+                    break;
+                }
+            }
         }
       else
         {
-          meta_warning ("Someone set _NET_DESKTOP_LAYOUT to %d integers instead of 3\n",
-                        n_items);
+          meta_warning ("Someone set _NET_DESKTOP_LAYOUT to %d integers instead of 4 "
+                        "(3 is accepted for backwards compat)\n", n_items);
         }
 
       meta_XFree (list);
     }
 
-  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d\n",
+  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d starting corner = %d\n",
                 screen->rows_of_workspaces,
                 screen->columns_of_workspaces,
-                screen->vertical_workspaces);
+                screen->vertical_workspaces,
+                screen->starting_corner);
 }
 
 void
@@ -1448,7 +1479,8 @@ meta_screen_calc_workspace_layout (MetaScreen *screen,
   int cols, rows;
 
   /*
-   * 3 rows, 4 columns, horizontal layout:
+   * 3 rows, 4 columns, horizontal layout
+   * and starting from top left:
    *  +--+--+--+--+
    *  | 1| 2| 3| 4|
    *  +--+--+--+--+

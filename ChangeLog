@@ -1,3 +1,13 @@
+2002-10-01  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/screen.c: (meta_screen_new): default to
+	topleft starting corner.
+	(meta_screen_update_workspace_layout): handle
+	new property format : orient,x,y,starting corner.
+	Fixes #89373.
+
+	* src/screen.h: add MetaScreenCorner enum.
+
 2002-10-01  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (constrain_position): always align fullscreen

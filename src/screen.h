@@ -40,6 +40,14 @@ struct _MetaXineramaScreenInfo
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);
 
+typedef enum
+{
+  META_SCREEN_TOPLEFT,
+  META_SCREEN_TOPRIGHT,
+  META_SCREEN_BOTTOMLEFT,
+  META_SCREEN_BOTTOMRIGHT
+} MetaScreenCorner;
+
 struct _MetaScreen
 {
   MetaDisplay *display;
@@ -74,6 +82,7 @@ struct _MetaScreen
 
   int rows_of_workspaces;
   int columns_of_workspaces;
+  MetaScreenCorner starting_corner;
   guint vertical_workspaces : 1;
   
   guint keys_grabbed : 1;
