@@ -1,5 +1,9 @@
 2002-10-03  Havoc Pennington  <hp@redhat.com>
 
+	* configure.in: 2.4.2
+
+2002-10-03  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (check_moveresize_frequency): handle the case where
 	the clock is set backward
 
