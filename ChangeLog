@@ -1,3 +1,7 @@
+2004-10-16  Elijah Newren  <newren@math.utah.edu>
+
+	* rationales.txt: Add new tracker bugs
+
 2004-10-15  Elijah Newren  <newren@math.utah.edu>
 
 	* src/keybindings.c (reload_keymap): Fix from Rob to correct

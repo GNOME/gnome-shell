@@ -2,14 +2,27 @@
 History
 ====
 
-Focus issues: see doc/how-to-get-focus-right.txt
+Focus issues:
+  see doc/how-to-get-focus-right.txt
 
-Keep panel always on top: http://bugzilla.gnome.org/show_bug.cgi?id=81551
-Edge flipping: http://bugzilla.gnome.org/show_bug.cgi?id=82917
-Opaque resize: http://bugzilla.gnome.org/show_bug.cgi?id=92618
-Alt+click to move/resize: http://bugzilla.gnome.org/show_bug.cgi?id=101151
-minimized windows in Alt+tab: http://bugzilla.gnome.org/show_bug.cgi?id=89416
-dialogs above entire app group: http://bugzilla.gnome.org/show_bug.cgi?id=88926
+Keep panel always on top:
+  http://bugzilla.gnome.org/show_bug.cgi?id=81551
+
+Edge flipping:
+  http://bugzilla.gnome.org/show_bug.cgi?id=82917
+
+Opaque resize:
+  http://bugzilla.gnome.org/show_bug.cgi?id=92618
+
+Alt+click to move/resize:
+  http://bugzilla.gnome.org/show_bug.cgi?id=101151
+  https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=80918
+
+minimized windows in Alt+tab:
+  http://bugzilla.gnome.org/show_bug.cgi?id=89416
+
+dialogs above entire app group:
+  http://bugzilla.gnome.org/show_bug.cgi?id=88926
 
 display window size/position: 
   http://bugzilla.gnome.org/show_bug.cgi?id=85213
@@ -19,21 +32,30 @@ display window size/position:
 configure click actions, alt+click:
   http://bugzilla.gnome.org/show_bug.cgi?id=83210
 
-system modal dialogs: http://bugzilla.gnome.org/show_bug.cgi?id=83357
+system modal dialogs:
+  http://bugzilla.gnome.org/show_bug.cgi?id=83357
 
-workspace wrapping: http://bugzilla.gnome.org/show_bug.cgi?id=89315
+workspace wrapping:
+  http://bugzilla.gnome.org/show_bug.cgi?id=89315
 
 raise windows on click:
   http://bugzilla.gnome.org/show_bug.cgi?id=86108
   http://bugzilla.gnome.org/show_bug.cgi?id=115072
   http://bugzilla.gnome.org/show_bug.cgi?id=115753
 
+
 Tracking bugs
 ====
 
-session management: http://bugzilla.gnome.org/show_bug.cgi?id=107063
-
-revise theme format: http://bugzilla.gnome.org/show_bug.cgi?id=102547
-
-bugs in focus-stealing-prevention: 
-  http://bugzilla.gnome.org/show_bug.cgi?id=149028
+          revise theme format: http://bugzilla.gnome.org/show_bug.cgi?id=102547
+           session management: http://bugzilla.gnome.org/show_bug.cgi?id=107063
+    focus-stealing-prevention: http://bugzilla.gnome.org/show_bug.cgi?id=149028
+             other focus bugs: http://bugzilla.gnome.org/show_bug.cgi?id=155450
+                drag-and-drop: http://bugzilla.gnome.org/show_bug.cgi?id=155451
+             raising/stacking: http://bugzilla.gnome.org/show_bug.cgi?id=155452
+  tasklist/workspace switcher: http://bugzilla.gnome.org/show_bug.cgi?id=155453
+   window/workspace selection: http://bugzilla.gnome.org/show_bug.cgi?id=155456
+    key/mouse-binding actions: http://bugzilla.gnome.org/show_bug.cgi?id=155457
+moving/resizing (constraints): http://bugzilla.gnome.org/show_bug.cgi?id=155458
+             window placement: http://bugzilla.gnome.org/show_bug.cgi?id=155460
+   logout/system-monitor keys: http://bugzilla.gnome.org/show_bug.cgi?id=155462
