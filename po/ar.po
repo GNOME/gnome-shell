@@ -1,64 +1,67 @@
+# translation of metacity.po to Arabic
 # translation of ar.po to Arabic
 # translation of metacity.gnome-2-2.po to Arabic
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
-# Arafat Medini <lumina@silverpen.de>, 2003
+# Arafat Medini <lumina@silverpen.de>, 2003.
+# Abdulaziz Al-Arfaj <alarfaj0@yahoo.com>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ar\n"
+"Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2004-03-18 15:33+0100\n"
-"Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"POT-Creation-Date: 2004-08-02 12:41+0200\n"
+"PO-Revision-Date: 2004-09-04 17:54+0300\n"
+"Last-Translator: Abdulaziz Al-Arfaj <alarfaj0@yahoo.com>\n"
+"Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr "الإستخدام: %s\n"
+msgstr "الاستخدام: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "جمع ميتستي دون دعم لنسق السهب\n"
 
-#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "لم يمكن اعراب \"%s\" كعدد صحيح"
 
-#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "لم تفهم الرموز المتدلية \"%s\" في السلسلة \"%s\""
 
-#: src/delete.c:128
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "فشل اعراب الرسالة \"%s\" من عملية الحوار\n"
 
-#: src/delete.c:263
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "خطأ قراءة من حوار عملية العرض: %s\n"
 
-#: src/delete.c:344
+#: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "خطأ اطلاق حوار ميتستي للسؤال حول قتل تطبيق: %s\n"
 
-#: src/delete.c:452
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "فشل تلقي اسم المضيف: %s\n"
 
-#: src/display.c:306
+#: src/display.c:303
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح شاشة نظام نوافذ X '%s'\n"
@@ -79,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "خطأ IO فادح %d (%s) على الشاشة '%s'.\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "غلق النافذة"
 
-#: src/frames.c:1024
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "قائمة النافذة"
 
-#: src/frames.c:1027
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "تصغير النافذة"
 
-#: src/frames.c:1030
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "تكبير النافذة"
 
-#: src/frames.c:1033
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "إلغاء تكبير النافذة"
 
@@ -106,12 +109,12 @@ msgid ""
 "binding\n"
 msgstr "برنامج آخر بصدد استعمال المفتاح %s بالمغيرين %x كرابط\n"
 
-#: src/keybindings.c:2529
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطأ اطلاق حوار ميتستي لعرض خطأ حول الأمر: %s\n"
 
-#: src/keybindings.c:2602
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "لم يعرف أمر %d.\n"
@@ -121,8 +124,8 @@ msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity·[--sm-disable]·[--sm-client-id=ID]·[--sm-save-file=FILENAME]·[--"
-"display=DISPLAY]·[--replace]·[--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:76
 #, c-format
@@ -145,8 +148,7 @@ msgstr "فشلت قراءة دليل التيمات : %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "لم يمكن ايجاد تيمة! تأكد من وجود %s و احتواءه على تيمات عادية."
 
 #: src/main.c:521
@@ -206,15 +208,15 @@ msgstr "نقل لمساحة العمل على ال_يسار"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "نقل·لمساحة·العمل·على·الي_مين"
+msgstr "نقل لمساحة العمل على الي_مين"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "نقل·لمساحة·العمل·إلى ال_أعلى"
+msgstr "نقل لمساحة العمل إلى ال_أعلى"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "نقل·لمساحة·العمل·إلى الأ_سفل"
+msgstr "نقل لمساحة العمل إلى الأ_سفل"
 
 #: src/menu.c:162 src/prefs.c:1868
 #, c-format
@@ -324,29 +326,28 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:110
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "النافذة \"%s\" لا تجيب"
 
-#: src/metacity-dialog.c:118
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+#: src/metacity-dialog.c:93
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "اجبار هذا التطبيق على الانتهاء سيفقدك تغييراتك الغير محفوظة."
 
-#: src/metacity-dialog.c:128
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_إجبار الإنهاء"
 
-#: src/metacity-dialog.c:225
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "العنوان"
 
-#: src/metacity-dialog.c:237
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "الطبقة"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -354,7 +355,7 @@ msgstr ""
 "هذه النوافذ لا تدعم \"حفظ الضبط الحالي\" يجب اعادة تشغيلها شخصيا عند التسجيل "
 "المرة القادمة."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -428,9 +429,8 @@ msgstr ""
 "\"&lt;Alt&gt;\" أو \"&lt;Super&gt;\" على سبيل المثال."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "غلق نافذة"
+msgstr "غلق النّافذة"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -523,9 +523,8 @@ msgid "Lower window below other windows"
 msgstr "خفض النافذة تحت النوافذ الأخرى"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
-msgstr "تكبير نافذة"
+msgstr "تكبير النّافذة لأقصى حد"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -536,9 +535,8 @@ msgid "Maximize window vertically"
 msgstr "تكبير النافذة عموديا"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
-msgstr "تصغير نافذة"
+msgstr "إخفاء النّافذة"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
@@ -577,9 +575,8 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "نقل التركيز إلى الوراء بين النوافذ باستخدام العرض المبرز"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "نقل نافذة"
+msgstr "نقل النّافذة"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -671,9 +668,8 @@ msgid "Raise window above other windows"
 msgstr "رفع النافذة فوق النوافذ الأخرى"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
-msgstr "تحجيم نافذة"
+msgstr "تحجيم النّافذة"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -684,9 +680,8 @@ msgid "Show the panel menu"
 msgstr "عرض قائمة الشريط"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
-msgstr "عرض حوار التشغيل للشريط"
+msgstr "إظهار حوار الشّريط لتشغيل التّطبيقات"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -829,11 +824,10 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"مفتاح ·/apps/metacity/global_keybindings/run_command_window_screenshot·يعرف "
+"مفتاح  /apps/metacity/global_keybindings/run_command_window_screenshot يعرف "
 "مفتاحا رابطا ينفذ الأمر المحدد من قبل هذا التعيين."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -841,15 +835,9 @@ msgid ""
 "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المشغل للأمر المرقم مماثلة في /apps/metacity/"
-"keybinding_commands . التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل "
-"\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى"
-"\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المشغّل للأمر ذو الرّقم المطابق في /apps/metacity/keybinding_commands. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -857,14 +845,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل فوق مساحة العمل الحالية. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل الموجودة فوق مساحة العمل الحاليّة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -872,14 +855,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل تحت مساحة العمل الحالية. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل الموجودة تحت مساحة العمل الحاليّة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -887,15 +865,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل على يسار مساحة العمل الحالية. التهيئة تكتب "
-"\"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف "
-"كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". "
-"اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل الموجودة على يسار مساحة العمل الحاليّة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -903,211 +875,135 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل على يمين مساحة العمل الحالية. التهيئة تكتب "
-"\"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف "
-"كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". "
-"اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل الموجودة على يمين مساحة العمل الحاليّة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 1. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 1. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 10. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 10. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 11. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 11. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 12. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 12. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 2. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 2. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 3. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 3. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 4. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 4. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 5. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 5. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 6. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 6. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 7. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 7. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 8. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 8. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 9. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يحوّل لمساحة العمل 9. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لتنشيط قائمة النافذة. التهيئة تكتب \"&lt;Control&gt;a"
-"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و "
-"كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
-"للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتنشيط قائمة النّافذة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لغلق نافذة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لإغلاق نافذة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1115,15 +1011,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لدخول \"نمط النقل\" و بدأ نقل نافذة باستعمال  لوحة "
-"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
-"هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لدخول \"وضع النّقل\" و البدء بنقل نافذة باستخدام لوحة المفاتيح. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1131,15 +1021,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لدخول \"نمط التحجيم\" و بدأ تحجيم نافذة باستعمال  لوحة "
-"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
-"هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لدخول \"وضع التّحجيم\" و البدء بتغيير حجم نافذة باستخدام لوحة المفاتيح. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1147,43 +1031,27 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لاخفاء كل النوافذ العادية و ضبط التركيز لخلفية سطح "
-"المكتب. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
-"هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لإخفاء كل النّوافذ العاديّة و ضبط التّركيز على خلفيّة سطح المكتب. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لتكبير نافذة . التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتكبير نافذةٍ لأقصى حجم. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستخدم لتصغير نافذة . التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لإخفاء نافذة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1191,14 +1059,9 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
-"رابط المفتاح المستخدم لنقل نافذة مساحة عمل إلى الأسفل. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ نحو الأسفل مساحة عملٍ واحدة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1206,14 +1069,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المستخدم لنقل نافذة مساحة عمل إلى اليسار. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ نحو اليسار مساحة عملٍ واحدة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1221,196 +1079,126 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة مساحة عمل إلى اليمين. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ نحو اليمين مساحة عملٍ واحدة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة مساحة عمل إلى الأعلى. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ نحو الأعلى مساحة عملٍ واحدة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 1. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 1. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 10. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 10. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 11. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 11. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 12. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 12. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 2. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 2. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 3. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 3. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 4. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 4. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 5. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 5. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 6. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 6. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 7. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 7. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 8. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 8. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل نافذة إلى مساحة العمل 9. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتحريك نافذةٍ إلى مساحة العمل 9. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1418,15 +1206,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين الشرائط و سطح المكتب "
-"باستعمال نافذة بارزة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل "
-"\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى"
-"\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب باستخدام نافذةٍ قافزة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1434,15 +1216,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين الشرائط و سطح المكتب بدون "
-"نافذة بارزة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;"
-"Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، "
-"فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب بدون نافذةٍ قافزة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1451,16 +1227,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين النوافذ بدون نافذة بارزة.  "
-"مسك \"shift\" مع هذا الرابط يجعل الاتجاه مرة أخرى إلى الأمام.التهيئة تكتب "
-"\"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف "
-"كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". "
-"اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب بدون نافذةٍ قافزة. الضّغط على \"shift\" مع هذا الرّابط يغيّر الاتّجاه إلى الأمام مجدّداً. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1469,16 +1238,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين النوافذ باستعمال نافذة "
-"بارزة.  مسك \"shift\" مع هذا الرابط يجعل الاتجاه مرة أخرى إلى الأمام.التهيئة "
-"تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
-"بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
-"لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب باستخدام نافذةٍ قافزة. الضّغط على \"shift\" مع هذا الرّابط يغيّر الاتّجاه إلى الأمام مجدّداً. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1486,16 +1248,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين النوافذ باستعمال نافذة "
-"بارزة.  مسك \"shift\" مع هذا الرابط يجعل الاتجاه مرة أخرى إلى الأمام.التهيئة "
-"تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
-"بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
-"لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز بين الشّرائط و سطح المكتب باستخدام نافذةٍ قافزة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1503,15 +1258,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين الشرائط و سطح المكتب "
-"باستعمال نافذة بارزة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل "
-"\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى"
-"\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز بين الشّرائط و سطح المكتب بدون نافذةٍ قافزة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1520,16 +1269,9 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز بين النوافذ بدون نافذة بارزة. (تقليديا "
-"&lt;Alt&gt;Escape) مسك \"shift\" مع هذا الرابط يقلب اتجاه الحركة.التهيئة "
-"تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
-"بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
-"لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب بدون نافذةٍ قافزة. (تقليديّاً &lt;Alt&gt;Escape). الضّغط على \"shift\" عند استخدام هذا الرّابط يعكس اتّجاه الحركة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1538,16 +1280,9 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لنقل التركيز بين النوافذ بلستعمال نافذة بارزة. "
-"(تقليديا &lt;Alt&gt;Tab) مسك \"shift\" مع هذا الرابط يقلب اتجاه الحركة."
-"التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر "
-"و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;"
-"Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط "
-"مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لنقل التّركيز إلى الخلف بين الشّرائط و سطح المكتب باستخدام نافذةٍ قافزة. (تقليديّاً &lt;Alt&gt;Escape). الضّغط على \"shift\" عند استخدام هذا الرّابط يعكس اتّجاه الحركة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1555,57 +1290,36 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لتفعيل وجود النافذة على جميع مساحات العمل أو مساحة "
-"واحدة فقط.التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
-"هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم للتّقليب بين وجود النّافذة في الأعلى دائماً أم لا. النّافذة الموجودة في الأعلى دائماً ستكون مرئيّةً فوق النّوافذ الأخرى التي تشغل نفس المساحة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لتفعيل نمط ملأ الشاشة.التهيئة تكتب \"&lt;Control&gt;a"
-"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و "
-"كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
-"للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتفعيل وضع ملأ الشّاشة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لتفعيل التكبير.التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لتفعيل التّكبير لأقصى حجم. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لتفعيل حالة الاخفاء/عدم الاخفاء.التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم للتّقليب بين حالة الإخفاء/عدم الاخفاء. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1613,29 +1327,18 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لتفعيل وجود النافذة على جميع مساحات العمل أو مساحة "
-"واحدة فقط.التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
-"هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم للتّقليب بين وجود النّافذة على جميع مساحات العمل أو مساحةٍ واحدة فقط. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لإلغاء تكبير النافذة. التهيئة تكتب \"&lt;Control&gt;a"
-"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و "
-"كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
-"للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح المستخدم لإلغاء تكبير النّافذة لأقصى حجم. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1643,14 +1346,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المستعمل لغلق نافذة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يعرض صندوق حوار الشّريط \"تشغيل تطبيق\". النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1658,14 +1356,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لغلق نافذة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي ينشّط أداة الشّريط لأخذ صورةٍ لنافذة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1673,25 +1366,16 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح المحول لمساحة العمل 1. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي ينشّط أداة الشّريط لأخذ صورةٍ سريعة للشّاشة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح المستعمل لإظهار قائمة الشريط الرئيسية. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب منان و يسمح بحروف "
-"كبيرة أو صغيرة، و كذلك الإختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". "
-"اذا تضبط الخيار للسلسلة الخاصة \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يظهر قائمة الشّريط الرّئيسيّة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
@@ -1733,7 +1417,6 @@ msgid "The window screenshot command"
 msgstr "أمر صورة الشاشة للنافذة"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1743,44 +1426,27 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"رابط المفتاح يغير ما اذا كانت النافذة تحت أم فوق النوافذ الأخرى. اذا كانت "
-"النافذة مغطات بنافذة أخرى، فسيرفع النافذة فوق النوافذ الأخرى، اذا كانت "
-"النافذة ظاهرة تماما، فستنزل النافذة تحت النوافذ الأخرى. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح الذي يغيّر ما إذا كانت نافذةٌ تحت أم فوق النّوافذ الأخرى. اذا كانت النّافذة مغطاةً بنافذة أخرى، فسيرفع النّافذة فوق النّوافذ الأخرى، إذا كانت النّافذة ظاهرةً تماماً، فسينزل النّافذة تحت النّوافذ الأخرى. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح يخفض نافذة تحت نوافذ أخرى. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المشعب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح هذا يخفّض نافذةً تحت نوافذٍ أخرى. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"رابط المفتاح يرفع نافذة فوق نوافذ أخرى. التهيئة تكتب \"&lt;Control&gt;a\" أو "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. المشعب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك "
-"الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة "
-"الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح هذا يرفع نافذةً فوق نوافذٍ أخرى. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1788,14 +1454,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح يحجم نافذة لملئ الفضاء الأفقي المتوفر. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المشعب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح هذا يحجّم نافذةً لملئ المساحة الأفقيّة المتوفّرة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1803,11 +1464,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"رابط المفتاح يحجم نافذة لملئ الفضاء العمودي المتوفر. التهيئة تكتب \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المشعب حر و يسمح بحروف كبيرة "
-"أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
-"الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+msgstr "رابط المفتاح هذا يحجّم نافذةً لملئ المساحة العموديّة المتوفّرة. النّسق شبيهٌ بـ \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعاً ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"ملغى\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1850,9 +1507,8 @@ msgstr ""
 "السمعي'"
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
-msgstr "إلغاء تكبير نافذة"
+msgstr "إلغاء تكبير النّافذة لأقصى حجم"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1884,8 +1540,7 @@ msgstr "مفتاح GConf \"%s\" مضبوط لنوع غير صحيح\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"\"%s\" الموجود في قاعدة بايانات الإعدادات قيمة غير سليمة لمغير أزرار الفأرة\n"
+msgstr "\"%s\" الموجود في قاعدة بايانات الإعدادات قيمة غير سليمة لمغير أزرار الفأرة\n"
 
 #: src/prefs.c:834 src/prefs.c:1244
 #, c-format
@@ -1910,8 +1565,7 @@ msgstr ""
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr ""
-"تجاهلات لالتطبيقات المكسورة ملغات. ربما لن تتصرف بعض التطبيقات بسلامة.\n"
+msgstr "تجاهلات لالتطبيقات المكسورة ملغات. ربما لن تتصرف بعض التطبيقات بسلامة.\n"
 
 #: src/prefs.c:1271
 #, c-format
@@ -1928,8 +1582,7 @@ msgstr "خطأ تعيين عدد مساحات العمل لـ %d: %s\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
-"\"%s\" الموجود في قاعدة بيانات الإعدادات قيمة غير سليمة لربط المفتاح \"%s\"\n"
+msgstr "\"%s\" الموجود في قاعدة بيانات الإعدادات قيمة غير سليمة لربط المفتاح \"%s\"\n"
 
 #: src/prefs.c:1949
 #, c-format
@@ -1957,8 +1610,7 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d المعرض \"%s\"\n"
 
 #: src/screen.c:506
@@ -2034,7 +1686,7 @@ msgstr "صفة مجهولة %s على عنصر <geometry>"
 msgid "Unknown element %s"
 msgstr "عنصر مجهول %s"
 
-#: src/session.c:1947
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2183,8 +1835,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "لا صفة \"قيمة\" على العنصر <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: src/theme-parser.c:1343
@@ -2481,8 +2132,7 @@ msgstr "يجب أن يكون أخرج عنصر من التيمة <metacity_theme
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر اسم/كاتب/تاريخ/وصف"
 
 #: src/theme-parser.c:3684
@@ -2492,8 +2142,7 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
 
 #: src/theme-parser.c:3718
@@ -2611,7 +2260,7 @@ msgstr "هذا زر عرض بأيقونة 'فتح'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr "هذا·زر·عرض·بأيقونة·'إنهاء'"
+msgstr "هذا زر عرض بأيقونة 'إنهاء'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
@@ -2666,7 +2315,7 @@ msgstr "%g مليثانية لرسم إظار واحد للنافذة"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "الإستعمال: metacity-theme-viewer·[THEMENAME]\n"
+msgstr "الإستعمال: metacity-theme-viewer [THEMENAME]\n"
 
 #: src/theme-viewer.c:810
 #, c-format
@@ -2709,12 +2358,12 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"دفعت %d إطارات في %g ثوان بإتجاه العميل (%g·مليثانية لكل إطار) و %g ثواني "
-"بوقت ساعة حائطية مع مصادر نادل X (%g·مليثانية لكل إطار)\n"
+"دفعت %d إطارات في %g ثوان بإتجاه العميل (%g مليثانية لكل إطار) و %g ثواني "
+"بوقت ساعة حائطية مع مصادر نادل X (%g مليثانية لكل إطار)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr "أرجع·إختبار·تعبير·الموقع·TRUE·لكنه·لم·يكتشف·الخطأ"
+msgstr "أرجع إختبار تعبير الموقع TRUE لكنه لم يكتشف الخطأ"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
@@ -2737,7 +2386,7 @@ msgstr "لم يُترقب خطأ لكنه أرجع واحد: %s"
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr "قيمة·س·كانت·%d،·ترقب·%d"
+msgstr "قيمة س كانت %d، ترقب %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
@@ -2835,10 +2484,8 @@ msgstr "قيمة الشفافية \"%s\" في اللون المخلوط ليست
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"تهيئة التضليل هي \"تضليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "تهيئة التضليل هي \"تضليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
 
 #: src/theme.c:1122
 #, c-format
@@ -2888,14 +2535,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "تعبير التنسيق ينتج عند القسمة على صفر"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "تعبير التنسيق يحاول استعمال مقسوم mod على عدد نقطة متغيرة"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "تعبير التنسيق له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
 #: src/theme.c:1845
@@ -2943,7 +2588,7 @@ msgstr "تعبير التنسيق لا يملك قاسمات و مقسومات"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "احتوت التيمة على التعبير \"%s\" انتج ذلك خطأ: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3912
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2952,25 +2597,23 @@ msgstr ""
 "يجب تخصيص <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "لأسلوب الإطار هذا"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
 
-#: src/theme.c:4448
+#: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "فشل تحميل التيمة \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "لا <%s> ضبط للتيمة \"%s\""
 
-#: src/theme.c:4632
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2979,7 +2622,7 @@ msgstr ""
 "لا أسلوب إطار مضبوط لنوع النافذة \"%s\" في التيمة \"%s\"، اضف عنصر <window "
 "type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4654
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2988,14 +2631,12 @@ msgstr ""
 "يجب أن يكون <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "مخصصا لهذه التيمة"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"الثابتات المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "الثابتات المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "الثابتة \"%s\" عرفت"
@@ -3065,7 +2706,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "ضبط التطبيق صك _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4929
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3081,7 +2722,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5591
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3112,30 +2753,6 @@ msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير ص
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
 
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr "فشل فتح اتصال لمدير جلسة، لن تحفظ مواقع النوافذ: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "فقط على %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "نقل إلى %s"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "النافذة \"%s\" لا تجيب.\n"
-#~ "أ اجبر التطبيق على الخروج؟\n"
-#~ "(ستضيع جميع المستندات المفتوحة.)"
-
-#~ msgid "Kill application"
-#~ msgstr "قتل التطيبق"
