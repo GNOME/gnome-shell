@@ -1,3 +1,8 @@
+2003-04-29  Havoc Pennington  <hp@redhat.com>
+
+	* src/bell.h: include Xlib.h before XKBlib.h which is required on
+	Solaris. #111877 from Peter O'Shea
+
 2003-04-23  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c (process_keyboard_move_grab): support

@@ -19,6 +19,7 @@
  * 02111-1307, USA.
  */
 
+#include <X11/Xlib.h>
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
