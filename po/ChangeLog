@@ -1,6 +1,11 @@
+
+2001-12-26  Vasif Ismailogu MD  <azerb_linux@hotmail.com>
+
+	* az.po: updating Azerbaijani translation file
+	
 2001-12-16  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmål) translation.
+	* no.po: Updated Norwegian (bokmï¿½) translation.
 	
 2001-12-15  Christian Rose  <menthos@menthos.com>
 
@@ -17,17 +22,17 @@
 2001-11-27  Jesus Bravo Alvarez  <jba@pobox.com>
 
 	* gl.po: Added Galician translation from
-	  Manuel A. Fernández Montecelo <manuel@sindominio.net>
+	  Manuel A. Fernï¿½dez Montecelo <manuel@sindominio.net>
 
 2001-10-29  Yuriy Syrota <rasta@renome.rovno.ua>
 
         * uk.po: Added Ukrainian translation file.
 	
-2001-10-28  Héctor García Álvarez <hector@scouts-es.org>
+2001-10-28  Hï¿½tor Garcï¿½ ï¿½varez <hector@scouts-es.org>
 
         * es.po: Updated Spanish translation.
 	
-2001-10-14  Héctor García Álvarez <hector@scouts-es.org>
+2001-10-14  Hï¿½tor Garcï¿½ ï¿½varez <hector@scouts-es.org>
 
 	* es.po: Added Spanish translation.
 
@@ -37,7 +42,7 @@
 
 2001-10-11  Christian Rose  <menthos@menthos.com>
 
-	* sv.po: Fixed some typos. Thanks to Tomas Ögren <stric@ing.umu.se>
+	* sv.po: Fixed some typos. Thanks to Tomas ï¿½ren <stric@ing.umu.se>
 	for spotting many of them.
 
 2001-10-11  Christian Rose  <menthos@menthos.com>

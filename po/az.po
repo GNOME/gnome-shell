@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2001-11-10 07:55-0500\n"
-"PO-Revision-Date: 2001-12-14 20:25GMT+0200\n"
+"PO-Revision-Date: 2001-12-26 18:59GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azerbaijani Turkic <linuxaz@azerimail.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 #: src/display.c:153
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
+msgstr "X Window System displeyi '%s' açıla bilmədi\n"
 
 #: src/errors.c:92
 #, c-format
@@ -26,124 +26,127 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
+"'%s' displeyi ilə bağlantı itirildi;\n"
+"böyük ehtimalla X verici pəncərə idarəçisini ya söndürdü\n"
+"ya da öldürdü/dağıtdı.\n"
 
 #: src/errors.c:99
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "'%s' displeyində Ağır IO %d (%s) xətası.\n"
 
 #: src/frames.c:229
 msgid "Left edge"
-msgstr ""
+msgstr "Sol kənar"
 
 #: src/frames.c:229
 msgid "Left window edge width"
-msgstr ""
+msgstr "Sol pəncərə kənarı eni"
 
 #: src/frames.c:230
 msgid "Right edge"
-msgstr ""
+msgstr "Sağ kənar"
 
 #: src/frames.c:230
 msgid "Right window edge width"
-msgstr ""
+msgstr "Sağ pəncərə kənarı eni"
 
 #: src/frames.c:231
 msgid "Bottom edge"
-msgstr ""
+msgstr "Alt kənar"
 
 #: src/frames.c:231
 msgid "Bottom window edge height"
-msgstr ""
+msgstr "Alt pəncərə kənarı eni"
 
 #: src/frames.c:233
 msgid "Title border"
-msgstr ""
+msgstr "Başlıq kənarı"
 
 #: src/frames.c:233
 msgid "Border around title area"
-msgstr ""
+msgstr "Başlıq sahəsi ətrafındakı kənarlıq"
 
 #: src/frames.c:234
 msgid "Text border"
-msgstr ""
+msgstr "Mətn kənarlığı"
 
 #: src/frames.c:234
 msgid "Border around window title text"
-msgstr ""
+msgstr "Pəncərə başlıöı mətni ətrafındakı kənarlıq"
 
 #: src/frames.c:236
 msgid "Spacer padding"
-msgstr ""
+msgstr "Boşluqvermə aralığı"
 
 #: src/frames.c:236
 msgid "Padding on either side of spacer"
-msgstr ""
+msgstr "Boşluqvericinin ətrafındakı aralıq"
 
 #: src/frames.c:237
 msgid "Spacer width"
-msgstr ""
+msgstr "Boşluqvermə eni"
 
 #: src/frames.c:237
 msgid "Width of spacer"
-msgstr ""
+msgstr "Boşluqverici eni"
 
 #: src/frames.c:238
 msgid "Spacer height"
-msgstr ""
+msgstr "Boşluqvermə hündürlüyü"
 
 #: src/frames.c:238
 msgid "Height of spacer"
-msgstr ""
+msgstr "Boşluqverici hündürlüyü"
 
 #. same as right_width left_width by default
 #: src/frames.c:241
 msgid "Right inset"
-msgstr ""
+msgstr "Sağ iç aralıq"
 
 #: src/frames.c:241
 msgid "Distance of buttons from right edge of frame"
-msgstr ""
+msgstr "Çərçivənin sağ kənarı ilə düymələr arasındakı məsafə"
 
 #: src/frames.c:242
 msgid "Left inset"
-msgstr ""
+msgstr "Sol iç aralıq"
 
 #: src/frames.c:242
 msgid "Distance of menu button from left edge of frame"
-msgstr ""
+msgstr "Çərçivənin sol kənarı ilə düymələr arasındakı məsafə"
 
 #: src/frames.c:244
 msgid "Button width"
-msgstr ""
+msgstr "Düymə eni"
 
 #: src/frames.c:244
 msgid "Width of buttons"
-msgstr ""
+msgstr "Düymələrin eni"
 
 #: src/frames.c:245
 msgid "Button height"
-msgstr ""
+msgstr "Düymə hündürlüyü"
 
 #: src/frames.c:245
 msgid "Height of buttons"
-msgstr ""
+msgstr "Düymələrin hündürlüyü"
 
 #: src/frames.c:247
 msgid "Button border"
-msgstr ""
+msgstr "Düymə kənarı"
 
 #: src/frames.c:247
 msgid "Border around buttons"
-msgstr ""
+msgstr "Düymələr ətrafındakı kənar"
 
 #: src/frames.c:248
 msgid "Inner button border"
-msgstr ""
+msgstr "İç düymə kənarı"
 
 #: src/frames.c:248
 msgid "Border around the icon inside buttons"
-msgstr ""
+msgstr "Düymə içindəki timsal ətrafındakı kənar"
 
 #: src/frames.c:889
 msgid "Close Window"
@@ -155,15 +158,15 @@ msgstr "Pəncərə Menüsü"
 
 #: src/frames.c:895
 msgid "Minimize Window"
-msgstr ""
+msgstr "Pəncərəni Kiçilt"
 
 #: src/frames.c:898
 msgid "Maximize Window"
-msgstr ""
+msgstr "Pəncərəni Böyüt"
 
 #: src/frames.c:901
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "Pəncərəni Yenidən Kiçilt"
 
 #: src/keybindings.c:210
 #, c-format
@@ -171,6 +174,8 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
+"Bəzi başqa proqramlar hazırda %x modifayrlı %s açarını bağlayıcı olaraq "
+"işlədirlər\n"
 
 #: src/menu.c:47
 msgid "_Close"
@@ -207,90 +212,94 @@ msgstr "_Böyüklüyünü Dəyişdir"
 #. separator
 #: src/menu.c:56
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "_Bütün İş Sahələrinə Qoy"
 
 #: src/menu.c:57
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "Təkcə _Bu İş Sahəsinə"
 
 #: src/menu.c:260
 #, c-format
 msgid "Only on workspace _%d"
-msgstr ""
+msgstr "Təkcə _%d İş Sahəsinə"
 
 #: src/menu.c:263
 #, c-format
 msgid "Move to workspace _%d"
-msgstr ""
+msgstr "_%d İş Sahəsinə Daşı"
 
 #: src/screen.c:168
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "'%s' displeyindəki %d ekranı hökmsüzdür\n"
 
 #: src/screen.c:183
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr ""
+msgstr "'%s' displeyindəki %d ekranı onsuz da pəncərə idarəçisinə malikdir\n"
 
 #: src/session.c:746 src/session.c:753
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "'%s' cərgəsi yaradıla bilmir: %s\n"
 
 #: src/session.c:763
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "'%s' iclas faylı yazmaq üçün açıla bilmir: %s\n"
 
 #: src/session.c:895
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "'%s' iclas faylı yazma xətası: %s\n"
 
 #: src/session.c:900
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "'%s' iclas faylı qapatma xətası: %s\n"
 
 #: src/session.c:974
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "'%s' iclas faylı oxunması bacarılmadı: %s\n"
 
 #: src/session.c:1008
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Qeyd edilmiş iclas faylı darana bilmədi: %s\n"
 
 #: src/session.c:1046
 msgid "nested <window> tag"
-msgstr ""
+msgstr "yuvalanmış <window> teqi"
 
 #: src/session.c:1096 src/session.c:1128
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "<window> elementində naməlum %s atributu"
 
 #: src/session.c:1188
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "<geometry> elementində naməlum %s atributu"
 
 #: src/session.c:1208
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Naməlum %s elementi"
 
 #. someone is on crack
 #: src/window.c:2934
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
+"%s pəncərəsi %d maksimal eni %d minimal endən daha kiçik olaraq seçir, "
+"böyüklük dəyişdirmə fəaliyyətdən salınır\n"
 
 #. another cracksmoker
 #: src/window.c:2944
 #, c-format
 msgid "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
+"%s pəncərəsi %d maksimal hündürlüyünü %d minimal hündürlükdən daha kiçik olaraq seçir, "
+"böyüklük dəyişdirmə fəaliyyətdən salınır\n"
 
