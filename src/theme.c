@@ -45,6 +45,156 @@
 #define INTENSITY(r, g, b) (r * 0.30 + g * 0.59 + b * 0.11)
 #define CLAMP_UCHAR(v) ((guchar) (CLAMP (((int)v), (int)0, (int)255)))
 
+#define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
+
+/* Converts from HSV to RGB */
+static void
+hsv_to_rgb (gdouble *h,
+	    gdouble *s,
+	    gdouble *v)
+{
+  gdouble hue, saturation, value;
+  gdouble f, p, q, t;
+  
+  if (*s == 0.0)
+    {
+      *h = *v;
+      *s = *v;
+      *v = *v; /* heh */
+    }
+  else
+    {
+      hue = *h * 6.0;
+      saturation = *s;
+      value = *v;
+      
+      if (hue == 6.0)
+	hue = 0.0;
+      
+      f = hue - (int) hue;
+      p = value * (1.0 - saturation);
+      q = value * (1.0 - saturation * f);
+      t = value * (1.0 - saturation * (1.0 - f));
+      
+      switch ((int) hue)
+	{
+	case 0:
+	  *h = value;
+	  *s = t;
+	  *v = p;
+	  break;
+	  
+	case 1:
+	  *h = q;
+	  *s = value;
+	  *v = p;
+	  break;
+	  
+	case 2:
+	  *h = p;
+	  *s = value;
+	  *v = t;
+	  break;
+	  
+	case 3:
+	  *h = p;
+	  *s = q;
+	  *v = value;
+	  break;
+	  
+	case 4:
+	  *h = t;
+	  *s = p;
+	  *v = value;
+	  break;
+	  
+	case 5:
+	  *h = value;
+	  *s = p;
+	  *v = q;
+	  break;
+	  
+	default:
+	  g_assert_not_reached ();
+	}
+    }
+}
+
+/* Converts from RGB to HSV */
+static void
+rgb_to_hsv (gdouble *r,
+	    gdouble *g,
+	    gdouble *b)
+{
+  gdouble red, green, blue;
+  gdouble h, s, v;
+  gdouble min, max;
+  gdouble delta;
+  
+  red = *r;
+  green = *g;
+  blue = *b;
+  
+  h = 0.0;
+  
+  if (red > green)
+    {
+      if (red > blue)
+	max = red;
+      else
+	max = blue;
+      
+      if (green < blue)
+	min = green;
+      else
+	min = blue;
+    }
+  else
+    {
+      if (green > blue)
+	max = green;
+      else
+	max = blue;
+      
+      if (red < blue)
+	min = red;
+      else
+	min = blue;
+    }
+  
+  v = max;
+  
+  if (max != 0.0)
+    s = (max - min) / max;
+  else
+    s = 0.0;
+  
+  if (s == 0.0)
+    h = 0.0;
+  else
+    {
+      delta = max - min;
+      
+      if (red == max)
+	h = (green - blue) / delta;
+      else if (green == max)
+	h = 2 + (blue - red) / delta;
+      else if (blue == max)
+	h = 4 + (red - green) / delta;
+      
+      h /= 6.0;
+      
+      if (h < 0.0)
+	h += 1.0;
+      else if (h > 1.0)
+	h -= 1.0;
+    }
+  
+  *r = h;
+  *g = s;
+  *b = v;
+}
+
 static GdkPixbuf *
 colorize_pixbuf (GdkPixbuf *orig,
                  GdkColor  *new_color)
@@ -52,7 +202,6 @@ colorize_pixbuf (GdkPixbuf *orig,
   GdkPixbuf *pixbuf;
   double intensity;
   int x, y;
-  guchar r, g, b;
   const guchar *src;
   guchar *dest;
   int orig_rowstride;
@@ -61,10 +210,12 @@ colorize_pixbuf (GdkPixbuf *orig,
   gboolean has_alpha;
   const guchar *src_pixels;
   guchar *dest_pixels;
-  
-  r = new_color->red / 256;
-  g = new_color->green / 256;
-  b = new_color->blue / 256;
+  double dh, ds, dv;
+
+  dh = new_color->red / 65535.0;
+  ds = new_color->green / 65535.0;
+  dv = new_color->blue / 65535.0;
+  rgb_to_hsv (&dh, &ds, &dv);
   
   pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
 			   gdk_pixbuf_get_bits_per_sample (orig),
@@ -88,11 +239,18 @@ colorize_pixbuf (GdkPixbuf *orig,
 
       for (x = 0; x < width; x++)
         {
-          intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
+          double dr, dg, db;
           
-          dest[0] = CLAMP_UCHAR (r * intensity);
-          dest[1] = CLAMP_UCHAR (g * intensity);
-          dest[2] = CLAMP_UCHAR (b * intensity);
+          intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
+
+          dr = dh;
+          dg = ds;
+          db = intensity;
+          hsv_to_rgb (&dr, &dg, &db);
+          
+          dest[0] = CLAMP_UCHAR (255 * dr);
+          dest[1] = CLAMP_UCHAR (255 * dg);
+          dest[2] = CLAMP_UCHAR (255 * db);
           
           if (has_alpha)
             {
