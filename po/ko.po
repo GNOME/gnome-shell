@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.89\n"
-"POT-Creation-Date: 2002-04-24 22:25+0900\n"
+"POT-Creation-Date: 2002-04-29 14:02-0400\n"
 "PO-Revision-Date: 2002-04-17 09:50+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: src/display.c:221
+#: src/display.c:222
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'를 여는데 실패하였습니다\n"
@@ -89,7 +89,7 @@ msgstr "창 최대화"
 msgid "Unmaximize Window"
 msgstr "창 최대화 취소"
 
-#: src/keybindings.c:237
+#: src/keybindings.c:639
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -175,28 +175,29 @@ msgstr ""
 msgid "Kill application"
 msgstr "응용프로그램 강제 종료"
 
-#: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
-#: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
+#: src/prefs.c:318 src/prefs.c:334 src/prefs.c:350 src/prefs.c:366
+#: src/prefs.c:382 src/prefs.c:402 src/prefs.c:418 src/prefs.c:434
+#: src/prefs.c:450
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 키 \"%s\"가 잘못된 형식으로 설정되어 있습니다\n"
 
-#: src/prefs.c:415
+#: src/prefs.c:484
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf 키 '%s' 가 잘못된 값으로 설정되어 있습니다"
 
-#: src/prefs.c:487
+#: src/prefs.c:556
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf키 %2$s 에서 글꼴 지정 \"%1$s\"을 분석할 수 없습니다\n"
 
-#: src/prefs.c:524
+#: src/prefs.c:593
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "GConf 키 %2$s에 저장된 %1$d는 올바른 글꼴크기가 아닙니다\n"
 
-#: src/prefs.c:550
+#: src/prefs.c:619
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -205,27 +206,34 @@ msgstr ""
 "Gconf 키 %2$s에 저장된 %1$d 는 사용할 수 없는 작업공간 번호 입니다, 현재 최대"
 "값은 %3$d 입니다\n"
 
-#: src/prefs.c:639
+#: src/prefs.c:708
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "작업 공간의 수를 %d로 설정하는 중 오류: %s\n"
+
+#: src/prefs.c:836
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\""
+msgstr ""
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:184
+#: src/screen.c:185
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d는 잘못되었습니다\n"
 
-#: src/screen.c:200
+#: src/screen.c:201
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d는 이미 창 관리자가 실행되고 있습니다\n"
 
-#: src/screen.c:347
+#: src/screen.c:349
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d를 떼어 놓을수 없습니다\n"

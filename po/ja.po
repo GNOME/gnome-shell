@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity CVS-20020416\n"
-"POT-Creation-Date: 2002-04-16 19:33+0900\n"
+"POT-Creation-Date: 2002-04-29 14:02-0400\n"
 "PO-Revision-Date: 2002-04-16 21:15+0900\n"
 "Last-Translator: Akira TAGOH <tagoh@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -39,14 +39,16 @@ msgstr "ダイアログ表示プロセスから読み込み中にエラーが発
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "アプリケーションの終了について尋ねるためのmetacityダイアログの起動中にエラーが発生しました: %s\n"
+msgstr ""
+"アプリケーションの終了について尋ねるためのmetacityダイアログの起動中にエラー"
+"が発生しました: %s\n"
 
 #: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:221
+#: src/display.c:222
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Xウィンドウシステムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -87,19 +89,22 @@ msgstr "ウィンドウを最大化"
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元の大きさに戻す"
 
-#: src/keybindings.c:237
+#: src/keybindings.c:639
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "別のプログラムですでにバインディングにキー %s と修飾キー %x を使っています\n"
+msgstr ""
+"別のプログラムですでにバインディングにキー %s と修飾キー %x を使っています\n"
 
-#: src/main.c:263
+#: src/main.c:273
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
-msgstr "テーマが見つかりませんでした! %s が存在して普通のテーマが含まれていることを確認してください"
+msgstr ""
+"テーマが見つかりませんでした! %s が存在して普通のテーマが含まれていることを確"
+"認してください"
 
-#: src/main.c:309
+#: src/main.c:319
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "リスタートに失敗しました: %s\n"
@@ -170,55 +175,67 @@ msgstr ""
 msgid "Kill application"
 msgstr "アプリケーションの強制終了"
 
-#: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
-#: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
+#: src/prefs.c:318 src/prefs.c:334 src/prefs.c:350 src/prefs.c:366
+#: src/prefs.c:382 src/prefs.c:402 src/prefs.c:418 src/prefs.c:434
+#: src/prefs.c:450
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConfキー \"%s\" は無効なタイプが設定されています\n"
 
-#: src/prefs.c:415
+#: src/prefs.c:484
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConfキー '%s' は無効な値が設定されています"
 
-#: src/prefs.c:487
+#: src/prefs.c:556
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "フォントの記述 \"%s\" をGConfキー %s からパースできませんでした\n"
 
-#: src/prefs.c:524
+#: src/prefs.c:593
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
-msgstr "%d(GConfキー %s に保存されています)は有効なフォントサイズではありません\n"
+msgstr ""
+"%d(GConfキー %s に保存されています)は有効なフォントサイズではありません\n"
 
-#: src/prefs.c:550
+#: src/prefs.c:619
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
-msgstr "%d(GConfキー %s に保存されています)は妥当なワークスペース数ではありません，現在の最大値は %d です\n"
+msgstr ""
+"%d(GConfキー %s に保存されています)は妥当なワークスペース数ではありません，現"
+"在の最大値は %d です\n"
 
-#: src/prefs.c:639
+#: src/prefs.c:708
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
+
+#: src/prefs.c:836
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\""
+msgstr ""
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:180
+#: src/screen.c:185
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "スクリーン %d(ディスプレイ '%s')は無効です\n"
 
-#: src/screen.c:196
+#: src/screen.c:201
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr "スクリーン %d(ディスプレイ '%s')はすでにウィンドウマネージャを持っています\n"
+msgstr ""
+"スクリーン %d(ディスプレイ '%s')はすでにウィンドウマネージャを持っています\n"
 
-#: src/screen.c:274
+#: src/screen.c:349
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "スクリーン %d(ディスプレイ '%s')を解放できませんでした\n"
@@ -231,7 +248,8 @@ msgstr "ディレクトリ '%s' を作成できませんでした : %s\n"
 #: src/session.c:783
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "書き込みのためのセッションファイル '%s' をオープンできませんでした: %s\n"
+msgstr ""
+"書き込みのためのセッションファイル '%s' をオープンできませんでした: %s\n"
 
 #: src/session.c:915
 #, c-format
@@ -544,7 +562,8 @@ msgstr "浮動小数点のような \"%s\" をパースできませんでした"
 #: src/theme-parser.c:551
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "ブーリアン値は \"true\" か \"false\" でなければならず \"%s\" ではありません"
+msgstr ""
+"ブーリアン値は \"true\" か \"false\" でなければならず \"%s\" ではありません"
 
 #: src/theme-parser.c:571
 #, c-format
@@ -561,7 +580,9 @@ msgstr ""
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
-msgstr "無効なタイトルスケール \"%s\" です (xx-small,x-small,small,medium,large,x-large,xx-largeのひとつでなければなりません)\n"
+msgstr ""
+"無効なタイトルスケール \"%s\" です (xx-small,x-small,small,medium,large,x-"
+"large,xx-largeのひとつでなければなりません)\n"
 
 #: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
 #: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
@@ -924,13 +945,17 @@ msgstr ""
 #: src/theme-parser.c:3364
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "テーマの最も外側のエレメントは<metacity_theme>でなければならず，<%s>ではありません"
+msgstr ""
+"テーマの最も外側のエレメントは<metacity_theme>でなければならず，<%s>ではあり"
+"ません"
 
 #: src/theme-parser.c:3384
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "エレメント <%s> は name/author/date/description エレメントの内側に許可されていません"
+msgstr ""
+"エレメント <%s> は name/author/date/description エレメントの内側に許可されて"
+"いません"
 
 #: src/theme-parser.c:3389
 #, c-format
@@ -997,7 +1022,8 @@ msgstr "ファイル %s からテーマの読み込みに失敗しました: %s\
 #: src/theme-parser.c:4110
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "テーマファイル %s はルートに<metacity_theme>エレメントを含んでいませんでした"
+msgstr ""
+"テーマファイル %s はルートに<metacity_theme>エレメントを含んでいませんでした"
 
 #: src/util.c:59
 #, c-format

@@ -1,3 +1,7 @@
+2002-04-29  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: 2.3.144
+
 2002-04-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_ui_init): don't leak the PangoContext
