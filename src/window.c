@@ -221,7 +221,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->has_close_func = TRUE;
   window->has_minimize_func = TRUE;
   window->has_maximize_func = TRUE;
-
+  window->has_shade_func = TRUE;
+  
   window->wm_state_modal = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
@@ -285,16 +286,36 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   meta_workspace_add_window (space, window);
 
-  /* Ignore USPosition on transients because the app is full
-   * of shit claiming the user set -geometry for a dialog
+  /* Only accept USPosition on normal windows because the app is full
+   * of shit claiming the user set -geometry for a dialog or dock
    */
-  if (window->type != META_WINDOW_DIALOG &&
-      window->type != META_WINDOW_MODAL_DIALOG &&
+  if (window->type == META_WINDOW_NORMAL &&
       (window->size_hints.flags & USPosition))
     {
       /* don't constrain with placement algorithm */
       window->placed = TRUE;
       meta_verbose ("Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
+    }
+
+  if (window->type != META_WINDOW_NORMAL)
+    {
+      window->placed = TRUE;
+      meta_verbose ("Not placing non-normal-type window\n");
+    }
+
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK)
+    {
+      /* Change around the defaults */
+      window->on_all_workspaces = TRUE;
+      window->has_close_func = FALSE;
+      window->has_shade_func = FALSE;
+    }
+
+  if (window->type != META_WINDOW_NORMAL)
+    {
+      window->has_minimize_func = FALSE;
+      window->has_maximize_func = FALSE;
     }
   
   /* Put our state back where it should be,
@@ -2968,9 +2989,6 @@ meta_window_show_menu (MetaWindow *window,
     ops |= META_MENU_OP_UNMAXIMIZE;
   else
     ops |= META_MENU_OP_MAXIMIZE;
-
-  if (!window->has_maximize_func)
-    insensitive |= META_MENU_OP_UNMAXIMIZE | META_MENU_OP_MAXIMIZE;
   
   if (window->shaded)
     ops |= META_MENU_OP_UNSHADE;
@@ -2981,13 +2999,19 @@ meta_window_show_menu (MetaWindow *window,
     ops |= META_MENU_OP_UNSTICK;
   else
     ops |= META_MENU_OP_STICK;
-
+  
+  if (!window->has_maximize_func)
+    insensitive |= META_MENU_OP_UNMAXIMIZE | META_MENU_OP_MAXIMIZE;
+  
   if (!window->has_minimize_func)
     insensitive |= META_MENU_OP_MINIMIZE;
   
   if (!window->has_close_func)
     insensitive |= META_MENU_OP_DELETE;
 
+  if (!window->has_shade_func)
+    insensitive |= META_MENU_OP_SHADE | META_MENU_OP_UNSHADE;
+  
   menu =
     meta_ui_window_menu_new (window->screen->ui,
                              window->xwindow,

@@ -258,7 +258,7 @@ compute_layer (MetaWindow *window)
       break;
 
     case META_WINDOW_DOCK:
-      window->layer = META_WINDOW_DOCK;
+      window->layer = META_LAYER_DOCK;
       break;
 
     default:
@@ -493,8 +493,6 @@ meta_stack_sync_to_server (MetaStack *stack)
         {
           MetaStackLayer old_layer;
 
-          old_layer = op->window->layer;
-
           if (op->add_order >= 0)
             {
               /* need to add to a layer */
@@ -502,6 +500,8 @@ meta_stack_sync_to_server (MetaStack *stack)
                 g_list_prepend (stack->layers[op->window->layer],
                                 op->window);
             }
+
+          old_layer = op->window->layer;
           
           if (op->update_layer)
             {
@@ -572,12 +572,18 @@ meta_stack_sync_to_server (MetaStack *stack)
   stack->pending = NULL;
   stack->n_added = 0;
 
-  /* Create stacked xwindow arrays */
+  /* Create stacked xwindow arrays.
+   * Painfully, "stacked" is in bottom-to-top order for the
+   * _NET hints, and "root_children_stacked" is in top-to-bottom
+   * order for XRestackWindows()
+   */
   stacked = g_array_new (FALSE, FALSE, sizeof (Window));
   root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
-  i = 0; 
-  while (i < META_LAYER_LAST)
+  i = META_LAYER_LAST; 
+  do
     {
+      --i;
+      
       /* Sort each layer... */
       if (needs_sort[i])
         {
@@ -593,8 +599,10 @@ meta_stack_sync_to_server (MetaStack *stack)
         {
           MetaWindow *w = tmp->data;
 
-          g_array_append_val (stacked, w->xwindow);
+          /* remember, stacked is in reverse order (bottom to top) */
+          g_array_prepend_val (stacked, w->xwindow);
 
+          /* build XRestackWindows() array from top to bottom */
           if (w->frame)
             g_array_append_val (root_children_stacked, w->frame->xwindow);
           else
@@ -607,9 +615,8 @@ meta_stack_sync_to_server (MetaStack *stack)
 
       meta_verbose ("\n");
       meta_pop_no_msg_prefix ();
-      
-      ++i;
     }
+  while (i > 0);
 
   /* All windows should be in some stacking order */
   if (stacked->len != stack->windows->len)

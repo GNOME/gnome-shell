@@ -166,21 +166,18 @@ meta_frame_get_flags (MetaFrame *frame)
   
   flags =
     META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_RESIZE;
-
-  if (frame->window->maximized)
-    flags |= META_FRAME_MAXIMIZED;
   
   if (frame->window->has_close_func)
     flags |= META_FRAME_ALLOWS_DELETE;
   
-  if (frame->window->type == META_WINDOW_NORMAL)
-    flags |= (META_FRAME_ALLOWS_MINIMIZE | META_FRAME_ALLOWS_MAXIMIZE);
+  if (frame->window->has_maximize_func)
+    flags |= META_FRAME_ALLOWS_MAXIMIZE;
 
-  if (!frame->window->has_maximize_func)
-    flags &= ~META_FRAME_ALLOWS_MAXIMIZE;
+  if (frame->window->has_minimize_func)
+    flags |= META_FRAME_ALLOWS_MINIMIZE;
 
-  if (!frame->window->has_minimize_func)
-    flags &= ~META_FRAME_ALLOWS_MINIMIZE;
+  if (frame->window->has_shade_func)
+    flags |= META_FRAME_ALLOWS_SHADE;
   
   if (frame->window->has_focus)
     flags |= META_FRAME_HAS_FOCUS;
@@ -190,6 +187,9 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (frame->window->on_all_workspaces)
     flags |= META_FRAME_STUCK;
+
+  if (frame->window->maximized)
+    flags |= META_FRAME_MAXIMIZED;    
 
   return flags;
 }

@@ -54,7 +54,7 @@ set_wm_check_hint (MetaScreen *screen)
   /* Legacy GNOME hint */
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_win_supporting_wm_check,
-                   XA_WINDOW,
+                   XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
 
   return Success;

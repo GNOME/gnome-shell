@@ -966,12 +966,15 @@ meta_frames_button_press_event (GtkWidget      *widget,
       
       flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
-      if (flags & META_FRAME_SHADED)
-        meta_core_unshade (gdk_display,
-                           frame->xwindow);
-      else
-        meta_core_shade (gdk_display,
-                         frame->xwindow);
+      if (flags & META_FRAME_ALLOWS_SHADE)
+        {
+          if (flags & META_FRAME_SHADED)
+            meta_core_unshade (gdk_display,
+                               frame->xwindow);
+          else
+            meta_core_shade (gdk_display,
+                             frame->xwindow);
+        }
 
       return TRUE;
     }

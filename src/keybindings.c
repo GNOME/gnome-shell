@@ -187,6 +187,11 @@ meta_window_grab_keys (MetaWindow  *window)
         return; /* already all good */
     }
 
+  /* no keybindings for Emacs ;-) */
+  if (window->res_class &&
+      g_strcasecmp (window->res_class, "Emacs") == 0)
+    return;
+  
   grab_keys (window_bindings, window->display,
              window->frame ? window->frame->xwindow : window->xwindow);
 

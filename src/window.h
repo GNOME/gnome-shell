@@ -104,13 +104,11 @@ struct _MetaWindow
   /* Globally active / No input */
   guint input : 1;
 
-  /* MWM hints */
+  /* Features of window */
   guint decorated : 1;
   guint has_close_func : 1;
   guint has_minimize_func : 1;
   guint has_maximize_func : 1;
-
-  /* similar hints */
   guint has_shade_func : 1;
   
   /* Weird "_NET_WM_STATE_MODAL" flag */

@@ -274,6 +274,21 @@ meta_display_open (const char *name)
                    display->leader_window,
                    display->atom_net_wm_name,
                    "Metacity");
+
+  {
+    /* The legacy GNOME hint is to set a cardinal which is the window
+     * id of the supporting_wm_check window on the supporting_wm_check
+     * window itself
+     */
+    gulong data[1];
+
+    data[0] = display->leader_window;
+    XChangeProperty (display->xdisplay,
+                     display->leader_window,
+                     display->atom_win_supporting_wm_check,
+                     XA_CARDINAL,
+                     32, PropModeReplace, (guchar*) data, 1);
+  }
   
   /* Now manage all existing windows */
   tmp = display->screens;
