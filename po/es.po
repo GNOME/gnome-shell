@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-02 15:24+0100\n"
-"PO-Revision-Date: 2003-11-02 20:45+0100\n"
+"POT-Creation-Date: 2003-12-14 11:25+0100\n"
+"PO-Revision-Date: 2003-12-14 11:37+0100\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ocurrió un error al obtener el nombre del host: %s\n"
 
-#: src/display.c:287
+#: src/display.c:291
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla del X Window System «%s»\n"
@@ -85,23 +85,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error fatal de E/S %d (%s) en la pantalla «%s».\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "Cerrar la ventana"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "Menú de la ventana"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "Minimizar la ventana"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "Restaurar la ventana"
 
@@ -149,7 +149,12 @@ msgstr ""
 "condiciones de copia. NO se proporciona ninguna garantía ; ni de "
 "MERCANTIBILIDAD O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
 
-#: src/main.c:437
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory : %s\n"
+msgstr "Falló al inspeccionar el directorio de temas: %s\n"
+
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -157,7 +162,7 @@ msgstr ""
 "¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
 "los temas usuales."
 
-#: src/main.c:499
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ocurrió un error al reiniciar: %s\n"
@@ -495,7 +500,7 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr ""
+msgstr "Si es «true», metacity dará al usuario menos información y menos sensación de \"manipulación directa\", usando «wireframes», evitando animaciones, u otros medios. Esto es una reducción significante en usabilidad para muchos usuarios, pero puede permitir a las aplicaciones heredadas y servidores de terminal funcionar cuando de otra forma sería impracticable."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -524,7 +529,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Si es «true», reducir usabilidad para menos uso de recursos"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2024,12 +2029,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:413
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: src/screen.c:408
+#: src/screen.c:429
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2038,7 +2043,7 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
 "usar la opción »--replace» para reemplazar el gestor de ventanas activo.\n"
 
-#: src/screen.c:449
+#: src/screen.c:453
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2046,12 +2051,12 @@ msgstr ""
 "No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
 "en la pantalla «%s»\n"
 
-#: src/screen.c:504
+#: src/screen.c:511
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: src/screen.c:687
+#: src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
@@ -2722,20 +2727,20 @@ msgstr "Abrir otra de estas ventanas"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "Esto es un botón de demostración con un icono de apertura"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Esto es un botón de demostración con un icono de salida"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Esto es un mensaje de ejemplo en un diálogo de ejemplo"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Elemento de menú de pega %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
@@ -2763,7 +2768,7 @@ msgstr "Paleta de utilidades"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "Menú apagado"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2823,15 +2828,15 @@ msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr ""
+msgstr "Dibujó %d marcos en %g segundos del lado del cliente (%g milisegundos por marco) y %g segundos de tiempo estándar incluyendo recursos del servidor X (%g milisegundos por marco)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "prueba de expresión de la posición devolvió TRUE pero estableció un error"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "prueba de expresión de la posición devolvió FASE pero no estableció un error"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2845,22 +2850,22 @@ msgstr "Se esperaba el error %d pero se dió el %d"
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "No se esperaba un error pero se devolvió uno: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "el valor x era %d, se esperaba %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "el valor y era %d, se esperaba %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "%d espresiones de coordenadas interpretadas en %g segundos (%g segundos de media)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -3208,7 +3213,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "La aplicación configuró un _NET_WM_PID %ld erróneo\n"
 
 #. first time through
-#: src/window.c:4647
+#: src/window.c:4689
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3224,7 +3229,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5308
+#: src/window.c:5351
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
