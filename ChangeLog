@@ -1,3 +1,9 @@
+2003-08-19  Rob Adams  <robadams@uclu.edu>
+
+	* src/stack.c (get_standalone_layer): put windows with
+	wm_state_below at the bottom.  Make this higher priority than full
+	screen layer; see #120238.
+
 2003-08-18  Rob Adams  <robadams@ucla.edu>
 
 	* src/constraints.c (meta_window_constrain): recalculate frame

@@ -264,9 +264,11 @@ get_standalone_layer (MetaWindow *window)
                                      is_focused_foreach,
                                      &focused_transient);
 
-      if ((window->has_focus || focused_transient ||
-           (window == window->display->expected_focus_window)) &&
-          (window->fullscreen || window_is_fullscreen_size (window)))
+      if (window->wm_state_below)
+        layer = META_LAYER_BOTTOM;
+      else if ((window->has_focus || focused_transient ||
+                (window == window->display->expected_focus_window)) &&
+               (window->fullscreen || window_is_fullscreen_size (window)))
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)
         layer = META_LAYER_DOCK;
