@@ -1,3 +1,7 @@
+2003-01-11  Akira TAGOH  <tagoh@gnome.gr.jp>
+
+	* configure.in: fix the behavior of --enable-*.
+
 2003-01-10  Havoc Pennington  <hp@redhat.com>
 
 	* src/Makefile.am (desktopfiles_in_files): revert that change, I

@@ -85,31 +85,31 @@ changequote([,])dnl
 
 METACITY_PC_MODULES='gtk+-2.0 >= 2.0.0'
 
-AC_ARG_ENABLE(config-dialog,      [  --enable-config-dialog      enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)],enable_config_dialog=yes,enable_config_dialog=no)
+AC_ARG_ENABLE(config-dialog,      [  --enable-config-dialog      enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)],,enable_config_dialog=no)
 
 AM_CONDITIONAL(BUILD_CONFIG_DIALOG, test x$enable_config_dialog = xyes)
 if test x$enable_config_dialog = xyes; then
     AC_DEFINE(BUILD_CONFIG_DIALOG,1,[Build configuration dialog])
 fi
 
-AC_ARG_ENABLE(gconf,              [  --disable-gconf             disable gconf usage, for embedded/size-sensitive non-GNOME builds],enable_gconf=no,enable_gconf=yes)
+AC_ARG_ENABLE(gconf,              [  --disable-gconf             disable gconf usage, for embedded/size-sensitive non-GNOME builds],,enable_gconf=yes)
 
 if test x$enable_gconf = xyes; then
     AC_DEFINE(HAVE_GCONF,1,[Build with gconf support])
     METACITY_PC_MODULES="$METACITY_PC_MODULES gconf-2.0 >= 1.2.0"
 fi
 
-AC_ARG_ENABLE(verbose-mode,       [  --disable-verbose             disable metacity's ability to do verbose logging, for embedded/size-sensitive custom builds],enable_verbose_mode=no,enable_verbose_mode=yes)
+AC_ARG_ENABLE(verbose-mode,       [  --disable-verbose             disable metacity's ability to do verbose logging, for embedded/size-sensitive custom builds],,enable_verbose_mode=yes)
 
 if test x$enable_verbose_mode = xyes; then
     AC_DEFINE(WITH_VERBOSE_MODE,1,[Build with verbose mode support])
 fi
 
-AC_ARG_ENABLE(sm,       [  --disable-sm             disable metacity's session management support, for embedded/size-sensitive custom non-GNOME builds],enable_sm=no,enable_sm=auto)
+AC_ARG_ENABLE(sm,       [  --disable-sm             disable metacity's session management support, for embedded/size-sensitive custom non-GNOME builds],,enable_sm=auto)
 
-AC_ARG_ENABLE(startup-notification,   [  --disable-startup-notification             disable metacity's startup notification support, for embedded/size-sensitive custom non-GNOME builds],enable_startup_notification=no,enable_startup_notification=auto)
+AC_ARG_ENABLE(startup-notification,   [  --disable-startup-notification             disable metacity's startup notification support, for embedded/size-sensitive custom non-GNOME builds],,enable_startup_notification=auto)
 
-AC_ARG_ENABLE(xsync,       [  --disable-xsync             disable metacity's use of the XSync extension],enable_xsync=no,enable_xsync=auto)
+AC_ARG_ENABLE(xsync,       [  --disable-xsync             disable metacity's use of the XSync extension],,enable_xsync=auto)
 
 ## try definining HAVE_BACKTRACE
 AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
