@@ -206,7 +206,7 @@ meta_display_open (const char *name)
     "_NET_WM_PID",
     "WM_CLIENT_MACHINE",
     "_NET_WM_WORKAREA",
-    "_NET_WM_SHOW_DESKTOP"
+    "_NET_SHOW_DESKTOP"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -314,7 +314,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_pid = atoms[54];
   display->atom_wm_client_machine = atoms[55];
   display->atom_net_wm_workarea = atoms[56];
-  display->atom_net_wm_show_desktop = atoms[57];
+  display->atom_net_show_desktop = atoms[57];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1267,7 +1267,7 @@ event_callback (XEvent   *event,
                   meta_prefs_set_num_workspaces (num_spaces);
                 }
 	      else if (event->xclient.message_type ==
-		       display->atom_net_wm_show_desktop)
+		       display->atom_net_show_desktop)
 		{
 		  gboolean show_desktop;
 
@@ -2299,7 +2299,7 @@ meta_display_update_show_desktop_hint (MetaDisplay *display)
       
       meta_error_trap_push (display);
       XChangeProperty (display->xdisplay, screen->xroot,
-                       display->atom_net_wm_show_desktop,
+                       display->atom_net_show_desktop,
                        XA_CARDINAL,
                        32, PropModeReplace, (guchar*) data, 1);
       meta_error_trap_pop (display);

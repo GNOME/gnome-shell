@@ -450,7 +450,12 @@ meta_frames_unmanage_window (MetaFrames *frames,
   frame = g_hash_table_lookup (frames->frames, &xwindow);
 
   if (frame)
-    {      
+    {
+      /* restore the cursor */
+      meta_core_set_screen_cursor (gdk_display,
+				   frame->xwindow,
+				   META_CURSOR_DEFAULT);
+
       gdk_window_set_user_data (frame->window, NULL);
 
       if (frames->last_motion_frame == frame)

@@ -116,7 +116,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[27] = screen->display->atom_net_wm_ping;
   atoms[28] = screen->display->atom_net_active_window;
   atoms[29] = screen->display->atom_net_wm_workarea;
-  atoms[30] = screen->display->atom_net_wm_show_desktop;
+  atoms[30] = screen->display->atom_net_show_desktop;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
