@@ -27,3 +27,4 @@ ABOUT-NLS
 COPYING
 intltool-*
 metacity.spec
+autom4te.cache
