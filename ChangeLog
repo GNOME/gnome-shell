@@ -1,5 +1,12 @@
 2002-10-18  Havoc Pennington  <hp@redhat.com>
 
+	* src/effects.c (meta_effects_draw_box_animation): call
+	meta_image_window_new in multihead-safe way
+
+	* src/ui.c (meta_image_window_new): multihead safety
+
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (meta_window_refresh_resize_popup): only create the 
 	resize popup if width_inc or height_inc are > 1
 

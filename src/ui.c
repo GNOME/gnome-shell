@@ -303,13 +303,21 @@ struct _MetaImageWindow
 };
 
 MetaImageWindow*
-meta_image_window_new (int max_width,
-                       int max_height)
+meta_image_window_new (Display *xdisplay,
+                       int      screen_number,
+                       int      max_width,
+                       int      max_height)
 {
   MetaImageWindow *iw;
+  GdkDisplay *gdisplay;
+  GdkScreen *gscreen;
 
+  gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
+  gscreen = gdk_display_get_screen (gdisplay, screen_number);
+  
   iw = g_new (MetaImageWindow, 1);
   iw->window = gtk_window_new (GTK_WINDOW_POPUP);
+  gtk_window_set_screen (GTK_WINDOW (iw->window), gscreen);
   gtk_widget_realize (iw->window);
   iw->pixmap = gdk_pixmap_new (iw->window->window,
                                max_width, max_height,

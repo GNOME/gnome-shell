@@ -333,7 +333,9 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
         }
       else
         {
-          context->image_window = meta_image_window_new (initial_rect->width,
+          context->image_window = meta_image_window_new (screen->display->xdisplay,
+                                                         screen->number,
+                                                         initial_rect->width,
                                                          initial_rect->height);
           context->orig_pixbuf = pix;
           meta_image_window_set (context->image_window,
