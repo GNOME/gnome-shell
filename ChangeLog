@@ -1,3 +1,11 @@
+2002-03-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_free): remove 
+	unmanaged windows from save set, and unselect 
+	input so we don't get events from them. Fixes annoying 
+	bug where withdrawn windows would decide to map themselves
+	due to save set stuff.
+
 2002-03-22  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* configure.in (ALL_LINGUAS): Added pl (Polish).

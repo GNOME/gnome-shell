@@ -817,12 +817,23 @@ meta_window_free (MetaWindow  *window)
   
   meta_display_unregister_x_window (window->display, window->xwindow);
   
-  /* Put back anything we messed up */
+
   meta_error_trap_push (window->display);
+
+  /* Put back anything we messed up */
   if (window->border_width != 0)
     XSetWindowBorderWidth (window->display->xdisplay,
                            window->xwindow,
                            window->border_width);
+
+  /* No save set */
+  XRemoveFromSaveSet (window->display->xdisplay,
+                      window->xwindow);
+
+  /* Don't get events on not-managed windows */
+  XSelectInput (window->display->xdisplay,
+                window->xwindow,
+                NoEventMask);
   
   meta_error_trap_pop (window->display);
 
