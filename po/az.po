@@ -1,7 +1,4 @@
 # translation of metacity.HEAD.az.po to Azerbaijani Turkish
-# translation of metacity.HEAD.po to Azerbaijani Turkish
-# metacity.HEAD.az.po faylının Azərbaycan dilinə tərcüməsi
-# Metacity faylının Azərbaycan dilinə tərcüməsi.
 # Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
 # Mətin Əmirov <metin@karegen.com>, 2002,2003, 2004.
 #
@@ -9,10 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-27 20:43+0100\n"
+"POT-Creation-Date: 2004-03-05 15:22+0100\n"
 "PO-Revision-Date: 2004-01-31 21:58+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
-"Language-Team: Azerbaijani Turkish <gnome@azitt.com>\n"
+"Language-Team: Azerbaijani Turkish <translation-team-az@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,7 +49,8 @@ msgstr "Dialoq ekran gedişatından oxuma xətası: %s\n"
 
 #: src/delete.c:338
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Tə'minatı sonlandırma haqqında metacity-dialoqu başlatma xətası: %s\n"
 
 #: src/delete.c:446
@@ -60,7 +58,7 @@ msgstr "Tə'minatı sonlandırma haqqında metacity-dialoqu başlatma xətası: 
 msgid "Failed to get hostname: %s\n"
 msgstr "Verici adı alına bilmədi: %s\n"
 
-#: src/display.c:291
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Window System displeyi '%s' açıla bilmədi\n"
@@ -101,21 +99,20 @@ msgstr "Pəncərəni Böyüt"
 msgid "Unmaximize Window"
 msgstr "Pəncərəni Balacalaşdır"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq "
-"işlədir\n"
+"Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq işlədir\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Əmr haqqında xəta metacity-dialoqu başlatma xətası: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d əmri tə'yin edilməyib.\n"
@@ -147,7 +144,8 @@ msgstr "Örtük qovluğu oxuna bilmədi: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Örtük tapıla bilmədi! %s'in yerində olduğundanə əyani örtüklər daxil "
 "etdiyindən əmin olun."
@@ -157,83 +155,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Yenidən başladıla bilmədi: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "_Kiçilt"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Bö_yüt"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "_Balacalaşdır"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "_Üstə Bur"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "_Geri bur"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "Ü_stdə"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_Daşı"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "_Böyüklüyünü Dəyişdir"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Bağla"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "_Bütün İş Sahələrinə Qoy"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Ancaq _Bu İş Sahəsinə"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "S_oldakı İş Sahəsinə Daşı"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "S_ağdakı İş Sahəsinə Daşı"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Ü_stdəki İş Sahəsinə Daşı"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "_Altdakı İş Sahəsinə Daşı"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "İş Sahəsi %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "İş Sahəsi 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "İş Sahəsi %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "_Başqa İş Sahəsinə Daşı"
 
@@ -333,7 +331,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" pəncərəsi cavab vermir."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Bu tə'minatı çıxışa məcbur etmək qeyd edilməmiş mə'lumatları itirməyə səbəb "
 "olacaq."
@@ -655,8 +654,9 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"İş sahəsi ədədi. Sıfırdan böyük olmalıdır və maksimal ədədi də müəyyən edilib "
-"(səhvən 34 miliyon iş sahəsi istəyərək masa üstünüzü dağıtmamanıq üçün)."
+"İş sahəsi ədədi. Sıfırdan böyük olmalıdır və maksimal ədədi də müəyyən "
+"edilib (səhvən 34 miliyon iş sahəsi istəyərək masa üstünüzü dağıtmamanıq "
+"üçün)."
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
@@ -1886,7 +1886,8 @@ msgstr "GConf açarı \"%s\" hökmsüz növlə tə'yin edilib\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
+msgstr ""
+"Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
 
 #: src/prefs.c:820 src/prefs.c:1230
 #, c-format
@@ -1904,8 +1905,8 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"%d GConf %s  açarında iş sahəsi ədədini düzgün bildirmir, hazırkı "
-"maksimal qiymət %d-dır\n"
+"%d GConf %s  açarında iş sahəsi ədədini düzgün bildirmir, hazırkı maksimal "
+"qiymət %d-dır\n"
 
 #: src/prefs.c:1192
 msgid ""
@@ -1944,12 +1945,12 @@ msgstr "%d iş sahəsinin adı \"%s\" ilə dəyişdirilirkən xəta: %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d ekranı '%s' displeyində hökmsüzdür\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1958,17 +1959,19 @@ msgstr ""
 "%d ekranı \"%s\" displeyində onsuz da pəncərə idarəçisinə malikdir; hazırkı "
 "pəncərə idarəçisini əvəz etmək üçün --replace seçimini işlətməyi sınayın.\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d ekranı \"%s\" displeyində onsuz da pəncərə idarəçisinə malikdir\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
@@ -2014,7 +2017,8 @@ msgstr "Qeyd edilmiş iclas faylı darana bilmədi: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
+msgstr ""
+"<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
 
 #: src/session.c:1234
 #, c-format
@@ -2198,7 +2202,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> elementinin \"value\" atributu yoxdur"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Düymələr üçün button_width/button_height və görünüş nisbətinin ikisi də "
 "verilə bilməz"
@@ -2461,7 +2466,8 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
+msgstr ""
+"Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2493,8 +2499,10 @@ msgstr "Örtükdəki outermost elementi <%s> yox <metacity_theme> olmalıdır"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2503,8 +2511,10 @@ msgstr "<%s> elementi <constant> elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2719,9 +2729,9 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d çərçivə %g alıcı-tərəfli saniyədə göstərildi (çərçivə başına %g millisaniyə) və "
-"X vericisi mənbələri də daxil edilərək %g divar saadı saniyəsi (çərçivə başına "
-" %g millisaniyə)\n"
+"%d çərçivə %g alıcı-tərəfli saniyədə göstərildi (çərçivə başına %g "
+"millisaniyə) və X vericisi mənbələri də daxil edilərək %g divar saadı "
+"saniyəsi (çərçivə başına  %g millisaniyə)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -2758,7 +2768,8 @@ msgstr "y qiyməti %d oldu, %d gözlənirdi"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
+msgstr ""
+"%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2848,8 +2859,10 @@ msgstr "Alfa qiyməti \"%s\" 0.0 ilə 1.0 arasında deyil"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
 
 #: src/theme.c:1122
 #, c-format
@@ -2899,12 +2912,15 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Birgə ifadə sıfıra bölmə ilə nəticələnir"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Birgə ifadə operand gözlənildiyi yerdə \"%s\" idarəçisinə malikdir"
 
 #: src/theme.c:1845
@@ -2963,8 +2979,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2997,8 +3015,10 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
@@ -3070,7 +3090,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Proqram tə'minatı xətalı _NET_WM_PID %ld tə'yin etdi\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3086,7 +3106,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3118,6 +3138,7 @@ msgstr "Property %s on window 0x%lx contained invalid UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
