@@ -29,7 +29,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_REASONABLE_WORKSPACES 32
+#define MAX_REASONABLE_WORKSPACES 36
 #define MAX_COMMANDS 32
 
 /* If you add a key, it needs updating in init() and in the gconf

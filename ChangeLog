@@ -1,5 +1,10 @@
 2003-02-22  Havoc Pennington  <hp@pobox.com>
 
+	* src/prefs.c (MAX_REASONABLE_WORKSPACES): change max workspaces
+	to 36 #81855
+
+2003-02-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (event_callback): fix to unfocus window only when 
 	you leave the window frame, not when you leave the window itself, 
 	unless window has no frame. #100248 fix from Orien Vandenbergh
