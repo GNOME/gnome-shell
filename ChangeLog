@@ -1,5 +1,16 @@
 2005-01-28  Elijah Newren  <newren@gmail.com>
 
+	Patch from RHEL-3 (Havoc doesn't remember how it got there) that
+	Havoc posted in bug 156511 to fix the problem with fullscreen
+	windows on a different xinerama monitor not staying on top.  I
+	updated to HEAD.  Should fix #156511.
+
+	* src/stack.c: (windows_on_different_xinerama): new function,
+	(get_standalone_layer): let windows on a different screen than the
+	one with the focus window stay in the fullscreen layer
+
+2005-01-28  Elijah Newren  <newren@gmail.com>
+
 	* src/metacity-dialog.c: (warn_about_no_sm_support): make this
 	dialog be sticky.  Fixes #164745.
 

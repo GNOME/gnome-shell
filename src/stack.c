@@ -251,6 +251,17 @@ is_focused_foreach (MetaWindow *window,
   return TRUE;
 }
 
+static gboolean
+windows_on_different_xinerama (MetaWindow *a,
+                               MetaWindow *b)
+{
+  if (a->screen != b->screen)
+    return TRUE;
+
+  return meta_screen_get_xinerama_for_window (a->screen, a) !=
+    meta_screen_get_xinerama_for_window (b->screen, b);
+}
+
 /* Get layer ignoring any transient or group relationships */
 static MetaStackLayer
 get_standalone_layer (MetaWindow *window)
@@ -279,9 +290,13 @@ get_standalone_layer (MetaWindow *window)
 
       if (window->wm_state_below)
         layer = META_LAYER_BOTTOM;
-      else if ((window->has_focus || focused_transient ||
-                (window == window->display->expected_focus_window)) &&
-               (window->fullscreen || window_is_fullscreen_size (window)))
+      else if ((window->fullscreen || window_is_fullscreen_size (window)) &&
+               (window->has_focus || focused_transient ||
+                window == window->display->expected_focus_window ||
+                window->display->focus_window == NULL ||
+                (window->display->focus_window != NULL &&
+                 windows_on_different_xinerama (window,
+                                                window->display->focus_window))))
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)
         layer = META_LAYER_DOCK;
