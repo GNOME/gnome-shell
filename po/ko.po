@@ -1,66 +1,66 @@
 # metacity korean translation
-# Copyright (C) 2002 Free Software Foundation, Inc.
 # Young-Ho, Cha <ganadist@chollian.net>, 2002.
+# Changwoo Ryu <cwryu@debian.org>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.4.3\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
-"PO-Revision-Date: 2002-11-06 11:53+0900\n"
-"Last-Translator: Young-Ho, Cha <ganadist@mizi.com>\n"
+"Project-Id-Version: metacity 2.4.21\n"
+"POT-Creation-Date: 2003-05-08 02:23+0900\n"
+"PO-Revision-Date: 2003-05-08 02:34+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "»ç¿ë¹ı: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Metacity°¡ ÀÚ¼¼ÇÑ ¸ğµå Áö¿ø ¾øÀÌ ÄÄÆÄÀÏ µÇ¾ú½À´Ï´Ù\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "ì •ìˆ˜ê°’ \"%s\"ì„(ë¥¼) ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "Á¤¼ö°ª \"%s\"À»(¸¦) ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "ë¬¸ìì—´ \"%2$s\"ì—ì„œ ì´ì–´ì§„ ë¬¸ì \"%1$s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¹®ÀÚ¿­ \"%2$s\"¿¡¼­ ÀÌ¾îÁø ¹®ÀÚ \"%1$s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "ëŒ€í™”ìƒì ì§„í–‰ì—ì„œ ë©”ì„¸ì§€ \"%s\"ì„(ë¥¼) ë¶„ì„í•˜ëŠ”ë° ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤\n"
+msgstr "´ëÈ­»óÀÚ ÁøÇà¿¡¼­ ¸Ş¼¼Áö \"%s\"À»(¸¦) ºĞ¼®ÇÏ´Âµ¥ ½ÇÆĞÇß½À´Ï´Ù\n"
 
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "ëŒ€í™”ìƒì ë³´ì—¬ì£¼ê¸° ì§„í–‰ì¤‘ì— ì½ê¸° ì˜¤ë¥˜: %s\n"
+msgstr "´ëÈ­»óÀÚ º¸¿©ÁÖ±â ÁøÇàÁß¿¡ ÀĞ±â ¿À·ù: %s\n"
 
 #: src/delete.c:331
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"ì‘ìš© í”„ë¡œê·¸ë¨ì„ ê°•ì œë¡œ ë§ˆì¹˜ë ¤ê³  ë¬¼ì–´ë³´ê¸° ìœ„í•´ metacity-dialogë¥¼ ì‹¤í–‰í•˜ëŠ” ì¤‘ "
-"ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤: %s\n"
+"ÀÀ¿ë ÇÁ·Î±×·¥À» °­Á¦·Î ¸¶Ä¡·Á°í ¹°¾îº¸±â À§ÇØ metacity-dialog¸¦ ½ÇÇàÇÏ´Â Áß "
+"¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù: %s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "í˜¸ìŠ¤íŠ¸ ì´ë¦„ ì–»ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "È£½ºÆ® ÀÌ¸§ ¾ò±â ½ÇÆĞ: %s\n"
 
 #: src/display.c:286
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "X ìœˆë„ ì‹œìŠ¤í…œ ë””ìŠ¤í”Œë ˆì´ '%s'ì„(ë¥¼) ì—¬ëŠ”ë° ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤\n"
+msgstr "X À©µµ ½Ã½ºÅÛ µğ½ºÇÃ·¹ÀÌ '%s'À»(¸¦) ¿©´Âµ¥ ½ÇÆĞÇÏ¿´½À´Ï´Ù\n"
 
 #: src/errors.c:231
 #, c-format
@@ -69,34 +69,34 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"ë””ìŠ¤í”Œë ˆì´ '%s'ì— ëŒ€í•œ ì—°ê²°ì„ ìƒì—ˆìŠµë‹ˆë‹¤;\n"
-"ì•„ë§ˆë„ X ì„œë²„ê°€ ì¢…ë£Œë˜ì—ˆê±°ë‚˜ ì°½ ê´€ë¦¬ìê°€ ì¢…ë£Œ/ê°•ì œ ì¢…ë£Œ\n"
-"ë˜ì—ˆì„ ê²ƒì…ë‹ˆë‹¤.\n"
+"µğ½ºÇÃ·¹ÀÌ '%s'¿¡ ´ëÇÑ ¿¬°áÀ» ÀÒ¾ú½À´Ï´Ù;\n"
+"¾Æ¸¶µµ X ¼­¹ö°¡ Á¾·áµÇ¾ú°Å³ª Ã¢ °ü¸®ÀÚ°¡ Á¾·á/°­Á¦ Á¾·á\n"
+"µÇ¾úÀ» °ÍÀÔ´Ï´Ù.\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "ë””ìŠ¤í”Œë ˆì´ '%3$s'ì—ì„œ ì¹˜ëª…ì ì¸ ì…ì¶œë ¥ ì˜¤ë¥˜ %1$d (%2$s).\n"
+msgstr "µğ½ºÇÃ·¹ÀÌ '%3$s'¿¡¼­ Ä¡¸íÀûÀÎ ÀÔÃâ·Â ¿À·ù %1$d (%2$s).\n"
 
 #: src/frames.c:998
 msgid "Close Window"
-msgstr "ì°½ ë‹«ê¸°"
+msgstr "Ã¢ ´İ±â"
 
 #: src/frames.c:1001
 msgid "Window Menu"
-msgstr "ì°½ ë©”ë‰´"
+msgstr "Ã¢ ¸Ş´º"
 
 #: src/frames.c:1004
 msgid "Minimize Window"
-msgstr "ì°½ ìµœì†Œí™”"
+msgstr "Ã¢ ÃÖ¼ÒÈ­"
 
 #: src/frames.c:1007
 msgid "Maximize Window"
-msgstr "ì°½ ìµœëŒ€í™”"
+msgstr "Ã¢ ÃÖ´ëÈ­"
 
 #: src/frames.c:1010
 msgid "Unmaximize Window"
-msgstr "ì°½ ìµœëŒ€í™” ì·¨ì†Œ"
+msgstr "Ã¢ ÃÖ´ëÈ­ Ãë¼Ò"
 
 #: src/keybindings.c:973
 #, c-format
@@ -104,29 +104,26 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"ëª‡ëª‡ ë‹¤ë¥¸ í”„ë¡œê·¸ë¨ì—ì„œ ì´ë¯¸ ë‹¨ì¶• ê¸€ì‡ ë¡œ ë³€ê²½í‚¤ %2$xì™€(ê³¼) ê¸€ì‡  %1$sì„(ë¥¼) ì‚¬"
-"ìš©í•˜ê³  ìˆìŠµë‹ˆë‹¤\n"
+"¸î¸î ´Ù¸¥ ÇÁ·Î±×·¥¿¡¼­ ÀÌ¹Ì ´ÜÃà ±Û¼è·Î º¯°æÅ° %2$x¿Í(°ú) ±Û¼è %1$sÀ»(¸¦) »ç"
+"¿ëÇÏ°í ÀÖ½À´Ï´Ù\n"
 
 #: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"ëª…ë ¹ì— ëŒ€í•œ ì˜¤ë¥˜ë¥¼ ì¶œë ¥í•˜ê¸° ìœ„í•´ metacity-dialogë¥¼ ì‹¤í–‰í•˜ëŠ” ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆ"
-"ìŠµë‹ˆë‹¤: %s\n"
+"¸í·É¿¡ ´ëÇÑ ¿À·ù¸¦ Ãâ·ÂÇÏ±â À§ÇØ metacity-dialog¸¦ ½ÇÇàÇÏ´Â Áß ¿À·ù°¡ ¹ß»ıÇß"
+"½À´Ï´Ù: %s\n"
 
 #: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr "ëª…ë ¹ %dì´(ê°€) ì •ì˜ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.\n"
+msgstr "¸í·É %dÀÌ(°¡) Á¤ÀÇµÇÁö ¾Ê¾Ò½À´Ï´Ù.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--disable-sm] [--sm-save-file=íŒŒì¼ì´ë¦„] [--display=í™”ë©´] [--"
-"replace] [--version]\n"
+msgstr "metacity [--disable-sm] [--sm-client-id=ID] [--sm-save-file=ÆÄÀÏÀÌ¸§] [--display=È­¸é] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -148,59 +145,59 @@ msgstr ""
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"í…Œë§ˆë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤! %sì— ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” í…Œë§ˆê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ì‹­ì‹œì˜¤."
+"Å×¸¶¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù! %s¿¡ »ç¿ëÇÒ ¼ö ÀÖ´Â Å×¸¶°¡ ÀÖ´ÂÁö È®ÀÎÇÏ½Ê½Ã¿À."
 
 #: src/main.c:393
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "ì¬ì‹œì‘ ì‹¤íŒ¨: %s\n"
+msgstr "Àç½ÃÀÛ ½ÇÆĞ: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr "ìµœì†Œí™”(_N)"
+msgstr "ÃÖ¼ÒÈ­(_N)"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
-msgstr "ìµœëŒ€í™”(_X)"
+msgstr "ÃÖ´ëÈ­(_X)"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr "ìµœëŒ€í™” ì·¨ì†Œ(_X)"
+msgstr "ÃÖ´ëÈ­ Ãë¼Ò(_X)"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr "ë§ì•„ì˜¬ë¦¬ê¸°(_U)"
+msgstr "¸»¾Æ¿Ã¸®±â(_U)"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr "í´ê¸°(_U)"
+msgstr "Æì±â(_U)"
 
 #: src/menu.c:57
 msgid "_Move"
-msgstr "ì˜®ê¹€(_M)"
+msgstr "¿Å±è(_M)"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr "í¬ê¸° ì¡°ì ˆ(_R)"
+msgstr "Å©±â Á¶Àı(_R)"
 
 #. separator
 #: src/menu.c:60
 msgid "_Close"
-msgstr "ë‹«ê¸°(_C)"
+msgstr "´İ±â(_C)"
 
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr "ëª¨ë“  ì‘ì—… ê³µê°„ì— ë†“ê¸°(_A)"
+msgstr "¸ğµç ÀÛ¾÷ °ø°£¿¡ ³õ±â(_A)"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr "ì´ ì‘ì—… ê³µê°„ì—ë§Œ ë†“ê¸°(_T)"
+msgstr "ÀÌ ÀÛ¾÷ °ø°£¿¡¸¸ ³õ±â(_T)"
 
 #: src/menu.c:152 src/prefs.c:1814
 #, c-format
 msgid "Workspace %d"
-msgstr "ì‘ì—… ê³µê°„ %d"
+msgstr "ÀÛ¾÷ °ø°£ %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -209,17 +206,17 @@ msgstr "ì‘ì—… ê³µê°„ %d"
 #: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
-msgstr "ì‘ì—… ê³µê°„ %s%d"
+msgstr "ÀÛ¾÷ °ø°£ %s%d"
 
 #: src/menu.c:345
 #, c-format
 msgid "Only on %s"
-msgstr "ì‘ì—… ê³µê°„ %sì—ë§Œ ë†“ê¸°"
+msgstr "ÀÛ¾÷ °ø°£ %s¿¡¸¸ ³õ±â"
 
 #: src/menu.c:347
 #, c-format
 msgid "Move to %s"
-msgstr "ì‘ì—… ê³µê°„ %s(ìœ¼)ë¡œ ì˜®ê¹€"
+msgstr "ÀÛ¾÷ °ø°£ %s(À¸)·Î ¿Å±è"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -318,29 +315,29 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
-"ì°½ \"%s\"ì´(ê°€) ë°˜ì‘ì´ ì—†ìŠµë‹ˆë‹¤.\n"
-"ê°•ì œë¡œ ì´ ì‘ìš©í”„ë¡œê·¸ë¨ì„ ë§ˆì¹ ê¹Œìš”?\n"
-"(ëª¨ë“  ì—´ë¦° ë¬¸ì„œëŠ” ìƒì–´ë²„ë¦´ ê²ƒì…ë‹ˆë‹¤.)"
+"Ã¢ \"%s\"ÀÌ(°¡) ¹İÀÀÀÌ ¾ø½À´Ï´Ù.\n"
+"°­Á¦·Î ÀÌ ÀÀ¿ëÇÁ·Î±×·¥À» ¸¶Ä¥±î¿ä?\n"
+"(¸ğµç ¿­¸° ¹®¼­´Â ÀÒ¾î¹ö¸± °ÍÀÔ´Ï´Ù.)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr "ì‘ìš©í”„ë¡œê·¸ë¨ ê°•ì œ ì¢…ë£Œ"
+msgstr "ÀÀ¿ëÇÁ·Î±×·¥ °­Á¦ Á¾·á"
 
 #: src/metacity-dialog.c:188
 msgid "Title"
-msgstr "ì œëª©"
+msgstr "Á¦¸ñ"
 
 #: src/metacity-dialog.c:200
 msgid "Class"
-msgstr "í´ë˜ìŠ¤"
+msgstr "Å¬·¡½º"
 
 #: src/metacity-dialog.c:224
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"ì´ ì°½ì€ \"í˜„ì¬ ì„¤ì • ì €ì¥\"ì„ ì§€ì›í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— ë‹¤ìŒ ë²ˆì— ë¡œê·¸ì¸ í•  ë•Œìˆ˜ë™"
-"ìœ¼ë¡œ ì¬ì‹œì‘ í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤."
+"ÀÌ Ã¢Àº \"ÇöÀç ¼³Á¤ ÀúÀå\"À» Áö¿øÇÏÁö ¾Ê±â ¶§¹®¿¡ ´ÙÀ½ ¹ø¿¡ ·Î±×ÀÎ ÇÒ ¶§¼öµ¿"
+"À¸·Î Àç½ÃÀÛ ÇÏ¿©¾ß ÇÕ´Ï´Ù."
 
 #: src/metacity-dialog.c:276
 #, c-format
@@ -348,16 +345,17 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"\"%s\"ì„(ë¥¼) ì‹¤í–‰í•˜ëŠ” ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤:\n"
+"\"%s\"À»(¸¦) ½ÇÇàÇÏ´Â Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù:\n"
 "%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr "ë©”íƒ€ì‹œí‹°"
+msgstr "¸ŞÅ¸½ÃÆ¼"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
+"(±¸ÇöµÇÁö ¾ÊÀ½) ³×ºñ°ÔÀÌ¼ÇÀ» Ã¢ ´ÜÀ§°¡ ¾Æ´Ï¶ó ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§·Î ÇÕ´Ï´Ù"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -368,23 +366,23 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"ì°½ ì œëª© ë§‰ëŒ€ì— ëŒ€í•œ ê¸€ê¼´ ì„¤ëª…ì„ ê¸°ìˆ í•©ë‹ˆë‹¤. titlebar_font_size ì˜µì…˜ì´ 0ìœ¼ë¡œ "
-"ì„¤ì •ë  ë•Œë§Œ ê¸°ìˆ ëœ í¬ê¸°ê°€ ì ìš©ë©ë‹ˆë‹¤. ë˜í•œ ì´ ì˜µì…˜ì€ "
-"titlebar_uses_desktop_font ì˜µì…˜ì´ trueë¡œ ì„¤ì •ë˜ì–´ ìˆìœ¼ë©´ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. "
-"titlebar_uses_desktop_fontê°€ false ì´ì–´ë„ ë°”íƒ•í™”ë©´ ì„¤ì •ì„ ì‚¬ìš©í•˜ë„ë¡ í•˜ê¸° ìœ„"
-"í•´, ê¸°ë³¸ê°’ìœ¼ë¡œ titlebar_fontëŠ” ì„¤ì •ë˜ì–´ ìˆì§€ ì•ŠìŠµë‹ˆë‹¤."
+"Ã¢ Á¦¸ñ ¸·´ë¿¡ ´ëÇÑ ±Û²Ã ¼³¸íÀ» ±â¼úÇÕ´Ï´Ù. titlebar_font_size ¿É¼ÇÀÌ 0À¸·Î "
+"¼³Á¤µÉ ¶§¸¸ ±â¼úµÈ Å©±â°¡ Àû¿ëµË´Ï´Ù. ¶ÇÇÑ ÀÌ ¿É¼ÇÀº "
+"titlebar_uses_desktop_font ¿É¼ÇÀÌ true·Î ¼³Á¤µÇ¾î ÀÖÀ¸¸é »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù. "
+"titlebar_uses_desktop_font°¡ false ÀÌ¾îµµ ¹ÙÅÁÈ­¸é ¼³Á¤À» »ç¿ëÇÏµµ·Ï ÇÏ±â À§"
+"ÇØ, ±âº»°ªÀ¸·Î titlebar_font´Â ¼³Á¤µÇ¾î ÀÖÁö ¾Ê½À´Ï´Ù."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Á¦¸ñ¿¡ µÎ ¹ø Å¬¸¯ÇÒ ¶§ ¾×¼Ç"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "ì°½ ë©”ë‰´ë¥¼ í™œì„±í™” í•©ë‹ˆë‹¤"
+msgstr "Ã¢ ¸Ş´º È°¼º"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Á¦¸ñ À§¿¡ ÀÖ´Â ´ÜÃßÀÇ ¹èÄ¡"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -395,10 +393,15 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"Á¦¸ñ À§¿¡ ÀÖ´Â ´ÜÃßÀÇ ¹èÄ¡. ÀÌ °ªÀº ½ºÆ®¸µÀ¸·Î, \"menu:minimize,maximize,"
+"close\"¿Í °°ÀÌ ¾¹´Ï´Ù; Äİ·ĞÀ¸·Î Ã¢ÀÇ ¿ŞÂÊ ³¡°ú ¿À¸¥ÂÊ ³¡À» ±¸ºĞÇÏ¸ç, °¢ ´ÜÃß"
+"´Â ÄŞ¸¶·Î ±¸ºĞÇÕ´Ï´Ù. °°Àº ´ÜÃß¸¦ Áßº¹ÇØ¼­ ¾µ ¼ö ¾ø½À´Ï´Ù. ¾Ë ¼ö ¾ø´Â ´ÜÃß ÀÌ"
+"¸§Àº ±×³É ¹«½ÃµÇ¸ç ´ÙÀ½ ¹öÀüÀÇ ¸ŞÅ¸½ÃÆ¼¿¡¼­ ±× ´ÜÃß°¡ »õ·Î »ı±æ °æ¿ì¿¡µµ ¹®"
+"Á¦ ¾øÀÌ »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "ì´ˆì ì´ ê°„ ì°½ì„ ìë™ìœ¼ë¡œ ë„ì›ë‹ˆë‹¤"
+msgstr "ÃÊÁ¡ÀÌ °£ Ã¢À» ÀÚµ¿À¸·Î ¶ç¿ó´Ï´Ù"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -407,40 +410,43 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
+"ÀÌ º¯°æ Å°¸¦ ´©¸¥ Ã¤·Î Ã¢À» Å¬¸¯ÇÏ¸é Ã¢À» ¿Å±â°Å³ª (¿ŞÂÊ Å¬¸¯), Ã¢ÀÇ Å©±â¸¦ "
+"¹Ù²Ù°Å³ª (°¡¿îµ¥ Å¬¸¯), È¤Àº Ã¢ ¸Ş´º¸¦ º¸¿©Áİ´Ï´Ù (¿À¸¥ÂÊ Å¬¸¯). º¯°æ Å°´Â "
+"\"&lt;Alt&gt;\" È¤Àº \"&lt;Super&gt;\"¿Í °°ÀÌ ¾¹´Ï´Ù."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
-msgstr "ì°½ì„ ë‹«ìŠµë‹ˆë‹¤"
+msgstr "Ã¢ ´İ±â"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "ë‹¨ì¶•ê¸€ì‡ ë¥¼ ëˆ„ë¥´ë©´ ì‹¤í–‰í•  ëª…ë ¹"
+msgstr "´ÜÃà±Û¼è¸¦ ´©¸£¸é ½ÇÇàÇÒ ¸í·É"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr "í˜„ì¬ í…Œë§ˆ"
+msgstr "ÇöÀç Å×¸¶"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "ìë™ ë„ì›€ ì˜µì…˜ì—ì„œ ì‚¬ìš©í•  ì§€ì—° ì‹œê°„(ë°€ë¦¬ì´ˆ)"
+msgstr "ÀÚµ¿ ¶ç¿ò ¿É¼Ç¿¡¼­ »ç¿ëÇÒ Áö¿¬ ½Ã°£(¹Ğ¸®ÃÊ)"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
+msgstr "¾ÖÇÃ¸®ÄÉÀÌ¼Ç È¤Àº ½Ã½ºÅÛ¿¡¼­ µéÀ» ¼ö ÀÖ´Â '»à¼Ò¸®'¸¦ ³¾ Áö ¿©ºÎ¸¦ °áÁ¤ÇÕ´Ï´Ù; Á¶¿ëÇÑ '»à¼Ò¸®'¸¦ ³»·Á¸é 'ºñÁÖ¾ó º§'°ú ÇÔ²² »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "ì´ì „ ë˜ëŠ” ì˜ëª»ëœ ì‘ìš© í”„ë¡œê·¸ë¨ì— ì‚¬ìš©í•˜ëŠ” ì˜¤ì‘ë™ì„ ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "ÀÌÀü ¶Ç´Â Àß¸øµÈ ÀÀ¿ë ÇÁ·Î±×·¥¿¡ »ç¿ëÇÏ´Â ¿ÀÀÛµ¿À» »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "ºñÁÖ¾ó º§ »ç¿ëÇÏ±â"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "ëª¨ë“  ì°½ê³¼ ì´ˆì ì´ ìˆëŠ” ë°”íƒ•í™”ë©´ì„ ëª¨ë‘ ìˆ¨ê¹ë‹ˆë‹¤"
+msgstr "¸ğµç Ã¢°ú ÃÊÁ¡ÀÌ ÀÖ´Â ¹ÙÅÁÈ­¸éÀ» ¸ğµÎ ¼û±é´Ï´Ù"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -448,17 +454,17 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"ì´ˆì  ëª¨ë“œê°€ \"ìµœì¢… ë§ˆìš°ìŠ¤ ìœ„ì¹˜\" ë˜ëŠ” \"ë§ˆìš°ìŠ¤ ìœ„ì¹˜\"ì´ë©´ì„œ ì°¸ì¼ ë•Œ ì§€ì—°ì‹œê°„ "
-"í›„ ìë™ìœ¼ë¡œ ì´ˆì ì´ ê°„ ì°½ì´ ë– ì˜¤ë¥´ê²Œ í•©ë‹ˆë‹¤. (ì§€ì—° ì‹œê°„ì€ auto_raise_delay í‚¤"
-"ì— ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤)"
+"ÃÊÁ¡ ¸ğµå°¡ \"ÃÖÁ¾ ¸¶¿ì½º À§Ä¡\" ¶Ç´Â \"¸¶¿ì½º À§Ä¡\"ÀÌ¸é¼­ ÂüÀÏ ¶§ Áö¿¬½Ã°£ "
+"ÈÄ ÀÚµ¿À¸·Î ÃÊÁ¡ÀÌ °£ Ã¢ÀÌ ¶°¿À¸£°Ô ÇÕ´Ï´Ù. (Áö¿¬ ½Ã°£Àº auto_raise_delay Å°"
+"¿¡ ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù)"
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"ì°¸ì´ë©´, titlebar_font ì˜µì…˜ì„ ë¬´ì‹œí•˜ê³  ì°½ ì œëª©ì˜ ê¸€ê¼´ì„ í‘œì¤€ ì‘ìš© í”„ë¡œê·¸ë¨ ê¸€"
-"ê¼´ë¡œ ì‚¬ìš©í•©ë‹ˆë‹¤."
+"ÂüÀÌ¸é, titlebar_font ¿É¼ÇÀ» ¹«½ÃÇÏ°í Ã¢ Á¦¸ñÀÇ ±Û²ÃÀ» Ç¥ÁØ ÀÀ¿ë ÇÁ·Î±×·¥ ±Û"
+"²Ã·Î »ç¿ëÇÕ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -472,150 +478,146 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
+"ÂüÀÌ¸é, ¸ŞÅ¸½ÃÆ¼°¡ Ã¢ ´ÜÀ§·Î µ¿ÀÛÇÏÁö ¾Ê°í ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§·Î µ¿ÀÛÇÕ´Ï´Ù. °³"
+"³äÀÌ Á» Ãß»óÀûÀÌÁö¸¸, ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§ÀÇ ¼³Á¤Àº À©µµ¿ìº¸´Ù´Â ¸Æ°ú ºñ½ÁÇÕ´Ï"
+"´Ù. ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§ÀÇ ¸ğµå¿¡¼­ ¾î¶² Ã¢¿¡ Æ÷Ä¿½º¸¦ ¸ÂÃèÀ» ¶§, ÇØ´ç ¾ÖÇÃ¸®ÄÉ"
+"ÀÌ¼ÇÀÇ ¸ğµç Ã¢ÀÌ ¿Ã¶ó¿É´Ï´Ù. ¶Ç, ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§ÀÇ ¸ğµå¿¡¼­, Æ÷Ä¿½º Àº ´Ù"
+"¸¥ ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÇ À©µµ¿ì¿¡´Â Àü´ŞµÇÁö ¾Ê½À´Ï´Ù. ÀÌ ¼³Á¤ÀÌ ¿Ö ÇÊ¿äÇÑÁö ÀÇ¹®ÀÌ "
+"µé Áöµµ ¸ğ¸¨´Ï´Ù. ÇÏÁö¸¸ ÀÌ·± ¼³Á¤ÀÌ ÀÖ´Â ÆíÀÌ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§ vs. Ã¢ ´ÜÀ§"
+"ÀÇ ¸ğµç ¼³Á¤ ÇÏ³ªÇÏ³ª¸¦ ¸¸µå´Â °Íº¸´Ù´Â ³´½À´Ï´Ù. ¶Ç, ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ´ÜÀ§ ¸ğµå"
+"´Â ÇöÀç ¸¹Àº ºÎºĞÀÌ ±¸ÇöµÇ¾î ÀÖÁö ¾Ê½À´Ï´Ù."
 
 #: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Ã¢ ³·Ãß±â"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize a window"
-msgstr "ì°½ì„ ìµœì†Œí™” í•©ë‹ˆë‹¤"
+msgstr "Ã¢ ÃÖ´ëÈ­"
 
 #: src/metacity.schemas.in.h:22
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "ì°½ì„ ìµœì†Œí™” í•©ë‹ˆë‹¤"
+msgstr "Ã¢ °¡·Î·Î ÃÖ´ëÈ­"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "ì°½ì„ ìµœì†Œí™” í•©ë‹ˆë‹¤"
+msgstr "Ã¢ ¼¼·Î·Î ÃÖ´ëÈ­"
 
 #: src/metacity.schemas.in.h:24
 msgid "Minimize a window"
-msgstr "ì°½ì„ ìµœì†Œí™” í•©ë‹ˆë‹¤"
+msgstr "Ã¢ ÃÖ¼ÒÈ­"
 
 #: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "º¯°æ Ã¢À» ´©¸¦ ¶§ ¾µ º¯°æÀÚ"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move a window"
-msgstr "ì°½ì„ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» ¿òÁ÷ÀÔ´Ï´Ù"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "ì´ˆì ì„ íŒ¨ë„ê³¼ ë°”íƒ•í™”ë©´ ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ¹Ù·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "ì´ˆì ì„ íŒ¨ë„ê³¼ ë°”íƒ•í™”ë©´ ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ÆË¾÷À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "ì´ˆì ì„ ì°½ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢ ¹İ´ë ¹æÇâÀ¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
-msgstr "ì´ˆì ì„ íŒ¨ë„ê³¼ ë°”íƒ•í™”ë©´ ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹Ù·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
-msgstr "ì´ˆì ì„ íŒ¨ë„ê³¼ ë°”íƒ•í™”ë©´ ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ÆË¾÷À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:32
-#, fuzzy
 msgid "Move between windows immediately"
-msgstr "ì´ˆì ì„ ì°½ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢ »çÀÌ¿¡¼­ ¹Ù·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:33
-#, fuzzy
 msgid "Move between windows with popup"
-msgstr "ì´ˆì ì„ ì°½ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢ »çÀÌ¿¡¼­ ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
 msgid "Move focus backwards between windows using popup display"
-msgstr "ì´ˆì ì„ ì°½ì‚¬ì´ì—ì„œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢ »çÀÌ¿¡¼­ Æ÷Ä¿½º¸¦ ÆË¾÷À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
-msgstr "ì°½ì„ ì•„ë˜ì˜ ì‘ì—… ê³µê°„ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» ¾Æ·¡ÀÇ ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
-msgstr "ì°½ì„ ì™¼ìª½ì˜ ì‘ì—… ê³µê°„ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» ¿ŞÂÊÀÇ ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
-msgstr "ì°½ì„ ì˜¤ë¥¸ìª½ì˜ ì‘ì—… ê³µê°„ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» ¿À¸¥ÂÊÀÇ ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
-msgstr "ì°½ì„ ìœ„ì˜ ì‘ì—… ê³µê°„ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» À§ÀÇ ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 1ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 1¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 10ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 2¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 11"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 11ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 11¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 12"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 12ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 12¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 2"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 2ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 2¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 3"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 3ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 3¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 4"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 4ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 4¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 5"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 5ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 5¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 6"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 6ìœ¼ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 6¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 7"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 7ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 7¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 8"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 8ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 8¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 9"
-msgstr "ì°½ì„ ì‘ì—… ê³µê°„ 9ë¡œ ì›€ì§ì…ë‹ˆë‹¤"
+msgstr "Ã¢À» 9¹øÂ° ÀÛ¾÷ °ø°£À¸·Î ¿Å±â±â"
 
 #: src/metacity.schemas.in.h:51
-#, fuzzy
 msgid "Name of workspace"
-msgstr "ì‘ì—… ê³µê°„ ê°œìˆ˜"
+msgstr "ÀÛ¾÷ °ø°£ ÀÌ¸§"
 
 #: src/metacity.schemas.in.h:52
 msgid "Number of workspaces"
-msgstr "ì‘ì—… ê³µê°„ ê°œìˆ˜"
+msgstr "ÀÛ¾÷ °ø°£ °³¼ö"
 
 #: src/metacity.schemas.in.h:53
 msgid ""
@@ -623,33 +625,32 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"ì‘ì—… ê³µê°„ì˜ ê°œìˆ˜. 0 ë³´ë‹¤ í° ê³ ì •ëœ ìµœëŒ€ê°’ ì…ë‹ˆë‹¤. (3ì²œ 4ë°±ë§Œê°œì˜ ì‘ì—… ê³µê°„ì„ "
-"ì‚¬ìš©í•˜ë ¤ í•´ì§€ ë§ˆì‹­ì‹œì˜¤. ì»´í“¨í„°ê°€ í­ë°œí• ì§€ ëª¨ë¦…ë‹ˆë‹¤.)"
+"ÀÛ¾÷ °ø°£ÀÇ °³¼ö. 0 º¸´Ù Å« °íÁ¤µÈ ÃÖ´ë°ª ÀÔ´Ï´Ù. (3Ãµ 4¹é¸¸°³ÀÇ ÀÛ¾÷ °ø°£À» "
+"»ç¿ëÇÏ·Á ÇØÁö ¸¶½Ê½Ã¿À. ÄÄÇ»ÅÍ°¡ Æø¹ßÇÒÁö ¸ğ¸¨´Ï´Ù.)"
 
 #: src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
-msgstr "ì°½ì„ ë„ìš°ë©´ ë‹¤ë¥¸ê²ƒë“¤ì„ ë‚´ë ¤ë²„ë¦½ë‹ˆë‹¤"
+msgstr "Ã¢À» ¶ç¿ì°í ´Ù¸¥°ÍµéÀ» ³»·Á¹ö¸®±â"
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
-msgstr "ë‹¤ë¥¸ì°½ ìœ„ì— ì°½ ë„ìš°ê¸°"
+msgstr "´Ù¸¥Ã¢ À§¿¡ Ã¢ ¶ç¿ì±â"
 
 #: src/metacity.schemas.in.h:56
 msgid "Resize a window"
-msgstr "ì°½í¬ê¸°ë¥¼ ì¡°ì ˆí•©ë‹ˆë‹¤"
+msgstr "Ã¢Å©±â Á¶Àı"
 
 #: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
-msgstr "ì •ì˜í•œ ëª…ë ¹ì„ ì‹¤í–‰í•©ë‹ˆë‹¤"
+msgstr "Á¤ÀÇÇÑ ¸í·ÉÀ» ½ÇÇàÇÕ´Ï´Ù"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "ÆĞ³Î ¸Ş´º º¸¿©ÁÖ±â"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "ÆĞ³ÎÀÇ ½ÇÇà ´ëÈ­ »óÀÚ º¸¿©ÁÖ±â"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -666,84 +667,94 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
+"¾ÖÇÃ¸®ÄÉÀÌ¼ÇµéÁß¿¡´Â ±ÔÄ¢´ë·Î µ¿ÀÛÇÏÁö ¾Ê¾Æ¼­ Ã¢ °ü¸®ÀÚ°¡ ¿Àµ¿ÀÛÇÏ°Ô ¸¸µì´Ï"
+"´Ù. ¿¹¸¦ µé¾î, ¸ŞÅ¸½ÃÆ¼´Â ¸ğµç ´ëÈ­ »óÀÚ¸¦ ±× ºÎ¸ğ Ã¢ÀÇ À§Ä¡¿¡ µû¶ó µ¿ÀÏÇÑ À§"
+"Ä¡¿¡ °è¼Ó Ç¥½ÃÇØ¾ß ÇÕ´Ï´Ù. ÀÌ·¸°Ô ÇÏ·Á¸é ´ëÈ­ »óÀÚ¿¡ ´ëÇØ¼­´Â ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ "
+"ÁöÁ¤ÇÑ À§Ä¡¸¦ ¹«½ÃÇØ¾ß ÇÕ´Ï´Ù. ÇÏÁö¸¸ Java/SwingÀÇ ¾î¶² ¹öÀüÀÇ °æ¿ì ÆË¾÷ ¸Ş´º"
+"¸¦ ´ëÈ­ »óÀÚ·Î ¸¸µì´Ï´Ù. ÀÌ °æ¿ì ¸ŞÅ¸½ÃÆ¼´Â ´ëÈ­ »óÀÚÀÇ À§Ä¡¸¦ ¹Ù²ÙÁö ¾Êµµ·Ï "
+"¸¸µé¾î¼­ ¸Ş´º°¡ ¾ûÅÍ¸® ÀÚ¹Ù ¾ÖÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­µµ µ¿ÀÛÇÏµµ·Ï ÇØ¾ß ÇÕ´Ï´Ù. ±× ¹Û"
+"¿¡µµ ÀÌ·± ¿¹µéÀÌ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀº ¸ŞÅ¸½ÃÆ¼°¡ ¿ÏÀüÈ÷ ¿Ã¹Ù¸¥ ¸ğµå·Î µ¿ÀÛÇÏµµ"
+"·Ï ¸¸µì´Ï´Ù. ÀÌ ¿É¼ÇÀ» Àû¿ëÇÒ °æ¿ì ¾ûÅÍ¸® ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» ½ÇÇàÇÏÁö ¾Ê´Â´Ù¸é ±×"
+"·°Àú·° ´õ ÈÇ¸¢ÇÑ UI°¡ ¸¸µé¾î Áı´Ï´Ù. ºÒÇàÈ÷µµ ±âº»ÀûÀ¸·Î´Â ÀÌ ¹®Á¦¸¦ ÇÇÇØ°¡"
+"´Â ¸ğµå¸¦ »ç¿ëÇÕ´Ï´Ù; ½ÇÁ¦ ¼¼°è´Â ÁöÀúºĞÇÕ´Ï´Ù. ¹®Á¦¸¦ ÇÇÇØ°¡´Â ¹æ¹ıÁß¿¡´Â "
+"Ã¢ °ü¸®ÀÚ ±ÔÄ¢ ÀÚÃ¼ÀÇ ÇÑ°è¶§¹®¿¡ ÇÊ¿äÇÑ °Íµéµµ ÀÖÀ¸¹Ç·Î, ÀÌ ¿É¼ÇÀ» ÄÓ °æ¿ì ±Ô"
+"Ä¢À» º¯°æÇÏÁö ¾Ê°í´Â °íÄ¥ ¼ö ¾ø´Â ¹ö±×µµ ÀÖ½À´Ï´Ù."
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
-msgstr "ì‘ì—… ê³µê°„ 1ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "1¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
-msgstr "ì‘ì—… ê³µê°„ 10ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "10¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
-msgstr "ì‘ì—… ê³µê°„ 11ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "11¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
-msgstr "ì‘ì—… ê³µê°„ 12ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "12¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
-msgstr "ì‘ì—… ê³µê°„ 2ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "2¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
-msgstr "ì‘ì—… ê³µê°„ 3ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "3¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
-msgstr "ì‘ì—… ê³µê°„ 4ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "4¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
-msgstr "ì‘ì—… ê³µê°„ 5ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "5¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
-msgstr "ì‘ì—… ê³µê°„ 6ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "6¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
-msgstr "ì‘ì—… ê³µê°„ 7ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "7¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
-msgstr "ì‘ì—… ê³µê°„ 8ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "8¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
-msgstr "ì‘ì—… ê³µê°„ 9ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "9¹øÂ° ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:73
-#, fuzzy
 msgid "Switch to workspace above this one"
-msgstr "í˜„ì¬ ê³µê°„ì˜ ìœ„ìª½ ì‘ì—… ê³µê°„ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "À§ÂÊ ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:74
-#, fuzzy
 msgid "Switch to workspace below this one"
-msgstr "í˜„ì¬ ê³µê°„ì˜ ì•„ë˜ìª½ ì‘ì—… ê³µê°„ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "¾Æ·¡ÂÊ ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
-msgstr "í˜„ì¬ ê³µê°„ì˜ ì™¼ìª½ ì‘ì—… ê³µê°„ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "¿ŞÂÊ ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
-msgstr "í˜„ì¬ ê³µê°„ì˜ ì˜¤ë¥¸ìª½ ì‘ì—… ê³µê°„ìœ¼ë¡œ ê°‘ë‹ˆë‹¤"
+msgstr "¿À¸¥ÂÊ ÀÛ¾÷ °ø°£À¸·Î °¡±â"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "½Ã½ºÅÛ »à¼Ò¸® µé¸²"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "½ºÅ©¸°¼¦ Âï±â"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Ã¢ÀÇ ½ºÅ©¸°¼¦ Âï±â"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -754,7 +765,7 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr ""
+msgstr "½Ã½ºÅÛ º§ È¤Àº ±× ¿Ü ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÇ 'º§' ¼Ò¸®¸¦ ¾î¶»°Ô ºñÁÖ¾óÇÏ°Ô Ç¥ÇöÇÒ Áö °áÁ¤ÇÕ´Ï´Ù. µÎ °¡Áö °ªÀ» »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù; \"fullscreen\"Àº ÀüÃ¼ È­¸éÀÌ Èò»ö-°ËÀº»öÀ¸·Î ±ô¹ÚÀÌ°í, \"frame_flash\"´Â º§ ¼Ò¸®¸¦ º¸³½ ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÇ Á¦¸ñÀÌ ±ô¹ÚÀÔ´Ï´Ù. º§ ¼Ò¸®¸¦ º¸³½ ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀ» ¾Ë ¼ö ¾ø´Â °æ¿ì (\"½Ã½ºÅÛ º§¼Ò¸®\"ÀÎ °æ¿ì\"), ÇöÀç Æ÷Ä¿½ºµÈ Ã¢ÀÇ Á¦¸ñÀÌ ±ô¹ÚÀÔ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -762,19 +773,22 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_N Å°´Â ÇØ´ç ¸í·É¾î¿¡ ÇØ´çÇÏ´Â "
+"Å°¹ÙÀÎµùÀ» Á¤ÀÇÇÕ´Ï´Ù. run_command_NÀÇ Å°¹ÙÀÎµùÀ» ´©¸£¸é command_NÀ» ½ÇÇàÇÕ´Ï"
+"´Ù."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
+msgstr "/apps/metacity/global_keybindings/run_command_screenshot Å°´Â ÀÌ ¼¼ÆÃÀ¸·Î ½ÇÇàÇÒ ¸í·É¾î¸¦ ½ÇÇàÇÏ´Â Å°¹ÙÀÎµùÀ» Á¤ÀÇÇÕ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr ""
+msgstr "/apps/metacity/global_keybindings/run_command_window_screenshot Å°´Â ÀÌ ¼¼ÆÃÀ¸·Î ½ÇÇàÇÒ ¸í·É¾î¸¦ ½ÇÇàÇÏ´Â Å°¹ÙÀÎµùÀ» Á¤ÀÇÇÕ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -785,6 +799,11 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
+"/apps/metacity/keybinding_commandsÀÇ ÇØ´ç ¹øÈ£ÀÇ ¸í·É¾î¸¦ ½ÇÇàÇÏ´Â Å°¹ÙÀÎµù. "
+"\"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­"
+"´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;"
+"Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ"
+"¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -795,6 +814,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"ÇöÀç ÀÛ¾÷ °ø°£ÀÇ À§¿¡ ÀÖ´Â ÀÛ¾÷ °ø°£À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;"
+"a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç"
+"·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ "
+"¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹Ù"
+"ÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -805,6 +829,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"ÇöÀç ÀÛ¾÷ °ø°£ÀÇ ¾Æ·¡¿¡ ÀÖ´Â ÀÛ¾÷ °ø°£À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -815,6 +844,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÇöÀç ÀÛ¾÷ °ø°£ÀÇ ¿ŞÂÊ¿¡ ÀÖ´Â ÀÛ¾÷ °ø°£À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -825,6 +859,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÇöÀç ÀÛ¾÷ °ø°£ÀÇ ¿À¸¥ÂÊ¿¡ ÀÖ´Â ÀÛ¾÷ °ø°£À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -834,6 +873,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 1·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -843,6 +886,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 10À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -852,6 +899,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 11·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -861,6 +912,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 12·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -870,6 +925,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 2·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -879,6 +938,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 3À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -888,6 +951,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 4·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -897,6 +964,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 5·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -906,6 +977,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 6À¸·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -915,6 +990,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 7·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -924,6 +1003,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 8·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -933,6 +1016,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀÛ¾÷ °ø°£ 9·Î ÀÌµ¿ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -942,6 +1029,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢ ¸Ş´º¸¦ È°¼ºÈ­ÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ"
+"°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -951,6 +1042,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ´İ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;"
+"Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» "
+"\"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -961,6 +1056,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"\"¿Å±â±â ¸ğµå\"·Î µé¾î°¡´Â Å°¹ÙÀÎµù. ÀÌ ¸ğµå·Î µé¾î°£ ´ÙÀ½ Å°º¸µå·Î Ã¢À» ¿Å±é"
+"´Ï´Ù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï"
+"´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª "
+"\"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸"
+"·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -971,6 +1071,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"\"Å©±â ¹Ù²Ù±â ¸ğµå\"·Î µé¾î°¡´Â Å°¹ÙÀÎµù. ÀÌ ¸ğµå·Î µé¾î°£ ´ÙÀ½ Å°º¸µå·Î Ã¢ "
+"Å©±â¸¦ ¹Ù²ß´Ï´Ù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú "
+"°°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;"
+"\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½º"
+"Æ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -981,6 +1086,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"¸ğµç Ã¢À» °¨Ãß°í Æ÷Ä¿½º¸¦ µ¥½ºÅ©Å¾ ¹ÙÅÁÈ­¸éÀ¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -990,6 +1100,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÃÖ´ëÈ­ÇÏ´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ"
+"°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -999,6 +1113,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÃÖ¼ÒÈ­ÇÏ´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ"
+"°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1009,6 +1127,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Ã¢À» ¾Æ·¡¿¡ ÀÖ´Â ÀÛ¾÷°ø°£À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ"
+"¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ"
+"½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø"
+"½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1019,6 +1142,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Ã¢À» ¿ŞÂÊ¿¡ ÀÖ´Â ÀÛ¾÷°ø°£À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ"
+"¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ"
+"½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø"
+"½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1029,6 +1157,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Ã¢À» ¿À¸¥ÂÊ¿¡ ÀÖ´Â ÀÛ¾÷°ø°£À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤"
+"Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò"
+"¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼ö"
+"µµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµù"
+"Àº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1038,6 +1171,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» À§¿¡ ÀÖ´Â ÀÛ¾÷°ø°£À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ"
+"¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ"
+"½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø"
+"½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1047,6 +1185,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 1·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1056,6 +1199,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 10À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1065,6 +1213,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 11·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1074,6 +1227,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 12·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1083,6 +1241,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 2·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1092,6 +1255,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 3À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1101,6 +1269,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 4·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1110,6 +1283,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 5·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1119,6 +1297,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 6À¸·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1128,6 +1311,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 7·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1137,6 +1325,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 8·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1146,6 +1339,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ÀÛ¾÷°ø°£ 9·Î ¿Å±â´Â Å°¹ÙÀÎµù. ÀÌ \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1156,6 +1354,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ÆË¾÷ À©µµ¿ì¸¦ »ç¿ëÇØ Æ÷Ä¿½º¸¦ ¿Å±â´Â "
+"Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹"
+"´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª "
+"\"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸"
+"·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1166,6 +1369,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ÆË¾÷ À©µµ¿ì ¾øÀÌ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹Ù"
+"ÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï"
+"´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª "
+"\"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸"
+"·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1177,6 +1385,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ÆË¾÷ À©µµ¿ì ¾øÀÌ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹Ù"
+"ÀÎµù. ÀÌ ¹ÙÀÎµù¿¡ \"shift\"¸¦ µ¿½Ã¿¡ ´©¸£¸é ¹æÇâÀÌ ¹İ´ë°¡ µË´Ï´Ù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1188,6 +1402,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î ÆË¾÷ À©µµ¿ì¸¦ »ç¿ëÇØ Æ÷Ä¿½º¸¦ ¿Å±â´Â "
+"Å°¹ÙÀÎµù. ÀÌ ¹ÙÀÎµù¿¡ \"shift\"¸¦ µ¿½Ã¿¡ ´©¸£¸é ¹æÇâÀÌ ¹İ´ë°¡ µË´Ï´Ù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1198,6 +1418,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ÆË¾÷ À©µµ¿ì¸¦ »ç¿ëÇØ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹ÙÀÎµù. "
+"\"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­"
+"´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;"
+"Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ"
+"¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1208,6 +1433,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"ÆĞ³Î°ú ¹ÙÅÁÈ­¸é »çÀÌ¿¡¼­ ÆË¾÷ À©µµ¿ì ¾øÀÌ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹ÙÀÎµù. \"&lt;"
+"Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å"
+"¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;"
+"\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×"
+"¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1219,6 +1449,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢ »çÀÌ¿¡¼­ ÆË¾÷ À©µµ¿ì ¾øÀÌ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹ÙÀÎµù. (ÀüÅëÀûÀ¸·Î &lt;"
+"Alt&gt;Escape) ÀÌ ¹ÙÀÎµù¿¡ \"shift\"¸¦ ´©¸£¸é ¿Å±â´Â ¹æÇâÀÌ ¹İ´ë°¡ µË´Ï´Ù. "
+"\"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­"
+"´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;"
+"Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ"
+"¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1230,6 +1466,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢ »çÀÌ¿¡¼­ ÆË¾÷ À©µµ¿ì¸¦ »ç¿ëÇØ Æ÷Ä¿½º¸¦ ¿Å±â´Â Å°¹ÙÀÎµù. (ÀüÅëÀûÀ¸·Î &lt;"
+"Alt&gt;Tab) ÀÌ ¹ÙÀÎµù¿¡ \"shift\"¸¦ ´©¸£¸é ¿Å±â´Â ¹æÇâÀÌ ¹İ´ë°¡ µË´Ï´Ù. "
+"\"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­"
+"´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;"
+"Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ"
+"¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1239,6 +1481,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÀüÃ¼ È­¸é ¸ğµå¸¦ Åä±ÛÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1248,6 +1494,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"ÃÖ´ëÈ­¸¦ Åä±ÛÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ"
+"°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1257,6 +1507,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢ ¼û±â±â/º¸ÀÌ±â¸¦ Åä±ÛÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1267,6 +1522,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Ã¢À» ¸ğµç ÀÛ¾÷°ø°£¿¡ µÑ °ÍÀÎÁö ÇÑ ÀÛ¾÷ °ø°£¿¡ µÑ °ÍÀÎÁö Åä±ÛÇÏ´Â Å°¹ÙÀÎµù. "
+"\"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­"
+"´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;"
+"Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ"
+"¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1276,6 +1536,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢ÀÇ ÃÖ´ëÈ­¸¦ Ãë¼ÒÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö "
+"ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼Ç"
+"À» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1285,7 +1549,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "ÆĞ³ÎÀÇ \"ÇÁ·Î±×·¥ ½ÇÇà\" ´ëÈ­ »óÀÚ¸¦ º¸¿©ÁÖ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1295,7 +1559,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "ÆĞ³ÎÀÇ ½ºÅ©¸°¼¦ µµ±¸¸¦ ½ÇÇàÇØ Ã¢ÀÇ ½ºÅ©¸°¼¦À» Âï´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1305,7 +1569,7 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
+msgstr "ÆĞ³ÎÀÇ ½ºÅ©¸°¼¦ µµ±¸¸¦ ½ÇÇàÇÏ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1314,28 +1578,29 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "ÆĞ³ÎÀÇ ÁÖ ¸Ş´º¸¦ º¸¿©ÁÖ´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid "The name of a workspace."
-msgstr "ì‘ì—… ê³µê°„ ê°œìˆ˜"
+msgstr "ÀÛ¾÷ °ø°£ ÀÌ¸§"
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "½ºÅ©¸°¼¦ ¸í·É¾î"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "Ã¢ÀÇ Å×µÎ¸®, Á¦¸ñ µîÀÇ ¸ğ¾çÀ» ÁöÁ¤ÇÏ´Â Å×¸¶."
 
 #: src/metacity.schemas.in.h:144
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
+"auto_raise°¡ Ä§ÀÏ °æ¿ì, Ã¢À» ¿Ã¸®±â ÀüÀÇ Áö¿¬ ½Ã°£. ÀÌ ½Ã°£Àº ÃµºĞÀÇ ÀÏÃÊ ´Ü"
+"À§·Î ÁÖ¾îÁı´Ï´Ù."
 
 #: src/metacity.schemas.in.h:145
 msgid ""
@@ -1345,10 +1610,14 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
+"Ã¢ Æ÷Ä¿½º ¸ğµå´Â Ã¢À» È°¼ºÈ­ÇÏ´Â ¹æ¹ıÀ» ÁöÁ¤ÇÕ´Ï´Ù. ¼¼ °¡Áö °ªÀ» »ç¿ëÇÒ ¼ö ÀÖ"
+"½À´Ï´Ù; \"click\"Àº Ã¢¿¡ Æ÷Ä¿½º¸¦ ³õÀ¸·Á¸é Å¬¸¯ÇØ¾ß ÇÏ´Â °ÍÀÌ°í, \"sloppy"
+"\"´Â ¸¶¿ì½º°¡ Ã¢ À§·Î µé¾î°¥ ¶§ Æ÷Ä¿½ºµÇ´Â °ÍÀÌ°í, \"mouse\"´Â ¸¶¿ì½º°¡ Ã¢ À§"
+"·Î µé¾î°¡¸é Æ÷Ä¿½ºµÇ°í ¸¶¿ì½º°¡ Ã¢ ¹ÛÀ¸·Î ³ª°¥ ¶§ Æ÷Ä¿½º°¡ ¾ø¾îÁö´Â °ÍÀÔ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Ã¢ ½ºÅ©¸°¼¦ ¸í·É¾î"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1361,6 +1630,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Ã¢À» ´Ù¸¥ Ã¢µéº¸´Ù Ç×»ó À§¿¡/¾Æ·¡¿¡ ³õÀÌ°Ô ¸¸µéÁö °áÁ¤ÇÏ´Â Å°¹ÙÀÎµù. ÇØ´ç Ã¢"
+"ÀÌ ´Ù¸¥ Ã¢¿¡ °¡·ÁÁ® ÀÖÀ¸¸é, ±× Ã¢À» ´Ù¸¥ Ã¢µé À§·Î ¿Ã¸³´Ï´Ù. Ã¢ÀÌ °¡·ÁÁ® ÀÖ"
+"Áö ¾ÊÀº °æ¿ì¿¡´Â ´Ù¸¥ Ã¢µé ¾Æ·¡·Î ³»¸³´Ï´Ù. \"&lt;Control&gt;a\" È¤Àº \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğ"
+"µÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ½À´Ï"
+"´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø½À´Ï"
+"´Ù\""
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1370,6 +1646,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ´Ù¸¥ Ã¢µéº¸´Ù ¾Æ·¡¿¡ ³õÀÌ°Ô ¸¸µå´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ"
+"¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ"
+"½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø"
+"½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:149
 msgid ""
@@ -1379,6 +1660,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Ã¢À» ´Ù¸¥ Ã¢µéº¸´Ù À§¿¡ ³õÀÌ°Ô ¸¸µå´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;a\" È¤Àº "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç·Î ´ë¼Ò¹®ÀÚ"
+"¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ ¾µ ¼öµµ ÀÖ"
+"½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹ÙÀÎµùÀº ¾ø"
+"½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1389,6 +1675,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"»ç¿ë °¡´ÉÇÑ °¡·Î ¹æÇâÀÇ °ø°£À» ²Ë Ã¤¿ìµµ·Ï ¸¸µå´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;"
+"a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç"
+"·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ "
+"¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹Ù"
+"ÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1399,58 +1690,61 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"»ç¿ë °¡´ÉÇÑ ¼¼·Î ¹æÇâÀÇ °ø°£À» ²Ë Ã¤¿ìµµ·Ï ¸¸µå´Â Å°¹ÙÀÎµù. \"&lt;Control&gt;"
+"a\" È¤Àº \"&lt;Shift&gt;&lt;Alt&gt;F1\"°ú °°ÀÌ ¾¹´Ï´Ù. ÆÄ¼­´Â ¸Å¿ì À¯¿¬ÇÏ¹Ç"
+"·Î ´ë¼Ò¹®ÀÚ¸¦ ¸ğµÎ ¾µ ¼ö ÀÖ°í, \"&lt;Ctl&gt;\"³ª \"&lt;Ctrl&gt;\"Ã³·³ ÁÙ¿©¼­ "
+"¾µ ¼öµµ ÀÖ½À´Ï´Ù. ÀÌ ¿É¼ÇÀ» \"disabled\" ½ºÆ®¸µÀ¸·Î ÇÏ¸é, ÀÌ ¾×¼Ç¿¡ ´ëÇÑ Å°¹Ù"
+"ÀÎµùÀº ¾ø½À´Ï´Ù\""
 
 #: src/metacity.schemas.in.h:152
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr ""
+msgstr "ÀÌ ¿É¼ÇÀº Á¦¸ñ¿¡ ´õºíÅ¬¸¯ÇßÀ» ¶§ ¾î¶»°Ô ÇÒ Áö¸¦ °áÁ¤ÇÕ´Ï´Ù. »ç¿ë °¡´ÉÇÑ ¿É¼ÇÀ¸·Î, \"toggle_shaded\"´Â Ã¢À» ¼û±â°Å³ª/º¸¿©ÁÖ´Â °ÍÀÌ°í, \"toggle_maximized\"´Â ÃÖ´ëÈ­/ÃÖ´ëÈ­Ãë¼ÒÇÏ´Â °ÍÀÔ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
-msgstr "ì „ì²´ í™”ë©´ ëª¨ë“œ í† ê¸€"
+msgstr "ÀüÃ¼ È­¸é ¸ğµå Åä±Û"
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle maximization state"
-msgstr "ì°½ ìµœëŒ€í™” í† ê¸€"
+msgstr "Ã¢ ÃÖ´ëÈ­ Åä±Û"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle shaded state"
-msgstr "ì°½ ìˆ¨ê¹€ í† ê¸€"
+msgstr "Ã¢ ¼û±è Åä±Û"
 
 #: src/metacity.schemas.in.h:156
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "ëª¨ë“  ì‘ì—… ê³µê°„ì— ë‘ê¸° í† ê¸€"
+msgstr "¸ğµç ÀÛ¾÷ °ø°£¿¡ µÎ±â Åä±Û"
 
 #: src/metacity.schemas.in.h:157
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr ""
+msgstr "¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ³ª ½Ã½ºÅÛÀÌ 'º§' È¤Àº '»à¼Ò¸®'¸¦ ³»º¸³¾ ¶§ ´«¿¡ º¸ÀÌµµ·Ï Ç¥ÇöÇÕ´Ï´Ù; µè´Âµ¥ ¾î·Á¿òÀÌ ÀÖ°Å³ª, ÁÖÀ§°¡ ½Ã²ô·´°Å³ª, '»à¼Ò¸® µé¸²'ÀÌ ²¨Á® ÀÖÀ» ¶§ À¯¿ëÇÕ´Ï´Ù."
 
 #: src/metacity.schemas.in.h:158
-#, fuzzy
 msgid "Unmaximize a window"
-msgstr "ì°½ ìµœëŒ€í™” ì·¨ì†Œ"
+msgstr "Ã¢ ÃÖ´ëÈ­ Ãë¼Ò"
 
 #: src/metacity.schemas.in.h:159
 msgid "Use standard system font in window titles"
-msgstr "ì°½ ì œëª©ì— í‘œì¤€ ì‹œìŠ¤í…œ ê¸€ê¼´ì„ ì‚¬ìš©í•©ë‹ˆë‹¤"
+msgstr "Ã¢ Á¦¸ñ¿¡ Ç¥ÁØ ½Ã½ºÅÛ ±Û²ÃÀ» »ç¿ëÇÕ´Ï´Ù"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "ºñÁÖ¾ó º§ Å¸ÀÔ"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
-msgstr "ì°½ ì´ˆì  ëª¨ë“œ"
+msgstr "Ã¢ ÃÊÁ¡ ¸ğµå"
 
 #: src/metacity.schemas.in.h:162
 msgid "Window title font"
-msgstr "ì°½ ì œëª© ê¸€ê¼´"
+msgstr "Ã¢ Á¦¸ñ ±Û²Ã"
 
 #: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
 #: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
@@ -1459,7 +1753,7 @@ msgstr "ì°½ ì œëª© ê¸€ê¼´"
 #: src/prefs.c:727
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf í‚¤ \"%s\"ì´(ê°€) ì˜ëª»ëœ í˜•ì‹ìœ¼ë¡œ ì„¤ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤\n"
+msgstr "GConf Å° \"%s\"ÀÌ(°¡) Àß¸øµÈ Çü½ÄÀ¸·Î ¼³Á¤µÇ¾î ÀÖ½À´Ï´Ù\n"
 
 #: src/prefs.c:771
 #, c-format
@@ -1467,18 +1761,18 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"ì„¤ì • ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì°¾ì€ \"%s\"ì´(ê°€) ë§ˆìš°ìŠ¤ ë‹¨ì¶” ì„¤ì • ê¸€ì‡ ì˜ ì˜¬ë°”ë¥¸ ê°’ì´ "
-"ì•„ë‹™ë‹ˆë‹¤\n"
+"¼³Á¤ µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ Ã£Àº \"%s\"ÀÌ(°¡) ¸¶¿ì½º ´ÜÃß ¼³Á¤ ±Û¼èÀÇ ¿Ã¹Ù¸¥ °ªÀÌ "
+"¾Æ´Õ´Ï´Ù\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf í‚¤ '%s'ì´(ê°€) ì˜ëª»ëœ ê°’ìœ¼ë¡œ ì„¤ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤\n"
+msgstr "GConf Å° '%s'ÀÌ(°¡) Àß¸øµÈ °ªÀ¸·Î ¼³Á¤µÇ¾î ÀÖ½À´Ï´Ù\n"
 
 #: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "GConf í‚¤ %2$sì—ì„œ ê¸€ê¼´ ì§€ì • \"%1$s\"ì„(ë¥¼) ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤\n"
+msgstr "GConf Å° %2$s¿¡¼­ ±Û²Ã ÁöÁ¤ \"%1$s\"À»(¸¦) ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù\n"
 
 #: src/prefs.c:1107
 #, c-format
@@ -1486,26 +1780,26 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"Gconf í‚¤ %2$sì— ì €ì¥ëœ %1$dì€(ëŠ”) ì‚¬ìš©í•  ìˆ˜ ì—†ëŠ” ì‘ì—… ê³µê°„ ë²ˆí˜¸ ì…ë‹ˆë‹¤, í˜„ì¬ "
-"ìµœëŒ€ê°’ì€ %3$d ì…ë‹ˆë‹¤\n"
+"Gconf Å° %2$s¿¡ ÀúÀåµÈ %1$dÀº(´Â) »ç¿ëÇÒ ¼ö ¾ø´Â ÀÛ¾÷ °ø°£ ¹øÈ£ ÀÔ´Ï´Ù, ÇöÀç "
+"ÃÖ´ë°ªÀº %3$d ÀÔ´Ï´Ù\n"
 
 #: src/prefs.c:1167
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"ì‘ìš© í”„ë¡œê·¸ë¨ì— ëŒ€í•œ ì„ì‹œ ë°©í¸ì„ ë§‰ì•˜ìŠµë‹ˆë‹¤. ëª‡ëª‡ ì‘ìš©í”„ë¡œê·¸ë¨ë“¤ì´ ì œëŒ€ë¡œ ë™"
-"ì‘í•˜ì§€ ì•Šì„ê²ƒì…ë‹ˆë‹¤.\n"
+"ÀÀ¿ë ÇÁ·Î±×·¥¿¡ ´ëÇÑ ÀÓ½Ã ¹æÆíÀ» ¸·¾Ò½À´Ï´Ù. ¸î¸î ÀÀ¿ëÇÁ·Î±×·¥µéÀÌ Á¦´ë·Î µ¿"
+"ÀÛÇÏÁö ¾ÊÀ»°ÍÀÔ´Ï´Ù.\n"
 
 #: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "GConf í‚¤ %2$sì— ì €ì¥ëœ %1$dì€(ëŠ”) 0ê³¼ %3$dì˜ ë²”ìœ„ë¥¼ ë„˜ì—ˆìŠµë‹ˆë‹¤\n"
+msgstr "GConf Å° %2$s¿¡ ÀúÀåµÈ %1$dÀº(´Â) 0°ú %3$dÀÇ ¹üÀ§¸¦ ³Ñ¾ú½À´Ï´Ù\n"
 
 #: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "ì‘ì—… ê³µê°„ì˜ ìˆ˜ë¥¼ %d(ìœ¼)ë¡œ ì„¤ì •í•˜ëŠ” ì¤‘ ì˜¤ë¥˜: %s\n"
+msgstr "ÀÛ¾÷ °ø°£ÀÇ ¼ö¸¦ %d(À¸)·Î ¼³Á¤ÇÏ´Â Áß ¿À·ù: %s\n"
 
 #: src/prefs.c:1578
 #, c-format
@@ -1513,13 +1807,13 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"ì„¤ì • ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì°¾ì€ \"%s\"ì´(ê°€) ë‹¨ì¶•ê¸€ì‡  \"%s\"ì— ëŒ€í•œ ì˜¬ë°”ë¥¸ ê°’ì´ ì•„"
-"ë‹™ë‹ˆë‹¤\n"
+"¼³Á¤ µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ Ã£Àº \"%s\"ÀÌ(°¡) ´ÜÃà±Û¼è \"%s\"¿¡ ´ëÇÑ ¿Ã¹Ù¸¥ °ªÀÌ ¾Æ"
+"´Õ´Ï´Ù\n"
 
 #: src/prefs.c:1895
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "ì‘ì—… ê³µê°„ %dì˜ ì´ë¦„ì„ \"%s\"(ìœ¼)ë¡œ ì„¤ì •í•˜ëŠ” ì¤‘ ì˜¤ë¥˜: %s\n"
+msgstr "ÀÛ¾÷ °ø°£ %dÀÇ ÀÌ¸§À» \"%s\"(À¸)·Î ¼³Á¤ÇÏ´Â Áß ¿À·ù: %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1529,7 +1823,7 @@ msgstr "%d x %d"
 #: src/screen.c:407
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "ë””ìŠ¤í”Œë ˆì´ '%2$s'ì˜ í™”ë©´ %1$dì€(ëŠ”) ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤\n"
+msgstr "µğ½ºÇÃ·¹ÀÌ '%2$s'ÀÇ È­¸é %1$dÀº(´Â) Àß¸øµÇ¾ú½À´Ï´Ù\n"
 
 #: src/screen.c:423
 #, c-format
@@ -1537,25 +1831,25 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"ë””ìŠ¤í”Œë ˆì´ \"%2$s\"ì˜ í™”ë©´ %1$dì— ì´ë¯¸ ì°½ ê´€ë¦¬ìê°€ ì‹¤í–‰ë˜ê³  ìˆìŠµë‹ˆë‹¤; í˜„ì¬ "
-"ì°½ ê´€ë¦¬ìë¥¼ ë¬´ì‹œí•˜ëŠ” -- ë°”ê¿ˆ ì˜µì…˜ì„ ì‚¬ìš©í•´ë³´ì‹­ì‹œì˜¤.\n"
+"µğ½ºÇÃ·¹ÀÌ \"%2$s\"ÀÇ È­¸é %1$d¿¡ ÀÌ¹Ì Ã¢ °ü¸®ÀÚ°¡ ½ÇÇàµÇ°í ÀÖ½À´Ï´Ù; ÇöÀç "
+"Ã¢ °ü¸®ÀÚ¸¦ ¹«½ÃÇÏ´Â -- ¹Ù²Ş ¿É¼ÇÀ» »ç¿ëÇØº¸½Ê½Ã¿À.\n"
 
 #: src/screen.c:464
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "ë””ìŠ¤í”Œë ˆì´ \"%2$s\"ì˜ í™”ë©´ %1$dì— ì°½ ê´€ë¦¬ ì„ íƒì„ ê°€ì§ˆ ìˆ˜ ì—†ìŠµë‹ˆë‹¤\n"
+msgstr "µğ½ºÇÃ·¹ÀÌ \"%2$s\"ÀÇ È­¸é %1$d¿¡ Ã¢ °ü¸® ¼±ÅÃÀ» °¡Áú ¼ö ¾ø½À´Ï´Ù\n"
 
 #: src/screen.c:520
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
-"ë””ìŠ¤í”Œë ˆì´ \"%2$s\"ì˜ í™”ë©´ %1$dì€(ëŠ”) ì´ë¯¸ ì°½ ê´€ë¦¬ìê°€ ì‹¤í–‰ë˜ê³  ìˆìŠµë‹ˆë‹¤\n"
+"µğ½ºÇÃ·¹ÀÌ \"%2$s\"ÀÇ È­¸é %1$dÀº(´Â) ÀÌ¹Ì Ã¢ °ü¸®ÀÚ°¡ ½ÇÇàµÇ°í ÀÖ½À´Ï´Ù\n"
 
 #: src/screen.c:690
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "ë””ìŠ¤í”Œë ˆì´ \"%2$s\"ì˜ í™”ë©´ %1$dì„(ë¥¼) ë–¼ì–´ ë†“ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤\n"
+msgstr "µğ½ºÇÃ·¹ÀÌ \"%2$s\"ÀÇ È­¸é %1$dÀ»(¸¦) ¶¼¾î ³õÀ»¼ö ¾ø½À´Ï´Ù\n"
 
 #: src/session.c:274
 #, c-format
@@ -1563,71 +1857,71 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
-"ì„¸ì…˜ ê´€ë¦¬ìì— ì—°ê²° ì—´ê¸°ë¥¼ ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤, ë”°ë¼ì„œ ì°½ ìœ„ì¹˜ê°€ ì €ì¥ë˜ì§€ ì•Šì„ ê²ƒì…ë‹ˆ"
-"ë‹¤: %s\n"
+"¼¼¼Ç °ü¸®ÀÚ¿¡ ¿¬°á ¿­±â¸¦ ½ÇÆĞÇß½À´Ï´Ù, µû¶ó¼­ Ã¢ À§Ä¡°¡ ÀúÀåµÇÁö ¾ÊÀ» °ÍÀÔ´Ï"
+"´Ù: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "ë””ë ‰í† ë¦¬ '%s'ì„(ë¥¼) ë§Œë“¤ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: %s\n"
+msgstr "µğ·ºÅä¸® '%s'À»(¸¦) ¸¸µé ¼ö ¾ø½À´Ï´Ù: %s\n"
 
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "ì„¸ì…˜ íŒŒì¼ '%s'ì„(ë¥¼) ì“°ê¸°ìœ„í•´ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: %s\n"
+msgstr "¼¼¼Ç ÆÄÀÏ '%s'À»(¸¦) ¾²±âÀ§ÇØ ¿­ ¼ö ¾ø½À´Ï´Ù: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "ì„¸ì…˜ íŒŒì¼ '%s'ì„(ë¥¼) ì“°ëŠ” ì¤‘ ì˜¤ë¥˜: %s\n"
+msgstr "¼¼¼Ç ÆÄÀÏ '%s'À»(¸¦) ¾²´Â Áß ¿À·ù: %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "ì„¸ì…˜ íŒŒì¼ '%s'ì„(ë¥¼) ë‹«ëŠ” ì¤‘ ì˜¤ë¥˜: %s\n"
+msgstr "¼¼¼Ç ÆÄÀÏ '%s'À»(¸¦) ´İ´Â Áß ¿À·ù: %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "ì €ì¥ëœ ì„¸ì…˜ íŒŒì¼ %sì„(ë¥¼) ì½ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "ÀúÀåµÈ ¼¼¼Ç ÆÄÀÏ %sÀ»(¸¦) ÀĞ±â ½ÇÆĞ: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "ì €ì¥ëœ ì„¸ì…˜íŒŒì¼ì„ ë¶„ì„í•˜ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "ÀúÀåµÈ ¼¼¼ÇÆÄÀÏÀ» ºĞ¼®ÇÏ±â ½ÇÆĞ: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> ì†ì„±ì´ ë³´ì´ì§€ë§Œ ì´ë¯¸ session IDë¥¼ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤"
+msgstr "<metacity_session> ¼Ó¼ºÀÌ º¸ÀÌÁö¸¸ ÀÌ¹Ì session ID¸¦ °¡Áö°í ÀÖ½À´Ï´Ù"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "<metacity_session> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” ì†ì„± %s"
+msgstr "<metacity_session> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â ¼Ó¼º %s"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr "í¬í•¨ëœ <window> íƒœê·¸"
+msgstr "Æ÷ÇÔµÈ <window> ÅÂ±×"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "<window> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” ì†ì„± %s"
+msgstr "<window> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â ¼Ó¼º %s"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "<maximized> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” ì†ì„± %s"
+msgstr "<maximized> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â ¼Ó¼º %s"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "<geometry> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” ì†ì„± %s"
+msgstr "<geometry> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â ¼Ó¼º %s"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr "ì•Œ ìˆ˜ ì—†ëŠ” ì†ì„± %s"
+msgstr "¾Ë ¼ö ¾ø´Â ¼Ó¼º %s"
 
 #: src/session.c:1921
 #, c-format
@@ -1635,55 +1929,55 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"ì„¸ì…˜ ê´€ë¦¬ë¥¼ ì§€ì›í•˜ì§€ ì•ŠëŠ” ì‘ìš©í”„ë¡œê·¸ë¨ì„ ê²½ê³ í•˜ê¸° ìœ„í•´ metacity-dialogë¥¼ ì‹¤í–‰"
-"í•˜ëŠ” ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤: %s\n"
+"¼¼¼Ç °ü¸®¸¦ Áö¿øÇÏÁö ¾Ê´Â ÀÀ¿ëÇÁ·Î±×·¥À» °æ°íÇÏ±â À§ÇØ metacity-dialog¸¦ ½ÇÇà"
+"ÇÏ´Â Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr "%d ì¤„ %d ë¬¸ì: %s"
+msgstr "%d ÁÙ %d ¹®ÀÚ: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "ê°™ì€ ìš”ì†Œ <%2$s>ì— \"%1$s\"ì†ì„±ì´ ë‘ë²ˆ ê²¹ì³ì ¸ ìˆìŠµë‹ˆë‹¤"
+msgstr "°°Àº ¿ä¼Ò <%2$s>¿¡ \"%1$s\"¼Ó¼ºÀÌ µÎ¹ø °ãÃÄÁ® ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "ì´ ë¬¸ë§¥ì˜ <%2$s> ìš”ì†Œì— ì†ì„± \"%1$s\"ì€(ëŠ”) ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "ÀÌ ¹®¸ÆÀÇ <%2$s> ¿ä¼Ò¿¡ ¼Ó¼º \"%1$s\"Àº(´Â) ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr "ì •ìˆ˜ %ldì€(ëŠ”) ì–‘ìˆ˜ì—¬ì•¼ í•©ë‹ˆë‹¤"
+msgstr "Á¤¼ö %ldÀº(´Â) ¾ç¼ö¿©¾ß ÇÕ´Ï´Ù"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "ì •ìˆ˜ %ldì´(ê°€) ë„ˆë¬´ í½ë‹ˆë‹¤, í˜„ì¬ ìµœëŒ€ê°’ì€ %d ì…ë‹ˆë‹¤"
+msgstr "Á¤¼ö %ldÀÌ(°¡) ³Ê¹« Å®´Ï´Ù, ÇöÀç ÃÖ´ë°ªÀº %d ÀÔ´Ï´Ù"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "ë¶€ë™ì†Œìˆ˜ì  ìˆ˜ \"%s\"(ìœ¼)ë¡œ ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "ºÎµ¿¼Ò¼öÁ¡ ¼ö \"%s\"(À¸)·Î ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Boolean ê°’ì€ \"true\"ì´ê±°ë‚˜ \"false\"ë§Œ ë©ë‹ˆë‹¤ \"%s\"ì€(ëŠ”) ì•ˆë©ë‹ˆë‹¤"
+msgstr "Boolean °ªÀº \"true\"ÀÌ°Å³ª \"false\"¸¸ µË´Ï´Ù \"%s\"Àº(´Â) ¾ÈµË´Ï´Ù"
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "ê°ë„ ê°’ì€ 0.0ê³¼ 360.0 ì‚¬ì´ì—¬ì•¼ í•©ë‹ˆë‹¤, %g(ìœ¼)ë¡œ ë˜ì–´ ìˆìŠµë‹ˆë‹¤\n"
+msgstr "°¢µµ °ªÀº 0.0°ú 360.0 »çÀÌ¿©¾ß ÇÕ´Ï´Ù, %g(À¸)·Î µÇ¾î ÀÖ½À´Ï´Ù\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"ì•ŒíŒŒ ê°’ì€ 0.0(ë³´ì´ì§€ ì•ŠìŒ)ê³¼ 1.0(ì™„ì „ ë¶ˆíˆ¬ëª…)ì‚¬ì´ì—¬ì•¼ í•©ë‹ˆë‹¤, %g(ìœ¼)ë¡œ ë˜ì–´ìˆ"
-"ìŠµë‹ˆë‹¤\n"
+"¾ËÆÄ °ªÀº 0.0(º¸ÀÌÁö ¾ÊÀ½)°ú 1.0(¿ÏÀü ºÒÅõ¸í)»çÀÌ¿©¾ß ÇÕ´Ï´Ù, %g(À¸)·Î µÇ¾îÀÖ"
+"½À´Ï´Ù\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1691,77 +1985,77 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"ì˜ëª»ëœ ì œëª© í™•ëŒ€ \"%s\" (xx-small, x-small, small, medium, large, x-large, "
-"xx-largeì¤‘ì— í•˜ë‚˜ì—¬ì•¼ í•©ë‹ˆë‹¤)\n"
+"Àß¸øµÈ Á¦¸ñ È®´ë \"%s\" (xx-small, x-small, small, medium, large, x-large, "
+"xx-largeÁß¿¡ ÇÏ³ª¿©¾ß ÇÕ´Ï´Ù)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%2$s> ì— \"%1$s\" ì†ì„± ì—†ìŒ"
+msgstr "¿ä¼Ò <%2$s> ¿¡ \"%1$s\" ¼Ó¼º ¾øÀ½"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "<%2$s> ìš”ì†Œì— \"%1$s\" ì†ì„± ì—†ìŒ"
+msgstr "<%2$s> ¿ä¼Ò¿¡ \"%1$s\" ¼Ó¼º ¾øÀ½"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> ì´ë¦„ \"%s\"ì´(ê°€) ë‘ë²ˆ ì‚¬ìš©ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "<%s> ÀÌ¸§ \"%s\"ÀÌ(°¡) µÎ¹ø »ç¿ëµÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> ë¶€ëª¨ \"%s\"ì€(ëŠ”) ì´ë¯¸ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "<%s> ºÎ¸ğ \"%s\"Àº(´Â) ÀÌ¹Ì ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> ìœ„ì¹˜ \"%s\"ì€(ëŠ”) ì´ë¯¸ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "<%s> À§Ä¡ \"%s\"Àº(´Â) ÀÌ¹Ì ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> ëŠ” ìœ„ì¹˜ë‚˜ ìœ„ì¹˜ë¥¼ ê°€ì§€ëŠ” ë¶€ëª¨ë¥¼ ì§€ì •í•˜ì—¬ì•¼ í•©ë‹ˆë‹¤"
+msgstr "<%s> ´Â À§Ä¡³ª À§Ä¡¸¦ °¡Áö´Â ºÎ¸ğ¸¦ ÁöÁ¤ÇÏ¿©¾ß ÇÕ´Ï´Ù"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "<%2$s> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” í˜•ì‹ \"%1$s\""
+msgstr "<%2$s> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â Çü½Ä \"%1$s\""
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "<%2$s> ìš”ì†Œì— ì•Œ ìˆ˜ ì—†ëŠ” ìŠ¤í‹°ì¼ ì…‹ \"%1$s\""
+msgstr "<%2$s> ¿ä¼Ò¿¡ ¾Ë ¼ö ¾ø´Â ½ºÆ¼ÀÏ ¼Â \"%1$s\""
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "ì°½ í˜•ì‹ \"%s\"ì€(ëŠ”) ì´ë¯¸ ìŠ¤íƒ€ì¼ ì…‹ìœ¼ë¡œ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "Ã¢ Çü½Ä \"%s\"Àº(´Â) ÀÌ¹Ì ½ºÅ¸ÀÏ ¼ÂÀ¸·Î ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "ë©”ë‰´ ì•„ì´ì½˜ì˜ ì•Œ ìˆ˜ ì—†ëŠ” ê¸°ëŠ¥ \"%s\""
+msgstr "¸Ş´º ¾ÆÀÌÄÜÀÇ ¾Ë ¼ö ¾ø´Â ±â´É \"%s\""
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "ë©”ë‰´ ì•„ì´ì½˜ì˜ ì•Œ ìˆ˜ ì—†ëŠ” ìƒíƒœ \"%s\""
+msgstr "¸Ş´º ¾ÆÀÌÄÜÀÇ ¾Ë ¼ö ¾ø´Â »óÅÂ \"%s\""
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "í…Œë§ˆì— ê¸°ëŠ¥ %s ìƒíƒœ %sì— ëŒ€í•œ ë©”ë‰´ì•„ì´ì½˜ì´ ìˆìŠµë‹ˆë‹¤"
+msgstr "Å×¸¶¿¡ ±â´É %s »óÅÂ %s¿¡ ´ëÇÑ ¸Ş´º¾ÆÀÌÄÜÀÌ ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "ì´ë¦„ \"%s\"ì„(ë¥¼) ê°€ì§€ëŠ” <draw_ops>ê°€ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "ÀÌ¸§ \"%s\"À»(¸¦) °¡Áö´Â <draw_ops>°¡ ÁöÁ¤µÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1769,85 +2063,85 @@ msgstr "ì´ë¦„ \"%s\"ì„(ë¥¼) ê°€ì§€ëŠ” <draw_ops>ê°€ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "ìš”ì†Œ <%s>ì´(ê°€) <%s>ì•„ë˜ì— í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>ÀÌ(°¡) <%s>¾Æ·¡¿¡ Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "<%s>ìš”ì†Œì— \"name\" ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s>¿ä¼Ò¿¡ \"name\" ¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"value\" ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"value\" ¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
-"button_width/button_height ì™€ ë‹¨ì¶”ì˜ ê°€ë¡œì„¸ë¡œ ë¹„ë¥¼ í•œêº¼ë²ˆì— ì§€ì •í•  ìˆ˜ ì—†ìŠµë‹ˆ"
-"ë‹¤"
+"button_width/button_height ¿Í ´ÜÃßÀÇ °¡·Î¼¼·Î ºñ¸¦ ÇÑ²¨¹ø¿¡ ÁöÁ¤ÇÒ ¼ö ¾ø½À´Ï"
+"´Ù"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "ê±°ë¦¬ \"%s\"ì„(ë¥¼) ì•Œ ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "°Å¸® \"%s\"À»(¸¦) ¾Ë ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "ê°€ë¡œì„¸ë¡œë¹„ \"%s\"ì„(ë¥¼) ì•Œ ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "°¡·Î¼¼·Îºñ \"%s\"À»(¸¦) ¾Ë ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"top\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"top\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"bottom\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"bottom\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"left\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"left\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"right\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"right\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "ê°€ì¥ìë¦¬ \"%s\"ì„(ë¥¼) ì•Œ ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "°¡ÀåÀÚ¸® \"%s\"À»(¸¦) ¾Ë ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"color\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"color\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"x1\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"x1\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"y1\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"y1\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"x2\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"x2\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"y2\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"y2\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -1855,7 +2149,7 @@ msgstr "ìš”ì†Œ <%s>ì— \"y2\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"x\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"x\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -1863,176 +2157,176 @@ msgstr "ìš”ì†Œ <%s>ì— \"x\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"y\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"y\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"width\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"width\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"height\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"height\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"start_angle\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"start_angle\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"extent_angle\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"extent_angle\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"alpha\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"alpha\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"type\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"type\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "ì„œì„œíˆ ë³€í•˜ëŠ” ìƒ‰ í˜•ì‹ ê°’ \"%s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¼­¼­È÷ º¯ÇÏ´Â »ö Çü½Ä °ª \"%s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"filename\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"filename\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "<%2$s>ìš”ì†Œì˜ ì±„ìš°ê¸° í˜•ì‹ \"%1$s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%2$s>¿ä¼ÒÀÇ Ã¤¿ì±â Çü½Ä \"%1$s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"state\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"state\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"shadow\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"shadow\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "ìš”ì†Œ <%s>ì— \"arrow\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¿¡ \"arrow\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "<%2$s>ìš”ì†Œì˜ state \"%1$s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%2$s>¿ä¼ÒÀÇ state \"%1$s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "<%2$s>ìš”ì†Œì˜ shadow \"%1$s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%2$s>¿ä¼ÒÀÇ shadow \"%1$s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "<%2$s>ìš”ì†Œì˜ arrow \"%1$s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%2$s>¿ä¼ÒÀÇ arrow \"%1$s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "\"%s\"ë¼ ë¶ˆë¦¬ëŠ” <draw_ops>ëŠ” ì •ì˜ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "\"%s\"¶ó ºÒ¸®´Â <draw_ops>´Â Á¤ÀÇµÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "draw_opsë¥¼ í¬í•¨í•˜ëŠ” \"%s\"ì´(ê°€) ìê¸° ìì‹ ì„ ì°¸ì¡°í•˜ê³  ìˆìŠµë‹ˆë‹¤"
+msgstr "draw_ops¸¦ Æ÷ÇÔÇÏ´Â \"%s\"ÀÌ(°¡) ÀÚ±â ÀÚ½ÅÀ» ÂüÁ¶ÇÏ°í ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"value\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"value\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"position\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"position\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "í”„ë ˆì„ ì¡°ê°ì— ëŒ€í•œ ì•Œ ìˆ˜ ì—†ëŠ” ìœ„ì¹˜ \"%s\""
+msgstr "ÇÁ·¹ÀÓ Á¶°¢¿¡ ´ëÇÑ ¾Ë ¼ö ¾ø´Â À§Ä¡ \"%s\""
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "í”„ë ˆì„ ìŠ¤íƒ€ì¼ì€ ì´ë¯¸ %s ìœ„ì¹˜ì— ì¡°ê°ì´ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÇÁ·¹ÀÓ ½ºÅ¸ÀÏÀº ÀÌ¹Ì %s À§Ä¡¿¡ Á¶°¢ÀÌ ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"function\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"function\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"state\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"state\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "ë‹¨ì¶”ì— ì•Œ ìˆ˜ ì—†ëŠ” ê¸°ëŠ¥ \"%s\""
+msgstr "´ÜÃß¿¡ ¾Ë ¼ö ¾ø´Â ±â´É \"%s\""
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "ë‹¨ì¶”ì— ì•Œ ìˆ˜ ì—†ëŠ” ìƒíƒœ \"%s\""
+msgstr "´ÜÃß¿¡ ¾Ë ¼ö ¾ø´Â »óÅÂ \"%s\""
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "í”„ë ˆì„ ìŠ¤íƒ€ì¼ì— ë‹¨ì¶”ì˜ ê¸°ëŠ¥ %s ìƒíƒœ %sì´(ê°€) ì´ë¯¸ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÇÁ·¹ÀÓ ½ºÅ¸ÀÏ¿¡ ´ÜÃßÀÇ ±â´É %s »óÅÂ %sÀÌ(°¡) ÀÌ¹Ì ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"focus\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"focus\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "<%s> ìš”ì†Œì— \"style\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s> ¿ä¼Ò¿¡ \"style\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\"ì€(ëŠ”) focus ì†ì„±ì— ëŒ€í•œ ì˜¬ë°”ë¥¸ ê°’ì´ ì•„ë‹™ë‹ˆë‹¤"
+msgstr "\"%s\"Àº(´Â) focus ¼Ó¼º¿¡ ´ëÇÑ ¿Ã¹Ù¸¥ °ªÀÌ ¾Æ´Õ´Ï´Ù"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\"ì€(ëŠ”) state ì†ì„±ì— ëŒ€í•œ ì˜¬ë°”ë¥¸ ê°’ì´ ì•„ë‹™ë‹ˆë‹¤"
+msgstr "\"%s\"Àº(´Â) state ¼Ó¼º¿¡ ´ëÇÑ ¿Ã¹Ù¸¥ °ªÀÌ ¾Æ´Õ´Ï´Ù"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "\"%s\"(ì´)ë¼ëŠ” ìŠ¤íƒ€ì¼ì€ ì •ì˜ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "\"%s\"(ÀÌ)¶ó´Â ½ºÅ¸ÀÏÀº Á¤ÀÇµÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "<%s>ìš”ì†Œì— \"resize\"ì†ì„±ì´ ì—†ìŠµë‹ˆë‹¤"
+msgstr "<%s>¿ä¼Ò¿¡ \"resize\"¼Ó¼ºÀÌ ¾ø½À´Ï´Ù"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "resize ì†ì„±ì— \"%s\"ì€(ëŠ”) ì˜¬ë°”ë¥¸ ê°’ì´ ì•„ë‹™ë‹ˆë‹¤"
+msgstr "resize ¼Ó¼º¿¡ \"%s\"Àº(´Â) ¿Ã¹Ù¸¥ °ªÀÌ ¾Æ´Õ´Ï´Ù"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2040,163 +2334,163 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"maximized/shaded ìƒíƒœì—ì„œ <%s> ìš”ì†ŒëŠ” \"resize\" ì†ì„±ì„ ê°€ì§€ì§€ ì•ŠìŠµë‹ˆë‹¤"
+"maximized/shaded »óÅÂ¿¡¼­ <%s> ¿ä¼Ò´Â \"resize\" ¼Ó¼ºÀ» °¡ÁöÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "ìŠ¤íƒ€ì¼ì— ìƒíƒœ %s í¬ê¸° ì¡°ì ˆ %s ì´ˆì  %sì— ëŒ€í•´ ì´ë¯¸ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "½ºÅ¸ÀÏ¿¡ »óÅÂ %s Å©±â Á¶Àı %s ÃÊÁ¡ %s¿¡ ´ëÇØ ÀÌ¹Ì ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "ìŠ¤íƒ€ì¼ì— ìƒíƒœ %s ì´ˆì  %sì— ëŒ€í•´ ì´ë¯¸ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "½ºÅ¸ÀÏ¿¡ »óÅÂ %s ÃÊÁ¡ %s¿¡ ´ëÇØ ÀÌ¹Ì ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<piece> ìš”ì†Œì— ë‘ê°œì˜ draw_opsë¥¼ ê°€ì§ˆìˆ˜ ì—†ìŠµë‹ˆë‹¤ (í…Œë§ˆì— draw_ops ì†ì„±ê³¼ "
-"<draw_ops>ìš”ì†Œë¥¼ ì§€ì •í–ˆê±°ë‚˜ ë‘ ìš”ì†Œë¥¼ ì§€ì •í–ˆìŠµë‹ˆë‹¤"
+"<piece> ¿ä¼Ò¿¡ µÎ°³ÀÇ draw_ops¸¦ °¡Áú¼ö ¾ø½À´Ï´Ù (Å×¸¶¿¡ draw_ops ¼Ó¼º°ú "
+"<draw_ops>¿ä¼Ò¸¦ ÁöÁ¤Çß°Å³ª µÎ ¿ä¼Ò¸¦ ÁöÁ¤Çß½À´Ï´Ù"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<button> ìš”ì†Œì— ë‘ê°œì˜ draw_opsë¥¼ ê°€ì§ˆìˆ˜ ì—†ìŠµë‹ˆë‹¤ (í…Œë§ˆì— draw_ops ì†ì„±ê³¼ "
-"<draw_ops>ìš”ì†Œë¥¼ ì§€ì •í–ˆê±°ë‚˜ ë‘ ìš”ì†Œë¥¼ ì§€ì •í–ˆìŠµë‹ˆë‹¤"
+"<button> ¿ä¼Ò¿¡ µÎ°³ÀÇ draw_ops¸¦ °¡Áú¼ö ¾ø½À´Ï´Ù (Å×¸¶¿¡ draw_ops ¼Ó¼º°ú "
+"<draw_ops>¿ä¼Ò¸¦ ÁöÁ¤Çß°Å³ª µÎ ¿ä¼Ò¸¦ ÁöÁ¤Çß½À´Ï´Ù"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<menu_icon> ìš”ì†Œì— ë‘ê°œì˜ draw_opsë¥¼ ê°€ì§ˆìˆ˜ ì—†ìŠµë‹ˆë‹¤ (í…Œë§ˆì— draw_ops ì†ì„±ê³¼ "
-"<draw_ops>ìš”ì†Œë¥¼ ì§€ì •í–ˆê±°ë‚˜ ë‘ ìš”ì†Œë¥¼ ì§€ì •í–ˆìŠµë‹ˆë‹¤"
+"<menu_icon> ¿ä¼Ò¿¡ µÎ°³ÀÇ draw_ops¸¦ °¡Áú¼ö ¾ø½À´Ï´Ù (Å×¸¶¿¡ draw_ops ¼Ó¼º°ú "
+"<draw_ops>¿ä¼Ò¸¦ ÁöÁ¤Çß°Å³ª µÎ ¿ä¼Ò¸¦ ÁöÁ¤Çß½À´Ï´Ù"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "í…Œë§ˆì˜ Outermost ìš”ì†ŒëŠ” <%s>ì´(ê°€) ì•„ë‹ˆë¼ <metacity_theme>ì—¬ì•¼ í•©ë‹ˆë‹¤"
+msgstr "Å×¸¶ÀÇ Outermost ¿ä¼Ò´Â <%s>ÀÌ(°¡) ¾Æ´Ï¶ó <metacity_theme>¿©¾ß ÇÕ´Ï´Ù"
 
 #: src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
-"name/author/date/description ìš”ì†Œ ì•ˆì—ì„œ ìš”ì†Œ <%s>ì´(ê°€) í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+"name/author/date/description ¿ä¼Ò ¾È¿¡¼­ ¿ä¼Ò <%s>ÀÌ(°¡) Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "<constant> ìš”ì†Œ ì•ˆì—ì„œ ìš”ì†Œ <%s>ì´(ê°€) í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "<constant> ¿ä¼Ò ¾È¿¡¼­ ¿ä¼Ò <%s>ÀÌ(°¡) Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3696
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
-"distance/border/aspect_ratio ìš”ì†Œ ì•ˆì—ì„œ ìš”ì†Œ <%s>ì´(ê°€) í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+"distance/border/aspect_ratio ¿ä¼Ò ¾È¿¡¼­ ¿ä¼Ò <%s>ÀÌ(°¡) Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "draw operation ìš”ì†Œ ì•ˆì—ì„œ ìš”ì†Œ <%s>ì´(ê°€) í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "draw operation ¿ä¼Ò ¾È¿¡¼­ ¿ä¼Ò <%s>ÀÌ(°¡) Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "<%2$s>ìš”ì†Œ ì•ˆì—ì„œ ìš”ì†Œ <%1$s>ì´(ê°€) í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "<%2$s>¿ä¼Ò ¾È¿¡¼­ ¿ä¼Ò <%1$s>ÀÌ(°¡) Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr "í”„ë ˆì„ ì¡°ê°ì— draw_opsê°€ ì œê³µí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "ÇÁ·¹ÀÓ Á¶°¢¿¡ draw_ops°¡ Á¦°øÇÏÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr "ë‹¨ì¶”ì— draw_opsê°€ ì œê³µë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "´ÜÃß¿¡ draw_ops°¡ Á¦°øµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr "ë©”ë‰´ ì•„ì´ì½˜ì— draw_opsê°€ ì œê³µë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "¸Ş´º ¾ÆÀÌÄÜ¿¡ draw_ops°¡ Á¦°øµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr "ìš”ì†Œ <%s>ì•ˆì— í…ìŠ¤íŠ¸ê°€ í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "¿ä¼Ò <%s>¾È¿¡ ÅØ½ºÆ®°¡ Çã¿ëµÇÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr "ì´ í…Œë§ˆì—ì„œ <name>ì´ ë‘ë²ˆ ì§€ì •ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÀÌ Å×¸¶¿¡¼­ <name>ÀÌ µÎ¹ø ÁöÁ¤µÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr "ì´ í…Œë§ˆì—ì„œ <author>ê°€ ë‘ë²ˆ ì§€ì •ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÀÌ Å×¸¶¿¡¼­ <author>°¡ µÎ¹ø ÁöÁ¤µÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr "ì´ í…Œë§ˆì—ì„œ <copyright>ê°€ ë‘ë²ˆ ì§€ì •ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÀÌ Å×¸¶¿¡¼­ <copyright>°¡ µÎ¹ø ÁöÁ¤µÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr "ì´ í…Œë§ˆì—ì„œ <date>ê°€ ë‘ë²ˆ ì§€ì •ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÀÌ Å×¸¶¿¡¼­ <date>°¡ µÎ¹ø ÁöÁ¤µÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr "ì´ í…Œë§ˆì—ì„œ <description>ê°€ ë‘ë²ˆ ì§€ì •ë˜ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÀÌ Å×¸¶¿¡¼­ <description>°¡ µÎ¹ø ÁöÁ¤µÇ¾ú½À´Ï´Ù"
 
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "íŒŒì¼ %sì—ì„œ í…Œë§ˆ ì½ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "ÆÄÀÏ %s¿¡¼­ Å×¸¶ ÀĞ±â ½ÇÆĞ: %s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "í…Œë§ˆ íŒŒì¼ %sì´(ê°€) root <metacity_theme> ìš”ì†Œë¥¼ í¬í•¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "Å×¸¶ ÆÄÀÏ %sÀÌ(°¡) root <metacity_theme> ¿ä¼Ò¸¦ Æ÷ÇÔÇÏÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme.c:202
 msgid "top"
-msgstr "ë§¨ ìœ„"
+msgstr "¸Ç À§"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr "ë§¨ ì•„ë˜"
+msgstr "¸Ç ¾Æ·¡"
 
 #: src/theme.c:206
 msgid "left"
-msgstr "ì™¼ìª½"
+msgstr "¿ŞÂÊ"
 
 #: src/theme.c:208
 msgid "right"
-msgstr "ì˜¤ë¥¸ìª½"
+msgstr "¿À¸¥ÂÊ"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "í”„ë ˆì„ ìœ„ì¹˜ê°€ \"%s\"ì°¨ì›ìœ¼ë¡œ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "ÇÁ·¹ÀÓ À§Ä¡°¡ \"%s\"Â÷¿øÀ¸·Î ÁöÁ¤µÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
-"í”„ë ˆì„ ìœ„ì¹˜ê°€ ê°€ì¥ìë¦¬ \"%2$s\" ê°€ì¥ìë¦¬ì˜ \"%1$s\"ì°¨ì›ìœ¼ë¡œ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆ"
-"ë‹¤."
+"ÇÁ·¹ÀÓ À§Ä¡°¡ °¡ÀåÀÚ¸® \"%2$s\" °¡ÀåÀÚ¸®ÀÇ \"%1$s\"Â÷¿øÀ¸·Î ÁöÁ¤µÇÁö ¾Ê¾Ò½À´Ï"
+"´Ù."
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "ë‹¨ì¶”ì˜ ê°€ë¡œì„¸ë¡œ ë¹„ %gì´(ê°€) ì ë‹¹í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤"
+msgstr "´ÜÃßÀÇ °¡·Î¼¼·Î ºñ %gÀÌ(°¡) Àû´çÇÏÁö ¾Ê½À´Ï´Ù"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr "í”„ë ˆì„ ìœ„ì¹˜ê°€ ë‹¨ì¶”ì˜ í¬ê¸°ë¡œ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "ÇÁ·¹ÀÓ À§Ä¡°¡ ´ÜÃßÀÇ Å©±â·Î ÁöÁ¤µÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr "ì„œì„œíˆ ë³€í•˜ëŠ” ìƒ‰ìœ¼ë¡œ ì§€ì •í•˜ë ¤ë©´ ìµœì†Œ 2ìƒ‰ì´ í•„ìš”í•©ë‹ˆë‹¤"
+msgstr "¼­¼­È÷ º¯ÇÏ´Â »öÀ¸·Î ÁöÁ¤ÇÏ·Á¸é ÃÖ¼Ò 2»öÀÌ ÇÊ¿äÇÕ´Ï´Ù"
 
 #: src/theme.c:975
 #, c-format
@@ -2204,8 +2498,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK ìƒ‰ìƒ ì§€ì •ì€ ì¤‘ê´„í˜¸ì•ˆì— ìˆì–´ì•¼ í•©ë‹ˆë‹¤, ì˜ˆ: gtk:fg[NORMAL] NORMALì€ ê°’; \"%"
-"s\"ì„(ë¥¼) ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+"GTK »ö»ó ÁöÁ¤Àº Áß°ıÈ£¾È¿¡ ÀÖ¾î¾ß ÇÕ´Ï´Ù, ¿¹: gtk:fg[NORMAL] NORMALÀº °ª; \"%"
+"s\"À»(¸¦) ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:989
 #, c-format
@@ -2213,18 +2507,18 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK ìƒ‰ìƒ ì§€ì •ì€ ê°’ ë’¤ì— ì¤‘ê´„í˜¸ë¡œ ë‹«í˜€ ìˆì–´ì•¼ í•©ë‹ˆë‹¤, ì˜ˆ: gtk:fg[NORMAL]NORMAL"
-"ì€ ê°’; \"%s\"ì„(ë¥¼) ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+"GTK »ö»ó ÁöÁ¤Àº °ª µÚ¿¡ Áß°ıÈ£·Î ´İÇô ÀÖ¾î¾ß ÇÕ´Ï´Ù, ¿¹: gtk:fg[NORMAL]NORMAL"
+"Àº °ª; \"%s\"À»(¸¦) ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "ìƒ‰ìƒ ì§€ì •ì˜ \"%s\" ê°’ì„ ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "»ö»ó ÁöÁ¤ÀÇ \"%s\" °ªÀ» ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "ìƒ‰ìƒ ì§€ì •ì˜ ìƒ‰ìƒ êµ¬ì„±ìš”ì†Œ \"%s\"ì„(ë¥¼) ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "»ö»ó ÁöÁ¤ÀÇ »ö»ó ±¸¼º¿ä¼Ò \"%s\"À»(¸¦) ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1043
 #, c-format
@@ -2232,58 +2526,58 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"ì„ê¸° í˜•ì‹ì€ \"blend/bg_color/fg_color/alpha\"ì…ë‹ˆë‹¤, \"%s\"ì€(ëŠ”) í˜•ì‹ì— ë§"
-"ì§€ ì•ŠìŠµë‹ˆë‹¤"
+"¼¯±â Çü½ÄÀº \"blend/bg_color/fg_color/alpha\"ÀÔ´Ï´Ù, \"%s\"Àº(´Â) Çü½Ä¿¡ ¸Â"
+"Áö ¾Ê½À´Ï´Ù"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "ìƒ‰ìƒ ì„ê¸°ì—ì„œ ì•ŒíŒŒ ê°’ \"%s\"ì„(ë¥¼) ë¶„ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "»ö»ó ¼¯±â¿¡¼­ ¾ËÆÄ °ª \"%s\"À»(¸¦) ºĞ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "ìƒ‰ìƒ ì„ê¸°ì—ì„œ ì•ŒíŒŒ ê°’ \"%s\"ì€(ëŠ”) 0.0 ê³¼ 1.0ì‚¬ì´ì˜ ê°’ì´ ì•„ë‹™ë‹ˆë‹¤"
+msgstr "»ö»ó ¼¯±â¿¡¼­ ¾ËÆÄ °ª \"%s\"Àº(´Â) 0.0 °ú 1.0»çÀÌÀÇ °ªÀÌ ¾Æ´Õ´Ï´Ù"
 
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"ê·¸ë¦¼ì í˜•ì‹ì€ \"shade/base_color/format\"ì…ë‹ˆë‹¤, \"%s\"(ì€)ëŠ” í˜•ì‹ì— ë§ì§€ ì•Š"
-"ìŠµë‹ˆë‹¤"
+"±×¸²ÀÚ Çü½ÄÀº \"shade/base_color/format\"ÀÔ´Ï´Ù, \"%s\"(Àº)´Â Çü½Ä¿¡ ¸ÂÁö ¾Ê"
+"½À´Ï´Ù"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "ê·¸ë¦¼ììƒ‰ì—ì„œ ê·¸ë¦¼ì ì¸ì \"%s\"(ì„)ë¥¼ í•´ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "±×¸²ÀÚ»ö¿¡¼­ ±×¸²ÀÚ ÀÎÀÚ \"%s\"(À»)¸¦ ÇØ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "ê·¸ë¦¼ììƒ‰ì—ì„œ ê·¸ë¦¼ì ì¸ì \"%s\"(ì€)ëŠ” ìŒìˆ˜ì…ë‹ˆë‹¤"
+msgstr "±×¸²ÀÚ»ö¿¡¼­ ±×¸²ÀÚ ÀÎÀÚ \"%s\"(Àº)´Â À½¼öÀÔ´Ï´Ù"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "ìƒ‰ìƒ \"%s\"ì„(ë¥¼) í•´ì„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "»ö»ó \"%s\"À»(¸¦) ÇØ¼®ÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "ì¢Œí‘œì‹ì— í—ˆìš©ë˜ì§€ ì•ŠëŠ” ë¬¸ì '%s'(ì´)ê°€ í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ Çã¿ëµÇÁö ¾Ê´Â ¹®ÀÚ '%s'(ÀÌ)°¡ Æ÷ÇÔµÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1450
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "ì¢Œí‘œì‹ì— ë¶„ì„í•  ìˆ˜ ì—†ëŠ” ë¶€ë™ì†Œìˆ˜ì  ìˆ«ì '%s'ì´(ê°€) í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ºĞ¼®ÇÒ ¼ö ¾ø´Â ºÎµ¿¼Ò¼öÁ¡ ¼ıÀÚ '%s'ÀÌ(°¡) Æ÷ÇÔµÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "ì¢Œí‘œì‹ì— ë¶„ì„í•  ìˆ˜ ì—†ëŠ” ì •ìˆ˜ '%s'ì´(ê°€) í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ºĞ¼®ÇÒ ¼ö ¾ø´Â Á¤¼ö '%s'ÀÌ(°¡) Æ÷ÇÔµÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1531
 #, c-format
@@ -2291,34 +2585,34 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"ì¢Œí‘œì‹ì— ì´ ê¸€ì ì‹œì‘ë¶€ë¶„ì— ì•Œ ìˆ˜ ì—†ëŠ” ì—°ì‚°ìê°€ í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤: \"%s\""
+"ÁÂÇ¥½Ä¿¡ ÀÌ ±ÛÀÚ ½ÃÀÛºÎºĞ¿¡ ¾Ë ¼ö ¾ø´Â ¿¬»êÀÚ°¡ Æ÷ÇÔµÇ¾î ÀÖ½À´Ï´Ù: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr "ì¢Œí‘œì‹ì´ ë¹„ì–´ìˆê±°ë‚˜ ì´í•´í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½ÄÀÌ ºñ¾îÀÖ°Å³ª ÀÌÇØÇÒ ¼ö ¾ø½À´Ï´Ù"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr "ì¢Œí‘œì‹ì˜ ê²°ê³¼ ê°’ì´ 0ë¡œ ë‚˜ëˆ„ì—ˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½ÄÀÇ °á°ú °ªÀÌ 0·Î ³ª´©¾ú½À´Ï´Ù"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "ì¢Œí‘œì‹ì—ì„œ ë¶€ë™ì†Œìˆ˜ì  ìˆ˜ì— ë‚˜ë¨¸ì§€ ì—°ì‚°ì„ í•˜ë ¤ í•©ë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡¼­ ºÎµ¿¼Ò¼öÁ¡ ¼ö¿¡ ³ª¸ÓÁö ¿¬»êÀ» ÇÏ·Á ÇÕ´Ï´Ù"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "ì¢Œí‘œì‹ì—ì„œ í”¼ì—°ì‚°ìê°€ ë“¤ì–´ê°ˆ ê³³ì— ì—°ì‚°ì \"%s\"ì´(ê°€) ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡¼­ ÇÇ¿¬»êÀÚ°¡ µé¾î°¥ °÷¿¡ ¿¬»êÀÚ \"%s\"ÀÌ(°¡) ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "ì¢Œí‘œì‹ì—ì„œ ì—°ì‚°ìê°€ ë“¤ì–´ê°ˆ ê³³ì— í”¼ì—°ì‚°ìê°€ ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡¼­ ¿¬»êÀÚ°¡ µé¾î°¥ °÷¿¡ ÇÇ¿¬»êÀÚ°¡ ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "ì¢Œí‘œì‹ì—ì„œ í”¼ì—°ì‚°ì ëŒ€ì‹ ì— ì—°ì‚°ìë¡œ ëë‚˜ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡¼­ ÇÇ¿¬»êÀÚ ´ë½Å¿¡ ¿¬»êÀÚ·Î ³¡³ªÀÖ½À´Ï´Ù"
 
 #: src/theme.c:1863
 #, c-format
@@ -2326,38 +2620,38 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"ì¢Œí‘œì‹ì—ì„œ í”¼ì—°ì‚°ìê°€ ì—†ëŠ” ì—°ì‚°ì \"%2$c\"ë‹¤ìŒì— ì—°ì‚°ì \"%1$c\"ì´(ê°€) ìˆìŠµë‹ˆ"
-"ë‹¤"
+"ÁÂÇ¥½Ä¿¡¼­ ÇÇ¿¬»êÀÚ°¡ ¾ø´Â ¿¬»êÀÚ \"%2$c\"´ÙÀ½¿¡ ¿¬»êÀÚ \"%1$c\"ÀÌ(°¡) ÀÖ½À´Ï"
+"´Ù"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"ì¢Œí‘œì‹ ë¶„ì„ê¸°ì˜ ë²„í¼ê°€ ë„˜ì³¤ìŠµë‹ˆë‹¤. ì´ê²ƒì€ Metacityì˜ ë²Œë ˆì…ë‹ˆë‹¤, í•˜ì§€ë§Œ í˜¹ì‹œ "
-"ê·¸ì™€ ê°™ì€ ì•„ì£¼ í° í‘œí˜„ì‹ì´ í•„ìš”í•©ë‹ˆê¹Œ?"
+"ÁÂÇ¥½Ä ºĞ¼®±âÀÇ ¹öÆÛ°¡ ³ÑÃÆ½À´Ï´Ù. ÀÌ°ÍÀº MetacityÀÇ ¹ú·¹ÀÔ´Ï´Ù, ÇÏÁö¸¸ È¤½Ã "
+"±×¿Í °°Àº ¾ÆÁÖ Å« Ç¥Çö½ÄÀÌ ÇÊ¿äÇÕ´Ï±î?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "ì¢Œí‘œì‹ì— ë‹«ëŠ” ê´„í˜¸ëŠ” ìˆì§€ë§Œ ì—¬ëŠ” ê´„í˜¸ê°€ ì—†ìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ´İ´Â °ıÈ£´Â ÀÖÁö¸¸ ¿©´Â °ıÈ£°¡ ¾ø½À´Ï´Ù"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "ì¢Œí‘œì‹ì— ì•Œ ìˆ˜ ì—†ëŠ” ë³€ìˆ˜ë‚˜ ìƒìˆ˜ \"%s\"ì´(ê°€) ìˆìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ¾Ë ¼ö ¾ø´Â º¯¼ö³ª »ó¼ö \"%s\"ÀÌ(°¡) ÀÖ½À´Ï´Ù"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "ì¢Œí‘œì‹ì— ì—¬ëŠ” ê´„í˜¸ëŠ” ìˆì§€ë§Œ ë‹«ëŠ” ê´„í˜¸ê°€ ì—†ìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ¿©´Â °ıÈ£´Â ÀÖÁö¸¸ ´İ´Â °ıÈ£°¡ ¾ø½À´Ï´Ù"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "ì¢Œí‘œì‹ì— ì–´ë– í•œ ì—°ì‚°ìë‚˜ í”¼ì—°ì‚°ìê°€ ì—†ìŠµë‹ˆë‹¤"
+msgstr "ÁÂÇ¥½Ä¿¡ ¾î¶°ÇÑ ¿¬»êÀÚ³ª ÇÇ¿¬»êÀÚ°¡ ¾ø½À´Ï´Ù"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "í…Œë§ˆê°€ ì˜¤ë¥˜ ê°’ì„ ë‚´ëŠ” í‘œí˜„ \"%s\"ì„(ë¥¼) í¬í•¨í•˜ê³  ìˆìŠµë‹ˆë‹¤: %s\n"
+msgstr "Å×¸¶°¡ ¿À·ù °ªÀ» ³»´Â Ç¥Çö \"%s\"À»(¸¦) Æ÷ÇÔÇÏ°í ÀÖ½À´Ï´Ù: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2365,27 +2659,27 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"ì´ í”„ë ˆì„ ìŠ¤íƒ€ì¼ì—ëŠ” <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
-"\"/>ê°€ ì§€ì •ë˜ì–´ì•¼ í•©ë‹ˆë‹¤"
+"ÀÌ ÇÁ·¹ÀÓ ½ºÅ¸ÀÏ¿¡´Â <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
+"\"/>°¡ ÁöÁ¤µÇ¾î¾ß ÇÕ´Ï´Ù"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> ê°€ ì—†ìŠµë‹ˆ"
-"ë‹¤"
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> °¡ ¾ø½À´Ï"
+"´Ù"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "í…Œë§ˆ \"%s\"ì„(ë¥¼) ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: %s\n"
+msgstr "Å×¸¶ \"%s\"À»(¸¦) ÀĞÀ» ¼ö ¾ø½À´Ï´Ù: %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "í…Œë§ˆ \"%2$s\"ì˜ <%1$s>(ì´)ê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤"
+msgstr "Å×¸¶ \"%2$s\"ÀÇ <%1$s>(ÀÌ)°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù"
 
 #: src/theme.c:4629
 #, c-format
@@ -2393,8 +2687,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"í…Œë§ˆ \"%2$s\"ì˜ ì°½ í˜•ì‹ \"%1$s\"ì— ëŒ€í•œ í”„ë ˆì„ ìŠ¤íƒ€ì¼ì´ ì—†ìŠµë‹ˆë‹¤,<window "
-"type=\"%3$s\" style_set=\"whatever\"/> ìš”ì†Œë¥¼ ë”í•˜ì‹­ì‹œì˜¤"
+"Å×¸¶ \"%2$s\"ÀÇ Ã¢ Çü½Ä \"%1$s\"¿¡ ´ëÇÑ ÇÁ·¹ÀÓ ½ºÅ¸ÀÏÀÌ ¾ø½À´Ï´Ù,<window "
+"type=\"%3$s\" style_set=\"whatever\"/> ¿ä¼Ò¸¦ ´õÇÏ½Ê½Ã¿À"
 
 #: src/theme.c:4651
 #, c-format
@@ -2402,84 +2696,84 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> ê°€ ì´ í…Œë§ˆì— "
-"ì§€ì •ë˜ì–´ ìˆì–´ì•¼ í•©ë‹ˆë‹¤"
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> °¡ ÀÌ Å×¸¶¿¡ "
+"ÁöÁ¤µÇ¾î ÀÖ¾î¾ß ÇÕ´Ï´Ù"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"ì‚¬ìš©ì ì •ì˜ ìƒìˆ˜ëŠ” ëŒ€ë¬¸ìë¡œ ì‹œì‘ë˜ì–´ì•¼ í•©ë‹ˆë‹¤; \"%s\"ì€(ëŠ”) ê·¸ë ‡ì§€ ì•ŠìŠµë‹ˆë‹¤"
+"»ç¿ëÀÚ Á¤ÀÇ »ó¼ö´Â ´ë¹®ÀÚ·Î ½ÃÀÛµÇ¾î¾ß ÇÕ´Ï´Ù; \"%s\"Àº(´Â) ±×·¸Áö ¾Ê½À´Ï´Ù"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "ìƒìˆ˜ \"%s\"ì€(ëŠ”) ì´ë¯¸ ì§€ì •ë˜ì–´ ìˆìŠµë‹ˆë‹¤"
+msgstr "»ó¼ö \"%s\"Àº(´Â) ÀÌ¹Ì ÁöÁ¤µÇ¾î ÀÖ½À´Ï´Ù"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr "ì°½ ì‚¬ì´ì— ì´ˆì ì£¼ëŠ” ë°©ë²•ì„ ì„ íƒí•©ë‹ˆë‹¤"
+msgstr "Ã¢ »çÀÌ¿¡ ÃÊÁ¡ÁÖ´Â ¹æ¹ıÀ» ¼±ÅÃÇÕ´Ï´Ù"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr "ì°½ ì´ˆì "
+msgstr "Ã¢ ÃÊÁ¡"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr "ë§ˆìš°ìŠ¤ë¥¼ ëˆ„ë¥´ë©´ ì´ˆì  ì£¼ê¸°(_K)"
+msgstr "¸¶¿ì½º¸¦ ´©¸£¸é ÃÊÁ¡ ÁÖ±â(_K)"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr "ì´ˆì  ì„¤ì •:"
+msgstr "ÃÊÁ¡ ¼³Á¤:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr "ì°½ ì´ˆì  ì„¸ë¶€ ì„¤ì •"
+msgstr "Ã¢ ÃÊÁ¡ ¼¼ºÎ ¼³Á¤"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr "ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì— ë”°ë¼ ì´ˆì  ì£¼ê¸°(_P)"
+msgstr "¸¶¿ì½º À§Ä¡¿¡ µû¶ó ÃÊÁ¡ ÁÖ±â(_P)"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr "ì´ˆì  ì£¼ë©´ ì°½ ë„ìš°ê¸°(_R)"
+msgstr "ÃÊÁ¡ ÁÖ¸é Ã¢ ¶ç¿ì±â(_R)"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "ë””ë²„ê·¸ ë¡œê·¸ ì—´ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "µğ¹ö±× ·Î±× ¿­±â ½ÇÆĞ: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "ë¡œê·¸ íŒŒì¼ %sì„(ë¥¼) fdopen()í•˜ê¸° ì‹¤íŒ¨: %s\n"
+msgstr "·Î±× ÆÄÀÏ %sÀ»(¸¦) fdopen()ÇÏ±â ½ÇÆĞ: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "ë¡œê·¸ íŒŒì¼ %sì„(ë¥¼) ì—½ë‹ˆë‹¤\n"
+msgstr "·Î±× ÆÄÀÏ %sÀ»(¸¦) ¿±´Ï´Ù\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr "ì°½ ê´€ë¦¬ì: "
+msgstr "Ã¢ °ü¸®ÀÚ: "
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr "ì°½ ê´€ë¦¬ìì˜ ë²Œë ˆ: "
+msgstr "Ã¢ °ü¸®ÀÚÀÇ ¹ú·¹: "
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr "ì°½ ê´€ë¦¬ì ì£¼ì˜: "
+msgstr "Ã¢ °ü¸®ÀÚ ÁÖÀÇ: "
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr "ì¥ ê´€ë¦¬ì ì˜¤ë¥˜: "
+msgstr "Àå °ü¸®ÀÚ ¿À·ù: "
 
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "ì‘ìš© í”„ë¡œê·¸ë¨ì´ ê°€ì§œ _NET_WM_PID %ldì„(ë¥¼) ì„¤ì •í•˜ì˜€ìŠµë‹ˆë‹¤\n"
+msgstr "ÀÀ¿ë ÇÁ·Î±×·¥ÀÌ °¡Â¥ _NET_WM_PID %ldÀ»(¸¦) ¼³Á¤ÇÏ¿´½À´Ï´Ù\n"
 
 #. first time through
 #: src/window.c:4540
@@ -2488,8 +2782,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"ì°½ %s(ì´)ê°€ ìì‹ ì—ê²Œ ICCCMì— ì €ì •í•œëŒ€ë¡œ WM_CLIENT_LEADERì°½ ëŒ€ì‹ ì— ìì‹ ì—ê²Œ "
-"SM_CLIENT_IDë¥¼ ì§€ì •í–ˆìŠµë‹ˆë‹¤.\n"
+"Ã¢ %s(ÀÌ)°¡ ÀÚ½Å¿¡°Ô ICCCM¿¡ ÀúÁ¤ÇÑ´ë·Î WM_CLIENT_LEADERÃ¢ ´ë½Å¿¡ ÀÚ½Å¿¡°Ô "
+"SM_CLIENT_ID¸¦ ÁöÁ¤Çß½À´Ï´Ù.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2504,9 +2798,11 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"%s Ã¢¿¡¼­ Å©±â º¯°æÀÌ ºÒ°¡´ÉÇÏ´Ù´Â MWM ÈùÆ®¸¦ ¼³Á¤ÇßÁö¸¸, ÃÖ¼Ò Å©±â(%d x %d) "
+"¹× ÃÖ´ë Å©±â(%d x %d)¸¦ ¼³Á¤Çß½À´Ï´Ù; ¾ÕµÚ°¡ ¸ÂÁö ¾Ê½À´Ï´Ù.\n"
 
 #: src/xprops.c:153
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
 "that was expected to have type %s format %d\n"
@@ -2514,18 +2810,21 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"ì°½ 0x%lxì˜ ë“±ë¡ ì •ë³´ %sì— í˜•ì‹ %s %dì´(ê°€) ë“¤ì–´ìˆì–´ì•¼ í•˜ëŠ”ë° ì‹¤ì œë¡œëŠ” í˜•ì‹ %"
-"s %d n_items %dì´(ê°€) ë“¤ì–´ìˆìŠµë‹ˆë‹¤\n"
+"Ã¢ 0x%lxÀÇ µî·Ï Á¤º¸ %s\n"
+"Çü½Ä %s %dÀÌ(°¡) µé¾îÀÖ¾î¾ß ÇÏ´Âµ¥\n"
+"½ÇÁ¦·Î´Â Çü½Ä %s %d n_items %dÀÌ(°¡) µé¾îÀÖ½À´Ï´Ù\n"
+"´ëºÎºĞÀº Ã¢ °ü¸®ÀÚ ¹ö±×°¡ ¾Æ´Ï¶ó ÀÀ¿ë ÇÁ·Î±×·¥ ¹ö±×ÀÔ´Ï´Ù.\n"
+"Ã¢ÀÇ Á¤º¸: title=\"%s\" class=\"%s\" name=\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "ì°½ 0x%2$lxì˜ ë“±ë¡ ì •ë³´ %1$sì€(ëŠ”) ì˜ëª»ëœ UTF-8ì„ í¬í•¨í•˜ê³  ìˆìŠµë‹ˆë‹¤\n"
+msgstr "Ã¢ 0x%2$lxÀÇ µî·Ï Á¤º¸ %1$sÀº(´Â) Àß¸øµÈ UTF-8À» Æ÷ÇÔÇÏ°í ÀÖ½À´Ï´Ù\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"ì°½ 0x%2$lxì˜ ë“±ë¡ ì •ë³´ %1$sì€(ëŠ”) ëª©ë¡ì•ˆì˜ í•­ëª© %3$dì— ì˜ëª»ëœ UTF-8ì„ í¬í•¨í•˜"
-"ê³  ìˆìŠµë‹ˆë‹¤\n"
+"Ã¢ 0x%2$lxÀÇ µî·Ï Á¤º¸ %1$sÀº(´Â) ¸ñ·Ï¾ÈÀÇ Ç×¸ñ %3$d¿¡ Àß¸øµÈ UTF-8À» Æ÷ÇÔÇÏ"
+"°í ÀÖ½À´Ï´Ù\n"
