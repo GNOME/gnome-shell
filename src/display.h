@@ -166,8 +166,8 @@ struct _MetaDisplay
   Atom atom_net_wm_state_below;
   Atom atom_net_startup_id;
   Atom atom_metacity_toggle_verbose;
-  Atom atom_metacity_update_counter;
-  Atom atom_sync_counter;
+  Atom atom_net_wm_sync_request;
+  Atom atom_net_wm_sync_request_counter;
   Atom atom_gnome_panel_action;
   Atom atom_gnome_panel_action_main_menu;
   Atom atom_gnome_panel_action_run_dialog;
@@ -258,9 +258,10 @@ struct _MetaDisplay
   int         xkb_base_event_type;
 #endif
 #ifdef HAVE_XSYNC
-  /* alarm monitoring client's _METACITY_UPDATE_COUNTER */
-  XSyncAlarm  grab_update_alarm;
+  /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
+  XSyncAlarm  grab_sync_request_alarm;
 #endif
+  int	      grab_resize_timeout_id;
 
   /* Keybindings stuff */
   MetaKeyBinding *screen_bindings;

@@ -544,7 +544,7 @@ counter_from_results (GetPropertyResults *results,
                       XSyncCounter       *counter_p)
 {
   if (!validate_or_free_results (results, 32,
-                                 results->display->atom_sync_counter,
+                                 XA_CARDINAL,
                                  TRUE))
     return FALSE;  
 
@@ -986,7 +986,7 @@ meta_prop_get_values (MetaDisplay   *display,
               values[i].required_type = XA_WM_SIZE_HINTS;
               break;
             case META_PROP_VALUE_SYNC_COUNTER:
-              values[i].required_type = display->atom_sync_counter;
+	      values[i].required_type = XA_CARDINAL;
               break;
             }
         }

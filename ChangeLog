@@ -1,3 +1,30 @@
+Sat Jun 19 02:21:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	Fix bug 143333, support for update counter spec, and 109362,
+	schedule compensation events when events are ignored.
+	
+	* src/display.c (meta_display_open): Add _NET_WM_SYNC_REQUEST and
+	_NET_WM_SYNC_REQUEST_COUNTER atoms. Remove the old
+	METACITY_SYNC_COUNTER stuff.
+	(meta_display_begin_op): Setup the sync counter
+
+	* src/xprops.c, src/xprops.h, src/window-props.c, src/display.h:
+	Add new atoms.
+	
+	* src/window.c (send_sync_request): new function.
+	(meta_window_move_resize_internal): send a sync request before
+	resizing.
+	(check_move_resize_frequence): Rework logic to also check the SYNC
+	case. If an event is ignored return the remaining time.
+	(update_resize_timeout): Timeout that gets called when a
+	compensation event is scheduled.
+	(uddate_resize): schedule compensation events when an event is
+	ignored.
+	(meta_window_handle_mouse_grap_op_event): When an alarm is
+	received and sync was turned off, turn it back on.
+	
+	* src/window.h (struct MetaWindow)  Add some variables
+
 2004-06-16  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: bump version, add the UNSTABLE note

@@ -243,10 +243,15 @@ struct _MetaWindow
 
   /* if TRUE we have a grab on the focus click buttons */
   guint have_focus_click_grab : 1;
-  
+
+  /* if TRUE, application is buggy and SYNC resizing is turned off */
+  guint disable_sync : 1;
+
 #ifdef HAVE_XSYNC
   /* XSync update counter */
-  XSyncCounter update_counter;
+  XSyncCounter sync_request_counter;
+  guint sync_request_serial;
+  GTimeVal sync_request_time;
 #endif
   
   /* Number of UnmapNotify that are caused by us, if

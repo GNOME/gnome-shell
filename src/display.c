@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2002, 2003 Red Hat, Inc.
+ * Copyright (C) 2002, 2003, 2004 Red Hat, Inc.
  * Copyright (C) 2003, 2004 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
@@ -270,8 +270,8 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_BELOW",
     "_NET_STARTUP_ID",
     "_METACITY_TOGGLE_VERBOSE",
-    "_METACITY_UPDATE_COUNTER",
-    "SYNC_COUNTER",
+    "_NET_WM_SYNC_REQUEST",
+    "_NET_WM_SYNC_REQUEST_COUNTER",
     "_GNOME_PANEL_ACTION",
     "_GNOME_PANEL_ACTION_MAIN_MENU",
     "_GNOME_PANEL_ACTION_RUN_DIALOG",
@@ -323,7 +323,7 @@ meta_display_open (const char *name)
   display->expected_focus_window = NULL;
 
 #ifdef HAVE_XSYNC
-  display->grab_update_alarm = None;
+  display->grab_sync_request_alarm = None;
 #endif
   
   /* FIXME copy the checks from GDK probably */
@@ -416,8 +416,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_below = atoms[71];
   display->atom_net_startup_id = atoms[72];
   display->atom_metacity_toggle_verbose = atoms[73];
-  display->atom_metacity_update_counter = atoms[74];
-  display->atom_sync_counter = atoms[75];
+  display->atom_net_wm_sync_request = atoms[74];
+  display->atom_net_wm_sync_request_counter = atoms[75];
   display->atom_gnome_panel_action = atoms[76];
   display->atom_gnome_panel_action_main_menu = atoms[77];
   display->atom_gnome_panel_action_run_dialog = atoms[78];
@@ -1264,7 +1264,7 @@ event_callback (XEvent   *event,
 #ifdef HAVE_XSYNC
   if (META_DISPLAY_HAS_XSYNC (display) && 
       event->type == (display->xsync_event_base + XSyncAlarmNotify) &&
-      ((XSyncAlarmNotifyEvent*)event)->alarm == display->grab_update_alarm)
+      ((XSyncAlarmNotifyEvent*)event)->alarm == display->grab_sync_request_alarm)
     {
       filter_out_event = TRUE; /* GTK doesn't want to see this really */
       
@@ -1272,7 +1272,7 @@ event_callback (XEvent   *event,
           display->grab_window != NULL &&
           event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_event (display->grab_window, event);
+	meta_window_handle_mouse_grab_op_event (display->grab_window, event);
     }
 #endif /* HAVE_XSYNC */
 
@@ -2969,10 +2969,16 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_moveresize_time.tv_usec = 0;
   display->grab_motion_notify_time = 0;
 #ifdef HAVE_XSYNC
-  display->grab_update_alarm = None;
+  display->grab_sync_request_alarm = None;
 #endif
   display->grab_was_cancelled = FALSE;
   
+  if (display->grab_resize_timeout_id)
+    {
+      g_source_remove (display->grab_resize_timeout_id);
+      display->grab_resize_timeout_id = 0;
+    }
+	
   if (display->grab_window)
     {
       display->grab_initial_window_pos = display->grab_window->rect;
@@ -3007,28 +3013,41 @@ meta_display_begin_grab_op (MetaDisplay *display,
 #ifdef HAVE_XSYNC
       if (!display->grab_wireframe_active &&
           meta_grab_op_is_resizing (display->grab_op) &&
-          display->grab_window->update_counter != None)
+          display->grab_window->sync_request_counter != None)
         {
           XSyncAlarmAttributes values;
+	  XSyncValue init;
 
-          /* trigger when we make a positive transition to a value
-           * one higher than the current value.
-           */
-          values.trigger.counter = display->grab_window->update_counter;
-          values.trigger.value_type = XSyncRelative;
+          meta_error_trap_push_with_return (display);
+
+	  /* Set the counter to 0, so we know that the application's
+	   * responses to the client messages will always trigger
+	   * a PositiveTransition
+	   */
+	  
+	  XSyncIntToValue (&init, 0);
+	  XSyncSetCounter (display->xdisplay,
+			   display->grab_window->sync_request_counter, init);
+	  
+	  display->grab_window->sync_request_serial = 0;
+	  display->grab_window->sync_request_time.tv_sec = 0;
+	  display->grab_window->sync_request_time.tv_usec = 0;
+	  
+          values.trigger.counter = display->grab_window->sync_request_counter;
+          values.trigger.value_type = XSyncAbsolute;
           values.trigger.test_type = XSyncPositiveTransition;
-          XSyncIntToValue (&values.trigger.wait_value, 1);
-
+          XSyncIntToValue (&values.trigger.wait_value,
+			   display->grab_window->sync_request_serial + 1);
+	  
           /* After triggering, increment test_value by this.
            * (NOT wait_value above)
            */
           XSyncIntToValue (&values.delta, 1);
-
+	  
           /* we want events (on by default anyway) */
           values.events = True;
           
-          meta_error_trap_push_with_return (display);
-          display->grab_update_alarm = XSyncCreateAlarm (display->xdisplay,
+          display->grab_sync_request_alarm = XSyncCreateAlarm (display->xdisplay,
                                                          XSyncCACounter |
                                                          XSyncCAValueType |
                                                          XSyncCAValue |
@@ -3036,12 +3055,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                                          XSyncCADelta |
                                                          XSyncCAEvents,
                                                          &values);
+
           if (meta_error_trap_pop_with_return (display, FALSE) != Success)
-            display->grab_update_alarm = None;
+	    display->grab_sync_request_alarm = None;
 
           meta_topic (META_DEBUG_RESIZING,
                       "Created update alarm 0x%lx\n",
-                      display->grab_update_alarm);
+                      display->grab_sync_request_alarm);
         }
 #endif
     }
@@ -3138,10 +3158,11 @@ meta_display_end_grab_op (MetaDisplay *display,
     }
 
 #ifdef HAVE_XSYNC
-  if (display->grab_update_alarm != None)
+  if (display->grab_sync_request_alarm != None)
     {
       XSyncDestroyAlarm (display->xdisplay,
-                         display->grab_update_alarm);
+                         display->grab_sync_request_alarm);
+      display->grab_sync_request_alarm = None;
     }
 #endif /* HAVE_XSYNC */
 
@@ -3176,6 +3197,12 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_ui_resize_popup_free (display->grab_resize_popup);
       display->grab_resize_popup = NULL;
+    }
+
+  if (display->grab_resize_timeout_id)
+    {
+      g_source_remove (display->grab_resize_timeout_id);
+      display->grab_resize_timeout_id = 0;
     }
 }
 

@@ -357,7 +357,10 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->workspaces = NULL;
 
 #ifdef HAVE_XSYNC
-  window->update_counter = None;
+  window->sync_request_counter = None;
+  window->sync_request_serial = 0;
+  window->sync_request_time.tv_sec = 0;
+  window->sync_request_time.tv_usec = 0;
 #endif
   
   window->screen = NULL;
@@ -446,6 +449,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
   window->have_focus_click_grab = FALSE;
+  window->disable_sync = FALSE;
   
   window->unmaps_pending = 0;
   
@@ -528,7 +532,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   initial_props[i++] = XA_WM_ICON_NAME;
   initial_props[i++] = display->atom_net_wm_desktop;
   initial_props[i++] = display->atom_net_startup_id;
-  initial_props[i++] = display->atom_metacity_update_counter;
+  initial_props[i++] = display->atom_net_wm_sync_request_counter;
   initial_props[i++] = XA_WM_NORMAL_HINTS;
   initial_props[i++] = display->atom_wm_protocols;
   initial_props[i++] = XA_WM_HINTS;
@@ -2297,6 +2301,36 @@ get_mouse_deltas_for_resize (MetaWindow *window,
     }
 }
 
+#ifdef HAVE_XSYNC
+static void
+send_sync_request (MetaWindow *window)
+{
+  XSyncValue value;
+  XClientMessageEvent ev;
+
+  window->sync_request_serial++;
+
+  XSyncIntToValue (&value, window->sync_request_serial);
+  
+  ev.type = ClientMessage;
+  ev.window = window->xwindow;
+  ev.message_type = window->display->atom_wm_protocols;
+  ev.format = 32;
+  ev.data.l[0] = window->display->atom_net_wm_sync_request;
+  ev.data.l[1] = meta_display_get_current_time (window->display);
+  ev.data.l[2] = XSyncValueLow32 (value);
+  ev.data.l[3] = XSyncValueHigh32 (value);
+
+  /* We don't need to trap errors here as we are already
+   * inside an error_trap_push()/pop() pair.
+   */
+  XSendEvent (window->display->xdisplay,
+	      window->xwindow, False, 0, (XEvent*) &ev);
+
+  g_get_current_time (&window->sync_request_time);
+}
+#endif
+
 static void
 meta_window_move_resize_internal (MetaWindow  *window,
                                   MetaMoveResizeFlags flags,
@@ -2627,10 +2661,20 @@ meta_window_move_resize_internal (MetaWindow  *window,
       }
       
       meta_error_trap_push (window->display);
+
+      if (window->sync_request_counter != None &&
+	  window->display->grab_sync_request_alarm != None &&
+	  window->sync_request_time.tv_usec == 0 &&
+	  window->sync_request_time.tv_sec == 0)
+	{
+	  send_sync_request (window);
+	}
+
       XConfigureWindow (window->display->xdisplay,
                         window->xwindow,
                         mask,
                         &values);
+      
       meta_error_trap_pop (window->display, FALSE);
     }
 
@@ -4364,12 +4408,12 @@ process_property_notify (MetaWindow     *window,
       meta_window_reload_property (window,
                                    window->display->atom_net_startup_id);
     }
-  else if (event->atom == window->display->atom_metacity_update_counter)
+  else if (event->atom == window->display->atom_net_wm_sync_request_counter)
     {
-      meta_verbose ("Property notify on %s for _METACITY_UPDATE_COUNTER\n", window->desc);
+      meta_verbose ("Property notify on %s for _NET_WM_SYNC_REQUEST_COUNTER\n", window->desc);
       
       meta_window_reload_property (window,
-                                   window->display->atom_metacity_update_counter);
+                                   window->display->atom_net_wm_sync_request_counter);
     }
 
   return TRUE;
@@ -5802,59 +5846,94 @@ meta_window_show_menu (MetaWindow *window,
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
 }
 
-static void
-clear_moveresize_time (MetaWindow *window)
+static double
+timeval_to_ms (const GTimeVal *timeval)
 {
-  /* Forces the next update to actually do something */
-  window->display->grab_last_moveresize_time.tv_sec = 0;
-  window->display->grab_last_moveresize_time.tv_usec = 0;
+  return (timeval->tv_sec * G_USEC_PER_SEC + timeval->tv_usec) / 1000.0;
+}
+
+static double
+time_diff (const GTimeVal *first,
+	   const GTimeVal *second)
+{
+  double first_ms = timeval_to_ms (first);
+  double second_ms = timeval_to_ms (second);
+
+  return first_ms - second_ms;
 }
 
 static gboolean
-check_moveresize_frequency (MetaWindow *window)
+check_moveresize_frequency (MetaWindow *window, 
+			    gdouble    *remaining)
 {
   GTimeVal current_time;
-  double elapsed;
-  double max_resizes_per_second;
   
   g_get_current_time (&current_time);
 
-  /* use milliseconds, 1000 milliseconds/second */
-  elapsed =
-    ((((double)current_time.tv_sec - window->display->grab_last_moveresize_time.tv_sec) * G_USEC_PER_SEC +
-      (current_time.tv_usec - window->display->grab_last_moveresize_time.tv_usec))) / 1000.0;
-
 #ifdef HAVE_XSYNC
-  if (window->display->grab_update_alarm != None)
-    max_resizes_per_second = 1.0;   /* this is max resizes without
-                                     * getting any alarms; we resize
-                                     * immediately if we get one.
-                                     * i.e. this is a timeout for the
-                                     * client getting stuck.
-                                     */
+  if (!window->disable_sync &&
+      window->display->grab_sync_request_alarm != None)
+    {
+      if (window->sync_request_time.tv_sec != 0 ||
+	  window->sync_request_time.tv_usec != 0)
+	{
+	  double elapsed =
+	    time_diff (&current_time, &window->sync_request_time);
+
+	  if (elapsed < 1000.0)
+	    {
+	      /* We want to be sure that the timeout happens at
+	       * a time where elapsed will definitely be
+	       * greater than 1000, so we can disable sync
+	       */
+	      if (remaining)
+		*remaining = 1000.0 - elapsed + 100;
+	      
+	      return FALSE;
+	    }
+	  else
+	    {
+	      /* We have now waited for more than a second for the
+	       * application to respond to the sync request
+	       */
+	      window->disable_sync = TRUE;
+	      return TRUE;
+	    }
+	}
+      else
+	{
+	  /* No outstanding sync requests. Go ahead and resize
+	   */
+	  return TRUE;
+	}
+    }
   else
 #endif /* HAVE_XSYNC */
-    max_resizes_per_second = 20.0;
-  
-#define EPSILON (1e-6)  
-  if (elapsed >= 0.0 && elapsed < (1000.0 / max_resizes_per_second))
     {
+      const double max_resizes_per_second = 25.0;
+      const double ms_between_resizes = 1000.0 / max_resizes_per_second;
+      double elapsed;
+
+      elapsed = time_diff (&current_time, &window->display->grab_last_moveresize_time);
+
+      if (elapsed >= 0.0 && elapsed < ms_between_resizes)
+	{
+	  meta_topic (META_DEBUG_RESIZING,
+		      "Delaying move/resize as only %g of %g ms elapsed\n",
+		      elapsed, ms_between_resizes);
+	  
+	  if (remaining)
+	    *remaining = (ms_between_resizes - elapsed);
+
+	  return FALSE;
+	}
+      
       meta_topic (META_DEBUG_RESIZING,
-                  "Delaying move/resize as only %g of %g seconds elapsed\n",
-                  elapsed / 1000.0, 1.0 / max_resizes_per_second);
-      return FALSE;
+		  " Checked moveresize freq, allowing move/resize now (%g of %g seconds elapsed)\n",
+		  elapsed / 1000.0, 1.0 / max_resizes_per_second);
+      
+      return TRUE;
     }
-  else if (elapsed < (0.0 - EPSILON)) /* handle clock getting set backward */
-    clear_moveresize_time (window);
-  
-  /* store latest time */
-  window->display->grab_last_moveresize_time = current_time;
-  
-  meta_topic (META_DEBUG_RESIZING,
-              " Checked moveresize freq, allowing move/resize now (%g of %g seconds elapsed)\n",
-              elapsed / 1000.0, 1.0 / max_resizes_per_second);
-  
-  return TRUE;
 }
 
 static void
@@ -6005,15 +6084,34 @@ update_move (MetaWindow  *window,
     }
 }
 
+static void update_resize (MetaWindow *window,
+			   int         x,
+			   int         y,
+			   gboolean    force);
+
+static gboolean
+update_resize_timeout (gpointer data)
+{
+  MetaWindow *window = data;
+
+  update_resize (window, 
+		 window->display->grab_latest_motion_x,
+		 window->display->grab_latest_motion_y,
+		 TRUE);
+  return FALSE;
+}
+
 static void
 update_resize (MetaWindow *window,
-               int x, int y)
+               int x, int y,
+	       gboolean force)
 {
   int dx, dy;
   int new_w, new_h;
   int gravity;
   MetaRectangle old;
   int new_x, new_y;
+  double remaining;
   
   window->display->grab_latest_motion_x = x;
   window->display->grab_latest_motion_y = y;
@@ -6077,8 +6175,28 @@ update_resize (MetaWindow *window,
       break;
     }
 
-  if (!check_moveresize_frequency (window))
-    return;
+  if (!check_moveresize_frequency (window, &remaining) && !force)
+    {
+      /* we are ignoring an event here, so we schedule a
+       * compensation event when we would otherwise not ignore
+       * an event. Otherwise we can become stuck if the user never
+       * generates another event.
+       */
+      if (!window->display->grab_resize_timeout_id)
+	{
+	  window->display->grab_resize_timeout_id = 
+	    g_timeout_add ((int)remaining, update_resize_timeout, window);
+	}
+
+      return;
+    }
+
+  /* Remove any scheduled compensation events */
+  if (window->display->grab_resize_timeout_id)
+    {
+      g_source_remove (window->display->grab_resize_timeout_id);
+      window->display->grab_resize_timeout_id = 0;
+    }
   
   old = window->rect;
 
@@ -6118,14 +6236,12 @@ update_resize (MetaWindow *window,
       meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
     }
 
-  /* If we don't actually resize the window, we clear the timestamp,
-   * so we'll quickly try again.  Otherwise you get "stuck" because
-   * the window doesn't increment its _METACITY_UPDATE_COUNTER when
-   * nothing happens.
-   */
-  if (window->rect.width == old.width &&
-      window->rect.height == old.height)
-    clear_moveresize_time (window);
+  /* Store the latest resize time, if we actually resized. */
+  if (window->rect.width != old.width &&
+      window->rect.height != old.height)
+    {
+      g_get_current_time (&window->display->grab_last_moveresize_time);
+    }
 }
 
 typedef struct
@@ -6216,6 +6332,14 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                   "Alarm event received last motion x = %d y = %d\n",
                   window->display->grab_latest_motion_x,
                   window->display->grab_latest_motion_y);
+
+      /* If sync was previously disabled, turn it back on and hope
+       * the application has come to its senses (maybe it was just
+       * busy with a pagefault or a long computation).
+       */
+      window->disable_sync = FALSE;
+      window->sync_request_time.tv_sec = 0;
+      window->sync_request_time.tv_usec = 0;
       
       /* This means we are ready for another configure. */
       switch (window->display->grab_op)
@@ -6236,12 +6360,11 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_RESIZING_NE:
         case META_GRAB_OP_KEYBOARD_RESIZING_SW:
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-          clear_moveresize_time (window); /* force update to do something */
-
           /* no pointer round trip here, to keep in sync */
           update_resize (window,
                          window->display->grab_latest_motion_x,
-                         window->display->grab_latest_motion_y);
+                         window->display->grab_latest_motion_y,
+			 TRUE);
           break;
           
         default:
@@ -6255,16 +6378,17 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
     case ButtonRelease:      
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
-          clear_moveresize_time (window);
           if (event->xbutton.root == window->screen->xroot)
             update_move (window, event->xbutton.state,
                          event->xbutton.x_root, event->xbutton.y_root);
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
-          clear_moveresize_time (window);
           if (event->xbutton.root == window->screen->xroot)
-            update_resize (window, event->xbutton.x_root, event->xbutton.y_root);
+            update_resize (window,
+			   event->xbutton.x_root,
+			   event->xbutton.y_root,
+			   TRUE);
         }
 
       meta_display_end_grab_op (window->display, event->xbutton.time);
@@ -6291,7 +6415,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                                 event))
                 update_resize (window,
                                event->xmotion.x_root,
-                               event->xmotion.y_root);
+                               event->xmotion.y_root,
+			       FALSE);
             }
         }
       break;
@@ -6311,7 +6436,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
           if (event->xcrossing.root == window->screen->xroot)
             update_resize (window,
                            event->xcrossing.x_root,
-                           event->xcrossing.y_root);
+                           event->xcrossing.y_root,
+			   FALSE);
         }
       break;
     default:
