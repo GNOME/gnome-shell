@@ -24,24 +24,19 @@
 
 #include "window.h"
 
-typedef struct _MetaSessionInfo MetaSessionInfo;
+typedef struct _MetaWindowSessionInfo MetaWindowSessionInfo;
 
-struct _MetaSessionInfo
+struct _MetaWindowSessionInfo
 {
-  /* In -geometry format; x, y are affected by gravity, width, height
-   * are to be multiplied by resize increments, etc.  This way we're
-   * robust against theme changes, client resize inc changes, client
-   * base size changes, and so on.
-   */
-  MetaRectangle rect;
-
-  /* A per-screen index (_NET_WM_DESKTOP) */
   int workspace;
+
 };
 
-MetaSessionInfo* meta_window_lookup_session_info (MetaWindow *window);
+void meta_window_lookup_saved_state (MetaWindow *window,
+                                     MetaWindowSessionInfo *info);
 
-void meta_session_init (const char *previous_id);
+void meta_session_init             (const char *previous_id);
+
 
 #endif
 

@@ -32,18 +32,26 @@ meta_session_init (const char *previous_id)
 #include <X11/ICE/ICElib.h>
 #include <X11/SM/SMlib.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <glib.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "main.h"
 #include "util.h"
+#include "display.h"
+#include "workspace.h"
 
 static void ice_io_error_handler (IceConn connection);
 
 static void new_ice_connection (IceConn connection, IcePointer client_data, 
 				Bool opening, IcePointer *watch_data);
+
+static void save_state         (void);
+static void load_state         (const char *previous_id);
 
 /* This is called when data is available on an ICE connection.  */
 static gboolean
@@ -186,6 +194,9 @@ meta_session_init (const char *previous_id)
 
   meta_verbose ("Initializing session with session ID '%s'\n",
                 previous_id ? previous_id : "(none)");
+
+  if (previous_id)
+    load_state (previous_id);
   
   ice_init ();
   
@@ -221,7 +232,11 @@ meta_session_init (const char *previous_id)
       return;
     }
   else
-    meta_verbose ("Obtained session ID '%s'\n", client_id);
+    {
+      if (client_id == NULL)
+        meta_bug ("Session manager gave us a NULL client ID?");
+      meta_verbose ("Obtained session ID '%s'\n", client_id);
+    }
 
   if (previous_id && strcmp (previous_id, client_id) == 0)
     current_state = STATE_IDLE;
@@ -333,6 +348,8 @@ save_phase_2_callback (SmcConn smc_conn, SmPointer client_data)
   
   current_state = STATE_SAVING_PHASE_2;
 
+  save_state ();
+  
   save_yourself_possibly_done (shutdown, TRUE);
 }
 
@@ -425,9 +442,16 @@ set_clone_restart_commands (void)
 {
   char *restartv[10];
   char *clonev[10];
+  char *discardv[10];
   int i;
-  SmProp prop1, prop2, *props[2];
+  SmProp prop1, prop2, prop3, *props[3];
+  char *session_file;
 
+  session_file = g_strconcat (g_get_home_dir (),
+                              ".metacity/sessions/",
+                              client_id,
+                              NULL);
+  
   /* Restart (use same client ID) */
   
   prop1.name = SmRestartCommand;
@@ -472,10 +496,205 @@ set_clone_restart_commands (void)
     }
   prop2.num_vals = i;
 
+  /* Discard */
+  
+  i = 0;
+  discardv[i] = "rm";
+  ++i;
+  discardv[i] = "-f";
+  ++i;
+  discardv[i] = session_file;
+
+  prop3.name = SmCloneCommand;
+  prop3.type = SmLISTofARRAY8;
+  
+  prop3.vals = g_new (SmPropValue, i);
+  i = 0;
+  while (clonev[i])
+    {
+      prop3.vals[i].value = discardv[i];
+      prop3.vals[i].length = strlen (discardv[i]);
+      ++i;
+    }
+  prop3.num_vals = i;
+
+  
   props[0] = &prop1;
   props[1] = &prop2;
-    
-  SmcSetProperties (session_connection, 2, props);
+  props[2] = &prop3;
+  
+  SmcSetProperties (session_connection, 3, props);
+
+  g_free (session_file);
+}
+
+/* The remaining code in this file actually loads/saves the session,
+ * while the code above this comment handles chatting with the
+ * session manager.
+ */
+
+static void
+save_state (void)
+{
+  char *metacity_dir;
+  char *session_dir;
+  char *session_file;
+  FILE *outfile;
+  GSList *displays;
+  GSList *display_iter;
+  
+  g_assert (client_id);
+
+  outfile = NULL;
+  
+  metacity_dir = g_strconcat (g_get_home_dir (), "/.metacity",
+                              NULL);
+  
+  session_dir = g_strconcat (metacity_dir, "/sessions",
+                             NULL);
+
+  /* Assuming client ID is a workable filename. */
+  session_file = g_strconcat (session_dir, "/",
+                              client_id,
+                              NULL);
+
+
+  if (mkdir (metacity_dir, 0700) < 0 &&
+      errno != EEXIST)
+    {
+      meta_warning (_("Could not create directory '%s': %s\n"),
+                    metacity_dir, g_strerror (errno));
+    }
+
+  if (mkdir (session_dir, 0700) < 0 &&
+      errno != EEXIST)
+    {
+      meta_warning (_("Could not create directory '%s': %s\n"),
+                    session_dir, g_strerror (errno));
+    }
+
+  meta_verbose ("Saving session to '%s'\n", session_file);
+  
+  outfile = fopen (session_file, "w");
+
+  if (outfile == NULL)
+    {
+      meta_warning (_("Could not open session file '%s' for writing: %s\n"),
+                    session_file, g_strerror (errno));
+      goto out;
+    }
+
+  /* The file format is:
+   * <metacity_session id="foo">
+   *   <window id="bar" class="XTerm" name="xterm" title="/foo/bar" role="blah">
+   *     <workspace>2</workspace>
+   *     <workspace>4</workspace>
+   *     <sticky/>
+   *     <geometry x="100" y="100" width="200" height="200" gravity="northwest"/>
+   *   </window>
+   * </metacity_session>
+   */
+
+  /* FIXME we are putting non-UTF-8 in here. */
+  
+  fprintf (outfile, "<metacity_session id=\"%s\">\n",
+           client_id);
+  
+  displays = meta_displays_list ();
+  display_iter = displays;
+  while (display_iter != NULL)
+    {
+      GSList *windows;
+      GSList *tmp;
+
+      windows = meta_display_list_windows (display_iter->data);
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *window;
+
+          window = tmp->data;
+
+          if (window->sm_client_id)
+            {
+              meta_verbose ("Saving session managed window %s, client ID '%s'\n",
+                            window->desc, window->sm_client_id);
+
+              fprintf (outfile,
+                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\">\n",
+                       window->sm_client_id,
+                       window->res_class ? window->res_class : "",
+                       window->res_name ? window->res_name : "",
+                       window->title ? window->title : "",
+                       window->role ? window->role : "");
+
+              /* Sticky */
+              if (window->on_all_workspaces)
+                fputs ("    <sticky/>\n", outfile);
+
+              /* Workspaces we're on */
+              {
+                GSList *w;
+                w = window->workspaces;
+                while (w != NULL)
+                  {
+                    int n;
+                    n = meta_workspace_screen_index (w->data);
+                    fprintf (outfile,
+                             "<workspace>%d</workspace>\n", n);
+
+                    w = w->next;
+                  }
+              }
+              
+              fputs ("  </window>\n", outfile);
+            }
+          else
+            {
+              meta_verbose ("Not saving window '%s', not session managed\n",
+                            window->desc);
+            }
+          
+          tmp = tmp->next;
+        }
+      
+      g_slist_free (windows);
+
+      display_iter = display_iter->next;
+    }
+  /* don't need to free displays */
+  displays = NULL;
+  
+  fputs ("</metacity_session>\n", outfile);
+  
+ out:
+  if (outfile)
+    {
+      if (fclose (outfile) != 0)
+        {
+          meta_warning (_("Error writing session file '%s': %s\n"),
+                        session_file, g_strerror (errno));
+        }
+    }
+  
+  g_free (metacity_dir);
+  g_free (session_dir);
+  g_free (session_file);
+}
+
+static void
+load_state (const char *previous_id)
+{
+
+
+}
+
+void
+meta_window_lookup_saved_state (MetaWindow *window,
+                                MetaWindowSessionInfo *info)
+{
+  
+
 }
 
 #endif /* HAVE_SM */

@@ -64,6 +64,9 @@ METACITY FEATURES
      the window will come with you to the new desktop, this is 
      a feature copied from Enlightenment.
 
+    If you hold down Shift while moving a window, the window snaps
+     to edges of other windows and the screen.
+
  - Session management:
 
     Metacity connects to the session manager and will set itself up 
