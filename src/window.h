@@ -252,6 +252,14 @@ struct _MetaWindow
   int dialog_pipe;
 };
 
+#define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->maximized && !(w)->fullscreen)
+#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !(w)->maximized && !(w)->fullscreen && !(w)->shaded)
+#define META_WINDOW_ALLOWS_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) &&                \
+                                        (((w)->size_hints.min_width < (w)->size_hints.max_width) ||  \
+                                         ((w)->size_hints.min_height < (w)->size_hints.max_height)))
+#define META_WINDOW_ALLOWS_HORIZONTAL_RESIZE(w) (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) && (w)->size_hints.min_width < (w)->size_hints.max_width)
+#define META_WINDOW_ALLOWS_VERTICAL_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) && (w)->size_hints.min_height < (w)->size_hints.max_height)
+
 MetaWindow* meta_window_new                (MetaDisplay *display,
                                             Window       xwindow,
                                             gboolean     must_be_viewable);

@@ -229,21 +229,14 @@ meta_frame_get_flags (MetaFrame *frame)
         flags |= META_FRAME_ALLOWS_SHADE;
     }  
   
-  if (frame->window->has_move_func)
+  if (META_WINDOW_ALLOWS_MOVE (frame->window))
     flags |= META_FRAME_ALLOWS_MOVE;
-  
-  if (frame->window->has_resize_func &&
-      !frame->window->maximized &&
-      !frame->window->shaded)
-    {
-      if (frame->window->size_hints.min_width <
-          frame->window->size_hints.max_width)
-        flags |= META_FRAME_ALLOWS_HORIZONTAL_RESIZE;
 
-      if (frame->window->size_hints.min_height <
-          frame->window->size_hints.max_height)
-        flags |= META_FRAME_ALLOWS_VERTICAL_RESIZE;
-    }
+  if (META_WINDOW_ALLOWS_HORIZONTAL_RESIZE (frame->window))
+    flags |= META_FRAME_ALLOWS_HORIZONTAL_RESIZE;
+
+  if (META_WINDOW_ALLOWS_VERTICAL_RESIZE (frame->window))
+    flags |= META_FRAME_ALLOWS_VERTICAL_RESIZE;
   
   if (frame->window->has_focus)
     flags |= META_FRAME_HAS_FOCUS;

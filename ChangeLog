@@ -1,3 +1,21 @@
+2002-07-02  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_show_menu): use new macros to get
+	whether we allow move/resize correct
+
+	* src/frame.c (meta_frame_get_flags): use new macros to get
+	whether we can move/resize correct, considering
+	maximized/fullscreen for the move case.
+
+	* src/window.h (META_WINDOW_ALLOWS_RESIZE,
+	META_WINDOW_ALLOWS_MOVE): new macros
+
+	* src/keybindings.c (process_keyboard_resize_grab): finish the
+	right/left resize, patch from Jayaraj #78179.
+
+	Has the same old move/resize bug, if it hits a constraint it
+	starts to break because we move without resizing.
+	
 2002-07-02  Mark McLoughlin  <mark@skynet.ie>
 
 	* src/keybindings.c:

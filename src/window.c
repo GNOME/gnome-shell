@@ -5499,10 +5499,10 @@ meta_window_show_menu (MetaWindow *window,
   if (!window->has_shade_func)
     insensitive |= META_MENU_OP_SHADE | META_MENU_OP_UNSHADE;
 
-  if (!window->has_move_func)
+  if (!META_WINDOW_ALLOWS_MOVE (window))
     insensitive |= META_MENU_OP_MOVE;
 
-  if (!window->has_resize_func)
+  if (!META_WINDOW_ALLOWS_RESIZE (window))
     insensitive |= META_MENU_OP_RESIZE;
 
    if (window->always_sticky)

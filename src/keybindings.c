@@ -1597,11 +1597,84 @@ process_keyboard_resize_grab (MetaDisplay *display,
       
     case XK_Left:
     case XK_KP_Left:
-      /* FIXME */
+      switch (gravity)
+        {
+        case EastGravity:
+        case SouthEastGravity:
+        case NorthEastGravity:
+          /* Move left edge left */
+          edge = meta_window_find_next_vertical_edge (window, TRUE);
+          x -= width_inc;
+          
+          if (smart_snap || ((edge > x) && ABS (edge - x) < width_inc))
+            x = edge;
+          
+          width += (orig_x - x);
+          break;
+
+        case WestGravity:
+        case SouthWestGravity:
+        case NorthWestGravity:
+          /* Move right edge left */
+          edge = meta_window_find_next_vertical_edge (window, FALSE);
+          width -= width_inc;
+          
+          if (smart_snap || ((edge > (x+width)) &&
+                             ABS (edge - (x+width)) < width_inc))
+            width = edge - x;
+          
+          handled = TRUE;
+          break;
+
+        case NorthGravity:
+        case SouthGravity:
+        case CenterGravity:
+          g_assert_not_reached ();
+          break;
+        }
+      
+      handled = TRUE;
       break;
+      
     case XK_Right:
     case XK_KP_Right:
-      /* FIXME */
+      switch (gravity)
+        {
+        case EastGravity:
+        case SouthEastGravity:
+        case NorthEastGravity:
+          /* Move left edge right */
+          edge = meta_window_find_next_vertical_edge (window, FALSE);
+          x += width_inc;
+          
+          if (smart_snap || ((edge < x) && ABS (edge - x) < width_inc))
+            x = edge;
+          
+          width -= (x - orig_x);
+          break;
+
+        case WestGravity:
+        case SouthWestGravity:
+        case NorthWestGravity:
+          /* Move right edge right */
+          edge = meta_window_find_next_vertical_edge (window, TRUE);
+          width += width_inc;
+          
+          if (smart_snap || ((edge > (x+width)) &&
+                             ABS (edge - (x+width)) < width_inc))
+            width = edge - x;
+          
+          handled = TRUE;
+          break;
+
+        case NorthGravity:
+        case SouthGravity:
+        case CenterGravity:
+          g_assert_not_reached ();
+          break;
+        }
+      
+      handled = TRUE;
       break;
           
     default:
