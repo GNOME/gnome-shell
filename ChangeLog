@@ -1,3 +1,7 @@
+2005-01-25  Benjamin Kahn  <xkahn@novell.com>
+
+	New 48x48 default icon as specified in bug #160660
+
 2005-01-25  Elijah Newren  <newren@math.utah.edu>
 
 	Patch from Stephane LOEUILLET in bug #151850.
