@@ -1,3 +1,11 @@
+2001-10-13  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (meta_stack_sync_to_server): set last window before 
+	setting newp, so we don't get the current window as the last
+	window and screw everything up	
+	(IN_TAB_CHAIN): use type not layer to decide if a window is 
+	in the tab chain, keeps panel out of alt-tab choices
+
 2001-10-13  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: add bad hack to work with GTK 1.3.9.90 RPMs from

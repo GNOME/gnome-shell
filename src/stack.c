@@ -680,6 +680,7 @@ meta_stack_sync_to_server (MetaStack *stack)
               /* Stacks are the same here, move on */
               ++oldp;
               ++newp;
+              last_window = *newp;
             }
           else if (meta_display_lookup_x_window (stack->screen->display,
                                                  *oldp) == NULL)
@@ -688,6 +689,7 @@ meta_stack_sync_to_server (MetaStack *stack)
                * so we can just skip it
                */
               ++oldp;
+              last_window = *newp;
             }
           else
             {
@@ -719,11 +721,10 @@ meta_stack_sync_to_server (MetaStack *stack)
                                     CWSibling | CWStackMode,
                                     &changes);
                 }
-              
+
+              last_window = *newp;
               ++newp;
             }
-          
-          last_window = *newp;
         }
 
       if (newp != new_end)
@@ -868,7 +869,7 @@ meta_stack_get_below (MetaStack      *stack,
     return find_prev_below_layer (stack, window->layer);
 }
 
-#define IN_TAB_CHAIN(w) ((w)->layer != META_LAYER_DOCK && (w)->layer != META_LAYER_DESKTOP)
+#define IN_TAB_CHAIN(w) ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
 #define GET_XWINDOW(stack, i) (g_array_index ((stack)->windows,    \
                                               Window, (i)))
 
