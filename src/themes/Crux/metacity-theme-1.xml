@@ -26,6 +26,18 @@
   <border name="button_border" left="0" right="0" top="0" bottom="0"/>
 </frame_geometry>
 
+<frame_geometry name="border" has_title="false">
+  <distance name="left_width" value="5"/>
+  <distance name="right_width" value="6"/>
+  <distance name="bottom_height" value="6"/>
+  <distance name="left_titlebar_edge" value="0"/>
+  <distance name="right_titlebar_edge" value="0"/>
+  <distance name="button_width" value="0"/>
+  <distance name="button_height" value="0"/>
+  <distance name="title_vertical_pad" value="6"/>
+  <border name="title_border" left="0" right="0" top="0" bottom="0"/>
+  <border name="button_border" left="0" right="0" top="0" bottom="0"/>
+</frame_geometry>
 
 <!-- Buttons -->
 
@@ -407,6 +419,59 @@
   </piece>
 </frame_style>
 
+<!-- Inactive border style -->
+<frame_style name="border_unfocused" geometry="border" parent="normal">
+  <piece position="title"><draw_ops/></piece>
+  <piece position="titlebar">
+    <draw_ops>
+      <image filename="inactive-top-left-corner.png" 
+             x="0" y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-border-top-left-border.png" x="5" y="0" 
+             width="((title_width + height / 2 - 4) `min` (width - object_width - 26))"
+             height="object_height"/>
+      <image filename="inactive-top-mid-border.png" 
+             x="((title_width + height / 2) `min` (width - object_width - 6)) + 1" 
+             y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-border-top-right-border.png"
+             x="((title_width + height / 2 + 32)) + 1" 
+             y="0" 
+             width="(width - title_width - height / 2 - 32 - 7) `max` 0"
+             height="object_height"/>
+      <image filename="inactive-top-right-corner.png" 
+             x="width - object_width" y="0" width="object_height" height="object_height"/>
+    </draw_ops>
+  </piece>
+</frame_style>
+
+<!-- Active (focused) border style -->
+<frame_style name="border_focused" geometry="border" parent="focused">
+  <piece position="title"><draw_ops/></piece>
+  <piece position="titlebar">
+    <draw_ops>
+      <image filename="active-top-left-corner.png" 
+             colorize="gtk:bg[SELECTED]"
+             x="0" y="0" width="object_width" height="object_height"/>
+      <image filename="active-border-top-left-border.png" 
+             colorize="gtk:bg[SELECTED]" x="5" y="0"
+             width="((title_width + height / 2 - 4) `min` (width - object_width - 26))"
+             height="object_height"/>
+      <image filename="active-top-mid-left-border.png" 
+             colorize="gtk:bg[SELECTED]"
+             x="((title_width + height / 2) `min` (width - object_width - 6)) + 1" 
+             y="0" width="object_width" height="object_height"/>
+      <image filename="active-top-mid-right-border.png" 
+             x="((title_width + height / 2) `min` (width - object_width - 6)) + 1" 
+             y="0" width="object_width" height="object_height"/>
+      <image filename="active-border-top-right-border.png"
+             x="((title_width + height / 2 + 32)) + 1" y="0" 
+             width="(width - title_width - height / 2 - 32 - 7) `max` 0"
+             height="object_height"/>
+      <image filename="active-top-right-corner.png" 
+             x="width - object_width" y="0" width="object_height" height="object_height"/>
+    </draw_ops>
+  </piece>
+</frame_style>
+
 <frame_style_set name="normal">
 <frame focus="yes" state="shaded" style="focused_shaded"/>
 <frame focus="yes" state="normal" resize="both" style="focused"/>
@@ -418,11 +483,23 @@
 <frame focus="no" state="maximized_and_shaded" style="normal_shaded"/>
 </frame_style_set>
 
+<frame_style_set name="border">
+<frame focus="yes" state="normal" resize="both" style="border_focused"/>
+<frame focus="yes" state="maximized" style="border_focused"/>
+<frame focus="yes" state="shaded" style="border_focused"/>
+<frame focus="yes" state="maximized_and_shaded" style="border_focused"/>
+<frame focus="no" state="normal" resize="both" style="border_unfocused"/>
+<frame focus="no" state="maximized" style="border_unfocused"/>
+<frame focus="no" state="shaded" style="border_unfocused"/>
+<frame focus="no" state="maximized_and_shaded" style="border_unfocused"/>
+</frame_style_set>
+
 <window type="normal" style_set="normal"/>
 <window type="dialog" style_set="normal"/>
 <window type="modal_dialog" style_set="normal"/>
 <window type="menu" style_set="normal"/>
 <window type="utility" style_set="normal"/>
+<window type="border" style_set="border"/>
 
 <menu_icon function="close" state="normal">
   <draw_ops> 

@@ -1,3 +1,19 @@
+2002-06-25  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/themes/Crux/active-border-top-left-border.png:
+	* src/themes/Crux/active-border-top-right-border.png:
+	* src/themes/Crux/active-top-left-corner.png:
+	* src/themes/Crux/active-top-mid-left-border.png:
+	* src/themes/Crux/active-top-mid-right-border.png:
+	* src/themes/Crux/active-top-right-corner.png:
+	* src/themes/Crux/inactive-border-top-left-border.png:
+	* src/themes/Crux/inactive-border-top-right-border.png:
+	* src/themes/Crux/inactive-top-left-corner.png:
+	* src/themes/Crux/inactive-top-mid-border.png:
+	* src/themes/Crux/inactive-top-right-corner.png:
+	* src/themes/Crux/metacity-theme-1.xml: added support
+	for border only windows.
+
 2002-06-24  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Added some stuff to
