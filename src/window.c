@@ -2631,8 +2631,8 @@ meta_window_move_resize_now (MetaWindow  *window)
 }
 
 static void
-check_maximize_to_xinerama (MetaWindow                   *window,
-                            const MetaXineramaScreenInfo *xinerama)
+check_maximize_to_work_area (MetaWindow          *window,
+                             const MetaRectangle *work_area)
 {
   /* If we now fill the screen, maximize.
    * the point here is that fill horz + fill vert = maximized
@@ -2644,11 +2644,11 @@ check_maximize_to_xinerama (MetaWindow                   *window,
   
   meta_window_get_outer_rect (window, &rect);
 
-  if ( rect.x >= xinerama->x_origin &&
-       rect.y >= xinerama->y_origin &&
-       (((xinerama->width - xinerama->x_origin) - rect.width) <
+  if ( rect.x >= work_area->x &&
+       rect.y >= work_area->y &&
+       (((work_area->width - work_area->x) - rect.width) <
         window->size_hints.width_inc) &&
-       (((xinerama->height - xinerama->y_origin) - rect.height) <
+       (((work_area->height - work_area->y) - rect.height) <
         window->size_hints.height_inc) )
     meta_window_maximize (window);
 }
@@ -2656,7 +2656,7 @@ check_maximize_to_xinerama (MetaWindow                   *window,
 void
 meta_window_fill_horizontal (MetaWindow  *window)
 {
-  const MetaXineramaScreenInfo *xinerama;
+  MetaRectangle work_area;
   int x, y, w, h;
   
   meta_window_get_user_position (window, &x, &y);
@@ -2664,12 +2664,10 @@ meta_window_fill_horizontal (MetaWindow  *window)
   w = window->rect.width;
   h = window->rect.height;
   
-  xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                  window);
-
-
-  x = xinerama->x_origin;
-  w = xinerama->width;
+  meta_window_get_work_area (window, TRUE, &work_area);
+  
+  x = work_area.x;
+  w = work_area.width;
   
   if (window->frame != NULL)
     {
@@ -2680,26 +2678,24 @@ meta_window_fill_horizontal (MetaWindow  *window)
   meta_window_move_resize (window, TRUE,
                            x, y, w, h);
 
-  check_maximize_to_xinerama (window, xinerama);
+  check_maximize_to_work_area (window, &work_area);
 }
 
 void
 meta_window_fill_vertical (MetaWindow  *window)
 {
-  const MetaXineramaScreenInfo *xinerama;
+  MetaRectangle work_area;
   int x, y, w, h;
   
   meta_window_get_user_position (window, &x, &y);
 
   w = window->rect.width;
   h = window->rect.height;
-  
-  xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                  window);
 
+  meta_window_get_work_area (window, TRUE, &work_area);
 
-  y = xinerama->y_origin;
-  h = xinerama->height;
+  y = work_area.y;
+  h = work_area.height;
   
   if (window->frame != NULL)
     {
@@ -2710,7 +2706,7 @@ meta_window_fill_vertical (MetaWindow  *window)
   meta_window_move_resize (window, TRUE,
                            x, y, w, h);
 
-  check_maximize_to_xinerama (window, xinerama);
+  check_maximize_to_work_area (window, &work_area);
 }
 
 static guint move_resize_idle = 0;

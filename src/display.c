@@ -42,6 +42,9 @@
 #ifdef HAVE_XFREE_XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif
+#ifdef HAVE_RANDR
+#include <X11/extensions/Xrandr.h>
+#endif
 #include <string.h>
 
 #define USE_GDK_DISPLAY

@@ -1,3 +1,11 @@
+2003-01-03  Havoc Pennington  <hp@redhat.com>
+
+	* src/display.c: include the Xrandr header file
+
+	* src/window.c (meta_window_fill_horizontal) 
+	(meta_window_fill_vertical): maximize to work area, not entire
+	screen. doh.
+
 2002-12-19  Ross Burton  <ross@burtonini.com>
 
 	* doc/metacity-theme.dtd: Fix a typo and loosen the requirements
