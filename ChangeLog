@@ -1,3 +1,14 @@
+2003-05-20  Havoc Pennington  <hp@pobox.com>
+	
+	* src/keybindings.c (meta_change_keygrab): the mask 
+	display->ignored_modifier_mask wasn't being bound, 
+	due to "<" instead of "<=" (most people didn't notice
+	as display->ignored_modifier_mask included Scroll_Lock).
+	Red Hat bugzilla #91301 reported by Youssef Makki
+
+	* src/display.c (meta_change_button_grab): make corresponding
+	change for button grabs.
+	
 2003-05-20  Havoc Pennington  <hp@redhat.com>
 
 	* NEWS: update

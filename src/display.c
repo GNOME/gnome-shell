@@ -2978,12 +2978,12 @@ meta_change_button_grab (MetaDisplay *display,
                          int          button,
                          int          modmask)
 {
-  int ignored_mask;
+  unsigned int ignored_mask;
   
   meta_error_trap_push (display);
   
   ignored_mask = 0;
-  while (ignored_mask < (int) display->ignored_modifier_mask)
+  while (ignored_mask <= display->ignored_modifier_mask)
     {
       if (ignored_mask & ~(display->ignored_modifier_mask))
         {
