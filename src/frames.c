@@ -1577,6 +1577,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
+  MetaGrabOp grab_op;
   
   frames = META_FRAMES (widget);
   
@@ -1587,16 +1588,43 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
   clear_tip (frames);
 
   frames->last_motion_frame = frame;
+
+  grab_op = meta_core_get_grab_op (gdk_display);
   
-  switch (meta_core_get_grab_op (gdk_display))
+  switch (grab_op)
     {
     case META_GRAB_OP_CLICKING_MENU:
     case META_GRAB_OP_CLICKING_DELETE:
     case META_GRAB_OP_CLICKING_MINIMIZE:
     case META_GRAB_OP_CLICKING_MAXIMIZE:
     case META_GRAB_OP_CLICKING_UNMAXIMIZE:
+      {
+        MetaFrameControl control;
+        int x, y;
+        
+        gdk_window_get_pointer (frame->window, &x, &y, NULL);
+
+        /* Control is set to none unless it matches
+         * the current grab
+         */
+        control = get_control (frames, frame, x, y);
+        if (! ((control == META_FRAME_CONTROL_MENU &&
+                grab_op == META_GRAB_OP_CLICKING_MENU) ||
+               (control == META_FRAME_CONTROL_DELETE &&
+                grab_op == META_GRAB_OP_CLICKING_DELETE) ||
+               (control == META_FRAME_CONTROL_MINIMIZE &&
+                grab_op == META_GRAB_OP_CLICKING_MINIMIZE) ||
+               (control == META_FRAME_CONTROL_MAXIMIZE &&
+                (grab_op == META_GRAB_OP_CLICKING_MAXIMIZE ||
+                 grab_op == META_GRAB_OP_CLICKING_UNMAXIMIZE))))
+          control = META_FRAME_CONTROL_NONE;
+        
+        /* Update prelit control and cursor */
+	meta_frames_update_prelit_control (frames, frame, control);
+
+        /* No tooltip while in the process of clicking */
+      }
       break;
-      
     case META_GRAB_OP_NONE:
       {
         MetaFrameControl control;
@@ -1684,6 +1712,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   int n_areas;
   int screen_width, screen_height;
   MetaButtonLayout button_layout;
+  MetaGrabOp grab_op;
   
   widget = GTK_WIDGET (frames);
 
@@ -1695,52 +1724,46 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       ++i;
     }
 
+  grab_frame = meta_core_get_grab_frame (gdk_display);
+  grab_op = meta_core_get_grab_op (gdk_display);
+  if (grab_frame != frame->xwindow)
+    grab_op = META_GRAB_OP_NONE;
+  
   /* Set prelight state */
   switch (frame->prelit_control)
     {
     case META_FRAME_CONTROL_MENU:
-      button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRELIGHT;
+      if (grab_op == META_GRAB_OP_CLICKING_MENU)
+        button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRESSED;
+      else
+        button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRELIGHT;
       break;
     case META_FRAME_CONTROL_MINIMIZE:
-      button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      if (grab_op == META_GRAB_OP_CLICKING_MINIMIZE)
+        button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRESSED;
+      else
+        button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRELIGHT;
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
+      if (grab_op == META_GRAB_OP_CLICKING_MAXIMIZE)
+        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRESSED;
+      else
+        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      break;
     case META_FRAME_CONTROL_UNMAXIMIZE:
-      button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      if (grab_op == META_GRAB_OP_CLICKING_UNMAXIMIZE)
+        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRESSED;
+      else
+        button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
       break;
     case META_FRAME_CONTROL_DELETE:
-      button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRELIGHT;
+      if (grab_op == META_GRAB_OP_CLICKING_DELETE)
+        button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRESSED;
+      else
+        button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRELIGHT;
       break;
     default:
       break;
-    }
-  
-  grab_frame = meta_core_get_grab_frame (gdk_display);
-
-  if (frame->xwindow == grab_frame)
-    {
-      switch (meta_core_get_grab_op (gdk_display))
-        {
-        case META_GRAB_OP_CLICKING_MENU:
-          button_states[META_BUTTON_TYPE_MENU] =
-            META_BUTTON_STATE_PRESSED;
-          break;
-        case META_GRAB_OP_CLICKING_DELETE:
-          button_states[META_BUTTON_TYPE_CLOSE] =
-            META_BUTTON_STATE_PRESSED;
-          break;
-        case META_GRAB_OP_CLICKING_MAXIMIZE:
-        case META_GRAB_OP_CLICKING_UNMAXIMIZE:
-          button_states[META_BUTTON_TYPE_MAXIMIZE] =
-            META_BUTTON_STATE_PRESSED;
-          break;
-	case META_GRAB_OP_CLICKING_MINIMIZE:
-          button_states[META_BUTTON_TYPE_MINIMIZE] =
-            META_BUTTON_STATE_PRESSED;
-          break;
-        default:
-          break;
-        }
     }
 
   /* Map button function states to button position states */

@@ -1,5 +1,16 @@
 2003-05-16  Havoc Pennington  <hp@redhat.com>
 
+	* src/frames.c (meta_frames_paint_to_drawable): fix for 
+	bug #104018 from David Santiago, change button state to 
+	normal while it's being pressed if you move the mouse 
+	outside it. Do this by tracking prelit_control for whether 
+	to draw a button as active, not just for whether to draw 
+	it as prelit.
+	(meta_frames_motion_notify_event): also update prelit_control 
+	while clicking a button
+
+2003-05-16  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (meta_window_new): fill in window->desc sooner
 	since we use it sooner now.
 
