@@ -1298,7 +1298,8 @@ meta_window_show (MetaWindow *window)
             meta_display_lookup_x_window (window->display,
                                           window->xtransient_for);
           
-          if (parent && parent->has_focus)
+          if (parent && parent->has_focus &&
+              (window->input || window->take_focus))
             {
               meta_topic (META_DEBUG_FOCUS,
                           "Focusing transient window '%s' since parent had focus\n",
@@ -1309,7 +1310,8 @@ meta_window_show (MetaWindow *window)
         }
 
       /* Always focus new windows in click-to-focus */
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+          (window->input || window->take_focus))
         {
           switch (window->type)
             {
@@ -4032,7 +4034,7 @@ update_wm_hints (MetaWindow *window)
                        window->xwindow);
   if (hints)
     {
-      window->input = (hints->flags & InputHint) != 0;
+      window->input = ((hints->flags & InputHint) != 0) && hints->input;
 
       if (hints->flags & StateHint)
         window->initially_iconic = (hints->initial_state == IconicState);

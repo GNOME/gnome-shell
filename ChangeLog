@@ -1,3 +1,14 @@
+2002-06-04  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (update_wm_hints): fix for how we read the input
+	hint, from Hidetoshi Tajima
+
+	(meta_window_show): from Hidetoshi, don't autofocus windows with
+	input = FALSE wm_take_focus = FALSE when they first appear. We do
+	allow these windows to be focused (so keynav works), but they
+	don't get focused automatically. Now how do we keep them out of
+	the task list?
+
 2002-06-04  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
 
 	* src/theme.c (draw_op_as_pixbuf): Use icon's instead of image's
