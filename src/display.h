@@ -188,10 +188,6 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
- /* Window that was the actual window from focus events before focus_window
-  */
-  MetaWindow *previously_focused_window;
-
   /* window we are expecting a FocusIn event for or the current focus
    * window if we are not expecting any FocusIn/FocusOut events; not
    * perfect because applications can call XSetInputFocus directly.

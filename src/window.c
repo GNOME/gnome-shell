@@ -950,8 +950,6 @@ meta_window_free (MetaWindow  *window)
   
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
-  if (window->display->previously_focused_window == window)
-    window->display->previously_focused_window = NULL;
 
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
@@ -3970,29 +3968,7 @@ meta_window_client_message (MetaWindow *window,
                     event->xclient.data.l[0]);
       if (event->xclient.data.l[0] == IconicState &&
           window->has_minimize_func)
-        {
-          meta_window_minimize (window);
-
-          /* If the window being minimized was the one with focus,
-           * then we should focus a new window.  We often receive this
-           * wm_change_state message when a user has clicked on the
-           * tasklist on the panel; in those cases, the current
-           * focus_window is the panel, but the previous focus_window
-           * will have been this one.  This is a special case where we
-           * need to manually handle focusing a new window because
-           * meta_window_minimize will get it wrong.
-           */
-          if (window->display->focus_window &&
-              (window->display->focus_window->type == META_WINDOW_DOCK ||
-               window->display->focus_window->type == META_WINDOW_DESKTOP) &&
-              window->display->previously_focused_window == window)
-            {
-              meta_topic (META_DEBUG_FOCUS,
-                          "Focusing default window because of minimization of former focus window %s, which was due to a wm_change_state client message\n",
-                      window->desc);
-              meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
-            }
-        }
+        meta_window_minimize (window);
 
       return TRUE;
     }
@@ -4296,8 +4272,6 @@ meta_window_notify_focus (MetaWindow *window,
           meta_topic (META_DEBUG_FOCUS,
                       "* Focus --> NULL (was %s)\n", window->desc);
           
-          window->display->previously_focused_window =
-            window->display->focus_window;
           window->display->focus_window = NULL;
           window->has_focus = FALSE;
           if (window->frame)

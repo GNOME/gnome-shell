@@ -1,5 +1,15 @@
 2005-01-09  Elijah Newren  <newren@gmail.com>
 
+	* src/display.c (meta_display_open):
+	* src/display.h (struct _MetaDisplay):
+	* src/window.c (meta_window_free, meta_window_client_message,
+	meta_window_notify_focus):
+
+	Remove the hack from bug 128200; it isn't needed anymore with the
+	fix from bug #160470.
+
+2005-01-09  Elijah Newren  <newren@gmail.com>
+
 	Don't focus the panel on click.  Fixes #160470 (and 100470 and
 	removes the need for the hack from 128200)
 

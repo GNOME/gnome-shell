@@ -330,7 +330,6 @@ meta_display_open (const char *name)
   display->autoraise_timeout_id = 0;
   display->autoraise_window = NULL;
   display->focus_window = NULL;
-  display->previously_focused_window = NULL;
   display->expected_focus_window = NULL;
 
 #ifdef HAVE_XSYNC
