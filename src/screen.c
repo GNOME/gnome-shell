@@ -1005,7 +1005,10 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       entries[i].key = (MetaTabEntryKey) window->xwindow;
       entries[i].title = window->title;
       entries[i].icon = window->icon;
-      meta_window_get_outer_rect (window, &r);
+
+      if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
+        meta_window_get_outer_rect (window, &r);
+      
       entries[i].x = r.x;
       entries[i].y = r.y;
       entries[i].width = r.width;

@@ -102,9 +102,6 @@ static void     meta_window_hide          (MetaWindow     *window);
 
 static GList*   meta_window_get_workspaces (MetaWindow    *window);
 
-static gboolean meta_window_get_icon_geometry (MetaWindow    *window,
-                                               MetaRectangle *rect);
-
 static void     meta_window_save_rect         (MetaWindow    *window);
 
 static void adjust_for_gravity               (MetaWindow        *window,
@@ -4499,7 +4496,7 @@ update_mwm_hints (MetaWindow *window)
   recalc_window_features (window);
 }
 
-static gboolean
+gboolean
 meta_window_get_icon_geometry (MetaWindow    *window,
                                MetaRectangle *rect)
 {

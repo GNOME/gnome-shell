@@ -430,4 +430,7 @@ void meta_window_update_resize_grab_op (MetaWindow *window,
 
 void meta_window_update_layer (MetaWindow *window);
 
+gboolean meta_window_get_icon_geometry (MetaWindow    *window,
+                                        MetaRectangle *rect);
+
 #endif

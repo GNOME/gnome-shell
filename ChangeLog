@@ -1,5 +1,13 @@
 2002-10-24  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_get_icon_geometry): make public
+
+	* src/screen.c (meta_screen_ensure_tab_popup): put the alt+tab 
+	highlight-window indicator on the icon, not the window itself, 
+	if the window is minimized.
+
+2002-10-24  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_get_tab_list): put minimized windows
 	at the end of Alt+Tab, #89416
 
