@@ -37,6 +37,8 @@ main (int argc, char **argv)
   meta_set_verbose (TRUE);
   meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
+
+  g_type_init (0); /* grumble */
   
   meta_errors_init ();
   

@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <Xlib.h>
+#include <pango/pangox.h>
 #include "eventqueue.h"
 
 typedef struct _MetaDisplay MetaDisplay;
@@ -35,7 +36,8 @@ struct _MetaDisplay
 {
   char *name;
   Display *xdisplay;
-  
+
+  /*< private-ish >*/
   MetaEventQueue *events;
   GSList *screens;
   GHashTable *window_ids;
@@ -43,12 +45,16 @@ struct _MetaDisplay
   int server_grab_count;
 };
 
-gboolean    meta_display_open            (const char  *name);
-void        meta_display_close           (MetaDisplay *display);
-MetaScreen* meta_display_screen_for_root (MetaDisplay *display,
-                                          Window       xroot);
-void        meta_display_grab            (MetaDisplay *display);
-void        meta_display_ungrab          (MetaDisplay *display);
+gboolean      meta_display_open                (const char  *name);
+void          meta_display_close               (MetaDisplay *display);
+MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
+                                                Window       xroot);
+MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
+                                                Screen      *screen);
+void          meta_display_grab                (MetaDisplay *display);
+void          meta_display_ungrab              (MetaDisplay *display);
+PangoContext* meta_display_get_pango_context   (MetaDisplay *display);
+
 
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.

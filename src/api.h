@@ -1,4 +1,4 @@
-/* Metacity X managed windows */
+/* Metacity misc. public entry points */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,32 +19,19 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WINDOW_H
-#define META_WINDOW_H
+#ifndef META_API_H
+#define META_API_H
 
-#include "screen.h"
-#include "util.h"
+/* don't add any internal headers here; api.h is an installed/public
+ * header. Only theme.h is also installed.
+ */
+#include <Xlib.h>
+#include <pango/pangox.h>
 
-struct _MetaWindow
-{
-  MetaDisplay *display;
-  MetaScreen *screen;
-  Window xwindow;
-  /* may be NULL! not all windows get decorated */
-  MetaFrame *frame;
-  MetaRectangle rect;
-  int border_width;
-  int win_gravity;
-  int depth;
-  Visual *xvisual;
-  char *title;
-};
-
-MetaWindow*  meta_window_new    (MetaDisplay *display,
-                                 Window       xwindow); 
-void         meta_window_free   (MetaWindow  *window);
-
-gboolean     meta_window_event  (MetaWindow  *window,
-                                 XEvent      *event);
+PangoContext* meta_get_pango_context (Screen                     *xscreen,
+                                      const PangoFontDescription *desc,
+                                      Window                      frame);
+gulong        meta_get_x_pixel       (Screen                     *xscreen,
+                                      const PangoColor           *color);
 
 #endif

@@ -92,6 +92,8 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->win_gravity = attrs.win_gravity;
   window->depth = attrs.depth;
   window->xvisual = attrs.visual;
+
+  window->title = g_strdup ("Foo foo foo foo");
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
@@ -107,6 +109,8 @@ meta_window_free (MetaWindow  *window)
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
   
   meta_display_unregister_x_window (window->display, window->xwindow);
+
+  g_free (window->title);
   
   meta_window_destroy_frame (window);
   

@@ -22,9 +22,14 @@
 #ifndef META_THEME_H
 #define META_THEME_H
 
+/* don't add any internal headers here; theme.h is an installed/public
+ * header.
+ */
 #include <Xlib.h>
+#include <glib.h>
 
 typedef struct _MetaFrameInfo       MetaFrameInfo;
+typedef struct _MetaFrameGeometry   MetaFrameGeometry;
 typedef struct _MetaThemeEngine     MetaThemeEngine;
 
 typedef enum
@@ -39,6 +44,8 @@ typedef enum
 
 typedef enum
 {
+  META_FRAME_CONTROL_NONE,
+  META_FRAME_CONTROL_TITLE,
   META_FRAME_CONTROL_DELETE,
   META_FRAME_CONTROL_MENU,
   META_FRAME_CONTROL_ICONIFY,
@@ -57,25 +64,23 @@ struct _MetaFrameInfo
 {
   /* These are read-only to engines */
   MetaFrameFlags flags;
-  Window xwindow; /* == None in fill_frame_geometry */
+  Window frame; /* == None in fill_frame_geometry */
   Display *display;
+  Screen *screen;
   Visual *visual;
   int depth;
-  Colormap cmap;
 
-  char *title;
-  
-  /* total frame size normally, but equal to child size in
-   * fill_frame_geometry
+  const char *title;  
+
+  /* Equal to child size before fill_frame_geometry
+   * has been called
    */
   int width;
   int height;
-  
-  /* Below here the engine can change things
-   * in fill_frame_geometry, though defaults are already
-   * filled in.
-   */
-  
+};
+
+struct _MetaFrameGeometry
+{  
   /* border sizes (space between frame and child) */
   int left_width;
   int right_width;
@@ -99,8 +104,9 @@ struct _MetaThemeEngine
   void             (* release_frame)       (MetaFrameInfo *info,
                                             gpointer       frame_data);
   
-  void             (* fill_frame_geometry) (MetaFrameInfo *info,
-                                            gpointer       frame_data);
+  void             (* fill_frame_geometry) (MetaFrameInfo     *info,
+                                            MetaFrameGeometry *geom,
+                                            gpointer           frame_data);
 
   void             (* expose_frame)        (MetaFrameInfo *info,
                                             int x, int y,

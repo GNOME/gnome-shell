@@ -190,6 +190,26 @@ meta_display_screen_for_root (MetaDisplay *display,
   return NULL;
 }
 
+MetaScreen*
+meta_display_screen_for_x_screen (MetaDisplay *display,
+                                  Screen      *xscreen)
+{
+  GSList *tmp;
+
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+
+      if (xscreen == screen->xscreen)
+        return screen;
+
+      tmp = tmp->next;
+    }
+
+  return NULL;
+}
+
 /* Grab/ungrab routines taken from fvwm */
 void
 meta_display_grab (MetaDisplay *display)

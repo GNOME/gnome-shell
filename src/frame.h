@@ -33,6 +33,8 @@ struct _MetaFrame
   Window xwindow;
 
   MetaRectangle rect;
+
+  gpointer theme_data;
 };
 
 void meta_window_ensure_frame  (MetaWindow *window);

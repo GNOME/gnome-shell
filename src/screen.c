@@ -23,7 +23,11 @@
 #include "util.h"
 #include "errors.h"
 #include "window.h"
+#include "colors.h"
+
 #include <cursorfont.h>
+#include <locale.h>
+#include <string.h>
 
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
@@ -81,7 +85,10 @@ meta_screen_new (MetaDisplay *display,
   screen->number = number;
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;  
+  screen->pango_context = NULL;
 
+  screen->engine = &meta_default_engine;
+  
   meta_verbose ("Added screen %d on display '%s' root 0x%lx\n",
                 screen->number, screen->display->name, screen->xroot);  
   
@@ -91,6 +98,8 @@ meta_screen_new (MetaDisplay *display,
 void
 meta_screen_free (MetaScreen *screen)
 {
+  if (screen->pango_context)
+    g_object_unref (G_OBJECT (screen->pango_context));
   g_free (screen);
 }
 
@@ -129,4 +138,121 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   
   if (children)
     XFree (children);
+}
+
+static GC
+get_gc_func (PangoContext *context, PangoColor *color, GC base_gc)
+{
+  MetaScreen *screen;
+  GC new_gc;
+  XGCValues vals;
+  int copy_mask = (GCFunction | GCPlaneMask | GCForeground | GCBackground |
+                   GCLineWidth | GCLineStyle | GCCapStyle | GCJoinStyle |
+                   GCFillStyle | GCFillRule | GCTile | GCStipple | GCTileStipXOrigin |
+                   GCTileStipYOrigin | GCFont | GCSubwindowMode |
+                   GCGraphicsExposures | GCClipXOrigin | GCClipYOrigin |
+                   GCDashOffset | GCArcMode);
+
+  screen = g_object_get_data (G_OBJECT (context), "meta-screen");
+  
+  new_gc = XCreateGC (screen->display->xdisplay,
+                      screen->xroot,
+                      0, 
+                      &vals);
+
+  XCopyGC (screen->display->xdisplay, base_gc, copy_mask, new_gc);
+
+  vals.foreground = meta_screen_get_x_pixel (screen, color);
+  XChangeGC (screen->display->xdisplay, new_gc, GCForeground, &vals);
+
+  return new_gc;
+}
+
+static void
+free_gc_func (PangoContext *context, GC gc)
+{
+  MetaScreen *screen;
+
+  screen = g_object_get_data (G_OBJECT (context), "meta-screen");
+
+  XFreeGC (screen->display->xdisplay, gc);
+}
+
+static char*
+get_default_language (void)
+{
+  /* Copied from GTK, Copyright 2001 Red Hat Inc. */
+  gchar *lang;
+  gchar *p;
+  
+  lang = g_strdup (setlocale (LC_CTYPE, NULL));
+  p = strchr (lang, '.');
+  if (p)
+    *p = '\0';
+  p = strchr (lang, '@');
+  if (p)
+    *p = '\0';
+
+  return lang;
+}
+
+PangoContext*
+meta_screen_get_pango_context (MetaScreen *screen,
+                               const PangoFontDescription *desc,
+                               PangoDirection direction)
+{
+  if (screen->pango_context == NULL)
+    {
+      PangoContext *ctx;
+      char *lang;
+      
+      /* Copied from GDK, Copyright 2001 Red Hat, Inc. */
+#ifdef HAVE_XFT
+      static int use_xft = -1;
+      if (use_xft == -1)
+        {
+          char *val = g_getenv ("META_USE_XFT");
+          
+          use_xft = val && (atoi (val) != 0);
+        }
+      
+      if (use_xft)
+        ctx = pango_xft_get_context (screen->display, screen->number);
+      else
+#endif /* HAVE_XFT */
+        ctx = pango_x_get_context (screen->display->xdisplay);
+
+      g_object_set_data (G_OBJECT (ctx), "meta-screen", screen);
+
+      pango_x_context_set_funcs (ctx, get_gc_func, free_gc_func);
+      
+      lang = get_default_language ();  
+      pango_context_set_lang (ctx, lang);
+      g_free (lang);
+
+      /* FIXME these two lines are wrong;
+       * we should be storing a context for each direction/desc,
+       * so that the args to meta_screen_get_pango_context()
+       * are honored.
+       */
+      pango_context_set_base_dir (ctx, direction);
+      pango_context_set_font_description (ctx, desc);
+      
+      screen->pango_context = ctx;
+    }
+  
+  return screen->pango_context;
+}
+
+MetaScreen*
+meta_screen_for_x_screen (Screen *xscreen)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (DisplayOfScreen (xscreen));
+
+  if (display == NULL)
+    return NULL;
+  
+  return meta_display_screen_for_x_screen (display, xscreen);
 }

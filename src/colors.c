@@ -1,4 +1,4 @@
-/* Metacity X managed windows */
+/* Metacity RGB color stuff */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,32 +19,24 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WINDOW_H
-#define META_WINDOW_H
+#include "colors.h"
 
-#include "screen.h"
-#include "util.h"
-
-struct _MetaWindow
+gulong
+meta_screen_get_x_pixel (MetaScreen       *screen,
+                         const PangoColor *color)
 {
-  MetaDisplay *display;
-  MetaScreen *screen;
-  Window xwindow;
-  /* may be NULL! not all windows get decorated */
-  MetaFrame *frame;
-  MetaRectangle rect;
-  int border_width;
-  int win_gravity;
-  int depth;
-  Visual *xvisual;
-  char *title;
-};
+#define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
+  double r, g, b;
 
-MetaWindow*  meta_window_new    (MetaDisplay *display,
-                                 Window       xwindow); 
-void         meta_window_free   (MetaWindow  *window);
+  r = color->red / (double) 0xffff;
+  g = color->green / (double) 0xffff;
+  b = color->blue / (double) 0xffff;    
 
-gboolean     meta_window_event  (MetaWindow  *window,
-                                 XEvent      *event);
-
-#endif
+  /* Now this is a low-bloat GdkRGB replacement! */
+  if (INTENSITY (r, g, b) > 0.5)
+    return WhitePixel (screen->display->xdisplay, screen->number);
+  else
+    return BlackPixel (screen->display->xdisplay, screen->number);
+  
+#undef INTENSITY
+}

@@ -23,6 +23,7 @@
 #define META_SCREEN_H
 
 #include "display.h"
+#include "theme.h"
 
 struct _MetaScreen
 {
@@ -30,11 +31,26 @@ struct _MetaScreen
   int number;
   Screen *xscreen;
   Window xroot;
+
+  MetaThemeEngine *engine;
+  
+  /*< private >*/
+
+  /* we only need one since we only draw to a single visual (that of
+   * root window)
+   */
+  PangoContext *pango_context;  
 };
 
-MetaScreen* meta_screen_new                (MetaDisplay *display,
-                                            int          number);
-void        meta_screen_free               (MetaScreen  *screen);
-void        meta_screen_manage_all_windows (MetaScreen  *screen);
+MetaScreen*   meta_screen_new                (MetaDisplay                *display,
+                                              int                         number);
+void          meta_screen_free               (MetaScreen                 *screen);
+void          meta_screen_manage_all_windows (MetaScreen                 *screen);
+PangoContext* meta_screen_get_pango_context  (MetaScreen                 *screen,
+                                              const PangoFontDescription *desc,
+                                              PangoDirection              direction);
+
+MetaScreen*   meta_screen_for_x_screen       (Screen                     *xscreen);
 
 #endif
+

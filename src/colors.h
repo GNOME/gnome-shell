@@ -1,4 +1,4 @@
-/* Metacity X managed windows */
+/* Metacity RGB color stuff */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,32 +19,17 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WINDOW_H
-#define META_WINDOW_H
+#ifndef META_COLORS_H
+#define META_COLORS_H
+
+/* This stuff will all just be XlibRGB eventually. Right now
+ * it has a stub implementation.
+ */
 
 #include "screen.h"
 #include "util.h"
 
-struct _MetaWindow
-{
-  MetaDisplay *display;
-  MetaScreen *screen;
-  Window xwindow;
-  /* may be NULL! not all windows get decorated */
-  MetaFrame *frame;
-  MetaRectangle rect;
-  int border_width;
-  int win_gravity;
-  int depth;
-  Visual *xvisual;
-  char *title;
-};
-
-MetaWindow*  meta_window_new    (MetaDisplay *display,
-                                 Window       xwindow); 
-void         meta_window_free   (MetaWindow  *window);
-
-gboolean     meta_window_event  (MetaWindow  *window,
-                                 XEvent      *event);
+gulong meta_screen_get_x_pixel (MetaScreen       *screen,
+                                const PangoColor *color);
 
 #endif

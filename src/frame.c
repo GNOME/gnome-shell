@@ -22,6 +22,21 @@
 #include "frame.h"
 #include "errors.h"
 
+static void
+meta_frame_init_info (MetaFrame     *frame,
+                      MetaFrameInfo *info)
+{
+  info->flags = 0;
+  info->frame = frame->xwindow;
+  info->display = frame->window->display->xdisplay;
+  info->screen = frame->window->screen->xscreen;
+  info->visual = frame->window->xvisual;
+  info->depth = frame->window->depth;
+  info->title = frame->window->title;
+  info->width = frame->rect.width;
+  info->height = frame->rect.height;
+}
+
 void
 meta_window_ensure_frame (MetaWindow *window)
 {
@@ -29,6 +44,8 @@ meta_window_ensure_frame (MetaWindow *window)
   int child_x, child_y;
   unsigned long background_pixel;
   XSetWindowAttributes attrs;
+  MetaFrameInfo info;
+  MetaFrameGeometry geom;
   
   if (window->frame)
     return;
@@ -37,14 +54,33 @@ meta_window_ensure_frame (MetaWindow *window)
 
   frame->window = window;
 
-  /* FIXME de-hardcode */
-  child_x = 5;
-  child_y = 5;
+  /* Fill these in for the theme engine's benefit */
+  frame->xwindow = None;
+  frame->rect.width = window->rect.width;
+  frame->rect.height = window->rect.height;
+  
+  meta_frame_init_info (frame, &info);
 
-  frame->rect.width = window->rect.width + 10;
-  frame->rect.height = window->rect.height + 10;
+  geom.left_width = 0;
+  geom.right_width = 0;
+  geom.top_height = 0;
+  geom.bottom_height = 0;
+  geom.background_pixel = BlackPixel (frame->window->display->xdisplay,
+                                      frame->window->screen->number);
 
-  background_pixel = BlackPixel (window->display, window->screen->number);
+  geom.shape_mask = None;
+  
+  frame->theme_data = window->screen->engine->acquire_frame (&info);
+  window->screen->engine->fill_frame_geometry (&info, &geom,
+                                               frame->theme_data);
+
+  child_x = geom.left_width;
+  child_y = geom.top_height;
+
+  frame->rect.width = window->rect.width + geom.left_width + geom.right_width;
+  frame->rect.height = window->rect.height + geom.top_height + geom.bottom_height;
+
+  background_pixel = geom.background_pixel;
   
   switch (window->win_gravity)
     {
@@ -151,11 +187,18 @@ void
 meta_window_destroy_frame (MetaWindow *window)
 {
   MetaFrame *frame;
+  MetaFrameInfo info;
   
   if (window->frame == NULL)
     return;
 
   frame = window->frame;
+
+  if (frame->theme_data)
+    {
+      meta_frame_init_info (frame, &info);
+      window->screen->engine->release_frame (&info, frame->theme_data);
+    }
   
   /* Unparent the client window; it may be destroyed,
    * thus the error trap.
@@ -220,6 +263,16 @@ meta_frame_event (MetaFrame *frame,
     case KeymapNotify:
       break;
     case Expose:
+      {
+        MetaFrameInfo info;
+        meta_frame_init_info (frame, &info);
+        frame->window->screen->engine->expose_frame (&info,
+                                                     event->xexpose.x,
+                                                     event->xexpose.y,
+                                                     event->xexpose.width,
+                                                     event->xexpose.height,
+                                                     frame->theme_data);
+      }
       break;
     case GraphicsExpose:
       break;
