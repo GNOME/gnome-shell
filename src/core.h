@@ -28,6 +28,10 @@
 #include "frames.h"
 #include "common.h"
 
+void meta_core_get_outer_rect (Display      *xdisplay,
+                               Window        frame_xwindow,
+                               GdkRectangle *rect);
+
 void meta_core_get_frame_size (Display *xdisplay,
                                Window   frame_xwindow,
                                int     *width,

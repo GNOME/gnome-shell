@@ -24,6 +24,24 @@
 #include "workspace.h"
 
 void
+meta_core_get_outer_rect (Display      *xdisplay,
+                          Window        frame_xwindow,
+                          GdkRectangle *rect)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  MetaRectangle r;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  
+}
+
+void
 meta_core_get_frame_size (Display *xdisplay,
                           Window   frame_xwindow,
                           int     *width,

@@ -563,6 +563,9 @@ window_type_to_string (MetaWindowType type)
     case META_WINDOW_MENU:
       return "menu";
       break;
+    case META_WINDOW_FULLSCREEN:
+      return "fullscreen";
+      break;
     }
 
   return "";
@@ -585,6 +588,8 @@ window_type_from_string (const char *str)
     return META_WINDOW_TOOLBAR;
   else if (strcmp (str, "menu") == 0)
     return META_WINDOW_MENU;
+  else if (strcmp (str, "fullscreen") == 0)
+    return META_WINDOW_FULLSCREEN;
   else
     return META_WINDOW_NORMAL;
 }

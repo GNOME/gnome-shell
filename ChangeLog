@@ -1,5 +1,11 @@
 2001-08-29  Havoc Pennington  <hp@pobox.com>
 
+	* src/tabpopup.c: add crackrock window-outlining feature
+
+	* src/session.c (window_type_to_string): handle fullscreen
+
+2001-08-29  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_open): wrong atom name -
 	_NET_SUPPORTED not _NET_WM_SUPPORTED
 

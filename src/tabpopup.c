@@ -35,6 +35,7 @@ struct _TabEntry
   char       *title;
   GdkPixbuf  *icon;
   GtkWidget  *widget;
+  GdkRectangle rect;
 };
 
 struct _MetaTabPopup
@@ -44,6 +45,7 @@ struct _MetaTabPopup
   GList *current;
   GList *entries;
   GtkWidget *current_selected_widget;
+  GtkWidget *outline_window;
 };
 
 static GtkWidget* selectable_image_new (GdkPixbuf *pixbuf);
@@ -64,6 +66,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   int max_label_width;
   
   popup = g_new (MetaTabPopup, 1);
+
+  popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
+  gtk_widget_set_app_paintable (popup->outline_window, TRUE);
+  gtk_widget_realize (popup->outline_window);
+  
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_position (GTK_WINDOW (popup->window),
                            GTK_WIN_POS_CENTER_ALWAYS);
@@ -87,6 +94,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
       g_object_ref (G_OBJECT (te->icon));
       te->widget = NULL;
 
+      te->rect.x = entries[i].x;
+      te->rect.y = entries[i].y;
+      te->rect.width = entries[i].width;
+      te->rect.height = entries[i].height;
+      
       tab_entries = g_list_prepend (tab_entries, te);
       
       ++i;
@@ -194,7 +206,7 @@ free_entry (gpointer data, gpointer user_data)
 void
 meta_ui_tab_popup_free (MetaTabPopup *popup)
 {
-
+  gtk_widget_destroy (popup->outline_window);
   gtk_widget_destroy (popup->window);
   
   g_list_foreach (popup->entries, free_entry, NULL);
@@ -218,11 +230,55 @@ static void
 display_entry (MetaTabPopup *popup,
                TabEntry     *te)
 {
+  GdkRectangle inner;
+  GdkRectangle rect;
+  
   if (popup->current_selected_widget)
     unselect_image (popup->current_selected_widget);
   
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
   select_image (te->widget);
+
+  /* Do stuff behind gtk's back */
+  gdk_window_hide (popup->outline_window->window);
+
+#define OUTLINE_WIDTH 3
+
+  rect = te->rect;
+  rect.x = 0;
+  rect.y = 0;
+  
+  inner = rect;
+  inner.x += OUTLINE_WIDTH;
+  inner.y += OUTLINE_WIDTH;
+  inner.width -= OUTLINE_WIDTH * 2;
+  inner.height -= OUTLINE_WIDTH * 2;
+  if (inner.width >= 0 || inner.height >= 0)
+    {
+      GdkRegion *region;
+      GdkRegion *inner_region;
+
+      gdk_window_move_resize (popup->outline_window->window,
+                              te->rect.x, te->rect.y,
+                              te->rect.width, te->rect.height);
+      
+      gdk_window_set_background (popup->outline_window->window,
+                                 &popup->outline_window->style->black);
+      
+      region = gdk_region_rectangle (&rect);
+      inner_region = gdk_region_rectangle (&inner);
+      gdk_region_subtract (region, inner_region);
+      gdk_region_destroy (inner_region);
+      
+      gdk_window_shape_combine_region (popup->outline_window->window,
+                                       region,
+                                       0, 0);
+
+      /* This should piss off gtk a bit, but we don't want to raise
+       * above the tab popup
+       */
+      gdk_window_show_unraised (popup->outline_window->window);
+    }
 
   popup->current_selected_widget = te->widget;
 }

@@ -133,9 +133,10 @@ typedef struct _MetaTabPopup MetaTabPopup;
 
 struct _MetaTabEntry
 {
-  Window      xwindow;
-  const char *title;
-  GdkPixbuf  *icon;
+  Window        xwindow;
+  const char   *title;
+  GdkPixbuf    *icon;
+  int           x, y, width, height;
 };
 
 MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries);

@@ -479,12 +479,18 @@ meta_screen_ensure_tab_popup (MetaScreen *screen)
   while (i < len)
     {
       MetaWindow *window;
-
+      MetaRectangle r;
+      
       window = tmp->data;
       
       entries[i].xwindow = window->xwindow;
       entries[i].title = window->title;
       entries[i].icon = window->icon;
+      meta_window_get_outer_rect (window, &r);
+      entries[i].x = r.x;
+      entries[i].y = r.y;
+      entries[i].width = r.width;
+      entries[i].height = r.height;
       
       ++i;
       tmp = tmp->next;
