@@ -50,6 +50,13 @@ set_wm_check_hint (MetaScreen *screen)
                    screen->display->atom_net_supporting_wm_check,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
+
+  /* Legacy GNOME hint */
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_win_supporting_wm_check,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+
   return Success;
 }
 
@@ -57,6 +64,7 @@ static int
 set_supported_hint (MetaScreen *screen)
 {
 #define N_SUPPORTED 21
+#define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -86,6 +94,14 @@ set_supported_hint (MetaScreen *screen)
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) atoms, N_SUPPORTED);
 
+  /* Set legacy GNOME hints */
+  atoms[0] = screen->display->atom_win_layer;
+  
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_win_protocols,
+                   XA_ATOM,
+                   32, PropModeReplace, (guchar*) atoms, N_WIN_SUPPORTED);
+  
   return Success;
 #undef N_SUPPORTED
 }

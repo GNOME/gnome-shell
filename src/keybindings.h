@@ -23,11 +23,15 @@
 #define META_KEYBINDINGS_H
 
 #include "display.h"
+#include "window.h"
 
 void meta_display_init_keys         (MetaDisplay *display);
 void meta_screen_grab_keys          (MetaScreen  *screen);
 void meta_screen_ungrab_keys        (MetaScreen  *screen);
+void meta_window_grab_keys          (MetaWindow  *window);
+void meta_window_ungrab_keys        (MetaWindow  *window);
 void meta_display_process_key_press (MetaDisplay *display,
+                                     MetaWindow  *window,
                                      XEvent      *event);
 
 #endif

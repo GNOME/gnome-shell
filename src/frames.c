@@ -300,9 +300,6 @@ meta_frames_destroy (GtkObject *object)
   MetaFrames *frames;
   
   frames = META_FRAMES (object);
-
-  if (frames->menu)
-    gtk_widget_destroy (frames->menu);
   
   winlist = NULL;
   g_hash_table_foreach (frames->frames,
@@ -856,13 +853,7 @@ meta_frames_end_grab (MetaFrames *frames,
                       guint32     timestamp)
 {
   if (frames->grab_frame)
-    {
-      if (frames->grab_status == META_FRAME_STATUS_CLICKING_MENU)
-        {
-          if (frames->menu)
-            gtk_widget_destroy (frames->menu);
-        }
-      
+    {      
       frames->grab_frame = NULL;
       frames->grab_status = META_FRAME_STATUS_NORMAL;
       gdk_pointer_ungrab (timestamp);
@@ -1030,11 +1021,12 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
       if (status == META_FRAME_STATUS_CLICKING_MENU)
         {
-          meta_window_menu_show (frames, frame,
-                                 event->x_root,
-                                 event->y_root,
-                                 event->button,
-                                 event->time);
+          meta_core_show_window_menu (gdk_display,
+                                      frame->xwindow,
+                                      event->x_root,
+                                      event->y_root,
+                                      event->button,
+                                      event->time);
         }
     }
   else if (control == META_FRAME_CONTROL_RESIZE_SE &&

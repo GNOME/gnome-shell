@@ -139,6 +139,10 @@ struct _MetaWindow
 
   /* Are we in the calc_showing queue? */
   guint calc_showing_queued : 1;
+
+  /* Used by keybindings.c */
+  guint keys_grabbed : 1;
+  guint grab_on_frame : 1;
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client
@@ -227,8 +231,17 @@ gboolean meta_window_property_notify   (MetaWindow *window,
                                         XEvent     *event);
 gboolean meta_window_client_message    (MetaWindow *window,
                                         XEvent     *event);
+gboolean meta_window_notify_focus      (MetaWindow *window,
+                                        XEvent     *event);
 
 int      meta_window_set_current_workspace_hint (MetaWindow *window);
 
 unsigned long meta_window_get_net_wm_desktop (MetaWindow *window);
+
+void meta_window_show_menu (MetaWindow *window,
+                            int         root_x,
+                            int         root_y,
+                            int         button,
+                            Time        timestamp);
+
 #endif

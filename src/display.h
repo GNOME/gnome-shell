@@ -90,6 +90,8 @@ struct _MetaDisplay
   Atom atom_net_wm_state_skip_pager;
   Atom atom_win_workspace;
   Atom atom_win_layer;
+  Atom atom_win_protocols;
+  Atom atom_win_supporting_wm_check;
   
   /* This is the actual window from focus events,
    * not the one we last set

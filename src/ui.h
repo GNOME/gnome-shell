@@ -71,4 +71,21 @@ void meta_ui_set_frame_title (MetaUI *ui,
                               Window xwindow,
                               const char *title);
 
+MetaWindowMenu* meta_ui_window_menu_new   (MetaUI             *ui,
+                                           Window              client_xwindow,
+                                           MetaMenuOp          ops,
+                                           MetaMenuOp          insensitive,
+                                           int                 active_workspace,
+                                           int                 n_workspaces,
+                                           MetaWindowMenuFunc  func,
+                                           gpointer            data);
+void            meta_ui_window_menu_popup (MetaWindowMenu     *menu,
+                                           int                 root_x,
+                                           int                 root_y,
+                                           int                 button,
+                                           guint32             timestamp);
+void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
+
+
+
 #endif

@@ -27,7 +27,8 @@
                     ExposureMask |                                 \
                     ButtonPressMask | ButtonReleaseMask |          \
                     PointerMotionMask | PointerMotionHintMask |    \
-                    EnterWindowMask | LeaveWindowMask)
+                    EnterWindowMask | LeaveWindowMask |            \
+                    FocusChangeMask)
 
 void
 meta_window_ensure_frame (MetaWindow *window)
@@ -106,6 +107,9 @@ meta_window_ensure_frame (MetaWindow *window)
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
                              window->title);
+
+  /* Move keybindings to frame instead of window */
+  meta_window_grab_keys (window);
 }
 
 void
@@ -117,7 +121,7 @@ meta_window_destroy_frame (MetaWindow *window)
     return;
 
   frame = window->frame;
-
+  
   meta_ui_remove_frame (window->screen->ui, frame->xwindow);
   
   /* Unparent the client window; it may be destroyed,
@@ -142,6 +146,9 @@ meta_window_destroy_frame (MetaWindow *window)
   
   window->frame = NULL;
 
+  /* Move keybindings to window instead of frame */
+  meta_window_grab_keys (window);
+  
   /* should we push an error trap? */
   XDestroyWindow (window->display->xdisplay, frame->xwindow);
   
@@ -270,6 +277,8 @@ meta_frame_event (MetaFrame *frame,
   switch (event->type)
     {
     case KeyPress:
+      meta_display_process_key_press (frame->window->display,
+                                      frame->window, event);
       break;
     case KeyRelease:
       break;
@@ -290,8 +299,9 @@ meta_frame_event (MetaFrame *frame,
     case LeaveNotify:
       break;
     case FocusIn:
-      break;
     case FocusOut:
+      meta_window_notify_focus (frame->window,
+                                event);
       break;
     case KeymapNotify:
       break;

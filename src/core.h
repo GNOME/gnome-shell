@@ -91,6 +91,13 @@ int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
 
 
+void meta_core_show_window_menu (Display *xdisplay,
+                                 Window   frame_xwindow,
+                                 int      root_x,
+                                 int      root_y,
+                                 int      button,
+                                 Time     timestamp);
+
 #endif
 
 

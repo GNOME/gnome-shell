@@ -25,6 +25,8 @@
 #include "errors.h"
 #include "workspace.h"
 #include "stack.h"
+#include "keybindings.h"
+#include "ui.h"
 
 #include <X11/Xatom.h>
 
@@ -210,6 +212,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->placed = window->mapped;
   window->unmanaging = FALSE;
   window->calc_showing_queued = FALSE;
+  window->keys_grabbed = FALSE;
+  window->grab_on_frame = FALSE;
   
   window->unmaps_pending = 0;
   
@@ -259,15 +263,18 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       window->minimized = TRUE;
       meta_verbose ("Window %s asked to start out minimized\n", window->desc);
     }
-
+  
   /* FIXME we have a tendency to set this then immediately
    * change it again.
    */
   set_wm_state (window, window->iconic ? IconicState : NormalState);
   set_net_wm_state (window);
-  
+
+  /* keys grab on client window if no frame */
   if (window->decorated)
     meta_window_ensure_frame (window);
+
+  meta_window_grab_keys (window);
 
   space =
     meta_display_get_workspace_by_screen_index (window->display,
@@ -321,6 +328,9 @@ meta_window_free (MetaWindow  *window)
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
   window->unmanaging = TRUE;
+
+  if (window->display->focus_window == window)
+    window->display->focus_window = NULL;
   
   meta_window_unqueue_calc_showing (window);
   
@@ -343,12 +353,15 @@ meta_window_free (MetaWindow  *window)
   
   /* FIXME restore original size if window has maximized */
   
-  set_wm_state (window, WithdrawnState);  
-  
+  set_wm_state (window, WithdrawnState);
+
+  if (window->frame)
+    meta_window_destroy_frame (window);
+
+  meta_window_ungrab_keys (window);
+
   meta_display_unregister_x_window (window->display, window->xwindow);
-
-  meta_window_destroy_frame (window);
-
+  
   /* Put back anything we messed up */
   meta_error_trap_push (window->display);
   if (window->border_width != 0)
@@ -698,9 +711,13 @@ meta_window_unmaximize (MetaWindow  *window)
 void
 meta_window_shade (MetaWindow  *window)
 {
+  meta_verbose ("Shading %s\n", window->desc);
   if (!window->shaded)
     {
       window->shaded = TRUE;
+
+      meta_window_focus (window, CurrentTime);
+      
       meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
 
@@ -711,6 +728,7 @@ meta_window_shade (MetaWindow  *window)
 void
 meta_window_unshade (MetaWindow  *window)
 {
+  meta_verbose ("Unshading %s\n", window->desc);
   if (window->shaded)
     {
       window->shaded = FALSE;
@@ -1153,24 +1171,41 @@ meta_window_focus (MetaWindow  *window,
   meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
                 window->desc, window->input, window->take_focus);
 
-  meta_error_trap_push (window->display);
-  
-  if (window->input)
+  if (window->shaded && window->frame)
     {
-      XSetInputFocus (window->display->xdisplay,
-                      window->xwindow,
-                      RevertToPointerRoot,
-                      timestamp);
+      /* This is so we can still use keyboard shortcuts
+       * and still draw the window as focused.
+       */
+      if (window->frame)
+        {
+          meta_verbose ("Focusing frame of %s\n", window->desc);
+          XSetInputFocus (window->display->xdisplay,
+                          window->frame->xwindow,
+                          RevertToPointerRoot,
+                          CurrentTime);
+        }
     }
-  
-  if (window->take_focus)
+  else
     {
-      meta_window_send_icccm_message (window,
-                                      window->display->atom_wm_take_focus,
-                                      timestamp);
+      meta_error_trap_push (window->display);
+      
+      if (window->input)
+        {
+          XSetInputFocus (window->display->xdisplay,
+                          window->xwindow,
+                          RevertToPointerRoot,
+                          timestamp);
+        }
+      
+      if (window->take_focus)
+        {
+          meta_window_send_icccm_message (window,
+                                          window->display->atom_wm_take_focus,
+                                          timestamp);
+        }
+      
+      meta_error_trap_pop (window->display);
     }
-  
-  meta_error_trap_pop (window->display);
 }
 
 void
@@ -1501,6 +1536,34 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   
+  return FALSE;
+}
+
+gboolean
+meta_window_notify_focus (MetaWindow *window,
+                          XEvent     *event)
+{
+  /* note the event can be on either the window or the frame,
+   * we focus the frame for shaded windows
+   */
+
+  if (event->type == FocusIn)
+    {
+      if (window != window->display->focus_window)
+        window->display->focus_window = window;
+      window->has_focus = TRUE;
+      if (window->frame)
+        meta_frame_queue_draw (window->frame);
+    }
+  else if (event->type == FocusOut)
+    {
+      if (window == window->display->focus_window)
+        window->display->focus_window = NULL;
+      window->has_focus = FALSE;
+      if (window->frame)
+        meta_frame_queue_draw (window->frame);
+    }
+
   return FALSE;
 }
 
@@ -2796,4 +2859,145 @@ constrain_position (MetaWindow *window,
 
   *new_x = x;
   *new_y = y;
+}
+
+static void
+menu_callback (MetaWindowMenu *menu,
+               Display        *xdisplay,
+               Window          client_xwindow,
+               MetaMenuOp      op,
+               int             workspace_index,
+               gpointer        data)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, client_xwindow);
+  
+  if (window != NULL) /* window can be NULL */
+    {
+      meta_verbose ("Menu op %d on %s\n", op, window->desc);
+      
+      /* op can be 0 for none */
+      switch (op)
+        {
+        case META_MENU_OP_DELETE:
+          meta_window_delete (window, CurrentTime);
+          break;
+
+        case META_MENU_OP_MINIMIZE:
+          meta_window_minimize (window);
+          break;
+
+        case META_MENU_OP_UNMAXIMIZE:
+          meta_window_unmaximize (window);
+          break;
+      
+        case META_MENU_OP_MAXIMIZE:
+          meta_window_maximize (window);
+          break;
+
+        case META_MENU_OP_UNSHADE:
+          meta_window_unshade (window);
+          break;
+      
+        case META_MENU_OP_SHADE:
+          meta_window_shade (window);
+          break;
+      
+        case META_MENU_OP_WORKSPACES:
+          {
+            MetaWorkspace *workspace;
+
+            workspace =
+              meta_display_get_workspace_by_screen_index (window->display,
+                                                          window->screen,
+                                                          workspace_index);
+
+            if (workspace)
+              meta_window_change_workspace (window,
+                                            workspace);
+            else
+              meta_warning ("Workspace %d doesn't exist\n", workspace_index);
+          }
+          break;
+
+        case META_MENU_OP_STICK:
+          meta_window_stick (window);
+          break;
+
+        case META_MENU_OP_UNSTICK:
+          meta_window_unstick (window);
+          break;
+
+        case 0:
+          /* nothing */
+          break;
+          
+        default:
+          meta_warning (G_STRLOC": Unknown window op\n");
+          break;
+        }
+    }
+  else
+    {
+      meta_verbose ("Menu callback on nonexistent window\n");
+    }
+  
+  meta_ui_window_menu_free (menu);
+}
+
+void
+meta_window_show_menu (MetaWindow *window,
+                       int         root_x,
+                       int         root_y,
+                       int         button,
+                       Time        timestamp)
+{
+  MetaMenuOp ops;
+  MetaMenuOp insensitive;
+  MetaWindowMenu *menu;
+  
+  ops = 0;
+  insensitive = 0;
+
+  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE);
+  
+  if (window->maximized)
+    ops |= META_MENU_OP_UNMAXIMIZE;
+  else
+    ops |= META_MENU_OP_MAXIMIZE;
+
+  if (!window->has_maximize_func)
+    insensitive |= META_MENU_OP_UNMAXIMIZE | META_MENU_OP_MAXIMIZE;
+  
+  if (window->shaded)
+    ops |= META_MENU_OP_UNSHADE;
+  else
+    ops |= META_MENU_OP_SHADE;
+
+  if (window->on_all_workspaces)
+    ops |= META_MENU_OP_UNSTICK;
+  else
+    ops |= META_MENU_OP_STICK;
+
+  if (!window->has_minimize_func)
+    insensitive |= META_MENU_OP_MINIMIZE;
+  
+  if (!window->has_close_func)
+    insensitive |= META_MENU_OP_DELETE;
+
+  menu =
+    meta_ui_window_menu_new (window->screen->ui,
+                             window->xwindow,
+                             ops,
+                             insensitive,
+                             meta_window_get_net_wm_desktop (window),
+                             meta_screen_get_n_workspaces (window->screen),
+                             menu_callback,
+                             NULL);                                  
+
+  meta_verbose ("Popping up window menu for %s\n", window->desc);
+  meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
 }

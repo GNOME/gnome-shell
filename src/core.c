@@ -355,4 +355,24 @@ meta_core_get_frame_workspace (Display *xdisplay,
   return meta_window_get_net_wm_desktop (window);
 }
 
+void
+meta_core_show_window_menu (Display *xdisplay,
+                            Window   frame_xwindow,
+                            int      root_x,
+                            int      root_y,
+                            int      button,
+                            Time     timestamp)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_show_menu (window, root_x, root_y, button, timestamp);
+}
+
 

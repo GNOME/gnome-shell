@@ -22,6 +22,7 @@
 #include "ui.h"
 #include "frames.h"
 #include "util.h"
+#include "menu.h"
 
 struct _MetaUI
 {
@@ -197,4 +198,37 @@ meta_ui_set_frame_title (MetaUI     *ui,
   meta_frames_set_title (ui->frames, xwindow, title);
 }
 
+MetaWindowMenu*
+meta_ui_window_menu_new  (MetaUI             *ui,
+                          Window              client_xwindow,
+                          MetaMenuOp          ops,
+                          MetaMenuOp          insensitive,
+                          int                 active_workspace,
+                          int                 n_workspaces,
+                          MetaWindowMenuFunc  func,
+                          gpointer            data)
+{
+  return meta_window_menu_new (ui->frames,
+                               ops, insensitive,
+                               client_xwindow,
+                               active_workspace,
+                               n_workspaces,
+                               func, data);
+}
+
+void
+meta_ui_window_menu_popup (MetaWindowMenu     *menu,
+                           int                 root_x,
+                           int                 root_y,
+                           int                 button,
+                           guint32             timestamp)
+{
+  meta_window_menu_popup (menu, root_x, root_y, button, timestamp);
+}
+
+void
+meta_ui_window_menu_free (MetaWindowMenu *menu)
+{
+  meta_window_menu_free (menu);
+}
 

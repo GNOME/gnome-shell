@@ -22,6 +22,8 @@
 #include "keybindings.h"
 #include "workspace.h"
 #include "errors.h"
+#include "ui.h"
+#include "frame.h"
 
 #include <X11/keysym.h>
 
@@ -30,12 +32,18 @@
  */
 
 typedef void (* MetaKeyHandler) (MetaDisplay *display,
+                                 MetaWindow  *window,
                                  XEvent      *event,
                                  gpointer     data);
 
 static void handle_activate_workspace (MetaDisplay *display,
-                                     XEvent      *event,
-                                     gpointer     data);
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
+static void handle_activate_menu      (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 
 typedef struct _MetaKeyBinding MetaKeyBinding;
 
@@ -50,7 +58,7 @@ struct _MetaKeyBinding
 
 #define INTERESTING_MODIFIERS (ShiftMask | ControlMask | Mod1Mask)
 
-static MetaKeyBinding bindings[] = {
+static MetaKeyBinding screen_bindings[] = {
   { XK_F1, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
   { XK_F2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
   { XK_F3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
@@ -62,41 +70,57 @@ static MetaKeyBinding bindings[] = {
   { XK_3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
   { XK_4, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
   { XK_5, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
-  { XK_6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 }
+  { XK_6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
+  { None, 0, NULL, NULL, 0 }
 };
 
-void
-meta_display_init_keys (MetaDisplay *display)
+static MetaKeyBinding window_bindings[] = {
+  { XK_space, Mod1Mask, handle_activate_menu, NULL, 0 },
+  { None, 0, NULL, NULL, 0 }
+};
+
+static void
+init_bindings (MetaDisplay    *display,
+               MetaKeyBinding *bindings)
 {
   int i;
 
   i = 0;
-  while (i < G_N_ELEMENTS (bindings))
+  while (bindings[i].keysym != None)
     {
       bindings[i].keycode = XKeysymToKeycode (display->xdisplay,
                                               bindings[i].keysym);
       
       ++i;
     }
-}
+}               
 
 void
-meta_screen_grab_keys (MetaScreen  *screen)
+meta_display_init_keys (MetaDisplay *display)
+{
+  init_bindings (display, screen_bindings);
+  init_bindings (display, window_bindings);
+}
+
+static void
+grab_keys (MetaKeyBinding *bindings,
+           MetaDisplay    *display,
+           Window          xwindow)
 {
   int i;
 
   i = 0;
-  while (i < G_N_ELEMENTS (bindings))
+  while (bindings[i].keysym != None)
     {
       if (bindings[i].keycode != 0)
         {
           int result;
           
-          meta_error_trap_push (screen->display);
-          XGrabKey (screen->display->xdisplay, bindings[i].keycode,
-                    bindings[i].mask, screen->xroot, True,
+          meta_error_trap_push (display);
+          XGrabKey (display->xdisplay, bindings[i].keycode,
+                    bindings[i].mask, xwindow, True,
                     GrabModeAsync, GrabModeAsync);
-          result = meta_error_trap_pop (screen->display);
+          result = meta_error_trap_pop (display);
           if (result != Success)
             {
               const char *name;
@@ -107,8 +131,6 @@ meta_screen_grab_keys (MetaScreen  *screen)
               
               if (result == BadAccess)
                 meta_warning (_("Some other program is already using the key %s as a binding\n"), name);
-              else
-                meta_bug ("Unexpected error setting up keybindings\n");
             }
         }
       
@@ -116,18 +138,22 @@ meta_screen_grab_keys (MetaScreen  *screen)
     }
 }
 
-void
-meta_screen_ungrab_keys (MetaScreen  *screen)
+static void
+ungrab_keys (MetaKeyBinding *bindings,
+             MetaDisplay    *display,
+             Window          xwindow)
 {
   int i;
 
   i = 0;
-  while (i < G_N_ELEMENTS (bindings))
+  while (bindings[i].keysym != None)
     {
       if (bindings[i].keycode != 0)
         {
-          XUngrabKey (screen->display->xdisplay, bindings[i].keycode,
-                      bindings[i].mask, screen->xroot);
+          meta_error_trap_push (display);
+          XUngrabKey (display->xdisplay, bindings[i].keycode,
+                      bindings[i].mask, xwindow);
+          meta_error_trap_pop (display);
         }
       
       ++i;
@@ -135,8 +161,59 @@ meta_screen_ungrab_keys (MetaScreen  *screen)
 }
 
 void
-meta_display_process_key_press (MetaDisplay *display,
-                                XEvent      *event)
+meta_screen_grab_keys (MetaScreen  *screen)
+{
+  grab_keys (screen_bindings, screen->display, screen->xroot);
+}
+
+void
+meta_screen_ungrab_keys (MetaScreen  *screen)
+{
+  ungrab_keys (screen_bindings, screen->display, screen->xroot);
+}
+
+void
+meta_window_grab_keys (MetaWindow  *window)
+{
+  if (window->keys_grabbed)
+    {
+      if (window->frame && !window->grab_on_frame)
+        ungrab_keys (window_bindings, window->display,
+                     window->xwindow);
+      else if (window->frame == NULL &&
+               window->grab_on_frame)
+        ; /* continue to regrab on client window */
+      else
+        return; /* already all good */
+    }
+
+  grab_keys (window_bindings, window->display,
+             window->frame ? window->frame->xwindow : window->xwindow);
+
+  window->keys_grabbed = TRUE;
+  window->grab_on_frame = window->frame != NULL;
+}
+
+void
+meta_window_ungrab_keys (MetaWindow  *window)
+{
+  if (window->keys_grabbed)
+    {
+      if (window->grab_on_frame &&
+          window->frame != NULL)
+        ungrab_keys (window_bindings, window->display,
+                     window->frame->xwindow);
+      else if (!window->grab_on_frame)
+        ungrab_keys (window_bindings, window->display,
+                     window->xwindow);
+    }
+}
+
+static void
+process_event (MetaKeyBinding *bindings,
+               MetaDisplay *display,
+               MetaWindow  *window,
+               XEvent      *event)
 {
   KeySym keysym;
   int i;
@@ -144,22 +221,32 @@ meta_display_process_key_press (MetaDisplay *display,
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
 
   i = 0;
-  while (i < G_N_ELEMENTS (bindings))
+  while (bindings[i].keysym != None)
     {
       if (bindings[i].keysym == keysym && 
           ((event->xkey.state & INTERESTING_MODIFIERS) ==
            bindings[i].mask))
         {
-          (* bindings[i].handler) (display, event, bindings[i].data);
+          (* bindings[i].handler) (display, window, event, bindings[i].data);
           break;
         }
       
       ++i;
     }
 }
+                
+void
+meta_display_process_key_press (MetaDisplay *display,
+                                MetaWindow  *window,
+                                XEvent      *event)
+{
+  process_event (screen_bindings, display, window, event);
+  process_event (window_bindings, display, window, event);
+}
 
 static void
 handle_activate_workspace (MetaDisplay *display,
+                           MetaWindow  *window,
                            XEvent      *event,
                            gpointer     data)
 {
@@ -180,3 +267,22 @@ handle_activate_workspace (MetaDisplay *display,
     }
 }
 
+static void
+handle_activate_menu (MetaDisplay *display,
+                      MetaWindow  *window,
+                      XEvent      *event,
+                      gpointer     data)
+{
+  if (display->focus_window)
+    {
+      int x, y;
+
+      meta_window_get_position (display->focus_window,
+                                &x, &y);
+      
+      meta_window_show_menu (display->focus_window,
+                             x, y,
+                             0,
+                             event->xkey.time);
+    }
+}

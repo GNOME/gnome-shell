@@ -27,19 +27,6 @@
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 
-typedef enum
-{
-  META_MENU_OP_DELETE      = 1 << 0,
-  META_MENU_OP_MINIMIZE    = 1 << 1,
-  META_MENU_OP_UNMAXIMIZE  = 1 << 2,
-  META_MENU_OP_MAXIMIZE    = 1 << 3,
-  META_MENU_OP_UNSHADE     = 1 << 4,
-  META_MENU_OP_SHADE       = 1 << 5,
-  META_MENU_OP_UNSTICK     = 1 << 6,
-  META_MENU_OP_STICK       = 1 << 7,
-  META_MENU_OP_WORKSPACES  = 1 << 8
-} MetaMenuOp;
-
 struct _MenuItem
 {
   MetaMenuOp op;
@@ -50,8 +37,7 @@ struct _MenuItem
 
 struct _MenuData
 {
-  MetaFrames *frames;
-  MetaUIFrame *frame;
+  MetaWindowMenu *menu;
   MetaMenuOp op;
 };
 
@@ -92,70 +78,64 @@ popup_position_func (GtkMenu   *menu,
 }
 
 static void
-menu_closed (GtkMenu *menu,
+menu_closed (GtkMenu *widget,
              gpointer data)
 {
-  MetaFrames *frames;
+  MetaWindowMenu *menu;
+  
+  menu = data;
 
-  frames = META_FRAMES (data);
-
-  meta_frames_notify_menu_hide (frames);
-
-  gtk_widget_destroy (frames->menu);
-  frames->menu = NULL;
+  meta_frames_notify_menu_hide (menu->frames);
+  (* menu->func) (menu, gdk_display,
+                  menu->client_xwindow,
+                  0, 0,
+                  menu->data);
+  
+  /* menu may now be freed */
 }
 
-void
-meta_window_menu_show (MetaFrames              *frames,
-                       MetaUIFrame             *frame,
-                       int                      root_x,
-                       int                      root_y,
-                       int                      button,
-                       guint32                  timestamp)
+static void
+activate_cb (GtkWidget *menuitem, gpointer data)
+{
+  MenuData *md;
+  
+  g_return_if_fail (GTK_IS_WIDGET (menuitem));
+  
+  md = data;
+
+  meta_frames_notify_menu_hide (md->menu->frames);
+  (* md->menu->func) (md->menu, gdk_display,
+                      md->menu->client_xwindow,
+                      md->op,
+                      GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
+                                                          "workspace")),
+                      md->menu->data);
+
+  /* menu may now be freed */
+}
+
+MetaWindowMenu*
+meta_window_menu_new   (MetaFrames         *frames,
+                        MetaMenuOp          ops,
+                        MetaMenuOp          insensitive,
+                        Window              client_xwindow,
+                        int                 active_workspace,
+                        int                 n_workspaces,
+                        MetaWindowMenuFunc  func,
+                        gpointer            data)
 {
   int i;
-  GdkPoint *pt;
-  int n_workspaces;
-  int current_workspace;
-  MetaMenuOp ops;
-  MetaMenuOp insensitive;
-  MetaFrameFlags flags;
-  
-  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-  
-  ops = 0;
-  insensitive = 0;
-  
-  if (flags & META_FRAME_ALLOWS_MAXIMIZE)
-    {
-      if (flags & META_FRAME_MAXIMIZED)
-        ops |= META_MENU_OP_UNMAXIMIZE;
-      else
-        ops |= META_MENU_OP_MAXIMIZE;
-    }
+  MetaWindowMenu *menu;
 
-  if (flags & META_FRAME_SHADED)
-    ops |= META_MENU_OP_UNSHADE;
-  else
-    ops |= META_MENU_OP_SHADE;
-
-  if (flags & META_FRAME_STUCK)
-    ops |= META_MENU_OP_UNSTICK;
-  else
-    ops |= META_MENU_OP_STICK;
+  menu = g_new (MetaWindowMenu, 1);
+  menu->frames = frames;
+  menu->client_xwindow = client_xwindow;
+  menu->func = func;
+  menu->data = data;
+  menu->ops = ops;
+  menu->insensitive = insensitive;
   
-  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE);
-
-  if (!(flags & META_FRAME_ALLOWS_MINIMIZE))
-    insensitive |= META_MENU_OP_MINIMIZE;
-  
-  if (!(flags & META_FRAME_ALLOWS_DELETE))
-    insensitive |= META_MENU_OP_DELETE;
-  
-  if (frames->menu)
-    gtk_widget_destroy (frames->menu);
-  
-  frames->menu = gtk_menu_new ();
+  menu->menu = gtk_menu_new ();
 
   i = 0;
   while (i < G_N_ELEMENTS (menuitems))
@@ -234,8 +214,7 @@ meta_window_menu_show (MetaFrames              *frames,
               
               md = g_new (MenuData, 1);
               
-              md->frames = frames;
-              md->frame = frame;
+              md->menu = menu;
               md->op = menuitems[i].op;
               
               gtk_signal_connect_full (GTK_OBJECT (mi),
@@ -246,7 +225,7 @@ meta_window_menu_show (MetaFrames              *frames,
                                        g_free, FALSE, FALSE);
             }
           
-          gtk_menu_shell_append (GTK_MENU_SHELL (frames->menu),
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
                                  mi);
           
           gtk_widget_show (mi);
@@ -256,12 +235,8 @@ meta_window_menu_show (MetaFrames              *frames,
 
   if (ops & META_MENU_OP_WORKSPACES)
     {
-      n_workspaces = meta_core_get_num_workspaces (DefaultScreenOfDisplay (gdk_display));
-      current_workspace = meta_core_get_frame_workspace (gdk_display,
-                                                         frame->xwindow);
-
       meta_warning ("Creating %d-workspace menu current %d\n",
-                    n_workspaces, current_workspace);
+                    n_workspaces, active_workspace);
       
       if (n_workspaces > 0)
         {
@@ -273,7 +248,7 @@ meta_window_menu_show (MetaFrames              *frames,
               char *label;
               MenuData *md;
 
-              if (flags & META_FRAME_STUCK)
+              if (ops & META_MENU_OP_UNSTICK)
                 label = g_strdup_printf (_("Only on workspace _%d\n"),
                                          i + 1);
               else
@@ -284,15 +259,14 @@ meta_window_menu_show (MetaFrames              *frames,
 
               g_free (label);
 
-              if (!(flags & META_FRAME_STUCK) &&
-                  (current_workspace == i ||
+              if (!(ops & META_MENU_OP_UNSTICK) &&
+                  (active_workspace == i ||
                    insensitive & META_MENU_OP_WORKSPACES))
                 gtk_widget_set_sensitive (mi, FALSE);
 
               md = g_new (MenuData, 1);
 
-              md->frames = frames;
-              md->frame = frame;
+              md->menu = menu;
               md->op = META_MENU_OP_WORKSPACES;
 
               g_object_set_data (G_OBJECT (mi),
@@ -306,7 +280,7 @@ meta_window_menu_show (MetaFrames              *frames,
                                        md,
                                        g_free, FALSE, FALSE);
 
-              gtk_menu_shell_append (GTK_MENU_SHELL (frames->menu),
+              gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
                                      mi);
           
               gtk_widget_show (mi);
@@ -318,14 +292,26 @@ meta_window_menu_show (MetaFrames              *frames,
   else
     meta_verbose ("not creating workspace menu\n");
   
-  gtk_signal_connect (GTK_OBJECT (frames->menu),
+  gtk_signal_connect (GTK_OBJECT (menu->menu),
                       "selection_done",
                       GTK_SIGNAL_FUNC (menu_closed),
-                      frames);
+                      menu);  
+
+  return menu;
+}
+
+void
+meta_window_menu_popup (MetaWindowMenu     *menu,
+                        int                 root_x,
+                        int                 root_y,
+                        int                 button,
+                        guint32             timestamp)
+{
+  GdkPoint *pt;
   
   pt = g_new (GdkPoint, 1);
 
-  g_object_set_data_full (G_OBJECT (frames->menu),
+  g_object_set_data_full (G_OBJECT (menu->menu),
                           "destroy-point",
                           pt,
                           g_free);
@@ -333,82 +319,19 @@ meta_window_menu_show (MetaFrames              *frames,
   pt->x = root_x;
   pt->y = root_y;
   
-  gtk_menu_popup (GTK_MENU (frames->menu),
+  gtk_menu_popup (GTK_MENU (menu->menu),
                   NULL, NULL,
                   popup_position_func, pt,
                   button,
                   timestamp);
 
-  if (!GTK_MENU_SHELL (frames->menu)->have_xgrab)
+  if (!GTK_MENU_SHELL (menu->menu)->have_xgrab)
     meta_warning ("GtkMenu failed to grab the pointer\n");
 }
 
-static void
-activate_cb (GtkWidget *menuitem, gpointer data)
+void
+meta_window_menu_free (MetaWindowMenu *menu)
 {
-  MenuData *md;
-  
-  g_return_if_fail (GTK_IS_WIDGET (menuitem));
-  
-  md = data;
-  
-  switch (md->op)
-    {
-    case META_MENU_OP_DELETE:
-      meta_core_delete (gdk_display,
-                        md->frame->xwindow,
-                        gtk_get_current_event_time ());
-      break;
-
-    case META_MENU_OP_MINIMIZE:
-      meta_core_minimize (gdk_display,
-                          md->frame->xwindow);
-      break;
-
-    case META_MENU_OP_UNMAXIMIZE:
-      meta_core_unmaximize (gdk_display,
-                            md->frame->xwindow);
-      break;
-      
-    case META_MENU_OP_MAXIMIZE:
-      meta_core_maximize (gdk_display,
-                          md->frame->xwindow);
-      break;
-
-    case META_MENU_OP_UNSHADE:
-      meta_core_unshade (gdk_display,
-                         md->frame->xwindow);
-      break;
-      
-    case META_MENU_OP_SHADE:
-      meta_core_shade (gdk_display,
-                       md->frame->xwindow);
-      break;
-      
-    case META_MENU_OP_WORKSPACES:
-      {
-        int workspace;
-
-        workspace = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
-                                                        "workspace"));
-
-        meta_core_change_workspace (gdk_display, md->frame->xwindow,
-                                    workspace);
-      }
-      break;
-
-    case META_MENU_OP_STICK:
-      meta_core_stick (gdk_display,
-                       md->frame->xwindow);
-      break;
-
-    case META_MENU_OP_UNSTICK:
-      meta_core_unstick (gdk_display,
-                         md->frame->xwindow);
-      break;
-      
-    default:
-      meta_warning (G_STRLOC": Unknown window op\n");
-      break;
-    }
+  gtk_widget_destroy (menu->menu);
+  g_free (menu);
 }

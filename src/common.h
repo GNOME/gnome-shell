@@ -24,6 +24,7 @@
 
 /* Don't include GTK or core headers here */
 #include <X11/Xlib.h>
+#include <glib.h>
 
 typedef enum
 {
@@ -38,5 +39,27 @@ typedef enum
   META_FRAME_STUCK            = 1 << 8,
   META_FRAME_MAXIMIZED        = 1 << 9
 } MetaFrameFlags;
+
+typedef enum
+{
+  META_MENU_OP_DELETE      = 1 << 0,
+  META_MENU_OP_MINIMIZE    = 1 << 1,
+  META_MENU_OP_UNMAXIMIZE  = 1 << 2,
+  META_MENU_OP_MAXIMIZE    = 1 << 3,
+  META_MENU_OP_UNSHADE     = 1 << 4,
+  META_MENU_OP_SHADE       = 1 << 5,
+  META_MENU_OP_UNSTICK     = 1 << 6,
+  META_MENU_OP_STICK       = 1 << 7,
+  META_MENU_OP_WORKSPACES  = 1 << 8
+} MetaMenuOp;
+
+typedef struct _MetaWindowMenu MetaWindowMenu;
+
+typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
+                                     Display        *xdisplay,
+                                     Window          client_xwindow,
+                                     MetaMenuOp      op,
+                                     int             workspace,
+                                     gpointer        data);
 
 #endif

@@ -41,6 +41,8 @@ struct _MetaSessionInfo
 
 MetaSessionInfo* meta_window_lookup_session_info (MetaWindow *window);
 
+void meta_session_init (const char *previous_id);
+
 #endif
 
 

@@ -125,7 +125,9 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_SKIP_TASKBAR",
     "_NET_WM_STATE_SKIP_PAGER",
     "_WIN_WORKSPACE",
-    "_WIN_LAYER"
+    "_WIN_LAYER",
+    "_WIN_PROTOCOLS",
+    "_WIN_SUPPORTING_WM_CHECK"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -200,6 +202,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_skip_pager = atoms[31];
   display->atom_win_workspace = atoms[32];
   display->atom_win_layer = atoms[33];
+  display->atom_win_protocols = atoms[34];
+  display->atom_win_supporting_wm_check = atoms[35];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -268,7 +272,7 @@ meta_display_open (const char *name)
 
   set_string_hint (display,
                    display->leader_window,
-                   display->atom_net_supporting_wm_check,
+                   display->atom_net_wm_name,
                    "Metacity");
   
   /* Now manage all existing windows */
