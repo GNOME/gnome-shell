@@ -168,23 +168,23 @@ CPPFLAGS="$metacity_save_cppflags"
 SHAPE_LIBS=
 found_shape=no
 AC_CHECK_LIB(Xext, XShapeQueryExtension,
-               [AC_CHECK_HEADERS(X11/extensions/shape.h,
-                                 SHAPE_LIBS=-lXext found_shape=yes)],
+               [AC_CHECK_HEADER(X11/extensions/shape.h,
+                                SHAPE_LIBS=-lXext found_shape=yes)],
                , $ALL_X_LIBS)
 
-if test "$found_shape" = "no"; then
+if test "x$found_shape" = "xyes"; then
    AC_DEFINE(HAVE_SHAPE)
 fi
 
 RANDR_LIBS=
 found_randr=no
 AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
-               [AC_CHECK_HEADERS(X11/extensions/Xrandr.h,
-                                 RANDR_LIBS=-lXrandr, found_randr=yes,
-				 [#include <X11/Xlib.h>])],
+               [AC_CHECK_HEADER(X11/extensions/Xrandr.h,
+                                RANDR_LIBS=-lXrandr found_randr=yes,,
+				[#include <X11/Xlib.h>])],
                , -lXrender $ALL_X_LIBS)
 
-if test "$found_randr" = "yes"; then
+if test "x$found_randr" = "xyes"; then
    AC_DEFINE(HAVE_RANDR)
 fi
 
