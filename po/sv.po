@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-07-11 13:07+0200\n"
-"PO-Revision-Date: 2002-07-11 13:07+0200\n"
+"POT-Creation-Date: 2002-07-25 16:39+0200\n"
+"PO-Revision-Date: 2002-07-25 16:39+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "Maximera fönster"
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:684
+#: src/keybindings.c:808
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -100,14 +100,14 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/keybindings.c:1957
+#: src/keybindings.c:2085
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %"
 "s\n"
 
-#: src/keybindings.c:1987
+#: src/keybindings.c:2115
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
@@ -133,56 +133,75 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
 
-#: src/menu.c:49
+#: src/menu.c:51
 msgid "_Close"
 msgstr "_Stäng"
 
-#: src/menu.c:50
+#: src/menu.c:52
 msgid "_Minimize"
 msgstr "_Minimera"
 
-#: src/menu.c:51
+#: src/menu.c:53
 msgid "Ma_ximize"
 msgstr "Ma_ximera"
 
-#: src/menu.c:52
+#: src/menu.c:54
 msgid "Unma_ximize"
 msgstr "Avma_ximera"
 
-#: src/menu.c:53
+#: src/menu.c:55
 msgid "_Shade"
 msgstr "_Skugga"
 
-#: src/menu.c:54
+#: src/menu.c:56
 msgid "Un_shade"
 msgstr "Av_skugga"
 
-#: src/menu.c:55
+#: src/menu.c:57
 msgid "Mo_ve"
 msgstr "Fl_ytta"
 
-#: src/menu.c:56
+#: src/menu.c:58
 msgid "_Resize"
 msgstr "_Ändra storlek"
 
 #. separator
-#: src/menu.c:58
+#: src/menu.c:60
 msgid "Put on _All Workspaces"
 msgstr "Placera på _alla arbetsytor"
 
-#: src/menu.c:59
+#: src/menu.c:61
 msgid "Only on _This Workspace"
 msgstr "Endast på _denna arbetsyta"
 
-#: src/menu.c:301
+#.
+#. * If the name is of the form "Workspace x" where x is an unsigned
+#. * integer, insert a '_' before the number if it is less than 10 and
+#. * return it
+#.
+#: src/menu.c:180
 #, c-format
-msgid "Only on workspace %s%d"
-msgstr "Endast på arbetsyta %s%d"
+msgid "Workspace %u"
+msgstr "Arbetsyta %u"
 
-#: src/menu.c:304
+#.
+#. * Above name is a pointer into the Workspace struct. Here we make
+#. * a copy copy so we can have our wicked way with it.
+#.
+#: src/menu.c:186
 #, c-format
-msgid "Move to workspace %s%d"
-msgstr "Flytta till arbetsyta %s%d"
+msgid "Workspace %s%d"
+msgstr "Arbetsyta %s%d"
+
+#: src/menu.c:370
+#, c-format
+msgid "Only on %s"
+msgstr "Endast på %s"
+
+#: src/menu.c:372
+#, c-format
+msgid "Move to %s"
+msgstr "Flytta till %s"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -275,9 +294,11 @@ msgstr "Aktuellt tema"
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Fördröjning i millisekunder "
 
+# SUN CHANGED MESSAGE
 #: src/metacity.schemas.in.h:9
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Inaktivera trasiga egenskaper som krävs av gamla eller trasiga program"
+msgstr ""
+"Inaktivera felaktiga egenskaper som krävs av gamla eller felaktiga program"
 
 #: src/metacity.schemas.in.h:10
 msgid "Hide all windows and focus desktop"
@@ -301,6 +322,7 @@ msgstr ""
 "Om sant ignoreras alternativet titlebar_font och standardtypsnittet för "
 "program används för fönstertitlar."
 
+# SUN CHANGED MESSAGE
 #: src/metacity.schemas.in.h:13
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
@@ -315,7 +337,7 @@ msgid ""
 msgstr ""
 "Om sant fungerar Metacity i termer av program, inte av fönster. Konceptet är "
 "ganska abstrakt, men i regel fungerar en programbaserad konfiguration mer "
-"lik Mac och mindre lik Windows. När du fokuserar ett fönster i "
+"likt Mac och mindre likt Windows. När du fokuserar ett fönster i "
 "programbaserat läge kommer alla fönster i programmet att höjas. Dessutom "
 "skickas fokusklick inte vidare till fönster i andra program då "
 "programbaserat läge används. Förekomsten av denna inställning går att "
@@ -451,13 +473,13 @@ msgstr ""
 "Detta kräver att dialogpositioner som program anger ignoreras. Men en del "
 "versioner av Java/Swing märker sina popupmenyer som dialogfönster, vilket "
 "gör att Metacity måste inaktivera dialogpositionering för att menyer ska "
-"kunna fungera i trasiga Javaprogram. Det finns åtskilliga andra exempel på "
+"kunna fungera i felaktiga Javaprogram. Det finns åtskilliga andra exempel på "
 "detta. Detta alternativ gör att Metacity använder ett fullt korrekt läge, "
 "vilket kanske ger ett aningen trevligare användargränssnitt om du inte "
-"behöver köra några trasiga program. Tyvärr måste dessa fixar vara aktiverade "
-"som standard; världen är en otrevligt plats. En del av dessa fixar är fixar "
-"för begränsningar i specifikationerna själva, vilket gör att ett fel i "
-"korrekthetsläge ibland inte kan åtgärdas utan att en specifikation "
+"behöver köra några felaktiga program. Tyvärr måste dessa fixar vara "
+"aktiverade som standard; världen är en otrevligt plats. En del av dessa "
+"fixar är fixar för begränsningar i specifikationerna själva, vilket gör att "
+"ett fel i korrekthetsläge ibland inte kan åtgärdas utan att en specifikation "
 "modifieras."
 
 #: src/metacity.schemas.in.h:40
@@ -1274,6 +1296,7 @@ msgstr ""
 "Tidsfördröjningen innan ett fönster höjs om auto_raise är sant. "
 "Fördröjningen ges i tusendelar av en sekund."
 
+# SUN CHANGED MESSAGE
 #: src/metacity.schemas.in.h:106
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
@@ -1284,9 +1307,9 @@ msgid ""
 msgstr ""
 "Fönsterfokusläget anger hur fönster ska aktiveras. Det har tre möjliga "
 "värden; \"click\" betyder att fönster måste klickas på för att de ska få "
-"fokus, \"sloppy\" betyder att fönster fokuseras då muspekaren går in i "
-"fönstret, och \"mouse\" betyder att fönster fokuseras då muspekaren går in i "
-"fönstret och avfokuseras då muspekaren lämnar fönstret."
+"fokus, \"sloppy\" betyder att fönster fokuseras då muspekaren hamnar i "
+"fönstret, och \"mouse\" betyder att fönster fokuseras då muspekaren hamnar i "
+"fönstret och förlorar fokus då muspekaren lämnar fönstret."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1336,17 +1359,19 @@ msgstr "Fönsterfokusläge"
 msgid "Window title font"
 msgstr "Typsnitt för fönstertitel"
 
+# SUN CHANGED MESSAGE
 #: src/prefs.c:346 src/prefs.c:362 src/prefs.c:378 src/prefs.c:394
 #: src/prefs.c:414 src/prefs.c:430 src/prefs.c:446 src/prefs.c:462
 #: src/prefs.c:478 src/prefs.c:494 src/prefs.c:510 src/prefs.c:527
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
+msgstr "GConf-nyckeln \"%s\" är inställd till en ogiltig typ\n"
 
+# SUN CHANGED MESSAGE
 #: src/prefs.c:561
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
-msgstr "GConf-nyckeln \"%s\" är satt till ogiltigt värde"
+msgstr "GConf-nyckeln \"%s\" är inställd till ogiltigt värde"
 
 #: src/prefs.c:633
 #, c-format
@@ -1380,7 +1405,7 @@ msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: src/prefs.c:997
+#: src/prefs.c:998
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1433,65 +1458,68 @@ msgstr ""
 "Misslyckades med att öppna en anslutning till en sessionshanterare, så "
 "fönsterpositioner kommer inte att sparas: %s\n"
 
-#: src/session.c:869 src/session.c:876
+#: src/session.c:865 src/session.c:872
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunde inte skapa katalogen \"%s\": %s\n"
 
-#: src/session.c:886
+#: src/session.c:882
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunde inte öppna sessionsfilen \"%s\" för skrivning: %s\n"
 
-#: src/session.c:1032
+#: src/session.c:1028
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fel vid skrivning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1037
+#: src/session.c:1033
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fel vid stängning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1112
+#: src/session.c:1108
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
 
-#: src/session.c:1147
+#: src/session.c:1143
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
-#: src/session.c:1196
+#: src/session.c:1192
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attribut hittat men vi har redan sessions-ID"
 
-#: src/session.c:1209
+# SUN CHANGED MESSAGE
+#: src/session.c:1205
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Okänt attribut %s på <metacity_session>-element"
+msgstr "Okänt attribut %s i <metacity_session>-element"
 
-#: src/session.c:1226
+#: src/session.c:1222
 msgid "nested <window> tag"
 msgstr "nästlad <window>-tagg"
 
-#: src/session.c:1284 src/session.c:1316
+# SUN CHANGED MESSAGE
+#: src/session.c:1280 src/session.c:1312
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "Okänt attribut %s på <window>-element"
+msgstr "Okänt attribut %s i <window>-element"
 
-#: src/session.c:1386
+# SUN CHANGED MESSAGE
+#: src/session.c:1382
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Okänt attribut %s på <geometry>-element"
+msgstr "Okänt attribut %s i <geometry>-element"
 
-#: src/session.c:1406
+#: src/session.c:1402
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
-#: src/session.c:1779
+#: src/session.c:1830
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -1510,10 +1538,11 @@ msgstr "Rad %d tecken %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Attributet \"%s\" upprepat två gånger på samma <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Attributet \"%s\" är ogiltigt på <%s>-element i detta sammanhang"
+msgstr "Attributet \"%s\" är ogiltigt i <%s>-element i detta sammanhang"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -1555,18 +1584,20 @@ msgstr ""
 "Ogiltig titelskala \"%s\" (måste vara ett av xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2872
 #: src/theme-parser.c:2961 src/theme-parser.c:2968 src/theme-parser.c:2975
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Inget \"%s\"-attribut på element <%s>"
+msgstr "Inget \"%s\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Inget \"%s\"-attribut på <%s>-element"
+msgstr "Inget \"%s\"-attribut i <%s>-element"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
@@ -1590,15 +1621,17 @@ msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "<%s> måste ange antingen en geometri eller en förälder som har en geometri"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Okänd typ \"%s\" på <%s>-element"
+msgstr "Okänd typ \"%s\" i <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Okänt style_set \"%s\" på <%s>-element"
+msgstr "Okänt style_set \"%s\" i <%s>-element"
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -1633,15 +1666,17 @@ msgstr "Inget <draw_ops> med namnet \"%s\" har definierats"
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elementet <%s> är inte tillåtet under <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "Inget \"name\"-attribut på element <%s>"
+msgstr "Inget \"name\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "Inget \"value\"-attribut på element <%s>"
+msgstr "Inget \"value\"-attribut i element <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
@@ -1659,136 +1694,157 @@ msgstr "Avståndet \"%s\" är okänt"
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Förhållandet \"%s\" är okänt"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "Inget \"top\"-attribut på element <%s>"
+msgstr "Inget \"top\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Inget \"bottom\"-attribut på element <%s>"
+msgstr "Inget \"bottom\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "Inget \"left\"-attribut på element <%s>"
+msgstr "Inget \"left\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "Inget \"right\"-attribut på element <%s>"
+msgstr "Inget \"right\"-attribut i element <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Ramen \"%s\" är okänd"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2805
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "Inget \"color\"-attribut på element <%s>"
+msgstr "Inget \"color\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "Inget \"x1\"-attribut på element <%s>"
+msgstr "Inget \"x1\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1669 src/theme-parser.c:2650
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "Inget \"y1\"-attribut på element <%s>"
+msgstr "Inget \"y1\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "Inget \"x2\"-attribut på element <%s>"
+msgstr "Inget \"x2\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1683 src/theme-parser.c:2657
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "Inget \"y2\"-attribut på element <%s>"
+msgstr "Inget \"y2\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2263
 #: src/theme-parser.c:2419 src/theme-parser.c:2545 src/theme-parser.c:2643
 #: src/theme-parser.c:2717 src/theme-parser.c:2812
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "Inget \"x\"-attribut på element <%s>"
+msgstr "Inget \"x\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2270
 #: src/theme-parser.c:2426 src/theme-parser.c:2552 src/theme-parser.c:2724
 #: src/theme-parser.c:2819
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "Inget \"y\"-attribut på element <%s>"
+msgstr "Inget \"y\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2277
 #: src/theme-parser.c:2433 src/theme-parser.c:2559 src/theme-parser.c:2731
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "Inget \"width\"-attribut på element <%s>"
+msgstr "Inget \"width\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2284
 #: src/theme-parser.c:2440 src/theme-parser.c:2566 src/theme-parser.c:2738
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr "Inget \"height\"-attribut på element <%s>"
+msgstr "Inget \"height\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Inget \"start_angle\"-attribut på element <%s>"
+msgstr "Inget \"start_angle\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Inget \"extent_angle\"attribut på element <%s>"
+msgstr "Inget \"extent_angle\"attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Inget \"alpha\"-attribut på element <%s>"
+msgstr "Inget \"alpha\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "Inget \"type\"-attribut på element <%s>"
+msgstr "Inget \"type\"-attribut i element <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Förstod inte värdet \"%s\" för typ av toning"
+msgstr "Förstod inte värdet \"%s\" för toningstyp"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2291
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr "Inget \"filename\"-attribut på element <%s>"
+msgstr "Inget \"filename\"-attribut i element <%s>"
 
 #: src/theme-parser.c:2316 src/theme-parser.c:2763
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Förstod inte fyllnadstypen \"%s\" för <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr "Inget \"state\"-attribut på element <%s>"
+msgstr "Inget \"state\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2405 src/theme-parser.c:2538
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Inget \"shadow\"-attribut på element <%s>"
+msgstr "Inget \"shadow\"-attribut i element <%s>"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:2412
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Inget \"arrow\"-attribut på element <%s>"
+msgstr "Inget \"arrow\"-attribut i element <%s>"
 
 #: src/theme-parser.c:2465 src/theme-parser.c:2587 src/theme-parser.c:2675
 #, c-format
@@ -1815,15 +1871,17 @@ msgstr "Inget <draw_ops> anropat \"%s\" har definierats"
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Att inkludera draw_ops \"%s\" här skulle skapa en cirkulärreferens"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3089
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "Inget \"value\"-attribut på <%s>-element"
+msgstr "Inget \"value\"-attribut i <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3146
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "Inget \"position\"-attribut på <%s>-element"
+msgstr "Inget \"position\"-attribut i <%s>-element"
 
 #: src/theme-parser.c:3155
 #, c-format
@@ -1835,15 +1893,17 @@ msgstr "Okänd position \"%s\" för ramdel"
 msgid "Frame style already has a piece at position %s"
 msgstr "Ramstilen har redan en del vid position %s"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3208
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "Inget \"function\"-attribut på <%s>-element"
+msgstr "Inget \"function\"-attribut i <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3216 src/theme-parser.c:3320
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "Inget \"state\"-attribut på <%s>-element"
+msgstr "Inget \"state\"-attribut i <%s>-element"
 
 #: src/theme-parser.c:3225
 #, c-format
@@ -1860,20 +1920,22 @@ msgstr "Okänt tillstånd \"%s\" för knapp"
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Ramstilen har redan en knapp för funktionen %s tillstånd %s"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3312
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "Inget \"focus\"-attribut på <%s>-element"
+msgstr "Inget \"focus\"-attribut i <%s>-element"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3328
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "Inget \"style\"-attribut på <%s>-element"
+msgstr "Inget \"style\"-attribut i <%s>-element"
 
 #: src/theme-parser.c:3337
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" är inte ett tillåtet värde på fokusattribut"
+msgstr "\"%s\" är inte ett tillåtet värde för fokusattribut"
 
 #: src/theme-parser.c:3346
 #, c-format
@@ -1885,23 +1947,25 @@ msgstr "\"%s\" är inte ett giltigt värde på tillståndsattribut"
 msgid "A style called \"%s\" has not been defined"
 msgstr "En stil med namnet \"%s\" har inte definierats"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3366
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "Inget \"resize\"-attribut på <%s>-element"
+msgstr "Inget \"resize\"-attribut i <%s>-element"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" är inte ett giltigt värde för storleksändringsattribut"
 
+# SUN CHANGED MESSAGE
 #: src/theme-parser.c:3386
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"Bör inte ha \"resize\"-attribut på <%s>-element för maximerad/skuggade "
+"Bör inte ha \"resize\"-attribut i <%s>-element för maximerad/skuggade "
 "tillstånd"
 
 #: src/theme-parser.c:3400
@@ -2011,12 +2075,12 @@ msgstr "<date> är angivet två gånger för detta tema"
 msgid "<description> specified twice for this theme"
 msgstr "<description> är angivet två gånger för detta tema"
 
-#: src/theme-parser.c:4294
+#: src/theme-parser.c:4283
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
 
-#: src/theme-parser.c:4349
+#: src/theme-parser.c:4338
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
@@ -2327,17 +2391,17 @@ msgstr "_Peka för att ge fokus"
 msgid "_Raise window on focus"
 msgstr "_Höj fönster vid fokus"
 
-#: src/util.c:60
+#: src/util.c:91
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Misslyckades med att öppna felsökningslogg: %s\n"
 
-#: src/util.c:70
+#: src/util.c:101
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 
-#: src/util.c:76
+#: src/util.c:107
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Öppnade loggfilen %s\n"
@@ -2349,8 +2413,8 @@ msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #: src/workspace.c:51
 #, c-format
-msgid "Workspace %d\n"
-msgstr "Arbetsyta %d\n"
+msgid "Workspace %d"
+msgstr "Arbetsyta %d"
 
 #: src/xprops.c:54
 #, c-format
@@ -2372,6 +2436,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "Workspace %d\n"
+#~ msgstr "Arbetsyta %d\n"
 
 #~ msgid ""
 #~ "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -2408,17 +2475,14 @@ msgstr ""
 #~ "\"disabled\" kommer det inte att finnas en tangentbindning för denna "
 #~ "åtgärd."
 
-#~ msgid "Workspace %d"
-#~ msgstr "Arbetsyta %d"
-
 #~ msgid "No \"name\" attribute on <%s> element"
-#~ msgstr "Inget \"name\"-attribut på <%s>-element"
+#~ msgstr "Inget \"name\"-attribut i <%s>-element"
 
 #~ msgid "No \"type\" attribute on <%s> element"
-#~ msgstr "Inget \"type\"-attribut på <%s>-element"
+#~ msgstr "Inget \"type\"-attribut i <%s>-element"
 
 #~ msgid "No \"style_set\" attribute on <%s> element"
-#~ msgstr "Inget \"style_set\"-attribut på <%s>-element"
+#~ msgstr "Inget \"style_set\"-attribut i <%s>-element"
 
 #~ msgid "Element <%s> is not allowed below <metacity_theme>"
 #~ msgstr "Elementet <%s> är inte tillåtet under <metacity_theme>"
