@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-29 04:41+0100\n"
+"POT-Creation-Date: 2005-02-01 06:06+0100\n"
 "PO-Revision-Date: 2005-01-29 16:32+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -199,8 +199,8 @@ msgstr "关闭(_C)"
 
 #. separator
 #: src/menu.c:66
-msgid "_Always on Current Workspace"
-msgstr "总在当前工作区(_A)"
+msgid "_Always on Visible Workspace"
+msgstr "总在可见工作区(_A)"
 
 #: src/menu.c:67
 msgid "_Only on This Workspace"
@@ -492,8 +492,8 @@ msgid ""
 msgstr ""
 "如果为 true，metacity 将会给用户提供较少的反馈，并且对“直接操纵”也更不敏感，"
 "方法是使用线框、避免动画或者其它途径。这对许多用户来说，可用性大打折扣，但是"
-"这将允许较早的应用程序和终端服务器能够顺利运行。此外，如果开启了辅助功能，"
-"为了避免不必要的桌面闪烁，系统会自动禁用线框特性。"
+"这将允许较早的应用程序和终端服务器能够顺利运行。此外，如果开启了辅助功能，为"
+"了避免不必要的桌面闪烁，系统会自动禁用线框特性。"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -3003,4 +3003,3 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
-
