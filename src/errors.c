@@ -107,14 +107,14 @@ x_error_handler (Display     *xdisplay,
 
 	  XGetErrorText (xdisplay, error->error_code, buf, 63);
           
-          meta_fatal ("Received an X Window System error without handling it.\n"
-                      "The error was '%s'.\n"
-                      "  (Details: serial %ld error_code %d request_code %d minor_code %d)\n",
-                      buf,
-                      error->serial, 
-                      error->error_code, 
-                      error->request_code,
-                      error->minor_code);
+          meta_bug ("Received an X Window System error without handling it.\n"
+                    "The error was '%s'.\n"
+                    "  (Details: serial %ld error_code %d request_code %d minor_code %d)\n",
+                    buf,
+                    error->serial, 
+                    error->error_code, 
+                    error->request_code,
+                    error->minor_code);
 	}
       else
         {

@@ -78,6 +78,7 @@ struct _MetaDisplay
   Atom atom_net_client_list_stacking;
   Atom atom_net_wm_state_skip_taskbar;
   Atom atom_net_wm_state_skip_pager;
+  Atom atom_win_workspace;
   
   /* This is the actual window from focus events,
    * not the one we last set

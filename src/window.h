@@ -65,6 +65,9 @@ struct _MetaWindow
   Window xtransient_for;
   Window xgroup_leader;
   Window xclient_leader;
+
+  /* Initial workspace property */
+  int initial_workspace;
   
   /* Whether we're maximized */
   guint maximized : 1;

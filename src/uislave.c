@@ -102,14 +102,21 @@ message_queue_func (MetaMessageQueue *mq,
 }
 
 static void
+child_setup (gpointer data)
+{
+  /* data is leaked, putenv doesn't copy it */
+  putenv (data);
+}
+
+static void
 respawn_child (MetaUISlave *uislave)
 {
   GError *error;
   const char *uislavedir;
   char *argv[] = { NULL, NULL, NULL, NULL, NULL };
-  char *envp[2] = { NULL, NULL };
   int child_pid, inpipe, outpipe, errpipe;
   char *path;
+  char *disp;
   
   if (uislave->no_respawn)
     return;
@@ -121,7 +128,7 @@ respawn_child (MetaUISlave *uislave)
   if (uislavedir == NULL)
     uislavedir = METACITY_LIBEXECDIR;
   
-  envp[0] = g_strconcat ("DISPLAY=", uislave->display_name, NULL);
+  disp = g_strconcat ("DISPLAY=", uislave->display_name, NULL);
 
   path = g_strconcat (uislavedir, "/", "metacity-uislave", NULL);
 #if 0
@@ -132,16 +139,15 @@ respawn_child (MetaUISlave *uislave)
   argv[0] = path;
   
   meta_verbose ("Launching UI slave in dir %s display %s\n",
-                uislavedir, envp[0]);
+                uislavedir, disp);
   
   error = NULL;
   if (g_spawn_async_with_pipes (NULL,
                                 argv,
-                                envp,
+                                NULL,
                                 /* flags */
                                 0,
-                                /* setup func, data */
-                                NULL, NULL,
+                                child_setup, disp,
                                 &child_pid,
                                 &inpipe, &outpipe, &errpipe,
                                 &error))
@@ -171,7 +177,7 @@ respawn_child (MetaUISlave *uislave)
       g_error_free (error);
     }
   
-  g_free (envp[0]);
+  g_free (disp);
   g_free (path);
 }
 

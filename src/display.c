@@ -120,7 +120,8 @@ meta_display_open (const char *name)
     "_NET_CLIENT_LIST",
     "_NET_CLIENT_LIST_STACKING",
     "_NET_WM_STATE_SKIP_TASKBAR",
-    "_NET_WM_STATE_SKIP_PAGER"
+    "_NET_WM_STATE_SKIP_PAGER",
+    "_WIN_WORKSPACE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -189,7 +190,8 @@ meta_display_open (const char *name)
   display->atom_net_client_list_stacking = atoms[29];
   display->atom_net_wm_state_skip_taskbar = atoms[30];
   display->atom_net_wm_state_skip_pager = atoms[31];
-
+  display->atom_win_workspace = atoms[32];
+  
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */

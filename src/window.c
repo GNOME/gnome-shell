@@ -52,6 +52,7 @@ static int      update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
 static int      update_role               (MetaWindow     *window);
 static int      update_net_wm_type        (MetaWindow     *window);
+static int      update_initial_workspace  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
@@ -82,6 +83,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   MetaWindow *window;
   XWindowAttributes attrs;
   GSList *tmp;
+  MetaWorkspace *space;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
@@ -228,7 +230,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   window->layer = META_LAYER_NORMAL;
   window->stack_op = NULL;
-  
+  window->initial_workspace = 
+    meta_workspace_screen_index (window->screen->active_workspace);
   meta_display_register_x_window (display, &window->xwindow, window);
 
   update_size_hints (window);
@@ -242,6 +245,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_sm_hints (window); /* must come after transient_for */
   update_role (window);
   update_net_wm_type (window);
+  update_initial_workspace (window);
   
   if (window->initially_iconic)
     {
@@ -259,7 +263,14 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   if (window->decorated)
     meta_window_ensure_frame (window);
 
-  meta_workspace_add_window (window->screen->active_workspace, window);
+  space =
+    meta_display_get_workspace_by_screen_index (window->display,
+                                                window->screen,
+                                                window->initial_workspace);
+  if (space == NULL)
+    space = window->screen->active_workspace;
+  
+  meta_workspace_add_window (space, window);
   
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
@@ -774,10 +785,15 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean need_move_frame = FALSE;
   gboolean need_resize_client = FALSE;
   gboolean need_resize_frame = FALSE;
-  
-  meta_verbose ("Move/resize %s to %d,%d %dx%d%s\n",
-                window->desc, root_x_nw, root_y_nw, w, h,
-                is_configure_request ? " (configure request)" : "");
+
+  {
+    int oldx, oldy;
+    meta_window_get_position (window, &oldx, &oldy);
+    meta_verbose ("Move/resize %s to %d,%d %dx%d%s from %d,%d %dx%d\n",
+                  window->desc, root_x_nw, root_y_nw, w, h,
+                  is_configure_request ? " (configure request)" : "",
+                  oldx, oldy, window->rect.width, window->rect.height);
+  }
   
   /* FIXME we're passing old window size to calc_geometry,
    * I believe the right fix is to remove window size
@@ -891,17 +907,26 @@ meta_window_move_resize_internal (MetaWindow  *window,
       window->frame->bottom_height = fgeom.bottom_height;
       window->frame->bg_pixel = fgeom.background_pixel;
     }
+
+  /* See ICCCM 4.1.5 for when to send ConfigureNotify */
   
+  need_configure_notify = FALSE;
+
   /* If this is a configure request and we change nothing, then we
-   * must send configure notify. In all cases we must send configure
-   * notify if we don't resize. ICCCM 4.1.5
+   * must send configure notify.
    */
-  need_configure_notify =
-    (!need_resize_client) ||
-    (is_configure_request &&
-     !(need_move_client || need_move_frame ||
-       need_resize_client || need_resize_frame ||
-       window->border_width != 0));
+  if  (is_configure_request &&
+       !(need_move_client || need_move_frame ||
+         need_resize_client || need_resize_frame ||
+         window->border_width != 0))
+    need_configure_notify = TRUE;
+
+  /* We must send configure notify if we move but don't resize, since
+   * the client window may not get a real event
+   */
+  if ((need_move_client || need_move_frame) &&
+      !(need_resize_client || need_resize_frame))
+    need_configure_notify = TRUE;
   
   /* Sync our new size/pos with X as efficiently as possible */
 
@@ -921,10 +946,16 @@ meta_window_move_resize_internal (MetaWindow  *window,
 
   if (mask != 0)
     {
-      meta_verbose ("Syncing new geometry to client, border: %s pos: %s size: %s\n",
-                    mask & CWBorderWidth ? "true" : "false",
-                    need_move_client ? "true" : "false",
-                    need_resize_client ? "true" : "false");
+      {
+        int newx, newy;
+        meta_window_get_position (window, &newx, &newy);
+        meta_verbose ("Syncing new client geometry %d,%d %dx%d, border: %s pos: %s size: %s\n",
+                      newx, newy,
+                      window->rect.width, window->rect.height,
+                      mask & CWBorderWidth ? "true" : "false",
+                      need_move_client ? "true" : "false",
+                      need_resize_client ? "true" : "false");
+      }
       
       meta_error_trap_push (window->display);
       XConfigureWindow (window->display->xdisplay,
@@ -1464,9 +1495,6 @@ send_configure_notify (MetaWindow *window)
   XEvent event;
 
   /* from twm */
-
-  meta_verbose ("Sending synthetic ConfigureNotify to %s\n",
-                window->desc);
   
   event.type = ConfigureNotify;
   event.xconfigure.display = window->display->xdisplay;
@@ -1492,9 +1520,9 @@ send_configure_notify (MetaWindow *window)
                 event.xconfigure.width, event.xconfigure.height);
   
   meta_error_trap_push (window->display);
-  XSendEvent(window->display->xdisplay,
-             window->xwindow,
-             False, StructureNotifyMask, &event);
+  XSendEvent (window->display->xdisplay,
+              window->xwindow,
+              False, StructureNotifyMask, &event);
   meta_error_trap_pop (window->display);
 }
 
@@ -2282,6 +2310,59 @@ update_net_wm_type (MetaWindow *window)
     }
   
   recalc_window_type (window);
+  return Success;
+}
+
+static gboolean
+get_cardinal (MetaWindow *window,
+              Atom        atom,
+              gulong     *val)
+{  
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  int err;
+  
+  meta_error_trap_push (window->display);
+  type = None;
+  XGetWindowProperty (window->display->xdisplay,
+                      window->xwindow,
+                      atom,
+                      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&num);  
+  err = meta_error_trap_pop (window->display);
+  if (err != Success)
+    return FALSE;
+  
+  if (type != XA_CARDINAL)
+    return FALSE;
+
+  *val = *num;
+  
+  XFree (num);
+
+  return TRUE;
+}
+
+static int
+update_initial_workspace (MetaWindow *window)
+{
+  gulong val = 0;
+
+  /* Fall back to old WM spec hint if net_wm_desktop is missing, this
+   * is just to be nice when restarting from old Sawfish basically,
+   * should nuke it eventually
+   */  
+  if (get_cardinal (window, window->display->atom_net_wm_desktop,
+                    &val))
+    window->initial_workspace = val;
+  else if (get_cardinal (window, window->display->atom_win_workspace,
+                         &val))
+    window->initial_workspace = val;
+
   return Success;
 }
 
