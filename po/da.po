@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-16 17:29+0100\n"
-"PO-Revision-Date: 2002-12-16 17:29+0100\n"
+"POT-Creation-Date: 2002-12-25 18:33+0100\n"
+"PO-Revision-Date: 2002-12-25 18:33+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -2754,7 +2754,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4862
+#: src/window.c:4863
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2770,7 +2770,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5422
+#: src/window.c:5423
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2786,13 +2786,13 @@ msgid ""
 "Window 0x%lx has property %s\n"
 "that was expected to have type %s format %d\n"
 "and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug not a window manager bug.\n"
+"This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 "Vinduet 0x%lx har egenskaben %s\n"
 "som forventedes at have typen %s format %d\n"
 "og faktisk har typen %s format %d n_items %d.\n"
-"Dette er sandsynligvis en fejl i programmet og ikke i vindueshåndtering.\n"
+"Dette er sandsynligvis en fejl i programmet og ikke i vindueshåndteringen.\n"
 "Vinduet har titlen \"%s\", klassen \"%s\" og navnet \"%s\"\n"
 
 #: src/xprops.c:399
