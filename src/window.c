@@ -134,6 +134,22 @@ static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
 
+static const char*
+wm_state_to_string (int state)
+{
+  switch (state)
+    {
+    case NormalState:
+      return "NormalState";      
+    case IconicState:
+      return "IconicState";
+    case WithdrawnState:
+      return "WithdrawnState";
+    }
+
+  return "Unknown";
+}
+
 MetaWindow*
 meta_window_new (MetaDisplay *display, Window xwindow,
                  gboolean must_be_viewable)
@@ -176,7 +192,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       return NULL;
     }
 
-  meta_verbose ("attrs.map_state = %d (%s)\n",
+  meta_verbose ("must_be_viewable = %d attrs.map_state = %d (%s)\n",
+                must_be_viewable,
                 attrs.map_state,
                 (attrs.map_state == IsUnmapped) ?
                 "IsUnmapped" :
@@ -205,6 +222,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
         }
 
       existing_wm_state = state;
+      meta_verbose ("WM_STATE of %lx = %s\n", xwindow,
+                    wm_state_to_string (existing_wm_state));
     }
   
   meta_error_trap_push (display);
@@ -768,7 +787,21 @@ meta_window_free (MetaWindow  *window)
   /* FIXME restore original size if window has maximized */
 
   if (window->withdrawn)
-    set_wm_state (window, WithdrawnState);
+    {
+      /* We need to clean off the window's state so it
+       * won't be restored if the app maps it again.
+       */
+      meta_error_trap_push (window->display);
+      meta_verbose ("Cleaning state from window %s\n", window->desc);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom_net_wm_desktop);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom_net_wm_state);
+      set_wm_state (window, WithdrawnState);
+      meta_error_trap_pop (window->display);
+    }
   
   if (window->frame)
     meta_window_destroy_frame (window);
@@ -811,7 +844,10 @@ set_wm_state (MetaWindow *window,
               int         state)
 {
   unsigned long data[2];
-
+  
+  meta_verbose ("Setting wm state %s on %s\n",
+                wm_state_to_string (state), window->desc);
+  
   /* twm sets the icon window as data[1], I couldn't find that in
    * ICCCM.
    */
@@ -1072,7 +1108,10 @@ meta_window_flush_calc_showing (MetaWindow *window)
 void
 meta_window_queue_calc_showing (MetaWindow  *window)
 {
-  if (window->unmanaging)
+  /* if withdrawn = TRUE then unmanaging should also be TRUE,
+   * really.
+   */
+  if (window->unmanaging || window->withdrawn)
     return;
 
   if (window->calc_showing_queued)
@@ -2628,7 +2667,10 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   unsigned long data[1];
 
   if (window->workspaces == NULL)
-    return Success; /* this happens when destroying windows */
+    {
+      /* this happens when unmanaging windows */      
+      return Success;
+    }
   
   data[0] = meta_window_get_net_wm_desktop (window);
 

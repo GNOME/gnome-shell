@@ -1646,6 +1646,9 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ResizeRequest:
       name = "ResizeRequest";
+      extra = g_strdup_printf ("width = %d height = %d",
+                               event->xresizerequest.width,
+                               event->xresizerequest.height);
       break;
     case CirculateNotify:
       name = "CirculateNotify";

@@ -1,3 +1,15 @@
+2002-03-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (set_supported_hint): we didn't claim to support 
+	_NET_ACTIVE_WINDOW so gtk_window_present() didn't work. Mumble.
+	Only worked with tasklist because libwnck didn't check for 
+	WM support.
+
+	* src/window.c (meta_window_free): clean off window state 
+	when windows are withdrawn, to avoid sticking dialogs 
+	to their initial desktop.
+	(meta_window_queue_calc_showing): return if window is withdrawn
+
 2002-03-08  Laszlo Peter  <laca@ireland.sun.com>
 
 	* configure.in: fix the X linker flags
