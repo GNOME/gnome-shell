@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-03-27 09:22+0100\n"
-"PO-Revision-Date: 2002-03-27 09:23+0100\n"
+"POT-Creation-Date: 2002-03-28 20:50+0100\n"
+"PO-Revision-Date: 2002-03-28 20:59+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -159,7 +159,7 @@ msgstr ""
 #: src/prefs.c:639
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
 #: src/screen.c:180
 #, c-format
@@ -208,7 +208,7 @@ msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
 #: src/session.c:1077
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
 #: src/session.c:1090
 #, c-format
@@ -646,19 +646,19 @@ msgstr "Stil er allerede spesifisert for tilstand %s fokus %s"
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "Kan ikke ha to draw_ops for et <piece>-element (tema spesifiserte en draw_ops-attributt i tillegg til et <draw_ops>-element, eller så spesifiserte det to elementer)"
 
 #: src/theme-parser.c:3279
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "Kan ikke ha to draw_ops for et <button>-element (tema spesifiserte en draw_ops-attributt i tillegg til et <draw_ops>-element, eller det spesifiserte to elementer)"
 
 #: src/theme-parser.c:3317
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "Kan ikke ha to draw_ops for et <menu_icon>-element (tema spesifiserte en draw_ops-attributt i tillegg til et <draw_ops>-element, eller det spesifiserte to elementer)"
 
 #: src/theme-parser.c:3364
 #, c-format
@@ -774,14 +774,14 @@ msgstr "Gradienter må ha minst to farger"
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgstr "GTK-fargespesifikasjon må ha tilstand i klammer, f.eks. gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
 
 #: src/theme.c:848
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgstr "GTK-fargespesifikasjon må ha en avsluttende klamme etter tilstanden, f.eks. gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
 
 #: src/theme.c:859
 #, c-format
@@ -798,17 +798,17 @@ msgstr "Forsto ikke fargekomponent «%s» i fargespesifikasjonen"
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
+msgstr "Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i formatet"
 
 #: src/theme.c:913
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Kunne ikke lese alpha-verdi «%s» i blandet farge"
 
 #: src/theme.c:923
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alpha-verdi «%s» i blandet farge er ikke mellom 0.0 og 1.0"
 
 #: src/theme.c:962
 #, c-format
@@ -913,13 +913,13 @@ msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
-msgstr ""
+msgstr "<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må spesifiseres for denne rammestilen"
 
 #: src/theme.c:3882 src/theme.c:3914
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgstr "Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
 
 #: src/theme.c:3965
 #, c-format
@@ -956,20 +956,20 @@ msgstr "<copyright> er ikke satt for tema «%s»"
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
+msgstr "Ingen rammestil satt for vindustype «%s» i tema «%s», legg til et <window type=«%s» style_set=«ett-eller-annet»/>-element"
 
 #: src/theme.c:4171
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
-msgstr ""
+msgstr "<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være spesifisert for dette temaet"
 
 #: src/theme.c:4554 src/theme.c:4614
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgstr "Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
 
 #: src/theme.c:4562 src/theme.c:4622
 #, c-format
