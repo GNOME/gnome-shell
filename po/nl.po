@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2004-01-05 17:48+0100\n"
+"POT-Creation-Date: 2004-07-03 17:02+0200\n"
+"PO-Revision-Date: 2004-07-04 01:13+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -230,21 +230,21 @@ msgstr "Verplaatsen naar _bovenliggend werkblad"
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar _onderliggend werkblad"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Werkblad 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Werkblad %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Naar ander _werkblad verplaatsen"
 
@@ -370,7 +370,7 @@ msgstr ""
 "Deze vensters ondersteunen niet \"huidige instellingen opslaan\" en zullen "
 "bij een volgende sessie opnieuw moeten worden opgestart."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -451,8 +451,8 @@ msgstr ""
 "Super&gt;\"."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Een venster sluiten"
+msgid "Close window"
+msgstr "Venster sluiten"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -552,8 +552,8 @@ msgid "Lower window below other windows"
 msgstr "Venster verlagen onder andere vensters"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Een venster maximaliseren"
+msgid "Maximize window"
+msgstr "Venster maximaliseren"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -564,53 +564,53 @@ msgid "Maximize window vertically"
 msgstr "Een venster vertikaal maximaliseren"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Een venster minimaliseren"
+msgid "Minimize window"
+msgstr "Venster minimaliseren"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr "Controletoets voor aangepaste venster-klik acties"
 
-#: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Een venster verplaatsen"
-
 # immediately, mogelijk vertalen met: 'met direct effect', maar kan volgens
 # mij ongestraft weggelaten worden
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Achterwaarts bewegen tussen panelen en het bureaublad"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Achterwaarts bewegen tussen vensters en het bureaublad middels een popup"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Achterwaarts bewegen tussen vensters"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Bewegen tussen panelen en het bureaublad"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Bewegen tussen panelen en het bureaublad middels een popup"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Bewegen tussen vensters"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Bewegen tussen vensters middels een popup"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Achterwaarts de aandacht verplaatsen tussen vensters middels een popup-"
 "venster"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Venster verplaatsen"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -703,7 +703,7 @@ msgid "Raise window above other windows"
 msgstr "Venster verhogen boven andere vensters"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
+msgid "Resize window"
 msgstr "Venstergrootte veranderen"
 
 #: src/metacity.schemas.in.h:59
@@ -713,11 +713,11 @@ msgstr "Voorgedefineerde opdracht uitvoeren"
 # aan elkaar hier is niet consistent met het andere bericht: panel run dialog
 #: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
-msgstr "Het paneel menu tonen"
+msgstr "Het paneel-menu tonen"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
-msgstr "Het paneel uitvoer-dialoog tonen"
+msgid "Show the panel run application dialog"
+msgstr "Het paneeldialoogvenster toepassing uitvoeren tonen"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -1693,19 +1693,13 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"De toetskoppeling voor het in het paneel tonen van het \"Uitvoeren\" "
-"dialoogvenster. Het formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Hierbij zijn kleine- en hoofdletters toegestaan, "
-"evenals afkortingen zoals \"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de "
-"optie instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze "
-"actie geen toetskoppeling kennen."
+msgstr "De toets voor het in het paneel tonen van het dialoogvenster \"Toepassing uitvoeren\". Het formaat ziet eruit als \"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie niet aan een toets zijn gebonden."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1917,7 +1911,7 @@ msgstr ""
 "omgevingen met veel lawaai, of wanneer de 'hoorbare bel' uitstaat."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
+msgid "Unmaximize window"
 msgstr "Vensterformaat herstellen"
 
 #: src/metacity.schemas.in.h:163
@@ -1940,12 +1934,12 @@ msgstr "Venstertitellettertype"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-sleutel \"%s\" is op een ongeldig type ingesteld\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1954,18 +1948,18 @@ msgstr ""
 "\"%s\", gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kon lettertypebeschrijving \"%s\" niet verwerken van Gconf-sleutel %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1974,7 +1968,7 @@ msgstr ""
 "%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
 "huidige maximum is %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1982,17 +1976,17 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2001,7 +1995,7 @@ msgstr ""
 "\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
 "\"%s\"\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
@@ -2042,80 +2036,71 @@ msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Kon geen verbinding maken met een sessiemanager, dus vensterposities zullen "
-"niet worden opgeslagen: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kon map '%s' niet aanmaken: %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kon sessiebestand '%s' niet openen voor schrijven: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fout bij schrijven sessiebestand '%s': %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fout bij sluiten sessiebestand '%s': %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lezen van opgeslagen sessiebestand %s mislukt: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Verwerken van opgeslagen sessiebestand mislukt: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> attribuut opgemerkt maar we hebben reeds de sessie-ID"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Onbekend attribuut %s op <metacity_session> element"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "ingebedde <window> markering"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Onbekend attribuut %s op <window> element"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Onbekend attribuut %s op <maximized> element"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Onbekend attribuut %s op <geometry> element"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Onbekend element %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3188,7 +3173,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3204,7 +3189,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3242,6 +3227,13 @@ msgid ""
 msgstr ""
 "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
 "lijst\n"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Kon geen verbinding maken met een sessiemanager, dus vensterposities "
+#~ "zullen niet worden opgeslagen: %s\n"
 
 #~ msgid "Only on %s"
 #~ msgstr "Alleen op %s"
