@@ -55,6 +55,8 @@ struct _MetaScreen
    * root window)
    */
   PangoContext *pango_context;
+
+  MetaStack *stack;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

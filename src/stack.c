@@ -22,6 +22,7 @@
 #include "stack.h"
 #include "window.h"
 #include "errors.h"
+#include "frame.h"
 
 #include <X11/Xatom.h>
 
@@ -166,6 +167,7 @@ meta_stack_remove (MetaStack  *stack,
   op->add_order = -1;
 
   /* Need to immediately remove from layer lists */
+  g_assert (g_list_find (stack->layers[window->layer], window) != NULL);
   stack->layers[window->layer] =
     g_list_remove (stack->layers[window->layer], window);
   
@@ -206,6 +208,7 @@ meta_stack_raise (MetaStack  *stack,
   op = ensure_op (stack, window);
   op->raised = TRUE;
   op->lowered = FALSE;
+  op->update_transient = TRUE;
   
   meta_stack_sync_to_server (stack);
 }
@@ -219,6 +222,7 @@ meta_stack_lower (MetaStack  *stack,
   op = ensure_op (stack, window);
   op->raised = FALSE;
   op->lowered = TRUE;
+  op->update_transient = TRUE;
   
   meta_stack_sync_to_server (stack);
 }
@@ -261,51 +265,91 @@ compute_layer (MetaWindow *window)
                 window->desc, window->layer);
 }
 
-static gboolean
-is_transient_for (MetaWindow *transient,
-                  MetaWindow *parent)
+static GList*
+ensure_before (GList *list,
+               gconstpointer before,
+               gconstpointer value)
 {
-  MetaWindow *w;
+  /* ensure before is before value */
+  GList *b_link;
+  GList *v_link;
+  GList *tmp;
 
-  w = transient;
-  while (w != NULL)
+  b_link = NULL;
+  v_link = NULL;
+  tmp = list;
+  while (tmp != NULL)
     {
-      if (w->xtransient_for == None)
-        return FALSE;
-      
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      if (tmp->data == before)
+        {
+          if (v_link == NULL)
+            return list; /* already before */
 
-      if (w == transient)
-        return FALSE; /* Cycle detected */
-      else if (w == parent)
-        return TRUE;
+          b_link = tmp;
+        }
+      else if (tmp->data == value)
+        {
+          v_link = tmp;
+        }
+
+      tmp = tmp->next;
     }
 
-  return FALSE;
-}
+  /* We weren't already before if we got here */
+  list = g_list_remove_link (list, b_link);
 
-static int
-window_stack_cmp (MetaWindow *a,
-                  MetaWindow *b)
-{
-  /* Less than means higher in stacking, i.e. at the
-   * front of the list.
-   */
-
-  if (a->xtransient_for != None &&
-      is_transient_for (a, b))
+  if (v_link == list)
     {
-      /* a is higher than b due to transient_for */
-      return -1;
-    }
-  else if (b->xtransient_for != None &&
-           is_transient_for (b, a))
-    {
-      /* b is higher than a due to transient_for */
-      return 1;
+      b_link->next = v_link;
+      v_link->prev = b_link;
+      list = b_link;
     }
   else
-    return 0;  /* leave things as-is */
+    {
+      b_link->prev = v_link->prev;
+      b_link->prev->next = b_link;
+      b_link->next = v_link;
+      v_link->prev = b_link;
+    }
+
+  return list;
+}
+
+static GList*
+sort_window_list (GList *list)
+{
+  GList *tmp;
+  GList *copy;
+  
+  /* This algorithm could stand to be a bit less
+   * quadratic
+   */
+  copy = g_list_copy (list);
+  tmp = copy;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      if (w->xtransient_for != None)
+        {
+          MetaWindow *parent;
+          
+          parent =
+            meta_display_lookup_x_window (w->display, w->xtransient_for);
+
+          if (parent)
+            {
+              meta_verbose ("Stacking %s above %s due to transiency\n",
+                            w->desc, parent->desc);
+              list = ensure_before (list, w, parent);
+            }
+        }
+      
+      tmp = tmp->next;
+    }
+  g_list_free (copy);
+  
+  return list;
 }
 
 static void
@@ -321,6 +365,7 @@ meta_stack_sync_to_server (MetaStack *stack)
   int i, j;
   int old_size;
   GArray *stacked;
+  GArray *root_children_stacked;
   
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -445,6 +490,14 @@ meta_stack_sync_to_server (MetaStack *stack)
 
           old_layer = op->window->layer;
 
+          if (op->add_order >= 0)
+            {
+              /* need to add to a layer */
+              stack->layers[op->window->layer] =
+                g_list_prepend (stack->layers[op->window->layer],
+                                op->window);
+            }
+          
           if (op->update_layer)
             {
               compute_layer (op->window);
@@ -486,6 +539,8 @@ meta_stack_sync_to_server (MetaStack *stack)
               stack->layers[op->window->layer] =
                 g_list_prepend (stack->layers[op->window->layer],
                                 op->window);
+
+              needs_sort[op->window->layer] = TRUE;
             }
           else if (op->lowered)
             {
@@ -496,44 +551,38 @@ meta_stack_sync_to_server (MetaStack *stack)
               stack->layers[op->window->layer] =
                 g_list_append (stack->layers[op->window->layer],
                                op->window);
+
+              needs_sort[op->window->layer] = TRUE;
             }
         }
 
+      if (op->window)
+        op->window->stack_op = NULL;
       g_free (op);
       
       tmp = tmp->next;
-    }  
+    }
 
   g_list_free (stack->pending);
   stack->pending = NULL;
   stack->n_added = 0;
 
-  /* Sort the layer lists */
-  i = 0;  
+  /* Create stacked xwindow arrays */
+  stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+  root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+  i = 0; 
   while (i < META_LAYER_LAST)
     {
+      /* Sort each layer... */
       if (needs_sort[i])
         {
-          stack->layers[i] =
-            g_list_sort (stack->layers[i],
-                         (GCompareFunc) window_stack_cmp);
+          meta_verbose ("Sorting layer %d\n", i);
+          stack->layers[i] = sort_window_list (stack->layers[i]);
         }
 
-      ++i;
-    }
-
-  /* Create stacked xwindow array */
-  stacked = g_array_new (FALSE, FALSE, sizeof (Window));
-  i = 0;  
-  while (i < META_LAYER_LAST)
-    {      
-      if (needs_sort[i])
-        {
-          stack->layers[i] =
-            g_list_sort (stack->layers[i],
-                         (GCompareFunc) window_stack_cmp);
-        }
-
+      /* ... then append it */
+      meta_verbose ("Layer %d: ", i);
+      meta_push_no_msg_prefix ();
       tmp = stack->layers[i];
       while (tmp != NULL)
         {
@@ -541,8 +590,18 @@ meta_stack_sync_to_server (MetaStack *stack)
 
           g_array_append_val (stacked, w->xwindow);
 
+          if (w->frame)
+            g_array_append_val (root_children_stacked, w->frame->xwindow);
+          else
+            g_array_append_val (root_children_stacked, w->xwindow);
+
+          meta_verbose ("%s ", w->desc);
+          
           tmp = tmp->next;
         }
+
+      meta_verbose ("\n");
+      meta_pop_no_msg_prefix ();
       
       ++i;
     }
@@ -554,10 +613,13 @@ meta_stack_sync_to_server (MetaStack *stack)
   
   /* Sync to server */
 
+  meta_verbose ("Restacking %d windows\n",
+                root_children_stacked->len);
+  
   meta_error_trap_push (stack->screen->display);
   XRestackWindows (stack->screen->display->xdisplay,
-                   (Window *) stacked->data,
-                   stacked->len);
+                   (Window *) root_children_stacked->data,
+                   root_children_stacked->len);
   meta_error_trap_pop (stack->screen->display);
   /* on error, a window was destroyed; it should eventually
    * get removed from the stacking list when we unmanage it
@@ -569,19 +631,20 @@ meta_stack_sync_to_server (MetaStack *stack)
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
                    stack->screen->display->atom_net_client_list,
-                   XA_ATOM,
+                   XA_WINDOW,
                    32, PropModeReplace,
                    stack->windows->data,
                    stack->windows->len);
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
                    stack->screen->display->atom_net_client_list_stacking,
-                   XA_ATOM,
+                   XA_WINDOW,
                    32, PropModeReplace,
                    stacked->data,
                    stacked->len);
 
   g_array_free (stacked, TRUE);
+  g_array_free (root_children_stacked, TRUE);
 
   /* That was scary... */
 }

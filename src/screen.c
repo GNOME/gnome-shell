@@ -47,6 +47,8 @@ set_wm_check_hint (MetaScreen *screen)
 {
   unsigned long data[1];
 
+  g_return_val_if_fail (screen->display->leader_window != None, 0);
+  
   data[0] = screen->display->leader_window;
 
   XChangeProperty (screen->display->xdisplay, screen->xroot,
@@ -59,9 +61,9 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 17
+#define N_SUPPORTED 19
   Atom atoms[N_SUPPORTED];
-
+  
   atoms[0] = screen->display->atom_net_wm_name;
   atoms[1] = screen->display->atom_net_close_window;
   atoms[2] = screen->display->atom_net_wm_state;
@@ -79,6 +81,8 @@ set_supported_hint (MetaScreen *screen)
   atoms[14] = screen->display->atom_net_wm_window_type_dialog;
   atoms[15] = screen->display->atom_net_wm_window_type_normal;
   atoms[16] = screen->display->atom_net_wm_state_modal;
+  atoms[17] = screen->display->atom_net_client_list;
+  atoms[18] = screen->display->atom_net_client_list_stacking;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_wm_supported,
@@ -153,6 +157,11 @@ meta_screen_new (MetaDisplay *display,
 
   screen->showing_tooltip = FALSE;
 
+  if (display->leader_window == None)
+    display->leader_window = XCreateSimpleWindow (display->xdisplay,
+                                                  screen->xroot,
+                                                  -100, -100, 1, 1, 0, 0, 0);
+  
   set_supported_hint (screen);
   
   set_wm_check_hint (screen);

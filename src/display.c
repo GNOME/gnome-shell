@@ -185,6 +185,11 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_modal = atoms[27];
   display->atom_net_client_list = atoms[28];
   display->atom_net_client_list_stacking = atoms[29];
+
+  /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
+   * created in screen_new
+   */
+  display->leader_window = None;
   
   screens = NULL;
   i = 0;
@@ -224,13 +229,6 @@ meta_display_open (const char *name)
   display->last_button_xwindow = None;
   display->last_button_num = 0;
   display->is_double_click = FALSE;
-
-  /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK
-   */
-  display->leader_window =
-    XCreateSimpleWindow (display->xdisplay,
-                         ((MetaScreen*)display->screens->data)->xroot,
-                         -100, -100, 1, 1, 0, 0, 0);
 
   set_string_hint (display,
                    display->leader_window,
@@ -303,7 +301,8 @@ meta_display_close (MetaDisplay *display)
    */
   g_hash_table_destroy (display->window_ids);
 
-  XDestroyWindow (display->xdisplay, display->leader_window);
+  if (display->leader_window != None)
+    XDestroyWindow (display->xdisplay, display->leader_window);
   
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);
@@ -720,7 +719,62 @@ event_get_modified_window (MetaDisplay *display,
       return None;
     }
 }
-  
+
+static const char*
+focus_detail (int d)
+{
+  const char *detail = "(????)";
+  switch (d)
+    {
+    case NotifyAncestor:
+      detail = "NotifyAncestor";
+      break;
+    case NotifyDetailNone:
+      detail = "NotifyDetailNone";
+      break;
+    case NotifyInferior:
+      detail = "NotifyInferior";
+      break;                
+    case NotifyNonlinear:
+      detail = "NotifyNonlinear";
+      break;
+    case NotifyNonlinearVirtual:
+      detail = "NotifyNonlinearVirtual";
+      break;
+    case NotifyPointer:
+      detail = "NotifyPointer";
+      break;
+    case NotifyPointerRoot:
+      detail = "NotifyPointerRoot";
+      break;
+    case NotifyVirtual:
+      detail = "NotifyVirtual";
+      break;
+    }
+
+  return detail;
+}
+
+static const char*
+focus_mode (int m)
+{
+  const char *mode = "(????)";
+  switch (m)
+    {
+    case NotifyNormal:
+      mode = "NotifyNormal";
+      break;
+    case NotifyGrab:
+      mode = "NotifyGrab";
+      break;
+    case NotifyUngrab:
+      mode = "NotifyUngrab";
+      break;
+    }
+
+  return mode;
+}
+
 static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
@@ -773,9 +827,15 @@ meta_spew_event (MetaDisplay *display,
           break;
         case FocusIn:
           name = "FocusIn";
+          extra = g_strdup_printf ("detail: %s mode: %s\n",
+                                   focus_detail (event->xfocus.detail),
+                                   focus_mode (event->xfocus.mode));
           break;
         case FocusOut:
           name = "FocusOut";
+          extra = g_strdup_printf ("detail: %s mode: %s\n",
+                                   focus_detail (event->xfocus.detail),
+                                   focus_mode (event->xfocus.mode));
           break;
         case KeymapNotify:
           name = "KeymapNotify";

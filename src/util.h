@@ -53,6 +53,9 @@ void meta_warning    (const char *format,
 void meta_fatal      (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);
 
+void meta_push_no_msg_prefix (void);
+void meta_pop_no_msg_prefix  (void);
+
 /* FIXME */
 #include <config.h>
 #define _(x) x

@@ -780,25 +780,25 @@ meta_window_focus (MetaWindow  *window,
 {
   meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
                 window->desc, window->input, window->take_focus);
+
+  meta_error_trap_push (window->display);
   
   if (window->input)
     {
-      meta_error_trap_push (window->display);
-      if (window->take_focus)
-        {
-          meta_window_send_icccm_message (window,
-                                          window->display->atom_wm_take_focus,
-                                          timestamp);
-        }
-      else
-        {
-          XSetInputFocus (window->display->xdisplay,
-                          window->xwindow,
-                          RevertToParent,
-                          timestamp);
-        }
-      meta_error_trap_pop (window->display);
+      XSetInputFocus (window->display->xdisplay,
+                      window->xwindow,
+                      RevertToPointerRoot,
+                      timestamp);
     }
+  
+  if (window->take_focus)
+    {
+      meta_window_send_icccm_message (window,
+                                      window->display->atom_wm_take_focus,
+                                      timestamp);
+    }
+  
+  meta_error_trap_pop (window->display);
 }
 
 void

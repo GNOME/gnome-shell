@@ -29,6 +29,7 @@
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
 static gboolean is_syncing = FALSE;
+static int no_prefix = 0;
 
 gboolean
 meta_is_verbose (void)
@@ -95,7 +96,8 @@ meta_debug_spew (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fputs ("Window manager: ", stderr);
+  if (no_prefix == 0)
+    fputs ("Window manager: ", stderr);
   fputs (str, stderr);
   
   g_free (str);
@@ -116,7 +118,8 @@ meta_verbose (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fputs ("Window manager: ", stderr);
+  if (no_prefix == 0)
+    fputs ("Window manager: ", stderr);
   fputs (str, stderr);
   
   g_free (str);
@@ -134,7 +137,8 @@ meta_bug (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fputs ("Bug in window manager: ", stderr);
+  if (no_prefix == 0)
+    fputs ("Bug in window manager: ", stderr);
   fputs (str, stderr);
   
   g_free (str);
@@ -155,7 +159,8 @@ meta_warning (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fputs ("Window manager: ", stderr);
+  if (no_prefix == 0)
+    fputs ("Window manager: ", stderr);
   fputs (str, stderr);
   
   g_free (str);
@@ -173,10 +178,25 @@ meta_fatal (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fputs ("Window manager: ", stderr);
+  if (no_prefix == 0)
+    fputs ("Window manager: ", stderr);
   fputs (str, stderr);
   
   g_free (str);
 
   meta_exit (META_EXIT_ERROR);
+}
+
+void
+meta_push_no_msg_prefix (void)
+{
+  ++no_prefix;
+}
+
+void
+meta_pop_no_msg_prefix (void)
+{
+  g_return_if_fail (no_prefix > 0);
+
+  --no_prefix;
 }
