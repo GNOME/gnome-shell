@@ -2805,7 +2805,7 @@ handle_toggle_desktop (MetaDisplay    *display,
                        XEvent         *event,
                        MetaKeyBinding *binding)
 {
-  if (screen->showing_desktop)
+  if (screen->active_workspace->showing_desktop)
     {
       meta_screen_unshow_desktop (screen);
       meta_workspace_focus_default_window (screen->active_workspace, 

@@ -539,8 +539,6 @@ meta_screen_new (MetaDisplay *display,
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
 
-  screen->showing_desktop = FALSE;
-
   screen->compositor_windows = NULL;
   screen->damage_region = None;
   screen->root_picture = None;
@@ -2166,12 +2164,12 @@ meta_screen_resize (MetaScreen *screen,
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
 }
 
-static void
-update_showing_desktop_hint (MetaScreen *screen)
+void
+meta_screen_update_showing_desktop_hint (MetaScreen *screen)
 {
   unsigned long data[1];
 
-  data[0] = screen->showing_desktop ? 1 : 0;  
+  data[0] = screen->active_workspace->showing_desktop ? 1 : 0;
       
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
@@ -2184,10 +2182,10 @@ update_showing_desktop_hint (MetaScreen *screen)
 static void
 queue_windows_showing (MetaScreen *screen)
 {
-  GSList *windows;
-  GSList *tmp;
+  GList *windows;
+  GList *tmp;
 
-  windows = meta_display_list_windows (screen->display);
+  windows = screen->active_workspace->windows;
 
   tmp = windows;
   while (tmp != NULL)
@@ -2199,18 +2197,16 @@ queue_windows_showing (MetaScreen *screen)
       
       tmp = tmp->next;
     }
-
-  g_slist_free (windows);
 }
 
 void
-meta_screen_minimize_all_except (MetaScreen *screen,
-                                 MetaWindow *keep)
+meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
+                                                     MetaWindow *keep)
 {
-  GSList *windows;
-  GSList *tmp;
-  
-  windows = meta_display_list_windows (screen->display);
+  GList *windows;
+  GList *tmp;
+
+  windows = screen->active_workspace->windows;
   
   tmp = windows;
   while (tmp != NULL)
@@ -2224,35 +2220,34 @@ meta_screen_minimize_all_except (MetaScreen *screen,
       
       tmp = tmp->next;
     }
-  
-  g_slist_free (windows);
 }
 
 void
 meta_screen_show_desktop (MetaScreen *screen)
 {
-  if (screen->showing_desktop)
+  if (screen->active_workspace->showing_desktop)
     return;
-
-  screen->showing_desktop = TRUE;
-
+  
+  screen->active_workspace->showing_desktop = TRUE;
+  
   queue_windows_showing (screen);
-
-  update_showing_desktop_hint (screen);
+  
+  meta_screen_update_showing_desktop_hint (screen);
 }
 
 void
 meta_screen_unshow_desktop (MetaScreen *screen)
 {
-  if (!screen->showing_desktop)
+  if (!screen->active_workspace->showing_desktop)
     return;
 
-  screen->showing_desktop = FALSE;
-  
+  screen->active_workspace->showing_desktop = FALSE;
+
   queue_windows_showing (screen);
 
-  update_showing_desktop_hint (screen);
+  meta_screen_update_showing_desktop_hint (screen);
 }
+
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 static gboolean startup_sequence_timeout (void *data);

@@ -158,7 +158,7 @@ maybe_leave_show_desktop_mode (MetaWindow *window)
 {
   gboolean is_desktop_or_dock;
 
-  if (!window->screen->showing_desktop)
+  if (!window->screen->active_workspace->showing_desktop)
     return;
 
   /* If the window is a transient for the dock or desktop, don't
@@ -175,7 +175,8 @@ maybe_leave_show_desktop_mode (MetaWindow *window)
 
   if (!is_desktop_or_dock)
     {
-      meta_screen_minimize_all_except (window->screen, window);
+      meta_screen_minimize_all_on_active_workspace_except (window->screen,
+                                                           window);
       meta_screen_unshow_desktop (window->screen);      
     }
 }
@@ -1265,7 +1266,7 @@ window_should_be_showing (MetaWindow  *window)
                                 &is_desktop_or_dock);
 
   if (showing &&      
-      window->screen->showing_desktop &&
+      window->screen->active_workspace->showing_desktop &&
       !is_desktop_or_dock)
     {
       meta_verbose ("Window %s is on current workspace, but we're showing the desktop\n",

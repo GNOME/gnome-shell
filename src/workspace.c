@@ -67,6 +67,8 @@ meta_workspace_new (MetaScreen *screen)
   workspace->right_struts = NULL;
   workspace->top_struts = NULL;
   workspace->bottom_struts = NULL;
+
+  workspace->showing_desktop = FALSE;
   
   return workspace;
 }
@@ -283,11 +285,19 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   if (workspace->screen->active_workspace == workspace)
     return;
 
+  /* Note that old can be NULL; e.g. when starting up */
   old = workspace->screen->active_workspace;
   
   workspace->screen->active_workspace = workspace;
 
   set_active_space_hint (workspace->screen);
+
+  /* If the "show desktop" mode is active for either the old workspace
+   * or the new one *but not both*, then update the
+   * _net_showing_desktop hint
+   */
+  if (old && (old->showing_desktop ^ workspace->showing_desktop))
+    meta_screen_update_showing_desktop_hint (workspace->screen);
 
   if (old == NULL)
     return;

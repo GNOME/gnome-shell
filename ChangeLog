@@ -1,5 +1,44 @@
 2004-10-16  Elijah Newren  <newren@math.utah.edu>
 
+	Make the "showing desktop" mode be per-workspace instead of
+	per-screen. (fixes #142198)
+
+	* src/keybindings.c (handle_toggle_desktop): access
+	showing_desktop through the active workspace
+
+	* src/screen.c (meta_screen_new): remove initialization of
+	screen->showing_desktop,
+	(meta_screen_update_showing_desktop_hint): rename and make not
+	static and access showing_desktop through the active workspace,
+	(queue_windows_showing): replace meta_display_list_windows() with
+	screen->active_workspace->windows,
+	(meta_screen_minimize_all_on_active_workspace_except): renamed
+	from meta_screen_minimize_all_except since it now only works on
+	the active workspace, (meta_screen_show_desktop,
+	meta_screen_unshow_desktop): access showing_desktop through the
+	active workspace
+
+	* src/screen.h (struct _MetaScreen): remove showing_desktop field,
+	(meta_screen_minimize_all_on_active_workspace_except): rename from
+	meta_screen_minimize_all_except,
+	(meta_screen_update)_showing_desktop_hint): export this function too
+
+	* src/window.c (maybe_leave_show_desktop_mode): access
+	showing_desktop through the active workspace and use new name for
+	meta_screen_minimize_all_on_active_workspace_except,
+	(window_should_be_showing): access showing_desktop through the
+	active workspace
+
+	* src/workspace.c (meta_workspace_new): initialize
+	workspace->showing_desktop, (meta_workspace_activate_with_focus):
+	add note that old can be NULL, update showing_desktop_hint if
+	different on this workspace than the previous one
+
+	* src/workspace.h (struct _MetaWorkspace): add showing_desktop
+	field
+
+2004-10-16  Elijah Newren  <newren@math.utah.edu>
+
 	* rationales.txt: Add new tracker bugs
 
 2004-10-15  Elijah Newren  <newren@math.utah.edu>

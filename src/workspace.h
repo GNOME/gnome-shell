@@ -49,6 +49,8 @@ struct _MetaWorkspace
   GSList *top_struts;
   GSList *bottom_struts;
   guint work_areas_invalid : 1;
+
+  guint showing_desktop : 1;
 };
 
 MetaWorkspace* meta_workspace_new           (MetaScreen    *screen);
