@@ -1,5 +1,10 @@
 2001-09-16  Havoc Pennington  <hp@pobox.com>
 
+	* src/session.c (process_ice_messages): disconnect this callback
+	on error
+
+2001-09-16  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_lower): new function
 
 	* configure.in: bump version to 2.3.8

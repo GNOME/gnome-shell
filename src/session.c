@@ -77,8 +77,10 @@ process_ice_messages (GIOChannel *channel,
       /* We were disconnected */
       IceSetShutdownNegotiation (connection, False);
       IceCloseConnection (connection);
-    }
 
+      return FALSE;
+    }
+  
   return TRUE;
 }
 
