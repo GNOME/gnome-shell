@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Metacity
+Exec=metacity
+
+[Window Manager]
+SessionManaged=true

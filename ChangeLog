@@ -1,3 +1,12 @@
+2001-09-04  Havoc Pennington  <hp@pobox.com>
+
+	* src/wm-tester/Makefile.am (noinst_PROGRAMS): make test apps
+	noinst
+
+	* src/metacity.desktop: for the capplet
+
+	* src/Makefile.am: add .desktop file
+
 2001-09-01  Havoc Pennington  <hp@pobox.com>
 
 	* src/errors.c: clean up the code, and replace GDK X error handler

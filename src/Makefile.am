@@ -49,3 +49,9 @@ metacity_SOURCES= 				\
 bin_PROGRAMS=metacity
 
 metacity_LDADD= @METACITY_LIBS@
+
+desktopfilesdir=$(datadir)/gnome/wm-properties
+desktopfiles_DATA=metacity.desktop
+
+EXTRA_DIST=$(desktopfiles_DATA)
+

@@ -7,7 +7,7 @@ wm_tester_SOURCES= 				\
 test_gravity_SOURCES=				\
 	test-gravity.c
 
-bin_PROGRAMS=wm-tester test-gravity
+noinst_PROGRAMS=wm-tester test-gravity
 
 wm_tester_LDADD= @METACITY_LIBS@
 test_gravity_LDADD= @METACITY_LIBS@
