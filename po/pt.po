@@ -1,0 +1,304 @@
+# metacity's Portuguese Translation
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.0\n"
+"POT-Creation-Date: 2001-12-27 04:07+0000\n"
+"PO-Revision-Date: 2001-12-25 18:52+0000\n"
+"Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Language-Team: Portuguese <none@none.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:155
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Falha ao abrir ecrã Sistema Janelas X '%s'\n"
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"Perdida a ligação ao ecrã v'%s';\n"
+"provavelmente o servidor X foi desligado ou você matou/destruiu\n"
+"o gestor de janelas.\n"
+
+#: src/errors.c:100
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
+
+#: src/frames.c:231
+msgid "Left edge"
+msgstr "Limite esquerdo"
+
+#: src/frames.c:231
+msgid "Left window edge width"
+msgstr "Largura do limite esquerdo da janela"
+
+#: src/frames.c:232
+msgid "Right edge"
+msgstr "Limite direito"
+
+#: src/frames.c:232
+msgid "Right window edge width"
+msgstr "Largura do limite direito da janela"
+
+#: src/frames.c:233
+msgid "Bottom edge"
+msgstr "Limite inferior"
+
+#: src/frames.c:233
+msgid "Bottom window edge height"
+msgstr "Largura do limite inferior da janela"
+
+#: src/frames.c:235
+msgid "Title border"
+msgstr "Margem título"
+
+#: src/frames.c:235
+msgid "Border around title area"
+msgstr "Margem à volta da área de título"
+
+#: src/frames.c:236
+msgid "Text border"
+msgstr "Margem de texto"
+
+#: src/frames.c:236
+msgid "Border around window title text"
+msgstr "Margem à volta do texto do título da janela"
+
+#: src/frames.c:238
+msgid "Spacer padding"
+msgstr "Espaçamento do ajuste"
+
+#: src/frames.c:238
+msgid "Padding on either side of spacer"
+msgstr "Espaçamento em ambos os lados do ajuste"
+
+#: src/frames.c:239
+msgid "Spacer width"
+msgstr "Largura ajuste"
+
+#: src/frames.c:239
+msgid "Width of spacer"
+msgstr "Largura do ajuste"
+
+#: src/frames.c:240
+msgid "Spacer height"
+msgstr "Altura ajuste"
+
+#: src/frames.c:240
+msgid "Height of spacer"
+msgstr "Altura do ajuste"
+
+#. same as right_width left_width by default
+#: src/frames.c:243
+msgid "Right inset"
+msgstr "Entrada direita"
+
+#: src/frames.c:243
+msgid "Distance of buttons from right edge of frame"
+msgstr "Distância dos botões da margem direita da moldura"
+
+#: src/frames.c:244
+msgid "Left inset"
+msgstr "Entrada esquerda"
+
+#: src/frames.c:244
+msgid "Distance of menu button from left edge of frame"
+msgstr "Distância dos botões da margem esquerda da moldura"
+
+#: src/frames.c:246
+msgid "Button width"
+msgstr "Largura botões"
+
+#: src/frames.c:246
+msgid "Width of buttons"
+msgstr "Largura dos botões"
+
+#: src/frames.c:247
+msgid "Button height"
+msgstr "Altura botões"
+
+#: src/frames.c:247
+msgid "Height of buttons"
+msgstr "Altura dos botões"
+
+#: src/frames.c:249
+msgid "Button border"
+msgstr "Margem botões"
+
+#: src/frames.c:249
+msgid "Border around buttons"
+msgstr "Margem à volta dos botões"
+
+#: src/frames.c:250
+msgid "Inner button border"
+msgstr "Margem interna botões"
+
+#: src/frames.c:250
+msgid "Border around the icon inside buttons"
+msgstr "Margem à volta do ícone dentro dos botões"
+
+#: src/frames.c:891
+msgid "Close Window"
+msgstr "Fechar Janela"
+
+#: src/frames.c:894
+msgid "Window Menu"
+msgstr "Menu Janela"
+
+#: src/frames.c:897
+msgid "Minimize Window"
+msgstr "Minimizar Janela"
+
+#: src/frames.c:900
+msgid "Maximize Window"
+msgstr "Maximizar Janela"
+
+#: src/frames.c:903
+msgid "Unmaximize Window"
+msgstr "Restaurar Janela"
+
+#: src/keybindings.c:215
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Outra aplicação está já a utilizar a chave %s com modificadores %x como "
+"binding\n"
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr "Fe_char"
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr "_Minimizar"
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr "Ma_ximizar"
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr "Resta_urar"
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr "_Sombra"
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr "_Não-sombra"
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr "Mo_ver"
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr "_Redimensionar"
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr "Colocar em Todas as _Áreas Trabalho"
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr "Apenas Nesta Área _Trabalho"
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "Apenas na área de trabalho %s%d"
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "Mover para área de trabalho %s%d"
+
+#: src/screen.c:174
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Ecrã %d no monitor '%s' é inválido\n"
+
+#: src/screen.c:189
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr "Ecrã %d no monitor '%s' já tem um gestor de janelas\n"
+
+#: src/session.c:760 src/session.c:767
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Incapaz de criar directório '%s': %s\n"
+
+#: src/session.c:777
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Incapaz de abrir ficheiro de sessão '%s' para escrita: %s\n"
+
+#: src/session.c:909
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Erro ao escrever ficheiro de sessão '%s': %s\n"
+
+#: src/session.c:914
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Erro ao fechar ficheiro de sessão '%s': %s\n"
+
+#: src/session.c:988
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Falha ao ler ficheiro de sessão gravado %s: %s\n"
+
+#: src/session.c:1022
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Falha ao parsear ficheiro de sessão gravado: %s\n"
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr "etiqueta de <janela> encadeada"
+
+#: src/session.c:1110 src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Atributo %s desconhecido no elemento de <janela>"
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Atributo %s desconhecido %s no elemento de <geometria>"
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr "Elemento %s desconhecido"
+
+#. someone is on crack
+#: src/window.c:2939
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+"Janela %s define largura máxima %d menor que largura mínima %d, a "
+"desabilitar redimensionamento\n"
+
+#. another cracksmoker
+#: src/window.c:2949
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
+"Janela %s define altura máxima %d menor que altura mínima %d, a desabilitar "
+"redimensionamento\n"
