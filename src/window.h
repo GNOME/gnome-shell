@@ -147,7 +147,6 @@ struct _MetaWindow
   
   /* whether net_wm_user_time has been set yet */
   guint net_wm_user_time_set : 1;
-  guint focus_despite_user_time : 1;
   
   /* These are the flags from WM_PROTOCOLS */
   guint take_focus : 1;

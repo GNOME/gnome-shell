@@ -1,3 +1,12 @@
+2004-08-07  Elijah Newren  <newren@math.utah.edu>
+
+	* window.c, window.h: Revert Rob's 2004-07-31 patch that ignored
+	net_wm_user_time when unminimizing a window
+
+	* window.c (meta_window_activate): If a nonzero timestamp is
+	passed, update the window's net_wm_user_time accordingly.  (see
+	comments 102-108 of bug 118372)
+
 2004-08-07  Rob Adams  <readams@readams.net>
 
 	Remove some extraneous items that could sometimes appear in the
