@@ -51,4 +51,13 @@ GdkPixbuf* meta_gradient_create_interwoven (int               width,
                                             int               thickness2);
 
 
+/* Generate an alpha gradient and multiply it with the existing alpha
+ * channel of the given pixbuf
+ */
+void meta_gradient_add_alpha (GdkPixbuf       *pixbuf,
+                              const guchar    *alphas,
+                              int              n_alphas,
+                              MetaGradientType type);
+
+
 #endif

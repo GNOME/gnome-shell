@@ -27,14 +27,81 @@ typedef void (* RenderGradientFunc) (GdkDrawable *drawable,
                                      int          height);
 
 static void
+draw_checkerboard (GdkDrawable *drawable,
+                   int          width,
+                   int          height)
+{
+  gint i, j, xcount, ycount;
+  GdkGC *gc1, *gc2;
+  GdkColor color;
+  
+#define CHECK_SIZE 10
+#define SPACING 2  
+
+  /* It would be a bit more efficient to keep these
+   * GC's around instead of recreating on each expose, but
+   * this is the lazy/slow way.
+   */
+  gc1 = gdk_gc_new (drawable);
+  color.red = 30000;
+  color.green = 30000;
+  color.blue = 30000;
+  gdk_gc_set_rgb_fg_color (gc1, &color);
+
+  gc2 = gdk_gc_new (drawable);
+  color.red = 50000;
+  color.green = 50000;
+  color.blue = 50000;
+  gdk_gc_set_rgb_fg_color (gc2, &color);
+  
+  xcount = 0;
+  i = SPACING;
+  while (i < width)
+    {
+      j = SPACING;
+      ycount = xcount % 2; /* start with even/odd depending on row */
+      while (j < height)
+	{
+	  GdkGC *gc;
+	  
+	  if (ycount % 2)
+	    gc = gc1;
+	  else
+	    gc = gc2;
+
+	  /* If we're outside event->area, this will do nothing.
+	   * It might be mildly more efficient if we handled
+	   * the clipping ourselves, but again we're feeling lazy.
+	   */
+	  gdk_draw_rectangle (drawable,
+			      gc,
+			      TRUE,
+			      i, j,
+			      CHECK_SIZE,
+			      CHECK_SIZE);
+
+	  j += CHECK_SIZE + SPACING;
+	  ++ycount;
+	}
+
+      i += CHECK_SIZE + SPACING;
+      ++xcount;
+    }
+  
+  g_object_unref (G_OBJECT (gc1));
+  g_object_unref (G_OBJECT (gc2));
+}
+
+static void
 render_simple (GdkDrawable *drawable,
                GdkGC       *gc,
                int width, int height,
-               MetaGradientType type)
+               MetaGradientType type,
+               gboolean    with_alpha)
 {
   GdkPixbuf *pixbuf;
   GdkColor from, to;
-
+  
   gdk_color_parse ("blue", &from);
   gdk_color_parse ("green", &to);
 
@@ -42,6 +109,26 @@ render_simple (GdkDrawable *drawable,
                                         &from, &to,
                                         type);
 
+  if (with_alpha)
+    {
+      const unsigned char alphas[] = { 0xff, 0xaa, 0x2f, 0x0, 0xcc, 0xff, 0xff };
+      
+      if (!gdk_pixbuf_get_has_alpha (pixbuf))
+        {
+          GdkPixbuf *new_pixbuf;
+          
+          new_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
+          g_object_unref (G_OBJECT (pixbuf));
+          pixbuf = new_pixbuf;
+        }
+      
+      meta_gradient_add_alpha (pixbuf,
+                               alphas, G_N_ELEMENTS (alphas),
+                               META_GRADIENT_HORIZONTAL);
+      
+      draw_checkerboard (drawable, width, height);
+    }
+    
   gdk_pixbuf_render_to_drawable (pixbuf,
                                  drawable,
                                  gc,
@@ -58,7 +145,7 @@ render_vertical_func (GdkDrawable *drawable,
                       GdkGC *gc,
                       int width, int height)
 {
-  render_simple (drawable, gc, width, height, META_GRADIENT_VERTICAL);
+  render_simple (drawable, gc, width, height, META_GRADIENT_VERTICAL, FALSE);
 }
 
 static void
@@ -66,7 +153,7 @@ render_horizontal_func (GdkDrawable *drawable,
                         GdkGC *gc,
                         int width, int height)
 {
-  render_simple (drawable, gc, width, height, META_GRADIENT_HORIZONTAL);
+  render_simple (drawable, gc, width, height, META_GRADIENT_HORIZONTAL, FALSE);
 }
 
 static void
@@ -74,7 +161,15 @@ render_diagonal_func (GdkDrawable *drawable,
                       GdkGC *gc,
                       int width, int height)
 {
-  render_simple (drawable, gc, width, height, META_GRADIENT_DIAGONAL);
+  render_simple (drawable, gc, width, height, META_GRADIENT_DIAGONAL, FALSE);
+}
+
+static void
+render_diagonal_alpha_func (GdkDrawable *drawable,
+                            GdkGC *gc,
+                            int width, int height)
+{
+  render_simple (drawable, gc, width, height, META_GRADIENT_DIAGONAL, TRUE);
 }
 
 static void
@@ -230,6 +325,10 @@ meta_gradient_test (void)
 
   window = create_gradient_window ("Interwoven",
                                    render_interwoven_func);
+
+  window = create_gradient_window ("Simple diagonal with horizontal multi alpha",
+                                   render_diagonal_alpha_func);
+
 }
 
 int

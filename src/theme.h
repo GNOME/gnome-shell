@@ -31,6 +31,7 @@ typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
 typedef struct _MetaDrawOp MetaDrawOp;
 typedef struct _MetaDrawOpList MetaDrawOpList;
 typedef struct _MetaGradientSpec MetaGradientSpec;
+typedef struct _MetaAlphaGradientSpec MetaAlphaGradientSpec; 
 typedef struct _MetaColorSpec MetaColorSpec;
 typedef struct _MetaFrameLayout MetaFrameLayout;
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
@@ -169,6 +170,13 @@ struct _MetaGradientSpec
   GSList *color_specs;
 };
 
+struct _MetaAlphaGradientSpec
+{
+  MetaGradientType type;
+  unsigned char *alphas;
+  int n_alphas;
+};
+
 struct _MetaDrawInfo
 {
   GdkPixbuf   *mini_icon;
@@ -256,7 +264,7 @@ struct _MetaDrawOp
     
     struct {
       MetaColorSpec *color_spec;
-      double alpha;
+      MetaAlphaGradientSpec *alpha_spec;
       char *x;
       char *y;
       char *width;
@@ -265,7 +273,7 @@ struct _MetaDrawOp
 
     struct {
       MetaGradientSpec *gradient_spec;
-      double alpha;
+      MetaAlphaGradientSpec *alpha_spec;
       char *x;
       char *y;
       char *width;
@@ -274,6 +282,7 @@ struct _MetaDrawOp
 
     struct {
       MetaColorSpec *colorize_spec;
+      MetaAlphaGradientSpec *alpha_spec;
       GdkPixbuf *pixbuf;
       double alpha;
       char *x;
@@ -312,7 +321,7 @@ struct _MetaDrawOp
     } gtk_vline;
 
     struct {
-      double alpha;
+      MetaAlphaGradientSpec *alpha_spec;
       char *x;
       char *y;
       char *width;
@@ -617,6 +626,10 @@ GdkPixbuf*        meta_gradient_spec_render (const MetaGradientSpec *desc,
                                              int                     height);
 gboolean          meta_gradient_spec_validate (MetaGradientSpec     *spec,
                                                GError              **error);
+
+MetaAlphaGradientSpec* meta_alpha_gradient_spec_new  (MetaGradientType       type,
+                                                      int                    n_alphas);
+void                   meta_alpha_gradient_spec_free (MetaAlphaGradientSpec *spec);
 
 
 MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);

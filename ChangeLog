@@ -1,3 +1,13 @@
+2002-05-31  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme.c (multiply_alpha): now just uses
+	meta_gradient_add_alpha
+	(draw_op_as_pixbuf): implement alpha gradients for tint, gradient,
+	and image draw ops, so I can implement garrett's stuff.
+
+	* src/gradient.c (meta_gradient_add_alpha): new function to
+	multiply the alpha channel of a pixbuf by an alpha gradient
+
 2002-05-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/main.c (main): verbose-log on startup whether we were

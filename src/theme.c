@@ -753,6 +753,32 @@ meta_gradient_spec_validate (MetaGradientSpec *spec,
   return TRUE;
 }
 
+MetaAlphaGradientSpec*
+meta_alpha_gradient_spec_new (MetaGradientType       type,
+                              int                    n_alphas)
+{
+  MetaAlphaGradientSpec *spec;
+
+  g_return_val_if_fail (n_alphas > 0, NULL);
+  
+  spec = g_new0 (MetaAlphaGradientSpec, 1);
+
+  spec->type = type;
+  spec->alphas = g_new0 (unsigned char, n_alphas);
+  spec->n_alphas = n_alphas;
+
+  return spec;
+}
+
+void
+meta_alpha_gradient_spec_free (MetaAlphaGradientSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+
+  g_free (spec->alphas);
+  g_free (spec);
+}
+
 MetaColorSpec*
 meta_color_spec_new (MetaColorSpecType type)
 {
@@ -2347,6 +2373,8 @@ meta_draw_op_free (MetaDrawOp *op)
     case META_DRAW_TINT:
       if (op->data.tint.color_spec)
         meta_color_spec_free (op->data.tint.color_spec);
+      if (op->data.tint.alpha_spec)
+        meta_alpha_gradient_spec_free (op->data.tint.alpha_spec);
       g_free (op->data.tint.x);
       g_free (op->data.tint.y);
       g_free (op->data.tint.width);
@@ -2356,6 +2384,8 @@ meta_draw_op_free (MetaDrawOp *op)
     case META_DRAW_GRADIENT:
       if (op->data.gradient.gradient_spec)
         meta_gradient_spec_free (op->data.gradient.gradient_spec);
+      if (op->data.gradient.alpha_spec)
+        meta_alpha_gradient_spec_free (op->data.gradient.alpha_spec);
       g_free (op->data.gradient.x);
       g_free (op->data.gradient.y);
       g_free (op->data.gradient.width);
@@ -2363,6 +2393,8 @@ meta_draw_op_free (MetaDrawOp *op)
       break;
 
     case META_DRAW_IMAGE:
+      if (op->data.image.alpha_spec)
+        meta_alpha_gradient_spec_free (op->data.image.alpha_spec);
       if (op->data.image.pixbuf)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
       if (op->data.image.colorize_spec)
@@ -2374,7 +2406,6 @@ meta_draw_op_free (MetaDrawOp *op)
       g_free (op->data.image.width);
       g_free (op->data.image.height);
       break;
-
 
     case META_DRAW_GTK_ARROW:
       g_free (op->data.gtk_arrow.x);
@@ -2397,6 +2428,8 @@ meta_draw_op_free (MetaDrawOp *op)
       break;
 
     case META_DRAW_ICON:
+      if (op->data.icon.alpha_spec)
+        meta_alpha_gradient_spec_free (op->data.icon.alpha_spec);
       g_free (op->data.icon.x);
       g_free (op->data.icon.y);
       g_free (op->data.icon.width);
@@ -2464,21 +2497,21 @@ get_gc_for_primitive (GtkWidget          *widget,
 }
 
 static GdkPixbuf*
-multiply_alpha (GdkPixbuf *pixbuf,
-                guchar     alpha,
-                gboolean   force_copy)
+apply_alpha (GdkPixbuf             *pixbuf,
+             MetaAlphaGradientSpec *spec,
+             gboolean               force_copy)
 {
   GdkPixbuf *new_pixbuf;
-  guchar *pixels;
-  int rowstride;
-  int height;
-  int row;
-
+  gboolean needs_alpha;
+  
   g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
   
-  if (alpha == 255)
-    return pixbuf;
+  needs_alpha = spec && (spec->n_alphas > 1 ||
+                         spec->alphas[0] != 0xff);
 
+  if (!needs_alpha)
+    return pixbuf;
+  
   if (!gdk_pixbuf_get_has_alpha (pixbuf))
     {
       new_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
@@ -2493,38 +2526,9 @@ multiply_alpha (GdkPixbuf *pixbuf,
     }
   
   g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+
+  meta_gradient_add_alpha (pixbuf, spec->alphas, spec->n_alphas, spec->type);
   
-  pixels = gdk_pixbuf_get_pixels (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
-
-  row = 0;
-  while (row < height)
-    {
-      guchar *p;
-      guchar *end;
-
-      p = pixels + row * rowstride;
-      end = p + rowstride;
-
-      while (p != end)
-        {
-          p += 3; /* skip RGB */
-
-          /* multiply the two alpha channels. not sure this is right.
-           * but some end cases are that if the pixbuf contains 255,
-           * then it should be modified to contain "alpha"; if the
-           * pixbuf contains 0, it should remain 0.
-           */
-          /* ((*p / 255.0) * (alpha / 255.0)) * 255; */
-          *p = (guchar) (((int) *p * (int) alpha) / (int) 255);
-          
-          ++p; /* skip A */
-        }
-
-      ++row;
-    }
-
   return pixbuf;
 }
 
@@ -2578,10 +2582,10 @@ render_pixbuf (GdkDrawable        *drawable,
 }
 
 static GdkPixbuf*
-scale_and_alpha_pixbuf (GdkPixbuf     *src,
-                        double         alpha,
-                        int            width,
-                        int            height)
+scale_and_alpha_pixbuf (GdkPixbuf             *src,
+                        MetaAlphaGradientSpec *alpha_spec,
+                        int                    width,
+                        int                    height)
 {
   GdkPixbuf *pixbuf;
 
@@ -2611,9 +2615,7 @@ scale_and_alpha_pixbuf (GdkPixbuf     *src,
     }
 
   if (pixbuf)
-    pixbuf = multiply_alpha (pixbuf,
-                             ALPHA_TO_UCHAR (alpha),
-                             pixbuf == src);
+    pixbuf = apply_alpha (pixbuf, alpha_spec, pixbuf == src);
   
   return pixbuf;
 }
@@ -2665,20 +2667,46 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       {
         GdkColor color;
         guint32 rgba;
+        gboolean has_alpha;
 
         meta_color_spec_render (op->data.rectangle.color_spec,
                                 widget,
                                 &color);
 
+        has_alpha =
+          op->data.tint.alpha_spec &&
+          (op->data.tint.alpha_spec->n_alphas > 1 ||
+           op->data.tint.alpha_spec->alphas[0] != 0xff);
+        
         pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                 ALPHA_TO_UCHAR (op->data.tint.alpha) < 255,
+                                 has_alpha,
                                  8, width, height);
 
-        rgba = GDK_COLOR_RGBA (color);
-        rgba &= ~0xff;
-        rgba |= ALPHA_TO_UCHAR (op->data.tint.alpha);
+        if (!has_alpha)
+          {
+            rgba = GDK_COLOR_RGBA (color);
+            
+            gdk_pixbuf_fill (pixbuf, rgba);
+          }
+        else if (op->data.tint.alpha_spec->n_alphas == 1)
+          {
+            rgba = GDK_COLOR_RGBA (color);
+            rgba &= ~0xff;
+            rgba |= op->data.tint.alpha_spec->alphas[0];
+            
+            gdk_pixbuf_fill (pixbuf, rgba);
+          }
+        else
+          {
+            rgba = GDK_COLOR_RGBA (color);
+            
+            gdk_pixbuf_fill (pixbuf, rgba);
 
-        gdk_pixbuf_fill (pixbuf, rgba);
+            meta_gradient_add_alpha (pixbuf,
+                                     op->data.tint.alpha_spec->alphas,
+                                     op->data.tint.alpha_spec->n_alphas,
+                                     op->data.tint.alpha_spec->type);
+          }
       }
       break;
 
@@ -2687,9 +2715,9 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
         pixbuf = meta_gradient_spec_render (op->data.gradient.gradient_spec,
                                             widget, width, height);
 
-        pixbuf = multiply_alpha (pixbuf,
-                                 ALPHA_TO_UCHAR (op->data.gradient.alpha),
-                                 FALSE);
+        pixbuf = apply_alpha (pixbuf,
+                              op->data.gradient.alpha_spec,
+                              FALSE);
       }
       break;
 
@@ -2720,17 +2748,17 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
             if (op->data.image.colorize_cache_pixbuf)
               {
                 pixbuf = scale_and_alpha_pixbuf (op->data.image.colorize_cache_pixbuf,
-                                                 op->data.image.alpha,
+                                                 op->data.image.alpha_spec,
                                                  width, height);
               }
 	  }
 	else
 	  {
 	    pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
-					     op->data.image.alpha,
+					     op->data.image.alpha_spec,
 					     width, height);
 	  }
-      break;
+        break;
       }
       
     case META_DRAW_GTK_ARROW:
@@ -2743,11 +2771,11 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
           width <= gdk_pixbuf_get_width (info->mini_icon) &&
           height <= gdk_pixbuf_get_height (info->mini_icon))
         pixbuf = scale_and_alpha_pixbuf (info->mini_icon,
-                                         op->data.icon.alpha,
+                                         op->data.icon.alpha_spec,
                                          width, height);
       else if (info->icon)
         pixbuf = scale_and_alpha_pixbuf (info->icon,
-                                         op->data.icon.alpha,
+                                         op->data.icon.alpha_spec,
                                          width, height);
       break;
 
@@ -2902,13 +2930,18 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
     case META_DRAW_TINT:
       {
         int rx, ry, rwidth, rheight;
-
+        gboolean needs_alpha;
+        
+        needs_alpha = op->data.tint.alpha_spec &&
+          (op->data.tint.alpha_spec->n_alphas > 1 ||
+           op->data.tint.alpha_spec->alphas[0] != 0xff);
+        
         rx = parse_x_position_unchecked (op->data.tint.x, env);
         ry = parse_y_position_unchecked (op->data.tint.y, env);
         rwidth = parse_size_unchecked (op->data.tint.width, env);
         rheight = parse_size_unchecked (op->data.tint.height, env);
 
-        if (ALPHA_TO_UCHAR (op->data.tint.alpha) == 255)
+        if (!needs_alpha)
           {
             gc = get_gc_for_primitive (widget, drawable,
                                        op->data.tint.color_spec,

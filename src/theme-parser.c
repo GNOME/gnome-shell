@@ -577,22 +577,81 @@ parse_angle (const char          *str,
 }
 
 static gboolean
-parse_alpha (const char          *str,
-             double              *val,
-             GMarkupParseContext *context,
-             GError             **error)
+parse_alpha (const char             *str,
+             MetaAlphaGradientSpec **spec_ret,
+             GMarkupParseContext    *context,
+             GError                **error)
 {
-  if (!parse_double (str, val, context, error))
-    return FALSE;
+  char **split;
+  int i;
+  int n_alphas;
+  MetaAlphaGradientSpec *spec;
 
-  if (*val < (0.0 - 1e6) || *val > (1.0 + 1e6))
+  *spec_ret = NULL;
+  
+  split = g_strsplit (str, ":", -1);
+
+  i = 0;
+  while (split[i])
+    ++i;
+
+  if (i == 0)
     {
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"),
-                 *val);
+                 _("Could not parse \"%s\" as a floating point number"),
+                 str);
+
+      g_strfreev (split);
+      
       return FALSE;
     }
 
+  n_alphas = i;
+
+  /* FIXME allow specifying horizontal/vertical/diagonal in theme format,
+   * once we implement vertical/diagonal in gradient.c
+   */
+  spec = meta_alpha_gradient_spec_new (META_GRADIENT_HORIZONTAL,
+                                       n_alphas);
+
+  i = 0;
+  while (i < n_alphas)
+    {
+      double v;
+      
+      if (!parse_double (split[i], &v, context, error))
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Could not parse \"%s\" as a floating point number"),
+                     split[i]);
+          
+          g_strfreev (split);
+          meta_alpha_gradient_spec_free (spec);
+          
+          return FALSE;
+        }
+
+      if (v < (0.0 - 1e6) || v > (1.0 + 1e6))
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"),
+                     v);
+
+          g_strfreev (split);
+          meta_alpha_gradient_spec_free (spec);          
+          
+          return FALSE;
+        }
+
+      spec->alphas[i] = (unsigned char) (v * 255);
+      
+      ++i;
+    }  
+
+  g_strfreev (split);
+  
+  *spec_ret = spec;
+  
   return TRUE;
 }
 
@@ -1886,7 +1945,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *width;
       const char *height;
       const char *alpha;
-      double alpha_val;
+      MetaAlphaGradientSpec *alpha_spec;
       MetaColorSpec *color_spec;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
@@ -1952,7 +2011,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, FALSE, info->theme, context, error))
         return;
 
-      if (!parse_alpha (alpha, &alpha_val, context, error))
+      alpha_spec = NULL;
+      if (!parse_alpha (alpha, &alpha_spec, context, error))
         return;
       
       /* Check last so we don't have to free it when other
@@ -1961,6 +2021,9 @@ parse_draw_op_element (GMarkupParseContext  *context,
       color_spec = meta_color_spec_new_from_string (color, error);
       if (color_spec == NULL)
         {
+          if (alpha_spec)
+            meta_alpha_gradient_spec_free (alpha_spec);
+          
           add_context_to_error (error, context);
           return;
         }
@@ -1968,11 +2031,11 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op = meta_draw_op_new (META_DRAW_TINT);
 
       op->data.tint.color_spec = color_spec;
+      op->data.tint.alpha_spec = alpha_spec;
       op->data.tint.x = optimize_expression (info->theme, x);
       op->data.tint.y = optimize_expression (info->theme, y);
       op->data.tint.width = optimize_expression (info->theme, width);
       op->data.tint.height = optimize_expression (info->theme, height);
-      op->data.tint.alpha = alpha_val;
 
       g_assert (info->op_list);
       
@@ -1988,7 +2051,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *height;
       const char *type;
       const char *alpha;
-      double alpha_val;
+      MetaAlphaGradientSpec *alpha_spec;
       MetaGradientType type_val;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
@@ -2046,10 +2109,6 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!check_expression (height, FALSE, info->theme, context, error))
         return;
-
-      alpha_val = 1.0;
-      if (alpha && !parse_alpha (alpha, &alpha_val, context, error))
-        return;
       
       type_val = meta_gradient_type_from_string (type);
       if (type_val == META_GRADIENT_LAST)
@@ -2060,6 +2119,10 @@ parse_draw_op_element (GMarkupParseContext  *context,
           return;
         }
 
+      alpha_spec = NULL;
+      if (alpha && !parse_alpha (alpha, &alpha_spec, context, error))
+        return;
+      
       g_assert (info->op == NULL);
       info->op = meta_draw_op_new (META_DRAW_GRADIENT);
 
@@ -2068,10 +2131,9 @@ parse_draw_op_element (GMarkupParseContext  *context,
       info->op->data.gradient.width = optimize_expression (info->theme, width);
       info->op->data.gradient.height = optimize_expression (info->theme, height);
 
-      info->op->data.gradient.gradient_spec =
-        meta_gradient_spec_new (type_val);
+      info->op->data.gradient.gradient_spec = meta_gradient_spec_new (type_val);
 
-      info->op->data.gradient.alpha = alpha_val;
+      info->op->data.gradient.alpha_spec = alpha_spec;
       
       push_state (info, STATE_GRADIENT);
 
@@ -2087,7 +2149,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *height;
       const char *alpha;
       const char *colorize;
-      double alpha_val;
+      MetaAlphaGradientSpec *alpha_spec;
       GdkPixbuf *pixbuf;
       MetaColorSpec *colorize_spec = NULL;
       
@@ -2147,9 +2209,6 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, TRUE, info->theme, context, error))
         return;
 
-      alpha_val = 1.0;
-      if (alpha && !parse_alpha (alpha, &alpha_val, context, error))
-        return;
       
       /* Check last so we don't have to free it when other
        * stuff fails
@@ -2173,6 +2232,13 @@ parse_draw_op_element (GMarkupParseContext  *context,
 	      return;
 	    }
 	}
+
+      alpha_spec = NULL;
+      if (alpha && !parse_alpha (alpha, &alpha_spec, context, error))
+        {
+          g_object_unref (G_OBJECT (pixbuf));
+          return;
+        }
       
       op = meta_draw_op_new (META_DRAW_IMAGE);
 
@@ -2182,7 +2248,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op->data.image.y = optimize_expression (info->theme, y);
       op->data.image.width = optimize_expression (info->theme, width);
       op->data.image.height = optimize_expression (info->theme, height);
-      op->data.image.alpha = alpha_val;
+      op->data.image.alpha_spec = alpha_spec;
 
       g_assert (info->op_list);
       
@@ -2523,7 +2589,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *width;
       const char *height;
       const char *alpha;
-      double alpha_val;
+      MetaAlphaGradientSpec *alpha_spec;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
@@ -2573,8 +2639,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, FALSE, info->theme, context, error))
         return;
 
-      alpha_val = 1.0;
-      if (alpha && !parse_alpha (alpha, &alpha_val, context, error))
+      alpha_spec = NULL;
+      if (alpha && !parse_alpha (alpha, &alpha_spec, context, error))
         return;
       
       op = meta_draw_op_new (META_DRAW_ICON);
@@ -2583,7 +2649,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op->data.icon.y = optimize_expression (info->theme, y);
       op->data.icon.width = optimize_expression (info->theme, width);
       op->data.icon.height = optimize_expression (info->theme, height);
-      op->data.icon.alpha = alpha_val;
+      op->data.icon.alpha_spec = alpha_spec;
 
       g_assert (info->op_list);
       
