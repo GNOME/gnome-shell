@@ -27,11 +27,11 @@
 #include <X11/Xatom.h>
 #include <string.h>
 
-void meta_workspace_queue_calc_showing      (MetaWorkspace *workspace);
-static void set_active_space_hint           (MetaScreen *screen);
-static void meta_workspace_focus_mru_window (MetaWorkspace *workspace,
-                                             MetaWindow    *not_this_one,
-                                             Time           timestamp);
+void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
+static void set_active_space_hint        (MetaScreen *screen);
+static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
+                                          MetaWindow    *not_this_one,
+                                          Time           timestamp);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
@@ -801,7 +801,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
 
 
   if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-    meta_workspace_focus_mru_window (workspace, not_this_one, timestamp);
+    focus_ancestor_or_mru_window (workspace, not_this_one, timestamp);
   else
     {
       MetaWindow * window;
@@ -838,7 +838,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
             }
         }
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_SLOPPY)
-        meta_workspace_focus_mru_window (workspace, not_this_one, timestamp);
+        focus_ancestor_or_mru_window (workspace, not_this_one, timestamp);
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_MOUSE)
         {
           meta_topic (META_DEBUG_FOCUS,
@@ -850,11 +850,23 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
     }
 }
 
-/* Focus MRU window (or top window if failed) on active workspace */
-void
-meta_workspace_focus_mru_window (MetaWorkspace *workspace,
-                                 MetaWindow    *not_this_one,
-                                 Time           timestamp)
+static gboolean
+record_ancestor (MetaWindow *window,
+                 void       *data)
+{
+  MetaWindow **result = data;
+
+  *result = window;
+  return FALSE; /* quit with the first ancestor we find */
+}
+
+/* Focus ancestor of not_this_one if there is one, otherwise focus the MRU
+ * window on active workspace
+ */
+static void
+focus_ancestor_or_mru_window (MetaWorkspace *workspace,
+                              MetaWindow    *not_this_one,
+                              Time           timestamp)
 {
   MetaWindow *window = NULL;
   GList *tmp;
@@ -862,7 +874,33 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
   if (not_this_one)
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing MRU window excluding %s\n", not_this_one->desc);
-  
+  else
+    meta_topic (META_DEBUG_FOCUS,
+                "Focusing MRU window\n");
+
+  /* First, check to see if we need to focus an ancestor of a window */  
+  if (not_this_one)
+    {
+      MetaWindow *ancestor;
+      ancestor = NULL;
+      meta_window_foreach_ancestor (not_this_one, record_ancestor, &ancestor);
+      if (ancestor != NULL)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focusing %s, ancestor of %s\n", 
+                      ancestor->desc, not_this_one->desc);
+      
+          meta_window_focus (ancestor, timestamp);
+
+          /* Also raise the window if in click-to-focus */
+          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+            meta_window_raise (ancestor);
+
+          return;
+        }
+    }
+
+  /* No ancestor, look for the MRU window */
   tmp = workspace->mru_list;  
 
   while (tmp)

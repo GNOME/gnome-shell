@@ -37,6 +37,14 @@ Focus method  Behavior
     mouse     Focus the window containing the pointer if there is one,
               otherwise focus the designated "no_focus_window".
 
+Note that "most recently used window", as used here, has a slightly
+different connotation than "most recent to have keyboard focus".  This
+is because when a user activates a window that is a transient, its
+ancestor(s) should be considered to be more recently used than other
+windows that have had the keyboard focus more recently.  (See bug
+157360; this may mean that the alt-tab order should also change
+simultaneously, although the current implementation does not do that.)
+
 Also, sometimes a new window will be mapped (e.g. unminimizing a
 window or launching a new application).  Most users want to interact
 with new windows right away, so these should typically be focused.

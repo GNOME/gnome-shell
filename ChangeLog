@@ -1,3 +1,21 @@
+2005-02-02  Elijah Newren  <newren@gmail.com>
+
+	Focus parents of dismissed transient windows in preference to the
+	window that most recently had keyboard focus.  Fixes #157360.
+
+	* doc/how-to-get-focus-right.txt: Note the distinction between
+	"most recently used window" and "most recent to have keyboard
+	focus" that we are now making.
+
+	* src/workspace.c: (focus_ancestor_or_mru_window): rename from
+	meta_workspace_focus_mru_window, and first check whether we need
+	to focus an ancestor window before looking for the mru window,
+	(record_ancestor): helper function for
+	focus_ancestor_or_mru_window,
+	(meta_workspace_focus_default_window): update due to the function
+	rename from meta_workspace_focus_mru_window to
+	focus_ancestor_or_mru_window
+
 2005-01-31  Elijah Newren  <newren@gmail.com>
 
 	Try 2 to correct misleading and inaccurate wording.  Hopefully,
