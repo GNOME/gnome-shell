@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
 "POT-Creation-Date: 2004-02-03 15:11+0100\n"
-"PO-Revision-Date: 2004-03-08 13:06+0100\n"
+"PO-Revision-Date: 2004-03-11 21:59+0100\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -466,7 +466,6 @@ msgid ""
 msgstr "Se impostata a vero, l'opzione \"titlebar_font\" è ignorata e per i titoli delle finestre viene usato il tipo di carattere predefinito per le applicazioni."
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -476,7 +475,6 @@ msgid ""
 msgstr "Se impostata a vero, metacity fornisce all'utente minore riscontro e minore senso di \"manipolazione diretta\" usando wireframes, evitando le animazione ed altro. Ciò rappresenta una significativa riduzione di usabilità da parte di molti utenti, ma potrebbe consentire ad applicazioni legacy e terminal server di funzionare laddove sarebbe invece poco pratico."
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -487,7 +485,7 @@ msgid ""
 "questionable. But it's better than having settings for all the specific "
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr "Se impostata a vero, Metacity funziona in termini di applicazioni invece che di finestre. Il concetto è un po' astratto, ma in generale una configurazione in base alle applicazioni e più simile al Mac e meno simile a Windows. Quando una finestra riceve il focus, nella modalità in base alle applicazioni, tutte le finestre dell'applicazione vengono \"alzate\". Inoltre in questa modalità i click per l'assegnazione del focus non vengono passati dalla finestra all'applicazione. L'esistenza di questa opzione è quantomeno questionabile, ma è meglio che avere impostazioni per tutte le peculiarità specifiche delle modalità in base alle applicazioni e in base alle finestre. La modalità in base alle applicazioni è largamente non implementata."
+msgstr "Se impostata a vero, Metacity funziona in termini di applicazioni invece che di finestre. Il concetto è un po' astratto, ma in generale una configurazione in base alle applicazioni è più simile al Mac e meno simile a Windows. Quando una finestra riceve il focus, nella modalità in base alle applicazioni, tutte le finestre dell'applicazione vengono \"alzate\". Inoltre in questa modalità i click per l'assegnazione del focus non vengono passati dalla finestra all'applicazione. L'esistenza di questa opzione è quantomeno discutibile, ma è meglio che avere impostazioni per tutte le peculiarità specifiche delle modalità in base alle applicazioni e in base alle finestre. La modalità in base alle applicazioni è largamente non implementata al momento."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
@@ -662,7 +660,6 @@ msgid "Show the panel run dialog"
 msgstr "Mostra la finestra di dialogo \"Esegui...\" del pannello"
 
 #: src/metacity.schemas.in.h:62
-#, fuzzy
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -676,22 +673,7 @@ msgid ""
 "world is an ugly place. Some of the workarounds are workarounds for "
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
-msgstr ""
-"Alcune applicazioni non seguono le specifiche in modo da far sì che il "
-"gestore delle finestre si comporti erroneamente. Metacity, idealmente, "
-"posizionerebbe tutti i dialoghi in modo consistente con la finestra "
-"dell'applicazione che li genera. Ciò comporta che la posizione richiesta "
-"dall'applicazione per tali dialoghi venga ignorata. Aalcune versioni di Java/"
-"Swing, però, marcano i propri menù a tendina come dialoghi, così Metacity "
-"deve disabilitare il posizionamento degli stessi per fare in modo che "
-"funzionino correttamente. Disabilitare questa opzione fa sì che Metacity "
-"funzioni in modalità corretta che permette di avere una interfaccia "
-"moderatamente migliore se non è necessario eseguire applicazioni buggate. "
-"Tristemente il mondo reale non è un posto ideale e quindi questa opzione è "
-"abilitata per default. Alcune di queste funzioni abilitate servono per "
-"aggirare limitazioni delle specifiche stesse, così è possibile che dei bug "
-"nella modalità corretta non siano risolvibili che tramite cambiamenti o "
-"aggiunte alle specifiche."
+msgstr "Alcune applicazioni non seguono le specifiche in modo da far sì che il gestore delle finestre si comporti erroneamente. Metacity, idealmente, posizionerebbe tutti i dialoghi in modo consistente con la finestra dell'applicazione che li genera. Ciò comporta che la posizione richiesta dall'applicazione per tali dialoghi venga ignorata. Alcune versioni di Java/Swing, però, marcano i propri menù a tendina come dialoghi, così Metacity deve disabilitare il posizionamento degli stessi per fare in modo che funzionino correttamente. Disabilitare questa opzione fa sì che Metacity funzioni in modalità corretta che permette di avere una interfaccia moderatamente migliore se non è necessario eseguire applicazioni con bug. Tristemente il mondo reale non è un posto ideale e quindi questa opzione è abilitata per default. Alcune di queste funzioni abilitate servono per aggirare limitazioni delle specifiche stesse, così è possibile che dei bug nella modalità corretta non siano risolvibili che tramite cambiamenti alle specifiche."
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
@@ -770,7 +752,6 @@ msgid "Take a screenshot of a window"
 msgstr "Cattura una schermata di una finestra"
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -779,7 +760,7 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr "Indica come Metacity implementi l'indicazione visive che la campanella di sistema o un altro indicatore di \"campanella\" di applicazione sta suonando. Al momento sono ammessi due valori: \"fullscreen\", che causa un lampeggio bianco-nero a tutto schermo, e \"frame_flash\" che causa un lampeggio della barra del titolo dell'applicazione che ha inviato il segnale della campanella. Se l'applicazione che he inviato la campanella è sconosciuta (come accade nel caso della campanella di sistema), il lampeggio avviene sulla finestra che al momento ha il focus."
+msgstr "Indica come Metacity implementa l'indicazione visiva che la campanella di sistema o un altro indicatore di \"campanella\" di applicazione sta suonando. Al momento sono ammessi due valori: \"fullscreen\", che causa un lampeggio bianco-nero a tutto schermo, e \"frame_flash\" che causa un lampeggio della barra del titolo dell'applicazione che ha inviato il segnale della campanella. Se l'applicazione che he inviato la campanella è sconosciuta (come accade nel caso della campanella di sistema), il lampeggio avviene sulla finestra che al momento ha il focus."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -1532,12 +1513,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Scorciatoia per portare la finestra attiva in sfondo. Il formato è \"&lt;"
-"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
-"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
-"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione viene impostata \"disabled"
-"\", allora non ci sarà nessuna scorciatoia per questa azione."
+msgstr "Scorciatoia per portare la finestra attiva in sfondo. Il formato è \"&lt;Control&gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione viene impostata \"disabled\", allora non ci sarà nessuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1617,12 +1593,11 @@ msgid "Toggle window on all workspaces"
 msgstr "Attiva/disattiva la presenza della finestra su tutte le aree di lavoro"
 
 #: src/metacity.schemas.in.h:161
-#, fuzzy
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr "Attiva un'indicazione visiva quando un'applicazione o il sistema emette un \"beep\" o una campanella;"
+msgstr "Attiva un'indicazione visiva quando un'applicazione o il sistema emette un \"beep\" o una campanella; utile per i deboli di udito e per l'uso in ambienti rumorosi o quando \"campanella udibile\" è disabilitato."
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize a window"
