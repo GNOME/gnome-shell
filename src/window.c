@@ -3575,7 +3575,8 @@ update_sm_hints (MetaWindow *window)
                         &window->sm_client_id);
 
       meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
-                    window->desc, window->xclient_leader, window->sm_client_id);
+                    window->desc, window->xclient_leader,
+		    window->sm_client_id ? window->sm_client_id : "(null)");
     }
   else
     meta_verbose ("Didn't find a client leader for %s\n", window->desc);
