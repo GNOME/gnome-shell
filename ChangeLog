@@ -1,3 +1,8 @@
+2002-03-04  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: fix configure.in since GTK no longer gives us 
+	-L/usr/X11R6/lib
+
 2002-03-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c: improve debug spew about initial workspace
