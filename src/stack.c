@@ -199,17 +199,11 @@ get_standalone_layer (MetaWindow *window)
       break;
       
     default:
-#if 0
-      /* FIXME this is disabled due to the FIXME below
-       * about how moving multiple windows between layers randomly
-       * rearranges their Z-order
-       */
        
       if (window->has_focus &&
           meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
         layer = META_LAYER_FOCUSED_WINDOW;
-#endif
-      if (window->fullscreen)
+      else if (window->fullscreen)
         layer = META_LAYER_FULLSCREEN;
       else
         layer = META_LAYER_NORMAL;
@@ -747,7 +741,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       else
         g_array_append_val (root_children_stacked, w->xwindow);
       
-      meta_topic (META_DEBUG_STACK, "%d) %s ", w->stack_position, w->desc);
+      meta_topic (META_DEBUG_STACK, "%d:%d - %s ", w->layer, w->stack_position, w->desc);
           
       tmp = tmp->next;
     }

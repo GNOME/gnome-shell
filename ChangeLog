@@ -1,5 +1,10 @@
 2002-09-28  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (get_standalone_layer): re-enable the FOCUSED_WINDOW
+	layer, should now work correctly.
+
+2002-09-28  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c, src/stack.c: Rewrite stack code to work a lot
 	differently. Should be better now, and not lose relative positions
 	of windows when moving among layers. Also should now be possible
