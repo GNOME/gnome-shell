@@ -31,11 +31,14 @@
 #include <X11/Xatom.h>
 #include <string.h>
 
+#define USE_GDK_DISPLAY
+
 static GSList *all_displays = NULL;
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
-static void   event_queue_callback      (MetaEventQueue *queue,
-                                         XEvent         *event,
+static void   event_queue_callback      (XEvent         *event,
+                                         gpointer        data);
+static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);
 static Window event_get_modified_window (MetaDisplay    *display,
                                          XEvent         *event);
@@ -126,9 +129,13 @@ meta_display_open (const char *name)
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
-  
-  xdisplay = XOpenDisplay (name);
 
+#ifdef USE_GDK_DISPLAY
+  xdisplay = meta_ui_get_display (name);
+#else
+  xdisplay = XOpenDisplay (name);
+#endif
+  
   if (xdisplay == NULL)
     {
       meta_warning (_("Failed to open X Window System display '%s'\n"),
@@ -225,7 +232,9 @@ meta_display_open (const char *name)
       /* This would typically happen because all the screens already
        * have window managers
        */
+#ifndef USE_GDK_DISPLAY
       XCloseDisplay (xdisplay);
+#endif
       all_displays = g_slist_remove (all_displays, display);
       g_free (display->name);
       g_free (display);
@@ -233,11 +242,20 @@ meta_display_open (const char *name)
     }
   
   display->screens = screens;
-  
+
+#ifdef USE_GDK_DISPLAY
+  display->events = NULL;
+
+  /* Get events */
+  meta_ui_add_event_func (display->xdisplay,
+                          event_callback,
+                          display);
+#else
   display->events = meta_event_queue_new (display->xdisplay,
                                           event_queue_callback,
                                           display);
-
+#endif
+  
   display->window_ids = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
   
   display->double_click_time = 250;
@@ -312,6 +330,13 @@ meta_display_close (MetaDisplay *display)
   g_slist_free (winlist);
   meta_display_ungrab (display);
 
+#ifdef USE_GDK_DISPLAY
+  /* Stop caring about events */
+  meta_ui_remove_event_func (display->xdisplay,
+                             event_callback,
+                             display);
+#endif
+  
   /* Must be after all calls to meta_window_free() since they
    * unregister windows
    */
@@ -319,9 +344,11 @@ meta_display_close (MetaDisplay *display)
 
   if (display->leader_window != None)
     XDestroyWindow (display->xdisplay, display->leader_window);
-  
+
+#ifndef USE_GDK_DISPLAY
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);
+#endif 
   g_free (display->name);
 
   all_displays = g_slist_remove (all_displays, display);
@@ -444,10 +471,17 @@ meta_display_is_double_click (MetaDisplay *display)
 
 static gboolean dump_events = TRUE;
 
+
 static void
-event_queue_callback (MetaEventQueue *queue,
-                      XEvent         *event,
+event_queue_callback (XEvent         *event,
                       gpointer        data)
+{
+  event_callback (event, data);
+}
+
+static gboolean
+event_callback (XEvent   *event,
+                gpointer  data)
 {
   MetaWindow *window;
   MetaDisplay *display;
@@ -457,7 +491,7 @@ event_queue_callback (MetaEventQueue *queue,
   
   if (dump_events)
     meta_spew_event (display, event);
-
+  
   /* mark double click events, kind of a hack, oh well. */
   if (event->type == ButtonPress)
     {
@@ -490,7 +524,7 @@ event_queue_callback (MetaEventQueue *queue,
       modified == window->frame->xwindow)
     {
       meta_frame_event (window->frame, event);
-      return;
+      return FALSE;
     }
   
   switch (event->type)
@@ -677,6 +711,8 @@ event_queue_callback (MetaEventQueue *queue,
     default:
       break;
     }
+
+  return FALSE;
 }
 
 /* Return the window this has to do with, if any, rather

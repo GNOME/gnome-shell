@@ -70,9 +70,8 @@ meta_core_queue_frame_resize (Display *xdisplay,
   window = meta_display_lookup_x_window (display, frame_xwindow);
 
   if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
-  
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  g_warning ("FIXME");
+  meta_window_queue_move_resize (window);
 }
 

@@ -52,6 +52,7 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
 void          meta_screen_queue_frame_redraws (MetaScreen                 *screen);
+void          meta_screen_queue_window_resizes (MetaScreen                 *screen);
 
 int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
 

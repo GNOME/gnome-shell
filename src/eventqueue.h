@@ -27,8 +27,7 @@
 
 typedef struct _MetaEventQueue MetaEventQueue;
 
-typedef void   (* MetaEventQueueFunc) (MetaEventQueue *queue,
-                                       XEvent         *event,
+typedef void   (* MetaEventQueueFunc) (XEvent         *event,
                                        gpointer        data);
 
 MetaEventQueue* meta_event_queue_new  (Display            *display,

@@ -349,6 +349,17 @@ meta_screen_queue_frame_redraws (MetaScreen *screen)
   meta_screen_foreach_window (screen, queue_draw, NULL);
 }
 
+static void
+queue_resize (MetaScreen *screen, MetaWindow *window, gpointer data)
+{
+  meta_window_queue_move_resize (window);
+}
+
+void
+meta_screen_queue_window_resizes (MetaScreen *screen)
+{
+  meta_screen_foreach_window (screen, queue_resize, NULL);
+}
 
 int
 meta_screen_get_n_workspaces (MetaScreen *screen)

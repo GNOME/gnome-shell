@@ -34,17 +34,6 @@ struct _MetaFrameActionGrab
   /* button doing the dragging */
   int start_button;
 };
-
-
-/* This lacks ButtonReleaseMask to avoid the auto-grab
- * since it breaks our popup menu
- */
-#define EVENT_MASK (SubstructureRedirectMask |                     \
-                    StructureNotifyMask | SubstructureNotifyMask | \
-                    ExposureMask |                                 \
-                    ButtonPressMask | ButtonReleaseMask |          \
-                    PointerMotionMask | PointerMotionHintMask |    \
-                    EnterWindowMask | LeaveWindowMask)
 #endif
 
 struct _MetaUIFrame
@@ -232,7 +221,7 @@ meta_frames_get_type (void)
         (GtkClassInitFunc) NULL,
       };
 
-      frames_type = gtk_type_unique (GTK_TYPE_WIDGET, &frames_info);
+      frames_type = gtk_type_unique (GTK_TYPE_WINDOW, &frames_info);
     }
 
   return frames_type;
@@ -494,7 +483,7 @@ meta_frames_style_set  (GtkWidget *widget,
     
     g_object_unref (G_OBJECT (font));
     
-    frames->text_height = metrics.ascent + metrics.descent;
+    frames->text_height = PANGO_PIXELS (metrics.ascent + metrics.descent);
   }
 
   /* Queue a draw/resize on all frames */
@@ -694,7 +683,9 @@ meta_frames_manage_window (MetaFrames *frames,
     }
   
   gdk_window_set_user_data (frame->window, frames);
-  
+
+#if 0
+  /* Add events in frame.c */
   gdk_window_set_events (frame->window,
                          GDK_EXPOSURE_MASK |
                          GDK_POINTER_MOTION_MASK |
@@ -702,7 +693,8 @@ meta_frames_manage_window (MetaFrames *frames,
                          GDK_BUTTON_PRESS_MASK |
                          GDK_BUTTON_RELEASE_MASK |
                          GDK_STRUCTURE_MASK);
-
+#endif
+  
   /* This shouldn't be required if we don't select for button
    * press in frame.c?
    */
@@ -1025,13 +1017,16 @@ meta_frames_expose_event            (GtkWidget           *widget,
                               fgeom.title_rect.height);
         }
 
-      gdk_gc_set_clip_rectangle (layout_gc, &clip);
-      gdk_draw_layout (frame->window,
-                       layout_gc,
-                       fgeom.title_rect.x + frames->props->text_border.left,
-                       fgeom.title_rect.y + frames->props->text_border.top,
-                       frame->layout);
-      gdk_gc_set_clip_rectangle (layout_gc, NULL);
+      if (frame->layout)
+        {
+          gdk_gc_set_clip_rectangle (layout_gc, &clip);
+          gdk_draw_layout (frame->window,
+                           layout_gc,
+                           fgeom.title_rect.x + frames->props->text_border.left,
+                           fgeom.title_rect.y + frames->props->text_border.top,
+                           frame->layout);
+          gdk_gc_set_clip_rectangle (layout_gc, NULL);
+        }
     }
 
   inner = frames->props->inner_button_border;

@@ -479,7 +479,7 @@ meta_window_show (MetaWindow *window)
     {
       meta_verbose ("Frame actually needs map\n");
       window->frame->mapped = TRUE;
-      XMapWindow (window->display->xdisplay, window->frame->xwindow);
+      meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
     }
 
   if (window->shaded)
@@ -528,7 +528,7 @@ meta_window_hide (MetaWindow *window)
     {
       meta_verbose ("Frame actually needs unmap\n");
       window->frame->mapped = FALSE;
-      XUnmapWindow (window->display->xdisplay, window->frame->xwindow);
+      meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
     }
 
   if (window->mapped)
@@ -1422,8 +1422,6 @@ process_property_notify (MetaWindow     *window,
       event->atom == window->display->atom_net_wm_name)
     {
       update_title (window);
-
-      meta_window_queue_move_resize (window);
     }
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
@@ -1788,6 +1786,11 @@ update_title (MetaWindow *window)
 
   g_free (window->desc);
   window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+
+  if (window->frame)
+    meta_ui_set_frame_title (window->screen->ui,
+                             window->frame->xwindow,
+                             window->title);
   
   return meta_error_trap_pop (window->display);
 }

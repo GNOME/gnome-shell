@@ -22,6 +22,13 @@
 #include "frame.h"
 #include "errors.h"
 
+#define EVENT_MASK (SubstructureRedirectMask |                     \
+                    StructureNotifyMask | SubstructureNotifyMask | \
+                    ExposureMask |                                 \
+                    ButtonPressMask | ButtonReleaseMask |          \
+                    PointerMotionMask | PointerMotionHintMask |    \
+                    EnterWindowMask | LeaveWindowMask)
+
 void
 meta_window_ensure_frame (MetaWindow *window)
 {
@@ -46,9 +53,7 @@ meta_window_ensure_frame (MetaWindow *window)
 
   frame->mapped = FALSE;
   
-  attrs.event_mask = SubstructureRedirectMask |
-    StructureNotifyMask | SubstructureNotifyMask |   
-    EnterWindowMask | LeaveWindowMask;
+  attrs.event_mask = EVENT_MASK;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
                                   window->screen->xroot,
@@ -92,10 +97,15 @@ meta_window_ensure_frame (MetaWindow *window)
                    window->rect.y);
   meta_error_trap_pop (window->display);
 
-  meta_ui_add_frame (window->screen->ui, frame->xwindow);
-  
   /* stick frame to the window */
   window->frame = frame;
+  
+  meta_ui_add_frame (window->screen->ui, frame->xwindow);
+
+  if (window->title)
+    meta_ui_set_frame_title (window->screen->ui,
+                             window->frame->xwindow,
+                             window->title);
 }
 
 void

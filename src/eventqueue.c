@@ -151,7 +151,7 @@ eq_dispatch (GSource *source, GSourceFunc callback, gpointer user_data)
       event = g_queue_pop_head (eq->events);
       func = (MetaEventQueueFunc) callback;
       
-      (* func) (eq, event, user_data);
+      (* func) (event, user_data);
 
       g_free (event);
     }

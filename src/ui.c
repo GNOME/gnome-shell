@@ -37,6 +37,68 @@ meta_ui_init (int *argc, char ***argv)
     meta_fatal ("Unable to open X display %s\n", gdk_display_name);
 }
 
+Display*
+meta_ui_get_display (const char *name)
+{
+  if (name == NULL)
+    return gdk_display;
+  else
+    return NULL;
+}
+
+typedef struct _EventFunc EventFunc;
+
+struct _EventFunc
+{
+  MetaEventFunc func;
+  gpointer data;
+};
+
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent *event,
+             gpointer data)
+{
+  EventFunc *ef;
+
+  ef = data;
+
+  if ((* ef->func) (xevent, ef->data))
+    return GDK_FILTER_REMOVE;
+  else
+    return GDK_FILTER_CONTINUE;
+}
+
+static EventFunc *ef = NULL;
+
+void
+meta_ui_add_event_func (Display       *xdisplay,
+                        MetaEventFunc  func,
+                        gpointer       data)
+{
+  g_return_if_fail (ef == NULL);
+
+  ef = g_new (EventFunc, 1);
+  ef->func = func;
+  ef->data = data;
+
+  gdk_window_add_filter (NULL, filter_func, ef);
+}
+
+/* removal is by data due to proxy function */
+void
+meta_ui_remove_event_func (Display       *xdisplay,
+                           MetaEventFunc  func,
+                           gpointer       data)
+{
+  g_return_if_fail (ef != NULL);
+  
+  gdk_window_remove_filter (NULL, filter_func, ef);
+
+  g_free (ef);
+  ef = NULL;
+}
+
 MetaUI*
 meta_ui_new (Display *xdisplay,
              Screen  *screen)
@@ -89,6 +151,30 @@ meta_ui_remove_frame (MetaUI *ui,
 }
 
 void
+meta_ui_map_frame   (MetaUI *ui,
+                     Window  xwindow)
+{
+  GdkWindow *window;
+
+  window = gdk_xid_table_lookup (xwindow);
+
+  if (window)
+    gdk_x11_window_map (window);
+}
+
+void
+meta_ui_unmap_frame (MetaUI *ui,
+                     Window  xwindow)
+{
+  GdkWindow *window;
+
+  window = gdk_xid_table_lookup (xwindow);
+
+  if (window)  
+    gdk_window_hide (window);
+}
+
+void
 meta_ui_reset_frame_bg (MetaUI *ui,
                         Window xwindow)
 {
@@ -102,5 +188,13 @@ meta_ui_queue_frame_draw (MetaUI *ui,
   meta_frames_queue_draw (ui->frames, xwindow);
 }
 
+
+void
+meta_ui_set_frame_title (MetaUI     *ui,
+                         Window      xwindow,
+                         const char *title)
+{
+  meta_frames_set_title (ui->frames, xwindow, title);
+}
 
 
