@@ -17,15 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  */
+ * 02111-1307, USA.
+ */
 
 #include <config.h>
 
 #include "session.h"
 
+#include <time.h>
+
 #ifndef HAVE_SM
 void
-meta_session_init (const char *previous_id)
+meta_session_init (const char *save_file)
 {
   meta_topic (META_DEBUG_SM, "Compiled without session management support\n");
 }
@@ -64,8 +67,12 @@ static void ice_io_error_handler (IceConn connection);
 static void new_ice_connection (IceConn connection, IcePointer client_data, 
 				Bool opening, IcePointer *watch_data);
 
-static void save_state         (void);
-static void load_state         (const char *previous_id);
+static void        save_state         (void);
+static void        load_state         (const char *previous_save_file);
+static const char* get_previous_id    (void);
+static void        regenerate_save_file (void);
+static const char* full_save_file       (void);
+static const char* base_save_file       (void);
 
 /* This is called when data is available on an ICE connection.  */
 static gboolean
@@ -196,28 +203,37 @@ static void save_yourself_callback      (SmcConn   smc_conn,
                                          Bool      fast);
 static void set_clone_restart_commands  (void);
 
-static gchar *client_id = NULL;
+static char *client_id = NULL;
 static gpointer session_connection = NULL;
 static ClientState current_state = STATE_DISCONNECTED;
 
 void
-meta_session_init (const char *previous_id)
+meta_session_init (const char *previous_save_file)
 {
   /* Some code here from twm */
   char buf[256];
   unsigned long mask;
   SmcCallbacks callbacks;
+  const char *previous_id;
+  
+  meta_topic (META_DEBUG_SM, "Initializing session with save file '%s'\n",
+              previous_save_file ? previous_save_file : "(none)");
 
-  meta_topic (META_DEBUG_SM, "Initializing session with session ID '%s'\n",
-              previous_id ? previous_id : "(none)");
-
-  if (previous_id)
-    load_state (previous_id);
+  if (previous_save_file)
+    load_state (previous_save_file);
+  
+  previous_id = get_previous_id (); /* from the file if any, null otherwise */
   
   ice_init ();
   
   mask = SmcSaveYourselfProcMask | SmcDieProcMask |
     SmcSaveCompleteProcMask | SmcShutdownCancelledProcMask;
+
+#if 0
+  /* note this isn't in the mask above */
+  callbacks.interact.callback = interact_callback;
+  callbacks.interact.client_data = NULL;
+#endif
   
   callbacks.save_yourself.callback = save_yourself_callback;
   callbacks.save_yourself.client_data = NULL;
@@ -230,7 +246,7 @@ meta_session_init (const char *previous_id)
   
   callbacks.shutdown_cancelled.callback = shutdown_cancelled_callback;
   callbacks.shutdown_cancelled.client_data = NULL;
-
+  
   session_connection =
     SmcOpenConnection (NULL, /* use SESSION_MANAGER env */
                        NULL, /* means use existing ICE connection */
@@ -238,7 +254,7 @@ meta_session_init (const char *previous_id)
                        SmProtoMinor,
                        mask,
                        &callbacks,
-                       previous_id,
+                       (char*) previous_id,
                        &client_id,
                        255, buf);
   
@@ -280,7 +296,7 @@ meta_session_init (const char *previous_id)
     prop2.type = SmARRAY8;
     prop2.num_vals = 1;
     prop2.vals = &prop2val;
-    prop2val.value = g_get_user_name ();
+    prop2val.value = (char*) g_get_user_name ();
     prop2val.length = strlen (prop2val.value);
 	
     prop3.name = SmRestartStyleHint;
@@ -303,7 +319,7 @@ meta_session_init (const char *previous_id)
     prop5.type = SmARRAY8;
     prop5.num_vals = 1;
     prop5.vals = &prop5val;
-    prop5val.value = g_get_home_dir ();
+    prop5val.value = (char*) g_get_home_dir ();
     prop5val.length = strlen (prop5val.value);
 
     prop6.name = "_GSM_Priority";
@@ -322,8 +338,6 @@ meta_session_init (const char *previous_id)
     
     SmcSetProperties (session_connection, 6, props);
   }
-
-  set_clone_restart_commands ();
 }
 
 static void
@@ -392,30 +406,12 @@ save_yourself_callback (SmcConn   smc_conn,
   
   /* The first SaveYourself after registering for the first time
    * is a special case (SM specs 7.2).
-   *
-   * This SaveYourself seems to be included in the protocol to
-   * ask the client to specify its initial SmProperties since 
-   * there is little point saving a copy of the initial state.
-   *
-   * A bug in xsm means that it does not send us a SaveComplete 
-   * in response to this initial SaveYourself. Therefore, we 
-   * must not set a grab because it would never be released.
-   * Indeed, even telling the app that this SaveYourself has
-   * arrived is hazardous as the app may take its own steps
-   * to freeze its WM state while waiting for the SaveComplete.
-   *
-   * Fortunately, we have already set the SmProperties during
-   * gnome_client_connect so there is little lost in simply
-   * returning immediately.
-   *
-   * Apps which really want to save their initial states can 
-   * do so safely using gnome_client_save_yourself_request.
    */
 
+#if 0 /* I think the GnomeClient rationale for this doesn't apply */
   if (current_state == STATE_REGISTERING)
     {
       current_state = STATE_IDLE;
-
       /* Double check that this is a section 7.2 SaveYourself: */
       
       if (save_style == SmSaveLocal && 
@@ -427,9 +423,12 @@ save_yourself_callback (SmcConn   smc_conn,
 	  return;
 	}
     }
+#endif
 
   current_state = STATE_SAVING_PHASE_1;
 
+  regenerate_save_file ();
+  
   set_clone_restart_commands ();
 
   save_yourself_possibly_done (shutdown, successful);
@@ -470,12 +469,6 @@ set_clone_restart_commands (void)
   char *discardv[10];
   int i;
   SmProp prop1, prop2, prop3, *props[3];
-  char *session_file;
-
-  session_file = g_strconcat (g_get_home_dir (),
-                              "/.metacity/sessions/",
-                              client_id,
-                              NULL);
   
   /* Restart (use same client ID) */
   
@@ -485,9 +478,9 @@ set_clone_restart_commands (void)
   i = 0;
   restartv[i] = "metacity";
   ++i;
-  restartv[i] = "--sm-client-id";
+  restartv[i] = "--sm-save-file";
   ++i;
-  restartv[i] = client_id;
+  restartv[i] = (char*) base_save_file ();
   ++i;
   restartv[i] = NULL;
 
@@ -528,7 +521,7 @@ set_clone_restart_commands (void)
   ++i;
   discardv[i] = "-f";
   ++i;
-  discardv[i] = session_file;
+  discardv[i] = (char*) full_save_file ();
 
   prop3.name = SmCloneCommand;
   prop3.type = SmLISTofARRAY8;
@@ -553,8 +546,6 @@ set_clone_restart_commands (void)
   g_free (prop1.vals);
   g_free (prop2.vals);
   g_free (prop3.vals);
-  
-  g_free (session_file);
 }
 
 /* The remaining code in this file actually loads/saves the session,
@@ -743,7 +734,6 @@ save_state (void)
 {
   char *metacity_dir;
   char *session_dir;
-  char *session_file;
   FILE *outfile;
   GSList *displays;
   GSList *display_iter;
@@ -757,12 +747,6 @@ save_state (void)
   
   session_dir = g_strconcat (metacity_dir, "/sessions",
                              NULL);
-
-  /* Assuming client ID is a workable filename. */
-  session_file = g_strconcat (session_dir, "/",
-                              client_id,
-                              NULL);
-
 
   if (mkdir (metacity_dir, 0700) < 0 &&
       errno != EEXIST)
@@ -778,14 +762,14 @@ save_state (void)
                     session_dir, g_strerror (errno));
     }
 
-  meta_topic (META_DEBUG_SM, "Saving session to '%s'\n", session_file);
+  meta_topic (META_DEBUG_SM, "Saving session to '%s'\n", full_save_file ());
   
-  outfile = fopen (session_file, "w");
+  outfile = fopen (full_save_file (), "w");
 
   if (outfile == NULL)
     {
       meta_warning (_("Could not open session file '%s' for writing: %s\n"),
-                    session_file, g_strerror (errno));
+                    full_save_file (), g_strerror (errno));
       goto out;
     }
 
@@ -917,18 +901,17 @@ save_state (void)
       if (ferror (outfile))
         {
           meta_warning (_("Error writing session file '%s': %s\n"),
-                        session_file, g_strerror (errno));
+                        full_save_file (), g_strerror (errno));
         }
       if (fclose (outfile))
         {
           meta_warning (_("Error closing session file '%s': %s\n"),
-                        session_file, g_strerror (errno));
+                        full_save_file (), g_strerror (errno));
         }
     }
   
   g_free (metacity_dir);
   g_free (session_dir);
-  g_free (session_file);
 }
 
 typedef enum
@@ -973,9 +956,10 @@ static GMarkupParser metacity_session_parser = {
 };
 
 static GSList *window_info_list = NULL;
+static char* previous_id = NULL;
 
 static void
-load_state (const char *previous_id)
+load_state (const char *previous_save_file)
 {
   GMarkupParseContext *context;
   GError *error;
@@ -986,7 +970,7 @@ load_state (const char *previous_id)
 
   session_file = g_strconcat (g_get_home_dir (),
                               "/.metacity/sessions/",
-                              previous_id,
+                              previous_save_file,
                               NULL);
 
   error = NULL;
@@ -1056,7 +1040,43 @@ start_element_handler  (GMarkupParseContext *context,
 
   if (strcmp (element_name, "metacity_session") == 0)
     {
-      /* do nothing */
+      /* Get previous ID */
+      int i;      
+
+      i = 0;
+      while (attribute_names[i])
+        {
+          const char *name;
+          const char *val;
+          
+          name = attribute_names[i];
+          val = attribute_values[i];
+
+          if (previous_id)
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_PARSE,
+                           _("<metacity_session> attribute seen but we already have the session ID"));
+              return;
+            }
+          
+          if (strcmp (name, "id") == 0)
+            {
+              previous_id = decode_text_from_utf8 (val);
+            }
+          else
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+                           _("Unknown attribute %s on <metacity_session> element"),
+                           name);
+              return;
+            }
+          
+          ++i;
+        }
     }
   else if (strcmp (element_name, "window") == 0)
     {
@@ -1277,6 +1297,11 @@ text_handler           (GMarkupParseContext *context,
    */
 }
 
+static const char*
+get_previous_id (void)
+{
+  return previous_id;
+}
 
 static gboolean
 both_null_or_matching (const char *a,
@@ -1360,7 +1385,7 @@ get_possible_matches (MetaWindow *window)
   return retval;
 }
 
-const MetaWindowSessionInfo*
+static const MetaWindowSessionInfo*
 find_best_match (GSList     *infos,
                  MetaWindow *window)
 {
@@ -1476,6 +1501,38 @@ session_info_new (void)
   info->gravity = NorthWestGravity;
   
   return info;
+}
+
+static char* relative_save_path = NULL;
+static char* full_save_path = NULL;
+
+static void
+regenerate_save_file (void)
+{
+  g_free (relative_save_path);
+  g_free (full_save_path);
+  
+  relative_save_path = g_strdup_printf ("%d-%d-%u.ms",
+                                        (int) time (NULL),
+                                        (int) getpid (),
+                                        g_random_int ()); 
+  
+  full_save_path = g_strconcat (g_get_home_dir (),
+                                "/.metacity/sessions/",
+                                relative_save_path,
+                                NULL);
+}
+
+static const char*
+full_save_file (void)
+{
+  return full_save_path;
+}
+
+static const char*
+base_save_file (void)
+{
+  return relative_save_path;
 }
 
 #endif /* HAVE_SM */

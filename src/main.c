@@ -58,7 +58,7 @@ log_handler (const gchar   *log_domain,
 static void
 usage (void)
 {
-  g_print ("metacity [--disable-sm] [--sm-client-id=ID] [--display=DISPLAY]\n");
+  g_print ("metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY]\n");
   exit (1);
 }
 
@@ -72,6 +72,7 @@ main (int argc, char **argv)
   const char *client_id;
   gboolean disable_sm;
   const char *prev_arg;
+  const char *save_file;
   
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -100,6 +101,7 @@ main (int argc, char **argv)
 
   display_name = NULL;
   client_id = NULL;
+  save_file = NULL;
   disable_sm = FALSE;
   prev_arg = NULL;
   i = 1;
@@ -136,27 +138,27 @@ main (int argc, char **argv)
         }
       else if (strcmp (arg, "--display") == 0)
         ; /* wait for next arg */
-      else if (strstr (arg, "--sm-client-id=") == arg)
+      else if (strstr (arg, "--sm-save-file=") == arg)
         {
-          const char *id;
+          const char *file;
 
-          if (client_id)
-            meta_fatal ("Can't specify client ID twice\n");
+          if (save_file)
+            meta_fatal ("Can't specify SM save file twice\n");
           
-          id = strchr (arg, '=');
-          ++id;
+          file = strchr (arg, '=');
+          ++file;
 
-          client_id = g_strdup (id);
+          save_file = g_strdup (file);
         }
       else if (prev_arg &&
-               strcmp (prev_arg, "--sm-client-id") == 0)
+               strcmp (prev_arg, "--sm-save-file") == 0)
         {
-          if (client_id)
-            meta_fatal ("Can't specify client ID twice\n");
+          if (save_file)
+            meta_fatal ("Can't specify SM save file twice\n");
 
-          client_id = g_strdup (arg);
+          save_file = g_strdup (arg);
         }
-      else if (strcmp (arg, "--sm-client-id") == 0)
+      else if (strcmp (arg, "--sm-save-file") == 0)
         ; /* wait for next arg */
       else
         usage ();
@@ -241,7 +243,7 @@ main (int argc, char **argv)
    * info
    */
   if (!disable_sm)
-    meta_session_init (client_id); /* client_id == NULL is fine */
+    meta_session_init (save_file);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
