@@ -1,5 +1,21 @@
 2003-11-15  Rob Adams  <readams@readams.net>
 
+	Inherit visual from frame window so that metacity will work with
+	the new compositing manager extension work by Keith on
+	freedesktop.org, so that ARGB windows can be full
+	alpha-transparent without a metacity frame getting drawn in the
+	background.  In the long term, we need to actually set alpha
+	values when drawing the frame so that it will really work; this is
+	a stopgap solution.  Patch from Keith Packard; see Bug 126875.
+	
+	* src/frame.c (meta_window_ensure_frame): pass client visual to
+	frame.
+
+	* src/ui.[ch] (meta_ui_create_frame_window): add new xvisual
+	parameter and use it to create new window.
+	
+2003-11-15  Rob Adams  <readams@readams.net>
+
 	* src/window.c (update_net_wm_type): don't set window->type_atom
 	here so that the type-inference code will actually be called.  Fix
 	for #126873 from Keith Packard.

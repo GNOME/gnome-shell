@@ -154,7 +154,8 @@ meta_ui_get_frame_geometry (MetaUI *ui,
 
 Window
 meta_ui_create_frame_window (MetaUI *ui,
-			     Display *xdisplay,
+                             Display *xdisplay,
+                             Visual *xvisual,
 			     gint x,
 			     gint y,
 			     gint width,
@@ -166,12 +167,22 @@ meta_ui_create_frame_window (MetaUI *ui,
   GdkWindowAttr attrs;
   gint attributes_mask;
   GdkWindow *window;
+  GdkVisual *visual;
+  GdkColormap *cmap = gdk_screen_get_default_colormap (screen);
   
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
    * e.g. DRI games can't be children of a parent that has the same
    * visual as the client.
    */
+  if (!xvisual)
+    visual = gdk_screen_get_system_visual (screen);
+  else
+    {
+      visual = gdk_x11_screen_lookup_visual (screen,
+                                             XVisualIDFromVisual (xvisual));
+      cmap = gdk_colormap_new (visual, FALSE);
+    }
 
   attrs.title = NULL;
 
@@ -185,8 +196,8 @@ meta_ui_create_frame_window (MetaUI *ui,
   attrs.x = x;
   attrs.y = y;
   attrs.wclass = GDK_INPUT_OUTPUT;
-  attrs.visual = gdk_screen_get_system_visual (screen);
-  attrs.colormap = gdk_screen_get_default_colormap (screen);
+  attrs.visual = visual;
+  attrs.colormap = cmap;
   attrs.window_type = GDK_WINDOW_CHILD;
   attrs.cursor = NULL;
   attrs.wmclass_name = NULL;

@@ -39,6 +39,7 @@ meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   XSetWindowAttributes attrs;
+  Visual *visual;
   
   if (window->frame)
     return;
@@ -78,10 +79,16 @@ meta_window_ensure_frame (MetaWindow *window)
    * visual as the client.
    */
 
+  visual = 0;
+  /* XXX special case for depth 32 windows (assumed to be ARGB) */
+  if (window->depth == 32)
+    visual = window->xvisual;  
+
   frame->xwindow = meta_ui_create_frame_window (window->screen->ui,
-						window->display->xdisplay,
-						frame->rect.x,
-						frame->rect.y,
+                                                window->display->xdisplay,
+                                                visual,
+                                                frame->rect.x,
+                                                frame->rect.y,
 						frame->rect.width,
 						frame->rect.height,
 						frame->window->screen->number);
