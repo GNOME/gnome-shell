@@ -1068,18 +1068,41 @@ meta_frames_button_press_event (GtkWidget      *widget,
     {
       MetaFrameFlags flags;
       
-      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-
-      if (flags & META_FRAME_ALLOWS_SHADE)
+      switch (meta_prefs_get_action_double_click_titlebar ())
         {
-          if (flags & META_FRAME_SHADED)
-            meta_core_unshade (gdk_display,
-                               frame->xwindow);
-          else
-            meta_core_shade (gdk_display,
-                             frame->xwindow);
-        }
+        case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE:
+          {
+            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+            
+            if (flags & META_FRAME_ALLOWS_SHADE)
+              {
+                if (flags & META_FRAME_SHADED)
+                  meta_core_unshade (gdk_display,
+                                     frame->xwindow);
+                else
+                  meta_core_shade (gdk_display,
+                                   frame->xwindow);
+              }
+          }
+          break;          
+          
+        case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE:
+          {
+            MetaFrameFlags flags;
+            
+            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+            
+            if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+              {
+                meta_core_toggle_maximize (gdk_display, frame->xwindow);
+              }
+          }
+          break;
 
+        case META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST:
+          break;
+        }
+      
       return TRUE;
     }
 

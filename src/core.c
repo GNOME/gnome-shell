@@ -323,6 +323,25 @@ meta_core_maximize (Display *xdisplay,
 }
 
 void
+meta_core_toggle_maximize (Display *xdisplay,
+                           Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  if (window->maximized)
+    meta_window_unmaximize (window);
+  else
+    meta_window_maximize (window);
+}
+
+void
 meta_core_unmaximize (Display *xdisplay,
                       Window   frame_xwindow)
 {

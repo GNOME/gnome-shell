@@ -32,6 +32,7 @@
  */
 #define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
+#define KEY_ACTION_DOUBLE_CLICK_TITLEBAR "/apps/metacity/general/action_double_click_titlebar"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
@@ -56,6 +57,8 @@ static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
+static MetaActionDoubleClickTitlebar action_double_click_titlebar =
+    META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
@@ -87,6 +90,7 @@ static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
+static gboolean update_action_double_click_titlebar (const char *value);
 static gboolean update_auto_raise          (gboolean   value);
 static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_button_layout      (const char *value);
@@ -267,6 +271,13 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_focus_mode (str_val);
   g_free (str_val);  
+
+  str_val = gconf_client_get_string (default_client,
+                                     KEY_ACTION_DOUBLE_CLICK_TITLEBAR,
+				     &err);
+  cleanup_error (&err);
+  update_action_double_click_titlebar (str_val);
+  g_free (str_val);
 
   bool_val = gconf_client_get_bool (default_client, KEY_AUTO_RAISE,
 				    &err);
@@ -532,6 +543,22 @@ change_notify (GConfClient    *client,
 
       if (update_screen_binding (key, str))
         queue_changed (META_PREF_SCREEN_KEYBINDINGS);
+    }
+  else if (strcmp (key, KEY_ACTION_DOUBLE_CLICK_TITLEBAR) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_action_double_click_titlebar (str))
+        queue_changed (META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR);
     }
   else if (strcmp (key, KEY_AUTO_RAISE) == 0)
     {
@@ -977,6 +1004,37 @@ meta_prefs_get_disable_workarounds (void)
   return disable_workarounds;
 }
 
+static MetaActionDoubleClickTitlebar
+action_double_click_titlebar_from_string (const char *str)
+{
+  if (strcmp (str, "toggle_shade") == 0)
+    return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE;
+  else if (strcmp (str, "toggle_maximize") == 0)
+    return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE;
+  else
+    return META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST;
+}
+
+static gboolean
+update_action_double_click_titlebar (const char *value)
+{
+  MetaActionDoubleClickTitlebar old_action = action_double_click_titlebar;
+  
+  if (value != NULL)
+    {
+      action_double_click_titlebar = action_double_click_titlebar_from_string (value);
+
+      if (action_double_click_titlebar == META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST)
+        {
+          action_double_click_titlebar = old_action;
+          meta_warning (_("GConf key '%s' is set to an invalid value\n"),
+                        KEY_ACTION_DOUBLE_CLICK_TITLEBAR);
+        }
+    }
+
+  return (old_action != action_double_click_titlebar);
+}
+
 static gboolean
 update_auto_raise (gboolean value)
 {
@@ -1038,6 +1096,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_DISABLE_WORKAROUNDS:
       return "DISABLE_WORKAROUNDS";
+
+    case META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR:
+      return "ACTION_DOUBLE_CLICK_TITLEBAR";
 
     case META_PREF_AUTO_RAISE:
       return "AUTO_RAISE";
@@ -1415,6 +1476,12 @@ meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
 {
   *bindings = window_bindings;
   *n_bindings = (int) G_N_ELEMENTS (window_bindings) - 1;
+}
+
+MetaActionDoubleClickTitlebar
+meta_prefs_get_action_double_click_titlebar ()
+{
+  return action_double_click_titlebar;
 }
 
 gboolean

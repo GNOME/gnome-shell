@@ -62,6 +62,23 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/action_double_click_titlebar</key>
+      <applyto>/apps/metacity/general/action_double_click_titlebar</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>toggle_shade</default>
+      <locale name="C">
+         <short>Action on title bar double-click</short>
+         <long>
+	  This option determines the effects of double-clicking on the
+	  title bar.  Current valid options are 'toggle_shade', which will
+	  shade/unshade the window, and 'toggle_maximize' which will
+	  maximize/unmaximize the window.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/auto_raise</key>
       <applyto>/apps/metacity/general/auto_raise</applyto>
       <owner>metacity</owner>

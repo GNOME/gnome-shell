@@ -1,5 +1,11 @@
 2002-10-18  Havoc Pennington  <hp@redhat.com>
 
+	* src/prefs.c, src/frames.c: add "what happens when you double
+	click the titlebar" setting, patch from Sean Middleditch bug
+	#95625.  This is basically an "add Windows emulation mode" patch.
+
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
 	* src/metacity.schemas.in: move window-click to Super+click not
 	Alt+click by default. Super should be the Windows key on keyboards
 	that have one and are so configured.  Prepare for the FAQ on this.

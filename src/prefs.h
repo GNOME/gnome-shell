@@ -30,6 +30,7 @@ typedef enum
 {
   META_PREF_MOUSE_BUTTON_MODS,
   META_PREF_FOCUS_MODE,
+  META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR,
   META_PREF_AUTO_RAISE,
   META_PREF_AUTO_RAISE_DELAY,
   META_PREF_THEME,
@@ -70,6 +71,7 @@ const char*                 meta_prefs_get_command            (int i);
 char*                       meta_prefs_get_gconf_key_for_command (int i);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
+MetaActionDoubleClickTitlebar meta_prefs_get_action_double_click_titlebar (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 
