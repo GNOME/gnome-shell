@@ -131,7 +131,10 @@ testasyncgetprop_LDADD= @METACITY_LIBS@
 
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_in_files=metacity.desktop.in
-desktopfiles_DATA = $(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+if BUILD_CONFIG_DIALOG
+desktopfiles_DATA = $(desktopfiles_files)
+endif
 @INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
@@ -159,7 +162,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 
 pkgconfig_DATA = libmetacity-private.pc
 
-EXTRA_DIST=$(desktopfiles_DATA) 	\
+EXTRA_DIST=$(desktopfiles_files) 	\
 	$(IMAGES) $(schema_DATA) 	\
 	update-from-egg.sh		\
 	$(desktopfiles_in_files)	\
