@@ -1,5 +1,12 @@
 2002-01-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (meta_shape_spec_draw): implement
+	(meta_texture_spec_draw): implement shape spec and blank 
+	texture support
+	(meta_frame_style_draw): implement
+
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_set_syncing): move in here so util.c doesn't
 	require display.[hc]
 

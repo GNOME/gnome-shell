@@ -100,6 +100,11 @@ struct _MetaFrameGeometry
   GdkRectangle spacer_rect;
   GdkRectangle menu_rect;
   GdkRectangle title_rect;
+
+  int left_titlebar_edge;
+  int right_titlebar_edge;
+  int top_titlebar_edge;
+  int bottom_titlebar_edge;
 };
 
 
@@ -199,6 +204,7 @@ struct _MetaShapeSpec
       GtkStateType state;
       GtkShadowType shadow;
       GtkArrowType arrow;
+      gboolean filled;
       char *x;
       char *y;
       char *width;
@@ -235,7 +241,9 @@ typedef enum
   META_TEXTURE_SOLID,
   META_TEXTURE_GRADIENT,
   META_TEXTURE_IMAGE,
-  META_TEXTURE_COMPOSITE
+  META_TEXTURE_COMPOSITE,
+  META_TEXTURE_BLANK,
+  META_TEXTURE_SHAPE_LIST
 } MetaTextureType;
 
 struct _MetaTextureSpec
@@ -258,14 +266,19 @@ struct _MetaTextureSpec
       MetaTextureSpec *foreground;
       double alpha;
     } composite;
+    struct {
+      int dummy;
+    } blank;
+    struct {
+      MetaShapeSpec **shape_specs;
+      int n_specs;
+    } shape_list;
   } data;
 };
 
 typedef enum
 {
-  META_BUTTON_STATE_UNFOCUSED,
-  META_BUTTON_STATE_FOCUSED,
-  META_BUTTON_STATE_INSENSITIVE,
+  META_BUTTON_STATE_NORMAL,
   META_BUTTON_STATE_PRESSED,
   META_BUTTON_STATE_PRELIGHT,
   META_BUTTON_STATE_LAST
@@ -453,10 +466,20 @@ typedef enum
   META_POSITION_EXPR_ERROR_FAILED
 } MetaPositionExprError;
 
-gboolean meta_parse_position_expression (const char *expr,
-                                         int x, int y, int width, int height,
-                                         int *x_return, int *y_return,
-                                         GError **err);
+gboolean meta_parse_position_expression (const char  *expr,
+                                         int          x,
+                                         int          y,
+                                         int          width,
+                                         int          height,
+                                         int         *x_return,
+                                         int         *y_return,
+                                         GError     **err);
+gboolean meta_parse_size_expression     (const char  *expr,
+                                         int          width,
+                                         int          height,
+                                         int         *val_return,
+                                         GError     **err);
+
 
 MetaColorSpec* meta_color_spec_new    (MetaColorSpecType  type);
 void           meta_color_spec_free   (MetaColorSpec     *spec);
@@ -512,6 +535,17 @@ void             meta_texture_spec_draw   (const MetaTextureSpec *desc,
 MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
 void            meta_frame_style_ref   (MetaFrameStyle *style);
 void            meta_frame_style_unref (MetaFrameStyle *style);
+
+void meta_frame_style_draw (MetaFrameStyle     *style,
+                            GtkWidget          *widget,
+                            GdkDrawable        *drawable,
+                            const GdkRectangle *clip,
+                            MetaFrameFlags      flags,
+                            int                 client_width,
+                            int                 client_height,
+                            PangoLayout        *title_layout,
+                            int                 text_height,
+                            MetaButtonState     button_states[META_BUTTON_TYPE_LAST]);
 
 MetaFrameStyleSet* meta_frame_style_set_new   (MetaFrameStyleSet *parent);
 void               meta_frame_style_set_ref   (MetaFrameStyleSet *style_set);

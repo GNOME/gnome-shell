@@ -23,8 +23,10 @@
 #include "util.h"
 #include "theme.h"
 #include <gtk/gtk.h>
+#include <time.h>
 
 static void run_position_expression_tests (void);
+static void run_position_expression_timings (void);
 
 int
 main (int argc, char **argv)
@@ -32,7 +34,8 @@ main (int argc, char **argv)
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
 
   run_position_expression_tests ();
-
+  run_position_expression_timings ();
+  
   return 0;
 }
 
@@ -244,4 +247,47 @@ run_position_expression_tests (void)
 
       ++i;
     }
+}
+
+static void
+run_position_expression_timings (void)
+{
+  int i;
+  int iters;
+  clock_t start;
+  clock_t end;
+
+#define ITERATIONS 100000
+
+  start = clock ();
+  
+  iters = 0;
+  i = 0;
+  while (iters < ITERATIONS)
+    {
+      const PositionExpressionTest *test;
+      int x, y;
+      
+      test = &position_expression_tests[i];
+      
+      meta_parse_position_expression (test->expr,
+                                      test->rect.x,
+                                      test->rect.y,
+                                      test->rect.width,
+                                      test->rect.height,
+                                      &x, &y, NULL);
+
+      ++iters;
+      ++i;
+      if (i == G_N_ELEMENTS (position_expression_tests))
+        i = 0;
+    }
+
+  end = clock ();
+
+  g_print ("%d coordinate expressions parsed in %g seconds (%g seconds average)\n",
+           ITERATIONS,
+           ((double)end - (double)start) / CLOCKS_PER_SEC,
+           ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
+           
 }
