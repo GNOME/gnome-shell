@@ -7,18 +7,18 @@ src/frames.c
 src/keybindings.c
 src/main.c
 src/menu.c
-src/metacity.schemas.in
 src/metacity-dialog.c
+src/metacity.desktop.in
+src/metacity.schemas.in
 src/prefs.c
 src/resizepopup.c
 src/screen.c
 src/session.c
-src/theme.c
 src/theme-parser.c
-src/util.c
-src/window.c
-src/xprops.c
-# files added by intltool-prepare
-src/metacity.desktop.in
+src/theme.c
 src/tools/metacity-properties.desktop.in
 src/tools/metacity-properties.glade
+src/util.c
+src/window.c
+src/workspace.c
+src/xprops.c
