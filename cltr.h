@@ -42,4 +42,6 @@
 
 #endif
 
+#define CLTR_MARK() CLTR_DBG("mark")
+
 #endif

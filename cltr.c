@@ -24,6 +24,89 @@ struct ClutterWindow
 
 ClutterMainContext CltrCntx;
 
+/* Event Loop Integration */
+
+typedef void (*CltrXEventFunc) (XEvent *xev, gpointer user_data);
+
+typedef struct 
+{
+  GSource  source;
+  Display *display;
+  GPollFD  event_poll_fd;
+} 
+CltrXEventSource;
+
+
+static gboolean  
+x_event_prepare (GSource  *source,
+		 gint     *timeout)
+{
+  Display *display = ((CltrXEventSource*)source)->display;
+
+  *timeout = -1;
+
+  return XPending (display);
+}
+
+static gboolean  
+x_event_check (GSource *source) 
+{
+  CltrXEventSource *display_source = (CltrXEventSource*)source;
+  gboolean         retval;
+
+  if (display_source->event_poll_fd.revents & G_IO_IN)
+    retval = XPending (display_source->display);
+  else
+    retval = FALSE;
+
+  return retval;
+}
+
+static gboolean  
+x_event_dispatch (GSource    *source,
+		  GSourceFunc callback,
+		  gpointer    user_data)
+{
+  Display *display = ((CltrXEventSource*)source)->display;
+  CltrXEventFunc event_func = (CltrXEventFunc) callback;
+  
+  XEvent xev;
+
+  if (XPending (display))
+    {
+      XNextEvent (display, &xev);
+
+      if (event_func)
+	(*event_func) (&xev, user_data);
+    }
+
+  return TRUE;
+}
+
+static const GSourceFuncs x_event_funcs = {
+  x_event_prepare,
+  x_event_check,
+  x_event_dispatch,
+  NULL
+};
+
+static void
+cltr_dispatch_x_event (XEvent  *xevent,
+		       gpointer data)
+{
+
+
+  switch (xevent->type)
+    {
+    case MapNotify:
+      CLTR_DBG("Map Notify Event");
+      break;
+    case Expose:
+      CLTR_DBG("Expose");
+      break;
+    }
+}
+
 int
 cltr_init(int *argc, char ***argv)
 {
@@ -38,6 +121,16 @@ cltr_init(int *argc, char ***argv)
     };
 
   XVisualInfo	       *vinfo;  
+
+  GMainContext         *gmain_context;
+  int                   connection_number;
+  GSource              *source;
+  CltrXEventSource     *display_source;
+
+  /* Not just yet ..
+  g_thread_init (NULL);
+  XInitThreads ();
+  */
 
   if ((CltrCntx.xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
     {
@@ -56,6 +149,33 @@ cltr_init(int *argc, char ***argv)
     }
 
   CltrCntx.gl_context = glXCreateContext(CltrCntx.xdpy, vinfo, 0, True);
+
+  /* g_main loop stuff */
+
+  gmain_context = g_main_context_default ();
+
+  g_main_context_ref (gmain_context);
+
+  connection_number = ConnectionNumber (CltrCntx.xdpy);
+  
+  source = g_source_new ((GSourceFuncs *)&x_event_funcs, 
+			 sizeof (CltrXEventSource));
+
+  display_source = (CltrXEventSource *)source;
+
+  display_source->event_poll_fd.fd     = connection_number;
+  display_source->event_poll_fd.events = G_IO_IN;
+  display_source->display              = CltrCntx.xdpy;
+  
+  g_source_add_poll (source, &display_source->event_poll_fd);
+  g_source_set_can_recurse (source, TRUE);
+
+  g_source_set_callback (source, 
+			 (GSourceFunc) cltr_dispatch_x_event, 
+			 NULL  /* no userdata */, NULL);
+
+  g_source_attach (source, gmain_context);
+  g_source_unref (source);
 
   return 1;
 }
@@ -78,6 +198,11 @@ cltr_window_new(int width, int height)
 				  0, 0, WhitePixel(CltrCntx.xdpy, 
 						   CltrCntx.xscreen));
 
+  XSelectInput(CltrCntx.xdpy, win->xwin, 
+	       StructureNotifyMask|ExposureMask|
+	       ButtonPressMask|ButtonReleaseMask|PointerMotionMask|
+	       PropertyChangeMask);
+
   glXMakeCurrent(CltrCntx.xdpy, win->xwin, CltrCntx.gl_context);
 
   glViewport (0, 0, width, height);
@@ -94,7 +219,6 @@ cltr_window_new(int width, int height)
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
-
 
   glLoadIdentity ();
   glOrtho (0, width, height, 0, -1, 1);
@@ -114,12 +238,14 @@ cltr_window_new(int width, int height)
 void
 cltr_main_loop()
 {
-  XEvent xev;
+  GMainLoop *loop;
 
-    for (;;) 
-    {
-      XNextEvent(CltrCntx.xdpy, &xev);
-    }
+  loop = g_main_loop_new (g_main_context_default (), FALSE);
+
+  CLTR_MARK();
+
+  g_main_loop_run (loop);
+
 }
 
 /* xxxxxxxxxxxxx */
@@ -296,9 +422,12 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
   */
 
   glLoadIdentity ();
+  // glTranslatef( -2.5, 2.0, 0.0);
   glScalef( Zoom, Zoom, Zoom);
 
   Zoom += 0.01;
+
+  if (Zoom > 4.0) Zoom = 0.0;
 
   cell = g_list_first(grid->cells_tail);
 
@@ -318,8 +447,8 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  thumb_w = (pixb->width  / grid->n_cols);
 	  thumb_h = (pixb->height / grid->n_rows);
 
-	  ew_border = thumb_w/4;
-	  ns_border = thumb_h/4; 
+	  ew_border = thumb_w/8;
+	  ns_border = thumb_h/8; 
 
 	  thumb_w -= (2 * ew_border);
 	  thumb_h -= (2 * ns_border);
@@ -330,17 +459,10 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  x2 = x1 + thumb_w; 
 	  y2 = y1 + thumb_h;
 
-	  glBindTexture(GL_TEXTURE_2D, grid->texs[i]);
-
-	  /*
-	  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
-			   (GLsizei)pixb->width,
-			   (GLsizei)pixb->height,
-			   GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
-			   pixb->data);
-	  */
 	  tx = (float) pixb->width  / grid->tex_w;
 	  ty = (float) pixb->height / grid->tex_h;
+
+	  glBindTexture(GL_TEXTURE_2D, grid->texs[i]);
 
 	  glBegin (GL_QUADS);
 	  glTexCoord2f (tx, ty);   glVertex2i   (x2, y2);
@@ -405,39 +527,15 @@ cltr_photo_grid_new(ClutterWindow *win,
   return grid;
 }
 
-static Bool
-get_xevent_timed(Display        *dpy, 
-		 XEvent         *event_return, 
-		 struct timeval *tv)
+gboolean
+idle_cb(gpointer data)
 {
-  if (tv->tv_usec == 0 && tv->tv_sec == 0)
-    {
-      XNextEvent(dpy, event_return);
-      return True;
-    }
+  ClutterPhotoGrid *grid = (ClutterPhotoGrid *)data;
 
-  XFlush(dpy);
+  cltr_photo_grid_redraw(grid);
 
-  if (XPending(dpy) == 0) 
-    {
-      int fd = ConnectionNumber(dpy);
-      fd_set readset;
-      FD_ZERO(&readset);
-      FD_SET(fd, &readset);
-
-      if (select(fd+1, &readset, NULL, NULL, tv) == 0) 
-	return False;
-      else {
-	XNextEvent(dpy, event_return);
-	return True;
-      }
-
-    } else {
-      XNextEvent(dpy, event_return);
-      return True;
-    }
+  return TRUE;
 }
-
 
 int
 main(int argc, char **argv)
@@ -445,18 +543,26 @@ main(int argc, char **argv)
   ClutterPhotoGrid *grid = NULL;
   ClutterWindow    *win = NULL;
 
+
   cltr_init(&argc, &argv);
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 3, 3, argv[1]);
+  grid = cltr_photo_grid_new(win, 4, 4, argv[1]);
 
   cltr_photo_grid_redraw(grid);
+
+  g_idle_add(idle_cb, grid);
 
   XFlush(CltrCntx.xdpy);
 
   XMapWindow(CltrCntx.xdpy, grid->parent->xwin);
 
+  XFlush(CltrCntx.xdpy);
+
+  cltr_main_loop();
+
+  /*
   {
     for (;;) 
       {
@@ -464,6 +570,7 @@ main(int argc, char **argv)
 	XFlush(CltrCntx.xdpy);
       }
   }
+  */
 
   return 0;
 }

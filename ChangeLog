@@ -1,0 +1,9 @@
+2005-03-22  mallum,,,  <mallum@openedhand.com>
+
+	* cltr.c: (x_event_prepare), (x_event_check), (x_event_dispatch),
+	(cltr_dispatch_x_event), (cltr_init), (cltr_window_new),
+	(cltr_photo_grid_append_cell), (cltr_photo_grid_populate),
+	(cltr_photo_grid_redraw), (cltr_photo_grid_new),
+	(idle_cb), (main):
+	* cltr.h:
+	Add glib event loop
