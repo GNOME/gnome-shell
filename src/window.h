@@ -219,6 +219,9 @@ struct _MetaWindow
   guint using_net_wm_name : 1; /* vs. plain wm_name */
   guint using_net_wm_icon_name : 1; /* vs. plain wm_icon_name */
 
+  /* has a shape mask */
+  guint has_shape : 1;
+  
 #ifdef HAVE_XSYNC
   /* XSync update counter */
   XSyncCounter update_counter;

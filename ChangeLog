@@ -1,3 +1,22 @@
+2003-01-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/frames.c (meta_frames_apply_shapes): handle 
+	the client having a shape mask, fixes #101806
+	
+	* src/core.c (meta_core_get_client_xwindow): new function
+
+	* src/frame.c, src/frame.h: keep a flag for whether we need to 
+	update the frame shape
+	
+	* src/window.c (meta_window_new): select for ShapeNotify
+
+	* src/display.h, src/display.c: actually query the shape
+	extension, instead of just using it all over the place.
+
+	* src/prefs.c (update_application_based): don't let people turn on
+	application_based, as it just causes funky bugs. We can reenable
+	the pref when/if it ever does something useful.
+
 2003-01-03  Havoc Pennington  <hp@redhat.com>
 
 	* src/display.c: include the Xrandr header file

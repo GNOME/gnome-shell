@@ -31,6 +31,9 @@ void meta_core_get_client_size (Display *xdisplay,
                                 int     *width,
                                 int     *height);
 
+Window meta_core_get_client_xwindow (Display *xdisplay,
+                                     Window   frame_xwindow);
+
 MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
                                           Window   frame_xwindow);
 MetaFrameType  meta_core_get_frame_type   (Display *xdisplay,

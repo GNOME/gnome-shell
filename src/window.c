@@ -41,6 +41,10 @@
 #include <X11/Xatom.h>
 #include <string.h>
 
+#ifdef HAVE_SHAPE
+#include <X11/extensions/shape.h>
+#endif
+
 typedef enum
 {
   META_IS_CONFIGURE_REQUEST = 1 << 0,
@@ -159,9 +163,11 @@ meta_window_new (MetaDisplay *display,
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
+  gulong event_mask;
 #define N_INITIAL_PROPS 10
   Atom initial_props[N_INITIAL_PROPS];
   int i;
+  gboolean has_shape;
   
   g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
   
@@ -241,11 +247,36 @@ meta_window_new (MetaDisplay *display,
   
   XAddToSaveSet (display->xdisplay, xwindow);
 
-  XSelectInput (display->xdisplay, xwindow,
-                PropertyChangeMask |
-                EnterWindowMask | LeaveWindowMask |
-                FocusChangeMask |
-                ColormapChangeMask);
+  event_mask =
+    PropertyChangeMask | EnterWindowMask | LeaveWindowMask |
+    FocusChangeMask | ColormapChangeMask;
+
+  XSelectInput (display->xdisplay, xwindow, event_mask);
+
+  has_shape = FALSE;
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (display))
+    {
+      int x_bounding, y_bounding, x_clip, y_clip;
+      unsigned w_bounding, h_bounding, w_clip, h_clip;
+      int bounding_shaped, clip_shaped;
+
+      XShapeSelectInput (display->xdisplay, xwindow, ShapeNotifyMask);
+
+      XShapeQueryExtents (display->xdisplay, xwindow,
+                          &bounding_shaped, &x_bounding, &y_bounding,
+                          &w_bounding, &h_bounding,
+                          &clip_shaped, &x_clip, &y_clip,
+                          &w_clip, &h_clip);
+
+      has_shape = bounding_shaped != FALSE;
+
+      meta_topic (META_DEBUG_SHAPES,
+                  "Window has_shape = %d extents %d,%d %d x %d\n",
+                  has_shape, x_bounding, y_bounding,
+                  w_bounding, h_bounding);
+    }
+#endif
 
   /* Get rid of any borders */
   if (attrs.border_width != 0)
@@ -311,6 +342,8 @@ meta_window_new (MetaDisplay *display,
 
   /* avoid tons of stack updates */
   meta_stack_freeze (window->screen->stack);
+
+  window->has_shape = has_shape;
   
   /* Remember this rect is the actual window size */
   window->rect.x = attrs.x;
@@ -977,6 +1010,11 @@ meta_window_free (MetaWindow  *window)
   XSelectInput (window->display->xdisplay,
                 window->xwindow,
                 NoEventMask);
+
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (window->display))
+    XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
+#endif
   
   meta_error_trap_pop (window->display, FALSE);
 

@@ -296,6 +296,13 @@ struct _MetaDisplay
 #else
 #define META_DISPLAY_HAS_XSYNC(display) FALSE
 #endif
+#ifdef HAVE_SHAPE
+  int shape_event_base;
+  int shape_error_base;
+#define META_DISPLAY_HAS_SHAPE(display) ((display)->shape_event_base != 0)
+#else
+#define META_DISPLAY_HAS_SHAPE(display) FALSE
+#endif
 };
 
 gboolean      meta_display_open                (const char  *name);

@@ -46,6 +46,22 @@ meta_core_get_client_size (Display *xdisplay,
     *height = window->rect.height;
 }
 
+Window
+meta_core_get_client_xwindow (Display *xdisplay,
+                              Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  return window->xwindow;
+}
+
 MetaFrameFlags
 meta_core_get_frame_flags (Display *xdisplay,
                            Window   frame_xwindow)

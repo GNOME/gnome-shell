@@ -72,7 +72,8 @@ struct _MetaUIFrame
   int text_height;
   char *title; /* NULL once we have a layout */
   guint expose_delayed : 1;
-
+  guint shape_applied : 1;
+  
   /* FIXME get rid of this, it can just be in the MetaFrames struct */
   MetaFrameControl prelit_control;
 };
@@ -127,7 +128,8 @@ void meta_frames_unflicker_bg (MetaFrames *frames,
 void meta_frames_apply_shapes (MetaFrames *frames,
                                Window      xwindow,
                                int         new_window_width,
-                               int         new_window_height);
+                               int         new_window_height,
+                               gboolean    window_has_shape);
 
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);

@@ -57,6 +57,7 @@ struct _MetaFrame
   int bottom_height;
 
   guint mapped : 1;
+  guint need_reapply_frame_shape : 1;
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);

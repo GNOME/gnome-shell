@@ -45,6 +45,9 @@
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
 #endif
+#ifdef HAVE_SHAPE
+#include <X11/extensions/shape.h>
+#endif
 #include <string.h>
 
 #define USE_GDK_DISPLAY
@@ -489,6 +492,27 @@ meta_display_open (const char *name)
 #else  /* HAVE_XSYNC */
   meta_verbose ("Not compiled with Xsync support\n");
 #endif /* !HAVE_XSYNC */
+
+
+#ifdef HAVE_SHAPE
+  {
+    display->shape_error_base = 0;
+    display->shape_event_base = 0;
+    
+    if (!XShapeQueryExtension (display->xdisplay,
+                               &display->shape_event_base,
+                               &display->shape_error_base))
+      {
+        display->shape_error_base = 0;
+        display->shape_event_base = 0;
+      }
+    meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
+                  display->shape_error_base,
+                  display->shape_event_base);
+  }
+#else  /* HAVE_SHAPE */
+  meta_verbose ("Not compiled with Shape support\n");
+#endif /* !HAVE_SHAPE */
   
   screens = NULL;
   
@@ -1189,6 +1213,56 @@ event_callback (XEvent   *event,
         meta_window_handle_mouse_grab_op_event (display->grab_window, event);
     }
 #endif /* HAVE_XSYNC */
+
+#ifdef HAVE_SHAPE
+  if (META_DISPLAY_HAS_SHAPE (display) && 
+      event->type == (display->shape_event_base + ShapeNotify))
+    {
+      filter_out_event = TRUE; /* GTK doesn't want to see this really */
+      
+      if (window && !frame_was_receiver)
+        {
+          XShapeEvent *sev = (XShapeEvent*) event;
+
+          if (sev->kind == ShapeBounding)
+            {
+              if (sev->shaped && !window->has_shape)
+                {
+                  window->has_shape = TRUE;                  
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s now has a shape\n",
+                              window->desc);
+                }
+              else if (!sev->shaped && window->has_shape)
+                {
+                  window->has_shape = FALSE;
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s no longer has a shape\n",
+                              window->desc);
+                }
+              else
+                {
+                  meta_topic (META_DEBUG_SHAPES,
+                              "Window %s shape changed\n",
+                              window->desc);
+                }
+
+              if (window->frame)
+                {
+                  window->frame->need_reapply_frame_shape = TRUE;
+                  meta_window_queue_move_resize (window);
+                }
+            }
+        }
+      else
+        {
+          meta_topic (META_DEBUG_SHAPES,
+                      "ShapeNotify not on a client window (window %s frame_was_receiver = %d)\n",
+                      window ? window->desc : "(none)",
+                      frame_was_receiver);
+        }
+    }
+#endif /* HAVE_SHAPE */
   
   switch (event->type)
     {
@@ -1902,6 +1976,15 @@ event_get_modified_window (MetaDisplay *display,
       return None;
 
     default:
+#ifdef HAVE_SHAPE
+      if (META_DISPLAY_HAS_SHAPE (display) && 
+          event->type == (display->shape_event_base + ShapeNotify))
+        {
+          XShapeEvent *sev = (XShapeEvent*) event;
+          return sev->window;
+        }
+#endif
+
       return None;
     }
 }
@@ -2360,6 +2443,27 @@ meta_spew_event (MetaDisplay *display,
         }
       else
 #endif /* HAVE_XSYNC */
+#ifdef HAVE_SHAPE
+        if (META_DISPLAY_HAS_SHAPE (display) && 
+            event->type == (display->shape_event_base + ShapeNotify))
+          {
+            XShapeEvent *sev = (XShapeEvent*) event;
+
+            name = "ShapeNotify";
+
+            extra =
+              g_strdup_printf ("kind: %s "
+                               "x: %d y: %d w: %d h: %d "
+                               "shaped: %d",
+                               sev->kind == ShapeBounding ?
+                               "ShapeBounding" :
+                               (sev->kind == ShapeClip ?
+                               "ShapeClip" : "(unknown)"),
+                               sev->x, sev->y, sev->width, sev->height,
+                               sev->shaped);
+          }
+        else
+#endif /* HAVE_SHAPE */      
         {
           name = "(Unknown event)";
           extra = g_strdup_printf ("type: %d", event->xany.type);
@@ -3046,20 +3150,10 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
       meta_window_queue_move_resize (window);
       if (window->frame)
         {
+          window->frame->need_reapply_frame_shape = TRUE;
+          
           meta_frame_queue_draw (window->frame);
-
-          /* FIXME this sucks and is slooooooooow. Do it in the idle with the
-           * redraw or the window resize. 
-           */
-
-#if 0
-          /* in case the theme doesn't affect the frame size */
-          meta_ui_apply_frame_shape (window->screen->ui,
-                                     window->frame->xwindow,
-                                     window->frame->rect.width,
-                                     window->frame->rect.height);
-#endif
-        }                                     
+        }
       
       tmp = tmp->next;
     }

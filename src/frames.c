@@ -495,6 +495,7 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->text_height = -1;
   frame->title = NULL;
   frame->expose_delayed = FALSE;
+  frame->shape_applied = FALSE;
   frame->prelit_control = META_FRAME_CONTROL_NONE;
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
@@ -664,7 +665,8 @@ void
 meta_frames_apply_shapes (MetaFrames *frames,
                           Window      xwindow,
                           int         new_window_width,
-                          int         new_window_height)
+                          int         new_window_height,
+                          gboolean    window_has_shape)
 {
 #ifdef HAVE_SHAPE
   /* Apply shapes as if window had new_window_width, new_window_height */
@@ -685,10 +687,25 @@ meta_frames_apply_shapes (MetaFrames *frames,
   if (!(fgeom.top_left_corner_rounded ||
         fgeom.top_right_corner_rounded ||
         fgeom.bottom_left_corner_rounded ||
-        fgeom.bottom_right_corner_rounded))
+        fgeom.bottom_right_corner_rounded ||
+        window_has_shape))
     {
-      XShapeCombineMask (gdk_display, frame->xwindow,
-                         ShapeBounding, 0, 0, None, ShapeSet);
+      if (frame->shape_applied)
+        {
+          meta_topic (META_DEBUG_SHAPES,
+                      "Unsetting shape mask on frame 0x%lx\n",
+                      frame->xwindow);
+          
+          XShapeCombineMask (gdk_display, frame->xwindow,
+                             ShapeBounding, 0, 0, None, ShapeSet);
+          frame->shape_applied = FALSE;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_SHAPES,
+                      "Frame 0x%lx still doesn't need a shape mask\n",
+                      frame->xwindow);
+        }
       
       return; /* nothing to do */
     }
@@ -804,11 +821,98 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
   XSubtractRegion (window_xregion, corners_xregion, window_xregion);
 
-  XShapeCombineRegion (gdk_display, frame->xwindow,
-                       ShapeBounding, 0, 0, window_xregion, ShapeSet);
+  XDestroyRegion (corners_xregion);
+  
+  if (window_has_shape)
+    {
+      /* The client window is oclock or something and has a shape
+       * mask. To avoid a round trip to get its shape region, we
+       * create a fake window that's never mapped, build up our shape
+       * on that, then combine. Wasting the window is assumed cheaper
+       * than a round trip, but who really knows for sure.
+       */
+      XSetWindowAttributes attrs;      
+      Window shape_window;
+      Window client_window;
+      Region client_xregion;
+      GdkScreen *screen;
+      int screen_number;
+      
+      meta_topic (META_DEBUG_SHAPES,
+                  "Frame 0x%lx needs to incorporate client shape\n",
+                  frame->xwindow);
+      
+      screen = gtk_widget_get_screen (GTK_WIDGET (frames));
+      screen_number = gdk_x11_screen_get_screen_number (screen);
+      
+      attrs.override_redirect = True;
+      
+      shape_window = XCreateWindow (gdk_display,
+                                    RootWindow (gdk_display, screen_number),
+                                    -5000, -5000,
+                                    new_window_width,
+                                    new_window_height,
+                                    0,
+                                    CopyFromParent,
+                                    CopyFromParent,
+                                    CopyFromParent,
+                                    CWOverrideRedirect,
+                                    &attrs);
+
+      /* Copy the client's shape to the temporary shape_window */
+      client_window = meta_core_get_client_xwindow (gdk_display,
+                                                    frame->xwindow);
+
+      XShapeCombineShape (gdk_display, shape_window, ShapeBounding,
+                          fgeom.left_width,
+                          fgeom.top_height,
+                          client_window,
+                          ShapeBounding,
+                          ShapeSet);
+
+      /* Punch the client area out of the normal frame shape,
+       * then union it with the shape_window's existing shape
+       */
+      client_xregion = XCreateRegion ();
+  
+      xrect.x = fgeom.left_width;
+      xrect.y = fgeom.top_height;
+      xrect.width = new_window_width - fgeom.right_width - xrect.x;
+      xrect.height = new_window_height - fgeom.bottom_height - xrect.y;
+
+      XUnionRectWithRegion (&xrect, client_xregion, client_xregion);
+      
+      XSubtractRegion (window_xregion, client_xregion, window_xregion);
+
+      XDestroyRegion (client_xregion);
+      
+      XShapeCombineRegion (gdk_display, shape_window,
+                           ShapeBounding, 0, 0, window_xregion, ShapeUnion);
+      
+      /* Now copy shape_window shape to the real frame */
+      XShapeCombineShape (gdk_display, frame->xwindow, ShapeBounding,
+                          0, 0,
+                          shape_window,
+                          ShapeBounding,
+                          ShapeSet);
+
+      XDestroyWindow (gdk_display, shape_window);
+    }
+  else
+    {
+      /* No shape on the client, so just do simple stuff */
+
+      meta_topic (META_DEBUG_SHAPES,
+                  "Frame 0x%lx has shaped corners\n",
+                  frame->xwindow);
+      
+      XShapeCombineRegion (gdk_display, frame->xwindow,
+                           ShapeBounding, 0, 0, window_xregion, ShapeSet);
+    }
+  
+  frame->shape_applied = TRUE;
   
   XDestroyRegion (window_xregion);
-  XDestroyRegion (corners_xregion);
 #endif
 }
 

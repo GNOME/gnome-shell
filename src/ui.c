@@ -238,12 +238,15 @@ meta_ui_reset_frame_bg (MetaUI *ui,
 }
 
 void
-meta_ui_apply_frame_shape  (MetaUI *ui,
-                            Window  xwindow,
-                            int     new_window_width,
-                            int     new_window_height)
+meta_ui_apply_frame_shape  (MetaUI  *ui,
+                            Window   xwindow,
+                            int      new_window_width,
+                            int      new_window_height,
+                            gboolean window_has_shape)
 {
-  meta_frames_apply_shapes (ui->frames, xwindow, new_window_width, new_window_height);
+  meta_frames_apply_shapes (ui->frames, xwindow,
+                            new_window_width, new_window_height,
+                            window_has_shape);
 }
 
 void

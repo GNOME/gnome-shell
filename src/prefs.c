@@ -1028,7 +1028,12 @@ update_application_based (gboolean value)
 {
   gboolean old = application_based;
 
+  /* DISABLE application_based feature for now */
+#if 0
   application_based = value;
+#else
+  application_based = FALSE;
+#endif
 
   return old != application_based;
 }

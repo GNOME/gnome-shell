@@ -282,6 +282,8 @@ topic_name (MetaDebugTopic topic)
       return "GROUPS";
     case META_DEBUG_RESIZING:
       return "RESIZING";
+    case META_DEBUG_SHAPES:
+      return "SHAPES";
     }
 
   return "Window manager";
