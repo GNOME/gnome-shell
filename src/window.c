@@ -83,7 +83,6 @@ static void     update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
-static void     update_initial_workspace  (MetaWindow     *window);
 static void     update_icon               (MetaWindow     *window);
 static void     redraw_icon               (MetaWindow     *window); 
 static void     update_struts             (MetaWindow     *window);
@@ -158,7 +157,7 @@ meta_window_new (MetaDisplay *display,
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
-#define N_INITIAL_PROPS 6
+#define N_INITIAL_PROPS 8
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   
@@ -438,6 +437,8 @@ meta_window_new (MetaDisplay *display,
   initial_props[i++] = XA_WM_NAME;
   initial_props[i++] = display->atom_net_wm_icon_name;
   initial_props[i++] = XA_WM_ICON_NAME;
+  initial_props[i++] = display->atom_net_wm_desktop;
+  initial_props[i++] = display->atom_win_workspace;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
@@ -455,7 +456,6 @@ meta_window_new (MetaDisplay *display,
   update_sm_hints (window); /* must come after transient_for */
   update_role (window);
   update_net_wm_type (window);
-  update_initial_workspace (window);
   update_icon (window);
   
   if (window->initially_iconic)
@@ -4879,42 +4879,6 @@ update_net_wm_type (MetaWindow *window)
     }
   
   recalc_window_type (window);
-}
-
-static void
-update_initial_workspace (MetaWindow *window)
-{
-  gulong val = 0;
-
-  window->initial_workspace_set = FALSE;
-  
-  /* Fall back to old WM spec hint if net_wm_desktop is missing, this
-   * is just to be nice when restarting from old Sawfish basically,
-   * should nuke it eventually
-   */  
-  if (meta_prop_get_cardinal (window->display,
-                              window->xwindow,
-                              window->display->atom_net_wm_desktop,
-                              &val))
-    {
-      window->initial_workspace_set = TRUE;
-      window->initial_workspace = val;
-      meta_topic (META_DEBUG_PLACEMENT,
-                  "Read initial workspace prop %d for %s\n",
-                  window->initial_workspace, window->desc);
-    }
-  else if (meta_prop_get_cardinal (window->display,
-                                   window->xwindow,
-                                   window->display->atom_win_workspace,
-                                   &val))
-    {
-      window->initial_workspace_set = TRUE;
-      window->initial_workspace = val;
-
-      meta_topic (META_DEBUG_PLACEMENT,
-                  "Read legacy GNOME workspace prop %d for %s\n",
-                  window->initial_workspace, window->desc);
-    }
 }
 
 static void

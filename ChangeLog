@@ -1,3 +1,12 @@
+2002-11-21  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (update_initial_workspace): delete
+	(meta_window_new): add getting initial workspace to the batch
+	property get call
+
+	* src/window-props.c (meta_display_init_window_prop_hooks): add
+	net_wm_desktop and win_workspace support
+
 2002-11-20  Havoc Pennington  <hp@pobox.com>
 
 	* src/window-props.c (set_icon_title): remove unused variable

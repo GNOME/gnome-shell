@@ -329,6 +329,61 @@ reload_wm_icon_name (MetaWindow    *window,
     }
 }
 
+static void
+init_net_wm_desktop (MetaDisplay   *display,
+                     Atom           property,
+                     MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_CARDINAL;
+  value->atom = display->atom_net_wm_desktop;
+}
+
+static void
+reload_net_wm_desktop (MetaWindow    *window,
+                       MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      window->initial_workspace_set = TRUE;
+      window->initial_workspace = value->v.cardinal;
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Read initial workspace prop %d for %s\n",
+                  window->initial_workspace, window->desc);
+    }
+}
+
+static void
+init_win_workspace (MetaDisplay   *display,
+                    Atom           property,
+                    MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_CARDINAL;
+  value->atom = display->atom_win_workspace;
+}
+
+static void
+reload_win_workspace (MetaWindow    *window,
+                      MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Read legacy GNOME workspace prop %d for %s\n",
+                  (int) value->v.cardinal, window->desc);
+
+      if (window->initial_workspace_set)
+        {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Ignoring legacy GNOME workspace prop %d for %s as we already set initial workspace\n",
+                      (int) value->v.cardinal, window->desc);          
+        }
+      else
+        {
+          window->initial_workspace_set = TRUE;
+          window->initial_workspace = value->v.cardinal;
+        }
+    }
+}
 
 #define N_HOOKS 22
 
@@ -436,13 +491,13 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = display->atom_net_wm_desktop;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_net_wm_desktop;
+  hooks[i].reload_func = reload_net_wm_desktop;
   ++i;
 
   hooks[i].property = display->atom_win_workspace;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_win_workspace;
+  hooks[i].reload_func = reload_win_workspace;
   ++i;
 
   hooks[i].property = display->atom_net_wm_strut;
