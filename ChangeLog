@@ -1,5 +1,11 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (meta_stack_sync_to_server): hmm, and don't set
+	last_window at all if we don't ++newp. Fixes even more obscure
+	stacking bug.
+
+2002-02-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/stack.c (meta_stack_sync_to_server): assign last_window
 	prior to ++newp, so we don't try to stack windows with respect to
 	themselves. Fixes some obscure stacking bugs.

@@ -690,7 +690,6 @@ meta_stack_sync_to_server (MetaStack *stack)
                * so we can just skip it
                */
               ++oldp;
-              last_window = *newp;
             }
           else
             {
