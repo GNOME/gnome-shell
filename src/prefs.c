@@ -301,7 +301,7 @@ change_notify (GConfClient    *client,
       
       str = value ? gconf_value_get_string (value) : NULL;
 
-      if (update_focus_mode (str))
+      if (update_theme (str))
         queue_changed (META_PREF_THEME);
     }
   else if (strcmp (key, KEY_TITLEBAR_FONT) == 0)

@@ -1,5 +1,10 @@
 2002-02-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/prefs.c (change_notify): s/update_focus_mode/update_theme/
+	in case of theme key changing
+
+2002-02-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme-viewer.c: benchmark theme on startup
 
 	* src/theme-parser.c (parse_draw_op_element): fix "colorize !=
