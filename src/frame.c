@@ -169,6 +169,8 @@ meta_frame_calc_geometry (MetaFrame *frame,
 
   frame->child_x = geom.left_width;
   frame->child_y = geom.top_height;
+  frame->right_width = geom.right_width;
+  frame->bottom_height = geom.bottom_height;
   
   frame->rect.width = frame->rect.width + geom.left_width + geom.right_width;
   frame->rect.height = frame->rect.height + geom.top_height + geom.bottom_height;
@@ -787,10 +789,18 @@ meta_frame_event (MetaFrame *frame,
           else if (control == META_FRAME_CONTROL_DELETE &&
                    event->xbutton.button == 1)
             {
-              /* FIXME delete event */
               meta_verbose ("Close control clicked on %s\n",
                             frame->window->desc);
               grab_action (frame, META_FRAME_ACTION_DELETING,
+                           event->xbutton.time);
+              frame->grab->start_button = event->xbutton.button;
+            }
+          else if (control == META_FRAME_CONTROL_MAXIMIZE &&
+                   event->xbutton.button == 1)
+            {
+              meta_verbose ("Maximize control clicked on %s\n",
+                            frame->window->desc);
+              grab_action (frame, META_FRAME_ACTION_TOGGLING_MAXIMIZE,
                            event->xbutton.time);
               frame->grab->start_button = event->xbutton.button;
             }
@@ -873,6 +883,21 @@ meta_frame_event (MetaFrame *frame,
               /* delete if we're still over the button */
               if (frame->current_control == META_FRAME_CONTROL_DELETE)
                 meta_window_delete (frame->window, event->xbutton.time);
+              break;
+            case META_FRAME_ACTION_TOGGLING_MAXIMIZE:
+              /* Must ungrab before getting "real" control position */
+              ungrab_action (frame, event->xbutton.time);
+              update_current_control (frame,
+                                      event->xbutton.x_root,
+                                      event->xbutton.y_root);
+              /* delete if we're still over the button */
+              if (frame->current_control == META_FRAME_CONTROL_MAXIMIZE)
+                {
+                  if (frame->window->maximized)
+                    meta_window_unmaximize (frame->window);
+                  else
+                    meta_window_maximize (frame->window);
+                }
               break;
             default:
               meta_warning ("Unhandled action in button release\n");

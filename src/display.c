@@ -78,7 +78,8 @@ meta_display_open (const char *name)
     "WM_PROTOCOLS",
     "WM_TAKE_FOCUS",
     "WM_DELETE_WINDOW",
-    "WM_STATE"
+    "WM_STATE",
+    "_NET_CLOSE_WINDOW"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -155,6 +156,7 @@ meta_display_open (const char *name)
   display->atom_wm_take_focus = atoms[2];
   display->atom_wm_delete_window = atoms[3];
   display->atom_wm_state = atoms[4];
+  display->atom_net_close_window = atoms[5];
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -494,6 +496,18 @@ event_queue_callback (MetaEventQueue *queue,
     case ColormapNotify:
       break;
     case ClientMessage:
+      if (window)
+        {
+          if (event->xclient.message_type ==
+              display->atom_net_close_window)
+            {
+              /* I think the wm spec should maybe put a time
+               * in this message, CurrentTime here is sort of
+               * bogus. But it rarely matters most likely.
+               */
+              meta_window_delete (window, CurrentTime);
+            }
+        }
       break;
     case MappingNotify:
       break;
@@ -708,7 +722,18 @@ meta_spew_event (MetaDisplay *display,
           name = "ColormapNotify";
           break;
         case ClientMessage:
-          name = "ClientMessage";
+          {
+            char *str;
+            name = "ClientMessage";
+            meta_error_trap_push (display);
+            str = XGetAtomName (display->xdisplay,
+                                event->xclient.message_type);
+            meta_error_trap_pop (display);
+            extra = g_strdup_printf ("type: %s format: %d\n",
+                                     str ? str : "(unknown atom)",
+                                     event->xclient.format);
+            XFree (str);
+          }
           break;
         case MappingNotify:
           name = "MappingNotify";

@@ -29,6 +29,7 @@ typedef enum
   META_FRAME_ACTION_NONE,
   META_FRAME_ACTION_MOVING,
   META_FRAME_ACTION_DELETING,
+  META_FRAME_ACTION_TOGGLING_MAXIMIZE,
   META_FRAME_ACTION_RESIZING_SE
 } MetaFrameAction;
 
@@ -48,6 +49,8 @@ struct _MetaFrame
   MetaRectangle rect;
   int child_x;
   int child_y;
+  int right_width;
+  int bottom_height;
   
   gpointer theme_data;
   gulong bg_pixel;

@@ -29,6 +29,8 @@ struct _MetaWorkspace
   MetaScreen *screen;
   
   GList *windows;
+
+  MetaRectangle workarea;
 };
 
 MetaWorkspace* meta_workspace_new           (MetaScreen    *screen);

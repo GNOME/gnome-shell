@@ -176,15 +176,56 @@ meta_window_menu_hide (void)
 }
 
 static void
+close_window (GdkWindow  *window)
+{  
+  XClientMessageEvent ev;
+  
+  ev.type = ClientMessage;
+  ev.window = GDK_WINDOW_XID (window);
+  ev.message_type = gdk_atom_intern ("_NET_CLOSE_WINDOW", FALSE);
+  ev.format = 32;
+  ev.data.l[0] = 0;
+  ev.data.l[1] = 0;
+
+  gdk_error_trap_push ();
+  XSendEvent (gdk_display,
+              gdk_root_window, False,
+              SubstructureNotifyMask | SubstructureRedirectMask,
+              (XEvent*) &ev);
+  gdk_flush ();
+  gdk_error_trap_pop ();
+}
+
+static void
 activate_cb (GtkWidget *menuitem, gpointer data)
 {
   MenuData *md;
 
   md = data;
   
-  meta_ui_warning ("Activated menuitem\n");
-  
-  gtk_widget_destroy (menu);
+  switch (md->op)
+    {
+    case META_MESSAGE_MENU_DELETE:
+      close_window (md->window);
+      break;
+
+    case META_MESSAGE_MENU_MINIMIZE:
+      break;
+
+    case META_MESSAGE_MENU_MAXIMIZE:
+      gdk_error_trap_push ();
+      gdk_window_maximize (md->window);
+      gdk_flush ();
+      gdk_error_trap_pop ();
+      break;
+
+    default:
+      meta_ui_warning (G_STRLOC": Unknown window op\n");
+      break;
+    }
+
+  if (menu)
+    gtk_widget_destroy (menu);
   g_object_unref (G_OBJECT (md->window));
   g_free (md);
 }

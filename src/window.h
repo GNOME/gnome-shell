@@ -39,12 +39,14 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
+  /* Whether we're maximized */
+  guint maximized : 1; 
   /* Mapped is what we think the mapped state should be;
    * so if we get UnmapNotify and mapped == TRUE then
    * it's a withdraw, if mapped == FALSE the UnmapNotify
    * is caused by us.
    */
-  guint mapped : 1;
+  guint mapped : 1  ;
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
   /* Iconic is the state in WM_STATE; happens for workspaces/shading
@@ -67,8 +69,19 @@ struct _MetaWindow
    */
   guint has_focus : 1;
   
-  /* The size we set the window to last. */
+  /* The size we set the window to last (i.e. what we believe
+   * to be its actual size on the server). The x, y are
+   * the actual server-side x,y so are relative to the frame
+   * or the root window as appropriate.
+   */
   MetaRectangle rect;
+
+  /* The geometry to restore when we unmaximize.
+   * The position is in root window coords, even if
+   * there's a frame, which contrasts with window->rect
+   * above.
+   */
+  MetaRectangle saved_rect;
   
   /* Requested geometry */
   int border_width;
@@ -86,6 +99,8 @@ void        meta_window_unminimize         (MetaWindow  *window);
 void        meta_window_resize             (MetaWindow  *window,
                                             int          w,
                                             int          h);
+void        meta_window_maximize           (MetaWindow  *window);
+void        meta_window_unmaximize         (MetaWindow  *window);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,

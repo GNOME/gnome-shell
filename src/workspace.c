@@ -34,6 +34,14 @@ meta_workspace_new (MetaScreen *screen)
   workspace->screen->display->workspaces =
     g_list_append (workspace->screen->display->workspaces, workspace);
   workspace->windows = NULL;
+
+  /* This may have something to do with the strut hints
+   * eventually
+   */
+  workspace->workarea.x = 0;
+  workspace->workarea.y = 0;
+  workspace->workarea.width = WidthOfScreen (screen->xscreen);
+  workspace->workarea.height = HeightOfScreen (screen->xscreen);
   
   return workspace;
 }

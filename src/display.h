@@ -44,6 +44,7 @@ struct _MetaDisplay
   Atom atom_wm_take_focus;
   Atom atom_wm_delete_window;
   Atom atom_wm_state;
+  Atom atom_net_close_window;
   
   /* This is the actual window from focus events,
    * not the one we last set

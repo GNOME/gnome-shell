@@ -128,6 +128,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->size_hints.y = attrs.y;
   window->size_hints.width = attrs.width;
   window->size_hints.height = attrs.height;
+
+  /* And this is our unmaximized size */
+  window->saved_rect = window->rect;
   
   window->depth = attrs.depth;
   window->xvisual = attrs.visual;
@@ -139,6 +142,7 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->frame = NULL;
   window->has_focus = FALSE;
 
+  window->maximized = FALSE;
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
   window->iconic = FALSE;
@@ -198,8 +202,10 @@ meta_window_free (MetaWindow  *window)
     }
 
   g_assert (window->workspaces == NULL);
+
+  /* FIXME restore original size if window has maximized */
   
-  set_wm_state (window, WithdrawnState);
+  set_wm_state (window, WithdrawnState);  
   
   meta_display_unregister_x_window (window->display, window->xwindow);
 
@@ -319,7 +325,7 @@ meta_window_minimize (MetaWindow  *window)
   if (!window->minimized)
     {
       window->minimized = TRUE;
-      meta_window_hide (window);
+      meta_window_queue_calc_showing (window);
     }
 }
 
@@ -329,7 +335,60 @@ meta_window_unminimize (MetaWindow  *window)
   if (window->minimized)
     {
       window->minimized = FALSE;
-      meta_window_show (window);
+      meta_window_queue_calc_showing (window);
+    }
+}
+
+void
+meta_window_maximize (MetaWindow  *window)
+{
+  if (!window->maximized)
+    {
+      int x, y;
+      
+      window->maximized = TRUE;
+      
+      /* save size */
+      window->saved_rect = window->rect;
+      if (window->frame)
+        {
+          window->saved_rect.x += window->frame->rect.x;
+          window->saved_rect.y += window->frame->rect.y;
+        }
+      
+      /* resize to current size with new maximization constraint */
+      meta_window_resize (window,
+                          window->rect.width, window->rect.height);
+
+      /* move to top left corner */
+      x = window->screen->active_workspace->workarea.x;
+      y = window->screen->active_workspace->workarea.y;
+      if (window->frame)
+        {
+          x += window->frame->child_x;
+          y += window->frame->child_y;
+        }
+      
+      meta_window_move (window, x, y);
+    }
+}
+
+void
+meta_window_unmaximize (MetaWindow  *window)
+{
+  if (window->maximized)
+    {
+      int x, y;
+      
+      window->maximized = FALSE;      
+
+      meta_window_resize (window,
+                          window->saved_rect.width,
+                          window->saved_rect.height);
+
+      meta_window_move (window,
+                        window->saved_rect.x,
+                        window->saved_rect.y);
     }
 }
 
@@ -375,7 +434,10 @@ meta_window_move (MetaWindow  *window,
         {
           window->frame->rect.x = new_x;
           window->frame->rect.y = new_y;
-      
+          /* window->rect.x, window->rect.y remain relative to frame,
+           * remember they are the server coords
+           */
+          
           XMoveWindow (window->display->xdisplay,
                        window->frame->xwindow,
                        window->frame->rect.x,
@@ -1003,17 +1065,48 @@ constrain_size (MetaWindow *window,
    */
   int delta;
   double min_aspect, max_aspect;
+  int minw, minh, maxw, maxh, fullw, fullh;
   
 #define FLOOR(value, base)	( ((gint) ((value) / (base))) * (base) )
+
+  /* Get the allowed size ranges, considering maximized, etc. */
+  fullw = window->screen->active_workspace->workarea.width;
+  fullh = window->screen->active_workspace->workarea.height;
+  if (window->frame)
+    {
+      fullw -= window->frame->child_x + window->frame->right_width;
+      fullh -= window->frame->child_y + window->frame->bottom_height;
+    }
+  
+  maxw = window->size_hints.max_width;
+  maxh = window->size_hints.max_height;
+  if (window->maximized)
+    {
+      maxw = MIN (maxw, fullw);
+      maxh = MIN (maxh, fullh);
+    }
+
+  minw = window->size_hints.min_width;
+  minh = window->size_hints.min_height;
+  if (window->maximized)
+    {
+      minw = MAX (minw, fullw);
+      minh = MAX (minh, fullh);
+    }
+
+  /* Check that fullscreen doesn't exceed max width hint,
+   * if so then snap back to max width hint
+   */
+  if (minw > maxw)
+    minw = maxw;
+  if (minh > maxh)
+    minh = maxh;
   
   /* clamp width and height to min and max values
    */
-  width = CLAMP (width,
-                 window->size_hints.min_width,
-                 window->size_hints.max_width);
-  height = CLAMP (height,
-                  window->size_hints.min_height,
-                  window->size_hints.max_height);
+  width = CLAMP (width, minw, maxw);
+
+  height = CLAMP (height, minh, maxh);
   
   /* shrink to base + N * inc
    */
