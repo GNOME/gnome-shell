@@ -1,0 +1,302 @@
+# metacity Slovak translation.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity\n"
+"POT-Creation-Date: 2001-12-07 07:52-0500\n"
+"PO-Revision-Date: 2001-12-08 12:16CET\n"
+"Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
+"Language-Team: Slovak <sk-i18n@linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: src/display.c:153
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
+
+#: src/errors.c:92
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"Stratené spojenie s displejom '%s'.\n"
+"Asi sa X server vypol alebo ste zabili správcu okien.\n"
+
+#: src/errors.c:99
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
+
+#: src/frames.c:230
+msgid "Left edge"
+msgstr "Ľavý okraj"
+
+#: src/frames.c:230
+msgid "Left window edge width"
+msgstr "Šírka ľavého okraja okna"
+
+#: src/frames.c:231
+msgid "Right edge"
+msgstr "Pravý okraj"
+
+#: src/frames.c:231
+msgid "Right window edge width"
+msgstr "Šírka oravého okraja okna"
+
+#: src/frames.c:232
+msgid "Bottom edge"
+msgstr "Dolný okraj"
+
+#: src/frames.c:232
+msgid "Bottom window edge height"
+msgstr "Šírka oolného okraja okna"
+
+#: src/frames.c:234
+msgid "Title border"
+msgstr "Okraj okolo titulku"
+
+#: src/frames.c:234
+msgid "Border around title area"
+msgstr "Okraj okolo oblasti titulku"
+
+#: src/frames.c:235
+msgid "Text border"
+msgstr "Okraj okolo textu"
+
+#: src/frames.c:235
+msgid "Border around window title text"
+msgstr "Okraj okolo textu titulku okna"
+
+#: src/frames.c:237
+msgid "Spacer padding"
+msgstr "Medzera oddeľovača"
+
+#: src/frames.c:237
+msgid "Padding on either side of spacer"
+msgstr "Medzery na každej strane oddeľovača"
+
+#: src/frames.c:238
+msgid "Spacer width"
+msgstr "Šírka oddeľovača"
+
+#: src/frames.c:238
+msgid "Width of spacer"
+msgstr "Šírka oddeľovača"
+
+#: src/frames.c:239
+msgid "Spacer height"
+msgstr "Výška oddeľovača"
+
+#: src/frames.c:239
+msgid "Height of spacer"
+msgstr "Výška oddeľovača"
+
+#. same as right_width left_width by default
+#: src/frames.c:242
+msgid "Right inset"
+msgstr "Pravá vzdialenosť"
+
+#: src/frames.c:242
+msgid "Distance of buttons from right edge of frame"
+msgstr "Vzdialenosť tlačidiel od pravého okraja rámu"
+
+#: src/frames.c:243
+msgid "Left inset"
+msgstr "Ľavá vzdialenosť"
+
+#: src/frames.c:243
+msgid "Distance of menu button from left edge of frame"
+msgstr "Vzdialenosť tlačidiel od ľavého okraja rámu"
+
+#: src/frames.c:245
+msgid "Button width"
+msgstr "Šírka tlačidiel"
+
+#: src/frames.c:245
+msgid "Width of buttons"
+msgstr "Šírka tlačidiel"
+
+#: src/frames.c:246
+msgid "Button height"
+msgstr "Výška tlačidiel"
+
+#: src/frames.c:246
+msgid "Height of buttons"
+msgstr "Výška tlačidiel"
+
+#: src/frames.c:248
+msgid "Button border"
+msgstr "Okraj tlačidiel"
+
+#: src/frames.c:248
+msgid "Border around buttons"
+msgstr "Okraj okolo tlačidiel"
+
+#: src/frames.c:249
+msgid "Inner button border"
+msgstr "Vnútorný okraj tlačidiel"
+
+#: src/frames.c:249
+msgid "Border around the icon inside buttons"
+msgstr "Okraj okolo ikony na tlačidlách"
+
+#: src/frames.c:890
+msgid "Close Window"
+msgstr "Zavrieť okno"
+
+#: src/frames.c:893
+msgid "Window Menu"
+msgstr "Menu okna"
+
+#: src/frames.c:896
+msgid "Minimize Window"
+msgstr "Minimalizovať okno"
+
+#: src/frames.c:899
+msgid "Maximize Window"
+msgstr "Maximalizovať okno"
+
+#: src/frames.c:902
+msgid "Unmaximize Window"
+msgstr "Odmaximalizovať okno"
+
+#: src/keybindings.c:210
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+
+#: src/menu.c:47
+msgid "_Close"
+msgstr "_Zavrieť"
+
+#: src/menu.c:48
+msgid "_Minimize"
+msgstr "_Minimalizovať"
+
+#: src/menu.c:49
+msgid "Ma_ximize"
+msgstr "Ma_ximalizovať"
+
+#: src/menu.c:50
+msgid "_Unmaximize"
+msgstr "_Odmaximalizovať"
+
+#: src/menu.c:51
+msgid "_Shade"
+msgstr "Za_baliť"
+
+#: src/menu.c:52
+msgid "U_nshade"
+msgstr "_Rozbaliť"
+
+#: src/menu.c:53
+msgid "Mo_ve"
+msgstr "_Presunúť"
+
+#: src/menu.c:54
+msgid "_Resize"
+msgstr "Zmeniť _veľkosť"
+
+#. separator
+#: src/menu.c:56
+msgid "Put on _All Workspaces"
+msgstr "Na _všetky plochy"
+
+#: src/menu.c:57
+msgid "Only on _This Workspace"
+msgstr "Len na _tejto ploche"
+
+#: src/menu.c:260
+#, c-format
+msgid "Only on workspace _%d"
+msgstr "Len na ploche _%d"
+
+#: src/menu.c:263
+#, c-format
+msgid "Move to workspace _%d"
+msgstr "Presunúť na plochu _%d"
+
+#: src/screen.c:168
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Obrazovka %d na displeji '%s' nie je platná\n"
+
+#: src/screen.c:183
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr "Obrazovka %d na displeji '%s' už má správcu okien\n"
+
+#: src/session.c:746 src/session.c:753
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Nepodarilo sa vytvoriť priečinok '%s': %s\n"
+
+#: src/session.c:763
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Nepodarilo sa otvoriť súbor sedenia '%s' pre zápis: %s\n"
+
+#: src/session.c:895
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Chyba pri zápise súboru sedenia '%s': %s\n"
+
+#: src/session.c:900
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Chyba pri zatváraní súboru sedenia '%s': %s\n"
+
+#: src/session.c:974
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
+
+#: src/session.c:1008
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Nepodarilo sa spracovať uložený súbor sedenia: %s\n"
+
+#: src/session.c:1046
+msgid "nested <window> tag"
+msgstr "vnorená značka <window>"
+
+#: src/session.c:1096 src/session.c:1128
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Neznámy atribúť %s v elemente <window>"
+
+#: src/session.c:1188
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Neznámy atribúť %s v elemente <geometry>"
+
+#: src/session.c:1208
+#, c-format
+msgid "Unknown element %s"
+msgstr "Neznámy element %s"
+
+#. someone is on crack
+#: src/window.c:2937
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+"Okno %s nastavuje maximálnu šírku %d menšiu ako je minimálna šírka %d, vypínam "
+"zmenu veľkosťi\n"
+
+#. another cracksmoker
+#: src/window.c:2947
+#, c-format
+msgid "Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
+"Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, vypínam "
+"zmenu veľkosťi\n"
+
