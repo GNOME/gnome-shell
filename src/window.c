@@ -349,8 +349,9 @@ meta_window_new (MetaDisplay *display,
 
   /* assign the window to its group, or create a new group if needed
    */
+  window->group = NULL;
   meta_window_compute_group (window);
-  
+
 #ifdef HAVE_XSYNC
   window->update_counter = None;
 #endif
@@ -493,8 +494,6 @@ meta_window_new (MetaDisplay *display,
   window->right_strut = 0;
   window->top_strut = 0;
   window->bottom_strut = 0;
-
-  window->group = NULL;
 
   window->using_net_wm_name = FALSE;
   window->using_net_wm_icon_name = FALSE;

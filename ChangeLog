@@ -1,5 +1,14 @@
 2003-06-04  Rob Adams  <robadams@ucla.edu>
 
+	* src/window.c (meta_window_new): don't be stupid and set
+	window->group = NULL after calling meta_window_compute_group.
+
+	* src/group.c (meta_window_get_group): assert that window->group
+	!= NULL in here instead of computing the group to ensure
+	robustness.
+
+2003-06-04  Rob Adams  <robadams@ucla.edu>
+
 	Precompute groups to guarantee that meta_group_list_windows always
 	returns the correct list of windows.  See Bug #96973
 
