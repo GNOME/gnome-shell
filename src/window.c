@@ -5200,23 +5200,11 @@ recalc_window_type (MetaWindow *window)
 static void
 set_allowed_actions_hint (MetaWindow *window)
 {
-#define MAX_N_ACTIONS 8
+#define MAX_N_ACTIONS 10
   unsigned long data[MAX_N_ACTIONS];
   int i;
 
   i = 0;
-  if (window->has_close_func)
-    {
-      data[i] = window->display->atom_net_wm_action_close;
-      ++i;
-    }
-  if (window->has_minimize_func)
-    {
-      data[i] = window->display->atom_net_wm_action_maximize_horz;
-      ++i;
-      data[i] = window->display->atom_net_wm_action_maximize_vert;
-      ++i;
-    }
   if (window->has_move_func)
     {
       data[i] = window->display->atom_net_wm_action_move;
@@ -5225,6 +5213,12 @@ set_allowed_actions_hint (MetaWindow *window)
   if (window->has_resize_func)
     {
       data[i] = window->display->atom_net_wm_action_resize;
+      data[i] = window->display->atom_net_wm_action_fullscreen;
+      ++i;
+    }
+  if (window->has_minimize_func)
+    {
+      data[i] = window->display->atom_net_wm_action_minimize;
       ++i;
     }
   if (window->has_shade_func)
@@ -5232,15 +5226,24 @@ set_allowed_actions_hint (MetaWindow *window)
       data[i] = window->display->atom_net_wm_action_shade;
       ++i;
     }
-  if (!window->always_sticky)
+  /* sticky according to EWMH is different from metacity's sticky;
+   * metacity doesn't support EWMH sticky
+   */
+  if (window->has_maximize_func)
     {
-      data[i] = window->display->atom_net_wm_action_stick;
+      data[i] = window->display->atom_net_wm_action_maximize_horz;
+      ++i;
+      data[i] = window->display->atom_net_wm_action_maximize_vert;
       ++i;
     }
-
   /* We always allow this */
   data[i] = window->display->atom_net_wm_action_change_desktop;
   ++i;
+  if (window->has_close_func)
+    {
+      data[i] = window->display->atom_net_wm_action_close;
+      ++i;
+    }
 
   g_assert (i <= MAX_N_ACTIONS);
 

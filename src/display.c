@@ -270,7 +270,9 @@ meta_display_open (const char *name)
     "_GNOME_PANEL_ACTION_MAIN_MENU",
     "_GNOME_PANEL_ACTION_RUN_DIALOG",
     "_METACITY_SENTINEL",
-    "_NET_WM_STRUT_PARTIAL"
+    "_NET_WM_STRUT_PARTIAL",
+    "_NET_WM_ACTION_FULLSCREEN",
+    "_NET_WM_ACTION_MINIMIZE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -413,6 +415,8 @@ meta_display_open (const char *name)
   display->atom_gnome_panel_action_run_dialog = atoms[78];
   display->atom_metacity_sentinel = atoms[79];
   display->atom_net_wm_strut_partial = atoms[80];
+  display->atom_net_wm_action_fullscreen = atoms[81];
+  display->atom_net_wm_action_minimize = atoms[82];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);

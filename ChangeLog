@@ -1,5 +1,21 @@
 2003-11-16  Rob Adams  <readams@readams.net>
 
+	Create COMPLIANCE document describing metacity specification
+	compliance.  Right now gives detailed EWMH compliance; still need
+	to add ICCCM compliance information.  Also some minor fixes to
+	bring metacity into compliance on some points.
+	
+	* COMPLIANCE: new file
+
+	* src/display.h, src/display.c (meta_display_open),
+	src/screen.c (set_supported_hint): add
+	atom_net_wm_action_fullscreen and atom_net_wm_action_minimize
+
+	* src/window.c (set_allowed_actions_hint): some fixes to which
+	hints to set and add fullscreen and minimize.
+	
+2003-11-16  Rob Adams  <readams@readams.net>
+
 	* src/window.c (meta_window_notify_focus): add paranoia check to
 	make sure a window is really on a workspace before inserting it at
 	the beginning of the MRU list.  Maybe there's a race condition

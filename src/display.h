@@ -152,6 +152,8 @@ struct _MetaDisplay
   Atom atom_net_wm_allowed_actions;
   Atom atom_net_wm_action_move;
   Atom atom_net_wm_action_resize;
+  Atom atom_net_wm_action_fullscreen;
+  Atom atom_net_wm_action_minimize;
   Atom atom_net_wm_action_shade;
   Atom atom_net_wm_action_stick;
   Atom atom_net_wm_action_maximize_horz;
