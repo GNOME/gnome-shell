@@ -1,5 +1,5 @@
 
-SUBDIRS=wm-tester
+SUBDIRS=wm-tester tools
 
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" 
 

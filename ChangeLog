@@ -1,3 +1,10 @@
+2001-10-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/main.c (meta_restart): add a restart feature, for debugging
+
+	* src/tools/metacity-restart.c: little utility program to trigger
+	the restart
+
 2001-10-14  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_button_press_event): raise/focus

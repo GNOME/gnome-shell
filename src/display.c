@@ -136,7 +136,8 @@ meta_display_open (const char *name)
     "WM_ICON_SIZE",
     "_KWM_WIN_ICON",
     "_NET_WM_MOVERESIZE",
-    "_NET_ACTIVE_WINDOW"
+    "_NET_ACTIVE_WINDOW",
+    "_METACITY_RESTART_MESSAGE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -226,6 +227,7 @@ meta_display_open (const char *name)
   display->atom_kwm_win_icon = atoms[41];
   display->atom_net_wm_moveresize = atoms[42];
   display->atom_net_active_window = atoms[43];
+  display->atom_metacity_restart_message = atoms[44];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -444,7 +446,7 @@ meta_display_close (MetaDisplay *display)
   g_free (display->name);
 
   all_displays = g_slist_remove (all_displays, display);
-  
+
   g_free (display);
 
   if (all_displays == NULL)
@@ -921,6 +923,7 @@ event_callback (XEvent   *event,
           
           if (screen)
             {
+              meta_debug_spew ("client for screen\n");
               if (event->xclient.message_type ==
                   display->atom_net_current_desktop)
                 {
@@ -941,6 +944,12 @@ event_callback (XEvent   *event,
                     meta_workspace_activate (workspace);
                   else
                     meta_verbose ("Don't know about workspace %d\n", space);
+                }
+              else if (event->xclient.message_type ==
+                       display->atom_metacity_restart_message)
+                {
+                  meta_verbose ("Received restart request\n");
+                  meta_restart ();
                 }
             }
         }

@@ -36,6 +36,8 @@ void meta_exit (MetaExitCode code);
 /* g_main_quit() then fall out of main() */
 void meta_quit (MetaExitCode code);
 
+void meta_restart (void);
+
 GMainLoop* meta_get_main_loop (void);
 
 #endif

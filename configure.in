@@ -42,6 +42,7 @@ dnl AM_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
 PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.9)
+PKG_CHECK_MODULES(METACITY_RESTART, gtk+-2.0 >= 1.3.9)
 
 CFLAGS="$METACITY_CFLAGS $CFLAGS"
 
@@ -85,4 +86,5 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/wm-tester/Makefile
+src/tools/Makefile
 ])

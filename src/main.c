@@ -34,9 +34,12 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
 
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
+static gboolean meta_restart_after_quit = FALSE;
 
 static void
 log_handler (const gchar   *log_domain,
@@ -187,15 +190,40 @@ main (int argc, char **argv)
   {
     GSList *displays;
     GSList *tmp;
-    
-    displays = meta_displays_list ();
+
+    /* we need a copy since closing the display removes it
+     * from the list
+     */
+    displays = g_slist_copy (meta_displays_list ());
     tmp = displays;
     while (tmp != NULL)
       {
         meta_display_close (tmp->data);
         tmp = tmp->next;
       }
+    g_slist_free (displays);
   }
+
+  if (meta_restart_after_quit)
+    {
+      GError *err;
+
+      err = NULL;
+      if (!g_spawn_async (NULL,
+                          argv,
+                          NULL,
+                          G_SPAWN_SEARCH_PATH,
+                          NULL,
+                          NULL,
+                          NULL,
+                          &err))
+        {
+          meta_fatal (_("Failed to restart: %s\n"),
+                      err->message);
+          g_error_free (err); /* not reached anyhow */
+          meta_exit_code = META_EXIT_ERROR;
+        }
+    }
   
   return meta_exit_code;
 }
@@ -222,3 +250,9 @@ meta_exit (MetaExitCode code)
   exit (code);
 }
 
+void
+meta_restart (void)
+{
+  meta_restart_after_quit = TRUE;
+  meta_quit (META_EXIT_SUCCESS);
+}
