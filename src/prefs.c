@@ -715,6 +715,13 @@ change_notify (GConfClient    *client,
     {
       gboolean b;
 
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
       b = value ? gconf_value_get_bool (value) : provide_visual_bell;      
       if (update_visual_bell (b, bell_is_audible))
 	queue_changed (META_PREF_VISUAL_BELL);	    
@@ -722,6 +729,13 @@ change_notify (GConfClient    *client,
   else if (strcmp (key, KEY_AUDIBLE_BELL) == 0)
     {
       gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
 
       b = value ? gconf_value_get_bool (value) : bell_is_audible;      
       if (update_visual_bell (provide_visual_bell, b))

@@ -1,3 +1,9 @@
+2004-04-29  Rob Adams  <readams@readams.net>
+
+	* src/prefs.c (change_notify): Add a value type check for the
+	visual bell/audible bell gconf settings.  Patch from Jarrod
+	Johnson for #141409.
+
 2004-04-19  Mark McLoughlin  <mark@skynet.ie>
 	
         Syncing across this change from libwnck.
