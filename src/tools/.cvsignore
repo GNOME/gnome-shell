@@ -1,4 +1,6 @@
 Makefile
 Makefile.in
 metacity-message
+metacity-mag
+metacity-properties.desktop
 metacity-window-demo
