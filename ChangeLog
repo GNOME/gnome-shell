@@ -1,5 +1,11 @@
 2001-10-15  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_new): use queried attributes to check
+	whether window should be initially maximized, rather than window 
+	rect
+
+2001-10-15  Havoc Pennington  <hp@pobox.com>
+
 	* src/main.c (meta_restart): add a restart feature, for debugging
 
 	* src/tools/metacity-restart.c: little utility program to trigger

@@ -362,9 +362,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
    * assume fullscreen state instead once we have that state...
    */
   if (!window->maximized &&
-      window->rect.x == 0 && window->rect.y == 0 &&
-      window->rect.width == window->screen->width &&
-      window->rect.height == window->screen->height)
+      attrs.x == 0 && attrs.y == 0 &&
+      attrs.width == window->screen->width &&
+      attrs.height == window->screen->height)
     window->maximized = TRUE;
   
   update_mwm_hints (window);
