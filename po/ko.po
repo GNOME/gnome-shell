@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.89\n"
-"POT-Creation-Date: 2002-05-17 18:07-0400\n"
+"POT-Creation-Date: 2002-05-20 01:31+0900\n"
 "PO-Revision-Date: 2002-04-17 09:50+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -122,18 +122,16 @@ msgid "Ma_ximize"
 msgstr "최대화(_x)"
 
 #: src/menu.c:52
-#, fuzzy
 msgid "Unma_ximize"
-msgstr "최대화 취소(_U)"
+msgstr "최대화 취소(_X)"
 
 #: src/menu.c:53
 msgid "_Shade"
 msgstr "숨김(_S)"
 
 #: src/menu.c:54
-#, fuzzy
 msgid "Un_shade"
-msgstr "숨김 취소(_n)"
+msgstr "숨김 취소(_S)"
 
 #: src/menu.c:55
 msgid "Mo_ve"
@@ -213,6 +211,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"응용 프로그램에 대한 임시 방편을 막았습니다. 몇몇 응용프로그램들이 제대로 동"
+"작하지 않을것입니다.\n"
 
 #: src/prefs.c:762
 #, c-format
@@ -225,6 +225,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\""
 msgstr ""
+"설정 데이터베이스에서 찾은 \"%s\"이(가) 단축글쇠 \"%s\"에 대한 올바른 값이 아"
+"닙니다"
 
 #: src/resizepopup.c:168
 #, c-format
