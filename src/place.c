@@ -19,8 +19,11 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include "place.h"
 #include "workspace.h"
+#include "prefs.h"
 #include <gdk/gdkregion.h>
 #include <math.h>
 #include <stdlib.h>
@@ -251,7 +254,59 @@ meta_window_place (MetaWindow        *window,
    * placement coordinates.
    */
   
-  meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);      
+  meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
+
+  if (meta_prefs_get_disable_workarounds ())
+    {
+      switch (window->type)
+        {
+          /* Only accept USPosition on normal windows because the app is full
+           * of shit claiming the user set -geometry for a dialog or dock
+           */
+        case META_WINDOW_NORMAL:
+          if (window->size_hints.flags & USPosition)
+            {
+              /* don't constrain with placement algorithm */
+              meta_topic (META_DEBUG_PLACEMENT,
+                          "Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
+
+              goto done;
+            }
+          break;
+
+          /* Ignore even USPosition on dialogs, splashscreen */
+        case META_WINDOW_DIALOG:
+        case META_WINDOW_MODAL_DIALOG:
+        case META_WINDOW_SPLASHSCREEN:
+          break;
+          
+          /* Assume the app knows best how to place these. */
+        case META_WINDOW_DESKTOP:
+        case META_WINDOW_DOCK:
+        case META_WINDOW_TOOLBAR:
+        case META_WINDOW_MENU:
+        case META_WINDOW_UTILITY:
+          if (window->size_hints.flags & PPosition)
+            {
+              meta_topic (META_DEBUG_PLACEMENT,
+                          "Not placing non-normal non-dialog window with PPosition set\n");
+              goto done;
+            }
+          break;
+        }
+    }
+  else
+    {
+      /* workarounds enabled */
+      
+      if ((window->size_hints.flags & PPosition) ||
+          (window->size_hints.flags & USPosition))
+        {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Not placing window with PPosition or USPosition set\n");
+          goto done;
+        }
+    }
   
   if ((window->type == META_WINDOW_DIALOG ||
        window->type == META_WINDOW_MODAL_DIALOG) &&

@@ -1,5 +1,12 @@
 2002-05-12  Havoc Pennington  <hp@pobox.com>
 
+	* src/place.c (meta_window_place): move pposition/usposition
+	honoring code into here, instead of putting it in window.c. 
+	Makes focusing new windows work, and cleans things up a bit.
+	#81585
+
+2002-05-12  Havoc Pennington  <hp@pobox.com>
+
 	* src/main.c (main): turn on --g-fatal-warnings if 
 	METACITY_G_FATAL_WARNINGS env variable is set.
 

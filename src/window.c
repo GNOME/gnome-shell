@@ -573,57 +573,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
       meta_workspace_add_window (space, window);
     }
-
-  if (meta_prefs_get_disable_workarounds ())
-    {
-      switch (window->type)
-        {
-          /* Only accept USPosition on normal windows because the app is full
-           * of shit claiming the user set -geometry for a dialog or dock
-           */
-        case META_WINDOW_NORMAL:
-          if (window->size_hints.flags & USPosition)
-            {
-              /* don't constrain with placement algorithm */
-              window->placed = TRUE;
-              meta_topic (META_DEBUG_PLACEMENT,
-                          "Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
-            }
-          break;
-
-          /* Ignore even USPosition on dialogs, splashscreen */
-        case META_WINDOW_DIALOG:
-        case META_WINDOW_MODAL_DIALOG:
-        case META_WINDOW_SPLASHSCREEN:
-          break;
-          
-          /* Assume the app knows best how to place these. */
-        case META_WINDOW_DESKTOP:
-        case META_WINDOW_DOCK:
-        case META_WINDOW_TOOLBAR:
-        case META_WINDOW_MENU:
-        case META_WINDOW_UTILITY:
-          if (window->size_hints.flags & PPosition)
-            {
-              window->placed = TRUE;
-              meta_topic (META_DEBUG_PLACEMENT,
-                          "Not placing non-normal non-dialog window with PPosition set\n");
-            }
-          break;
-        }
-    }
-  else
-    {
-      /* workarounds enabled */
-      
-      if ((window->size_hints.flags & PPosition) ||
-          (window->size_hints.flags & USPosition))
-        {
-          window->placed = TRUE;
-          meta_topic (META_DEBUG_PLACEMENT,
-                      "Not placing window with PPosition or USPosition set\n");
-        }
-    }
   
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
