@@ -105,7 +105,6 @@
 
 	* src/common.h: add a grab op for alt+esc window cycling
 
->>>>>>> 1.366
 2002-07-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Makefile.am (THEMES): Take Gorilla out until it gets
