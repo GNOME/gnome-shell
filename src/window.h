@@ -158,8 +158,7 @@ struct _MetaWindow
   /* Track whether the user has ever manually modified
    * the window; if so, we can use the saved user size/pos
    */
-  guint user_has_resized : 1;
-  guint user_has_moved : 1;
+  guint user_has_move_resized : 1;
 
   /* Have we placed this window? */
   guint placed : 1;

@@ -42,6 +42,9 @@ ensure_logfile (void)
       
       dir = g_get_home_dir ();
       str = g_strconcat (dir, "/", "metacity.log", NULL);
+
+      /* we want to replace not truncate any old logfile */
+      unlink (str);
       
       logfile = fopen (str, "w");
 

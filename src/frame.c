@@ -260,6 +260,9 @@ meta_frame_sync_to_window (MetaFrame *frame,
                            gboolean   need_move,
                            gboolean   need_resize)
 {
+  if (!(need_move || need_resize))
+    return;
+  
   meta_verbose ("Syncing frame geometry %d,%d %dx%d (SE: %d,%d)\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,

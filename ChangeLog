@@ -1,3 +1,14 @@
+2001-09-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c: Don't separate user_has_moved/user_has_resized,
+	fixes bug in east-resizing Emacs, among other things
+
+	* src/frame.c (meta_frame_sync_to_window): return immediately if
+	nothing to do
+
+	* src/util.c (ensure_logfile): replace rather than truncate old
+	logfiles
+
 2001-09-08  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_ui_init): don't use gdk_display_name

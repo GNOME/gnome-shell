@@ -37,8 +37,7 @@ typedef enum
 {
   META_IS_CONFIGURE_REQUEST = 1 << 0,
   META_DO_GRAVITY_ADJUST    = 1 << 1,
-  META_USER_RESIZE          = 1 << 2,
-  META_USER_MOVE            = 1 << 3
+  META_USER_MOVE_RESIZE     = 1 << 2
 } MetaMoveResizeFlags;
 
 static void constrain_size     (MetaWindow        *window,
@@ -249,6 +248,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->rect.width = attrs.width;
   window->rect.height = attrs.height;
 
+  window->size_hints.flags = 0;
+  
   /* And border width, size_hints are the "request" */
   window->border_width = attrs.border_width;
   window->size_hints.x = attrs.x;
@@ -272,8 +273,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->frame = NULL;
   window->has_focus = FALSE;
 
-  window->user_has_resized = FALSE;
-  window->user_has_moved = FALSE;
+  window->user_has_move_resized = FALSE;
   
   window->maximized = FALSE;
   window->on_all_workspaces = FALSE;
@@ -1311,22 +1311,19 @@ meta_window_move_resize_internal (MetaWindow  *window,
   int frame_size_dy;
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
-  gboolean is_user_resize;
-  gboolean is_user_move;
+  gboolean is_user_action;
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
-  is_user_resize = (flags & META_USER_RESIZE) != 0;
-  is_user_move = (flags & META_USER_MOVE) != 0;
+  is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
   
   {
     int oldx, oldy;
     meta_window_get_position (window, &oldx, &oldy);
-    meta_verbose ("Move/resize %s to %d,%d %dx%d%s%s%s from %d,%d %dx%d\n",
+    meta_verbose ("Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
                   window->desc, root_x_nw, root_y_nw, w, h,
                   is_configure_request ? " (configure request)" : "",
-                  is_user_resize ? " (user resize)" : "",
-                  is_user_move ? " (user move)" : "",
+                  is_user_action ? " (user move/resize)" : "",
                   oldx, oldy, window->rect.width, window->rect.height);
   }
   
@@ -1565,25 +1562,37 @@ meta_window_move_resize_internal (MetaWindow  *window,
     {
       meta_frame_sync_to_window (window->frame, need_move_frame, need_resize_frame);
     }
+
   
   if (need_configure_notify)
     send_configure_notify (window);
 
-  if (is_user_resize)
+  if (is_user_action)
     {
-      window->user_has_resized = TRUE;
+      window->user_has_move_resized = TRUE;
+
       window->user_rect.width = window->rect.width;
       window->user_rect.height = window->rect.height;
-    }
 
-  if (is_user_move)
-    {
-      window->user_has_moved = TRUE;
       meta_window_get_position (window, 
                                 &window->user_rect.x,
                                 &window->user_rect.y);
     }
-
+  
+  if (need_move_frame || need_resize_frame ||
+      need_move_client || need_resize_client)
+    {
+      int newx, newy;
+      meta_window_get_position (window, &newx, &newy);
+      meta_verbose ("New size/position %d,%d %dx%d (user %d,%d %dx%d)\n",
+                    newx, newy, window->rect.width, window->rect.height,
+                    window->user_rect.x, window->user_rect.y,
+                    window->user_rect.width, window->user_rect.height);
+    }
+  else
+    {
+      meta_verbose ("Size/position not modified\n");
+    }
   
   /* Invariants leaving this function are:
    *   a) window->rect and frame->rect reflect the actual
@@ -1603,7 +1612,7 @@ meta_window_resize (MetaWindow  *window,
   meta_window_get_position (window, &x, &y);
   
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_RESIZE : 0,
+                                    user_op ? META_USER_MOVE_RESIZE : 0,
                                     NorthWestGravity,
                                     x, y, w, h);
 }
@@ -1615,7 +1624,7 @@ meta_window_move (MetaWindow  *window,
                   int          root_y_nw)
 {
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE : 0,
+                                    user_op ? META_USER_MOVE_RESIZE : 0,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     window->rect.width,
@@ -1631,7 +1640,7 @@ meta_window_move_resize (MetaWindow  *window,
                          int          h)
 {
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE | META_USER_RESIZE : 0,
+                                    user_op ? META_USER_MOVE_RESIZE : 0,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     w, h);
@@ -1649,7 +1658,7 @@ meta_window_resize_with_gravity (MetaWindow *window,
   meta_window_get_position (window, &x, &y);
   
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_RESIZE : 0,
+                                    user_op ? META_USER_MOVE_RESIZE : 0,
                                     gravity,
                                     x, y, w, h);
 }
@@ -1665,9 +1674,9 @@ meta_window_move_resize_now (MetaWindow  *window)
   meta_window_get_user_position (window, &x, &y);
   
   meta_window_move_resize (window, FALSE, x, y,
-                           window->user_has_resized ?
+                           window->user_has_move_resized ?
                            window->user_rect.width : window->rect.width,
-                           window->user_has_resized ?
+                           window->user_has_move_resized ?
                            window->user_rect.height : window->rect.height);
 }
 
@@ -1704,7 +1713,7 @@ meta_window_get_user_position  (MetaWindow  *window,
                                 int         *x,
                                 int         *y)
 {
-  if (window->user_has_moved)
+  if (window->user_has_move_resized)
     {
       if (x)
         *x = window->user_rect.x;
@@ -2641,13 +2650,76 @@ send_configure_notify (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
+#define FLAG_TOGGLED_ON(old,new,flag) \
+ (((old)->flags & (flag)) == 0 &&     \
+  ((new)->flags & (flag)) != 0)
+
+#define FLAG_TOGGLED_OFF(old,new,flag) \
+ (((old)->flags & (flag)) != 0 &&      \
+  ((new)->flags & (flag)) == 0)
+
+#define FLAG_CHANGED(old,new,flag) \
+  (FLAG_TOGGLED_ON(old,new,flag) || FLAG_TOGGLED_OFF(old,new,flag))
+
+static void
+spew_size_hints_differences (const XSizeHints *old,
+                             const XSizeHints *new)
+{
+  if (FLAG_CHANGED (old, new, USPosition))
+    meta_verbose ("XSizeHints: USPosition now %s\n",
+                  FLAG_TOGGLED_ON (old, new, USPosition) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, USSize))
+    meta_verbose ("XSizeHints: USSize now %s\n",
+                  FLAG_TOGGLED_ON (old, new, USSize) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PPosition))
+    meta_verbose ("XSizeHints: PPosition now %s\n",
+                  FLAG_TOGGLED_ON (old, new, PPosition) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PSize))
+    meta_verbose ("XSizeHints: PSize now %s\n",
+                  FLAG_TOGGLED_ON (old, new, PSize) ? "set" : "unset");
+  if (FLAG_CHANGED (old, new, PMinSize))
+    meta_verbose ("XSizeHints: PMinSize now %s (%d x %d -> %d x %d)\n",
+                  FLAG_TOGGLED_ON (old, new, PMinSize) ? "set" : "unset",
+                  old->min_width, old->min_height,
+                  new->min_width, new->min_height);
+  if (FLAG_CHANGED (old, new, PMaxSize))
+    meta_verbose ("XSizeHints: PMaxSize now %s (%d x %d -> %d x %d)\n",
+                  FLAG_TOGGLED_ON (old, new, PMaxSize) ? "set" : "unset",
+                  old->max_width, old->max_height,
+                  new->max_width, new->max_height);
+  if (FLAG_CHANGED (old, new, PResizeInc))
+    meta_verbose ("XSizeHints: PResizeInc now %s (width_inc %d -> %d height_inc %d -> %d)\n",
+                  FLAG_TOGGLED_ON (old, new, PResizeInc) ? "set" : "unset",
+                  old->width_inc, new->width_inc,
+                  old->height_inc, new->height_inc);
+  if (FLAG_CHANGED (old, new, PAspect))
+    meta_verbose ("XSizeHints: PAspect now %s (min %d/%d -> %d/%d max %d/%d -> %d/%d)\n",
+                  FLAG_TOGGLED_ON (old, new, PAspect) ? "set" : "unset",
+                  old->min_aspect.x, old->min_aspect.y,
+                  new->min_aspect.x, new->min_aspect.y,
+                  old->max_aspect.x, old->max_aspect.y,
+                  new->max_aspect.x, new->max_aspect.y);
+  if (FLAG_CHANGED (old, new, PBaseSize))
+    meta_verbose ("XSizeHints: PBaseSize now %s (%d x %d -> %d x %d)\n",
+                  FLAG_TOGGLED_ON (old, new, PBaseSize) ? "set" : "unset",
+                  old->base_width, old->base_height,
+                  new->base_width, new->base_height);
+  if (FLAG_CHANGED (old, new, PWinGravity))
+    meta_verbose ("XSizeHints: PWinGravity now %s  (%d -> %d)\n",
+                  FLAG_TOGGLED_ON (old, new, PWinGravity) ? "set" : "unset",
+                  old->win_gravity, new->win_gravity);  
+}
+
 static int
 update_size_hints (MetaWindow *window)
 {
   int x, y, w, h;
   gulong supplied;
+  XSizeHints old_hints;
+  
+  meta_verbose ("Updating WM_NORMAL_HINTS for %s\n", window->desc);
 
-  meta_verbose ("Updating WM_NORMAL_HINTS\n");
+  old_hints = window->size_hints;
   
   /* Save the last ConfigureRequest, which we put here.
    * Values here set in the hints are supposed to
@@ -2814,6 +2886,8 @@ update_size_hints (MetaWindow *window)
     }
 
   recalc_window_features (window);
+
+  spew_size_hints_differences (&old_hints, &window->size_hints);
   
   return meta_error_trap_pop (window->display);
 }
@@ -4348,18 +4422,14 @@ constrain_size (MetaWindow *window,
 
   if (window->frame)
     {
-      fullw -= fgeom->left_width + fgeom->right_width;
-      fullh -= fgeom->top_height + fgeom->bottom_height;
+      fullw -= (fgeom->left_width + fgeom->right_width);
+      fullh -= (fgeom->top_height + fgeom->bottom_height);
     }
   
   maxw = window->size_hints.max_width;
   maxh = window->size_hints.max_height;
   
   if (window->maximized)
-    /* we used to only constrain to fit inside screen for these cases,
-     * but now I don't remember why I did that.
-     */
-    /* !(window->user_has_resized || window->user_has_moved) */
     {
       maxw = MIN (maxw, fullw);
       maxh = MIN (maxh, fullh);
