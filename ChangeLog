@@ -1,3 +1,8 @@
+2003-01-19  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: add note about how this is the unstable branch,
+	set version to 2.5.0
+
 2003-01-14  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_maximize, meta_window_unmaximize) 
