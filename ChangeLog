@@ -1,3 +1,10 @@
+2004-08-15  Rob Adams  <readams@readams.net>
+
+	* src/window.c (meta_window_update_struts): Allow struts larger
+	than 1/2 the screen width/height, as long as there's a minimum
+	sized gap between them.  Patch from Bill Haneman <billh@gnome.org>
+	for bug #144126.
+	
 2004-08-13 Gurban M. Tewekgeli  <gmtavakkoli@yahoo.com>
 	* po/tk.po: Added Turkmen translation.
 	* configure.in: Added "tk" to ALL_LINGUAS.

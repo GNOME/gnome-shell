@@ -5248,7 +5248,14 @@ meta_window_update_struts (MetaWindow *window)
   MetaRectangle new_top;
   MetaRectangle new_bottom;
 
-#define MIN_EMPTY (75)
+  /**
+   * This gap must be kept to at least 75 pixels, since otherwise
+   * struts on opposite sides of the screen left/right could interfere
+   * in each other in a way that makes it so there is no feasible
+   * solution to the constraint satisfaction problem.  See
+   * constraints.c.
+   */
+#define MIN_EMPTY (76)
   
   meta_verbose ("Updating struts for %s\n", window->desc);
   
@@ -5298,15 +5305,16 @@ meta_window_update_struts (MetaWindow *window)
         }
       else
         {
+          int gap;
+          gap = window->screen->width - struts[0] - struts[1];
+          gap -= MIN_EMPTY;
           new_has_struts = TRUE;
-          new_left.width = MIN ((int)struts[0], 
-                                window->screen->width/2 - MIN_EMPTY);
-          new_right.width = MIN ((int)struts[1], 
-                                 window->screen->width/2 - MIN_EMPTY);
-          new_top.height = MIN ((int)struts[2], 
-                                window->screen->height/2 - MIN_EMPTY);
-          new_bottom.height = MIN ((int)struts[3], 
-                                   window->screen->height/2 - MIN_EMPTY);
+          new_left.width = (int) struts[0] + MIN (0, gap/2);
+          new_right.width = (int) struts[1] + MIN (0, gap/2);
+          gap = window->screen->width - struts[0] - struts[1];
+          gap -= MIN_EMPTY;
+          new_top.height = (int)struts[2] + MIN (0, gap/2);
+          new_bottom.height = (int)struts[3] + MIN (0, gap/2);
           new_right.x = window->screen->width - 
             new_right.width;
           new_bottom.y = window->screen->height - 
@@ -5350,22 +5358,23 @@ meta_window_update_struts (MetaWindow *window)
             }
           else
             {
+              int gap;
+              gap = window->screen->width - struts[0] - struts[1];
+              gap -= MIN_EMPTY;
               new_has_struts = TRUE;
-              new_left.width = MIN ((int)struts[0], 
-                                    window->screen->width/2 - MIN_EMPTY);
-              new_right.width = MIN ((int)struts[1], 
-                                     window->screen->width/2 - MIN_EMPTY);
-              new_top.height = MIN ((int)struts[2], 
-                                    window->screen->height/2 - MIN_EMPTY);
-              new_bottom.height = MIN ((int)struts[3], 
-                                       window->screen->height/2 - MIN_EMPTY);
+              new_left.width = (int) struts[0] + MIN (0, gap/2);
+              new_right.width = (int) struts[1] + MIN (0, gap/2);
+              gap = window->screen->width - struts[0] - struts[1];
+              gap -= MIN_EMPTY;
+              new_top.height = (int)struts[2] + MIN (0, gap/2);
+              new_bottom.height = (int)struts[3] + MIN (0, gap/2);
               new_left.x = 0;
               new_right.x = window->screen->width - 
                 new_right.width;
               new_top.y = 0;
               new_bottom.y = window->screen->height -
                 new_bottom.height;
-          
+              
               meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
                             new_left.width,
                             new_right.width,
