@@ -465,6 +465,12 @@ meta_window_new (MetaDisplay *display, Window xwindow,
         }
     }
 
+  if (window->type == META_WINDOW_FULLSCREEN)
+    {
+      meta_verbose ("Won't place fullscreen window\n");
+      window->placed = TRUE;
+    }
+  
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
@@ -3792,7 +3798,7 @@ apply_mask (GdkPixbuf *pixbuf,
   
   w = MIN (gdk_pixbuf_get_width (mask), gdk_pixbuf_get_width (pixbuf));
   h = MIN (gdk_pixbuf_get_height (mask), gdk_pixbuf_get_height (pixbuf));
-
+  
   with_alpha = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
 
   dest = gdk_pixbuf_get_pixels (with_alpha);
@@ -3809,9 +3815,11 @@ apply_mask (GdkPixbuf *pixbuf,
         {
           guchar *s = src + i * src_stride + j * 3;
           guchar *d = dest + i * dest_stride + j * 4;
-
-          /* I have no idea if this is reliable. */
-          if ((s[0] + s[1] + s[2]) == 0)
+          
+          /* s[0] == s[1] == s[2], they are 255 if the bit was set, 0
+           * otherwise
+           */
+          if (s[0] == 0)
             d[3] = 0;   /* transparent */
           else
             d[3] = 255; /* opaque */
@@ -4166,12 +4174,11 @@ constrain_size (MetaWindow *window,
   maxw = window->size_hints.max_width;
   maxh = window->size_hints.max_height;
 
-  /* If user hasn't resized or moved, then try to shrink the window to
-   * fit onscreen, while not violating the min size, just as
-   * we do for maximize
-   */
-  if (window->maximized ||
-      !(window->user_has_resized || window->user_has_moved))
+  if (window->maximized)
+    /* we used to only constrain to fit inside screen for these cases,
+     * but now I don't remember why I did that.
+     */
+    /* !(window->user_has_resized || window->user_has_moved) */
     {
       maxw = MIN (maxw, fullw);
       maxh = MIN (maxh, fullh);
@@ -4271,9 +4278,14 @@ constrain_position (MetaWindow *window,
 
   if (!window->placed && window->calc_placement)
     meta_window_place (window, fgeom, x, y, &x, &y);
-  
-  if (window->type != META_WINDOW_DESKTOP &&
-      window->type != META_WINDOW_DOCK)
+
+  if (window->type == META_WINDOW_FULLSCREEN)
+    {
+      x = 0;
+      y = 0;
+    }
+  else if (window->type != META_WINDOW_DESKTOP &&
+           window->type != META_WINDOW_DOCK)
     {
       int nw_x, nw_y;
       int se_x, se_y;
@@ -4318,15 +4330,34 @@ constrain_position (MetaWindow *window,
         nw_y -= offscreen_h;
       
       /* Convert se_x, se_y to the most bottom-right position
-       * the window can occupy
+       * the window can occupy - don't allow offscreen
        */
+      se_x -= window->rect.width;
+      se_y -= window->rect.height;
+      if (window->frame)
+        {
+          se_x -= fgeom->right_width;
+          se_y -= fgeom->bottom_height;
+        }
+
+      /* If the window is larger than screen, allow it to move, as for
+       * nw_x nw_y
+       */
+      if (offscreen_w > 0)
+        se_x += offscreen_w;
+      if (offscreen_h > 0)
+        se_y += offscreen_h;
+      
+#if 0
+      /* this is the old allow-offscreen-to-se constraint */
       if (window->frame)
         {
 #define TITLEBAR_LENGTH_ONSCREEN 10
           se_x -= (fgeom->left_width + TITLEBAR_LENGTH_ONSCREEN);
           se_y -= fgeom->top_height;
         }
-
+#endif
+      
       /* If we have a micro-screen or huge frames maybe nw/se got
        * swapped
        */
@@ -4364,7 +4395,7 @@ constrain_position (MetaWindow *window,
             y = nw_y;
         }
     }
-
+  
   *new_x = x;
   *new_y = y;
 }

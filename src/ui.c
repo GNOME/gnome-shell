@@ -311,10 +311,8 @@ get_cmap (GdkPixmap *pixmap)
     {
       if (gdk_drawable_get_depth (pixmap) == 1)
         {
-          /* hell if I know */
-          meta_verbose ("Making up some sort of colormap to get 1-bit pixmap\n");
-          cmap = gdk_colormap_get_system ();
-          g_object_ref (G_OBJECT (cmap));
+          meta_verbose ("Using NULL colormap for snapshotting bitmap\n");
+          cmap = NULL;
         }
       else
         {
@@ -359,7 +357,8 @@ meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
                                          dest_x, dest_y,
                                          width, height);
 
-  g_object_unref (G_OBJECT (cmap));
+  if (cmap)
+    g_object_unref (G_OBJECT (cmap));
   g_object_unref (G_OBJECT (drawable));
 
   return retval;
@@ -397,7 +396,8 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
                                          dest_x, dest_y,
                                          width, height);
 
-  g_object_unref (G_OBJECT (cmap));
+  if (cmap)
+    g_object_unref (G_OBJECT (cmap));
   g_object_unref (G_OBJECT (drawable));
 
   return retval;

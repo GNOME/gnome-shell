@@ -448,8 +448,7 @@ meta_display_process_key_event (MetaDisplay *display,
                 XKeysymToString (keysym), event->xkey.state,
                 window ? window->desc : "(no window)");
 
-  if (display->grab_op == META_GRAB_OP_NONE &&
-      (window == NULL || !window->all_keys_grabbed))
+  if (window == NULL || !window->all_keys_grabbed)
     {
       /* Do the normal keybindings */
       process_event (screen_bindings, display, NULL, event, keysym);
