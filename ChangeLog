@@ -1,3 +1,14 @@
+2002-05-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (meta_session_init): improve error about failing
+	to open session manager.
+	(shutdown_cancelled_callback): send SmcSaveYourselfDone when we
+	get cancelled
+	(interact_callback): implement an interact callback that complains
+	about lame clients that can't be saved. Still somewhat buggy 
+	in that it sends InteractDone before the user has closed the 
+	dialog.
+
 2002-05-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/tools/metacity-mag.c: add a magnifier I'm using when making

@@ -73,6 +73,7 @@ static char*       load_state         (const char *previous_save_file);
 static void        regenerate_save_file (void);
 static const char* full_save_file       (void);
 static const char* base_save_file       (void);
+static void        warn_about_lame_clients (void);
 
 /* This is called when data is available on an ICE connection.  */
 static gboolean
@@ -181,6 +182,8 @@ typedef enum
   STATE_SAVING_PHASE_1,
   STATE_WAITING_FOR_PHASE_2,
   STATE_SAVING_PHASE_2,
+  STATE_WAITING_FOR_INTERACT,
+  STATE_DONE_WITH_INTERACT,
   STATE_FROZEN,
   STATE_REGISTERING
 } ClientState;
@@ -206,6 +209,7 @@ static void set_clone_restart_commands  (void);
 static char *client_id = NULL;
 static gpointer session_connection = NULL;
 static ClientState current_state = STATE_DISCONNECTED;
+static gboolean interaction_allowed = FALSE;
 
 void
 meta_session_init (const char *previous_client_id,
@@ -266,7 +270,7 @@ meta_session_init (const char *previous_client_id,
   
   if (session_connection == NULL)
     {
-      meta_warning ("Failed to open connection to session manager: %s\n", buf);
+      meta_warning (_("Failed to a open connection to a session manager, so window positions will not be saved: %s\n"), buf);
 
       goto out;
     }
@@ -374,8 +378,26 @@ save_yourself_possibly_done (gboolean shutdown,
         current_state = STATE_WAITING_FOR_PHASE_2;
     }
 
+  if (current_state == STATE_SAVING_PHASE_2 &&
+      interaction_allowed)
+    {
+      Status status;
+
+      status = SmcInteractRequest (session_connection,
+                                   /* ignore this feature of the protocol by always
+                                    * claiming normal
+                                    */
+                                   SmDialogNormal,
+                                   interact_callback,
+                                   GINT_TO_POINTER (shutdown));
+
+      if (status)
+        current_state = STATE_WAITING_FOR_INTERACT;
+    }
+  
   if (current_state == STATE_SAVING_PHASE_1 ||
-      current_state == STATE_SAVING_PHASE_2)
+      current_state == STATE_SAVING_PHASE_2 ||
+      current_state == STATE_DONE_WITH_INTERACT)
     {
       SmcSaveYourselfDone (session_connection,
                            successful);
@@ -386,7 +408,6 @@ save_yourself_possibly_done (gboolean shutdown,
         current_state = STATE_IDLE;
     }
 }
-
 
 static void 
 save_phase_2_callback (SmcConn smc_conn, SmPointer client_data)
@@ -435,6 +456,8 @@ save_yourself_callback (SmcConn   smc_conn,
     }
 #endif
 
+  interaction_allowed = interact_style != SmInteractStyleNone;
+  
   current_state = STATE_SAVING_PHASE_1;
 
   regenerate_save_file ();
@@ -462,13 +485,29 @@ save_complete_callback (SmcConn smc_conn, SmPointer client_data)
 static void
 shutdown_cancelled_callback (SmcConn smc_conn, SmPointer client_data)
 {
-  /* nothing */
+  if (session_connection != NULL &&
+      (current_state != STATE_IDLE && current_state != STATE_FROZEN))
+    {
+      SmcSaveYourselfDone (session_connection, True);
+      current_state = STATE_IDLE;
+    }
 }
 
 static void 
 interact_callback (SmcConn smc_conn, SmPointer client_data)
 {
   /* nothing */
+  gboolean shutdown;
+
+  shutdown = GPOINTER_TO_INT (client_data);
+
+  current_state = STATE_DONE_WITH_INTERACT;
+
+  warn_about_lame_clients ();
+
+  SmcInteractDone (session_connection, False /* don't cancel logout */);
+  
+  save_yourself_possibly_done (shutdown, TRUE);
 }
 
 static void
@@ -1544,6 +1583,112 @@ static const char*
 base_save_file (void)
 {
   return relative_save_path;
+}
+
+static int
+windows_cmp_by_title (MetaWindow *a,
+                      MetaWindow *b)
+{
+  return g_utf8_collate (a->title, b->title);
+}
+
+static void
+warn_about_lame_clients (void)
+{
+  GSList *displays;
+  GSList *display_iter;  
+  GSList *lame;
+  char **argv;
+  int i;
+  GSList *tmp;
+  int len;
+  int child_pid;
+  GError *err;
+  
+  lame = NULL;
+  displays = meta_displays_list ();
+  display_iter = displays;
+  while (display_iter != NULL)
+    {
+      GSList *windows;
+
+      windows = meta_display_list_windows (display_iter->data);
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *window;
+
+          window = tmp->data;
+
+          /* only complain about normal windows, the others
+           * are kind of dumb to worry about
+           */
+          if (window->sm_client_id == NULL &&
+              window->type == META_WINDOW_NORMAL)
+            lame = g_slist_prepend (lame, window);
+          
+          tmp = tmp->next;
+        }
+      
+      g_slist_free (windows);
+
+      display_iter = display_iter->next;
+    }
+  /* don't need to free displays */
+  displays = NULL;
+
+  lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
+
+  len = g_slist_length (lame);
+  len *= 2; /* titles and also classes */
+  len += 1; /* NULL term */
+  len += 2; /* metacity-dialog command and option */
+  
+  argv = g_new0 (char*, len);
+  
+  i = 0;
+
+  argv[i] = METACITY_LIBEXECDIR"/metacity-dialog";
+  ++i;
+  argv[i] = "--warn-about-no-sm-support";
+  ++i;
+  
+  tmp = lame;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      argv[i] = w->title;
+      ++i;
+      argv[i] = w->res_class ? w->res_class : "";
+      ++i;
+
+      tmp = tmp->next;
+    }
+  
+  err = NULL;
+  if (!g_spawn_async_with_pipes ("/",
+                                 argv,
+                                 NULL,
+                                 0,
+                                 NULL, NULL,
+                                 &child_pid,
+                                 NULL,
+                                 NULL,
+                                 NULL,
+                                 &err))
+    {
+      meta_warning (_("Error launching metacity-dialog to warn about apps that don't support session management: %s\n"),
+                    err->message);
+      g_error_free (err);
+    }
+
+  g_free (argv);
+  g_slist_free (lame);
+
+  /* FIXME we need to keep a pipe to the child open to detect when it exits, and
+   * only send InteractDone when the child has exited.
+   */
 }
 
 #endif /* HAVE_SM */
