@@ -112,6 +112,9 @@ main (int argc, char **argv)
     meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
 
+  if (g_get_home_dir ())
+    chdir (g_get_home_dir ());
+
   {
     char buf[256];
     GDate d;

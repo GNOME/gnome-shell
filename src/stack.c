@@ -217,11 +217,25 @@ window_is_fullscreen_size (MetaWindow *window)
   return FALSE;
 }
 
+static gboolean
+is_focused_foreach (MetaWindow *window,
+                    void       *data)
+{
+  if (window->has_focus ||
+      (window == window->display->expected_focus_window))
+    {
+      *((gboolean*) data) = TRUE;
+      return FALSE;
+    }
+  return TRUE;
+}
+
 /* Get layer ignoring any transient or group relationships */
 static MetaStackLayer
 get_standalone_layer (MetaWindow *window)
 {
   MetaStackLayer layer;
+  gboolean focused_transient = FALSE;
   
   switch (window->type)
     {
@@ -242,14 +256,12 @@ get_standalone_layer (MetaWindow *window)
       break;
       
     default:       
+      meta_window_foreach_transient (window,
+                                     is_focused_foreach,
+                                     &focused_transient);
 
-#if 0
-      if (window->has_focus &&
-          meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        layer = META_LAYER_FOCUSED_WINDOW;
-#endif
-      
-      if (window->has_focus &&
+      if ((window->has_focus || focused_transient ||
+           (window == window->display->expected_focus_window)) &&
           (window->fullscreen || window_is_fullscreen_size (window)))
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)

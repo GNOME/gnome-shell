@@ -1,3 +1,16 @@
+2003-05-29  Rob Adams  <robadams@ucla.edu>
+
+	* src/main.c (main): chdir to the user's home directory on
+	startup.  See #113755.
+
+	* src/stack.c (get_standalone_layer): a window should be in the
+	fullscreen layer if it or any of its transient descendants are
+	focused or expecting the focus and it is either fullscreen or
+	fullscreen sized.  Fix for #104369.
+
+	* src/stack.c (is_focused_foreach): foreach used by
+	get_standalone_layer to find focused transient descendants.
+	
 2003-05-20  Havoc Pennington  <hp@pobox.com>
 	
 	* src/keybindings.c (meta_change_keygrab): the mask 
