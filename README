@@ -228,6 +228,24 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    don't actually have any translations. So if someone translates
    something we can set it up.
 
+ - If you switch from sawfish to metacity without restarting X, 
+   the panel often ends up buried behind the Nautilus desktop window.
+
+   What happens is that the panel detects Sawfish has gone away, and
+   turns on override redirect mode because no GNOME-aware WM is
+   running (i.e. it goes into "ignore the window manager" mode). But
+   the panel doesn't notice that Metacity has appeared and is
+   (partially) GNOME-compliant. So Metacity doesn't see the override
+   redirect panel, and leaves it behind the Nautilus desktop. I'm not
+   sure whether Metacity or the panel is to blame for this.
+
+   (To debug - use "xwininfo" on the panel, if override redirect is
+    "Yes" then Metacity won't have any awareness of a window and can't
+    properly stack it above the desktop. If override redirect is "No"
+    then Metacity can see the panel and handle it properly. Look at
+    xstuff.c:xstuff_is_compliant_wm() in the panel to get started on
+    how the panel deals with this.)
+
 FAQ
 ===
 
@@ -274,6 +292,13 @@ A: This is not the current plan, though of course I'm happy to see the
    For now Metacity is my toy hobby project that I work on when I feel
    like it.
 
+Q: Is Metacity a Red Hat project?
+
+A: Metacity is in no way funded, endorsed, or encouraged by Red Hat,
+   Inc. - I'm guessing Red Hat would not consider "insufficient number
+   of window managers for Linux" an urgent problem. Just a wild guess
+   though.
+ 
 Q: Why can't I move XMMS?
 
 A: Because XMMS is broken and is trying to move itself. Metacity 

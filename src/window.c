@@ -2187,10 +2187,13 @@ process_property_notify (MetaWindow     *window,
   if (event->atom == XA_WM_NAME ||
       event->atom == window->display->atom_net_wm_name)
     {
+      meta_verbose ("Property notify on %s for WM_NAME or NET_WM_NAME\n", window->desc);
       update_title (window);
     }
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
+      meta_verbose ("Property notify on %s for WM_NORMAL_HINTS\n", window->desc);
+      
       update_size_hints (window);
       
       /* See if we need to constrain current size */
@@ -2198,12 +2201,16 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == window->display->atom_wm_protocols)
     {
+      meta_verbose ("Property notify on %s for WM_PROTOCOLS\n", window->desc);
+      
       update_protocols (window);
 
       meta_window_queue_move_resize (window);
     }
   else if (event->atom == XA_WM_HINTS)
     {
+      meta_verbose ("Property notify on %s for WM_HINTS\n", window->desc);
+      
       update_wm_hints (window);
       update_icon (window);
       
@@ -2211,6 +2218,8 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == window->display->atom_motif_wm_hints)
     {
+      meta_verbose ("Property notify on %s for MOTIF_WM_HINTS\n", window->desc);
+      
       update_mwm_hints (window);
       
       if (window->decorated)
@@ -2222,10 +2231,14 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == XA_WM_CLASS)
     {
+      meta_verbose ("Property notify on %s for WM_CLASS\n", window->desc);
+      
       update_wm_class (window);
     }
   else if (event->atom == XA_WM_TRANSIENT_FOR)
     {
+      meta_verbose ("Property notify on %s for WM_TRANSIENT_FOR\n", window->desc);
+      
       update_transient_for (window);
 
       meta_window_queue_move_resize (window);
@@ -2233,6 +2246,8 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom ==
            window->display->atom_wm_window_role)
     {
+      meta_verbose ("Property notify on %s for WM_WINDOW_ROLE\n", window->desc);
+      
       update_role (window);
     }
   else if (event->atom ==
@@ -2240,23 +2255,27 @@ process_property_notify (MetaWindow     *window,
            event->atom ==
            window->display->atom_sm_client_id)
     {
-      meta_warning ("Broken client changed client leader window or SM client ID\n");
+      meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
     }
   else if (event->atom ==
            window->display->atom_net_wm_window_type ||
            /* update_net_wm_type falls back to this */
            event->atom == window->display->atom_win_layer)
     {
+      meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE or WIN_LAYER\n", window->desc);
       update_net_wm_type (window);
     }
   else if (event->atom ==
            window->display->atom_net_wm_icon_name ||
            event->atom == XA_WM_ICON_NAME)
     {
+      meta_verbose ("Property notify on %s for NET_WM_ICON_NAME or WM_ICON_NAME\n", window->desc);
+      
       update_icon_name (window);
     }
   else if (event->atom == window->display->atom_net_wm_icon)
     {
+      meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
       update_icon (window);
     }
   
@@ -3371,14 +3390,15 @@ recalc_window_type (MetaWindow *window)
       window->wm_state_modal)
     window->type = META_WINDOW_MODAL_DIALOG;
 
-  meta_verbose ("Calculated type %d for %s\n", window->type, window->desc);
+  meta_verbose ("Calculated type %d for %s, old type %d\n",
+                window->type, window->desc, old_type);
 
   if (old_type != window->type)
     {
       recalc_window_features (window);
       
       set_net_wm_state (window);
-
+      
       /* Update frame */
       if (window->decorated)
         meta_window_ensure_frame (window);
@@ -3408,6 +3428,7 @@ recalc_window_features (MetaWindow *window)
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
+      window->decorated = FALSE;
       window->has_close_func = FALSE;
       window->has_shade_func = FALSE;
       window->has_move_func = FALSE;

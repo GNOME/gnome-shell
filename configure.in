@@ -2,7 +2,7 @@ AC_INIT(src/display.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(metacity, 2.3)
+AM_INIT_AUTOMAKE(metacity, 2.3.1)
 
 GETTEXT_PACKAGE=metacity
 AC_SUBST(GETTEXT_PACKAGE)
@@ -70,8 +70,6 @@ AC_SUBST(HOST_ALIAS)
 
 AC_OUTPUT([
 Makefile
-intl/Makefile
-po/Makefile.in
 src/Makefile
 ])
 
