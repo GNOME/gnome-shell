@@ -1,5 +1,11 @@
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c (meta_window_show): Ignore all focus and
+	focus-stealing-prevention code in meta_window_show when not
+	showing the window for the first time.  Fixes #167199.
+
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
 	Fix an obscure xinerama placement bug with windows that are too
 	large to fit in the workarea in both dimensions.  #166757
 

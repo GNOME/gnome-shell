@@ -1696,7 +1696,8 @@ meta_window_show (MetaWindow *window)
 
   if ( !takes_focus_on_map &&
        window->display->focus_window != NULL &&
-       !place_on_top_on_map )
+       !place_on_top_on_map &&
+       window->showing_for_first_time )
     {
       if (meta_window_is_ancestor_of_transient (window->display->focus_window,
                                                 window))
