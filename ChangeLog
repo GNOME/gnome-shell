@@ -1,5 +1,9 @@
 2002-10-04  Havoc Pennington  <hp@redhat.com>
 
+	* configure.in: actually link to RANDR_LIBS
+
+2002-10-04  Havoc Pennington  <hp@redhat.com>
+
 	* src/display.c (event_callback): do XRRUpdateConfiguration() 
 	if we have RandR extension, else poke in Xlib's screen struct to
 	update the screen size.
