@@ -1,3 +1,10 @@
+2003-08-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_new): don't select for button
+	press/release events, as that keeps other clients from doing so, 
+	and it doesn't seem that metacity has any reason to do it.
+	Patch from Andreas Volz.
+
 2003-08-08  Bastien Nocera  <hadess@hadess.net>
 
 	* src/metacity-dialog.c: (kill_window_question),

@@ -496,7 +496,6 @@ meta_screen_new (MetaDisplay *display,
                 SubstructureRedirectMask | SubstructureNotifyMask |
                 ColormapChangeMask | PropertyChangeMask |
                 LeaveWindowMask | EnterWindowMask |
-                ButtonPressMask | ButtonReleaseMask |
                 KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | StructureNotifyMask |
 		attr.your_event_mask);
