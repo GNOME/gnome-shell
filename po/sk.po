@@ -1,23 +1,25 @@
 # translation of metacity.HEAD.sk.po to Slovak
 # translation of sk.po to Slovak
 # metacity Slovak translation.
-# Copyright (C) 2001,2002,2003 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2003, 2005 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001,2003.
 # Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
 # Stanislav Visnovsky <visnovsky@kde.org>, 2003.
+# Marcel Telka <marcel@telka.sk>, 2005.
+#
+# $Id$
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.sk\n"
+"Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2003-09-24 08:54+0200\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
-"Language-Team: Slovak <sk-i18n@linux.sk>\n"
+"POT-Creation-Date: 2005-01-29 14:25+0100\n"
+"PO-Revision-Date: 2005-01-29 15:23+0100\n"
+"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.2\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -120,9 +122,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Nedefinovaný príkaz %d.\n"
+msgstr "Nebol definovaný terminálový príkaz.\n"
 
 #: src/main.c:69
 msgid ""
@@ -133,7 +134,7 @@ msgstr ""
 "display=DISPLEJ] [--replace] [--version]\n"
 
 #: src/main.c:76
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -142,8 +143,8 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
+"Autorské práva (C) 2001-2002 Havoc Pennington, Red Hat, Inc., a ostatní\n"
+"Toto je slobodný softvér; pozrite podmienky kopírovania v zdrojových kódoch.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
@@ -203,52 +204,46 @@ msgstr "_Zavrieť"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Na _všetky plochy"
+msgid "_Always on Current Workspace"
+msgstr "_Vždy na aktuálnej pracovnej ploche"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Len na _tejto ploche"
+msgid "_Only on This Workspace"
+msgstr "_Len na tejto pracovnej ploche"
 
 #: src/menu.c:68
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "Presunúť okno na plochu 9"
+msgstr "Presunúť na pracovnú plochu _vľavo"
 
 #: src/menu.c:69
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "Presunúť okno na plochu 1"
+msgstr "Presunúť na pracovnú plochu v_pravo"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "Presunúť okno na plochu 1"
+msgstr "Presunúť na pracovnú plochu _hore"
 
 #: src/menu.c:71
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "Presunúť okno o jednu plochu dolu"
+msgstr "Presunúť na pracovnú plochu _dole"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
-msgstr "Plocha %d"
+msgstr "Pracovná plocha %d"
 
 #: src/menu.c:171
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "Plocha %d"
+msgstr "Pracovná plocha 1_0"
 
 #: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Plocha %s%d"
+msgstr "Pracovná plocha %s%d"
 
 #: src/menu.c:368
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "Presunúť okno o jednu plochu hore"
+msgstr "Presunúť na inú _pracovnú plochu"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -370,7 +365,7 @@ msgstr ""
 "Tieto okná nepodporujú \"uložiť aktuálne nastavenie\n"
 " a pri budúcom prihlásení ich budete musieť znovu spustiť ručne."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -446,9 +441,8 @@ msgstr ""
 "\"&lt;Super&gt;\"."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "Zavrieť okno"
+msgstr "Zatvoriť okno"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -508,7 +502,8 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages"
 msgstr ""
 
 #: src/metacity.schemas.in.h:20
@@ -541,7 +536,6 @@ msgid "Lower window below other windows"
 msgstr "Presunúť okno pod ostatné okná"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "Maximalizovať okno"
 
@@ -554,7 +548,6 @@ msgid "Maximize window vertically"
 msgstr "Maximalizovať okno vertikálne"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
 msgstr "Minimalizovať okno"
 
@@ -595,73 +588,72 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Prepnúť aktívne okno medzi oknami pomocou malého okna"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
 msgstr "Presunúť okno"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr "Presunúť okno o jednu plochu dolu"
+msgstr "Presunúť okno o jednu pracovnú plochu dolu"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr "Presunúť okno o jednu plochu vľavo"
+msgstr "Presunúť okno o jednu pracovnú plochu vľavo"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr "Presunúť okno o jednu plochu vpravo"
+msgstr "Presunúť okno o jednu pracovnú plochu vpravo"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr "Presunúť okno o jednu plochu hore"
+msgstr "Presunúť okno o jednu pracovnú plochu hore"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
-msgstr "Presunúť okno na plochu 1"
+msgstr "Presunúť okno na pracovnú plochu 1"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
-msgstr "Presunúť okno na plochu 10"
+msgstr "Presunúť okno na pracovnú plochu 10"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
-msgstr "Presunúť okno na plochu 11"
+msgstr "Presunúť okno na pracovnú plochu 11"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
-msgstr "Presunúť okno na plochu 12"
+msgstr "Presunúť okno na pracovnú plochu 12"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
-msgstr "Presunúť okno na plochu 2"
+msgstr "Presunúť okno na pracovnú plochu 2"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
-msgstr "Presunúť okno na plochu 3"
+msgstr "Presunúť okno na pracovnú plochu 3"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
-msgstr "Presunúť okno na plochu 4"
+msgstr "Presunúť okno na pracovnú plochu 4"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
-msgstr "Presunúť okno na plochu 5"
+msgstr "Presunúť okno na pracovnú plochu 5"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
-msgstr "Presunúť okno na plochu 6"
+msgstr "Presunúť okno na pracovnú plochu 6"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
-msgstr "Presunúť okno na plochu 7"
+msgstr "Presunúť okno na pracovnú plochu 7"
 
 #: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
-msgstr "Presunúť okno na plochu 8"
+msgstr "Presunúť okno na pracovnú plochu 8"
 
 #: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
-msgstr "Presunúť okno na plochu 9"
+msgstr "Presunúť okno na pracovnú plochu 9"
 
 #: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
@@ -690,7 +682,6 @@ msgid "Raise window above other windows"
 msgstr "Presunúť okno dopredu nad ostatné okná"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "Zmeniť veľkosť okna"
 
@@ -741,67 +732,67 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
-msgstr "Prepnúť na plochu 1"
+msgstr "Prepnúť na pracovnú plochu 1"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
-msgstr "Prepnúť na plochu 10"
+msgstr "Prepnúť na pracovnú plochu 10"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
-msgstr "Prepnúť na plochu 11"
+msgstr "Prepnúť na pracovnú plochu 11"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
-msgstr "Prepnúť na plochu 12"
+msgstr "Prepnúť na pracovnú plochu 12"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
-msgstr "Prepnúť na plochu 2"
+msgstr "Prepnúť na pracovnú plochu 2"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
-msgstr "Prepnúť na plochu 3"
+msgstr "Prepnúť na pracovnú plochu 3"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
-msgstr "Prepnúť na plochu 4"
+msgstr "Prepnúť na pracovnú plochu 4"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
-msgstr "Prepnúť na plochu 5"
+msgstr "Prepnúť na pracovnú plochu 5"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
-msgstr "Prepnúť na plochu 6"
+msgstr "Prepnúť na pracovnú plochu 6"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
-msgstr "Prepnúť na plochu 7"
+msgstr "Prepnúť na pracovnú plochu 7"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
-msgstr "Prepnúť na plochu 8"
+msgstr "Prepnúť na pracovnú plochu 8"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
-msgstr "Prepnúť na plochu 9"
+msgstr "Prepnúť na pracovnú plochu 9"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
-msgstr "Prepnúť na plochu nad aktuálnou plochou"
+msgstr "Prepnúť na pracovnú plochu nad aktuálnou pracovnou plochou"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
-msgstr "Prepnúť na plochu pod aktuálnou plochou"
+msgstr "Prepnúť na pracovnú plochu pod aktuálnou pracovnou plochou"
 
 #: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
-msgstr "Prepnúť na plochu vľavo"
+msgstr "Prepnúť na pracovnú plochu vľavo"
 
 #: src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
-msgstr "Prepnúť na plochu vpravo"
+msgstr "Prepnúť na pracovnú plochu vpravo"
 
 #: src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
@@ -860,7 +851,6 @@ msgstr ""
 "definuje klávesovúskratku, ktorá spustí zadaný príkaz."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -869,7 +859,7 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka spustí príkaz podľa čísla v /apps/metacity/"
+"Klávesová skratka, ktorá spustí príkaz podľa čísla v /apps/metacity/"
 "keybinding_commands. Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\". Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená "
 "a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto "
@@ -877,7 +867,6 @@ msgstr ""
 "žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -886,7 +875,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Táto klávesová skratka pre prepnutie pracovnej plochy na plochu vyššie. "
+"Klávesová skratka, ktorá prepne na pracovnú plochu nad aktuálnou pracovnou plochou. "
 "Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky ako "
 "je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -894,7 +883,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -903,7 +891,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Táto klávesová skratka pre prepnutie pracovnej plochy na plochu nižšie. "
+"Klávesová skratka, ktorá prepne na pracovnú plochu pod aktuálnou pracovnou plochou. "
 "Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky ako "
 "je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -911,7 +899,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -920,7 +907,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre prepnutie pracovnej plochy na plochu vľavo. "
+"Klávesová skratka, ktorá prepne na pracovnú plochu vľavo od aktuálnej parcovnej plochy. "
 "Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky ako "
 "je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -928,7 +915,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -937,7 +923,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre prepnutie pracovnej plochy na plochu vpravo. "
+"Klávesová skratka, ktorá prepne na pracovnú plochu vpravo od aktuálnej pracovnej plochy. "
 "Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky ako "
 "je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -945,7 +931,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -953,14 +938,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 1. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 1. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -968,14 +952,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 10. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 10. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -983,14 +966,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 11. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 11. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -998,14 +980,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 12. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 12. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1013,14 +994,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 2. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 2. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1028,14 +1008,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 3. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 3. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1043,14 +1022,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 4. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 4. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1058,14 +1036,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 5. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 5. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1073,14 +1050,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 6. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 6. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1088,14 +1064,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 7. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 7. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1103,14 +1078,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 8. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 8. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1118,14 +1092,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 9. Formát je \"&lt;"
+"Klávesová skratka, ktorá prepne na pracovnú plochu 9. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1133,14 +1106,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre aktiváciu menu okna. Formát je \"&lt;Control&gt;a"
+"Klávesová skratka použitá pre aktiváciu menu okna. Formát je \"&lt;Control&gt;a"
 "\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a "
 "umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;"
 "Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre "
 "túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1148,14 +1120,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre zatvorenie okna Formát je \"&lt;Control&gt;a\" "
+"Klávesová skratka použitá pre zatvorenie okna. Formát je \"&lt;Control&gt;a\" "
 "alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje "
 "malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
 "Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu "
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1164,7 +1135,7 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre zapnutie \"režimu presunu\" pomocou klávesnice. "
+"Klávesová skratka použitá pre vstup do \"režimu presunu\" a začiatok presunu okna pomocou klávesnice. "
 "Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky ako "
 "je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -1172,7 +1143,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1181,7 +1151,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre zapnutie \"režimu zmeny veľkosti\" pomocou "
+"Klávesová skratka použitá pre vstup do \"režimu zmeny veľkosti\" a začiatok zmeny veľkosti okna pomocou "
 "klávesnice. Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;"
 "F1. Spracovanie je dosť liberálne a umožňuje malé aj veľké písmená a skratky "
 "ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na "
@@ -1189,7 +1159,6 @@ msgstr ""
 "klávesová skratka."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1198,7 +1167,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre skrytie všetkých normálnych okien a nastavenie "
+"Klávesová skratka použitá pre skrytie všetkých normálnych okien a nastavenie "
 "ako aktívne pozadie plochy. Formát je \"&lt;Control&gt;a\" alebo \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje malé aj "
 "veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak "
@@ -1206,7 +1175,6 @@ msgstr ""
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1214,14 +1182,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre minimalizáciu okna. Formát je \"&lt;Control&gt;a"
+"Klávesová skratka použitá pre maximalizáciu okna. Formát je \"&lt;Control&gt;a"
 "\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a "
 "umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;"
 "Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre "
 "túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1229,14 +1196,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre minimalizáciu okna. Formát je \"&lt;Control&gt;a"
+"Klávesová skratka použitá pre minimalizáciu okna. Formát je \"&lt;Control&gt;a"
 "\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a "
 "umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;"
 "Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre "
 "túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1245,14 +1211,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Táto klávesová skratka presunie okno o jednu pracovnú plochu dolu. Formát je "
+"Klávesová skratka použitá na presun okna o jednu pracovnú plochu dolu. Formát je "
 "\"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1261,14 +1226,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno o jednu pracovnú plochu vľavo. Formát "
+"Klávesová skratka použitá na presun okna o jednu pracovnú plochu vľavo. Formát "
 "je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je "
 "dosť liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;"
 "Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu "
 "\"disabled\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1277,14 +1241,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno o jednu pracovnú plochu vpravo. Formát "
+"Klávesová skratka použitá na presun okna o jednu pracovnú plochu vpravo. Formát "
 "je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je "
 "dosť liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;"
 "Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu "
 "\"disabled\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1292,14 +1255,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno o jednu pracovnú plochu hore. Formát je "
+"Klávesová skratka použitá na presun okna o jednu pracovnú plochu hore. Formát je "
 "\"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1307,14 +1269,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 1. Formát je \"&lt;"
+"Klávesová skratka použitá na presuni okna na pracovnú plochu 1. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1322,14 +1283,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 10. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 10. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1337,14 +1297,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 11. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 11. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1352,14 +1311,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 12. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 12. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1367,14 +1325,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 2. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 2. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1382,14 +1339,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 3. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 3. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1397,14 +1353,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 4. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 4. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1412,14 +1367,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 5. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 5. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1427,14 +1381,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 6. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 6. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1442,14 +1395,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 7. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 7. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1457,14 +1409,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 8. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 8. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1472,14 +1423,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka presunie okno na pracovnú plochu 9. Formát je \"&lt;"
+"Klávesová skratka použitá na presun okna na pracovnú plochu 9. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1488,15 +1438,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne aktívne okno dozadu medzi panelmi a plochou so "
-"zobrazením malého okna. Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;"
+"Klávesová skratka použitá na prepnutie ohniska dozadu medzi panelmi a plochou so "
+"zobrazením vyskakovacieho okna. Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje malé aj veľké "
 "písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte "
 "túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu nebude "
 "definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1505,15 +1454,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne aktívne okno dozadu medzi panelmi a plochou "
-"bez zobrazenia malého okna. Formát je \"&lt;Control&gt;a\" alebo \"&lt;"
+"Klávesová skratka použitá na prepnutie ohniska dozadu medzi panelmi a plochou "
+"bez zobrazenia vyskakovacieho okna. Formát je \"&lt;Control&gt;a\" alebo \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje malé aj "
 "veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak "
 "nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu "
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1523,8 +1471,8 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne aktívne okno na predchádzajúce okno bez "
-"zobrazenia malého okienka. Držaním \"shift\" spolu s touto klávesovou "
+"Klávesová skratka použitá na prepnutie ohniska dozadu medzi oknami bez "
+"zobrazenia vyskakovacieho okna. Držaním \"shift\" spolu s touto klávesovou "
 "skratkou znovu obráti smer prepínania. Formát je \"&lt;Control&gt;a\" alebo "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje malé "
 "aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak "
@@ -1532,7 +1480,6 @@ msgstr ""
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1542,8 +1489,8 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka prepne aktívne okno na predchádzajúce okno pomocou "
-"malého okienka (tradične &lt;Alt&gt;Tab). Formát je \"&lt;Control&gt;a\" "
+"Klávesová skratka použitá na prepnutie ohniska dozadu medzi oknami so zobrazením "
+"vyskakovacieho okna. Držaním \"shift\" spolu s touto klávesovou skratkou znovu obráti smer prepínania. Formát je \"&lt;Control&gt;a\" "
 "alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje "
 "malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
 "Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu "
@@ -1955,7 +1902,6 @@ msgstr ""
 "pri vypnutom počuteľnom zvončeku."
 
 #: src/metacity.schemas.in.h:164
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "Odmaximalizovať okno"
 
@@ -1975,17 +1921,17 @@ msgstr "Režim aktivácie okna"
 msgid "Window title font"
 msgstr "Písmo titulku okna"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf kľúč \"%s\" má nastavený neplatný typ\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1994,17 +1940,17 @@ msgstr ""
 "V konfiguračnej databázi nájdené \"%s\", čo nie je platná hodnota pre "
 "modifikátor tlačidla myši.\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf kľúč \"%s\" má nastavený neplatnú hodnotu\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepodarilo sa spracovať popis písma \"%s\" z GConf kľúča %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2013,7 +1959,7 @@ msgstr ""
 "%d uložená v GConf kľúči %s nie je rozumný počet pracovných plôch, "
 "momentálne maximum je %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2021,17 +1967,17 @@ msgstr ""
 "Náhradné riešenia pre nefunkčné aplikácie nie sú povolené. Niektoré "
 "aplikácie sa nemusia správne chovať.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "Hodnota %d uložená v GConf kľúči %s nie je v rozsahu od 0 do %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Chyba pri nastavovaní počtu pracovných plôch na %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2040,7 +1986,7 @@ msgstr ""
 "V konfiguračnej databázi nájdené \"%s\", čo nie je platná hodnota pre "
 "klávesovú skratku \"%s\".\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba pri nastavovaní mena pracovnej plochy %d na \"%s\": %s\n"
@@ -2672,34 +2618,32 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Súbor témy %s neobsahuje koreňový element <metacity_theme>"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "Aktivácia okna"
+msgstr "/_Okná"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Okná/odtrhávatko"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Okná/_Dialógové okno"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Okná/_Modálne dialógové okno"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Okná/_Nástroje"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
 msgstr ""
 
 #: src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "Aktivácia okna"
+msgstr ""
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
@@ -2716,11 +2660,11 @@ msgstr ""
 #: src/theme-viewer.c:80
 #, fuzzy
 msgid "/Windows/_All docks"
-msgstr "Aktivácia okna"
+msgstr ""
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Okná/Praco_vná plocha"
 
 #: src/theme-viewer.c:131
 #, fuzzy
@@ -2729,15 +2673,15 @@ msgstr "Presunúť okno dopredu nad ostatné okná"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "Toto je ukážkové tlačidlo s ikonou 'otvoriť'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Toto je ukážkové tlačidlo s ikonou 'ukončiť'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Toto je ukážková správa v ukážkovom dialógovom okne"
 
 #: src/theme-viewer.c:324
 #, c-format
@@ -2746,7 +2690,7 @@ msgstr ""
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "Okno len s okrajom"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
@@ -2754,15 +2698,15 @@ msgstr ""
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Normálne aplikačné okno"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "Dialógové okno"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Modálne dialógové okno"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
@@ -2774,7 +2718,7 @@ msgstr ""
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "Okraj"
 
 #: src/theme-viewer.c:731
 #, c-format
@@ -2784,16 +2728,16 @@ msgstr ""
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "%g milisekúnd pre vykreslenie jedneho rámca okna"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "Použitie: metacity-theme-viewer [NÁZOVTÉMY]\n"
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Chyba pri zatváraní súboru sedenia '%s': %s\n"
+msgstr "Chyba pri načítavaní témy: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
@@ -2814,16 +2758,15 @@ msgstr ""
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "Rozloženie tlačidiel"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "Test rýchlosti"
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "Písmo titulku okna"
+msgstr "Sem príde názov okna"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2843,32 +2786,32 @@ msgstr ""
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "Bola očakávaná chyba, ale žiadna nenastala"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "Bola očakávaná chyba %d, ale nastala %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "Chyba nebola očakávaná, ale bola vrátená: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "hodnota x bola %d, očakávaná bola %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "hodnota y bola %d, očakávaná bola %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "%d výrazov pre súradnice analyzovaných za %g sekúnd (priemer %g sekúnd)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -3162,7 +3105,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3178,7 +3121,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3215,37 +3158,3 @@ msgid ""
 msgstr ""
 "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8 pre položku %d v "
 "zozname\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Vyberte, ako aktivovať okná"
-
-#~ msgid "Window Focus"
-#~ msgstr "Aktivácia okna"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Kliknúť"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Chovanie fokusu:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Nastavenie aktívneho okna"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Ukázať kurzorom"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Presunúť okno _dopredu pri jeho aktivácii"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Nepodarilo sa otvoriť spojenie so správcom sedenia, takže pozície okien "
-#~ "nebudú uložené: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Len na %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Presunúť na %s"
