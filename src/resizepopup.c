@@ -92,11 +92,10 @@ ensure_size_window (MetaResizePopup *popup)
     return;
   
   popup->size_window = gtk_window_new (GTK_WINDOW_POPUP);
-#ifdef HAVE_GTK_MULTIHEAD
+
   gtk_window_set_screen (GTK_WINDOW (popup->size_window),
 			 gdk_display_get_screen (gdk_x11_lookup_xdisplay (popup->display),
 						 popup->screen_number));
-#endif
   
   /* never shrink the size window */
   gtk_window_set_resizable (GTK_WINDOW (popup->size_window),

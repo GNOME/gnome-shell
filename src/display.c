@@ -528,7 +528,6 @@ meta_display_open (const char *name)
   
   screens = NULL;
   
-#ifdef HAVE_GTK_MULTIHEAD  
   i = 0;
   while (i < ScreenCount (xdisplay))
     {
@@ -540,14 +539,6 @@ meta_display_open (const char *name)
         screens = g_slist_prepend (screens, screen);
       ++i;
     }
-#else
-  {
-    MetaScreen *screen;
-    screen = meta_screen_new (display, DefaultScreen (xdisplay));
-    if (screen)
-      screens = g_slist_prepend (screens, screen);
-  }
-#endif
   
   display->screens = screens;
   

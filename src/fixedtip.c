@@ -48,7 +48,6 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
   if (tip == NULL)
     {      
       tip = gtk_window_new (GTK_WINDOW_POPUP);
-#ifdef HAVE_GTK_MULTIHEAD
       {
         GdkScreen *gdk_screen;
 
@@ -59,10 +58,6 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
         screen_width = gdk_screen_get_width (gdk_screen);
         screen_height = gdk_screen_get_height (gdk_screen);
       }
-#else
-      screen_width = gdk_screen_width ();
-      screen_height = gdk_screen_height ();      
-#endif
       
       gtk_widget_set_app_paintable (tip, TRUE);
       gtk_window_set_policy (GTK_WINDOW (tip), FALSE, FALSE, TRUE);

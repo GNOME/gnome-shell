@@ -122,11 +122,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup = g_new (MetaTabPopup, 1);
 
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
-#ifdef HAVE_GTK_MULTIHEAD
+
   gtk_window_set_screen (GTK_WINDOW (popup->outline_window),
 			 gdk_display_get_screen (gdk_display_get_default (),
 						 screen_number));
-#endif
 
   gtk_widget_set_app_paintable (popup->outline_window, TRUE);
   gtk_widget_realize (popup->outline_window);
@@ -135,11 +134,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
                     G_CALLBACK (outline_window_expose), popup);
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
-#ifdef HAVE_GTK_MULTIHEAD
+
   gtk_window_set_screen (GTK_WINDOW (popup->window),
 			 gdk_display_get_screen (gdk_display_get_default (),
 						 screen_number));
-#endif
 
   gtk_window_set_position (GTK_WINDOW (popup->window),
                            GTK_WIN_POS_CENTER_ALWAYS);

@@ -452,7 +452,6 @@ meta_frames_calc_geometry (MetaFrames        *frames,
 MetaFrames*
 meta_frames_new (int screen_number)
 {
-#ifdef HAVE_GTK_MULTIHEAD
   GdkScreen *screen;
 
   screen = gdk_display_get_screen (gdk_display_get_default (),
@@ -460,12 +459,7 @@ meta_frames_new (int screen_number)
 
   return g_object_new (META_TYPE_FRAMES,
 		       "screen", screen,
-		       NULL);
-#else
-  return g_object_new (META_TYPE_FRAMES,
-		       NULL);
-#endif
-  
+		       NULL);  
 }
 
 void
@@ -835,21 +829,15 @@ meta_frames_apply_shapes (MetaFrames *frames,
       Window shape_window;
       Window client_window;
       Region client_xregion;
-#ifdef HAVE_GTK_MULTIHEAD
       GdkScreen *screen;
-#endif
       int screen_number;
       
       meta_topic (META_DEBUG_SHAPES,
                   "Frame 0x%lx needs to incorporate client shape\n",
                   frame->xwindow);
 
-#ifdef HAVE_GTK_MULTIHEAD
       screen = gtk_widget_get_screen (GTK_WIDGET (frames));
       screen_number = gdk_x11_screen_get_screen_number (screen);
-#else
-      screen_number = DefaultScreen (gdk_display);
-#endif
       
       attrs.override_redirect = True;
       
@@ -1057,11 +1045,8 @@ show_tip_now (MetaFrames *frames)
       /* get conversion delta for root-to-frame coords */
       dx = root_x - x;
       dy = root_y - y;
-#ifdef HAVE_GTK_MULTIHEAD
       screen_number = gdk_screen_get_number (gtk_widget_get_screen (GTK_WIDGET (frames)));
-#else
-      screen_number = DefaultScreen (gdk_display);
-#endif
+      
       meta_fixed_tip_show (gdk_display,
 			   screen_number,
                            rect->x + dx,

@@ -290,21 +290,16 @@ meta_image_window_new (Display *xdisplay,
                        int      max_height)
 {
   MetaImageWindow *iw;
-  
+  GdkDisplay *gdisplay;
+  GdkScreen *gscreen;
+    
   iw = g_new (MetaImageWindow, 1);
   iw->window = gtk_window_new (GTK_WINDOW_POPUP);
-
-#ifdef HAVE_GTK_MULTIHEAD
-  {
-    GdkDisplay *gdisplay;
-    GdkScreen *gscreen;
     
-    gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
-    gscreen = gdk_display_get_screen (gdisplay, screen_number);
-    
-    gtk_window_set_screen (GTK_WINDOW (iw->window), gscreen);
-  }
-#endif
+  gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
+  gscreen = gdk_display_get_screen (gdisplay, screen_number);
+  
+  gtk_window_set_screen (GTK_WINDOW (iw->window), gscreen);
  
   gtk_widget_realize (iw->window);
   iw->pixmap = gdk_pixmap_new (iw->window->window,
@@ -391,11 +386,8 @@ get_cmap (GdkPixmap *pixmap)
       else
         {
           meta_verbose ("Using system cmap to snapshot pixmap\n");
-#ifdef HAVE_GTK_MULTIHEAD
           cmap = gdk_screen_get_system_colormap (gdk_drawable_get_screen (pixmap));
-#else
-          cmap = gdk_colormap_get_system ();
-#endif
+
           g_object_ref (G_OBJECT (cmap));
         }
     }

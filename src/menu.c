@@ -241,10 +241,10 @@ meta_window_menu_new   (MetaFrames         *frames,
   menu->insensitive = insensitive;
   
   menu->menu = gtk_menu_new ();
-#ifdef HAVE_GTK_MULTIHEAD
+
   gtk_menu_set_screen (GTK_MENU (menu->menu),
 		       gtk_widget_get_screen (GTK_WIDGET (frames)));
-#endif
+
   i = 0;
   while (i < (int) G_N_ELEMENTS (menuitems))
     {
@@ -321,20 +321,12 @@ meta_window_menu_new   (MetaFrames         *frames,
           GtkWidget *mi;
           Display *display;
           Window xroot;
-          
+          GdkScreen *screen;
+            
           display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
-
-#ifdef HAVE_GTK_MULTIHEAD
-          {
-            GdkScreen *screen;
-            screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
-            xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
-          }
-#else
-          {
-            xroot = gdk_x11_get_default_root_xwindow ();
-          }
-#endif
+          
+          screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
+          xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
           
           i = 0;
           while (i < n_workspaces)
