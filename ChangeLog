@@ -1,5 +1,13 @@
 2002-05-24  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (menu_callback): follow windows to their new
+	workspace
+
+	* src/keybindings.c (handle_move_to_workspace): follow windows to
+	their new workspace
+
+2002-05-24  Havoc Pennington  <hp@pobox.com>
+
 	* src/metacity.schemas: add minimize window binding
 
 	* src/keybindings.c (handle_minimize_window): add minimize keybinding

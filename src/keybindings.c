@@ -1692,7 +1692,9 @@ handle_move_to_workspace  (MetaDisplay    *display,
   
   if (workspace)
     {
+      /* Activate second, so the window is never unmapped */
       meta_window_change_workspace (window, workspace);
+      meta_workspace_activate (workspace);
     }
   else
     {
