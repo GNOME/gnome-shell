@@ -9,10 +9,15 @@ your petty hangups about version numbers.
 COMPILING METACITY
 ===
 
-You need GTK+ 1.3.x (to become 2.0). At the moment CVS HEAD is
-required. Once 1.3.7 is available that will probably work. Metacity is
-a fairly trivial 6000-line C program, so once you get GTK+ built it
-should be no problem to build Metacity.
+You need GTK+ 1.3.x (to become 2.0), at least version 1.3.7.  At the
+moment CVS HEAD works, but that can change. Metacity is a fairly
+trivial 6000-line C program, so once you get GTK+ built it should be
+no problem to build Metacity.
+
+There are SRPMs on the ftp site (there were also binaries for a bit,
+but I am taking them down because they only worked with Rawhide, so it
+was sort of pointless). Just "rpm --rebuild metacity-whatever.src.rpm"
+after installing the GTK packages from ftp.gtk.org.
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
@@ -250,9 +255,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    I put a patch in the CVS version of the panel to fix this by 
    setting the new non-legacy type hint, but a panel with that 
    patch hasn't been released yet.
-
- - If you run a GLX/DRI 3D game or application, Metacity will 
-   crash, for reasons I do not yet understand.
 
 FAQ
 ===
