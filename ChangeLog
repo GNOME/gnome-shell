@@ -1,3 +1,11 @@
+2005-02-08  Aidan Delaney  <adelaney@cs.may.ie>
+
+	Removed useless function call.  #166730
+
+	* src/tabpopup.c: (outline_window_expose): Removed unused
+	references to variables and an unnecessary function call to
+	gdk_window_get_size().
+
 2005-02-08  Elijah Newren  <newren@gmail.com>
 
 	Avoid using CurrentTime when focusing, handle it better in case we

@@ -72,7 +72,6 @@ outline_window_expose (GtkWidget      *widget,
                        gpointer        data)
 {
   MetaTabPopup *popup;
-  int w, h;
   TabEntry *te;  
   
   popup = data;
@@ -82,8 +81,6 @@ outline_window_expose (GtkWidget      *widget,
 
   te = popup->current_selected_entry;
   
-  gdk_window_get_size (widget->window, &w, &h);
-
   gdk_draw_rectangle (widget->window,
                       widget->style->white_gc,
                       FALSE,
