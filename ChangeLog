@@ -1,3 +1,20 @@
+2004-08-02  Elijah Newren  <newren@math.utah.edu>
+
+	Fix some bugs (reported in #120100) regarding the focus window
+	when using the workspace switcher.
+	
+	* src/display.c (event_callback): When switching workspaces due to
+	a _NET_CURRENT_DESKTOP message, make sure to focus the default
+	window as well.
+
+	* src/workspace.c (meta_workspace_focus_default_window,
+	meta_workspace_focus_mru_window): Make DOCK or DESKTOP windows
+	have lower priority than others when choosing a window to focus.
+	(For the former function, this means don't focus them at all; for
+	the latter, this means only focus them (via the
+	meta_workspace_focus_top_window call) if no other mru window can
+	be found.)
+
 2004-07-31  Rob Adams  <readams@readams.net>
 
 	Fix bug that caused windows to not be focused on unminimizing

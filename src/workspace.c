@@ -787,7 +787,9 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
     {
       MetaWindow * window;
       window = meta_screen_get_mouse_window (workspace->screen, not_this_one);
-      if (window)
+      if (window &&
+          window->type != META_WINDOW_DOCK &&
+          window->type != META_WINDOW_DESKTOP)
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing mouse window %s\n", window->desc);
@@ -817,7 +819,11 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
 
   while (tmp)
     {
-      if (((MetaWindow*) tmp->data) != not_this_one)
+      MetaWindow* tmp_window;
+      tmp_window = ((MetaWindow*) tmp->data);
+      if (tmp_window != not_this_one           &&
+          tmp_window->type != META_WINDOW_DOCK &&
+          tmp_window->type != META_WINDOW_DESKTOP)
         {
           window = tmp->data;
 	  break;

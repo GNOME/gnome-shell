@@ -2056,7 +2056,10 @@ event_callback (XEvent   *event,
                                                         space);
 
                   if (workspace)
-                    meta_workspace_activate (workspace);
+                    {
+                      meta_workspace_activate (workspace);
+                      meta_workspace_focus_default_window (workspace, NULL);
+                    }
                   else
                     meta_verbose ("Don't know about workspace %d\n", space);
                 }
