@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-01-13 22:16+0100\n"
-"PO-Revision-Date: 2004-01-13 22:17+0100\n"
+"PO-Revision-Date: 2004-02-11 19:46+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -478,7 +478,7 @@ msgstr ""
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
-msgstr ""
+msgstr "Hvis denne settes vil «titlebar_font» ignoreres og forvalgt skrift vil brukes for vindustitler."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -644,7 +644,7 @@ msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr ""
+msgstr "Antall arbeidsområder. Må være større enn null og har et fast maksimum (for å hindre at noen ødelegger skrivebordet ved å be om 34 millioner arbeidsområder ved en feiltagelse)."
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
@@ -2735,11 +2735,11 @@ msgstr ""
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
