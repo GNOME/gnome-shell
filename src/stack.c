@@ -1339,6 +1339,7 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
           window != not_this_one &&
           (window->unmaps_pending == 0) &&
           !window->minimized &&
+          (window->input || window->take_focus) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         {

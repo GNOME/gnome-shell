@@ -1,3 +1,9 @@
+2002-11-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/stack.c (meta_stack_get_default_focus_window): never use a
+	window with input = FALSE take_focus = FALSE as the default focus
+	window #95454 fix from Hidetoshi Tajima
+
 2002-11-10  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Major changes
