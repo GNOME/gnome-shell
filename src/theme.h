@@ -325,6 +325,8 @@ struct _MetaDrawOp
       guint32 colorize_cache_pixel;
       GdkPixbuf *colorize_cache_pixbuf;
       MetaImageFillType fill_type;
+      unsigned int vertical_stripes : 1;
+      unsigned int horizontal_stripes : 1;
     } image;
     
     struct {

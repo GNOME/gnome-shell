@@ -1,3 +1,15 @@
+2002-11-04  Havoc Pennington  <hp@pobox.com>
+
+        Patch from Brian Cameron to implement the vertical/horizontal 
+	striped image accelerated scaling from the gtk pixbuf engine.
+	
+	* src/theme.c (scale_and_alpha_pixbuf): if an image is
+	vertical/horizontal stripes, use special extra-fast scaling 
+	routines.
+
+	* src/theme-parser.c (parse_draw_op_element): when loading an
+	image, mark it as vertically/horizontally striped when appropriate
+
 2002-11-04 Erwann Chenede - <erwann.chenede@sun.com>
 	
 	* src/xprops.c (meta_prop_get_values): changed __FUNCTION__

@@ -2246,6 +2246,9 @@ parse_draw_op_element (GMarkupParseContext  *context,
       GdkPixbuf *pixbuf;
       MetaColorSpec *colorize_spec = NULL;
       MetaImageFillType fill_type_val;
+      int h, w, c;
+      int pixbuf_width, pixbuf_height, pixbuf_n_channels, pixbuf_rowstride;
+      guchar *pixbuf_pixels;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
@@ -2308,7 +2311,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (fill_type)
         {
           fill_type_val = meta_image_fill_type_from_string (fill_type);
-
+          
           if (((int) fill_type_val) == -1)
             {
               set_error (error, context, G_MARKUP_ERROR,
@@ -2330,16 +2333,16 @@ parse_draw_op_element (GMarkupParseContext  *context,
         }
 
       if (colorize)
-	{
-	  colorize_spec = meta_color_spec_new_from_string (colorize, error);
-
-	  if (colorize_spec == NULL)
-	    {
-	      add_context_to_error (error, context);
+        {
+          colorize_spec = meta_color_spec_new_from_string (colorize, error);
+          
+          if (colorize_spec == NULL)
+            {
+              add_context_to_error (error, context);
               g_object_unref (G_OBJECT (pixbuf));
-	      return;
-	    }
-	}
+              return;
+            }
+        }
 
       alpha_spec = NULL;
       if (alpha && !parse_alpha (alpha, &alpha_spec, context, error))
@@ -2358,6 +2361,67 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op->data.image.height = optimize_expression (info->theme, height);
       op->data.image.alpha_spec = alpha_spec;
       op->data.image.fill_type = fill_type_val;
+      
+      /* Check for vertical & horizontal stripes */
+      pixbuf_n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+      pixbuf_width = gdk_pixbuf_get_width(pixbuf);
+      pixbuf_height = gdk_pixbuf_get_height(pixbuf);
+      pixbuf_rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+      pixbuf_pixels = gdk_pixbuf_get_pixels(pixbuf);
+
+      /* Check for horizontal stripes */
+      for (h = 0; h < pixbuf_height; h++)
+        {
+          for (w = 1; w < pixbuf_width; w++)
+            {
+              for (c = 0; c < pixbuf_n_channels; c++)
+                {
+                  if (pixbuf_pixels[(h * pixbuf_rowstride) + c] !=
+                      pixbuf_pixels[(h * pixbuf_rowstride) + w + c])
+                    break;
+                }
+              if (c < pixbuf_n_channels)
+                break;
+            }
+          if (w < pixbuf_width)
+            break;
+        }
+
+      if (h >= pixbuf_height)
+        {
+          op->data.image.horizontal_stripes = TRUE; 
+        }
+      else
+        {
+          op->data.image.horizontal_stripes = FALSE; 
+        }
+
+      /* Check for vertical stripes */
+      for (w = 0; w < pixbuf_width; w++)
+        {
+          for (h = 1; h < pixbuf_height; h++)
+            {
+              for (c = 0; c < pixbuf_n_channels; c++)
+                {
+                  if (pixbuf_pixels[w + c] !=
+                      pixbuf_pixels[(h * pixbuf_rowstride) + w + c])
+                    break;
+                }
+              if (c < pixbuf_n_channels)
+                break;
+            }
+          if (h < pixbuf_height)
+            break;
+        }
+
+      if (w >= pixbuf_width)
+        {
+          op->data.image.vertical_stripes = TRUE; 
+        }
+      else
+        {
+          op->data.image.vertical_stripes = FALSE; 
+        }
       
       g_assert (info->op_list);
       

@@ -2804,18 +2804,107 @@ pixbuf_tile (GdkPixbuf *tile,
   return pixbuf;
 }
 
+static GdkPixbuf *
+replicate_rows (GdkPixbuf  *src,
+                int         src_x,
+                int         src_y,
+                int         width,
+                int         height)
+{
+  unsigned int n_channels = gdk_pixbuf_get_n_channels (src);
+  unsigned int src_rowstride = gdk_pixbuf_get_rowstride (src);
+  unsigned char *pixels = (gdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x
+                           * n_channels);
+  unsigned char *dest_pixels;
+  GdkPixbuf *result;
+  unsigned int dest_rowstride;
+  int i;
+
+  result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, n_channels == 4, 8,
+                           width, height);
+  dest_rowstride = gdk_pixbuf_get_rowstride (result);
+  dest_pixels = gdk_pixbuf_get_pixels (result);
+  
+  for (i = 0; i < height; i++)
+    memcpy (dest_pixels + dest_rowstride * i, pixels, n_channels * width);
+
+  return result;
+}
+
+static GdkPixbuf *
+replicate_cols (GdkPixbuf  *src,
+                int         src_x,
+                int         src_y,
+                int         width,
+                int         height)
+{
+  unsigned int n_channels = gdk_pixbuf_get_n_channels (src);
+  unsigned int src_rowstride = gdk_pixbuf_get_rowstride (src);
+  unsigned char *pixels = (gdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x
+                           * n_channels);
+  unsigned char *dest_pixels;
+  GdkPixbuf *result;
+  unsigned int dest_rowstride;
+  int i, j;
+
+  result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, n_channels == 4, 8,
+                           width, height);
+  dest_rowstride = gdk_pixbuf_get_rowstride (result);
+  dest_pixels = gdk_pixbuf_get_pixels (result);
+
+  for (i = 0; i < height; i++)
+    {
+      unsigned char *p = dest_pixels + dest_rowstride * i;
+      unsigned char *q = pixels + src_rowstride * i;
+
+      unsigned char r = *(q++);
+      unsigned char g = *(q++);
+      unsigned char b = *(q++);
+      
+      if (n_channels == 4)
+        {
+          unsigned char a;
+          
+          a = *(q++);
+          
+          for (j = 0; j < width; j++)
+            {
+              *(p++) = r;
+              *(p++) = g;
+              *(p++) = b;                    
+              *(p++) = a;
+            }
+        }
+      else
+        {
+          for (j = 0; j < width; j++)
+            {
+              *(p++) = r;
+              *(p++) = g;
+              *(p++) = b;
+            }
+        }
+    }
+
+  return result;
+}
+
 static GdkPixbuf*
 scale_and_alpha_pixbuf (GdkPixbuf             *src,
                         MetaAlphaGradientSpec *alpha_spec,
                         MetaImageFillType      fill_type,
                         int                    width,
-                        int                    height)
+                        int                    height,
+                        gboolean               vertical_stripes,
+                        gboolean               horizontal_stripes)
 {
   GdkPixbuf *pixbuf;
+  GdkPixbuf *temp_pixbuf;
 
   pixbuf = NULL;
 
   pixbuf = src;
+
   if (gdk_pixbuf_get_width (pixbuf) == width &&
       gdk_pixbuf_get_height (pixbuf) == height)
     {
@@ -2823,16 +2912,61 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
     }
   else
     {
-      switch (fill_type)
+      if (fill_type == META_IMAGE_FILL_TILE)
         {
-        case META_IMAGE_FILL_SCALE:
-          pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                            width, height,
-                                            GDK_INTERP_BILINEAR);
-          break;
-        case META_IMAGE_FILL_TILE:
           pixbuf = pixbuf_tile (pixbuf, width, height);
-          break;
+        }
+      else
+        {
+    	  int src_h, src_w, dest_h, dest_w, pixbuf_width, pixbuf_height;
+          src_h = gdk_pixbuf_get_height (src);
+          src_w = gdk_pixbuf_get_width (src);
+
+          if (vertical_stripes)
+            {
+              dest_w = width;
+              dest_h = gdk_pixbuf_get_height (src);
+            }
+          else if (horizontal_stripes)
+            {
+              dest_w = gdk_pixbuf_get_width (src);
+              dest_h = height;
+            }
+          else
+            {
+              dest_w = width;
+              dest_h = height;
+            }
+
+          if (dest_w == src_w && dest_h == src_h)
+            {
+              temp_pixbuf = src;
+              g_object_ref (G_OBJECT (tmp_pixbuf));
+            }
+          else
+            {
+              temp_pixbuf = gdk_pixbuf_scale_simple (src,
+                                                     dest_w, dest_h,
+                                                     GDK_INTERP_BILINEAR);
+            }
+
+          /* prefer to replicate_cols if possible, as that
+           * is faster (no memory reads)
+           */
+          if (horizontal_stripes)
+            {
+              pixbuf = replicate_cols (temp_pixbuf, 0, 0, width, height);
+              g_object_unref (G_OBJECT (temp_pixbuf));
+            }
+          else if (vertical_stripes)
+            {
+              pixbuf = replicate_rows (temp_pixbuf, 0, 0, width, height);
+              g_object_unref (G_OBJECT (temp_pixbuf));
+            }
+          else 
+            {
+              pixbuf = temp_pixbuf;
+            }
         }
     }
 
@@ -2972,15 +3106,19 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
                 pixbuf = scale_and_alpha_pixbuf (op->data.image.colorize_cache_pixbuf,
                                                  op->data.image.alpha_spec,
                                                  op->data.image.fill_type,
-                                                 width, height);
+                                                 width, height,
+                                                 op->data.image.vertical_stripes,
+                                                 op->data.image.horizontal_stripes);
               }
 	  }
 	else
 	  {
 	    pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
-					     op->data.image.alpha_spec,
+                                             op->data.image.alpha_spec,
                                              op->data.image.fill_type,
-					     width, height);
+                                             width, height,
+                                             op->data.image.vertical_stripes,
+                                             op->data.image.horizontal_stripes);
 	  }
         break;
       }
@@ -2997,12 +3135,16 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
         pixbuf = scale_and_alpha_pixbuf (info->mini_icon,
                                          op->data.icon.alpha_spec,
                                          op->data.icon.fill_type,
-                                         width, height);
+                                         width, height,
+                                         op->data.image.vertical_stripes,
+                                         op->data.image.horizontal_stripes);
       else if (info->icon)
         pixbuf = scale_and_alpha_pixbuf (info->icon,
                                          op->data.icon.alpha_spec,
                                          op->data.icon.fill_type,
-                                         width, height);
+                                         width, height,
+                                         op->data.image.vertical_stripes,
+                                         op->data.image.horizontal_stripes);
       break;
 
     case META_DRAW_TITLE:
