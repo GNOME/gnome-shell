@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-10-01 17:18-0400\n"
-"PO-Revision-Date: 2003-07-29 15:34+0200\n"
+"POT-Creation-Date: 2003-10-08 12:55+0200\n"
+"PO-Revision-Date: 2003-10-08 13:15+0200\n"
 "Last-Translator: Andras Timar <timar@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -300,16 +300,16 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "A(z) \"%s\" ablak nem válaszol."
 
 #: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgstr "Ha erőszakkal bezárod az alkalmazást, minden mentetlen változtatás elvész."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
-msgstr "_Kényszerített kilépés"
+msgstr "_Erőszakos bezárás"
 
 #: src/metacity-dialog.c:197
 msgid "Title"
@@ -331,6 +331,8 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"Hiba történt a(z) \"%s\" futtatása közben:\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -356,11 +358,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Ablakmenü aktiválása"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "A gombok elrendezése az ablak címsorában"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -386,7 +388,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
-msgstr ""
+msgstr "Ablak bezárása"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -394,7 +396,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr ""
+msgstr "Aktuális téma"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
@@ -416,7 +418,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Minden ablak elrejtése és fókusz a munkaasztalra"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -450,7 +452,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "Maximize a window"
-msgstr ""
+msgstr "Ablak maximalizálása"
 
 #: src/metacity.schemas.in.h:22
 msgid "Maximize window horizontally"
@@ -470,7 +472,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:26
 msgid "Move a window"
-msgstr ""
+msgstr "Ablak áthelyezése"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
@@ -506,82 +508,82 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "Ablak áthelyezése egy munkaterülettel lejjebb"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Ablak áthelyezése a balra lévő munkaterületre"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Ablak áthelyezése a jobbra lévő munkaterületre"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "Ablak áthelyezése egy munkaterülettel feljebb"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "Ablak áthelyezése az 1. munkaterületre"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "Ablak áthelyezése a 10. munkaterületre"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "Ablak áthelyezése a 11. munkaterületre"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "Ablak áthelyezése a 12. munkaterületre"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "Ablak áthelyezése a 2. munkaterületre"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "Ablak áthelyezése a 3. munkaterületre"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "Ablak áthelyezése a 4. munkaterületre"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "Ablak áthelyezése az 5. munkaterületre"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "Ablak áthelyezése a 6. munkaterületre"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "Ablak áthelyezése a 7. munkaterületre"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "Ablak áthelyezése a 8. munkaterületre"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "Ablak áthelyezése a 9. munkaterületre"
 
 #: src/metacity.schemas.in.h:51
 msgid "Name of workspace"
-msgstr ""
+msgstr "Munkaterület neve"
 
 #: src/metacity.schemas.in.h:52
 msgid "Number of workspaces"
-msgstr ""
+msgstr "Munkaterületek száma"
 
 #: src/metacity.schemas.in.h:53
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr ""
+msgstr "A munkaterületek száma. Az értéknek nullánál nagyobbnak kell lennie, és van beépített maximális érték, nehogy véletlenül szétrombold a munkaasztalodat 34 millió munkaterület beállításával."
 
 #: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
@@ -593,19 +595,19 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:56
 msgid "Resize a window"
-msgstr ""
+msgstr "Ablak átméretezése"
 
 #: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
-msgstr ""
+msgstr "Megadott parancs futtatása"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "A panelmenü megjelenítése"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "A panel futtatás párbeszédablakának megjelenítése"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -625,79 +627,79 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "Átváltás az 1. munkaterületre"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "Átváltás a 10. munkaterületre"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "Átváltás a 11. munkaterületre"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "Átváltás a 12. munkaterületre"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "Átváltás a 2. munkaterületre"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "Átváltás a 3. munkaterületre"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "Átváltás a 4. munkaterületre"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "Átváltás az 5. munkaterületre"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "Átváltás a 6. munkaterületre"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "Átváltás a 7. munkaterületre"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "Átváltás a 8. munkaterületre"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "Átváltás a 9. munkaterületre"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Átváltás az aktuális feletti munkaterületre"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Átváltás az aktuális alatti munkaterületre"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Átváltás a bal oldali munkaterületre"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Átváltás a jobb oldali munkaterületre"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "A rendszer pittyenése hallható"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Képernyőkép készítése"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Képernyőkép készítése egy ablakról"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -1372,15 +1374,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
-msgstr ""
+msgstr "Mindig az előtérben"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Teljes képernyős üzemmód"
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Maximalizált állapot"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
@@ -2373,24 +2375,24 @@ msgstr ""
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Ablakkezelő "
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Hiba az ablakkezelőben: "
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Ablakkezelő-figyelmeztetés: "
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Ablakkezelő-hibaüzenet: "
 
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Az alkalmazás hamis _NET_WM_PID-értéket állított be: %ld\n"
 
 #. first time through
 #: src/window.c:4566
@@ -2434,15 +2436,3 @@ msgstr ""
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "A(z) \"%s\" ablak nem válaszol.\n"
-#~ "Kilépsz az alkalmazásból?\n"
-#~ "(Minden megnyitott dokumentum elvész.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Alkalmazás kilövése"
