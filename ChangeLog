@@ -1,3 +1,26 @@
+2003-02-27  Havoc Pennington  <hp@redhat.com>
+
+	Switch over to new constraints code, unquestionably introduces
+	some bugs, but should get us on the right path.
+	
+	* src/window.c (meta_window_get_work_area_all_xineramas): create
+	this function again as it turned out to be legitimate for window 
+	position constraint
+	(adjust_for_gravity): use the width/height from the configure
+	request to compute the requested move
+	(meta_window_move_resize_internal): use meta_window_constrain
+	(update_size_hints): clamp max size to MAXSHORT to avoid worrying
+	about overflow stuff
+
+	* src/constraints.c (meta_window_constrain): don't base placement
+	on uninitialized variables, general hacking
+
+	* src/Makefile.am (metacity_SOURCES): add constraints.c,
+	constraints.h
+
+	* src/constraints.c (meta_window_constrain): update the 
+	cut-and-paste aspect ratio code to have latest bugfixes
+ 
 2003-03-08  Rob Adams <robadams@ucla.edu>
 
 	* src/window-props.c (reload_normal_hints):  Check that window min

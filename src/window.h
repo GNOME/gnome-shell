@@ -424,6 +424,8 @@ void meta_window_get_work_area_current_xinerama (MetaWindow    *window,
 void meta_window_get_work_area_for_xinerama     (MetaWindow    *window,
                                                  int            which_xinerama,
                                                  MetaRectangle *area);
+void meta_window_get_work_area_all_xineramas    (MetaWindow    *window,
+                                                 MetaRectangle *area);
 
 
 gboolean meta_window_same_application (MetaWindow *window,

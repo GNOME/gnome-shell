@@ -1,8 +1,8 @@
 /* Metacity size/position constraints */
 
-/* 
- * Copyright (C) 2002 Red Hat, Inc.
- * 
+/*
+ * Copyright (C) 2002, 2003 Red Hat, Inc.
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -12,13 +12,14 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "constraints.h"
 #include "place.h"
 
@@ -35,7 +36,7 @@
  *
  * After selecting the variables we plan to vary, we define
  * each constraint on the window in terms of those variables.
- * 
+ *
  * Trivial example, say we are resizing vertically from the top of the
  * window. In that case we are applying the user's mouse motion delta
  * to an original size and position, note that dy is positive to
@@ -66,7 +67,7 @@
  *
  *   new_height = orig_height - dy;
  *   new_y      = orig_y + dy;
- * 
+ *
  * This way the constraint is applied simultaneously to size/position,
  * so you aren't running the risk of constraining one but still
  * changing the other. i.e. we've converted an operation that may
@@ -103,8 +104,10 @@
  * maximized, we want to MOVE_VERTICAL/MOVE_HORIZONTAL to the top
  * center of the screen, then RESIZE_BOTTOM and
  * RESIZE_HORIZONTAL_CENTER. i.e. essentially NorthGravity.
- * 
+ *
  */
+
+#define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
 
 typedef struct
 {
@@ -113,7 +116,7 @@ typedef struct
   const MetaXineramaScreenInfo *xinerama;
   MetaRectangle work_area_xinerama;
   MetaRectangle work_area_screen;
-  int nw_x, nw_y, se_x, se_y;
+  int nw_x, nw_y, se_x, se_y; /* these are whole-screen not xinerama */
 } ConstraintInfo;
 
 /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
@@ -157,6 +160,7 @@ typedef void (* MetaConstrainMoveFunc)    (MetaWindow           *window,
 
 typedef struct
 {
+  const char               *name;
   MetaConstraintAppliesFunc applies_func;
   MetaConstrainTopFunc      top_func;
   MetaConstrainBottomFunc   bottom_func;
@@ -246,11 +250,12 @@ constraint_desktop_move_func    (MetaWindow           *window,
                                  int                  *x_delta,
                                  int                  *y_delta)
 {
-  *x_delta = 0 - orig->x;  
+  *x_delta = 0 - orig->x;
   *y_delta = 0 - orig->y;
 }
 
 static const Constraint constraint_desktop = {
+  "Desktop",
   constraint_desktop_applies_func,
   constraint_desktop_top_func,
   constraint_desktop_bottom_func,
@@ -272,7 +277,7 @@ static const Constraint constraint_desktop = {
  *
  * Left resize
  * ===
- * 
+ *
  *   new_width = orig_width - dx
  *   new_x = orig_x + dx
  *
@@ -311,7 +316,7 @@ static const Constraint constraint_desktop = {
  *
  * Vertical move
  * ===
- * 
+ *
  *  new_height = orig_height
  *  new_y = orig_y + dy
  *
@@ -324,9 +329,9 @@ static const Constraint constraint_desktop = {
  *   new_y < se_y
  *   orig_y + dy = se_y
  *   so max dy is (se_y - orig_y)
- * 
+ *
  * Horizontal move is equivalent to vertical.
- *   
+ *
  */
 
 static gboolean
@@ -338,14 +343,48 @@ constraint_onscreen_applies_func (MetaWindow *window)
 }
 
 static void
+get_outermost_onscreen_positions (MetaWindow           *window,
+                                  const ConstraintInfo *info,
+                                  const MetaRectangle  *orig,
+                                  int                  *leftmost_x,
+                                  int                  *rightmost_x,
+                                  int                  *topmost_y,
+                                  int                  *bottommost_y)
+{
+  if (leftmost_x)
+    *leftmost_x = info->nw_x + TITLEBAR_LENGTH_ONSCREEN - orig->width;
+
+  if (rightmost_x)
+    *rightmost_x = info->se_x - TITLEBAR_LENGTH_ONSCREEN;
+
+  if (topmost_y)
+    *topmost_y = info->nw_y + info->fgeom.top_height;
+
+  if (bottommost_y)
+    {
+      /* If no frame, keep random TITLEBAR_LENGTH_ONSCREEN pixels on the
+       * screen.
+       */
+      if (window->frame)
+        *bottommost_y = info->se_y;
+      else
+        *bottommost_y = info->se_y - TITLEBAR_LENGTH_ONSCREEN;
+    }
+}
+
+static void
 constraint_onscreen_top_func     (MetaWindow           *window,
                                   const ConstraintInfo *info,
                                   const MetaRectangle  *orig,
                                   int                  *y_delta)
 {
   int min_dy;
-  
-  min_dy = info->nw_y + info->fgeom.top_height - orig->y;
+  int topmost_y;
+
+  get_outermost_onscreen_positions (window, info, orig,
+                                    NULL, NULL, &topmost_y, NULL);
+
+  min_dy = topmost_y - orig->y;
 
   if (*y_delta < min_dy)
     *y_delta = min_dy;
@@ -358,8 +397,12 @@ constraint_onscreen_bottom_func  (MetaWindow           *window,
                                   int                  *y_delta)
 {
   int max_dy;
+  int bottommost_y;
 
-  max_dy = info->se_y - info->fgeom.top_height - orig->y;
+  get_outermost_onscreen_positions (window, info, orig,
+                                    NULL, NULL, NULL, &bottommost_y);
+
+  max_dy = bottommost_y - orig->y;
 
   if (*y_delta > max_dy)
     *y_delta = max_dy;
@@ -372,10 +415,13 @@ constraint_onscreen_vcenter_func (MetaWindow           *window,
                                   int                  *y_delta)
 {
   int max_dy;
-  
-  max_dy = info->nw_y + info->fgeom.top_height - orig->y;
-  max_dy = ABS (max_dy);
-  
+  int topmost_y;
+
+  get_outermost_onscreen_positions (window, info, orig,
+                                    NULL, NULL, &topmost_y, NULL);
+
+  max_dy = orig->y - topmost_y;
+
   if (*y_delta > max_dy)
     *y_delta = max_dy;
 }
@@ -387,8 +433,12 @@ constraint_onscreen_left_func    (MetaWindow           *window,
                                   int                  *x_delta)
 {
   int min_dx;
-  
-  min_dx = info->nw_x + info->fgeom.left_width + TITLEBAR_WIDTH_ONSCREEN - orig->x;
+  int leftmost_x;
+
+  get_outermost_onscreen_positions (window, info, orig,
+                                    &leftmost_x, NULL, NULL, NULL);
+
+  min_dx = leftmost_x - orig->x;
 
   if (*x_delta < min_dx)
     *x_delta = min_dx;
@@ -401,8 +451,12 @@ constraint_onscreen_right_func   (MetaWindow           *window,
                                   int                  *x_delta)
 {
   int max_dx;
+  int rightmost_x;
 
-  max_dx = info->se_x - TITLEBAR_WIDTH_ONSCREEN - orig->x;
+  get_outermost_onscreen_positions (window, info, orig,
+                                    NULL, &rightmost_x, NULL, NULL);
+
+  max_dx = rightmost_x - orig->x;
 
   if (*x_delta > max_dx)
     *x_delta = max_dx;
@@ -415,10 +469,13 @@ constraint_onscreen_hcenter_func (MetaWindow           *window,
                                   int                  *x_delta)
 {
   int max_dx;
+  int leftmost_x;
   
-  max_dx = info->nw_x + info->fgeom.left_width + TITLEBAR_WIDTH_ONSCREEN - orig->x;
-  max_dx = ABS (max_dx);
-  
+  get_outermost_onscreen_positions (window, info, orig,
+                                    &leftmost_x, NULL, NULL, NULL);
+
+  max_dx = orig->x - leftmost_x;
+
   if (*x_delta > max_dx)
     *x_delta = max_dx;
 }
@@ -432,15 +489,15 @@ constraint_onscreen_move_func    (MetaWindow           *window,
 {
   int min_delta;
   int max_delta;
-  
-  min_delta = info->nw_y + info->fgeom.top_height - orig->y;
+  int leftmost_x, rightmost_x, topmost_y, bottommost_y;
 
-  if (window->frame) /* if frame, the titlebar is always above the y pos */
-    max_delta = info->se_y - orig->y;
-  else               /* else keep some client area pixels on the screen */
-    max_delta = info->se_y - orig->y - TITLEBAR_WIDTH_ONSCREEN;
+  get_outermost_onscreen_positions (window, info, orig,
+                                    &leftmost_x, &rightmost_x,
+                                    &topmost_y, &bottommost_y);
 
-  
+  min_delta = topmost_y - orig->y;
+  max_delta = bottommost_y - orig->y;
+
   /* Note that min delta (top left) has priority over
    * max delta (bottom right) to facilitate keeping
    * titlebar on the screen
@@ -450,8 +507,8 @@ constraint_onscreen_move_func    (MetaWindow           *window,
   if (*y_delta < min_delta)
     *y_delta = min_delta;
 
-  min_delta = info->nw_x + TITLEBAR_WIDTH_ONSCREEN - orig->x;
-  max_delta = info->se_x - orig->x - TITLEBAR_WIDTH_ONSCREEN;
+  min_delta = leftmost_x - orig->x;
+  max_delta = rightmost_x - orig->x;
 
   if (*x_delta > max_delta)
     *x_delta = max_delta;
@@ -460,6 +517,7 @@ constraint_onscreen_move_func    (MetaWindow           *window,
 }
 
 static const Constraint constraint_onscreen = {
+  "Onscreen",
   constraint_onscreen_applies_func,
   constraint_onscreen_top_func,
   constraint_onscreen_bottom_func,
@@ -472,7 +530,7 @@ static const Constraint constraint_onscreen = {
 
 
 /* Size hints constraints:
- * 
+ *
  * For min/max size we just clamp to those, and for resize increment
  * we clamp to the one at or below the requested place.
  *
@@ -480,7 +538,7 @@ static const Constraint constraint_onscreen = {
  * meta_window_constrain, because it involves both dimensions, and
  * thus messes up our generic framework.
  *
- * Left resize:
+ * Left resize can be solved for dx like this:
  *   new_width = orig_width - dx
  *   new_x = orig_x + dx
  *
@@ -493,7 +551,7 @@ static const Constraint constraint_onscreen = {
  *   orig_width - dx <= max_width
  *   - dx <= max_width - orig_width
  *   dx >= orig_width - max_width
- * 
+ *
  */
 
 static gboolean
@@ -508,7 +566,27 @@ constraint_hints_top_func     (MetaWindow           *window,
                                const MetaRectangle  *orig,
                                int                  *y_delta)
 {
-  
+  int min_dy;
+  int max_dy;
+  int height;
+
+  max_dy = orig->height - window->size_hints.min_height;
+  min_dy = orig->height - window->size_hints.max_height;
+
+  g_assert (max_dy >= min_dy);
+
+  if (*y_delta > max_dy)
+    *y_delta = max_dy;
+  if (*y_delta < min_dy)
+    *y_delta = min_dy;
+
+  /* shrink to base + N * inc
+   */
+  height = orig->height - *y_delta;
+  height = window->size_hints.base_height +
+    FLOOR (height - window->size_hints.base_height, window->size_hints.height_inc);
+
+  *y_delta = orig->height - height;
 }
 
 static void
@@ -517,7 +595,27 @@ constraint_hints_bottom_func  (MetaWindow           *window,
                                const MetaRectangle  *orig,
                                int                  *y_delta)
 {
+  int min_dy;
+  int max_dy;
+  int height;
 
+  min_dy = window->size_hints.min_height - orig->height;
+  max_dy = window->size_hints.max_height - orig->height;
+
+  g_assert (max_dy >= min_dy);
+
+  if (*y_delta > max_dy)
+    *y_delta = max_dy;
+  if (*y_delta < min_dy)
+    *y_delta = min_dy;
+
+  /* shrink to base + N * inc
+   */
+  height = orig->height + *y_delta;
+  height = window->size_hints.base_height +
+    FLOOR (height - window->size_hints.base_height, window->size_hints.height_inc);
+
+  *y_delta = height - orig->height;
 }
 
 static void
@@ -526,7 +624,32 @@ constraint_hints_vcenter_func (MetaWindow           *window,
                                const MetaRectangle  *orig,
                                int                  *y_delta)
 {
+  int min_dy;
+  int max_dy;
+  int height;
 
+  /* Remember our delta is negative to shrink window, positive to
+   * grow it, and the actual resize is y_delta * 2 (which is broken,
+   * but that's how it currently is)
+   */
+
+  min_dy = (window->size_hints.min_height - orig->height) / 2;
+  max_dy = (window->size_hints.max_height - orig->height) / 2;
+
+  g_assert (max_dy >= min_dy);
+
+  if (*y_delta > max_dy)
+    *y_delta = max_dy;
+  if (*y_delta < min_dy)
+    *y_delta = min_dy;
+
+  /* shrink to base + N * inc
+   */
+  height = orig->height + *y_delta * 2;
+  height = window->size_hints.base_height +
+    FLOOR (height - window->size_hints.base_height, window->size_hints.height_inc);
+
+  *y_delta = (height - orig->height) / 2;
 }
 
 static void
@@ -538,9 +661,11 @@ constraint_hints_left_func    (MetaWindow           *window,
   int min_dx;
   int max_dx;
   int width;
-  
+
   max_dx = orig->width - window->size_hints.min_width;
   min_dx = orig->width - window->size_hints.max_width;
+
+  g_assert (max_dx >= min_dx);
 
   if (*x_delta > max_dx)
     *x_delta = max_dx;
@@ -552,7 +677,7 @@ constraint_hints_left_func    (MetaWindow           *window,
   width = orig->width - *x_delta;
   width = window->size_hints.base_width +
     FLOOR (width - window->size_hints.base_width, window->size_hints.width_inc);
-  
+
   *x_delta = orig->width - width;
 }
 
@@ -562,7 +687,27 @@ constraint_hints_right_func   (MetaWindow           *window,
                                const MetaRectangle  *orig,
                                int                  *x_delta)
 {
+  int min_dx;
+  int max_dx;
+  int width;
 
+  min_dx = window->size_hints.min_width - orig->width;
+  max_dx = window->size_hints.max_width - orig->width;
+
+  g_assert (max_dx >= min_dx);
+
+  if (*x_delta > max_dx)
+    *x_delta = max_dx;
+  if (*x_delta < min_dx)
+    *x_delta = min_dx;
+
+  /* shrink to base + N * inc
+   */
+  width = orig->width + *x_delta;
+  width = window->size_hints.base_width +
+    FLOOR (width - window->size_hints.base_width, window->size_hints.width_inc);
+
+  *x_delta = width - orig->width;
 }
 
 static void
@@ -571,7 +716,32 @@ constraint_hints_hcenter_func (MetaWindow           *window,
                                const MetaRectangle  *orig,
                                int                  *x_delta)
 {
+  int min_dx;
+  int max_dx;
+  int width;
+  
+  /* Remember our delta is negative to shrink window, positive to
+   * grow it, and the actual resize is x_delta * 2 (which is broken,
+   * but that's how it currently is)
+   */
 
+  min_dx = (window->size_hints.min_width - orig->width) / 2;
+  max_dx = (window->size_hints.max_width - orig->width) / 2;
+
+  g_assert (max_dx >= min_dx);
+
+  if (*x_delta > max_dx)
+    *x_delta = max_dx;
+  if (*x_delta < min_dx)
+    *x_delta = min_dx;
+
+  /* shrink to base + N * inc
+   */
+  width = orig->width + *x_delta * 2;
+  width = window->size_hints.base_width +
+    FLOOR (width - window->size_hints.base_width, window->size_hints.width_inc);
+
+  *x_delta = (width - orig->width) / 2;
 }
 
 static void
@@ -585,6 +755,7 @@ constraint_hints_move_func    (MetaWindow           *window,
 }
 
 static const Constraint constraint_hints = {
+  "Hints",
   constraint_hints_applies_func,
   constraint_hints_top_func,
   constraint_hints_bottom_func,
@@ -618,10 +789,18 @@ constrain_move (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d %d (Move constraint '%s')\n",
+                  x_delta, y_delta, (*cp)->name);
+                  
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->move_func) (window, info, orig,
                               &x_delta, &y_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d %d (Move constraint '%s')\n",
+                  x_delta, y_delta, (*cp)->name);
+      
       ++cp;
     }
 
@@ -642,17 +821,25 @@ constrain_resize_left (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (Left constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->left_func) (window, info, orig,
                               &x_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (Left constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       ++cp;
     }
 
   /* Moving mouse from 10 to 5 means current - orig means 5 - 10 means
    * a delta of -5
    */
-  new->x = orig->x - x_delta;
+  new->x = orig->x + x_delta;
   new->width = orig->width - x_delta;
 }
 
@@ -664,23 +851,34 @@ constrain_resize_hcenter (MetaWindow           *window,
                           MetaRectangle        *new)
 {
   const Constraint **cp;
-
+  
   cp = &all_constraints[0];
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (HCenter constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->hcenter_func) (window, info, orig,
                                  &x_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (HCenter constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       ++cp;
     }
-
+  
   /* center deltas are positive to grow the window and negative to
    * shrink it.
    */
   new->x = orig->x - x_delta;
   new->width = orig->width + x_delta * 2;
+  /* FIXME above implies that with center gravity you have to grow
+   * in increments of two
+   */
 }
 
 static void
@@ -696,10 +894,18 @@ constrain_resize_right (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (Right constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->right_func) (window, info, orig,
                                &x_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (Right constraint '%s')\n",
+                  x_delta, (*cp)->name);
+      
       ++cp;
     }
 
@@ -719,14 +925,22 @@ constrain_resize_top (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (Top constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->top_func) (window, info, orig,
                              &y_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (Top constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       ++cp;
     }
 
-  new->y = orig->y - y_delta;
+  new->y = orig->y + y_delta;
   new->height = orig->height - y_delta;
 }
 
@@ -743,10 +957,18 @@ constrain_resize_vcenter (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (VCenter constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->vcenter_func) (window, info, orig,
                                  &y_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (VCenter constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       ++cp;
     }
 
@@ -755,6 +977,9 @@ constrain_resize_vcenter (MetaWindow           *window,
    */
   new->y = orig->y - y_delta;
   new->height = orig->height + y_delta * 2;
+  /* FIXME above implies that with center gravity you have to grow
+   * in increments of two
+   */
 }
 
 static void
@@ -770,14 +995,22 @@ constrain_resize_bottom (MetaWindow           *window,
 
   while (*cp)
     {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Before: %d (Bottom constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       if ((* (*cp)->applies_func) (window))
         (* (*cp)->bottom_func) (window, info, orig,
                                 &y_delta);
 
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "After:  %d (Bottom constraint '%s')\n",
+                  y_delta, (*cp)->name);
+      
       ++cp;
     }
 
-  new->height = orig->y + y_delta;
+  new->height = orig->height + y_delta;
 }
 
 static void
@@ -786,15 +1019,14 @@ update_position_limits (MetaWindow          *window,
 {
   int nw_x, nw_y;
   int se_x, se_y;
-  int offscreen_w, offscreen_h;
-  
+
   nw_x = info->work_area_screen.x;
   nw_y = info->work_area_screen.y;
-  
+
   /* find bottom-right corner of workarea */
   se_x = info->work_area_screen.x + info->work_area_screen.width;
   se_y = info->work_area_screen.y + info->work_area_screen.height;
-  
+
   /* If we have a micro-screen or huge frames maybe nw/se got
    * swapped
    */
@@ -804,7 +1036,7 @@ update_position_limits (MetaWindow          *window,
       nw_x = se_x;
       se_x = tmp;
     }
-  
+
   if (nw_y > se_y)
     {
       int tmp = nw_y;
@@ -840,7 +1072,16 @@ meta_window_constrain (MetaWindow          *window,
 {
   ConstraintInfo info;
   MetaRectangle current;
+
+#define OUTER_WIDTH(rect) ((rect).width + info.fgeom.left_width + info.fgeom.right_width)
+#define OUTER_HEIGHT(rect) ((rect).height + info.fgeom.top_height + info.fgeom.bottom_height)
   
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Constraining %s x_move_delta = %d y_move_delta = %d x_direction = %d y_direction = %d x_delta = %d y_delta = %d orig %d,%d %dx%d\n",
+              window->desc, x_move_delta, y_move_delta,
+              x_direction, y_direction, x_delta, y_delta,
+              orig->x, orig->y, orig->width, orig->height);
+
   /* Create a fake frame geometry if none really exists */
   if (orig_fgeom && !window->fullscreen)
     info.fgeom = *orig_fgeom;
@@ -852,9 +1093,9 @@ meta_window_constrain (MetaWindow          *window,
       info.fgeom.right_width = 0;
     }
 
-  meta_window_get_work_area (window, TRUE, &info.work_area_xinerama);
-  meta_window_get_work_area (window, FALSE, &info.work_area_screen);
-  
+  meta_window_get_work_area_current_xinerama (window, &info.work_area_xinerama);
+  meta_window_get_work_area_all_xineramas (window, &info.work_area_screen);
+
   info.window = window;
   info.xinerama = meta_screen_get_xinerama_for_window (window->screen,
                                                        window);
@@ -864,7 +1105,7 @@ meta_window_constrain (MetaWindow          *window,
 
   current = *orig;
   *new = current;
-  
+
   /* Do placement if any, so we go ahead and apply position
    * constraints in a move-only context. Don't place
    * maximized/fullscreen windows until they are unmaximized
@@ -876,13 +1117,19 @@ meta_window_constrain (MetaWindow          *window,
       !window->fullscreen)
     {
       int x, y;
-      
-      meta_window_place (window, orig_fgeom, x, y, &x, &y);
+
+      meta_window_place (window, orig_fgeom, current.x, current.y,
+                         &x, &y);
 
       constrain_move (window, &info, &current,
                       x - current.x,
                       y - current.y,
                       new);
+      current = *new;
+
+      /* Ignore any non-placement movement */
+      x_move_delta = 0;
+      y_move_delta = 0;
     }
 
   /* Maximization, fullscreen, etc. are defined as a move followed by
@@ -890,51 +1137,63 @@ meta_window_constrain (MetaWindow          *window,
    * this file.
    */
   if (window->fullscreen)
-    {      
+    {
+      int center_x;
+
+      center_x = info.xinerama->x_origin + (info.xinerama->width / 2);
+      center_x -= OUTER_WIDTH (current) / 2;
+
       constrain_move (window, &info, &current,
-                      info.xinerama->x_origin - current.x,
-                      info.xinerama->y_origin - current.y,
+                      center_x - current.x,
+                      info.xinerama->y_origin - current.y + info.fgeom.top_height,
                       new);
 
       current = *new;
-      
+
       constrain_resize_bottom (window, &info, &current,
-                               info.xinerama->height - current.height,
+                               (info.xinerama->height - OUTER_HEIGHT (current)),
                                new);
 
       current = *new;
-      
+
       constrain_resize_hcenter (window, &info, &current,
-                                (info.xinerama->width - current.width) / 2,
+                                (info.xinerama->width - OUTER_WIDTH (current)) / 2,
                                 new);
+      current = *new;
     }
   else if (window->maximized)
     {
+      int center_x;
+
+      center_x = info.work_area_xinerama.x + (info.work_area_xinerama.width / 2);
+      center_x -= OUTER_WIDTH (current) / 2;
+
       constrain_move (window, &info, &current,
-                      info.work_area_xinerama.x - current.x,
-                      info.work_area_xinerama.y - current.y,
+                      center_x - current.x,
+                      info.work_area_xinerama.y - current.y + info.fgeom.top_height,
                       new);
 
       current = *new;
-      
+
       constrain_resize_bottom (window, &info, &current,
-                               info.work_area_xinerama.height - current.height,
+                               (info.work_area_xinerama.height - OUTER_HEIGHT (current)),
                                new);
 
       current = *new;
-      
+
       constrain_resize_hcenter (window, &info, &current,
-                                (info.work_area_xinerama.width - current.width) / 2,
+                                (info.work_area_xinerama.width - OUTER_WIDTH (current)) / 2,
                                 new);
+      current = *new;
     }
   else
-    {      
+    {
       constrain_move (window, &info, &current,
                       x_move_delta, y_move_delta,
                       new);
 
       current = *new;
-      
+
       switch (x_direction)
         {
         case META_RESIZE_LEFT_OR_TOP:
@@ -966,103 +1225,119 @@ meta_window_constrain (MetaWindow          *window,
                                    y_delta, new);
           break;
         }
+
+      current = *new;
     }
 
-  current = *new;
-
+#if 0
   /* Now we have to sort out the aspect ratio */
-#define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
- {
-   /*
-    *                width     
-    * min_aspect <= -------- <= max_aspect
-    *                height    
-    */  
-   double min_aspect, max_aspect;
-   int width, height;
-   
-   min_aspect = window->size_hints.min_aspect.x / (double) window->size_hints.min_aspect.y;
-   max_aspect = window->size_hints.max_aspect.x / (double) window->size_hints.max_aspect.y;
+  {
+    /*
+     *                width
+     * min_aspect <= -------- <= max_aspect
+     *                height
+     */
+    double min_aspect, max_aspect;
+    int width, height;
 
-   width = current.width;
-   height = current.height;
+    min_aspect = window->size_hints.min_aspect.x / (double) window->size_hints.min_aspect.y;
+    max_aspect = window->size_hints.max_aspect.x / (double) window->size_hints.max_aspect.y;
 
-   /* Use the standard cut-and-pasted-between-every-WM code: */
-   if (min_aspect * height > width)
-     {
-       delta = FLOOR (height - width * min_aspect, window->size_hints.height_inc);
-       if (height - delta >= window->size_hints.min_height)
-         height -= delta;
-       else
-         { 
-           delta = FLOOR (height * min_aspect - width, window->size_hints.width_inc);
-           if (width + delta <= window->size_hints.max_width) 
-             width += delta;
-         }
-     }
-      
-   if (max_aspect * height < width)
-     {
-       delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
-       if (width - delta >= window->size_hints.min_width) 
-         width -= delta;
-       else
-         {
-           delta = FLOOR (width / max_aspect - height, window->size_hints.height_inc);
-           if (height + delta <= window->size_hints.max_height)
-             height += delta;
-         }
-     }
+    width = current.width;
+    height = current.height;
 
-   /* Convert into terms of the direction of resize and reapply the
-    * earlier constraints; this means aspect ratio becomes the
-    * least-important of the constraints. If we wanted aspect to be
-    * the most important, we could just not do this next bit.
-    */
+    /* Use the standard cut-and-pasted-between-every-WM code: */
+    if (min_aspect * height > width)
+      {
+        int delta;
 
-   if (current.width != width)
-     {
-       x_delta = width - current.width; /* positive delta to increase width */
-       switch (x_direction)
-         {
-         case META_RESIZE_LEFT_OR_TOP:
-           constrain_resize_left (window, &info, &current,
-                                  - x_delta, new);
-           break;
-         case META_RESIZE_CENTER:
-           constrain_resize_hcenter (window, &info, &current,
-                                     x_delta, new);
-           break;
-         case META_RESIZE_RIGHT_OR_BOTTOM:
-           constrain_resize_right (window, &info, &current,
-                                   x_delta, new);
-           break;
-         }
-     }
+        delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
+        if (height - delta >= window->size_hints.min_height)
+          height -= delta;
+        else
+          {
+            delta = FLOOR (height * min_aspect - width, window->size_hints.width_inc);
+            if (width + delta <= window->size_hints.max_width)
+              width += delta;
+          }
+      }
 
-   if (current.height != height)
-     {
-       y_delta = height - current.height; /* positive to increase height */
-       
-       switch (y_direction)
-         {
-         case META_RESIZE_LEFT_OR_TOP:
-           constrain_resize_top (window, &info, &current,
-                                 - y_delta, new);
-           break;
-         case META_RESIZE_CENTER:
-           constrain_resize_vcenter (window, &info, &current,
+    if (max_aspect * height < width)
+      {
+        int delta;
+
+        delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
+        if (width - delta >= window->size_hints.min_width)
+          width -= delta;
+        else
+          {
+            delta = FLOOR (width / max_aspect - height, window->size_hints.height_inc);
+            if (height + delta <= window->size_hints.max_height)
+              height += delta;
+          }
+      }
+
+    /* Convert into terms of the direction of resize and reapply the
+     * earlier constraints; this means aspect ratio becomes the
+     * least-important of the constraints. If we wanted aspect to be
+     * the most important, we could just not do this next bit.
+     */
+
+    if (current.width != width)
+      {
+        x_delta = width - current.width; /* positive delta to increase width */
+        switch (x_direction)
+          {
+          case META_RESIZE_LEFT_OR_TOP:
+            constrain_resize_left (window, &info, &current,
+                                   - x_delta, new);
+            break;
+          case META_RESIZE_CENTER:
+            constrain_resize_hcenter (window, &info, &current,
+                                      x_delta, new);
+            break;
+          case META_RESIZE_RIGHT_OR_BOTTOM:
+            constrain_resize_right (window, &info, &current,
+                                    x_delta, new);
+            break;
+          }
+      }
+
+    if (current.height != height)
+      {
+        y_delta = height - current.height; /* positive to increase height */
+
+        switch (y_direction)
+          {
+          case META_RESIZE_LEFT_OR_TOP:
+            constrain_resize_top (window, &info, &current,
+                                  - y_delta, new);
+            break;
+          case META_RESIZE_CENTER:
+            constrain_resize_vcenter (window, &info, &current,
+                                      y_delta, new);
+            break;
+          case META_RESIZE_RIGHT_OR_BOTTOM:
+            constrain_resize_bottom (window, &info, &current,
                                      y_delta, new);
-           break;
-         case META_RESIZE_RIGHT_OR_BOTTOM:
-           constrain_resize_bottom (window, &info, &current,
-                                    y_delta, new);
-           break;
-         }
-     }
- }
-#undef FLOOR
+            break;
+          }
+      }
 
+    current = *new;
+  }
+
+
+  g_print ("3 x_delta = %d y_delta = %d pos = %d,%d size = %dx%d\n",
+           x_delta, y_delta,
+           current.x, current.y, current.width, current.height);
+#endif
+
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Constrained %s new %d,%d %dx%d old %d,%d %dx%d\n",
+              window->desc,
+              new->x, new->y, new->width, new->height,
+              orig->x, orig->y, orig->width, orig->height);
 }
 
 MetaResizeDirection
@@ -1086,7 +1361,7 @@ meta_x_direction_from_gravity (int gravity)
     default:
       return META_RESIZE_CENTER;
       break;
-    }      
+    }
 }
 
 MetaResizeDirection
@@ -1106,7 +1381,7 @@ meta_y_direction_from_gravity (int gravity)
     case StaticGravity:
       return META_RESIZE_RIGHT_OR_BOTTOM;
       break;
-      
+
     default:
       return META_RESIZE_CENTER;
     }

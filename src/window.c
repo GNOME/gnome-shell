@@ -38,6 +38,7 @@
 #include "xprops.h"
 #include "group.h"
 #include "window-props.h"
+#include "constraints.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -65,18 +66,6 @@ typedef enum
 
 static int destroying_windows_disallowed = 0;
 
-static void constrain_size     (MetaWindow        *window,
-                                MetaFrameGeometry *fgeom,
-                                int                width,
-                                int                height,
-                                int               *new_width,
-                                int               *new_height);
-static void constrain_position (MetaWindow        *window,
-                                MetaFrameGeometry *fgeom,
-                                int                x,
-                                int                y,
-                                int               *new_x,
-                                int               *new_y);
 
 static void     update_net_wm_state       (MetaWindow     *window);
 static void     update_mwm_hints          (MetaWindow     *window);
@@ -102,14 +91,6 @@ static void     meta_window_hide          (MetaWindow     *window);
 static GList*   meta_window_get_workspaces (MetaWindow    *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
-
-static void adjust_for_gravity               (MetaWindow        *window,
-                                              MetaFrameGeometry *fgeom,
-                                              gboolean           coords_assume_border,
-                                              int                x,
-                                              int                y,
-                                              int               *xp,
-                                              int               *yp);
 
 static void meta_window_move_resize_internal (MetaWindow         *window,
                                               MetaMoveResizeFlags flags,
@@ -2012,13 +1993,17 @@ meta_window_activate (MetaWindow *window,
   meta_window_focus (window, timestamp);
 }
 
-/* returns values suitable for meta_window_move */
+/* returns values suitable for meta_window_move
+ * i.e. static gravity
+ */
 static void
 adjust_for_gravity (MetaWindow        *window,
                     MetaFrameGeometry *fgeom,
                     gboolean           coords_assume_border,
                     int                x,
                     int                y,
+                    int                width,
+                    int                height,
                     int               *xp,
                     int               *yp)
 {
@@ -2036,15 +2021,15 @@ adjust_for_gravity (MetaWindow        *window,
     {
       child_x = fgeom->left_width;
       child_y = fgeom->top_height;
-      frame_width = child_x + window->rect.width + fgeom->right_width;
-      frame_height = child_y + window->rect.height + fgeom->bottom_height;
+      frame_width = child_x + width + fgeom->right_width;
+      frame_height = child_y + height + fgeom->bottom_height;
     }
   else
     {
       child_x = 0;
       child_y = 0;
-      frame_width = window->rect.width;
-      frame_height = window->rect.height;
+      frame_width = width;
+      frame_height = height;
     }
   
   /* We're computing position to pass to window_move, which is
@@ -2061,36 +2046,36 @@ adjust_for_gravity (MetaWindow        *window,
       ref_y = y;
       break;
     case NorthGravity:
-      ref_x = x + window->rect.width / 2 + bw;
+      ref_x = x + width / 2 + bw;
       ref_y = y;
       break;
     case NorthEastGravity:
-      ref_x = x + window->rect.width + bw * 2;
+      ref_x = x + width + bw * 2;
       ref_y = y;
       break;
     case WestGravity:
       ref_x = x;
-      ref_y = y + window->rect.height / 2 + bw;
+      ref_y = y + height / 2 + bw;
       break;
     case CenterGravity:
-      ref_x = x + window->rect.width / 2 + bw;
-      ref_y = y + window->rect.height / 2 + bw;
+      ref_x = x + width / 2 + bw;
+      ref_y = y + height / 2 + bw;
       break;
     case EastGravity:
-      ref_x = x + window->rect.width + bw * 2;
-      ref_y = y + window->rect.height / 2 + bw;
+      ref_x = x + width + bw * 2;
+      ref_y = y + height / 2 + bw;
       break;
     case SouthWestGravity:
       ref_x = x;
-      ref_y = y + window->rect.height + bw * 2;
+      ref_y = y + height + bw * 2;
       break;
     case SouthGravity:
-      ref_x = x + window->rect.width / 2 + bw;
-      ref_y = y + window->rect.height + bw * 2;
+      ref_x = x + width / 2 + bw;
+      ref_y = y + height + bw * 2;
       break;
     case SouthEastGravity:
-      ref_x = x + window->rect.width + bw * 2;
-      ref_y = y + window->rect.height + bw * 2;
+      ref_x = x + width + bw * 2;
+      ref_y = y + height + bw * 2;
       break;
     case StaticGravity:
     default:
@@ -2152,6 +2137,47 @@ static_gravity_works (MetaDisplay *display)
 }
 
 static void
+get_mouse_deltas_for_resize (MetaWindow *window,
+                             int         resize_gravity,
+                             int         w,
+                             int         h,
+                             int        *x_delta,
+                             int        *y_delta)
+{
+  switch (meta_x_direction_from_gravity (resize_gravity))
+    {
+    case META_RESIZE_LEFT_OR_TOP:
+      *x_delta = window->rect.width - w;
+      break;
+    case META_RESIZE_RIGHT_OR_BOTTOM:
+      *x_delta = w - window->rect.width;
+      break;
+    case META_RESIZE_CENTER:
+      /* FIXME this implies that with center gravity you have to grow
+       * in increments of two
+       */
+      *x_delta = (w - window->rect.width) / 2;
+      break;
+    }
+  
+  switch (meta_y_direction_from_gravity (resize_gravity))
+    {
+    case META_RESIZE_LEFT_OR_TOP:
+      *y_delta = window->rect.height - h;
+      break;
+    case META_RESIZE_RIGHT_OR_BOTTOM:
+      *y_delta = h - window->rect.height;
+      break;
+    case META_RESIZE_CENTER:
+      /* FIXME this implies that with center gravity you have to grow
+       * in increments of two
+       */
+      *y_delta = (h - window->rect.height) / 2;
+      break;
+    }
+}
+
+static void
 meta_window_move_resize_internal (MetaWindow  *window,
                                   MetaMoveResizeFlags flags,
                                   int          resize_gravity,
@@ -2168,8 +2194,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean need_move_frame = FALSE;
   gboolean need_resize_client = FALSE;
   gboolean need_resize_frame = FALSE;
-  int size_dx;
-  int size_dy;
   int frame_size_dx;
   int frame_size_dy;
   gboolean is_configure_request;
@@ -2182,39 +2206,73 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   int client_move_x;
   int client_move_y;
+  int x_delta;
+  int y_delta;
+  MetaRectangle new_rect;
+  MetaRectangle old_rect;
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
   
   /* We don't need it in the idle queue anymore. */
-  meta_window_unqueue_move_resize (window);  
+  meta_window_unqueue_move_resize (window);
 
-  {
-    int oldx, oldy;
-    meta_window_get_position (window, &oldx, &oldy);
-    meta_topic (META_DEBUG_GEOMETRY,
-                "Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
-                window->desc, root_x_nw, root_y_nw, w, h,
-                is_configure_request ? " (configure request)" : "",
-                is_user_action ? " (user move/resize)" : "",
-                oldx, oldy, window->rect.width, window->rect.height);
-  }
+  old_rect = window->rect;
+  meta_window_get_position (window, &old_rect.x, &old_rect.y);
+  
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
+              window->desc, root_x_nw, root_y_nw, w, h,
+              is_configure_request ? " (configure request)" : "",
+              is_user_action ? " (user move/resize)" : "",
+              old_rect.x, old_rect.y, old_rect.width, old_rect.height);
   
   if (window->frame)
     meta_frame_calc_geometry (window->frame,
                               &fgeom);
   
-  constrain_size (window, &fgeom, w, h, &w, &h);
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Constrained resize of %s to %d x %d\n", window->desc, w, h);
+  if (is_configure_request || do_gravity_adjust)
+    {      
+      adjust_for_gravity (window,
+                          window->frame ? &fgeom : NULL,
+                          /* configure request coords assume
+                           * the border width existed
+                           */
+                          is_configure_request,
+                          root_x_nw,
+                          root_y_nw,
+                          w, h,
+                          &root_x_nw,
+                          &root_y_nw);
+      
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Compensated position for gravity, new pos %d,%d\n",
+                  root_x_nw, root_y_nw);
+    }
 
+  get_mouse_deltas_for_resize (window, resize_gravity, w, h,
+                               &x_delta, &y_delta);
+  
+  meta_window_constrain (window,
+                         &fgeom,
+                         &old_rect,
+                         root_x_nw - old_rect.x,
+                         root_y_nw - old_rect.y,
+                         meta_x_direction_from_gravity (resize_gravity),
+                         x_delta,
+                         meta_y_direction_from_gravity (resize_gravity),
+                         y_delta,
+                         &new_rect);
+  
+  w = new_rect.width;
+  h = new_rect.height;
+  root_x_nw = new_rect.x;
+  root_y_nw = new_rect.y;
+  
   if (w != window->rect.width ||
       h != window->rect.height)
     need_resize_client = TRUE;  
-
-  size_dx = w - window->rect.width;
-  size_dy = h - window->rect.height;
   
   window->rect.width = w;
   window->rect.height = h;
@@ -2249,73 +2307,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
       frame_size_dy = 0;
     }
 
-  if (is_configure_request || do_gravity_adjust)
-    {
-      adjust_for_gravity (window,
-                          window->frame ? &fgeom : NULL,
-                          /* configure request coords assume
-                           * the border width existed
-                           */
-                          is_configure_request,
-                          root_x_nw,
-                          root_y_nw,
-                          &root_x_nw,
-                          &root_y_nw);
-      
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Compensated position for gravity, new pos %d,%d\n",
-                  root_x_nw, root_y_nw);
-    }
-
-  /* There can be somewhat bogus interactions between gravity
-   * and the position constraints (with position contraints
-   * basically breaking gravity). Not sure how to fix this.
-   */  
-
-  switch (resize_gravity)
-    {
-      /* If client is staying fixed on the east during resize, then we
-       * have to move the west edge.
-       */
-    case NorthEastGravity:
-    case EastGravity:
-    case SouthEastGravity:
-      root_x_nw -= size_dx;
-      break;
-
-      /* centered horizontally */
-    case NorthGravity:
-    case SouthGravity:
-    case CenterGravity:
-      root_x_nw -= size_dx / 2;
-      break;
-      
-    default:
-      break;
-    }
-
-  switch (resize_gravity)
-    {
-      /* If client is staying fixed on the south during resize,
-       * we have to move the north edge
-       */
-    case SouthGravity:
-    case SouthEastGravity:
-    case SouthWestGravity:
-      root_y_nw -= size_dy;
-      break;
-
-      /* centered vertically */
-    case EastGravity:
-    case WestGravity:
-    case CenterGravity:
-      root_y_nw -= size_dy / 2;
-      break;
-      
-    default:
-      break;
-    }  
-
   /* For nice effect, when growing the window we want to move/resize
    * the frame first, when shrinking the window we want to move/resize
    * the client first. If we grow one way and shrink the other,
@@ -2330,15 +2321,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
    * behavior. The move and resize must actually occur, it is not
    * enough to set CWX | CWWidth but pass in the current size/pos.
    */
-  
-  constrain_position (window,
-                      window->frame ? &fgeom : NULL,
-                      root_x_nw, root_y_nw,
-                      &root_x_nw, &root_y_nw);
-
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Constrained position to %d,%d\n",
-              root_x_nw, root_y_nw);
       
   if (window->frame)
     {
@@ -2473,6 +2455,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   if (use_static_gravity)
     {
+      int size_dx = w - window->rect.width;
+      int size_dy = h - window->rect.height;
+      
       if ((size_dx + size_dy) >= 0)
         configure_frame_first = FALSE;
       else
@@ -5387,360 +5372,6 @@ recalc_window_features (MetaWindow *window)
 }
 
 static void
-constrain_size (MetaWindow *window,
-                MetaFrameGeometry *fgeom,
-                int width, int height,
-                int *new_width, int *new_height)
-{
-  /* This is partially borrowed from GTK (LGPL), which in turn 
-   * partially borrowed from fvwm,
-   *
-   * Copyright 1993, Robert Nation
-   *     You may use this code for any purpose, as long as the original
-   *     copyright remains in the source code and all documentation
-   *
-   * which in turn borrows parts of the algorithm from uwm
-   */
-  int delta;
-  double min_aspect, max_aspect;
-  int minw, minh, maxw, maxh, fullw, fullh;
-  
-  /* frame member variables should NEVER be used in here */
-  
-#define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
-  
-  /* Get the allowed size ranges, considering maximized, etc. */
-  if (window->fullscreen)
-    {
-      const MetaXineramaScreenInfo *xinerama;
-
-      xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                      window);
-
-
-      fullw = xinerama->width;
-      fullh = xinerama->height;
-    }
-  else if (window->type == META_WINDOW_DESKTOP ||
-           window->type == META_WINDOW_DOCK)
-    {
-      
-      fullw = window->screen->width;
-      fullh = window->screen->height;
-    }
-  else
-    {
-      MetaRectangle work_area;
-      
-      meta_window_get_work_area_current_xinerama (window, &work_area);
-      
-      fullw = work_area.width;
-      fullh = work_area.height;
-    }
-
-  if (window->frame && !window->fullscreen)
-    {
-      fullw -= (fgeom->left_width + fgeom->right_width);
-      fullh -= (fgeom->top_height + fgeom->bottom_height);
-    }
-  
-  maxw = window->size_hints.max_width;
-  maxh = window->size_hints.max_height;
-  
-  if (window->maximized || window->fullscreen)
-    {
-      maxw = MIN (maxw, fullw);
-      maxh = MIN (maxh, fullh);
-    }
-
-  minw = window->size_hints.min_width;
-  minh = window->size_hints.min_height;
-  
-  /* Check that fullscreen doesn't go under app-specified min size, if
-   * so snap back to min size
-   */
-  if (maxw < minw)
-    maxw = minw;
-  if (maxh < minh)
-    maxh = minh;
-  
-  if (window->maximized || window->fullscreen)
-    {
-      minw = MAX (minw, fullw);
-      minh = MAX (minh, fullh);
-    }
-  
-  /* Check that fullscreen doesn't exceed max width hint,
-   * if so then snap back to max width hint
-   */
-  if (minw > maxw)
-    minw = maxw;
-  if (minh > maxh)
-    minh = maxh;
-  
-  /* clamp width and height to min and max values
-   */
-  width = CLAMP (width, minw, maxw);
-
-  height = CLAMP (height, minh, maxh);
-  
-  /* shrink to base + N * inc
-   */
-  width = window->size_hints.base_width +
-    FLOOR (width - window->size_hints.base_width, window->size_hints.width_inc);
-  height = window->size_hints.base_height +
-    FLOOR (height - window->size_hints.base_height, window->size_hints.height_inc);
-
-  /* constrain aspect ratio, according to:
-   *
-   *                width     
-   * min_aspect <= -------- <= max_aspect
-   *                height    
-   */  
-
-  min_aspect = window->size_hints.min_aspect.x / (double) window->size_hints.min_aspect.y;
-  max_aspect = window->size_hints.max_aspect.x / (double) window->size_hints.max_aspect.y;
-
-  if (min_aspect * height > width)
-    {
-      delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
-      if (height - delta >= window->size_hints.min_height)
-        height -= delta;
-      else
-        { 
-          delta = FLOOR (height * min_aspect - width, window->size_hints.width_inc);
-          if (width + delta <= window->size_hints.max_width) 
-            width += delta;
-        }
-    }
-      
-  if (max_aspect * height < width)
-    {
-      delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
-      if (width - delta >= window->size_hints.min_width) 
-        width -= delta;
-      else
-        {
-          delta = FLOOR (width / max_aspect - height, window->size_hints.height_inc);
-          if (height + delta <= window->size_hints.max_height)
-            height += delta;
-        }
-    }
-
-#undef FLOOR
-  
-  *new_width = width;
-  *new_height = height;
-}
-
-static void
-constrain_position (MetaWindow        *window,
-                    MetaFrameGeometry *fgeom,
-                    int                x,
-                    int                y,
-                    int               *new_x,
-                    int               *new_y)
-{  
-  /* frame member variables should NEVER be used in here, only
-   * MetaFrameGeometry
-   */
-
-  if (!window->placed && window->calc_placement)
-    meta_window_place (window, fgeom, x, y, &x, &y);
-
-  if (window->type == META_WINDOW_DESKTOP)
-    {
-      x = 0;
-      y = 0;
-    }
-  else if (window->type == META_WINDOW_DOCK)
-    {
-      ; /* let it do whatever */
-    }
-  else if (window->fullscreen)
-    {
-      const MetaXineramaScreenInfo *xinerama;
-
-      xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                      window);
-      
-      x = xinerama->x_origin;
-      y = xinerama->y_origin;
-
-      /* If the window's geometry gridding (e.g. for a terminal)
-       * prevents fullscreen, center the window within
-       * the screen area.
-       */
-      x += (xinerama->width - window->rect.width) / 2;
-
-      /* If the window is somehow larger than the screen be paranoid
-       * and fix the resulting negative coords
-       */
-      if (x < xinerama->x_origin)
-        x = xinerama->x_origin;
-    }
-  else if (window->maximized)
-    {
-      const MetaXineramaScreenInfo* xsi;
-      MetaRectangle work_area;
-
-      xsi = meta_screen_get_xinerama_for_rect (window->screen, 
-					       &window->saved_rect);
-
-      meta_window_get_work_area_for_xinerama (window, 
-					      xsi->number, 
-					      &work_area);
-      
-      x = work_area.x;
-      y = work_area.y;
-      if (window->frame)
-        {
-          x += fgeom->left_width;
-          y += fgeom->top_height;
-        }
-
-      /* If the window's geometry gridding (e.g. for a terminal)
-       * prevents full maximization, center the window within
-       * the maximized area horizontally.
-       */
-      x += (work_area.width - window->rect.width -
-            (window->frame ? (fgeom->left_width + fgeom->right_width) : 0)) / 2;
-    }
-  else
-    {
-      int nw_x, nw_y;
-      int se_x, se_y;
-      int offscreen_w, offscreen_h;
-      MetaRectangle work_area;
-      MetaRectangle window_area;
-      const MetaXineramaScreenInfo* xsi;
-
-      /* this is the rect for the window if it were where we're moving
-       * it now
-       */
-      meta_window_get_outer_rect (window, &window_area);
-      window_area.x = x;
-      window_area.y = y;
-      if (fgeom)
-	{
-	  window_area.x -= fgeom->left_width;
-	  window_area.y -= fgeom->top_height;
-	}
-      
-      xsi = meta_screen_get_xinerama_for_rect (window->screen, &window_area);
-      meta_window_get_work_area_for_xinerama (window, 
-					      xsi->number, 
-					      &work_area);
-      
-      /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
-       * size of the menu control?).
-       */
-      
-#define TITLEBAR_LENGTH_ONSCREEN 36
-      
-      /* find furthest northwest point the window can occupy */
-      nw_x = work_area.x;
-      nw_y = work_area.y;
-
-      /* FIXME note this means framed windows can go off the left
-       * but not unframed windows.
-       */
-      if (window->frame)
-        {
-          /* Must keep TITLEBAR_LENGTH_ONSCREEN onscreen when moving left */
-          nw_x -= fgeom->left_width + window->rect.width + fgeom->right_width - TITLEBAR_LENGTH_ONSCREEN;
-          /* Can't move off the top */
-          nw_y += fgeom->top_height;
-        }
-      
-      /* find bottom-right corner of workarea */
-      se_x = work_area.x + work_area.width;
-      se_y = work_area.y + work_area.height;
-
-      /* if the window's size exceeds the screen size,
-       * we allow it to go off the top/left far enough
-       * to get the right/bottom edges onscreen.
-       */
-      offscreen_w = nw_x + window->rect.width;
-      offscreen_h = nw_y + window->rect.height;
-      if (window->frame)
-        {
-          offscreen_w += fgeom->right_width;
-          offscreen_h += fgeom->bottom_height;
-        }
-
-      offscreen_w = offscreen_w - se_x;
-      offscreen_h = offscreen_h - se_y;
-
-      /* Now change NW limit to reflect amount offscreen in SE direction */
-      if (offscreen_w > 0)
-        nw_x -= offscreen_w;
-
-      /* do it for top of window for undecorated windows,
-       * since losing the titlebar isn't really an issue anyway,
-       * and it fixes fullscreen mode for stuff like Xine.
-       * but don't lose the titlebar on decorated windows.
-       */
-      if (!window->decorated && offscreen_h > 0)
-        nw_y -= offscreen_h;
-      
-      /* Limit movement off the right/bottom.
-       * Remember, we're constraining StaticGravity position.
-       */
-      if (window->frame)
-        {
-          se_x -= TITLEBAR_LENGTH_ONSCREEN;
-          se_y -= 0;
-        }
-      else
-        {
-          /* for frameless windows, just require an arbitrary little
-           * chunk to be onscreen
-           */
-          se_x -= TITLEBAR_LENGTH_ONSCREEN;
-          se_y -= TITLEBAR_LENGTH_ONSCREEN;
-        }
-      
-      /* If we have a micro-screen or huge frames maybe nw/se got
-       * swapped
-       */
-      if (nw_x > se_x)
-        {
-          int tmp = nw_x;
-          nw_x = se_x;
-          se_x = tmp;
-        }
-
-      if (nw_y > se_y)
-        {
-          int tmp = nw_y;
-          nw_y = se_y;
-          se_y = tmp;
-        }
-
-      /* Clamp window to the given positions.
-       * Do the SE clamp first, so that the NW clamp has precedence
-       * and we don't tend to lose the titlebar for too-large
-       * windows.
-       */
-      if (x > se_x)
-        x = se_x;
-      if (y > se_y)
-        y = se_y;
-      
-      if (x < nw_x)
-        x = nw_x;
-      if (y < nw_y)
-        y = nw_y;
-
-#undef TITLEBAR_LENGTH_ONSCREEN
-    }
-  
-  *new_x = x;
-  *new_y = y;
-}
-
-static void
 menu_callback (MetaWindowMenu *menu,
                Display        *xdisplay,
                Window          client_xwindow,
@@ -6350,9 +5981,9 @@ meta_window_set_gravity (MetaWindow *window,
 }
 
 static void
-get_work_area (MetaWindow    *window,
-               MetaRectangle *area,
-               int            which_xinerama)
+get_work_area_xinerama (MetaWindow    *window,
+                        MetaRectangle *area,
+                        int            which_xinerama)
 {
   MetaRectangle space_area;
   GList *tmp;  
@@ -6393,7 +6024,7 @@ get_work_area (MetaWindow    *window,
       bottom_strut = MAX (bottom_strut,
 			  (xinerama_height - 
 			   (space_area.y - xinerama_origin_y) - 
-			   space_area.height));      
+			   space_area.height));
       tmp = tmp->next;
     }
   
@@ -6403,8 +6034,9 @@ get_work_area (MetaWindow    *window,
   area->height = xinerama_height - top_strut - bottom_strut;
 
   meta_topic (META_DEBUG_WORKAREA,
-              "Window %s has work area %d,%d %d x %d\n",
-              window->desc, area->x, area->y, area->width, area->height);
+              "Window %s xinerama %d has work area %d,%d %d x %d\n",
+              window->desc, which_xinerama,
+              area->x, area->y, area->width, area->height);
 }
 
 void
@@ -6427,10 +6059,65 @@ meta_window_get_work_area_for_xinerama (MetaWindow    *window,
 {
   g_return_if_fail (which_xinerama >= 0);
   
-  get_work_area (window,
-                 area,
-                 which_xinerama);
+  get_work_area_xinerama (window,
+                          area,
+                          which_xinerama);
 }
+
+void
+meta_window_get_work_area_all_xineramas (MetaWindow    *window,
+                                         MetaRectangle *area)
+{
+  MetaRectangle space_area;
+  GList *tmp;  
+  int left_strut;
+  int right_strut;
+  int top_strut;
+  int bottom_strut;  
+  int screen_origin_x;
+  int screen_origin_y;
+  int screen_width;
+  int screen_height;
+
+  screen_origin_x = 0;
+  screen_origin_y = 0;
+  screen_width = window->screen->width;
+  screen_height = window->screen->height;
+  
+  left_strut = 0;
+  right_strut = 0;
+  top_strut = 0;
+  bottom_strut = 0;
+  
+  tmp = meta_window_get_workspaces (window);  
+  while (tmp != NULL)
+    {
+      meta_workspace_get_work_area_all_xineramas (tmp->data,
+                                                  &space_area);
+
+      left_strut = MAX (left_strut, space_area.x - screen_origin_x);
+      right_strut = MAX (right_strut,
+			 (screen_width - 
+			  (space_area.x - screen_origin_x) - 
+			  space_area.width));
+      top_strut = MAX (top_strut, space_area.y - screen_origin_y);
+      bottom_strut = MAX (bottom_strut,
+			  (screen_height - 
+			   (space_area.y - screen_origin_y) - 
+			   space_area.height));      
+      tmp = tmp->next;
+    }
+  
+  area->x = screen_origin_x + left_strut;
+  area->y = screen_origin_y + top_strut;
+  area->width = screen_width - left_strut - right_strut;
+  area->height = screen_height - top_strut - bottom_strut;
+
+  meta_topic (META_DEBUG_WORKAREA,
+              "Window %s has whole-screen work area %d,%d %d x %d\n",
+              window->desc, area->x, area->y, area->width, area->height);
+}
+
 
 gboolean
 meta_window_same_application (MetaWindow *window,
