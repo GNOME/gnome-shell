@@ -78,7 +78,7 @@ METACITY FEATURES
  - Does not expose the concept of "window manager" to the user.  Some
    of the features in the GNOME control panel and other parts of the
    desktop happen to be implemented in metacity, such as changing your
-   window border theme, or changing your window navigation shorcuts,
+   window border theme, or changing your window navigation shortcuts,
    but the user doesn't need to know this.
 
  - Includes only the window manager; does not try to be a desktop

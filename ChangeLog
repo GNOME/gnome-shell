@@ -1,5 +1,9 @@
 2003-02-22  Havoc Pennington  <hp@pobox.com>
 
+	* README: fix a typo, pointed out by Steve Kemp
+
+2003-02-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/prefs.c (MAX_REASONABLE_WORKSPACES): change max workspaces
 	to 36 #81855
 
