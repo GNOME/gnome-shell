@@ -9,3 +9,7 @@ raise windows on click: http://bugzilla.gnome.org/show_bug.cgi?id=86108
 dialogs above entire app group: http://bugzilla.gnome.org/show_bug.cgi?id=88926
 display window size/position: http://bugzilla.gnome.org/show_bug.cgi?id=85213, 
 http://bugzilla.gnome.org/show_bug.cgi?id=106645
+
+configure click actions, alt+click:
+http://bugzilla.gnome.org/show_bug.cgi?id=83210
+
