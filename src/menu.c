@@ -27,6 +27,7 @@
 #include "util.h"
 #include "core.h"
 #include "themewidget.h"
+#include "metaaccellabel.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -185,6 +186,31 @@ get_workspace_name_with_accel (Display *display,
   }
 }
 
+static GtkWidget*
+menu_item_new (const char         *label,
+               gboolean            with_image,
+               unsigned int        key,
+               MetaVirtualModifier mods)
+{
+  GtkWidget *menu_item;
+  GtkWidget *accel_label;
+
+  if (with_image)
+    menu_item = gtk_image_menu_item_new ();
+  else
+    menu_item = gtk_menu_item_new ();
+  accel_label = meta_accel_label_new_with_mnemonic (label);
+  gtk_misc_set_alignment (GTK_MISC (accel_label), 0.0, 0.5);
+
+  gtk_container_add (GTK_CONTAINER (menu_item), accel_label);
+  gtk_widget_show (accel_label);
+
+  meta_accel_label_set_accelerator (META_ACCEL_LABEL (accel_label),
+                                    key, mods);
+  
+  return menu_item;
+}
+
 MetaWindowMenu*
 meta_window_menu_new   (MetaFrames         *frames,
                         MetaMenuOp          ops,
@@ -218,7 +244,9 @@ meta_window_menu_new   (MetaFrames         *frames,
         {
           GtkWidget *mi;
           MenuData *md;
-
+          unsigned int key;
+          MetaVirtualModifier mods;
+          
           if (menuitems[i].op == 0)
             {
               mi = gtk_separator_menu_item_new ();
@@ -235,17 +263,20 @@ meta_window_menu_new   (MetaFrames         *frames,
                                                     GTK_ICON_SIZE_MENU);
 
                 }
+
+              meta_core_get_menu_accelerator (menuitems[i].op, -1,
+                                              &key, &mods);
               
               if (image)
                 {
-                  mi = gtk_image_menu_item_new_with_mnemonic (_(menuitems[i].label));
+                  mi = menu_item_new (_(menuitems[i].label), TRUE, key, mods);
                   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
                                                  image);
                   gtk_widget_show (image);
                 }
               else
                 {
-                  mi = gtk_menu_item_new_with_mnemonic (_(menuitems[i].label));
+                  mi = menu_item_new (_(menuitems[i].label), FALSE, key, mods);
                 }
               
               if (insensitive & menuitems[i].op)
@@ -289,13 +320,19 @@ meta_window_menu_new   (MetaFrames         *frames,
             {
               char *label, *name;
               MenuData *md;
-
+              unsigned int key;
+              MetaVirtualModifier mods;
+              
+              meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
+                                              i + 1,
+                                              &key, &mods);
+              
               name = get_workspace_name_with_accel (display, i);
               if (ops & META_MENU_OP_UNSTICK)
                 label = g_strdup_printf (_("Only on %s"), name);
               else
                 label = g_strdup_printf(_("Move to %s"), name);
-              mi = gtk_menu_item_new_with_mnemonic (label);
+              mi = menu_item_new (label, FALSE, key, mods);
 
               g_free (name);
               g_free (label);

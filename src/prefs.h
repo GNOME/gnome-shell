@@ -187,6 +187,10 @@ void meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
 
 MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 
+void meta_prefs_get_window_binding (const char          *name,
+                                    unsigned int        *keysym,
+                                    MetaVirtualModifier *modifiers);
+
 #endif
 
 

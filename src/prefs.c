@@ -1188,3 +1188,25 @@ meta_prefs_get_keybinding_action (const char *name)
   return META_KEYBINDING_ACTION_NONE;
 }
 
+void
+meta_prefs_get_window_binding (const char          *name,
+                               unsigned int        *keysym,
+                               MetaVirtualModifier *modifiers)
+{
+  int i;
+
+  i = G_N_ELEMENTS (window_bindings) - 2; /* -2 for dummy entry at end */
+  while (i >= 0)
+    {
+      if (strcmp (window_bindings[i].name, name) == 0)
+        {
+          *keysym = window_bindings[i].keysym;
+          *modifiers = window_bindings[i].modifiers;
+          return;
+        }
+      
+      --i;
+    }
+
+  g_assert_not_reached ();
+}

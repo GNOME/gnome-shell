@@ -1,3 +1,17 @@
+2002-09-26  Havoc Pennington  <hp@pobox.com>
+
+	* src/menu.c (meta_window_menu_new): use MetaAccelLabel to display
+	accelerators for the menu items
+
+	* src/metaaccellabel.c: cut-and-paste GtkAccelLabel and port to
+	use virtual modifiers
+
+	* src/Makefile.am (metacity_SOURCES): add metaaccellabel.[hc]
+
+	* src/prefs.c (meta_prefs_get_window_binding): new function
+
+	* src/core.c (meta_core_get_menu_accelerator): new function
+	
 2002-09-25  Havoc Pennington  <hp@redhat.com>
 
 	* src/metacity.schemas.in: Change short desc of switch_windows and

@@ -41,6 +41,8 @@ metacity_SOURCES= 				\
 	main.h					\
 	menu.c					\
 	menu.h					\
+	metaaccellabel.c			\
+	metaaccellabel.h			\
 	place.c					\
 	place.h					\
 	prefs.c					\

@@ -22,6 +22,7 @@
 #include "core.h"
 #include "frame.h"
 #include "workspace.h"
+#include "prefs.h"
 
 void
 meta_core_get_client_size (Display *xdisplay,
@@ -507,6 +508,102 @@ meta_core_show_window_menu (Display *xdisplay,
   meta_window_focus (window, timestamp);
 
   meta_window_show_menu (window, root_x, root_y, button, timestamp);
+}
+
+void
+meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
+                                int                  workspace,
+                                unsigned int        *keysym,
+                                MetaVirtualModifier *modifiers)
+{
+  const char *name;
+
+  name = NULL;
+  
+  switch (menu_op)
+    {
+    case META_MENU_OP_DELETE:
+      name = META_KEYBINDING_CLOSE;
+      break;
+    case META_MENU_OP_MINIMIZE:
+      name = META_KEYBINDING_MINIMIZE;
+      break;
+    case META_MENU_OP_UNMAXIMIZE:
+      name = META_KEYBINDING_UNMAXIMIZE;
+      break;
+    case META_MENU_OP_MAXIMIZE:
+      name = META_KEYBINDING_MAXIMIZE;
+      break;
+    case META_MENU_OP_UNSHADE:
+      name = META_KEYBINDING_TOGGLE_SHADE;
+      break;
+    case META_MENU_OP_SHADE:
+      name = META_KEYBINDING_TOGGLE_SHADE;
+      break;
+    case META_MENU_OP_UNSTICK:
+      name = META_KEYBINDING_TOGGLE_STICKY;
+      break;
+    case META_MENU_OP_STICK:
+      name = META_KEYBINDING_TOGGLE_STICKY;
+      break;
+    case META_MENU_OP_WORKSPACES:
+      switch (workspace)
+        {
+        case 1:
+          name = META_KEYBINDING_MOVE_WORKSPACE_1;
+          break;
+        case 2:
+          name = META_KEYBINDING_MOVE_WORKSPACE_2;
+          break;
+        case 3:
+          name = META_KEYBINDING_MOVE_WORKSPACE_3;
+          break; 
+        case 4:
+          name = META_KEYBINDING_MOVE_WORKSPACE_4;
+          break; 
+        case 5:
+          name = META_KEYBINDING_MOVE_WORKSPACE_5;
+          break; 
+        case 6:
+          name = META_KEYBINDING_MOVE_WORKSPACE_6;
+          break; 
+        case 7:
+          name = META_KEYBINDING_MOVE_WORKSPACE_7;
+          break; 
+        case 8:
+          name = META_KEYBINDING_MOVE_WORKSPACE_8;
+          break; 
+        case 9:
+          name = META_KEYBINDING_MOVE_WORKSPACE_9;
+          break; 
+        case 10:
+          name = META_KEYBINDING_MOVE_WORKSPACE_10;
+          break;
+        case 11:
+          name = META_KEYBINDING_MOVE_WORKSPACE_11;
+          break;
+        case 12:
+          name = META_KEYBINDING_MOVE_WORKSPACE_12;
+          break;
+        }
+      break;
+    case META_MENU_OP_MOVE:
+      name = META_KEYBINDING_BEGIN_MOVE;
+      break;
+    case META_MENU_OP_RESIZE:
+      name = META_KEYBINDING_BEGIN_RESIZE;
+      break;
+    }
+
+  if (name)
+    {
+      meta_prefs_get_window_binding (name, keysym, modifiers);
+    }
+  else
+    {
+      *keysym = 0;
+      *modifiers = 0;
+    }
 }
 
 char *
