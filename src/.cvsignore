@@ -5,3 +5,4 @@ Makefile
 metacity
 metacity-theme-viewer
 testgradient
+inlinepixbufs.h
