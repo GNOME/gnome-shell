@@ -5387,17 +5387,6 @@ recalc_window_features (MetaWindow *window)
       window->has_fullscreen_func = FALSE;
     }
 
-  /* We leave fullscreen windows decorated, just push the frame outside
-   * the screen. This avoids flickering to unparent them.
-   */
-  if (window->fullscreen)
-    {
-      window->has_shade_func = FALSE;
-      window->has_move_func = FALSE;
-      window->has_resize_func = FALSE;
-      window->has_maximize_func = FALSE;
-    }  
-
   if (!window->has_resize_func)
     {      
       window->has_maximize_func = FALSE;
@@ -5412,16 +5401,34 @@ recalc_window_features (MetaWindow *window)
         ; /* leave fullscreen available */
       else
         window->has_fullscreen_func = FALSE;
-
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Window %s not resizable, maximizable = %d fullscreenable = %d min size %dx%d max size %dx%d\n",
-                  window->desc, window->has_maximize_func, window->has_fullscreen_func,
-                  window->size_hints.min_width,
-                  window->size_hints.min_height,
-                  window->size_hints.max_width,
-                  window->size_hints.max_height);
     }
 
+  /* We leave fullscreen windows decorated, just push the frame outside
+   * the screen. This avoids flickering to unparent them.
+   *
+   * Note that setting has_resize_func = FALSE here must come after the
+   * above code that may disable fullscreen, because if the window
+   * is not resizable purely due to fullscreen, we don't want to
+   * disable fullscreen mode.
+   */
+  if (window->fullscreen)
+    {
+      window->has_shade_func = FALSE;
+      window->has_move_func = FALSE;
+      window->has_resize_func = FALSE;
+      window->has_maximize_func = FALSE;
+    }
+
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Window %s fullscreen = %d not resizable, maximizable = %d fullscreenable = %d min size %dx%d max size %dx%d\n",
+              window->desc,
+              window->fullscreen,
+              window->has_maximize_func, window->has_fullscreen_func,
+              window->size_hints.min_width,
+              window->size_hints.min_height,
+              window->size_hints.max_width,
+              window->size_hints.max_height);
+  
   /* no shading if not decorated */
   if (!window->decorated || window->border_only)
     window->has_shade_func = FALSE;
@@ -5457,6 +5464,19 @@ recalc_window_features (MetaWindow *window)
       break;
     }
 
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Window %s decorated = %d border_only = %d has_close = %d has_minimize = %d has_maximize = %d has_move = %d has_shade = %d skip_taskbar = %d skip_pager = %d\n",
+              window->desc,
+              window->decorated,
+              window->border_only,
+              window->has_close_func,
+              window->has_minimize_func,
+              window->has_maximize_func,
+              window->has_move_func,
+              window->has_shade_func,
+              window->skip_taskbar,
+              window->skip_pager);
+  
   /* FIXME:
    * Lame workaround for recalc_window_features
    * being used overzealously. The fix is to

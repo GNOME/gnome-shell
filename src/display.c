@@ -1923,9 +1923,17 @@ meta_spew_event (MetaDisplay *display,
       break;
     case UnmapNotify:
       name = "UnmapNotify";
+      extra = g_strdup_printf ("event: 0x%lx window: 0x%lx from_configure: %d",
+                               event->xunmap.event,
+                               event->xunmap.window,
+                               event->xunmap.from_configure);
       break;
     case MapNotify:
       name = "MapNotify";
+      extra = g_strdup_printf ("event: 0x%lx window: 0x%lx override_redirect: %d",
+                               event->xmap.event,
+                               event->xmap.window,
+                               event->xmap.override_redirect);
       break;
     case MapRequest:
       name = "MapRequest";
@@ -1935,12 +1943,13 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ConfigureNotify:
       name = "ConfigureNotify";
-      extra = g_strdup_printf ("x: %d y: %d w: %d h: %d above: 0x%lx",
+      extra = g_strdup_printf ("x: %d y: %d w: %d h: %d above: 0x%lx override_redirect: %d",
                                event->xconfigure.x,
                                event->xconfigure.y,
                                event->xconfigure.width,
                                event->xconfigure.height,
-                               event->xconfigure.above);
+                               event->xconfigure.above,
+                               event->xconfigure.override_redirect);
       break;
     case ConfigureRequest:
       name = "ConfigureRequest";

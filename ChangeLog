@@ -1,3 +1,16 @@
+2002-09-22  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (recalc_window_features): small reordering of 
+	code
+
+	* src/display.c (meta_spew_event): more spew for MapNotify,
+	UnmapNotify
+
+	* src/window.c (recalc_window_features): spew more stuff
+
+	* src/display.c (meta_spew_event): spew override_redirect field of 
+	ConfigureNotify
+
 2002-09-20  Arvind Samptur <arvind.samputr@wipro.com>
 	* src/metacity.schemas.in: added keybindings for
 	moving windows between workspaces.
