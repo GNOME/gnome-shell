@@ -39,6 +39,15 @@ meta_ui_init (int *argc, char ***argv)
 {
   if (!gtk_init_check (argc, argv))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
+
+  {
+    /* FIXME this is a hackaround for a GTK bug with using menus without
+     * menubars. we have to use the get_type value since it's G_GNUC_CONST
+     */
+    volatile GType t;
+    t = gtk_menu_bar_get_type ();
+    t += 5;
+  }
 }
 
 Display*

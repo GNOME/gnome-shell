@@ -1,5 +1,10 @@
 2001-09-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/ui.c (meta_ui_init): add hackaround for the warning about
+	gtk-menu-bar-accel
+
+2001-09-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/ui.c (meta_ui_get_default_mini_icon): 
 	(meta_ui_get_default_window_icon): ref the returned icon, oops.
 
