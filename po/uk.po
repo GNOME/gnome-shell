@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2001-10-29 11:52+0200\n"
+"POT-Creation-Date: 2001-12-18 11:51+0200\n"
 "PO-Revision-Date: 2001-10-14 16:24+0400\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -12,12 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=koi8-u\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:153
+#: src/display.c:155
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не вдалося в╕дкрити дисплей X Window System \"%s\"\n"
 
-#: src/errors.c:92
+#: src/errors.c:93
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -28,145 +28,145 @@ msgstr ""
 "очевидно було зупинено X-сервер, або ви припинили роботу\n"
 "в╕конного менеджера.\n"
 
-#: src/errors.c:99
+#: src/errors.c:100
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальна помилка вводу-виводу %d (%s) на диспле╖ \"%s\".\n"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left edge"
 msgstr "Л╕вий край"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left window edge width"
 msgstr "Ширина л╕вого краю в╕кна"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right edge"
 msgstr "Правий край"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right window edge width"
 msgstr "Ширина правого краю в╕кна"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom edge"
 msgstr "Нижн╕й край"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom window edge height"
 msgstr "Висота нижнього краю в╕кна"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Title border"
 msgstr "Поле заголовку"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Border around title area"
 msgstr "Поле навколо д╕лянки заголовку"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Text border"
 msgstr "Поле тексту"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Border around window title text"
 msgstr "Поле навколо тексту загаловку в╕кна"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Spacer padding"
 msgstr "В╕ступ пропуска"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Padding on either side of spacer"
 msgstr "В╕дступ з обох стор╕н пропуска"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Spacer width"
 msgstr "Ширина пропуска"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Width of spacer"
 msgstr "Ширина пропуска"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Spacer height"
 msgstr "Висота пропуска"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Height of spacer"
 msgstr "Висота пропуска"
 
 #. same as right_width left_width by default
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Right inset"
 msgstr "Правий в╕дступ"
 
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Distance of buttons from right edge of frame"
 msgstr "Дистанц╕я до кнопок в╕д правого краю в╕кна"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Left inset"
 msgstr "Л╕вий в╕дступ"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Distance of menu button from left edge of frame"
 msgstr "В╕дстань до кнопки меню в╕д л╕вого краю в╕кна"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Button width"
 msgstr "Ширина кнопки"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Width of buttons"
 msgstr "Ширина кнопок"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Button height"
 msgstr "Висота кнопки"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Height of buttons"
 msgstr "Висота кнопок"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Button border"
 msgstr "Поле кнопки"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Border around buttons"
 msgstr "Поле навколо кнопок"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Inner button border"
 msgstr "Внутр╕шн╓ поле кнопки"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Border around the icon inside buttons"
 msgstr "Поле навколо п╕ктограми в кнопц╕"
 
-#: src/frames.c:889
+#: src/frames.c:891
 msgid "Close Window"
 msgstr "Закрити в╕кно"
 
-#: src/frames.c:892
+#: src/frames.c:894
 msgid "Window Menu"
 msgstr "Меню в╕кна"
 
-#: src/frames.c:895
+#: src/frames.c:897
 msgid "Minimize Window"
 msgstr "М╕н╕м╕зувати в╕кно"
 
-#: src/frames.c:898
+#: src/frames.c:900
 msgid "Maximize Window"
 msgstr "Максим╕зувати в╕кно"
 
-#: src/frames.c:901
+#: src/frames.c:903
 msgid "Unmaximize Window"
 msgstr "Демаксим╕зувати в╕кно"
 
-#: src/keybindings.c:210
+#: src/keybindings.c:215
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -175,118 +175,118 @@ msgstr ""
 "Якась програма вже використову╓ клав╕шу %s з модиф╕катором %x в якост╕ "
 "прив'язки\n"
 
-#: src/menu.c:47
+#: src/menu.c:48
 msgid "_Close"
 msgstr "Закрити"
 
-#: src/menu.c:48
+#: src/menu.c:49
 msgid "_Minimize"
 msgstr "М╕н╕м╕зувати"
 
-#: src/menu.c:49
+#: src/menu.c:50
 msgid "Ma_ximize"
 msgstr "Максим╕зувати"
 
-#: src/menu.c:50
+#: src/menu.c:51
 msgid "_Unmaximize"
 msgstr "Демаксим╕зувати"
 
-#: src/menu.c:51
+#: src/menu.c:52
 msgid "_Shade"
 msgstr "Згорнути"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "U_nshade"
 msgstr "Розгорнути"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mo_ve"
 msgstr "Перем╕стити"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "_Resize"
 msgstr "Зм╕нити розм╕р"
 
 #. separator
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Put on _All Workspaces"
 msgstr "Пом╕стити на вс╕ робоч╕ м╕сця"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "Only on _This Workspace"
 msgstr "Лише на цьому робочому м╕сц╕"
 
-#: src/menu.c:260
+#: src/menu.c:261
 #, c-format
-msgid "Only on workspace _%d"
-msgstr "Лише на робочому м╕сц╕ _%d"
+msgid "Only on workspace %s%d"
+msgstr "Лише на робочому м╕сц╕ %s%d"
 
-#: src/menu.c:263
+#: src/menu.c:264
 #, c-format
-msgid "Move to workspace _%d"
-msgstr "Перем╕стити на робоче м╕сце _%d"
+msgid "Move to workspace %s%d"
+msgstr "Перем╕стити на робоче м╕сце %s%d"
 
-#: src/screen.c:168
+#: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на диспле╖ \"%s\" не в╕рний\n"
 
-#: src/screen.c:183
+#: src/screen.c:189
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Екран %d на диспле╖ \"%s\" вже ма╓ в╕конного менеджера\n"
 
-#: src/session.c:746 src/session.c:753
+#: src/session.c:760 src/session.c:767
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не вдалось створити каталог \"%s\": %s\n"
 
-#: src/session.c:763
+#: src/session.c:777
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не вдалось в╕дкрити для запису файл сеансу \"%s\": %s\n"
 
-#: src/session.c:895
+#: src/session.c:909
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Помилка запису файлу сеансу \"%s\": %s\n"
 
-#: src/session.c:900
+#: src/session.c:914
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Помилка закриття файлу сеансу \"%s\": %s\n"
 
-#: src/session.c:974
+#: src/session.c:988
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Зб╕й п╕д час зчитування збереженого файлу сеансу \"%s\": %s\n"
 
-#: src/session.c:1008
+#: src/session.c:1022
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Зб╕й анал╕зування збереженого файлу сеансу: %s\n"
 
-#: src/session.c:1046
+#: src/session.c:1060
 msgid "nested <window> tag"
 msgstr "вкладена бирка <window>"
 
-#: src/session.c:1096 src/session.c:1128
+#: src/session.c:1110 src/session.c:1142
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Нев╕дома ознака %s у елемент╕ <window>"
 
-#: src/session.c:1188
+#: src/session.c:1202
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Нев╕дома ознака %s у елемент╕ <geometry>"
 
-#: src/session.c:1208
+#: src/session.c:1222
 #, c-format
 msgid "Unknown element %s"
 msgstr "Нев╕домий елемент %s"
 
 #. someone is on crack
-#: src/window.c:2903
+#: src/window.c:2939
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -294,7 +294,7 @@ msgstr ""
 "заборонено зм╕нити розм╕р\n"
 
 #. another cracksmoker
-#: src/window.c:2913
+#: src/window.c:2949
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
