@@ -1,5 +1,36 @@
 2004-10-04  Elijah Newren  <newren@math.utah.edu>
 
+	Fix a variety of issues with autoraise (#134206)
+
+	* src/display.h: (struct _MetaDisplay): add an autoraise_window
+	parameter
+
+	* src/display.[hc] (meta_display_focus_the_no_focus_window): new
+	function, (meta_display_queue_autoraise_callback): new function,
+	(meta_display_remove_autoraise_callback): new function
+
+	* src/display.c (meta_display_open): intialize
+	display->autoraise_window too, (meta_display_close): remove any
+	pending autoraise callback, (window_raise_with_delay_callback):
+	clear out auto_raise->display->autoraise_window too,
+	(event_callback): call meta_display_queue_autoraise_callback
+	instead of having the code inline, call
+	meta_display_focus_the_no_focus_window to handle focusing that
+	window
+
+	* src/window.c (meta_window_focus): If there's a window with an
+	autoraise timeout that isn't the window being focused, remove the
+	autoraise timeout
+
+	* src/workspace.c (meta_workspace_focus_default_window): If no
+	autoraise timeout is queued for the given window then queue one
+	now, call meta_display_focus_the_no_focus_window to handle
+	focusing that window, (meta_workspace_focus_mru_window): call
+	meta_display_focus_the_no_focus_window to handle focusing that
+	window
+
+2004-10-04  Elijah Newren  <newren@math.utah.edu>
+
 	* src/display.c (event_callback): When no window becomes focused,
 	focus the default window instead of punting to the
 	no_focus_window.  Also, change the warning to a verbose

@@ -830,6 +830,13 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
                           "Focusing mouse window %s\n", window->desc);
               meta_window_focus (window, timestamp);
             }
+
+          if (workspace->screen->display->autoraise_window != window &&
+              meta_prefs_get_auto_raise ()) 
+            {
+              meta_display_queue_autoraise_callback (workspace->screen->display,
+                                                     window);
+            }
         }
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_SLOPPY)
         meta_workspace_focus_mru_window (workspace, not_this_one, timestamp);
@@ -838,10 +845,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           meta_topic (META_DEBUG_FOCUS,
                       "Setting focus to no_focus_window, since no valid "
                       "window to focus found.\n");
-          XSetInputFocus (workspace->screen->display->xdisplay,
-                          workspace->screen->display->no_focus_window,
-                          RevertToPointerRoot,
-                          timestamp);
+          meta_display_focus_the_no_focus_window (workspace->screen->display,
+                                                  timestamp);
         }
     }
 }
@@ -891,9 +896,7 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
   else
     {
       meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found; focusing no_focus_window.\n");
-      XSetInputFocus (workspace->screen->display->xdisplay,
-                      workspace->screen->display->no_focus_window,
-                      RevertToPointerRoot,
-                      timestamp);
+      meta_display_focus_the_no_focus_window (workspace->screen->display,
+                                              timestamp);
     }
 }

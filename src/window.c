@@ -3323,6 +3323,10 @@ meta_window_focus (MetaWindow  *window,
       window->wm_state_demands_attention = FALSE;
       set_net_wm_state (window);
     }  
+
+  /* Check if there's an autoraise timeout for a different window */
+  if (window != window->display->autoraise_window)
+    meta_display_remove_autoraise_callback (window->display);
 }
 
 static void

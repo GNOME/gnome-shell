@@ -233,6 +233,7 @@ struct _MetaDisplay
 
   /* Pending autoraise */
   guint       autoraise_timeout_id;
+  MetaWindow* autoraise_window;
 
   /* Alt+click button grabs */
   unsigned int window_grab_modifiers;
@@ -484,5 +485,11 @@ void meta_display_devirtualize_modifiers (MetaDisplay        *display,
 void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);
 gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
+
+void meta_display_focus_the_no_focus_window (MetaDisplay *display, 
+                                             Time         timestamp);
+void meta_display_queue_autoraise_callback  (MetaDisplay *display,
+                                             MetaWindow  *window);
+void meta_display_remove_autoraise_callback (MetaDisplay *display);
 
 #endif

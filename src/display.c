@@ -328,6 +328,7 @@ meta_display_open (const char *name)
 
   display->pending_pings = NULL;
   display->autoraise_timeout_id = 0;
+  display->autoraise_window = NULL;
   display->focus_window = NULL;
   display->previously_focused_window = NULL;
   display->expected_focus_window = NULL;
@@ -780,11 +781,7 @@ meta_display_close (MetaDisplay *display)
 
   meta_prefs_remove_listener (prefs_changed_callback, display);
   
-  if (display->autoraise_timeout_id != 0)
-    {
-      g_source_remove (display->autoraise_timeout_id);
-      display->autoraise_timeout_id = 0;
-    }
+  meta_display_remove_autoraise_callback (display);
   
 #ifdef USE_GDK_DISPLAY
   /* Stop caring about events */
@@ -1193,6 +1190,7 @@ window_raise_with_delay_callback (void *data)
 	      auto_raise->xwindow);
 
   auto_raise->display->autoraise_timeout_id = 0;
+  auto_raise->display->autoraise_window = NULL;
 
   window  = meta_display_lookup_x_window (auto_raise->display, 
 					  auto_raise->xwindow);
@@ -1227,6 +1225,33 @@ window_raise_with_delay_callback (void *data)
     }
 
   return FALSE;
+}
+
+void
+meta_display_queue_autoraise_callback (MetaDisplay *display,
+                                       MetaWindow  *window)
+{
+  MetaAutoRaiseData *auto_raise_data;
+
+  meta_topic (META_DEBUG_FOCUS, 
+              "Queuing an autoraise timeout for %s with delay %d\n", 
+              window->desc, 
+              meta_prefs_get_auto_raise_delay ());
+  
+  auto_raise_data = g_new (MetaAutoRaiseData, 1);
+  auto_raise_data->display = window->display;
+  auto_raise_data->xwindow = window->xwindow;
+  
+  if (display->autoraise_timeout_id != 0)
+    g_source_remove (display->autoraise_timeout_id);
+
+  display->autoraise_timeout_id = 
+    g_timeout_add_full (G_PRIORITY_DEFAULT,
+                        meta_prefs_get_auto_raise_delay (),
+                        window_raise_with_delay_callback,
+                        auto_raise_data,
+                        g_free);
+  display->autoraise_window = window;
 }
 
 static int
@@ -1732,26 +1757,7 @@ event_callback (XEvent   *event,
 		  
 		  if (meta_prefs_get_auto_raise ()) 
 		    {
-		      MetaAutoRaiseData *auto_raise_data;
-
-		      meta_topic (META_DEBUG_FOCUS, 
-				  "Queuing an autoraise timeout for %s with delay %d\n", 
-				  window->desc, 
-				  meta_prefs_get_auto_raise_delay ());
-		      
-		      auto_raise_data = g_new (MetaAutoRaiseData, 1);
-		      auto_raise_data->display = window->display;
-		      auto_raise_data->xwindow = window->xwindow;
-		      
-		      if (display->autoraise_timeout_id != 0)
-			g_source_remove (display->autoraise_timeout_id);
-
-		      display->autoraise_timeout_id = 
-			g_timeout_add_full (G_PRIORITY_DEFAULT,
-					    meta_prefs_get_auto_raise_delay (),
-					    window_raise_with_delay_callback,
-					    auto_raise_data,
-					    g_free);
+                      meta_display_queue_autoraise_callback (display, window);
 		    }
 		  else
 		    {
@@ -1786,10 +1792,8 @@ event_callback (XEvent   *event,
                 {
                   meta_verbose ("Unsetting focus from %s due to LeaveNotify\n",
                                 window->desc);
-                  XSetInputFocus (display->xdisplay,
-                                  display->no_focus_window,
-                                  RevertToPointerRoot,
-                                  event->xcrossing.time);
+                  meta_display_focus_the_no_focus_window (display, 
+                                                          event->xcrossing.time);
                 }
               break;
             case META_FOCUS_MODE_SLOPPY:
@@ -4571,4 +4575,26 @@ gboolean
 meta_display_focus_sentinel_clear (MetaDisplay *display)
 {
   return (display->sentinel_counter == 0);
+}
+
+void
+meta_display_focus_the_no_focus_window (MetaDisplay *display, 
+                                        Time         timestamp)
+{
+  XSetInputFocus (display->xdisplay,
+                  display->no_focus_window,
+                  RevertToPointerRoot,
+                  timestamp);
+  meta_display_remove_autoraise_callback (display);
+}
+
+void
+meta_display_remove_autoraise_callback (MetaDisplay *display)
+{
+  if (display->autoraise_timeout_id != 0)
+    {
+      g_source_remove (display->autoraise_timeout_id);
+      display->autoraise_timeout_id = 0;
+      display->autoraise_window = NULL;
+    }
 }
