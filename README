@@ -203,18 +203,12 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    locale. I assume the window titles should be right-justified;
    should the window controls also be flipped?
 
- - Need keyboard shortcuts for hide/show desktop (minimize/unminimize
-   all windows temporarily, basically, and focus desktop); also 
-   for focusing dock windows (though since current GNOME panel has 
-   no useful keynav, this doesn't get you far at the moment).
+ - Need keyboard shortcuts for focusing dock windows (though since
+   current GNOME panel has no useful keynav, this doesn't get you far
+   at the moment).
 
  - Resize menu item doesn't do anything. It's intended to enter
    resize-with-the-keyboard mode, similar to Move menu item.
-
- - I haven't set up the po subdir and translations, mostly because
-   autotools seem to get all confused if you set these up but 
-   don't actually have any translations. So if someone translates
-   something we can set it up.
 
  - If you switch from sawfish to metacity without restarting X, 
    the panel often ends up buried behind the Nautilus desktop window.
