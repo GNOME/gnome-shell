@@ -93,7 +93,7 @@ evil_timeout (gpointer data)
   int len;
   int create_count;
   int destroy_count;
-
+  
   len = g_slist_length (evil_windows);  
   
   if (len > 35)
@@ -115,16 +115,37 @@ evil_timeout (gpointer data)
     {
       GtkWidget *w;
       GtkWidget *c;
+      int t;
+      GtkWidget *parent;
       
       w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      c = gtk_button_new_with_label ("Evil Window!");
-      gtk_container_add (GTK_CONTAINER (w), c);
 
       gtk_widget_set_uposition (w,
                                 g_random_int_range (0,
                                                     gdk_screen_width ()),
                                 g_random_int_range (0,
                                                     gdk_screen_height ()));
+
+      parent = NULL;
+      
+      /* set transient for random window (may create all kinds of weird cycles) */
+      if (len > 0)
+        {
+          t = g_random_int_range (- (len / 3), len);
+          if (t >= 0)
+            {
+              parent = g_slist_nth_data (evil_windows, t);
+              
+              if (parent != NULL)
+                gtk_window_set_transient_for (GTK_WINDOW (w), GTK_WINDOW (parent));
+            }
+        }
+      
+      if (parent != NULL)
+        c = gtk_button_new_with_label ("Evil Transient!");
+      else
+        c = gtk_button_new_with_label ("Evil Window!");
+      gtk_container_add (GTK_CONTAINER (w), c);
       
       gtk_widget_show_all (w);
       

@@ -1,5 +1,10 @@
 2002-10-26  Havoc Pennington  <hp@pobox.com>
 
+	* src/wm-tester/main.c (evil_timeout): make windows randomly
+	transient for each other http://bugzilla.gnome.org/show_bug.cgi?id=96928
+
+2002-10-26  Havoc Pennington  <hp@pobox.com>
+
 	* src/xprops.c (meta_prop_get_text_property): new function
 	(meta_prop_get_wm_hints): new function
 	(meta_prop_get_class_hint): new function
