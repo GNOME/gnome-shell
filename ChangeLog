@@ -1,5 +1,11 @@
 2004-06-24  Elijah Newren  <newren@math.utah.edu>
 
+	* src/window.c: Avoid a race condition on the choice of window to
+	focus after the previously focused window gets closed or
+	minimized.  Fixes #131582.
+
+2004-06-24  Elijah Newren  <newren@math.utah.edu>
+
 	* src/metacity.schemas.in: make naming for "move a window"/"move
 	the window"/"move window" more consistent.  Patch from Michael
 	Terry for #142235.

@@ -1079,7 +1079,13 @@ meta_window_free (MetaWindow  *window)
     g_object_unref (G_OBJECT (window->mini_icon));
 
   meta_icon_cache_free (&window->icon_cache);
-  
+
+  /* Avoid a race condition between the focusing of the mru window and the
+   * mouse entering the window beneath the one closed in sloppy/mouse focus
+   * modes.
+   */  
+  meta_display_increment_focus_sentinel (window->display);
+
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
   g_free (window->startup_id);
@@ -1479,8 +1485,26 @@ idle_calc_showing (gpointer data)
   /* for all displays used in the queue, set a sentinel property on
    * the root window so that we can ignore EnterNotify events that
    * occur before the window maps occur.  This avoids a race
-   * condition. */
+   * condition.
+   */
   tmp = should_show;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+      
+      if (g_slist_find (displays, window->display) == NULL)
+        {
+          displays = g_slist_prepend (displays, window->display);
+          meta_display_increment_focus_sentinel (window->display);
+        }
+
+      tmp = tmp->next;
+    }
+  /* There's also a potential race condition on window minimize.
+   * So we need to avoid that to, in the same manner.  As with the
+   * case above, this race condition is only for sloppy/mouse focus.
+   */
+  tmp = should_hide;
   while (tmp != NULL)
     {
       MetaWindow *window = tmp->data;
