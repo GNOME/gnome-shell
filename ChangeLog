@@ -3,7 +3,7 @@
 	* src/themes/Atlanta/metacity-theme-1.xml:
 
 	Ensure Atlanta window buttons get larger when using large
-	print themes.
+	print themes. Fixes #123469.
 
 2003-01-04  Rob Adams  <readams@readams.net>
 
