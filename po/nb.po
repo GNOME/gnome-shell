@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-28 17:02+0100\n"
-"PO-Revision-Date: 2005-01-28 17:03+0100\n"
+"POT-Creation-Date: 2005-02-01 13:22+0100\n"
+"PO-Revision-Date: 2005-02-01 13:23+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -203,12 +203,12 @@ msgstr "_Lukk"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Plasser på _alle arbeidsområder"
+msgid "_Always on Visible Workspace"
+msgstr "_Alltid på synlig arbeidsområde"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Kun på de_tte arbeidsområdet"
+msgid "_Only on This Workspace"
+msgstr "K_un på dette arbeidsområdet"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -366,7 +366,7 @@ msgstr ""
 "Disse vinduene støtter ikke «lagre aktiv konfigurasjon» og vil måtte startes "
 "på nytt manuelt neste gang du logger inn."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -506,7 +506,13 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages"
-msgstr "Hvis denne er sann vil metacity gi bruker mindre informasjon og inntrykk av «direkte manipulasjon», ved å vise kun ramme ved flytting og å unngå animasjoner. Dette er en betydelig reduksjon i brukervennlighet for mange brukere, men kan la eldre applikasjoner og termialtjenere fungere på en bedre måte.Denne funksjonen vil deaktiveres hvis tilgjengelighet skrus på for å unngå problemer."
+msgstr ""
+"Hvis denne er sann vil metacity gi bruker mindre informasjon og inntrykk av "
+"«direkte manipulasjon», ved å vise kun ramme ved flytting og å unngå "
+"animasjoner. Dette er en betydelig reduksjon i brukervennlighet for mange "
+"brukere, men kan la eldre applikasjoner og termialtjenere fungere på en "
+"bedre måte.Denne funksjonen vil deaktiveres hvis tilgjengelighet skrus på "
+"for å unngå problemer."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -3131,7 +3137,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4914
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3147,7 +3153,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5585
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3184,31 +3190,3 @@ msgid ""
 msgstr ""
 "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8 for oppføring %d i "
 "listen\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Velg hvordan fokus gis til vinduer"
-
-#~ msgid "Window Focus"
-#~ msgstr "Vindufokus"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Kli_kk for å gi fokus"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Fokusoppførsel:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Brukervalg for vindufokus"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Pek for å gi fokus"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Hev vindue_r når de får fokus"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Feil under åpning av en tilkobling til sesjonshåndtereren. "
-#~ "Vindusposisjoner vil ikke bli lagret: %s\n"
