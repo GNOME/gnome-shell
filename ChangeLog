@@ -1,5 +1,13 @@
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
+	Patch from Joe Marcus Clarke to fix a possible crash on logout.
+	#167935.  Thanks for fixing my mistakes, Joe!
+
+	* src/display.c: (meta_display_open): initialize
+	display->grab_old_window_stacking to NULL.
+
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
 	Big patch to cover about 6 different issues in order to correct
 	rare problems with timestamps (make sure window selected in
 	tasklist actually gets focus, sanity check timestamps to avoid

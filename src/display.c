@@ -341,6 +341,7 @@ meta_display_open (const char *name)
   display->autoraise_window = NULL;
   display->focus_window = NULL;
   display->expected_focus_window = NULL;
+  display->grab_old_window_stacking = NULL;
 
 #ifdef HAVE_XSYNC
   display->grab_sync_request_alarm = None;
