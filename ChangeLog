@@ -1,5 +1,13 @@
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
+	Fix unwanted loss of focus to the mouse window when using keynav
+	(fixes #101190)
+
+	* src/display.c (event_callback): Ignore EnterNotify events with
+	xcrossing.mode of either NotifyGrab or NotifyUngrab
+
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
 	Focus correct window after minimizing via the tasklist (fixes
 	#128200; see also #107681)
 

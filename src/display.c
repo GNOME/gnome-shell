@@ -1677,6 +1677,8 @@ event_callback (XEvent   *event,
         meta_window_handle_mouse_grab_op_event (window, event);
       /* do this even if window->has_focus to avoid races */
       else if (window && !serial_is_ignored (display, event->xany.serial) &&
+               event->xcrossing.mode != NotifyGrab && 
+               event->xcrossing.mode != NotifyUngrab &&
                event->xcrossing.detail != NotifyInferior &&
                meta_display_focus_sentinel_clear (display))
         {
