@@ -89,7 +89,7 @@
       <applyto>/apps/metacity/general/titlebar_font</applyto>   
       <owner>metacity</owner>
       <type>string</type>
-      <!-- no default is deliberate - we want to be unset by default -->
+      <default>Sans Bold 10</default>
       <locale name="C">
          <short>Window title font</short>
          <long>
