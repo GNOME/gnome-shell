@@ -1,3 +1,8 @@
+2005-02-04  Dave Ahlswede  <mightyquinn@letterboxes.org>
+
+	* src/metacity.schemas.in: Add period to the end of
+	reduced_resources' description.  Fixes #165780.
+ 	
 2005-02-04  Elijah Newren  <newren@gmail.com>
 
 	Make sure window->border_only is initialized so we don't get

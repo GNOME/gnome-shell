@@ -273,7 +273,7 @@
         legacy applications and terminal servers to function 
         when they would otherwise be impractical. However, the wireframe
         feature is disabled when accessibility is on to avoid weird desktop
-        breakages
+        breakages.
          </long>
       </locale>
     </schema>
