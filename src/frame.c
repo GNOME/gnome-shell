@@ -112,6 +112,7 @@ meta_window_ensure_frame (MetaWindow *window)
                    frame->xwindow,
                    window->rect.x,
                    window->rect.y);
+  /* FIXME handle this error */
   meta_error_trap_pop (window->display);
   
   /* stick frame to the window */
