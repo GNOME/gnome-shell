@@ -164,7 +164,8 @@ RANDR_LIBS=
 found_randr=false
 AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
                [AC_CHECK_HEADERS(X11/extensions/Xrandr.h,
-                                 RANDR_LIBS=-lXrandr found_randr=true)],
+                                 RANDR_LIBS=-lXrandr, found_randr=true,
+				 [#include <X11/Xlib.h>])],
                , -lXrender $ALL_X_LIBS)
 
 if test "$found_randr" = "true"; then
