@@ -451,7 +451,7 @@ utf8_list_from_results (GetPropertyResults *results,
    * property is nul-separated
    */
   i = 0;
-  n_strings = 1;
+  n_strings = 0;
   while (i < (int) results->n_items)
     {
       if (results->prop[i] == '\0')
@@ -459,6 +459,9 @@ utf8_list_from_results (GetPropertyResults *results,
       ++i;
     }
 
+  if (results->prop[results->n_items - 1] != '\0')
+    ++n_strings;
+ 
   /* we're guaranteed that results->prop has a nul on the end
    * by XGetWindowProperty
    */

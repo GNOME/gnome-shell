@@ -1,3 +1,11 @@
+2003-07-29  Arvind Samptur  <arvind.samptur@wipro.com>
+
+	* src/xprops.c (utf8_list_from_results): Number of
+	strings we are processing is one more than required.
+	
+	Also get the string count right even without a null byte at the end.
+	Pointed out by Havoc.
+
 2003-07-27  Rob Adams  <robadams@ucla.edu>
 
 	* src/window.c (update_move):  Update window shaking loose so that
