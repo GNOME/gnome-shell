@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-07-13 16:47+0200\n"
-"PO-Revision-Date: 2002-07-13 16:47+0200\n"
+"POT-Creation-Date: 2002-07-15 23:05+0200\n"
+"PO-Revision-Date: 2002-07-15 23:06+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Maksimér vindue"
 msgid "Unmaximize Window"
 msgstr "Gendan vindue"
 
-#: src/keybindings.c:684
+#: src/keybindings.c:808
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,13 +97,13 @@ msgid ""
 msgstr ""
 "Et andet program bruger allerede nøglen %s med modifikatorer %x som binding\n"
 
-#: src/keybindings.c:1957
+#: src/keybindings.c:2082
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fejl ved start af metacity-dialog for at vise en fejl for en kommando: %s\n"
 
-#: src/keybindings.c:1987
+#: src/keybindings.c:2112
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
@@ -1370,7 +1370,7 @@ msgstr "%d lagret i GConf-nøgle %s er uden for intervallet 0 til %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: src/prefs.c:997
+#: src/prefs.c:998
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2343,8 +2343,8 @@ msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #: src/workspace.c:51
 #, c-format
-msgid "Workspace %d\n"
-msgstr "Arbejdsområde %d\n"
+msgid "Workspace %d"
+msgstr "Arbejdsområde %d"
 
 #: src/xprops.c:54
 #, c-format
