@@ -3621,7 +3621,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                        GdkPixbuf               *mini_icon,
                        GdkPixbuf               *icon)
 {
-  int i;
+  int i, j;
   GdkRectangle titlebar_rect;
   GdkRectangle left_titlebar_edge;
   GdkRectangle right_titlebar_edge;
@@ -3786,43 +3786,44 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                                     rect.x, rect.y, rect.width, rect.height);
         }
 
-      ++i;
-    }
 
-  /* Now we draw buttons */
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
-    {
-      GdkRectangle rect;
-      GdkRectangle combined_clip;
-
-      button_rect (i, fgeom, &rect);
-
-      rect.x += x_offset;
-      rect.y += y_offset;
-
-      if (clip == NULL)
-        combined_clip = rect;
-      else
-        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                 &rect,
-                                 &combined_clip);
-
-      if (combined_clip.width > 0 && combined_clip.height > 0)
+      /* Draw buttons just before overlay */
+      if ((i + 1) == META_FRAME_PIECE_OVERLAY)
         {
-          MetaDrawOpList *op_list;
-
-          op_list = get_button (style, i, button_states[i]);
-          
-          if (op_list)
-            meta_draw_op_list_draw (op_list,
-                                    widget,
-                                    drawable,
-                                    &combined_clip,
-                                    &draw_info,
-                                    rect.x, rect.y, rect.width, rect.height);
+          j = 0;
+          while (j < META_BUTTON_TYPE_LAST)
+            {              
+              button_rect (j, fgeom, &rect);
+              
+              rect.x += x_offset;
+              rect.y += y_offset;
+              
+              if (clip == NULL)
+                combined_clip = rect;
+              else
+                gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
+                                         &rect,
+                                         &combined_clip);
+              
+              if (combined_clip.width > 0 && combined_clip.height > 0)
+                {
+                  MetaDrawOpList *op_list;
+                  
+                  op_list = get_button (style, j, button_states[j]);
+                  
+                  if (op_list)
+                    meta_draw_op_list_draw (op_list,
+                                            widget,
+                                            drawable,
+                                            &combined_clip,
+                                            &draw_info,
+                                            rect.x, rect.y, rect.width, rect.height);
+                }
+              
+              ++j;
+            }
         }
-
+      
       ++i;
     }
 }
