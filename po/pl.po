@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-06-30 09:13+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"

@@ -1,3 +1,7 @@
+Wed Sep 10 15:38:09 2003  Jonathan Blandford  <jrb@redhat.com>
+
+	* configure.in: Rerelease 2.4.0.1 to fix glib-gettext problem.
+
 2003-09-08  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: remove "this is the unstable branch" warning

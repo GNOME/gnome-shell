@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-02-05 03:08--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"

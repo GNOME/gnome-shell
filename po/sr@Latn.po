@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-08-08 04:41+0200\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"

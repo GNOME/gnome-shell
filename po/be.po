@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-08-13 20:59+0300\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"

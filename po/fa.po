@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-03-10 12:01+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"

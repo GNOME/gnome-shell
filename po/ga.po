@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity HEAD\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
+"POT-Creation-Date: 2003-09-10 15:41-0400\n"
 "PO-Revision-Date: 2003-02-11 15:05 GMT\n"
 "Last-Translator: Paul Duffy <dubhthach@zion.nuigalway.ie>\n"
 "Language-Team: Irish\n"
