@@ -5,13 +5,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-11-25 21:12+0100\n"
+"POT-Creation-Date: 2002-12-14 21:57+0100\n"
+"PO-Revision-Date: 2002-12-14 22:00+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr " Bruk: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity er kompilert uten støtte for «verbose» modus\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -48,7 +57,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
-#: src/display.c:270
+#: src/display.c:273
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -454,14 +463,12 @@ msgid "Maximize a window"
 msgstr "Maksimer et vindu"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "Maksimer et vindu"
+msgstr "Maksimer vinduet horisontalt"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "Maksimer et vindu"
+msgstr "Maksimer vinduet vertikalt"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
@@ -2439,23 +2446,19 @@ msgstr "Feil under fdopen() av loggfil %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: src/util.c:343
+#: src/util.c:345
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: src/util.c:372
+#: src/util.c:374
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: src/util.c:396
+#: src/util.c:398
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
@@ -2465,7 +2468,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4859
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2481,7 +2484,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5419
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2512,42 +2515,3 @@ msgid ""
 msgstr ""
 "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8 for oppføring %d i "
 "listen\n"
-
-#~ msgid "Workspace %u"
-#~ msgstr "Arbeidsområde %u"
-
-#~ msgid "click"
-#~ msgstr "klikk"
-
-#~ msgid "disabled"
-#~ msgstr "deaktivert"
-
-#~ msgid "false"
-#~ msgstr "usann"
-
-#~ msgid "true"
-#~ msgstr "sann"
-
-#~ msgid "_Shade"
-#~ msgstr "_Skyggelegg"
-
-#~ msgid "Un_shade"
-#~ msgstr "Fjern _skygge"
-
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "<author> er ikke satt for tema «%s»"
-
-#~ msgid "No <date> set for theme \"%s\""
-#~ msgstr "<date> er ikke satt for tema «%s»"
-
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "<description> er ikks satt for tema «%s»"
-
-#~ msgid "No <copyright> set for theme \"%s\""
-#~ msgstr "<copyright> er ikke satt for tema «%s»"
-
-#~ msgid "Change how focus is moved from one window to another"
-#~ msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
-
-#~ msgid "Move focus to the previously-focused window"
-#~ msgstr "Flytt fokus til tidligere fokusert vindu"
