@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2003-08-13 20:59+0300\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -2150,70 +2150,70 @@ msgstr "У экрана %d дысплэя \"%s\" ужо ёсьць мэнадж�
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ня атрымалася вызваліць экран %d дысплэя \"%s\"\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ня атрымалася стварыць каталёг \"%s\": %s\n"
 
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Ня атрымалася адкрыць для запісу файл сэанса \"%s\": %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Адбылася памылка запісу файла сэанса \"%s\": %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Адбылася памылка закрыцьця файла сэанса \"%s\": %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Адбыўся збой пад час чытаньня захаванага файла сэанса \"%s\": %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Адбыўся збой пад час выкананьня разбору захаванага файла сэанса: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Указаны атрыбут <metacity_session>, але ID сэанса ўжо ёсьць"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Невядомы атрыбут \"%s\" элемэнта <metacity_session>"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "укладзены тэг <window>"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Атрыбут \"%s\" элемэнта <window> невядомы"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Атрыбут \"%s\" элемэнта <window> невядомы"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Атрыбут \"%s\" элемэнта <geometry> невядомы"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "Элемэнт \"%s\" невядомы"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3262,7 +3262,7 @@ msgstr ""
 "Дастасаваньне усталявала няправільнае значэньне парамэтра _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3278,7 +3278,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

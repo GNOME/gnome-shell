@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2002-06-07 21:46+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -2108,71 +2108,71 @@ msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nisem mogel opustiti prikaza %d prikazu \"%s\"\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nisem mogel ustvariti imenika %s %s\n"
 
 # G:2 K:0 O:0
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nisem uspel odpreti datoteke seje '%s' za pisanje: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Napaka ob zapisovanju datoteke seje '%s': %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Napaka ob zapiranju datekote seje '%s': %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Nisem uspel prebrati datoteke shranjene seje %s: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nisem uspel razčleniti datoteke shranjene seje: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "atribut <metacity_session> je bil viden, a mi že imamo ID seje"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Neznan atribut %s v elementu <metacity_session>"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "gnezdena označba <window>"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Neznan atribut %s elementa <window>"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Neznan atribut %s elementa <maximize>"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Neznan atribut %s elementa <geometry>"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznan element %s"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3199,7 +3199,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program je nastavil pokvarjen _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3215,7 +3215,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

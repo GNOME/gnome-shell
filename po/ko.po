@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2004-08-15 10:59+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -1971,70 +1971,70 @@ msgstr ""
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "디렉토리 '%s'을(를) 만들 수 없습니다: %s\n"
 
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "세션 파일 '%s'을(를) 쓰기위해 열 수 없습니다: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "세션 파일 '%s'을(를) 쓰는 중 오류: %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "세션 파일 '%s'을(를) 닫는 중 오류: %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "저장된 세션 파일 %s을(를) 읽기 실패: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "저장된 세션파일을 분석하기 실패: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> 속성이 보이지만 이미 session ID를 가지고 있습니다"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> 요소에 알 수 없는 속성 %s"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "포함된 <window> 태그"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 요소에 알 수 없는 속성 %s"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> 요소에 알 수 없는 속성 %s"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> 요소에 알 수 없는 속성 %s"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "알 수 없는 속성 %s"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3056,7 +3056,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3072,7 +3072,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

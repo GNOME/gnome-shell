@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2004-09-19 16:36+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -2086,72 +2086,72 @@ msgstr "Lo schermo %d nel display «%s» ha già un window manager\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d nel display «%s»\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Impossibile creare la directory «%s»: %s\n"
 
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Impossibile aprire il file di sessione «%s» in scrittura: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Errore nello scrivere il file di sessione «%s»: %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Errore nel chiudere il file di sessione «%s»: %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lettura del file della sessione %s fallita: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Analisi del file della sessione salvato fallita: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "È stato trovato un'attributo in <metacity_session> ma è già presente un ID "
 "della sessione"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Attributo %s sconosciuto nell'elemento <metacity_session>"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "tag <window> annidato"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Attributo %s sconosciuto nell'elemento <window>"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Attributo %s sconosciuto nell'elemento <maximized>"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Attributo %s sconosciuto nell'elemento <geometry>"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento %s sconosciuto"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3202,7 +3202,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'applicazione ha impostato un _NET_WM_PID errato %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3218,7 +3218,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2004-07-18 14:18+0530\n"
 "Last-Translator: Ravishankar Shrivastava <raviratlami@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
@@ -2088,70 +2088,70 @@ msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर �
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है को मुक्त नहीं कर सका\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "डिरेक्ट्री '%s' बना नहीं पाया: %s\n"
 
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "सत्र फ़ाइल '%s' लिखने हेतु नही खोल पाया: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "स्त्र फ़ाइल लिखने में त्रुटि '%s': %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "सत्र फ़ाइल बंद करने में त्रुटि '%s': %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "सहेजी गई सत्र फ़ाइल %s पढ़ने में असफल: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "सहेजी गई सत्र फ़ाइल: %s की व्याख्या करने में असफल\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<मेटासिटी_सत्र> गुण देखा पर हमारे पास पहले ही सत्र आईडी है"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "अज्ञात विशेषता %s <मेटासिटी-सत्र> तत्व पर"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "नेस्टेड <विंडो> टैग"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "अज्ञात गुण %s  <विंडो> तत्व पर"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "अज्ञात गुण %s <अधिकतम> तत्व पर"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "अज्ञात गुण %s <ज्यामिती> तत्व पर"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "अज्ञात तत्व %s"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3159,7 +3159,7 @@ msgstr "अनुप्रयोग ने नियत किया एक bogu
 
 #  first time through
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3181,7 +3181,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

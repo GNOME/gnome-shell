@@ -1,5 +1,9 @@
 2005-01-09  Elijah Newren  <newren@gmail.com>
 
+	* NEWS: Metacity 2.9.3 unstable release
+
+2005-01-09  Elijah Newren  <newren@gmail.com>
+
 	* src/display.c (meta_display_open):
 	* src/display.h (struct _MetaDisplay):
 	* src/window.c (meta_window_free, meta_window_client_message,

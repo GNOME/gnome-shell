@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: METACITY 2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
+"POT-Creation-Date: 2005-01-09 21:23-0700\n"
 "PO-Revision-Date: 2003-10-12 20:33+0530\n"
 "Last-Translator: Dr Anirban Mitra <mitra_anirban@yahoo.co.in>\n"
 "Language-Team: Bengali <gnome-trans@bengalinux.org>\n"
@@ -2088,71 +2088,71 @@ msgstr "পর্দা %d প্রদর্শক \"%s\"এ ইতিমধ্
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "পর্দা %d প্রদর্শক \"%s\" কে ছাড়তে পারলাম না\n"
 
-#: src/session.c:883 src/session.c:890
+#: src/session.c:884 src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ডিরেক্টরী তৈরী করতে পারছে না '%s': %s\n"
 
-#: src/session.c:900
+#: src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "সেসন ফাইল '%s' কে লেখার জন্য খুলতে পারছে না :%s\n"
 
-#: src/session.c:1059
+#: src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "সেসন ফাইল '%s' কে লিখতে ভুল হয়েছে :%s\n"
 
-#: src/session.c:1064
+#: src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "সেসন ফাইল '%s' কে বন্ধ করতে ভুল হয়েছে :%s\n"
 
-#: src/session.c:1139
+#: src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "সঞ্চিত সেসন ফাইল '%s' কে পড়তে পারি নি :%s\n"
 
-#: src/session.c:1174
+#: src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "সঞ্চিত সেসন ফাইল পার্স করতে পারি নি :%s\n"
 
-#: src/session.c:1223
+#: src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> বৈশিষ্ট্য দেখা গেছে কিন্তু আমাদের ইতিমধ্যেই সেসন আই ডি আছে"
 
-#: src/session.c:1236
+#: src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> উপাদানে অজানা বৈশিষ্ট্য %s"
 
-#: src/session.c:1253
+#: src/session.c:1247
 msgid "nested <window> tag"
 msgstr "একত্রিত <window> ট্যাগ"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1305 src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> উপাদানে অজানা বৈশিষ্ট্য %s"
 
-#: src/session.c:1415
+#: src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> উপাদানে অজানা বৈশিষ্ট্য %s"
 
-#: src/session.c:1475
+#: src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> উপাদানে অজানা বৈশিষ্ট্য %s"
 
-#: src/session.c:1495
+#: src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "অজানা উপাদান %s"
 
-#: src/session.c:1947
+#: src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3173,7 +3173,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "প্রোগ্রামটি একটি অর্থহীন _NET_WM_PID স্থির করেছে %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4829
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3189,7 +3189,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5500
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
