@@ -1,3 +1,11 @@
+2004-12-28  Elijah Newren  <newren@gmail.com>
+
+	Allow users to move the window around immediately after
+	double-clicking to shade (#90290)
+
+	* src/display.c (event_callback): only end the grab op if either
+	there is no frame or else the frame is not mapped
+
 2004-12-27  Elijah Newren  <newren@gmail.com>
 
 	Focus windows that manually position themselves too (fixes

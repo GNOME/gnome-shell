@@ -1909,7 +1909,8 @@ event_callback (XEvent   *event,
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&
-              display->grab_window == window)
+              display->grab_window == window &&
+              ((window->frame == NULL) || !window->frame->mapped))
             meta_display_end_grab_op (display, CurrentTime);      
       
           if (!frame_was_receiver)
