@@ -1,3 +1,8 @@
+Tue Apr 30 06:24:09 2002  Jonathan Blandford  <jrb@gnome.org>
+
+	* src/menu.c: give Maximize/Unmaximize and Shade/Unshade the same
+	mnemonic for consistency's sake.
+
 2002-04-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (TITLEBAR_LENGTH_ONSCREEN): require 36 pixels

@@ -49,9 +49,9 @@ static MenuItem menuitems[] = {
   { META_MENU_OP_DELETE, NULL, N_("_Close") },
   { META_MENU_OP_MINIMIZE, NULL, N_("_Minimize") },
   { META_MENU_OP_MAXIMIZE, NULL, N_("Ma_ximize") },
-  { META_MENU_OP_UNMAXIMIZE, NULL, N_("_Unmaximize") },
+  { META_MENU_OP_UNMAXIMIZE, NULL, N_("Unma_ximize") },
   { META_MENU_OP_SHADE, NULL, N_("_Shade") },
-  { META_MENU_OP_UNSHADE, NULL, N_("U_nshade") },
+  { META_MENU_OP_UNSHADE, NULL, N_("Un_shade") },
   { META_MENU_OP_MOVE, NULL, N_("Mo_ve") },
   { META_MENU_OP_RESIZE, NULL, N_("_Resize") },
   { 0, NULL, NULL }, /* separator */
