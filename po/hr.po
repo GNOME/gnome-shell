@@ -1,12 +1,12 @@
-# Translation of metacity to Croatian
-# Copyright (C) Croatian team
-# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatiann
+# Copyright (C) Croatiann team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Željko Brajdić <zorz@iskon.hr>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,pr pr <delacko@192.168.0.1>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0\n"
-"POT-Creation-Date: 2004-01-05 04:38+0100\n"
-"PO-Revision-Date: 2004-01-05 12:22+CET\n"
-"Last-Translator: Robert Sedak <robert.sedak@sk.tel.hr>\n"
+"POT-Creation-Date: 2004-02-01 17:12+0100\n"
+"PO-Revision-Date: 2004-02-05 23:51+CET\n"
+"Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +54,7 @@ msgstr "Greška pri pokretanju metacity-dialoga za potvrdu o zatvaranju aplikaci
 msgid "Failed to get hostname: %s\n"
 msgstr "Nije uspjelo dobivanje imena računala: %s\n"
 
-#: src/display.c:291
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nije uspjelo otvaranje  X Window System prikaza'%s'\n"
@@ -1994,12 +1994,12 @@ msgstr "Pogreška prilikom podešavanja imena radne površine %d  u \"%s\": %s\n
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekran %d na prikazu '%s' je neispravan\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2008,17 +2008,17 @@ msgstr ""
 "Ekran %d na prikazu \"%s\" već ima rkovoditelja prozora; pokušajte koristiti --"
 "replace opciju da zamjenite trenutni rukovoditelj prozora.\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nije moguće dobiti biranje upravitelja prozora na ekranu %d prikaza \"%s\"\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekran %d na prikazu \"%s\" već ima rukovoditelj prozora\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nije moguće izbaciti otpustiti ekran %d na prikazu \"%s\"\n"
@@ -3079,7 +3079,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacija je postavila prividan _NETWM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4730
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
@@ -3093,7 +3093,7 @@ msgstr ""
 #.  * leads to e.g. us not fullscreening their windows.  Apps that set
 #.  * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #.  * about these apps but make them work.
-#: src/window.c:5351
+#: src/window.c:5392
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
@@ -3125,12 +3125,4 @@ msgstr "Svojstvo %s na prozoru 0x%lx je sadržalo neispravni UTF-8\n"
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "Svojstvo %s na prozoru 0x%lx sadrži neispravni UTF-8 za predmet %d na popisu\n"
-
-#, c-format
-#~ msgid "Only on %s"
-#~ msgstr "Samo na %s"
-
-#, c-format
-#~ msgid "Move to %s"
-#~ msgstr "Premjesti u %s"
 
