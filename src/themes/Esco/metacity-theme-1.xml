@@ -98,11 +98,6 @@
 		y="height - ButtonIPad - 4"
 		width="width - ButtonIPad * 2 - 1"
 		height="3"/>
-	<line color="gtk:fg[INSENSITIVE]" width="2"
-		x1="ButtonIPad + 1"
-		y1="height - ButtonIPad - 2"
-		x2="width - ButtonIPad - 1"
-		y2="height - ButtonIPad - 2"/>
 </draw_ops>
 <draw_ops name="minimize_button_focused">
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"

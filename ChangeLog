@@ -1,3 +1,8 @@
+2002-05-15  James M. Cape  <jcape@ignore-your.tv>
+
+	* src/themes/Esco/metacity-theme-1.xml: Minor tweak to minimize
+	button.
+
 2002-05-14  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Makefile.am (THEMES): add Esco theme from James Cape
