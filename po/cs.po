@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-28 12:42+0100\n"
-"PO-Revision-Date: 2005-01-29 15:42+0100\n"
+"POT-Creation-Date: 2005-01-31 06:04+0100\n"
+"PO-Revision-Date: 2005-01-31 10:56+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -200,12 +200,12 @@ msgstr "_Zavřít"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Na _všechny plochy"
+msgid "_Always on Current Workspace"
+msgstr "_Vždy na aktuální ploše"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Jen na _tuto plochu"
+msgid "_Only on This Workspace"
+msgstr "_Jen na této ploše"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -362,7 +362,7 @@ msgstr ""
 "Tyto okna nepodporují \"uložit aktuální nastavení\" a po vašem příštím "
 "přihlášení je budete muset spustit ručně."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -501,7 +501,14 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages"
-msgstr "Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může umožnit fungování starých aplikací a terminálových serverů v situacích, kde by jindy byly nepraktické. Funkce drátových rámů je ale zakázána, když je povoleno zpřístupnění, abychom se vyhnuli divným chybám prostředí pracovní plochy"
+msgstr ""
+"Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé "
+"manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými "
+"způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může "
+"umožnit fungování starých aplikací a terminálových serverů v situacích, kde "
+"by jindy byly nepraktické. Funkce drátových rámů je ale zakázána, když je "
+"povoleno zpřístupnění, abychom se vyhnuli divným chybám prostředí pracovní "
+"plochy"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -3084,7 +3091,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4916
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3100,7 +3107,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5587
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3135,6 +3142,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 pro položku %d seznamu\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Na _všechny plochy"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Zvolit, jak aktivovat okna"
