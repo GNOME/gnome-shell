@@ -1,5 +1,9 @@
 2003-09-29  Havoc Pennington  <hp@redhat.com>
 
+	* configure.in: put -lXext in Xrandr check, bug #115996
+
+2003-09-29  Havoc Pennington  <hp@redhat.com>
+
 	* src/wm-tester/test-size-hints.c: a little program to test size
 	hints, for now just a 0x0 min size to verify bug #113320
 

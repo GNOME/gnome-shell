@@ -267,7 +267,7 @@ AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
                [AC_CHECK_HEADER(X11/extensions/Xrandr.h,
                                 RANDR_LIBS=-lXrandr found_randr=yes,,
 				[#include <X11/Xlib.h>])],
-               , -lXrender $ALL_X_LIBS)
+               , -lXrender -lXext $ALL_X_LIBS)
 
 if test "x$found_randr" = "xyes"; then
    AC_DEFINE(HAVE_RANDR, , [Have the Xrandr extension library])
