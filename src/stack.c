@@ -371,6 +371,98 @@ sort_window_list (GList *list)
 }
 
 static void
+raise_window_relative_to_managed_windows (MetaScreen *screen,
+                                          Window      xwindow)
+{
+  /* This function is used to avoid raising a window above popup
+   * menus and other such things.
+   */
+
+  Window ignored1, ignored2;
+  Window *children;
+  int n_children;
+  int i;
+
+  /* Normally XQueryTree() means "must grab server" but here
+   * we don't, since we know we won't manage any new windows
+   * or restack any windows before using the XQueryTree results.
+   */
+  
+  meta_error_trap_push (screen->display);
+  
+  XQueryTree (screen->display->xdisplay,
+              screen->xroot,
+              &ignored1, &ignored2, &children, &n_children);
+
+  if (meta_error_trap_pop (screen->display))
+    {
+      meta_topic (META_DEBUG_STACK,
+                  "Error querying root children to raise window 0x%lx\n",
+                  xwindow);
+      return;
+    }
+
+  /* Children are in order from bottom to top. We want to
+   * find the topmost managed child, then configure
+   * our window to be above it.
+   */
+  i = n_children - 1;
+  while (i >= 0)
+    {
+      if (children[i] == xwindow)
+        {
+          /* Do nothing. This means we're already the topmost managed
+           * window, but it DOES NOT mean we are already just above
+           * the topmost managed window. This is important because if
+           * an override redirect window is up, and we map a new
+           * managed window, the new window is probably above the old
+           * popup by default, and we want to push it below that
+           * popup. So keep looking for a sibling managed window
+           * to be moved below.
+           */
+        }
+      else if (meta_display_lookup_x_window (screen->display,
+                                             children[i]) != NULL)
+        {
+          XWindowChanges changes;
+          
+          /* children[i] is the topmost managed child */
+          meta_topic (META_DEBUG_STACK,
+                      "Moving 0x%lx above topmost managed child window 0x%lx\n",
+                      xwindow, children[i]);
+
+          changes.sibling = children[i];
+          changes.stack_mode = Above;
+
+          meta_error_trap_push (screen->display);
+          XConfigureWindow (screen->display->xdisplay,
+                            xwindow,
+                            CWSibling | CWStackMode,
+                            &changes);
+          meta_error_trap_pop (screen->display);
+
+          break;
+        }
+
+      --i;
+    }
+
+  if (i < 0)
+    {
+      /* No sibling to use, just lower ourselves to the bottom
+       * to be sure we're below any override redirect windows.
+       */
+      meta_error_trap_push (screen->display);
+      XLowerWindow (screen->display->xdisplay,
+                    xwindow);
+      meta_error_trap_pop (screen->display);
+    }
+  
+  if (children)
+    XFree (children);
+}                                         
+
+static void
 meta_stack_sync_to_server (MetaStack *stack)
 {
   gboolean needs_sort[META_LAYER_LAST] = {
@@ -696,10 +788,10 @@ meta_stack_sync_to_server (MetaStack *stack)
               /* Move *newp below last_window */
               if (last_window == None)
                 {
-                  meta_topic (META_DEBUG_STACK, "Raising window 0x%lx to the top\n", *newp);
-                  
-                  XRaiseWindow (stack->screen->display->xdisplay,
-                                *newp);
+                  meta_topic (META_DEBUG_STACK, "Using window 0x%lx as topmost (but leaving it in-place)\n", *newp);
+
+                  raise_window_relative_to_managed_windows (stack->screen,
+                                                            *newp);
                 }
               else
                 {

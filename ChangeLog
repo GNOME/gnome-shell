@@ -1,5 +1,17 @@
 2002-05-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/tools/metacity-window-demo.c: add override redirect test
+	window
+
+	* src/stack.c (raise_window_relative_to_managed_windows): new
+	function, used to avoid moving windows above override redirect 
+	popup windows.
+	
+	* src/display.c (event_callback): don't lower panels on
+	LeaveNotify if they have focus, #70895
+
+2002-05-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (constrain_position): when maximizing/fullscreening
 	something with a grid, like a terminal, center it in the
 	maximization area in case it can't fill the whole area.

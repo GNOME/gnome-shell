@@ -1074,7 +1074,8 @@ event_callback (XEvent   *event,
           
           if (window->type == META_WINDOW_DOCK &&
               event->xcrossing.mode != NotifyGrab &&
-              event->xcrossing.mode != NotifyUngrab)
+              event->xcrossing.mode != NotifyUngrab &&
+              !window->has_focus)
             meta_window_lower (window);
         }
       break;
