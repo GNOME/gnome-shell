@@ -345,3 +345,12 @@ meta_ui_pop_delay_exposes  (MetaUI *ui)
   meta_frames_pop_delay_exposes (ui->frames);
 }
 
+GdkPixbuf*
+meta_ui_get_default_window_icon (MetaUI *ui)
+{
+  /* FIXME */
+  return gtk_widget_render_icon (GTK_WIDGET (ui->frames),
+                                 GTK_STOCK_NEW,
+                                 GTK_ICON_SIZE_LARGE_TOOLBAR,
+                                 NULL);
+}

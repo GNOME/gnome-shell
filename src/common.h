@@ -67,9 +67,13 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
                                      int             workspace,
                                      gpointer        data);
 
+/* when changing this enum, there are various switch statements
+ * you have to update
+ */
 typedef enum
 {
   META_GRAB_OP_NONE,
+
   /* Mouse ops */
   META_GRAB_OP_MOVING,
   META_GRAB_OP_RESIZING_SE,
@@ -80,6 +84,7 @@ typedef enum
   META_GRAB_OP_RESIZING_NW,
   META_GRAB_OP_RESIZING_W,
   META_GRAB_OP_RESIZING_E,
+
   /* Keyboard ops */
   META_GRAB_OP_KEYBOARD_MOVING,
   META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
@@ -87,6 +92,13 @@ typedef enum
   META_GRAB_OP_KEYBOARD_RESIZING_N,
   META_GRAB_OP_KEYBOARD_RESIZING_W,
   META_GRAB_OP_KEYBOARD_RESIZING_E,
+  META_GRAB_OP_KEYBOARD_RESIZING_SE,
+  META_GRAB_OP_KEYBOARD_RESIZING_NE,
+  META_GRAB_OP_KEYBOARD_RESIZING_SW,
+  META_GRAB_OP_KEYBOARD_RESIZING_NW,
+
+  META_GRAB_OP_KEYBOARD_TABBING,
+  
   /* Frame button ops */
   META_GRAB_OP_CLICKING_MINIMIZE,
   META_GRAB_OP_CLICKING_MAXIMIZE,

@@ -1,5 +1,14 @@
 2001-08-19  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_grab_window_buttons): remove XSync,
+	error traps already do that
+	(meta_display_grab_window_buttons): implement
+
+	* src/keybindings.c: 
+	src/display.c: wire up the tab window, it rulez!
+
+2001-08-19  Havoc Pennington  <hp@pobox.com>
+
 	* src/tabpopup.c: add prototype thingy to display windows we're
 	cycling through with tab. Not wired up to keybindings yet.
 

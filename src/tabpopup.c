@@ -40,6 +40,7 @@ struct _MetaTabPopup
   GtkWidget *label;
   GList *current;
   GList *entries;
+  GtkWidget *current_selected_widget;
 };
 
 MetaTabPopup*
@@ -52,12 +53,19 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   int height;
   GtkWidget *table;
   GList *tmp;
+  GtkWidget *frame;
   
   popup = g_new (MetaTabPopup, 1);
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
+  gtk_window_set_position (GTK_WINDOW (popup->window),
+                           GTK_WIN_POS_CENTER_ALWAYS);
+  /* enable resizing, to get never-shrink behavior */
+  gtk_window_set_resizable (GTK_WINDOW (popup->window),
+                            TRUE);
   popup->current = NULL;
   popup->entries = NULL;
-
+  popup->current_selected_widget = NULL;
+  
   tab_entries = NULL;
   i = 0;
   while (entries[i].xwindow != None)
@@ -84,33 +92,52 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
     height += 1;
 
   table = gtk_table_new (height + 1, width, FALSE);
+  
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 1);
+  gtk_container_add (GTK_CONTAINER (popup->window),
+                     frame);
+  gtk_container_add (GTK_CONTAINER (frame),
+                     table);
 
+  
   popup->label = gtk_label_new ("");
   
   gtk_table_attach (GTK_TABLE (table),
                     popup->label,
-                    0, width,   height - 1, height,
-                    0,          0,
-                    0,          0);
+                    0, width,              height, height + 1,
+                    GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL,
+                    0,                     2);
   
-  left = 0;
-  right = 1;
+
   top = 0;
   bottom = 1;
   tmp = popup->entries;
   
   while (tmp && top < height)
-    {
+    {      
+      left = 0;
+      right = 1;
+
       while (tmp && left < width)
         {
           GtkWidget *image;
+          GtkWidget *highlight;
+          
           TabEntry *te;
 
           te = tmp->data;
-          
-          image = gtk_image_new_from_pixbuf (te->icon);
 
-          te->widget = image;
+          highlight = gtk_frame_new (NULL);
+          gtk_frame_set_shadow_type (GTK_FRAME (highlight),
+                                     GTK_SHADOW_NONE);
+          image = gtk_image_new_from_pixbuf (te->icon);
+          gtk_misc_set_padding (GTK_MISC (image), 3, 3);
+          
+          gtk_container_add (GTK_CONTAINER (highlight), image);
+          
+          te->widget = highlight;
 
           gtk_table_attach (GTK_TABLE (table),
                             te->widget,
@@ -121,9 +148,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
           tmp = tmp->next;
           
           ++left;
+          ++right;
         }
       
       ++top;
+      ++bottom;
     }
       
   return popup;
@@ -169,7 +198,16 @@ static void
 display_entry (MetaTabPopup *popup,
                TabEntry     *te)
 {
+  if (popup->current_selected_widget)
+    {
+      gtk_frame_set_shadow_type (GTK_FRAME (popup->current_selected_widget),
+                                 GTK_SHADOW_NONE);
+    }
+  
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
+  gtk_frame_set_shadow_type (GTK_FRAME (te->widget),
+                             GTK_SHADOW_ETCHED_IN);
+  popup->current_selected_widget = te->widget;
 }
 
 void

@@ -39,7 +39,8 @@ struct _MetaScreen
   int width;
   int height;
   MetaUI *ui;
-
+  MetaTabPopup *tab_popup;
+  
   MetaWorkspace *active_workspace;
 
   MetaStack *stack;
@@ -62,6 +63,8 @@ int           meta_screen_get_n_workspaces    (MetaScreen                 *scree
 
 void          meta_screen_set_cursor          (MetaScreen                 *screen,
                                                MetaCursor                  cursor);
+
+void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen);
 
 #endif
 

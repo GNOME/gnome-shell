@@ -653,6 +653,9 @@ meta_window_free (MetaWindow  *window)
   
   meta_error_trap_pop (window->display);
 
+  if (window->icon)
+    g_object_unref (G_OBJECT (window->icon));
+  
   g_free (window->sm_client_id);
   g_free (window->role);
   g_free (window->res_class);
@@ -3497,16 +3500,22 @@ update_icon_name (MetaWindow *window)
 
 static int
 update_icon (MetaWindow *window)
-{
+{  
   meta_error_trap_push (window->display);
-  
+
+#if 0
   if (window->icon)
     {
       g_object_unref (G_OBJECT (window->icon));
       window->icon = NULL;
-    }  
+    }
+#endif
   
   /* FIXME */
+
+  /* Fallback */
+  if (window->icon == NULL)
+    window->icon = meta_ui_get_default_window_icon (window->screen->ui);
   
   return meta_error_trap_pop (window->display);
 }

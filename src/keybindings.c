@@ -62,9 +62,19 @@ static void handle_workspace_left     (MetaDisplay *display,
                                        XEvent      *event,
                                        gpointer     data);
 static void handle_workspace_right     (MetaDisplay *display,
-                                       MetaWindow  *window,
-                                       XEvent      *event,
-                                       gpointer     data);
+                                        MetaWindow  *window,
+                                        XEvent      *event,
+                                        gpointer     data);
+
+static gboolean process_keyboard_move_grab (MetaDisplay *display,
+                                            MetaWindow  *window,
+                                            XEvent      *event,
+                                            KeySym       keysym);
+
+static gboolean process_tab_grab           (MetaDisplay *display,
+                                            MetaWindow  *window,
+                                            XEvent      *event,
+                                            KeySym       keysym);
 
 typedef struct _MetaKeyBinding MetaKeyBinding;
 
@@ -281,10 +291,30 @@ meta_window_grab_all_keys (MetaWindow  *window)
     }
   else
     {
-      window->keys_grabbed = FALSE;
-      window->all_keys_grabbed = TRUE;
-      window->grab_on_frame = window->frame != NULL;
-      return TRUE;
+      /* Also grab the keyboard, so we get key releases and all key
+       * presses
+       */
+       meta_error_trap_push (window->display);
+       /* FIXME CurrentTime bogus */
+       XGrabKeyboard (window->display->xdisplay,
+                      grabwindow, True,
+                      GrabModeAsync, GrabModeAsync,
+                      CurrentTime);
+       
+       result = meta_error_trap_pop (window->display);
+       if (result != Success)
+         {
+           meta_verbose ("XGrabKeyboard() failed for window %s\n",
+                         window->desc);
+           return FALSE;
+         }
+       
+       meta_verbose ("Grabbed all keys on window %s\n", window->desc);
+       
+       window->keys_grabbed = FALSE;
+       window->all_keys_grabbed = TRUE;
+       window->grab_on_frame = window->frame != NULL;
+       return TRUE;
     }
 }
 
@@ -302,6 +332,8 @@ meta_window_ungrab_all_keys (MetaWindow  *window)
       XUngrabKey (window->display->xdisplay,
                   AnyKey, AnyModifier,
                   grabwindow);
+      /* FIXME CurrentTime bogus */
+      XUngrabKeyboard (window->display->xdisplay, CurrentTime);
       meta_error_trap_pop (window->display);
       
       window->grab_on_frame = FALSE;
@@ -317,29 +349,61 @@ static gboolean
 is_modifier (MetaDisplay *display,
              unsigned int keycode)
 {
-	int i;
-	int map_size;
-	XModifierKeymap *mod_keymap;
-	gboolean retval = FALSE;
+  int i;
+  int map_size;
+  XModifierKeymap *mod_keymap;
+  gboolean retval = FALSE;
+  
+  /* FIXME this is ass-slow, cache the modmap */
+  
+  mod_keymap = XGetModifierMapping (display->xdisplay);
+  
+  map_size = 8 * mod_keymap->max_keypermod;
+  i = 0;
+  while (i < map_size)
+    {
+      if (keycode == mod_keymap->modifiermap[i])
+        {
+          retval = TRUE;
+          break;
+        }
+      ++i;
+    }
+  
+  XFreeModifiermap (mod_keymap);
+  
+  return retval;
+}
 
-        /* FIXME this is ass-slow, cache the modmap */
-        
-	mod_keymap = XGetModifierMapping (display->xdisplay);
-
-	map_size = 8 * mod_keymap->max_keypermod;
-	i = 0;
-	while (i < map_size) {
-		
-		if (keycode == mod_keymap->modifiermap[i]) {
-			retval = TRUE;
-			break;
-		}
-		++i;
-	}
-
-	XFreeModifiermap (mod_keymap);
-
-	return retval;
+#define MOD1_INDEX 3 /* shift, lock, control, mod1 */
+static gboolean 
+is_mod1_key (MetaDisplay *display,
+             unsigned int keycode)
+{
+  int i;
+  int end;
+  XModifierKeymap *mod_keymap;
+  gboolean retval = FALSE;
+  
+  /* FIXME this is ass-slow, cache the modmap */
+  
+  mod_keymap = XGetModifierMapping (display->xdisplay);
+  
+  end = (MOD1_INDEX + 1) * mod_keymap->max_keypermod;
+  i = MOD1_INDEX * mod_keymap->max_keypermod;
+  while (i < end)
+    {
+      if (keycode == mod_keymap->modifiermap[i])
+        {
+          retval = TRUE;
+          break;
+        }
+      ++i;
+    }
+  
+  XFreeModifiermap (mod_keymap);
+  
+  return retval;
 }
 
 static void
@@ -384,57 +448,89 @@ meta_display_process_key_event (MetaDisplay *display,
                 XKeysymToString (keysym), event->xkey.state,
                 window ? window->desc : "(no window)");
 
-  if (window == NULL || !window->all_keys_grabbed)
+  if (display->grab_op == META_GRAB_OP_NONE &&
+      (window == NULL || !window->all_keys_grabbed))
     {
       /* Do the normal keybindings */
       process_event (screen_bindings, display, NULL, event, keysym);
 
       if (window)
         process_event (window_bindings, display, window, event, keysym);
+
       return;
     }
+  
+  if (display->grab_op == META_GRAB_OP_NONE)
+    return;    
 
   /* If we get here we have a global grab, because
    * we're in some special keyboard mode such as window move
    * mode.
    */
   
-  if (display->grab_op == META_GRAB_OP_NONE)
-    return;
-    
-  /* don't end grabs on modifier key presses */
-  if (is_modifier (display, event->xkey.keycode))
-    return;
+  handled = FALSE;
+
+  if (window == display->grab_window)
+    {
+      switch (display->grab_op)
+        {
+        case META_GRAB_OP_KEYBOARD_MOVING:
+          meta_verbose ("Processing event for keyboard move\n");
+          handled = process_keyboard_move_grab (display, window, event, keysym);
+          break;
+        case META_GRAB_OP_KEYBOARD_TABBING:
+          meta_verbose ("Processing event for keyboard tabbing\n");
+          handled = process_tab_grab (display, window, event, keysym);
+          break;
+        default:
+          break;
+        }
+    }
+  
+  /* end grab if a key that isn't used gets pressed */
+  if (!handled)
+    {
+      meta_verbose ("Ending grab op %d on key event sym %s\n",
+                    display->grab_op, XKeysymToString (keysym));
+      meta_display_end_grab_op (display, event->xkey.time);
+    }
+}
+
+static gboolean
+process_keyboard_move_grab (MetaDisplay *display,
+                            MetaWindow  *window,
+                            XEvent      *event,
+                            KeySym       keysym)
+{
+  gboolean handled;
+  int x, y;
+  int incr;
+  gboolean smart_snap;
+  int edge;
   
   handled = FALSE;
 
-  if (display->grab_op == META_GRAB_OP_KEYBOARD_MOVING &&
-      display->grab_window == window)
-    {
-      int x, y;
-      int incr;
-      gboolean smart_snap;
-      int edge;
-      
-      if (event->type == KeyRelease)
-        return; /* don't care about releases */
-      
-      if (window == NULL)
-        meta_bug ("NULL window while doing keyboard grab op\n");
+  /* don't care about releases, but eat them, don't end grab */
+  if (event->type == KeyRelease)
+    return TRUE;
 
-      meta_window_get_position (window, &x, &y);
+  /* don't end grab on modifier key presses */
+  if (is_modifier (display, event->xkey.keycode))
+    return TRUE;
 
-      smart_snap = (event->xkey.state & ShiftMask) != 0;
+  meta_window_get_position (window, &x, &y);
+
+  smart_snap = (event->xkey.state & ShiftMask) != 0;
 
 #define SMALL_INCREMENT 1
 #define NORMAL_INCREMENT 10
 
-      if (smart_snap)
-        incr = 0;
-      else if (event->xkey.state & ControlMask)
-        incr = SMALL_INCREMENT;
-      else
-        incr = NORMAL_INCREMENT;
+  if (smart_snap)
+    incr = 0;
+  else if (event->xkey.state & ControlMask)
+    incr = SMALL_INCREMENT;
+  else
+    incr = NORMAL_INCREMENT;
 
       /* When moving by increments, we still snap to edges if the move
        * to the edge is smaller than the increment. This is because
@@ -442,71 +538,138 @@ meta_display_process_key_event (MetaDisplay *display,
        * people using just arrows shouldn't get too frustrated.
        */
       
-      switch (keysym)
-        {
-        case XK_Up:
-        case XK_KP_Up:
-          edge = meta_window_find_next_horizontal_edge (window, FALSE);
-          y -= incr;
-          
-          if (smart_snap || ((edge > y) && ABS (edge - y) < incr))
-            y = edge;
-          
-          handled = TRUE;
-          break;
-        case XK_Down:
-        case XK_KP_Down:
-          edge = meta_window_find_next_horizontal_edge (window, TRUE);
-          y += incr;
-
-          if (smart_snap || ((edge < y) && ABS (edge - y) < incr))
-            y = edge;
-          
-          handled = TRUE;
-          break;
-        case XK_Left:
-        case XK_KP_Left:
-          edge = meta_window_find_next_vertical_edge (window, FALSE);
-          x -= incr;
-          
-          if (smart_snap || ((edge > x) && ABS (edge - x) < incr))
-            x = edge;
-
-          handled = TRUE;
-          break;
-        case XK_Right:
-        case XK_KP_Right:
-          edge = meta_window_find_next_vertical_edge (window, TRUE);
-          x += incr;
-          if (smart_snap || ((edge < x) && ABS (edge - x) < incr))
-            x = edge;
-          handled = TRUE;
-          break;
-
-        case XK_Escape:
-          /* End move and restore to original position */
-          meta_window_move_resize (display->grab_window,
-                                   display->grab_initial_window_pos.x,
-                                   display->grab_initial_window_pos.y,
-                                   display->grab_initial_window_pos.width,
-                                   display->grab_initial_window_pos.height);
-          break;
-          
-        default:
-          break;
-        }
-
-      if (handled)
-        meta_window_move (window, x, y);
-    }  
-  
-  /* end grab if a key that isn't used gets pressed */
-  if (!handled)
+  switch (keysym)
     {
-      meta_verbose ("Ending grab op %d on key press event sym %s\n",
-                    display->grab_op, XKeysymToString (keysym));
-      meta_display_end_grab_op (display, event->xkey.time);
+    case XK_Up:
+    case XK_KP_Up:
+      edge = meta_window_find_next_horizontal_edge (window, FALSE);
+      y -= incr;
+          
+      if (smart_snap || ((edge > y) && ABS (edge - y) < incr))
+        y = edge;
+          
+      handled = TRUE;
+      break;
+    case XK_Down:
+    case XK_KP_Down:
+      edge = meta_window_find_next_horizontal_edge (window, TRUE);
+      y += incr;
+
+      if (smart_snap || ((edge < y) && ABS (edge - y) < incr))
+        y = edge;
+          
+      handled = TRUE;
+      break;
+    case XK_Left:
+    case XK_KP_Left:
+      edge = meta_window_find_next_vertical_edge (window, FALSE);
+      x -= incr;
+          
+      if (smart_snap || ((edge > x) && ABS (edge - x) < incr))
+        x = edge;
+
+      handled = TRUE;
+      break;
+    case XK_Right:
+    case XK_KP_Right:
+      edge = meta_window_find_next_vertical_edge (window, TRUE);
+      x += incr;
+      if (smart_snap || ((edge < x) && ABS (edge - x) < incr))
+        x = edge;
+      handled = TRUE;
+      break;
+
+    case XK_Escape:
+      /* End move and restore to original position */
+      meta_window_move_resize (display->grab_window,
+                               display->grab_initial_window_pos.x,
+                               display->grab_initial_window_pos.y,
+                               display->grab_initial_window_pos.width,
+                               display->grab_initial_window_pos.height);
+      break;
+          
+    default:
+      break;
     }
+
+  if (handled)
+    meta_window_move (window, x, y);
+
+  return handled;
+}
+
+static gboolean
+process_tab_grab (MetaDisplay *display,
+                  MetaWindow  *window,
+                  XEvent      *event,
+                  KeySym       keysym)
+{
+  MetaScreen *screen;
+
+  window = NULL; /* be sure we don't use this, it's irrelevant */
+
+  screen = display->grab_window->screen;
+
+  g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
+  
+  if (event->type == KeyRelease &&
+      is_mod1_key (display, event->xkey.keycode))
+    {
+      /* We're done, move to the new window. */
+      Window target_xwindow;
+      MetaWindow *target_window;
+
+      target_xwindow =
+        meta_ui_tab_popup_get_selected (screen->tab_popup);
+      target_window =
+        meta_display_lookup_x_window (display, target_xwindow);
+
+      meta_verbose ("Ending tab operation, Mod1 released\n");
+      
+      if (target_window)
+        {
+          meta_verbose ("Ending grab early so we can focus the target window\n");
+          meta_display_end_grab_op (display, event->xkey.time);
+
+          meta_verbose ("Focusing target window\n");
+          meta_window_raise (target_window);
+          meta_window_focus (target_window, event->xkey.time);
+
+          return TRUE; /* we already ended the grab */
+        }
+      
+      return FALSE; /* end grab */
+    }
+  
+  /* don't care about other releases, but eat them, don't end grab */
+  if (event->type == KeyRelease)
+    return TRUE;
+
+  /* don't end grab on modifier key presses */
+  if (is_modifier (display, event->xkey.keycode))
+    return TRUE;
+
+  switch (keysym)
+    {
+    case XK_ISO_Left_Tab:
+    case XK_Tab:
+      if (event->xkey.state & ShiftMask)
+        meta_ui_tab_popup_backward (screen->tab_popup);
+      else
+        meta_ui_tab_popup_forward (screen->tab_popup);
+
+      /* continue grab */
+      meta_verbose ("Tab key pressed, moving tab focus in popup\n");
+      return TRUE;
+      break;
+
+    default:
+      break;
+    }
+
+  /* end grab */
+  meta_verbose ("Ending tabbing, uninteresting key pressed\n");
+  return FALSE;
 }
 
 static void
@@ -694,8 +857,22 @@ handle_tab_forward (MetaDisplay *display,
 
   if (window)
     {
-      meta_window_raise (window);
-      meta_window_focus (window, event->xkey.time);
+      meta_verbose ("Starting tab forward, showing popup\n");
+
+      meta_display_begin_grab_op (window->display,
+                                  display->focus_window ?
+                                  display->focus_window : window,
+                                  META_GRAB_OP_KEYBOARD_TABBING,
+                                  FALSE,
+                                  0, 0,
+                                  event->xkey.time,
+                                  0, 0);
+
+      meta_ui_tab_popup_select (window->screen->tab_popup,
+                                window->xwindow);
+      /* only after selecting proper window */
+      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                     TRUE);
     }
 }
 
@@ -738,8 +915,22 @@ handle_tab_backward (MetaDisplay *display,
 
   if (window)
     {
-      meta_window_raise (window);
-      meta_window_focus (window, event->xkey.time);
+      meta_verbose ("Starting tab backward, showing popup\n");
+      
+      meta_display_begin_grab_op (window->display,
+                                  display->focus_window ?
+                                  display->focus_window : window,
+                                  META_GRAB_OP_KEYBOARD_TABBING,
+                                  FALSE,
+                                  0, 0,
+                                  event->xkey.time,
+                                  0, 0);
+
+      meta_ui_tab_popup_select (window->screen->tab_popup,
+                                window->xwindow);
+      /* only after selecting proper window */
+      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                     TRUE);
     }
 }
 

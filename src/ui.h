@@ -117,6 +117,8 @@ GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
 void      meta_ui_push_delay_exposes (MetaUI *ui);
 void      meta_ui_pop_delay_exposes  (MetaUI *ui);
 
+GdkPixbuf* meta_ui_get_default_window_icon (MetaUI *ui);
+
 typedef struct _MetaTabEntry MetaTabEntry;
 typedef struct _MetaTabPopup MetaTabPopup;
 

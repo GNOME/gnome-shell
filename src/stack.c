@@ -902,6 +902,41 @@ meta_stack_get_tab_next (MetaStack  *stack,
     return find_tab_forward (stack, NULL, -1);
 }
 
+GSList*
+meta_stack_get_tab_list (MetaStack *stack)
+{
+  GSList *list;
+  int i;
+  
+  list = NULL;
+  
+  i = 0;
+  while (i < stack->windows->len)
+    {
+      MetaWindow *window;
+      MetaWorkspace *workspace;
+      
+      window = meta_display_lookup_x_window (stack->screen->display,
+                                             GET_XWINDOW (stack, i));
+
+      if (window)
+        workspace = window->screen->active_workspace;
+      else
+        workspace = NULL;
+      
+      if (window && IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_workspace_contains_window (workspace, window)))
+        list = g_slist_prepend (list, window);
+
+      ++i;
+    }
+
+  list = g_slist_reverse (list);
+
+  return list;
+}
+
 int
 meta_stack_windows_cmp  (MetaStack  *stack,
                          MetaWindow *window_a,

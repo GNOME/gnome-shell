@@ -198,6 +198,8 @@ meta_screen_new (MetaDisplay *display,
   screen->ui = meta_ui_new (screen->display->xdisplay,
                             screen->xscreen);
 
+  screen->tab_popup = NULL;
+  
   screen->stack = meta_stack_new (screen);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
@@ -210,7 +212,7 @@ void
 meta_screen_free (MetaScreen *screen)
 {  
   meta_screen_ungrab_keys (screen);
-  
+
   meta_ui_free (screen->ui);
 
   meta_stack_free (screen->stack);
@@ -422,4 +424,46 @@ meta_screen_set_cursor (MetaScreen *screen,
   xcursor = meta_display_create_x_cursor (screen->display, cursor);
   XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
   XFreeCursor (screen->display->xdisplay, xcursor);
+}
+
+void
+meta_screen_ensure_tab_popup (MetaScreen *screen)
+{
+  MetaTabEntry *entries;
+  GSList *tab_list;
+  GSList *tmp;
+  int len;
+  int i;
+  
+  if (screen->tab_popup)
+    return;
+
+  tab_list = meta_stack_get_tab_list (screen->stack);
+  len = g_slist_length (tab_list);
+
+  entries = g_new (MetaTabEntry, len + 1);
+  entries[len].xwindow = None;
+  entries[len].title = NULL;
+  entries[len].icon = NULL;
+  
+  i = 0;
+  tmp = tab_list;
+  while (i < len)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+      
+      entries[i].xwindow = window->xwindow;
+      entries[i].title = window->title;
+      entries[i].icon = window->icon;
+      
+      ++i;
+      tmp = tmp->next;
+    }
+  
+  screen->tab_popup = meta_ui_tab_popup_new (entries);
+  g_free (entries);
+
+  /* don't show tab popup, since proper window isn't selected yet */
 }

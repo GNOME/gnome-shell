@@ -592,6 +592,11 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_N:
     case META_GRAB_OP_KEYBOARD_RESIZING_W:
     case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+    case META_GRAB_OP_KEYBOARD_TABBING:
       return TRUE;
       break;
 
@@ -664,7 +669,7 @@ event_callback (XEvent   *event,
                         display->grab_window->desc);
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
-        }      
+        }
       else if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           gboolean begin_move = FALSE;
@@ -1240,6 +1245,7 @@ meta_spew_event (MetaDisplay *display,
           name = "MappingNotify";
           break;
         default:
+          meta_verbose ("Unknown event type %d\n", event->xany.type);
           name = "Unknown event type";
           break;
         }
@@ -1453,9 +1459,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
 
-      /* We XGrabPointer even if we already have an autograb,
-       * just to set the cursor and event mask
-       */
+  /* We XGrabPointer even if we already have an autograb,
+   * just to set the cursor and event mask
+   */
       
   cursor = xcursor_for_op (display, op);
       
@@ -1480,30 +1486,19 @@ meta_display_begin_grab_op (MetaDisplay *display,
       meta_verbose ("XGrabPointer() failed\n");
       return FALSE;
     }
-  
-  switch (op)
+
+  if (grab_op_is_keyboard (op))
     {
-    case META_GRAB_OP_KEYBOARD_MOVING:
-    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-    case META_GRAB_OP_KEYBOARD_RESIZING_S:
-    case META_GRAB_OP_KEYBOARD_RESIZING_N:
-    case META_GRAB_OP_KEYBOARD_RESIZING_W:
-    case META_GRAB_OP_KEYBOARD_RESIZING_E:
       if (meta_window_grab_all_keys (window))
         display->grab_have_keyboard = TRUE;
-
+      
       if (!display->grab_have_keyboard)
         {
-          meta_verbose ("XGrabKeyboard() failed\n");
+          meta_verbose ("grabbing all keys failed\n");
           return FALSE;
         }
-      break;
-
-    default:
-      /* non-keyboard grab ops */
-      break;
     }
-                
+  
   display->grab_op = op;
   display->grab_window = window;
   display->grab_button = button;
@@ -1519,6 +1514,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   g_assert (display->grab_window != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
+
+  /* Do this last, after everything is set up. */
+  if (op == META_GRAB_OP_KEYBOARD_TABBING)
+    meta_screen_ensure_tab_popup (window->screen);
   
   return TRUE;
 }
@@ -1529,6 +1528,12 @@ meta_display_end_grab_op (MetaDisplay *display,
 {
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
+
+  if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING)
+    {
+      meta_ui_tab_popup_free (display->grab_window->screen->tab_popup);
+      display->grab_window->screen->tab_popup = NULL;
+    }
   
   if (display->grab_have_pointer)
     XUngrabPointer (display->xdisplay, timestamp);    
@@ -1548,6 +1553,11 @@ meta_display_grab_window_buttons (MetaDisplay *display,
    * and Alt + button3 for popping up window menu.
    */
   meta_verbose ("Grabbing window buttons for 0x%lx\n", xwindow);
+
+  /* FIXME If we ignored errors here instead of spewing, we could
+   * put one big error trap around the loop and avoid a bunch of
+   * XSync()
+   */
   
   {
     int i = 1;
@@ -1562,11 +1572,10 @@ meta_display_grab_window_buttons (MetaDisplay *display,
                      PointerMotionMask | PointerMotionHintMask,
                      GrabModeAsync, GrabModeAsync,
                      False, None);
-        XSync (display->xdisplay, False);
         result = meta_error_trap_pop (display);
 
         if (result != Success)
-          meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx error code %d\n",
+          meta_warning ("Failed to grab button %d with Mod1Mask for window 0x%lx error code %d\n",
                         i, xwindow, result);
         
 
@@ -1582,11 +1591,10 @@ meta_display_grab_window_buttons (MetaDisplay *display,
                                   PointerMotionMask | PointerMotionHintMask,
                                   GrabModeAsync, GrabModeAsync,
                                   False, None);
-            XSync (display->xdisplay, False);
             result = meta_error_trap_pop (display);
             
             if (result != Success)
-              meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx error code %d\n",
+              meta_warning ("Failed to grab button %d with ControlMask for window 0x%lx error code %d\n",
                             i, xwindow, result);
           }
         
@@ -1599,7 +1607,32 @@ void
 meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                      Window       xwindow)
 {
+  /* FIXME If we ignored errors here instead of spewing, we could
+   * put one big error trap around the loop and avoid a bunch of
+   * XSync()
+   */
+  int i = 1;
+  while (i < 4)
+    {
+      int result;
+      
+      meta_error_trap_push (display);
+      XUngrabButton (display->xdisplay, i, Mod1Mask, xwindow);
+      result = meta_error_trap_pop (display);
 
+      if (result != Success)
+        meta_warning ("Failed to ungrab button %d with Mod1Mask for window 0x%lx error code %d\n",
+                      i, xwindow, result);
 
+      meta_error_trap_push (display);
+      XUngrabButton (display->xdisplay, i, ControlMask, xwindow);
+      result = meta_error_trap_pop (display);
+      
+      if (result != Success)
+        meta_warning ("Failed to ungrab button %d with ControlMask for window 0x%lx error code %d\n",
+                      i, xwindow, result);
+      
+      ++i;
+    }
 }
 

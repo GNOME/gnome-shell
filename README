@@ -194,9 +194,12 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Should support click-to-focus as an option.
 
- - Windows has a neat way of implementing Alt-Tab for 
-   window cycling that I would like to copy. (The little 
-   popup window thing.)
+ - There is some sort of race condition with Alt-Tab that can
+   sometimes result in the focus not moving.
+
+ - The focus rectangle around the icons in the Alt-Tab popup
+   is ugly, should use a GTK-like focus rectangle, or maybe
+   make it look selected, not sure.
 
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left
