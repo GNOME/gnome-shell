@@ -187,6 +187,7 @@ meta_display_open (const char *name)
   GSList *screens;
   GSList *tmp;
   int i;
+  Time timestamp;
   /* Remember to edit code that assigns each atom to display struct
    * when adding an atom name here.
    */
@@ -532,6 +533,41 @@ meta_display_open (const char *name)
   meta_verbose ("Not compiled with Shape support\n");
 #endif /* !HAVE_SHAPE */
 
+  /* Create the leader window here. Set its properties and
+   * use the timestamp from one of the PropertyNotify events
+   * that will follow.
+   */
+  {
+    XSetWindowAttributes attrs;
+    gulong data[1];
+    XEvent event;
+
+    attrs.event_mask = PropertyChangeMask;
+    attrs.override_redirect = True;
+
+    display->leader_window = meta_create_offscreen_window (display->xdisplay,
+                                                           DefaultRootWindow (display->xdisplay));                                                           
+
+    set_utf8_string_hint (display,
+                          display->leader_window,
+                          display->atom_net_wm_name,
+                          "Metacity");
+    
+    data[0] = display->leader_window;
+    XChangeProperty (display->xdisplay,
+                     display->leader_window,
+                     display->atom_net_supporting_wm_check,
+                     XA_WINDOW,
+                     32, PropModeReplace, (guchar*) data, 1);
+
+    XWindowEvent (display->xdisplay,
+                  display->leader_window,
+                  PropertyChangeMask,
+                  &event);
+
+    timestamp = event.xproperty.time;
+  }
+
   display->compositor = meta_compositor_new (display);
   
   screens = NULL;
@@ -541,7 +577,7 @@ meta_display_open (const char *name)
     {
       MetaScreen *screen;
 
-      screen = meta_screen_new (display, i);
+      screen = meta_screen_new (display, i, timestamp);
 
       if (screen)
         screens = g_slist_prepend (screens, screen);
@@ -558,25 +594,6 @@ meta_display_open (const char *name)
       meta_display_close (display);
       return FALSE;
     }
-
-  /* display->leader_window was created as a side effect of
-   * initializing the screens
-   */
-  
-  set_utf8_string_hint (display,
-                        display->leader_window,
-                        display->atom_net_wm_name,
-                        "Metacity");
-  {
-    gulong data[1];
-    data[0] = display->leader_window;
-
-    XChangeProperty (display->xdisplay,
-                     display->leader_window,
-                     display->atom_net_supporting_wm_check,
-                     XA_WINDOW,
-                     32, PropModeReplace, (guchar*) data, 1);
-  }
  
   meta_display_grab (display);
   
@@ -603,9 +620,11 @@ meta_display_open (const char *name)
     if (focus == None || focus == PointerRoot)
       focus = display->no_focus_window;
 
-    /* FIXME CurrentTime evil */
+    /* Use the same timestamp that was passed to meta_screen_new(),
+     * as it is the most recent timestamp.
+     */
     XSetInputFocus (display->xdisplay, focus, RevertToPointerRoot,
-                    CurrentTime);
+                    timestamp);
     
     meta_error_trap_pop (display, FALSE);
   }
@@ -1616,14 +1635,28 @@ event_callback (XEvent   *event,
           if (event->type == FocusIn &&
               event->xfocus.detail == NotifyDetailNone)
             {
+              XEvent   property_event;
+
               /* FIXME _() gettextify on HEAD */
               meta_warning ("Working around an application which called XSetInputFocus (None) or with RevertToNone instead of RevertToPointerRoot, this is a minor bug in some application. If you can figure out which application causes this please report it as a bug against that application.\n");
-              
+
               /* Fix the problem */
+              /* Using the property XA_PRIMARY because it's safe;
+               * nothing would use it as a property. The type
+               * doesn't matter.
+               */
+              XChangeProperty (display->xdisplay,
+                               display->leader_window,
+                               XA_PRIMARY, XA_STRING, 8,
+                               PropModeAppend, NULL, 0);
+              XWindowEvent (display->xdisplay,
+                            display->leader_window,
+                            PropertyChangeMask,
+                            &property_event);
               XSetInputFocus (display->xdisplay,
                               display->no_focus_window,
                               RevertToPointerRoot,
-                              CurrentTime); /* CurrentTime FIXME */
+                              property_event.xproperty.time);
             }
         }
       break;

@@ -376,7 +376,8 @@ reload_xinerama_infos (MetaScreen *screen)
 
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
-                 int          number)
+                 int          number,
+                 Time         timestamp)
 {
   MetaScreen *screen;
   Window xroot;
@@ -442,24 +443,7 @@ meta_screen_new (MetaDisplay *display,
 
   new_wm_sn_owner = meta_create_offscreen_window (xdisplay, xroot);
 
-  {
-    /* Generate a timestamp */
-    XSetWindowAttributes attrs;
-    XEvent event;
-
-    attrs.event_mask = PropertyChangeMask;
-    XChangeWindowAttributes (xdisplay, new_wm_sn_owner, CWEventMask, &attrs);
-    
-    XChangeProperty (xdisplay,
-                     new_wm_sn_owner, XA_WM_CLASS, XA_STRING, 8,
-                     PropModeAppend, NULL, 0);
-    XWindowEvent (xdisplay, new_wm_sn_owner, PropertyChangeMask, &event);
-    attrs.event_mask = NoEventMask;
-    XChangeWindowAttributes (display->xdisplay,
-                             new_wm_sn_owner, CWEventMask, &attrs);
-
-    manager_timestamp = event.xproperty.time;
-  }
+  manager_timestamp = timestamp;
   
   XSetSelectionOwner (xdisplay, wm_sn_atom, new_wm_sn_owner,
                       manager_timestamp);
@@ -561,6 +545,7 @@ meta_screen_new (MetaDisplay *display,
 
   screen->compositor_windows = NULL;
   screen->damage_region = None;
+  screen->root_picture = None;
   
   {
     XGCValues gc_values;
@@ -582,10 +567,6 @@ meta_screen_new (MetaDisplay *display,
   reload_xinerama_infos (screen);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
-  
-  if (display->leader_window == None)
-    display->leader_window = meta_create_offscreen_window (display->xdisplay,
-                                                           screen->xroot);
   
   if (display->no_focus_window == None)
     {

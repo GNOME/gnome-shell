@@ -3126,7 +3126,7 @@ meta_window_focus (MetaWindow  *window,
           XSetInputFocus (window->display->xdisplay,
                           window->frame->xwindow,
                           RevertToPointerRoot,
-                          CurrentTime);
+                          timestamp);
           window->display->expected_focus_window = window;
         }
     }

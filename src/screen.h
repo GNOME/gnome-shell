@@ -121,7 +121,8 @@ struct _MetaScreen
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
-                                               int                         number);
+                                               int                         number,
+                                               Time                        timestamp);
 void          meta_screen_free                (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 MetaScreen*   meta_screen_for_x_screen        (Screen                     *xscreen);

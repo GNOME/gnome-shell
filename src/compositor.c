@@ -123,9 +123,10 @@ meta_compositor_new (MetaDisplay *display)
     {
       compositor->composite_event_base = 0;
       compositor->composite_error_base = 0;
+      meta_verbose ("XCompositeQueryExtension() returned FALSE\n");
     }
 
-  meta_verbose ("Composite extension event base %d error base %d",
+  meta_verbose ("Composite extension event base %d error base %d\n",
                 compositor->composite_event_base,
                 compositor->composite_error_base);
 
@@ -137,7 +138,7 @@ meta_compositor_new (MetaDisplay *display)
       compositor->damage_error_base = 0;
     }
 
-  meta_verbose ("Damage extension event base %d error base %d",
+  meta_verbose ("Damage extension event base %d error base %d\n",
                 compositor->damage_event_base,
                 compositor->damage_error_base);
   
@@ -149,7 +150,7 @@ meta_compositor_new (MetaDisplay *display)
       compositor->fixes_error_base = 0;
     }
 
-  meta_verbose ("Fixes extension event base %d error base %d",
+  meta_verbose ("Fixes extension event base %d error base %d\n",
                 compositor->fixes_event_base,
                 compositor->fixes_error_base);
 
@@ -161,7 +162,7 @@ meta_compositor_new (MetaDisplay *display)
       compositor->render_error_base = 0;
     }
 
-  meta_verbose ("Render extension event base %d error base %d",
+  meta_verbose ("Render extension event base %d error base %d\n",
                 compositor->render_event_base,
                 compositor->render_error_base);
   
@@ -208,8 +209,9 @@ meta_compositor_unref (MetaCompositor *compositor)
    * there's no ref()
    */
   remove_repair_idle (compositor);
-  
-  g_hash_table_destroy (compositor->window_hash);
+
+  if (compositor->window_hash)
+    g_hash_table_destroy (compositor->window_hash);
   
   g_free (compositor);
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -599,8 +601,6 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   XRenderPictFormat *format;
   XRenderPictureAttributes pa;
   
-  g_print ("compositor adding window 0x%lx\n", xwindow);
-  
   if (!compositor->enabled)
     return; /* no extension */
 
@@ -669,8 +669,6 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
   MetaCompositorWindow *cwindow;
   MetaScreen *screen;
   
-  g_print ("compositor removing window 0x%lx\n", xwindow);
-  
   if (!compositor->enabled)
     return; /* no extension */
 
@@ -716,6 +714,14 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   
   g_assert (screen->root_picture == None);
 
+  /* FIXME add flag for whether we're composite-managing each
+   * screen and detect failure here
+   */
+  XCompositeRedirectSubwindows (screen->display->xdisplay,
+                                screen->xroot,
+                                CompositeRedirectManual);
+  g_print ("Subwindows redirected\n");
+  
   pa.subwindow_mode = IncludeInferiors;
   
   screen->root_picture =

@@ -1,3 +1,8 @@
+2003-11-24  Havoc Pennington  <hp@redhat.com>
+
+	* Apply patch from Gregory Merchan to avoid using CurrentTime when
+	setting input focus. Bug #108881
+
 2003-11-23  Havoc Pennington  <hp@redhat.com>
 
 	* src/compositor.c: move xcompmgr code in here (minus drop
