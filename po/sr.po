@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-15 22:37+0200\n"
-"PO-Revision-Date: 2003-10-15 23:04+0200\n"
+"POT-Creation-Date: 2003-11-08 17:00+0100\n"
+"PO-Revision-Date: 2003-11-08 17:17+0100\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,12 @@ msgstr ""
 "Никаква гаранција НЕ постоји; чак ни гаранција о подобности за одређену "
 "намену.\n"
 
-#: src/main.c:437
+#: src/main.c:439
+#, c-format
+msgid "Failed to scan themes directory : %s\n"
+msgstr "Нисам успео да прочитам директоријум тема: %s\n"
+
+#: src/main.c:455
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -154,7 +159,7 @@ msgstr ""
 "Нисам могао да пронђем тему! Проверите се да %s постоји и да садржи "
 "уобичајне теме."
 
-#: src/main.c:499
+#: src/main.c:517
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Нисам успео да се поново покренем: %s\n"
@@ -215,12 +220,12 @@ msgstr "Радна површина %d"
 msgid "Workspace %s%d"
 msgstr "Радна површина %s%d"
 
-#: src/menu.c:345
+#: src/menu.c:347
 #, c-format
 msgid "Only on %s"
 msgstr "Само на %s"
 
-#: src/menu.c:347
+#: src/menu.c:349
 #, c-format
 msgid "Move to %s"
 msgstr "Премести на %s"
@@ -2785,7 +2790,10 @@ msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "Нацртао је %d оквира за %g клијентских секунди (%g милисекунди по оквиру) и %g секунди времена на зидном часовнику укључујући и ресурсе Икс сервера (%g милисекунди по оквиру)\n"
+msgstr ""
+"Нацртао је %d оквира за %g клијентских секунди (%g милисекунди по оквиру) и %"
+"g секунди времена на зидном часовнику укључујући и ресурсе Икс сервера (%g "
+"милисекунди по оквиру)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -3147,7 +3155,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4653
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3163,7 +3171,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5240
+#: src/window.c:5314
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
