@@ -14,3 +14,5 @@ bin_PROGRAMS=metacity-message metacity-window-demo
 
 metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
 metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
+
+EXTRA_DIST=$(icon_DATA)

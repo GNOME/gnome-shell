@@ -3,16 +3,14 @@ Meta-ness as in the state of being meta. i.e. metacity : meta as
 opacity : opaque. Also it may have something to do with the Meta key
 on UNIX keyboards.
 
-The first release of Metacity is version 2.3. Metacity has no need for
+The first release of Metacity was version 2.3. Metacity has no need for
 your petty hangups about version numbers.
 
 COMPILING METACITY
 ===
 
-You need GTK+ 1.3.x (to become 2.0), at least version 1.3.9.  At the
-moment CVS HEAD works, but that can change. Metacity is a fairly
-trivial 6000-line C program, so once you get GTK+ built it should be
-no problem to build Metacity.
+You need GTK+ 1.3.x (to become 2.0), at least version 1.3.13.  At the
+moment CVS HEAD works, but that can change.
 
 There are SRPMs and sometimes RPMs on the ftp site, but you'd be
 pretty lucky to get them to work for now, since they are often out of
@@ -39,17 +37,29 @@ METACITY FEATURES
  - Uses GTK+ 2.0 for drawing window frames. This means colors, fonts, 
    etc. come from GTK+ theme.
 
- - There are 6 workspaces.
+ - Has a simple theme system and a couple of extra themes come with it.
+   Change themes via gconf-editor or gconftool:
+     gconftool-2 --type=string --set /apps/metacity/general/theme Crux
+     gconftool-2 --type=string --set /apps/metacity/general/theme Gorilla
+     gconftool-2 --type=string --set /apps/metacity/general/theme Atlanta
+
+ - Change number of workspaces via gconf-editor or gconftool:
+     gconftool-2 --type=int --set /apps/metacity/general/num_workspaces 5
+
+ - Change focus mode:
+     gconftool-2 --type=string --set /apps/metacity/general/focus_mode mouse
+     gconftool-2 --type=string --set /apps/metacity/general/focus_mode sloppy
+     gconftool-2 --type=string --set /apps/metacity/general/focus_mode click
 
  - Global keybindings:
-    Alt-F1 to Alt-F6  switch workspaces
-    Alt-1  to Alt-6   switch workspaces
-    Alt-Tab           forward cycle window focus
-    Alt-Shift-Tab     backward cycle focus
-    Alt-Escape        focus previous window
-    Alt-Left Arrow    previous workspace
-    Alt-Right Arrow   next workspace
-    Ctrl-Alt-D        minimize/unminimize all, to show desktop
+    Alt-F1 to Alt-F6       switch workspaces
+    Alt-1  to Alt-6        switch workspaces
+    Alt-Tab                forward cycle window focus
+    Alt-Shift-Tab          backward cycle focus
+    Alt-Escape             focus previous window
+    Ctrl-Alt-Left Arrow    previous workspace
+    Ctrl-Alt-Right Arrow   next workspace
+    Ctrl-Alt-D             minimize/unminimize all, to show desktop
 
  - Window keybindings:
     Alt-space         window menu
@@ -63,7 +73,7 @@ METACITY FEATURES
       Shift to snap to edges.
 
     Choose Resize from menu, and nothing happens yet, but 
-      eventually I might implement something.   
+      eventually I might implement something.
 
  - Window mouse bindings:
 
@@ -77,9 +87,6 @@ METACITY FEATURES
     
     If you click and drag the titlebar with button 1 it moves the 
      window.
-
-    If you click anywhere on the frame with button 2 it moves the window,
-     without raising it.
 
     If you click anywhere on the frame with button 3 it shows the 
      window menu.
@@ -100,23 +107,19 @@ METACITY FEATURES
      be respawned. It theoretically restores sizes/positions/workspace
      for session-aware applications.
 
- - Here is an example of how you can configure the Metacity 
-   window border appearance in ~/.gtkrc-2.0:
+ - Here is an example of how you can configure GTK colors/fonts
+   for metacity windows only, in ~/.gtkrc-2.0:
 
        style "metacity-style"
        {
           font_name = "Sans 16"
-          MetaFrames::title_border = { 7, 7, 7, 7 }
-          MetaFrames::button_width = 25
           bg[NORMAL] = { 0.0, 0.0, 0.0 }
        }
 
        class "MetaFrames" style "metacity-style"
 
    You get the idea. It is just your basic GTK+ rc file, the 
-   window borders are a widget called MetaFrames, 
-   look in frames.c:meta_frames_class_init() for all the style
-   properties that you can configure.
+   window borders are a widget called MetaFrames.
 
    Metacity-specific styles can also be included in any GTK+ 
    theme.
@@ -136,24 +139,24 @@ METACITY FEATURES
  - if you have the proper X setup, set the GDK_USE_XFT=1 
    environment variable to get antialiased window titles.
 
+ - considers the panel when placing windows and maximizing
+   them.
+
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
  - Metacity creates a big file in your home directory called
    ~/metacity.log with a bunch of debug spew.
 
- - If you want a number of workspaces which is not 6, you have to 
-   edit screen.c and recompile.
-
  - If you want keybindings which are not the ones mentioned above
    as features, you have to edit keybindings.c and recompile.
 
+ - Some of the default keybindings (notable Alt+number) are total
+   crackrock.
+
  - The only way to unminimize at the moment is to use the Alt+Tab
-   move-between-windows feature.
-   (If you had a WM-spec-compliant tasklist, it would work
-   for unminimization also.)
-   (Or you can use "test-wnck" from the libwnck CVS module to 
-   unminimize, but it's not much of a UI ;-)
+   move-between-windows feature, or to run the GNOME 2 panel
+   and tasklist.
 
  - Metacity uses the new window manager spec, but only random bits of
    the old GNOME spec. It correctly advertises exactly which parts of
@@ -165,7 +168,8 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    far as I know, Metacity does support enough of the new spec to
    allow a working tasklist and pager.
 
-   Upshot: task list and desk guide DO NOT WORK with Metacity.
+   Upshot: GNOME 1.x task list and desk guide DO NOT WORK with
+   Metacity.
 
  - Metacity turns off its keybindings for Emacs, because I use 
    Alt-space in Emacs, and getting a window menu annoys me.
@@ -173,7 +177,7 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    instead of Alt as the main keybinding shortcut, if super/hyper 
    exist, and then keyboards with a windows key can use that for 
    WM functions and Alt for application shortcuts.
-   We'd fall back to Alt if no other suitable modifier existed.   
+   We'd fall back to Alt if no other suitable modifier existed.
 
  - I haven't even read the ICCCM section about colormaps. So if you 
    have an 8-bit display you are basically screwed.
@@ -189,23 +193,12 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    (Configurable placement algorithms are stupid though, don't 
    send me patches for any bogus ones. Let's just pick a good one.)
 
- - Maximization and movement constraints do not take the 
-   GNOME panel into account. Most of the code already handles
-   this (using workspace->workarea in workspace.h), but 
-   workspace->workarea isn't ever actually calculated.
-   Metacity needs to keep this area up-to-date using the hints the
-   panel sets.
-
- - Should support click-to-focus as an option.
-
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left
    locale. I assume the window titles should be right-justified;
    should the window controls also be flipped?
 
- - Need keyboard shortcuts for focusing dock windows (though since
-   current GNOME panel has no useful keynav, this doesn't get you far
-   at the moment).
+ - Need keyboard shortcuts for focusing dock windows.
 
  - Resize menu item doesn't do anything. It's intended to enter
    resize-with-the-keyboard mode, similar to Move menu item.
@@ -279,11 +272,6 @@ A: If it makes sense to turn on unconditionally,
    Just be prepared to hear the above objections if your patch
    adds some crack-ridden configuration option.
 
-Q: How do I add a configuration option?
-
-A: You don't, until GConf 2 is relatively easy to compile and I feel 
-   like adding it as a dependency.
-
 Q: Will Metacity be part of GNOME?
 
 A: This is not the current plan, though of course I'm happy to see the
@@ -301,12 +289,6 @@ A: Metacity is in no way funded, endorsed, or encouraged by Red Hat,
    of window managers for Linux" an urgent problem. Just a wild guess
    though.
  
-Q: Why can't I move XMMS?
-
-A: Because XMMS is broken and is trying to move itself. Metacity 
-   does not tolerate insolent windows who believe they can
-   self-manage. Use Alt-button1 to move XMMS using Metacity.
-
 Q: Why does Metacity remember the workspace/position of some apps 
    but not others?
 
@@ -353,11 +335,8 @@ A: I could conceivably be convinced to use viewports _instead_ of
 
 Q: Did you spend a lot of time on this?
 
-A: Metacity is about 6000 lines of code, which took a few weekends and
-   evenings to write. If it ever becomes more polished it will
-   probably grow 2-3 more thousand lines of code and suck a few more
-   weekends of time. If I started adding all kinds of features and 
-   crack-ridden configuration options, it might take more time than that. 
+A: Originally the answer was no. Sadly the answer is now yes.
+   Still, it's only 12,000 lines of code.
 
 Q: How can you claim that you are anti-crack, while still 
    writing a window manager?

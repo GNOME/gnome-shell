@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-02-08 19:32+0100\n"
+"POT-Creation-Date: 2002-02-08 01:59-0500\n"
 "PO-Revision-Date: 2002-02-08 19:32+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -221,556 +221,6 @@ msgstr "Okänt attribut %s på <geometry>-element"
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
-
-#: src/theme-parser.c:222 src/theme-parser.c:240
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "Rad %d tecken %d: %s"
-
-#: src/theme-parser.c:394
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Attributet \"%s\" upprepat två gånger på samma <%s>-element"
-
-#: src/theme-parser.c:412 src/theme-parser.c:437
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Attributet \"%s\" är ogiltigt på <%s>-element i detta sammanhang"
-
-#: src/theme-parser.c:465
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Kunde inte tolka \"%s\" som ett heltal"
-
-#: src/theme-parser.c:474 src/theme-parser.c:528
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Förstod inte eftersläpande tecknen \"%s\" i strängen \"%s\""
-
-#: src/theme-parser.c:483
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "Heltalet %ld måste vara positivt"
-
-#: src/theme-parser.c:491
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "Heltalet %ld är för stort, aktuellt max är %d"
-
-#: src/theme-parser.c:519
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Kunde inte tolka \"%s\" som ett flyttal"
-
-#: src/theme-parser.c:548
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Vinkeln måste vara mellan 0,0 och 360,0, var %g\n"
-
-#: src/theme-parser.c:568
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfavärdet måste vara mellan 0,0 (osynligt) och 1,0 (helt synligt), var %g\n"
-
-#: src/theme-parser.c:611 src/theme-parser.c:1105 src/theme-parser.c:1179
-#: src/theme-parser.c:2584
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr "Inget \"name\"-attribut på element <%s>"
-
-#: src/theme-parser.c:618 src/theme-parser.c:1112
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr "Inget \"value\"-attribut på element <%s>"
-
-#: src/theme-parser.c:670 src/theme-parser.c:720 src/theme-parser.c:758
-#: src/theme-parser.c:835
-#, c-format
-msgid "No \"name\" attribute on <%s> element"
-msgstr "Inget \"name\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:678 src/theme-parser.c:728 src/theme-parser.c:766
-#: src/theme-parser.c:843
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s>-namnet \"%s\" använt en andra gång"
-
-#: src/theme-parser.c:690 src/theme-parser.c:778 src/theme-parser.c:855
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s>-föräldern \"%s\" har inte definierats"
-
-#: src/theme-parser.c:791
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s>-geometrin \"%s\" har inte definierats"
-
-#: src/theme-parser.c:804
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> måste ange antingen en geometri eller en förälder som har en geometri"
-
-#: src/theme-parser.c:885
-#, c-format
-msgid "No \"type\" attribute on <%s> element"
-msgstr "Inget \"type\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:893
-#, c-format
-msgid "No \"style_set\" attribute on <%s> element"
-msgstr "Inget \"style_set\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:903
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Okänd typ \"%s\" på <%s>-element"
-
-#: src/theme-parser.c:914
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Okänt style_set \"%s\" på <%s>-element"
-
-#: src/theme-parser.c:922
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Fönstertypen \"%s\" har redan tilldelats en stilsamling"
-
-#: src/theme-parser.c:949 src/theme-parser.c:2796
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Inget \"function\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:957 src/theme-parser.c:2804 src/theme-parser.c:2908
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Inget \"state\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:966
-#, c-format
-msgid "Unknown function \"%s\" for menu icon"
-msgstr "Okänd funktion \"%s\" för menyikon"
-
-#: src/theme-parser.c:975
-#, c-format
-msgid "Unknown state \"%s\" for menu icon"
-msgstr "Okänt tillstånd \"%s\" för menyikon"
-
-#: src/theme-parser.c:983
-#, c-format
-msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Temat har redan en menyikon för funktionen %s tillstånd %s"
-
-#: src/theme-parser.c:1000 src/theme-parser.c:2768 src/theme-parser.c:2847
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Inget <draw_ops> med namnet \"%s\" har definierats"
-
-#: src/theme-parser.c:1015
-#, c-format
-msgid "Element <%s> is not allowed below <metacity_theme>"
-msgstr "Elementet <%s> är inte tillåtet under <metacity_theme>"
-
-#: src/theme-parser.c:1079
-#, c-format
-msgid "Element <%s> is not allowed below <info>"
-msgstr "Elementet <%s> är inte tillåtet under <info>"
-
-#: src/theme-parser.c:1142
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "Avståndet \"%s\" är okänt"
-
-#: src/theme-parser.c:1186
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr "Inget \"top\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1193
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Inget \"bottom\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1200
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr "Inget \"left\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1207
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr "Inget \"right\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1239
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "Ramen \"%s\" är okänd"
-
-#: src/theme-parser.c:1277
-#, c-format
-msgid "Element <%s> is not allowed below <frame_geometry>"
-msgstr "Elementet <%s> är inte tillåtet under <frame_geometry>"
-
-#: src/theme-parser.c:1361
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Booleska värden måste vara \"true\" eller \"false\", inte \"%s\""
-
-#: src/theme-parser.c:1409 src/theme-parser.c:1519 src/theme-parser.c:1622
-#: src/theme-parser.c:1809 src/theme-parser.c:2517
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Inget \"color\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1416
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Inget \"x1\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1423 src/theme-parser.c:2380
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Inget \"y1\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1430
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Inget \"x2\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1437 src/theme-parser.c:2387
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Inget \"y2\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1526 src/theme-parser.c:1629 src/theme-parser.c:1735
-#: src/theme-parser.c:1816 src/theme-parser.c:1918 src/theme-parser.c:2011
-#: src/theme-parser.c:2149 src/theme-parser.c:2275 src/theme-parser.c:2373
-#: src/theme-parser.c:2444 src/theme-parser.c:2524
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Inget \"x\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1533 src/theme-parser.c:1636 src/theme-parser.c:1742
-#: src/theme-parser.c:1823 src/theme-parser.c:1925 src/theme-parser.c:2018
-#: src/theme-parser.c:2156 src/theme-parser.c:2282 src/theme-parser.c:2451
-#: src/theme-parser.c:2531
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Inget \"y\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1540 src/theme-parser.c:1643 src/theme-parser.c:1749
-#: src/theme-parser.c:1830 src/theme-parser.c:1932 src/theme-parser.c:2025
-#: src/theme-parser.c:2163 src/theme-parser.c:2289 src/theme-parser.c:2458
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr "Inget \"width\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1547 src/theme-parser.c:1650 src/theme-parser.c:1756
-#: src/theme-parser.c:1837 src/theme-parser.c:1939 src/theme-parser.c:2032
-#: src/theme-parser.c:2170 src/theme-parser.c:2296 src/theme-parser.c:2465
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr "Inget \"height\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1657
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Inget \"start_angle\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1664
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Inget \"extent_angle\"attribut på element <%s>"
-
-#: src/theme-parser.c:1844
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Inget \"alpha\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1911
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr "Inget \"type\"-attribut på element <%s>"
-
-#: src/theme-parser.c:1963
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Förstod inte värdet \"%s\" för typ av toning"
-
-#: src/theme-parser.c:2039
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Inget \"filename\"-attribut på element <%s>"
-
-#: src/theme-parser.c:2128 src/theme-parser.c:2261 src/theme-parser.c:2366
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Inget \"state\"-attribut på element <%s>"
-
-#: src/theme-parser.c:2135 src/theme-parser.c:2268
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Inget \"shadow\"-attribut på element <%s>"
-
-#: src/theme-parser.c:2142
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Inget \"arrow\"-attribut på element <%s>"
-
-#: src/theme-parser.c:2195 src/theme-parser.c:2317 src/theme-parser.c:2405
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Förstod inte tillståndet \"%s\" för <%s>-element"
-
-#: src/theme-parser.c:2205 src/theme-parser.c:2327
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Förstod inte skuggan \"%s\" för <%s>-element"
-
-#: src/theme-parser.c:2215
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Förstod inte pilen \"%s\" för <%s>-element"
-
-#: src/theme-parser.c:2610
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Inget <draw_ops> anropat \"%s\" har definierats"
-
-#: src/theme-parser.c:2622
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Att inkludera draw_ops \"%s\" här skulle skapa en cirkulärreferens"
-
-#: src/theme-parser.c:2648
-#, c-format
-msgid "Element <%s> is not allowed below <draw_ops>"
-msgstr "Elementet <%s> är inte tillåtet under <draw_ops>"
-
-#: src/theme-parser.c:2677
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr "Inget \"value\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:2702
-#, c-format
-msgid "Element <%s> is not allowed below <gradient>"
-msgstr "Elementet <%s> är inte tillåtet under <gradient>"
-
-#: src/theme-parser.c:2734
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr "Inget \"position\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:2743
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "Okänd position \"%s\" för ramdel"
-
-#: src/theme-parser.c:2751
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "Ramstilen har redan en del vid position %s"
-
-#: src/theme-parser.c:2813
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "Okänd funktion \"%s\" för knapp"
-
-#: src/theme-parser.c:2822
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "Okänt tillstånd \"%s\" för knapp"
-
-#: src/theme-parser.c:2830
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "Ramstilen har redan en knapp för funktionen %s tillstånd %s"
-
-#: src/theme-parser.c:2862
-#, c-format
-msgid "Element <%s> is not allowed below <frame_style>"
-msgstr "Elementet <%s> är inte tillåtet under <frame_style>"
-
-#: src/theme-parser.c:2900
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "Inget \"focus\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:2916
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "Inget \"style\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:2925
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" är inte ett tillåtet värde på fokusattribut"
-
-#: src/theme-parser.c:2934
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" är inte ett giltigt värde på tillståndsattribut"
-
-#: src/theme-parser.c:2944
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "En stil med namnet \"%s\" har inte definierats"
-
-#: src/theme-parser.c:2954
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "Inget \"resize\"-attribut på <%s>-element"
-
-#: src/theme-parser.c:2964
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" är inte ett giltigt värde för storleksändringsattribut"
-
-#: src/theme-parser.c:2974
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"Bör inte ha \"resize\"-attribut på <%s>-element för maximerad/skuggade "
-"tillstånd"
-
-#: src/theme-parser.c:2988
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"Stilen har redan angivits för tillståndet %s storleksändring %s fokus %s"
-
-#: src/theme-parser.c:2999 src/theme-parser.c:3010 src/theme-parser.c:3021
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "Stilen har redan angivits för tillståndet %s fokus %s"
-
-#: src/theme-parser.c:3039
-#, c-format
-msgid "Element <%s> is not allowed below <frame_style_set>"
-msgstr "Elementet <%s> är inte tillåtet under <frame_style_set>"
-
-#: src/theme-parser.c:3060
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Kan inte ha två draw_ops för ett <piece>-element (temat angav ett draw_ops-"
-"attribut och även ett <draw_ops>-element, eller angav två element)"
-
-#: src/theme-parser.c:3077 src/theme-parser.c:3115 src/theme-parser.c:3153
-#, c-format
-msgid "Element <%s> is not allowed below <piece>"
-msgstr "Elementet <%s> är inte tillåtet under <piece>"
-
-#: src/theme-parser.c:3098
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Kan inte ha två draw_ops för ett <button>-element (temat angav ett draw_ops-"
-"attribut och även ett <draw_ops>-element, eller angav två element)"
-
-#: src/theme-parser.c:3136
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Kan inte ha två draw_ops för ett <menu_icon>-element (temat angav ett "
-"draw_ops-attribut och även ett <draw_ops>-element, eller angav två element)"
-
-#: src/theme-parser.c:3183
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Yttersta elementet i temat måste vara <metacity_theme>, inte <%s>"
-
-#: src/theme-parser.c:3203
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Elementet <%s> är inte tillåtet inuti ett namn-/författare-/datum-/"
-"beskrivningselement"
-
-#: src/theme-parser.c:3208
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett <constant>-element"
-
-#: src/theme-parser.c:3219
-#, c-format
-msgid "Element <%s> is not allowed inside a distance/border element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett avstånds-/ramelement"
-
-#: src/theme-parser.c:3240
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett ritningsåtgärdselement"
-
-#: src/theme-parser.c:3250
-#, c-format
-msgid "Element <%s> is not allowed inside a <color> element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett <color>-element"
-
-#: src/theme-parser.c:3280
-#, c-format
-msgid "Element <%s> is not allowed inside a <frame> element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett <frame>-element"
-
-#: src/theme-parser.c:3285
-#, c-format
-msgid "Element <%s> is not allowed inside a <window> element"
-msgstr "Elementet <%s> är inte tillåtet inuti ett <window>-element"
-
-#: src/theme-parser.c:3498
-msgid "No draw_ops provided for frame piece"
-msgstr "Inget draw_ops tillhandahålls för ramdel"
-
-#: src/theme-parser.c:3513
-msgid "No draw_ops provided for button"
-msgstr "Inget draw_ops tillhandahålls för knappen"
-
-#: src/theme-parser.c:3528
-msgid "No draw_ops provided for menu icon"
-msgstr "Inget draw_ops tillhandahålls för menyikon"
-
-#: src/theme-parser.c:3568
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "Ingen text är tillåten inuti elementet <%s>"
-
-#: src/theme-parser.c:3623
-msgid "<name> specified twice for this theme"
-msgstr "<namn> är angiven två gånger för detta tema"
-
-#: src/theme-parser.c:3634
-msgid "<author> specified twice for this theme"
-msgstr "<author> är angiven två gånger för detta tema"
-
-#: src/theme-parser.c:3645
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> är angivet två gånger för detta tema"
-
-#: src/theme-parser.c:3656
-msgid "<date> specified twice for this theme"
-msgstr "<date> är angivet två gånger för detta tema"
-
-#: src/theme-parser.c:3667
-msgid "<description> specified twice for this theme"
-msgstr "<description> är angivet två gånger för detta tema"
-
-#: src/theme-parser.c:3866
-#, c-format
-msgid "Failed to read theme from file %s: %s\n"
-msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
-
-#: src/theme-parser.c:3921
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
 
 #: src/theme.c:348
 msgid "top"
@@ -1037,6 +487,351 @@ msgstr ""
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
+
+#~ msgid "Line %d character %d: %s"
+#~ msgstr "Rad %d tecken %d: %s"
+
+#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+#~ msgstr "Attributet \"%s\" upprepat två gånger på samma <%s>-element"
+
+#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+#~ msgstr "Attributet \"%s\" är ogiltigt på <%s>-element i detta sammanhang"
+
+#~ msgid "Could not parse \"%s\" as an integer"
+#~ msgstr "Kunde inte tolka \"%s\" som ett heltal"
+
+#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+#~ msgstr "Förstod inte eftersläpande tecknen \"%s\" i strängen \"%s\""
+
+#~ msgid "Integer %ld must be positive"
+#~ msgstr "Heltalet %ld måste vara positivt"
+
+#~ msgid "Integer %ld is too large, current max is %d"
+#~ msgstr "Heltalet %ld är för stort, aktuellt max är %d"
+
+#~ msgid "Could not parse \"%s\" as a floating point number"
+#~ msgstr "Kunde inte tolka \"%s\" som ett flyttal"
+
+#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
+#~ msgstr "Vinkeln måste vara mellan 0,0 och 360,0, var %g\n"
+
+#~ msgid ""
+#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+#~ msgstr ""
+#~ "Alfavärdet måste vara mellan 0,0 (osynligt) och 1,0 (helt synligt), var %"
+#~ "g\n"
+
+#~ msgid "No \"name\" attribute on element <%s>"
+#~ msgstr "Inget \"name\"-attribut på element <%s>"
+
+#~ msgid "No \"value\" attribute on element <%s>"
+#~ msgstr "Inget \"value\"-attribut på element <%s>"
+
+#~ msgid "No \"name\" attribute on <%s> element"
+#~ msgstr "Inget \"name\"-attribut på <%s>-element"
+
+#~ msgid "<%s> name \"%s\" used a second time"
+#~ msgstr "<%s>-namnet \"%s\" använt en andra gång"
+
+#~ msgid "<%s> parent \"%s\" has not been defined"
+#~ msgstr "<%s>-föräldern \"%s\" har inte definierats"
+
+#~ msgid "<%s> geometry \"%s\" has not been defined"
+#~ msgstr "<%s>-geometrin \"%s\" har inte definierats"
+
+#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
+#~ msgstr ""
+#~ "<%s> måste ange antingen en geometri eller en förälder som har en geometri"
+
+#~ msgid "No \"type\" attribute on <%s> element"
+#~ msgstr "Inget \"type\"-attribut på <%s>-element"
+
+#~ msgid "No \"style_set\" attribute on <%s> element"
+#~ msgstr "Inget \"style_set\"-attribut på <%s>-element"
+
+#~ msgid "Unknown type \"%s\" on <%s> element"
+#~ msgstr "Okänd typ \"%s\" på <%s>-element"
+
+#~ msgid "Unknown style_set \"%s\" on <%s> element"
+#~ msgstr "Okänt style_set \"%s\" på <%s>-element"
+
+#~ msgid "Window type \"%s\" has already been assigned a style set"
+#~ msgstr "Fönstertypen \"%s\" har redan tilldelats en stilsamling"
+
+#~ msgid "No \"function\" attribute on <%s> element"
+#~ msgstr "Inget \"function\"-attribut på <%s>-element"
+
+#~ msgid "No \"state\" attribute on <%s> element"
+#~ msgstr "Inget \"state\"-attribut på <%s>-element"
+
+#~ msgid "Unknown function \"%s\" for menu icon"
+#~ msgstr "Okänd funktion \"%s\" för menyikon"
+
+#~ msgid "Unknown state \"%s\" for menu icon"
+#~ msgstr "Okänt tillstånd \"%s\" för menyikon"
+
+#~ msgid "Theme already has a menu icon for function %s state %s"
+#~ msgstr "Temat har redan en menyikon för funktionen %s tillstånd %s"
+
+#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
+#~ msgstr "Inget <draw_ops> med namnet \"%s\" har definierats"
+
+#~ msgid "Element <%s> is not allowed below <metacity_theme>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <metacity_theme>"
+
+#~ msgid "Element <%s> is not allowed below <info>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <info>"
+
+#~ msgid "Distance \"%s\" is unknown"
+#~ msgstr "Avståndet \"%s\" är okänt"
+
+#~ msgid "No \"top\" attribute on element <%s>"
+#~ msgstr "Inget \"top\"-attribut på element <%s>"
+
+#~ msgid "No \"bottom\" attribute on element <%s>"
+#~ msgstr "Inget \"bottom\"-attribut på element <%s>"
+
+#~ msgid "No \"left\" attribute on element <%s>"
+#~ msgstr "Inget \"left\"-attribut på element <%s>"
+
+#~ msgid "No \"right\" attribute on element <%s>"
+#~ msgstr "Inget \"right\"-attribut på element <%s>"
+
+#~ msgid "Border \"%s\" is unknown"
+#~ msgstr "Ramen \"%s\" är okänd"
+
+#~ msgid "Element <%s> is not allowed below <frame_geometry>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_geometry>"
+
+#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+#~ msgstr "Booleska värden måste vara \"true\" eller \"false\", inte \"%s\""
+
+#~ msgid "No \"color\" attribute on element <%s>"
+#~ msgstr "Inget \"color\"-attribut på element <%s>"
+
+#~ msgid "No \"x1\" attribute on element <%s>"
+#~ msgstr "Inget \"x1\"-attribut på element <%s>"
+
+#~ msgid "No \"y1\" attribute on element <%s>"
+#~ msgstr "Inget \"y1\"-attribut på element <%s>"
+
+#~ msgid "No \"x2\" attribute on element <%s>"
+#~ msgstr "Inget \"x2\"-attribut på element <%s>"
+
+#~ msgid "No \"y2\" attribute on element <%s>"
+#~ msgstr "Inget \"y2\"-attribut på element <%s>"
+
+#~ msgid "No \"x\" attribute on element <%s>"
+#~ msgstr "Inget \"x\"-attribut på element <%s>"
+
+#~ msgid "No \"y\" attribute on element <%s>"
+#~ msgstr "Inget \"y\"-attribut på element <%s>"
+
+#~ msgid "No \"width\" attribute on element <%s>"
+#~ msgstr "Inget \"width\"-attribut på element <%s>"
+
+#~ msgid "No \"height\" attribute on element <%s>"
+#~ msgstr "Inget \"height\"-attribut på element <%s>"
+
+#~ msgid "No \"start_angle\" attribute on element <%s>"
+#~ msgstr "Inget \"start_angle\"-attribut på element <%s>"
+
+#~ msgid "No \"extent_angle\" attribute on element <%s>"
+#~ msgstr "Inget \"extent_angle\"attribut på element <%s>"
+
+#~ msgid "No \"alpha\" attribute on element <%s>"
+#~ msgstr "Inget \"alpha\"-attribut på element <%s>"
+
+#~ msgid "No \"type\" attribute on element <%s>"
+#~ msgstr "Inget \"type\"-attribut på element <%s>"
+
+#~ msgid "Did not understand value \"%s\" for type of gradient"
+#~ msgstr "Förstod inte värdet \"%s\" för typ av toning"
+
+#~ msgid "No \"filename\" attribute on element <%s>"
+#~ msgstr "Inget \"filename\"-attribut på element <%s>"
+
+#~ msgid "No \"state\" attribute on element <%s>"
+#~ msgstr "Inget \"state\"-attribut på element <%s>"
+
+#~ msgid "No \"shadow\" attribute on element <%s>"
+#~ msgstr "Inget \"shadow\"-attribut på element <%s>"
+
+#~ msgid "No \"arrow\" attribute on element <%s>"
+#~ msgstr "Inget \"arrow\"-attribut på element <%s>"
+
+#~ msgid "Did not understand state \"%s\" for <%s> element"
+#~ msgstr "Förstod inte tillståndet \"%s\" för <%s>-element"
+
+#~ msgid "Did not understand shadow \"%s\" for <%s> element"
+#~ msgstr "Förstod inte skuggan \"%s\" för <%s>-element"
+
+#~ msgid "Did not understand arrow \"%s\" for <%s> element"
+#~ msgstr "Förstod inte pilen \"%s\" för <%s>-element"
+
+#~ msgid "No <draw_ops> called \"%s\" has been defined"
+#~ msgstr "Inget <draw_ops> anropat \"%s\" har definierats"
+
+#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
+#~ msgstr "Att inkludera draw_ops \"%s\" här skulle skapa en cirkulärreferens"
+
+#~ msgid "Element <%s> is not allowed below <draw_ops>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <draw_ops>"
+
+#~ msgid "No \"value\" attribute on <%s> element"
+#~ msgstr "Inget \"value\"-attribut på <%s>-element"
+
+#~ msgid "Element <%s> is not allowed below <gradient>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <gradient>"
+
+#~ msgid "No \"position\" attribute on <%s> element"
+#~ msgstr "Inget \"position\"-attribut på <%s>-element"
+
+#~ msgid "Unknown position \"%s\" for frame piece"
+#~ msgstr "Okänd position \"%s\" för ramdel"
+
+#~ msgid "Frame style already has a piece at position %s"
+#~ msgstr "Ramstilen har redan en del vid position %s"
+
+#~ msgid "Unknown function \"%s\" for button"
+#~ msgstr "Okänd funktion \"%s\" för knapp"
+
+#~ msgid "Unknown state \"%s\" for button"
+#~ msgstr "Okänt tillstånd \"%s\" för knapp"
+
+#~ msgid "Frame style already has a button for function %s state %s"
+#~ msgstr "Ramstilen har redan en knapp för funktionen %s tillstånd %s"
+
+#~ msgid "Element <%s> is not allowed below <frame_style>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_style>"
+
+#~ msgid "No \"focus\" attribute on <%s> element"
+#~ msgstr "Inget \"focus\"-attribut på <%s>-element"
+
+#~ msgid "No \"style\" attribute on <%s> element"
+#~ msgstr "Inget \"style\"-attribut på <%s>-element"
+
+#~ msgid "\"%s\" is not a valid value for focus attribute"
+#~ msgstr "\"%s\" är inte ett tillåtet värde på fokusattribut"
+
+#~ msgid "\"%s\" is not a valid value for state attribute"
+#~ msgstr "\"%s\" är inte ett giltigt värde på tillståndsattribut"
+
+#~ msgid "A style called \"%s\" has not been defined"
+#~ msgstr "En stil med namnet \"%s\" har inte definierats"
+
+#~ msgid "No \"resize\" attribute on <%s> element"
+#~ msgstr "Inget \"resize\"-attribut på <%s>-element"
+
+#~ msgid "\"%s\" is not a valid value for resize attribute"
+#~ msgstr "\"%s\" är inte ett giltigt värde för storleksändringsattribut"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+#~ "states"
+#~ msgstr ""
+#~ "Bör inte ha \"resize\"-attribut på <%s>-element för maximerad/skuggade "
+#~ "tillstånd"
+
+#~ msgid "Style has already been specified for state %s resize %s focus %s"
+#~ msgstr ""
+#~ "Stilen har redan angivits för tillståndet %s storleksändring %s fokus %s"
+
+#~ msgid "Style has already been specified for state %s focus %s"
+#~ msgstr "Stilen har redan angivits för tillståndet %s fokus %s"
+
+#~ msgid "Element <%s> is not allowed below <frame_style_set>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_style_set>"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "Kan inte ha två draw_ops för ett <piece>-element (temat angav ett "
+#~ "draw_ops-attribut och även ett <draw_ops>-element, eller angav två "
+#~ "element)"
+
+#~ msgid "Element <%s> is not allowed below <piece>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <piece>"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <button> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "Kan inte ha två draw_ops för ett <button>-element (temat angav ett "
+#~ "draw_ops-attribut och även ett <draw_ops>-element, eller angav två "
+#~ "element)"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "Kan inte ha två draw_ops för ett <menu_icon>-element (temat angav ett "
+#~ "draw_ops-attribut och även ett <draw_ops>-element, eller angav två "
+#~ "element)"
+
+#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+#~ msgstr "Yttersta elementet i temat måste vara <metacity_theme>, inte <%s>"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a name/author/date/description element"
+#~ msgstr ""
+#~ "Elementet <%s> är inte tillåtet inuti ett namn-/författare-/datum-/"
+#~ "beskrivningselement"
+
+#~ msgid "Element <%s> is not allowed inside a <constant> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <constant>-element"
+
+#~ msgid "Element <%s> is not allowed inside a distance/border element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett avstånds-/ramelement"
+
+#~ msgid "Element <%s> is not allowed inside a draw operation element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett ritningsåtgärdselement"
+
+#~ msgid "Element <%s> is not allowed inside a <color> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <color>-element"
+
+#~ msgid "Element <%s> is not allowed inside a <frame> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <frame>-element"
+
+#~ msgid "Element <%s> is not allowed inside a <window> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <window>-element"
+
+#~ msgid "No draw_ops provided for frame piece"
+#~ msgstr "Inget draw_ops tillhandahålls för ramdel"
+
+#~ msgid "No draw_ops provided for button"
+#~ msgstr "Inget draw_ops tillhandahålls för knappen"
+
+#~ msgid "No draw_ops provided for menu icon"
+#~ msgstr "Inget draw_ops tillhandahålls för menyikon"
+
+#~ msgid "No text is allowed inside element <%s>"
+#~ msgstr "Ingen text är tillåten inuti elementet <%s>"
+
+#~ msgid "<name> specified twice for this theme"
+#~ msgstr "<namn> är angiven två gånger för detta tema"
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<author> är angiven två gånger för detta tema"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr "<copyright> är angivet två gånger för detta tema"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<date> är angivet två gånger för detta tema"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr "<description> är angivet två gånger för detta tema"
+
+#~ msgid "Failed to read theme from file %s: %s\n"
+#~ msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
+
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
 
 #~ msgid "Element <%s> is not allowed inside a <%s> element"
 #~ msgstr "Elementet <%s> är inte tillåtet inuti ett <%s>-element"

@@ -8,7 +8,18 @@ It runs metacity in an Xnest. e.g.:
  CLIENTS=3 ./run-metacity.sh
 or 
  DEBUG=memprof ./run-metacity.sh
+or
+ DEBUG_TEST=1 ./run-metacity-sh
 or whatever.
+
+The tool metacity-message can be used as follows:
+ metacity-message reload-theme
+ metacity-message restart
+ metacity-message enable-keybindings
+ metacity-message disable-keybindings
+
+metacity-window-demo is good for trying behavior of various kinds of window
+without launching a full desktop.
 
 src/window.c is where all the guts of the window manager live. This is
 basically the only remotely scary file.
@@ -28,6 +39,10 @@ display.h or window.h or other core files.
 
 Files in the core (display.[hc], window.[hc]) are not supposed to
 include gdk.h or gtk.h.
+
+src/theme.c and src/theme-parser.c have the theme system; this is
+well-modularized from the rest of the code, since the theme viewer app
+links to these files in addition to the WM itself.
 
 When hacking, remember that you can have multiple screens. The code is
 also written to support multiple displays, but this is useless, since

@@ -1,3 +1,13 @@
+2002-02-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/tools/Makefile.am (EXTRA_DIST): add $(icon_DATA)
+
+	* configure.in: 2.3.55
+
+	* HACKING: update
+
+	* README: update
+
 2002-02-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme.c (meta_theme_set_current): add a newline to an error
