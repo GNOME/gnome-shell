@@ -4081,7 +4081,7 @@ read_rgb_icon (MetaWindow    *window,
   
   if (sizeof (gulong) != 4)
     meta_warning ("%s: Whoops, I think this function may be broken on 64-bit\n",
-                  __FUNCTION__);
+                  G_GNUC_FUNCTION);
   
   meta_error_trap_push (window->display);
   type = None;

@@ -148,6 +148,7 @@ static void clear_tip (MetaFrames *frames);
 
 enum
 {
+  dummy, /* remove this when you add more signals */
   LAST_SIGNAL
 };
 

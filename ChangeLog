@@ -1,3 +1,10 @@
+2001-12-03  Laszlo Peter  <laca@ireland.sun.com>
+
+	* src/frames.c: add a dummy element to the enum so
+          the signals array is not empty. (breaks the build with Forte C)
+
+	* src/window.c: s/__FUNCTION__/G_GNUC_FUNCTION/
+
 2001-11-27  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (constrain_position): change so that window can be
