@@ -1,5 +1,11 @@
 2003-02-22  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (event_callback): fix to unfocus window only when 
+	you leave the window frame, not when you leave the window itself, 
+	unless window has no frame. #100248 fix from Orien Vandenbergh
+
+2003-02-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_get_tab_next): when tabbing
 	backward, we are still tabbing *from* the most recently used
 	window, not from the least recently used window.

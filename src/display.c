@@ -1499,13 +1499,8 @@ event_callback (XEvent   *event,
           switch (meta_prefs_get_focus_mode ())
             {
             case META_FOCUS_MODE_MOUSE:
-              /* This is kind of questionable; but we normally
-               * set focus to RevertToPointerRoot, so I guess
-               * leaving it on PointerRoot when nothing is focused
-               * is probably right. Anyway, unfocus the
-               * focused window.
-               */
               if (window->has_focus &&
+                  (window->frame == NULL || frame_was_receiver) &&
 		  event->xcrossing.mode != NotifyGrab && 
 		  event->xcrossing.mode != NotifyUngrab &&
 		  event->xcrossing.detail != NotifyInferior)
