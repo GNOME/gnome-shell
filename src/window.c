@@ -1349,35 +1349,51 @@ meta_window_move_resize_internal (MetaWindow  *window,
   /* There can be somewhat bogus interactions between gravity
    * and the position constraints (with position contraints
    * basically breaking gravity). Not sure how to fix this.
-   */
-  
-  /* If client is staying fixed on the east during resize, then we
-   * have to move the west edge.
-   */
+   */  
+
   switch (resize_gravity)
     {
+      /* If client is staying fixed on the east during resize, then we
+       * have to move the west edge.
+       */
     case NorthEastGravity:
     case EastGravity:
     case SouthEastGravity:
       root_x_nw -= size_dx;
       break;
+
+      /* centered horizontally */
+    case NorthGravity:
+    case SouthGravity:
+    case CenterGravity:
+      root_x_nw -= size_dx / 2;
+      break;
+      
     default:
       break;
     }
 
-  /* If client is staying fixed on the south during resize,
-   * we have to move the north edge
-   */
   switch (resize_gravity)
     {
+      /* If client is staying fixed on the south during resize,
+       * we have to move the north edge
+       */
     case SouthGravity:
     case SouthEastGravity:
     case SouthWestGravity:
       root_y_nw -= size_dy;
       break;
+
+      /* centered vertically */
+    case EastGravity:
+    case WestGravity:
+    case CenterGravity:
+      root_y_nw -= size_dy / 2;
+      break;
+      
     default:
       break;
-    }
+    }  
   
   constrain_position (window,
                       window->frame ? &fgeom : NULL,
@@ -1944,7 +1960,8 @@ meta_window_configure_request (MetaWindow *window,
                                XEvent     *event)
 {
   int x, y, width, height;
-
+  gboolean only_resize;
+  
   /* it's essential to use only the explicitly-set fields,
    * and otherwise use our current up-to-date position.
    *
@@ -1956,6 +1973,8 @@ meta_window_configure_request (MetaWindow *window,
 
   meta_window_get_gravity_position (window, &x, &y);
 
+  only_resize = TRUE;
+  
   if (((window->type == META_WINDOW_DESKTOP ||
         window->type == META_WINDOW_DOCK ||
         window->type == META_WINDOW_TOOLBAR ||
@@ -1972,6 +1991,9 @@ meta_window_configure_request (MetaWindow *window,
       
       if (event->xconfigurerequest.value_mask & CWY)
         y = event->xconfigurerequest.y;
+
+      if (event->xconfigurerequest.value_mask & (CWX | CWY))
+        only_resize = FALSE;
     }
 
   width = window->rect.width;
@@ -2002,8 +2024,16 @@ meta_window_configure_request (MetaWindow *window,
   window->size_hints.width = width;
   window->size_hints.height = height;
 
+  /* FIXME passing the gravity on only_resize thing is kind of crack-rock.
+   * Basically I now have several ways of handling gravity, and things
+   * don't make too much sense. I think I am doing the math in a couple
+   * places and could do it in only one function, and remove some of the
+   * move_resize_internal arguments.
+   */
+  
   meta_window_move_resize_internal (window, TRUE, FALSE,
-                                    NorthWestGravity,
+                                    only_resize ?
+                                    window->size_hints.win_gravity : NorthWestGravity,
                                     window->size_hints.x,
                                     window->size_hints.y,
                                     window->size_hints.width,

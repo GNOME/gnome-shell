@@ -1,5 +1,12 @@
 2001-08-18  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_configure_request): 
+	(meta_window_move_resize_internal): Make a half-hearted
+	not-very-tested attempt to handle window resizes correctly with
+	respect to window gravity.
+
+2001-08-18  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_get_gravity_position): hrm, I fixed
 	this wrong the other day. Fixes static gravity when moving
 	windows.
