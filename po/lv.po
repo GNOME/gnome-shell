@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2002-12-22 01:07+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -98,7 +98,7 @@ msgstr "Maksimizēt Logu"
 msgid "Unmaximize Window"
 msgstr "Atjaunot Logu"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,12 +106,12 @@ msgid ""
 msgstr ""
 "Kāda cita programma jau lieto taustiņu %s ar modifcētājiem %x kā sasaisti\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Kļūda palaižot metacity-dialogu, lai parādītu kļūdu par komandu: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Neviena komanda %d netika definēta.\n"
@@ -308,30 +308,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Logs \"%s\" neatbild.\n"
-"Likt šai aplikācijai iziet?\n"
-"(Visi atvētie dokumenti būs zuduši.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Nokaut aplikāciju"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Nosaukums"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Klase"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -339,7 +338,7 @@ msgstr ""
 "Šie logi neatbalsta \"saglabāt pašreizējos uzstādījumus\" un būs jāpārsāknē "
 "pašrocīgi nākamreiz, kad pieteiksieties."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2545,12 +2544,12 @@ msgstr "<date> šai tēmai noteikts divreiz"
 msgid "<description> specified twice for this theme"
 msgstr "<description> šai tēmai noteikts divreiz"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Nevarēju nolasīt tēmu no faila %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Tēmas fails %s nesaturēja saknes <metacity_theme> elementu"
@@ -2882,7 +2881,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikācija iestatīja neīstu _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2898,7 +2897,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2933,3 +2932,15 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Rekvizīts %slogā 0x%lx saturēja nederīgu UTF-8 priekšmetam %d no saraksta\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Logs \"%s\" neatbild.\n"
+#~ "Likt šai aplikācijai iziet?\n"
+#~ "(Visi atvētie dokumenti būs zuduši.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Nokaut aplikāciju"

@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-05-06 04:00+0200\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-04-09 12:52+0100\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
@@ -101,7 +101,7 @@ msgstr "Увећај прозор"
 msgid "Unmaximize Window"
 msgstr "Поништи увећавање прозора"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, fuzzy, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,14 +109,14 @@ msgid ""
 msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x као закачкама\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
@@ -314,30 +314,29 @@ msgstr ""
 msgid "Mod5"
 msgstr ""
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Прозор \"%s\" не одговара на упите.\n"
-"Да ли да присилим програм да се затвори?\n"
-"(Сви отворени документи биће изгубљени.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Убиј програм"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Наслов"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Класа"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -345,7 +344,7 @@ msgstr ""
 "Ови прозори не подржавају могућност „сними тренутна подешавања“ па ћете "
 "морати да их ручно поново покренете када се следећи пут пријавите."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2577,12 +2576,12 @@ msgstr "Елемент <date> је наведен два пута у овој т
 msgid "<description> specified twice for this theme"
 msgstr "Елемент <description> је наведен два пута у овој теми"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Нисам успео да прочитам тему из датотеке %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Датотека са темом %s не садржи коренски <metacity_theme> елемент"
@@ -2909,7 +2908,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2925,7 +2924,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2961,3 +2960,15 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Особина %s прозора 0x%lx садржи неисправан UTF-8 за ставку %d у листи\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Прозор \"%s\" не одговара на упите.\n"
+#~ "Да ли да присилим програм да се затвори?\n"
+#~ "(Сви отворени документи биће изгубљени.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Убиј програм"

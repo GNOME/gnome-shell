@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.1\n"
-"POT-Creation-Date: 2003-05-19 00:54+0200\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-05-19 00:49+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -322,30 +322,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
-#, c-format
+#: src/metacity-dialog.c:84
+#, fuzzy, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "La commande de capture d'écran de fenêtre"
+
+#: src/metacity-dialog.c:92
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"La fenêtre « %s » ne répond pas.\n"
-"Forcer la fermeture de cette application ?\n"
-"(Tous les documents ouverts seront perdus.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Tuer l'application"
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Titre"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -354,7 +353,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -3135,3 +3134,15 @@ msgid ""
 msgstr ""
 "La propriété %s de la fenêtre 0x%lx contient des données UTF-8 incorrectes "
 "pour l'élément %d dans la liste\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "La fenêtre « %s » ne répond pas.\n"
+#~ "Forcer la fermeture de cette application ?\n"
+#~ "(Tous les documents ouverts seront perdus.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Tuer l'application"

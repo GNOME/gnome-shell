@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-01-23 22:48+0800\n"
 "Last-Translator: He Qiangqiang <carton@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -99,19 +99,19 @@ msgstr "最大化窗口"
 msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
@@ -306,36 +306,35 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"窗口“%s”没有响应。\n"
-"是否强制该应用程序退出？\n"
-"(所有打开的文档都将丢失。)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "杀死应用程序"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "标题"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "类别"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr "这些窗口不支持“保存当前设置”，您在下次登录时，必须手动重启动它们。"
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2391,12 +2390,12 @@ msgstr "为此主题指定了两次 <date>"
 msgid "<description> specified twice for this theme"
 msgstr "为此主题指定了两次 <description>"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "无法从文件 %s 读取主题：%s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "主题文件 %s 不包含根 <metacity_theme> 元素"
@@ -2715,7 +2714,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2731,7 +2730,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2765,6 +2764,18 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "窗口“%s”没有响应。\n"
+#~ "是否强制该应用程序退出？\n"
+#~ "(所有打开的文档都将丢失。)"
+
+#~ msgid "Kill application"
+#~ msgstr "杀死应用程序"
 
 #~ msgid "Change how focus is moved from one window to another"
 #~ msgstr "更改焦点在窗口间移动的方式"

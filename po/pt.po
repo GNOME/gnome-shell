@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
-"POT-Creation-Date: 2003-05-12 23:38+0000\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-05-12 23:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -99,7 +99,7 @@ msgstr "Maximizar Janela"
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,13 +108,13 @@ msgstr ""
 "Outra aplicação está já a utilizar a chave %s com modificadores %x como "
 "binding\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erro ao lançar diálogo-metacity para imprimir um erro sobre o comando: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nenhum comando %d foi definido.\n"
@@ -124,8 +124,8 @@ msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOMEFICHEIRO] "
-"[--display=ECRA] [--replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOMEFICHEIRO] [--"
+"display=ECRA] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -311,30 +311,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
-#, c-format
+#: src/metacity-dialog.c:84
+#, fuzzy, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "O comando de captura de janela"
+
+#: src/metacity-dialog.c:92
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"A janela \"%s\" não está a responder.\n"
-"Forçar esta aplicação a terminar?\n"
-"(Todos os documentos abertos serão perdidos.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Matar aplicação"
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Título"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -342,7 +341,7 @@ msgstr ""
 "Estas janelas não suportam \"gravar configuração actual\" e terão de ser "
 "reiniciadas manualmente da próxima vez que iniciar sessão."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -782,11 +781,12 @@ msgid ""
 msgstr ""
 "Indica ao Metacity como implementar a indicação visual de que a campainha de "
 "sistema ou o indicador de 'campainha' de outra aplicação tocou. Actualmente "
-"existem dois valores válidos, \"fullscreen\", que causa um flash branco-preto "
-"de ecrã completo, e \"frame_flash\" que faz com que a barra de título da "
-"aplicação que emitiu a campainha emita um flashe. Se a aplicação que tocou a "
-"campainha for desconhecida (é normalmente o caso para o \"beep de sistema\" por "
-"omissão), irá emitir flash a barra de título da aplicação com o focus."
+"existem dois valores válidos, \"fullscreen\", que causa um flash branco-"
+"preto de ecrã completo, e \"frame_flash\" que faz com que a barra de título "
+"da aplicação que emitiu a campainha emita um flashe. Se a aplicação que "
+"tocou a campainha for desconhecida (é normalmente o caso para o \"beep de "
+"sistema\" por omissão), irá emitir flash a barra de título da aplicação com "
+"o focus."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -1661,8 +1661,8 @@ msgid ""
 "for this action."
 msgstr ""
 "O atalho de teclado que apresenta a caixa de diálogo de painel \"Executar "
-"Aplicação\". O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift"
-"&gt;&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"Aplicação\". O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1679,9 +1679,9 @@ msgstr ""
 "O atalho de teclado que invoca o utilitário de capturas de ecrã para obter "
 "uma captura de uma janela. O formato assemelha-se a \"&lt;Control&gt;a\" ou "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite "
-"capitalização maiúscula ou minúscula e também abreviaturas tais como "
-"\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a expressão "
-"especial \"disabled\", não existirão quaisquer atalhos de teclado para esta acção."
+"capitalização maiúscula ou minúscula e também abreviaturas tais como \"&lt;"
+"Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial "
+"\"disabled\", não existirão quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1844,8 +1844,8 @@ msgid ""
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Esta opção determina o efeito do clique-duplo na barra de título. As opções "
-"válidas actualmente são 'toggle_shade', que sombreia/dessombreia a janela, "
-"e 'toggle_maximized' que maximiza/restaura a janela."
+"válidas actualmente são 'toggle_shade', que sombreia/dessombreia a janela, e "
+"'toggle_maximized' que maximiza/restaura a janela."
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
@@ -1870,8 +1870,8 @@ msgid ""
 "environments, or when 'audible bell' is off."
 msgstr ""
 "Activa um indicador visual quando uma aplicação ou o sistema emitem uma "
-"'campainha' ou 'beep'; útil para os deficientes auditivos e para utilizar "
-"em ambientes ruidosos, ou quando 'campainha audível' está desligada."
+"'campainha' ou 'beep'; útil para os deficientes auditivos e para utilizar em "
+"ambientes ruidosos, ou quando 'campainha audível' está desligada."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -2593,12 +2593,12 @@ msgstr "<date> especificado duas vezes para este tema"
 msgid "<description> specified twice for this theme"
 msgstr "<description> especificado duas vezes para este tema"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Falha ao ler tema de ficheiro %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Ficheiro de tema %s não continha um elemento raiz <metacity_theme>"
@@ -2935,7 +2935,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID fictício %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2951,7 +2951,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2989,6 +2989,18 @@ msgid ""
 msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para ítem %d na "
 "lista\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "A janela \"%s\" não está a responder.\n"
+#~ "Forçar esta aplicação a terminar?\n"
+#~ "(Todos os documentos abertos serão perdidos.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Matar aplicação"
 
 #~ msgid "_Shade"
 #~ msgstr "_Sombra"

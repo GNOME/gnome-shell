@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-01-05 17:29+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: Gnome-Vi <gnomevi-list@lists.sourceforge.net>\n"
@@ -96,7 +96,7 @@ msgstr "Phóng to cửa sổ"
 msgid "Unmaximize Window"
 msgstr "Bỏ phóng to cửa sổ"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -104,12 +104,12 @@ msgid ""
 msgstr ""
 "Một vài chương trình đã dùng phím %s với phím bổ trợ %x như là liên kết\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Lỗi chạy metacity-dialog để in thông báo lỗi về lệnh: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Không có lệnh %d nào được định nghĩa.\n"
@@ -306,30 +306,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Cửa sổ \"%s\" không trả lời.\n"
-"Ép ứng dụng này kết thúc chứ?\n"
-"(Các tài liệu đang mở có thể sẽ bị mất)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Buộc chấm dứt ứng dụng"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Tựa đề"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Lớp"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -337,7 +336,7 @@ msgstr ""
 "Những cửa sổ này không hỗ trợ \"lưu thiết lập hiện thời\" và sẽ phải khởi "
 "động lại bằng tay lần kế bạn đăng nhập."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2502,12 +2501,12 @@ msgstr "<date> được xác định hai lần trong theme này"
 msgid "<description> specified twice for this theme"
 msgstr "<description> được xác định hai lần trong theme này"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Lỗi đọc theme từ tập tin %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Tập tin theme %s không chứa phần tử gốc <metacity_theme>"
@@ -2834,7 +2833,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Ứng dụng đặt bogus _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2850,7 +2849,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2887,6 +2886,18 @@ msgid ""
 msgstr ""
 "Thuộc tính %s trên cửa sổ 0x%lx chứa chuỗi UTF-8 sai cho mục %d trong danh "
 "sách\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Cửa sổ \"%s\" không trả lời.\n"
+#~ "Ép ứng dụng này kết thúc chứ?\n"
+#~ "(Các tài liệu đang mở có thể sẽ bị mất)"
+
+#~ msgid "Kill application"
+#~ msgstr "Buộc chấm dứt ứng dụng"
 
 #~ msgid "Workspace %u"
 #~ msgstr "Vùng làm việc %u"

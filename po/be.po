@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-2\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-02-21 19:19GMT+2\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: belarusian <i18n@mova.org>\n"
@@ -102,7 +102,7 @@ msgstr "Найбольшыць акно"
 msgid "Unmaximize Window"
 msgstr "Аднавіць папярэдні памер"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -110,14 +110,14 @@ msgid ""
 msgstr ""
 "Клявішу \"%s\" з мадыфікатарамі \"%x\" ужо выкарыстоўвае іншая праграма\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Памыдка загрузкі дыялёгу \"Мэтасіці\" для вываду паведамленьня пра памылку "
 "каманды: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Каманда %d ня была вызначана.\n"
@@ -316,30 +316,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Акно \"%s\" ня адказвае.\n"
-"Завершыць працу гэтага дастасаваньня?\n"
-"(Усе незахаваныя дакумэнты будуць згубленыя.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Забіць дастасаваньне"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Назва"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Кляса"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -347,7 +346,7 @@ msgstr ""
 "Гэтыя вокны ня падтрымліваюць каманду \"save current setup\", пад час "
 "наступнага зваходу іх прыйдзецца перазапусьціць асабіста."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2591,12 +2590,12 @@ msgstr "парамэтар <date> вызначаны для гэтае тэмы 
 msgid "<description> specified twice for this theme"
 msgstr "парамэтар <description> вызначаны для гэтае тэмы двойчы"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Адбылася памылка пад час чытаньня тэмы з файла %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "У файле тэмы %s няма каранёвага элемэнта <metacity_theme>"
@@ -2942,7 +2941,7 @@ msgstr ""
 "Дастасаваньне усталявала няправільнае значэньне парамэтра _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2958,7 +2957,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2997,3 +2996,15 @@ msgid ""
 msgstr ""
 "Уласьцівасьць \"%s\" для акна 0x%lx утрымлівала нерэчаісныя даньні UTF-8 для "
 "элемэнта %d у сьпісе\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Акно \"%s\" ня адказвае.\n"
+#~ "Завершыць працу гэтага дастасаваньня?\n"
+#~ "(Усе незахаваныя дакумэнты будуць згубленыя.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Забіць дастасаваньне"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2002-12-25 18:33+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -98,7 +98,7 @@ msgstr "Maksimér vindue"
 msgid "Unmaximize Window"
 msgstr "Gendan vindue"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,13 +106,13 @@ msgid ""
 msgstr ""
 "Et andet program bruger allerede nøglen %s med modifikatorer %x som binding\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fejl ved start af metacity-dialog for at vise en fejl for en kommando: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
@@ -310,30 +310,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Kan ikke komme i kontakt med vinduet \"%s\".\n"
-"Tving dette program til at afslutte\n"
-"(alle åbne dokumenter mistes)?"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Dræb program"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Titel"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Klasse"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -341,7 +340,7 @@ msgstr ""
 "Disse vinduer understøtter ikke gemning af deres opsætning og skal "
 "genstartes manuelt næste gang du logger på."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2567,12 +2566,12 @@ msgstr "<date> angivet to gange for dette tema"
 msgid "<description> specified twice for this theme"
 msgstr "<description> angivet to gange for dette tema"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Kunne ikke læse tema fra filen %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafilen %s indeholdt ikke et rodelement <metacity_theme>"
@@ -2902,7 +2901,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2918,7 +2917,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2955,6 +2954,18 @@ msgid ""
 msgstr ""
 "Egenskaben %s for vinduet 0x%lx indeholdt ugyldig UTF-8 for element %d i "
 "listen\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Kan ikke komme i kontakt med vinduet \"%s\".\n"
+#~ "Tving dette program til at afslutte\n"
+#~ "(alle åbne dokumenter mistes)?"
+
+#~ msgid "Kill application"
+#~ msgstr "Dræb program"
 
 #~ msgid "Workspace %u"
 #~ msgstr "Arbejdsområde %u"

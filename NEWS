@@ -1,3 +1,22 @@
+2.5.2
+===
+
+ Thanks to David Santiago, Julien Olivier, Anders Carlsson, Rob Adams
+ for fixes in this release.
+
+ - improved wording/UI for some dialogs
+ - while clicking a window button, if you move the mouse outside 
+   the button such that releasing the mouse button won't activate 
+   the window button, visually indicate by "popping out" the button.
+ - fix some valgrind errors
+ - change "show desktop mode" to convert to "everything is minimized
+   mode" if you open a new window while showing desktop, rather 
+   than previous behavior of simply leaving show desktop mode.
+ - fix a trivial memory leak
+ - change "move to workspace N" so it doesn't switch workspaces, 
+   just moves the window.
+ - translation updates
+
 2.5.1
 ===
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.5.x\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2002-01-20 17:12+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -102,7 +102,7 @@ msgstr "Fenster maximieren"
 msgid "Unmaximize Window"
 msgstr "Fenster wiederherstellen"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,14 +111,14 @@ msgstr ""
 "Ein anderes Programm verwendet die Taste %s bereits mit den Umschaltern %x "
 "als Tastenkombination\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Beim Starten eines Metacity-Dialogs, der einen Fehler zu einem Befehl "
 "anzeigen sollte, ist ein Fehler aufgetreten: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Es wurde kein Befehl %d festgelegt.\n"
@@ -318,30 +318,29 @@ msgstr "Umschalter4"
 msgid "Mod5"
 msgstr "Umschalter5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Das Fenster „%s” reagiert nicht.\n"
-"Möchten Sie das Beenden dieser Anwendung erzwingen?\n"
-"(Alle offenen Dokumente gehen dabei verloren)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Anwendung abwürgen"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Titel"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Klasse"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -349,7 +348,7 @@ msgstr ""
 "Diese Fenster unterstützen das Speichern der aktuellen Einstellungen nicht "
 "und müssen bei der nächsten Anmeldung manuell neu gestartet werden."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2622,12 +2621,12 @@ msgstr "<date> wurde für dieses Thema zweimal angegeben"
 msgid "<description> specified twice for this theme"
 msgstr "<description> wurde für dieses Thema zweimal angegeben"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Thema konnte nicht aus Datei %s gelesen werden: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Themendatei %s enthielt kein Wurzelelement <metacity_theme>"
@@ -2978,7 +2977,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3000,7 +2999,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3038,3 +3037,15 @@ msgid ""
 msgstr ""
 "Eigenschaft %s auf Fenster 0x%lx enthielt ungültiges UTF-8 für Objekt %d in "
 "der Liste\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Das Fenster „%s” reagiert nicht.\n"
+#~ "Möchten Sie das Beenden dieser Anwendung erzwingen?\n"
+#~ "(Alle offenen Dokumente gehen dabei verloren)"
+
+#~ msgid "Kill application"
+#~ msgstr "Anwendung abwürgen"

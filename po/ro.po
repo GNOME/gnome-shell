@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.4.0\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-01-30 12:49+0200\n"
 "Last-Translator: Mugurel Tudor <mugurelu@go.ro>\n"
 "Language-Team: română <ro@li.org>\n"
@@ -99,7 +99,7 @@ msgstr "Maximizează fereastra"
 msgid "Unmaximize Window"
 msgstr "Restaurează fereastra"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -107,14 +107,14 @@ msgid ""
 msgstr ""
 "Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Eroare la lansarea metacity-dialog pentru a afişa o eroare despre o comandă: "
 "%s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nici o comandă %d nu a fost definită.\n"
@@ -311,30 +311,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
+#: src/metacity-dialog.c:84
 #, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+msgid "The window \"%s\" is not responding."
 msgstr ""
-"Fereastra \"%s\" nu răspunde.\n"
-"Forţez terminarea aplicaţiei ?\n"
-"(toate documentele deschise vor fi pierdute)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Omoară aplicaţia"
+#: src/metacity-dialog.c:92
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
+
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Titlu"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Clasă"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -342,7 +341,7 @@ msgstr ""
 "Aceste ferestre nu suportă \"salvează setarea curentă\" şi vor trebui "
 "restartate manual urmatoarea dată când vă veţi loga."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2567,12 +2566,12 @@ msgstr "<date> este specificat de două ori pentru această temă"
 msgid "<description> specified twice for this theme"
 msgstr "<description> este specificat de două ori pentru această temă"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Nu am putut citi tema din fişierul %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Fişierul temă %s nu conţine un element rădăcină <metacity_theme> "
@@ -2909,7 +2908,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicaţia a setat un _NET_WM_PID fals %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2925,7 +2924,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2963,6 +2962,18 @@ msgid ""
 msgstr ""
 "Proprietatea %s din fereastra 0x%lx conţine date invalide UTF-8 pentru "
 "elementul %d din listă\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Fereastra \"%s\" nu răspunde.\n"
+#~ "Forţez terminarea aplicaţiei ?\n"
+#~ "(toate documentele deschise vor fi pierdute)"
+
+#~ msgid "Kill application"
+#~ msgstr "Omoară aplicaţia"
 
 #~ msgid "Workspace %u"
 #~ msgstr "Ecranul %u"

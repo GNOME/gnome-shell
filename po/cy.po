@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-13 21:09+0200\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-05-14 00:28+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -50,8 +50,8 @@ msgstr "Gwall wrth ddarllen o broses dangos deialog: %s\n"
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: "
-"%s\n"
+"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: %"
+"s\n"
 
 #: src/delete.c:429
 #, c-format
@@ -71,8 +71,8 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Collwyd y cysylltiad i'r dangosydd '%s'; \n"
-"mwy na thebyg fe derfynnwyd y gweinydd X ne cafodd y rheolydd ffenestri "
-"ei derfynnu ganddoch.\n"
+"mwy na thebyg fe derfynnwyd y gweinydd X ne cafodd y rheolydd ffenestri ei "
+"derfynnu ganddoch.\n"
 
 #: src/errors.c:238
 #, c-format
@@ -99,7 +99,7 @@ msgstr "Ehangu'r Ffenest"
 msgid "Unmaximize Window"
 msgstr "Dadehangu'r Ffenest"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,13 +108,14 @@ msgstr ""
 "Mae rhaglen arall yn defnyddio'r bysell %s gyfa'r addasyddion %x fel "
 "rhwymiad eisioes\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch "
-"gorchymyn: %s\n"
+msgstr ""
+"Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch gorchymyn: "
+"%s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
@@ -139,8 +140,8 @@ msgstr ""
 "metacity %s\n"
 "Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
 "Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
-"Does DIM GWARANT; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD "
-"AR GYFER PWRPAS PENODOL.\n"
+"Does DIM GWARANT; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD AR "
+"GYFER PWRPAS PENODOL.\n"
 
 #: src/main.c:345
 #, c-format
@@ -311,30 +312,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
-#, c-format
+#: src/metacity-dialog.c:84
+#, fuzzy, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "Y gorchymyn sgrîn-lun ffenest"
+
+#: src/metacity-dialog.c:92
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Nid yw'r ffenest \"%s\" yn ymateb.\n"
-"Gorfodu'r rhaglen yma i derfynnu?\n"
-"(Fe gaiff unrhyw ddogfenni ar agor eu colli.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Terfynnu'r rhaglen"
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Teitl"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Dosbarth"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -342,7 +342,7 @@ msgstr ""
 "Dyw'r ffenestri yma ddim yn cynnal \"arbed y gosodiad cyfredol\" a bydd "
 "rhaid eu ail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1562,8 +1562,8 @@ msgstr "Methu dehongle ffeil sesiwn wedi cadw: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn "
-"eisioes"
+msgstr ""
+"gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn eisioes"
 
 #: src/session.c:1234
 #, c-format
@@ -2095,12 +2095,12 @@ msgstr ""
 msgid "<description> specified twice for this theme"
 msgstr ""
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr ""
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr ""
@@ -2406,7 +2406,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Gosododd rhaglen _NET_WM_PID drŵg %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2420,7 +2420,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2453,3 +2453,14 @@ msgstr ""
 "Roedd y priodoledd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
 "eitem %d yn y rhestr\n"
 
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "Nid yw'r ffenest \"%s\" yn ymateb.\n"
+#~ "Gorfodu'r rhaglen yma i derfynnu?\n"
+#~ "(Fe gaiff unrhyw ddogfenni ar agor eu colli.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Terfynnu'r rhaglen"

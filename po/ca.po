@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.1\n"
-"POT-Creation-Date: 2003-05-09 21:24+0200\n"
+"POT-Creation-Date: 2003-05-20 12:32-0400\n"
 "PO-Revision-Date: 2003-05-10 02:08+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -103,7 +103,7 @@ msgstr "Maximitza la finestra"
 msgid "Unmaximize Window"
 msgstr "Desmaximitza la finestra"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -112,14 +112,14 @@ msgstr ""
 "Ja hi ha algun altre programa utilitzant la clau %s amb els modificadors %x "
 "com a vinculació\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "S'ha produït un error en executar el metacity-dialog per a mostrar un error "
 "sobre una ordre: %s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
@@ -128,7 +128,9 @@ msgstr "No s'ha definit cap ordre %d.\n"
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
-msgstr "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOM DE FITXER] [--display=PANTALLA] [--replace] [--version]\n"
+msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOM DE FITXER] "
+"[--display=PANTALLA] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -314,30 +316,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:86
-#, c-format
+#: src/metacity-dialog.c:84
+#, fuzzy, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "L'ordre de captura de finestra"
+
+#: src/metacity-dialog.c:92
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"La finestra «%s» no respon.\n"
-"Voleu sortir d'aquesta aplicació?\n"
-"(Es perdrà qualsevol document obert.)"
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Finalitza l'aplicació"
+#: src/metacity-dialog.c:102
+msgid "_Force Quit"
+msgstr ""
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:196
 msgid "Title"
 msgstr "Títol"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:208
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -345,7 +346,7 @@ msgstr ""
 "Aquestes finestres no suporten «desa la configuració actual» i es tindràn "
 "que reiniciar manualment la pròxima vegada que entreu."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:284
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -444,7 +445,10 @@ msgstr "Retard en milisegons per a l'opció d'alçat automàtic"
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr "Determina si les aplicacions o el sistema poden generar «beeps» audibles; es pot utilitzar en conjunció amb «visual bell» per a permetre «beeps» silenciosos."
+msgstr ""
+"Determina si les aplicacions o el sistema poden generar «beeps» audibles; es "
+"pot utilitzar en conjunció amb «visual bell» per a permetre «beeps» "
+"silenciosos."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -782,7 +786,15 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr "Li diu a Metacity com implementar la indicació visual de que s'ha tocat la campana del sistema o l'indicador de campana d'un altra aplicació. Actualment, hi ha dos valors vàlids, «fullscreen», que causa un flash blanc i negre en tota la pantalla, i «frame_flash», que causa que la barra del títol de l'aplicació que ha enviat el senyal de campana faci un flash. Si l'aplicació que envia la campana és desconeguda (com sol pasar per al «beep del sistema» per defecte), la barra del títol de la finestra que té el focus en eixe moment reb un flash."
+msgstr ""
+"Li diu a Metacity com implementar la indicació visual de que s'ha tocat la "
+"campana del sistema o l'indicador de campana d'un altra aplicació. "
+"Actualment, hi ha dos valors vàlids, «fullscreen», que causa un flash blanc "
+"i negre en tota la pantalla, i «frame_flash», que causa que la barra del "
+"títol de l'aplicació que ha enviat el senyal de campana faci un flash. Si "
+"l'aplicació que envia la campana és desconeguda (com sol pasar per al «beep "
+"del sistema» per defecte), la barra del títol de la finestra que té el focus "
+"en eixe moment reb un flash."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -798,14 +810,20 @@ msgstr ""
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr "La clau /apps/metacity/global_keybindings/run_command_screenshot estableix una vinculació de tecles que fa que s'invoque l'ordre especificada en aquesta configuració."
+msgstr ""
+"La clau /apps/metacity/global_keybindings/run_command_screenshot estableix "
+"una vinculació de tecles que fa que s'invoque l'ordre especificada en "
+"aquesta configuració."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr "La clau /apps/metacity/global_keybindings/run_command_window_screenshot estableix una vinculació de tecles que fa que s'invoque l'ordre especificada en aquesta configuració."
+msgstr ""
+"La clau /apps/metacity/global_keybindings/run_command_window_screenshot "
+"estableix una vinculació de tecles que fa que s'invoque l'ordre especificada "
+"en aquesta configuració."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1601,7 +1619,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "La vinculació de tecles que mostra el diàleg «Executa un programa» del quadre. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+msgstr ""
+"La vinculació de tecles que mostra el diàleg «Executa un programa» del "
+"quadre. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+"també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
+"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+"acció."
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1611,7 +1635,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La vinculació de tecles que invoca la utilitat de captures de pantalla del quadre per a prendre una captura d'una finestra. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+msgstr ""
+"La vinculació de tecles que invoca la utilitat de captures de pantalla del "
+"quadre per a prendre una captura d'una finestra. El format és paregut a «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
+"i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+"«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+"haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1621,7 +1651,13 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "La vinculació de tecles que invoca la utilitat de captures de pantalla del quadre. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+msgstr ""
+"La vinculació de tecles que invoca la utilitat de captures de pantalla del "
+"quadre. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
+"també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
+"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+"acció."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1630,7 +1666,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La vinculació de tecles que mostra el menú principal del quadre. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+msgstr ""
+"La vinculació de tecles que mostra el menú principal del quadre. El format "
+"és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"L'analitzador és prou flexible i permet minúscules i majúscules, i també "
+"abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
+"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:141
 msgid "The name of a workspace."
@@ -1760,7 +1801,10 @@ msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr "Aquesta opció determina els efectes de fer doble clic en la barra de títol. Els valors vàlids actualment són «toggle_shaded», que ombrejarà/desombrejarà la finestra, i «toggle_maximize», que maximitzarà/desmaximitzarà la finestra."
+msgstr ""
+"Aquesta opció determina els efectes de fer doble clic en la barra de títol. "
+"Els valors vàlids actualment són «toggle_shaded», que ombrejarà/desombrejarà "
+"la finestra, i «toggle_maximize», que maximitzarà/desmaximitzarà la finestra."
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
@@ -1783,7 +1827,10 @@ msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr "Activa una indicació visual quan una aplicació o el sistema envia un senyal de «campana» o «beep»; és útil per als durs d'orella i per l'ús en ambients amb soroll, o quan la «campana audible» està inhabilitada."
+msgstr ""
+"Activa una indicació visual quan una aplicació o el sistema envia un senyal "
+"de «campana» o «beep»; és útil per als durs d'orella i per l'ús en ambients "
+"amb soroll, o quan la «campana audible» està inhabilitada."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -2514,12 +2561,12 @@ msgstr "S'ha especificat <date> dues vegades per a aquest tema"
 msgid "<description> specified twice for this theme"
 msgstr "S'ha especificat <description> dues vegades per a aquest tema"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "És impossible de llegir el tema del fitxer %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "El fitxer de tema %s no conté un element arrel <metacity_theme>"
@@ -2859,7 +2906,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'aplicació ha definit un _NET_WM_PID %ld fals\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2875,7 +2922,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2914,3 +2961,15 @@ msgid ""
 msgstr ""
 "La propietat %s en la finestra 0x%lx contenia UTF-8 invàlid per a l'element %"
 "d en la lista\n"
+
+#~ msgid ""
+#~ "The window \"%s\" is not responding.\n"
+#~ "Force this application to exit?\n"
+#~ "(Any open documents will be lost.)"
+#~ msgstr ""
+#~ "La finestra «%s» no respon.\n"
+#~ "Voleu sortir d'aquesta aplicació?\n"
+#~ "(Es perdrà qualsevol document obert.)"
+
+#~ msgid "Kill application"
+#~ msgstr "Finalitza l'aplicació"
