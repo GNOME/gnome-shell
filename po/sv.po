@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-08 01:02+0200\n"
-"PO-Revision-Date: 2003-05-08 01:03+0200\n"
+"POT-Creation-Date: 2003-05-20 17:31+0200\n"
+"PO-Revision-Date: 2003-05-20 17:32+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -101,7 +101,7 @@ msgstr "Maximera fönster"
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:973
+#: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -110,14 +110,14 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/keybindings.c:2402
+#: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %"
 "s\n"
 
-#: src/keybindings.c:2433
+#: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
@@ -317,28 +317,28 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:86
 #, c-format
 msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
+"<b>The window \"%s\" is not responding.</b>\n"
+"\n"
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Fönstret \"%s\" svarar inte.\n"
-"Tvinga detta program att avsluta?\n"
-"(Alla öppna dokument kommer att gå\n"
-"förlorade)."
+"<b>Fönstret \"%s\" svarar inte.</b>\n"
+"\n"
+"Att tvinga detta program att avsluta kommer att göra att alla osparade "
+"ändringar går förlorade."
 
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Döda program"
+#: src/metacity-dialog.c:96
+msgid "_Force Quit"
+msgstr "_Tvinga avslutande"
 
-#: src/metacity-dialog.c:188
+#: src/metacity-dialog.c:190
 msgid "Title"
 msgstr "Titel"
 
-#: src/metacity-dialog.c:200
+#: src/metacity-dialog.c:202
 msgid "Class"
 msgstr "Klass"
 
-#: src/metacity-dialog.c:224
+#: src/metacity-dialog.c:226
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -346,7 +346,7 @@ msgstr ""
 "Dessa fönster stöder inte \"spara nuvarande inställningar\" och kommer att "
 "behöva startas om manuellt nästa gång du loggar in."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:278
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2635,12 +2635,12 @@ msgstr "<date> är angivet två gånger för detta tema"
 msgid "<description> specified twice for this theme"
 msgstr "<description> är angivet två gånger för detta tema"
 
-#: src/theme-parser.c:4347
+#: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
 
-#: src/theme-parser.c:4402
+#: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
@@ -2969,7 +2969,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4540
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2985,7 +2985,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5223
+#: src/window.c:5262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3021,6 +3021,19 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "The window \"%s\" is not responding."
+#~ msgstr "Fönstret \"%s\" svarar inte."
+
+#~ msgid ""
+#~ "Forcing this application to quit will cause you to lose any unsaved "
+#~ "changes."
+#~ msgstr ""
+#~ "Att tvinga detta program att avsluta kommer att göra att alla osparade "
+#~ "ändringar går förlorade."
+
+#~ msgid "Kill application"
+#~ msgstr "Döda program"
 
 #~ msgid ""
 #~ "Tells Metacity how to implement the visual indication that the system "
