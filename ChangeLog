@@ -1,5 +1,10 @@
 2001-10-24  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (meta_frames_expose_event): use bg/fg not base/text
+	for the window title area.
+
+2001-10-24  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_new): support initial
 	on-all-workspaces setting
 

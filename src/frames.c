@@ -1749,14 +1749,14 @@ meta_frames_expose_event            (GtkWidget           *widget,
       clip.width -= frames->props->text_border.left +
         frames->props->text_border.right;
 
-      layout_gc = widget->style->text_gc[GTK_STATE_NORMAL];
+      layout_gc = widget->style->fg_gc[GTK_STATE_NORMAL];
       if (flags & META_FRAME_HAS_FOCUS)
         {
-          layout_gc = widget->style->text_gc[GTK_STATE_SELECTED];
+          layout_gc = widget->style->fg_gc[GTK_STATE_SELECTED];
 
           /* Draw blue background */
           gdk_draw_rectangle (frame->window,
-                              widget->style->base_gc[GTK_STATE_SELECTED],
+                              widget->style->bg_gc[GTK_STATE_SELECTED],
                               TRUE,
                               fgeom.title_rect.x,
                               fgeom.title_rect.y,
