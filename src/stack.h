@@ -52,9 +52,8 @@ typedef enum
   META_LAYER_TOP            = 3,
   META_LAYER_DOCK           = 4,
   META_LAYER_FULLSCREEN     = 5,
-  META_LAYER_SPLASH         = 6,
-  META_LAYER_FOCUSED_WINDOW = 7,
-  META_LAYER_LAST           = 8
+  META_LAYER_FOCUSED_WINDOW = 6,
+  META_LAYER_LAST           = 7
 } MetaStackLayer;
 
 struct _MetaStack

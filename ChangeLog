@@ -1,5 +1,16 @@
 2005-01-27  Elijah Newren  <newren@gmail.com>
 
+	Treat splashscreens same as other windows for stacking.  Fixes
+	#165243.
+
+	* src/stack.h: (MetaStackLayer enum): remove META_LAYER_SPLASH
+	from the list
+
+	* src/stack.c: (get_standalone_layer): remove the special casing
+	of META_WINDOW_SPLASHSCREEN
+
+2005-01-27  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c: (set_net_wm_state): shaded windows should not show
 	up in pagers.  Fixes #165377.
 

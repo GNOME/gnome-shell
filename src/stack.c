@@ -272,10 +272,6 @@ get_standalone_layer (MetaWindow *window)
         layer = META_LAYER_DOCK;
       break;
 
-    case META_WINDOW_SPLASHSCREEN:
-      layer = META_LAYER_SPLASH;
-      break;
-      
     default:       
       meta_window_foreach_transient (window,
                                      is_focused_foreach,
@@ -1495,7 +1491,7 @@ meta_stack_get_positions (MetaStack *stack)
   return tmp;
 }
 
-gint
+static gint
 compare_pointers (gconstpointer a,
                   gconstpointer b)
 {
