@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2001-12-27 04:07+0000\n"
-"PO-Revision-Date: 2001-12-25 18:52+0000\n"
+"POT-Creation-Date: 2002-01-08 23:40+0000\n"
+"PO-Revision-Date: 2002-01-08 23:52+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <none@none.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:155
+#: src/display.c:156
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã Sistema Janelas X '%s'\n"
@@ -34,136 +34,136 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
 
-#: src/frames.c:231
+#: src/frames.c:232
 msgid "Left edge"
 msgstr "Limite esquerdo"
 
-#: src/frames.c:231
+#: src/frames.c:232
 msgid "Left window edge width"
 msgstr "Largura do limite esquerdo da janela"
 
-#: src/frames.c:232
+#: src/frames.c:233
 msgid "Right edge"
 msgstr "Limite direito"
 
-#: src/frames.c:232
+#: src/frames.c:233
 msgid "Right window edge width"
 msgstr "Largura do limite direito da janela"
 
-#: src/frames.c:233
+#: src/frames.c:234
 msgid "Bottom edge"
 msgstr "Limite inferior"
 
-#: src/frames.c:233
+#: src/frames.c:234
 msgid "Bottom window edge height"
 msgstr "Largura do limite inferior da janela"
 
-#: src/frames.c:235
+#: src/frames.c:236
 msgid "Title border"
 msgstr "Margem título"
 
-#: src/frames.c:235
+#: src/frames.c:236
 msgid "Border around title area"
 msgstr "Margem à volta da área de título"
 
-#: src/frames.c:236
+#: src/frames.c:237
 msgid "Text border"
 msgstr "Margem de texto"
 
-#: src/frames.c:236
+#: src/frames.c:237
 msgid "Border around window title text"
 msgstr "Margem à volta do texto do título da janela"
 
-#: src/frames.c:238
+#: src/frames.c:239
 msgid "Spacer padding"
 msgstr "Espaçamento do ajuste"
 
-#: src/frames.c:238
+#: src/frames.c:239
 msgid "Padding on either side of spacer"
 msgstr "Espaçamento em ambos os lados do ajuste"
 
-#: src/frames.c:239
+#: src/frames.c:240
 msgid "Spacer width"
 msgstr "Largura ajuste"
 
-#: src/frames.c:239
+#: src/frames.c:240
 msgid "Width of spacer"
 msgstr "Largura do ajuste"
 
-#: src/frames.c:240
+#: src/frames.c:241
 msgid "Spacer height"
 msgstr "Altura ajuste"
 
-#: src/frames.c:240
+#: src/frames.c:241
 msgid "Height of spacer"
 msgstr "Altura do ajuste"
 
 #. same as right_width left_width by default
-#: src/frames.c:243
+#: src/frames.c:244
 msgid "Right inset"
 msgstr "Entrada direita"
 
-#: src/frames.c:243
+#: src/frames.c:244
 msgid "Distance of buttons from right edge of frame"
 msgstr "Distância dos botões da margem direita da moldura"
 
-#: src/frames.c:244
+#: src/frames.c:245
 msgid "Left inset"
 msgstr "Entrada esquerda"
 
-#: src/frames.c:244
+#: src/frames.c:245
 msgid "Distance of menu button from left edge of frame"
 msgstr "Distância dos botões da margem esquerda da moldura"
 
-#: src/frames.c:246
+#: src/frames.c:247
 msgid "Button width"
 msgstr "Largura botões"
 
-#: src/frames.c:246
+#: src/frames.c:247
 msgid "Width of buttons"
 msgstr "Largura dos botões"
 
-#: src/frames.c:247
+#: src/frames.c:248
 msgid "Button height"
 msgstr "Altura botões"
 
-#: src/frames.c:247
+#: src/frames.c:248
 msgid "Height of buttons"
 msgstr "Altura dos botões"
 
-#: src/frames.c:249
+#: src/frames.c:250
 msgid "Button border"
 msgstr "Margem botões"
 
-#: src/frames.c:249
+#: src/frames.c:250
 msgid "Border around buttons"
 msgstr "Margem à volta dos botões"
 
-#: src/frames.c:250
+#: src/frames.c:251
 msgid "Inner button border"
 msgstr "Margem interna botões"
 
-#: src/frames.c:250
+#: src/frames.c:251
 msgid "Border around the icon inside buttons"
 msgstr "Margem à volta do ícone dentro dos botões"
 
-#: src/frames.c:891
+#: src/frames.c:892
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: src/frames.c:894
+#: src/frames.c:895
 msgid "Window Menu"
 msgstr "Menu Janela"
 
-#: src/frames.c:897
+#: src/frames.c:898
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: src/frames.c:900
+#: src/frames.c:901
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: src/frames.c:903
+#: src/frames.c:904
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
@@ -175,6 +175,11 @@ msgid ""
 msgstr ""
 "Outra aplicação está já a utilizar a chave %s com modificadores %x como "
 "binding\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Falha ao reiniciar: %s\n"
 
 #: src/menu.c:48
 msgid "_Close"
@@ -227,15 +232,50 @@ msgstr "Apenas na área de trabalho %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Mover para área de trabalho %s%d"
 
+#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "Chave GConf \"%s\" está definida para um tipo inválido\n"
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "Chave GConf '%s' está definida para um valor inválido"
+
+#: src/prefs.c:399
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Incapaz de parsear descrição de fonte \"%s\" da chave GConf %s\n"
+
+#: src/prefs.c:436
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr "%d armazenado na chave GConf %s não é um tamanho de fonte válido\n"
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d armazenado na chave GConf %s não é um número razoável de ambientes de "
+"trabalho, o número máximo actual é %d\n"
+
 #: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: src/screen.c:189
+#: src/screen.c:190
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Ecrã %d no monitor '%s' já tem um gestor de janelas\n"
+
+#: src/screen.c:268
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "Incapaz libertar ecrã %d no monitor '%s'\n"
 
 #: src/session.c:760 src/session.c:767
 #, c-format
@@ -279,7 +319,7 @@ msgstr "Atributo %s desconhecido no elemento de <janela>"
 #: src/session.c:1202
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Atributo %s desconhecido %s no elemento de <geometria>"
+msgstr "Atributo %s desconhecido no elemento de <geometria>"
 
 #: src/session.c:1222
 #, c-format
@@ -287,7 +327,7 @@ msgid "Unknown element %s"
 msgstr "Elemento %s desconhecido"
 
 #. someone is on crack
-#: src/window.c:2939
+#: src/window.c:3058
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -295,10 +335,24 @@ msgstr ""
 "desabilitar redimensionamento\n"
 
 #. another cracksmoker
-#: src/window.c:2949
+#: src/window.c:3068
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
 "Janela %s define altura máxima %d menor que altura mínima %d, a desabilitar "
 "redimensionamento\n"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"Janela 0x%lx tem propriedade %s que se esperava ter tipo %s formato %d mas na "
+"verdade tem tipo %s formato %d n_itens %d\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Propriedade %s na janela 0x%lx continha UTF-8 inválido\n"
