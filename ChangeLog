@@ -1,3 +1,16 @@
+2004-10-20  Elijah Newren  <newren@math.utah.edu>
+
+	Patch from Soeren to fix the modifier key breakage introduced by
+	an Xorg change. (fixes #151554)
+
+	* src/keybindings.c: include X11/XKBlib.h if available,
+	(handle_spew_mark): remove this unused function declaration,
+	(end_keyboard_grab): new function, uses XKB if available,
+	(process_tab_grab): use end_keyboard_grab to determine whether to
+	end the grab, (error_on_command): make key a const char *,
+	(process_workspace_switch_grab): use end_keyboard_grab to
+	determine whether to end the grab
+	
 2004-10-19  Anders Carlsson  <andersca@gnome.org>
 
 	* src/frame.c: (meta_window_ensure_frame):

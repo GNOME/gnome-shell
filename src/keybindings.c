@@ -36,6 +36,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef HAVE_XKB
+#include <X11/XKBlib.h>
+#endif
+
 static gboolean all_bindings_disabled = FALSE;
 
 typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
@@ -191,12 +195,6 @@ static void handle_run_terminal       (MetaDisplay    *display,
                                        MetaKeyBinding *binding);
 
 /* debug */
-static void handle_spew_mark          (MetaDisplay *display,
-                                       MetaScreen  *screen,
-                                       MetaWindow  *window,
-                                       XEvent      *event,
-                                       MetaKeyBinding     *binding);
-
 static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             MetaScreen  *screen,
                                             MetaWindow  *window,
@@ -2318,6 +2316,33 @@ process_keyboard_resize_grab (MetaDisplay *display,
 }
 
 static gboolean
+end_keyboard_grab (MetaDisplay *display,
+		   unsigned int keycode)
+{
+#ifdef HAVE_XKB
+  if (display->xkb_base_event_type > 0)
+    {
+      unsigned int primary_modifier;
+      XkbStateRec state;
+  
+      primary_modifier = get_primary_modifier (display, display->grab_mask);
+      
+      XkbGetState (display->xdisplay, XkbUseCoreKbd, &state);
+
+      if (!(primary_modifier & state.mods))
+	return TRUE;
+    }
+  else
+#endif
+    {
+      if (keycode_is_primary_modifier (display, keycode, display->grab_mask))
+	return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 process_tab_grab (MetaDisplay *display,
                   MetaScreen  *screen,
                   XEvent      *event,
@@ -2332,10 +2357,9 @@ process_tab_grab (MetaDisplay *display,
     return FALSE;
 
   g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
-  
+
   if (event->type == KeyRelease &&
-      keycode_is_primary_modifier (display, event->xkey.keycode,
-                                   display->grab_mask))
+      end_keyboard_grab (display, event->xkey.keycode))
     {
       /* We're done, move to the new window. */
       Window target_xwindow;
@@ -2510,7 +2534,7 @@ error_on_generic_command (const char *key,
   argv[3] = "--timestamp";
   argv[4] = timestampbuf;
   argv[5] = "--command-failed-error";
-  argv[6] = key;
+  argv[6] = (char *)key;
   argv[7] = (char*) (command ? command : "");
   argv[8] = (char*) message;
   argv[9] = NULL;
@@ -2552,12 +2576,13 @@ error_on_command (int         command_index,
   g_free (key);
 }
 
+static void
 error_on_terminal_command (const char *command,
                            const char *message,
                            int         screen_number,
                            Time        timestamp)
 {
-  char *key;
+  const char *key;
   
   meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
 
@@ -2689,10 +2714,9 @@ process_workspace_switch_grab (MetaDisplay *display,
     return FALSE;
 
   g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
-  
+
   if (event->type == KeyRelease &&
-      keycode_is_primary_modifier (display, event->xkey.keycode,
-                                   display->grab_mask))
+      end_keyboard_grab (display, event->xkey.keycode))
     {
       /* We're done, move to the new workspace. */
       MetaWorkspace *target_workspace;
