@@ -195,6 +195,12 @@ void     meta_display_grab_window_buttons    (MetaDisplay *display,
 void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                               Window       xwindow);
 
+void meta_display_grab_unfocused_window_buttons   (MetaDisplay *display,
+                                                   Window       xwindow);
+void meta_display_ungrab_unfocused_window_buttons (MetaDisplay *display,
+                                                   Window       xwindow);
+
+
 /* make a request to ensure the event serial has changed */
 void     meta_display_increment_event_serial (MetaDisplay *display);
 

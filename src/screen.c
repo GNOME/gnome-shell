@@ -38,6 +38,7 @@ static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
 static void update_num_workspaces  (MetaScreen *screen);
+static void update_focus_mode      (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
@@ -316,6 +317,10 @@ prefs_changed_callback (MetaPreference pref,
     {
       update_num_workspaces (screen);
     }
+  else if (pref == META_PREF_FOCUS_MODE)
+    {
+      update_focus_mode (screen);
+    }
 }
 
 
@@ -404,7 +409,7 @@ meta_screen_foreach_window (MetaScreen *screen,
             (* func) (screen, window, data);
         }
       
-      tmp = tmp->data;
+      tmp = tmp->next;
     }
   g_slist_free (winlist);
 }
@@ -538,6 +543,20 @@ update_num_workspaces (MetaScreen *screen)
       meta_workspace_new (screen);
       ++i;
     }
+}
+
+static void
+update_grabs_func (MetaScreen *screen, MetaWindow *window,
+                   gpointer user_data)
+{
+  meta_window_update_unfocused_button_grabs (window);
+}
+
+
+static void
+update_focus_mode (MetaScreen *screen)
+{
+  meta_screen_foreach_window (screen, update_grabs_func, NULL);
 }
 
 void

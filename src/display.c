@@ -704,11 +704,13 @@ event_callback (XEvent   *event,
           if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
             grab_mask |= ControlMask;
           
-          if ((event->xbutton.state & grab_mask) == 0)
+          if (!window->unfocused_buttons_grabbed &&
+              (event->xbutton.state & grab_mask) == 0)
             {
               ; /* nothing, not getting event from our button grabs,
                  * rather from a client that just let button presses
-                 * pass through to our frame
+                 * pass through to our frame, and we don't have
+                 * the click-to-focus first-click-to-raise grab
                  */
             }
           else if (event->xbutton.button == 1)
@@ -716,7 +718,11 @@ event_callback (XEvent   *event,
               meta_window_raise (window);
               meta_window_focus (window, event->xbutton.time);
 
-              begin_move = TRUE;
+              /* you can move on alt-click but not on
+               * first-unmodified-click
+               */
+              if (!window->unfocused_buttons_grabbed)
+                begin_move = TRUE;
             }
           else if (event->xbutton.button == 2)
             {
@@ -1735,6 +1741,50 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
       
       ++i;
     }
+}
+
+/* Grab buttons we only grab while unfocused in click-to-focus mode */
+void
+meta_display_grab_unfocused_window_buttons (MetaDisplay *display,
+                                            Window       xwindow)
+{
+  /* Grab button 1 for activating unfocused windows */
+  meta_verbose ("Grabbing unfocused window buttons for 0x%lx\n", xwindow);
+
+  /* FIXME If we ignored errors here instead of spewing, we could
+   * put one big error trap around the loop and avoid a bunch of
+   * XSync()
+   */
+  
+  {
+    int i = 1;
+    while (i < 2)
+      {
+        meta_change_button_grab (display,
+                                 xwindow,
+                                 TRUE, i, 0);
+        
+        ++i;
+      }
+  }
+}
+
+void
+meta_display_ungrab_unfocused_window_buttons (MetaDisplay *display,
+                                              Window       xwindow)
+{
+  meta_verbose ("Ungrabbing unfocused window buttons for 0x%lx\n", xwindow);
+
+  {
+    int i = 1;
+    while (i < 2)
+      {
+        meta_change_button_grab (display, xwindow,
+                                 FALSE, i, 0);
+        
+        ++i;
+      }
+  }
 }
 
 void

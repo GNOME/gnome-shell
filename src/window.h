@@ -173,6 +173,9 @@ struct _MetaWindow
   guint keys_grabbed : 1;     /* normal keybindings grabbed */
   guint grab_on_frame : 1;    /* grabs are on the frame */
   guint all_keys_grabbed : 1; /* AnyKey grabbed */
+
+  /* Used by display.c */
+  guint unfocused_buttons_grabbed : 1; /* have the unmodified buttons grabbed */
   
   /* Set if the reason for unmanaging the window is that
    * it was withdrawn
@@ -303,6 +306,7 @@ void        meta_window_focus              (MetaWindow  *window,
 void        meta_window_raise              (MetaWindow  *window);
 void        meta_window_lower              (MetaWindow  *window);
 
+void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 
 /* Sends a client message */
 void meta_window_send_icccm_message (MetaWindow *window,

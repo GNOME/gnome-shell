@@ -1,5 +1,24 @@
 2001-12-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (meta_screen_foreach_window): fix broken 
+	"tmp = tmp->data"
+
+	Implement do-not-pass-thru-click for click-to-focus mode.
+	
+	* src/screen.c (update_focus_mode): when focus mode changes,
+	update all the window grabs
+
+	* src/display.c (meta_display_grab_unfocused_window_buttons):
+	implement grabbing button 1 on client area of unfocused
+	click-to-focus windows
+
+	* src/window.c (meta_window_update_unfocused_button_grabs): update
+	whether we're grabbing unmodified button 1 on client area
+	according to focus state and focus mode
+	(meta_window_new): start out with proper grab state
+	
+2001-12-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/menu.c (meta_window_menu_new): don't do mnemonics for
 	workspaces above 9
 
