@@ -91,7 +91,8 @@ libmetacity_private_la_SOURCES=	\
 	theme-parser.c		\
 	theme-parser.h		\
 	util.c			\
-	util.h	
+	util.h			\
+	common.h
 
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
