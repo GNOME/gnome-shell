@@ -2050,7 +2050,8 @@ meta_window_update_unfocused_button_grabs (MetaWindow *window)
            * do is focus these windows, but pass thru click. What we
            * do now is ignore clicks on them.
            */
-          if (window->type != META_WINDOW_DOCK &&
+          if (!window->has_focus &&
+              window->type != META_WINDOW_DOCK &&
               window->type != META_WINDOW_DESKTOP)
             {
               /* Not focused so grab */

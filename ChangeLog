@@ -1,5 +1,10 @@
 2001-12-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_update_unfocused_button_grabs): oops, 
+	unbreak this _again_ - reported by Josh Barrow
+
+2001-12-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_update_unfocused_button_grabs): don't 
 	allow grab on docks/desktop for now; needs fixing later to 
 	do the grab, but pass thru click, so we can focus those windows.
