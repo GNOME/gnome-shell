@@ -814,7 +814,7 @@ reload_wm_hints (MetaWindow    *window,
 
 
 
-#define N_HOOKS 22
+#define N_HOOKS 23
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -910,6 +910,11 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = display->atom_net_wm_strut;
+  hooks[i].init_func = NULL;
+  hooks[i].reload_func = NULL;
+  ++i;
+
+  hooks[i].property = display->atom_net_wm_strut_partial;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;

@@ -1,3 +1,68 @@
+2003-06-10  Rob Adams  <robadams@ucla.edu>
+
+	Update constraints code to support the new _NET_WM_STRUT_PARTIAL
+	EWMH draft specification.  See #86682.  Also, fix a bug involving
+	work area invalidation on metacity startup.  Fix for #108497.
+	Finally, some minor fixes for full screen windows.
+
+	* src/window.h: Add new MetaStruts structure to store strut rects
+	for a window.  Remove has_struts and do_not_cover flag, and
+	support new MetaStruts instead of the four ints.
+	
+	* src/window.c (meta_window_new): change initialization to work
+	with new struts.  Also, move meta_window_update_struts call to
+	after the workspaces are initialized to fix #108497.  Remove
+	do_not_cover and related code.
+	(process_property_notify): add strut_partial
+	(update_struts): change function name to meta_window_update_struts
+	and expose in external MetaWindow API.  Support partial width
+	struts and the new strut rects.
+
+	* src/workspace.h: add new GSLists containing pointers to all
+	relevant struts for this workspace.
+
+	* src/workspace.c (meta_workspace_new): initialize the list of
+	strut rects for this workspace.
+	(meta_workspace_free): free the strut rect lists
+	(ensure_work_areas_validated): support new struts and new strut
+	rect lists.  Unleash the per-xinerama work areas.
+
+	* src/constraints.c (get_outermost_onscreen_positions): Use the
+	current window position along with the new per-workspace strut
+	rects to compute the constraints that apply to a particular
+	window.
+	(constraint_hint_applies_func): don't do hints constraints on
+	fullscreen windows
+	(update_position_limits): for maximized windows use the work areas
+	to set the position limits; for other windows rely on the struts
+	constraints to be computed later in
+	get_outermost_onscreen_positions
+	(meta_window_constrain): don't apply aspect ratio hints to full
+	screen windows
+
+	* src/display.c (meta_display_open): add _NET_WM_STRUT_PARTIAL atom
+	(meta_rectangle_equal): new helper function for MetaRectangles
+	(event_queue_callback): #ifndef out if USE_GDK_DISPLAY not set to
+	avoid compiler warning
+
+	* src/display.h: add atom_net_wm_strut_partial, and add
+	meta_rectangle_equal.
+
+	* src/screen.c (meta_screen_rect_intersects_xinerama): change
+	_window_intersects_ to _rect_intersects_ which is more useful now.
+	(meta_screen_resize_func): update struts on windows with struts
+	since struts are relative to the screen size, and this function is
+	called when the screen size updates.
+
+	* src/screen.h (meta_screen_rect_intersects_xinerama): change
+	_window_intersects_ to _rect_intersects_ which is more useful now.
+
+	* src/window-props.c (meta_display_init_window_prop_hooks): add
+	hook for strut_partial
+
+	* src/tools/metacity-window-demo.c: Support partial-width struts
+	on the dock window tests for metacity testing purposes.
+ 
 2003-06-22  Samúel Jón Gunnarsson  <sammi@techattack.nu>
 
 	* configure.in: Added "is" to ALL_LINGUAS

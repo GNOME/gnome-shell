@@ -48,6 +48,11 @@ meta_workspace_new (MetaScreen *screen)
   workspace->all_work_areas.y = 0;
   workspace->all_work_areas.width = 0;
   workspace->all_work_areas.height = 0;
+
+  workspace->left_struts = NULL;
+  workspace->right_struts = NULL;
+  workspace->top_struts = NULL;
+  workspace->bottom_struts = NULL;
   
   return workspace;
 }
@@ -86,6 +91,12 @@ meta_workspace_free (MetaWorkspace *workspace)
     g_list_remove (workspace->screen->workspaces, workspace);
   
   g_free (workspace->work_areas);
+
+  g_slist_free (workspace->left_struts);
+  g_slist_free (workspace->right_struts);
+  g_slist_free (workspace->top_struts);
+  g_slist_free (workspace->bottom_struts);
+
   g_free (workspace);
 
   /* don't bother to reset names, pagers can just ignore
@@ -105,7 +116,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
-  if (window->has_struts)
+  if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
                   "Invalidating work area of workspace %d since we're adding window %s to it\n",
@@ -132,7 +143,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   
   meta_window_queue_calc_showing (window);
 
-  if (window->has_struts)
+  if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
                   "Invalidating work area of workspace %d since we're removing window %s from it\n",
@@ -375,6 +386,15 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   if (!workspace->work_areas_invalid)
     return;
       
+  g_slist_free (workspace->left_struts);
+  workspace->left_struts = NULL;
+  g_slist_free (workspace->right_struts);
+  workspace->right_struts = NULL;
+  g_slist_free (workspace->top_struts);
+  workspace->top_struts = NULL;
+  g_slist_free (workspace->bottom_struts);
+  workspace->bottom_struts = NULL;
+
   windows = meta_workspace_list_windows (workspace);
 
   g_free (workspace->work_areas);
@@ -394,33 +414,76 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
         {
           MetaWindow *w = tmp->data;
 
-          if (w->has_struts && 
-              (meta_screen_window_intersects_xinerama (w->screen, w, i)))
+          if (w->struts)
             {
               meta_topic (META_DEBUG_WORKAREA,
                           "Merging win %s with %d %d %d %d "
                           "with %d %d %d %d\n",
                           w->desc,
-                          w->left_strut, w->right_strut, 
-                          w->top_strut, w->bottom_strut,
+                          w->struts->left.width, w->struts->right.width, 
+                          w->struts->top.height, w->struts->bottom.height,
                           left_strut, right_strut, 
                           top_strut, bottom_strut);
 
-              left_strut = MAX (left_strut, 
-                                w->left_strut - 
-                                workspace->screen->xinerama_infos[i].x_origin);
-              all_left_strut = MAX (all_left_strut, w->left_strut);
+              if ((i == 0) && (w->struts->left.width > 0))
+                {
+                  workspace->left_struts = g_slist_prepend (workspace->left_struts,
+                                                            &w->struts->left);
+                }
 
-              right_strut = MAX (right_strut, w->right_strut);
-              all_right_strut = MAX (all_right_strut, w->right_strut);
+              if (meta_screen_rect_intersects_xinerama (w->screen,
+                                                        &w->struts->left,
+                                                        i))
+                {
+                  left_strut = MAX (left_strut, 
+                                    w->struts->left.width - 
+                                    workspace->screen->xinerama_infos[i].x_origin);
+                  all_left_strut = MAX (all_left_strut, w->struts->left.width);
+                }
 
-              top_strut = MAX (top_strut,
-                               w->top_strut - 
-                               workspace->screen->xinerama_infos[i].y_origin);
-              all_top_strut = MAX (all_top_strut, w->top_strut);
+              if ((i == 0) && (w->struts->right.width > 0))
+                {
+                  workspace->right_struts = g_slist_prepend (workspace->right_struts,
+							     &w->struts->right);
+                }
 
-              bottom_strut = MAX (bottom_strut, w->bottom_strut);
-              all_bottom_strut = MAX (all_bottom_strut, w->bottom_strut);
+              if (meta_screen_rect_intersects_xinerama (w->screen,
+                                                        &w->struts->right,
+                                                        i))
+                {
+                  right_strut = MAX (right_strut, w->struts->right.width);
+                  all_right_strut = MAX (all_right_strut, w->struts->right.width);
+                }
+
+              if ((i == 0) && (w->struts->top.height > 0))
+                {
+                  workspace->top_struts = g_slist_prepend (workspace->top_struts,
+                                                           &w->struts->top);
+                }
+
+              if (meta_screen_rect_intersects_xinerama (w->screen,
+                                                        &w->struts->top,
+                                                        i))
+                {
+                  top_strut = MAX (top_strut,
+                                   w->struts->top.height - 
+                                   workspace->screen->xinerama_infos[i].y_origin);
+                  all_top_strut = MAX (all_top_strut, w->struts->top.height);
+                }
+
+              if ((i == 0) && (w->struts->bottom.height > 0))
+                {
+                  workspace->bottom_struts = g_slist_prepend (workspace->bottom_struts,
+                                                              &w->struts->bottom);
+                }
+
+              if (meta_screen_rect_intersects_xinerama (w->screen,
+                                                        &w->struts->bottom,
+                                                        i))
+                {
+                  bottom_strut = MAX (bottom_strut, w->struts->bottom.height);
+                  all_bottom_strut = MAX (all_bottom_strut, w->struts->bottom.height);
+                }
             }
           
           tmp = tmp->next;
@@ -451,10 +514,6 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
           bottom_strut = top_strut;
         }
 
-      /* FIXME even if we take struts to apply only to xineramas
-       * that the strut-specifying window overlaps, is it right
-       * to make the struts *relative to* the xinerama?
-       */
       workspace->work_areas[i].x = 
         left_strut + workspace->screen->xinerama_infos[i].x_origin;
       workspace->work_areas[i].y = top_strut + 
@@ -467,7 +526,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
         top_strut - bottom_strut;
 
       meta_topic (META_DEBUG_WORKAREA,
-                  "Computed [unused] work area for workspace %d "
+                  "Computed work area for workspace %d "
                   "xinerama %d: %d,%d %d x %d\n",
                   meta_workspace_index (workspace),
                   i,
@@ -507,19 +566,6 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
     workspace->screen->width - all_left_strut - all_right_strut;
   workspace->all_work_areas.height = 
     workspace->screen->height - all_top_strut - all_bottom_strut;
-
-  /* FIXME Here we disable all the per-xinerama work done earlier,
-   * because we don't have a spec for how it should work yet.
-   * If we do rely on which windows overlap what, work areas
-   * will need to be invalidated when we change a strut-setting
-   * window's size/position in move_resize_internal
-   */
-  i = 0;
-  while (i < workspace->screen->n_xinerama_infos)
-    {
-      workspace->work_areas[i] = workspace->all_work_areas;
-      ++i;
-    }
   
   workspace->work_areas_invalid = FALSE;
 

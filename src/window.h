@@ -32,6 +32,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef struct _MetaGroup MetaGroup;
+typedef struct _MetaStruts MetaStruts;
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
                                            void       *data);
@@ -48,6 +49,15 @@ typedef enum
   META_WINDOW_UTILITY,
   META_WINDOW_SPLASHSCREEN
 } MetaWindowType;
+
+struct _MetaStruts
+{
+  /* struts */
+  MetaRectangle left;
+  MetaRectangle right;
+  MetaRectangle top;
+  MetaRectangle bottom;
+};
 
 struct _MetaWindow
 {
@@ -211,8 +221,8 @@ struct _MetaWindow
    */
   guint calc_placement : 1;
 
-  /* Has nonzero struts */
-  guint has_struts : 1; 
+  /* Note: can be NULL */
+  MetaStruts *struts;
 
   /* Transient parent is a root window */
   guint transient_parent_is_root_window : 1;
@@ -271,12 +281,6 @@ struct _MetaWindow
   /* x/y/w/h here get filled with ConfigureRequest values */
   XSizeHints size_hints;
 
-  /* struts */
-  int left_strut;
-  int right_strut;
-  int top_strut;
-  int bottom_strut;
-  
   /* Managed by stack.c */
   MetaStackLayer layer;
   int stack_position; /* see comment in stack.h */
@@ -355,6 +359,8 @@ void        meta_window_fill_vertical       (MetaWindow  *window);
  */
 void        meta_window_queue_move_resize  (MetaWindow  *window);
 
+void        meta_window_update_struts      (MetaWindow  *window);
+
 /* this gets root coords */
 void        meta_window_get_position       (MetaWindow  *window,
                                             int         *x,
@@ -423,6 +429,8 @@ void meta_window_set_gravity (MetaWindow *window,
 
 void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                              XEvent     *event);
+
+GList* meta_window_get_workspaces (MetaWindow *window);
 
 gboolean meta_window_visible_on_workspace (MetaWindow    *window,
                                            MetaWorkspace *workspace);

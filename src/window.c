@@ -64,7 +64,6 @@ static void     update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
-static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
@@ -76,8 +75,6 @@ static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
-
-static GList*   meta_window_get_workspaces (MetaWindow    *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
 
@@ -479,11 +476,7 @@ meta_window_new (MetaDisplay *display,
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
 
-  window->has_struts = FALSE;
-  window->left_strut = 0;
-  window->right_strut = 0;
-  window->top_strut = 0;
-  window->bottom_strut = 0;
+  window->struts = NULL;
 
   window->using_net_wm_name = FALSE;
   window->using_net_wm_icon_name = FALSE;
@@ -516,8 +509,6 @@ meta_window_new (MetaDisplay *display,
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
-  
-  update_struts (window);
 
   update_net_wm_state (window);
   
@@ -651,6 +642,8 @@ meta_window_new (MetaDisplay *display,
 
   /* for the various on_all_workspaces = TRUE possible above */
   meta_window_set_current_workspace_hint (window);
+  
+  meta_window_update_struts (window);
 
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
@@ -907,8 +900,11 @@ meta_window_free (MetaWindow  *window)
                   window->desc);
     }
 
-  if (window->has_struts)
+  if (window->struts)
     {
+      g_free (window->struts);
+      window->struts = NULL;
+
       meta_topic (META_DEBUG_WORKAREA,
                   "Unmanaging window %s which has struts, so invalidating work areas\n",
                   window->desc);
@@ -1679,7 +1675,7 @@ meta_window_show (MetaWindow *window)
     {
       set_net_wm_state (window);
       
-      if (window->has_struts)
+      if (window->struts)
         {
           meta_topic (META_DEBUG_WORKAREA,
                       "Mapped window %s with struts, so invalidating work areas\n",
@@ -1732,7 +1728,7 @@ meta_window_hide (MetaWindow *window)
     {
       set_net_wm_state (window);
       
-      if (window->has_struts)
+      if (window->struts)
         {
           meta_topic (META_DEBUG_WORKAREA,
                       "Unmapped window %s with struts, so invalidating work areas\n",
@@ -2307,7 +2303,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
                          meta_y_direction_from_gravity (resize_gravity),
                          y_delta,
                          &new_rect);
-  
+
   w = new_rect.width;
   h = new_rect.height;
   root_x_nw = new_rect.x;
@@ -4118,10 +4114,11 @@ process_property_notify (MetaWindow     *window,
                                         event->atom);
       meta_window_queue_update_icon (window);
     }
-  else if (event->atom == window->display->atom_net_wm_strut)
+  else if ((event->atom == window->display->atom_net_wm_strut) ||
+	   (event->atom == window->display->atom_net_wm_strut_partial))
     {
       meta_verbose ("Property notify on %s for _NET_WM_STRUT\n", window->desc);
-      update_struts (window);
+      meta_window_update_struts (window);
     }
   else if (event->atom == window->display->atom_net_startup_id)
     {
@@ -4788,7 +4785,7 @@ meta_window_queue_update_icon (MetaWindow *window)
   update_icon_pending = g_slist_prepend (update_icon_pending, window);
 }
 
-static GList*
+GList*
 meta_window_get_workspaces (MetaWindow *window)
 {
   if (window->on_all_workspaces)
@@ -4811,68 +4808,102 @@ invalidate_work_areas (MetaWindow *window)
     }
 }
 
-static void
-update_struts (MetaWindow *window)
+void
+meta_window_update_struts (MetaWindow *window)
 {
   gulong *struts = NULL;
   int nitems;
   gboolean old_has_struts;
-  int old_left;
-  int old_right;
-  int old_top;
-  int old_bottom;
+  gboolean new_has_struts;
+
+  MetaRectangle old_left;
+  MetaRectangle old_right;
+  MetaRectangle old_top;
+  MetaRectangle old_bottom;
+
+  MetaRectangle new_left;
+  MetaRectangle new_right;
+  MetaRectangle new_top;
+  MetaRectangle new_bottom;
   
   meta_verbose ("Updating struts for %s\n", window->desc);
   
-  old_has_struts = window->has_struts;
-  old_left = window->left_strut;
-  old_right = window->right_strut;
-  old_top = window->top_strut;
-  old_bottom = window->bottom_strut;  
-  
-  window->has_struts = FALSE;
-  window->left_strut = 0;
-  window->right_strut = 0;
-  window->top_strut = 0;
-  window->bottom_strut = 0;
+  if (window->struts)
+    {
+      old_has_struts = TRUE;
+      old_left = window->struts->left;
+      old_right = window->struts->right;
+      old_top = window->struts->top;
+      old_bottom = window->struts->bottom;
+    }
+  else
+    {
+      old_has_struts = FALSE;
+    }
+
+  new_has_struts = FALSE;
+  new_left.width = 0;
+  new_left.x = 0;
+  new_left.y = 0;
+  new_left.height = window->screen->height;
+
+  new_right.width = 0;
+  new_right.x = window->screen->width;
+  new_right.y = 0;
+  new_right.height = window->screen->height;
+
+  new_top.height = 0;
+  new_top.y = 0;
+  new_top.x = 0;
+  new_top.width = window->screen->width;
+
+  new_bottom.height = 0;
+  new_bottom.y = window->screen->height;
+  new_bottom.x = 0;
+  new_bottom.width = window->screen->width;
   
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom_net_wm_strut,
+                                   window->display->atom_net_wm_strut_partial,
                                    &struts, &nitems))
     {
-      if (nitems != 4)
+      if (nitems != 12)
         {
-          meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
+          meta_verbose ("_NET_WM_STRUT_PARTIAL on %s has %d values instead of 12\n",
                         window->desc, nitems);
-          meta_XFree (struts);
         }
-      
-      window->has_struts = TRUE;
-      window->left_strut = struts[0];
-      window->right_strut = struts[1];
-      window->top_strut = struts[2];
-      window->bottom_strut = struts[3];
-
-      meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
-                    window->left_strut, window->right_strut,
-                    window->top_strut, window->bottom_strut,
-                    window->desc);
-      
-      if (window->left_strut < 0)
-        window->left_strut = 0;
-      if (window->right_strut < 0)
-        window->right_strut = 0;
-      if (window->top_strut < 0)
-        window->top_strut = 0;
-      if (window->bottom_strut < 0)
-        window->bottom_strut = 0;
-      
-      meta_verbose ("Using _NET_WM_STRUT struts %d %d %d %d for window %s\n",
-                    window->left_strut, window->right_strut,
-                    window->top_strut, window->bottom_strut,
-                    window->desc);
-      
+      else
+        {
+          new_has_struts = TRUE;
+          new_left.width = MIN ((int)struts[0], 
+                                window->screen->width/2 - 75);
+          new_right.width = MIN ((int)struts[1], 
+                                 window->screen->width/2 - 75);
+          new_top.height = MIN ((int)struts[2], 
+                                window->screen->height/2 - 75);
+          new_bottom.height = MIN ((int)struts[3], 
+                                   window->screen->height/2 - 75);
+          new_right.x = window->screen->width - 
+            new_right.width;
+          new_bottom.y = window->screen->height - 
+            new_bottom.height;
+          new_left.y = struts[4];
+          new_left.height = struts[5] - new_left.y;
+          new_right.y = struts[6];
+          new_right.height = struts[7] - new_right.y;
+          new_top.x = struts[8];
+          new_top.width = struts[9] - new_top.x;
+          new_bottom.x = struts[10];
+          new_bottom.width = struts[11] - new_bottom.x;
+          
+          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %d %d %d %d for window %s\n",
+                        new_left.width,
+                        new_right.width,
+                        new_top.height,
+                        new_bottom.height,
+                        window->desc);
+          
+        }
       meta_XFree (struts);
     }
   else
@@ -4881,12 +4912,75 @@ update_struts (MetaWindow *window)
                     window->desc);
     }
 
-  if (old_has_struts != window->has_struts ||
-      old_left != window->left_strut ||
-      old_right != window->right_strut ||
-      old_top != window->top_strut ||
-      old_bottom != window->bottom_strut)
-    {  
+  if (!new_has_struts)
+    {
+      if (meta_prop_get_cardinal_list (window->display,
+                                       window->xwindow,
+                                       window->display->atom_net_wm_strut,
+                                       &struts, &nitems))
+        {
+          if (nitems != 4)
+            {
+              meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
+                            window->desc, nitems);
+            }
+          else
+            {
+              new_has_struts = TRUE;
+              new_left.width = MIN ((int)struts[0], 
+                                    window->screen->width/2 - 75);
+              new_right.width = MIN ((int)struts[1], 
+                                     window->screen->width/2 - 75);
+              new_top.height = MIN ((int)struts[2], 
+                                    window->screen->height/2 - 75);
+              new_bottom.height = MIN ((int)struts[3], 
+                                       window->screen->height/2 - 75);
+              new_left.x = 0;
+              new_right.x = window->screen->width - 
+                new_right.width;
+              new_top.y = 0;
+              new_bottom.y = window->screen->height -
+                new_bottom.height;
+          
+              meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
+                            new_left.width,
+                            new_right.width,
+                            new_top.height,
+                            new_bottom.height,
+                            window->desc);
+              
+            }
+          meta_XFree (struts);
+        }
+      else
+        {
+          meta_verbose ("No _NET_WM_STRUT property for %s\n",
+                        window->desc);
+        }
+    }
+ 
+  if (old_has_struts != new_has_struts ||
+      (new_has_struts && old_has_struts &&
+       (!meta_rectangle_equal(&old_left, &new_left) ||
+        !meta_rectangle_equal(&old_right, &new_right) ||
+        !meta_rectangle_equal(&old_top, &new_top) ||
+        !meta_rectangle_equal(&old_bottom, &new_bottom))))
+    {
+      if (new_has_struts)
+        {
+          if (!window->struts)
+            window->struts = g_new (MetaStruts, 1);
+              
+          window->struts->left = new_left;
+          window->struts->right = new_right;
+          window->struts->top = new_top;
+          window->struts->bottom = new_bottom;
+        }
+      else
+        {
+          g_free (window->struts);
+          window->struts = NULL;
+        }
       meta_topic (META_DEBUG_WORKAREA,
                   "Invalidating work areas of window %s due to struts update\n",
                   window->desc);

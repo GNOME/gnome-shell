@@ -42,8 +42,11 @@ struct _MetaWorkspace
   GList *windows;
 
   MetaRectangle all_work_areas;
-  
   MetaRectangle *work_areas;
+  GSList *left_struts;
+  GSList *right_struts;
+  GSList *top_struts;
+  GSList *bottom_struts;
   guint work_areas_invalid : 1;
 };
 

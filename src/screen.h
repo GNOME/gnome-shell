@@ -148,9 +148,9 @@ const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_rect   (MetaScreen   
 const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen    *screen,
                                                                    MetaWindow    *window);
 
-gboolean      meta_screen_window_intersects_xinerama (MetaScreen *screen, 
-                                                      MetaWindow *window,
-                                                      int         which_xinerama);
+gboolean      meta_screen_rect_intersects_xinerama (MetaScreen    *screen, 
+                                                    MetaRectangle *window,
+                                                    int            which_xinerama);
 
 const MetaXineramaScreenInfo* meta_screen_get_xinerama_neighbor (MetaScreen *screen,
                                                                  int         which_xinerama,

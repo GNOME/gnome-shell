@@ -33,19 +33,27 @@ set_gdk_window_struts (GdkWindow *window,
                        int        top,
                        int        bottom)
 {
-  long vals[4];
+  long vals[12];
   
   vals[0] = left;
   vals[1] = right;
   vals[2] = top;
   vals[3] = bottom;
-  
+  vals[4] = 000;
+  vals[5] = 400;
+  vals[6] = 200;
+  vals[7] = 600;
+  vals[8] = 76;
+  vals[9] = 676;
+  vals[10] = 200;
+  vals[11] = 800;
+
   XChangeProperty (GDK_WINDOW_XDISPLAY (window),
                    GDK_WINDOW_XWINDOW (window),
                    XInternAtom (GDK_WINDOW_XDISPLAY (window),
-                                "_NET_WM_STRUT", False),
+                                "_NET_WM_STRUT_PARTIAL", False),
                    XA_CARDINAL, 32, PropModeReplace,
-                   (guchar *)vals, 4);
+                   (guchar *)vals, 12);
 }
 
 static void
@@ -441,6 +449,7 @@ border_only_cb (gpointer             callback_data,
   gtk_widget_show_all (window);
 }
 
+#if 0
 static void
 changing_icon_cb (gpointer             callback_data,
                   guint                callback_action,
@@ -462,6 +471,7 @@ changing_icon_cb (gpointer             callback_data,
   
   gtk_widget_show_all (window);
 }
+#endif
 
 static gboolean
 focus_in_event_cb (GtkWidget *window,
@@ -473,6 +483,8 @@ focus_in_event_cb (GtkWidget *window,
   widget = GTK_WIDGET (data);
 
   gtk_label_set_text (GTK_LABEL (widget), "Has focus");
+
+  return TRUE;
 }
 
 
@@ -486,6 +498,8 @@ focus_out_event_cb (GtkWidget *window,
   widget = GTK_WIDGET (data);
 
   gtk_label_set_text (GTK_LABEL (widget), "Not focused");
+  
+  return TRUE;
 }
 
 static GtkWidget*
@@ -583,26 +597,26 @@ make_dock (int type)
   switch (type)
     {
     case DOCK_LEFT:
-      gtk_widget_set_size_request (window, DOCK_SIZE, gdk_screen_height ());
-      gtk_window_move (GTK_WINDOW (window), 0, 0);
+      gtk_widget_set_size_request (window, DOCK_SIZE, 400);
+      gtk_window_move (GTK_WINDOW (window), 0, 000);
       set_gtk_window_struts (window, DOCK_SIZE, 0, 0, 0);
       gtk_window_set_title (GTK_WINDOW (window), "LeftDock");
       break;
     case DOCK_RIGHT:      
-      gtk_widget_set_size_request (window, DOCK_SIZE, gdk_screen_height ());
-      gtk_window_move (GTK_WINDOW (window), gdk_screen_width () - DOCK_SIZE, 0);
+      gtk_widget_set_size_request (window, DOCK_SIZE, 400);
+      gtk_window_move (GTK_WINDOW (window), gdk_screen_width () - DOCK_SIZE, 200);
       set_gtk_window_struts (window, 0, DOCK_SIZE, 0, 0);
       gtk_window_set_title (GTK_WINDOW (window), "RightDock");
       break;
     case DOCK_TOP:
-      gtk_widget_set_size_request (window, gdk_screen_width (), DOCK_SIZE);
-      gtk_window_move (GTK_WINDOW (window), 0, 0);
+      gtk_widget_set_size_request (window, 600, DOCK_SIZE);
+      gtk_window_move (GTK_WINDOW (window), 76, 0);
       set_gtk_window_struts (window, 0, 0, DOCK_SIZE, 0);
       gtk_window_set_title (GTK_WINDOW (window), "TopDock");
       break;
     case DOCK_BOTTOM:
-      gtk_widget_set_size_request (window, gdk_screen_width (), DOCK_SIZE);
-      gtk_window_move (GTK_WINDOW (window), 0, gdk_screen_height () - DOCK_SIZE);
+      gtk_widget_set_size_request (window, 600, DOCK_SIZE);
+      gtk_window_move (GTK_WINDOW (window), 200, gdk_screen_height () - DOCK_SIZE);
       set_gtk_window_struts (window, 0, 0, 0, DOCK_SIZE);
       gtk_window_set_title (GTK_WINDOW (window), "BottomDock");
       break;

@@ -168,6 +168,7 @@ struct _MetaDisplay
   Atom atom_gnome_panel_action_main_menu;
   Atom atom_gnome_panel_action_run_dialog;
   Atom atom_metacity_sentinel;
+  Atom atom_net_wm_strut_partial;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -433,6 +434,8 @@ gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_rectangle_intersect (MetaRectangle *src1,
                                    MetaRectangle *src2,
                                    MetaRectangle *dest);
+gboolean meta_rectangle_equal (const MetaRectangle *src1,
+                               const MetaRectangle *src2);
 
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,

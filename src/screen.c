@@ -81,8 +81,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 45
-#define N_WIN_SUPPORTED 1
+#define N_SUPPORTED 49
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -106,30 +105,34 @@ set_supported_hint (MetaScreen *screen)
   atoms[18] = screen->display->atom_net_client_list_stacking;
   atoms[19] = screen->display->atom_net_wm_state_skip_taskbar;
   atoms[20] = screen->display->atom_net_wm_state_skip_pager;
-  atoms[21] = screen->display->atom_net_wm_icon;
-  atoms[22] = screen->display->atom_net_wm_moveresize;
-  atoms[23] = screen->display->atom_net_wm_state_hidden;
-  atoms[24] = screen->display->atom_net_wm_window_type_utility;
-  atoms[25] = screen->display->atom_net_wm_window_type_splash;
-  atoms[26] = screen->display->atom_net_wm_state_fullscreen;
-  atoms[27] = screen->display->atom_net_wm_ping;
-  atoms[28] = screen->display->atom_net_active_window;
-  atoms[29] = screen->display->atom_net_workarea;
-  atoms[30] = screen->display->atom_net_showing_desktop;
-  atoms[31] = screen->display->atom_net_desktop_layout;
-  atoms[32] = screen->display->atom_net_desktop_names;
-  atoms[33] = screen->display->atom_net_wm_allowed_actions;
-  atoms[34] = screen->display->atom_net_wm_action_move;
-  atoms[35] = screen->display->atom_net_wm_action_resize;
-  atoms[36] = screen->display->atom_net_wm_action_shade;
-  atoms[37] = screen->display->atom_net_wm_action_stick;
-  atoms[38] = screen->display->atom_net_wm_action_maximize_horz;
-  atoms[39] = screen->display->atom_net_wm_action_maximize_vert;
-  atoms[40] = screen->display->atom_net_wm_action_change_desktop;
-  atoms[41] = screen->display->atom_net_wm_action_close;
-  atoms[42] = screen->display->atom_net_wm_state_above;
-  atoms[43] = screen->display->atom_net_wm_state_below;
-  atoms[44] = screen->display->atom_net_startup_id;
+  atoms[21] = screen->display->atom_net_wm_icon_name;
+  atoms[22] = screen->display->atom_net_wm_icon;
+  atoms[23] = screen->display->atom_net_wm_icon_geometry;
+  atoms[24] = screen->display->atom_net_wm_moveresize;
+  atoms[25] = screen->display->atom_net_active_window;
+  atoms[26] = screen->display->atom_net_wm_strut;
+  atoms[27] = screen->display->atom_net_wm_state_hidden;
+  atoms[28] = screen->display->atom_net_wm_window_type_utility;
+  atoms[29] = screen->display->atom_net_wm_window_type_splash;
+  atoms[30] = screen->display->atom_net_wm_state_fullscreen;
+  atoms[31] = screen->display->atom_net_wm_ping;
+  atoms[32] = screen->display->atom_net_wm_pid;
+  atoms[33] = screen->display->atom_net_workarea;
+  atoms[34] = screen->display->atom_net_showing_desktop;
+  atoms[35] = screen->display->atom_net_desktop_layout;
+  atoms[36] = screen->display->atom_net_desktop_names;
+  atoms[37] = screen->display->atom_net_wm_allowed_actions;
+  atoms[38] = screen->display->atom_net_wm_action_move;
+  atoms[39] = screen->display->atom_net_wm_action_resize;
+  atoms[40] = screen->display->atom_net_wm_action_shade;
+  atoms[41] = screen->display->atom_net_wm_action_stick;
+  atoms[42] = screen->display->atom_net_wm_action_maximize_horz;
+  atoms[43] = screen->display->atom_net_wm_action_maximize_vert;
+  atoms[44] = screen->display->atom_net_wm_action_change_desktop;
+  atoms[45] = screen->display->atom_net_wm_action_close;
+  atoms[46] = screen->display->atom_net_wm_state_above;
+  atoms[47] = screen->display->atom_net_wm_state_below;
+  atoms[48] = screen->display->atom_net_startup_id;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -1461,21 +1464,18 @@ meta_screen_get_natural_xinerama_list (MetaScreen *screen,
 }
 
 gboolean
-meta_screen_window_intersects_xinerama (MetaScreen *screen,
-                                        MetaWindow *window,
-                                        int         which_xinerama)
+meta_screen_rect_intersects_xinerama (MetaScreen    *screen,
+                                      MetaRectangle *rect,
+                                      int            which_xinerama)
 {
-  MetaRectangle window_rect;
   MetaRectangle dest, screen_rect;
-  
-  meta_window_get_outer_rect (window, &window_rect);
   
   screen_rect.x = screen->xinerama_infos[which_xinerama].x_origin;
   screen_rect.y = screen->xinerama_infos[which_xinerama].y_origin;
   screen_rect.width = screen->xinerama_infos[which_xinerama].width;
   screen_rect.height = screen->xinerama_infos[which_xinerama].height;
   
-  if (meta_rectangle_intersect (&screen_rect, &window_rect, &dest))
+  if (meta_rectangle_intersect (&screen_rect, rect, &dest))
     return TRUE;
 
   return FALSE;
@@ -2105,6 +2105,10 @@ meta_screen_resize_func (MetaScreen *screen,
                          MetaWindow *window,
                          void       *user_data)
 {
+  if (window->struts)
+    {
+      meta_window_update_struts (window);
+    }
   meta_window_queue_move_resize (window);
 }
 

@@ -77,6 +77,11 @@ static GSList *all_displays = NULL;
 
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
+#ifndef USE_GDK_DISPLAY
+static void   event_queue_callback      (XEvent         *event,
+                                         gpointer        data);
+#endif
+
 static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);
 static Window event_get_modified_window (MetaDisplay    *display,
@@ -263,7 +268,8 @@ meta_display_open (const char *name)
     "_GNOME_PANEL_ACTION",
     "_GNOME_PANEL_ACTION_MAIN_MENU",
     "_GNOME_PANEL_ACTION_RUN_DIALOG",
-    "_METACITY_SENTINEL"
+    "_METACITY_SENTINEL",
+    "_NET_WM_STRUT_PARTIAL"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -406,6 +412,7 @@ meta_display_open (const char *name)
   display->atom_gnome_panel_action_main_menu = atoms[77];
   display->atom_gnome_panel_action_run_dialog = atoms[78];
   display->atom_metacity_sentinel = atoms[79];
+  display->atom_net_wm_strut_partial = atoms[80];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -875,6 +882,15 @@ meta_display_is_double_click (MetaDisplay *display)
 
 static gboolean dump_events = TRUE;
 
+#ifndef USE_GDK_DISPLAY
+static void
+event_queue_callback (XEvent         *event,
+                      gpointer        data)
+{
+  event_callback (event, data);
+}
+#endif
+
 static gboolean
 grab_op_is_mouse (MetaGrabOp op)
 {
@@ -1252,6 +1268,7 @@ event_callback (XEvent   *event,
               if (window->frame)
                 {
                   window->frame->need_reapply_frame_shape = TRUE;
+		  meta_warning("from event callback\n");		  
                   meta_window_queue_move_resize (window);
                 }
             }
@@ -3202,6 +3219,7 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
     {
       MetaWindow *window = tmp->data;
       
+      meta_warning("from retheme\n");
       meta_window_queue_move_resize (window);
       if (window->frame)
         {
@@ -3324,8 +3342,8 @@ meta_display_ping_window (MetaDisplay       *display,
               "Sending ping with timestamp %lu to window %s\n",
               timestamp, window->desc);
   meta_window_send_icccm_message (window,
-				  display->atom_net_wm_ping,
-				  timestamp);
+                                  display->atom_net_wm_ping,
+                                  timestamp);
 }
 
 /* process the pong from our ping */
@@ -3674,6 +3692,16 @@ meta_rectangle_intersect (MetaRectangle *src1,
     }
 
   return return_val;
+}
+
+gboolean
+meta_rectangle_equal (const MetaRectangle *src1,
+                      const MetaRectangle *src2)
+{
+  return ((src1->x == src2->x) &&
+          (src1->y == src2->y) &&
+          (src1->width == src2->width) &&
+          (src1->height == src2->height));
 }
 
 static MetaScreen*
