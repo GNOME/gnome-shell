@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
-"PO-Revision-Date: 2004-10-14 14:44+0200\n"
+"POT-Creation-Date: 2004-12-24 20:39+0100\n"
+"PO-Revision-Date: 2004-12-25 15:56+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1176,19 +1176,13 @@ msgstr ""
 "zkratka."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Klávesová zkratka pro maximalizaci okna. Formát je jako \"&lt;Control&gt;a\" "
-"nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje "
-"malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
-"Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci "
-"nebude žádná klávesová zkratka."
+msgstr "Klávesová zkratka pro maximalizaci okna. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -2016,60 +2010,60 @@ msgstr "Nemohu vytvořit adresář '%s': %s\n"
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nemohu otevřít soubor sezení '%s' pro zápis: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1052
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Chyba při zápisu souboru sezení '%s': %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1057
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Chyba při zavírání souboru sezení '%s': %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1132
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Chyba při čtení uloženého souboru sezení %s: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1167
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Chyba při parsování uloženého souboru sezení: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1216
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "našel jsem atribut <metacity_session>, ale ID sezení už máme"
 
-#: src/session.c:1236
+#: src/session.c:1229
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Neznámý atribut %s elementu <metacity_session>"
 
-#: src/session.c:1253
+#: src/session.c:1246
 msgid "nested <window> tag"
 msgstr "vnořená značka <window>"
 
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1304 src/session.c:1336
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Neznámý atribut %s elementu <window>"
 
-#: src/session.c:1415
+#: src/session.c:1408
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Neznámý atribut %s elementu <maximized>"
 
-#: src/session.c:1475
+#: src/session.c:1468
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Neznámý atribut %s elementu <geometry>"
 
-#: src/session.c:1495
+#: src/session.c:1488
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznámý element %s"
 
-#: src/session.c:1947
+#: src/session.c:1940
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3089,7 +3083,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4843
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3105,7 +3099,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5514
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
