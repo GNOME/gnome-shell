@@ -1,3 +1,8 @@
+2002-05-30  Stephen Browne@sun.com <stephen.browne@sun.com>
+
+	* src/tools/metacity-properties.glade: changed window title
+	to match other control center dialogs
+
 2002-05-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (meta_session_init): improve error about failing
