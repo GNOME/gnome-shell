@@ -42,6 +42,48 @@
 #define ALPHA_TO_UCHAR(d) ((unsigned char) ((d) * 255))
 
 #define DEBUG_FILL_STRUCT(s) memset ((s), 0xef, sizeof (*(s)))
+#define INTENSITY(r, g, b) (r * 0.30 + g * 0.59 + b * 0.11)
+
+static GdkPixbuf *
+colorize_pixbuf (GdkPixbuf *orig, GdkColor *new_color)
+{
+  GdkPixbuf *pixbuf;
+  double intensity;
+  int x, y;
+  guchar r, g, b;
+  guchar *src, *dest;
+
+  r = new_color->red / 256;
+  g = new_color->green / 256;
+  b = new_color->blue / 256;
+
+  pixbuf = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (orig), gdk_pixbuf_get_has_alpha (orig),
+			   gdk_pixbuf_get_bits_per_sample (orig),
+			   gdk_pixbuf_get_width (orig), gdk_pixbuf_get_height (orig));
+  
+  for (y = 0; y < gdk_pixbuf_get_height (pixbuf); y++)
+    {
+      src = gdk_pixbuf_get_pixels (orig) + y * gdk_pixbuf_get_rowstride (orig);
+      dest = gdk_pixbuf_get_pixels (pixbuf) + y * gdk_pixbuf_get_rowstride (pixbuf);
+
+      for (x = 0; x < gdk_pixbuf_get_width (pixbuf); x++) {
+
+	intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
+	
+	dest[0] = (guchar)(r * intensity);
+	dest[1] = g * intensity;
+	dest[2] = b * intensity;
+
+	if (gdk_pixbuf_get_has_alpha (orig))
+	  dest[3] = src[3];
+
+	src += gdk_pixbuf_get_has_alpha (orig) ? 4 : 3;
+	dest += gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3;
+      }
+    }
+
+  return pixbuf;
+}
 
 static void
 color_composite (const GdkColor *bg,
@@ -1088,6 +1130,7 @@ pos_tokenize (const char  *expr,
 
         case ' ':
         case '\t':
+        case '\n':		
           break;
 
         default:
@@ -2106,6 +2149,8 @@ meta_draw_op_free (MetaDrawOp *op)
     case META_DRAW_IMAGE:
       if (op->data.image.pixbuf)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
+      if (op->data.image.colorize_spec)
+	meta_color_spec_free (op->data.image.colorize_spec);
       g_free (op->data.image.x);
       g_free (op->data.image.y);
       g_free (op->data.image.width);
@@ -2395,15 +2440,33 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       }
       break;
 
+      
     case META_DRAW_IMAGE:
       {
-        pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
-                                         op->data.image.alpha,
-                                         width, height);
-      }
+	if (op->data.image.colorize_spec)
+	  {
+	    GdkPixbuf *tmp_pixbuf;
+	    GdkColor color;
+
+	     meta_color_spec_render (op->data.image.colorize_spec,
+				     widget, &color);
+	     tmp_pixbuf = colorize_pixbuf (op->data.image.pixbuf,
+					   &color);
+
+	     pixbuf = scale_and_alpha_pixbuf (tmp_pixbuf,
+					      op->data.image.alpha,
+					      width, height);
+	     g_object_unref (tmp_pixbuf);
+	  }
+	else
+	  {
+	    pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
+					     op->data.image.alpha,
+					     width, height);
+	  }
       break;
-
-
+      }
+      
     case META_DRAW_GTK_ARROW:
     case META_DRAW_GTK_BOX:
     case META_DRAW_GTK_VLINE:

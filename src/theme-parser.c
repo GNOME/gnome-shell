@@ -1991,14 +1991,17 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *width;
       const char *height;
       const char *alpha;
+      const char *colorize;
       double alpha_val;
       GdkPixbuf *pixbuf;
+      MetaColorSpec *colorize_spec = NULL;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
                               "x", &x, "y", &y,
                               "width", &width, "height", &height,
                               "alpha", &alpha, "filename", &filename,
+			      "colorize", &colorize,
                               NULL))
         return;
       
@@ -2063,10 +2066,22 @@ parse_draw_op_element (GMarkupParseContext  *context,
           add_context_to_error (error, context);
           return;
         }
+
+      if (colorize)
+	{
+	  colorize_spec = meta_color_spec_new_from_string (colorize, error);
+
+	  if (colorize == NULL)
+	    {
+	      add_context_to_error (error, context);
+	      return;
+	    }
+	}
       
       op = meta_draw_op_new (META_DRAW_IMAGE);
 
       op->data.image.pixbuf = pixbuf;
+      op->data.image.colorize_spec = colorize_spec;
       op->data.image.x = optimize_expression (info->theme, x);
       op->data.image.y = optimize_expression (info->theme, y);
       op->data.image.width = optimize_expression (info->theme, width);

@@ -253,6 +253,7 @@ struct _MetaDrawOp
     } gradient;
 
     struct {
+      MetaColorSpec *colorize_spec;
       GdkPixbuf *pixbuf;
       double alpha;
       char *x;

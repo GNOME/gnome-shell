@@ -1,5 +1,21 @@
 2002-02-07  Anders Carlsson  <andersca@gnu.org>
 
+	* src/theme-parser.c: (parse_draw_op_element):
+	Add support for "colorize" image attribute.
+	
+	* src/theme.c: (colorize_pixbuf):
+	New function that colorizes a pixbuf.
+
+	(pos_tokenize): Allow "\n" as a whitespace character.
+	
+	(meta_draw_op_free): Free colorize_spec;
+
+	(draw_op_as_pixbuf): Colorize image if needed.
+	
+	* src/theme.h: Add colorize_spec to struct.
+
+2002-02-07  Anders Carlsson  <andersca@gnu.org>
+
 	* src/themes/Crux/metacity-theme-1.xml: Add maximized and
 	shaded_and_maximized frame styles.
 
