@@ -36,7 +36,18 @@
 
 #define USE_GDK_DISPLAY
 
+typedef struct {
+  MetaDisplay *display;
+  Window xwindow;
+  Time timestamp;
+  MetaWindowPingFunc ping_reply_func;
+  MetaWindowPingFunc ping_timeout_func;
+  void *user_data;
+  guint ping_timeout_id;
+} MetaPingData;
+
 static GSList *all_displays = NULL;
+
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
 static void   event_queue_callback      (XEvent         *event,
@@ -47,7 +58,8 @@ static Window event_get_modified_window (MetaDisplay    *display,
                                          XEvent         *event);
 static guint32 event_get_time           (MetaDisplay    *display,
                                          XEvent         *event);
-
+static void    process_pong_message     (MetaDisplay    *display,
+                                         XEvent         *event);
 
 
 static gint
@@ -82,6 +94,46 @@ set_utf8_string_hint (MetaDisplay *display,
                    display->atom_utf8_string, 
                    8, PropModeReplace, (guchar*) val, strlen (val) + 1);
   return meta_error_trap_pop (display);
+}
+
+static void
+ping_data_free (MetaPingData *ping_data)
+{
+  /* Remove the timeout */
+  if (ping_data->ping_timeout_id != 0)
+    g_source_remove (ping_data->ping_timeout_id);
+
+  g_free (ping_data);
+}
+
+static void
+remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
+{
+  GSList *tmp;
+  GSList *dead;
+
+  /* could obviously be more efficient, don't care */
+  
+  /* build list to be removed */
+  dead = NULL;
+  for (tmp = display->pending_pings; tmp; tmp = tmp->next)
+    {
+      MetaPingData *ping_data = tmp->data;
+
+      if (ping_data->xwindow == xwindow)
+        dead = g_slist_prepend (dead, ping_data);
+    }
+
+  /* remove what we found */
+  for (tmp = dead; tmp; tmp = tmp->next)
+    {
+      MetaPingData *ping_data = tmp->data;
+
+      display->pending_pings = g_slist_remove (display->pending_pings, ping_data);
+      ping_data_free (ping_data);
+    }
+
+  g_slist_free (dead);
 }
 
 gboolean
@@ -148,6 +200,9 @@ meta_display_open (const char *name)
     "_NET_WM_WINDOW_TYPE_UTILITY",
     "_NET_WM_WINDOW_TYPE_SPLASHSCREEN",
     "_NET_WM_STATE_FULLSCREEN"
+    "_NET_WM_PING",
+    "_NET_WM_PID",
+    "WM_CLIENT_MACHINE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -182,6 +237,7 @@ meta_display_open (const char *name)
   display->server_grab_count = 0;
   display->workspaces = NULL;
 
+  display->pending_pings = NULL;
   display->focus_window = NULL;
   display->prev_focus_window = NULL;
 
@@ -250,7 +306,10 @@ meta_display_open (const char *name)
   display->atom_net_wm_window_type_utility = atoms[50];
   display->atom_net_wm_window_type_splashscreen = atoms[51];
   display->atom_net_wm_state_fullscreen = atoms[52];
-  
+  display->atom_net_wm_ping = atoms[53];
+  display->atom_net_wm_pid = atoms[54];
+  display->atom_wm_client_machine = atoms[55];
+
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */
@@ -670,17 +729,24 @@ event_callback (XEvent   *event,
   MetaDisplay *display;
   Window modified;
   gboolean frame_was_receiver;
+  gboolean filter_out_event;
   
   display = data;
   
   if (dump_events)
     meta_spew_event (display, event);
 
+  filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
   
-  /* mark double click events, kind of a hack, oh well. */
   if (event->type == ButtonPress)
     {
+      /* filter out scrollwheel */
+      if (event->xbutton.button == 4 ||
+	  event->xbutton.button == 5)
+	return FALSE;
+
+      /* mark double click events, kind of a hack, oh well. */
       if (((int)event->xbutton.button) ==  display->last_button_num &&
           event->xbutton.window == display->last_button_xwindow &&
           event->xbutton.time < (display->last_button_time + display->double_click_time))
@@ -1132,6 +1198,22 @@ event_callback (XEvent   *event,
                                 (int) event->xclient.data.l[0]);
                   meta_set_keybindings_disabled (!event->xclient.data.l[0]);
                 }
+	      else if (event->xclient.message_type ==
+		       display->atom_wm_protocols) 
+		{
+                  meta_verbose ("Received WM_PROTOCOLS message\n");
+                  
+		  if ((Atom)event->xclient.data.l[0] == display->atom_net_wm_ping)
+                    {
+                      process_pong_message (display, event);
+
+                      /* We don't want ping reply events going into
+                       * the GTK+ event loop because gtk+ will treat
+                       * them as ping requests and send more replies.
+                       */
+                      filter_out_event = TRUE;
+                    }
+		}
             }
         }
       break;
@@ -1142,7 +1224,7 @@ event_callback (XEvent   *event,
     }
 
   display->current_time = CurrentTime;
-  return FALSE;
+  return filter_out_event;
 }
 
 /* Return the window this has to do with, if any, rather
@@ -1596,6 +1678,9 @@ meta_display_unregister_x_window (MetaDisplay *display,
   g_return_if_fail (g_hash_table_lookup (display->window_ids, &xwindow) != NULL);
 
   g_hash_table_remove (display->window_ids, &xwindow);
+
+  /* Remove any pending pings */
+  remove_pending_pings_for_window (display, xwindow);
 }
 
 MetaWorkspace*
@@ -2163,3 +2248,126 @@ meta_set_syncing (gboolean setting)
         }
     }
 }
+
+#define PING_TIMEOUT_DELAY 3000
+
+static gboolean
+meta_display_ping_timeout (gpointer data)
+{
+  MetaPingData *ping_data;
+
+  ping_data = data;
+
+  ping_data->ping_timeout_id = 0;
+
+  meta_topic (META_DEBUG_PING,
+              "Ping %lu on window %lx timed out\n",
+              ping_data->timestamp, ping_data->xwindow);
+  
+  (* ping_data->ping_timeout_func) (ping_data->display, ping_data->xwindow,
+                                    ping_data->user_data);
+
+  ping_data->display->pending_pings =
+    g_slist_remove (ping_data->display->pending_pings,
+                    ping_data);
+  ping_data_free (ping_data);
+  
+  return FALSE;
+}
+
+void
+meta_display_ping_window (MetaDisplay       *display,
+			  MetaWindow        *window,
+			  Time               timestamp,
+			  MetaWindowPingFunc ping_reply_func,
+			  MetaWindowPingFunc ping_timeout_func,
+			  gpointer           user_data)
+{
+  MetaPingData *ping_data;
+
+  if (timestamp == CurrentTime)
+    {
+      meta_warning ("Tried to ping a window with CurrentTime! Not allowed.\n");
+      return;
+    }
+  
+  ping_data = g_new (MetaPingData, 1);
+  ping_data->display = display;
+  ping_data->xwindow = window->xwindow;
+  ping_data->timestamp = timestamp;
+  ping_data->ping_reply_func = ping_reply_func;
+  ping_data->ping_timeout_func = ping_timeout_func;
+  ping_data->user_data = user_data;
+  ping_data->ping_timeout_id = g_timeout_add (PING_TIMEOUT_DELAY,
+					      meta_display_ping_timeout,
+					      ping_data);
+  
+  display->pending_pings = g_slist_prepend (display->pending_pings, ping_data);
+
+  meta_topic (META_DEBUG_PING,
+              "Sending ping with timestamp %lu to window %s\n",
+              timestamp, window->desc);
+  meta_window_send_icccm_message (window,
+				  display->atom_net_wm_ping,
+				  timestamp);
+}
+
+/* process the pong from our ping */
+static void
+process_pong_message (MetaDisplay    *display,
+                      XEvent         *event)
+{
+  GSList *tmp;
+
+  meta_topic (META_DEBUG_PING, "Received a pong with timestamp %lu\n",
+              (Time) event->xclient.data.l[1]);
+  
+  for (tmp = display->pending_pings; tmp; tmp = tmp->next)
+    {
+      MetaPingData *ping_data = tmp->data;
+			  
+      if ((Time)event->xclient.data.l[1] == ping_data->timestamp)
+        {
+          meta_topic (META_DEBUG_PING,
+                      "Matching ping found for pong %lu\n",
+                      ping_data->timestamp);
+
+          /* Remove the ping data from the list */
+          display->pending_pings = g_slist_remove (display->pending_pings,
+                                                   ping_data);
+
+          /* Remove the timeout */
+          if (ping_data->ping_timeout_id != 0)
+            {
+              g_source_remove (ping_data->ping_timeout_id);
+              ping_data->ping_timeout_id = 0;
+            }
+          
+          /* Call callback */
+          (* ping_data->ping_reply_func) (display, ping_data->xwindow,
+                                          ping_data->user_data);
+			      
+          ping_data_free (ping_data);
+
+          break;
+        }
+    }
+}
+
+gboolean
+meta_display_window_has_pending_pings (MetaDisplay *display,
+				       MetaWindow  *window)
+{
+  GSList *tmp;
+
+  for (tmp = display->pending_pings; tmp; tmp = tmp->next)
+    {
+      MetaPingData *ping_data = tmp->data;
+
+      if (ping_data->xwindow == window->xwindow) 
+        return TRUE;
+    }
+
+  return FALSE;
+}
+

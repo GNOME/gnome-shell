@@ -48,6 +48,11 @@ typedef struct _MetaUISlave   MetaUISlave;
 typedef struct _MetaWindow    MetaWindow;
 typedef struct _MetaWorkspace MetaWorkspace;
 
+typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
+				     Window       xwindow,
+				     gpointer     user_data);
+
+
 #define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
 #define _NET_WM_STATE_ADD           1    /* add/set property */
 #define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
@@ -111,6 +116,9 @@ struct _MetaDisplay
   Atom atom_net_wm_state_hidden;
   Atom atom_net_wm_window_type_utility;
   Atom atom_net_wm_window_type_splashscreen;
+  Atom atom_net_wm_ping;
+  Atom atom_net_wm_pid;
+  Atom atom_wm_client_machine;
   Atom atom_net_wm_state_fullscreen;
   
   /* This is the actual window from focus events,
@@ -150,6 +158,9 @@ struct _MetaDisplay
   unsigned long last_ignored_unmap_serial;
 
   guint32 current_time;
+
+  /* Pings which we're waiting for a reply from */
+  GSList     *pending_pings;
   
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -237,5 +248,15 @@ const char* meta_focus_detail_to_string (int d);
 
 void meta_display_queue_retheme_all_windows (MetaDisplay *display);
 void meta_display_retheme_all (void);
+
+void     meta_display_ping_window              (MetaDisplay        *display,
+						MetaWindow         *window,
+						Time                timestamp,
+						MetaWindowPingFunc  ping_reply_func,
+						MetaWindowPingFunc  ping_timeout_func,
+						void               *user_data);
+gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
+						MetaWindow         *window);
+
 
 #endif

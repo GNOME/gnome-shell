@@ -1,3 +1,41 @@
+2002-02-26  Havoc Pennington  <hp@pobox.com>
+
+        Screw around with Anders's ping patch so he'll get plenty of CVS
+	conflicts. ;-)
+	
+	* src/display.c (meta_display_ping_window): spew warnings
+	if we try to call this with CurrentTime
+	(meta_display_ping_timeout): remove ping from the pending pings
+	after it times out.
+
+	* src/util.h: added PING debug category
+
+	* src/display.c (remove_pending_pings_for_window): don't remove
+	"tmp" just before "tmp->next", don't break out of loop after
+	finding the first match
+	(meta_display_open): no trailing comma in array init
+	(event_callback): move the processing of ping replies into a
+	separate function
+
+	* src/screen.c (set_supported_hint): add _NET_WM_PING to supported
+	list
+
+	* src/display.h: change gpointer to void*
+
+2002-02-26  Anders Carlsson  <andersca@gnu.org>
+
+	* src/display.c: (ping_data_free),
+	(remove_pending_pings_for_window), (meta_display_open),
+	(event_callback), (meta_display_unregister_x_window),
+	(meta_display_ping_timeout), (meta_display_ping_window),
+	(meta_display_window_has_pending_pings):
+	Implement meta_display_ping_window, and filter out scroll wheel 
+	events.
+	
+	* src/display.h:
+	Add MetaWindowPingFunc, meta_display_ping_window and
+	meta_display_window_has_pending_pings.
+	
 2002-02-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (xcursor_for_op): switch on the op passed in, not
