@@ -1,3 +1,7 @@
+2003-01-05  Pauli Virtanen <pauli.virtanen@hut.fi>
+
+	* configure.in (ALL_LINGUAS): Added "fi" (Finnish).
+
 2003-01-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_apply_shapes): handle 
