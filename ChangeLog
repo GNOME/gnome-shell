@@ -1,3 +1,21 @@
+2001-12-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/main.c (main): move SM init a bit later in the process, and 
+	init prefs
+
+	* src/session.c: fix no SM case (though I hardly know why I'm
+	bothering)
+
+	* src/main.c (main): call bindtextdomain
+
+	* src/util.h (_): actually call gettext
+
+	* configure.in: put in AM_GLIB_GNU_GETTEXT and gconf stuff
+
+	* src/prefs.c: Preferences - this marks the beginning of our doom.
+	None of them are actually implemented yet, but we monitor 
+	some stuff from gconf.
+	
 2001-12-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_unminimize): when unminimizing an app,

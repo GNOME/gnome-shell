@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.  */
 
+#include <config.h>
+
 #include "session.h"
 
 #ifndef HAVE_SM
@@ -26,6 +28,18 @@ void
 meta_session_init (const char *previous_id)
 {
   meta_verbose ("Compiled without session management support\n");
+}
+
+const MetaWindowSessionInfo*
+meta_window_lookup_saved_state (MetaWindow *window)
+{
+  return NULL;
+}
+
+void
+meta_window_release_saved_state (const MetaWindowSessionInfo *info)
+{
+  ;
 }
 #else /* HAVE_SM */
 

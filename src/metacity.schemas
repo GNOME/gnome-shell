@@ -4,7 +4,8 @@
     <!-- General preferences -->        
 
     <schema>
-      <key>/apps/metacity/general/focus_mode</key>
+      <key>/schemas/apps/metacity/general/focus_mode</key>
+      <applyto>/apps/metacity/general/focus_mode</applyto>
       <owner>metacity</owner>
       <type>string</type>
       <default>click</default>
@@ -22,7 +23,8 @@
     </schema>
 
     <schema>
-      <key>/apps/metacity/general/titlebar_uses_desktop_font</key>
+      <key>/schemas/apps/metacity/general/titlebar_uses_desktop_font</key>
+      <applyto>/apps/metacity/general/titlebar_uses_desktop_font</applyto>      
       <owner>metacity</owner>
       <type>bool</type>
       <default>true</default>
@@ -37,7 +39,8 @@
     </schema>
 
     <schema>
-      <key>/apps/metacity/general/titlebar_font</key>
+      <key>/schemas/apps/metacity/general/titlebar_font</key>
+      <applyto>/apps/metacity/general/titlebar_font</applyto>   
       <owner>metacity</owner>
       <type>string</type>
       <!-- no default is deliberate - we want to be unset by default -->
@@ -57,7 +60,8 @@
     </schema>
 
     <schema>
-      <key>/apps/metacity/general/titlebar_font_size</key>
+      <key>/schemas/apps/metacity/general/titlebar_font_size</key>
+      <applyto>/apps/metacity/general/titlebar_font_size</applyto>      
       <owner>metacity</owner>
       <type>int</type>
       <default>0</default>
@@ -75,18 +79,19 @@
     <!-- Keybindings -->
 
     <schema>
-      <key>/apps/metacity/keybindings/activate_window_menu</key>
+      <key>/schemas/apps/metacity/keybindings/activate_window_menu</key>
+      <applyto>/apps/metacity/keybindings/activate_window_menu</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>
+      <default>&lt;Alt&gt;space</default>
       <locale name="C">
          <short>Activate window menu</short>
          <long>
           The keybinding used to activate the window menu.
-          The format looks like "<Control>a" or "<Shift><Alt>F1" or
-          "<Release>z" (the last one is for key release). The parser is
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1" or
+          "&lt;Release&gt;z" (the last one is for key release). The parser is
           fairly liberal and allows lower or upper case, and also
-          abbreviations such as "<Ctl>" and "<Ctrl>". This option can be 
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". This option can be 
           set to a single string, or a list of strings; if a list, 
           all of the given keybindings will be present. If you set 
           the option to the special string "disabled", then there 

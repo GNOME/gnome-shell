@@ -38,11 +38,11 @@ fi
 changequote([,])dnl
 
 ALL_LINGUAS="es gl ru sv uk"
-dnl AM_GNU_GETTEXT
+AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.10)
-PKG_CHECK_MODULES(METACITY_RESTART, gtk+-2.0 >= 1.3.10)
+PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.11 gconf-2.0 >= 1.1.5)
+PKG_CHECK_MODULES(METACITY_RESTART, gtk+-2.0 >= 1.3.11)
 
 CFLAGS="$METACITY_CFLAGS $CFLAGS"
 
@@ -81,6 +81,14 @@ save_LDFLAGS=$LDFLAGS
 LDFLAGS="$METACITY_LIBS $LDFLAGS"
 AC_CHECK_FUNCS(gdk_pixbuf_new_from_stream)
 LDFLAGS=$save_LDFLAGS
+
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+
+if test x"$GCONFTOOL" = xno; then
+  AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+fi
+
+AM_GCONF_SOURCE_2
 
 AC_OUTPUT([
 Makefile

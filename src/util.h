@@ -46,9 +46,8 @@ void meta_fatal      (const char *format,
 void meta_push_no_msg_prefix (void);
 void meta_pop_no_msg_prefix  (void);
 
-/* FIXME */
-#include <config.h>
-#define _(x) x
+#include <libintl.h>
+#define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
 #endif

@@ -123,6 +123,13 @@ typedef enum
 } MetaCursor;
 
 
+typedef enum
+{
+  META_FOCUS_MODE_CLICK,
+  META_FOCUS_MODE_SLOPPY,
+  META_FOCUS_MODE_MOUSE
+} MetaFocusMode;
+
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32
 #define META_ICON_HEIGHT 32

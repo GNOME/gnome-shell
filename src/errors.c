@@ -20,6 +20,7 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "errors.h"
 #include <errno.h>
 #include <stdlib.h>

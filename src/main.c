@@ -19,12 +19,14 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "main.h"
 #include "util.h"
 #include "display.h"
 #include "errors.h"
 #include "ui.h"
 #include "session.h"
+#include "prefs.h"
 
 #include <glib-object.h>
 
@@ -74,7 +76,9 @@ main (int argc, char **argv)
   act.sa_flags   = 0;
   sigaction (SIGPIPE,  &act, 0);
   
-  g_set_prgname (PACKAGE);
+  g_set_prgname (argv[0]);
+
+  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
   
   meta_set_verbose (TRUE);
   meta_set_debugging (TRUE);
@@ -169,8 +173,8 @@ main (int argc, char **argv)
   
   g_type_init ();
 
-  if (!disable_sm)
-    meta_session_init (client_id); /* client_id == NULL is fine */
+  /* Load prefs */
+  meta_prefs_init ();
   
   meta_ui_init (&argc, &argv);  
 
@@ -181,6 +185,13 @@ main (int argc, char **argv)
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
   g_log_set_always_fatal (G_LOG_LEVEL_MASK);
+
+  /* Connect to SM as late as possible - but before managing display,
+   * or we might try to manage a window before we have the session
+   * info
+   */
+  if (!disable_sm)
+    meta_session_init (client_id); /* client_id == NULL is fine */
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);

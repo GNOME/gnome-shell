@@ -1,7 +1,7 @@
 
 SUBDIRS=wm-tester tools
 
-INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" 
+INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(datadir)/locale\"
 
 metacity_SOURCES= 				\
 	common.h				\
@@ -30,6 +30,8 @@ metacity_SOURCES= 				\
 	menu.h					\
 	place.c					\
 	place.h					\
+	prefs.c					\
+	prefs.h					\
 	screen.c				\
 	screen.h				\
 	session.c				\
@@ -54,6 +56,12 @@ metacity_LDADD= @METACITY_LIBS@
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_DATA=metacity.desktop
 
+schemadir   = @GCONF_SCHEMA_FILE_DIR@
+schema_DATA = metacity.schemas
+
+install-data-local:
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
+
 IMAGES=default_icon.png
 VARIABLES=default_icon_data $(srcdir)/default_icon.png
 
@@ -63,4 +71,4 @@ CLEANFILES += inlinepixbufs.h
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
-EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES)
+EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA)

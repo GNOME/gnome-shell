@@ -19,6 +19,7 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "keybindings.h"
 #include "workspace.h"
 #include "errors.h"
