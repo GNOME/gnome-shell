@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
+"POT-Creation-Date: 2004-06-23 05:20+0200\n"
 "PO-Revision-Date: 2004-02-23 12:24+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -225,21 +225,21 @@ msgstr "Lëvize tek hapësira e punës _Sipër"
 msgid "Move to Workspace _Down"
 msgstr "Lëvize tek hapësira e punës _Poshtë"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Hapësira e punës %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Hapësira e punës 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Hapësira e punës %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Lëvize tek një tjetër hapësirë pune"
 
@@ -365,7 +365,7 @@ msgstr ""
 "Këto dritare nuk suportojnë \"ruaj rregullimet aktuale\" dhe duhet të "
 "rinisen nga ju kur të futeni përsëri."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1909,12 +1909,12 @@ msgstr "Gërmat e titullit të dritares"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Kyçi GConf \"%s\" është vendosur në një lloj të pavlefshëm\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1923,17 +1923,17 @@ msgstr ""
 "Vlera \"%s\" tek databaza e konfigurimit është e pavlefshme për ndryshuesin "
 "e pulsantit të mouse\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Kyçi GConf \"%s\" është vendosur në një vlerë të pavlefshme\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "E pamundur analiza e përshkrimit të gërmës \"%s\" nga kyçi GConf %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1942,7 +1942,7 @@ msgstr ""
 "Vlera %d e memorizuar në kyçit GConf %s nuk është një numër i arsyeshëm për "
 "hapësirat e punës, maksimumi aktual është %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1950,18 +1950,18 @@ msgstr ""
 "Veprimtari mirëmbajtje për manazhimin e programeve difektozë të ç'aktivuar. "
 "Disa programe mund të sillen në mënyrë të gabuar.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Gabim gjatë vendosjes së numrit të hapësirave të punës në %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1970,7 +1970,7 @@ msgstr ""
 "Vlera \"%s\" në databazën e konfigurimit është e pavlefshme për kombinim "
 "tastesh \"%s\"\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2107,11 +2107,11 @@ msgstr "Rreshti %d gërma %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atributi \"%s\" është përsëritur dy herë tek i njëjti element <%s>"
 
+#. GRUT modified this item
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
-"Atributi \"%s\" është i pavlefshëm për këtë kontekst tek elementi <%s> "
+msgstr "Atributi \"%s\" tek elementi <%s> është i pavlefshëm për këtë kontekst"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -2153,11 +2153,12 @@ msgstr ""
 "Shkallë e titullit \"%s\"  e pavlefshme (duhet të jetë njëra prej xx-small,x-"
 "small,small,medium,large,x-large,xx-large)\n"
 
+#. GRUT modified this item
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Asnjë karakteristikë \"%s\" tek elementi <%s>"
+msgstr "Asnjë atribut \"%s\" tek elementi <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
@@ -2223,13 +2224,14 @@ msgstr "Tema ka një ikonë menuje për funksionin %s dhe gjëndjen %s"
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Nuk është përcaktuar asnjë <draw_ops> me emrin \"%s\""
 
+#. GRUT modified this item
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
 #: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "Elementi <%s> nuk lejohet nën <%s>"
+msgstr "Elementi <%s> nuk lejohet para <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
@@ -3155,7 +3157,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikativi ka vendosur një _NET_WM_PID të gabuar %ld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4790
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3171,7 +3173,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5452
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3209,3 +3211,4 @@ msgid ""
 msgstr ""
 "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme për elementin %d në "
 "listë\n"
+
