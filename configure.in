@@ -198,7 +198,7 @@ fi
 ## or the render-specific check later
 have_xrender=no
 
-XCOMPOSITE_VERSION=1.0
+XCOMPOSITE_VERSION=0.2
 AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
 if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
    have_xcomposite=yes

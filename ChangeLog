@@ -1,5 +1,14 @@
 2005-01-28  Elijah Newren  <newren@gmail.com>
 
+	Patch from Tim Herold to handle xcomposite pkgconfig version
+	regression.  Fixes #149368.
+
+	* configure.in: Change XCOMPOSITE_VERSION from 1.0 to 0.2
+
+2005-01-28  Elijah Newren  <newren@gmail.com>
+
+	Correct misleading and inaccurate wording.  Fixes #165380.
+
 	* src/menu.c: Change wording of menu to "Always on Current
 	Workspace" from "Put on All Workspaces", remove a quick-key
 	conflict between "On _Top" and "Only on _This Workspace" by
