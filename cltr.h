@@ -43,15 +43,25 @@
 
 #define CLTR_MARK() CLTR_DBG("mark")
 
+typedef struct CltrTexturePool CltrTexturePool;
+
+struct CltrTexturePool
+{
+  GList  *texture_items;
+  gint    n_texture_items;
+  GLuint *gl_textures;
+};
+
 typedef struct ClutterMainContext ClutterMainContext;
 
 struct ClutterMainContext
 {
-  Display    *xdpy;
-  Window      xwin_root;
-  int         xscreen;
-  GC          xgc;
-  GLXContext  gl_context;
+  Display        *xdpy;
+  Window          xwin_root;
+  int             xscreen;
+  GC              xgc;
+  GLXContext      gl_context;
+  CltrTexturePool texture_pool;
 };
 
 typedef enum CltrDirection
@@ -86,6 +96,28 @@ typedef struct
 } 
 CltrXEventSource;
 
+/* texture stuff */
+
+typedef struct CltrImage CltrImage;
+
+struct CltrImage
+{
+  Pixbuf *pixb;
+
+  int    width, height;
+
+  int     n_x_tiles, n_y_tiles;
+  int    *tile_x_position, *tile_x_size, *tile_x_waste;
+  int    *tile_y_position, *tile_y_size, *tile_y_waste;
+
+  GLuint *tiles;
+
+  gint    refcnt; 
+};
+
+/* ******************* */
+
+#include "cltr-tex.h"
 #include "cltr-photo-grid.h"
 
 #endif

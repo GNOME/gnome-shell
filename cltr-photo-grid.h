@@ -32,8 +32,8 @@ struct ClutterPhotoGridCell
   Pixbuf *pixb;
   float   angle;
   GLuint  texref;
-
-  gint    anim_step;
+  CltrImage *img;
+  gint       anim_step;
 
   ClutterPhotoGridCellState state;
 };

@@ -475,6 +475,12 @@ pixbuf_unref(Pixbuf *pixb)
     }
 }
 
+void
+pixbuf_ref(Pixbuf *pixb)
+{
+  pixb->refcnt++;
+}
+
 Pixbuf*
 pixbuf_new_from_file(const char *filename)
 {
@@ -552,6 +558,14 @@ pixbuf_copy(Pixbuf *src_pixb,
   
   sp = src_pixb->data + (srcy * src_pixb->width) + srcx;
   dp = dst_pixb->data + (dsty * dst_pixb->width) + dstx;
+
+  /* basic source clipping - needed by texture tiling code */
+
+  if (srcx + srcw > src_pixb->width)
+    srcw = src_pixb->width - srcx;
+
+  if (srcy + srch > src_pixb->height)
+    srch = src_pixb->height - srcy;
 
   while (srch--)
     {

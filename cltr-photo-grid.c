@@ -219,8 +219,10 @@ cltr_photo_grid_populate(gpointer data)
 
   CLTR_DBG("estamited %i pixb's\n", n_pixb);
 
+  /*
   grid->texs = util_malloc0(sizeof(GLuint)*n_pixb);
   glGenTextures(n_pixb, grid->texs);
+  */
 
   g_dir_rewind (dir);
 
@@ -241,38 +243,9 @@ cltr_photo_grid_populate(gpointer data)
 	  g_snprintf(&buf[0], 24, "%i", i);
 	  font_draw(font, cell->pixb, buf, 10, 10);
 
-	  cell->texref = grid->texs[i];
-
 	  g_mutex_lock(Mutex_GRID);
 
-	  glBindTexture(GL_TEXTURE_2D, cell->texref);
-
-	  CLTR_GLERR();
-
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	  glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_REPLACE);
-
-	  CLTR_GLERR();
-
-	  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
-		       grid->tex_w,
-		       grid->tex_h,
-		       0, GL_RGBA, 
-		       GL_UNSIGNED_INT_8_8_8_8,
-		       grid->tex_data);
-
-	  CLTR_GLERR();
-
-	  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
-			   (GLsizei)cell->pixb->width,
-			   (GLsizei)cell->pixb->height,
-			   GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
-			   cell->pixb->data);
-
-	  CLTR_GLERR();
+	  cell->img = cltr_image_new(cell->pixb);
 
 	  g_mutex_unlock(Mutex_GRID);
 
@@ -312,25 +285,40 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glClearColor( 0.6, 0.6, 0.62, 1.0);
-
   if (grid->cells_tail == NULL)
     {
-        glPopMatrix();
-	glXSwapBuffers(CltrCntx.xdpy, grid->parent->xwin);  
-	return;
+      /* No pictures to paint yet */
+      glColor3f(0.6, 0.6, 0.62);
+      glRecti(0, 0, 640, 480);
+
+      glPopMatrix();
+      glXSwapBuffers(CltrCntx.xdpy, grid->parent->xwin);  
+      return;
     }
 
-  glEnable(GL_TEXTURE_2D);
+  /*
+   * Using GL_POLYGON_SMOOTH with 'regular' alpha blends causes ugly seems
+   * in the textures and texture tile borders. We therefore do this 'saturate'
+   * trick painting front -> back.
+   * 
+   * see http://blog.metawrap.com/blog/PermaLink.aspx?guid=db82f92e-9fc8-4635-b3e5-e37a1ca6ee0a 
+   * for more info
+   *
+   * Is there a better way.?
+  */
+
+  glClearColor( 0.0, 0.0, 0.0, 0.0 ); /* needed for saturate to work */
+
+  glEnable(GL_BLEND);
+
+  glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); /* needed  */
+
+  glEnable(GL_POLYGON_SMOOTH);
 
   glDisable(GL_LIGHTING); 
   glDisable(GL_DEPTH_TEST);
 
-  glEnable(GL_BLEND);
-  
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glEnable(GL_POLYGON_SMOOTH);
+  glBlendFunc(GL_SRC_ALPHA_SATURATE,GL_ONE);
 
   /* Assume zoomed out */
   zoom    = grid->zoom_min;
@@ -456,11 +444,6 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  thumb_w -= (2 * ew_border);
 	  thumb_h -= (2 * ns_border);
 
-	  /*
-	  x1 = x + ew_border;
-	  y1 = y + ns_border;
-	  */
-
 	  x1 = x + ((grid->cell_width - thumb_w)/2);
 	  y1 = y + ((grid->cell_height - thumb_h)/2);
 
@@ -479,8 +462,20 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	    /* Rotate around Z axis */
 	    glRotatef ( cell->angle, 0.0, 0.0, 1.0);
 
-	  /* Border - why need tex disabled ? */
+	  glEnable(GL_TEXTURE_2D);
+
+	  g_mutex_lock(Mutex_GRID);
+
+	  cltr_image_render_to_gl_quad(cell->img,
+				       -(thumb_w/2),
+				       -(thumb_h/2),
+				       (thumb_w/2),
+				       (thumb_h/2));
+
+	  g_mutex_unlock(Mutex_GRID);
+
 	  glDisable(GL_TEXTURE_2D);
+
 	  if (cell_item == grid->cell_active 
 	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
 	    glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -493,35 +488,6 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 		  (thumb_w/2)+4, (thumb_h/2)+ns_border);
 
 	  glEnable(GL_TEXTURE_2D);
-	  glEnable(GL_SMOOTH);
-
-	  g_mutex_lock(Mutex_GRID);
-
-	  glBindTexture(GL_TEXTURE_2D, cell->texref);
-
-	  /*
-	  if (cell == grid->cell_active 
-	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
-	    {
-	      glBegin (GL_QUADS);
-	      glTexCoord2f (tx, ty);   glVertex2i   (x2+5, y2+5);
-	      glTexCoord2f (0,  ty);   glVertex2i   (x1-5, y2+5);
-	      glTexCoord2f (0,  0);    glVertex2i   (x1-5, y1-5);
-	      glTexCoord2f (tx, 0);    glVertex2i   (x2+5, y1-5);
-	      glEnd ();	
-	    }
-	  else
-	  */
-	    {
-	      glBegin (GL_QUADS);
-	      glTexCoord2f (tx, ty);   glVertex2i ((thumb_w/2), (thumb_h/2));
-	      glTexCoord2f (0,  ty);   glVertex2i (-(thumb_w/2), (thumb_h/2));
-	      glTexCoord2f (0,  0);    glVertex2i (-(thumb_w/2), -(thumb_h/2));
-	      glTexCoord2f (tx, 0);    glVertex2i ((thumb_w/2), -(thumb_h/2));
-	      glEnd ();	
-	    }
-
-	    g_mutex_unlock(Mutex_GRID);
 
 	    /* back to regular non translated matrix */
 	   glPopMatrix();
@@ -541,16 +507,10 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
   glPopMatrix();
 
-  /*
+  /* finally paint background  */
   glDisable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glBlendFunc(GL_ONE, GL_SRC_ALPHA);
-  glColor4f(1.0, 1.0, 1.0, xxx);
+  glColor3f(0.6, 0.6, 0.62);
   glRecti(0, 0, 640, 480);
-
-  xxx += 0.01;
-  */
 
   glXSwapBuffers(CltrCntx.xdpy, grid->parent->xwin);  
 

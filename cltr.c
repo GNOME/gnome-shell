@@ -292,7 +292,17 @@ main(int argc, char **argv)
 {
   ClutterPhotoGrid *grid = NULL;
   ClutterWindow    *win = NULL;
+  /*
+  Pixbuf *p1, *p2, *p3;
 
+  p1 = pixbuf_new(2000,2000);
+  p2 = pixbuf_new(640,480);
+  p3 = pixbuf_scale_down(p1, 512, 512);
+
+  pixbuf_copy(p3, p2, 0,0, 1000, 1000,0,0);
+
+  exit(1);
+  */
   if (argc < 2)
     {
       g_printerr("usage: '%s' <path to not too heavily populated image dir>\n"
@@ -304,7 +314,7 @@ main(int argc, char **argv)
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 4, 4, argv[1]);
+  grid = cltr_photo_grid_new(win, 5, 5, argv[1]);
 
   Grid = grid; 			/* laaaaaazy globals */
 

@@ -47,6 +47,9 @@ void
 pixbuf_unref(Pixbuf *pixb);
 
 void
+pixbuf_ref(Pixbuf *pixb);
+
+void
 pixbuf_set_pixel(Pixbuf *pixb, int x, int y, PixbufPixel *p);
 
 void

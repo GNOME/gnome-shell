@@ -1,3 +1,17 @@
+2005-03-30  mallum,,,  <mallum@openedhand.com>
+
+	* Makefile:
+	* cltr-photo-grid.c: (cltr_photo_grid_populate),
+	(cltr_photo_grid_redraw):
+	* cltr-photo-grid.h:
+	* cltr-tex.c:
+	* cltr-tex.h:
+	* cltr.c: (main):
+	* cltr.h:
+	* pixbuf.c: (pixbuf_unref), (pixbuf_copy):
+	* pixbuf.h:
+	Add intial new texture tiling code.
+
 2005-03-27  mallum,,,  <mallum@openedhand.com>
 
 	* Makefile:
@@ -10,6 +24,7 @@
 	(main):
 	* cltr.h:
 	Add a very hacky threaded image loader. 
+	Make event handling a little more efficient, though still hacky
 	* pixbuf.c: (pixel_set_vals), pixbuf.h:
 	Add copy func ( unused as yet )
 
