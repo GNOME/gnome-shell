@@ -1,3 +1,7 @@
+Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
+
+	* configure.in (METACITY_LIBS): put -lXext into SHAPE_LIBS
+
 2002-06-03  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/tools/metacity-properties.desktop.in: Someone forgot to mark
