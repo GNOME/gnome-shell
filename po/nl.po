@@ -12,13 +12,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-16 16:04+0100\n"
-"PO-Revision-Date: 2005-02-16 22:54+0100\n"
+"POT-Creation-Date: 2005-02-22 15:40+0100\n"
+"PO-Revision-Date: 2005-02-23 00:57+0100\n"
 "Last-Translator: Michiel Sikkes <michiel@eyesopened.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:313
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -115,19 +115,19 @@ msgstr ""
 "Een ander programma gebruikt reeds de %s-toets met controletoets %x als "
 "toetsbinding\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fout bij het starten van een metacity-dialoogvenster om een foutmelding te "
 "tonen over een opdracht: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
 msgstr "Er is geen opdracht voor de terminal gedefinieerd.\n"
 
@@ -511,7 +511,6 @@ msgstr ""
 "font gebruiken voor venstertitels."
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -1208,7 +1207,6 @@ msgstr ""
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1719,7 +1717,6 @@ msgstr ""
 "actie niet aan een toets zijn gebonden."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -3178,7 +3175,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: src/window.c:5036
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3194,7 +3191,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5707
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
