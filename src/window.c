@@ -490,7 +490,7 @@ meta_window_new (MetaDisplay *display,
   window->top_strut = 0;
   window->bottom_strut = 0;
 
-  window->group = NULL;
+  window->cached_group = NULL;
 
   window->using_net_wm_name = FALSE;
   window->using_net_wm_icon_name = FALSE;
@@ -692,10 +692,6 @@ meta_window_new (MetaDisplay *display,
       }
   }
   
-  /* assign the window to its group, or create a new group if needed
-   */
-  meta_window_compute_group (window);
-
   /* Maximize windows if they are too big for their work
    * area (bit of a hack here). Assume undecorated windows
    * probably don't intend to be maximized.
