@@ -1,3 +1,8 @@
+2002-02-11  Anders Carlsson  <andersca@gnu.org>
+
+	* src/theme-parser.c (parse_toplevel_element): Always set 
+	title_scale_val.
+
 2002-02-11  Bastien Nocera  <hadess@hadess.net>
 
 	* src/theme-viewer.c: (main): change default theme to be Atlanta
