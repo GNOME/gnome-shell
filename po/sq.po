@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-29 12:38+0200\n"
+"POT-Creation-Date: 2004-07-04 21:24+0200\n"
 "PO-Revision-Date: 2004-06-29 12:42+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -50,7 +50,8 @@ msgstr "Gabim gjatë leximit të dialogut të proçesit: %s\n"
 
 #: src/delete.c:338
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Gabim gjatë lëshimit të dritares së dialogut metacity për të pyetur nëse "
 "dëshiron të përfundosh një program: %s\n"
@@ -152,8 +153,10 @@ msgstr "Gabim gjatë skanimit të directory të temave: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Nuk u gjet asnjë temë! Sigurohu që %s ekziston dhe përmban temat e zakonshme."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Nuk u gjet asnjë temë! Sigurohu që %s ekziston dhe përmban temat e zakonshme."
 
 #: src/main.c:521
 #, c-format
@@ -336,7 +339,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "Dritarja \"%s\" nuk përgjigjet."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Duke detyruar me forcë përfundimin e këtij programi mund të humbisni çdo "
 "ndryshim të paruajtur."
@@ -376,7 +380,8 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(E pakompletuar) Lundrimi funksionon në nivel programi, jo në nivel dritareje"
+msgstr ""
+"(E pakompletuar) Lundrimi funksionon në nivel programi, jo në nivel dritareje"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -466,7 +471,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Disaktivo funksionet e kërkuara nga programet e vjetër ose jo funksionues"
+msgstr ""
+"Disaktivo funksionet e kërkuara nga programet e vjetër ose jo funksionues"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -534,7 +540,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Nëse e vërtetë, hiqet lehtësia e përdorimit në favor të konsumit më të ulët"
+msgstr ""
+"Nëse e vërtetë, hiqet lehtësia e përdorimit në favor të konsumit më të ulët"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -558,7 +565,8 @@ msgstr "Minimizo dritaren"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr "Ndryshues që duhet përdorur për veprimet mbi dritare me pulsantët e mouse"
+msgstr ""
+"Ndryshues që duhet përdorur për veprimet mbi dritare me pulsantët e mouse"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
@@ -592,7 +600,8 @@ msgstr "Lëviz fokusin midis dritareve me dialogun popup"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr "Lëvize, në drejtim të kundërt, fokusi midis dritareve me dialogun popup"
+msgstr ""
+"Lëvize, në drejtim të kundërt, fokusi midis dritareve me dialogun popup"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -682,7 +691,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr "Sill dritaren në plan të parë po të jetë e mbuluar, përndryshe në sfond"
+msgstr ""
+"Sill dritaren në plan të parë po të jetë e mbuluar, përndryshe në sfond"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
@@ -1875,9 +1885,10 @@ msgstr ""
 "një 'beep', i dobishëm për të 'rënët nga veshët' apo për përdorim gjatë "
 "programimit, apo kur 'sinjalet me tinguj' nuk janë aktivë."
 
+#. GRUT modified this item
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize window"
-msgstr "Demaksimizo dritaren"
+msgstr "Ç'maksimizo dritaren"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1943,7 +1954,8 @@ msgstr ""
 #: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
+msgstr ""
+"Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
 
 #: src/prefs.c:1389
 #, c-format
@@ -1962,7 +1974,8 @@ msgstr ""
 #: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Gabim gjatë vendosjes së emrit të hapësirës së punës %d në \"%s\": %s\n"
+msgstr ""
+"Gabim gjatë vendosjes së emrit të hapësirës së punës %d në \"%s\": %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1985,7 +1998,8 @@ msgstr ""
 
 #: src/screen.c:439
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "E pamundur marrja e zgjedhjes së organizuesit të dritares për screen %d tek "
 "display \"%s\"\n"
@@ -1993,7 +2007,8 @@ msgstr ""
 #: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Screen %d tek display \"%s\" aktualisht e ka një organizues dritareje\n"
+msgstr ""
+"Screen %d tek display \"%s\" aktualisht e ka një organizues dritareje\n"
 
 #: src/screen.c:688
 #, c-format
@@ -2117,7 +2132,8 @@ msgstr "Këndi duhet të jetë midis 0.0 dhe 360.0, e jo %g\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alpha duhet të jetë midis 0.0 (e tejdukshme) dhe 1.0 (opake), e jo %g\n"
+msgstr ""
+"Alpha duhet të jetë midis 0.0 (e tejdukshme) dhe 1.0 (opake), e jo %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2160,7 +2176,8 @@ msgstr "<%s> gjeometria \"%s\" nuk është përcaktuar"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> duhet të specifikojë një gjeometri ose një prind që ka një gjeometri"
+msgstr ""
+"<%s> duhet të specifikojë një gjeometri ose një prind që ka një gjeometri"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2216,7 +2233,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Asnjë karakteristikë \"value\" në elementin <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "I pamundur specifikimi si i button_width/button_height ashtu dhe "
 "proporcionet për pulsantët"
@@ -2385,7 +2403,8 @@ msgstr "Asnjë <draw_ops> e quajtur \"%s\" është përcaktuar"
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Përfshirja e draw_ops \"%s\" këtu do të provokojë një riferiment qarkor"
+msgstr ""
+"Përfshirja e draw_ops \"%s\" këtu do të provokojë një riferiment qarkor"
 
 #: src/theme-parser.c:3153
 #, c-format
@@ -2520,7 +2539,8 @@ msgstr "Elementi i jashtëm në temë duhet të jetë <metacity_theme> e jo <%s>
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Elementi <%s> nuk lejohet në brendësi të elementëve name/author/date/"
 "description"
@@ -2532,7 +2552,8 @@ msgstr "Elementi <%s> nuk lejohet në brendësi të elementit <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elementi <%s> nuk lejohet në brendësi të elementëve distance/border/"
 "aspect_ratio"
@@ -2762,7 +2783,8 @@ msgstr "Ekspresioni i provës së pozicionit u përgjigj me TRUE por jep gabim"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr "Ekspresioni i provës së pozicionit u përgjigj me FALSE por nuk jep gabim"
+msgstr ""
+"Ekspresioni i provës së pozicionit u përgjigj me FALSE por nuk jep gabim"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2819,7 +2841,8 @@ msgstr "gjeometria e frame nuk specifikon dimensionin \"%s\""
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "gjeometria e frame nuk specifikon dimensionin \"%s\" për kornizën \"%s\""
+msgstr ""
+"gjeometria e frame nuk specifikon dimensionin \"%s\" për kornizën \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2884,7 +2907,8 @@ msgstr "Vlera alpha \"%s\" në ngjyrën e sfumuar nuk gjendet midis 0.0 dhe 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formati i hijes është \"shade/base_color/factor\", \"%s\" nuk bën pjesë në "
 "format"
@@ -2928,7 +2952,8 @@ msgstr "Koordinata përmban numrin e plotë '%s' që nuk mund të analizohet"
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Koordinata përmban një operator të panjohur në fillim të këtij teksti: \"%s\""
+msgstr ""
+"Koordinata përmban një operator të panjohur në fillim të këtij teksti: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2939,14 +2964,16 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordinata rezulton një pjestim me zero"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Koordinata përpiqet të përdorë një operator në një numër me presje të "
 "lëvizëshme"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinata ka një operator \"%s\" atje ku pritej një operim"
 
 #: src/theme.c:1845
@@ -3007,8 +3034,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Mungon <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Mungon <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -3041,7 +3070,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Konstantet e përcaktuara nga përdoruesi duhet të fillojnë me një gërmë të "
 "madhe, \"%s\" nuk fillon me gërmë të madhe"
@@ -3165,7 +3195,8 @@ msgstr "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme për elementin %d në "
 "listë\n"
