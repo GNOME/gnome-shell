@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2003-01-21 11:41+0100\n"
-"PO-Revision-Date: 2003-01-21 11:43+0100\n"
+"POT-Creation-Date: 2003-01-25 09:30+0100\n"
+"PO-Revision-Date: 2003-01-25 09:57+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -107,14 +107,14 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/keybindings.c:2246
+#: src/keybindings.c:2317
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Feil under oppstart av metacity-dialog for å skrive ut en feil om en "
 "kommando: %s\n"
 
-#: src/keybindings.c:2277
+#: src/keybindings.c:2348
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
@@ -476,7 +476,8 @@ msgstr "Minimer et vindu"
 
 #: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
-msgstr "Endringstast som skal brukes for modifiserte handlinger ved klikk i vinduet"
+msgstr ""
+"Endringstast som skal brukes for modifiserte handlinger ved klikk i vinduet"
 
 #: src/metacity.schemas.in.h:24
 msgid "Move a window"
@@ -704,13 +705,7 @@ msgid ""
 "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen for kjøring av en korresponderende kommando i /apps/metacity/"
-"keybinding_commands. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;"
-"Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og "
-"store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;"
-"Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen "
-"«deaktivert», vil det ikke være en tastebinding for denne handlingen."
+msgstr "Tastebindingen for kjøring av en korresponderende kommando i /apps/metacity/keybinding_commands. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:75
 msgid ""
@@ -720,13 +715,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:76
 msgid ""
@@ -736,7 +725,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområdet under aktivt arbeidsområde. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:77
 msgid ""
@@ -746,7 +735,7 @@ msgid ""
 "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområdet til venstre for aktivt arbeidsområde. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:78
 msgid ""
@@ -756,7 +745,7 @@ msgid ""
 "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområdet til høyre for aktivt arbeidsområde. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:79
 msgid ""
@@ -765,7 +754,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 1. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -774,7 +763,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 10. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -783,7 +772,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 11. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -792,7 +781,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 12. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -801,7 +790,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 2. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -810,7 +799,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 3. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -819,7 +808,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 4. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -828,7 +817,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 5. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -837,7 +826,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 6. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -846,7 +835,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 7. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -855,7 +844,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 8. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -864,7 +853,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som bytter til arbeidsområde 9. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -873,7 +862,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å aktivere vindumenyen. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -882,7 +871,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -892,7 +881,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å aktivere «flyttemodus» og starte flytting av et vindu med tastaturet. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -902,7 +891,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å aktivere «modus for endring av størrelse» og starte endring av størrelse av vinduet med tastaturet. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -912,23 +901,16 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å skjule alle normale vinduer og sette fokus til skrivebordsbakgrunnen. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som maksimerer et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -937,7 +919,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å minimere et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -947,7 +929,7 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu et arbeidsområde ned. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -957,7 +939,7 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu et arbeidsområde til venstre. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -967,7 +949,7 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu et arbeidsområde til høyre. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -976,7 +958,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu et arbeidsområde opp. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -985,7 +967,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 1. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -994,7 +976,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 10. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1003,7 +985,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 11. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1012,7 +994,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 12. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1021,7 +1003,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 2. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1030,7 +1012,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 3. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1039,7 +1021,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 4. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1048,7 +1030,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 5. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1057,7 +1039,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 6. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1066,7 +1048,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 7. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1075,7 +1057,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 8. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1084,10 +1066,9 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å flytte et vindu til arbeidsområde 9. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1095,16 +1076,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom panelene og skrivebordet, med en "
-"dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;"
-"Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, "
-"i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du "
-"setter alternativet til den spesielle strengen «deaktivert», vil det ikke "
-"være en tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom paneler og skrivebordet baklengs, med en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1112,16 +1086,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom panelene og skrivebordet, uten en "
-"dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;"
-"Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, "
-"i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du "
-"setter alternativet til den spesielle strengen «deaktivert», vil det ikke "
-"være en tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom panelene og skrivebordet baklengs, uten en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1130,16 +1097,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom vinduer uten en dialog. Formatet ser "
-"slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er "
-"ganske liberal og tillater små og store bokstaver, i tillegg til "
-"forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom vinduer baklengs uten en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1148,13 +1108,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom vinduer med en dialog. Formatet ser "
-"slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er "
-"ganske liberal og tillater små og store bokstaver, i tillegg til "
-"forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom vinduer, med en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1164,13 +1118,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom panelene og skrivebordet, med en "
-"dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;"
-"Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, "
-"i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du "
-"setter alternativet til den spesielle strengen «deaktivert», vil det ikke "
-"være en tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom panelene og skrivebordet, med en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1180,16 +1128,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom panelene og skrivebordet, uten en "
-"dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;"
-"Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, "
-"i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du "
-"setter alternativet til den spesielle strengen «deaktivert», vil det ikke "
-"være en tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom panelene og skrivebordet, uten en dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1198,16 +1139,9 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom vinduer uten en dialog. Formatet ser "
-"slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er "
-"ganske liberal og tillater små og store bokstaver, i tillegg til "
-"forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom vinduer uten en dialog. (Tradisjonelt &lt;Alt&gt;Escape) Hvis du holder nede «shift»-tasten mens du bruker denne bindingen snur om på bevegelsesretningen. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1216,13 +1150,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter fokus mellom vinduer med en dialog. Formatet ser "
-"slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er "
-"ganske liberal og tillater små og store bokstaver, i tillegg til "
-"forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som bytter fokus mellom vinduer med en dialog. (Tradisjonelt &lt;Alt&gt;Tab) Hvis du holder «shift»-tasten nede snur du om på retningen. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1231,7 +1159,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å bytte mellom fullskjermmodus. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1240,7 +1168,7 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes for å maksimering. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1249,7 +1177,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å bytte mellom skyggelagt/ikke skyggelagt tilstand. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1259,23 +1187,16 @@ msgid ""
 "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "Tastebindingen som brukes til å bytte mellom visning av vinduet på alle arbeidsområder eller kun ett. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen som gjenoppretter et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:127
 msgid "The name of a workspace."
@@ -1291,7 +1212,7 @@ msgstr "Tema bestemmer utseende for vinduskanter, tittellinje osv."
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr ""
+msgstr "Pause før et vindu heves hvis auto_raise er satt. Pausen er gitt i tusendelsekunder."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1303,7 +1224,6 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1313,48 +1233,27 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Denne tastebindingen endrer om et vindu er over eller under andre vinduer. Hvis vinduet er dekket av et annet vindu blir det hevet over andre vinduer. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Denne tastebindingen senker et vindu under andre vinduer. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Denne tastebindingen hever vinduer over andre vinduer. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1362,16 +1261,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Tastebindingen endrer størrelse på et vindu til det fyller all horisontall plass. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1379,13 +1271,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
-"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
-"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
-"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
-"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
-"tastebinding for denne handlingen."
+msgstr "Denne bindingen endrer størrelse på et vindu til det fyller all vertikal plass. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -2472,7 +2358,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5457
+#: src/window.c:5471
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
