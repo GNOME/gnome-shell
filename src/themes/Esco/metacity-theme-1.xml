@@ -102,7 +102,7 @@
 		x2="0"
 		y2="height * 1.5 + 2"/>
 </draw_ops>
-<draw_ops name="menu_button_pressed_contents">
+<draw_ops name="menu_button_pressed">
 	<clip x="5" y="5" width="width - 10" height="height - 10"/>
 	<rectangle color="gtk:fg[ACTIVE]" filled="true"
 		x="ButtonIPad"
@@ -140,7 +140,7 @@
 		x2="width - ButtonIPad - 1"
 		y2="height - ButtonIPad - 2"/>
 </draw_ops>
-<draw_ops name="minimize_button_pressed_contents">
+<draw_ops name="minimize_button_pressed">
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
 		x="ButtonIPad"
 		y="ButtonIPad"
@@ -187,7 +187,7 @@
 		width="width-ButtonIPad*2-1"
 		height="height-ButtonIPad*2-1"/>
 </draw_ops>
-<draw_ops name="maximize_button_pressed_contents">
+<draw_ops name="maximize_button_pressed">
 	<line color="gtk:fg[INSENSITIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="ButtonIPad + 2"
@@ -244,7 +244,7 @@
 		x2="width - (ButtonIPad * 2) - 2"
 		y2="ButtonIPad + 4 + 2"/>
 </draw_ops>
-<draw_ops name="restore_button_pressed_contents">
+<draw_ops name="restore_button_pressed">
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
 		x="ButtonIPad"
 		y="ButtonIPad"
@@ -312,7 +312,7 @@
 		width="1"
 		height="1"/>
 </draw_ops>
-<draw_ops name="close_button_pressed_contents">
+<draw_ops name="close_button_pressed">
 	<line color="gtk:fg[ACTIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="ButtonIPad + 1"
@@ -336,57 +336,6 @@
 		height="1"/>
 </draw_ops>
 <!-- End Buttons Icons -->
-
-<!-- Buttons -->
-<draw_ops name="close_button_normal">
-	<include name="button_normal_bg"/>
-	<include name="close_button_focused"/>
-</draw_ops>
-
-<draw_ops name="close_button_pressed">
-	<include name="button_pressed_bg"/>
-	<include name="close_button_pressed_contents"/>
-</draw_ops>
-
-<draw_ops name="menu_button_normal">
-	<include name="button_normal_bg"/>
-	<include name="menu_button_focused"/>
-</draw_ops>
-
-<draw_ops name="menu_button_pressed">
-	<include name="button_pressed_bg"/>
-	<include name="menu_button_pressed_contents"/>
-</draw_ops>
-
-<draw_ops name="maximize_button_normal">
-	<include name="button_normal_bg"/>
-	<include name="maximize_button_focused"/>
-</draw_ops>
-
-<draw_ops name="maximize_button_pressed">
-	<include name="button_pressed_bg"/>
-	<include name="maximize_button_pressed_contents"/>
-</draw_ops>
-
-<draw_ops name="restore_button_normal">
-	<include name="button_normal_bg"/>
-	<include name="restore_button_focused"/>
-</draw_ops>
-
-<draw_ops name="restore_button_pressed">
-	<include name="button_pressed_bg"/>
-	<include name="restore_button_pressed_contents"/>
-</draw_ops>
-
-<draw_ops name="minimize_button_normal">
-	<include name="button_normal_bg"/>
-	<include name="minimize_button_focused"/>
-</draw_ops>
-
-<draw_ops name="minimize_button_pressed">
-	<include name="button_pressed_bg"/>
-	<include name="minimize_button_pressed_contents"/>
-</draw_ops>
 
 <!-- Outer Bevel -->
 <draw_ops name="outer_bevel">
@@ -514,34 +463,68 @@
 <frame_style name="normal_unfocused" geometry="normal">
 	<piece position="entire_background" draw_ops="background"/>
 
-	<!-- we don't specify for prelight, so normal is used -->
-	<button function="close" state="normal" draw_ops="close_button"/>
-	<button function="close" state="pressed" draw_ops="close_button_pressed"/>
-
 	<piece position="title" draw_ops="title_normal"/>
 
-	<button function="menu" state="normal" draw_ops="menu_button"/>
-	<button function="menu" state="pressed" draw_ops="menu_button_pressed"/>
-	<button function="maximize" state="normal"
-		draw_ops="maximize_button"/>
-	<button function="maximize" state="pressed"
-		draw_ops="maximize_button_pressed"/>
+	<!-- we don't specify for normal or prelight, so nothing is used for
+		 those -->
+	<button function="left_left_background" state="pressed"
+		draw_ops="button_pressed_bg"/>
+	<button function="left_middle_background" state="pressed"
+		draw_ops="button_pressed_bg"/>
+	<button function="left_right_background" state="pressed"
+  		draw_ops="button_pressed_bg"/>
+	<button function="right_left_background" state="pressed"
+		draw_ops="button_pressed_bg"/>
+	<button function="right_middle_background" state="pressed"
+		draw_ops="button_pressed_bg"/>
+	<button function="right_right_background" state="pressed"
+		draw_ops="button_pressed_bg"/>
+
+	<button function="menu" state="normal"
+		draw_ops="menu_button"/>
+	<button function="menu" state="pressed"
+		draw_ops="menu_button_pressed"/>
+
 	<button function="minimize" state="normal"
 		draw_ops="minimize_button"/>
 	<button function="minimize" state="pressed"
 		draw_ops="minimize_button_pressed"/>
+
+	<button function="maximize" state="normal"
+		draw_ops="maximize_button"/>
+	<button function="maximize" state="pressed"
+		draw_ops="maximize_button_pressed"/>
+
+	<button function="close" state="normal"
+		draw_ops="close_button"/>
+	<button function="close" state="pressed"
+		draw_ops="close_button_pressed"/>
 </frame_style>
 
 <frame_style name="normal_focused" geometry="normal" parent="normal_unfocused">
 	<piece position="entire_background" draw_ops="background_focused"/>
 	<piece position="title" draw_ops="title_focused"/>
 
-	<button function="close" state="normal" draw_ops="close_button_normal"/>
-	<button function="menu" state="normal" draw_ops="menu_button_normal"/>
+	<!-- we don't specify for prelight, so normal is used -->
+	<button function="left_left_background" state="normal"
+		draw_ops="button_normal_bg"/>
+	<button function="left_middle_background" state="normal"
+		draw_ops="button_normal_bg"/>
+	<button function="left_right_background" state="normal"
+  		draw_ops="button_normal_bg"/>
+	<button function="right_left_background" state="normal"
+		draw_ops="button_normal_bg"/>
+	<button function="right_middle_background" state="normal"
+		draw_ops="button_normal_bg"/>
+	<button function="right_right_background" state="normal"
+		draw_ops="button_normal_bg"/>
+
+	<button function="close" state="normal" draw_ops="close_button_focused"/>
+	<button function="menu" state="normal" draw_ops="menu_button_focused"/>
 	<button function="maximize" state="normal"
-		draw_ops="maximize_button_normal"/>
+		draw_ops="maximize_button_focused"/>
 	<button function="minimize" state="normal"
-		draw_ops="minimize_button_normal"/>
+		draw_ops="minimize_button_focused"/>
 </frame_style>
 
 <frame_style name="maximized_unfocused" geometry="normal_small_borders"
@@ -557,7 +540,7 @@
 	parent="normal_focused">
 	<piece position="entire_background" draw_ops="outline_focused"/>
 	<button function="maximize" state="normal"
-		draw_ops="restore_button_normal"/>
+		draw_ops="restore_button_focused"/>
 	<button function="maximize" state="pressed"
 		draw_ops="restore_button_pressed"/>
 </frame_style>
