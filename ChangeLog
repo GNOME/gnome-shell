@@ -1,3 +1,7 @@
+2002-06-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/main.c (main): fix spelling error, #85452
+
 2002-06-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c (meta_display_process_key_event): don't pass a

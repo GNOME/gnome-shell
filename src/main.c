@@ -287,7 +287,7 @@ main (int argc, char **argv)
     meta_ui_set_current_theme ("Crux", FALSE);
 
   if (!meta_ui_have_a_theme ())
-    meta_fatal (_("Could not find a theme! Be sure %s exits and contains the usual themes."),
+    meta_fatal (_("Could not find a theme! Be sure %s exists and contains the usual themes."),
                 METACITY_PKGDATADIR"/themes");
   
   /* Connect to SM as late as possible - but before managing display,
