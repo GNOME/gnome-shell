@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-28 17:40+0100\n"
+"POT-Creation-Date: 2004-01-05 22:22+0100\n"
 "PO-Revision-Date: 2003-12-28 20:04+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -52,7 +52,8 @@ msgstr "Feil under lesing frå dialogvisingsprosess: %s\n"
 
 #: src/delete.c:338
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Kunne ikkje starta metacity-dialogen som spør om å drepa ein applikasjon: %"
 "s\n"
@@ -115,7 +116,8 @@ msgstr ""
 #: src/keybindings.c:2554
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
+msgstr ""
+"Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
 
 #: src/keybindings.c:2627
 #, c-format
@@ -153,7 +155,8 @@ msgstr "Klarte ikkje å søka gjennom draktmappa: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Kunne ikkje finna ei drakt! Kontroller at %s finst og inneheld dei vanlege "
 "draktene."
@@ -339,7 +342,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "Vindauget «%s» svarar ikkje."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Dersom du tvingar denne applikasjonen til å avslutta, vil alle ulagra "
 "endringar gå tapt."
@@ -471,7 +475,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Slå av uønskte funksjonar som krevst av gamle eller øydelagte applikasjonar"
+msgstr ""
+"Slå av uønskte funksjonar som krevst av gamle eller øydelagte applikasjonar"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -509,9 +514,9 @@ msgid ""
 msgstr ""
 "Dersom sann, vil Metacity gje brukaren mindre tilbakemelding og mindre "
 "kjensle av direkte manipulering, ved å bruka trådrammer, unngå animasjonar, "
-"og andre teknikkar. Dette gjer Metacity mindre brukarvennleg for mange, "
-"men vil også la gamle program og terminaltenarar fungera når dei "
-"elles ville vore for upraktiske."
+"og andre teknikkar. Dette gjer Metacity mindre brukarvennleg for mange, men "
+"vil også la gamle program og terminaltenarar fungera når dei elles ville "
+"vore for upraktiske."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1735,7 +1740,8 @@ msgstr "Skjermbiletekommandoen"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Drakta avgjer korleis vindaugekantar, tittellinjer og så vidare ser ut."
+msgstr ""
+"Drakta avgjer korleis vindaugekantar, tittellinjer og så vidare ser ut."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1996,8 +2002,10 @@ msgstr ""
 
 #: src/screen.c:453
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Kunne ikkje henta utvalet frå vindaugehandsamaren på skjerm %d display «%s»\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Kunne ikkje henta utvalet frå vindaugehandsamaren på skjerm %d display «%s»\n"
 
 #: src/screen.c:511
 #, c-format
@@ -2177,7 +2185,8 @@ msgstr "<%s> geometri «%s» er ikkje definert"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> må spesifisere anten ein geometri eller eit opphav som har geometri"
+msgstr ""
+"<%s> må spesifisere anten ein geometri eller eit opphav som har geometri"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2233,8 +2242,10 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Ingen «value»-attributt på elementet <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "Kan ikkje oppgje både button_width/button_height og forholdstal for knappar"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr ""
+"Kan ikkje oppgje både button_width/button_height og forholdstal for knappar"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2494,7 +2505,8 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Stilen er alt spesifisert for tilstand %s, storleiksendring %s, fokus %s"
+msgstr ""
+"Stilen er alt spesifisert for tilstand %s, storleiksendring %s, fokus %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2533,8 +2545,10 @@ msgstr "Det ytste elementet i drakta må vera <metacity_theme>, ikkje <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Elementet <%s> er ikkje tillate inni eit name/author/date/description-element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Elementet <%s> er ikkje tillate inni eit name/author/date/description-element"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2543,8 +2557,10 @@ msgstr "Elementet <%s> er ikkje tillate inne i eit <constant>-element"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Elementet <%s> er ikkje tillate inni eit distance/border/aspect_ratio-element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Elementet <%s> er ikkje tillate inni eit distance/border/aspect_ratio-element"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2759,9 +2775,9 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"Teikna %d rammer på %g sekund hjå klienten (%g millisekund per ramme), og "
-"%g sekund etter vegguret inkludert X-tenar-ressursar "
-"(%g millisekund per ramme)\n"
+"Teikna %d rammer på %g sekund hjå klienten (%g millisekund per ramme), og %g "
+"sekund etter vegguret inkludert X-tenar-ressursar (%g millisekund per "
+"ramme)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -2798,7 +2814,8 @@ msgstr "y-verdien var %d, venta %d"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinatuttrykk tolka på %g sekund (%g sekund per uttrykk i snitt)\n"
+msgstr ""
+"%d koordinatuttrykk tolka på %g sekund (%g sekund per uttrykk i snitt)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2888,8 +2905,10 @@ msgstr "Alfaverdien «%s» i blanda farge er ikkje mellom 0.0 og 1.0."
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Skuggeformatet er «shade/base_color/factor», «%s» passar ikkje inn i formatet"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Skuggeformatet er «shade/base_color/factor», «%s» passar ikkje inn i formatet"
 
 #: src/theme.c:1122
 #, c-format
@@ -2941,12 +2960,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrykket fører til deling på null"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrykket prøver å bruka mod-operatoren på eit flyttal"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrykket har ein operator «%s» der ein operand var venta"
 
 #: src/theme.c:1845
@@ -2989,7 +3010,8 @@ msgstr "Koordinatuttrykket hadde ein opneparentes men ingen sluttparantes"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Koordinatuttrykket ser ikkje ut til å ha nokon operatorar eller operandar"
+msgstr ""
+"Koordinatuttrykket ser ikkje ut til å ha nokon operatorar eller operandar"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
@@ -3007,8 +3029,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Manglande <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Manglande <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -3041,8 +3065,10 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "Brukardefinerte konstantar må byrja med stor bokstav; «%s» gjer det ikkje"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Brukardefinerte konstantar må byrja med stor bokstav; «%s» gjer det ikkje"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
@@ -3162,7 +3188,8 @@ msgstr "Eigenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8 for oppføring %d i "
 "lista\n"
@@ -3172,4 +3199,3 @@ msgstr ""
 
 #~ msgid "Move to %s"
 #~ msgstr "Flytt til %s"
-
