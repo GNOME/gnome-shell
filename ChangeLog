@@ -1,5 +1,10 @@
 2001-12-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/menu.c (meta_window_menu_new): don't do mnemonics for
+	workspaces above 9
+
+2001-12-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_new): oops, remove extra workspace
 	creation, and update to current pref.
 	
