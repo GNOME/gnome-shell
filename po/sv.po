@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-19 01:11+0200\n"
-"PO-Revision-Date: 2002-08-19 01:13+0200\n"
+"POT-Creation-Date: 2002-08-19 22:27+0200\n"
+"PO-Revision-Date: 2002-08-19 22:28+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -358,7 +358,7 @@ msgstr "Minimera ett fönster"
 
 #: src/metacity.schemas.in.h:16
 msgid "Move a window"
-msgstr "Stäng ett fönster"
+msgstr "Flytta ett fönster"
 
 #: src/metacity.schemas.in.h:17
 msgid "Move focus between panels and the desktop"

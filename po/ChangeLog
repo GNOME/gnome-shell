@@ -1,5 +1,9 @@
 2002-08-19  Christian Rose  <menthos@menthos.com>
 
+	* sv.po: Fixed a bug. Thanks to rhult for reporting it.
+
+2002-08-19  Christian Rose  <menthos@menthos.com>
+
 	* sv.po: Updated Swedish translation.
 
 2002-08-18  Hasbullah Bin Pit <sebol@ikhlas.com>
