@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-18 04:11+0200\n"
+"POT-Creation-Date: 2004-08-19 12:10+0200\n"
 "PO-Revision-Date: 2004-07-27 17:54+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -111,14 +111,14 @@ msgstr ""
 "Ndonjë program tjetër është duke përdorur kombinimin e pulsantit %s me "
 "ndryshuesin %x\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2524
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Gabim gjatë lëshimit të dritares së dialogut të metacity për të lajmëruar "
 "një gabim në lidhje me një komandë: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2597
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komanda %d nuk është përcaktuar.\n"
@@ -187,13 +187,15 @@ msgstr "_Ç'mbështille"
 msgid "On _Top"
 msgstr "Në _Krye"
 
+#. GRUT modified this item
 #: src/menu.c:61
 msgid "_Move"
-msgstr "_Lëvize"
+msgstr "_Lëviz"
 
+#. GRUT modified this item
 #: src/menu.c:62
 msgid "_Resize"
-msgstr "_Ridimensiono"
+msgstr "_Ripërmaso"
 
 #. separator
 #: src/menu.c:64
@@ -3146,7 +3148,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikativi ka vendosur një _NET_WM_PID të gabuar %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4951
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3162,7 +3164,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5622
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3200,3 +3202,4 @@ msgid ""
 msgstr ""
 "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme për elementin %d në "
 "listë\n"
+
