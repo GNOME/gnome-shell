@@ -1,3 +1,14 @@
+2005-03-25  mallum,,,  <mallum@openedhand.com>
+
+	* cltr-photo-grid.c: (cltr_photo_grid_cell_new),
+	(ctrl_photo_grid_get_zoomed_coords), (cltr_photo_grid_redraw),
+	(cltr_photo_grid_new):
+	* cltr-photo-grid.h:
+	* cltr.c: (cltr_window_new), (idle_cb), (main):
+	Use GL matrices in a saner way.
+	Add random rotation to picts
+	Random minor tweaks
+
 2005-03-24  mallum,,,  <mallum@openedhand.com>
 
 	* Makefile:

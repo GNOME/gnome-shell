@@ -37,6 +37,8 @@ cltr_photo_grid_cell_new(ClutterPhotoGrid *grid,
 
   CLTR_DBG ("loaded %s at %ix%i", filename, neww, newh);
 
+  cell->angle = 6.0 - (rand()%12);
+
   return cell;
 }
 
@@ -69,48 +71,16 @@ static void
 ctrl_photo_grid_get_zoomed_coords(ClutterPhotoGrid *grid,
 				  int              x,
 				  int              y,
-				  float            zoom,
 				  float           *tx,
 				  float           *ty)
 {
-  int max_x = grid->n_cols-1;
-
-  /* XXX figure out what magic 2.0 value comes from */
-
-  /*
-  *tx = (float)( (max_x-x) - 1.0 ) * 2.0;
-  *ty = (float)( y - 1.0 ) * 2.0;
-  */
-
   /* 
-   3x3 0,0 -> 2,-2
-
-   5x5 0,0 ->
-  *tx = 4.0;
-  *ty = -4.0;
-
-  4x4 0,0 -> 3.0, -3.0
+   * figure out translate co-ords for the cell at x,y to get translated
+   * so its centered for glScale to zoom in on it.
   */
 
-  /*
-  float trange = ((float)(grid->n_cols - 1.0) * 2.0);
-  float xrange = (float)grid->n_cols - 1.0;
-  */
-
-  /*
-  *tx = ((max_x-x) * (trange/xrange)) - (trange/2);
-  *ty = (y * (trange/xrange)) - (trange/2);
-  */
-
-  /* assumes rows = cols */
-
-  *tx = ((max_x-x) * 2.0) - (grid->n_cols - 1.0);
-  *ty = (y * 2.0) - (grid->n_cols - 1.0);
-
-  /*
-  *tx = ((max_x-x) * (grid->zoom_max/2.0)) - (grid->n_cols - 1.0);
-  *ty = (y * (grid->zoom_max/2.0)) - (grid->n_cols - 1.0);
-  */
+  *tx = (float)grid->cell_width  * (grid->zoom_max) * x * -1.0;
+  *ty = (float)grid->cell_height * (grid->zoom_max) * y * -1.0;
 }
 
 void
@@ -155,7 +125,7 @@ cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
 	  
       ctrl_photo_grid_cell_to_coords(grid, grid->cell_active, &x, &y);
 
-      ctrl_photo_grid_get_zoomed_coords(grid, x, y, zoom, 
+      ctrl_photo_grid_get_zoomed_coords(grid, x, y,
 					&grid->view_max_x,
 					&grid->view_max_y);
 				       
@@ -292,6 +262,12 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
   glDisable(GL_LIGHTING); 
   glDisable(GL_DEPTH_TEST);
 
+  glEnable(GL_BLEND);
+  
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glEnable(GL_POLYGON_SMOOTH);
+
   /* Assume zoomed out */
   zoom    = grid->zoom_min;
   trans_x = grid->view_min_x;
@@ -402,10 +378,15 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  thumb_w -= (2 * ew_border);
 	  thumb_h -= (2 * ns_border);
 
+	  /*
 	  x1 = x + ew_border;
 	  y1 = y + ns_border;
+	  */
 
-	  x2 = x1 + thumb_w; 
+	  x1 = x + ((grid->cell_width - thumb_w)/2);
+	  y1 = y + ((grid->cell_height - thumb_h)/2);
+
+	  x2 = x1 + thumb_w;
 	  y2 = y1 + thumb_h;
 
 	  tx = (float) pixb->width  / grid->tex_w;
@@ -413,18 +394,27 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
 	  glPushMatrix();
 
-#if 0
-	  glRotatef ( 45.0, x1+(thumb_w/2) - 320, 0.0 /*y2+(thumb_h/2) - 240*/, 0.0);
-#endif
+	  /* Translate origin to rotation point ( photo center ) */
+	  glTranslatef( x1 + ((x2-x1)/2), y1 + ((y2-y1)/2), 0.0);
+
+	  /* Rotate around Z axis */
+	  glRotatef ( cell->angle, 0.0, 0.0, 1.0);
+
 	  /* Border - why need tex disabled ? */
 	  glDisable(GL_TEXTURE_2D);
 	  if (cell_item == grid->cell_active 
 	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
 	    glColor4f(1.0, 1.0, 1.0, 1.0);
 	  else
-	    glColor4f(0.8, 0.8, 0.8, 1.0);
-	  glRecti(x1-2, y1-2, x2+2, y2+2);
+	    glColor4f(0.9, 0.95, 0.95, 1.0);
+
+	  /* Draw with origin in center of photo */
+
+	  glRecti(-(thumb_w/2)-4, -(thumb_h/2)-4, 
+		  (thumb_w/2)+4, (thumb_h/2)+ns_border);
+
 	  glEnable(GL_TEXTURE_2D);
+	  glEnable(GL_SMOOTH);
 
 	  glBindTexture(GL_TEXTURE_2D, grid->texs[i]);
 
@@ -443,13 +433,14 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  */
 	    {
 	      glBegin (GL_QUADS);
-	      glTexCoord2f (tx, ty);   glVertex2i   (x2, y2);
-	      glTexCoord2f (0,  ty);   glVertex2i   (x1, y2);
-	      glTexCoord2f (0,  0);    glVertex2i   (x1, y1);
-	      glTexCoord2f (tx, 0);    glVertex2i   (x2, y1);
+	      glTexCoord2f (tx, ty);   glVertex2i ((thumb_w/2), (thumb_h/2));
+	      glTexCoord2f (0,  ty);   glVertex2i (-(thumb_w/2), (thumb_h/2));
+	      glTexCoord2f (0,  0);    glVertex2i (-(thumb_w/2), -(thumb_h/2));
+	      glTexCoord2f (tx, 0);    glVertex2i ((thumb_w/2), -(thumb_h/2));
 	      glEnd ();	
 	    }
 
+	    /* back to regular non translated matrix */
 	   glPopMatrix();
 
 	  cell_item = g_list_next(cell_item);
@@ -489,7 +480,6 @@ cltr_photo_grid_new(ClutterWindow *win,
 		    const gchar   *imgs_path)
 {
   ClutterPhotoGrid *grid = NULL;
-  int               x,y;
 
   grid = util_malloc0(sizeof(ClutterPhotoGrid));
 
@@ -511,13 +501,13 @@ cltr_photo_grid_new(ClutterWindow *win,
      grid->zoom_step = 0.05;
      grid->zoom      = 1.0;
   */
-  grid->zoom_min  = 0.8;		      
+  grid->zoom_min  = 1.0;		      
   grid->view_min_x = 0.0;
   grid->view_min_y = 0.0;
 
 
   /* Assmes cols == rows */
-  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0);
+  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0) - 0.3;
 
   /* Below needs to go else where - some kind of texture manager/helper */
 
@@ -531,12 +521,15 @@ cltr_photo_grid_new(ClutterWindow *win,
 
   grid->cell_active = g_list_first(grid->cells_tail);
 
+  /*
   ctrl_photo_grid_cell_to_coords(grid, grid->cell_active, &x, &y);
 
-  ctrl_photo_grid_get_zoomed_coords(grid, grid->zoom_min,
+
+  ctrl_photo_grid_get_zoomed_coords(grid, grid->zoom_max,
 				    x, y, 
 				    &grid->view_max_x,
 				    &grid->view_max_y);
+  */
   cltr_photo_grid_redraw(grid);
 
   return grid;

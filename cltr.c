@@ -213,29 +213,15 @@ cltr_window_new(int width, int height)
 
   glXMakeCurrent(CltrCntx.xdpy, win->xwin, CltrCntx.gl_context);
 
+  /* All likely better somewhere else */
+
+  /* view port */
   glViewport (0, 0, width, height);
+  glMatrixMode (GL_PROJECTION);
+  glLoadIdentity ();
+  glOrtho (0, width, height, 0, -1, 1); /* 2d */
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
-  glClearColor (0xff, 0xff, 0xff, 0xff);
-  glClearDepth (1.0f);
-
-  /* Move to redraw ?
-  glDisable    (GL_DEPTH_TEST);
-  glDepthMask  (GL_FALSE);
-  glDisable    (GL_CULL_FACE);
-  glShadeModel (GL_FLAT);
-  glHint       (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_BLEND);
-  */
-
-  glLoadIdentity ();
-  glOrtho (0, width, height, 0, -1, 1);
-
-  glMatrixMode (GL_PROJECTION);
-
-  /* likely better somewhere elese */
 
   glEnable        (GL_TEXTURE_2D);
   glTexParameteri (GL_TEXTURE_2D,  GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -258,6 +244,41 @@ cltr_main_loop()
 
 }
 
+gboolean
+test_idle_cb(gpointer data)
+{
+  static float angle = 0.0;
+
+  glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor( 0.6, 0.6, 0.62, 1.0);
+
+  glColor3f(0.0, 0.0, 0.0);
+
+  glTranslatef( 0.0, 0.0, 0.0);
+
+  /* get a copy of our untranformed matrix */
+  glPushMatrix();
+
+  /* Translate origin to rotation point */
+  glTranslatef( 320.0, 240.0, 0.0);
+
+  /* Rotate around Z axis */
+  glRotatef ( angle, 0.0, 0.0, 1.0);
+
+  /* Draw tranformed rect with origin at center */
+  glRecti(-50, -50, 50, 50);
+
+  /* Reset our un transformed matrix */
+  glPopMatrix();
+
+  glRecti(-50, -50, 50, 50);
+
+  angle += 0.1;
+
+  glXSwapBuffers(CltrCntx.xdpy, (Window)data);  
+
+  return TRUE;
+}
 
 
 gboolean
@@ -265,10 +286,6 @@ idle_cb(gpointer data)
 {
   ClutterPhotoGrid *grid = (ClutterPhotoGrid *)data;
 
-  /*
-  if (grid->state != CLTR_PHOTO_GRID_STATE_BROWSE
-      && grid->state != CLTR_PHOTO_GRID_STATE_ZOOMED)
-  */
   cltr_photo_grid_redraw(grid);
 
   return TRUE;
@@ -291,7 +308,7 @@ main(int argc, char **argv)
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 3, 3, argv[1]);
+  grid = cltr_photo_grid_new(win, 4, 4, argv[1]);
 
   Grid = grid; 			/* laaaaaazy globals */
 
@@ -299,23 +316,15 @@ main(int argc, char **argv)
 
   g_idle_add(idle_cb, grid);
 
+  // g_idle_add(test_idle_cb, (gpointer)win->xwin);
+
   XFlush(CltrCntx.xdpy);
 
-  XMapWindow(CltrCntx.xdpy, grid->parent->xwin);
+  XMapWindow(CltrCntx.xdpy, win->xwin);
 
   XFlush(CltrCntx.xdpy);
 
   cltr_main_loop();
-
-  /*
-  {
-    for (;;) 
-      {
-	cltr_photo_grid_redraw(grid);
-	XFlush(CltrCntx.xdpy);
-      }
-  }
-  */
 
   return 0;
 }

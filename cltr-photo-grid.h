@@ -20,7 +20,7 @@ ClutterPhotoGridState;
 struct ClutterPhotoGridCell
 {
   Pixbuf *pixb;
-
+  float   angle;
 };
 
 struct ClutterPhotoGrid
