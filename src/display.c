@@ -1555,24 +1555,26 @@ meta_display_grab_window_buttons (MetaDisplay *display,
           meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx error code %d\n",
                         i, xwindow, result);
         
-#if 1
-        /* This is just for debugging, since I end up moving
-         * the Xnest otherwise ;-)
-         */
-        meta_error_trap_push (display);
-        result = XGrabButton (display->xdisplay, i, ControlMask,
-                              xwindow, False,
-                              ButtonPressMask | ButtonReleaseMask |    
-                              PointerMotionMask | PointerMotionHintMask,
-                              GrabModeAsync, GrabModeAsync,
-                              False, None);
-        XSync (display->xdisplay, False);
-        result = meta_error_trap_pop (display);
-        
-        if (result != Success)
-          meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx error code %d\n",
-                        i, xwindow, result);        
-#endif
+
+        if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
+          {
+            /* This is just for debugging, since I end up moving
+             * the Xnest otherwise ;-)
+             */
+            meta_error_trap_push (display);
+            result = XGrabButton (display->xdisplay, i, ControlMask,
+                                  xwindow, False,
+                                  ButtonPressMask | ButtonReleaseMask |    
+                                  PointerMotionMask | PointerMotionHintMask,
+                                  GrabModeAsync, GrabModeAsync,
+                                  False, None);
+            XSync (display->xdisplay, False);
+            result = meta_error_trap_pop (display);
+            
+            if (result != Success)
+              meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx error code %d\n",
+                            i, xwindow, result);
+          }
         
         ++i;
       }

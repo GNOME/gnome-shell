@@ -1,0 +1,48 @@
+
+The script src/run-metacity.sh is useful to hack on the window manager. 
+It runs metacity in an Xnest. e.g.:
+ CLIENTS=3 ./run-metacity.sh
+or 
+ DEBUG=memprof ./run-metacity.sh
+or whatever.
+
+src/window.c is where all the guts of the window manager live. This is
+basically the only remotely scary file.
+
+src/frames.c is the GtkWidget that handles drawing window frames.
+
+src/core.h defines the interface used by the GTK portion of the window
+manager to talk to the other portions. There's some cruft in here
+that's unused, since nearly all window operations have moved out of
+this file so frameless apps can have window operations.
+
+src/ui.h defines the interface the plain Xlib portion of the window
+manager uses to talk to the GTK portion.
+
+Files that include gdk.h or gtk.h are not supposed to include
+display.h or window.h or other core files.
+
+Files in the core (display.[hc], window.[hc]) are not supposed to
+include gdk.h or gtk.h.
+
+When hacking, remember that you can have multiple screens. The code is
+also written to support multiple displays, but this is useless, since
+you can just run two copies of the WM. Also, an XKillClient() or
+shutdown on any display causes Xlib to exit the app, so it would be
+broken. So the multi-display thing is mostly just for code
+cleanliness.  Multi-screen on the other hand is important for some
+people.
+
+Remember that strings stored in X properties are not in UTF-8, and
+they have to end up in UTF-8 before we try putting them through Pango.
+
+If you make any X request involving a client window, you have to
+meta_error_trap_push() around the call; this is not necessary for 
+X requests on the frame windows.
+
+Remember that not all windows have frames, and window->frame can 
+be NULL.
+
+The code could use cleanup in a lot of places, feel free to do so.
+
+

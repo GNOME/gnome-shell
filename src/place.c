@@ -185,6 +185,11 @@ find_next_cascade (MetaWindow *window,
 
 /* Find the leftmost, then topmost, empty area on the workspace
  * that can contain the new window.
+ *
+ * Cool feature to have: if we can't fit the current window size,
+ * try shrinking the window (within geometry constraints). But
+ * beware windows such as Emacs with no sane minimum size, we
+ * don't want to create a 1x1 Emacs.
  */
 static gboolean
 find_first_fit (MetaWindow *window,
@@ -196,7 +201,7 @@ find_first_fit (MetaWindow *window,
                 int        *new_x,
                 int        *new_y)
 {
-  
+  /* FIXME */
 }
 
 void

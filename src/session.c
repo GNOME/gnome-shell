@@ -525,6 +525,10 @@ set_clone_restart_commands (void)
   
   SmcSetProperties (session_connection, 3, props);
 
+  g_free (prop1.vals);
+  g_free (prop2.vals);
+  g_free (prop3.vals);
+  
   g_free (session_file);
 }
 

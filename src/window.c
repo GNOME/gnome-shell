@@ -70,13 +70,22 @@ static gboolean process_property_notify   (MetaWindow     *window,
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
-static void   meta_window_move_resize_internal (MetaWindow  *window,
-                                                gboolean     is_configure_request,
-                                                int          resize_gravity,
-                                                int          root_x_nw,
-                                                int          root_y_nw,
-                                                int          w,
-                                                int          h);
+static void adjust_for_gravity               (MetaWindow        *window,
+                                              MetaFrameGeometry *fgeom,
+                                              gboolean           coords_assume_border,
+                                              int                x,
+                                              int                y,
+                                              int               *xp,
+                                              int               *yp);
+static void meta_window_move_resize_internal (MetaWindow        *window,
+                                              gboolean           is_configure_request,
+                                              gboolean           do_gravity_adjust,
+                                              int                resize_gravity,
+                                              int                root_x_nw,
+                                              int                root_y_nw,
+                                              int                w,
+                                              int                h);
+
 
 void meta_window_move_resize_now (MetaWindow  *window);
 
@@ -446,7 +455,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
    */
-  meta_window_move_resize_internal (window, TRUE,
+  meta_window_move_resize_internal (window, TRUE, FALSE,
                                     NorthWestGravity,
                                     window->size_hints.x,
                                     window->size_hints.y,
@@ -522,7 +531,7 @@ meta_window_apply_session_info (MetaWindow *window,
            * indeed valid, so we know we'll go right back to one.
            */
           while (window->workspaces)
-            meta_workspace_remove_window (window->workspaces->next->data, window);
+            meta_workspace_remove_window (window->workspaces->data, window);
 
           tmp = spaces;
           while (tmp != NULL)
@@ -542,6 +551,32 @@ meta_window_apply_session_info (MetaWindow *window,
 
           g_slist_free (spaces);
         }
+    }
+
+  if (info->geometry_set)
+    {
+      int x, y, w, h;
+      
+      window->placed = TRUE; /* don't do placement algorithms later */
+
+      x = info->rect.x;
+      y = info->rect.y;
+
+      w = window->size_hints.base_width +
+        info->rect.width * window->size_hints.width_inc;
+      h = window->size_hints.base_height +
+        info->rect.height * window->size_hints.height_inc;
+
+      /* Force old gravity, ignoring anything now set */
+      window->size_hints.win_gravity = info->gravity;
+      
+      meta_verbose ("Restoring pos %d,%d size %d x %d for %s\n",
+                    x, y, w, h, window->desc);
+      
+      meta_window_move_resize_internal (window,
+                                        FALSE, TRUE,
+                                        NorthWestGravity,
+                                        x, y, w, h);
     }
 }
 
@@ -1020,7 +1055,7 @@ meta_window_unshade (MetaWindow  *window)
 
 
 /* returns values suitable for meta_window_move */
-void
+static void
 adjust_for_gravity (MetaWindow        *window,
                     MetaFrameGeometry *fgeom,
                     gboolean           coords_assume_border,
@@ -1155,6 +1190,8 @@ adjust_for_gravity (MetaWindow        *window,
 static void
 meta_window_move_resize_internal (MetaWindow  *window,
                                   gboolean     is_configure_request,
+                                  /* only relevant if !is_configure_request */
+                                  gboolean     do_gravity_adjust,
                                   int          resize_gravity,
                                   int          root_x_nw,
                                   int          root_y_nw,
@@ -1233,7 +1270,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
       frame_size_dy = 0;
     }
 
-  if (is_configure_request)
+  if (is_configure_request || do_gravity_adjust)
     {
       adjust_for_gravity (window,
                           window->frame ? &fgeom : NULL,
@@ -1424,7 +1461,7 @@ meta_window_resize (MetaWindow  *window,
 
   meta_window_get_position (window, &x, &y);
   
-  meta_window_move_resize_internal (window, FALSE,
+  meta_window_move_resize_internal (window, FALSE, FALSE,
                                     NorthWestGravity,
                                     x, y, w, h);
 }
@@ -1434,7 +1471,7 @@ meta_window_move (MetaWindow  *window,
                   int          root_x_nw,
                   int          root_y_nw)
 {
-  meta_window_move_resize_internal (window, FALSE,
+  meta_window_move_resize_internal (window, FALSE, FALSE,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     window->rect.width,
@@ -1448,7 +1485,7 @@ meta_window_move_resize (MetaWindow  *window,
                          int          w,
                          int          h)
 {
-  meta_window_move_resize_internal (window, FALSE,
+  meta_window_move_resize_internal (window, FALSE, FALSE,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     w, h);
@@ -1464,7 +1501,7 @@ meta_window_resize_with_gravity (MetaWindow *window,
 
   meta_window_get_position (window, &x, &y);
   
-  meta_window_move_resize_internal (window, FALSE,
+  meta_window_move_resize_internal (window, FALSE, FALSE,
                                     gravity,
                                     x, y, w, h);
 }
@@ -1577,6 +1614,21 @@ meta_window_get_gravity_position (MetaWindow  *window,
     *root_x = x;
   if (root_y)
     *root_y = y;
+}
+
+void
+meta_window_get_geometry (MetaWindow  *window,
+                          int         *x,
+                          int         *y,
+                          int         *width,
+                          int         *height)
+{
+  meta_window_get_gravity_position (window, x, y);
+
+  *width = (window->rect.width - window->size_hints.base_width) /
+    window->size_hints.width_inc;
+  *height = (window->rect.height - window->size_hints.base_height) /
+    window->size_hints.height_inc;
 }
 
 void
@@ -1874,7 +1926,7 @@ meta_window_configure_request (MetaWindow *window,
   window->size_hints.width = width;
   window->size_hints.height = height;
 
-  meta_window_move_resize_internal (window, TRUE,
+  meta_window_move_resize_internal (window, TRUE, FALSE,
                                     NorthWestGravity,
                                     window->size_hints.x,
                                     window->size_hints.y,

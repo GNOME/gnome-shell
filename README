@@ -23,6 +23,8 @@ sometime probably.
 Feel free to send patches too; Metacity is really small and simple, so
 if you find a bug or want to add a feature it should be pretty easy.
 
+See the HACKING file for some notes on hacking Metacity.
+
 METACITY FEATURES
 ===
 
