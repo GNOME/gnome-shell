@@ -1,5 +1,10 @@
 2002-10-20  Havoc Pennington  <hp@pobox.com>
 
+	* src/ui.c (meta_image_window_new): put multihead stuff in 
+	HAVE_GTK_MULTIHEAD, reported by John Palmieri
+
+2002-10-20  Havoc Pennington  <hp@pobox.com>
+
 	* src/keybindings.c (handle_raise_or_lower): check above->mapped 
 	before deciding if it overlaps the window being raiselowered, 
 	fix from Stephane Chauveau 
