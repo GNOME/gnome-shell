@@ -440,7 +440,7 @@ main (int argc, char **argv)
       
       if (!(themes_dir = g_dir_open (METACITY_DATADIR"/themes", 0, &err)))
         {
-          meta_fatal (_("Failed to scan themes directory : %s\n"), err->message);
+          meta_fatal (_("Failed to scan themes directory: %s\n"), err->message);
           g_error_free (err);
         } 
       else 
