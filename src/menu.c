@@ -49,7 +49,6 @@ struct _MenuData
 static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static MenuItem menuitems[] = {
-  { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, N_("_Close") },
   { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, N_("_Minimize") },
   { META_MENU_OP_MAXIMIZE, METACITY_STOCK_MAXIMIZE, N_("Ma_ximize") },
   { META_MENU_OP_UNMAXIMIZE, NULL, N_("Unma_ximize") },
@@ -57,6 +56,8 @@ static MenuItem menuitems[] = {
   { META_MENU_OP_UNSHADE, NULL, N_("Un_shade") },
   { META_MENU_OP_MOVE, NULL, N_("Mo_ve") },
   { META_MENU_OP_RESIZE, NULL, N_("_Resize") },
+  { 0, NULL, NULL }, /* separator */
+  { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, N_("_Close") },
   { 0, NULL, NULL }, /* separator */
   { META_MENU_OP_STICK, NULL, N_("Put on _All Workspaces") },
   { META_MENU_OP_UNSTICK, NULL, N_("Only on _This Workspace") }

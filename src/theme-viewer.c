@@ -566,6 +566,12 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
+  if (g_getenv ("METACITY_DEBUG") != NULL)
+    {
+      meta_set_debugging (TRUE);
+      meta_set_verbose (TRUE);
+    }
+  
   start = clock ();
   err = NULL;
   if (argc == 1)
