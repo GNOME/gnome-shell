@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-18 20:31+0100\n"
-"PO-Revision-Date: 2003-12-19 02:22-0200\n"
+"POT-Creation-Date: 2003-12-22 20:42+0100\n"
+"PO-Revision-Date: 2003-12-23 01:53-0200\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: GNOME-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -148,8 +148,8 @@ msgstr ""
 
 #: src/main.c:443
 #, c-format
-msgid "Failed to scan themes directory : %s\n"
-msgstr "Falha ao escanear diretório de temas: %s\n"
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Falha ao escanear pasta de temas: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -163,71 +163,85 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Falha ao reiniciar: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "Mi_nimizar"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "Ma_ximizar"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "Desfazer Ma_ximizar"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "Rolar para _Cima"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "_Desenrolar"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "No _Topo"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "_Mover"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "_Redimensionar"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "Fe_char"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "Colocar em _Todas as Áreas de Trabalho"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "Somente Nes_ta Área de Trabalho"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "Mover para Área de Trabalho da _Esquerda"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "Mover para Área de Trabalho a D_ireita"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "Mover para Área de Trabalho _Acima"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "Mover para Área de Trabalho A_baixo"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "Área de Trabalho 1_0"
+
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de Trabalho %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Apenas na %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Mover para %s"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "Mover para _Outra Área de Trabalho"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -496,7 +510,13 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr "Se verdadeiro o metacity dará menor resposta e menos sensação de \"manipulação direta\" ao usuário, mostrando somente as bordas durante a movimentação da janela, evitando animações e outros meios. Isso significa uma redução significante na usabilidade para muitos usuários, mas pode possibilitar o funcionamento de aplicações legadas e servidores de terminal quando, de outra forma, isso seria impraticável."
+msgstr ""
+"Se verdadeiro o metacity dará menor resposta e menos sensação de "
+"\"manipulação direta\" ao usuário, mostrando somente as bordas durante a "
+"movimentação da janela, evitando animações e outros meios. Isso significa "
+"uma redução significante na usabilidade para muitos usuários, mas pode "
+"possibilitar o funcionamento de aplicações legadas e servidores de terminal "
+"quando, de outra forma, isso seria impraticável."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -2806,7 +2826,10 @@ msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "%d quadros desenhados em %g segundos do lado cliente (%g milisegundos por quadro) e %g segundos no relógio, incluindo recursos do servidor X (%g milisegundos por quadro)\n"
+msgstr ""
+"%d quadros desenhados em %g segundos do lado cliente (%g milisegundos por "
+"quadro) e %g segundos no relógio, incluindo recursos do servidor X (%g "
+"milisegundos por quadro)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -2843,7 +2866,9 @@ msgstr "o valor y era %d, mas %d era esperado"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d expressões de coordenadas analizadas em %g segundos (%g segundos em média)\n"
+msgstr ""
+"%d expressões de coordenadas analizadas em %g segundos (%g segundos em "
+"média)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -3240,3 +3265,9 @@ msgid ""
 msgstr ""
 "A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
 "lista\n"
+
+#~ msgid "Only on %s"
+#~ msgstr "Apenas na %s"
+
+#~ msgid "Move to %s"
+#~ msgstr "Mover para %s"
