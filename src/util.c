@@ -284,6 +284,8 @@ topic_name (MetaDebugTopic topic)
       return "RESIZING";
     case META_DEBUG_SHAPES:
       return "SHAPES";
+    case META_DEBUG_COMPOSITOR:
+      return "COMPOSITOR";
     }
 
   return "WM";

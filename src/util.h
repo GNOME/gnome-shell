@@ -66,7 +66,8 @@ typedef enum
   META_DEBUG_PREFS        = 1 << 16,
   META_DEBUG_GROUPS       = 1 << 17,
   META_DEBUG_RESIZING     = 1 << 18,
-  META_DEBUG_SHAPES       = 1 << 19
+  META_DEBUG_SHAPES       = 1 << 19,
+  META_DEBUG_COMPOSITOR   = 1 << 20
 
 } MetaDebugTopic;
 

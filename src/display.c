@@ -1318,10 +1318,6 @@ event_callback (XEvent   *event,
         }
     }
 #endif /* HAVE_SHAPE */
-
-  meta_compositor_process_event (display->compositor,
-                                 event,
-                                 window);
   
   switch (event->type)
     {
@@ -1675,10 +1671,8 @@ event_callback (XEvent   *event,
       break;
     case CreateNotify:
       break;
+      
     case DestroyNotify:
-      meta_compositor_remove_window (display->compositor,
-                                     modified);
-            
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&
@@ -1696,13 +1690,11 @@ event_callback (XEvent   *event,
           else
             {
               meta_window_free (window); /* Unmanage destroyed window */
+              window = NULL;
             }
         }
       break;
-    case UnmapNotify:
-      meta_compositor_remove_window (display->compositor,
-                                     modified);
-      
+    case UnmapNotify:      
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&
@@ -1738,36 +1730,6 @@ event_callback (XEvent   *event,
         }
       break;
     case MapNotify:
-      {
-        /* If a window becomes viewable and is a child of the root,
-         * then we need to add it to the compositor. If the window
-         * has a frame we definitely don't want to add it, it's
-         * just being mapped inside the frame.
-         */
-        if (window == NULL ||
-            (window && window->frame == NULL) ||
-            frame_was_receiver)
-          {
-            XWindowAttributes attrs;
-            
-            meta_error_trap_push_with_return (display);
-            
-            XGetWindowAttributes (display->xdisplay,
-                                  modified, &attrs);
-            
-            if (meta_error_trap_pop_with_return (display, TRUE) != Success)
-              {
-                meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                              modified);
-              }
-            else
-              {
-                if (attrs.map_state == IsViewable)
-                  meta_compositor_add_window (display->compositor,
-                                              modified, &attrs);
-              }
-          }
-      }
       break;
     case MapRequest:
       if (window == NULL)
@@ -2077,6 +2039,10 @@ event_callback (XEvent   *event,
       break;
     }
 
+  meta_compositor_process_event (display->compositor,
+                                 event,
+                                 window);
+  
   display->current_time = CurrentTime;
   return filter_out_event;
 }

@@ -65,6 +65,7 @@ typedef struct
   
   unsigned int managed : 1;
   unsigned int damaged : 1;
+  unsigned int viewable : 1;
 
   unsigned int screen_index : 8;
   
@@ -144,9 +145,9 @@ meta_compositor_new (MetaDisplay *display)
   else
     compositor->have_composite = TRUE;
 
-  meta_verbose ("Composite extension event base %d error base %d\n",
-                compositor->composite_event_base,
-                compositor->composite_error_base);
+  meta_topic (META_DEBUG_COMPOSITOR, "Composite extension event base %d error base %d\n",
+              compositor->composite_event_base,
+              compositor->composite_error_base);
 
   if (!XDamageQueryExtension (display->xdisplay,
                               &compositor->damage_event_base,
@@ -158,9 +159,9 @@ meta_compositor_new (MetaDisplay *display)
   else
     compositor->have_damage = TRUE;
 
-  meta_verbose ("Damage extension event base %d error base %d\n",
-                compositor->damage_event_base,
-                compositor->damage_error_base);
+  meta_topic (META_DEBUG_COMPOSITOR, "Damage extension event base %d error base %d\n",
+              compositor->damage_event_base,
+              compositor->damage_error_base);
   
   if (!XFixesQueryExtension (display->xdisplay,
                              &compositor->fixes_event_base,
@@ -172,9 +173,9 @@ meta_compositor_new (MetaDisplay *display)
   else
     compositor->have_fixes = TRUE;
 
-  meta_verbose ("Fixes extension event base %d error base %d\n",
-                compositor->fixes_event_base,
-                compositor->fixes_error_base);
+  meta_topic (META_DEBUG_COMPOSITOR, "Fixes extension event base %d error base %d\n",
+              compositor->fixes_event_base,
+              compositor->fixes_error_base);
 
   if (!XRenderQueryExtension (display->xdisplay,
                               &compositor->render_event_base,
@@ -186,16 +187,16 @@ meta_compositor_new (MetaDisplay *display)
   else
     compositor->have_render = TRUE;
 
-  meta_verbose ("Render extension event base %d error base %d\n",
-                compositor->render_event_base,
-                compositor->render_error_base);
+  meta_topic (META_DEBUG_COMPOSITOR, "Render extension event base %d error base %d\n",
+              compositor->render_event_base,
+              compositor->render_error_base);
   
   if (!(compositor->have_composite &&
         compositor->have_fixes &&
         compositor->have_render &&
         compositor->have_damage))
     {
-      meta_verbose ("Failed to find all extensions needed for compositing manager, disabling compositing manager\n");
+      meta_topic (META_DEBUG_COMPOSITOR, "Failed to find all extensions needed for compositing manager, disabling compositing manager\n");
       g_assert (!compositor->enabled);
       return compositor;
     }
@@ -279,8 +280,8 @@ paint_screen (MetaCompositor *compositor,
   GList *tmp;
   GC gc;
 
-  meta_verbose ("Repainting screen %d root 0x%lx\n",
-                screen->number, screen->xroot);
+  meta_topic (META_DEBUG_COMPOSITOR, "Repainting screen %d root 0x%lx\n",
+              screen->number, screen->xroot);
 
   meta_display_grab (screen->display);
   
@@ -349,6 +350,9 @@ paint_screen (MetaCompositor *compositor,
 
       if (cwindow->picture == None) /* InputOnly */
         goto next;
+
+      if (!cwindow->viewable)
+        goto next; /* not viewable */
       
       if (cwindow->last_painted_extents)
         XFixesDestroyRegion (xdisplay,
@@ -358,10 +362,10 @@ paint_screen (MetaCompositor *compositor,
       
       /* XFixesSubtractRegion (dpy, region, region, 0, 0, w->borderSize, 0, 0); */
 
-      meta_verbose ("  Compositing window 0x%lx %d,%d %dx%d\n",
-                    cwindow->xwindow,
-                    cwindow->x, cwindow->y,
-                    cwindow->width, cwindow->height);
+      meta_topic (META_DEBUG_COMPOSITOR, "  Compositing window 0x%lx %d,%d %dx%d\n",
+                  cwindow->xwindow,
+                  cwindow->x, cwindow->y,
+                  cwindow->width, cwindow->height);
       
       window = meta_display_lookup_x_window (compositor->display,
                                              cwindow->xwindow);
@@ -412,8 +416,8 @@ paint_screen (MetaCompositor *compositor,
   meta_error_trap_pop (compositor->display, FALSE);
 
   /* Copy buffer to root window */
-  meta_verbose ("Copying buffer to root window 0x%lx picture 0x%lx\n",
-                screen->xroot, screen->root_picture);
+  meta_topic (META_DEBUG_COMPOSITOR, "Copying buffer to root window 0x%lx picture 0x%lx\n",
+              screen->xroot, screen->root_picture);
 
 #if 1
   XFixesSetPictureClipRegion (xdisplay,
@@ -720,6 +724,131 @@ process_expose (MetaCompositor     *compositor,
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+process_map (MetaCompositor     *compositor,
+             XMapEvent          *event)
+{
+  MetaCompositorWindow *cwindow;
+  MetaScreen *screen;
+
+  /* See if window was mapped as child of root */
+  screen = meta_display_screen_for_root (compositor->display,
+                                         event->event);
+
+  if (screen == NULL || screen->root_picture == None)
+    return; /* MapNotify wasn't for a child of the root */
+  
+  cwindow = g_hash_table_lookup (compositor->window_hash,
+                                 &event->window);
+  if (cwindow == NULL)
+    {
+      XWindowAttributes attrs;
+      
+      meta_error_trap_push_with_return (compositor->display);
+      
+      XGetWindowAttributes (compositor->display->xdisplay,
+                            event->window, &attrs);
+      
+      if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+        {
+          meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
+                      event->window);
+        }
+      else
+        {
+          meta_compositor_add_window (compositor,
+                                      event->window, &attrs);
+        }
+    }
+  else
+    {
+      cwindow->viewable = TRUE;
+    }
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+process_unmap (MetaCompositor     *compositor,
+               XUnmapEvent        *event)
+{
+  MetaCompositorWindow *cwindow;
+  MetaScreen *screen;
+
+  /* See if window was unmapped as child of root */
+  screen = meta_display_screen_for_root (compositor->display,
+                                         event->event);
+
+  if (screen == NULL || screen->root_picture == None)
+    return; /* UnmapNotify wasn't for a child of the root */
+  
+  cwindow = g_hash_table_lookup (compositor->window_hash,
+                                 &event->window);
+  if (cwindow != NULL)
+    {
+      cwindow->viewable = FALSE;
+
+      if (cwindow->last_painted_extents)
+        {
+          merge_and_destroy_damage_region (compositor,
+                                           screen,
+                                           cwindow->last_painted_extents);
+          cwindow->last_painted_extents = None;
+        }
+    }
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+process_create (MetaCompositor     *compositor,
+                XCreateWindowEvent *event)
+{
+  MetaScreen *screen;
+  XWindowAttributes attrs;
+      
+  screen = meta_display_screen_for_root (compositor->display,
+                                         event->parent);
+
+  if (screen == NULL || screen->root_picture == None)
+    return;
+      
+  meta_error_trap_push_with_return (compositor->display);
+  
+  XGetWindowAttributes (compositor->display->xdisplay,
+                        event->window, &attrs);
+  
+  if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
+                  event->window);
+    }
+  else
+    {
+      meta_compositor_add_window (compositor,
+                                  event->window, &attrs);
+    }
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+process_destroy (MetaCompositor      *compositor,
+                 XDestroyWindowEvent *event)
+{
+  MetaScreen *screen;
+
+  screen = meta_display_screen_for_root (compositor->display,
+                                         event->event);
+
+  if (screen == NULL || screen->root_picture == None)
+    return;
+
+  meta_compositor_remove_window (compositor, event->window);
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+
 void
 meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
@@ -744,6 +873,27 @@ meta_compositor_process_event (MetaCompositor *compositor,
       process_expose (compositor,
                       (XExposeEvent*) event);
     }
+  else if (event->type == UnmapNotify)
+    {
+      process_unmap (compositor,
+                     (XUnmapEvent*) event);
+    }
+  else if (event->type == MapNotify)
+    {
+      process_map (compositor,
+                   (XMapEvent*) event);
+    }
+  else if (event->type == CreateNotify)
+    {
+      process_create (compositor,
+                      (XCreateWindowEvent*) event);
+    }
+  else if (event->type == DestroyNotify)
+    {
+      process_destroy (compositor,
+                       (XDestroyWindowEvent*) event);
+    }
+  
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
@@ -775,6 +925,10 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   if (cwindow != NULL)
     return;
 
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "Adding window 0x%lx to compositor\n",
+              xwindow);
+  
   /* Create Damage object to monitor window damage */
   meta_error_trap_push (compositor->display);
   damage = XDamageCreate (compositor->display->xdisplay,
@@ -796,6 +950,10 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   cwindow->height = attrs->height;
   cwindow->border_width = attrs->border_width;
 
+  /* viewable == mapped for the root window, since root can't be unmapped */
+  cwindow->viewable = (attrs->map_state == IsViewable);
+  g_assert (attrs->map_state != IsUnviewable);
+  
   pa.subwindow_mode = IncludeInferiors;
 
   if (attrs->class != InputOnly)
@@ -816,9 +974,8 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   g_hash_table_insert (compositor->window_hash,
                        &cwindow->xwindow, cwindow);
 
-  /* assume cwindow is at the top of the stack */
-  /* FIXME this is wrong, switch workspaces to see an example;
-   * in fact we map windows up from the bottom
+  /* assume cwindow is at the top of the stack as it was either just
+   * created or just reparented to the root window
    */
   screen->compositor_windows = g_list_prepend (screen->compositor_windows,
                                                cwindow);
@@ -839,12 +996,16 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
   
   if (!compositor->enabled)
     return; /* no extension */
-
+  
   cwindow = g_hash_table_lookup (compositor->window_hash,
                                  &xwindow);
 
   if (cwindow == NULL)
     return;
+
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "Removing window 0x%lx from compositor\n",
+              xwindow);
   
   screen = meta_compositor_window_get_screen (cwindow);
 
@@ -890,7 +1051,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   XCompositeRedirectSubwindows (screen->display->xdisplay,
                                 screen->xroot,
                                 CompositeRedirectManual);
-  meta_verbose ("Subwindows redirected, we are now the compositing manager\n");
+  meta_topic (META_DEBUG_COMPOSITOR, "Subwindows redirected, we are now the compositing manager\n");
   
   pa.subwindow_mode = IncludeInferiors;
   

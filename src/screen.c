@@ -762,9 +762,8 @@ meta_screen_manage_all_windows (MetaScreen *screen)
           meta_window_new_with_attrs (screen->display, children[i], TRUE,
                                       &attrs);
           
-          if (attrs.map_state == IsViewable)
-            meta_compositor_add_window (screen->display->compositor,
-                                        children[i], &attrs);
+          meta_compositor_add_window (screen->display->compositor,
+                                      children[i], &attrs);
         }
 
       ++i;
