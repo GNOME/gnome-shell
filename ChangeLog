@@ -1,3 +1,8 @@
+2002-07-24  jacob berkman  <jacob@ximian.com>
+
+	* configure.in: fix x11 header checks when x11 is not in the
+	default include path
+
 2002-07-23  Ross Burton  <ross@burtonini.com>
 
 	* src/menu.c (meta_window_menu_new): Use the real workspace names
