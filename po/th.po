@@ -5,24 +5,20 @@
 # Phakhinee Thangnithirat <sc442535@angsila.compsci.buu.ac.th>, 2003
 # Chanchai Junlouchai <taz@opentle.org>, 2003
 # Paisa Seeluangsawat <paisa@users.sf.net>, 2004.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2004.
-#
-# Paisa's note:
-#       The Burapha traslations for opentle 5.0 need heavy editing.
-#       Entries that I haven't edited has been commented out.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2004-2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-09-12 22:37-0500\n"
-"Last-Translator: Paisa Seeluangsawat <paisa@users.sf.net>\n"
+"PO-Revision-Date: 2005-01-25 20:22+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0;"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -124,9 +120,8 @@ msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
+msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
 #: src/main.c:69
 msgid ""
@@ -696,7 +691,7 @@ msgstr "เรียกใช้คำสั่งที่กำหนดไว
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "เปิดเทอร์มินัล"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1147,7 +1142,6 @@ msgstr ""
 "\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1607,7 +1601,6 @@ msgstr ""
 "\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1615,7 +1608,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ปุ่มลัดสำหรับเปิดเมนูหลักของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
+"ปุ่มลัดสำหรับเปิดเทอร์มินัล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
 "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
@@ -3006,6 +2999,7 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"หน้าต่าง %s ตั้งค่า SM_CLIENT_ID มาที่ตัวเอง แทนที่จะอ้างไปถึงหน้าต่างของ WM_CLIENT_LEADER ตามที่กำหนดไว้ใน ICCCM\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3020,6 +3014,7 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"หน้าต่าง %s ตั้งค่า MWM hint ไว้ว่าเป็นหน้าต่างที่เปลี่ยนขนาดไม่ได้ แต่กลับตั้งค่าขนาดต่ำสุด %d x %d และขนาดสูงสุด %d x %d ไว้ ซึ่งไม่สมเหตุสมผลเท่าไรนัก\n"
 
 #: src/xprops.c:153
 #, c-format
