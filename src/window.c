@@ -4893,13 +4893,23 @@ constrain_position (MetaWindow *window,
       x = 0;
       y = 0;
     }
+  else if (window->maximized)
+    {
+      x = work_area.x;
+      y = work_area.y;
+      if (window->frame)
+        {
+          x += fgeom->left_width;
+          y += fgeom->top_height;
+        }
+    }
   else if (window->type != META_WINDOW_DESKTOP &&
            window->type != META_WINDOW_DOCK)
     {
       int nw_x, nw_y;
       int se_x, se_y;
       int offscreen_w, offscreen_h;
-
+      
       /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
        * size of the menu control?).
        */
@@ -4990,15 +5000,6 @@ constrain_position (MetaWindow *window,
         x = nw_x;
       if (y < nw_y)
         y = nw_y;
-
-      /* If maximized, force the exact position */
-      if (window->maximized)
-        {
-          if (x != nw_x)
-            x = nw_x;
-          if (y != nw_y)
-            y = nw_y;
-        }
       
 #undef TITLEBAR_LENGTH_ONSCREEN
     }

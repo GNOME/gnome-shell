@@ -1,3 +1,8 @@
+2002-04-30  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (constrain_position): oops, fix
+	maximization. Pointed out by Gustavo Giráldez
+
 Tue Apr 30 06:24:09 2002  Jonathan Blandford  <jrb@gnome.org>
 
 	* src/menu.c: give Maximize/Unmaximize and Shade/Unshade the same
