@@ -9,7 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-11-16 11:18+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-13 16:02+0100\n"
 "PO-Revision-Date: 2003-06-30 09:13+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -63,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nie można uzyskać nazwy komputera: %s\n"
 
-#: src/display.c:287
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nie można otworzyć połączenia z ekranem \"%s\" systemu X Window\n"
@@ -84,23 +85,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Poważny błąd we/wy %d (%s) na ekranie \"%s\".\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "Zamyka okno"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "Minimalizuje okno"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "Maksymalizuje okno"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "Przywraca zmaksymalizowane okno"
 
@@ -149,12 +150,12 @@ msgstr ""
 "Na program nie udziela się ŻADNYCH GWARANCJI, nawet domyślnej gwarancji\n"
 "PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ.\n"
 
-#: src/main.c:439
-#, fuzzy, c-format
-msgid "Failed to scan themes directory : %s\n"
-msgstr "Nie można odczytać motywu z pliku %s: %s\n"
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Nie można przejrzeć katalogu z motywami: %s\n"
 
-#: src/main.c:455
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -162,76 +163,90 @@ msgstr ""
 "Nie można odnaleźć żadnego motywu! Upewnij się, że istnieje katalog \"%s\" i "
 "zawiera standardowe motywy."
 
-#: src/main.c:517
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "Zm_inimalizuj"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "Zm_aksymalizuj"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "Przywróć zm_aksymalizowane"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "_Zwiń"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "Ro_zwiń"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "Na wierzc_hu"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "Prz_esuń"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "Zmień _rozmiar"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "Za_mknij"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "Na _wszystkich obszarach roboczych"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "Tylko na _tym obszarze roboczym"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "Przeniesienie na _lewy obszar roboczy"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "Przen_iesienie na prawy obszar roboczy"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "_Przeniesienie na górny obszar roboczy"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "Przeniesienie na _dolny obszar roboczy"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "Obszar roboczy 1_0"
+
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Obszar roboczy %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Tylko na obszarze %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Przenieś na obszar %s"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "Przeniesienie na inny _obszar roboczy"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -2048,12 +2063,12 @@ msgstr "Błąd przy ustawianiu nazwy obszaru roboczego %d na \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:415
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest niepoprawny\n"
 
-#: src/screen.c:408
+#: src/screen.c:431
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2062,7 +2077,7 @@ msgstr ""
 "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić "
 "działającego menedżera okien, spróbuj użyć opcji --replace.\n"
 
-#: src/screen.c:449
+#: src/screen.c:455
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2070,12 +2085,12 @@ msgstr ""
 "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s"
 "\"\n"
 
-#: src/screen.c:504
+#: src/screen.c:513
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: src/screen.c:687
+#: src/screen.c:704
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -3216,15 +3231,15 @@ msgstr "Otwarty plik dziennika %s\n"
 msgid "Window manager: "
 msgstr "Menedżer okien: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "Błąd w programie menedżera okien: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "Ostrzeżenie menedżera okien: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
@@ -3234,7 +3249,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacja ustawiła błędną wartość _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4647
+#: src/window.c:4730
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3250,7 +3265,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5305
+#: src/window.c:5392
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3288,3 +3303,9 @@ msgid ""
 msgstr ""
 "Własność %s odnosząca się do okna 0x%lx zawiera niepoprawną sekwencję UTF-8 "
 "w %d. elemencie listy\n"
+
+#~ msgid "Only on %s"
+#~ msgstr "Tylko na obszarze %s"
+
+#~ msgid "Move to %s"
+#~ msgstr "Przenieś na obszar %s"
