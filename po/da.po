@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-07-15 23:05+0200\n"
+"POT-Creation-Date: 2002-08-06 14:49-0400\n"
 "PO-Revision-Date: 2002-07-15 23:06+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Kunne ikke skaffe værtsnavn: %s\n"
 
-#: src/display.c:244
+#: src/display.c:253
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen '%s'\n"
@@ -89,7 +89,7 @@ msgstr "Maksimér vindue"
 msgid "Unmaximize Window"
 msgstr "Gendan vindue"
 
-#: src/keybindings.c:808
+#: src/keybindings.c:809
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,13 +97,13 @@ msgid ""
 msgstr ""
 "Et andet program bruger allerede nøglen %s med modifikatorer %x som binding\n"
 
-#: src/keybindings.c:2082
+#: src/keybindings.c:2078
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fejl ved start af metacity-dialog for at vise en fejl for en kommando: %s\n"
 
-#: src/keybindings.c:2112
+#: src/keybindings.c:2108
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
@@ -129,55 +129,74 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Kunne ikke genstarte: %s\n"
 
-#: src/menu.c:49
+#: src/menu.c:51
 msgid "_Close"
 msgstr "_Luk"
 
-#: src/menu.c:50
+#: src/menu.c:52
 msgid "_Minimize"
 msgstr "_Minimér"
 
-#: src/menu.c:51
+#: src/menu.c:53
 msgid "Ma_ximize"
 msgstr "Ma_ksimér"
 
-#: src/menu.c:52
+#: src/menu.c:54
 msgid "Unma_ximize"
 msgstr "_Gendan"
 
-#: src/menu.c:53
+#: src/menu.c:55
 msgid "_Shade"
 msgstr "_Rul op"
 
-#: src/menu.c:54
+#: src/menu.c:56
 msgid "Un_shade"
 msgstr "Rul _ned"
 
-#: src/menu.c:55
+#: src/menu.c:57
 msgid "Mo_ve"
 msgstr "_Flyt"
 
-#: src/menu.c:56
+#: src/menu.c:58
 msgid "_Resize"
 msgstr "Ænd_r størrelse"
 
 #. separator
-#: src/menu.c:58
+#: src/menu.c:60
 msgid "Put on _All Workspaces"
 msgstr "Placér på _alle arbejdsområder"
 
-#: src/menu.c:59
+#: src/menu.c:61
 msgid "Only on _This Workspace"
 msgstr "Kun på de_tte arbejdsområde"
 
-#: src/menu.c:301
-#, c-format
-msgid "Only on workspace %s%d"
+#.
+#. * If the name is of the form "Workspace x" where x is an unsigned
+#. * integer, insert a '_' before the number if it is less than 10 and
+#. * return it
+#.
+#: src/menu.c:180
+#, fuzzy, c-format
+msgid "Workspace %u"
+msgstr "Arbejdsområde %d"
+
+#.
+#. * Above name is a pointer into the Workspace struct. Here we make
+#. * a copy copy so we can have our wicked way with it.
+#.
+#: src/menu.c:186
+#, fuzzy, c-format
+msgid "Workspace %s%d"
+msgstr "Arbejdsområde %d"
+
+#: src/menu.c:370
+#, fuzzy, c-format
+msgid "Only on %s"
 msgstr "Kun på arbejdsområde %s%d"
 
-#: src/menu.c:304
-#, c-format
-msgid "Move to workspace %s%d"
+#: src/menu.c:372
+#, fuzzy, c-format
+msgid "Move to %s"
 msgstr "Flyt til arbejdsområde %s%d"
 
 #: src/metacity-dialog.c:86
@@ -211,7 +230,7 @@ msgstr ""
 "Disse vinduer understøtter ikke gemning af deres opsætning og skal "
 "genstartes manuelt næste gang du logger på."
 
-#: src/metacity-dialog.c:275
+#: src/metacity-dialog.c:276
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1384,12 +1403,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:196
+#: src/screen.c:205
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal '%s' er ugyldig\n"
 
-#: src/screen.c:212
+#: src/screen.c:221
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1398,7 +1417,7 @@ msgstr ""
 "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering; prøv "
 "tilvalget --replace for at overskrive den aktuelle vindueshåndtering.\n"
 
-#: src/screen.c:253
+#: src/screen.c:262
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1406,17 +1425,17 @@ msgstr ""
 "Kunne ikke fremskaffe vindueshåndteringvælgeren på skærm %d på terminal \"%s"
 "\"\n"
 
-#: src/screen.c:308
+#: src/screen.c:317
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering\n"
 
-#: src/screen.c:516
+#: src/screen.c:526
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
 
-#: src/session.c:273
+#: src/session.c:274
 #, c-format
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
@@ -1425,65 +1444,65 @@ msgstr ""
 "Kunne ikke åbne en forbindelse til sessionshåndteringen, så "
 "vinduespositioner vil ikke blive gemt: %s\n"
 
-#: src/session.c:865 src/session.c:872
+#: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke oprette mappen '%s': %s\n"
 
-#: src/session.c:882
+#: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åbne sessionsfilen '%s' til skrivning: %s\n"
 
-#: src/session.c:1028
+#: src/session.c:1044
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fejl under skrivning af sessionsfilen '%s': %s\n"
 
-#: src/session.c:1033
+#: src/session.c:1049
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fejl under lukning af sessionsfilen '%s': %s\n"
 
-#: src/session.c:1108
+#: src/session.c:1124
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Kunne ikke læse den lagrede sessionsfil %s: %s\n"
 
-#: src/session.c:1143
+#: src/session.c:1159
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Kunne ikke fortolke den lagrede sessionsfil: %s\n"
 
-#: src/session.c:1192
+#: src/session.c:1208
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-egenskaben set, men vi har allerede sessions-id'en"
 
-#: src/session.c:1205
+#: src/session.c:1221
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Ukendt egenskab %s for <metacity_session>-element"
 
-#: src/session.c:1222
+#: src/session.c:1238
 msgid "nested <window> tag"
 msgstr "indlejret <window>-mærke"
 
-#: src/session.c:1280 src/session.c:1312
+#: src/session.c:1296 src/session.c:1328
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukendt egenskab %s for <window>-element"
 
-#: src/session.c:1382
+#: src/session.c:1398
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukendt egenskab %s for <geometry>-element"
 
-#: src/session.c:1402
+#: src/session.c:1418
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukendt element %s"
 
-#: src/session.c:1830
+#: src/session.c:1846
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2004,12 +2023,12 @@ msgstr "<date> angivet to gange for dette tema"
 msgid "<description> specified twice for this theme"
 msgstr "<description> angivet to gange for dette tema"
 
-#: src/theme-parser.c:4294
+#: src/theme-parser.c:4283
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "Kunne ikke læse tema fra filen %s: %s\n"
 
-#: src/theme-parser.c:4349
+#: src/theme-parser.c:4338
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafilen %s indeholdt ikke et rodelement <metacity_theme>"
@@ -2215,7 +2234,7 @@ msgstr ""
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema indeholdt et udtryk '%s', som resulterede i en fejl: %s\n"
 
-#: src/theme.c:3566
+#: src/theme.c:3569
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2224,7 +2243,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"et-eller-andet\"/> skal "
 "angives for denne rammestil"
 
-#: src/theme.c:3976 src/theme.c:4008
+#: src/theme.c:3992 src/theme.c:4024
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -2232,37 +2251,37 @@ msgstr ""
 "Manglende <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"et-eller-"
 "andet\"/>"
 
-#: src/theme.c:4059
+#: src/theme.c:4075
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Kunne ikke indlæse temaet \"%s\": %s\n"
 
-#: src/theme.c:4205
+#: src/theme.c:4221
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "Ingen <name> angivet for temaet \"%s\""
 
-#: src/theme.c:4212
+#: src/theme.c:4228
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "Ingen <author> angivet for temaet \"%s\""
 
-#: src/theme.c:4219
+#: src/theme.c:4235
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "Ingen <date> angivet for temaet \"%s\""
 
-#: src/theme.c:4226
+#: src/theme.c:4242
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "Ingen <description> angivet for temaet \"%s\""
 
-#: src/theme.c:4233
+#: src/theme.c:4249
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "Ingen <copyright> angivet for temaet \"%s\""
 
-#: src/theme.c:4243
+#: src/theme.c:4259
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2271,7 +2290,7 @@ msgstr ""
 "Ingen rammestil angivet for vinduestypen \"%s\" i temaet \"%s\", tilføj et "
 "<window type=\"%s\" style_set=\"et-eller-andet\"/>-element"
 
-#: src/theme.c:4265
+#: src/theme.c:4281
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2280,7 +2299,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"et-eller-andet\"/> skal "
 "angives for dette tema"
 
-#: src/theme.c:4648 src/theme.c:4708
+#: src/theme.c:4664 src/theme.c:4726
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2288,7 +2307,7 @@ msgstr ""
 "Brugerdefinerede konstanter skal begynde med et stort bogstav; det gør \"%s"
 "\" ikke"
 
-#: src/theme.c:4656 src/theme.c:4716
+#: src/theme.c:4672 src/theme.c:4734
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" er allerede defineret"
@@ -2321,17 +2340,17 @@ msgstr "_Peg for at give fokus"
 msgid "_Raise window on focus"
 msgstr "_Hæv vindue ved fokus"
 
-#: src/util.c:60
+#: src/util.c:91
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Kunne ikke åbne fejlinformationslog: %s\n"
 
-#: src/util.c:70
+#: src/util.c:101
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Kunne ikke udføre fdopen() på logfilen %s: %s\n"
 
-#: src/util.c:76
+#: src/util.c:107
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Åbnede logfilen %s\n"

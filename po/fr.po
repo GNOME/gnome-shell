@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.987\n"
-"POT-Creation-Date: 2002-07-28 02:56+0200\n"
+"POT-Creation-Date: 2002-08-06 14:49-0400\n"
 "PO-Revision-Date: 2002-07-28 02:44+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
 
-#: src/display.c:244
+#: src/display.c:253
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir l'affichage X Window System « %s »\n"
@@ -96,7 +96,7 @@ msgstr "Agrandir la fenêtre"
 msgid "Unmaximize Window"
 msgstr "Annuler l'agrandissement"
 
-#: src/keybindings.c:808
+#: src/keybindings.c:809
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -105,12 +105,12 @@ msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x commes "
 "liaison\n"
 
-#: src/keybindings.c:2085
+#: src/keybindings.c:2078
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2115
+#: src/keybindings.c:2108
 #, fuzzy, c-format
 msgid "No command %d has been defined.\n"
 msgstr "La constante « %s » a déjà été définie"
@@ -236,7 +236,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:275
+#: src/metacity-dialog.c:276
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1403,12 +1403,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:196
+#: src/screen.c:205
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "L'écran %d sur l'affichage « %s » n'est pas valide\n"
 
-#: src/screen.c:212
+#: src/screen.c:221
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1418,7 +1418,7 @@ msgstr ""
 "essayez d'utiliser --l'option de remplacement pour écraser le gestionnaire "
 "de fenêtres courant.\n"
 
-#: src/screen.c:253
+#: src/screen.c:262
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1426,17 +1426,17 @@ msgstr ""
 "Impossible d'acquérir la sélection de gestionnaire de fenêtres sur l'écran %"
 "d affichage « %s »\n"
 
-#: src/screen.c:308
+#: src/screen.c:317
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur l'affichage « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: src/screen.c:516
+#: src/screen.c:526
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur l'affichage « %s »\n"
 
-#: src/session.c:273
+#: src/session.c:274
 #, c-format
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
@@ -1445,68 +1445,68 @@ msgstr ""
 "Impossible d'ouvrir une connexion avec un gestionnaire de sessions. Les "
 "positions de fenêtre ne seront donc pas enregistrées : %s\n"
 
-#: src/session.c:865 src/session.c:872
+#: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Impossible de créer le répertoire « %s » : %s\n"
 
-#: src/session.c:882
+#: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr ""
 "Impossible d'ouvrir le fichier de session « %s » afin d'y écrire : %s\n"
 
-#: src/session.c:1028
+#: src/session.c:1044
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erreur lors de l'écriture du fichier de session « %s » : %s\n"
 
-#: src/session.c:1033
+#: src/session.c:1049
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erreur lors de la fermeture du fichier de session « %s » : %s\n"
 
-#: src/session.c:1108
+#: src/session.c:1124
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Échec de lecture du fichier de session enregistré %s : %s\n"
 
-#: src/session.c:1143
+#: src/session.c:1159
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Échec d'analyse du fichier de session enregistré : %s\n"
 
-#: src/session.c:1192
+#: src/session.c:1208
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "L'attribut <metacity_session> a été vu, mais nous possédons déjà l'ID de "
 "session"
 
-#: src/session.c:1205
+#: src/session.c:1221
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Attribut %s inconnu sur l'élément <metacity_session>"
 
-#: src/session.c:1222
+#: src/session.c:1238
 msgid "nested <window> tag"
 msgstr "balise <window> imbriquée"
 
-#: src/session.c:1280 src/session.c:1312
+#: src/session.c:1296 src/session.c:1328
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Attribut %s inconnu sur l'élément <window>"
 
-#: src/session.c:1382
+#: src/session.c:1398
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Attribut %s inconnu sur l'élément <geometry>"
 
-#: src/session.c:1402
+#: src/session.c:1418
 #, c-format
 msgid "Unknown element %s"
 msgstr "Élément %s inconnu"
 
-#: src/session.c:1830
+#: src/session.c:1846
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2280,7 +2280,7 @@ msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr ""
 "Le thème contenait une expression « %s » qui a entraîné une erreur : %s\n"
 
-#: src/theme.c:3566
+#: src/theme.c:3569
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2289,44 +2289,44 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> doit être "
 "spécifié pour ce style de cadre"
 
-#: src/theme.c:3976 src/theme.c:4008
+#: src/theme.c:3992 src/theme.c:4024
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\" manquant/>"
 
-#: src/theme.c:4059
+#: src/theme.c:4075
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Impossible de charger le thème « %s »: %s\n"
 
-#: src/theme.c:4205
+#: src/theme.c:4221
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "Aucun <name> défini pour le thème « %s »"
 
-#: src/theme.c:4212
+#: src/theme.c:4228
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "Aucun <author> défini pour le thème « %s »"
 
-#: src/theme.c:4219
+#: src/theme.c:4235
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "Aucune <date> définie pour le thème « %s »"
 
-#: src/theme.c:4226
+#: src/theme.c:4242
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "Aucune <description> définie pour le thème « %s »"
 
-#: src/theme.c:4233
+#: src/theme.c:4249
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "Aucun <copyright> défini pour le thème « %s »"
 
-#: src/theme.c:4243
+#: src/theme.c:4259
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2335,7 +2335,7 @@ msgstr ""
 "Aucun style de cadre défini pour le type de fenêtre « %s » dans le thème \"%s"
 "\", ajoutez un élément <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4265
+#: src/theme.c:4281
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2344,7 +2344,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> doit être "
 "spécifié pour ce thème"
 
-#: src/theme.c:4648 src/theme.c:4708
+#: src/theme.c:4664 src/theme.c:4726
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2352,7 +2352,7 @@ msgstr ""
 "Les constantes définies par l'utilisateur doivent commencer par une "
 "majuscule ; « %s » commence par une minuscule"
 
-#: src/theme.c:4656 src/theme.c:4716
+#: src/theme.c:4672 src/theme.c:4734
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constante « %s » a déjà été définie"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-05 08:46+0200\n"
+"POT-Creation-Date: 2002-08-06 14:49-0400\n"
 "PO-Revision-Date: 2002-07-24 11:52+0100\n"
 "Last-Translator: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
 "Language-Team: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
@@ -102,19 +102,19 @@ msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
 # SUN NEW TRANSLATION
-#: src/keybindings.c:807
+#: src/keybindings.c:809
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "某个其它程序已经将关键字 %s 和修饰符 %x 配合使用作为一种组合\n"
 
-#: src/keybindings.c:2080
+#: src/keybindings.c:2078
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2110
+#: src/keybindings.c:2108
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-08-04 22:35+0200\n"
+"POT-Creation-Date: 2002-08-06 14:49-0400\n"
 "PO-Revision-Date: 2002-08-04 22:36+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
@@ -89,7 +89,7 @@ msgstr "Maksimer vindu"
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:807
+#: src/keybindings.c:809
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,14 +98,14 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/keybindings.c:2080
+#: src/keybindings.c:2078
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Feil under oppstart av metacity-dialog for å skrive ut en feil om en "
 "kommando: %s\n"
 
-#: src/keybindings.c:2110
+#: src/keybindings.c:2108
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
