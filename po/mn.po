@@ -1,21 +1,24 @@
+# translation of metacity.gnome-2-4.mn.po to Mongolian
 # translation of metacity.HEAD.mn.po to Mongolian
 # translation of metacity.HEAD.po to mongolian
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# Ochirbat Batzaya <buuvei@yahoo.com>, 2003
-# Sanlig Badral <badral@chinggis.com>, 2003
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Ochirbat Batzaya <buuvei@yahoo.com>, 2003.
+# Sanlig Badral <badral@chinggis.com>, 2003.
+# Sanlig Badral <badral@users.sf.net>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.mn\n"
-"POT-Creation-Date: 2003-10-01 17:18-0400\n"
-"PO-Revision-Date: 2003-01-21 07:43+0100\n"
-"Last-Translator: Ochirbat Batzaya <buuvei@yahoo.com>\n"
-"Language-Team: Mongolian <mn@li.org>\n"
+"Project-Id-Version: metacity.gnome-2-4.mn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-03 02:56+0100\n"
+"PO-Revision-Date: 2003-11-11 02:36+0100\n"
+"Last-Translator: Sanlig Badral <badral@users.sf.net>\n"
+"Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.1\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -122,13 +125,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
 
 #: src/main.c:69
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--хаах-sm] [--sm-хадгалах-файл=ӨГӨГДЛИЙН НЭР] [--дэлгэц=ДЭЛГЭЦ] [--"
-"солих] [--хувилбар]\n"
+"metacity [--sm-хаах] [--sm-клиент-тт=ID] [--sm-хадгалах-файл=ӨГӨГДЛИЙН НЭР] "
+"[--дэлгэц=ДЭЛГЭЦ] [--солих] [--хувилбар]\n"
 
 # CHECK
 #: src/main.c:76
@@ -318,16 +320,17 @@ msgstr "Горим5"
 #: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "\"%s\" цонхноос хариу алга."
 
 #: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Энэ х.програмаас хүчээр гарахыг хүсэж байвал хадгалаагүй өөрчилөлтүүд устана."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Хүчээр гарах"
 
 #: src/metacity-dialog.c:197
 msgid "Title"
@@ -443,6 +446,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Хэрэглээний програмууд эсвэл систем дуут 'дохио' үүсгэж чадах эсэхийг "
+"нягтлахр; магадгүй 'оптик дохио' той холбоотой чимээгүй 'дохио' байж болох."
 
 # CHECK - Miss-Features?
 #: src/metacity.schemas.in.h:14
@@ -453,7 +458,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Оптик сигнал нээх"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -661,11 +666,11 @@ msgstr "Тодорхой команд гүйцэтгэх"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Удирдах самбар харуулах"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Самбарт ажиллуулах диалогийг харуулах"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -762,15 +767,15 @@ msgstr "Идэвхтэй байгаа ажлын талбарын баруун �
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Системийн сигнал дуут байна"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Агшин дэлгэц авах"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Цонхны агшин дэлгэц авах"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -782,6 +787,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Metacity яаж системийн дохио эсвэл өөр хэрэглээний програмын 'чимээ' өгөхийг "
+"заах оптик шинж тэмдэг хэрэгжүүлэхийг хэлнэ. Одоогоор хар цагаан бүтэн "
+"дэлгэц заах \"Дэлгэц дүүрэн\", хэрэглээний програмын толгой самбарыг заах "
+"\"жааз_нүүр\" хоёр хүчинтэй утга байна. Хэрэв програм мэдэгдэхгүй чимээ "
+"өгвөл (ихэнхдээ стандарт \"системийн чимээ\"), одоо идэвхитэй байгаа цонхны "
+"толгой самбар идэвхижинэ."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -794,25 +805,23 @@ msgstr ""
 "хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
-"гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
-"хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
+"»/apps/metacity/global_keybindings/run_command_screenshot«-түлхүүр энэ "
+"командыг гүйцэтгэх товчлуурын хослолыг тодорхойлно. Товчлуурын хувилбарыг "
+"оруулснаар command_screenshot гүйцэтгэгдэнэ."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
-"гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
-"хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
+"»/apps/metacity/global_keybindings/run_command_window_screenshot«-код нь энэ "
+"командыг гүйцэтгэх товчлуурын хослолыг тодорхойлно. Товчлуурын хувилбарыг "
+"оруулснаар command_window_screenshot гүйцэтгэгдэнэ."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1532,7 +1541,6 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1541,12 +1549,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг бүх ажлын хавтгай дээр эсвэл бүгд дээр байршуулахад ашиглах "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
-"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
-"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
-"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
-"комбинаци тавигдахгүй."
+"Үргэлж наана харагдуулах эсвэл үгүй эсэхийг тогтоох товчилуурын хослол. "
+"Цонхыг бүх давхарласан цонхны наана харагдуулахад ашиглах товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;"
+"F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1621,7 +1630,6 @@ msgstr ""
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1630,14 +1638,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
-"ямар ч товчлуурын комбинаци тавигдахгүй."
+"Програм ажиллуулах диалог харуулах товчины хослол. Цонхыг хаах үүрэгтэй  "
+"товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt; "
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1646,14 +1654,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
+"Цонхны агшин дэлгэц авахад хэрэглэдэг удирдах самбарын агшин дэлгэцийн "
+"хэрэгсэл дуудахад хэрэглэх товчилуурын хослол. Хэлбэр нь »&lt; Control&gt;« "
 "эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
 "бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
 "эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1662,14 +1670,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Ажлын талбар 9-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
-"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
-"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Удирдах самбарын агшин дэлгэцийн хэрэгсэл дуудахад хэрэглэх товчилуурын "
+"хослол. Хэлбэр нь »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1677,10 +1685,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхны цэсийг идэвхжүүлж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
-"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
-"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"Удирдах самбарын үндсэн цэс харуулах товчилуурын хослол. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:142
@@ -1689,7 +1697,7 @@ msgstr "Ажлын талбарын нэр."
 
 #: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
-msgstr ""
+msgstr "Агшин дэлгэц тушаал"
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1723,7 +1731,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Цонхны агшин дэлгэц тушаал"
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1817,9 +1825,8 @@ msgstr ""
 "томсгож багасгах болно."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid "Toggle always on top state"
-msgstr "Томсгосон хэлбэрийг асааж унтраахMaximierungszustand ein-/ausschalten"
+msgstr "Үргэлж наана хадах эсвэл үгүй эсэх"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
@@ -1843,6 +1850,8 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Програм эсвэл систем 'дохио' эсвэл 'чимээ' өгөх оптик шинж; Сонсгол муутай "
+"эсвэл маш чимээгүй орчинд ажилладаг эсвэл дүлий хүмүүст их тустай."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1854,7 +1863,7 @@ msgstr "Цонхны нэрэнд стандарт үсгийн хэв ашиг�
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Оптик сигналын төрөл"
 
 #: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
@@ -2912,7 +2921,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4566
+#: src/window.c:4638
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2934,7 +2943,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5227
+#: src/window.c:5296
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
