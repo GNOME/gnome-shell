@@ -334,7 +334,7 @@ msgstr "Cửa sổ \"%s\" không trả lời."
 #: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Việc buộc ứng dụng này phải thoát có làm mất thông tin chưa được lưu."
+msgstr "Việc buộc thoát ứng dụng này sẽ làm mất những thông tin chưa được lưu."
 
 #: src/metacity-dialog.c:128
 msgid "_Force Quit"
