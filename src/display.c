@@ -1030,7 +1030,8 @@ event_callback (XEvent   *event,
       meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
-      if ((grab_op_is_mouse (display->grab_op) &&
+      if ((window &&
+           grab_op_is_mouse (display->grab_op) &&
            display->grab_button != (int) event->xbutton.button && 
            display->grab_window == window) ||
           grab_op_is_keyboard (display->grab_op))
@@ -1340,36 +1341,39 @@ event_callback (XEvent   *event,
         }
       break;
     case UnmapNotify:
-      if (display->grab_op != META_GRAB_OP_NONE &&
-          display->grab_window == window)
-        meta_display_end_grab_op (display, CurrentTime);      
-      
-      if (!frame_was_receiver && window)
-        {
-          if (window->unmaps_pending == 0)
-            {
-              meta_topic (META_DEBUG_WINDOW_STATE,
-                          "Window %s withdrawn\n",
-                          window->desc);
-              window->withdrawn = TRUE;
-              meta_window_free (window); /* Unmanage withdrawn window */
-              window = NULL;
-            }
-          else
-            {
-              window->unmaps_pending -= 1;
-              meta_topic (META_DEBUG_WINDOW_STATE,
-                          "Received pending unmap, %d now pending\n",
-                          window->unmaps_pending);
-            }
-        }
-
-      /* Unfocus on UnmapNotify, do this after the possible
-       * window_free above so that window_free can see if window->has_focus
-       * and move focus to another window
-       */
       if (window)
-        meta_window_notify_focus (window, event);
+        {
+          if (display->grab_op != META_GRAB_OP_NONE &&
+              display->grab_window == window)
+            meta_display_end_grab_op (display, CurrentTime);      
+      
+          if (!frame_was_receiver)
+            {
+              if (window->unmaps_pending == 0)
+                {
+                  meta_topic (META_DEBUG_WINDOW_STATE,
+                              "Window %s withdrawn\n",
+                              window->desc);
+                  window->withdrawn = TRUE;
+                  meta_window_free (window); /* Unmanage withdrawn window */
+                  window = NULL;
+                }
+              else
+                {
+                  window->unmaps_pending -= 1;
+                  meta_topic (META_DEBUG_WINDOW_STATE,
+                              "Received pending unmap, %d now pending\n",
+                              window->unmaps_pending);
+                }
+            }
+
+          /* Unfocus on UnmapNotify, do this after the possible
+           * window_free above so that window_free can see if window->has_focus
+           * and move focus to another window
+           */
+          if (window)
+            meta_window_notify_focus (window, event);
+        }
       break;
     case MapNotify:
       break;
