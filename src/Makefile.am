@@ -14,6 +14,8 @@ metacity_SOURCES= 				\
 	bell.h					\
 	bell.c					\
 	common.h				\
+	compositor.c				\
+	compositor.h				\
 	constraints.c				\
 	constraints.h				\
 	core.c					\

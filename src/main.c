@@ -430,7 +430,7 @@ main (int argc, char **argv)
   
   if (!meta_ui_have_a_theme ())
     {
-      gchar  *dir_entry = NULL;
+      const char *dir_entry = NULL;
       GError *err = NULL;
       GDir   *themes_dir = NULL;
       

@@ -1,3 +1,10 @@
+2003-11-15  Havoc Pennington  <hp@redhat.com>
+
+	* src/main.c (main): fix warning
+
+	* src/compositor.c: add a new file to contain compositing manager
+	functionality; not yet implemented at all.
+
 2003-11-15  Rob Adams  <readams@readams.net>
 
 	Inherit visual from frame window so that metacity will work with
