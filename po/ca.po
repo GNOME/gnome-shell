@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.6.0\n"
+"Project-Id-Version: metacity 2.7.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
-"PO-Revision-Date: 2004-04-23 10:07+0200\n"
+"POT-Creation-Date: 2004-08-21 18:46+0200\n"
+"PO-Revision-Date: 2004-08-21 18:54+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -113,14 +113,14 @@ msgstr ""
 "Ja hi ha algun altre programa utilitzant la clau %s amb els modificadors %x "
 "com a vinculació\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2524
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "S'ha produït un error en executar el metacity-dialog per a mostrar un error "
 "sobre una ordre: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2597
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
@@ -447,9 +447,8 @@ msgstr ""
 "s'expresa com «&lt;Alt;&gt;» o «&lt;Super&gt;», per exemple."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "Tanca una finestra"
+msgstr "Tanca la finestra"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -550,9 +549,8 @@ msgid "Lower window below other windows"
 msgstr "Baixa la finestra sota les altres"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
-msgstr "Maximitza una finestra"
+msgstr "Maximitza la finestra"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -563,9 +561,8 @@ msgid "Maximize window vertically"
 msgstr "Maximitza la finestra verticalment"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
-msgstr "Minimitza una finestra"
+msgstr "Minimitza la finestra"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
@@ -604,9 +601,8 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Mou el focus cap enrere entre finestres utilitzant un diàleg emergent"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "Mou una finestra"
+msgstr "Mou la finestra"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -699,9 +695,8 @@ msgid "Raise window above other windows"
 msgstr "Alça una finestra per damunt de les altres"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
-msgstr "Redimensiona una finestra"
+msgstr "Redimensiona la finestra"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -712,9 +707,8 @@ msgid "Show the panel menu"
 msgstr "Mostra el menú del quadre"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
-msgstr "Mostra el diàleg d'execució del quadre"
+msgstr "Mostra el diàleg d'execució d'aplicacions del quadre"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -871,7 +865,6 @@ msgstr ""
 "en aquesta configuració."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -888,7 +881,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -905,7 +897,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -922,7 +913,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -939,7 +929,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -956,7 +945,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -971,7 +959,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -986,7 +973,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1001,7 +987,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1016,7 +1001,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1031,7 +1015,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1046,7 +1029,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1061,7 +1043,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1076,7 +1057,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1091,7 +1071,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1106,7 +1085,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1121,7 +1099,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1136,7 +1113,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1151,7 +1127,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1166,7 +1141,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1183,7 +1157,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1200,7 +1173,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1217,7 +1189,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1232,7 +1203,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1247,7 +1217,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1263,7 +1232,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1280,7 +1248,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1297,7 +1264,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1312,7 +1278,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1327,7 +1292,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1342,7 +1306,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1357,7 +1320,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1372,7 +1334,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1387,7 +1348,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1402,7 +1362,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1417,7 +1376,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1432,7 +1390,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1447,7 +1404,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1462,7 +1418,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1477,7 +1432,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1492,7 +1446,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1509,7 +1462,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1526,7 +1478,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1544,7 +1495,6 @@ msgstr ""
 "cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1562,7 +1512,6 @@ msgstr ""
 "cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1579,7 +1528,6 @@ msgstr ""
 "cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1596,7 +1544,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1614,7 +1561,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1632,7 +1578,6 @@ msgstr ""
 "per a aquesta acció."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1650,7 +1595,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1666,7 +1610,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1681,7 +1624,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1696,7 +1638,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1713,7 +1654,6 @@ msgstr ""
 "cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1728,7 +1668,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1745,7 +1684,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1762,7 +1700,6 @@ msgstr ""
 "haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1779,7 +1716,6 @@ msgstr ""
 "acció."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1837,7 +1773,6 @@ msgid "The window screenshot command"
 msgstr "L'ordre de captura de finestra"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1858,7 +1793,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1873,7 +1807,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1888,7 +1821,6 @@ msgstr ""
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1905,7 +1837,6 @@ msgstr ""
 "cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1962,9 +1893,8 @@ msgstr ""
 "amb soroll, o quan la «campana audible» està inhabilitada."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
-msgstr "Desmaximitza una finestra"
+msgstr "Desmaximitza la finestra"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -3227,7 +3157,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'aplicació ha definit un _NET_WM_PID %ld fals\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4951
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3243,7 +3173,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5622
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
