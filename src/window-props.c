@@ -509,213 +509,227 @@ spew_size_hints_differences (const XSizeHints *old,
                 old->win_gravity, new->win_gravity);  
 }
 
+void
+meta_set_normal_hints (MetaWindow *window,
+		       XSizeHints *hints)
+{
+  int x, y, w, h;
+  /* Save the last ConfigureRequest, which we put here.
+   * Values here set in the hints are supposed to
+   * be ignored.
+   */
+  x = window->size_hints.x;
+  y = window->size_hints.y;
+  w = window->size_hints.width;
+  h = window->size_hints.height;
+
+  /* as far as I can tell, value->v.size_hints.flags is just to
+   * check whether we had old-style normal hints without gravity,
+   * base size as returned by XGetNormalHints(), so we don't
+   * really use it as we fixup window->size_hints to have those
+   * fields if they're missing.
+   */
+
+  /*
+   * When the window is first created, NULL hints will
+   * be passed in which will initialize all of the fields
+   * as if flags were zero
+   */
+  if (hints)
+    window->size_hints = *hints;
+  else
+    window->size_hints.flags = 0;
+
+  /* Put back saved ConfigureRequest. */
+  window->size_hints.x = x;
+  window->size_hints.y = y;
+  window->size_hints.width = w;
+  window->size_hints.height = h;
+
+  if (window->size_hints.flags & PBaseSize)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets base size %d x %d\n",
+		  window->desc,
+		  window->size_hints.base_width,
+		  window->size_hints.base_height);
+    }
+  else if (window->size_hints.flags & PMinSize)
+    {
+      window->size_hints.base_width = window->size_hints.min_width;
+      window->size_hints.base_height = window->size_hints.min_height;
+    }
+  else
+    {
+      window->size_hints.base_width = 0;
+      window->size_hints.base_height = 0;
+    }
+  window->size_hints.flags |= PBaseSize;
+
+  if (window->size_hints.flags & PMinSize)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min size %d x %d\n",
+		  window->desc,
+		  window->size_hints.min_width,
+		  window->size_hints.min_height);
+    }
+  else if (window->size_hints.flags & PBaseSize)
+    {
+      window->size_hints.min_width = window->size_hints.base_width;
+      window->size_hints.min_height = window->size_hints.base_height;
+    }
+  else
+    {
+      window->size_hints.min_width = 0;
+      window->size_hints.min_height = 0;
+    }
+  window->size_hints.flags |= PMinSize;
+
+  if (window->size_hints.flags & PMaxSize)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets max size %d x %d\n",
+		  window->desc,
+		  window->size_hints.max_width,
+		  window->size_hints.max_height);
+    }
+  else
+    {
+      window->size_hints.max_width = G_MAXINT;
+      window->size_hints.max_height = G_MAXINT;
+      window->size_hints.flags |= PMaxSize;
+    }
+
+  if (window->size_hints.max_width < window->size_hints.min_width)
+    {
+      /* someone is on crack */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets max width %d less than min width %d, disabling resize\n",
+		  window->desc,
+		  window->size_hints.max_width,
+		  window->size_hints.min_width);
+      window->size_hints.max_width = window->size_hints.min_width;
+    }
+
+  if (window->size_hints.max_height < window->size_hints.min_height)
+    {
+      /* another cracksmoker */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets max height %d less than min height %d, disabling resize\n",
+		  window->desc,
+		  window->size_hints.max_height,
+		  window->size_hints.min_height);
+      window->size_hints.max_height = window->size_hints.min_height;
+    }
+
+  if (window->size_hints.min_width < 1)
+    {
+      /* another cracksmoker */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets min width to 0, which makes no sense\n",
+		  window->desc);
+      window->size_hints.min_width = 1;
+    }
+  if (window->size_hints.max_width < 1)
+    {
+      /* another cracksmoker */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets max width to 0, which makes no sense\n",
+		  window->desc);
+      window->size_hints.max_width = 1;
+    }
+  if (window->size_hints.min_height < 1)
+    {
+      /* another cracksmoker */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets min height to 0, which makes no sense\n",
+		  window->desc);
+      window->size_hints.min_height = 1;
+    }
+  if (window->size_hints.max_height < 1)
+    {
+      /* another cracksmoker */
+      meta_topic (META_DEBUG_GEOMETRY,
+		  "Window %s sets max height to 0, which makes no sense\n",
+		  window->desc);
+      window->size_hints.max_height = 1;
+    }
+
+  if (window->size_hints.flags & PResizeInc)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets resize width inc: %d height inc: %d\n",
+		  window->desc,
+		  window->size_hints.width_inc,
+		  window->size_hints.height_inc);
+      if (window->size_hints.width_inc == 0)
+	{
+	  window->size_hints.width_inc = 1;
+	  meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 width_inc to 1\n");
+	}
+      if (window->size_hints.height_inc == 0)
+	{
+	  window->size_hints.height_inc = 1;
+	  meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 height_inc to 1\n");
+	}
+    }
+  else
+    {
+      window->size_hints.width_inc = 1;
+      window->size_hints.height_inc = 1;
+      window->size_hints.flags |= PResizeInc;
+    }
+
+  if (window->size_hints.flags & PAspect)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min_aspect: %d/%d max_aspect: %d/%d\n",
+		  window->desc,
+		  window->size_hints.min_aspect.x,
+		  window->size_hints.min_aspect.y,
+		  window->size_hints.max_aspect.x,
+		  window->size_hints.max_aspect.y);
+
+      /* don't divide by 0 */
+      if (window->size_hints.min_aspect.y < 1)
+	window->size_hints.min_aspect.y = 1;
+      if (window->size_hints.max_aspect.y < 1)
+	window->size_hints.max_aspect.y = 1;
+    }
+  else
+    {
+      window->size_hints.min_aspect.x = 1;
+      window->size_hints.min_aspect.y = G_MAXINT;
+      window->size_hints.max_aspect.x = G_MAXINT;
+      window->size_hints.max_aspect.y = 1;
+      window->size_hints.flags |= PAspect;
+    }
+
+  if (window->size_hints.flags & PWinGravity)
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets gravity %d\n",
+		  window->desc,
+		  window->size_hints.win_gravity);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s doesn't set gravity, using NW\n",
+		  window->desc);
+      window->size_hints.win_gravity = NorthWestGravity;
+      window->size_hints.flags |= PWinGravity;
+    }
+}
+
 static void
 reload_normal_hints (MetaWindow    *window,
                      MetaPropValue *value)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
-      int x, y, w, h;
       XSizeHints old_hints;
   
       meta_topic (META_DEBUG_GEOMETRY, "Updating WM_NORMAL_HINTS for %s\n", window->desc);
 
       old_hints = window->size_hints;
   
-      /* Save the last ConfigureRequest, which we put here.
-       * Values here set in the hints are supposed to
-       * be ignored.
-       */
-      x = window->size_hints.x;
-      y = window->size_hints.y;
-      w = window->size_hints.width;
-      h = window->size_hints.height;
+      meta_set_normal_hints (window, value->v.size_hints.hints);
       
-      /* as far as I can tell, value->v.size_hints.flags is just to
-       * check whether we had old-style normal hints without gravity,
-       * base size as returned by XGetNormalHints(), so we don't
-       * really use it as we fixup window->size_hints to have those
-       * fields if they're missing.
-       */
-
-      window->size_hints.flags = 0; /* pointless right? why did I have this here */
-      window->size_hints = * value->v.size_hints.hints;
-  
-      /* Put back saved ConfigureRequest. */
-      window->size_hints.x = x;
-      window->size_hints.y = y;
-      window->size_hints.width = w;
-      window->size_hints.height = h;
-  
-      if (window->size_hints.flags & PBaseSize)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets base size %d x %d\n",
-                      window->desc,
-                      window->size_hints.base_width,
-                      window->size_hints.base_height);
-        }
-      else if (window->size_hints.flags & PMinSize)
-        {
-          window->size_hints.base_width = window->size_hints.min_width;
-          window->size_hints.base_height = window->size_hints.min_height;
-        }
-      else
-        {
-          window->size_hints.base_width = 0;
-          window->size_hints.base_height = 0;
-        }
-      window->size_hints.flags |= PBaseSize;
-  
-      if (window->size_hints.flags & PMinSize)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min size %d x %d\n",
-                      window->desc,
-                      window->size_hints.min_width,
-                      window->size_hints.min_height);
-        }
-      else if (window->size_hints.flags & PBaseSize)
-        {
-          window->size_hints.min_width = window->size_hints.base_width;
-          window->size_hints.min_height = window->size_hints.base_height;
-        }
-      else
-        {
-          window->size_hints.min_width = 0;
-          window->size_hints.min_height = 0;
-        }
-      window->size_hints.flags |= PMinSize;
-  
-      if (window->size_hints.flags & PMaxSize)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets max size %d x %d\n",
-                      window->desc,
-                      window->size_hints.max_width,
-                      window->size_hints.max_height);
-        }
-      else
-        {
-          window->size_hints.max_width = G_MAXINT;
-          window->size_hints.max_height = G_MAXINT;
-          window->size_hints.flags |= PMaxSize;
-        }
-
-      if (window->size_hints.max_width < window->size_hints.min_width)
-        {
-          /* someone is on crack */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets max width %d less than min width %d, disabling resize\n",
-                      window->desc,
-                      window->size_hints.max_width,
-                      window->size_hints.min_width);
-          window->size_hints.max_width = window->size_hints.min_width;
-        }
-
-      if (window->size_hints.max_height < window->size_hints.min_height)
-        {
-          /* another cracksmoker */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets max height %d less than min height %d, disabling resize\n",
-                      window->desc,
-                      window->size_hints.max_height,
-                      window->size_hints.min_height);
-          window->size_hints.max_height = window->size_hints.min_height;
-        }
-
-      if (window->size_hints.min_width < 1)
-        {
-          /* another cracksmoker */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets min width to 0, which makes no sense\n",
-                      window->desc);
-          window->size_hints.min_width = 1;
-        }
-      if (window->size_hints.max_width < 1)
-        {
-          /* another cracksmoker */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets max width to 0, which makes no sense\n",
-                      window->desc);
-          window->size_hints.max_width = 1;
-        }
-      if (window->size_hints.min_height < 1)
-        {
-          /* another cracksmoker */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets min height to 0, which makes no sense\n",
-                      window->desc);
-          window->size_hints.min_height = 1;
-        }
-      if (window->size_hints.max_height < 1)
-        {
-          /* another cracksmoker */
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Window %s sets max height to 0, which makes no sense\n",
-                      window->desc);
-          window->size_hints.max_height = 1;
-        }
-  
-      if (window->size_hints.flags & PResizeInc)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets resize width inc: %d height inc: %d\n",
-                      window->desc,
-                      window->size_hints.width_inc,
-                      window->size_hints.height_inc);
-          if (window->size_hints.width_inc == 0)
-            {
-              window->size_hints.width_inc = 1;
-              meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 width_inc to 1\n");
-            }
-          if (window->size_hints.height_inc == 0)
-            {
-              window->size_hints.height_inc = 1;
-              meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 height_inc to 1\n");
-            }
-        }
-      else
-        {
-          window->size_hints.width_inc = 1;
-          window->size_hints.height_inc = 1;
-          window->size_hints.flags |= PResizeInc;
-        }
-  
-      if (window->size_hints.flags & PAspect)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min_aspect: %d/%d max_aspect: %d/%d\n",
-                      window->desc,
-                      window->size_hints.min_aspect.x,
-                      window->size_hints.min_aspect.y,
-                      window->size_hints.max_aspect.x,
-                      window->size_hints.max_aspect.y);
-
-          /* don't divide by 0 */
-          if (window->size_hints.min_aspect.y < 1)
-            window->size_hints.min_aspect.y = 1;
-          if (window->size_hints.max_aspect.y < 1)
-            window->size_hints.max_aspect.y = 1;
-        }
-      else
-        {
-          window->size_hints.min_aspect.x = 1;
-          window->size_hints.min_aspect.y = G_MAXINT;
-          window->size_hints.max_aspect.x = G_MAXINT;
-          window->size_hints.max_aspect.y = 1;
-          window->size_hints.flags |= PAspect;
-        }
-
-      if (window->size_hints.flags & PWinGravity)
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s sets gravity %d\n",
-                      window->desc,
-                      window->size_hints.win_gravity);
-        }
-      else
-        {
-          meta_topic (META_DEBUG_GEOMETRY, "Window %s doesn't set gravity, using NW\n",
-                      window->desc);
-          window->size_hints.win_gravity = NorthWestGravity;
-          window->size_hints.flags |= PWinGravity;
-        }
-
       spew_size_hints_differences (&old_hints, &window->size_hints);
       
       meta_window_recalc_features (window);

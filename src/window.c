@@ -334,14 +334,14 @@ meta_window_new (MetaDisplay *display,
   window->rect.width = attrs.width;
   window->rect.height = attrs.height;
 
-  window->size_hints.flags = 0;
-  
   /* And border width, size_hints are the "request" */
   window->border_width = attrs.border_width;
   window->size_hints.x = attrs.x;
   window->size_hints.y = attrs.y;
   window->size_hints.width = attrs.width;
   window->size_hints.height = attrs.height;
+  /* initialize the remaining size_hints as if size_hints.flags were zero */
+  meta_set_normal_hints (window, NULL);
 
   /* And this is our unmaximized size */
   window->saved_rect = window->rect;

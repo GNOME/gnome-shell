@@ -33,4 +33,7 @@ void meta_window_reload_properties (MetaWindow *window,
 void meta_display_init_window_prop_hooks (MetaDisplay *display);
 void meta_display_free_window_prop_hooks (MetaDisplay *display);
 
+void meta_set_normal_hints (MetaWindow *window,
+			    XSizeHints *hints);
+
 #endif /* META_WINDOW_PROPS_H */
