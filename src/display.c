@@ -532,7 +532,7 @@ event_callback (XEvent   *event,
   switch (event->type)
     {
     case KeyPress:
-      meta_display_process_key_press (display, event);
+      meta_display_process_key_press (display, window, event);
       break;
     case KeyRelease:
       break;
@@ -553,24 +553,9 @@ event_callback (XEvent   *event,
     case LeaveNotify:
       break;
     case FocusIn:
-      if (window)
-        {
-          if (window != window->display->focus_window)
-            window->display->focus_window = window;
-          window->has_focus = TRUE;
-          if (window->frame)
-            meta_frame_queue_draw (window->frame);
-        }
-      break;
     case FocusOut:
       if (window)
-        {
-          if (window == window->display->focus_window)
-            window->display->focus_window = NULL;
-          window->has_focus = FALSE;
-          if (window->frame)
-            meta_frame_queue_draw (window->frame);
-        }
+        meta_window_notify_focus (window, event);
       break;
     case KeymapNotify:
       break;
@@ -1038,7 +1023,7 @@ meta_spew_event (MetaDisplay *display,
           name = "MappingNotify";
           break;
         default:
-          name = "Unknown";
+          name = "Unknown event type";
           break;
         }
 
