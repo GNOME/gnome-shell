@@ -1,3 +1,7 @@
+2003-02-26  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
+
+	* configure.in: Added Belarusian to ALL_LINGUAS.
+
 2003-02-26  Mark McLoughlin  <mark@skynet.ie>
 
 	* src/keybindings.c: (handle_panel_keybinding): release
