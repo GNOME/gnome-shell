@@ -1,5 +1,11 @@
 2002-06-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/delete.c (delete_ping_timeout_func): add G_IO_NVAL to watch
+	condition, patch from Gustavo Giraldez, avoids another 100% CPU
+	thingy
+
+2002-06-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/place.c (meta_window_place): don't run constrain_placement
 	on windows we allow to go anywhere (docks, etc.). Fixes
 	positioning of panel windows in certain cases.

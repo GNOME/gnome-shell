@@ -1,7 +1,7 @@
 /* Metacity window deletion */
 
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2001, 2002 Havoc Pennington
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -341,7 +341,7 @@ delete_ping_timeout_func (MetaDisplay *display,
 
   channel = g_io_channel_unix_new (window->dialog_pipe);
   g_io_add_watch_full (channel, G_PRIORITY_DEFAULT,
-                       G_IO_IN | G_IO_HUP | G_IO_ERR,
+                       G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
                        io_from_ping_dialog,
                        NULL, NULL);
   g_io_channel_unref (channel);
