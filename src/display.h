@@ -124,6 +124,11 @@ struct _MetaDisplay
   GSList *error_traps;
   int server_grab_count;
 
+  /* This window holds the focus when we don't want to focus
+   * any actual clients
+   */
+  Window no_focus_window;
+  
   /* for double click */
   int double_click_time;
   Time last_button_time;
@@ -214,5 +219,9 @@ void     meta_display_show_desktop   (MetaDisplay *display);
 void     meta_display_unshow_desktop (MetaDisplay *display);
 
 guint32  meta_display_get_current_time (MetaDisplay *display);
+
+/* utility goo */
+const char* meta_focus_mode_to_string   (int m);
+const char* meta_focus_detail_to_string (int d);
 
 #endif

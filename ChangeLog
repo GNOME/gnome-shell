@@ -1,3 +1,21 @@
+2002-01-05  Havoc Pennington  <hp@pobox.com>
+
+        GTK 1.2 plug/socket clients still broken, don't know why.
+	
+	* src/screen.c (meta_screen_new): select focus change on root
+	window, for debugging
+
+	* src/display.c (event_callback): when unfocusing, use
+	no_focus_window to hold the focus
+
+	* src/display.h (struct _MetaDisplay): have a no_focus_window to 
+	hold the focus when we don't want to have anything focused. 
+	Then we can avoid confusing focusing-the-frame stuff.
+
+	* src/window.c (meta_window_notify_focus): improve some debug spew
+	(meta_window_notify_focus): add hack from WindowMaker to ignore
+	focus in events with detail > NotifyNonlinearVirtual	
+
 2002-01-04  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): don't lower docks when a grab

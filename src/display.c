@@ -235,7 +235,8 @@ meta_display_open (const char *name)
    * created in screen_new
    */
   display->leader_window = None;
-
+  display->no_focus_window = None;
+  
   screens = NULL;
 #if 0
   /* disable multihead pending GTK support */
@@ -863,7 +864,7 @@ event_callback (XEvent   *event,
                   meta_verbose ("Unsetting focus from %s due to LeaveNotify\n",
                                 window->desc);
                   XSetInputFocus (display->xdisplay,
-                                  PointerRoot,
+                                  display->no_focus_window,
                                   RevertToPointerRoot,
                                   event->xcrossing.time);
                 }
@@ -882,7 +883,34 @@ event_callback (XEvent   *event,
     case FocusIn:
     case FocusOut:
       if (window)
-        meta_window_notify_focus (window, event);
+        {
+          meta_window_notify_focus (window, event);
+        }
+      else if (event->xany.window == display->no_focus_window)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focus %s event received on no_focus_window 0x%lx "
+                      "mode %s detail %s\n",
+                      event->type == FocusIn ? "in" :
+                      event->type == FocusOut ? "out" :
+                      "???",
+                      event->xany.window,
+                      meta_focus_mode_to_string (event->xfocus.mode),
+                      meta_focus_detail_to_string (event->xfocus.mode));
+        }
+      else if (meta_display_screen_for_root (display,
+                                             event->xany.window) != NULL)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focus %s event received on root window 0x%lx "
+                      "mode %s detail %s\n",
+                      event->type == FocusIn ? "in" :
+                      event->type == FocusOut ? "out" :
+                      "???",
+                      event->xany.window,
+                      meta_focus_mode_to_string (event->xfocus.mode),
+                      meta_focus_detail_to_string (event->xfocus.mode));
+        }
       break;
     case KeymapNotify:
       break;
@@ -1203,22 +1231,23 @@ event_get_time (MetaDisplay *display,
     }
 }
 
-
-static const char*
-focus_detail (int d)
+const char*
+meta_focus_detail_to_string (int d)
 {
   const char *detail = "???";
   switch (d)
     {
+      /* We are an ancestor in the A<->B focus change relationship */
     case NotifyAncestor:
       detail = "NotifyAncestor";
       break;
     case NotifyDetailNone:
       detail = "NotifyDetailNone";
       break;
+      /* We are a descendant in the A<->B focus change relationship */
     case NotifyInferior:
       detail = "NotifyInferior";
-      break;                
+      break;
     case NotifyNonlinear:
       detail = "NotifyNonlinear";
       break;
@@ -1239,8 +1268,8 @@ focus_detail (int d)
   return detail;
 }
 
-static const char*
-focus_mode (int m)
+const char*
+meta_focus_mode_to_string (int m)
 {
   const char *mode = "???";
   switch (m)
@@ -1254,6 +1283,14 @@ focus_mode (int m)
     case NotifyUngrab:
       mode = "NotifyUngrab";
       break;
+      /* not sure any X implementations are missing this, but
+       * it seems to be absent from some docs.
+       */
+#ifdef NotifyWhileGrabbed
+    case NotifyWhileGrabbed:
+      mode = "NotifyWhileGrabbed";
+      break;
+#endif
     }
 
   return mode;
@@ -1325,14 +1362,14 @@ meta_spew_event (MetaDisplay *display,
         case FocusIn:
           name = "FocusIn";
           extra = g_strdup_printf ("detail: %s mode: %s\n",
-                                   focus_detail (event->xfocus.detail),
-                                   focus_mode (event->xfocus.mode));
+                                   meta_focus_detail_to_string (event->xfocus.detail),
+                                   meta_focus_mode_to_string (event->xfocus.mode));
           break;
         case FocusOut:
           name = "FocusOut";
           extra = g_strdup_printf ("detail: %s mode: %s\n",
-                                   focus_detail (event->xfocus.detail),
-                                   focus_mode (event->xfocus.mode));
+                                   meta_focus_detail_to_string (event->xfocus.detail),
+                                   meta_focus_mode_to_string (event->xfocus.mode));
           break;
         case KeymapNotify:
           name = "KeymapNotify";

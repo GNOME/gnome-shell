@@ -183,7 +183,8 @@ meta_screen_new (MetaDisplay *display,
                 SubstructureRedirectMask | SubstructureNotifyMask |
                 ColormapChangeMask | PropertyChangeMask |
                 LeaveWindowMask | EnterWindowMask |
-                ButtonPressMask | ButtonReleaseMask);
+                ButtonPressMask | ButtonReleaseMask |
+                FocusChangeMask);
   if (meta_error_trap_pop (display) != Success)
     {
       meta_warning (_("Screen %d on display '%s' already has a window manager\n"),
@@ -211,6 +212,16 @@ meta_screen_new (MetaDisplay *display,
                                                   screen->xroot,
                                                   -100, -100, 1, 1, 0, 0, 0);
 
+  if (display->no_focus_window == None)
+    {
+      display->no_focus_window = XCreateSimpleWindow (display->xdisplay,
+                                                      screen->xroot,
+                                                      -100, -100, 1, 1, 0, 0, 0);
+      XSelectInput (display->xdisplay, display->no_focus_window,
+                    FocusChangeMask);
+      XMapWindow (display->xdisplay, display->no_focus_window);
+    }
+  
   set_wm_icon_size_hint (screen);
   
   set_supported_hint (screen);
