@@ -5,8 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
-"PO-Revision-Date: 2003-09-05 23:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-30 21:56+0200\n"
+"PO-Revision-Date: 2003-09-30 21:57+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -22,29 +23,29 @@ msgstr " Bruk: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity er kompilert uten støtte for «verbose» modus\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kunne ikke lese «%s» som et heltall"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Feil under tolking av melding «%s» fra dialog-prosess\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Feil under lesing fra dialog-skjermprosess: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -52,7 +53,7 @@ msgstr ""
 "Feil under oppstart av metacity-dialog for å spørre om terminering av en "
 "applikasjone: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
@@ -98,7 +99,7 @@ msgstr "Maksimer vindu"
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -107,19 +108,19 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Feil under oppstart av metacity-dialog for å skrive ut en feil om en "
 "kommando: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
@@ -127,7 +128,7 @@ msgstr ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAVN] [--"
 "display=SKJERM] [--replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -141,7 +142,7 @@ msgstr ""
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
 "Det gis INGEN garanti.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -149,7 +150,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -715,11 +716,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Ta et skjermdump"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Ta et skjermdump av et vindu"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -2001,7 +2002,7 @@ msgstr "Ukjent attributt %s på <geometry>-element"
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
