@@ -1,12 +1,12 @@
 # Czech translation of Metacity
 # This file is distributed under the same license as the metacity package.
-# Miloslav Trmac <mitr@volny.cz>, 2002.
+# Miloslav Trmac <mitr@volny.cz>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.0\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
-"PO-Revision-Date: 2002-12-20 13:13+0100\n"
+"POT-Creation-Date: 2003-04-29 13:36+0200\n"
+"PO-Revision-Date: 2003-04-29 20:03+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -76,23 +76,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatální chyba IO %d (%s) na displeji '%s'.\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Zavřít okno"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Minimalizovat okno"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Maximalizovat okno"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Demaximalizovat okno"
 
@@ -104,24 +104,23 @@ msgid ""
 msgstr ""
 "Klávesu %s s modifikátory %x již jako zkratku používá nějaký jiný program\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba při spouštění metacity-dialog pro výpis chyby o příkazu: %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nebyl definován příkaz %d.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=SOUBOR] [--display=DISPLEJ] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=SOUBOR] [--"
+"display=DISPLEJ] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -209,12 +208,12 @@ msgstr "plochu %d"
 msgid "Workspace %s%d"
 msgstr "plochu %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Jen na %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Přesunout na %s"
@@ -652,11 +651,11 @@ msgstr "Spustit definovaný příkaz"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Zobrazit menu panelu"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Zobrazit dialog panelu Spustit"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -756,14 +755,13 @@ msgstr "Systémový zvonek je slyšet"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Zachytit obrazovku"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Zachytit obrázek okna"
 
 #: src/metacity.schemas.in.h:80
-#, fuzzy
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -775,10 +773,10 @@ msgid ""
 msgstr ""
 "Říká Metacity, jak implementovat vizuální indikaci, že zazvolnil systémový "
 "zvonek nebo indikátor 'zvonek' jiné aplikace. Momentálně jsou dvě platné "
-"hodnoty, \"fullscree\", která způsobí černo-bílé bliknutí přes celou "
-"obrazovku, a \"frame_flash\", která způsobí blikunutí nadpisu okna, které "
-"poslalo signál zvonku. Není-li aplikace, která poslala zvonek, známá (což je "
-"obvykle případ implicitního \"sytémového pípnutí\"), blikne nadpis "
+"hodnoty, \"fullscreen\", která způsobí bílo-čené bliknutí přes celou "
+"obrazovku, a \"frame_flash\", která způsobí blikání nadpisu aplikace, která "
+"poslala signál zvonku. Není-li aplikace, která poslala signál zvonku, známá "
+"(což je obvykle případ implicitního \"sytémového pípnutí\"), bliká nadpis "
 "aktuálního okna."
 
 #: src/metacity.schemas.in.h:81
@@ -792,25 +790,22 @@ msgstr ""
 "run_command_N spustí command_N."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Klíče /apps/metacity/global_keybindings/run_command_N definují klávesové "
-"zkratky, které odpovídají těmto příkazům. Stisknutí klávesové zkratky pro "
-"run_command_N spustí command_N."
+"Klíč /apps/metacity/global_keybindings/run_command_screenshot definuje "
+"klávesovou zkratku, která způsobí spuštění příkazu určeného tímto nstavením."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Klíče /apps/metacity/global_keybindings/run_command_N definují klávesové "
-"zkratky, které odpovídají těmto příkazům. Stisknutí klávesové zkratky pro "
-"run_command_N spustí command_N."
+"Klíč /apps/metacity/global_keybindings/run_command_window_screenshot "
+"definuje klávesovou zkratku, která způsobí spuštění příkazu určeného tímto "
+"nstavením."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1593,7 +1588,6 @@ msgstr ""
 "nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1602,14 +1596,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Klávesová zkratka pro zavření okna. Formát je jako \"&lt;Control&gt;a\" nebo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i "
-"velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu "
-"nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná "
-"klávesová zkratka."
+"Klávesová zkratka, která zobrazí dialogové okno \"Spustit program\" panelu. "
+"Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako "
+"\"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální "
+"řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1618,14 +1611,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Klávesová zkratka pro zavření okna. Formát je jako \"&lt;Control&gt;a\" nebo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i "
-"velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu "
+"Klávesová zkratka, která spustí nástroj panelu pro zachycení obrazovky, aby "
+"zachytil obrázek okna. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká "
+"písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu "
 "nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná "
 "klávesová zkratka."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1634,14 +1627,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Klávesová zkratka, která přepne na pracovní plochu 9. Formát je jako \"&lt;"
-"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
-"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
-"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
-"tak pro tuto akci nebude žádná klávesová zkratka."
+"Klávesová zkratka, která spustí pomůcku panelu pro zachycení obrazovky. "
+"Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako "
+"\"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální "
+"řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1649,11 +1641,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Klávesová zkratka pro aktivaci menu okna. Formát je jako \"&lt;Control&gt;a"
-"\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje "
-"malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
-"Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci "
-"nebude žádná klávesová zkratka."
+"Klávesová zkratka, která zobrazí hlavní menu panelu. Formát je jako \"&lt;"
+"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
+"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
+"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
+"tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:141
 msgid "The name of a workspace."
@@ -1661,7 +1653,7 @@ msgstr "Jméno pracovní plochy."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Příkaz pro zachycení obrazovky"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1693,7 +1685,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Příkaz pro zachycení obrázku okna"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1897,7 +1889,7 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d × %d"
