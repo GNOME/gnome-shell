@@ -25,7 +25,7 @@
 #include "window.h"
 #include "colors.h"
 
-#include <cursorfont.h>
+#include <X11/cursorfont.h>
 #include <locale.h>
 #include <string.h>
 

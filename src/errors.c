@@ -73,7 +73,7 @@ meta_error_trap_pop (MetaDisplay *display)
   display->error_traps = next;
 
   g_free (et);
-
+  
   if (result != Success)
     {
       gchar buf[64];

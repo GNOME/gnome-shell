@@ -1,0 +1,73 @@
+AC_INIT(src/display.c)
+
+AM_CONFIG_HEADER(config.h)
+
+AM_INIT_AUTOMAKE(metacity, 2.3)
+
+GETTEXT_PACKAGE=metacity
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+
+AM_MAINTAINER_MODE
+
+AC_PROG_CC
+AC_ISC_POSIX
+AC_HEADER_STDC
+AC_ARG_PROGRAM
+AM_PROG_LIBTOOL
+
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+
+  if test "x$enable_ansi" = "xyes"; then
+    case " $CFLAGS " in
+    *[\ \	]-ansi[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -ansi" ;;
+    esac
+
+    case " $CFLAGS " in
+    *[\ \	]-pedantic[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -pedantic" ;;
+    esac
+  fi
+fi
+changequote([,])dnl
+
+ALL_LINGUAS=""
+AM_GNU_GETTEXT
+
+if test -z "$PKG_CONFIG"; then
+  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+fi
+
+## see if we have Pango built with xft support
+if $PKG_CONFIG --exists pangoxft ; then
+  PANGO_PACKAGES="pangox pangoxft"
+  have_xft=true
+  AC_DEFINE(HAVE_XFT)
+else
+  PANGO_PACKAGES="pangox"
+  have_xft=false
+fi
+AM_CONDITIONAL(HAVE_XFT, $have_xft)
+
+## here we get the flags we'll actually use
+PKG_CHECK_MODULES(UISLAVE, gtk+-2.0 >= 1.3.5)
+PKG_CHECK_MODULES(METACITY, $PANGO_PACKAGES)
+
+# Check for shaped window extension
+AC_CHECK_LIB(Xext, XShapeCombineMask, AC_DEFINE(HAVE_SHAPE_EXT),,$METACITY_LIBS)
+
+AC_OUTPUT([
+Makefile
+intl/Makefile
+po/Makefile.in
+src/Makefile
+src/uislave/Makefile
+])
+
+

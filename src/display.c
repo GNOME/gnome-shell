@@ -63,7 +63,9 @@ meta_display_open (const char *name)
   GSList *screens;
   GSList *tmp;
   int i;
-
+  char *atom_names[] = { "_NET_WM_NAME" };
+  Atom atoms[G_N_ELEMENTS(atom_names)];
+  
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
   
   xdisplay = XOpenDisplay (name);
@@ -122,6 +124,10 @@ meta_display_open (const char *name)
 
   display->server_grab_count = 0;
 
+  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
+                False, atoms);
+  display->atom_net_wm_name = atoms[0];
+  
   /* Now manage all existing windows */
   tmp = display->screens;
   while (tmp != NULL)

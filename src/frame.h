@@ -24,6 +24,13 @@
 
 #include "window.h"
 
+typedef enum
+{
+  META_FRAME_ACTION_NONE,
+  META_FRAME_ACTION_MOVING,
+  META_FRAME_ACTION_RESIZING
+} MetaFrameAction;
+
 struct _MetaFrame
 {
   /* window we frame */
@@ -32,19 +39,27 @@ struct _MetaFrame
   /* reparent window */
   Window xwindow;
 
+  /* This is trusted info from where we put the
+   * frame, not the result of ConfigureNotify
+   */
   MetaRectangle rect;
 
   gpointer theme_data;
+
+  MetaFrameAction action;
+  /* reference point for drags */
+  int last_x, last_y;
+  int start_button;
 };
 
 void meta_window_ensure_frame  (MetaWindow *window);
 void meta_window_destroy_frame (MetaWindow *window);
 
-void     meta_frame_show  (MetaFrame *frame);
-void     meta_frame_hide  (MetaFrame *frame);
+void     meta_frame_move  (MetaFrame *frame,
+                           int        root_x,
+                           int        root_y);
 
 gboolean meta_frame_event (MetaFrame *frame,
                            XEvent    *event);
-
 
 #endif

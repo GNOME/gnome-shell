@@ -1,4 +1,4 @@
-/* Metacity X event source for main loop */
+/* Metacity UI slave main() */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,21 +19,9 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_EVENT_QUEUE_H
-#define META_EVENT_QUEUE_H
+int
+main (int argc, char **argv)
+{
 
-#include <glib.h>
-#include <X11/Xlib.h>
-
-typedef struct _MetaEventQueue MetaEventQueue;
-
-typedef void   (* MetaEventQueueFunc) (MetaEventQueue *queue,
-                                       XEvent         *event,
-                                       gpointer        data);
-
-MetaEventQueue* meta_event_queue_new  (Display            *display,
-                                       MetaEventQueueFunc  func,
-                                       gpointer            data);
-void            meta_event_queue_free (MetaEventQueue     *eq);
-
-#endif
+  return 0;
+}

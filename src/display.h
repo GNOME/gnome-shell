@@ -23,7 +23,7 @@
 #define META_DISPLAY_H
 
 #include <glib.h>
-#include <Xlib.h>
+#include <X11/Xlib.h>
 #include <pango/pangox.h>
 #include "eventqueue.h"
 
@@ -37,6 +37,8 @@ struct _MetaDisplay
   char *name;
   Display *xdisplay;
 
+  Atom atom_net_wm_name;
+  
   /*< private-ish >*/
   MetaEventQueue *events;
   GSList *screens;

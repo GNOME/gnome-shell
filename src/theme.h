@@ -25,7 +25,7 @@
 /* don't add any internal headers here; theme.h is an installed/public
  * header.
  */
-#include <Xlib.h>
+#include <X11/Xlib.h>
 #include <glib.h>
 
 typedef struct _MetaFrameInfo       MetaFrameInfo;

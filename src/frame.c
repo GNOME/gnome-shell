@@ -82,7 +82,7 @@ meta_window_ensure_frame (MetaWindow *window)
 
   background_pixel = geom.background_pixel;
   
-  switch (window->win_gravity)
+  switch (window->size_hints.win_gravity)
     {
     case NorthWestGravity:
       frame->rect.x = window->rect.x;
@@ -127,18 +127,20 @@ meta_window_ensure_frame (MetaWindow *window)
       break;
     }
 
-  meta_verbose ("Creating frame %d,%d %dx%d around window 0x%lx %d,%d %dx%d with child position inside frame %d,%d\n",
+  meta_verbose ("Creating frame %d,%d %dx%d around window 0x%lx %d,%d %dx%d with child position inside frame %d,%d and gravity %d\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
                 window->xwindow,
                 window->rect.x, window->rect.y,
                 window->rect.width, window->rect.height,
-                child_x, child_y);
+                child_x, child_y,
+                window->size_hints.win_gravity);
 
   attrs.background_pixel = background_pixel;
   attrs.event_mask =
     StructureNotifyMask | ExposureMask |
-    ButtonPressMask | ButtonReleaseMask;
+    ButtonPressMask | ButtonReleaseMask |
+    PointerMotionMask | PointerMotionHintMask;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
                                   window->screen->xroot,
@@ -152,6 +154,13 @@ meta_window_ensure_frame (MetaWindow *window)
                                   window->xvisual,
                                   CWBackPixel | CWEventMask,
                                   &attrs);
+
+  meta_verbose ("Frame is 0x%lx\n", frame->xwindow);
+  
+  frame->action = META_FRAME_ACTION_NONE;
+  frame->last_x = 0;
+  frame->last_y = 0;
+  frame->start_button = 0;
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
@@ -172,12 +181,13 @@ meta_window_ensure_frame (MetaWindow *window)
                    child_y);
   meta_error_trap_pop (window->display);
 
-  /* Show windows */
-  XMapWindow (window->display->xdisplay, frame->xwindow);
-  XMapWindow (window->display->xdisplay, window->xwindow);
-  
   /* stick frame to the window */
-  window->frame = frame;
+  window->frame = frame;  
+
+  if (window->iconic)
+    meta_window_hide (window);
+  else
+    meta_window_show (window);
   
   /* Ungrab server */
   meta_display_ungrab (window->display);
@@ -223,23 +233,60 @@ meta_window_destroy_frame (MetaWindow *window)
   g_free (frame);
 }
 
-
 void
-meta_frame_show (MetaFrame *frame)
+meta_frame_move  (MetaFrame *frame,
+                  int        root_x,
+                  int        root_y)
 {
-  XMapWindow (frame->window->display->xdisplay, frame->xwindow);
+  frame->rect.x = root_x;
+  frame->rect.y = root_y;
+  
+  XMoveWindow (frame->window->display->xdisplay,
+               frame->xwindow,
+               root_x, root_y);
 }
 
-void
-meta_frame_hide (MetaFrame *frame)
+static void
+frame_query_root_pointer (MetaFrame *frame,
+                          int *x, int *y)
 {
-  XUnmapWindow (frame->window->display->xdisplay, frame->xwindow);
+  Window root_return, child_return;
+  int root_x_return, root_y_return;
+  int win_x_return, win_y_return;
+  unsigned int mask_return;
+
+  XQueryPointer (frame->window->display->xdisplay,
+                 frame->xwindow,
+                 &root_return,
+                 &child_return,
+                 &root_x_return,
+                 &root_y_return,
+                 &win_x_return,
+                 &win_y_return,
+                 &mask_return);
+
+  if (x)
+    *x = root_x_return;
+  if (y)
+    *y = root_y_return;
+}
+
+static MetaFrameControl
+frame_get_control (MetaFrame *frame,
+                   int x, int y)
+{
+  MetaFrameInfo info;
+  meta_frame_init_info (frame, &info);
+
+  return frame->window->screen->engine->get_control (&info,
+                                                     x, y,
+                                                     frame->theme_data);
 }
 
 gboolean
 meta_frame_event (MetaFrame *frame,
                   XEvent    *event)
-{   
+{
   switch (event->type)
     {
     case KeyPress:
@@ -247,10 +294,68 @@ meta_frame_event (MetaFrame *frame,
     case KeyRelease:
       break;
     case ButtonPress:
+      if (frame->action == META_FRAME_ACTION_NONE)
+        {
+          MetaFrameControl control;
+          control = frame_get_control (frame,
+                                       event->xbutton.x,
+                                       event->xbutton.y);
+
+          if (((control == META_FRAME_CONTROL_TITLE ||
+                control == META_FRAME_CONTROL_NONE) &&
+               event->xbutton.button == 1) ||
+              event->xbutton.button == 2)
+            {
+              meta_verbose ("Begin move on %s\n",
+                            frame->window->desc);
+              frame->action = META_FRAME_ACTION_MOVING;
+              frame->last_x = event->xbutton.x_root;
+              frame->last_y = event->xbutton.y_root;
+              frame->start_button = event->xbutton.button; 
+            }
+          else if (control == META_FRAME_CONTROL_DELETE &&
+                   event->xbutton.button == 1)
+            {
+              /* FIXME delete event */
+              meta_verbose ("Close control clicked on %s\n",
+                            frame->window->desc);
+            }
+          else if (control == META_FRAME_CONTROL_RESIZE_SE &&
+                   event->xbutton.button == 1)
+            {
+              /* FIXME begin a resize */
+              meta_verbose ("Resize control clicked on %s\n",
+                            frame->window->desc);
+            }
+        }
       break;
     case ButtonRelease:
+      if (event->xbutton.button == frame->start_button)
+        {
+          frame->action = META_FRAME_ACTION_NONE;
+        }
       break;
     case MotionNotify:
+      switch (frame->action)
+        {
+        case META_FRAME_ACTION_MOVING:
+          {
+            int x, y;
+            int new_x, new_y;
+            frame_query_root_pointer (frame, &x, &y);
+
+            new_x = frame->rect.x + (x - frame->last_x);
+            new_y = frame->rect.y + (y - frame->last_y);
+            frame->last_x = x;
+            frame->last_y = y;
+            
+            meta_frame_move (frame, new_x, new_y);
+          }
+          break;
+
+        default:
+          break;
+        }
       break;
     case EnterNotify:
       break;
@@ -290,19 +395,16 @@ meta_frame_event (MetaFrame *frame,
       return TRUE;
       break;
     case UnmapNotify:
+      frame->action = META_FRAME_ACTION_NONE;
       break;
     case MapNotify:
+      frame->action = META_FRAME_ACTION_NONE;
       break;
     case MapRequest:
       break;
     case ReparentNotify:
       break;
     case ConfigureNotify:
-      frame->rect.x = event->xconfigure.x;
-      frame->rect.y = event->xconfigure.y;
-      frame->rect.width = event->xconfigure.width;
-      frame->rect.height = event->xconfigure.height;
-      return TRUE;
       break;
     case ConfigureRequest:
       break;

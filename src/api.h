@@ -25,7 +25,7 @@
 /* don't add any internal headers here; api.h is an installed/public
  * header. Only theme.h is also installed.
  */
-#include <Xlib.h>
+#include <X11/Xlib.h>
 #include <pango/pangox.h>
 
 PangoContext* meta_get_pango_context (Screen                     *xscreen,

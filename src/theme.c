@@ -28,6 +28,8 @@ struct _DefaultFrameData
 {
   PangoLayout *layout;
   GC text_gc;
+  GC fg_gc;
+  int title_height;
 };
 
 static gpointer
@@ -47,10 +49,19 @@ default_acquire_frame (MetaFrameInfo *info)
 
   color.red = color.green = color.blue = 0xffff;
   vals.foreground = meta_get_x_pixel (info->screen, &color);
+  /* FIXME memory-inefficient, could use the same one for all frames
+   * w/ the same root window
+   */
   d->text_gc = XCreateGC (info->display,
                           RootWindowOfScreen (info->screen),
                           GCForeground,
                           &vals);
+  d->fg_gc = XCreateGC (info->display,
+                        RootWindowOfScreen (info->screen),
+                        GCForeground,
+                        &vals);
+  
+  d->title_height = 0;
   
   return d;
 }
@@ -67,14 +78,15 @@ default_release_frame (MetaFrameInfo *info,
     g_object_unref (G_OBJECT (d->layout));
 
   XFreeGC (info->display, d->text_gc);
+  XFreeGC (info->display, d->fg_gc);
   
   g_free (d);
 }
 
 #define VERTICAL_TEXT_PAD 3
-#define LEFT_WIDTH 2
-#define RIGHT_WIDTH 2
-#define BOTTOM_HEIGHT 2
+#define LEFT_WIDTH 15
+#define RIGHT_WIDTH 15
+#define BOTTOM_HEIGHT 20
 void
 default_fill_frame_geometry (MetaFrameInfo *info,
                              MetaFrameGeometry *geom,
@@ -93,7 +105,8 @@ default_fill_frame_geometry (MetaFrameInfo *info,
   
   pango_layout_get_pixel_extents (d->layout, NULL, &rect);
 
-  geom->top_height = rect.height + VERTICAL_TEXT_PAD * 2;
+  d->title_height = rect.height + VERTICAL_TEXT_PAD * 2;
+  geom->top_height = d->title_height;
   
   geom->left_width = LEFT_WIDTH;
   geom->right_width = RIGHT_WIDTH;
@@ -111,6 +124,7 @@ default_expose_frame (MetaFrameInfo *info,
                       gpointer frame_data)
 {
   DefaultFrameData *d;
+  int close_size;
   
   d = frame_data;
   
@@ -120,15 +134,49 @@ default_expose_frame (MetaFrameInfo *info,
                          d->layout,
                          LEFT_WIDTH,
                          VERTICAL_TEXT_PAD);
+
+  close_size = d->title_height;
+  
+  XDrawLine (info->display,
+             info->frame,
+             d->fg_gc,
+             info->width - RIGHT_WIDTH - close_size,
+             VERTICAL_TEXT_PAD,
+             info->width - RIGHT_WIDTH,
+             d->title_height - VERTICAL_TEXT_PAD);
+
+  XDrawLine (info->display,
+             info->frame,
+             d->fg_gc,
+             info->width - RIGHT_WIDTH,
+             VERTICAL_TEXT_PAD,
+             info->width - RIGHT_WIDTH - close_size,
+             d->title_height - VERTICAL_TEXT_PAD);
 }
 
+#define RESIZE_EXTENDS 10
 MetaFrameControl
 default_get_control (MetaFrameInfo *info,
                      int x, int y,
                      gpointer frame_data)
 {
+  DefaultFrameData *d;
+  int close_size;
+  
+  d = frame_data;
 
-
+  close_size = d->title_height;
+  if (y < d->title_height &&
+      x > info->width - RIGHT_WIDTH - close_size)
+    return META_FRAME_CONTROL_DELETE;
+  
+  if (y < d->title_height)
+    return META_FRAME_CONTROL_TITLE;
+  
+  if (y > (info->height - BOTTOM_HEIGHT - RESIZE_EXTENDS) &&
+      x > (info->width - RIGHT_WIDTH - RESIZE_EXTENDS))
+    return META_FRAME_CONTROL_RESIZE_SE;
+  
   return META_FRAME_CONTROL_NONE;
 }
 

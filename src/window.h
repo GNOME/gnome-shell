@@ -24,6 +24,7 @@
 
 #include "screen.h"
 #include "util.h"
+#include <X11/Xutil.h>
 
 struct _MetaWindow
 {
@@ -32,19 +33,33 @@ struct _MetaWindow
   Window xwindow;
   /* may be NULL! not all windows get decorated */
   MetaFrame *frame;
-  MetaRectangle rect;
-  int border_width;
-  int win_gravity;
   int depth;
   Visual *xvisual;
+  char *desc; /* used in debug spew */
   char *title;
+  
+  guint iconic : 1;
+  guint take_focus : 1;
+  guint delete_window : 1;
+
+  /* The size we set the window to last. */
+  MetaRectangle rect;
+  
+  /* Requested geometry */
+  int border_width;
+  /* x/y/w/h here get filled with ConfigureRequest values */
+  XSizeHints size_hints;
 };
 
 MetaWindow*  meta_window_new    (MetaDisplay *display,
                                  Window       xwindow); 
 void         meta_window_free   (MetaWindow  *window);
+void         meta_window_show   (MetaWindow  *window);
+void         meta_window_hide   (MetaWindow  *window);
 
 gboolean     meta_window_event  (MetaWindow  *window,
                                  XEvent      *event);
+
+
 
 #endif

@@ -20,7 +20,7 @@
  * 02111-1307, USA.  */
 
 #include "eventqueue.h"
-#include <Xlib.h>
+#include <X11/Xlib.h>
 
 static gboolean eq_prepare  (GSource     *source,
                              gint        *timeout);
