@@ -1,3 +1,9 @@
+2003-09-04  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: 2.5.5
+
+	* HACKING: add instructions on how to make a release
+
 2003-08-29  Rob Adams  <robadams@ucla.edu>
 
 	* src/ui.c (meta_gdk_pixbuf_get_from_pixmap): harden against null

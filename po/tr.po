@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-02-10 18:55+0200\n"
 "Last-Translator: Arman Aksoy (Armish) <armish@linux-sevenler.de>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -23,29 +23,29 @@ msgstr "Kullanım: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity, ayrıntılı kip desteği olmadan derlenmiş\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" bir tamsayı olarak ayrıştırılamadı"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "\"%2$s\" dizgisinin sonundaki \"%1$s\" karakterleri anlaşılmadı"
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "İletişim kutusu işleminden gelen \"%s\" iletisi ayrıştırılamadı\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "İletişim kutusu gösteren işlemden okuma hatası: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -53,7 +53,7 @@ msgstr ""
 "metacity-dialog'u bir uygulamanın öldürülmesiyle ilgili soru sormak amacıyla "
 "başlatırken hata: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Konak makine adının ne olduğu öğrenilemedi: %s\n"
@@ -79,27 +79,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ölümcül G/Ç hatası %d (%s); '%s' X oturumunda.\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Pencereyi Kapat"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Pencere Menüsü"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Simge Durumuna Küçült"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Ekranı Kapla"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Önceki Boyut"
 
-#: src/keybindings.c:978
+#: src/keybindings.c:984
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,14 +108,14 @@ msgstr ""
 "%s tuşu %x değiştiricileriyle birlikte başka bir uygulama tarafından "
 "atanmış\n"
 
-#: src/keybindings.c:2407
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Bir komutla ilgili hatayı göstermek için metacity-dialog başlatılırken hata: "
 "%s\n"
 
-#: src/keybindings.c:2438
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komutu tanımlanmamış.\n"
@@ -143,7 +143,7 @@ msgstr ""
 "Bu, özgür yazılımdır; telif koşullarını öğrenmek için kaynak koda bakın.\n"
 "Hiç bir garantisi, BELİRLİ BİR AMACA UYGUNLUĞU için dahi, YOKTUR.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -151,7 +151,7 @@ msgstr ""
 "Hiç tema bulunamadı! %s dizininin var olduğundan ve bildiğimiz temaları "
 "içerdiğinden emin olun."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Yeniden başlanamadı: %s\n"
@@ -198,7 +198,7 @@ msgstr "Tüm Çalışma _Alanlarında"
 msgid "Only on _This Workspace"
 msgstr "Yalnız _Bu Çalışma Alanında"
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Çalışma Alanı %d"
@@ -312,29 +312,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr ""
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr ""
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Başlık"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Sınıf"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -342,7 +342,7 @@ msgstr ""
 "Bu pencereleri, \"geçerli durumu kaydet\"me özelliğini "
 "desteklemediklerinden, bir dahaki oturumda kendiniz açmanız gerekecek."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1538,6 +1538,23 @@ msgstr ""
 "ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
+msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Pencerenin görünürlüğünün bütün çalışma alanları ile yalnızca geçerli "
+"çalışma alanı arasına geçişini yapmak üzere atanmış tuş bileşimi. Biçimi "
+"şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya "
+"da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
+"dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
+
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1551,7 +1568,7 @@ msgstr ""
 "da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1566,7 +1583,7 @@ msgstr ""
 "Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş "
 "ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1580,7 +1597,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1596,7 +1613,7 @@ msgstr ""
 "da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1611,7 +1628,7 @@ msgstr ""
 "\"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması "
 "yapılmamış olur."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
@@ -1627,7 +1644,7 @@ msgstr ""
 "gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer "
 "atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1643,7 +1660,7 @@ msgstr ""
 "gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer "
 "atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1659,7 +1676,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1674,22 +1691,22 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
 msgstr "Çalışma alanının adı."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 "Tema; pencere kenarları, başlık çubuğu gibi öğelerin görünümünü belirler."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1697,7 +1714,7 @@ msgstr ""
 "Pencereyi auto_raise ayarı açıksa yükseltmeden önceki gecikme. Bu gecikme "
 "saniyenin binde biri cinsinden verilir."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1710,11 +1727,11 @@ msgstr ""
 "\"sloppy\" olursa fare pencereye girince kendiliğinden odaklanır, \"fare\" "
 "olursa fare pencereye girince odaklanır ama fare çıktığında odaklama biter."
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1734,7 +1751,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1748,7 +1765,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1762,7 +1779,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1777,7 +1794,7 @@ msgstr ""
 "da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1792,7 +1809,7 @@ msgstr ""
 "da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel "
 "dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1802,46 +1819,51 @@ msgstr ""
 "seçenekler: 'toggle_shade' pencereyi toplar/yayar, 'toggle_maximize' ekranı "
 "kaplatır / simge durumuna getirir."
 
-#: src/metacity.schemas.in.h:153
-msgid "Toggle fullscreen mode"
-msgstr "Tam ekran kipini aç/kapa"
-
 #: src/metacity.schemas.in.h:154
-msgid "Toggle maximization state"
+#, fuzzy
+msgid "Toggle always on top state"
 msgstr "Ekranı kaplama durumunu aç/kapa"
 
 #: src/metacity.schemas.in.h:155
+msgid "Toggle fullscreen mode"
+msgstr "Tam ekran kipini aç/kapa"
+
+#: src/metacity.schemas.in.h:156
+msgid "Toggle maximization state"
+msgstr "Ekranı kaplama durumunu aç/kapa"
+
+#: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
 msgstr "Toplanmış durumu aç/kapa"
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
 msgstr "Pencerenin tüm çalışma alanlarında oluşunu aç/kapa"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr "Pencereyi önceki boyutuna getir"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr "Pencere başlıklarında standart sistem yazıtipini kullan"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
 msgstr ""
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Pencere odaklama kipi"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Pencere başlığı yazıtipi"
 
@@ -1901,7 +1923,7 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Çalışma alanı sayısının %d yapılmasında hata: %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1910,7 +1932,7 @@ msgstr ""
 "Yapılandırma veritabanında bulunan \"%s\", \"%s\" tuş ataması olarak geçerli "
 "bir değer değil\n"
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "%d çalışma alanının adının \"%s\" yapılmasında hata: %s\n"
@@ -1920,12 +1942,12 @@ msgstr "%d çalışma alanının adının \"%s\" yapılmasında hata: %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "'%2$s' X oturumundaki %1$d. ekran geçersiz\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1935,7 +1957,7 @@ msgstr ""
 "geçerli pencere yöneticisinin yerine bir başkasını koymak için --replace "
 "seçeneğini kullanabilirsiniz.\n"
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1943,13 +1965,13 @@ msgstr ""
 "\"%2$s\" X oturumundaki %1$d. ekranının pencere yöneticisi seçimi "
 "öğrenilemedi\n"
 
-#: src/screen.c:520
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "\"%2$s\" X oturumundaki %1$d. ekranın bir pencere yöneticisi zaten var\n"
 
-#: src/screen.c:690
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "\"%2$s\" X oturumundaki %1$d. ekran bırakılamadı\"\n"
@@ -2887,7 +2909,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Uygulama _NET_WM_PID'e geçersiz %ld değerini atadı\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2903,7 +2925,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2933,7 +2955,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "0x%2$lx penceresinin %1$s özelliği geçersiz UTF-8 içeriyor\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

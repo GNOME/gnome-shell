@@ -1,3 +1,40 @@
+Making a release
+===
+
+To make a release of metacity, do the following:
+
+ - check out a fresh copy from CVS
+
+ - increment the version number in configure.in, 
+   see the comment above the version for the next fibonacci number
+
+ - update the file NEWS based on the ChangeLog
+
+ - add a ChangeLog entry containing the version number 
+   you're releasing ("Released 2.5.4" or something)
+   so people can see which changes were before and after
+   a given release.
+
+ - "make distcheck" (DO NOT just "make dist" - pass the check!)
+
+ - if make distcheck fails, fix it.
+
+ - once distcheck succeeds, "cvs commit"
+
+ - if someone else made changes and the commit fails, 
+   you have to "cvs up" and run "make distcheck" again
+
+ - once the commit succeeds, WITHOUT cvs updating, "cvs tag
+   METACITY_X_Y_Z" where
+   X_Y_Z map to version X.Y.Z
+
+ - scp the tarball to master.gnome.org
+
+ - run install-module on master.gnome.org to install the tarball 
+   on the ftp site
+
+Misc stuff
+===
 
 Don't commit substantive code in here without asking me,
 hp@redhat.com.  Adding translations, no-brainer typo fixes, etc.  is

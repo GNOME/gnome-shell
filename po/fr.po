@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-09 10:34+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-08-09 10:27+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -29,33 +29,33 @@ msgstr ""
 "Metacity a été compilé sans le support du mode bavard (donc moins de "
 "commentaires de la part de l'application)\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Impossible d'analyser « %s » en tant qu'entier"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Caractères de fin « %s » non compris dans la chaîne « %s »"
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr ""
 "Impossible d'analyser le message « %s » à partir du processus de la boîte de "
 "dialogue\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr ""
 "Erreur de lecture depuis le processus d'affichage de la boîte de dialogue : %"
 "s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -63,7 +63,7 @@ msgstr ""
 "Erreur de lancement de la boîte de dialogue Metacity invitant à tuer une "
 "application : %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
@@ -89,23 +89,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erreur d'ES fatale %d (%s) sur le visuel « %s ».\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Menu Fenêtre"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Réduire la fenêtre"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Agrandir la fenêtre"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Annuler l'agrandissement"
 
@@ -2119,12 +2119,12 @@ msgstr ""
 "Impossible d'avoir la sélection du gestionnaire de fenêtres sur l'écran %d "
 "du visuel « %s »\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur le visuel « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur le visuel « %s »\n"
@@ -3103,7 +3103,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4534
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3119,7 +3119,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5195
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

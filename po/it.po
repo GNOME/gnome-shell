@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
-"POT-Creation-Date: 2003-07-12 14:56+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-07-12 14:58+0200\n"
 "Last-Translator: Lapo Calamandrei <lapo.calamandrei@virgilio.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -25,29 +25,29 @@ msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "Metacity è stato compilato escludendo il supporto per la modalità prolissa\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Impossibile analizzare «%s» come un intero"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "I caratteri «%s» nella stringa «%s» risultano incomprensibili"
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Errore nell'analisi del messaggio «%s» dal processo dialogo\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Errore di lettura dal processo della mappa delle aree di lavoro: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -55,7 +55,7 @@ msgstr ""
 "Errore nell'esecuzione di metacity-dialog per richiedere se terminare un "
 "applicazione: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Errore nell'acquisizione del nome host: %s\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Errore fatale di IO %d (%s) relativo al display \"%s\".\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Chiude la finestra"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Menù della finestra"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Minimizza la finestra"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Massimizza la finestra"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Demassimizza la finestra"
 
@@ -315,29 +315,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "La finestra \"%s\" non risponde."
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr ""
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Titolo"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -345,7 +345,7 @@ msgstr ""
 "Queste finestre non supportano \"save current setup\" e devono essere "
 "riavviate manualmente al prossimo log in."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1983,12 +1983,12 @@ msgstr ""
 "Impossibile acquisire la selezione del window manager per lo schermo %d nel "
 "display \"%s\"\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Lo schermo %d nel display \"%s\" ha già un window manager\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d nel display \"%s\"\n"
@@ -2937,7 +2937,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'applicazione ha impostato un _NET_WM_PID errato %ld\n"
 
 #. first time through
-#: src/window.c:4534
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2953,7 +2953,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5195
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2983,7 +2983,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "La proprietà %s della finestra 0x%lx contiene UTF-8 non valido\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

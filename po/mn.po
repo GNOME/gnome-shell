@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.mn\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-01-21 07:43+0100\n"
 "Last-Translator: Ochirbat Batzaya <buuvei@yahoo.com>\n"
 "Language-Team: Mongolian <mn@li.org>\n"
@@ -26,36 +26,36 @@ msgstr "Хэрэглээ: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity нь нэмэлт үгсийн дэмжлэггүйгээр хөрвүүлэгдсэн байна\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "»%s« бүхэл тоо мэт боловсруулагдаагүй"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "»%s« мөрөн дэх цоожлогч тэмдэгт »%s« -ийг ойлгосонгүй"
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Диалог-процессийн »%s« мэдээллийг боловсруулж чадсангүй\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Диалог-Үзүүлэх процессд алдаа гарлаа: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Х-Программыг алахад асуугддаг Metacity-Диалог үйлдэлд алдаа гарлаа: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Хостын нэрийг олж чадсангүй: %s\n"
@@ -80,27 +80,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "%d (%s) төрлийн алдаа »%s«.дэлгэцэн дээр гарлаа \n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Цонх хаах"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Цонхны цэс"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Цонх агшаах"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Цонх томсгох"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Цонх хаах"
 
-#: src/keybindings.c:978
+#: src/keybindings.c:984
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,14 +109,14 @@ msgstr ""
 "Өөр нэг программ %s товчийг %x modifier-ын хамтаар товчлуурын комбинац "
 "хэлбэрээр хэрэглэж бйна \n"
 
-#: src/keybindings.c:2407
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа "
 "гарлаа: %s\n"
 
-#: src/keybindings.c:2438
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
@@ -146,7 +146,7 @@ msgstr ""
 "Ямар нэгэн ХУДАЛДААНЫ болон тодорхой зорилгод тохируулахад ямар ч баталгаа "
 "олгохгүй.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -154,7 +154,7 @@ msgstr ""
 "Сэдэв олдсонгүй! Энд %s оршихоос гадна энгийн сэдвийг дотроо агуулсан "
 "эсэхийг шалгана уу."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Шинэ эхлэл амжилтүй боллоо: %s\n"
@@ -201,7 +201,7 @@ msgstr "_Бүх ажлын талбар дээр тавих"
 msgid "Only on _This Workspace"
 msgstr "Зөвхөн _энэ ажлын талбар дээр "
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Ажлын талбар %d"
@@ -315,29 +315,29 @@ msgstr "Горим4"
 msgid "Mod5"
 msgstr "Горим5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr ""
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr ""
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Гарчиг"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Анги"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -345,7 +345,7 @@ msgstr ""
 "Эдгээр цонхнууд одоогийн тохиргоонуудыг хадгалахад оролцохгүй бөгөөд "
 "дараагийн асаалтаар гараар шинээр эхлэх хэрэгтэй."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1532,6 +1532,23 @@ msgstr ""
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
+msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Цонхыг бүх ажлын хавтгай дээр эсвэл бүгд дээр байршуулахад ашиглах "
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
+
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1545,7 +1562,7 @@ msgstr ""
 "Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1559,7 +1576,7 @@ msgstr ""
 "»&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
 "товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1573,7 +1590,7 @@ msgstr ""
 "Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1589,7 +1606,7 @@ msgstr ""
 "Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
 "комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1603,7 +1620,7 @@ msgstr ""
 "эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
@@ -1619,7 +1636,7 @@ msgstr ""
 "эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1635,7 +1652,7 @@ msgstr ""
 "эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
 "ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1651,7 +1668,7 @@ msgstr ""
 "»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1666,15 +1683,15 @@ msgstr ""
 "Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
 msgstr "Ажлын талбарын нэр."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1682,7 +1699,7 @@ msgstr ""
 "Энд цонхны жааз, хүрээ(хөвөө), нэрийн хэсгийн үзэмжийг тохируулах зэргийн "
 "сэдвүүд агуулагдана."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1690,7 +1707,7 @@ msgstr ""
 "auto_raise нь true дээр тохируулагдсан тохиолдолд өгөгдсөн цонх идэвхжихэд "
 "гарах цагийн хоцролт. Энэхүү хоцролт  мянганы нэг секундын нэгжээр өгөгдөнө."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1704,11 +1721,11 @@ msgstr ""
 "идэвхжих, »mouse« заагуур цонхон дээр очингуут идэвхжиж цонхны талбараас "
 "гарангуут эргэж идэвхгүй байдалд орох үйлдлүүдийг заана."
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1726,7 +1743,7 @@ msgstr ""
 "Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
 "комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1741,7 +1758,7 @@ msgstr ""
 "мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
 "тавигдахгүй."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1756,7 +1773,7 @@ msgstr ""
 "мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
 "тавигдахгүй."
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1772,7 +1789,7 @@ msgstr ""
 "Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
 "комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1788,7 +1805,7 @@ msgstr ""
 "Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
 "комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1799,46 +1816,51 @@ msgstr ""
 "цонх хуйлагдан эсвэл эсрэгээр дэлгэгдэж харин »toggle_maximize« гэвэл цонхыг "
 "томсгож багасгах болно."
 
-#: src/metacity.schemas.in.h:153
-msgid "Toggle fullscreen mode"
-msgstr "Бүтэн дэлгэц гаргах горимыг асааж унтраах"
-
 #: src/metacity.schemas.in.h:154
-msgid "Toggle maximization state"
+#, fuzzy
+msgid "Toggle always on top state"
 msgstr "Томсгосон хэлбэрийг асааж унтраахMaximierungszustand ein-/ausschalten"
 
 #: src/metacity.schemas.in.h:155
+msgid "Toggle fullscreen mode"
+msgstr "Бүтэн дэлгэц гаргах горимыг асааж унтраах"
+
+#: src/metacity.schemas.in.h:156
+msgid "Toggle maximization state"
+msgstr "Томсгосон хэлбэрийг асааж унтраахMaximierungszustand ein-/ausschalten"
+
+#: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
 msgstr "Цонхыг дэлгэн буцааж хуйлах "
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
 msgstr "Цонхуудыг бүх ажлын талбар дээр харагдхаар тохируулах"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr "Цонхыг багасгах"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr "Цонхны нэрэнд стандарт үсгийн хэв ашигла"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
 msgstr ""
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Цонхны фокусын горим"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Цонхны нэрийн үсгийн хэв"
 
@@ -1898,7 +1920,7 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "%d дээрхи ажлын талбарын тоог оруулахад алдаа гарлаа: %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1906,7 +1928,7 @@ msgid ""
 msgstr ""
 "Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өөрчлөхөд алдаа гарлаа: %s\n"
@@ -1916,12 +1938,12 @@ msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өө�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d дэлгэц Display »%s« дээрх байгаа ба хүчингүй байна\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1931,7 +1953,7 @@ msgstr ""
 "байна; »--replace«-ийг сонгож одоо актуаль байгаа цонхны менежерийг сольж "
 "туршина уу\n"
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1939,12 +1961,12 @@ msgstr ""
 "дэлгэц %d-ийн (Display »%s« дээрх ) цонхны менежерийн тэмдэглэл хүлээж "
 "авахад алдаа гарлаа\n"
 
-#: src/screen.c:520
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d » (%s« джжрхи) цонхны менежертэй байна\n"
 
-#: src/screen.c:690
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d нь »%s« дэлгэцэн дээр гаргагдаж чадсангүй\n"
@@ -2890,7 +2912,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2912,7 +2934,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2942,7 +2964,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Онцлог %s. 0x%lx цонхон дээр буруу UTF-8 агуулагдаж байна\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

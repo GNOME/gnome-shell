@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2003-08-20 22:57+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-08-20 22:59+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
@@ -123,7 +123,9 @@ msgstr "Ingen kommando %d er definert\n"
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
-msgstr "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAVN] [--display=SKJERM] [--replace] [--version]\n"
+msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAVN] [--"
+"display=SKJERM] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -316,7 +318,9 @@ msgstr "Vinduet «%s» svarer ikke."
 #: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Hvis du tvinger denne applikasjonen til å avslutte vil du tape alle endringer som ikke er lagret."
+msgstr ""
+"Hvis du tvinger denne applikasjonen til å avslutte vil du tape alle "
+"endringer som ikke er lagret."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -2756,13 +2760,13 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Klarte ikke å laste tema «%s»: %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> er ikke satt for tema «%s»"
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2771,7 +2775,7 @@ msgstr ""
 "Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window "
 "type=«%s» style_set=«ett-eller-annet»/>-element"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2780,14 +2784,14 @@ msgstr ""
 "<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være "
 "spesifisert for dette temaet"
 
-#: src/theme.c:5042 src/theme.c:5104
+#: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
 
-#: src/theme.c:5050 src/theme.c:5112
+#: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstant «%s» er allerede definert"

@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
-"POT-Creation-Date: 2003-07-17 19:17+0300\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-07-17 19:48+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -28,38 +28,40 @@ msgstr "Χρήση: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Το Metacityέχει γίνει compiled χωρίς υποστήριξη για verbose mode\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Αδύνατη η ανάλυση του \"%s\" ως ακεραίου αριθμού"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Δεν έγινε κατανοητή η ακολουθία χαρακτήρων \"%s\" στο αλφαριθμητικό \"%s\""
+msgstr ""
+"Δεν έγινε κατανοητή η ακολουθία χαρακτήρων \"%s\" στο αλφαριθμητικό \"%s\""
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Αποτυχία ανάλυσης μηνύματος \"%s\" από την διεργασία διαλόγου\n"
 
 # gconf/gconfd.c:901
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Σφάλμα κατά την διεργασία προβολής διαλόγου: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Σφάλμα εκκίνησης διαλόγου  metacity για ερώτηση για τον βιαίο τερματισμό "
 "μιας εφαρμογής: %s\n"
 
 # gconf-editor/gconf-editor.c:69 gconf/gconftool.c:447
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Αποτυχία λήψης  hostname: %s\n"
@@ -86,24 +88,24 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Μοιραίο σφάλμα IO %d (%s) ατην οθόνη '%s'.\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Κλείσιμο παραθύρου"
 
 #
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Μενού παραθύρου"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Ελαχιστοποίηση  παραθύρου"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Μεγιστοποίηση Παραθύρου"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Απόμεγιστοποίηση παραθύρου"
 
@@ -155,7 +157,8 @@ msgstr ""
 
 #: src/main.c:348
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Δεν είναι δυνατή η εύρεση θέματος! Βεβαιωθείτε ότι το %s υπάρχει ακι "
 "περιέχει τα συνήθη θέματα."
@@ -322,28 +325,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Το παράθυρο \"%s\" δεν ανταποκρίνεται."
 
-#: src/metacity-dialog.c:92
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Ο εξαναγκασμός αυτού του παραθύρου σε τερματισμό θα προκαλέσει το χάσιμο των μή αποθηκευμένων αλλαγών"
+#: src/metacity-dialog.c:93
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
+"Ο εξαναγκασμός αυτού του παραθύρου σε τερματισμό θα προκαλέσει το χάσιμο των "
+"μή αποθηκευμένων αλλαγών"
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_Εξαναγκασμός σε τερματισμό"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Τίτλος"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Κλάση"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -351,7 +357,7 @@ msgstr ""
 "Αυτά τα παράθυρα δεν υποστηρίζουν \"αποθήκευση τρέχουσας εγκατάστασης\" και "
 "θα πρέπει να επανεκκινηθούν χειρονακτικά στην επόμενη είσοδο σας."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -366,7 +372,8 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Δεν εφαρμόζεται) Η πλοήγηση λειτουργεί με όρους εφαρμογών και όχι παραθύρων"
+msgstr ""
+"(Δεν εφαρμόζεται) Η πλοήγηση λειτουργεί με όρους εφαρμογών και όχι παραθύρων"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -451,7 +458,8 @@ msgid ""
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Καθορίζει αν οι εφαρμογές ή το σύστημα θα δημιουργούν ήχους μπίπ, μπορεί να "
-"χρηιμοποιηθεί σε συνδυσαμό με το 'οπτικό κουδούνι' για να επιτρέπει άηχα μπίπ. "
+"χρηιμοποιηθεί σε συνδυσαμό με το 'οπτικό κουδούνι' για να επιτρέπει άηχα "
+"μπίπ. "
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -536,7 +544,8 @@ msgstr "Μετακίνηση ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Άμεση μετακίνηση προς τα πίσω ανάμεσα στα ταμπλώ και στην επιφάνεια εργασίας."
+msgstr ""
+"Άμεση μετακίνηση προς τα πίσω ανάμεσα στα ταμπλώ και στην επιφάνεια εργασίας."
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
@@ -792,12 +801,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Επικοινωνεί με το Metacity για τον τρόπο με το οποίο θα εφαρμόζεται η οπτική ένδειξη "
-"του οπτικού κουδουνιού. Αυτή την στιγμή υπάρχουν δύο έγκυρες τιμές \"πλήρης οθόνη\", που "
-"δημιουργεί ένα ασπρόμαυρο φλάς σε πλήρη οθόνη, και  \"φλάς-πλαισίου\" που δημιουργεί ένα "
-"ένα αναβόσβημα του τίτλου της εφαρμογής που έστειλε το κουδούνισμα. Αν η εφαρμογή "
-"που έστειλε το κουδούνισμα είναι άγνωστη (όπως συνήθως συμβαίνει για το εξ ορισμού "
-"\"μπιπ συστήματος\") αναβοσβήνει η μπάρα τίτλου του εστιαζόμενου εκείνη την στιγμή παραθύρου."
+"Επικοινωνεί με το Metacity για τον τρόπο με το οποίο θα εφαρμόζεται η οπτική "
+"ένδειξη του οπτικού κουδουνιού. Αυτή την στιγμή υπάρχουν δύο έγκυρες τιμές "
+"\"πλήρης οθόνη\", που δημιουργεί ένα ασπρόμαυρο φλάς σε πλήρη οθόνη, και  "
+"\"φλάς-πλαισίου\" που δημιουργεί ένα ένα αναβόσβημα του τίτλου της εφαρμογής "
+"που έστειλε το κουδούνισμα. Αν η εφαρμογή που έστειλε το κουδούνισμα είναι "
+"άγνωστη (όπως συνήθως συμβαίνει για το εξ ορισμού \"μπιπ συστήματος\") "
+"αναβοσβήνει η μπάρα τίτλου του εστιαζόμενου εκείνη την στιγμή παραθύρου."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -814,8 +824,8 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Το κλειδί /apps/metacity/global_keybindings/run_command_screenshot ορίζει τον"
-"συνδυασμό πλήκτρων που αντιστοιχεί σε αυτές την εντολή."
+"Το κλειδί /apps/metacity/global_keybindings/run_command_screenshot ορίζει "
+"τονσυνδυασμό πλήκτρων που αντιστοιχεί σε αυτές την εντολή."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -823,8 +833,9 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Το κλειδί /apps/metacity/global_keybindings/run_command_window_screenshotορίζει τον"
-"συνδυασμό πλήκτρων που αντιστοιχεί σε αυτές την εντολή."
+"Το κλειδί /apps/metacity/global_keybindings/"
+"run_command_window_screenshotορίζει τονσυνδυασμό πλήκτρων που αντιστοιχεί σε "
+"αυτές την εντολή."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1590,11 +1601,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή του παραθύρου σε επικάλυψη. "
-" Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής "
-"είναι  φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως "
-"\"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δεν θα υπάρχει "
-"κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
+"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή του παραθύρου σε "
+"επικάλυψη.  Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1.  Ο διαβιβαστής είναι  φιλελεύθερος και επιτρέπει κεφαλαία και "
+"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"\"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
+"ενέργεια."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1681,12 +1693,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εμφάνιση του διαλόγου \"Εκτέλεση προγράμματος\" "
-"στο ταμπλώ. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
-"Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
-"συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
-"\"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
-"ενέργεια."
+"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εμφάνιση του διαλόγου "
+"\"Εκτέλεση προγράμματος\" στο ταμπλώ. Η διαμόρφωση μοιάζει με \"&lt;"
+"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι "
+"φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
+"Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δεν θα υπάρχει "
+"κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1697,10 +1709,10 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την αρπαγή οθόνης ενός παραθύρου. Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
-"Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
-"συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την αρπαγή οθόνης ενός "
+"παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
+"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
 "ενέργεια."
 
@@ -1747,7 +1759,8 @@ msgstr "Η εντολή αρπαγής οθόνης"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Το θέμα καθορίζει την εμφάνιση των περιγραμμάτων παραθύρου, μπάρας τίτλου κτλ"
+msgstr ""
+"Το θέμα καθορίζει την εμφάνιση των περιγραμμάτων παραθύρου, μπάρας τίτλου κτλ"
 
 #: src/metacity.schemas.in.h:145
 msgid ""
@@ -1894,9 +1907,10 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"Ενεργοποιεί μια οπτική ένδειξη για το πότε η εφαρμογή ή το σύστημα στέλνει ένα "
-"'κουδούνισμα' ή 'μπιπ'. Είναι χρήσιμο για όσους έχουν προβλήματα ακοής ή για όσους "
-"εργάζονται σε θορυβώδες περιβάλλον, ή όταν έχει απενεργοποιηθεί το 'ηχηρό κουδούνι'."
+"Ενεργοποιεί μια οπτική ένδειξη για το πότε η εφαρμογή ή το σύστημα στέλνει "
+"ένα 'κουδούνισμα' ή 'μπιπ'. Είναι χρήσιμο για όσους έχουν προβλήματα ακοής ή "
+"για όσους εργάζονται σε θορυβώδες περιβάλλον, ή όταν έχει απενεργοποιηθεί το "
+"'ηχηρό κουδούνι'."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1944,7 +1958,8 @@ msgstr "Το GConf key '%s'  έχει ορισθεί σε μια μή έγκυρ
 #: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GConf %s\n"
+msgstr ""
+"Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GConf %s\n"
 
 #: src/prefs.c:1107
 #, c-format
@@ -1966,7 +1981,8 @@ msgstr ""
 #: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "Το %d που αποθηκεύτηκε στο κλειδί GConf %s είναι εκτός του εύρους 0 έως %d\n"
+msgstr ""
+"Το %d που αποθηκεύτηκε στο κλειδί GConf %s είναι εκτός του εύρους 0 έως %d\n"
 
 # gconf/gconfd.c:1561
 #: src/prefs.c:1336
@@ -2012,15 +2028,17 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Αδυναμία λήψης επιλογής διαχειριστή παραθύρωων στην οθόνη %d προβολή \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Αδυναμία λήψης επιλογής διαχειριστή παραθύρωων στην οθόνη %d προβολή \"%s\"\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Η οθόνη  %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Αδυναμία απελευθέρωσης οθόνης %d στην προβολή \"%s\"\n"
@@ -2071,7 +2089,8 @@ msgstr "Αποτυχία ανάλυσης αποθηκευμένου αρχεί�
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "βρέθηκε γνώρισμα <metacity_session> αλλά ήδη έχουμε την ταυτότητα συνεδρίας "
+msgstr ""
+"βρέθηκε γνώρισμα <metacity_session> αλλά ήδη έχουμε την ταυτότητα συνεδρίας "
 
 #: src/session.c:1234
 #, c-format
@@ -2124,7 +2143,8 @@ msgstr "Το γνώρισμα \"%s\" επαναλήφθηκε δυο φορές 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Το γνώρισμα \"%s\" δεν είναι έγκυρο στο στοιχείο <%s> σε αυτην την περίπτωση"
+msgstr ""
+"Το γνώρισμα \"%s\" δεν είναι έγκυρο στο στοιχείο <%s> σε αυτην την περίπτωση"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -2144,7 +2164,8 @@ msgstr "Αδυναμία ανάλυσης \"%s\" ώς αριθμό κινητο�
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Οι τιμές Boolean θα πρέπει να είναι είτε  \"true\" ή \"false\" όχι \"%s\""
+msgstr ""
+"Οι τιμές Boolean θα πρέπει να είναι είτε  \"true\" ή \"false\" όχι \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
@@ -2257,7 +2278,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Δεν υπάρχει γνώρισμα \"τιμή\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Δεν είναι δυνατός ο καθορισμός και ύψους/πλάτους κουμπιού και αναλογίας "
 "διαστάσεων για κουμπιά"
@@ -2474,7 +2496,8 @@ msgstr "Άγνωστη κατάσταση \"%s\" για το κουμπί"
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Το στυλ πλαισίου έχει ήδη ένα κουμπί για την λειτουργία  %s κατάσταση %s"
+msgstr ""
+"Το στυλ πλαισίου έχει ήδη ένα κουμπί για την λειτουργία  %s κατάσταση %s"
 
 #: src/theme-parser.c:3376
 #, c-format
@@ -2523,7 +2546,8 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Το στύλ έχει ήδη καθορισθεί για κατάσταση %s αλλαγή μεγέθους %s εστίαση %s"
+msgstr ""
+"Το στύλ έχει ήδη καθορισθεί για κατάσταση %s αλλαγή μεγέθους %s εστίαση %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2560,11 +2584,13 @@ msgstr ""
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Το εξώτατο στοιχείο στο θέμα θα πρέπει να είναι <metacity_theme> όχι <%s>"
+msgstr ""
+"Το εξώτατο στοιχείο στο θέμα θα πρέπει να είναι <metacity_theme> όχι <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο όνοματος/συγγραφέα/"
 "ημερομηνίας/περιγραφής"
@@ -2576,7 +2602,8 @@ msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε 
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο απόστασης/περιγράμματος/"
 "aspect_ratio"
@@ -2584,7 +2611,8 @@ msgstr ""
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο λειτουργίας σχεδίασης"
+msgstr ""
+"Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο λειτουργίας σχεδίασης"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
@@ -2637,7 +2665,8 @@ msgstr "Αποτυχία ανάγνωσης θέματος από αρχείο %
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Το αρχείο θέματος  %s δεν περιέχει ενα στοιχεί διαχειριστή <metacity_theme>"
+msgstr ""
+"Το αρχείο θέματος  %s δεν περιέχει ενα στοιχεί διαχειριστή <metacity_theme>"
 
 #: src/theme.c:202
 msgid "top"
@@ -2663,7 +2692,8 @@ msgstr "η γεωμετρία πλαισίου δεν έχει καθορίσε�
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση για περίγραμμα \"%s\""
+msgstr ""
+"η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση για περίγραμμα \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2724,11 +2754,13 @@ msgstr "Αδυναμία ανάλυσης τιμής alpha \"%s\" στο ανα�
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Η τιμή Alpha \"%s\" στο αναμιγμένο χρώμα δεν είναι ανάμεσα σε 0.0 και 1.0"
+msgstr ""
+"Η τιμή Alpha \"%s\" στο αναμιγμένο χρώμα δεν είναι ανάμεσα σε 0.0 και 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Ο τύπος σκίασης είναι  \"shade/base_color/factor\", το \"%s\" δεν ταιριάζει "
 "στον τύπο"
@@ -2765,7 +2797,8 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Η συντενταγμένη έκφραση περιέχει έναν ακέραιο  '%s που δεν μπορεί να αναλυθεί"
+msgstr ""
+"Η συντενταγμένη έκφραση περιέχει έναν ακέραιο  '%s που δεν μπορεί να αναλυθεί"
 
 #: src/theme.c:1531
 #, c-format
@@ -2785,15 +2818,18 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Η συντενταγμένη έκφραση έχει σαν αποτέλεσμα διαίρεση με το μηδέν"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Η συντενταγμένη έκφραση  προσπαθεί να χρησιμοποιήσε ιmod operator σε αριθμό "
 "κινητού σημείου"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Η συντενταγμένη έκφραση έχει ένα operator \"%s\" ενω αναμενόταν operand "
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Η συντενταγμένη έκφραση έχει ένα operator \"%s\" ενω αναμενόταν operand "
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -2845,7 +2881,8 @@ msgstr "Η συντενταγμένη έκφραση δεν φαίνεται ν�
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Το θέμα περιείχε μια έκφραση \"%s\" που είχε σαν αποτέλεσμα σφάλμα: %s\n"
+msgstr ""
+"Το θέμα περιείχε μια έκφραση \"%s\" που είχε σαν αποτέλεσμα σφάλμα: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2858,8 +2895,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2893,7 +2932,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Οι συνεχείς που ορίζονται από το χρήστη θα πρέπει να ξεκινάνε με κεφαλαίο "
 "γράμμα, η \"%s\" δεν έχει"
@@ -2970,7 +3010,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4534
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2986,7 +3026,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5195
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3017,9 +3057,10 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μή έγκυρο UTF-8\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μή έγκυρο UTF-8\n"
 " για το αντικείμενο %d στην λίστα\n"
@@ -3035,4 +3076,3 @@ msgstr ""
 
 #~ msgid "Kill application"
 #~ msgstr "Τερματισμός εφαρμογής"
-

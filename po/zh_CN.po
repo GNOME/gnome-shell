@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-08 04:48+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-08-08 15:16+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -27,35 +27,35 @@ msgstr "用法：%s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity 编译的时候没有加入详细模式的支持\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "无法将“%s”解析为整数"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "不理解结尾字符“%s”(位于字符串“%s”中)"
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "无法通过对话进程解析消息“%s”\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "读取对话显示进程时出错：%s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "关闭窗口"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
@@ -307,35 +307,35 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "窗口“%s”未响应。"
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "强制退出此应用程序将使您丢失未保存的更改。"
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "强制退出(_F)"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "标题"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "类别"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr "这些窗口不支持“保存当前设置”，您在下次登录时，必须手动重启动它们。"
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -427,8 +427,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
-"决定应用程序或系统是否可以生成听得见的铃声；可以和“视觉铃声”一起使用，以便"
-"允许静默的铃声。"
+"决定应用程序或系统是否可以生成听得见的铃声；可以和“视觉铃声”一起使用，以便允"
+"许静默的铃声。"
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -448,8 +448,8 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"如果为真，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被"
-"自动提升(该延迟时间由 auto_raise_delay 关键字指定)。"
+"如果为真，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被自动"
+"提升(该延迟时间由 auto_raise_delay 关键字指定)。"
 
 #: src/metacity.schemas.in.h:18
 msgid ""
@@ -752,10 +752,9 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"通知 Metacity 如何实现系统铃声或其它应用程序响铃的视觉标识。目前有两种"
-"值，“全屏”将以黑白色闪烁整个屏幕，而“框架闪烁”将闪烁发出响铃信号的应用程"
-"序的标题栏。如果发送响铃的程序未知(通常是默认的“系统响铃”)，则闪烁当前窗口"
-"的标题栏。"
+"通知 Metacity 如何实现系统铃声或其它应用程序响铃的视觉标识。目前有两种值，“全"
+"屏”将以黑白色闪烁整个屏幕，而“框架闪烁”将闪烁发出响铃信号的应用程序的标题栏。"
+"如果发送响铃的程序未知(通常是默认的“系统响铃”)，则闪烁当前窗口的标题栏。"
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -793,9 +792,9 @@ msgid ""
 "there will be no keybinding for this action."
 msgstr ""
 "运行 /apps/metacity/keybinding_commands 中相应编号的命令的按键组合。其格式类"
-"似于“&lt;Control&gt;a”或者“&lt;Shift&gt;&lt;Alt&gt;F1”。该分析程序的格式"
-"相当自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选"
-"项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+"似于“&lt;Control&gt;a”或者“&lt;Shift&gt;&lt;Alt&gt;F1”。该分析程序的格式相当"
+"自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
+"特殊字符串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -806,10 +805,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"切换到当前工作区上方的工作区的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"切换到当前工作区上方的工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -820,10 +819,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"切换到当前工作区下方的工作区的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"切换到当前工作区下方的工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -834,10 +833,10 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"切换到当前工作区的左侧工作区的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"切换到当前工作区的左侧工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -848,10 +847,10 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"切换到当前工作区的右侧工作区的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"切换到当前工作区的右侧工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -861,10 +860,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 1 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 1 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -876,8 +875,8 @@ msgid ""
 msgstr ""
 "切换到工作区 10 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -889,8 +888,8 @@ msgid ""
 msgstr ""
 "切换到工作区 11 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -902,8 +901,8 @@ msgid ""
 msgstr ""
 "切换到工作区 12 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -913,10 +912,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 2 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 2 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -926,10 +925,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 3 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 3 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -939,10 +938,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 4 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 4 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -952,10 +951,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 5 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 5 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -965,10 +964,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 6 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 6 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -978,10 +977,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 7 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 7 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -991,10 +990,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 8 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 8 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -1004,10 +1003,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 9 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"切换到工作区 9 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -1019,8 +1018,8 @@ msgid ""
 msgstr ""
 "用于激活窗口菜单的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -1032,8 +1031,8 @@ msgid ""
 msgstr ""
 "用于关闭窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -1045,9 +1044,9 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "用于进入“移动窗口模式”并开始使用键盘移动窗口的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1058,10 +1057,10 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"用于进入“改变大小模式”并开始使用键盘改变窗口大小的按键组合。其格式类似"
-"于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常"
-"自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选"
-"项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+"用于进入“改变大小模式”并开始使用键盘改变窗口大小的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1073,9 +1072,9 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "用于隐藏所有普通窗口并将焦点设置为桌面背景的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1085,10 +1084,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"用于最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1098,10 +1097,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于最小化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
-"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"用于最小化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1114,8 +1113,8 @@ msgid ""
 msgstr ""
 "用于将窗口下移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1128,8 +1127,8 @@ msgid ""
 msgstr ""
 "用于将窗口左移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1142,8 +1141,8 @@ msgid ""
 msgstr ""
 "用于将窗口右移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1155,8 +1154,8 @@ msgid ""
 msgstr ""
 "用于将窗口上移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1168,8 +1167,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 1 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1179,10 +1178,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 10 的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于将窗口移动到工作区 10 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1192,10 +1191,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 11 的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于将窗口移动到工作区 11 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1205,10 +1204,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 12 的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于将窗口移动到工作区 12 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1220,8 +1219,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 2 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1233,8 +1232,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 3 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1246,8 +1245,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 4 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1259,8 +1258,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 5 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1272,8 +1271,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 6 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1285,8 +1284,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 7 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1298,8 +1297,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 8 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1311,8 +1310,8 @@ msgid ""
 msgstr ""
 "用于将窗口移动到工作区 9 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1324,9 +1323,9 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "用于在面板和桌面之间用弹出框反向移动焦点的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1338,9 +1337,9 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "用于在面板和桌面之间不用弹出框反向移动焦点的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1353,10 +1352,10 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "用于在窗口之间不用弹出框反向移动焦点的按键组合。使用这个组合时如果按"
-"住“Shift”键会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"住“Shift”键会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1368,11 +1367,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于在窗口之间用弹出框反向移动焦点的按键组合。使用这个组合时如果按"
-"住“Shift”键会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于在窗口之间用弹出框反向移动焦点的按键组合。使用这个组合时如果按住“Shift”键"
+"会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1384,8 +1383,8 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "用于在面板和桌面之间用弹出框移动焦点的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:129
@@ -1398,9 +1397,9 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "用于在面板和桌面之间不用弹出框移动焦点的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1414,8 +1413,8 @@ msgid ""
 msgstr ""
 "用于在窗口之间不用弹出框移动焦点的按键组合(传统设置为 &lt;Alt&gt;Esc)。使用这"
 "个组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:131
@@ -1429,10 +1428,10 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "用于在窗口之间用弹出框移动焦点的按键组合(传统传统为&lt;Alt&gt;Tab)。使用这个"
-"组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1444,10 +1443,9 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "用于切换窗口常居顶层的按键组合。常居顶层的窗口，即总是位于其它窗口之上的窗"
-"口。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析"
-"程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组"
-"合。"
+"口。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序"
+"的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果"
+"将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1459,8 +1457,8 @@ msgid ""
 msgstr ""
 "用于切换全屏模式的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1470,10 +1468,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于切换最大化操作的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于切换最大化操作的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1483,10 +1481,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于切换卷起/展开状态的按键组合。格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于切换卷起/展开状态的按键组合。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1497,10 +1495,10 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于切换窗口是在所有工作区上还是只在一个工作区上的按键组合。其格式类似"
-"于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常"
-"自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选"
-"项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
+"用于切换窗口是在所有工作区上还是只在一个工作区上的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1510,10 +1508,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于取消最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于取消最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1524,10 +1522,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"显示面板的“运行程序”对话框的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"显示面板的“运行程序”对话框的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1539,8 +1537,8 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "用于调用面板抓图工具以抓取某一窗口的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:140
@@ -1552,10 +1550,10 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"调用面板的抓图工具的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"调用面板的抓图工具的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1565,10 +1563,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于显示面板主菜单的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于显示面板主菜单的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -1598,9 +1596,9 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
-"窗口焦点模式指明窗口的激活方式。它有三个可能的值；“click”表示必须单击窗口才"
-"能聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示当"
-"鼠标进入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
+"窗口焦点模式指明窗口的激活方式。它有三个可能的值；“click”表示必须单击窗口才能"
+"聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示当鼠标进"
+"入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
@@ -1619,10 +1617,9 @@ msgid ""
 msgstr ""
 "用于将窗口更改到位于其它窗口上方或下方的按键组合。如果窗口被另一个窗口覆盖，"
 "则会将该窗口提升到其它窗口的上方。如果窗口已经完全可见，则会将该窗口降低到其"
-"它窗口的下方。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
-"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此"
-"操作将没有按键组合。"
+"它窗口的下方。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。"
+"该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
+"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:149
 msgid ""
@@ -1632,10 +1629,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口降低到其它窗口之下的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于将窗口降低到其它窗口之下的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1645,10 +1642,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口提升到其它窗口之上的按键组合。其格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写"
-"和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组合。"
+"用于将窗口提升到其它窗口之上的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1660,9 +1657,9 @@ msgid ""
 "for this action."
 msgstr ""
 "用于改变窗口大小使其充满可用的水平空间的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1674,9 +1671,9 @@ msgid ""
 "for this action."
 msgstr ""
 "用于改变窗口大小使其充满可用的垂直空间的按键组合。其格式类似于“&lt;"
-"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允"
-"许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
-"特殊字符串“disabled”，那么此操作将没有按键组合。"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1684,8 +1681,8 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"这个选项决定在标题栏上双击的效果。当前有效的选项是“切换卷起”，它将卷起/展开"
-"窗口；以及“切换最大化”，它将最大化/还原窗口。"
+"这个选项决定在标题栏上双击的效果。当前有效的选项是“切换卷起”，它将卷起/展开窗"
+"口；以及“切换最大化”，它将最大化/还原窗口。"
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
@@ -1713,8 +1710,8 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"当应用程序或系统发出“铃声”时，打开视觉标识；适合有听力障碍的用户以及在吵闹"
-"的环境中使用，或者关闭“听得见的铃声”时。"
+"当应用程序或系统发出“铃声”时，打开视觉标识；适合有听力障碍的用户以及在吵闹的"
+"环境中使用，或者关闭“听得见的铃声”时。"
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1815,8 +1812,8 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换"
-"当前的窗口管理器。\n"
+"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换当"
+"前的窗口管理器。\n"
 
 #: src/screen.c:449
 #, c-format
@@ -1824,12 +1821,12 @@ msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定项\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
@@ -1962,8 +1959,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-"
-"large、xx-large 中的一个)\n"
+"无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-large、"
+"xx-large 中的一个)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -2649,8 +2646,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"没有为窗口类型“%s”(在主题“%s”中)设置窗帧风格，请添加一个 <window type=\"%"
-"s\" style_set=\"whatever\"/> 元素"
+"没有为窗口类型“%s”(在主题“%s”中)设置窗帧风格，请添加一个 <window type=\"%s\" "
+"style_set=\"whatever\"/> 元素"
 
 #: src/theme.c:4651
 #, c-format
@@ -2737,7 +2734,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4534
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2753,7 +2750,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5195
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -1,3 +1,25 @@
+2.5.4
+===
+
+ Thanks to Rob Adams, Arvind Samptur, Andreas Volz, Ray Strode, John
+ Paul Wallington, Soeren Sandmann for contributions to this release. 
+ And as always thanks to the translators.
+
+ - fix aspect ratio handling
+ - fix "shake loose" functionality for maximized windows
+ - handle Xrandr size changes properly again
+ - fix fullscreen window detection
+ - fix workspace name handling
+ - don't steal button press events on root window
+ - nuke metacity.spec due to nonmaintenance
+ - allow too-large-for-screen windows to move their titlebar offscreen
+ - keep an MRU list of windows per-workspace and use it to focus 
+   the next window when the focused window disappears
+ - fix cursor when moving
+ - improve appearance of opaque resize
+ - make BELOW window state work
+ - fix a crash when gdk_pixmap_foreign_new() returned NULL
+
 2.5.3
 ===
 

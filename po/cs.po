@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-28 13:14+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-06-28 17:54+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -23,35 +23,35 @@ msgstr "Použití: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity byl přeložen bez podpory pro podrobný režim\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nemohu parsovat \"%s\" jako celé číslo"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nerozumím koncovým znakům \"%s\" v řetězci \"%s\""
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nemohu parsovat zprávu \"%s\" z procesu dialogu\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Chyba při čtení z procesu zobrazení dialogu: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Chyba při spouštění metacity-dialog pro dotaz o zabití aplikace: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nemohu získat jméno počítače: %s\n"
@@ -77,23 +77,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatální chyba IO %d (%s) na displeji '%s'.\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Zavřít okno"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Minimalizovat okno"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Maximalizovat okno"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Demaximalizovat okno"
 
@@ -309,29 +309,30 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Okno \"%s\" neodpovídá."
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Vynucené ukončení této aplikace způsobí, že přijdete o neuložené změny."
+msgstr ""
+"Vynucené ukončení této aplikace způsobí, že přijdete o neuložené změny."
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_Vynutit ukončení"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Nadpis"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Třída"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -339,7 +340,7 @@ msgstr ""
 "Tyto okna nepodporují \"uložit aktuální nastavení\" a po vašem příštím "
 "přihlášení je budete muset spustit ručně."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -770,7 +771,14 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr "Říká Metacity, jak implementovat vizuální indikaci, že zazvonil systémový zvonek nebo indikátor 'zvonek' jiné aplikace. Momentálně jsou dvě platné hodnoty, \"fullscreen\", která způsobí bílo-černé bliknutí přes celou obrazovku, a \"frame_flash\", která způsobí blikání nadpisu aplikace, která poslala signál zvonku. Není-li aplikace, která poslala signál zvonku, známá (což je obvykle případ implicitního \"systémového pípnutí\"), bliká nadpis aktuálního okna."
+msgstr ""
+"Říká Metacity, jak implementovat vizuální indikaci, že zazvonil systémový "
+"zvonek nebo indikátor 'zvonek' jiné aplikace. Momentálně jsou dvě platné "
+"hodnoty, \"fullscreen\", která způsobí bílo-černé bliknutí přes celou "
+"obrazovku, a \"frame_flash\", která způsobí blikání nadpisu aplikace, která "
+"poslala signál zvonku. Není-li aplikace, která poslala signál zvonku, známá "
+"(což je obvykle případ implicitního \"systémového pípnutí\"), bliká nadpis "
+"aktuálního okna."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -786,14 +794,19 @@ msgstr ""
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr "Klíč /apps/metacity/global_keybindings/run_command_screenshot definuje klávesovou zkratku, která způsobí spuštění příkazu určeného tímto nastavením."
+msgstr ""
+"Klíč /apps/metacity/global_keybindings/run_command_screenshot definuje "
+"klávesovou zkratku, která způsobí spuštění příkazu určeného tímto nastavením."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr "Klíč /apps/metacity/global_keybindings/run_command_window_screenshot definuje klávesovou zkratku, která způsobí spuštění příkazu určeného tímto nastavením."
+msgstr ""
+"Klíč /apps/metacity/global_keybindings/run_command_window_screenshot "
+"definuje klávesovou zkratku, která způsobí spuštění příkazu určeného tímto "
+"nastavením."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1477,7 +1490,14 @@ msgid ""
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Klávesová zkratka pro přepínání mezi okny bez pomocného okna (tradičně &lt;Alt&gt;Escape). Stisknutí klávesy \"shift\" při použití této zkratky obrátí směr pohybu. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Klávesová zkratka pro přepínání mezi okny bez pomocného okna (tradičně &lt;"
+"Alt&gt;Escape). Stisknutí klávesy \"shift\" při použití této zkratky obrátí "
+"směr pohybu. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a "
+"zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na "
+"speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová "
+"zkratka."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1505,7 +1525,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Klávesová zkratka pro přepínání, jestli je okno vždy navrchu. Okno, které je vždy navrchu, bude vždy vidět nad jinými okny. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Klávesová zkratka pro přepínání, jestli je okno vždy navrchu. Okno, které je "
+"vždy navrchu, bude vždy vidět nad jinými okny. Formát je jako \"&lt;"
+"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
+"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
+"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
+"tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1733,7 +1759,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Tato klávesová zkratka změní velikost okna, aby vyplnilo dostupné vodorovné místo. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Tato klávesová zkratka změní velikost okna, aby vyplnilo dostupné vodorovné "
+"místo. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky "
+"jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální "
+"řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1743,7 +1774,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Tato klávesová zkratka změní velikost okna, aby vyplnilo dostupné svislé místo. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr ""
+"Tato klávesová zkratka změní velikost okna, aby vyplnilo dostupné svislé "
+"místo. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky "
+"jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální "
+"řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1780,7 +1816,10 @@ msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr "Zapíná vizuální indikaci toho, že aplikace nebo systém vyvolal 'zvonek' nebo 'pípnutí'; užitečné pro lidi s poškozeným sluchem a pro použití v hlučném prostředí, nebo když je 'audible bell' vypnut."
+msgstr ""
+"Zapíná vizuální indikaci toho, že aplikace nebo systém vyvolal 'zvonek' nebo "
+"'pípnutí'; užitečné pro lidi s poškozeným sluchem a pro použití v hlučném "
+"prostředí, nebo když je 'audible bell' vypnut."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1896,12 +1935,12 @@ msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nemohu získat výběr manažera oken na obrazovce %d displeje \"%s\"\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má manažera oken\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nemohu uvolnit obrazovku %d na displeji \"%s\"\n"
@@ -2830,7 +2869,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4523
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2846,7 +2885,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5182
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2875,7 +2914,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-19 02:58+0100\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-08-29 17:17+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Cymraeg <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -142,7 +142,8 @@ msgstr ""
 "metacity %s\n"
 "Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
 "Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
-"Does DIM gwarant; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD AR\n"
+"Does DIM gwarant; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD "
+"AR\n"
 "GYFER PWRPAS PENODOL.\n"
 
 #: src/main.c:348
@@ -1922,8 +1923,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth "
-"ddilys ar gyfer addasydd botwm llygoden\n"
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
+"ar gyfer addasydd botwm llygoden\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
@@ -1970,8 +1971,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth "
-"ddilys ar gyfer y rhwymiad bysell \"%s\"\n"
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
+"ar gyfer y rhwymiad bysell \"%s\"\n"
 
 #: src/prefs.c:1896
 #, c-format

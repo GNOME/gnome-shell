@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-07-03 13:15+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-07-24 15:39+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: Gnome-Vi <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -23,35 +23,35 @@ msgstr "Cách dùng: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity đã được biên dịch không hỗ trợ phương thức verbose\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Không thể phân tích \"%s\" thành một số nguyên"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Không thể hiểu ký tự đuôi \"%s\" trong chuỗi \"%s\""
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Lỗi phân tích thông điệp \"%s\" từ tiến trình hội thoại\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Lỗi đọc tiến trình hiển thị hộp thoại: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Lỗi chạy metacity-dialog để hỏi về việc buộc kết thúc ứng dụng: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Lỗi lấy tên máy: %s\n"
@@ -77,23 +77,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Lỗi IO nghiêm trọng %d (%s) trên display '%s'.\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Đóng cửa sổ"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Menu cửa sổ"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Thu nhỏ cửa sổ"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Phóng to cửa sổ"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Bỏ phóng to cửa sổ"
 
@@ -119,7 +119,9 @@ msgstr "Không có lệnh %d nào được định nghĩa.\n"
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
-msgstr "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"
+msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -304,29 +306,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Cửa sổ \"%s\" không trả lời."
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Việc buộc ứng dụng này phải thoát có làm mất thông tin chưa được lưu."
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_Buộc thoát"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Tựa đề"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Lớp"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -334,7 +336,7 @@ msgstr ""
 "Những cửa sổ này không hỗ trợ \"lưu thiết lập hiện thời\" và sẽ phải khởi "
 "động lại bằng tay lần kế bạn đăng nhập."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -772,20 +774,28 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
-msgstr "Những khóa /apps/metacity/global_keybindings/run_command_N định nghĩa phím nóng tương ứng với những lệnh này. Hãy nhấn phím nóng của run_command_N để thực hiện command_N."
+msgstr ""
+"Những khóa /apps/metacity/global_keybindings/run_command_N định nghĩa phím "
+"nóng tương ứng với những lệnh này. Hãy nhấn phím nóng của run_command_N để "
+"thực hiện command_N."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr "Những khóa /apps/metacity/global_keybindings/run_command_screenshot định nghĩa  tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong khóa này."
+msgstr ""
+"Những khóa /apps/metacity/global_keybindings/run_command_screenshot định "
+"nghĩa  tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong khóa này."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr "Những khóa /apps/metacity/global_keybindings/run_command_window_screenshot định nghĩa  tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong khóa này."
+msgstr ""
+"Những khóa /apps/metacity/global_keybindings/run_command_window_screenshot "
+"định nghĩa  tổ hợp phím, khi được nhấn, sẽ thực hiện lệnh được ghi trong "
+"khóa này."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1499,7 +1509,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Phím tắt để bật tắt hiện cửa sổ ở trên cùng. Cửa sổ đó sẽ hiện bên trên tất cả các cửa sổ khác. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr ""
+"Phím tắt để bật tắt hiện cửa sổ ở trên cùng. Cửa sổ đó sẽ hiện bên trên tất "
+"cả các cửa sổ khác. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và "
+"cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt "
+"tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành "
+"động này."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1580,7 +1596,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Phím nóng dùng để hiện cửa số \"Chạy chương trình\". Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr ""
+"Phím nóng dùng để hiện cửa số \"Chạy chương trình\". Dạng thức tương tự như "
+"\"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu "
+"cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và "
+"\"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có "
+"phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1590,7 +1611,12 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "Phím nóng dùng để chụp hình cửa sổ. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr ""
+"Phím nóng dùng để chụp hình cửa sổ. Dạng thức tương tự như \"&lt;Control&gt;a"
+"\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ "
+"thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". "
+"Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào "
+"thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1600,7 +1626,12 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "Phím nóng dùng để gọi tiện ích chụp hình. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr ""
+"Phím nóng dùng để gọi tiện ích chụp hình. Dạng thức tương tự như \"&lt;"
+"Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ "
+"hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;"
+"Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím "
+"nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1609,7 +1640,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Phím nóng dùng để hiện menu chính của panel. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr ""
+"Phím nóng dùng để hiện menu chính của panel. Dạng thức tương tự như \"&lt;"
+"Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ "
+"hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;"
+"Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím "
+"nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -1882,12 +1918,12 @@ msgid ""
 msgstr ""
 "Không thể lấy selection bộ quản lý cửa sổ trên screen %d displat \"%s\"\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d trên display \"%s\" đã có bộ quản lý cửa sổ rồi\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Không thể giải phóng screen %d trên display \"%s\"\n"
@@ -2810,7 +2846,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Ứng dụng đặt bogus _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4534
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2826,7 +2862,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5195
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2856,7 +2892,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Thuộc tính %s trên cửa sổ 0x%lx chứa chuỗi UTF-8 sai\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

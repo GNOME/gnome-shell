@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-02-05 03:08--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -22,35 +22,35 @@ msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "\"Метасіті\" було скомпільовано без підтримки режиму докладних повідомлень\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Не вдалось проаналізувати як ціле \"%s\""
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Не вдалось розпізнати останні символи \"%s\" у рядку \"%s\""
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Збій при аналізі повідомлення \"%s\" від діалогового процесу\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Помилка при зчитуванні з діалогового процесу: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Помилка при відкриванні діалогу закриття програми: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Збій при отриманні назви комп'ютера: %s\n"
@@ -76,27 +76,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальна помилка вводу-виводу %d (%s) на дисплеї \"%s\".\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Мінімізувати вікно"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Максимізувати вікно"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Демаксимізувати вікно"
 
-#: src/keybindings.c:978
+#: src/keybindings.c:984
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -105,14 +105,14 @@ msgstr ""
 "Якась програма вже використовує клавішу %s з модифікатором %x в якості "
 "прив'язки\n"
 
-#: src/keybindings.c:2407
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Помилка при відкриванні діалогу виводу повідомлення про помилку у команді: %"
 "s\n"
 
-#: src/keybindings.c:2438
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команду %d не визначено.\n"
@@ -141,7 +141,7 @@ msgstr ""
 "Не надається НІЯКИХ гарантій; навіть ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ чи "
 "ВІДПОВІДНОСТІ ПЕВНІЙ МЕТІ.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -149,7 +149,7 @@ msgstr ""
 "Неможливо знайти тему! Перевірте чи існує %s та чи він містить прийнятну "
 "тему."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Збій перезапуску: %s\n"
@@ -196,7 +196,7 @@ msgstr "Помістити на _всі робочі місця"
 msgid "Only on _This Workspace"
 msgstr "Лише на _цьому робочому місці"
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Робоче місце %d"
@@ -310,29 +310,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr ""
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr ""
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Клас"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -340,7 +340,7 @@ msgstr ""
 "Ці вікна не підтримують \"збереження поточних параметрів\", при наступному "
 "входженні їх треба запустити власноруч."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1559,6 +1559,23 @@ msgstr ""
 "призначено комбінації клавіш."
 
 #: src/metacity.schemas.in.h:132
+#, fuzzy
+msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Комбінація клавіш перемикання стану чи показувати вікно на усіх робочих "
+"місцях, чи лише на одному. Використовується формат \"&lt;Control&gt;a\" або "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1.Аналізатор достатньо гнучкий та дозволяє "
+"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
+"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
+"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
+
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1573,7 +1590,7 @@ msgstr ""
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1588,7 +1605,7 @@ msgstr ""
 "у спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1603,7 +1620,7 @@ msgstr ""
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1619,7 +1636,7 @@ msgstr ""
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1634,7 +1651,7 @@ msgstr ""
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
@@ -1651,7 +1668,7 @@ msgstr ""
 "спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1668,7 +1685,7 @@ msgstr ""
 "спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1685,7 +1702,7 @@ msgstr ""
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1701,21 +1718,21 @@ msgstr ""
 "у спеціальне значення \"disabled\", то для цієї дії не буде призначено "
 "комбінації клавіш."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
 msgstr "Назва робочої області"
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Тема визначає вигляд рамки вікна, заголовку та таке інше."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1723,7 +1740,7 @@ msgstr ""
 "Затримка перед підніманням вікна, якщо встановлено параметр auto_raise. "
 "Затримка вказується у тисячних долях секунди."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1738,11 +1755,11 @@ msgstr ""
 "коли вказівник миші входить у межі вікна і втрачає фокус, коли виходить з "
 "вікна;"
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1762,7 +1779,7 @@ msgstr ""
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1777,7 +1794,7 @@ msgstr ""
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1792,7 +1809,7 @@ msgstr ""
 "встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
 "призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1808,7 +1825,7 @@ msgstr ""
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1824,7 +1841,7 @@ msgstr ""
 "\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
 "цієї дії не буде призначено комбінації клавіш."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1834,46 +1851,51 @@ msgstr ""
 "Поточними можливими значеннями є 'toggle_shade' - згортає і розгортає вікно, "
 "та 'toggle_maximize' - максимізує і відновлює вікно."
 
-#: src/metacity.schemas.in.h:153
-msgid "Toggle fullscreen mode"
-msgstr "Перемикання повноекранного режиму"
-
 #: src/metacity.schemas.in.h:154
-msgid "Toggle maximization state"
+#, fuzzy
+msgid "Toggle always on top state"
 msgstr "Перемикання стану максимізації"
 
 #: src/metacity.schemas.in.h:155
+msgid "Toggle fullscreen mode"
+msgstr "Перемикання повноекранного режиму"
+
+#: src/metacity.schemas.in.h:156
+msgid "Toggle maximization state"
+msgstr "Перемикання стану максимізації"
+
+#: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
 msgstr "Перемикання стану згорнутості"
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
 msgstr "Перемикання стану показувати на всіх робочих місцях"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr "Демаксимізація вікна"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr "Використання стандартного шрифту у заголовках вікон"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
 msgstr ""
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Режим отримання фокусу вікном"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Шрифт заголовка вікна"
 
@@ -1932,7 +1954,7 @@ msgstr "Значення %d встановлене у ключі GConf %s вих
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Помилка встановлення кількості робочих місць у %d: %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1941,7 +1963,7 @@ msgstr ""
 "Знайдене у конфігураційній базі даних значення \"%s\" не є правильним "
 "записом комбінації клавіш \"%s\"\n"
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка встановлення назви робочого місця %d у \"%s\": %s\n"
@@ -1951,12 +1973,12 @@ msgstr "Помилка встановлення назви робочого мі
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї \"%s\" не правильний\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1965,7 +1987,7 @@ msgstr ""
 "Екран %d на дисплеї \"%s\" вже контролюється менеджером вікон; спробуйте "
 "вказати параметр --replace, щоб замінити поточний менеджер вікон.\n"
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1973,12 +1995,12 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "\"%s\"\n"
 
-#: src/screen.c:520
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї \"%s\" вже контролюється менеджером вікон\n"
 
-#: src/screen.c:690
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось повернути екран %d на дисплеї \"%s\"\n"
@@ -2919,7 +2941,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Додаток встановив неправильне значення _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2935,7 +2957,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2965,7 +2987,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Властивість %s вікна 0x%lx містить неправильний UTF-8\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

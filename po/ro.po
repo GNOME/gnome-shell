@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ro\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-09-02 04:28+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-09-02 14:26+0300\n"
 "Last-Translator: Mugurel Tudor <mugurelu@go.ro>\n"
 "Language-Team:  <@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.1\n"
 
 #: src/tools/metacity-message.c:150
@@ -50,8 +50,10 @@ msgstr "Eroare la citire din dialogul de afişare a proceselor: %s\n"
 
 #: src/delete.c:332
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Eroare la lansarea metacity-dialog pentru omorârea unei aplicaţii: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Eroare la lansarea metacity-dialog pentru omorârea unei aplicaţii: %s\n"
 
 #: src/delete.c:431
 #, c-format
@@ -104,7 +106,8 @@ msgstr "Restaurează fereastra"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
+msgstr ""
+"Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
 
 #: src/keybindings.c:2413
 #, c-format
@@ -143,8 +146,10 @@ msgstr ""
 
 #: src/main.c:348
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Nu am putut găsi o temă ! Asiguraţi-vă că %s există şi conţine temele uzuale."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Nu am putut găsi o temă ! Asiguraţi-vă că %s există şi conţine temele uzuale."
 
 #: src/main.c:396
 #, c-format
@@ -313,8 +318,11 @@ msgid "The window \"%s\" is not responding."
 msgstr "Fereastra \"%s\" nu răspunde."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Forţarea închiderii acestei aplicaţii va determina pierderea datelor nesalvate."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
+"Forţarea închiderii acestei aplicaţii va determina pierderea datelor "
+"nesalvate."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -436,7 +444,8 @@ msgid ""
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Determină dacă aplicaţia sau sistemul va genera 'bip'-uri audio; poate fi "
-"folosit împreună cu 'bip'-urile vizuale, pentru a permite 'bip'-uri silenţioase."
+"folosit împreună cu 'bip'-urile vizuale, pentru a permite 'bip'-uri "
+"silenţioase."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -773,11 +782,11 @@ msgid ""
 "currently focused window's titlebar is flashed."
 msgstr ""
 "Instruieşte Metacity cum să implementeze indicaţia vizuală despre producerea "
-"unui bip. Pentru moment sunt două valori, \"fullscreen\", ce produce un flash "
-"alb-negru pe tot ecranul, şi \"frame_flash\", ce produce un flash la nivelul barei "
-"de titlu al aplicaţiei ce a cauzat bip-ul. Dacă aplicaţia care a trimis bip-ul nu "
-"poate fi determinată (ca în cazul bip-ului de sistem), va clipi bara de titlu a ferestrei "
-"care are focusul în acel moment."
+"unui bip. Pentru moment sunt două valori, \"fullscreen\", ce produce un "
+"flash alb-negru pe tot ecranul, şi \"frame_flash\", ce produce un flash la "
+"nivelul barei de titlu al aplicaţiei ce a cauzat bip-ul. Dacă aplicaţia care "
+"a trimis bip-ul nu poate fi determinată (ca în cazul bip-ului de sistem), va "
+"clipi bara de titlu a ferestrei care are focusul în acel moment."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -794,8 +803,8 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Cheia /apps/metacity/global_keybindings/run_command_screenshot defineşte"
-"combinaţia de taste corespunzătoare acestei comenzi."
+"Cheia /apps/metacity/global_keybindings/run_command_screenshot "
+"defineştecombinaţia de taste corespunzătoare acestei comenzi."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -1553,9 +1562,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a comuta starea întotdeauna deasupra. "
-"O fereastră care este setată întotdeauna deasupra îşi va păstrea această "
-"stare indiferent ce alte aplicaţii încearcă să o acopere. Formatul arată ca de "
+"Combinaţia de taste folosită pentru a comuta starea întotdeauna deasupra. O "
+"fereastră care este setată întotdeauna deasupra îşi va păstrea această stare "
+"indiferent ce alte aplicaţii încearcă să o acopere. Formatul arată ca de "
 "exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1. Este permisă "
 "folosirea majusculelor şi a minusculelor, precum şi a abrevierilor gen \"&lt;"
 "Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul \"disabled\", "
@@ -1646,12 +1655,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a afişa dialogul \"Rulează aplicaţia\". Formatul arată ca "
-"de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1. Este "
-"permisă folosirea majusculelor şi a minusculelor, precum şi a abrevierilor "
-"gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul "
-"\"disabled\", atunci nu va exista o combinaţie de taste pentru această "
-"acţiune."
+"Combinaţia de taste folosită pentru a afişa dialogul \"Rulează aplicaţia\". "
+"Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Este permisă folosirea majusculelor şi a minusculelor, precum şi "
+"a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea "
+"cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru "
+"această acţiune."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1662,12 +1671,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a invoca utilitarul de captură ecran. Formatul arată ca "
-"de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1. Este "
-"permisă folosirea majusculelor şi a minusculelor, precum şi a abrevierilor "
-"gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul "
-"\"disabled\", atunci nu va exista o combinaţie de taste pentru această "
-"acţiune."
+"Combinaţia de taste folosită pentru a invoca utilitarul de captură ecran. "
+"Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Este permisă folosirea majusculelor şi a minusculelor, precum şi "
+"a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea "
+"cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru "
+"această acţiune."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1678,11 +1687,12 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Combinaţia de taste ce va invoca utilizatorul de captură ecran al panoului. Formatul arată ca de "
-"exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1. Este permisă "
-"folosirea majusculelor şi a minusculelor, precum şi a abrevierilor gen \"&lt;"
-"Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul \"disabled\", "
-"atunci nu va exista o combinaţie de taste pentru această acţiune."
+"Combinaţia de taste ce va invoca utilizatorul de captură ecran al panoului. "
+"Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Este permisă folosirea majusculelor şi a minusculelor, precum şi "
+"a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea "
+"cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru "
+"această acţiune."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1692,10 +1702,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a activa meniul principal al panoului. Formatul "
-"arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"Este permisă folosirea majusculelor şi a minusculelor, precum şi a "
-"abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea "
+"Combinaţia de taste folosită pentru a activa meniul principal al panoului. "
+"Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Este permisă folosirea majusculelor şi a minusculelor, precum şi "
+"a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea "
 "cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru "
 "această acţiune."
 
@@ -1860,9 +1870,10 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"Activează un indicator vizual când o aplicatie sau sistemul produce un bip; este "
-"util pentru persoanele cu handicap auditiv şî pentru folosirea în medii extrem "
-"de zgomotoase, ca şi pentru situaţiile în care bip-ul audio este dezactivat."
+"Activează un indicator vizual când o aplicatie sau sistemul produce un bip; "
+"este util pentru persoanele cu handicap auditiv şî pentru folosirea în medii "
+"extrem de zgomotoase, ca şi pentru situaţiile în care bip-ul audio este "
+"dezactivat."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1974,7 +1985,8 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nu am putut achiziţiona selecţia managerului de ferestre pe ecranul %d "
 "afişajul \"%s\"\n"
@@ -2158,7 +2170,8 @@ msgstr "<%s> geometrie \"%s\" nu a fost definită"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> trebuie să specifice o geometrie sau un părinte care are o geometrie"
+msgstr ""
+"<%s> trebuie să specifice o geometrie sau un părinte care are o geometrie"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2214,8 +2227,10 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Nici un atribut \"value\" în elementul <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "Nu puteţi specifica şi button_width/button_height şi proporţia butoanelor"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr ""
+"Nu puteţi specifica şi button_width/button_height şi proporţia butoanelor"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2515,7 +2530,8 @@ msgstr "Elementul extern în temă trebuie să fie <metacity_theme> nu %s"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Elementul <%s> nu este permis în interiorul un element name/author/date/"
 "description"
@@ -2527,7 +2543,8 @@ msgstr "Elementul <%s> nu este permis în interiorul unui element <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elementul <%s> nu este permis în interiorul unui element distance/border/"
 "aspect_ratio"
@@ -2613,7 +2630,8 @@ msgstr "geometria cadrului nu specifică dimensiunea \"%s\""
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "geometria cadrului nu specifică dimensiunea \"%s\" pentru marginea \"%s\""
+msgstr ""
+"geometria cadrului nu specifică dimensiunea \"%s\" pentru marginea \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2678,7 +2696,8 @@ msgstr "Valoarea alfa \"%s\" în culoarea blend-ată nu este între 0.0 şi 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formatul de umbră este \"shade/base_color/factor\", \"%s\" nu se potriveşte "
 "formatului"
@@ -2735,14 +2754,16 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Expresia coordonatelor este rezultată în urma unei împărţiri la zero"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Expresia coordonatelor încearcă să folosească operatorul mod asupra unui "
 "număr în virgulă mobilă"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Expresia coordonatelor are un operator \"%s\" care aşteaptă un operand"
 
 #: src/theme.c:1845
@@ -2751,7 +2772,8 @@ msgstr "Expresia coordonatelor are un operand unde un operator era aşteptat"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Expresia coordonatelor a fost terminată cu un operator în locul operandului"
+msgstr ""
+"Expresia coordonatelor a fost terminată cu un operator în locul operandului"
 
 #: src/theme.c:1863
 #, c-format
@@ -2772,7 +2794,8 @@ msgstr ""
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Expresia coordonatelor are o paranteză închisă fără nici o paranteză deschisă"
+msgstr ""
+"Expresia coordonatelor are o paranteză închisă fără nici o paranteză deschisă"
 
 #: src/theme.c:2074
 #, c-format
@@ -2803,8 +2826,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Lipseşte <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Lipseşte <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2837,7 +2862,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Constantele definite de utilizatori trebuie să înceapă cu o majusculă;\"%s\" "
 "nu respectă acest lucru"
@@ -2961,7 +2987,8 @@ msgstr "Proprietatea %s din fereastra 0x%lx conţine date invalide UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Proprietatea %s din fereastra 0x%lx conţine date invalide UTF-8 pentru "
 "elementul %d din listă\n"
@@ -3001,4 +3028,3 @@ msgstr ""
 
 #~ msgid "Change how focus is moved from one window to another"
 #~ msgstr "Schimbă modul în care se mută focalizarea de la o fereastră la alta"
-

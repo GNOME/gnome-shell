@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-28 18:41+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-06-28 18:42+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -26,30 +26,30 @@ msgstr "Forma d'ús: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity es va compilar sense suport per al mode detallat\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "No s'ha pogut analitzar \"%s\" com a enter"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
+#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "No s'entenen els caràcters de cua \"%s\" a la cadena \"%s\""
 
-#: src/delete.c:125
+#: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "És impossible d'analitzar \"%s\" des del procés de diàleg\n"
 
-#: src/delete.c:260
+#: src/delete.c:261
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr ""
 "S'ha produït un error en llegir el procés de la pantalla de diàleg: %s\n"
 
-#: src/delete.c:331
+#: src/delete.c:332
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -58,7 +58,7 @@ msgstr ""
 "la \n"
 "finalització d'una aplicació: %s\n"
 
-#: src/delete.c:429
+#: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "És impossible d'obtenir el nom de l'ordinador central: %s\n"
@@ -84,23 +84,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error d'ES %d fatal (%s) a la pantalla '%s'.\n"
 
-#: src/frames.c:998
+#: src/frames.c:1015
 msgid "Close Window"
 msgstr "Tanca la finestra"
 
-#: src/frames.c:1001
+#: src/frames.c:1018
 msgid "Window Menu"
 msgstr "Menú de la finestra"
 
-#: src/frames.c:1004
+#: src/frames.c:1021
 msgid "Minimize Window"
 msgstr "Minimitza la finestra"
 
-#: src/frames.c:1007
+#: src/frames.c:1024
 msgid "Maximize Window"
 msgstr "Maximitza la finestra"
 
-#: src/frames.c:1010
+#: src/frames.c:1027
 msgid "Unmaximize Window"
 msgstr "Desmaximitza la finestra"
 
@@ -317,30 +317,30 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "La finestra «%s» no està responent."
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Si forceu la sortida d'aquesta aplicació es perdran els canvis no desats."
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_Força la sortida"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Títol"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -348,7 +348,7 @@ msgstr ""
 "Aquestes finestres no suporten «desa la configuració actual» i es tindràn "
 "que reiniciar manualment la pròxima vegada que entreu."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1548,7 +1548,14 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La vinculació de tecles per a seleccionar si una finestra està sempre per damunt. Una finestra que estiga sempre per damunt serà visible per damunt de les altres finestres que s'interseccionen. El format és paregut a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+msgstr ""
+"La vinculació de tecles per a seleccionar si una finestra està sempre per "
+"damunt. Una finestra que estiga sempre per damunt serà visible per damunt de "
+"les altres finestres que s'interseccionen. El format és paregut a «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
+"i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+"«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+"haurà cap vinculació per a aquesta acció."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1969,12 +1976,12 @@ msgstr ""
 "No s'ha pogut adquirir la selecció del gestor de finestres en la pantalla %d "
 "visualització «%s»\n"
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La pantalla %d en la visualització «%s» ja té un gestor de finestres\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No s'ha pogut lliberar la pantalla %d en la visualització «%s»\n"
@@ -2922,7 +2929,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'aplicació ha definit un _NET_WM_PID %ld fals\n"
 
 #. first time through
-#: src/window.c:4523
+#: src/window.c:4565
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2938,7 +2945,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5184
+#: src/window.c:5226
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2970,7 +2977,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "La propietat %s en la finestra 0x%lx contenia un UTF-8 invàlid\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-27 04:36+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-08-27 10:45+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.2\n"
 
 #: src/tools/metacity-message.c:150
@@ -43,7 +43,8 @@ msgstr "No se comprenden los carácteres sobrantes «%s» en la cadena «%s»"
 #: src/delete.c:126
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Ocurrió un error al analizar el mensaje «%s» desde el proceso de diálogo\n"
+msgstr ""
+"Ocurrió un error al analizar el mensaje «%s» desde el proceso de diálogo\n"
 
 #: src/delete.c:261
 #, c-format
@@ -52,8 +53,11 @@ msgstr "Ocurrió un error leyendo desde el proceso de diálogo de pantalla: %s\n
 
 #: src/delete.c:332
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Ocurrió un error al lanzar metacity-dialog para preguntar acerca de matar una aplicación: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Ocurrió un error al lanzar metacity-dialog para preguntar acerca de matar "
+"una aplicación: %s\n"
 
 #: src/delete.c:431
 #, c-format
@@ -73,8 +77,8 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Se ha perdido la conexión con la pantalla «%s»; \n"
-"parece que el servidor X fue apagado o que usted ha matado o "
-"destruido el gestor de ventanas.\n"
+"parece que el servidor X fue apagado o que usted ha matado o destruido el "
+"gestor de ventanas.\n"
 
 #: src/errors.c:238
 #, c-format
@@ -107,15 +111,15 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Algún otro programa ya está usando la clave %s con el modificador %x como una "
-"vinculación\n"
+"Algún otro programa ya está usando la clave %s con el modificador %x como "
+"una vinculación\n"
 
 #: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca "
-"de un comando: %s\n"
+"Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca de "
+"un comando: %s\n"
 
 #: src/keybindings.c:2444
 #, c-format
@@ -142,12 +146,13 @@ msgstr ""
 "metacity %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
 "Este programa es software libre ; vea el código fuente para obtener las "
-"condiciones de copia. NO se proporciona ninguna garantía ; ni de MERCANTIBILIDAD "
-"O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
+"condiciones de copia. NO se proporciona ninguna garantía ; ni de "
+"MERCANTIBILIDAD O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: src/main.c:348
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
 "los temas usuales."
@@ -319,7 +324,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "La ventana «%s» no está respondiendo."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Al forzar esta aplicación a terminar perderá cualquier cambio que no haya "
 "guardado."
@@ -375,10 +381,10 @@ msgstr ""
 "Una cadena de descripción de tipografía describiendo una tipografía para los "
 "títulos de las ventanas. El tamaño de una descripción sólo será usado si la "
 "opción titlebar_font_size está configurada como 0, de la misma manera, esta "
-"opción también está deshabilitada si la opción titlebar_uses_desktop_font está "
-"configurada como verdadera. Por omisión titlebar_font no esta configurada "
-"causando que Metacity utilice la tipografía del escritorio aún si "
-"titlebar_uses_desktop está configurada como falsa."
+"opción también está deshabilitada si la opción titlebar_uses_desktop_font "
+"está configurada como verdadera. Por omisión titlebar_font no esta "
+"configurada causando que Metacity utilice la tipografía del escritorio aún "
+"si titlebar_uses_desktop está configurada como falsa."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -420,9 +426,9 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Al pulsar sobre una ventana manteniendo presionada esta tecla "
-"modificadora se moverá la ventana (botón izquierdo), se redimensionará la ventana "
-"(botón central), o se mostrará el menú de la ventana (botón derecho). El "
+"Al pulsar sobre una ventana manteniendo presionada esta tecla modificadora "
+"se moverá la ventana (botón izquierdo), se redimensionará la ventana (botón "
+"central), o se mostrará el menú de la ventana (botón derecho). El "
 "modificador se expresa por ejemplo como »&lt;Alt&gt;» o »&lt;Super&gt;»"
 
 #: src/metacity.schemas.in.h:9
@@ -471,8 +477,8 @@ msgid ""
 "specified by the auto_raise_delay key)."
 msgstr ""
 "Si es verdadero y el modo del foco es «sloppy» o «ratón» entonces la ventana "
-"con el foco será elevada automáticamente tras un retardo (el retardo "
-"se especifica en la clave auto_raise_delay)."
+"con el foco será elevada automáticamente tras un retardo (el retardo se "
+"especifica en la clave auto_raise_delay)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
@@ -497,14 +503,15 @@ msgstr ""
 "Si es verdadero, entonces Metacity funciona en términos de aplicaciones en "
 "vez de en ventanas. El concepto es un poco abstracto, pero en general una "
 "configuración basada en aplicaciones es más parecida a un Mac y menos a un "
-"Windows. Cuando enfoca a una ventana en el modo basado en aplicación "
-"todas las ventanas en la aplicación serán elevadas. También en el modo "
-"basado en aplicación las pulsaciones del foco no son pasadas a través de las "
-"ventanas en otras aplicaciones. La existencia de esta configuración es un "
-"poco cuestionable. Pero es mejor que tener configuraciones para todos los "
-"detalles específicos de «basado en aplicación» frente a «basado en ventanas». "
-"Por ejemplo cuando decida pasar a través de pulsaciones. Además este modo "
-"basado en aplicaciones no esta en absoluto implementado en este momento."
+"Windows. Cuando enfoca a una ventana en el modo basado en aplicación todas "
+"las ventanas en la aplicación serán elevadas. También en el modo basado en "
+"aplicación las pulsaciones del foco no son pasadas a través de las ventanas "
+"en otras aplicaciones. La existencia de esta configuración es un poco "
+"cuestionable. Pero es mejor que tener configuraciones para todos los "
+"detalles específicos de «basado en aplicación» frente a «basado en "
+"ventanas». Por ejemplo cuando decida pasar a través de pulsaciones. Además "
+"este modo basado en aplicaciones no esta en absoluto implementado en este "
+"momento."
 
 #: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
@@ -528,7 +535,8 @@ msgstr "Minimizar una ventana"
 
 #: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
-msgstr "Modificador a usar para las acciones de pulsación modificadas de ventana"
+msgstr ""
+"Modificador a usar para las acciones de pulsación modificadas de ventana"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move a window"
@@ -540,7 +548,8 @@ msgstr "Moverse hacia atrás entre paneles y el escritorio inmediatamente"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
+msgstr ""
+"Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
@@ -564,7 +573,8 @@ msgstr "Moverse entre ventanas con una ventana emergente"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr "Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
+msgstr ""
+"Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
@@ -696,11 +706,11 @@ msgstr ""
 "de Java rotas. Hay muchos otros ejemplos como este. Esta opción pone a "
 "Metacity en un modo de corrección completa, el cual quizás le dará una "
 "interfaz de usuarios moderadamente linda si usted no necesita ejecutar "
-"ninguna aplicación rota. Lamentablemente los arreglos deben "
-"estar habilitados por omisión; el mundo real es un lugar rudo. Algunos de "
-"los arreglos sonpara limitaciones en las especificaciones "
-"mismas, así que algunas veces un error en el modo «no-workarounds» no podrá "
-"arreglarse sin fastidiar una especificación."
+"ninguna aplicación rota. Lamentablemente los arreglos deben estar "
+"habilitados por omisión; el mundo real es un lugar rudo. Algunos de los "
+"arreglos sonpara limitaciones en las especificaciones mismas, así que "
+"algunas veces un error en el modo «no-workarounds» no podrá arreglarse sin "
+"fastidiar una especificación."
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
@@ -886,8 +896,8 @@ msgstr ""
 "La combinación de teclas que cambia al espacio de trabajo hacia la izquierda "
 "del actual. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:88
@@ -902,8 +912,8 @@ msgstr ""
 "La combinación de teclas que cambia al espacio de trabajo hacia la derecha "
 "del actual. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:89
@@ -1207,8 +1217,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana un espacio de trabajo "
 "hacia abajo. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:109
@@ -1223,8 +1233,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana un espacio de trabajo "
 "hacia la izquierda. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;"
 "&lt;Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:110
@@ -1239,8 +1249,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana un espacio de trabajo "
 "hacia la derecha. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;"
 "&lt;Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:111
@@ -1254,8 +1264,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana un espacio de trabajo "
 "hacia arriba. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:112
@@ -1269,8 +1279,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 1. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:113
@@ -1284,8 +1294,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 10. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:114
@@ -1299,8 +1309,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 11. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:115
@@ -1314,8 +1324,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 12. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:116
@@ -1329,8 +1339,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 2. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:117
@@ -1344,8 +1354,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 3. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:118
@@ -1359,8 +1369,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 4. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:119
@@ -1374,8 +1384,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 5. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:120
@@ -1389,8 +1399,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 6. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:121
@@ -1404,8 +1414,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 7. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:122
@@ -1419,8 +1429,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 8. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:123
@@ -1434,8 +1444,8 @@ msgstr ""
 "La combinación de teclas usada para mover una ventana hacia el espacio de "
 "trabajo 9. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;"
 "Alt&gt;F1». El analizador es bastante liberal y permite tanto mayúsculas "
-"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y "
-"»&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"como minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:124
@@ -1755,8 +1765,8 @@ msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
-"El retardo antes de desplegar una ventana si »auto_rise» está configurado como "
-"verdadero. El retardo está especificado en milésimas de segundo."
+"El retardo antes de desplegar una ventana si »auto_rise» está configurado "
+"como verdadero. El retardo está especificado en milésimas de segundo."
 
 #: src/metacity.schemas.in.h:146
 msgid ""
@@ -1866,9 +1876,10 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"Esta opción determina los efectos de la pulsación doble en la barra de títulos. Las "
-"opciones válidas actualmente son «toggle_shade», que enrolla/desenrolla la "
-"ventana, y «toggle_maximized» que maximiza o minimiza la ventana."
+"Esta opción determina los efectos de la pulsación doble en la barra de "
+"títulos. Las opciones válidas actualmente son «toggle_shade», que enrolla/"
+"desenrolla la ventana, y «toggle_maximized» que maximiza o minimiza la "
+"ventana."
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
@@ -1964,8 +1975,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Los arreglos para aplicaciones rotas deshabilitados. Algunas "
-"aplicaciones podrían no comportarse correctamente.\n"
+"Los arreglos para aplicaciones rotas deshabilitados. Algunas aplicaciones "
+"podrían no comportarse correctamente.\n"
 
 #: src/prefs.c:1232
 #, c-format
@@ -1975,7 +1986,9 @@ msgstr "%d almacenado en la clave GConf %s está fuera de rango 0 hasta %d\n"
 #: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Ocurrió un error configurando la cantidad de espacios de trabajo para %d: %s\n"
+msgstr ""
+"Ocurrió un error configurando la cantidad de espacios de trabajo para %d: %"
+"s\n"
 
 #: src/prefs.c:1579
 #, c-format
@@ -1989,7 +2002,9 @@ msgstr ""
 #: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Ocurrió un error al establecer el nombre del espacio de trabajo %d como «%s»: %s \n"
+msgstr ""
+"Ocurrió un error al establecer el nombre del espacio de trabajo %d como «%"
+"s»: %s \n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -2012,10 +2027,11 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"No se ha podido obtener la selección del gestor de ventanas en la ventana "
-"%d en la pantalla «%s»\n"
+"No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
+"en la pantalla «%s»\n"
 
 #: src/screen.c:504
 #, c-format
@@ -2033,8 +2049,8 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
-"Hubo un fallo al abrir una conexión con el gestor de sesiones, por esto "
-"las posiciones de las ventanas no podrás ser guardadas: %s\n"
+"Hubo un fallo al abrir una conexión con el gestor de sesiones, por esto las "
+"posiciones de las ventanas no podrás ser guardadas: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
@@ -2198,7 +2214,8 @@ msgstr "La <%s> geometría «%s» no ha sido definida"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> debe especificar o una geometría o un padre para tenga una geometría"
+msgstr ""
+"<%s> debe especificar o una geometría o un padre para tenga una geometría"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2254,7 +2271,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "No hay atributo «value» en el elemento <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "No se puede especificar ambos «button_width/button_height» y «aspect ratio» "
 "para los botones"
@@ -2517,7 +2535,8 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
+msgstr ""
+"El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2558,7 +2577,8 @@ msgstr "El elemento mas externo en un tema debe ser <metacity_theme> no <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento name/author/date/"
 "description"
@@ -2570,7 +2590,8 @@ msgstr "El elemento <%s> no esta permitido dentro de un elemento <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento distance/border/"
 "aspect_ratio"
@@ -2658,7 +2679,8 @@ msgstr "La geometría del marco no especifica la dimensión «%s»"
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
+msgstr ""
+"La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
 
 #: src/theme.c:278
 #, c-format
@@ -2679,8 +2701,9 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"La especificación de color GTK debe tener el estado entre corchetes, ejemplo. "
-"gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido analizar «%s»"
+"La especificación de color GTK debe tener el estado entre corchetes, "
+"ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido analizar "
+"«%s»"
 
 #: src/theme.c:989
 #, c-format
@@ -2700,7 +2723,8 @@ msgstr "No se entiende el estado «%s» en la especificación del color"
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "No se entiende el componente de color «%s» en la especificación del color"
+msgstr ""
+"No se entiende el componente de color «%s» en la especificación del color"
 
 #: src/theme.c:1043
 #, c-format
@@ -2708,8 +2732,8 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"El formato de blend es «blend/bg_color/fg_color/alfa», «%s» no cumple con "
-"el formato"
+"El formato de blend es «blend/bg_color/fg_color/alfa», «%s» no cumple con el "
+"formato"
 
 #: src/theme.c:1054
 #, c-format
@@ -2723,15 +2747,18 @@ msgstr "El valor alfa «%s» en el color mezclado no está entre 0.0 y 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"El formato de sombreado es «shade/base_color/factor», «%s» no coincide con el "
-"formato"
+"El formato de sombreado es «shade/base_color/factor», «%s» no coincide con "
+"el formato"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "No se ha podido analizar el factor de sombreado «%s» en el color del sombreado"
+msgstr ""
+"No se ha podido analizar el factor de sombreado «%s» en el color del "
+"sombreado"
 
 #: src/theme.c:1132
 #, c-format
@@ -2747,8 +2774,8 @@ msgstr "No se ha podido analizar el color «%s»"
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
-"La expresión de coordenadas contenía un carácter «%s» en cual no estaá"
-"permitido"
+"La expresión de coordenadas contenía un carácter «%s» en cual no "
+"estaápermitido"
 
 #: src/theme.c:1450
 #, c-format
@@ -2762,7 +2789,8 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
+msgstr ""
+"La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
 #: src/theme.c:1531
 #, c-format
@@ -2782,25 +2810,29 @@ msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar un operador mod con un número de "
 "coma flotante"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operador «%s» donde se esperaba un "
 "operando"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
+msgstr ""
+"La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
+msgstr ""
+"La expresión de coordenadas termina con una operador en vez de un operando"
 
 #: src/theme.c:1863
 #, c-format
@@ -2829,7 +2861,8 @@ msgstr ""
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
+msgstr ""
+"La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -2852,12 +2885,13 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=«%s» state=«%s» draw_ops=»whatever»/> debe ser "
-"especificado para este estilo de marco"
+"<button function=«%s» state=«%s» draw_ops=»whatever»/> debe ser especificado "
+"para este estilo de marco"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Falta <frame state=«%s» resize=«%s» focus=«%s» style=»whatever»/>"
 
 #: src/theme.c:4445
@@ -2891,7 +2925,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
@@ -2972,8 +3007,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"La ventana %s ha establecido SM_CLIENT_ID sobre sí misma en vez de hacerlo en "
-"la ventana WM_CLIENT_LEADER como está especificado en el ICCCM.\n"
+"La ventana %s ha establecido SM_CLIENT_ID sobre sí misma en vez de hacerlo "
+"en la ventana WM_CLIENT_LEADER como está especificado en el ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3014,7 +3049,8 @@ msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido para el elemento "
 "%d de la lista\n"
@@ -3142,4 +3178,3 @@ msgstr ""
 #~ msgstr ""
 #~ "La ventana %s pone su altura máxima %d menor que la mínima %d, "
 #~ "deshabilitando el redimensionado\n"
-
