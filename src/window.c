@@ -53,6 +53,7 @@ static int      update_net_wm_type        (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
+static int      set_net_wm_state          (MetaWindow     *window);
 static void     send_configure_notify     (MetaWindow     *window);
 static gboolean process_configure_request (MetaWindow     *window,
                                            int             x,

@@ -74,6 +74,8 @@ struct _MetaDisplay
   Atom atom_net_wm_window_type_dialog;
   Atom atom_net_wm_window_type_normal;
   Atom atom_net_wm_state_modal;
+  Atom atom_net_client_list;
+  Atom atom_net_client_list_stacking;
   
   /* This is the actual window from focus events,
    * not the one we last set

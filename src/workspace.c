@@ -226,3 +226,6 @@ set_active_space_hint (MetaScreen *screen)
                    32, PropModeReplace, (guchar*) data, 1);
   return meta_error_trap_pop (screen->display);
 }
+
+
+

@@ -116,7 +116,9 @@ meta_display_open (const char *name)
     "_NET_WM_WINDOW_TYPE_MENU",
     "_NET_WM_WINDOW_TYPE_DIALOG",
     "_NET_WM_WINDOW_TYPE_NORMAL",
-    "_NET_WM_STATE_MODAL"
+    "_NET_WM_STATE_MODAL",
+    "_NET_CLIENT_LIST",
+    "_NET_CLIENT_LIST_STACKING"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -181,6 +183,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_window_type_dialog = atoms[25];
   display->atom_net_wm_window_type_normal = atoms[26];
   display->atom_net_wm_state_modal = atoms[27];
+  display->atom_net_client_list = atoms[28];
+  display->atom_net_client_list_stacking = atoms[29];
   
   screens = NULL;
   i = 0;

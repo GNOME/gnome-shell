@@ -20,6 +20,10 @@
  */
 
 #include "stack.h"
+#include "window.h"
+#include "errors.h"
+
+#include <X11/Xatom.h>
 
 struct _MetaStackOp
 {
@@ -63,6 +67,7 @@ void
 meta_stack_free (MetaStack *stack)
 {
   GList *tmp;
+  int i;
   
   g_array_free (stack->windows, TRUE);
 
@@ -251,6 +256,56 @@ compute_layer (MetaWindow *window)
       window->layer = META_LAYER_NORMAL;
       break;
     }
+
+  meta_verbose ("Window %s on layer %d\n",
+                window->desc, window->layer);
+}
+
+static gboolean
+is_transient_for (MetaWindow *transient,
+                  MetaWindow *parent)
+{
+  MetaWindow *w;
+
+  w = transient;
+  while (w != NULL)
+    {
+      if (w->xtransient_for == None)
+        return FALSE;
+      
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+
+      if (w == transient)
+        return FALSE; /* Cycle detected */
+      else if (w == parent)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static int
+window_stack_cmp (MetaWindow *a,
+                  MetaWindow *b)
+{
+  /* Less than means higher in stacking, i.e. at the
+   * front of the list.
+   */
+
+  if (a->xtransient_for != None &&
+      is_transient_for (a, b))
+    {
+      /* a is higher than b due to transient_for */
+      return -1;
+    }
+  else if (b->xtransient_for != None &&
+           is_transient_for (b, a))
+    {
+      /* b is higher than a due to transient_for */
+      return 1;
+    }
+  else
+    return 0;  /* leave things as-is */
 }
 
 static void
@@ -265,11 +320,17 @@ meta_stack_sync_to_server (MetaStack *stack)
   int n_actually_added;
   int i, j;
   int old_size;
+  GArray *stacked;
   
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
     return;
 
+  if (stack->pending == NULL)
+    return;
+  
+  meta_verbose ("Syncing window stack to server\n");
+  
   /* Here comes the fun - figure out all the stacking.
    * We make no pretense of efficiency.
    *   a) replay all the pending operations
@@ -304,7 +365,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       tmp = tmp->next;
     }
 
-  old_size = stack->window->len;
+  old_size = stack->windows->len;
   g_array_set_size (stack->windows,
                     old_size + n_actually_added);
   
@@ -447,25 +508,81 @@ meta_stack_sync_to_server (MetaStack *stack)
   stack->pending = NULL;
   stack->n_added = 0;
 
-
   /* Sort the layer lists */
   i = 0;  
   while (i < META_LAYER_LAST)
     {
       if (needs_sort[i])
         {
-          
-
+          stack->layers[i] =
+            g_list_sort (stack->layers[i],
+                         (GCompareFunc) window_stack_cmp);
         }
 
       ++i;
     }
 
   /* Create stacked xwindow array */
+  stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+  i = 0;  
+  while (i < META_LAYER_LAST)
+    {      
+      if (needs_sort[i])
+        {
+          stack->layers[i] =
+            g_list_sort (stack->layers[i],
+                         (GCompareFunc) window_stack_cmp);
+        }
+
+      tmp = stack->layers[i];
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+
+          g_array_append_val (stacked, w->xwindow);
+
+          tmp = tmp->next;
+        }
+      
+      ++i;
+    }
+
+  /* All windows should be in some stacking order */
+  if (stacked->len != stack->windows->len)
+    meta_bug ("%d windows stacked, %d windows exist in stack\n",
+              stacked->len, stack->windows->len);
   
   /* Sync to server */
+
+  meta_error_trap_push (stack->screen->display);
+  XRestackWindows (stack->screen->display->xdisplay,
+                   (Window *) stacked->data,
+                   stacked->len);
+  meta_error_trap_pop (stack->screen->display);
+  /* on error, a window was destroyed; it should eventually
+   * get removed from the stacking list when we unmanage it
+   * and we'll fix stacking at that time.
+   */
   
   /* Sync _NET_CLIENT_LIST and _NET_CLIENT_LIST_STACKING */
-  
+
+  XChangeProperty (stack->screen->display->xdisplay,
+                   stack->screen->xroot,
+                   stack->screen->display->atom_net_client_list,
+                   XA_ATOM,
+                   32, PropModeReplace,
+                   stack->windows->data,
+                   stack->windows->len);
+  XChangeProperty (stack->screen->display->xdisplay,
+                   stack->screen->xroot,
+                   stack->screen->display->atom_net_client_list_stacking,
+                   XA_ATOM,
+                   32, PropModeReplace,
+                   stacked->data,
+                   stacked->len);
+
+  g_array_free (stacked, TRUE);
+
+  /* That was scary... */
 }
 

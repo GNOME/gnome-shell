@@ -57,6 +57,8 @@ metacity_SOURCES= 				\
 	screen.h				\
 	session.c				\
 	session.h				\
+	stack.c					\
+	stack.h					\
 	theme.c					\
 	theme.h					\
 	uislave.c				\

@@ -24,6 +24,7 @@
 
 #include "screen.h"
 #include "util.h"
+#include "stack.h"
 #include <X11/Xutil.h>
 
 typedef enum
