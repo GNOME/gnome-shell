@@ -4,8 +4,10 @@ AC_INIT(src/display.c)
 AM_CONFIG_HEADER(config.h)
 
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987 
-# releases on a branch add a 4th version like 2.4.21.1
-AM_INIT_AUTOMAKE(metacity, 2.8.1)
+# we'll hold the 2.8.x versioning for GNOME 2.8, it was also used
+# for GNOME 2.6, then after GNOME 2.8 we'll have the numbers synced
+# with GNOME
+AM_INIT_AUTOMAKE(metacity, 2.8.2)
 
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
@@ -439,4 +441,4 @@ metacity-$VERSION:
 	Xsync:                    ${found_xsync}
         Deprecated config dialog: ${enable_config_dialog}
 "
-#echo "This is the UNSTABLE branch of metacity, use 2.8.x for stable (gnome-2-6 branch in CVS)"
+echo "This is the UNSTABLE branch of metacity, use 2.8.1.x for stable (gnome-2-6 branch in CVS)"
