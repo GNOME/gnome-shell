@@ -536,7 +536,9 @@ meta_window_hide (MetaWindow *window)
       meta_verbose ("%s actually needs unmap\n", window->desc);
       window->mapped = FALSE;
       window->unmaps_pending += 1;
+      meta_error_trap_push (window->display);
       XUnmapWindow (window->display->xdisplay, window->xwindow);
+      meta_error_trap_pop (window->display);
     }
 
   if (!window->iconic)
@@ -793,13 +795,8 @@ meta_window_move_resize_internal (MetaWindow  *window,
                   window->desc, root_x_nw, root_y_nw, w, h,
                   is_configure_request ? " (configure request)" : "",
                   oldx, oldy, window->rect.width, window->rect.height);
-  }
-  
-  /* FIXME we're passing old window size to calc_geometry,
-   * I believe the right fix is to remove window size
-   * args from calc_geometry and remove any dependency
-   * on that in frame code.
-   */
+  }  
+
   if (window->frame)
     meta_frame_calc_geometry (window->frame,
                               &fgeom);
