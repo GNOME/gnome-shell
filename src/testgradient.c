@@ -201,6 +201,7 @@ render_multi (GdkDrawable *drawable,
                                  0, 0);
 
   g_object_unref (G_OBJECT (pixbuf));
+#undef N_COLORS
 }
 
 static void

@@ -744,6 +744,8 @@ run_theme_benchmark (int client_width,
   g_object_unref (G_OBJECT (layout));
   g_object_unref (G_OBJECT (pixmap));
   gtk_widget_destroy (widget);
+
+#undef ITERATIONS
 }
 
 typedef struct

@@ -173,9 +173,17 @@ Themes are in a simple XML-subset format.
   <!-- For buttons, drawing methods have to be provided for 
        each of three states: 
           normal, pressed, prelight
-       and the button name must be provided:
-          close, maximize, minimize, menu
+       and the button function or position must be provided:
+          close, maximize, minimize, menu, 
+          left_left_background, left_middle_background,
+          left_right_background, right_left_background, 
+          right_middle_background, right_right_background
        So a working theme needs 3*4 = 12 button declarations
+       and a theme may have up to 3*10 = 30 button declarations
+       in order to handle button-rearrangement preferences.
+ 
+       (The name "function" for the attribute is from before the 
+        background values existed.)
     -->
 
   <button function="close" state="normal" draw_ops="previously_named"/>

@@ -1021,7 +1021,10 @@ event_callback (XEvent   *event,
   if (window &&
       window->frame &&
       modified == window->frame->xwindow)
-    frame_was_receiver = TRUE;
+    {
+      frame_was_receiver = TRUE;
+      meta_topic (META_DEBUG_EVENTS, "Frame was receiver of event\n");
+    }
   
   switch (event->type)
     {

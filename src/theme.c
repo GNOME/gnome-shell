@@ -3556,20 +3556,24 @@ meta_frame_style_validate (MetaFrameStyle    *style,
   i = 0;
   while (i < META_BUTTON_TYPE_LAST)
     {
-      j = 0;
-      while (j < META_BUTTON_STATE_LAST)
-        {          
-          if (get_button (style, i, j) == NULL)
+      /* for now the "positional" buttons are optional */
+      if (i >= META_BUTTON_TYPE_CLOSE)
+        {
+          j = 0;
+          while (j < META_BUTTON_STATE_LAST)
             {
-              g_set_error (error, META_THEME_ERROR,
-                           META_THEME_ERROR_FAILED,
-                           _("<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"),
-                           meta_button_type_to_string (i),
-                           meta_button_state_to_string (j));
-              return FALSE;
+              if (get_button (style, i, j) == NULL)
+                {
+                  g_set_error (error, META_THEME_ERROR,
+                               META_THEME_ERROR_FAILED,
+                               _("<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"),
+                               meta_button_type_to_string (i),
+                               meta_button_state_to_string (j));
+                  return FALSE;
+                }
+              
+              ++j;
             }
-          
-          ++j;
         }
       
       ++i;
@@ -3585,22 +3589,34 @@ button_rect (MetaButtonType type,
 {
   switch (type)
     {
+    case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
     case META_BUTTON_TYPE_CLOSE:
       *rect = fgeom->close_rect;
       break;
 
+    case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
     case META_BUTTON_TYPE_MAXIMIZE:
       *rect = fgeom->max_rect;
       break;
 
+    case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
     case META_BUTTON_TYPE_MINIMIZE:
       *rect = fgeom->min_rect;
       break;
 
+    case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
     case META_BUTTON_TYPE_MENU:
       *rect = fgeom->menu_rect;
       break;
 
+    case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
+    case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
+      rect->x = 0;
+      rect->y = 0;
+      rect->width = 0;
+      rect->height = 0;
+      break;
+      
     case META_BUTTON_TYPE_LAST:
       g_assert_not_reached ();
       break;
@@ -4113,12 +4129,12 @@ meta_theme_new (void)
 
 
 static void
-free_menu_ops (MetaDrawOpList *op_lists[META_BUTTON_TYPE_LAST][N_GTK_STATES])
+free_menu_ops (MetaDrawOpList *op_lists[META_MENU_ICON_TYPE_LAST][N_GTK_STATES])
 {
   int i, j;
 
   i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
+  while (i < META_MENU_ICON_TYPE_LAST)
     {
       j = 0;
       while (j < N_GTK_STATES)
@@ -4662,6 +4678,8 @@ meta_theme_define_int_constant (MetaTheme   *theme,
   g_hash_table_insert (theme->integer_constants,
                        g_strdup (name),
                        GINT_TO_POINTER (value));
+
+  return TRUE;
 }
 
 gboolean
@@ -4723,7 +4741,9 @@ meta_theme_define_float_constant (MetaTheme   *theme,
   *d = value;
   
   g_hash_table_insert (theme->float_constants,
-                       g_strdup (name), d);                       
+                       g_strdup (name), d);
+
+  return TRUE;
 }
 
 gboolean
@@ -4883,6 +4903,18 @@ meta_button_type_from_string (const char *str)
     return META_BUTTON_TYPE_MINIMIZE;
   else if (strcmp ("menu", str) == 0)
     return META_BUTTON_TYPE_MENU;
+  else if (strcmp ("left_left_background", str) == 0)
+    return META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND;
+  else if (strcmp ("left_middle_background", str) == 0)
+    return META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND;
+  else if (strcmp ("left_right_background", str) == 0)
+    return META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND;
+  else if (strcmp ("right_left_background", str) == 0)
+    return META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND;
+  else if (strcmp ("right_middle_background", str) == 0)
+    return META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND;
+  else if (strcmp ("right_right_background", str) == 0)
+    return META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND;
   else
     return META_BUTTON_TYPE_LAST;
 }
@@ -4900,6 +4932,18 @@ meta_button_type_to_string (MetaButtonType type)
       return "minimize";
     case META_BUTTON_TYPE_MENU:
       return "menu";
+    case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
+      return "left_left_background";
+    case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
+      return "left_middle_background";
+    case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
+      return "left_right_background";
+    case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
+      return "right_left_background";
+    case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
+      return "right_middle_background";
+    case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
+      return "right_right_background";      
     case META_BUTTON_TYPE_LAST:
       break;
     }

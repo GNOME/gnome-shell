@@ -1,13 +1,36 @@
+2002-08-04  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme.c (free_menu_ops): use MetaMenuIconType not button
+	type for the size of the menu ops array
+	(meta_theme_define_int_constant): return TRUE on success (how the
+	heck did this ever work?)
+	(meta_theme_define_float_constant): return TRUE on success
+	(meta_frame_style_validate): allow the "positional" buttons to 
+	be omitted for now.
+
+	* src/testgradient.c (render_multi): don't define N_COLORS twice
+
+	* src/theme-viewer.c (run_theme_benchmark): don't define
+	ITERATIONS twice
+
+	* src/theme.c (button_rect): handle new button types
+	(meta_button_type_to_string): update
+	(meta_button_type_from_string): update
+
+	* src/theme.h (enum): add button types for the 6 possible button
+	positions. No way to reposition buttons still but this will allow
+	themes to go ahead and support doing so.
+
 2002-08-03  Craig Black  <blackc@speakeasy.net>
 
 	* src/keybindings.c: (meta_display_process_key_event),
-	(process_tab_grab), (do_choose_window): change alt+tab
-  to a windowless grab, fixes #83499
+	(process_tab_grab), (do_choose_window): change alt+tab to a
+	windowless grab, fixes #83499
 
 2002-08-03  Craig Black  <blackc@speakeasy.net>
 
-	* src/display.c: (event_callback): Have ButtonPress and UnmapNotify
-  events account for a null grab window, fixes #87896
+	* src/display.c: (event_callback): Have ButtonPress and
+	UnmapNotify events account for a null grab window, fixes #87896
 
 2002-08-03  Gaute Lindkvist <lindkvis@linpro.no>
 
