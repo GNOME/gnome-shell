@@ -165,6 +165,8 @@ meta_screen_new (MetaDisplay *display,
   MetaScreen *screen;
   Window xroot;
   Display *xdisplay;
+  XWindowAttributes attr;
+
   int xinerama_event_base, xinerama_error_base;
   
   /* Only display->name, display->xdisplay, and display->error_traps
@@ -191,13 +193,18 @@ meta_screen_new (MetaDisplay *display,
 
   /* Select our root window events */
   meta_error_trap_push (display);
+
+  /* We need to or with the existing event mask since
+   * gtk+ may be interested in other events.
+   */
+  XGetWindowAttributes (xdisplay, xroot, &attr);
   XSelectInput (xdisplay,
                 xroot,
                 SubstructureRedirectMask | SubstructureNotifyMask |
                 ColormapChangeMask | PropertyChangeMask |
                 LeaveWindowMask | EnterWindowMask |
                 ButtonPressMask | ButtonReleaseMask |
-                FocusChangeMask);
+                FocusChangeMask | attr.your_event_mask);
   if (meta_error_trap_pop (display) != Success)
     {
       meta_warning (_("Screen %d on display '%s' already has a window manager\n"),
@@ -683,7 +690,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
   GSList *tmp;
   int len;
   int i;
-  
+
   if (screen->tab_popup)
     return;
 
@@ -747,8 +754,8 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       ++i;
       tmp = tmp->next;
     }
-  
-  screen->tab_popup = meta_ui_tab_popup_new (entries);
+
+  screen->tab_popup = meta_ui_tab_popup_new (entries, screen->number);
   g_free (entries);
 
   g_slist_free (tab_list);

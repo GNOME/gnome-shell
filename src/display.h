@@ -307,6 +307,7 @@ GSList* meta_display_get_tab_list (MetaDisplay   *display,
 
 MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
                                        MetaTabList    type,
+				       MetaScreen    *screen,
                                        MetaWorkspace *workspace,
                                        MetaWindow    *window,
                                        gboolean       backward);

@@ -40,7 +40,8 @@ struct _MetaTabEntry
   int           inner_x, inner_y, inner_width, inner_height;
 };
 
-MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries);
+MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries,
+					     int                 screen_number);
 void          meta_ui_tab_popup_free        (MetaTabPopup       *popup);
 void          meta_ui_tab_popup_set_showing (MetaTabPopup       *popup,
                                              gboolean            showing);

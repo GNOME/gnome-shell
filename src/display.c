@@ -2615,19 +2615,21 @@ meta_display_window_has_pending_pings (MetaDisplay *display,
 static MetaWindow*
 find_tab_forward (MetaDisplay   *display,
                   MetaTabList    type,
+		  MetaScreen    *screen, 
                   MetaWorkspace *workspace,
                   GList         *start)
 {
   GList *tmp;
 
   g_return_val_if_fail (start != NULL, NULL);
-  
+
   tmp = start->next;
   while (tmp != NULL)
     {
       MetaWindow *window = tmp->data;
 
-      if (IN_TAB_CHAIN (window, type) &&
+      if (window->screen == screen &&
+	  IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2654,6 +2656,7 @@ find_tab_forward (MetaDisplay   *display,
 static MetaWindow*
 find_tab_backward (MetaDisplay   *display,
                    MetaTabList    type,
+		   MetaScreen    *screen, 
                    MetaWorkspace *workspace,
                    GList         *start)
 {
@@ -2666,7 +2669,8 @@ find_tab_backward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (IN_TAB_CHAIN (window, type) &&
+      if (window->screen == screen &&
+	  IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2727,6 +2731,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
 MetaWindow*
 meta_display_get_tab_next (MetaDisplay   *display,
                            MetaTabList    type,
+			   MetaScreen    *screen,
                            MetaWorkspace *workspace,
                            MetaWindow    *window,
                            gboolean       backward)
@@ -2739,20 +2744,20 @@ meta_display_get_tab_next (MetaDisplay   *display,
       g_assert (window->display == display);
       
       if (backward)
-        return find_tab_backward (display, type, workspace,
+        return find_tab_backward (display, type, screen, workspace,
                                   g_list_find (display->mru_list,
                                                window));
       else
-        return find_tab_forward (display, type, workspace,
+        return find_tab_forward (display, type, screen, workspace,
                                  g_list_find (display->mru_list,
                                               window));
     }
   
   if (backward)
-    return find_tab_backward (display, type, workspace,
+    return find_tab_backward (display, type, screen, workspace,
                               g_list_last (display->mru_list));
   else
-    return find_tab_forward (display, type, workspace,
+    return find_tab_forward (display, type, screen, workspace,
                              display->mru_list);
 }
 

@@ -1439,6 +1439,7 @@ handle_tab_forward (MetaDisplay    *display,
     {
       window = meta_display_get_tab_next (display,
                                           type,
+					  display->focus_window->screen,
                                           display->focus_window->screen->active_workspace,
                                           display->focus_window,
                                           backward);
@@ -1458,6 +1459,7 @@ handle_tab_forward (MetaDisplay    *display,
         {
           window = meta_display_get_tab_next (screen->display,
                                               type,
+					      screen,
                                               screen->active_workspace,
                                               NULL,
                                               backward);
@@ -1525,6 +1527,7 @@ handle_focus_previous (MetaDisplay    *display,
       /* Pick first window in tab order */      
       window = meta_display_get_tab_next (screen->display,
                                           META_TAB_LIST_NORMAL,
+					  screen,					  
                                           screen->active_workspace,
                                           NULL,
                                           TRUE);

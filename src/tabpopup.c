@@ -19,6 +19,8 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include "util.h"
 #include "core.h"
 #include "tabpopup.h"
@@ -90,7 +92,8 @@ outline_window_expose (GtkWidget      *widget,
 }
 
 MetaTabPopup*
-meta_ui_tab_popup_new (const MetaTabEntry *entries)
+meta_ui_tab_popup_new (const MetaTabEntry *entries,
+		       int                 screen_number)
 {
   MetaTabPopup *popup;
   int i, left, right, top, bottom;
@@ -103,10 +106,16 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   GList *tmp;
   GtkWidget *frame;
   int max_label_width;
-  
+
   popup = g_new (MetaTabPopup, 1);
 
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
+#ifdef HAVE_GTK_MULTIHEAD
+  gtk_window_set_screen (GTK_WINDOW (popup->outline_window),
+			 gdk_display_get_screen (gdk_get_default_display (),
+						 screen_number));
+#endif
+
   gtk_widget_set_app_paintable (popup->outline_window, TRUE);
   gtk_widget_realize (popup->outline_window);
 
@@ -114,6 +123,12 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
                     G_CALLBACK (outline_window_expose), popup);
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
+#ifdef HAVE_GTK_MULTIHEAD
+  gtk_window_set_screen (GTK_WINDOW (popup->window),
+			 gdk_display_get_screen (gdk_get_default_display (),
+						 screen_number));
+#endif
+
   gtk_window_set_position (GTK_WINDOW (popup->window),
                            GTK_WIN_POS_CENTER_ALWAYS);
   /* enable resizing, to get never-shrink behavior */

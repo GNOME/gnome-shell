@@ -1,3 +1,22 @@
+2002-05-11  Anders Carlsson  <andersca@gnu.org>
+
+	* src/display.c: (find_tab_forward), (find_tab_backward),
+	(meta_display_get_tab_next):
+	* src/display.h:
+	* src/keybindings.c: (handle_tab_forward), (handle_focus_previous):
+	Add screen argument to meta_display_get_tab_next, since we only
+	want windows on the same screen to appear in the tab chain.
+
+	* src/screen.c: (meta_screen_new):
+	Or the event mask with existing events since gtk+ may listen to
+	certain events and we don't want to disable those events.
+	
+	(meta_screen_ensure_tab_popup):
+	* src/tabpopup.c: (meta_ui_tab_popup_new):
+	* src/tabpopup.h:
+	Add a screen number argument to meta_ui_tab_popup_new so we
+	can position the popup on the correct screen.
+
 2002-05-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c: include locale.h, fix from Hidetoshi Tajima
@@ -47,6 +66,7 @@
 	the calc_showing, don't focus it, it's probably on another
 	workspace or something.
 
+>>>>>>> 1.239
 2002-05-09  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (show_tip_now): DefaultScreen() returns the screen
