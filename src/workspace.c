@@ -31,6 +31,15 @@ void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
 static void set_active_space_hint      (MetaScreen *screen);
 
+static void
+maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
+{
+  GList **mru_list = data;
+
+  if (window->on_all_workspaces)
+    *mru_list = g_list_prepend (*mru_list, window);
+}
+
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
 {
@@ -43,6 +52,7 @@ meta_workspace_new (MetaScreen *screen)
     g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
   workspace->mru_list = NULL;
+  meta_screen_foreach_window (screen, maybe_add_to_list, &workspace->mru_list);
 
   workspace->work_areas = NULL;
   workspace->work_areas_invalid = TRUE;

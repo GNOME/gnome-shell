@@ -1,3 +1,18 @@
+2004-08-27  Elijah Newren  <newren@math.utah.edu>
+
+	Prevent an assertion failure that can occur after increasing the
+	number of workspaces; also fix a warning and stacking order when a
+	window is denied focus (fixes #150615)
+
+	* src/window.c (meta_window_stack_just_below): the position of the
+	window should be set equal to that of the one we want to be below,
+	not 1 lower than that number
+
+	* src/workspace.c (maybe_add_to_list): new function to add
+	on_all_workspace windows to an mru_list, (meta_workspace_new):
+	call maybe_add_to_list for all windows on the screen in order to
+	initialize the mru_list
+
 2004-08-26  Havoc Pennington  <hp@redhat.com>
 
 	* src/frame.c: delete extra copy of find_argb_visual so things

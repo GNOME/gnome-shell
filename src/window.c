@@ -7298,9 +7298,9 @@ meta_window_stack_just_below (MetaWindow *window,
       meta_topic (META_DEBUG_STACK,
                   "Setting stack position of window %s to %d (making it below window %s).\n",
                   window->desc, 
-                  below_this_one->stack_position - 1, 
+                  below_this_one->stack_position, 
                   below_this_one->desc);
-      meta_window_set_stack_position (window, below_this_one->stack_position - 1);
+      meta_window_set_stack_position (window, below_this_one->stack_position);
     }
   else
     {
