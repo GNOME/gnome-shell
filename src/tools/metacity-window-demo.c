@@ -635,6 +635,17 @@ sleep_cb (GtkWidget *button,
 }
 
 static void
+toggle_decorated_cb (GtkWidget *button,
+                     gpointer   data)
+{
+  GtkWidget *window;
+  window = gtk_widget_get_ancestor (button, GTK_TYPE_WINDOW);
+  if (window)
+    gtk_window_set_decorated (GTK_WINDOW (window),
+                              !gtk_window_get_decorated (GTK_WINDOW (window)));
+}
+
+static void
 clicked_toolbar_cb (GtkWidget *button,
                     gpointer   data)
 {
@@ -779,6 +790,14 @@ do_appwindow (void)
                             window, /* user data for callback */
                             -1);  /* -1 means "append" */
 
+  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
+                            GTK_STOCK_OPEN,
+                            "This is a demo button that toggles window decorations",
+                            NULL,
+                            G_CALLBACK (toggle_decorated_cb),
+                            window, /* user data for callback */
+                            -1);  /* -1 means "append" */
+  
   gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
                             GTK_STOCK_QUIT,
                             "This is a demo button with a 'quit' icon",

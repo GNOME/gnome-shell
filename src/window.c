@@ -3794,6 +3794,8 @@ process_property_notify (MetaWindow     *window,
         meta_window_destroy_frame (window);
 
       meta_window_queue_move_resize (window);
+      /* because ensure/destroy frame may unmap */
+      meta_window_queue_calc_showing (window);
     }
   else if (event->atom == XA_WM_CLASS)
     {

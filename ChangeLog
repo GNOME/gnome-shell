@@ -1,5 +1,14 @@
 2002-08-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (process_property_notify): recalculate mapped-ness
+	of frame after toggling decorations on/off, so that windows don't
+	disappear when decorations are toggled on.
+
+	* src/tools/metacity-window-demo.c (toggle_decorated_cb): add a
+	test for toggling decoration state on the fly
+
+2002-08-24  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (update_sm_hints): hack around bug in kmail etc.
 	where SM_CLIENT_ID was set on the window, not the client leader.
 
