@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-01-07 06:08+0100\n"
-"PO-Revision-Date: 2003-01-10 01:21+0100\n"
+"POT-Creation-Date: 2003-01-14 04:05+0100\n"
+"PO-Revision-Date: 2003-01-16 17:07+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -2297,12 +2297,12 @@ msgstr "Een stijl genaamd \"%s\" is niet gedefinieerd"
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"grootte aanpassen\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" is geen geldige waarde voor grootte aanpassen-attribuut"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2310,152 +2310,169 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"Behoort geen \"grootte aanpassen\" attribuut te hebben op <%s> element voor "
+"gemaximaliseerde/opgerolde toestanden"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
+"Stijl is reeds gespecificeerd voor status %s grootte aanpassen %s aandacht %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Stijl is reeds gespecificeerd voor status %s aandacht %s"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan niet twee draw_ops voor een <onderdeel>-element hebben (thema "
+"specificeerde een draw_ops-attribuut en tevens een <draw_ops>-element, of "
+"specificeerde twee elementen)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan niet twee draw_ops voor een <knop>-element hebben (thema specificeerde "
+"een draw_ops-attribuut en tevens een <draw_ops>-element, of specificeerde "
+"twee elementen)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan niet twee draw_ops voor een <menu_pictogram>-element hebben (thema "
+"specificeerde een draw_ops-attribuut en tevens een <draw_ops>-element, of "
+"specificeerde twee elementen)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Buitenste element in thema moet zijn: <metacity_theme>, niet <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
+"Element <%s> is niet toegestaan binnen een naam/auteur/datum/beschrijving "
+"element"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Element <%s> is niet toegestaan binnen een <constant> element"
 
 #: src/theme-parser.c:3696
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
+"Element <%s> is niet toegestaan binnen een afstand/rand/verhouding element"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Element <%s> is niet toegestaan binnen een \"draw operation\" element"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Element <%s> is niet toegestaan binnen een <%s> element"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Geen draw_ops gegeven voor kader-onderdeel"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Geen draw_ops gegeven voor knop"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Geen draw_ops gegeven voor menu-pictogram"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Geen tekst toegestaan binnen element <%s>"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<naam> twee keer gegeven voor dit thema"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<auteur> twee keer gegeven voor dit thema"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> twee keer gegeven voor dit thema"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<datum> twee keer gegeven voor dit thema"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<beschrijving> twee keer gegeven voor dit thema"
 
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Kon thema niet uit bestand %s lezen: %s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Themabestand %s bevatte geen root <metacity_theme> element"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "boven"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "onder"
 
 #: src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "links"
 
 #: src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "rechts"
 
+# betere vertaling voor frame geometry?
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "kadergeometrie geeft geen \"%s\" dimensie"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "kadergeometrie geeft geen dimensie \"%s\" voor rand \"%s\""
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Knopverhouding %g is onredelijk"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Kadergeometrie geeft geen afmeting van knoppen"
 
+# Gradiënt hier beter?
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Kleurverloop moet tenminste twee kleuren hebben"
 
 #: src/theme.c:975
 #, c-format
@@ -2463,6 +2480,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK-kleurspecificatie moet de toestand in rechte haken hebben, bijv. gtk:fg"
+"[NORMAL] waarbij NORMAL de toestand is; kon \"%s\" niet verwerken"
 
 #: src/theme.c:989
 #, c-format
@@ -2470,16 +2489,18 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK-kleurspecificatie moet een sluithaakje hebben na de status, dus: gtk: fg"
+"[NORMAL] waarbij NORMAL de stutus is; kon \"%s\" niet verwerken"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Niet begrepen: status \"%s\" in kleurspecificatie"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Niet begrepen: kleurcomponent \"%s\" in kleurspecificatie"
 
 #: src/theme.c:1043
 #, c-format
@@ -2487,42 +2508,46 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"Mengformaat is \"meng/vg_kleur/ag_kleur/alpha\", \"%s\" voldoet niet aan dit "
+"formaat"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Kon alpha-waarde \"%s\" niet verwerken in gemengde kleur"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alpha-waarde \"%s\" in gemengde kleur zit niet tussen 0.0 en 1.0"
 
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
+"Schaduwformaat is \"schaduw/basiskleur/factor\", \"%s\" voldoet niet aan dit "
+"formaat"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Kon schaduwfactor \"%s\" in schaduwkleur niet verwerken"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Schaduwfactor \"%s\" in schaduwkleur is negatief"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "Kon kleur \"%s\" niet verwerken"
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Coördinaatuitdrukking bevat letterteken '%s' wat niet is toegestaan"
 
 #: src/theme.c:1450
 #, c-format
@@ -2530,45 +2555,57 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"Coördinaatuitdrukking bevat floating-point getal '%s' wat niet kon worden "
+"verwerkt"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
+"Coördinaatuitdrukking bevat geheel getal '%s' wat niet kon worden verwerkt"
 
+# hoe vertalen we operator en operand?
 #: src/theme.c:1531
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Coördinaatuitdrukking bevat een onbekende functie aan het begin van deze "
+"tekst: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Coördinaatuitdrukking was leeg of was niet begrepen"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Coördinaatuitdrukking resulteert in een deling door nul"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
+"Coördinaatuitdrukking probeert een mod-functie te gebruiken op een floating-"
+"point getal"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"Coördinaatuitdrukking bevat een functie \"%s\" waar een argument werd "
+"verwacht"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
+"Coördinaatuitdrukking bevat een argument waar een functie werd verwacht"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
+"Coördinaatuitdrukking eindigde met een functie in plaats van een argument"
 
 #: src/theme.c:1863
 #, c-format
@@ -2576,34 +2613,41 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Coördinaatuitdrukking bevat functie \"%c\" volgend op functie \"%c\" zonder "
+"argument in het midden"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Coördinaatuitdrukking-verwerker heeft zijn buffer laten overlopen. Dit is "
+"eigenlijk een Metacity fout, maar weet u wel zeker of u zo'n enorme "
+"uitdrukking nodig heeft?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Coördinaatuitdrukking bevat een sluithaakje zonder openingshaakje"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
+"Coördinaatuitdrukking bevat een onbekende variabele of constante \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Coördinaatuitdrukking bevat een openingshaakje zonder sluithaakje"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Coördinaatuitdrukking bevat schijnbaar geen functies of argumenten"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr ""
+"Thema bevat een uitdrukking \"%s\" wat resulteert in een foutmelding: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2611,23 +2655,27 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<knopfunctie=\"%s\" status=\"%s\" draw_ops=\"iets\"/> moet voor deze "
+"kaderstijl gespecificeerd worden"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
+"Ontbrekende <kaderstatus=\"%s\" grootte_aanpassen=\"%s\" aandacht=\"%s\" "
+"stijl=\"iets\"/>"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Laden thema \"%s\" mislukt: %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Geen <%s> ingesteld voor thema \"%s\" "
 
 #: src/theme.c:4629
 #, c-format
@@ -2635,6 +2683,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Geen kaderstijl ingesteld voor venstertype \"%s\" in thema \"%s\", voeg een "
+"<venstertype=\"%s\" stijlverzameling=\"iets\"/> element toe"
 
 #: src/theme.c:4651
 #, c-format
@@ -2642,81 +2692,85 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_pictogram-functie=\"%s\" status=\"%s\" draw_ops=\"iets\"/> moet "
+"gespecificeerd zijn voor dit thema"
 
 #: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
+"Door de gebruiker gedefinieerde constanten moeten met een hoofdletter "
+"beginnen; \"%s\" doet dat niet"
 
 #: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Constante \"%s\" is reeds gedefinieerd"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Kiezen hoe u vensters aandacht geeft"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Vensteraandacht"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "_Klikken voor het geven van aandacht"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Aandachtgedrag:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Vensteraandacht voorkeuren"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Aanwijzen voor het geven van aandacht"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "Venster _verhogen bij aandacht"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "debug-logboek openen mislukt: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Logboek %s openen via fdopen() mislukt: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Logboek %s geopend\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Windowmanager:"
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Fout in windowmanager:"
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Windowmanager waarschuwing:"
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Windowmanager fout:"
 
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
 #: src/window.c:4893
@@ -2725,6 +2779,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Venster %s stelt zelf SM_CLIENT_ID in, in plaats van bij het "
+"WM_CLIENT_LEADER-venster zoals gespecificeerd wordt in de ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2739,6 +2795,9 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Venster %s geeft een MWM-hint dat de grootte niet kan worden aangepast, maar "
+"stelt wel min-grootte %d x %d en max-grootte %d x %d in; dit is niet "
+"logisch.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2749,14 +2808,22 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Venster 0x%lx heeft eigenschap %s\n"
+"welke zou moeten hebben: type %s en formaat %d\n"
+"maar in feite heeft: type %s formaat %d n_items %d.\n"
+"Dit is waarschijnlijk een fout van de toepassing, niet van de "
+"windowmanager.\n"
+"Het venster heeft titel=\"%s\" klasse\"%s\" naam\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
+"lijst\n"
