@@ -1,5 +1,26 @@
 2002-07-06  Havoc Pennington  <hp@pobox.com>
 
+        Apply blackc@speakeasy.net patch, bug #83940, to do
+	mini-workspaces similar to the pager, when switching 
+	spaces.
+
+	* src/window.c (update_net_wm_state): actually fill in
+	wm_state_skip_taskbar, wm_state_skip_pager flags
+
+	* src/tabpopup.c: support drawing a mini-workspace similar to the 
+	one the pager draws.
+
+	* src/stack.c (meta_stack_list_windows): new function to list 
+	the windows in stacking order
+
+	* src/screen.c (meta_screen_ensure_workspace_popup): don't pass in
+	the ugly default app icon for workspaces 
+
+	* src/display.c (event_callback): fix from blackc@speakeasy.net
+	to avoid dereferencing a NULL grab window.
+
+2002-07-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_open): put _NET_DESKTOP_NAMES in the 
 	array of atom names, so desktop names might work and we don't read
 	uninitialized memory.

@@ -932,14 +932,11 @@ void
 meta_screen_ensure_workspace_popup (MetaScreen *screen)
 {
   MetaTabEntry *entries;
-  GdkPixbuf *icon;
   int len, rows, cols;
   int i;
 
   if (screen->tab_popup)
     return;
-
-  icon = meta_ui_get_default_window_icon (NULL);
 
   len = meta_screen_get_n_workspaces (screen);
 
@@ -968,7 +965,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
 
               entries[i].key = (MetaTabEntryKey) workspace;
               entries[i].title = workspace->name;
-              entries[i].icon = icon;
+              entries[i].icon = NULL;
             }
         }
     }
@@ -984,7 +981,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
 
           entries[i].key = (MetaTabEntryKey) workspace;
           entries[i].title = workspace->name;
-          entries[i].icon = icon;
+          entries[i].icon = NULL;
         }
     }
 
@@ -995,8 +992,6 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
                                              FALSE);      
 
   g_free (entries);
-
-  g_object_unref (G_OBJECT (icon));
 
   /* don't show tab popup, since proper window isn't selected yet */
 }

@@ -1035,6 +1035,42 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
   return topmost_dock;
 }
 
+GList*
+meta_stack_list_windows (MetaStack     *stack,
+                         MetaWorkspace *workspace)
+{
+  GList *workspace_windows = NULL;
+  int layer = META_LAYER_LAST;  
+
+  --layer;
+  while (layer >= 0)
+    {
+      GList *link;
+
+      g_assert (layer >= 0 && layer < META_LAYER_LAST);
+
+      /* top of this layer is at the front of the list */
+      link = stack->layers[layer];
+      
+      while (link)
+        {
+          MetaWindow *window = link->data;
+
+          if (window && meta_window_visible_on_workspace (window, workspace))
+            {
+              workspace_windows = g_list_prepend (workspace_windows,
+                                                  window);
+            }
+
+          link = link->next;
+        }
+      
+      --layer;
+    }
+
+  return workspace_windows;
+}
+
 int
 meta_stack_windows_cmp  (MetaStack  *stack,
                          MetaWindow *window_a,

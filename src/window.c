@@ -382,6 +382,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->has_fullscreen_func = TRUE;
   
   window->wm_state_modal = FALSE;
+  window->skip_taskbar = FALSE;
+  window->skip_pager = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
   
@@ -3222,9 +3224,9 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom_net_wm_state_skip_pager ||
           second == display->atom_net_wm_state_skip_pager)
         {
-          window->wm_state_skip_pager =
+          window->skip_pager =
             (action == _NET_WM_STATE_ADD) ||
-            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_skip_pager);
+            (action == _NET_WM_STATE_TOGGLE && !window->skip_pager);
 
           set_net_wm_state (window);
         }
@@ -3232,9 +3234,9 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom_net_wm_state_skip_taskbar ||
           second == display->atom_net_wm_state_skip_taskbar)
         {
-          window->wm_state_skip_taskbar =
+          window->skip_taskbar =
             (action == _NET_WM_STATE_ADD) ||
-            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_skip_taskbar);
+            (action == _NET_WM_STATE_TOGGLE && !window->skip_taskbar);
 
           set_net_wm_state (window);
         }
@@ -4088,7 +4090,9 @@ update_net_wm_state (MetaWindow *window)
   window->shaded = FALSE;
   window->maximized = FALSE;
   window->wm_state_modal = FALSE;
-
+  window->wm_state_skip_taskbar = FALSE;
+  window->wm_state_skip_pager = FALSE;
+  
   if (meta_prop_get_atom_list (window->display, window->xwindow,
                                window->display->atom_net_wm_state,
                                &atoms, &n_atoms))
@@ -4106,6 +4110,10 @@ update_net_wm_state (MetaWindow *window)
             window->maximized = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_modal)
             window->wm_state_modal = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_skip_taskbar)
+            window->wm_state_skip_taskbar = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_skip_pager)
+            window->wm_state_skip_pager = TRUE;
       
           ++i;
         }
@@ -5012,7 +5020,38 @@ recalc_window_features (MetaWindow *window)
   /* no shading if not decorated */
   if (!window->decorated)
     window->has_shade_func = FALSE;
+
+  window->skip_taskbar = FALSE;
+  window->skip_pager = FALSE;
+
+  if (window->wm_state_skip_taskbar)
+    window->skip_taskbar = TRUE;
   
+  if (window->wm_state_skip_pager)
+    window->skip_pager = TRUE;
+  
+  switch (window->type)
+    {
+      /* Force skip taskbar/pager on these window types */
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_MENU:
+    case META_WINDOW_UTILITY:
+    case META_WINDOW_SPLASHSCREEN:
+      window->skip_taskbar = TRUE;
+      window->skip_pager = TRUE;
+      break;
+
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+      window->skip_taskbar = TRUE;
+      break;
+      
+    case META_WINDOW_NORMAL:
+      break;
+    }
+    
   /* FIXME perhaps should ensure if we don't have a shade func,
    * we aren't shaded, etc.
    */

@@ -101,6 +101,8 @@ MetaWindow* meta_stack_get_below  (MetaStack  *stack,
 MetaWindow* meta_stack_get_default_focus_window (MetaStack *stack,
                                                  MetaWorkspace *workspace,
                                                  MetaWindow    *not_this_one);
+GList*      meta_stack_list_windows (MetaStack *stack,
+                                     MetaWorkspace *workspace);
 				       
 
 /* -1 if a < b, etc. */

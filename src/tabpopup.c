@@ -24,6 +24,9 @@
 #include "util.h"
 #include "core.h"
 #include "tabpopup.h"
+#include "workspace.h" /* FIXME should not be included in this file */
+#include "draw-workspace.h"
+#include "frame.h"
 #include <gtk/gtk.h>
 #include <math.h>
 
@@ -56,6 +59,10 @@ struct _MetaTabPopup
 static GtkWidget* selectable_image_new (GdkPixbuf *pixbuf);
 static void       select_image         (GtkWidget *widget);
 static void       unselect_image       (GtkWidget *widget);
+
+static GtkWidget* selectable_workspace_new (MetaWorkspace *workspace);
+static void       select_workspace         (GtkWidget *widget);
+static void       unselect_workspace       (GtkWidget *widget);
 
 static gboolean
 outline_window_expose (GtkWidget      *widget,
@@ -150,9 +157,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       te = g_new (TabEntry, 1);
       te->key = entries[i].key;
       te->title = g_strdup (entries[i].title);
-      te->icon = entries[i].icon;
-      g_object_ref (G_OBJECT (te->icon));
       te->widget = NULL;
+      te->icon = entries[i].icon;
+      if (te->icon)
+        g_object_ref (G_OBJECT (te->icon));
 
       if (outline)
         {
@@ -218,12 +226,20 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
           TabEntry *te;
 
           te = tmp->data;
-          
-          image = selectable_image_new (te->icon);
-          gtk_misc_set_padding (GTK_MISC (image),
-                                INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1,
-                                INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1);
-          gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.5);
+       
+          if (outline)
+            {
+              image = selectable_image_new (te->icon);
+
+              gtk_misc_set_padding (GTK_MISC (image),
+                                    INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1,
+                                    INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1);
+              gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.5);
+            }   
+          else
+            {
+              image = selectable_workspace_new ((MetaWorkspace *) te->key);
+            }
           
           te->widget = image;
 
@@ -269,7 +285,8 @@ free_entry (gpointer data, gpointer user_data)
   te = data;
   
   g_free (te->title);
-  g_object_unref (G_OBJECT (te->icon));
+  if (te->icon)
+    g_object_unref (G_OBJECT (te->icon));
 
   g_free (te);
 }
@@ -318,11 +335,20 @@ display_entry (MetaTabPopup *popup,
 
   
   if (popup->current_selected_entry)
-    unselect_image (popup->current_selected_entry->widget);
+  {
+    if (popup->outline)
+      unselect_image (popup->current_selected_entry->widget);
+    else
+      unselect_workspace (popup->current_selected_entry->widget);
+  }
   
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
-  select_image (te->widget);
-  
+
+  if (popup->outline)
+    select_image (te->widget);
+  else
+    select_workspace (te->widget);
+
   if (popup->outline)
     {
       /* Do stuff behind gtk's back */
@@ -554,7 +580,7 @@ meta_select_image_expose_event (GtkWidget      *widget,
       
       w = widget->requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
       h = widget->requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
-      
+
       gdk_draw_rectangle (widget->window,
                           widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
                           FALSE,
@@ -579,3 +605,197 @@ meta_select_image_expose_event (GtkWidget      *widget,
 
   return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 }
+
+#define META_TYPE_SELECT_WORKSPACE   (meta_select_workspace_get_type ())
+#define META_SELECT_WORKSPACE(obj)   (GTK_CHECK_CAST ((obj), META_TYPE_SELECT_WORKSPACE, MetaSelectWorkspace))
+
+typedef struct _MetaSelectWorkspace       MetaSelectWorkspace;
+typedef struct _MetaSelectWorkspaceClass  MetaSelectWorkspaceClass;
+
+struct _MetaSelectWorkspace
+{
+  GtkDrawingArea parent_instance;
+  MetaWorkspace *workspace;
+  guint selected : 1;
+};
+
+struct _MetaSelectWorkspaceClass
+{
+  GtkDrawingAreaClass parent_class;
+};
+
+
+static GType meta_select_workspace_get_type (void) G_GNUC_CONST;
+
+#define SELECT_OUTLINE_WIDTH 2
+
+static GtkWidget*
+selectable_workspace_new (MetaWorkspace *workspace)
+{
+  GtkWidget *widget;
+  double screen_aspect;
+  
+  widget = g_object_new (meta_select_workspace_get_type (), NULL);
+
+  screen_aspect = (double) workspace->screen->height / (double) workspace->screen->width;
+  
+  /* account for select rect */ 
+  gtk_widget_set_size_request (widget,
+                               META_ICON_WIDTH + SELECT_OUTLINE_WIDTH * 2,
+                               META_ICON_WIDTH * screen_aspect + SELECT_OUTLINE_WIDTH * 2);
+
+  META_SELECT_WORKSPACE (widget)->workspace = workspace;
+
+  return widget;
+}
+
+static void
+select_workspace (GtkWidget *widget)
+{
+  META_SELECT_WORKSPACE(widget)->selected = TRUE;
+  gtk_widget_queue_draw (widget);
+}
+
+static void
+unselect_workspace (GtkWidget *widget)
+{
+  META_SELECT_WORKSPACE (widget)->selected = FALSE;
+  gtk_widget_queue_draw (widget);
+}
+
+static void meta_select_workspace_class_init (MetaSelectWorkspaceClass *klass);
+
+static gboolean meta_select_workspace_expose_event (GtkWidget      *widget,
+                                                    GdkEventExpose *event);
+
+GType
+meta_select_workspace_get_type (void)
+{
+  static GtkType workspace_type = 0;
+
+  if (!workspace_type)
+    {
+      static const GTypeInfo workspace_info =
+      {
+        sizeof (MetaSelectWorkspaceClass),
+        NULL,           /* base_init */
+        NULL,           /* base_finalize */
+        (GClassInitFunc) meta_select_workspace_class_init,
+        NULL,           /* class_finalize */
+        NULL,           /* class_data */
+        sizeof (MetaSelectWorkspace),
+        16,             /* n_preallocs */
+        (GInstanceInitFunc) NULL,
+      };
+
+      workspace_type = g_type_register_static (GTK_TYPE_DRAWING_AREA, 
+                                               "MetaSelectWorkspace", 
+                                               &workspace_info, 
+                                               0);
+    }
+
+  return workspace_type;
+}
+
+static void
+meta_select_workspace_class_init (MetaSelectWorkspaceClass *klass)
+{
+  GtkWidgetClass *widget_class;
+  
+  widget_class = GTK_WIDGET_CLASS (klass);
+  
+  widget_class->expose_event = meta_select_workspace_expose_event;
+}
+
+static gboolean
+meta_select_workspace_expose_event (GtkWidget      *widget,
+                                    GdkEventExpose *event)
+{
+  MetaWorkspace *workspace;
+  WnckWindowDisplayInfo *windows;
+  int i, n_windows;
+  GList *tmp, *list;
+
+  workspace = META_SELECT_WORKSPACE (widget)->workspace;
+              
+  list = meta_stack_list_windows (workspace->screen->stack, workspace);
+  n_windows = g_list_length (list);
+  windows = g_new (WnckWindowDisplayInfo, n_windows);
+
+  tmp = list;
+  i = 0;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+
+      if (window->skip_pager || 
+          window->minimized || 
+          window->unmaps_pending)
+        {
+          --n_windows;
+        }
+      else
+        {
+          windows[i].icon = window->icon;
+          windows[i].mini_icon = window->mini_icon;
+          windows[i].is_active = window->has_focus;
+
+          if (window->frame)
+            {
+              windows[i].x = window->frame->rect.x;
+              windows[i].y = window->frame->rect.y;
+              windows[i].width = window->frame->rect.width;
+              windows[i].height = window->frame->rect.height;
+            }
+          else
+            {                
+              windows[i].x = window->rect.x;
+              windows[i].y = window->rect.y;
+              windows[i].width = window->rect.width;
+              windows[i].height = window->rect.height;
+            }
+
+          i++;
+        }
+      tmp = tmp->next;
+    }
+
+  g_list_free (list);
+
+  wnck_draw_workspace (widget,
+                       widget->window,
+                       SELECT_OUTLINE_WIDTH,
+                       SELECT_OUTLINE_WIDTH,
+                       widget->allocation.width - SELECT_OUTLINE_WIDTH * 2,
+                       widget->allocation.height - SELECT_OUTLINE_WIDTH * 2,
+                       workspace->screen->width,
+                       workspace->screen->height,
+                       NULL,
+                       (workspace->screen->active_workspace == workspace),
+                       windows,
+                       n_windows);
+
+  g_free (windows);
+  
+  if (META_SELECT_WORKSPACE (widget)->selected)
+    {
+      i = SELECT_OUTLINE_WIDTH - 1;
+      while (i >= 0)
+        {
+          gdk_draw_rectangle (widget->window,
+                              widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+                              FALSE,
+                              i, 
+                              i,
+                              widget->allocation.width - i * 2 - 1,
+                              widget->allocation.height - i * 2 - 1);
+
+          --i;
+        }
+    }
+
+  return TRUE;
+}
+

@@ -152,12 +152,14 @@ struct _MetaWindow
   
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
-  /* If these are TRUE, it just means a client explicitly
-   * toggled them on; we compute actual _NET_WM_STATE from
-   * window type usually
-   */
+
+  /* TRUE if the client forced these on */
   guint wm_state_skip_taskbar : 1;
   guint wm_state_skip_pager : 1;
+
+  /* Computed whether to skip taskbar or not */
+  guint skip_taskbar : 1;
+  guint skip_pager : 1;
   
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus

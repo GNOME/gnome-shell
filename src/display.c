@@ -996,7 +996,9 @@ event_callback (XEvent   *event,
         {
           meta_verbose ("Ending grab op %d on window %s due to button press\n",
                         display->grab_op,
-                        display->grab_window->desc);
+                        (display->grab_window ?
+                         display->grab_window->desc : 
+                         "none"));
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
         }
