@@ -1,3 +1,9 @@
+2003-03-30  Rob Adams  <robadams@ucla.edu>
+
+	* src/window.c (meta_window_move_resize_internal): When passing
+	frame geometry to meta_window_constrain, send null if no frame.
+	Possible fix for #109039.
+
 2003-03-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/wm-tester/test-gravity.c (main): add --noframes option for

@@ -2253,7 +2253,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
                                &x_delta, &y_delta);
   
   meta_window_constrain (window,
-                         &fgeom,
+                         window->frame ? &fgeom : NULL,
                          &old_rect,
                          root_x_nw - old_rect.x,
                          root_y_nw - old_rect.y,
