@@ -1,3 +1,12 @@
+2003-10-06  Rob Adams  <readams@readams.net>
+
+	* src/constraints.c (constraint_onscreen_*_func): disable onscreen
+	resize constraints for right, left, and bottom, since there is no
+	way to violate onscreen constraints by resizing in these
+	directions and the code to implement the constraints made some
+	incorrect assumptions.  Fix for #120701, #120756, #123165,
+	#123631, #123838.
+
 2003-10-06  Žygimantas Beručka  <uid0@tuxfamily.org>
 
 	* configure.in: Added "lt" to ALL_LINGUAS

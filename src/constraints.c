@@ -559,16 +559,9 @@ constraint_onscreen_bottom_func  (MetaWindow           *window,
                                   const MetaRectangle  *orig,
                                   int                  *y_delta)
 {
-  int max_dy;
-  int bottommost_y;
-
-  get_outermost_onscreen_positions (window, info, orig, 0, *y_delta,
-                                    NULL, NULL, NULL, &bottommost_y);
-
-  max_dy = bottommost_y - orig->y;
-
-  if (*y_delta > max_dy)
-    *y_delta = max_dy;
+  /* no way to resize off the bottom so that constraints are
+     violated */
+  return;
 }
 
 static void
@@ -595,16 +588,9 @@ constraint_onscreen_left_func    (MetaWindow           *window,
                                   const MetaRectangle  *orig,
                                   int                  *x_delta)
 {
-  int min_dx;
-  int leftmost_x;
-
-  get_outermost_onscreen_positions (window, info, orig, *x_delta, 0,
-                                    &leftmost_x, NULL, NULL, NULL);
-
-  min_dx = leftmost_x - orig->x;
-
-  if (*x_delta < min_dx)
-    *x_delta = min_dx;
+  /* no way to resize off the sides so that constraints are violated
+   */
+  return;
 }
 
 static void
@@ -613,16 +599,9 @@ constraint_onscreen_right_func   (MetaWindow           *window,
                                   const MetaRectangle  *orig,
                                   int                  *x_delta)
 {
-  int max_dx;
-  int rightmost_x;
-
-  get_outermost_onscreen_positions (window, info, orig, *x_delta, 0,
-                                    NULL, &rightmost_x, NULL, NULL);
-
-  max_dx = rightmost_x - orig->x;
-
-  if (*x_delta > max_dx)
-    *x_delta = max_dx;
+  /* no way to resize off the sides so that constraints are violated
+   */
+  return;
 }
 
 static void
@@ -631,16 +610,9 @@ constraint_onscreen_hcenter_func (MetaWindow           *window,
                                   const MetaRectangle  *orig,
                                   int                  *x_delta)
 {
-  int max_dx;
-  int leftmost_x;
-  
-  get_outermost_onscreen_positions (window, info, orig, *x_delta, 0,
-                                    &leftmost_x, NULL, NULL, NULL);
-
-  max_dx = orig->x - leftmost_x;
-
-  if (*x_delta > max_dx)
-    *x_delta = max_dx;
+  /* no way to resize off the sides so that constraints are violated
+   */
+  return;
 }
 
 static void
