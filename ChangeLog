@@ -1,5 +1,13 @@
 2002-05-04  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (meta_frames_paint_to_drawable): chop out the 
+	portion of the region that's outside the screen.
+
+	* src/core.c (meta_core_get_screen_size): new function
+	(meta_core_get_frame_extents): new function
+
+2002-05-04  Havoc Pennington  <hp@pobox.com>
+
 	* src/frames.c (meta_frames_init): disable automatic GTK double
 	buffering, since it resulted in gigantic backing pixmaps the size
 	of the whole screen.

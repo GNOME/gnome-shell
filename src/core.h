@@ -99,6 +99,14 @@ int meta_core_get_active_workspace (Screen *xscreen);
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
 
+void  meta_core_get_frame_extents   (Display        *xdisplay,
+                                     Window          frame_xwindow,
+                                     int            *x,
+                                     int            *y,
+                                     int            *width,
+                                     int            *height);
+
+
 void meta_core_show_window_menu (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      root_x,
@@ -128,6 +136,11 @@ void       meta_core_grab_buttons  (Display *xdisplay,
 void       meta_core_set_screen_cursor (Display *xdisplay,
                                         Window   frame_on_screen,
                                         MetaCursor cursor);
+
+void       meta_core_get_screen_size (Display *xdisplay,
+                                      Window   frame_on_screen,
+                                      int     *width,
+                                      int     *height);
 
 /* Used because we ignore EnterNotify when a window is unmapped that
  * really shouldn't cause focus changes, by comparing the event serial

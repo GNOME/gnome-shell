@@ -452,6 +452,34 @@ meta_core_get_frame_workspace (Display *xdisplay,
 }
 
 void
+meta_core_get_frame_extents   (Display        *xdisplay,
+                               Window          frame_xwindow,
+                               int            *x,
+                               int            *y,
+                               int            *width,
+                               int            *height)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  if (x)
+    *x = window->frame->rect.x;
+  if (y)
+    *y = window->frame->rect.y;
+  if (width)
+    *width = window->frame->rect.width;
+  if (height)
+    *height = window->frame->rect.height;
+}
+
+
+void
 meta_core_show_window_menu (Display *xdisplay,
                             Window   frame_xwindow,
                             int      root_x,
@@ -577,6 +605,27 @@ meta_core_set_screen_cursor (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
 
   meta_screen_set_cursor (window->screen, cursor);
+}
+
+void
+meta_core_get_screen_size (Display *xdisplay,
+                           Window   frame_on_screen,
+                           int     *width,
+                           int     *height)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_on_screen);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
+
+  if (width)
+    *width = window->screen->width;
+  if (height)
+    *height = window->screen->height;
 }
 
 void

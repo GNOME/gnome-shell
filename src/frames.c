@@ -1299,10 +1299,11 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   int i;
   int top, bottom, left, right;
   GdkRegion *edges;
-  GdkRegion *client;
+  GdkRegion *tmp_region;
   GdkRectangle area;
   GdkRectangle *areas;
   int n_areas;
+  int screen_width, screen_height;
   
   widget = GTK_WIDGET (frames);
 
@@ -1380,19 +1381,52 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   /* Repaint each side of the frame */
   
   edges = gdk_region_copy (region);
+
+  /* Punch out the client area */
   area.x = left;
   area.y = top;
   area.width = w;
   area.height = h;
-  client = gdk_region_rectangle (&area);
-  gdk_region_subtract (edges, client);
-  gdk_region_destroy (client);
+  tmp_region = gdk_region_rectangle (&area);
+  gdk_region_subtract (edges, tmp_region);
+  gdk_region_destroy (tmp_region);
 
+  /* Chop off stuff outside the screen; this optimization
+   * is crucial to handle huge client windows,
+   * like "xterm -geometry 1000x1000"
+   */
+  meta_core_get_frame_extents (gdk_display,
+                               frame->xwindow,
+                               &area.x, &area.y,
+                               &area.width, &area.height);
+
+  meta_core_get_screen_size (gdk_display,
+                             frame->xwindow,
+                             &screen_width, &screen_height);
+
+  if ((area.x + area.width) > screen_width)
+    area.width = screen_width - area.x;
+  if (area.width < 0)
+    area.width = 0;
+  
+  if ((area.y + area.height) > screen_height)
+    area.height = screen_height - area.y;
+  if (area.height < 0)
+    area.height = 0;
+
+  area.x = 0; /* make relative to frame rather than screen */
+  area.y = 0;
+  
+  tmp_region = gdk_region_rectangle (&area);
+  gdk_region_intersect (edges, tmp_region);
+  gdk_region_destroy (tmp_region);
+
+  /* Now draw remaining portion of region */
   gdk_region_get_rectangles (edges, &areas, &n_areas);
   
   i = 0;
   while (i < n_areas)
-    {
+    {      
       if (GDK_IS_WINDOW (drawable))
         gdk_window_begin_paint_rect (drawable, &areas[i]);
       
