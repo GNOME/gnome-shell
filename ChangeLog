@@ -1,3 +1,13 @@
+2003-09-20  Rob Adams <readams@readams.net>
+
+	Fix bug where multiple entries could appear in MRU lists, or no
+	entry when sticking/unsticking windows.  Fix for #122016
+
+	* src/window.c (meta_window_stick): use window->screen->workspaces
+	instead of window->workspaces.
+	(meta_window_unstick): use window->screen->workspaces instead of
+	window->workspaces.
+
 2003-09-19  Rob Adams <readams@readams.net>
 
 	Fix a bug with partial-width panel struts caused by incorrect

@@ -3204,7 +3204,7 @@ meta_window_stick (MetaWindow  *window)
 
   /* We do, however, change the MRU lists of all the workspaces
    */
-  tmp = window->workspaces;
+  tmp = window->screen->workspaces;
   while (tmp)
     {
       workspace = (MetaWorkspace *) tmp->data;
@@ -3233,7 +3233,7 @@ meta_window_unstick (MetaWindow  *window)
   window->on_all_workspaces = FALSE;
 
   /* Remove window from MRU lists that it doesn't belong in */
-  tmp = window->workspaces;
+  tmp = window->screen->workspaces;
   while (tmp)
     {
       workspace = (MetaWorkspace *) tmp->data;
