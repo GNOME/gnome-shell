@@ -150,7 +150,7 @@ validate_or_free_results (GetPropertyResults *results,
   if (res_name == NULL)
     res_name = "unknown";
   
-  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n"),
+  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug, not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n"),
                 results->xwindow,
                 prop_name ? prop_name : "(bad atom)",
                 expected_name ? expected_name : "(bad atom)",

@@ -1,3 +1,7 @@
+2002-12-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/xprops.c (validate_or_free_results): add a comma to message #101401
+
 2002-12-16 Bill Haneman <bill.haneman@sun.com>
    
 	* configure.in:
