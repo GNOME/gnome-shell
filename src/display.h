@@ -153,8 +153,7 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
-  /* WM_TAKE_FOCUS has been sent but we have not yet 
-   * received the resulting FocusIn event for this window
+  /* window we are expecting a FocusIn event for
    */
   MetaWindow *expected_focus_window;
 

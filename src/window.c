@@ -2781,6 +2781,7 @@ meta_window_focus (MetaWindow  *window,
                           window->frame->xwindow,
                           RevertToPointerRoot,
                           CurrentTime);
+          window->display->expected_focus_window = window;
         }
     }
   else
@@ -2796,6 +2797,7 @@ meta_window_focus (MetaWindow  *window,
                           window->xwindow,
                           RevertToPointerRoot,
                           timestamp);
+          window->display->expected_focus_window = window;
         }
       
       if (window->take_focus)
