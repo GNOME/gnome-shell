@@ -1,3 +1,15 @@
+2002-09-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/workspace.c (meta_workspace_screen_index)
+	(meta_workspace_index): fix compiler warnings
+
+	* src/tools/metacity-window-demo.c (menu_items): add a test for
+	dialogs with no transient parent
+
+	* src/place.c (find_first_fit): Try placing window at origin of
+	first Xinerama, even if there are no windows to place next to;
+	makes placement work when no other windows are open on the screen.
+	
 2002-09-09  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in: 2.4.1

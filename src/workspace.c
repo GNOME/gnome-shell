@@ -246,6 +246,7 @@ meta_workspace_index (MetaWorkspace *workspace)
     }
 
   meta_bug ("Workspace does not exist to index!\n");
+  return -1; /* compiler warnings */
 }
 
 int
@@ -270,6 +271,7 @@ meta_workspace_screen_index  (MetaWorkspace *workspace)
     }
 
   meta_bug ("Workspace does not exist to index!\n");
+  return -1; /* compiler warnings */
 }
 
 /* get windows contained on workspace, including workspace->windows

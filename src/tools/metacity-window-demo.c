@@ -258,6 +258,28 @@ modal_dialog_cb (gpointer             callback_data,
 }
 
 static void
+no_parent_dialog_cb (gpointer             callback_data,
+                     guint                callback_action,
+                     GtkWidget           *widget)
+{
+  GtkWidget *dialog;
+  
+  dialog = gtk_message_dialog_new (NULL,
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_INFO,
+                                   GTK_BUTTONS_CLOSE,
+                                   "Here is a dialog with no transient parent");
+
+  /* Close dialog on user response */
+  g_signal_connect (G_OBJECT (dialog),
+                    "response",
+                    G_CALLBACK (gtk_widget_destroy),
+                    NULL);
+  
+  gtk_widget_show (dialog);
+}
+
+static void
 utility_cb (gpointer             callback_data,
             guint                callback_action,
             GtkWidget           *widget)
@@ -613,6 +635,7 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Windows/tearoff",       NULL,         NULL,                     0, "<Tearoff>" },
   { "/Windows/_Dialog",       "<control>d",  dialog_cb,               0, NULL },
   { "/Windows/_Modal dialog", NULL,          modal_dialog_cb,         0, NULL },
+  { "/Windows/_Parentless dialog", NULL,     no_parent_dialog_cb,     0, NULL },
   { "/Windows/_Utility",      "<control>u",  utility_cb,              0, NULL },
   { "/Windows/_Splashscreen", "<control>s",  splashscreen_cb,         0, NULL },
   { "/Windows/_Top dock",     NULL,          dock_cb,                 DOCK_TOP, NULL },

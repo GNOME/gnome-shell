@@ -427,7 +427,8 @@ find_first_fit (MetaWindow *window,
   MetaRectangle rect;
   
   retval = FALSE;
-
+  sorted = NULL;
+  
   rect.width = window->rect.width;
   rect.height = window->rect.height;
   
@@ -435,6 +436,26 @@ find_first_fit (MetaWindow *window,
     {
       rect.width += fgeom->left_width + fgeom->right_width;
       rect.height += fgeom->top_height + fgeom->bottom_height;
+    }
+
+  /* Try origin of first Xinerama */
+  rect.x = window->screen->xinerama_infos[0].x_origin;
+  rect.y = window->screen->xinerama_infos[0].y_origin;
+
+  if (fit_rect_in_xinerama (window->screen, &rect) &&
+      !rectangle_overlaps_some_window (&rect, windows))
+    {
+      *new_x = rect.x;
+      *new_y = rect.y;
+      if (fgeom)
+        {
+          *new_x += fgeom->left_width;
+          *new_y += fgeom->top_height;
+        }
+      
+      retval = TRUE;
+      
+      goto out;
     }
   
   sorted = g_list_copy (windows);
@@ -468,7 +489,7 @@ find_first_fit (MetaWindow *window,
           retval = TRUE;
 
           goto out;
-        }      
+        }
       
       tmp = tmp->next;
     }
