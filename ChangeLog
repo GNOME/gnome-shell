@@ -1,3 +1,7 @@
+2004-03-04  Paisa Seeluangsawat  <paisa@users.sf.net>
+
+	* configure.in: Added "th" (Thai) to ALL_LINGUAS.
+
 2004-03-01  Rob Adams  <readams@readams.net>
 
 	* src/stack.c (compute_layer): don't promote due to transiency; we
