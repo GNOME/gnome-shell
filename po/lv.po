@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-11-09 04:41+0100\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-11-10 11:42+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -184,12 +184,7 @@ msgstr "Novietot uz Visām D_arba vietām"
 msgid "Only on _This Workspace"
 msgstr "Tikai uz Šīs Darba vie_tas"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr "Darba vieta %d"
@@ -198,17 +193,17 @@ msgstr "Darba vieta %d"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Darba vieta %s%d"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "Tikai uz %s"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "Pārvietot uz %s"
@@ -1713,12 +1708,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, kas saglabāts GConf atslēgā %s, ir ārpus 0 līdz %d diapazona\n"
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Kļūda iestatot darba vietu daudzumu uz %d: %s\n"
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1727,7 +1722,7 @@ msgstr ""
 "\"%s\", atrasta konfigurācijas datu bāzē, nav derīga vērtība "
 "taustiņsasaistei \"%s\"\n"
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Kļūda iestatot darba vietas %d nosaukumu uz \"%s\": %s\n"
@@ -1737,12 +1732,12 @@ msgstr "Kļūda iestatot darba vietas %d nosaukumu uz \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekrāna %d displejs \"%s\" ir nederīgs\n"
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1751,18 +1746,18 @@ msgstr ""
 "Ekrāna %d displejam \"%s\" jau ir logu pārvaldnieks; mēģiniet lietot --"
 "replace opciju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nevarēju iegūt logu pārvaldnieka izvēli ekrāna %d displejā \"%s\"\n"
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekrāna %d displejam \"%s\" jau ir logu pārvaldnieks\n"
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nevarēju atlaist ekrānu %d uz displeja \"%s\"\n"
@@ -2571,7 +2566,7 @@ msgstr "Koordinētajai izteiksmei neliekas, ka būtu kāds operators vai operand
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tēma saturēja izteiksmi \"%s\", kas noveda pie kļūdas: %s\n"
 
-#: src/theme.c:3914
+#: src/theme.c:3912
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2580,25 +2575,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt noteiktam "
 "šajā rāmja stilā"
 
-#: src/theme.c:4364 src/theme.c:4396
+#: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Iztrūkst <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"jebkas\"/>"
 
-#: src/theme.c:4447
+#: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nevarēju ielādēt tēmu \"%s\": %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nav iestādīts <%s> tēmai \"%s\""
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2607,7 +2602,7 @@ msgstr ""
 "Nav ramja stila kopas loga tipam \"%s\" tēmā \"%s\", pievieno <window type="
 "\"%s\" style_set=\"jebkas\"/> elementu"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2616,14 +2611,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt "
 "noteiktam šajā tēmā"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Lietotāja definētajām konstantēm jāsākas ar lielo burtu; \"%s\" nesākas"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstante \"%s\" jau tikusi definēta"
@@ -2693,7 +2688,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikācija iestatīja neīstu _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2709,7 +2704,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

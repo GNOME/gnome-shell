@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-11-05 01:12+0100\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-11-05 01:16+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -92,7 +92,7 @@ msgstr "Maximera fönster"
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:852
+#: src/keybindings.c:858
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -101,14 +101,14 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/keybindings.c:2176
+#: src/keybindings.c:2194
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %"
 "s\n"
 
-#: src/keybindings.c:2207
+#: src/keybindings.c:2225
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
@@ -191,12 +191,7 @@ msgstr "Placera på _alla arbetsytor"
 msgid "Only on _This Workspace"
 msgstr "Endast på _denna arbetsyta"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
@@ -205,17 +200,17 @@ msgstr "Arbetsyta %d"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbetsyta %s%d"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "Endast på %s"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "Flytta till %s"
@@ -1750,12 +1745,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1764,7 +1759,7 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "tangentbindningen \"%s\"\n"
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -1774,12 +1769,12 @@ msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1788,18 +1783,18 @@ msgstr ""
 "Skärm %d på display \"%s\" har redan en fönsterhanterare; försök med flaggan "
 "--replace för att ersätta den aktuella fönsterhanteraren.\n"
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunde inte få tag i fönsterhanterarval på skärm %d display \"%s\"\n"
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
@@ -2647,7 +2642,7 @@ msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck \"%s\" som resulterade i ett fel: %s\n"
 
-#: src/theme.c:3914
+#: src/theme.c:3912
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2656,25 +2651,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för "
 "denna ramtyp"
 
-#: src/theme.c:4364 src/theme.c:4396
+#: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: src/theme.c:4447
+#: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2683,7 +2678,7 @@ msgstr ""
 "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett "
 "<window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2692,7 +2687,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges "
 "för detta tema"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2700,7 +2695,7 @@ msgstr ""
 "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör "
 "det inte"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
@@ -2770,7 +2765,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2786,7 +2781,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

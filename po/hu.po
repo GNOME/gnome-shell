@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2002-11-19 11:08+0100\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-10-18 16:17+0200\n"
 "Last-Translator: Andras Timar <timar@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -171,12 +171,7 @@ msgstr "_Minden munkaterületre"
 msgid "Only on _This Workspace"
 msgstr "_Csak erre a munkaterületre"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr ""
@@ -185,17 +180,17 @@ msgstr ""
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "%s%d. munkaterület"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "Csak %s"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "Áthelyezés: %s"
@@ -1297,19 +1292,19 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -1319,30 +1314,30 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr ""
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
@@ -2229,7 +2224,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2243,7 +2238,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

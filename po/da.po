@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-11-10 11:44+0100\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-11-10 11:44+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -186,12 +186,7 @@ msgstr "Placér på _alle arbejdsområder"
 msgid "Only on _This Workspace"
 msgstr "Kun på de_tte arbejdsområde"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
@@ -200,17 +195,17 @@ msgstr "Arbejdsområde %d"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbejdsområde %s%d"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "Kun på %s"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "Flyt til %s"
@@ -1726,12 +1721,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøgle %s er uden for intervallet 0 til %d\n"
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1740,7 +1735,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
@@ -1750,12 +1745,12 @@ msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal '%s' er ugyldig\n"
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1764,7 +1759,7 @@ msgstr ""
 "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering; prøv "
 "tilvalget --replace for at erstatte den aktuelle vindueshåndtering.\n"
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1772,12 +1767,12 @@ msgstr ""
 "Kunne ikke fremskaffe vindueshåndteringvælgeren på skærm %d på terminal \"%s"
 "\"\n"
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering\n"
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
@@ -2586,7 +2581,7 @@ msgstr ""
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema indeholdt et udtryk '%s', som resulterede i en fejl: %s\n"
 
-#: src/theme.c:3914
+#: src/theme.c:3912
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2595,7 +2590,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"et-eller-andet\"/> skal "
 "angives for denne rammestil"
 
-#: src/theme.c:4364 src/theme.c:4396
+#: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -2603,18 +2598,18 @@ msgstr ""
 "Manglende <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"et-eller-"
 "andet\"/>"
 
-#: src/theme.c:4447
+#: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Kunne ikke indlæse temaet \"%s\": %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Ingen <%s> angivet for temaet \"%s\""
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2623,7 +2618,7 @@ msgstr ""
 "Ingen rammestil angivet for vinduestypen \"%s\" i temaet \"%s\", tilføj et "
 "<window type=\"%s\" style_set=\"et-eller-andet\"/>-element"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2632,7 +2627,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"et-eller-andet\"/> skal "
 "angives for dette tema"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2640,7 +2635,7 @@ msgstr ""
 "Brugerdefinerede konstanter skal begynde med et stort bogstav; det gør \"%s"
 "\" ikke"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" er allerede defineret"
@@ -2710,7 +2705,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2726,7 +2721,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

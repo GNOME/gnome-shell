@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.4.3\n"
-"POT-Creation-Date: 2002-11-06 20:43+0900\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-11-06 11:53+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist@mizi.com>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -89,7 +89,7 @@ msgstr "창 최대화"
 msgid "Unmaximize Window"
 msgstr "창 최대화 취소"
 
-#: src/keybindings.c:852
+#: src/keybindings.c:858
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,14 +98,14 @@ msgstr ""
 "몇몇 다른 프로그램에서 이미 단축 글쇠로 변경키 %2$x와(과) 글쇠 %1$s을(를) 사"
 "용하고 있습니다\n"
 
-#: src/keybindings.c:2176
+#: src/keybindings.c:2194
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "명령에 대한 오류를 출력하기 위해 metacity-dialog를 실행하는 중 오류가 발생했"
 "습니다: %s\n"
 
-#: src/keybindings.c:2207
+#: src/keybindings.c:2225
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
@@ -187,12 +187,7 @@ msgstr "모든 작업 공간에 놓기(_A)"
 msgid "Only on _This Workspace"
 msgstr "이 작업 공간에만 놓기(_T)"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
@@ -201,17 +196,17 @@ msgstr "작업 공간 %d"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "작업 공간 %s%d"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "작업 공간 %s에만 놓기"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "작업 공간 %s(으)로 옮김"
@@ -1350,12 +1345,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "GConf 키 %2$s에 저장된 %1$d은(는) 0과 %3$d의 범위를 넘었습니다\n"
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "작업 공간의 수를 %d(으)로 설정하는 중 오류: %s\n"
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1364,7 +1359,7 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 단축글쇠 \"%s\"에 대한 올바른 값이 아"
 "닙니다\n"
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s\n"
@@ -1374,12 +1369,12 @@ msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1388,19 +1383,19 @@ msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다; 현재 "
 "창 관리자를 무시하는 -- 바꿈 옵션을 사용해보십시오.\n"
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 창 관리 선택을 가질 수 없습니다\n"
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습니다\n"
@@ -2098,7 +2093,8 @@ msgstr "색상 섞기에서 알파 값 \"%s\"은(는) 0.0 과 1.0사이의 값�
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"그림자 형식은 \"shade/base_color/format\"입니다, \"%s\"(은)는 형식에 맞지 않습니다"
+"그림자 형식은 \"shade/base_color/format\"입니다, \"%s\"(은)는 형식에 맞지 않"
+"습니다"
 
 #: src/theme.c:1122
 #, c-format
@@ -2206,7 +2202,7 @@ msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "테마가 오류 값을 내는 표현 \"%s\"을(를) 포함하고 있습니다: %s\n"
 
-#: src/theme.c:3914
+#: src/theme.c:3912
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2215,7 +2211,7 @@ msgstr ""
 "이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
 "\"/>가 지정되어야 합니다"
 
-#: src/theme.c:4364 src/theme.c:4396
+#: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -2223,18 +2219,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
 "다"
 
-#: src/theme.c:4447
+#: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "테마 \"%2$s\"의 <%s>(이)가 설정되지 않았습니다"
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2243,7 +2239,7 @@ msgstr ""
 "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
 "type=\"%3$s\" style_set=\"whatever\"/> 요소를 더하십시오"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2252,14 +2248,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> 가 이 테마에 "
 "지정되어 있어야 합니다"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "사용자 정의 상수는 대문자로 시작되어야 합니다; \"%s\"은(는) 그렇지 않습니다"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
@@ -2329,7 +2325,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2345,7 +2341,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2373,4 +2369,3 @@ msgid ""
 msgstr ""
 "창 0x%2$lx의 등록 정보 %1$s은(는) 목록안의 항목 %3$d에 잘못된 UTF-8을 포함하"
 "고 있습니다\n"
-

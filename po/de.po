@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2002-11-13 19:36+0100\n"
+"POT-Creation-Date: 2002-11-26 11:08+0000\n"
 "PO-Revision-Date: 2002-11-12 20:40+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -193,12 +193,7 @@ msgstr "Auf _alle Arbeitsflächen legen"
 msgid "Only on _This Workspace"
 msgstr "Nur auf _dieser Arbeitsfläche"
 
-#.
-#. * If the name is of the form "Workspace x" where x is an unsigned
-#. * integer, insert a '_' before the number if it is less than 10 and
-#. * return it
-#.
-#: src/menu.c:149 src/prefs.c:1571
+#: src/menu.c:152 src/prefs.c:1579
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
@@ -207,17 +202,17 @@ msgstr "Arbeitsfläche %d"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:157
+#: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeitsfläche %s%d"
 
-#: src/menu.c:350
+#: src/menu.c:353
 #, c-format
 msgid "Only on %s"
 msgstr "Nur auf %s"
 
-#: src/menu.c:352
+#: src/menu.c:355
 #, c-format
 msgid "Move to %s"
 msgstr "Auf Arbeitsfläche %s verschieben"
@@ -1769,12 +1764,12 @@ msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d, gespeichert in GConf-Schlüssel %s, liegt außerhalb des Bereichs 0-%d\n"
 
-#: src/prefs.c:1166
+#: src/prefs.c:1170
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fehler beim Festlegen der Anzahl der Arbeitsflächen auf %d: %s\n"
 
-#: src/prefs.c:1372
+#: src/prefs.c:1378
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1783,7 +1778,7 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein gültiger Wert für "
 "die Tastenkombination »%s«\n"
 
-#: src/prefs.c:1625
+#: src/prefs.c:1653
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n"
@@ -1793,12 +1788,12 @@ msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:390
+#: src/screen.c:391
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Bildschirm %d auf Anzeige »%s« ist ungültig\n"
 
-#: src/screen.c:406
+#: src/screen.c:407
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1808,7 +1803,7 @@ msgstr ""
 "die Option »--replace« an, um zu versuchen, den aktuellen Fenstermanager zu "
 "ersetzen.\n"
 
-#: src/screen.c:447
+#: src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1816,12 +1811,12 @@ msgstr ""
 "Markierung des Fenstermanagers auf Bildschirm %d auf Anzeige »%s« konnte "
 "nicht empfangen werden\n"
 
-#: src/screen.c:503
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager\n"
 
-#: src/screen.c:649
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Bildschirm %d auf Anzeige »%s« konnte nicht freigegeben werden\n"
@@ -2778,7 +2773,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4708
+#: src/window.c:4733
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2800,7 +2795,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5304
+#: src/window.c:5293
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
