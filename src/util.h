@@ -54,6 +54,7 @@ void meta_fatal      (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);
 
 /* FIXME */
+#include <config.h>
 #define _(x) x
 
 #endif

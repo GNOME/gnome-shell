@@ -24,14 +24,18 @@
 #include "main.h"
 #include "screen.h"
 #include "window.h"
+#include "frame.h"
 
 static GSList *all_displays = NULL;
+static void   meta_spew_event           (MetaDisplay    *display,
+                                         XEvent         *event);
+static void   event_queue_callback      (MetaEventQueue *queue,
+                                         XEvent         *event,
+                                         gpointer        data);
+static Window event_get_modified_window (MetaDisplay    *display,
+                                         XEvent         *event);
 
-static void meta_spew_event      (MetaDisplay    *display,
-                                  XEvent         *event);
-static void event_queue_callback (MetaEventQueue *queue,
-                                  XEvent         *event,
-                                  gpointer        data);
+
 
 
 static gint
@@ -63,7 +67,7 @@ meta_display_open (const char *name)
   GSList *screens;
   GSList *tmp;
   int i;
-  char *atom_names[] = { "_NET_WM_NAME" };
+  char *atom_names[] = { "_NET_WM_NAME", "WM_PROTOCOLS", "WM_TAKE_FOCUS", "WM_DELETE_WINDOW" };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
@@ -81,7 +85,11 @@ meta_display_open (const char *name)
     XSynchronize (xdisplay, True);
   
   display = g_new (MetaDisplay, 1);
-  
+
+  /* here we use XDisplayName which is what the user
+   * probably put in, vs. DisplayString(display) which is
+   * canonicalized by XOpenDisplay()
+   */
   display->name = g_strdup (XDisplayName (name));
   display->xdisplay = xdisplay;
   display->error_traps = NULL;
@@ -277,26 +285,26 @@ event_queue_callback (MetaEventQueue *queue,
 {
   MetaWindow *window;
   MetaDisplay *display;
-  gboolean is_root;
+  Window modified;
   
   display = data;
   
   if (dump_events)
     meta_spew_event (display, event);
 
-  is_root = meta_display_screen_for_root (display, event->xany.window) != NULL;  
-  window = NULL;
+  modified = event_get_modified_window (display, event);
+
+  if (modified != None)
+    window = meta_display_lookup_x_window (display, modified);
+  else
+    window = NULL;
   
-  if (!is_root)
+  if (window &&
+      window->frame &&
+      modified == window->frame->xwindow)
     {
-      if (window == NULL)
-        window = meta_display_lookup_x_window (display, event->xany.window);
-  
-      if (window != NULL)
-        {
-          if (meta_window_event (window, event))
-            return;
-        }
+      meta_frame_event (window->frame, event);
+      return;
     }
   
   switch (event->type)
@@ -332,28 +340,59 @@ event_queue_callback (MetaEventQueue *queue,
     case CreateNotify:
       break;
     case DestroyNotify:
+      if (window)
+        meta_window_free (window); /* Unmanage destroyed window */
       break;
     case UnmapNotify:
+      if (window)
+        meta_window_free (window); /* Unmanage withdrawn window */
       break;
     case MapNotify:
       break;
     case MapRequest:
-      if (is_root && !event->xmap.override_redirect)
-        {
-          /* Window requested mapping. Manage it if we haven't. Note that
-           * meta_window_new() can return NULL
-           */
-          window = meta_display_lookup_x_window (display,
-                                                 event->xmaprequest.window);
-          if (window == NULL)
-            window = meta_window_new (display, event->xmaprequest.window);
-        }
+      if (window == NULL)
+        window = meta_window_new (display, event->xmaprequest.window);
       break;
     case ReparentNotify:
       break;
     case ConfigureNotify:
+      if (event->xconfigure.override_redirect)
+        {
+          /* Unmanage it, override_redirect was toggled on?
+           * Can this happen?
+           */
+          meta_window_free (window);
+        }
       break;
     case ConfigureRequest:
+      /* This comment and code is found in both twm and fvwm */
+      /*
+       * According to the July 27, 1988 ICCCM draft, we should ignore size and
+       * position fields in the WM_NORMAL_HINTS property when we map a window.
+       * Instead, we'll read the current geometry.  Therefore, we should respond
+       * to configuration requests for windows which have never been mapped.
+       */
+      if (window == NULL)
+        {
+          unsigned int xwcm;
+          XWindowChanges xwc;
+          
+          xwcm = event->xconfigurerequest.value_mask &
+            (CWX | CWY | CWWidth | CWHeight | CWBorderWidth);
+
+          xwc.x = event->xconfigurerequest.x;
+          xwc.y = event->xconfigurerequest.y;
+          xwc.width = event->xconfigurerequest.width;
+          xwc.height = event->xconfigurerequest.height;
+          xwc.border_width = event->xconfigurerequest.border_width;
+
+          XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
+                            xwcm, &xwc);
+        }
+      else
+        {
+          meta_window_configure_request (window, event);
+        }
       break;
     case GravityNotify:
       break;
@@ -364,6 +403,8 @@ event_queue_callback (MetaEventQueue *queue,
     case CirculateRequest:
       break;
     case PropertyNotify:
+      if (window)
+        meta_window_property_notify (window, event);
       break;
     case SelectionClear:
       break;
@@ -379,9 +420,83 @@ event_queue_callback (MetaEventQueue *queue,
       break;
     default:
       break;
-    }  
+    }
 }
 
+/* Return the window this has to do with, if any, rather
+ * than the frame or root window that was selecting
+ * for substructure
+ */
+static Window
+event_get_modified_window (MetaDisplay *display,
+                           XEvent *event)
+{
+  switch (event->type)
+    {
+    case KeyPress:
+    case KeyRelease:
+    case ButtonPress:
+    case ButtonRelease:
+    case MotionNotify:
+    case EnterNotify:
+    case LeaveNotify:
+    case FocusIn:
+    case FocusOut:
+    case KeymapNotify:
+    case Expose:
+    case GraphicsExpose:
+    case NoExpose:
+    case VisibilityNotify:
+    case ResizeRequest:
+    case PropertyNotify:
+    case SelectionClear:
+    case SelectionRequest:
+    case SelectionNotify:
+    case ColormapNotify:
+    case ClientMessage:
+      return event->xany.window;
+
+    case CreateNotify:
+      return event->xcreatewindow.window;
+      
+    case DestroyNotify:
+      return event->xdestroywindow.window;
+
+    case UnmapNotify:
+      return event->xunmap.window;
+
+    case MapNotify:
+      return event->xmap.window;
+
+    case MapRequest:
+      return event->xmaprequest.window;
+
+    case ReparentNotify:
+     return event->xreparent.window;
+      
+    case ConfigureNotify:
+      return event->xconfigure.window;
+      
+    case ConfigureRequest:
+      return event->xconfigurerequest.window;
+
+    case GravityNotify:
+      return event->xgravity.window;
+
+    case CirculateNotify:
+      return event->xcirculate.window;
+
+    case CirculateRequest:
+      return event->xcirculaterequest.window;
+
+    case MappingNotify:
+      return None;
+
+    default:
+      return None;
+    }
+}
+  
 static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
@@ -465,6 +580,14 @@ meta_spew_event (MetaDisplay *display,
           break;
         case ConfigureRequest:
           name = "ConfigureRequest";
+          extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d y: %d w: %d h: %d border: %d",
+                                   event->xconfigurerequest.parent,
+                                   event->xconfigurerequest.window,
+                                   event->xconfigurerequest.x,
+                                   event->xconfigurerequest.y,
+                                   event->xconfigurerequest.width,
+                                   event->xconfigurerequest.height,
+                                   event->xconfigurerequest.border_width);
           break;
         case GravityNotify:
           name = "GravityNotify";

@@ -51,14 +51,21 @@ struct _MetaWindow
   XSizeHints size_hints;
 };
 
-MetaWindow*  meta_window_new    (MetaDisplay *display,
-                                 Window       xwindow); 
-void         meta_window_free   (MetaWindow  *window);
-void         meta_window_show   (MetaWindow  *window);
-void         meta_window_hide   (MetaWindow  *window);
+MetaWindow* meta_window_new       (MetaDisplay *display,
+                                   Window       xwindow);
+void        meta_window_free      (MetaWindow  *window);
+void        meta_window_show      (MetaWindow  *window);
+void        meta_window_hide      (MetaWindow  *window);
+void        meta_window_resize    (MetaWindow  *window,
+                                   int          w,
+                                   int          h);
 
-gboolean     meta_window_event  (MetaWindow  *window,
-                                 XEvent      *event);
+gboolean meta_window_configure_request (MetaWindow *window,
+                                        XEvent     *event);
+gboolean meta_window_property_notify   (MetaWindow *window,
+                                        XEvent     *event);
+
+
 
 
 

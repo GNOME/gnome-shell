@@ -102,7 +102,7 @@ default_fill_frame_geometry (MetaFrameInfo *info,
     pango_layout_set_text (d->layout, info->title, -1);
   else
     pango_layout_set_text (d->layout, " ", -1);
-  
+
   pango_layout_get_pixel_extents (d->layout, NULL, &rect);
 
   d->title_height = rect.height + VERTICAL_TEXT_PAD * 2;

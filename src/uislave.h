@@ -23,17 +23,39 @@
 #define META_UI_SLAVE_H
 
 #include "util.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
+#include "uislave/messages.h"
+#include "display.h"
 
-typedef struct _MetaUISlave MetaUISlave;
+typedef void (* MetaUISlaveFunc) (MetaUISlave *uislave,
+                                  MetaMessage *message,
+                                  gpointer     data);
 
 struct _MetaUISlave
 {
+  GSource source;
+  
   char *display_name;
+  int child_pid;
+  int in_pipe;
+  int err_pipe;
+  GPollFD out_poll;
+  GIOChannel *err_channel;
+  unsigned int errwatch;
+  GQueue *queue;
+  GString *buf;
+  GString *current_message;
+  int current_required_len;
+  /* if we determine that our available slave is hosed,
+   * set this bit.
+   */
+  guint no_respawn : 1;
 };
 
-MetaUISlave* meta_ui_slave_new (const char *display_name);
+MetaUISlave* meta_ui_slave_new     (const char      *display_name,
+                                    MetaUISlaveFunc  func,
+                                    gpointer         data);
+void         meta_ui_slave_free    (MetaUISlave     *uislave);
+void         meta_ui_slave_disable (MetaUISlave     *uislave);
 
 
 #endif

@@ -28,7 +28,7 @@ typedef enum
 {
   META_FRAME_ACTION_NONE,
   META_FRAME_ACTION_MOVING,
-  META_FRAME_ACTION_RESIZING
+  META_FRAME_ACTION_RESIZING_SE
 } MetaFrameAction;
 
 struct _MetaFrame
@@ -43,6 +43,8 @@ struct _MetaFrame
    * frame, not the result of ConfigureNotify
    */
   MetaRectangle rect;
+  int child_x;
+  int child_y;
 
   gpointer theme_data;
 
@@ -50,16 +52,27 @@ struct _MetaFrame
   /* reference point for drags */
   int last_x, last_y;
   int start_button;
+
+  guint theme_acquired : 1;
 };
 
-void meta_window_ensure_frame  (MetaWindow *window);
-void meta_window_destroy_frame (MetaWindow *window);
+void     meta_window_ensure_frame           (MetaWindow *window);
+void     meta_window_destroy_frame          (MetaWindow *window);
+void     meta_frame_move                    (MetaFrame  *frame,
+                                             int         root_x,
+                                             int         root_y);
+void     meta_frame_child_configure_request (MetaFrame  *frame);
+void     meta_frame_recalc_now              (MetaFrame  *frame);
+void     meta_frame_queue_recalc            (MetaFrame  *frame);
+void     meta_frame_queue_draw              (MetaFrame  *frame);
+gboolean meta_frame_event                   (MetaFrame  *frame,
+                                             XEvent     *event);
 
-void     meta_frame_move  (MetaFrame *frame,
-                           int        root_x,
-                           int        root_y);
 
-gboolean meta_frame_event (MetaFrame *frame,
-                           XEvent    *event);
+
 
 #endif
+
+
+
+

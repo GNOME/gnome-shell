@@ -62,6 +62,9 @@ PKG_CHECK_MODULES(METACITY, $PANGO_PACKAGES)
 # Check for shaped window extension
 AC_CHECK_LIB(Xext, XShapeCombineMask, AC_DEFINE(HAVE_SHAPE_EXT),,$METACITY_LIBS)
 
+HOST_ALIAS=$host_alias
+AC_SUBST(HOST_ALIAS)
+
 AC_OUTPUT([
 Makefile
 intl/Makefile

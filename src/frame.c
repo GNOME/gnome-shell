@@ -37,109 +37,145 @@ meta_frame_init_info (MetaFrame     *frame,
   info->height = frame->rect.height;
 }
 
+static void
+meta_frame_calc_initial_pos (MetaFrame *frame,
+                             int child_root_x, int child_root_y)
+{
+  MetaWindow *window;
+  
+  window = frame->window;
+  
+  switch (window->size_hints.win_gravity)
+    {
+    case NorthWestGravity:
+      frame->rect.x = child_root_x;
+      frame->rect.y = child_root_y;
+      break;
+    case NorthGravity:
+      frame->rect.x = child_root_x - frame->rect.width / 2;
+      frame->rect.y = child_root_y;
+      break;
+    case NorthEastGravity:
+      frame->rect.x = child_root_x - frame->rect.width;
+      frame->rect.y = child_root_y;
+      break;
+    case WestGravity:
+      frame->rect.x = child_root_x;
+      frame->rect.y = child_root_y - frame->rect.height / 2;
+      break;
+    case CenterGravity:
+      frame->rect.x = child_root_x - frame->rect.width / 2;
+      frame->rect.y = child_root_y - frame->rect.height / 2;
+      break;
+    case EastGravity:
+      frame->rect.x = child_root_x - frame->rect.width;
+      frame->rect.y = child_root_y - frame->rect.height / 2;
+      break;
+    case SouthWestGravity:
+      frame->rect.x = child_root_x;
+      frame->rect.y = child_root_y - frame->rect.height;
+      break;
+    case SouthGravity:
+      frame->rect.x = child_root_x - frame->rect.width / 2;
+      frame->rect.y = child_root_y - frame->rect.height;
+      break;
+    case SouthEastGravity:
+      frame->rect.x = child_root_x - frame->rect.width;
+      frame->rect.y = child_root_y - frame->rect.height;
+      break;
+    case StaticGravity:
+    default:
+      frame->rect.x = child_root_x - frame->child_x;
+      frame->rect.y = child_root_y - frame->child_y;
+      break;
+    }
+}
+
+static void
+meta_frame_calc_geometry (MetaFrame *frame,
+                          int child_width, int child_height,
+                          MetaFrameGeometry *geomp)
+{
+  MetaFrameInfo info;
+  MetaFrameGeometry geom;
+  MetaWindow *window;  
+  
+  /* Remember this is called from the constructor
+   * pre-window-creation.
+   */
+
+  window = frame->window;
+  
+  frame->rect.width = child_width;
+  frame->rect.height = child_height;
+  
+  meta_frame_init_info (frame, &info);
+
+  if (!frame->theme_acquired)
+    frame->theme_data = window->screen->engine->acquire_frame (&info);
+  
+  geom.left_width = 0;
+  geom.right_width = 0;
+  geom.top_height = 0;
+  geom.bottom_height = 0;
+  geom.background_pixel = BlackPixel (window->display->xdisplay,
+                                      window->screen->number);
+
+  geom.shape_mask = None;
+
+  window->screen->engine->fill_frame_geometry (&info, &geom,
+                                               frame->theme_data);
+
+  frame->child_x = geom.left_width;
+  frame->child_y = geom.top_height;
+
+  frame->rect.width = frame->rect.width + geom.left_width + geom.right_width;
+  frame->rect.height = frame->rect.height + geom.top_height + geom.bottom_height;
+
+  *geomp = geom;
+}
+
 void
 meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
-  int child_x, child_y;
-  unsigned long background_pixel;
   XSetWindowAttributes attrs;
-  MetaFrameInfo info;
   MetaFrameGeometry geom;
   
   if (window->frame)
     return;
 
+  /* Need to fix Pango, it grabs the server */
+  g_return_if_fail (window->display->server_grab_count == 0);
+  
   frame = g_new (MetaFrame, 1);
 
+  /* Fill in values that calc_geometry will use */
   frame->window = window;
-
-  /* Fill these in for the theme engine's benefit */
   frame->xwindow = None;
-  frame->rect.width = window->rect.width;
-  frame->rect.height = window->rect.height;
-  
-  meta_frame_init_info (frame, &info);
+  frame->theme_acquired = FALSE;
 
-  geom.left_width = 0;
-  geom.right_width = 0;
-  geom.top_height = 0;
-  geom.bottom_height = 0;
-  geom.background_pixel = BlackPixel (frame->window->display->xdisplay,
-                                      frame->window->screen->number);
+  /* This fills in frame->rect as well. */
+  meta_frame_calc_geometry (frame,
+                            window->rect.width,
+                            window->rect.height,
+                            &geom);
 
-  geom.shape_mask = None;
-  
-  frame->theme_data = window->screen->engine->acquire_frame (&info);
-  window->screen->engine->fill_frame_geometry (&info, &geom,
-                                               frame->theme_data);
-
-  child_x = geom.left_width;
-  child_y = geom.top_height;
-
-  frame->rect.width = window->rect.width + geom.left_width + geom.right_width;
-  frame->rect.height = window->rect.height + geom.top_height + geom.bottom_height;
-
-  background_pixel = geom.background_pixel;
-  
-  switch (window->size_hints.win_gravity)
-    {
-    case NorthWestGravity:
-      frame->rect.x = window->rect.x;
-      frame->rect.y = window->rect.y;
-      break;
-    case NorthGravity:
-      frame->rect.x = window->rect.x - frame->rect.width / 2;
-      frame->rect.y = window->rect.y;
-      break;
-    case NorthEastGravity:
-      frame->rect.x = window->rect.x - frame->rect.width;
-      frame->rect.y = window->rect.y;
-      break;
-    case WestGravity:
-      frame->rect.x = window->rect.x;
-      frame->rect.y = window->rect.y - frame->rect.height / 2;
-      break;
-    case CenterGravity:
-      frame->rect.x = window->rect.x - frame->rect.width / 2;
-      frame->rect.y = window->rect.y - frame->rect.height / 2;
-      break;
-    case EastGravity:
-      frame->rect.x = window->rect.x - frame->rect.width;
-      frame->rect.y = window->rect.y - frame->rect.height / 2;
-      break;
-    case SouthWestGravity:
-      frame->rect.x = window->rect.x;
-      frame->rect.y = window->rect.y - frame->rect.height;
-      break;
-    case SouthGravity:
-      frame->rect.x = window->rect.x - frame->rect.width / 2;
-      frame->rect.y = window->rect.y - frame->rect.height;
-      break;
-    case SouthEastGravity:
-      frame->rect.x = window->rect.x - frame->rect.width;
-      frame->rect.y = window->rect.y - frame->rect.height;
-      break;
-    case StaticGravity:
-    default:
-      frame->rect.x = window->rect.x - child_x;
-      frame->rect.y = window->rect.y - child_y;
-      break;
-    }
-
-  meta_verbose ("Creating frame %d,%d %dx%d around window 0x%lx %d,%d %dx%d with child position inside frame %d,%d and gravity %d\n",
+  meta_frame_calc_initial_pos (frame, window->rect.x, window->rect.y);
+                               
+  meta_verbose ("Will create frame %d,%d %dx%d around window %s %d,%d %dx%d with child position inside frame %d,%d and gravity %d\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
-                window->xwindow,
+                window->desc,
                 window->rect.x, window->rect.y,
                 window->rect.width, window->rect.height,
-                child_x, child_y,
+                frame->child_x, frame->child_y,
                 window->size_hints.win_gravity);
-
-  attrs.background_pixel = background_pixel;
+  
+  attrs.background_pixel = geom.background_pixel;
   attrs.event_mask =
-    StructureNotifyMask | ExposureMask |
-    ButtonPressMask | ButtonReleaseMask |
+    StructureNotifyMask | SubstructureNotifyMask | ExposureMask |
+    ButtonPressMask | ButtonReleaseMask | OwnerGrabButtonMask |
     PointerMotionMask | PointerMotionHintMask;
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
@@ -177,10 +213,14 @@ meta_window_ensure_frame (MetaWindow *window)
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
-                   child_x,
-                   child_y);
+                   frame->child_x,
+                   frame->child_y);
   meta_error_trap_pop (window->display);
 
+  /* Update window's location */
+  window->rect.x = frame->child_x;
+  window->rect.y = frame->child_y;
+  
   /* stick frame to the window */
   window->frame = frame;  
 
@@ -246,6 +286,90 @@ meta_frame_move  (MetaFrame *frame,
                root_x, root_y);
 }
 
+/* Just a chunk of process_configure_event in window.c,
+ * moved here since it's the part that deals with
+ * the frame.
+ */
+void
+meta_frame_child_configure_request (MetaFrame *frame)
+{
+  MetaFrameGeometry geom;
+  
+  /* This fills in frame->rect as well. */
+  meta_frame_calc_geometry (frame,
+                            frame->window->size_hints.width,
+                            frame->window->size_hints.height,
+                            &geom);
+
+  meta_frame_calc_initial_pos (frame,
+                               frame->window->size_hints.x,
+                               frame->window->size_hints.y);
+                               
+  XMoveResizeWindow (frame->window->display->xdisplay,
+                     frame->xwindow,
+                     frame->rect.x,
+                     frame->rect.y,
+                     frame->rect.width,
+                     frame->rect.height);
+}
+
+void
+meta_frame_recalc_now (MetaFrame *frame)
+{
+  int old_child_x, old_child_y;
+  MetaFrameGeometry geom;
+  XSetWindowAttributes attrs;
+
+  old_child_x = frame->child_x;
+  old_child_y = frame->child_y;
+  
+  /* This fills in frame->rect as well. */
+  meta_frame_calc_geometry (frame,
+                            frame->window->rect.width,
+                            frame->window->rect.height,
+                            &geom);
+
+  /* See if we need to move the frame to keep child in
+   * a constant position
+   */
+  if (old_child_x != frame->child_x)
+    frame->rect.x += (frame->child_x - old_child_x);
+  if (old_child_y != frame->child_y)
+    frame->rect.y += (frame->child_y - old_child_y);
+
+  XMoveResizeWindow (frame->window->display->xdisplay,
+                     frame->xwindow,
+                     frame->rect.x,
+                     frame->rect.y,
+                     frame->rect.width,
+                     frame->rect.height);
+
+  attrs.background_pixel = geom.background_pixel;
+  XChangeWindowAttributes (frame->window->display->xdisplay,
+                           frame->xwindow,
+                           CWBackPixel,
+                           &attrs);
+
+  meta_verbose ("Frame of %s recalculated to %d,%d %d x %d child %d,%d\n",
+                frame->window->desc, frame->rect.x, frame->rect.y,
+                frame->rect.width, frame->rect.height,
+                frame->child_x, frame->child_y);
+}
+
+void
+meta_frame_queue_recalc (MetaFrame *frame)
+{
+  /* FIXME */
+  meta_frame_recalc_now (frame);
+}
+
+void
+meta_frame_queue_draw (MetaFrame *frame)
+{
+  /* FIXME */
+
+}
+
 static void
 frame_query_root_pointer (MetaFrame *frame,
                           int *x, int *y)
@@ -281,6 +405,37 @@ frame_get_control (MetaFrame *frame,
   return frame->window->screen->engine->get_control (&info,
                                                      x, y,
                                                      frame->theme_data);
+}
+
+static void
+update_move (MetaFrame *frame)
+{
+  int x, y;
+  int new_x, new_y;
+  frame_query_root_pointer (frame, &x, &y);
+  
+  new_x = frame->rect.x + (x - frame->last_x);
+  new_y = frame->rect.y + (y - frame->last_y);
+  frame->last_x = x;
+  frame->last_y = y;
+  
+  meta_frame_move (frame, new_x, new_y);
+}
+
+static void
+update_resize_se (MetaFrame *frame)
+{
+  int x, y;
+  int new_w, new_h;
+
+  frame_query_root_pointer (frame, &x, &y);
+  
+  new_w = frame->window->rect.width + (x - frame->last_x);
+  new_h = frame->window->rect.height + (y - frame->last_y);
+  frame->last_x = x;
+  frame->last_y = y;
+  
+  meta_window_resize (frame->window, new_w, new_h);
 }
 
 gboolean
@@ -323,15 +478,32 @@ meta_frame_event (MetaFrame *frame,
           else if (control == META_FRAME_CONTROL_RESIZE_SE &&
                    event->xbutton.button == 1)
             {
-              /* FIXME begin a resize */
               meta_verbose ("Resize control clicked on %s\n",
                             frame->window->desc);
+              frame->action = META_FRAME_ACTION_RESIZING_SE;
+              frame->last_x = event->xbutton.x_root;
+              frame->last_y = event->xbutton.y_root;
+              frame->start_button = event->xbutton.button;
             }
         }
       break;
     case ButtonRelease:
       if (event->xbutton.button == frame->start_button)
         {
+          switch (frame->action)
+            {
+            case META_FRAME_ACTION_MOVING:
+              update_move (frame);
+              break;
+              
+            case META_FRAME_ACTION_RESIZING_SE:
+              update_resize_se (frame);
+              break;
+              
+            default:
+              break;
+            }
+          
           frame->action = META_FRAME_ACTION_NONE;
         }
       break;
@@ -339,20 +511,13 @@ meta_frame_event (MetaFrame *frame,
       switch (frame->action)
         {
         case META_FRAME_ACTION_MOVING:
-          {
-            int x, y;
-            int new_x, new_y;
-            frame_query_root_pointer (frame, &x, &y);
-
-            new_x = frame->rect.x + (x - frame->last_x);
-            new_y = frame->rect.y + (y - frame->last_y);
-            frame->last_x = x;
-            frame->last_y = y;
-            
-            meta_frame_move (frame, new_x, new_y);
-          }
+          update_move (frame);
           break;
 
+        case META_FRAME_ACTION_RESIZING_SE:
+          update_resize_se (frame);
+          break;
+          
         default:
           break;
         }
@@ -388,11 +553,16 @@ meta_frame_event (MetaFrame *frame,
     case CreateNotify:
       break;
     case DestroyNotify:
-      meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n", frame->xwindow);
-      meta_error_trap_push (frame->window->display);
-      meta_window_destroy_frame (frame->window);
-      meta_error_trap_pop (frame->window->display);
-      return TRUE;
+      {
+        MetaDisplay *display;
+        
+        meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n", frame->xwindow);
+        display = frame->window->display;
+        meta_error_trap_push (display);
+        meta_window_destroy_frame (frame->window);
+        meta_error_trap_pop (display);
+        return TRUE;
+      }
       break;
     case UnmapNotify:
       frame->action = META_FRAME_ACTION_NONE;

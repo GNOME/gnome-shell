@@ -24,10 +24,18 @@
 #include "errors.h"
 #include "window.h"
 #include "colors.h"
+#include "uislave.h"
 
 #include <X11/cursorfont.h>
 #include <locale.h>
 #include <string.h>
+
+static void  ui_slave_func   (MetaUISlave *uislave,
+                              MetaMessage *message,
+                              gpointer     data);
+static char* get_screen_name (MetaDisplay *display,
+                              int          number);
+
 
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
@@ -83,14 +91,19 @@ meta_screen_new (MetaDisplay *display,
 
   screen->display = display;
   screen->number = number;
+  screen->screen_name = get_screen_name (display, number);
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;  
   screen->pango_context = NULL;
-
-  screen->engine = &meta_default_engine;
   
-  meta_verbose ("Added screen %d on display '%s' root 0x%lx\n",
-                screen->number, screen->display->name, screen->xroot);  
+  screen->engine = &meta_default_engine;
+
+  screen->uislave = meta_ui_slave_new (screen->screen_name,
+                                       ui_slave_func,
+                                       screen);
+  
+  meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
+                screen->number, screen->screen_name, screen->xroot);  
   
   return screen;
 }
@@ -98,8 +111,10 @@ meta_screen_new (MetaDisplay *display,
 void
 meta_screen_free (MetaScreen *screen)
 {
+  meta_ui_slave_free (screen->uislave);
   if (screen->pango_context)
     g_object_unref (G_OBJECT (screen->pango_context));
+  g_free (screen->screen_name);
   g_free (screen);
 }
 
@@ -255,4 +270,65 @@ meta_screen_for_x_screen (Screen *xscreen)
     return NULL;
   
   return meta_display_screen_for_x_screen (display, xscreen);
+}
+
+static void
+ui_slave_func (MetaUISlave *uislave,
+               MetaMessage *message,
+               gpointer     data)
+{
+  switch (message->header.message_code)
+    {
+    case MetaMessageCheckCode:
+      meta_verbose ("Received UI slave check message version: %s host alias: %s messages version: %d\n",
+                    message->check.metacity_version,
+                    message->check.host_alias,
+                    message->check.messages_version);
+
+      if (strcmp (message->check.metacity_version, VERSION) != 0 ||
+          strcmp (message->check.host_alias, HOST_ALIAS) != 0 ||
+          message->check.messages_version != META_MESSAGES_VERSION)
+        {
+          meta_warning ("metacity-uislave has the wrong version; must use the one compiled with metacity\n");
+          meta_ui_slave_disable (uislave);
+        }
+      
+      break;
+
+    default:
+      meta_verbose ("Received unhandled message from UI slave: %d\n",
+                    message->header.message_code);
+      break;
+    }
+}
+
+
+static char*
+get_screen_name (MetaDisplay *display,
+                 int          number)
+{
+  char *p;
+  char *dname;
+  char *scr;
+  
+  /* DisplayString gives us a sort of canonical display,
+   * vs. the user-entered name from XDisplayName()
+   */
+  dname = g_strdup (DisplayString (display->xdisplay));
+
+  /* Change display name to specify this screen.
+   */
+  p = strrchr (dname, ':');
+  if (p)
+    {
+      p = strchr (p, '.');
+      if (p)
+        *p = '\0';
+    }
+  
+  scr = g_strdup_printf ("%s.%d", dname, number);
+
+  g_free (dname);
+
+  return scr;
 }

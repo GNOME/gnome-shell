@@ -1,8 +1,10 @@
 
-INCLUDES=@UISLAVE_CFLAGS@
+INCLUDES=@UISLAVE_CFLAGS@ -DHOST_ALIAS=\"@HOST_ALIAS@\"
 
-metacity_uislave_SOURCES = \
-	main.c
+metacity_uislave_SOURCES = 	\
+	main.c			\
+	messages.c		\
+	messages.h
 
 libexec_PROGRAMS=metacity-uislave
 

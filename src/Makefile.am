@@ -1,7 +1,7 @@
 
 SUBDIRS=uislave
 
-INCLUDES=@METACITY_CFLAGS@
+INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\"
 
 metacity_SOURCES= 				\
 	api.c					\

@@ -31,6 +31,7 @@ typedef struct _MetaDisplay MetaDisplay;
 typedef struct _MetaFrame   MetaFrame;
 typedef struct _MetaScreen  MetaScreen;
 typedef struct _MetaWindow  MetaWindow;
+typedef struct _MetaUISlave MetaUISlave;
 
 struct _MetaDisplay
 {
@@ -38,6 +39,9 @@ struct _MetaDisplay
   Display *xdisplay;
 
   Atom atom_net_wm_name;
+  Atom atom_wm_protocols;
+  Atom atom_wm_take_focus;
+  Atom atom_wm_delete_window;
   
   /*< private-ish >*/
   MetaEventQueue *events;

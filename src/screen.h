@@ -29,6 +29,7 @@ struct _MetaScreen
 {
   MetaDisplay *display;
   int number;
+  char *screen_name;
   Screen *xscreen;
   Window xroot;
 
@@ -39,7 +40,9 @@ struct _MetaScreen
   /* we only need one since we only draw to a single visual (that of
    * root window)
    */
-  PangoContext *pango_context;  
+  PangoContext *pango_context;
+
+  MetaUISlave *uislave;
 };
 
 MetaScreen*   meta_screen_new                (MetaDisplay                *display,
