@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-06-24 22:02+0200\n"
-"PO-Revision-Date: 2002-06-24 22:02+0200\n"
+"POT-Creation-Date: 2002-07-24 00:32+0200\n"
+"PO-Revision-Date: 2002-07-04 00:37+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -102,6 +102,26 @@ msgstr ""
 "Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny "
 "program\n"
 
+#: src/keybindings.c:1
+#, c-format
+msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgstr ""
+"Przy uruchamianiu metacity-dialog (informującego o błędzie dotyczącym "
+"polecenia) wystąpił błąd: %s\n"
+
+#: src/keybindings.c:1
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "Nie zdefiniowano polecenia %d.\n"
+
+#: src/main.c:1
+msgid ""
+"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] "
+"[--replace]\n"
+msgstr ""
+"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] "
+"[--replace]\n"
+
 #: src/main.c:1
 #, c-format
 msgid ""
@@ -156,15 +176,34 @@ msgstr "Na _wszystkich obszarach roboczych"
 msgid "Only on _This Workspace"
 msgstr "Tylko na _tym obszarze roboczym"
 
+#.
+#. * If the name is of the form "Workspace x" where x is an unsigned
+#. * integer, insert a '_' before the number if it is less than 10 and
+#. * return it
+#.
 #: src/menu.c:1
 #, c-format
-msgid "Only on workspace %s%d"
-msgstr "Tylko na obszarze %s%d"
+msgid "Workspace %u"
+msgstr "Obszar roboczy %u"
+
+#.
+#. * Above name is a pointer into the Workspace struct. Here we make
+#. * a copy copy so we can have our wicked way with it.
+#.
+#: src/menu.c:1
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Obszar roboczy %s%d"
 
 #: src/menu.c:1
 #, c-format
-msgid "Move to workspace %s%d"
-msgstr "Przenieś na obszar roboczy %s%d"
+msgid "Only on %s"
+msgstr "Tylko na obszarze %s"
+
+#: src/menu.c:1
+#, c-format
+msgid "Move to %s"
+msgstr "Przenieś na obszar %s"
 
 #: src/metacity-dialog.c:1
 #, c-format
@@ -195,8 +234,17 @@ msgid ""
 "restarted manually next time you log in."
 msgstr ""
 "Te okna nie obsługują opcji zapisu aktualnego stanu (\"save current "
-"setup\"), więc przy następnym zalogowniu będą musiały być uruchomione "
+"setup\"), więc przy następnym zalogowaniu będą musiały być uruchomione "
 "ręcznie."
+
+#: src/metacity-dialog.c:1
+#, c-format
+msgid ""
+"There was an error running \"%s\":\n"
+"%s."
+msgstr ""
+"Przy wykonywaniu \"%s\" wystąpił błąd:\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -234,6 +282,10 @@ msgstr "Automatyczne wysuwanie okien otrzymujących skupienie"
 #: src/metacity.schemas.in.h:1
 msgid "Close a window"
 msgstr "Zamknięcie okna"
+
+#: src/metacity.schemas.in.h:1
+msgid "Commands to run in response to keybindings"
+msgstr "Polecenia uruchamiane w odpowiedzi na użycia skrótów klawiszowych"
 
 #: src/metacity.schemas.in.h:1
 msgid "Current theme"
@@ -298,10 +350,6 @@ msgstr "Przeniesienie skupienia pomiędzy oknami a panelem"
 #: src/metacity.schemas.in.h:1
 msgid "Move focus between windows"
 msgstr "Przeniesienie skupienia pomiędzy oknami"
-
-#: src/metacity.schemas.in.h:1
-msgid "Move focus to the previously-focused window"
-msgstr "Przekazanie skupienia do poprzedniego okna"
 
 #: src/metacity.schemas.in.h:1
 msgid "Move window one workspace down"
@@ -387,6 +435,14 @@ msgstr ""
 "Wysunięcie okna, jeśli jest zasłonięte, obniżenie w przeciwnym wypadku."
 
 #: src/metacity.schemas.in.h:1
+msgid "Resize a window"
+msgstr "Zmiana rozmiaru okna"
+
+#: src/metacity.schemas.in.h:1
+msgid "Run a defined command"
+msgstr "Uruchomienie zdefiniowanego polecenia"
+
+#: src/metacity.schemas.in.h:1
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -465,6 +521,31 @@ msgstr "Przełączenie na obszar roboczy po lewej"
 #: src/metacity.schemas.in.h:1
 msgid "Switch to workspace on the right"
 msgstr "Przełączenie na obszar roboczy po prawej"
+
+#: src/metacity.schemas.in.h:1
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+
+#: src/metacity.schemas.in.h:1
+#, fuzzy
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in "
+"/apps/metacity/keybinding_commands The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as "
+"\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special "
+"string \"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Skrót klawiszowy, który przełącza tryb maksymalizacji. Przykładowy zapis "
+"skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych "
+"i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz "
+"\"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
+"\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden "
+"skrót klawiszowy."
 
 #: src/metacity.schemas.in.h:1
 msgid ""
@@ -1086,30 +1167,14 @@ msgstr ""
 "skrót klawiszowy."
 
 #: src/metacity.schemas.in.h:1
+#, fuzzy
 msgid ""
-"The keybinding used to move focus back to the window which last had the "
-"focus. The format looks like \"&lt;Control&gt;a\" or "
+"The keybinding used to move focus between panels and the desktop, using a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
 "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
-msgstr ""
-"Skrót klawiszowy, który przekazuje skupienie na powrót do poprzedniego okna. "
-"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
-"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
-"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
-"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
-"powiązany żaden skrót klawiszowy."
-
-#: src/metacity.schemas.in.h:1
-msgid ""
-"The keybinding used to move focus between panels and the desktop. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
 msgstr ""
 "Skrót klawiszowy, który przekazuje skupienie pomiędzy panelami i biurkiem. "
 "Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
@@ -1120,9 +1185,46 @@ msgstr ""
 "powiązany żaden skrót klawiszowy."
 
 #: src/metacity.schemas.in.h:1
+#, fuzzy
 msgid ""
-"The keybinding used to move focus between windows. (Traditionally "
-"&lt;Alt&gt;Tab) The format looks like \"&lt;Control&gt;a\" or "
+"The keybinding used to move focus between panels and the desktop, without a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
+"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"Skrót klawiszowy, który przekazuje skupienie pomiędzy panelami i biurkiem. "
+"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
+"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
+"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
+"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
+"powiązany żaden skrót klawiszowy."
+
+#: src/metacity.schemas.in.h:1
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows without a popup window. "
+"(Traditionally &lt;Alt&gt;Escape) The format looks like \"&lt;Control&gt;a\" "
+"or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"Skrót klawiszowy, który przekazuje skupienie pomiędzy oknami (tradycyjnie "
+"jest to &lt;Alt&gt;Tab). Przykładowy zapis skrótu ma postać "
+"\"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa "
+"jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter "
+"oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji "
+"zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas "
+"z akcją nie będzie powiązany żaden skrót klawiszowy."
+
+#: src/metacity.schemas.in.h:1
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows, using a popup window. "
+"(Traditionally &lt;Alt&gt;Tab) The format looks like \"&lt;Control&gt;a\" or "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
 "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
@@ -1276,7 +1378,7 @@ msgstr "Czcionka tytułu okna"
 
 #: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
 #: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
-#: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
+#: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klucz GConfa \"%s\" jest niewłaściwego typu\n"
@@ -1376,7 +1478,7 @@ msgstr ""
 #: src/session.c:1 src/session.c:1
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Nie można stworzyć katalogu \"%s\": %s\n"
+msgstr "Nie można utworzyć katalogu \"%s\": %s\n"
 
 #: src/session.c:1
 #, c-format
@@ -1573,7 +1675,7 @@ msgstr "Nie zdefiniowano elementu <draw_ops> o nazwie \"%s\""
 #: src/theme-parser.c:1
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "Element <%s> nie jest dopuszczlny poniżej <%s>"
+msgstr "Element <%s> nie jest dopuszczalny poniżej <%s>"
 
 #: src/theme-parser.c:1 src/theme-parser.c:1 src/theme-parser.c:1
 #, c-format
@@ -1834,7 +1936,7 @@ msgstr "Nie zdefiniowano stylu o nazwie \"%s\""
 #: src/theme-parser.c:1
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "Brak atrybutu \"rewize\" wewnątrz elementu <%s>"
+msgstr "Brak atrybutu \"resize\" wewnątrz elementu <%s>"
 
 #: src/theme-parser.c:1
 #, c-format
@@ -2322,8 +2424,8 @@ msgstr "Aplikacja ustawiła błędną wartość _NET_WM_PID %ld\n"
 
 #: src/workspace.c:1
 #, c-format
-msgid "Workspace %d\n"
-msgstr "Obszar roboczy %d\n"
+msgid "Workspace %d"
+msgstr "Obszar roboczy %d"
 
 #: src/xprops.c:1
 #, c-format
