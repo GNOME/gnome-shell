@@ -6061,6 +6061,14 @@ window_query_root_pointer (MetaWindow *window,
     *y = root_y_return;
 }
 
+static void
+clear_moveresize_time (MetaWindow *window)
+{
+  /* Forces the next update to actually do something */
+  window->display->grab_last_moveresize_time.tv_sec = 0;
+  window->display->grab_last_moveresize_time.tv_usec = 0;
+}
+
 static gboolean
 check_moveresize_frequency (MetaWindow *window)
 {
@@ -6074,22 +6082,17 @@ check_moveresize_frequency (MetaWindow *window)
     ((((double)current_time.tv_sec - window->display->grab_last_moveresize_time.tv_sec) * G_USEC_PER_SEC +
       (current_time.tv_usec - window->display->grab_last_moveresize_time.tv_usec))) / 1000.0;
 
+#define EPSILON (1e-6)
 #define MAX_RESIZES_PER_SECOND 30.0
-  if (elapsed < (1000.0 / MAX_RESIZES_PER_SECOND))
+  if (elapsed >= 0.0 && elapsed < (1000.0 / MAX_RESIZES_PER_SECOND))
     return FALSE;
-
+  else if (elapsed < (0.0 - EPSILON)) /* handle clock getting set backward */
+    clear_moveresize_time (window);
+  
   /* store latest time */
   window->display->grab_last_moveresize_time = current_time;
 
   return TRUE;
-}
-
-static void
-clear_moveresize_time (MetaWindow *window)
-{
-  /* Forces the next update to actually do something */
-  window->display->grab_last_moveresize_time.tv_sec = 0;
-  window->display->grab_last_moveresize_time.tv_usec = 0;
 }
 
 static void
