@@ -3572,6 +3572,25 @@ meta_window_notify_focus (MetaWindow *window,
               meta_event_mode_to_string (event->xfocus.mode) : "n/a",
               event->type != UnmapNotify ?
               meta_event_detail_to_string (event->xfocus.detail) : "n/a");
+
+  /* FIXME our pointer tracking is broken; see how
+   * gtk+/gdk/x11/gdkevents-x11.c or XFree86/xc/programs/xterm/misc.c
+   * handle it for the correct way.  In brief you need to track
+   * pointer focus and regular focus, and handle EnterNotify in
+   * PointerRoot mode with no window manager.  However as noted above,
+   * accurate focus tracking will break things because we want to keep
+   * windows "focused" when using keybindings on them, and also we
+   * sometimes "focus" a window by focusing its frame or
+   * no_focus_window; so this all needs rethinking massively.
+   *
+   * My suggestion is to change it so that we clearly separate
+   * actual keyboard focus tracking using the xterm algorithm,
+   * and metacity's "pretend" focus window, and go through all
+   * the code and decide which one should be used in each place;
+   * a hard bit is deciding on a policy for that.
+   *
+   * http://bugzilla.gnome.org/show_bug.cgi?id=90382
+   */
   
   if ((event->type == FocusIn ||
        event->type == FocusOut) &&
