@@ -1,5 +1,15 @@
 2001-12-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (event_callback): in click-to-focus mode don't
+	focus on enter notify. Implement unfocusing on LeaveNotify in
+	mouse focus mode. Click to focus just ends up working if we 
+	do nothing on enter/leave, because of the way things already
+	worked. Except I need to add some relatively complex hack to 
+	allow clicking on client area, right now you have to click 
+	on the frame.
+
+2001-12-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/main.c (main): move SM init a bit later in the process, and 
 	init prefs
 

@@ -28,6 +28,7 @@
 #include "frame.h"
 #include "errors.h"
 #include "keybindings.h"
+#include "prefs.h"
 #include "workspace.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
@@ -758,7 +759,16 @@ event_callback (XEvent   *event,
       /* do this even if window->has_focus to avoid races */
       if (window && event->xany.serial != display->last_ignored_unmap_serial)
         {
-          meta_window_focus (window, event->xcrossing.time);
+          switch (meta_prefs_get_focus_mode ())
+            {
+            case META_FOCUS_MODE_SLOPPY:
+            case META_FOCUS_MODE_MOUSE:
+              meta_window_focus (window, event->xcrossing.time);
+              break;
+            case META_FOCUS_MODE_CLICK:
+              break;
+            }
+          
           if (window->type == META_WINDOW_DOCK)
             meta_window_raise (window);
         }
@@ -766,6 +776,26 @@ event_callback (XEvent   *event,
     case LeaveNotify:
       if (window)
         {
+          switch (meta_prefs_get_focus_mode ())
+            {
+            case META_FOCUS_MODE_MOUSE:
+              /* This is kind of questionable; but we normally
+               * set focus to RevertToPointerRoot, so I guess
+               * leaving it on PointerRoot when nothing is focused
+               * is probably right. Anyway, unfocus the
+               * focused window.
+               */
+              if (window->has_focus)
+                XSetInputFocus (display->xdisplay,
+                                PointerRoot,
+                                RevertToPointerRoot,
+                                event->xcrossing.time);
+              break;
+            case META_FOCUS_MODE_SLOPPY:
+            case META_FOCUS_MODE_CLICK:
+              break;
+            }
+          
           if (window->type == META_WINDOW_DOCK)
             meta_window_lower (window);
         }
