@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-09-18 20:28+0200\n"
-"PO-Revision-Date: 2003-09-19 22:07+0300\n"
+"PO-Revision-Date: 2003-09-27 22:04+0300\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azərbaycan <gnome@azitt.com>\n"
 "MIME-Version: 1.0\n"
@@ -358,7 +358,7 @@ msgid ""
 "titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
-msgstr ""
+msgstr "Pəncərələrin etiket çubuğunun yazı növünü izah edən qatar."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -397,6 +397,9 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
+"Bu düymə basılı ikən siçanın sol düyməsi ilə pəncərələr daşına bilər, orta düyməsi "
+"ilə ölçüləndirilə bilər, sağ düyməsi ilə isə pəncərə menyusu göstərilə bilər. Bu "
+"misal üçün \"&lt;Alt&gt;\" ya da \"&lt;Super&gt;\" ola bilər."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -419,6 +422,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Eşidilən bip səslərini proqramların ya da sistemin çala bilməsinini müəyyən edir; "
+"'sakit bipləri' fəallaşdırmaq üçün 'əyani zəng' ilə bərabər istifadə edilə bilər."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -438,12 +443,17 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
+"Seçilidirsə, və fokus modu \"sloppy\" ya da \"mouse\" isə, fokusa malik olan "
+"pəncərə gecikmədən sonra üstə gətiriləcək (gecikmə vaxtını auto_raise_delay "
+"açarından dəyişdirə bilərsiniz(."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
+"Seçilidirsə, titlebar_font seçimini rədd et və pəncərə başlıqları üçün "
+"proqramların standart yazı növünü işlət."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -457,6 +467,8 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
+"Seçilidirsə, Metacity pəncərə təməlli deyil, proqram təməlli işləyəcək. "
+"Bu xassə hələlik hazır deyil."
 
 #: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
@@ -480,7 +492,7 @@ msgstr "Pəncərəni Kiçilt"
 
 #: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "Dəyişdirilmiş pəncərə tıqlama gedişatları üçün istifadə ediləcək düymə"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move a window"
@@ -516,7 +528,7 @@ msgstr "Pəncərələr arasında popup ilə hərəkət et"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
+msgstr "Popup displeyi göstərərək pəncərələr arasında fokusu arxaya doğru daşı"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
@@ -596,10 +608,12 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
+"İş sahəsi sayı. Sıfırdan böyük olmalıdır və maksimal ədədi də müəyyən edilib "
+"(səhvən 34 miliyon iş sahəsi istəyərək masa üstünüzü dağıtmamanıq üçün)."
 
 #: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "Tünd pəncərəni üstə gətir, əks halda alta apar"
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
@@ -636,6 +650,12 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
+"Bə'zi proqramlar pəncərə idarəçisinin pəncərələri yerləşdirmə yöntəmini "
+"ləğv edərək öz xassələrinə görə yerləşdirirlər. Ona görə də onların "
+"bunu etməsini buradan bağlamaq lazımdır. Ancaq misal üçün Java/Swing "
+"popup menyularını dialoq olaraq işarələyir və ona görə də Metacity "
+"Java proqramlarında menyuların göstərilə bilməsi üçün dialoq "
+"yerləşdirilməsinin qeyri-fəallaşdırmalıdır."
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
@@ -723,6 +743,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Metacity'yə sistem ya da başqa proqramın səsinin çaldığını əyani "
+"şəkildə necə bildiriləcəyini müəyyən edir. Hazırda iki qiymət "
+"mümkündür. \"fullscreen\" tam ekran modunda ikən proqramın "
+"yanıb sönməyə məcbur edir. \"frame_flash\" isə siqnalı göndərən "
+"proqramın etiket çubuğunu yanıb sönməyə məcbur edir. Əgər "
+"səsi çalan proqram mə'lum deyilsə, hazırda fokusa malik olan "
+"pəncərənin etiket çubuğu yanıb sönəcək."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -730,12 +757,17 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_N açarları bu əmrlərə uyğun "
+"gələn qısa yolları müəyyən edir. run_command_N üçün klaviatura qısa yoluna "
+"basaraq command_N icra edilə bilər."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_screenshot açarı, bu"
+"açar ilə müəyyən edilən əmri icra edən qısa yolu müəyyən edir."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -743,6 +775,8 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_window_screenshot açarı, bu"
+"açar ilə müəyyən edilən əmri icra edən qısa yolu müəyyən edir."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -753,6 +787,13 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
+"/apps/metacity/keybinding_command içindəki uyğun olaraq nömrələnmiş "
+"əmri icra edən qısa yol. Format belədir: \"&lt;Control&gt;a\" ya da "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Oxuyucu liberaldır və kiçik və böyük hərf "
+"arasında fərqi nəzərə almır, eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;"
+"Ctrl&gt;\" kimi qısaltmaları istifadə etmə icazəsi də verir. Əgər bu "
+"seçimi \"disabled\" olaraq seçsəniz, bu əmr üçün heç bir qısa yol "
+"mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -1320,6 +1361,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Panel və masa üstü arasında fokusu arxaya doğru popup pəncərə ilə daşıyan "
+"qısa yol. Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1330,6 +1377,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Panel və masa üstü arasında fokusu arxaya doğru popup pəncərəsi olmadan daşıyan "
+"qısa yol. Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1341,6 +1394,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Pəncərələr arasında fokusu arxaya doğru popup pəncərəsiz daşıyan "
+"qısa yol. Bu qısa yol ilə bərabər \"Shift\" düyməsinə basılarsa fokus "
+"önə doğru daşınacaq. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1352,6 +1413,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Pəncərələr arasında fokusu arxaya doğru popup pəncərə ilə daşıyan "
+"qısa yol. Bu qısa yol ilə bərabər \"Shift\" düyməsinə basılarsa fokus "
+"önə doğru daşınacaq. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1362,6 +1431,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Panellər və masa üstü arasında fokusu popup pəncərə ilə daşıyan qısa yol."
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1372,6 +1447,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Panellər və masa üstü arasında fokusu popup pəncərəsiz daşıyan qısa yol."
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1383,6 +1464,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərələr arasında fokusu popup pəncərəsiz daşıyan qısa yol."
+"(Ənənəvi &lt;Alt&gt;Escape). Bu qısa yol istifadə edilirkən \"shift\" "
+"düyməsinə basaraq istiqamət tərs çevirilə bilər. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1394,6 +1483,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərələr arasında fokusu popup pəncərəsi ilə daşıyan qısa yol."
+"(Ənənəvi &lt;Alt&gt;Tab). Bu qısa yol istifadə edilirkən \"shift\" "
+"düyməsinə basaraq istiqamət tərs çevirilə bilər. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1404,6 +1501,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Həmişə üstdə modunu fəallaşdıran qısa yol. Həmişə üstdə modunda olan "
+"pəncərə bütün pəncərələrin üstündə göstəriləcəkdir. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1413,6 +1517,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Tam ekran moduna keçiş üçün işlədiləcək qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1422,6 +1532,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Maksimal böyüklüyə gətirmə üçün işlədiləcək qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1431,6 +1547,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Burma və açma üçün işlədiləcək qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1441,6 +1563,13 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Pəncərəni bütün iş sahələrinə ya da sadəcə olaraq birisinə yerləşdirmək "
+"üçün işlədiləcək qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1450,6 +1579,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Pəncərəni balacalaşdırmaq üçün işlədiləcək qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1460,6 +1595,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"\"Proqram İcra Et\" dialoq qutusunu göstərən qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1470,6 +1611,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Ekran görüntüsü tə'minatını işə salaraq pəncərənin şəklini çəkən qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1480,6 +1627,12 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Ekran görüntüsü tə'minatını işə salan qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1489,6 +1642,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Panelin ana menyusunu göstərən qısa yol. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -1502,13 +1661,15 @@ msgstr "Ekran görüntüsü əmri"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "Örtük pəncərə kənarlarının, başlıq çubuqlarının və s. görünüşünü müəyyən edir."
 
 #: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
+"auto_raise true seçilidirsə, pəncərəni üstə gətirmədən əvvəlki gecikmə. "
+"Bu gecikmə saniyənin mində biri ilə ölçülür."
 
 #: src/metacity.schemas.in.h:146
 msgid ""
@@ -1518,6 +1679,11 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
+"Pəncərə fokusu pəncərələrin necə fəal vəziyyətə keçəcəklərini müəyyən edir. "
+"Üç mümkün qiymət ala bilər;\"click\" - pəncərəyə fokus vermək üçün ona tıqlamaq "
+"lazımdır, \"sloppy\" - pəncərəyə fokus vermək üçün siçanın pəncərənin sahəsinə "
+"daxil olması lazımdır, \"mouse\" - siçan pəncərə sahəsinə daxil olanda pəncərə "
+"fokusa malik olacaq, siçan pəncərə sahəsindən çıxanda isə fokusu itirəcəkdir."
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
@@ -1534,6 +1700,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"BU qısa yol pəncərənin üstdə ya da altda olmasını müəyyən edir. Əgər "
+"pəncərənin üstündə başqa bir pəncərə varsa altda olan pəncərə üstə "
+"gətiriləcəkdir. Əgər pəncərə hazırda tamamilə görünürsə bu pəncərə diqər "
+"pəncərələrin altına göndəriləcəkdir. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:149
 msgid ""
@@ -1543,6 +1718,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Bu qısa yol pəncərəni digər pəncərələrin altına göndərəcəkdir. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1552,6 +1733,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Bu qısa yol pəncərəni digər pəncərələrin üstünə gətirəcəkdir."
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1562,6 +1749,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Bu qısa yol ilə pəncərə üfüqi olaraq maksimal sahəni əhatə edəcəkdir. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1572,6 +1765,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Bu qısa yol ilə pəncərə şaquli olaraq maksimal sahəni əhatə edəcəkdir. "
+"Format belədir: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"Oxuyucu liberaldır və kiçik və böyük hərf arasında fərqi nəzərə almır, "
+"eyni zamanda \"&lt;Ctl&gt;\" və \"&lt;Ctrl&gt;\" kimi qısaltmaları istifadə "
+"etmə icazəsi də verir. Əgər bu seçimi \"disabled\" olaraq seçsəniz, bu "
+"əmr üçün heç bir qısa yol mövcud olmayacaq."
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1579,6 +1778,10 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
+"Bu seçim başlıq çubuğuna cüt tıqlananda nə ediləcəyini müəyyən edir. "
+"Mümkün qiymətlər: pəncərəni üstə burmaq/geri açmaq üçün "
+"'toggle_shade', pəncərənin böyütmək/kiçiltmək üçün 'toggle_maximize' "
+"istifadə edilə bilər."
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
@@ -1606,6 +1809,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Proqram tə'minatının ya da sistemin bip səsi yaratdığı an əyani bildiricini "
+"fəallaşdırır. Bu eşitmə qüvvəsi zəyif olanlar, səsli mühitlərdə işləyənlər "
+"ya da 'eşidilə bilən səs' xassəsi bağlı olanlar üçün faydalıdır."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1634,24 +1840,24 @@ msgstr "Pəncərə başlığının yazı növü"
 #: src/prefs.c:727
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "GConf açarı \"%s\" hökmsüz növlə tə'yin edilib\n"
 
 #: src/prefs.c:771
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
+msgstr "Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf açarı \"%s\" hökmsüz qiymətlə tə'yin edilib\n"
 
 #: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "\"%s\" yazı növü izahatı oxuna bilmədi. Gconf açarı: %s\n"
 
 #: src/prefs.c:1107
 #, c-format
@@ -1659,34 +1865,38 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"%s GConf açarında saxlanan %d iş sahəsi ədədini düzgün bildirmir, "
+"hazırkı maksimal qiymət %d'dır\n"
 
 #: src/prefs.c:1167
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Xarab tə'minatlar üçün düzəltmə qeyri-fəaldır. Bə'zi proqramlar düzgün"
+"davranmaya bilər.\n"
 
 #: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%s GConf açarında saxlanan %d 0 ilə %d aralığının xaricindədir\n"
 
 #: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "İş sahələrinin ədədi %d seçilirkən xəta: %s\n"
 
 #: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
+msgstr "Quraşdırma bazasında tapılan \"%s\", \"%s\" qısa yolu üçün hökmlü qiymət deyil\n"
 
 #: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "%d iş sahəsinin adı \"%s\" ilə dəyişdirilirkən xəta: %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1704,11 +1914,13 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"\"%s\" displeyindəki %d ekranı onsuzda pəncərə idarəçisinə malikdir; hazırkı "
+"pəncərə idarəçisini əvəz etmək üçün --replace seçimini işlətməyi sınayın.\n"
 
 #: src/screen.c:449
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgstr "%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
 
 #: src/screen.c:504
 #, c-format
@@ -1718,7 +1930,7 @@ msgstr "\"%2$s\" displeyindəki %1$d ekranı onsuz da pəncərə idarəçisinə 
 #: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "\"%s\" displeyi üstündə %d ekranı azad edilə bilmədi\n"
 
 #: src/session.c:274
 #, c-format
@@ -1726,6 +1938,8 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
+"İclas idarəçisi ilə bağlantı qurula bilmədi, ona görə də pəncərələrin "
+"mövqeləri qeyd edilə bilməyəvək: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
@@ -1759,12 +1973,12 @@ msgstr "Qeyd edilmiş iclas faylı darana bilmədi: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "<metacity_session> elementi üstündə namə'lum %s atributu"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
@@ -1796,51 +2010,53 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
+"İclas idarəsini dəstəkləməyən proqramlar haqqında xəbərdarlıq "
+"pəncərəsi açılırkən xəta yarandı: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Sətir %d hərf %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "\"%s\" ayributu eyni <%s> elementi üstündə iki dəfə əvəz edilib"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Bu məzmunda \"%s\" atributu <%s> elementi üçün hökmsüzdür"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "%ld integeri müsbət olmalıdır"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "%ld integeri çox böyükdür, hazırkı maksimal qiymət %d'dır"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "\"%s\" üzən nöqtə olaraq oxuna bilmədi"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Boolean qiymətlər \"%s\" yox, \"true\" ya da \"false\" olmalıdır"
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Bucaq 0.0 və 360.0 arasında olmalıdır, yalnız %g'dır\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Alfa 0.0 (görünməz) və 1.0 (tamamilə qeyri-şəffaf) arasında olmalıdır, yalnız %g'dır\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1848,6 +2064,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Hökmsüz başlıq ölçüsü \"%s\" (bunlardan biri olmalıdır: xx-small,x-small, "
+"small,medium,large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -1866,57 +2084,57 @@ msgstr "<%s> elementi üstündə \"%s\" atributu yoxdur"
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> ad \"%s\" iki dəfə işlədilib"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> valideyn \"%s\" tə'yin edilməyib"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> quruluşu \"%s\" tə'yin edilməyib"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> ya quruluşu ya da quruluşa malik olan valideyni bildirməlidir"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "<%s> elementi üstündə namə'lum \"%s\" növü"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "<%s> elementi üstündə namə'lum \"%s\" style_set"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "\"%s\" pəncərə növü onsuzda tərz dəstəsinə verilib"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Menyu timsalı üçün namə'lum \"%s\" funksiyası"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Menyu timsalı üçün namə'lum \"%s\" vəziyyəti"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Örtük onsuzda funksiya %s vəziyyət %s üçün menyu timsalına malikdir"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "\"%s\" adlı heç bir <draw_ops> tə'yin edilməyib"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1924,7 +2142,7 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "<%s> elementinin <%s> altında olmasına icazə verilmir"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
@@ -1934,11 +2152,11 @@ msgstr "<%s> elementi üstündə \"ad\" atributu yoxdur"
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> elementinin \"value\" atributu yoxdur"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+msgstr "Düymələr üçün button_width/button_height və görünüş nisbətinin ikisi də verilə bilməz"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2099,12 +2317,12 @@ msgstr "<%s> elementi üçün \"%s\" oxu başa düşülmədi "
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "\"%s\" adında heç bir <draw_ops> tə'yin edilməyib"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "draw_ops \"%s\"ları burada daxil etmək sirkular bağları yaradacaqdır"
 
 #: src/theme-parser.c:3153
 #, c-format
@@ -2119,12 +2337,12 @@ msgstr "<%s> elementi üstündə \"yer\" atributu yoxdur"
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Çərçivə parçası üçün namə'lum \"%s\" mövqeyi"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Çərçivə tərzi %s mövqeyində onsuzda parçaya malikdir"
 
 #: src/theme-parser.c:3272
 #, c-format
@@ -2139,17 +2357,17 @@ msgstr "<%s> elementi üstündə \"vəziyyət\" atributu yoxdur"
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Düymə üçün namə'lum \"%s\" funksiya"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Düymə üçün namə'lum \"%s\" vəziyyəti"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Çərçivə tərzi %s funksiyası %s vəziyyəti üçün onsuzda düyməyə malikdir"
 
 #: src/theme-parser.c:3376
 #, c-format
@@ -2164,17 +2382,17 @@ msgstr "<%s> elementi üstündə \"tərz\" atributu yoxdur"
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" fokus atributu üçün hökmlü qiymət deyil"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" vəziyyət atributu üçün hökmlü qiymət deyil"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "\"%s\" adlı tərz tə'yin edilməyib"
 
 #: src/theme-parser.c:3430
 #, c-format
@@ -2184,7 +2402,7 @@ msgstr "<%s> elementi üstündə \"ölçüləndir\" atributu yoxdur"
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" ölçüləndirmə atributu üçün hökmlü vəziyyət deyil"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2192,39 +2410,41 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"<%s> elementi üçün maksimumlaşdırılmış və bükülmüş vəziyyətlər üçün "
+"\"resize\" atributu olmamalıdır."
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Tərz onsuzda %s vəziyyəti və %s fokusu üçün tə'yin edilib"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "<piece> elementi üçün iki draw_ops maliki oluna bilməz."
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "<button> elementi üçün iki draw_ops maliki oluna bilməz."
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "<menu_icon> elementi üçün iki draw_ops maliki oluna bilməz."
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Örtükdəki outermost elementi <%s> yox <metacity_theme> olmalıdır"
 
 #: src/theme-parser.c:3679
 #, c-format
@@ -2296,7 +2516,7 @@ msgstr "%s faylından örtük oxunması bacarılmadı: %s\n"
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Örtük faylı %s kök <metacity_theme> elementini daxil etmir"
 
 #: src/theme.c:202
 msgid "top"
@@ -2317,17 +2537,17 @@ msgstr "sağ"
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "çərçivə quruluşu \"%s\" ölçüsünü bildirmir"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "çərçivə quruluşu \"%s\" ölçüsünü \"%s\" kənarı üçün bildirmir"
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "%g düymə görünüş nisbəti səbəbsizdir"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
@@ -2343,6 +2563,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK rəng spesifikasiyasında vəziyyət mö'tərizə içində olmalıdır, mis."
+"gtk:fg[NORMAL] burada NORMAL vəziyyətdir; \"%s\" oxuna bilmədi"
 
 #: src/theme.c:989
 #, c-format
@@ -2350,48 +2572,50 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK rəng spesifikasiyasında vəziyyətdən sonra mö'tərizə bağlanmalıdır, mis. gtk:"
+"fg[NORMAL] burada NORMAL vəziyyətdir; \"%s\" oxuna bilmədi"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Rəng spesifikasiyasındakı \"%s\" vəziyyəti başa düşülmədi"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Rəng spesifikasiyasındakı \"%s\" rəng tərkib hissəsi başa düşülmədi"
 
 #: src/theme.c:1043
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
+msgstr "Qarışdırma formatı \"blend/bg_color/fg_color/alpha\"dır, \"%s\" formata uyğun gəlmir"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Qarışıq rəngdəki alfa qiyməti \"%s\" oxuna bilmədi"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alfa qiyməti \"%s\" 0.0 ilə 1.0 arasında deyil"
 
 #: src/theme.c:1111
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgstr "Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Bükülmüş rəngdəki \"%s\" bükmə faktoru oxuna bilmədi"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Bükülmüş rəngdəki bükmə faktoru \"%s\" mənfidir"
 
 #: src/theme.c:1161
 #, c-format
@@ -2401,19 +2625,19 @@ msgstr "\"%s\" rəngi oxuna bilmədi"
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Birgə ifadə icazə verilməyən '%s' hərfini daxil edir"
 
 #: src/theme.c:1450
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
+msgstr "Birgə ifadə oxuna bilməyən '%s' üzən nöqtə daxil edir"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Birgə ifadə oxuna bilməyən '%s' integer'ini daxil edir"
 
 #: src/theme.c:1531
 #, c-format
@@ -2421,66 +2645,70 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Birgə ifadə bu mətnin başında namə'lum idarəçiyə malikdir: "
+"\"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Birgə ifadə boş idi ya da başa düşülmədi"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Birgə ifadə sıfıra bölmə ilə nəticələnir"
 
 #: src/theme.c:1779
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
 
 #: src/theme.c:1836
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgstr "Birgə ifadə operand gözlənildiyi yerdə \"%s\" idarəçisinə malikdir"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Birgə ifadə idarəçi gözləndiyi yerdə operand'a malikdir"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Birgə ifadə operand yerinə idarəçi ilə sonlandı"
 
 #: src/theme.c:1863
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
+msgstr "Birgə ifadə \"%c\" ilə \"%c\" idarəçisi arasında operand'a malik deyil"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Birgə ifadə ara yaddaşını doldurub daşırdı. Bu qədər böyük ifadəyə "
+"ehtiyac var idi ki?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Birgə ifadə açılmadan bağlanan qövsvari mö'tərizəyə malikdir"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Birgə ifadə namə'lum \"%s\" dəyişən ya da sabitə malikdir"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Birgə ifadə açılıb bağlanmayan qövsvari mö'tərizəyə malikdir"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Birgə ifadə operatorlara malik görünmür"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Örtükdə xətaya səbəb olan \"%s\" idafəsi var: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2505,7 +2733,7 @@ msgstr "\"%s\" örtüyü yüklənə bilmədi: %s\n"
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "\"%2$s\" örtüyü üçün <%1$s> tə'yin edilməyib"
 
 #: src/theme.c:4629
 #, c-format
@@ -2513,6 +2741,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"\"%2$s\" örtüyündə \"%1$s\" pəncərə növü üçün heç bir çərçivə tərzi tə'yin edilməyib. "
+"<window type=\"%s\" style_set=\"whatever\"/> elementini əlavə edin"
 
 #: src/theme.c:4651
 #, c-format
@@ -2526,12 +2756,12 @@ msgstr ""
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgstr "İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "\"%s\" sabiti onsuzda tə'yin edilib"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
@@ -2574,7 +2804,7 @@ msgstr "%s qeyd faylı üstündə fdopen() bacarılmadı : %s\n"
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "%s qeyd faylını aç\n"
+msgstr "%s qeyd faylı açıldı\n"
 
 #: src/util.c:203
 msgid "Window manager: "
@@ -2595,7 +2825,7 @@ msgstr "Pəncərə idarəçisi xətası:"
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Proqram tə'minatı xətalı _NET_WM_PID %ld tə'yin etdi\n"
 
 #. first time through
 #: src/window.c:4565
@@ -2604,6 +2834,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"%s pəncərəsi özünə SM_CLIENT_ID tə'yin edir, yalnız ICCCM'də bildirilib ki bu "
+"WM_CLIENT_LEADER pəncərəsinə tə'yin edilməlidir.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2618,6 +2850,8 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"%s pəncərəsi ölçüləndirilə bilmədiyini MWM ehkamı ilə bildirir, yalnız minimal. %"
+"d x %d və maksimal %d x %d böyüklüyünü alır; buna bir mə'na verə bilmirəm.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2628,14 +2862,19 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"0x%lx pəncərəsi %s xassəsinə malikdir.\n"
+"Əslində %s formatında %d gözlənirdi yalnız alınan növ\n"
+"%s formatında %d n_items'lər %d alındı.\n"
+"Bu böyük ehtimalla proqram xətasıdır, pəncərə idarəçisinin xətası deyil.\n"
+"Pəncərənin başlığı=\"%s\" sinifi=\"%s\" adı=\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "0x%lx pəncərəsindəki %s xassəsi hökmsüz UTF-8 daxil etdi\n"
 
 #: src/xprops.c:482
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
+msgstr "0x%lx pəncərəsindəki %s xassəsi siyahıdakı %d üzvü üçün hökmsüz UTF-8 daxil etdi\n"
 
