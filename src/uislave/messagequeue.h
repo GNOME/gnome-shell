@@ -41,4 +41,7 @@ MetaMessageQueue* meta_message_queue_new  (int                   fd,
                                            gpointer              data);
 void              meta_message_queue_free (MetaMessageQueue     *mq);
 
+void              meta_message_queue_wait_for_reply (MetaMessageQueue *mq,
+                                                     int               serial_of_request);
+
 #endif

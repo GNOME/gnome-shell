@@ -29,9 +29,6 @@
 #include <fcntl.h>
 
 static void       respawn_child   (MetaUISlave   *uislave);
-static gboolean   error_callback  (GIOChannel    *source,
-                                   GIOCondition   condition,
-                                   gpointer       data);
 static void       kill_child      (MetaUISlave   *uislave);
 static void       reset_vals      (MetaUISlave   *uislave);
 static void       message_queue_func (MetaMessageQueue *mq,
@@ -52,6 +49,7 @@ meta_ui_slave_new (const char *display_name,
   uislave->func = func;
   uislave->data = data;
   uislave->no_respawn = FALSE;
+  uislave->serial = 1;
   
   reset_vals (uislave);
   
@@ -137,6 +135,7 @@ respawn_child (MetaUISlave *uislave)
   argv[2] = "uislave-strace.log";
 #endif
   argv[0] = path;
+  argv[1] = "--sync";
   
   meta_verbose ("Launching UI slave in dir %s display %s\n",
                 uislavedir, disp);
@@ -149,20 +148,13 @@ respawn_child (MetaUISlave *uislave)
                                 0,
                                 child_setup, disp,
                                 &child_pid,
-                                &inpipe, &outpipe, &errpipe,
+                                &inpipe, &outpipe, NULL,
                                 &error))
     {
+      errpipe = -1;
       uislave->child_pid = child_pid;
       uislave->in_pipe = inpipe;
-      uislave->err_pipe = errpipe;
       uislave->out_pipe = outpipe;
-
-      uislave->err_channel = g_io_channel_unix_new (errpipe);
-      
-      uislave->errwatch = g_io_add_watch (uislave->err_channel,
-                                          G_IO_IN,
-                                          error_callback,
-                                          uislave);
 
       uislave->mq = meta_message_queue_new (outpipe,
                                             message_queue_func,
@@ -181,75 +173,23 @@ respawn_child (MetaUISlave *uislave)
   g_free (path);
 }
 
-static gboolean
-error_callback  (GIOChannel   *source,
-                 GIOCondition  condition,
-                 gpointer      data)
-{  
-  /* Relay slave errors to WM stderr */
-#define BUFSIZE 1024
-  MetaUISlave *uislave;
-  char buf[1024];
-  int n;
-  static int logfile = -1;
-  
-  if (meta_is_debugging () && logfile < 0)
-    {
-      const char *dir;
-      char *str;
-      
-      dir = g_get_home_dir ();
-      str = g_strconcat (dir, "/", "metacity-uislave.log", NULL);
-      
-      logfile = open (str, O_TRUNC | O_CREAT, 0644);
-
-      if (logfile < 0)
-        meta_warning ("Failed to open uislave log file %s\n", str);
-      else
-        meta_verbose ("Opened uislave log file %s\n", str);
-      
-      g_free (str);
-    }
-
-  if (logfile < 0)
-    logfile = 2;
-  
-  uislave = data;
-  
-  n = read (uislave->err_pipe, buf, BUFSIZE);
-  if (n > 0)
-    {
-      if (write (logfile, buf, n) != n)
-        ; /* error, but printing a message to stderr will hardly help. */
-    }
-  else if (n < 0)
-    meta_warning (_("Error reading errors from UI slave: %s\n"),
-                  g_strerror (errno));
-  
-  return TRUE;
-#undef BUFSIZE
-}
-
 static void
 kill_child (MetaUISlave *uislave)
 {
   if (uislave->mq)
     meta_message_queue_free (uislave->mq);
   
-  if (uislave->errwatch != 0)
-    g_source_remove (uislave->errwatch);  
-
-  if (uislave->err_channel)
-    g_io_channel_unref (uislave->err_channel);
-
   if (uislave->out_pipe >= 0)
-    close (uislave->out_pipe);
+    {
+      meta_verbose ("Closing UI child output pipe\n");
+      close (uislave->out_pipe);
+    }
 
   if (uislave->in_pipe >= 0)
-    close (uislave->in_pipe);
-
-  if (uislave->err_pipe >= 0)
-    close (uislave->err_pipe);
+    {
+      meta_verbose ("Closing UI child input pipe\n");
+      close (uislave->in_pipe);
+    }
   
   if (uislave->child_pid > 0)
     {
@@ -272,10 +212,7 @@ reset_vals (MetaUISlave *uislave)
   uislave->mq = NULL;
   uislave->child_pid = 0;
   uislave->in_pipe = -1;
-  uislave->err_pipe = -1;
   uislave->out_pipe = -1;
-  uislave->err_channel = NULL;
-  uislave->errwatch = 0;
   /* don't reset no_respawn, it's a permanent thing. */
 }
 
@@ -310,9 +247,9 @@ write_bytes (int fd, void *buf, int bytes)
 }
 
 static void
-send_message (MetaUISlave *uislave, MetaMessage *message)
+send_message (MetaUISlave *uislave, MetaMessage *message,
+              int request_serial)
 {
-  static int serial = 0;
   MetaMessageFooter *footer;
 
   if (uislave->no_respawn)
@@ -320,11 +257,13 @@ send_message (MetaUISlave *uislave, MetaMessage *message)
   
   respawn_child (uislave);
   
-  message->header.serial = serial;
+  message->header.serial = uislave->serial;
+  message->header.request_serial = request_serial;
+  
   footer = META_MESSAGE_FOOTER (message);
   
   footer->checksum = META_MESSAGE_CHECKSUM (message);
-  ++serial;
+  uislave->serial += 1;
   
   if (write_bytes (uislave->in_pipe,
                    META_MESSAGE_ESCAPE, META_MESSAGE_ESCAPE_LEN) < 0)
@@ -359,7 +298,7 @@ meta_ui_slave_show_tip (MetaUISlave    *uislave,
   strncpy (showtip.markup, markup_text, META_MESSAGE_MAX_TIP_LEN);
   showtip.markup[META_MESSAGE_MAX_TIP_LEN] = '\0';
 
-  send_message (uislave, (MetaMessage*)&showtip);
+  send_message (uislave, (MetaMessage*)&showtip, 0);
 }
 
 void
@@ -371,7 +310,7 @@ meta_ui_slave_hide_tip (MetaUISlave *uislave)
   hidetip.header.message_code = MetaMessageHideTipCode;
   hidetip.header.length = META_MESSAGE_LENGTH (MetaMessageHideTip);
 
-  send_message (uislave, (MetaMessage*)&hidetip);
+  send_message (uislave, (MetaMessage*)&hidetip, 0);
 }
 
 void
@@ -398,7 +337,7 @@ meta_ui_slave_show_window_menu (MetaUISlave             *uislave,
   showmenu.insensitive = insensitive;
   showmenu.timestamp = timestamp;
   
-  send_message (uislave, (MetaMessage*)&showmenu);
+  send_message (uislave, (MetaMessage*)&showmenu, 0);
 }
 
 void
@@ -410,5 +349,5 @@ meta_ui_slave_hide_window_menu (MetaUISlave *uislave)
   hidemenu.header.message_code = MetaMessageHideWindowMenuCode;
   hidemenu.header.length = META_MESSAGE_LENGTH (MetaMessageHideWindowMenu);
 
-  send_message (uislave, (MetaMessage*)&hidemenu);
+  send_message (uislave, (MetaMessage*)&hidemenu, 0);
 }

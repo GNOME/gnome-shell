@@ -37,14 +37,13 @@ struct _MetaUISlave
   int child_pid;
   int in_pipe;
   int out_pipe;
-  int err_pipe;
-  GIOChannel *err_channel;
-  unsigned int errwatch;
 
   MetaMessageQueue *mq;
 
   MetaUISlaveFunc func;
   gpointer data;
+
+  int serial;
   
   /* if we determine that our available slave is hosed,
    * set this bit.

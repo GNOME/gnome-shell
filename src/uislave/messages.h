@@ -36,7 +36,7 @@
 /* We increment this when we change this header, so we can
  * check for mismatched UI slave and WM
  */
-#define META_MESSAGES_VERSION 1
+#define META_MESSAGES_VERSION 2
 
 /* We have an escape sequence, just in case some part of GTK
  * decides to write to stdout, so that we have a good chance
@@ -87,6 +87,7 @@ struct _MetaMessageHeader
   MetaMessageCode message_code;
   int length;
   int serial;
+  int request_serial; /* 0 if none */
 };
 
 /* The footer thing was pretty much just a debug hack and could die. */

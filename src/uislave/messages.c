@@ -40,7 +40,8 @@ typedef enum
 static ReadResult read_data       (GString       *str,
                                    gint           fd);
 
-static void send_message (MetaMessage *message);
+static void send_message (MetaMessage *message,
+                          int          request_serial);
 
 void
 meta_message_send_check (void)
@@ -58,8 +59,8 @@ meta_message_send_check (void)
   check.host_alias[META_MESSAGE_MAX_HOST_ALIAS_LEN] = '\0';
 
   check.messages_version = META_MESSAGES_VERSION;
-
-  send_message ((MetaMessage*)&check);
+  
+  send_message ((MetaMessage*)&check, 0);
 }
 
 static int
@@ -113,12 +114,14 @@ print_mem (int fd, void *mem, int len)
 #endif
 
 static void
-send_message (MetaMessage *message)
+send_message (MetaMessage *message,
+              int          request_serial)
 {
-  static int serial = 0;
+  static int serial = 1;
   MetaMessageFooter *footer;
   
   message->header.serial = serial;
+  message->header.request_serial = request_serial;
   footer = META_MESSAGE_FOOTER (message);
   
   footer->checksum = META_MESSAGE_CHECKSUM (message);

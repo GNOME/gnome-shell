@@ -360,7 +360,6 @@ mq_prepare (GSource *source, gint *timeout)
   return mq_messages_pending (mq);
 }
 
-#include <stdio.h>
 static gboolean  
 mq_check (GSource  *source) 
 {
@@ -383,13 +382,29 @@ mq_check (GSource  *source)
                         mq->buf->len);
           break;
         case READ_EOF:
+#ifdef METACITY_COMPILE
           meta_verbose ("EOF reading stdout from slave process\n");
+#else
+          meta_ui_warning ("Metacity parent process disappeared\n");
+          exit (1);
+#endif
           break;
           
         case READ_FAILED:
           /* read_data printed the error */
           break;
         }
+    }
+
+
+  if (mq->out_poll.revents & G_IO_HUP)
+    {
+#ifdef METACITY_COMPILE
+      meta_verbose ("UI slave hung up\n");
+#else
+      meta_ui_warning ("Metacity parent process hung up\n");
+      exit (1);
+#endif
     }
   
   mq->out_poll.revents = 0;
@@ -529,7 +544,12 @@ meta_message_queue_wait_for_reply (MetaMessageQueue *mq,
           break;
           
         case READ_EOF:
+#ifdef METACITY_COMPILE
           meta_verbose ("EOF reading stdout from slave process\n");
+#else
+          meta_ui_warning ("Metacity parent process disappeared\n");
+          exit (1);
+#endif
           return;
           break;
           
