@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
-"PO-Revision-Date: 2004-07-25 16:14+0200\n"
+"POT-Creation-Date: 2004-12-28 23:28+0100\n"
+"PO-Revision-Date: 2004-12-28 23:28+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -124,9 +124,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Inget kommando %d har definierats.\n"
+msgstr "Inget terminalkommando har definierats.\n"
 
 #: src/main.c:69
 msgid ""
@@ -712,7 +711,7 @@ msgstr "Kör ett angivet kommando"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Kör en terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1215,7 +1214,6 @@ msgstr ""
 "kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1740,7 +1738,6 @@ msgstr ""
 "tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1748,7 +1745,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Tangentbindningen som visar panelens huvudmeny. Formatet ser ut som \"&lt;"
+"Tangentbindningen som startar en terminal. Formatet ser ut som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
 "tillåtande och tillåter gemener och versaler och även förkortningar som "
 "\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
@@ -2101,63 +2098,63 @@ msgstr "Kunde inte skapa katalogen \"%s\": %s\n"
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunde inte öppna sessionsfilen \"%s\" för skrivning: %s\n"
 
-#: src/session.c:1059
+#: src/session.c:1052
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fel vid skrivning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1064
+#: src/session.c:1057
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fel vid stängning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1139
+#: src/session.c:1132
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
 
-#: src/session.c:1174
+#: src/session.c:1167
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
-#: src/session.c:1223
+#: src/session.c:1216
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attribut hittat men vi har redan sessions-ID"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1236
+#: src/session.c:1229
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Okänt attribut %s i <metacity_session>-element"
 
-#: src/session.c:1253
+#: src/session.c:1246
 msgid "nested <window> tag"
 msgstr "nästlad <window>-tagg"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1311 src/session.c:1343
+#: src/session.c:1304 src/session.c:1336
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Okänt attribut %s i <window>-element"
 
-#: src/session.c:1415
+#: src/session.c:1408
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Okänt attribut %s i <maximized>-element"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1475
+#: src/session.c:1468
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Okänt attribut %s i <geometry>-element"
 
-#: src/session.c:1495
+#: src/session.c:1488
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
-#: src/session.c:1947
+#: src/session.c:1940
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3218,7 +3215,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4907
+#: src/window.c:4850
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3234,7 +3231,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5578
+#: src/window.c:5521
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
