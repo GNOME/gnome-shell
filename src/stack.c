@@ -182,10 +182,10 @@ window_is_fullscreen_size (MetaWindow *window)
 {
   int i;
 
-  if (window->rect.x == 0 &&
-      window->rect.y == 0 &&
-      window->rect.width == window->screen->width &&
-      window->rect.height == window->screen->height)
+  if (window->rect.x <= 0 &&
+      window->rect.y <= 0 &&
+      window->rect.width >= window->screen->width &&
+      window->rect.height >= window->screen->height)
     return TRUE;
   
   i = 0;
@@ -193,8 +193,8 @@ window_is_fullscreen_size (MetaWindow *window)
     {
       if (window->rect.x == window->screen->xinerama_infos[i].x_origin &&
           window->rect.y == window->screen->xinerama_infos[i].y_origin &&
-          window->rect.width == window->screen->xinerama_infos[i].width &&
-          window->rect.height == window->screen->xinerama_infos[i].height)
+          window->rect.width >= window->screen->xinerama_infos[i].width &&
+          window->rect.height >= window->screen->xinerama_infos[i].height)
         return TRUE;
       
       ++i;

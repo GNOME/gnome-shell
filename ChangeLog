@@ -1,3 +1,15 @@
+2002-10-11  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (window_is_fullscreen_size): make the checks here
+	allow windows larger than the screen in addition to
+	exactly-screen-size
+
+	* src/window.c (meta_window_configure_request): delete the "try to
+	auto-enter-fullscreen-state" hack here, because it was broken, and
+	the changes to the stacking code to move screen-size focused
+	windows to the fullscreen layer should work better.
+	(meta_window_new): remove auto-fullscreen hack from here too
+
 2002-10-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (apply_constraints): also keep utility/menu/toolbar

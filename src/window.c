@@ -635,24 +635,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
           outer.height >= workarea.height)
         meta_window_maximize (window);
     }
-  /* Assume screen-size undecorated windows are intended to be
-   * fullscreen
-   */
-  else if (window->has_fullscreen_func && !window->decorated &&
-           !window->maximized)
-    {
-      const MetaXineramaScreenInfo *xinerama;
-      MetaRectangle outer;
-
-      xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                      window);
-      
-      meta_window_get_outer_rect (window, &outer);
-      
-      if (outer.width >= xinerama->width &&
-          outer.height >= xinerama->height)
-        meta_window_make_fullscreen (window);
-    }
   
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -3238,42 +3220,6 @@ meta_window_configure_request (MetaWindow *window,
           break;
         }
     }      
-
-  /* If we went full-size for an undecorated window, then enter
-   * fullscreen mode.  A hack for lame clients.
-   */
-  if (window->has_fullscreen_func && !window->decorated &&
-      !window->maximized)
-    {
-      const MetaXineramaScreenInfo *xinerama;
-      MetaRectangle outer;
-
-      xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                      window);
-      
-      meta_window_get_outer_rect (window, &outer);
-      
-      if (outer.width >= xinerama->width &&
-          outer.height >= xinerama->height)
-        meta_window_make_fullscreen (window);
-      else
-        {
-          meta_topic (META_DEBUG_GEOMETRY,
-                      "Did not fullscreen %s size %dx%d with xinerama %dx%d\n",
-                      window->desc,
-                      outer.width, outer.height,
-                      xinerama->width, xinerama->height);
-        }
-    }
-  else
-    {
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Did not fullscreen %s has_fullscreen = %d decorated = %d maximized = %d\n", 
-                  window->desc,
-                  window->has_fullscreen_func,
-                  window->decorated,
-                  window->maximized);
-    }
   
   return TRUE;
 }
