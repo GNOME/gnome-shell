@@ -1,0 +1,8 @@
+src/display.c
+src/errors.c
+src/frames.c
+src/keybindings.c
+src/menu.c
+src/screen.c
+src/session.c
+src/window.c

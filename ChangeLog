@@ -1,3 +1,7 @@
+2001-10-11  Christian Rose  <menthos@menthos.com>
+
+	* configure.in: Added "sv" to ALL_LINGUAS.
+
 2001-10-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (meta_stack_free): fix mem leak of the MetaStack
