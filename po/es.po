@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
-"PO-Revision-Date: 2003-02-25 14:57-0300\n"
-"Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
+"POT-Creation-Date: 2003-05-16 12:57+0200\n"
+"PO-Revision-Date: 2003-05-16 09:12-0300\n"
+"Last-Translator: Pablo G. del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.1\n"
+"X-Generator: KBabel 1.0\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -23,7 +23,7 @@ msgstr "Uso: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity fué compilado sin soporte para modo verboso\n"
+msgstr "Metacity fue compilado sin soporte para modo verboso\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -40,8 +40,7 @@ msgstr "No se comprenden los caracteres sobrantes «%s» en la cadena «%s»"
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
-"Ocurrió un error al analizar el mensaje «%s» desde el proceso de dialogo\n"
+msgstr "Ocurrió un error al analizar el mensaje «%s» desde el proceso de dialogo\n"
 
 #: src/delete.c:260
 #, c-format
@@ -50,8 +49,7 @@ msgstr "Ocurrió un error leyendo desde el proceso de muestra de dialogo: %s\n"
 
 #: src/delete.c:331
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Ocurrió un error ejecutando metacity-dialog para preguntar acerca de "
 "eliminar una aplicación: %s\n"
@@ -74,7 +72,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Se ha perdido la conexión con la pantalla «%s»; \n"
-"parecería que el servidor X fué dado de baja o que usted ha matado o "
+"parecería que el servidor X fue dado de baja o que usted ha matado o "
 "destruido el manejador de ventanas.\n"
 
 #: src/errors.c:238
@@ -124,13 +122,12 @@ msgid "No command %d has been defined.\n"
 msgstr "No ha sido definido ningún comando %d.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=ARCHIVO] [--"
+"display=PANTALLA] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -149,8 +146,7 @@ msgstr ""
 
 #: src/main.c:345
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
 "los temas usuales."
@@ -543,8 +539,7 @@ msgstr "Moverse hacia atrás entre paneles y el escritorio inmediatamente"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
-"Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
+msgstr "Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
@@ -568,8 +563,7 @@ msgstr "Moverse entre ventanas con una ventana emergente"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
+msgstr "Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
@@ -671,11 +665,11 @@ msgstr "Ejecuta un comando definido"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Muestra el menú del panel"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Muestra el diálogo de ejecución del panel"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -777,11 +771,11 @@ msgstr "La campana del sistema es audible"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Toma una captura de pantalla"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Toma una captura de una ventana"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -813,25 +807,22 @@ msgstr ""
 "combinación de teclas para «run_command_N» se ejecutará el «command_N»."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Las claves /apps/metacity/global_keybindings/run_command_N definen las "
-"combinaciones de teclas que corresponden a esos comandos. Al presionar la "
-"combinación de teclas para «run_command_N» se ejecutará el «command_N»."
+"La clave /apps/metacity/global_keybindings/run_command_screenshot define una combinación "
+"de teclas que produce que el comando especificado por esta configuración sea invocado."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Las claves /apps/metacity/global_keybindings/run_command_N definen las "
-"combinaciones de teclas que corresponden a esos comandos. Al presionar la "
-"combinación de teclas para «run_command_N» se ejecutará el «command_N»."
+"La clave /apps/metacity/global_keybindings/run_command_window_screenshot define una "
+"combinación de teclas que produce que el comando especificado por esta configuración sea "
+"invocado."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1662,7 +1653,6 @@ msgstr ""
 "combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1671,15 +1661,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"La combinación de teclas usado para cerrar una ventana. El formato se ve "
-"como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
-"analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
-"configura esta opción con la cadena especial «disabled» entonces no habrá "
+"La combinación de teclas que muestra el diálogo del panel «Ejecutar el programa». "
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas como "
+"minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». "
+"Si configura esta opción con la cadena especial «disabled» entonces no habrá "
 "combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1688,15 +1677,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"La combinación de teclas usado para cerrar una ventana. El formato se ve "
-"como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
-"analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
-"configura esta opción con la cadena especial «disabled» entonces no habrá "
-"combinación de teclas para esta acción."
+"La combinación de teclas que invoca la utilidad del panel de captura de pantalla para "
+"obtener una captura de pantalla de una ventana. El formato se ve como "
+"«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: analizador) "
+"es bastante liberal y permite tanto mayúsculas como minúsculas además de abreviaciones "
+"como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la "
+"cadena especial «disabled» entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1705,15 +1693,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"La combinación de teclas que cambia al espacio de trabajo 9. El formato se "
-"ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El parser (NT: "
-"analizador) es bastante liberal y permite tanto mayúsculas como minúsculas "
-"además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
-"configura esta opción con la cadena especial «disabled» entonces no habrá "
-"combinación de teclas para esta acción."
+"La combinación de teclas que invoca a la utilidad de captura de pantalla del panel."
+"El formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"El parser (NT: analizador) es bastante liberal y permite tanto mayúsculas "
+"como minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y "
+"«&lt;Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
+"entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1721,7 +1708,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La combinación de teclas usado para activar el menu de la ventana. El "
+"La combinación de teclas que muestra el menú principal del panel.El "
 "formato se ve como «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». El "
 "parser (NT: analizador) es bastante liberal y permite tanto mayúsculas como "
 "minúsculas además de abreviaciones como por ejemplo «&lt;Ctl&gt;» y «&lt;"
@@ -1734,7 +1721,7 @@ msgstr "El nombre del espacio de trabajo"
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "El comando de captura de pantalla"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1769,7 +1756,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "El comando de captura de una ventana"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1855,7 +1842,6 @@ msgstr ""
 "«disabled» entonces no habrá combinación de teclas para esta acción."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2007,8 +1993,7 @@ msgstr ""
 
 #: src/screen.c:464
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "No se ha podido obtener la selección del manejador de ventanas en la ventana "
 "%d en la pantalla «%s»\n"
@@ -2144,14 +2129,14 @@ msgstr "Los valores booleanos deben ser «true» o «false» no «%s»"
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "El ángulo debe estar entre 0.0 y 360.9, fué %g\n"
+msgstr "El ángulo debe estar entre 0.0 y 360.9, fue %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "El valor Alpha debe estar entre 0.0 (invisible) y 1.0 (completamente opaco), "
-"fué %g\n"
+"fue %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2194,8 +2179,7 @@ msgstr "La <%s> geometría «%s» no ha sido definida"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> debe especificar o una geometría o un padre para tenga una geometría"
+msgstr "<%s> debe especificar o una geometría o un padre para tenga una geometría"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2251,8 +2235,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "No hay atributo «value» en el elemento <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "No se debe especificar ambos «button_width/button_height» y «aspect ratio» "
 "para los botones"
@@ -2515,8 +2498,7 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
+msgstr "El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2557,8 +2539,7 @@ msgstr "El elemento mas externo en un tema debe ser <metacity_theme> no <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento name/author/date/"
 "description"
@@ -2570,8 +2551,7 @@ msgstr "El elemento <%s> no esta permitido dentro de un elemento <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento distance/border/"
 "aspect_ratio"
@@ -2659,8 +2639,7 @@ msgstr "La geometría del marco no especifica la dimensión «%s»"
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-"La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
+msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
 
 #: src/theme.c:278
 #, c-format
@@ -2702,8 +2681,7 @@ msgstr "No se entiende el estado «%s» en la especificación del color"
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
-"No se entiende el componente de color «%s» en la especificación del color"
+msgstr "No se entiende el componente de color «%s» en la especificación del color"
 
 #: src/theme.c:1043
 #, c-format
@@ -2726,8 +2704,7 @@ msgstr "El valor alpha «%s» en el color blended no esta entre 0.0 y 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "El formato de shade es «shade/base_color/factor», «%s» no coincide con el "
 "formato"
@@ -2766,8 +2743,7 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
+msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
 #: src/theme.c:1531
 #, c-format
@@ -2780,36 +2756,32 @@ msgstr ""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr "La expresión de coordenadas estuvo vacía o no fué entendida"
+msgstr "La expresión de coordenadas estuvo vacía o no fue entendida"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar una operador mod con un número de "
 "punto flotante"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operador «%s» donde se esperaba un "
 "operando"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"La expresión de coordenadas tiene un operando donde se esperaba un operador"
+msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"La expresión de coordenadas termina con una operador en vez de un operando"
+msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
 
 #: src/theme.c:1863
 #, c-format
@@ -2838,8 +2810,7 @@ msgstr ""
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
-"La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
+msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -2867,10 +2838,8 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2903,8 +2872,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
@@ -3027,8 +2995,7 @@ msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
 
 #: src/xprops.c:479
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido para el elemento "
 "%d de la lista\n"
@@ -3144,3 +3111,4 @@ msgstr ""
 #~ msgstr ""
 #~ "La ventana %s pone su altura máxima %d menor que la mínima %d, "
 #~ "deshabilitando el redimensionado\n"
+
