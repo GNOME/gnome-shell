@@ -1,5 +1,10 @@
 2002-07-05  Havoc Pennington  <hp@pobox.com>
 
+	* src/themes/Makefile.am (THEMES): Take Gorilla out until it gets
+	repaired.
+
+2002-07-05  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_wm_hints): Change default value of input
 	hint (if not specified) to true instead of false. This is what 
 	some clients assume, such as Visual SlickEdit.
