@@ -1,3 +1,13 @@
+2002-07-24  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme-parser.c (meta_theme_load): look for themes in
+	~/.themes/NAME/metacity-1/ and datadir/themes/NAME/metacity-1 
+	instead of the old locations.
+
+	* src/themes/Makefile.am: install themes to
+	datadir/themes/NAME/metacity-1/ to match how GTK works, breaking 
+	third-party themes yet again! woot!
+
 2002-07-20  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_open): grab display across managing

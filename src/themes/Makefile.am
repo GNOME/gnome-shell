@@ -5,18 +5,20 @@ THEMES=			\
 	Esco		\
 	Gorilla
 
-THEME_DIR=$(pkgdatadir)/themes
+THEME_DIR=$(datadir)/themes
+THEME_SUBDIR=metacity-1
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(THEME_DIR);					\
-	for THEME in $(THEMES); do							\
-		echo '-- Installing theme '$$THEME;					\
-		$(mkinstalldirs) $(DESTDIR)$(THEME_DIR)/$$THEME;			\
-		(installfiles=`find $(srcdir)/$$THEME -name "*.png" -o -name "*.xml"`;	\
-		 for i in $$installfiles; do						\
-			echo '-- Installing '$$i ;					\
-		    	$(INSTALL_DATA) $$i $(DESTDIR)$(THEME_DIR)/$$THEME;		\
-	  	 done)									\
+	$(mkinstalldirs) $(DESTDIR)$(THEME_DIR);					     \
+	for THEME in $(THEMES); do							     \
+		echo '-- Installing theme '$$THEME;					     \
+		$(mkinstalldirs) $(DESTDIR)$(THEME_DIR)/$$THEME;			     \
+		$(mkinstalldirs) $(DESTDIR)$(THEME_DIR)/$$THEME/$(THEME_SUBDIR);	     \
+		(installfiles=`find $(srcdir)/$$THEME -name "*.png" -o -name "*.xml"`;	     \
+		 for i in $$installfiles; do						     \
+			echo '-- Installing '$$i ;					     \
+		    	$(INSTALL_DATA) $$i $(DESTDIR)$(THEME_DIR)/$$THEME/$(THEME_SUBDIR) ; \
+	  	 done)									     \
 	done
 
 dist-hook:

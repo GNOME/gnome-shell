@@ -4181,8 +4181,13 @@ text_handler (GMarkupParseContext *context,
 
 /* We change the filename when we break the format,
  * so themes can work with various metacity versions
+ * (note, this is obsolete now because we are versioning
+ * the directory this file is inside, so oh well)
  */
 #define THEME_FILENAME "metacity-theme-1.xml"
+
+/* now this is versioned, /usr/share/themes/NAME/THEME_SUBDIR/THEME_FILENAME */
+#define THEME_SUBDIR "metacity-1"
 
 MetaTheme*
 meta_theme_load (const char *theme_name,
@@ -4206,6 +4211,7 @@ meta_theme_load (const char *theme_name,
   
   if (meta_is_debugging ())
     {
+      /* Try in themes in our source tree */
       theme_dir = g_build_filename ("./themes", theme_name, NULL);
       
       theme_file = g_build_filename (theme_dir,
@@ -4227,34 +4233,15 @@ meta_theme_load (const char *theme_name,
         }
     }
   
-  /* We try in current dir, then home dir, then system dir for themes */
-  if (text == NULL)
-    {
-      theme_dir = g_build_filename ("./", theme_name, NULL);
-      
-      theme_file = g_build_filename (theme_dir,
-                                     THEME_FILENAME,
-                                     NULL);
-      
-      error = NULL;
-      if (!g_file_get_contents (theme_file,
-                                &text,
-                                &length,
-                                &error))
-        {
-          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
-                      theme_file, error->message);
-          g_error_free (error);
-          g_free (theme_dir);
-          g_free (theme_file);
-          theme_file = NULL;
-        }
-    }
+  /* We try in home dir, then system dir for themes */
   
   if (text == NULL)
     {
       theme_dir = g_build_filename (g_get_home_dir (),
-                                    ".metacity/themes/", theme_name, NULL);
+                                    ".themes",
+                                    theme_name,
+                                    THEME_SUBDIR,
+                                    NULL);
       
       theme_file = g_build_filename (theme_dir,
                                      THEME_FILENAME,
@@ -4277,9 +4264,11 @@ meta_theme_load (const char *theme_name,
 
   if (text == NULL)
     {
-      theme_dir = g_build_filename (METACITY_PKGDATADIR,
+      theme_dir = g_build_filename (METACITY_DATADIR,
                                     "themes",
-                                    theme_name, NULL);
+                                    theme_name,
+                                    THEME_SUBDIR,
+                                    NULL);
       
       theme_file = g_build_filename (theme_dir,
                                      THEME_FILENAME,

@@ -1872,8 +1872,6 @@ get_control (MetaFrames *frames,
             return META_FRAME_CONTROL_RESIZE_E;
         }
     }
-
- noresize:
   
   return META_FRAME_CONTROL_NONE;
 }
