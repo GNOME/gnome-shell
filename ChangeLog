@@ -1,5 +1,11 @@
 2002-06-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (meta_stack_get_default_focus_window): don't use a
+	minimized window as the next focus window, patch from 
+	blackc@speakeasy.net	
+
+2002-06-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/place.c (find_next_cascade): increase the cascade threshold
 	a bit.
 	(find_first_fit): implement a somewhat lame first fit algorithm

@@ -948,6 +948,7 @@ set_net_wm_state (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
+/* FIXME rename this, it makes it sound like map state is relevant */
 gboolean
 meta_window_visible_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)

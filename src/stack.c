@@ -1011,6 +1011,7 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
           if (window &&
               window != not_this_one &&
               (window->unmaps_pending == 0) &&
+              !window->minimized &&
               (workspace == NULL ||
                meta_window_visible_on_workspace (window, workspace)))
             {
