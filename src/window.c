@@ -400,6 +400,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->type_atom = None;
 
   window->has_struts = FALSE;
+  window->do_not_cover = FALSE;
   window->left_strut = 0;
   window->right_strut = 0;
   window->top_strut = 0;
@@ -4977,13 +4978,10 @@ constrain_size (MetaWindow *window,
   int delta;
   double min_aspect, max_aspect;
   int minw, minh, maxw, maxh, fullw, fullh;
-  MetaRectangle work_area;
   
   /* frame member variables should NEVER be used in here */
   
 #define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
-
-  meta_window_get_work_area (window, TRUE, &work_area);
   
   /* Get the allowed size ranges, considering maximized, etc. */
   if (window->fullscreen)
@@ -5006,6 +5004,10 @@ constrain_size (MetaWindow *window,
     }
   else
     {
+      MetaRectangle work_area;
+      
+      meta_window_get_work_area (window, TRUE, &work_area);
+      
       fullw = work_area.width;
       fullh = work_area.height;
     }

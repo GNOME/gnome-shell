@@ -308,6 +308,27 @@ meta_window_place (MetaWindow        *window,
           goto done;
         }
     }
+
+  switch (window->type)
+    {
+      /* Run placement algorithm on these. */
+    case META_WINDOW_NORMAL:
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+    case META_WINDOW_SPLASHSCREEN:
+      break;
+          
+      /* Assume the app knows best how to place these, no placement
+       * algorithm ever (other than "leave them as-is")
+       */
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_MENU:
+    case META_WINDOW_UTILITY:
+      goto done;
+      break;
+    }
   
   if ((window->type == META_WINDOW_DIALOG ||
        window->type == META_WINDOW_MODAL_DIALOG) &&

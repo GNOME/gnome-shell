@@ -1,5 +1,18 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+        Yeah I know maximization is broken, I'm too tired to fix it. 
+	Probably because of the change to update_struts() that was 
+	supposed to fix the 100% CPU bug.
+	
+	* src/place.c (meta_window_place): don't run docks and things
+	through the placement algorithm. Thought it might fix
+	metacity-window-demo but it didn't.
+	
+	* src/window.c (constrain_size): only get work area when needed
+	(meta_window_new): init the do_not_cover field
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_get_xinerama_for_window):
 	short-circuit the "only one xinerama" case, and use outer rect of
 	window instead of window->rect, so we get root window coords.
