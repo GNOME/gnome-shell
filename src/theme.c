@@ -575,10 +575,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   i = 0;
   while (i < n_left)
     {
-      if (i == 0)
-        left_bg_rects[i] = &fgeom->left_left_background;
-      else if (i == (n_left - 1))
+      if (i == 0) /* prefer left background if only one button */
         left_bg_rects[i] = &fgeom->left_right_background;
+      else if (i == (n_left - 1))
+        left_bg_rects[i] = &fgeom->left_left_background;
       else
         left_bg_rects[i] = &fgeom->left_middle_backgrounds[i-1];
 
@@ -588,9 +588,9 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   i = 0;
   while (i < n_right)
     {
-      if (i == 0)
+      if (i == (n_right - 1)) /* prefer right background if only one button */
         right_bg_rects[i] = &fgeom->right_left_background;
-      else if (i == (n_right - 1))
+      else if (i == 0)
         right_bg_rects[i] = &fgeom->right_right_background;
       else
         right_bg_rects[i] = &fgeom->right_middle_backgrounds[i-1];
