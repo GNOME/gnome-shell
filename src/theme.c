@@ -38,6 +38,8 @@
                           (((color).green / 256) << 8)  |        \
                           (((color).blue / 256)))
 
+#define ALPHA_TO_UCHAR(d) ((unsigned char) ((d) * 255))
+
 static void
 color_composite (const GdkColor *bg,
                  const GdkColor *fg,
@@ -300,6 +302,210 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
     }
 }
 
+
+MetaGradientSpec*
+meta_gradient_spec_new (MetaGradientType type)
+{
+  MetaGradientSpec *spec;
+
+  spec = g_new (MetaGradientSpec, 1);
+
+  spec->type = type;
+  spec->color_specs = NULL;
+  
+  return spec;
+}
+
+void
+meta_gradient_spec_free (MetaGradientSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+  
+  g_slist_foreach (spec->color_specs, (GFunc) meta_color_spec_free, NULL);
+  g_slist_free (spec->color_specs);
+  g_free (spec);
+}
+
+GdkPixbuf*
+meta_gradient_spec_render (const MetaGradientSpec *spec,
+                           GtkWidget              *widget,
+                           int                     width,
+                           int                     height)
+{
+  int n_colors;
+  GdkColor *colors;
+  GSList *tmp;
+  int i;
+  GdkPixbuf *pixbuf;
+  
+  n_colors = g_slist_length (spec->color_specs);
+
+  if (n_colors == 0)
+    return NULL;
+  
+  colors = g_new (GdkColor, n_colors);
+
+  i = 0;
+  tmp = spec->color_specs;
+  while (tmp != NULL)
+    {
+      meta_color_spec_render (tmp->data, widget, &colors[i]);
+      
+      tmp = tmp->next;
+      ++i;
+    }
+  
+  pixbuf = meta_gradient_create_multi (width, height,
+                                       colors, n_colors,
+                                       spec->type);
+
+  g_free (colors);
+
+  return pixbuf;
+}
+
+MetaColorSpec*
+meta_color_spec_new (MetaColorSpecType type)
+{
+  MetaColorSpec *spec;
+  MetaColorSpec dummy;
+  int size;
+
+  size = G_STRUCT_OFFSET (MetaColorSpec, data);
+  
+  switch (type)
+    {
+    case META_COLOR_SPEC_BASIC:
+      size += sizeof (dummy.data.basic);
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      size += sizeof (dummy.data.gtk);
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      size += sizeof (dummy.data.blend);
+      break;
+    }
+  
+  spec = g_malloc0 (size);
+
+  spec->type = type;  
+  
+  return spec;
+}
+
+void
+meta_color_spec_free (MetaColorSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+  
+  switch (spec->type)
+    {
+    case META_COLOR_SPEC_BASIC:      
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      if (spec->data.blend.foreground)
+        meta_color_spec_free (spec->data.blend.foreground);      
+      if (spec->data.blend.background)
+        meta_color_spec_free (spec->data.blend.background);
+      break;
+    }
+  
+  g_free (spec);
+}
+
+MetaColorSpec*
+meta_color_spec_new_from_string (const char *str,
+                                 GError    **err)
+{
+  /* FIXME handle GTK colors, etc. */
+  MetaColorSpec *spec;
+
+  spec = meta_color_spec_new (META_COLOR_SPEC_BASIC);
+  
+  gdk_color_parse (str, &spec->data.basic.color);
+
+  return spec;
+}
+
+MetaColorSpec*
+meta_color_spec_new_gtk (MetaGtkColorComponent component,
+                         GtkStateType          state)
+{
+  /* FIXME handle GTK colors, etc. */
+  MetaColorSpec *spec;
+
+  spec = meta_color_spec_new (META_COLOR_SPEC_GTK);
+  
+  spec->data.gtk.component = component;
+  spec->data.gtk.state = state;
+
+  return spec;
+}
+
+void
+meta_color_spec_render (MetaColorSpec *spec,
+                        GtkWidget     *widget,
+                        GdkColor      *color)
+{
+  g_return_if_fail (spec != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (widget->style != NULL);
+  
+  switch (spec->type)
+    {
+    case META_COLOR_SPEC_BASIC:
+      *color = spec->data.basic.color;
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      switch (spec->data.gtk.component)
+        {
+        case META_GTK_COLOR_BG:
+          *color = widget->style->bg[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_FG:
+          *color = widget->style->fg[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_BASE:
+          *color = widget->style->base[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_TEXT:
+          *color = widget->style->text[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_LIGHT:
+          *color = widget->style->light[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_DARK:
+          *color = widget->style->dark[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_MID:
+          *color = widget->style->mid[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_TEXT_AA:
+          *color = widget->style->text_aa[spec->data.gtk.state];
+          break;
+        }
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      {
+        GdkColor bg, fg;
+
+        meta_color_spec_render (spec->data.blend.background, widget, &bg);
+        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+
+        color_composite (&bg, &fg, spec->data.blend.alpha, color);
+      }
+      break;
+    }
+}
+
 typedef enum
 {
   POS_TOKEN_INT,
@@ -467,6 +673,7 @@ pos_tokenize (const char  *expr,
         case '/':
         case '+':
         case '-': /* negative numbers aren't allowed so this is easy */
+        case '%':
           next->type = POS_TOKEN_OPERATOR;
           next->d.o.op = *p;
           ++n_tokens;
@@ -844,12 +1051,11 @@ do_operations (PosExpr *exprs,
 }
 
 static gboolean
-pos_eval_helper (PosToken *tokens,
-                 int       n_tokens,
-                 int       width,
-                 int       height,
-                 PosExpr  *result,
-                 GError  **err)
+pos_eval_helper (PosToken                   *tokens,
+                 int                         n_tokens,
+                 const MetaPositionExprEnv  *env,
+                 PosExpr                    *result,
+                 GError                    **err)
 {
   /* lazy-ass hardcoded limit on expression size */
 #define MAX_EXPRS 32
@@ -917,9 +1123,15 @@ pos_eval_helper (PosToken *tokens,
               exprs[n_exprs].type = POS_EXPR_INT;
               
               if (strcmp (t->d.v.name, "width") == 0)
-                exprs[n_exprs].d.int_val = width;
+                exprs[n_exprs].d.int_val = env->width;
               else if (strcmp (t->d.v.name, "height") == 0)
-                exprs[n_exprs].d.int_val = height;
+                exprs[n_exprs].d.int_val = env->height;
+              else if (env->object_width >= 0 &&
+                       strcmp (t->d.v.name, "object_width") == 0)
+                exprs[n_exprs].d.int_val = env->object_width;
+              else if (env->object_height >= 0 &&
+                       strcmp (t->d.v.name, "object_height") == 0)
+                exprs[n_exprs].d.int_val = env->object_height;
               else
                 {
                   g_set_error (err, META_POSITION_EXPR_ERROR,
@@ -960,7 +1172,7 @@ pos_eval_helper (PosToken *tokens,
                   /* We closed a toplevel paren group, so recurse */
                   if (!pos_eval_helper (&tokens[first_paren+1],
                                         i - first_paren - 1,
-                                        width, height,
+                                        env,
                                         &exprs[n_exprs],
                                         err))
                     return FALSE;
@@ -1018,18 +1230,17 @@ pos_eval_helper (PosToken *tokens,
  *   so very not worth fooling with bison, yet so very painful by hand.
  */
 static gboolean
-pos_eval (PosToken *tokens,
-          int       n_tokens,
-          int       width,
-          int       height,
-          int      *val_p,
-          GError  **err)
+pos_eval (PosToken                  *tokens,
+          int                        n_tokens,
+          const MetaPositionExprEnv *env,
+          int                       *val_p,
+          GError                   **err)
 {
   PosExpr expr;
   
   *val_p = 0;
 
-  if (pos_eval_helper (tokens, n_tokens, width, height, &expr, err))
+  if (pos_eval_helper (tokens, n_tokens, env, &expr, err))
     {
       switch (expr.type)
         {
@@ -1056,19 +1267,17 @@ pos_eval (PosToken *tokens,
  */
             
 gboolean
-meta_parse_position_expression (const char  *expr,
-                                int          x,
-                                int          y,
-                                int          width,
-                                int          height,
-                                int         *x_return,
-                                int         *y_return,
-                                GError     **err)
+meta_parse_position_expression (const char                *expr,
+                                const MetaPositionExprEnv *env,
+                                int                       *x_return,
+                                int                       *y_return,
+                                GError                   **err)
 {
   /* All positions are in a coordinate system with x, y at the origin.
-   * The expression can have -, +, *, / as operators, floating
-   * point or integer constants, and the two variables "width"
-   * and "height". Negative numbers aren't allowed.
+   * The expression can have -, +, *, / as operators, floating point
+   * or integer constants, and the variables "width" and "height" and
+   * optionally "object_width" and object_height". Negative numbers
+   * aren't allowed.
    */
   PosToken *tokens;
   int n_tokens;
@@ -1085,12 +1294,12 @@ meta_parse_position_expression (const char  *expr,
   debug_print_tokens (tokens, n_tokens);
 #endif
 
-  if (pos_eval (tokens, n_tokens, width, height, &val, err))
+  if (pos_eval (tokens, n_tokens, env, &val, err))
     {
       if (x_return)    
-        *x_return = x + val;
+        *x_return = env->x + val;
       if (y_return)    
-        *y_return = y + val;
+        *y_return = env->y + val;
       free_tokens (tokens, n_tokens);
       return TRUE;
     }
@@ -1104,17 +1313,11 @@ meta_parse_position_expression (const char  *expr,
 
 
 gboolean
-meta_parse_size_expression (const char  *expr,
-                            int          width,
-                            int          height,
-                            int         *val_return,
-                            GError     **err)
+meta_parse_size_expression (const char                *expr,
+                            const MetaPositionExprEnv *env,
+                            int                       *val_return,
+                            GError                   **err)
 {
-  /* All positions are in a coordinate system with x, y at the origin.
-   * The expression can have -, +, *, / as operators, floating
-   * point or integer constants, and the two variables "width"
-   * and "height". Negative numbers aren't allowed.
-   */
   PosToken *tokens;
   int n_tokens;
   int val;
@@ -1130,7 +1333,7 @@ meta_parse_size_expression (const char  *expr,
   debug_print_tokens (tokens, n_tokens);
 #endif
 
-  if (pos_eval (tokens, n_tokens, width, height, &val, err))
+  if (pos_eval (tokens, n_tokens, env, &val, err))
     {
       if (val_return)    
         *val_return = val;
@@ -1146,17 +1349,15 @@ meta_parse_size_expression (const char  *expr,
 }
 
 static int
-parse_x_position_unchecked (const char  *expr,
-                            int          x,
-                            int          width,
-                            int          height)
+parse_x_position_unchecked (const char                *expr,
+                            const MetaPositionExprEnv *env)
 {
   int retval;
   GError *error;  
   
   retval = 0;
   error = NULL;
-  if (!meta_parse_position_expression (expr, x, 0, width, height,
+  if (!meta_parse_position_expression (expr, env,
                                        &retval, NULL,
                                        &error))
     {
@@ -1170,17 +1371,15 @@ parse_x_position_unchecked (const char  *expr,
 }
 
 static int
-parse_y_position_unchecked (const char  *expr,
-                            int          y,
-                            int          width,
-                            int          height)
+parse_y_position_unchecked (const char                *expr,
+                            const MetaPositionExprEnv *env)
 {
   int retval;
   GError *error;  
   
   retval = 0;
   error = NULL;
-  if (!meta_parse_position_expression (expr, 0, y, width, height,
+  if (!meta_parse_position_expression (expr, env,
                                        NULL, &retval,
                                        &error))
     {
@@ -1194,16 +1393,15 @@ parse_y_position_unchecked (const char  *expr,
 }
 
 static int
-parse_size_unchecked (const char  *expr,
-                      int          width,
-                      int          height)
+parse_size_unchecked (const char          *expr,
+                      MetaPositionExprEnv *env)
 {
   int retval;
   GError *error;  
   
   retval = 0;
   error = NULL;
-  if (!meta_parse_size_expression (expr, width, height,
+  if (!meta_parse_size_expression (expr, env,
                                    &retval, &error))
     {
       meta_warning (_("Theme contained an expression \"%s\" that resulted in an error: %s\n"),
@@ -1216,116 +1414,143 @@ parse_size_unchecked (const char  *expr,
 }
 
 
-MetaShapeSpec*
-meta_shape_spec_new (MetaShapeType type)
+MetaDrawOp*
+meta_draw_op_new (MetaDrawType type)
 {
-  MetaShapeSpec *spec;
-  MetaShapeSpec dummy;
+  MetaDrawOp *op;
+  MetaDrawOp dummy;
   int size;
 
-  size = G_STRUCT_OFFSET (MetaShapeSpec, data);
+  size = G_STRUCT_OFFSET (MetaDrawOp, data);
   
   switch (type)
     {
-    case META_SHAPE_LINE:
+    case META_DRAW_LINE:
       size += sizeof (dummy.data.line);
       break;
 
-    case META_SHAPE_RECTANGLE:
+    case META_DRAW_RECTANGLE:
       size += sizeof (dummy.data.rectangle);
       break;
 
-    case META_SHAPE_ARC:
+    case META_DRAW_ARC:
       size += sizeof (dummy.data.arc);
       break;
 
-    case META_SHAPE_TEXTURE:
-      size += sizeof (dummy.data.texture);
+    case META_DRAW_TINT:
+      size += sizeof (dummy.data.tint);
       break;
 
-    case META_SHAPE_GTK_ARROW:
+    case META_DRAW_GRADIENT:
+      size += sizeof (dummy.data.gradient);
+      break;
+
+    case META_DRAW_IMAGE:
+      size += sizeof (dummy.data.image);
+      break;
+      
+    case META_DRAW_GTK_ARROW:
       size += sizeof (dummy.data.gtk_arrow);
       break;
 
-    case META_SHAPE_GTK_BOX:
+    case META_DRAW_GTK_BOX:
       size += sizeof (dummy.data.gtk_box);
       break;
 
-    case META_SHAPE_GTK_VLINE:
+    case META_DRAW_GTK_VLINE:
       size += sizeof (dummy.data.gtk_vline);
       break;
     }
   
-  spec = g_malloc0 (size);
+  op = g_malloc0 (size);
 
-  spec->type = type;  
+  op->type = type;  
   
-  return spec;
+  return op;
 }
 
 void
-meta_shape_spec_free (MetaShapeSpec *spec)
+meta_draw_op_free (MetaDrawOp *op)
 {
-  g_return_if_fail (spec != NULL);
+  g_return_if_fail (op != NULL);
   
-  switch (spec->type)
+  switch (op->type)
     {
-    case META_SHAPE_LINE:
-      g_free (spec->data.line.x1);
-      g_free (spec->data.line.y1);
-      g_free (spec->data.line.x2);
-      g_free (spec->data.line.y2);
+    case META_DRAW_LINE:
+      g_free (op->data.line.x1);
+      g_free (op->data.line.y1);
+      g_free (op->data.line.x2);
+      g_free (op->data.line.y2);
       break;
 
-    case META_SHAPE_RECTANGLE:
-      if (spec->data.rectangle.color_spec)
-        g_free (spec->data.rectangle.color_spec);
-      g_free (spec->data.rectangle.x);
-      g_free (spec->data.rectangle.y);
-      g_free (spec->data.rectangle.width);
-      g_free (spec->data.rectangle.height);
+    case META_DRAW_RECTANGLE:
+      if (op->data.rectangle.color_spec)
+        g_free (op->data.rectangle.color_spec);
+      g_free (op->data.rectangle.x);
+      g_free (op->data.rectangle.y);
+      g_free (op->data.rectangle.width);
+      g_free (op->data.rectangle.height);
       break;
 
-    case META_SHAPE_ARC:
-      if (spec->data.arc.color_spec)
-        g_free (spec->data.arc.color_spec);
-      g_free (spec->data.arc.x);
-      g_free (spec->data.arc.y);
-      g_free (spec->data.arc.width);
-      g_free (spec->data.arc.height);
+    case META_DRAW_ARC:
+      if (op->data.arc.color_spec)
+        g_free (op->data.arc.color_spec);
+      g_free (op->data.arc.x);
+      g_free (op->data.arc.y);
+      g_free (op->data.arc.width);
+      g_free (op->data.arc.height);
       break;
 
-    case META_SHAPE_TEXTURE:
-      if (spec->data.texture.texture_spec)
-        meta_texture_spec_free (spec->data.texture.texture_spec);
-      g_free (spec->data.texture.x);
-      g_free (spec->data.texture.y);
-      g_free (spec->data.texture.width);
-      g_free (spec->data.texture.height);
+    case META_DRAW_TINT:
+      if (op->data.tint.color_spec)
+        meta_color_spec_free (op->data.tint.color_spec);
+      g_free (op->data.tint.x);
+      g_free (op->data.tint.y);
+      g_free (op->data.tint.width);
+      g_free (op->data.tint.height);
       break;
 
-    case META_SHAPE_GTK_ARROW:
-      g_free (spec->data.gtk_arrow.x);
-      g_free (spec->data.gtk_arrow.y);
-      g_free (spec->data.gtk_arrow.width);
-      g_free (spec->data.gtk_arrow.height);
+    case META_DRAW_GRADIENT:
+      if (op->data.gradient.gradient_spec)
+        meta_gradient_spec_free (op->data.gradient.gradient_spec);
+      g_free (op->data.gradient.x);
+      g_free (op->data.gradient.y);
+      g_free (op->data.gradient.width);
+      g_free (op->data.gradient.height);
       break;
 
-    case META_SHAPE_GTK_BOX:
-      g_free (spec->data.gtk_box.x);
-      g_free (spec->data.gtk_box.y);
-      g_free (spec->data.gtk_box.width);
-      g_free (spec->data.gtk_box.height);
+    case META_DRAW_IMAGE:
+      if (op->data.image.pixbuf)
+        g_object_unref (G_OBJECT (op->data.image.pixbuf));
+      g_free (op->data.image.x);
+      g_free (op->data.image.y);
+      g_free (op->data.image.width);
+      g_free (op->data.image.height);
       break;
 
-    case META_SHAPE_GTK_VLINE:
-      g_free (spec->data.gtk_vline.x);
-      g_free (spec->data.gtk_vline.y1);
-      g_free (spec->data.gtk_vline.y2);
+      
+    case META_DRAW_GTK_ARROW:
+      g_free (op->data.gtk_arrow.x);
+      g_free (op->data.gtk_arrow.y);
+      g_free (op->data.gtk_arrow.width);
+      g_free (op->data.gtk_arrow.height);
+      break;
+
+    case META_DRAW_GTK_BOX:
+      g_free (op->data.gtk_box.x);
+      g_free (op->data.gtk_box.y);
+      g_free (op->data.gtk_box.width);
+      g_free (op->data.gtk_box.height);
+      break;
+
+    case META_DRAW_GTK_VLINE:
+      g_free (op->data.gtk_vline.x);
+      g_free (op->data.gtk_vline.y1);
+      g_free (op->data.gtk_vline.y2);
       break;
     }
 
-  g_free (spec);
+  g_free (op);
 }
 
 static GdkGC*
@@ -1353,594 +1578,6 @@ get_gc_for_primitive (GtkWidget          *widget,
                                (GdkRectangle*) clip); /* const cast */
 
   return gc;
-}
-
-void
-meta_shape_spec_draw (const MetaShapeSpec *spec,
-                      GtkWidget           *widget,
-                      GdkDrawable         *drawable,
-                      const GdkRectangle  *clip,
-                      int                  x,
-                      int                  y,
-                      int                  width,
-                      int                  height)
-{
-  GdkGC *gc;
-  
-  switch (spec->type)
-    {
-    case META_SHAPE_LINE:
-      {
-        int x1, x2, y1, y2;
-        
-        gc = get_gc_for_primitive (widget, drawable,
-                                   spec->data.line.color_spec,
-                                   clip,
-                                   spec->data.line.width);
-        
-        if (spec->data.line.dash_on_length > 0 &&
-            spec->data.line.dash_off_length > 0)
-          {
-            gint8 dash_list[2];
-            dash_list[0] = spec->data.line.dash_on_length;
-            dash_list[1] = spec->data.line.dash_off_length;
-            gdk_gc_set_dashes (gc, 0, dash_list, 2);
-          }
-
-        x1 = parse_x_position_unchecked (spec->data.line.x1,
-                                         x, width, height);
-
-        y1 = parse_y_position_unchecked (spec->data.line.y1,
-                                         y, width, height);
-
-        x2 = parse_x_position_unchecked (spec->data.line.x2,
-                                         x, width, height);
-        
-        y2 = parse_y_position_unchecked (spec->data.line.y2,
-                                         y, width, height);
-
-        gdk_draw_line (drawable, gc, x1, y1, x2, y2);
-        
-        g_object_unref (G_OBJECT (gc));
-      }
-      break;
-
-    case META_SHAPE_RECTANGLE:
-      {
-        int rx, ry, rwidth, rheight;
-        
-        gc = get_gc_for_primitive (widget, drawable, 
-                                   spec->data.rectangle.color_spec,
-                                   clip, 0);
-        
-        rx = parse_x_position_unchecked (spec->data.rectangle.x,
-                                         x, width, height);
-
-        ry = parse_y_position_unchecked (spec->data.rectangle.y,
-                                         y, width, height);
-
-
-        rwidth = parse_size_unchecked (spec->data.rectangle.width,
-                                       width, height);
-
-        rheight = parse_size_unchecked (spec->data.rectangle.height,
-                                       width, height);        
-
-        gdk_draw_rectangle (drawable, gc,
-                            spec->data.rectangle.filled,
-                            rx, ry, rwidth, rheight);
-        
-        g_object_unref (G_OBJECT (gc));
-      }
-      break;
-
-    case META_SHAPE_ARC:
-      {
-        int rx, ry, rwidth, rheight;
-        
-        gc = get_gc_for_primitive (widget, drawable,
-                                   spec->data.arc.color_spec,
-                                   clip, 0);
-        
-        rx = parse_x_position_unchecked (spec->data.arc.x,
-                                         x, width, height);
-
-        ry = parse_y_position_unchecked (spec->data.arc.y,
-                                         y, width, height);
-
-
-        rwidth = parse_size_unchecked (spec->data.arc.width,
-                                       width, height);
-
-        rheight = parse_size_unchecked (spec->data.arc.height,
-                                       width, height);        
-
-        gdk_draw_arc (drawable,
-                      gc,
-                      spec->data.arc.filled,
-                      rx, ry, rwidth, rheight,
-                      spec->data.arc.start_angle * (360.0 * 64.0) -
-                      (90.0 * 64.0), /* start at 12 instead of 3 oclock */
-                      spec->data.arc.extent_angle * (360.0 * 64.0));
-        
-        g_object_unref (G_OBJECT (gc));
-      }
-      break;
-
-    case META_SHAPE_TEXTURE:
-      {
-        int rx, ry, rwidth, rheight;
-
-        rx = parse_x_position_unchecked (spec->data.texture.x,
-                                         x, width, height);
-
-        ry = parse_y_position_unchecked (spec->data.texture.y,
-                                         y, width, height);
-
-
-        rwidth = parse_size_unchecked (spec->data.texture.width,
-                                       width, height);
-
-        rheight = parse_size_unchecked (spec->data.texture.height,
-                                        width, height);
-
-        meta_texture_spec_draw (spec->data.texture.texture_spec,
-                                widget,
-                                drawable,
-                                clip,
-                                spec->data.texture.mode,
-                                spec->data.texture.xalign,
-                                spec->data.texture.yalign,
-                                rx, ry, rwidth, rheight);
-      }
-      break;
-
-    case META_SHAPE_GTK_ARROW:
-      {
-        int rx, ry, rwidth, rheight;
-
-        rx = parse_x_position_unchecked (spec->data.gtk_arrow.x,
-                                         x, width, height);
-
-        ry = parse_y_position_unchecked (spec->data.gtk_arrow.y,
-                                         y, width, height);
-
-
-        rwidth = parse_size_unchecked (spec->data.gtk_arrow.width,
-                                       width, height);
-
-        rheight = parse_size_unchecked (spec->data.gtk_arrow.height,
-                                        width, height);
-
-        gtk_paint_arrow (widget->style,
-                         drawable,
-                         spec->data.gtk_arrow.state,
-                         spec->data.gtk_arrow.shadow,
-                         (GdkRectangle*) clip,
-                         widget,
-                         "metacity",
-                         spec->data.gtk_arrow.arrow,
-                         spec->data.gtk_arrow.filled,
-                         rx, ry, rwidth, rheight);
-      }
-      break;
-
-    case META_SHAPE_GTK_BOX:
-      {
-        int rx, ry, rwidth, rheight;
-        
-        rx = parse_x_position_unchecked (spec->data.gtk_box.x,
-                                         x, width, height);
-
-        ry = parse_y_position_unchecked (spec->data.gtk_box.y,
-                                         y, width, height);
-
-
-        rwidth = parse_size_unchecked (spec->data.gtk_box.width,
-                                       width, height);
-
-        rheight = parse_size_unchecked (spec->data.gtk_box.height,
-                                        width, height);
-
-        gtk_paint_box (widget->style,
-                       drawable,
-                       spec->data.gtk_box.state,
-                       spec->data.gtk_box.shadow,
-                       (GdkRectangle*) clip,
-                       widget,
-                       "metacity",
-                       rx, ry, rwidth, rheight);
-      }
-      break;
-
-    case META_SHAPE_GTK_VLINE:
-      {
-        int rx, ry1, ry2;
-        
-        rx = parse_x_position_unchecked (spec->data.gtk_vline.x,
-                                         x, width, height);
-
-        ry1 = parse_y_position_unchecked (spec->data.gtk_vline.y1,
-                                          y, width, height);
-
-        ry2 = parse_y_position_unchecked (spec->data.gtk_vline.y2,
-                                          y, width, height);
-
-        gtk_paint_vline (widget->style,
-                         drawable,
-                         spec->data.gtk_vline.state,
-                         (GdkRectangle*) clip,
-                         widget,
-                         "metacity",
-                         rx, ry1, ry2);
-      }
-      break;
-    }
-}
-
-MetaGradientSpec*
-meta_gradient_spec_new (MetaGradientType type)
-{
-  MetaGradientSpec *spec;
-
-  spec = g_new (MetaGradientSpec, 1);
-
-  spec->type = type;
-  spec->color_specs = NULL;
-  
-  return spec;
-}
-
-void
-meta_gradient_spec_free (MetaGradientSpec *spec)
-{
-  g_return_if_fail (spec != NULL);
-  
-  g_slist_foreach (spec->color_specs, (GFunc) meta_color_spec_free, NULL);
-  g_slist_free (spec->color_specs);
-  g_free (spec);
-}
-
-GdkPixbuf*
-meta_gradient_spec_render (const MetaGradientSpec *spec,
-                           GtkWidget              *widget,
-                           int                     width,
-                           int                     height)
-{
-  int n_colors;
-  GdkColor *colors;
-  GSList *tmp;
-  int i;
-  GdkPixbuf *pixbuf;
-  
-  n_colors = g_slist_length (spec->color_specs);
-
-  if (n_colors == 0)
-    return NULL;
-  
-  colors = g_new (GdkColor, n_colors);
-
-  i = 0;
-  tmp = spec->color_specs;
-  while (tmp != NULL)
-    {
-      meta_color_spec_render (tmp->data, widget, &colors[i]);
-      
-      tmp = tmp->next;
-      ++i;
-    }
-  
-  pixbuf = meta_gradient_create_multi (width, height,
-                                       colors, n_colors,
-                                       spec->type);
-
-  g_free (colors);
-
-  return pixbuf;
-}
-
-MetaColorSpec*
-meta_color_spec_new (MetaColorSpecType type)
-{
-  MetaColorSpec *spec;
-  MetaColorSpec dummy;
-  int size;
-
-  size = G_STRUCT_OFFSET (MetaColorSpec, data);
-  
-  switch (type)
-    {
-    case META_COLOR_SPEC_BASIC:
-      size += sizeof (dummy.data.basic);
-      break;
-
-    case META_COLOR_SPEC_GTK:
-      size += sizeof (dummy.data.gtk);
-      break;
-
-    case META_COLOR_SPEC_BLEND:
-      size += sizeof (dummy.data.blend);
-      break;
-    }
-  
-  spec = g_malloc0 (size);
-
-  spec->type = type;  
-  
-  return spec;
-}
-
-void
-meta_color_spec_free (MetaColorSpec *spec)
-{
-  g_return_if_fail (spec != NULL);
-  
-  switch (spec->type)
-    {
-    case META_COLOR_SPEC_BASIC:      
-      break;
-
-    case META_COLOR_SPEC_GTK:
-      break;
-
-    case META_COLOR_SPEC_BLEND:
-      if (spec->data.blend.foreground)
-        meta_color_spec_free (spec->data.blend.foreground);      
-      if (spec->data.blend.background)
-        meta_color_spec_free (spec->data.blend.background);
-      break;
-    }
-  
-  g_free (spec);
-}
-
-MetaColorSpec*
-meta_color_spec_new_from_string (const char *str,
-                                 GError    **err)
-{
-  /* FIXME handle GTK colors, etc. */
-  MetaColorSpec *spec;
-
-  spec = meta_color_spec_new (META_COLOR_SPEC_BASIC);
-  
-  gdk_color_parse (str, &spec->data.basic.color);
-
-  return spec;
-}
-
-MetaColorSpec*
-meta_color_spec_new_gtk (MetaGtkColorComponent component,
-                         GtkStateType          state)
-{
-  /* FIXME handle GTK colors, etc. */
-  MetaColorSpec *spec;
-
-  spec = meta_color_spec_new (META_COLOR_SPEC_GTK);
-  
-  spec->data.gtk.component = component;
-  spec->data.gtk.state = state;
-
-  return spec;
-}
-
-void
-meta_color_spec_render (MetaColorSpec *spec,
-                        GtkWidget     *widget,
-                        GdkColor      *color)
-{
-  g_return_if_fail (spec != NULL);
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (widget->style != NULL);
-  
-  switch (spec->type)
-    {
-    case META_COLOR_SPEC_BASIC:
-      *color = spec->data.basic.color;
-      break;
-
-    case META_COLOR_SPEC_GTK:
-      switch (spec->data.gtk.component)
-        {
-        case META_GTK_COLOR_BG:
-          *color = widget->style->bg[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_FG:
-          *color = widget->style->fg[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_BASE:
-          *color = widget->style->base[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_TEXT:
-          *color = widget->style->text[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_LIGHT:
-          *color = widget->style->light[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_DARK:
-          *color = widget->style->dark[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_MID:
-          *color = widget->style->mid[spec->data.gtk.state];
-          break;
-        case META_GTK_COLOR_TEXT_AA:
-          *color = widget->style->text_aa[spec->data.gtk.state];
-          break;
-        }
-      break;
-
-    case META_COLOR_SPEC_BLEND:
-      {
-        GdkColor bg, fg;
-
-        meta_color_spec_render (spec->data.blend.background, widget, &bg);
-        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
-
-        color_composite (&bg, &fg, spec->data.blend.alpha, color);
-      }
-      break;
-    }
-}
-
-
-MetaTextureSpec*
-meta_texture_spec_new (MetaTextureType type)
-{
-  MetaTextureSpec *spec;
-  MetaTextureSpec dummy;
-  int size;
-
-  size = G_STRUCT_OFFSET (MetaTextureSpec, data);
-  
-  switch (type)
-    {
-    case META_TEXTURE_SOLID:
-      size += sizeof (dummy.data.solid);
-      break;
-
-    case META_TEXTURE_GRADIENT:
-      size += sizeof (dummy.data.gradient);
-      break;
-
-    case META_TEXTURE_IMAGE:
-      size += sizeof (dummy.data.image);
-      break;
-
-    case META_TEXTURE_COMPOSITE:
-      size += sizeof (dummy.data.composite);
-      break;
-
-    case META_TEXTURE_BLANK:
-      size += sizeof (dummy.data.blank);
-      break;
-
-    case META_TEXTURE_SHAPE_LIST:
-      size += sizeof (dummy.data.shape_list);
-      break;
-    }
-  
-  spec = g_malloc0 (size);
-
-  spec->type = type;  
-  
-  return spec;
-}
-
-void
-meta_texture_spec_free (MetaTextureSpec *spec)
-{
-  g_return_if_fail (spec != NULL);
-  
-  switch (spec->type)
-    {
-    case META_TEXTURE_SOLID:
-      if (spec->data.solid.color_spec)
-        meta_color_spec_free (spec->data.solid.color_spec);
-      break;
-
-    case META_TEXTURE_GRADIENT:
-      if (spec->data.gradient.gradient_spec)
-        meta_gradient_spec_free (spec->data.gradient.gradient_spec);
-      break;
-
-    case META_TEXTURE_IMAGE:
-      if (spec->data.image.pixbuf)
-        g_object_unref (G_OBJECT (spec->data.image.pixbuf));
-      break;
-
-    case META_TEXTURE_COMPOSITE:
-      if (spec->data.composite.background)
-        meta_texture_spec_free (spec->data.composite.background);
-      if (spec->data.composite.foreground)
-        meta_texture_spec_free (spec->data.composite.foreground);
-      break;
-
-    case META_TEXTURE_BLANK:
-      break;
-
-    case META_TEXTURE_SHAPE_LIST:
-      if (spec->data.shape_list.shape_specs)
-        {
-          int i;
-          i = 0;
-          while (i < spec->data.shape_list.n_specs)
-            {
-              meta_shape_spec_free (spec->data.shape_list.shape_specs[i]);
-              ++i;
-            }
-          g_free (spec->data.shape_list.shape_specs);
-        }
-      break;
-    }
-
-  g_free (spec);
-}
-
-static void
-render_pixbuf (GdkDrawable        *drawable,
-               const GdkRectangle *clip,
-               GdkPixbuf          *pixbuf,
-               int                 x,
-               int                 y)
-{
-  /* grumble, render_to_drawable_alpha does not accept a clip
-   * mask, so we have to go through some BS
-   */
-  GdkRectangle pixbuf_rect;
-  GdkRectangle draw_rect;
-  
-  pixbuf_rect.x = x;
-  pixbuf_rect.y = y;
-  pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
-  pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
-
-  if (clip)
-    {
-      if (!gdk_rectangle_intersect ((GdkRectangle*)clip,
-                                    &pixbuf_rect, &draw_rect))
-        return;
-    }
-  else
-    {
-      draw_rect = pixbuf_rect;
-    }
-  
-  gdk_pixbuf_render_to_drawable_alpha (pixbuf,
-                                       drawable,
-                                       draw_rect.x - pixbuf_rect.x,
-                                       draw_rect.y - pixbuf_rect.y,
-                                       draw_rect.x, draw_rect.y,
-                                       draw_rect.width,
-                                       draw_rect.height,
-                                       GDK_PIXBUF_ALPHA_FULL, /* ignored */
-                                       128,                   /* ignored */
-                                       GDK_RGB_DITHER_NORMAL,
-                                       draw_rect.x - pixbuf_rect.x,
-                                       draw_rect.y - pixbuf_rect.y);
-}
-
-
-static void
-render_pixbuf_aligned (GdkDrawable        *drawable,
-                       const GdkRectangle *clip,
-                       GdkPixbuf          *pixbuf,
-                       double              xalign,
-                       double              yalign,
-                       int                 x,
-                       int                 y,
-                       int                 width,
-                       int                 height)
-{
-  int pix_width;
-  int pix_height;
-  int rx, ry;
-  
-  pix_width = gdk_pixbuf_get_width (pixbuf);
-  pix_height = gdk_pixbuf_get_height (pixbuf);
-  
-  rx = x + (width - pix_width) * xalign;
-  ry = y + (height - pix_height) * yalign;
-  
-  render_pixbuf (drawable, clip, pixbuf, rx, ry);
 }
 
 static GdkPixbuf*
@@ -1998,83 +1635,132 @@ multiply_alpha (GdkPixbuf *pixbuf,
   return pixbuf;
 }
 
-static GdkPixbuf*
-meta_texture_spec_render (const MetaTextureSpec *spec,
-                          GtkWidget             *widget,
-                          MetaTextureDrawMode    mode,
-                          guchar                 alpha,
-                          int                    width,
-                          int                    height)
+static void
+render_pixbuf (GdkDrawable        *drawable,
+               const GdkRectangle *clip,
+               GdkPixbuf          *pixbuf,
+               int                 x,
+               int                 y)
 {
+  /* grumble, render_to_drawable_alpha does not accept a clip
+   * mask, so we have to go through some BS
+   */
+  /* FIXME once GTK 1.3.13 has been out a while we can use
+   * render_to_drawable() which now does alpha with clip
+   */
+  GdkRectangle pixbuf_rect;
+  GdkRectangle draw_rect;
+  
+  pixbuf_rect.x = x;
+  pixbuf_rect.y = y;
+  pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
+  pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
+
+  if (clip)
+    {
+      if (!gdk_rectangle_intersect ((GdkRectangle*)clip,
+                                    &pixbuf_rect, &draw_rect))
+        return;
+    }
+  else
+    {
+      draw_rect = pixbuf_rect;
+    }
+  
+  gdk_pixbuf_render_to_drawable_alpha (pixbuf,
+                                       drawable,
+                                       draw_rect.x - pixbuf_rect.x,
+                                       draw_rect.y - pixbuf_rect.y,
+                                       draw_rect.x, draw_rect.y,
+                                       draw_rect.width,
+                                       draw_rect.height,
+                                       GDK_PIXBUF_ALPHA_FULL, /* ignored */
+                                       128,                   /* ignored */
+                                       GDK_RGB_DITHER_NORMAL,
+                                       draw_rect.x - pixbuf_rect.x,
+                                       draw_rect.y - pixbuf_rect.y);
+}
+
+static GdkPixbuf*
+draw_op_as_pixbuf (const MetaDrawOp    *op,
+                   GtkWidget           *widget,
+                   int                  width,
+                   int                  height)
+{
+  /* Try to get the op as a pixbuf, assuming w/h in the op
+   * matches the width/height passed in. return NULL
+   * if the op can't be converted to an equivalent pixbuf.
+   */
   GdkPixbuf *pixbuf;
 
   pixbuf = NULL;
-
-  g_return_val_if_fail (spec != NULL, NULL);
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-  g_return_val_if_fail (widget->style != NULL, NULL);
   
-  switch (spec->type)
+  switch (op->type)
     {
-    case META_TEXTURE_SOLID:
+    case META_DRAW_LINE:
+      break;
+
+    case META_DRAW_RECTANGLE:
+      if (op->data.rectangle.filled)
+        {
+          GdkColor color;
+
+          meta_color_spec_render (op->data.rectangle.color_spec,
+                                  widget,
+                                  &color);
+          
+          pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                   FALSE,
+                                   8, width, height);
+          
+          gdk_pixbuf_fill (pixbuf, GDK_COLOR_RGBA (color));
+        }
+      break;
+
+    case META_DRAW_ARC:
+      break;
+
+    case META_DRAW_TINT:
       {
         GdkColor color;
+        guint32 rgba;
         
-        g_return_val_if_fail (spec->data.solid.color_spec != NULL,
-                              NULL);
+        meta_color_spec_render (op->data.rectangle.color_spec,
+                                widget,
+                                &color);
+        
+        pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                 ALPHA_TO_UCHAR (op->data.tint.alpha) < 255,
+                                 8, width, height);
 
-        meta_color_spec_render (spec->data.solid.color_spec,
-                                widget, &color);
-
-        if (alpha == 255)
-          {
-            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                     FALSE,
-                                     8, width, height);
-            gdk_pixbuf_fill (pixbuf, GDK_COLOR_RGBA (color));
-          }
-        else
-          {
-            guint32 rgba;
-            
-            pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                     TRUE,
-                                     8, width, height);
-            rgba = GDK_COLOR_RGBA (color);
-            rgba &= ~0xff;
-            rgba |= alpha;
-            gdk_pixbuf_fill (pixbuf, rgba);
-          }
+        rgba = GDK_COLOR_RGBA (color);
+        rgba &= ~0xff;
+        rgba |= ALPHA_TO_UCHAR (op->data.tint.alpha);
+        
+        gdk_pixbuf_fill (pixbuf, rgba);
       }
       break;
 
-    case META_TEXTURE_GRADIENT:
+    case META_DRAW_GRADIENT:
       {
-        g_return_val_if_fail (spec->data.gradient.gradient_spec != NULL,
-                              NULL);
-
-        pixbuf = meta_gradient_spec_render (spec->data.gradient.gradient_spec,
+        pixbuf = meta_gradient_spec_render (op->data.gradient.gradient_spec,
                                             widget, width, height);
 
-        pixbuf = multiply_alpha (pixbuf, alpha);
+        pixbuf = multiply_alpha (pixbuf,
+                                 ALPHA_TO_UCHAR (op->data.gradient.alpha));
       }
       break;
 
-    case META_TEXTURE_IMAGE:
-      {
-        g_return_val_if_fail (spec->data.image.pixbuf != NULL,
-                              NULL);
-
-        pixbuf = NULL;
-        
-        switch (mode)
+    case META_DRAW_IMAGE:
+      {                
+        switch (op->data.image.scale_mode)
           {
-          case META_TEXTURE_DRAW_UNSCALED:
-            pixbuf = spec->data.image.pixbuf;
+          case META_SCALE_NONE:
+            pixbuf = op->data.image.pixbuf;
             g_object_ref (G_OBJECT (pixbuf));
             break;
-          case META_TEXTURE_DRAW_SCALED_VERTICALLY:
-            pixbuf = spec->data.image.pixbuf;
+          case META_SCALE_VERTICALLY:
+            pixbuf = op->data.image.pixbuf;
             if (gdk_pixbuf_get_height (pixbuf) == height)
               {
                 g_object_ref (G_OBJECT (pixbuf));
@@ -2087,8 +1773,8 @@ meta_texture_spec_render (const MetaTextureSpec *spec,
                                                   GDK_INTERP_BILINEAR);
               }
             break;
-          case META_TEXTURE_DRAW_SCALED_HORIZONTALLY:
-            pixbuf = spec->data.image.pixbuf;
+          case META_SCALE_HORIZONTALLY:
+            pixbuf = op->data.image.pixbuf;
             if (gdk_pixbuf_get_width (pixbuf) == width)
               {
                 g_object_ref (G_OBJECT (pixbuf));
@@ -2101,8 +1787,8 @@ meta_texture_spec_render (const MetaTextureSpec *spec,
                                                   GDK_INTERP_BILINEAR);
               }
             break;
-          case META_TEXTURE_DRAW_SCALED_BOTH:
-            pixbuf = spec->data.image.pixbuf;
+          case META_SCALE_BOTH:
+            pixbuf = op->data.image.pixbuf;
             if (gdk_pixbuf_get_width (pixbuf) == width &&
                 gdk_pixbuf_get_height (pixbuf) == height)
               {
@@ -2117,47 +1803,1004 @@ meta_texture_spec_render (const MetaTextureSpec *spec,
             break;
           }
 
-        pixbuf = multiply_alpha (pixbuf, alpha);
+        pixbuf = multiply_alpha (pixbuf,
+                                 ALPHA_TO_UCHAR (op->data.image.alpha));
       }
       break;
 
-    case META_TEXTURE_COMPOSITE:
-    case META_TEXTURE_BLANK:
-    case META_TEXTURE_SHAPE_LIST:
-      break;
+      
+    case META_DRAW_GTK_ARROW:
+    case META_DRAW_GTK_BOX:
+    case META_DRAW_GTK_VLINE:
+      break;  
     }
 
   return pixbuf;
 }
 
-static void
-draw_color_rectangle (GtkWidget   *widget,
-                      GdkDrawable *drawable,
-                      GdkColor    *color,
-                      const GdkRectangle *clip,
-                      int          x,
-                      int          y,
-                      int          width,
-                      int          height)
+void
+meta_draw_op_draw (const MetaDrawOp    *op,
+                   GtkWidget           *widget,
+                   GdkDrawable         *drawable,
+                   const GdkRectangle  *clip,
+                   int                  x,
+                   int                  y,
+                   int                  width,
+                   int                  height)
 {
   GdkGC *gc;
-  GdkGCValues values;  
+  MetaPositionExprEnv env;
 
-  values.foreground = *color;
-  gdk_rgb_find_color (widget->style->colormap, &values.foreground);  
+  env.x = x;
+  env.y = y;
+  env.width = width;
+  env.height = height;
+  env.object_width = -1;
+  env.object_height = -1;
   
-  gc = gdk_gc_new_with_values (drawable, &values, GDK_GC_FOREGROUND);
+  switch (op->type)
+    {
+    case META_DRAW_LINE:
+      {
+        int x1, x2, y1, y2;
+        
+        gc = get_gc_for_primitive (widget, drawable,
+                                   op->data.line.color_spec,
+                                   clip,
+                                   op->data.line.width);
+        
+        if (op->data.line.dash_on_length > 0 &&
+            op->data.line.dash_off_length > 0)
+          {
+            gint8 dash_list[2];
+            dash_list[0] = op->data.line.dash_on_length;
+            dash_list[1] = op->data.line.dash_off_length;
+            gdk_gc_set_dashes (gc, 0, dash_list, 2);
+          }
 
-  if (clip)
-    gdk_gc_set_clip_rectangle (gc,
-                               (GdkRectangle*) clip); /* const cast */
-  
-  gdk_draw_rectangle (drawable,
-                      gc, TRUE, x, y, width, height);
-  
-  g_object_unref (G_OBJECT (gc));
+        x1 = parse_x_position_unchecked (op->data.line.x1, &env);
+        y1 = parse_y_position_unchecked (op->data.line.y1, &env);
+        x2 = parse_x_position_unchecked (op->data.line.x2, &env);
+        y2 = parse_y_position_unchecked (op->data.line.y2, &env);
+
+        gdk_draw_line (drawable, gc, x1, y1, x2, y2);
+        
+        g_object_unref (G_OBJECT (gc));
+      }
+      break;
+
+    case META_DRAW_RECTANGLE:
+      {
+        int rx, ry, rwidth, rheight;
+        
+        gc = get_gc_for_primitive (widget, drawable, 
+                                   op->data.rectangle.color_spec,
+                                   clip, 0);
+        
+        rx = parse_x_position_unchecked (op->data.rectangle.x, &env);
+        ry = parse_y_position_unchecked (op->data.rectangle.y, &env);
+        rwidth = parse_size_unchecked (op->data.rectangle.width, &env);
+        rheight = parse_size_unchecked (op->data.rectangle.height, &env);
+
+        gdk_draw_rectangle (drawable, gc,
+                            op->data.rectangle.filled,
+                            rx, ry, rwidth, rheight);
+        
+        g_object_unref (G_OBJECT (gc));
+      }
+      break;
+
+    case META_DRAW_ARC:
+      {
+        int rx, ry, rwidth, rheight;
+        
+        gc = get_gc_for_primitive (widget, drawable,
+                                   op->data.arc.color_spec,
+                                   clip, 0);
+        
+        rx = parse_x_position_unchecked (op->data.arc.x, &env);
+        ry = parse_y_position_unchecked (op->data.arc.y, &env);
+        rwidth = parse_size_unchecked (op->data.arc.width, &env);
+        rheight = parse_size_unchecked (op->data.arc.height, &env);
+
+        gdk_draw_arc (drawable,
+                      gc,
+                      op->data.arc.filled,
+                      rx, ry, rwidth, rheight,
+                      op->data.arc.start_angle * (360.0 * 64.0) -
+                      (90.0 * 64.0), /* start at 12 instead of 3 oclock */
+                      op->data.arc.extent_angle * (360.0 * 64.0));
+        
+        g_object_unref (G_OBJECT (gc));
+      }
+      break;
+
+    case META_DRAW_TINT:
+      {
+        int rx, ry, rwidth, rheight;
+
+        rx = parse_x_position_unchecked (op->data.tint.x, &env);
+        ry = parse_y_position_unchecked (op->data.tint.y, &env);
+        rwidth = parse_size_unchecked (op->data.tint.width, &env);
+        rheight = parse_size_unchecked (op->data.tint.height, &env);
+
+        if (ALPHA_TO_UCHAR (op->data.tint.alpha) == 255)
+          {
+            gc = get_gc_for_primitive (widget, drawable,
+                                       op->data.tint.color_spec,
+                                       clip, 0);
+
+            gdk_draw_rectangle (drawable, gc,
+                                TRUE,
+                                rx, ry, rwidth, rheight);
+            
+            g_object_unref (G_OBJECT (gc));
+          }
+        else
+          {
+            GdkPixbuf *pixbuf;
+
+            pixbuf = draw_op_as_pixbuf (op, widget, rwidth, rheight);
+
+            render_pixbuf (drawable, clip, pixbuf, rx, ry);
+
+            g_object_unref (G_OBJECT (pixbuf));
+          }
+      }
+      break;
+
+    case META_DRAW_GRADIENT:
+      {
+        int rx, ry, rwidth, rheight;
+        GdkPixbuf *pixbuf;
+        
+        rx = parse_x_position_unchecked (op->data.gradient.x, &env);
+        ry = parse_y_position_unchecked (op->data.gradient.y, &env);
+        rwidth = parse_size_unchecked (op->data.gradient.width, &env);
+        rheight = parse_size_unchecked (op->data.gradient.height, &env);
+
+        pixbuf = draw_op_as_pixbuf (op, widget, rwidth, rheight);
+        
+        render_pixbuf (drawable, clip, pixbuf, rx, ry);
+        
+        g_object_unref (G_OBJECT (pixbuf));        
+      }
+      break;
+      
+    case META_DRAW_IMAGE:
+      {
+        int rx, ry, rwidth, rheight;
+        GdkPixbuf *pixbuf;
+        
+        rx = parse_x_position_unchecked (op->data.image.x, &env);
+        ry = parse_y_position_unchecked (op->data.image.y, &env);
+        rwidth = parse_size_unchecked (op->data.image.width, &env);
+        rheight = parse_size_unchecked (op->data.image.height, &env);
+
+        pixbuf = draw_op_as_pixbuf (op, widget, rwidth, rheight);
+
+        env.object_width = gdk_pixbuf_get_width (pixbuf);
+        env.object_height = gdk_pixbuf_get_height (pixbuf);
+        
+        render_pixbuf (drawable, clip, pixbuf, rx, ry);
+        
+        g_object_unref (G_OBJECT (pixbuf));        
+      }
+      break;
+      
+    case META_DRAW_GTK_ARROW:
+      {
+        int rx, ry, rwidth, rheight;
+
+        rx = parse_x_position_unchecked (op->data.gtk_arrow.x, &env);
+        ry = parse_y_position_unchecked (op->data.gtk_arrow.y, &env);
+        rwidth = parse_size_unchecked (op->data.gtk_arrow.width, &env);
+        rheight = parse_size_unchecked (op->data.gtk_arrow.height, &env);
+
+        gtk_paint_arrow (widget->style,
+                         drawable,
+                         op->data.gtk_arrow.state,
+                         op->data.gtk_arrow.shadow,
+                         (GdkRectangle*) clip,
+                         widget,
+                         "metacity",
+                         op->data.gtk_arrow.arrow,
+                         op->data.gtk_arrow.filled,
+                         rx, ry, rwidth, rheight);
+      }
+      break;
+
+    case META_DRAW_GTK_BOX:
+      {
+        int rx, ry, rwidth, rheight;
+        
+        rx = parse_x_position_unchecked (op->data.gtk_box.x, &env);
+        ry = parse_y_position_unchecked (op->data.gtk_box.y, &env);
+        rwidth = parse_size_unchecked (op->data.gtk_box.width, &env);
+        rheight = parse_size_unchecked (op->data.gtk_box.height, &env);
+
+        gtk_paint_box (widget->style,
+                       drawable,
+                       op->data.gtk_box.state,
+                       op->data.gtk_box.shadow,
+                       (GdkRectangle*) clip,
+                       widget,
+                       "metacity",
+                       rx, ry, rwidth, rheight);
+      }
+      break;
+
+    case META_DRAW_GTK_VLINE:
+      {
+        int rx, ry1, ry2;
+        
+        rx = parse_x_position_unchecked (op->data.gtk_vline.x, &env);
+        ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, &env);
+        ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, &env);
+
+        gtk_paint_vline (widget->style,
+                         drawable,
+                         op->data.gtk_vline.state,
+                         (GdkRectangle*) clip,
+                         widget,
+                         "metacity",
+                         rx, ry1, ry2);
+      }
+      break;
+    }
 }
 
+MetaDrawOpList*
+meta_draw_op_list_new (int n_preallocs)
+{
+  MetaDrawOpList *op_list;
+
+  g_return_val_if_fail (n_preallocs >= 0, NULL);
+  
+  op_list = g_new (MetaDrawOpList, 1);
+
+  op_list->refcount = 1;
+  op_list->n_allocated = n_preallocs;
+  op_list->ops = g_new (MetaDrawOp*, op_list->n_allocated);
+  op_list->n_ops = 0;
+  
+  return op_list;
+}
+
+void
+meta_draw_op_list_ref (MetaDrawOpList *op_list)
+{
+  g_return_if_fail (op_list != NULL);
+
+  op_list->refcount += 1;
+}
+
+void
+meta_draw_op_list_unref (MetaDrawOpList *op_list)
+{
+  g_return_if_fail (op_list != NULL);
+  g_return_if_fail (op_list->refcount > 0);
+
+  op_list->refcount -= 1;
+
+  if (op_list->refcount == 0)
+    {
+      int i;
+
+      i = 0;
+      while (i < op_list->n_ops)
+        {
+          meta_draw_op_free (op_list->ops[i]);
+          ++i;
+        }
+
+      g_free (op_list->ops);
+      
+      g_free (op_list);
+    }
+}
+
+void
+meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
+                         GtkWidget            *widget,
+                         GdkDrawable          *drawable,
+                         const GdkRectangle   *clip,
+                         int                   x,
+                         int                   y,
+                         int                   width,
+                         int                   height)
+{
+  int i;
+
+  /* FIXME this can be optimized, potentially a lot, by
+   * compressing multiple ops when possible. For example,
+   * anything convertible to a pixbuf can be composited
+   * client-side, and putting a color tint over a pixbuf
+   * can be done without creating the solid-color pixbuf.
+   */
+  
+  i = 0;
+  while (i < op_list->n_ops)
+    {
+      meta_draw_op_draw (op_list->ops[i],
+                         widget, drawable, clip,
+                         x, y, width, height);
+      ++i;
+    }
+}
+
+void
+meta_draw_op_list_append (MetaDrawOpList       *op_list,
+                          MetaDrawOp           *op)
+{
+  if (op_list->n_ops == op_list->n_allocated)
+    {
+      op_list->n_allocated *= 2;
+      op_list->ops = g_renew (MetaDrawOp*, op_list->ops, op_list->n_allocated);
+    }
+
+  op_list->ops[op_list->n_ops] = op;
+  op_list->n_ops += 1;
+}
+
+MetaFrameStyle*
+meta_frame_style_new (MetaFrameStyle *parent)
+{
+  MetaFrameStyle *style;
+
+  style = g_new0 (MetaFrameStyle, 1);
+
+  style->refcount = 1;
+
+  style->parent = parent;
+  if (parent)
+    meta_frame_style_ref (parent);
+  
+  return style;
+}
+
+void
+meta_frame_style_ref (MetaFrameStyle *style)
+{
+  g_return_if_fail (style != NULL);
+  
+  style->refcount += 1;
+}
+
+static void
+free_button_ops (MetaDrawOpList *op_lists[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST])
+{
+  int i, j;
+  
+  i = 0;
+  while (i < META_BUTTON_TYPE_LAST)
+    {
+      j = 0;
+      while (j < META_BUTTON_STATE_LAST)
+        {
+          if (op_lists[i][j])
+            meta_draw_op_list_unref (op_lists[i][j]);
+          
+          ++j;
+        }
+      
+      ++i;
+    }
+}
+
+void
+meta_frame_style_unref (MetaFrameStyle *style)
+{
+  g_return_if_fail (style != NULL);
+  g_return_if_fail (style->refcount > 0);
+  
+  style->refcount -= 1;
+
+  if (style->refcount == 0)
+    {
+      int i;
+      
+      free_button_ops (style->button_icons);
+      free_button_ops (style->button_backgrounds);
+
+      i = 0;
+      while (i < META_FRAME_PIECE_LAST)
+        {
+          if (style->pieces[i])
+            meta_draw_op_list_unref (style->pieces[i]);
+          
+          ++i;
+        }
+
+      if (style->layout)
+        meta_frame_layout_free (style->layout);
+
+      /* we hold a reference to any parent style */
+      if (style->parent)
+        meta_frame_style_unref (style->parent);
+      
+      g_free (style);
+    }
+}
+
+static void
+button_rect (MetaButtonType type,
+             MetaFrameGeometry *fgeom,
+             GdkRectangle *rect)
+{
+  switch (type)
+    {
+    case META_BUTTON_TYPE_CLOSE:
+      *rect = fgeom->close_rect;
+      break;
+      
+    case META_BUTTON_TYPE_MAXIMIZE:
+      *rect = fgeom->max_rect;
+      break;
+      
+    case META_BUTTON_TYPE_MINIMIZE:
+      *rect = fgeom->min_rect;
+      break;
+      
+    case META_BUTTON_TYPE_MENU:
+      *rect = fgeom->menu_rect;
+      break;
+
+    case META_BUTTON_TYPE_LAST:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+void
+meta_frame_style_draw (MetaFrameStyle     *style,
+                       GtkWidget          *widget,
+                       GdkDrawable        *drawable,
+                       int                 x_offset,
+                       int                 y_offset,
+                       const GdkRectangle *clip,
+                       MetaFrameFlags      flags,
+                       int                 client_width,
+                       int                 client_height,
+                       PangoLayout        *title_layout,
+                       int                 text_height,
+                       MetaButtonState     button_states[META_BUTTON_TYPE_LAST])
+{
+  int i;
+  MetaFrameGeometry fgeom;
+  GdkRectangle titlebar_rect;
+  GdkRectangle left_titlebar_edge;
+  GdkRectangle right_titlebar_edge;
+  GdkRectangle bottom_titlebar_edge;
+  GdkRectangle top_titlebar_edge;
+  GdkRectangle left_edge, right_edge, bottom_edge;
+  
+  meta_frame_layout_calc_geometry (style->layout,
+                                   widget,
+                                   text_height,
+                                   flags,
+                                   client_width, client_height,
+                                   &fgeom);
+
+  titlebar_rect.x = 0;
+  titlebar_rect.y = 0;
+  titlebar_rect.width = fgeom.width;
+  titlebar_rect.height = fgeom.top_height;
+
+  left_titlebar_edge.x = titlebar_rect.x;
+  left_titlebar_edge.y = titlebar_rect.y + fgeom.top_titlebar_edge;
+  left_titlebar_edge.width = fgeom.left_titlebar_edge;
+  left_titlebar_edge.height = titlebar_rect.height - fgeom.top_titlebar_edge - fgeom.bottom_titlebar_edge;
+
+  right_titlebar_edge.y = left_titlebar_edge.y;
+  right_titlebar_edge.height = left_titlebar_edge.height;
+  right_titlebar_edge.width = fgeom.right_titlebar_edge;
+  right_titlebar_edge.x = titlebar_rect.x + titlebar_rect.width - right_titlebar_edge.width;
+  
+  top_titlebar_edge.x = titlebar_rect.x;
+  top_titlebar_edge.y = titlebar_rect.y;
+  top_titlebar_edge.width = titlebar_rect.width;
+  top_titlebar_edge.height = fgeom.top_titlebar_edge;
+
+  bottom_titlebar_edge.x = titlebar_rect.x;
+  bottom_titlebar_edge.width = titlebar_rect.width;
+  bottom_titlebar_edge.height = fgeom.bottom_titlebar_edge;
+  bottom_titlebar_edge.y = titlebar_rect.y + titlebar_rect.height - bottom_titlebar_edge.height;  
+
+  left_edge.x = 0;
+  left_edge.y = fgeom.top_height;
+  left_edge.width = fgeom.left_width;
+  left_edge.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
+
+  right_edge.x = fgeom.width - fgeom.right_width;
+  right_edge.y = fgeom.top_height;
+  right_edge.width = fgeom.right_width;
+  right_edge.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
+
+  bottom_edge.x = 0;
+  bottom_edge.y = fgeom.height - fgeom.bottom_height;
+  bottom_edge.width = fgeom.width;
+  bottom_edge.height = fgeom.bottom_height;
+  
+  /* The enum is in the order the pieces should be rendered. */
+  i = 0;
+  while (i < META_FRAME_PIECE_LAST)
+    {
+      GdkRectangle rect;
+      GdkRectangle combined_clip;
+      gboolean draw_title_text = FALSE;
+      
+      switch ((MetaFramePiece) i)
+        {
+        case META_FRAME_PIECE_ENTIRE_BACKGROUND:
+          rect.x = 0;
+          rect.y = 0;
+          rect.width = fgeom.width;
+          rect.height = fgeom.height;
+          break;
+
+        case META_FRAME_PIECE_TITLEBAR_BACKGROUND:
+          rect = titlebar_rect;
+          break;
+
+        case META_FRAME_PIECE_LEFT_TITLEBAR_EDGE:
+          rect = left_titlebar_edge;
+          break;
+
+        case META_FRAME_PIECE_RIGHT_TITLEBAR_EDGE:
+          rect = right_titlebar_edge;
+          break;
+
+        case META_FRAME_PIECE_TOP_TITLEBAR_EDGE:
+          rect = top_titlebar_edge;
+          break;
+
+        case META_FRAME_PIECE_BOTTOM_TITLEBAR_EDGE:
+          rect = bottom_titlebar_edge;
+          break;
+
+        case META_FRAME_PIECE_TITLEBAR_MIDDLE:
+          rect.x = left_titlebar_edge.x + left_titlebar_edge.width;
+          rect.y = top_titlebar_edge.y + top_titlebar_edge.height;
+          rect.width = titlebar_rect.width - left_titlebar_edge.width -
+            right_titlebar_edge.width;
+          rect.height = titlebar_rect.height - top_titlebar_edge.height - bottom_titlebar_edge.height;
+          break;
+          
+        case META_FRAME_PIECE_TITLE_BACKGROUND:
+          rect = fgeom.title_rect;
+
+          /* Trigger drawing the title itself */
+          draw_title_text = TRUE;
+          break;
+          
+        case META_FRAME_PIECE_LEFT_EDGE:
+          rect = left_edge;
+          break;
+
+        case META_FRAME_PIECE_RIGHT_EDGE:
+          rect = right_edge;
+          break;
+
+        case META_FRAME_PIECE_BOTTOM_EDGE:
+          rect = bottom_edge;
+          break;
+
+        case META_FRAME_PIECE_OVERLAY:
+          rect.x = 0;
+          rect.y = 0;
+          rect.width = fgeom.width;
+          rect.height = fgeom.height;
+          break;
+
+        case META_FRAME_PIECE_LAST:
+          g_assert_not_reached ();
+          break;
+        }
+
+      rect.x += x_offset;
+      rect.y += y_offset;
+      
+      if (clip == NULL)
+        combined_clip = rect;
+      else
+        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
+                                 &rect,
+                                 &combined_clip);
+
+      if (combined_clip.width > 0 && combined_clip.height > 0)
+        {
+          MetaDrawOpList *op_list;
+          MetaFrameStyle *parent;
+
+          parent = style;
+          op_list = NULL;
+          while (parent && op_list == NULL)
+            {
+              op_list = style->pieces[i];
+              parent = style->parent;
+            }
+
+          if (op_list)
+            meta_draw_op_list_draw (op_list,
+                                    widget,
+                                    drawable,
+                                    &combined_clip,
+                                    rect.x, rect.y, rect.width, rect.height);
+        }
+
+      if (draw_title_text)
+        {
+          /* FIXME */
+          
+          /* Deal with whole icon-in-the-titlebar issue; there should
+           * probably be "this window's icon" and "this window's mini-icon"
+           * textures, and a way to stick textures on either end of
+           * the title text as well as behind the text.
+           * Most likely the text_rect should extend a configurable
+           * distance from either end of the text.
+           */
+        }
+      
+      ++i;
+    }
+
+  /* Now we draw button backgrounds */
+  i = 0;
+  while (i < META_BUTTON_TYPE_LAST)
+    {
+      GdkRectangle rect;
+      GdkRectangle combined_clip;
+
+      button_rect (i, &fgeom, &rect);
+
+      rect.x += x_offset;
+      rect.y += y_offset;
+      
+      if (clip == NULL)
+        combined_clip = rect;
+      else
+        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
+                                 &rect,
+                                 &combined_clip);
+
+      if (combined_clip.width > 0 && combined_clip.height > 0)
+        {
+          MetaDrawOpList *op_list;
+          MetaFrameStyle *parent;
+          
+          parent = style;
+          op_list = NULL;
+          while (parent && op_list == NULL)
+            {
+              op_list = style->button_backgrounds[i][button_states[i]];
+              parent = style->parent;
+            }
+          
+          if (op_list)
+            meta_draw_op_list_draw (op_list,
+                                    widget,
+                                    drawable,
+                                    &combined_clip,
+                                    rect.x, rect.y, rect.width, rect.height);
+        }
+      
+      ++i;
+    }
+
+  /* And button icons */
+  i = 0;
+  while (i < META_BUTTON_TYPE_LAST)
+    {
+      GdkRectangle rect;
+      GdkRectangle combined_clip;
+
+      button_rect (i, &fgeom, &rect);
+
+      rect.x += x_offset;
+      rect.y += y_offset;
+      
+      if (clip == NULL)
+        combined_clip = rect;
+      else
+        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
+                                 &rect,
+                                 &combined_clip);
+
+      if (combined_clip.width > 0 && combined_clip.height > 0)
+        {
+          MetaDrawOpList *op_list;
+          MetaFrameStyle *parent;
+          
+          parent = style;
+          op_list = NULL;
+          while (parent && op_list == NULL)
+            {
+              op_list = style->button_icons[i][button_states[i]];
+              parent = style->parent;
+            }
+          
+          if (op_list)
+            meta_draw_op_list_draw (op_list,
+                                    widget,
+                                    drawable,
+                                    &combined_clip,
+                                    rect.x, rect.y, rect.width, rect.height);
+        }
+      
+      ++i;
+    }
+}
+
+MetaFrameStyleSet*
+meta_frame_style_set_new (MetaFrameStyleSet *parent)
+{
+  MetaFrameStyleSet *style_set;
+
+  style_set = g_new0 (MetaFrameStyleSet, 1);
+
+  style_set->parent = parent;
+  if (parent)
+    meta_frame_style_set_ref (parent);
+  
+  return style_set;
+}
+
+static void
+free_focus_styles (MetaFrameStyle *focus_styles[META_FRAME_FOCUS_LAST])
+{
+  int i;
+
+  i = 0;
+  while (i < META_FRAME_FOCUS_LAST)
+    {
+      if (focus_styles[i])
+        meta_frame_style_unref (focus_styles[i]);
+
+      ++i;
+    }
+}
+
+void
+meta_frame_style_set_ref (MetaFrameStyleSet *style_set)
+{
+  g_return_if_fail (style_set != NULL);
+  
+  style_set->refcount += 1;
+}
+
+void
+meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
+{
+  g_return_if_fail (style_set != NULL);
+  g_return_if_fail (style_set->refcount > 0);
+
+  style_set->refcount -= 1;
+
+  if (style_set->refcount == 0)
+    {
+      int i;
+
+      i = 0;
+      while (i < META_FRAME_RESIZE_LAST)
+        {
+          free_focus_styles (style_set->normal_styles[i]);
+          
+          ++i;
+        }
+      
+      free_focus_styles (style_set->maximized_styles);
+      free_focus_styles (style_set->shaded_styles);
+      free_focus_styles (style_set->maximized_and_shaded_styles);
+
+      if (style_set->parent)
+        meta_frame_style_set_unref (style_set->parent);
+      
+      g_free (style_set);
+    }
+}
+
+MetaTheme*
+meta_theme_new (void)
+{
+  MetaTheme *theme;
+
+  theme = g_new0 (MetaTheme, 1);
+
+  theme->styles_by_name = g_hash_table_new_full (g_str_hash,
+                                                 g_str_equal,
+                                                 g_free,
+                                                 (GDestroyNotify) meta_frame_style_unref);
+
+  theme->style_sets_by_name = g_hash_table_new_full (g_str_hash,
+                                                     g_str_equal,
+                                                     g_free,
+                                                     (GDestroyNotify) meta_frame_style_set_unref);
+
+  
+  return theme;
+}
+
+void
+meta_theme_free (MetaTheme *theme)
+{
+  int i;
+  
+  g_return_if_fail (theme != NULL);
+
+  g_free (theme->name);
+  g_free (theme->filename);
+
+  g_hash_table_destroy (theme->styles_by_name);
+  g_hash_table_destroy (theme->style_sets_by_name);
+
+  i = 0;
+  while (i < META_FRAME_TYPE_LAST)
+    {
+      if (theme->style_sets_by_type[i])
+        meta_frame_style_set_unref (theme->style_sets_by_type[i]);
+      ++i;
+    }
+  
+  g_free (theme);
+}
+
+static MetaDrawOp*
+line_op (MetaGtkColorComponent component,
+         const char *x1,
+         const char *y1,
+         const char *x2,
+         const char *y2)
+{
+  MetaDrawOp *op;
+  
+  op = meta_draw_op_new (META_DRAW_LINE);
+  op->data.line.color_spec =
+    meta_color_spec_new_gtk (component, GTK_STATE_NORMAL);
+  op->data.line.x1 = g_strdup (x1);
+  op->data.line.x2 = g_strdup (x2);
+  op->data.line.y1 = g_strdup (y1);
+  op->data.line.y2 = g_strdup (y2);
+  op->data.line.dash_on_length = 0;
+  op->data.line.dash_off_length = 0;
+  op->data.line.width = 0;
+
+  return op;
+}
+
+#define DEFAULT_INNER_BUTTON_BORDER 3
+MetaFrameStyle*
+meta_frame_style_get_test (void)
+{
+  static MetaFrameStyle *style = NULL;
+  static GtkBorder default_title_border = { 3, 4, 4, 3 };
+  static GtkBorder default_text_border = { 2, 2, 2, 2 };
+  static GtkBorder default_button_border = { 0, 0, 1, 1 };
+  static GtkBorder default_inner_button_border = {
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER
+  };
+  MetaDrawOpList *op_list;
+  MetaDrawOp *op;
+  MetaGradientSpec *gradient;
+  
+  if (style)
+    return style;
+  
+  style = meta_frame_style_new (NULL);
+  
+  style->layout = meta_frame_layout_new ();
+
+  style->layout->title_border = default_title_border;
+  style->layout->text_border = default_text_border;
+  style->layout->button_border = default_button_border;
+  style->layout->inner_button_border = default_inner_button_border;
+  
+  style->layout->left_width = 6;
+  style->layout->right_width = 6;
+  style->layout->bottom_height = 7;
+  style->layout->spacer_padding = 3;
+  style->layout->spacer_width = 2;
+  style->layout->spacer_height = 11;
+  style->layout->right_inset = 6;
+  style->layout->left_inset = 6;
+  style->layout->button_width = 17;
+  style->layout->button_height = 17;
+
+  op_list = meta_draw_op_list_new (3);
+  
+  /* Gradient background */
+  op = meta_draw_op_new (META_DRAW_GRADIENT);
+  gradient = meta_gradient_spec_new (META_GRADIENT_VERTICAL);
+  gradient->color_specs =
+    g_slist_prepend (gradient->color_specs,
+                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
+                                              GTK_STATE_NORMAL));
+  gradient->color_specs =
+    g_slist_prepend (gradient->color_specs,
+                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
+                                              GTK_STATE_SELECTED));
+
+  op->data.gradient.gradient_spec = gradient;
+  op->data.gradient.alpha = 1.0;
+  
+  op->data.gradient.x = g_strdup ("0");
+  op->data.gradient.y = g_strdup ("0");
+  op->data.gradient.width = g_strdup ("width");
+  op->data.gradient.height = g_strdup ("height");
+
+  meta_draw_op_list_append (op_list, op);
+
+  /* Put orange tint on parts of window */
+  op = meta_draw_op_new (META_DRAW_TINT);
+  op->data.tint.color_spec = meta_color_spec_new_from_string ("orange", NULL);
+  op->data.tint.alpha = 0.3;
+  op->data.gradient.x = g_strdup ("0");
+  op->data.gradient.y = g_strdup ("0");
+  op->data.gradient.width = g_strdup ("width / 2");
+  op->data.gradient.height = g_strdup ("height / 2");
+
+  meta_draw_op_list_append (op_list, op);
+
+  op = meta_draw_op_new (META_DRAW_TINT);
+  op->data.tint.color_spec = meta_color_spec_new_from_string ("orange", NULL);
+  op->data.tint.alpha = 0.3;
+  op->data.gradient.x = g_strdup ("width / 2 + width % 2");
+  op->data.gradient.y = g_strdup ("height / 2 + height % 2");
+  op->data.gradient.width = g_strdup ("width / 2");
+  op->data.gradient.height = g_strdup ("height / 2");
+
+  meta_draw_op_list_append (op_list, op);
+  
+  style->pieces[META_FRAME_PIECE_ENTIRE_BACKGROUND] = op_list;
+  
+  op_list = meta_draw_op_list_new (5);
+  style->pieces[META_FRAME_PIECE_OVERLAY] = op_list;
+
+  op = meta_draw_op_new (META_DRAW_RECTANGLE);
+  op->data.rectangle.color_spec =
+    meta_color_spec_new_from_string ("#000000", NULL);
+  op->data.rectangle.filled = FALSE;
+  op->data.rectangle.x = g_strdup ("0");
+  op->data.rectangle.y = g_strdup ("0");
+  op->data.rectangle.width = g_strdup ("width - 1");
+  op->data.rectangle.height = g_strdup ("height - 1");
+
+  meta_draw_op_list_append (op_list, op);
+
+  meta_draw_op_list_append (op_list, 
+                            line_op (META_GTK_COLOR_LIGHT,
+                                     "1", "1", "1", "height - 2"));
+
+  meta_draw_op_list_append (op_list, 
+                            line_op (META_GTK_COLOR_LIGHT,
+                                     "1", "1", "width - 2", "1"));
+
+  meta_draw_op_list_append (op_list, 
+                            line_op (META_GTK_COLOR_DARK,
+                                     "width - 2", "1", "width - 2", "height - 2"));
+
+  meta_draw_op_list_append (op_list,
+                            line_op (META_GTK_COLOR_DARK,
+                                     "1", "height - 2", "width - 2", "height - 2"));
+
+  
+  
+  return style;
+}
+
+
+
+
+
+
+#if 0
+/* These are some functions I'm saving to use in optimizing
+ * MetaDrawOpList, namely to pre-composite pixbufs on client side
+ * prior to rendering to the server
+ */
 static void
 draw_bg_solid_composite (const MetaTextureSpec *bg,
                          const MetaTextureSpec *fg,
@@ -2360,942 +3003,4 @@ draw_bg_gradient_composite (const MetaTextureSpec *bg,
       break;
     }
 }
-
-static void
-draw_composite_fallback (const MetaTextureSpec *bg,
-                         const MetaTextureSpec *fg,
-                         double                 alpha,
-                         GtkWidget             *widget,
-                         GdkDrawable           *drawable,
-                         const GdkRectangle    *clip,
-                         MetaTextureDrawMode    mode,
-                         double                 xalign,
-                         double                 yalign,
-                         int                    x,
-                         int                    y,
-                         int                    width,
-                         int                    height)
-{
-  /* This one is tricky since the fg doesn't necessarily cover the
-   * entire x,y width, height rectangle, so we need to handle the fact
-   * that there may be existing stuff in the uncovered portions of the
-   * drawable that we need to composite over the top of.
-   *
-   * i.e. the "bg" we are compositing onto is equivalent to the image
-   * composited over the top of whatever is already in the drawable.
-   *
-   * To implement this we just draw the background to drawable, then
-   * render the foreground to a pixbuf, multiply its alpha channel by
-   * the composite alpha, then composite the foreground onto the
-   * drawable.
-   */
-  
-  switch (fg->type)
-    {
-    case META_TEXTURE_SOLID:
-    case META_TEXTURE_GRADIENT:
-    case META_TEXTURE_IMAGE:
-      {
-        GdkPixbuf *fg_pixbuf;
-
-        meta_texture_spec_draw (bg, widget, drawable, clip,
-                                mode, xalign, yalign, x, y, width, height);
-
-        /* fg_pixbuf has its alpha multiplied, note */
-        fg_pixbuf = meta_texture_spec_render (fg, widget, mode,
-                                              255 * alpha,
-                                              width, height);
-
-        if (fg_pixbuf == NULL)
-          return;
-
-        render_pixbuf_aligned (drawable, clip, fg_pixbuf,
-                               xalign, yalign,
-                               x, y, width, height);
-        
-        g_object_unref (G_OBJECT (fg_pixbuf));
-      }
-      break;
-
-    case META_TEXTURE_SHAPE_LIST:
-    case META_TEXTURE_BLANK:
-    case META_TEXTURE_COMPOSITE:
-      g_assert_not_reached ();
-      break;
-    }
-}
-
-void
-meta_texture_spec_draw   (const MetaTextureSpec *spec,
-                          GtkWidget             *widget,
-                          GdkDrawable           *drawable,
-                          const GdkRectangle    *clip,
-                          MetaTextureDrawMode    mode,
-                          double                 xalign,
-                          double                 yalign,
-                          int                    x,
-                          int                    y,
-                          int                    width,
-                          int                    height)
-{
-  g_return_if_fail (spec != NULL);
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_DRAWABLE (drawable));
-  g_return_if_fail (widget->style != NULL);
-  
-  switch (spec->type)
-    {
-    case META_TEXTURE_SOLID:
-      {
-        GdkColor color;
-
-        g_return_if_fail (spec->data.solid.color_spec != NULL);
-        
-        meta_color_spec_render (spec->data.solid.color_spec,
-                                widget, &color);
-
-        draw_color_rectangle (widget, drawable, &color, clip,
-                              x, y, width, height);
-      }
-      break;
-
-    case META_TEXTURE_GRADIENT:
-    case META_TEXTURE_IMAGE:
-      {
-        GdkPixbuf *pixbuf;
-        
-        g_return_if_fail (spec->data.gradient.gradient_spec != NULL);
-
-        pixbuf = meta_texture_spec_render (spec, widget, mode, 255,
-                                           width, height);
-        
-        if (pixbuf == NULL)
-          return;
-        
-        render_pixbuf_aligned (drawable, clip, pixbuf,
-                               xalign, yalign,
-                               x, y, width, height);
-        
-        g_object_unref (G_OBJECT (pixbuf));
-      }
-      break;
-      
-    case META_TEXTURE_COMPOSITE:
-      {
-        MetaTextureSpec *fg;
-        MetaTextureSpec *bg;
-        
-        /* We could just render both things to a pixbuf then squish them
-         * but we are instead going to try to be all optimized for
-         * certain cases.
-         */
-
-        fg = spec->data.composite.foreground;
-        bg = spec->data.composite.background;
-
-        g_return_if_fail (fg != NULL);
-        g_return_if_fail (bg != NULL);
-        g_return_if_fail (fg->type != META_TEXTURE_SHAPE_LIST);
-        g_return_if_fail (fg->type != META_TEXTURE_COMPOSITE);
-        g_return_if_fail (bg->type != META_TEXTURE_COMPOSITE);
-
-        if (fg->type == META_TEXTURE_BLANK)
-          {
-            meta_texture_spec_draw (bg, widget, drawable, clip, mode,
-                                    xalign, yalign,
-                                    x, y, width, height);
-          }
-        else
-          {
-            switch (bg->type)
-              {
-              case META_TEXTURE_SOLID:
-                draw_bg_solid_composite (bg, fg, spec->data.composite.alpha,
-                                         widget, drawable, clip, mode,
-                                         xalign, yalign,
-                                         x, y, width, height);
-                break;
-
-              case META_TEXTURE_GRADIENT:
-                draw_bg_gradient_composite (bg, fg, spec->data.composite.alpha,
-                                            widget, drawable, clip, mode,
-                                            xalign, yalign,
-                                            x, y, width, height);
-                break;
-            
-              case META_TEXTURE_IMAGE:
-              case META_TEXTURE_BLANK:
-              case META_TEXTURE_SHAPE_LIST:
-                draw_composite_fallback (bg, fg, spec->data.composite.alpha,
-                                         widget, drawable, clip, mode,
-                                         xalign, yalign,
-                                         x, y, width, height);
-                break;
-            
-              case META_TEXTURE_COMPOSITE:
-                g_assert_not_reached ();
-                break;
-              }
-          }
-      }
-      break;
-      
-    case META_TEXTURE_BLANK:
-      /* do nothing */
-      break;
-
-    case META_TEXTURE_SHAPE_LIST:
-      {
-        int i;
-        i = 0;
-        while (i < spec->data.shape_list.n_specs)
-          {
-            meta_shape_spec_draw (spec->data.shape_list.shape_specs[i],
-                                  widget, drawable, clip,
-                                  x, y, width, height);
-            ++i;
-          }
-      }
-      break;
-    }
-}
-
-MetaFrameStyle*
-meta_frame_style_new (MetaFrameStyle *parent)
-{
-  MetaFrameStyle *style;
-
-  style = g_new0 (MetaFrameStyle, 1);
-
-  style->refcount = 1;
-
-  style->parent = parent;
-  if (parent)
-    meta_frame_style_ref (parent);
-  
-  return style;
-}
-
-void
-meta_frame_style_ref (MetaFrameStyle *style)
-{
-  g_return_if_fail (style != NULL);
-  
-  style->refcount += 1;
-}
-
-static void
-free_button_textures (MetaTextureSpec *textures[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST])
-{
-  int i, j;
-  
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
-    {
-      j = 0;
-      while (j < META_BUTTON_STATE_LAST)
-        {
-          if (textures[i][j])
-            meta_texture_spec_free (textures[i][j]);
-          
-          ++j;
-        }
-      
-      ++i;
-    }
-}
-
-void
-meta_frame_style_unref (MetaFrameStyle *style)
-{
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (style->refcount > 0);
-  
-  style->refcount -= 1;
-
-  if (style->refcount == 0)
-    {
-      int i;
-      
-      free_button_textures (style->button_icons);
-      free_button_textures (style->button_backgrounds);
-
-      i = 0;
-      while (i < META_FRAME_PIECE_LAST)
-        {
-          if (style->pieces[i])
-            meta_texture_spec_free (style->pieces[i]);
-          
-          ++i;
-        }
-
-      if (style->layout)
-        meta_frame_layout_free (style->layout);
-
-      /* we hold a reference to any parent style */
-      if (style->parent)
-        meta_frame_style_unref (style->parent);
-      
-      g_free (style);
-    }
-}
-
-static void
-button_rect (MetaButtonType type,
-             MetaFrameGeometry *fgeom,
-             GdkRectangle *rect)
-{
-  switch (type)
-    {
-    case META_BUTTON_TYPE_CLOSE:
-      *rect = fgeom->close_rect;
-      break;
-      
-    case META_BUTTON_TYPE_MAXIMIZE:
-      *rect = fgeom->max_rect;
-      break;
-      
-    case META_BUTTON_TYPE_MINIMIZE:
-      *rect = fgeom->min_rect;
-      break;
-      
-    case META_BUTTON_TYPE_MENU:
-      *rect = fgeom->menu_rect;
-      break;
-
-    case META_BUTTON_TYPE_LAST:
-      g_assert_not_reached ();
-      break;
-    }
-}
-
-void
-meta_frame_style_draw (MetaFrameStyle     *style,
-                       GtkWidget          *widget,
-                       GdkDrawable        *drawable,
-                       int                 x_offset,
-                       int                 y_offset,
-                       const GdkRectangle *clip,
-                       MetaFrameFlags      flags,
-                       int                 client_width,
-                       int                 client_height,
-                       PangoLayout        *title_layout,
-                       int                 text_height,
-                       MetaButtonState     button_states[META_BUTTON_TYPE_LAST])
-{
-  int i;
-  MetaFrameGeometry fgeom;
-  GdkRectangle titlebar_rect;
-  GdkRectangle left_titlebar_edge;
-  GdkRectangle right_titlebar_edge;
-  GdkRectangle bottom_titlebar_edge;
-  GdkRectangle top_titlebar_edge;
-  GdkRectangle left_edge, right_edge, bottom_edge;
-  
-  meta_frame_layout_calc_geometry (style->layout,
-                                   widget,
-                                   text_height,
-                                   flags,
-                                   client_width, client_height,
-                                   &fgeom);
-
-  titlebar_rect.x = 0;
-  titlebar_rect.y = 0;
-  titlebar_rect.width = fgeom.width;
-  titlebar_rect.height = fgeom.top_height;
-
-  left_titlebar_edge.x = titlebar_rect.x;
-  left_titlebar_edge.y = titlebar_rect.y + fgeom.top_titlebar_edge;
-  left_titlebar_edge.width = fgeom.left_titlebar_edge;
-  left_titlebar_edge.height = titlebar_rect.height - fgeom.top_titlebar_edge - fgeom.bottom_titlebar_edge;
-
-  right_titlebar_edge.y = left_titlebar_edge.y;
-  right_titlebar_edge.height = left_titlebar_edge.height;
-  right_titlebar_edge.width = fgeom.right_titlebar_edge;
-  right_titlebar_edge.x = titlebar_rect.x + titlebar_rect.width - right_titlebar_edge.width;
-  
-  top_titlebar_edge.x = titlebar_rect.x;
-  top_titlebar_edge.y = titlebar_rect.y;
-  top_titlebar_edge.width = titlebar_rect.width;
-  top_titlebar_edge.height = fgeom.top_titlebar_edge;
-
-  bottom_titlebar_edge.x = titlebar_rect.x;
-  bottom_titlebar_edge.width = titlebar_rect.width;
-  bottom_titlebar_edge.height = fgeom.bottom_titlebar_edge;
-  bottom_titlebar_edge.y = titlebar_rect.y + titlebar_rect.height - bottom_titlebar_edge.height;  
-
-  left_edge.x = 0;
-  left_edge.y = fgeom.top_height;
-  left_edge.width = fgeom.left_width;
-  left_edge.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
-
-  right_edge.x = fgeom.width - fgeom.right_width;
-  right_edge.y = fgeom.top_height;
-  right_edge.width = fgeom.right_width;
-  right_edge.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
-
-  bottom_edge.x = 0;
-  bottom_edge.y = fgeom.height - fgeom.bottom_height;
-  bottom_edge.width = fgeom.width;
-  bottom_edge.height = fgeom.bottom_height;
-  
-  /* The enum is in the order the pieces should be rendered. */
-  i = 0;
-  while (i < META_FRAME_PIECE_LAST)
-    {
-      GdkRectangle rect;
-      GdkRectangle combined_clip;
-      double xalign = 0.5;
-      double yalign = 0.5;
-      MetaTextureDrawMode mode = META_TEXTURE_DRAW_SCALED_BOTH;
-      gboolean draw_title_text = FALSE;
-      
-      switch (i)
-        {
-        case META_FRAME_PIECE_ENTIRE_BACKGROUND:
-          rect.x = 0;
-          rect.y = 0;
-          rect.width = fgeom.width;
-          rect.height = fgeom.height;
-          break;
-
-        case META_FRAME_PIECE_TITLEBAR_BACKGROUND:
-          rect = titlebar_rect;
-          break;
-
-        case META_FRAME_PIECE_LEFT_TITLEBAR_EDGE:
-          rect = left_titlebar_edge;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_TITLEBAR_EDGE:
-          rect = right_titlebar_edge;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_TOP_TITLEBAR_EDGE:
-          rect = top_titlebar_edge;
-          mode = META_TEXTURE_DRAW_SCALED_HORIZONTALLY;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_TITLEBAR_EDGE:
-          rect = bottom_titlebar_edge;
-          mode = META_TEXTURE_DRAW_SCALED_HORIZONTALLY;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_LEFT_END_OF_TOP_TITLEBAR_EDGE:
-          rect = top_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_END_OF_TOP_TITLEBAR_EDGE:
-          rect = top_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_LEFT_END_OF_BOTTOM_TITLEBAR_EDGE:
-          rect = bottom_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_END_OF_BOTTOM_TITLEBAR_EDGE:
-          rect = bottom_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_TOP_END_OF_LEFT_TITLEBAR_EDGE:
-          rect = left_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_END_OF_LEFT_TITLEBAR_EDGE:
-          rect = left_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_TOP_END_OF_RIGHT_TITLEBAR_EDGE:
-          rect = right_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_END_OF_RIGHT_TITLEBAR_EDGE:
-          rect = right_titlebar_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_TITLE_BACKGROUND:
-          rect = fgeom.title_rect;
-          break;
-
-        case META_FRAME_PIECE_LEFT_TITLE_BACKGROUND:
-          rect = fgeom.title_rect;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_TITLE_BACKGROUND:
-          rect = fgeom.title_rect;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 1.0;
-
-          /* Trigger drawing the title itself, with the same
-           * clip as this texture
-           */
-          draw_title_text = TRUE;
-          break;
-          
-        case META_FRAME_PIECE_LEFT_EDGE:
-          rect = left_edge;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_EDGE:
-          rect = right_edge;
-          mode = META_TEXTURE_DRAW_SCALED_VERTICALLY;
-          xalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_EDGE:
-          rect = bottom_edge;
-          mode = META_TEXTURE_DRAW_SCALED_HORIZONTALLY;
-          yalign = 1.0;
-          break;
-          
-        case META_FRAME_PIECE_TOP_END_OF_LEFT_EDGE:
-          rect = left_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_END_OF_LEFT_EDGE:
-          rect = left_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_TOP_END_OF_RIGHT_EDGE:
-          rect = right_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 0.0;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_END_OF_RIGHT_EDGE:
-          rect = right_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_LEFT_END_OF_BOTTOM_EDGE:
-          rect = bottom_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 0.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_RIGHT_END_OF_BOTTOM_EDGE:
-          rect = bottom_edge;
-          mode = META_TEXTURE_DRAW_UNSCALED;
-          xalign = 1.0;
-          yalign = 1.0;
-          break;
-
-        case META_FRAME_PIECE_OVERLAY:
-          rect.x = 0;
-          rect.y = 0;
-          rect.width = fgeom.width;
-          rect.height = fgeom.height;
-          break;
-        }
-
-      rect.x += x_offset;
-      rect.y += y_offset;
-      
-      if (clip == NULL)
-        combined_clip = rect;
-      else
-        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                 &rect,
-                                 &combined_clip);
-
-      if (combined_clip.width > 0 && combined_clip.height > 0)
-        {
-          MetaTextureSpec *spec;
-          MetaFrameStyle *parent;
-
-          parent = style;
-          spec = NULL;
-          while (parent && spec == NULL)
-            {
-              spec = style->pieces[i];
-              parent = style->parent;
-            }
-
-          if (spec)
-            meta_texture_spec_draw (spec,
-                                    widget,
-                                    drawable,
-                                    &combined_clip,
-                                    mode, xalign, yalign,
-                                    rect.x, rect.y, rect.width, rect.height);
-        }
-
-      if (draw_title_text)
-        {
-          /* FIXME */
-          
-          /* Deal with whole icon-in-the-titlebar issue; there should
-           * probably be "this window's icon" and "this window's mini-icon"
-           * textures, and a way to stick textures on either end of
-           * the title text as well as behind the text.
-           * Most likely the text_rect should extend a configurable
-           * distance from either end of the text.
-           */
-        }
-      
-      ++i;
-    }
-
-  /* Now we draw button backgrounds */
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
-    {
-      GdkRectangle rect;
-      GdkRectangle combined_clip;
-
-      button_rect (i, &fgeom, &rect);
-
-      rect.x += x_offset;
-      rect.y += y_offset;
-      
-      if (clip == NULL)
-        combined_clip = rect;
-      else
-        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                 &rect,
-                                 &combined_clip);
-
-      if (combined_clip.width > 0 && combined_clip.height > 0)
-        {
-          MetaTextureSpec *spec;
-          MetaFrameStyle *parent;
-          
-          parent = style;
-          spec = NULL;
-          while (parent && spec == NULL)
-            {
-              spec = style->button_backgrounds[i][button_states[i]];
-              parent = style->parent;
-            }
-          
-          if (spec)
-            meta_texture_spec_draw (spec,
-                                    widget,
-                                    drawable,
-                                    &combined_clip,
-                                    META_TEXTURE_DRAW_SCALED_BOTH,
-                                    0.5, 0.5,
-                                    rect.x, rect.y, rect.width, rect.height);
-        }
-      
-      ++i;
-    }
-
-  /* And button icons */
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
-    {
-      GdkRectangle rect;
-      GdkRectangle combined_clip;
-
-      button_rect (i, &fgeom, &rect);
-
-      rect.x += x_offset;
-      rect.y += y_offset;
-      
-      if (clip == NULL)
-        combined_clip = rect;
-      else
-        gdk_rectangle_intersect ((GdkRectangle*) clip, /* const cast */
-                                 &rect,
-                                 &combined_clip);
-
-      if (combined_clip.width > 0 && combined_clip.height > 0)
-        {
-          MetaTextureSpec *spec;
-          MetaFrameStyle *parent;
-          
-          parent = style;
-          spec = NULL;
-          while (parent && spec == NULL)
-            {
-              spec = style->button_icons[i][button_states[i]];
-              parent = style->parent;
-            }
-          
-          if (spec)
-            meta_texture_spec_draw (spec,
-                                    widget,
-                                    drawable,
-                                    &combined_clip,
-                                    META_TEXTURE_DRAW_SCALED_BOTH,
-                                    0.5, 0.5,
-                                    rect.x, rect.y, rect.width, rect.height);
-        }
-      
-      ++i;
-    }
-}
-
-MetaFrameStyleSet*
-meta_frame_style_set_new (MetaFrameStyleSet *parent)
-{
-  MetaFrameStyleSet *style_set;
-
-  style_set = g_new0 (MetaFrameStyleSet, 1);
-
-  style_set->parent = parent;
-  if (parent)
-    meta_frame_style_set_ref (parent);
-  
-  return style_set;
-}
-
-static void
-free_focus_styles (MetaFrameStyle *focus_styles[META_FRAME_FOCUS_LAST])
-{
-  int i;
-
-  i = 0;
-  while (i < META_FRAME_FOCUS_LAST)
-    {
-      if (focus_styles[i])
-        meta_frame_style_unref (focus_styles[i]);
-
-      ++i;
-    }
-}
-
-void
-meta_frame_style_set_ref (MetaFrameStyleSet *style_set)
-{
-  g_return_if_fail (style_set != NULL);
-  
-  style_set->refcount += 1;
-}
-
-void
-meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
-{
-  g_return_if_fail (style_set != NULL);
-  g_return_if_fail (style_set->refcount > 0);
-
-  style_set->refcount -= 1;
-
-  if (style_set->refcount == 0)
-    {
-      int i;
-
-      i = 0;
-      while (i < META_FRAME_RESIZE_LAST)
-        {
-          free_focus_styles (style_set->normal_styles[i]);
-          
-          ++i;
-        }
-      
-      free_focus_styles (style_set->maximized_styles);
-      free_focus_styles (style_set->shaded_styles);
-      free_focus_styles (style_set->maximized_and_shaded_styles);
-
-      if (style_set->parent)
-        meta_frame_style_set_unref (style_set->parent);
-      
-      g_free (style_set);
-    }
-}
-
-MetaTheme*
-meta_theme_new (void)
-{
-  MetaTheme *theme;
-
-  theme = g_new0 (MetaTheme, 1);
-
-  theme->styles_by_name = g_hash_table_new_full (g_str_hash,
-                                                 g_str_equal,
-                                                 g_free,
-                                                 (GDestroyNotify) meta_frame_style_unref);
-
-  theme->style_sets_by_name = g_hash_table_new_full (g_str_hash,
-                                                     g_str_equal,
-                                                     g_free,
-                                                     (GDestroyNotify) meta_frame_style_set_unref);
-
-  
-  return theme;
-}
-
-void
-meta_theme_free (MetaTheme *theme)
-{
-  int i;
-  
-  g_return_if_fail (theme != NULL);
-
-  g_free (theme->name);
-  g_free (theme->filename);
-
-  g_hash_table_destroy (theme->styles_by_name);
-  g_hash_table_destroy (theme->style_sets_by_name);
-
-  i = 0;
-  while (i < META_FRAME_TYPE_LAST)
-    {
-      if (theme->style_sets_by_type[i])
-        meta_frame_style_set_unref (theme->style_sets_by_type[i]);
-      ++i;
-    }
-  
-  g_free (theme);
-}
-
-static MetaShapeSpec*
-line_spec (MetaGtkColorComponent component,
-           const char *x1,
-           const char *y1,
-           const char *x2,
-           const char *y2)
-{
-  MetaShapeSpec *shape;
-  
-  shape = meta_shape_spec_new (META_SHAPE_LINE);
-  shape->data.line.color_spec =
-    meta_color_spec_new_gtk (component, GTK_STATE_NORMAL);
-  shape->data.line.x1 = g_strdup (x1);
-  shape->data.line.x2 = g_strdup (x2);
-  shape->data.line.y1 = g_strdup (y1);
-  shape->data.line.y2 = g_strdup (y2);
-  shape->data.line.dash_on_length = 0;
-  shape->data.line.dash_off_length = 0;
-  shape->data.line.width = 0;
-
-  return shape;
-}
-
-#define DEFAULT_INNER_BUTTON_BORDER 3
-MetaFrameStyle*
-meta_frame_style_get_test (void)
-{
-  static MetaFrameStyle *style = NULL;
-  static GtkBorder default_title_border = { 3, 4, 4, 3 };
-  static GtkBorder default_text_border = { 2, 2, 2, 2 };
-  static GtkBorder default_button_border = { 0, 0, 1, 1 };
-  static GtkBorder default_inner_button_border = {
-    DEFAULT_INNER_BUTTON_BORDER,
-    DEFAULT_INNER_BUTTON_BORDER,
-    DEFAULT_INNER_BUTTON_BORDER,
-    DEFAULT_INNER_BUTTON_BORDER
-  };
-  MetaTextureSpec *texture;
-  MetaShapeSpec *shape;
-  MetaGradientSpec *gradient;
-  
-  if (style)
-    return style;
-  
-  style = meta_frame_style_new (NULL);
-  
-  style->layout = meta_frame_layout_new ();
-
-  style->layout->title_border = default_title_border;
-  style->layout->text_border = default_text_border;
-  style->layout->button_border = default_button_border;
-  style->layout->inner_button_border = default_inner_button_border;
-  
-  style->layout->left_width = 6;
-  style->layout->right_width = 6;
-  style->layout->bottom_height = 7;
-  style->layout->spacer_padding = 3;
-  style->layout->spacer_width = 2;
-  style->layout->spacer_height = 11;
-  style->layout->right_inset = 6;
-  style->layout->left_inset = 6;
-  style->layout->button_width = 17;
-  style->layout->button_height = 17;
-
-  texture = meta_texture_spec_new (META_TEXTURE_GRADIENT);
-  style->pieces[META_FRAME_PIECE_ENTIRE_BACKGROUND] = texture;
-
-  gradient = meta_gradient_spec_new (META_GRADIENT_VERTICAL);
-  texture->data.gradient.gradient_spec = gradient;
-
-  gradient->color_specs =
-    g_slist_prepend (gradient->color_specs,
-                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
-                                              GTK_STATE_NORMAL));
-  gradient->color_specs =
-    g_slist_prepend (gradient->color_specs,
-                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
-                                              GTK_STATE_SELECTED));
-                     
-  texture = meta_texture_spec_new (META_TEXTURE_SHAPE_LIST);
-  style->pieces[META_FRAME_PIECE_OVERLAY] = texture;
-  texture->data.shape_list.shape_specs = g_new (MetaShapeSpec*, 5);
-  texture->data.shape_list.n_specs = 5;
-
-  shape = meta_shape_spec_new (META_SHAPE_RECTANGLE);
-  shape->data.rectangle.color_spec =
-    meta_color_spec_new_from_string ("#000000", NULL);
-  shape->data.rectangle.filled = FALSE;
-  shape->data.rectangle.x = g_strdup ("0");
-  shape->data.rectangle.y = g_strdup ("0");
-  shape->data.rectangle.width = g_strdup ("width - 1");
-  shape->data.rectangle.height = g_strdup ("height - 1");
-
-  texture->data.shape_list.shape_specs[0] = shape;
-
-  texture->data.shape_list.shape_specs[1] =
-    line_spec (META_GTK_COLOR_LIGHT,
-               "1", "1", "1", "height - 2");
-
-  texture->data.shape_list.shape_specs[2] =
-    line_spec (META_GTK_COLOR_LIGHT,
-               "1", "1", "width - 2", "1");
-
-  texture->data.shape_list.shape_specs[3] =
-    line_spec (META_GTK_COLOR_DARK,
-               "width - 2", "1", "width - 2", "height - 2");
-
-  texture->data.shape_list.shape_specs[4] =
-    line_spec (META_GTK_COLOR_DARK,
-               "1", "height - 2", "width - 2", "height - 2");
-
-  
-  
-  return style;
-}
+#endif

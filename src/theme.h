@@ -28,21 +28,22 @@
 
 typedef struct _MetaFrameStyle MetaFrameStyle;
 typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
-typedef struct _MetaTextureSpec MetaTextureSpec;
+typedef struct _MetaDrawOp MetaDrawOp;
+typedef struct _MetaDrawOpList MetaDrawOpList;
 typedef struct _MetaGradientSpec MetaGradientSpec;
 typedef struct _MetaColorSpec MetaColorSpec;
-typedef struct _MetaShapeSpec MetaShapeSpec;
 typedef struct _MetaFrameLayout MetaFrameLayout;
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
 typedef struct _MetaTheme MetaTheme;
+typedef struct _MetaPositionExprEnv MetaPositionExprEnv;
 
 typedef enum
 {
-  META_TEXTURE_DRAW_UNSCALED,
-  META_TEXTURE_DRAW_SCALED_VERTICALLY,
-  META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
-  META_TEXTURE_DRAW_SCALED_BOTH
-} MetaTextureDrawMode;
+  META_SCALE_NONE,
+  META_SCALE_VERTICALLY,
+  META_SCALE_HORIZONTALLY,
+  META_SCALE_BOTH
+} MetaScaleMode;
 
 /* Parameters used to calculate the geometry of the frame */
 struct _MetaFrameLayout
@@ -147,25 +148,33 @@ struct _MetaColorSpec
   } data;
 };
 
+struct _MetaGradientSpec
+{
+  MetaGradientType type;
+  GSList *color_specs;
+};
+
 typedef enum
 {
   /* Basic drawing */
-  META_SHAPE_LINE,
-  META_SHAPE_RECTANGLE,
-  META_SHAPE_ARC,
+  META_DRAW_LINE,
+  META_DRAW_RECTANGLE,
+  META_DRAW_ARC,
 
-  /* Texture in a specific rectangle */
-  META_SHAPE_TEXTURE,
+  /* Texture thingies */
+  META_DRAW_TINT, /* just a filled rectangle with alpha */
+  META_DRAW_GRADIENT,
+  META_DRAW_IMAGE,
   
   /* GTK theme engine stuff */
-  META_SHAPE_GTK_ARROW,
-  META_SHAPE_GTK_BOX,
-  META_SHAPE_GTK_VLINE
-} MetaShapeType;
+  META_DRAW_GTK_ARROW,
+  META_DRAW_GTK_BOX,
+  META_DRAW_GTK_VLINE
+} MetaDrawType;
 
-struct _MetaShapeSpec
+struct _MetaDrawOp
 {
-  MetaShapeType type;
+  MetaDrawType type;
 
   /* Positions are strings because they can be expressions */
   union
@@ -200,18 +209,35 @@ struct _MetaShapeSpec
       double start_angle;
       double extent_angle;
     } arc;
-
+    
     struct {
-      MetaTextureSpec *texture_spec;
-      MetaTextureDrawMode mode;
-      double xalign;
-      double yalign;
+      MetaColorSpec *color_spec;
+      double alpha;
       char *x;
       char *y;
       char *width;
       char *height;
-    } texture;
+    } tint;
 
+    struct {
+      MetaGradientSpec *gradient_spec;
+      double alpha;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } gradient;
+
+    struct {
+      GdkPixbuf *pixbuf;
+      double alpha;
+      MetaScaleMode scale_mode;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } image;
+    
     struct {
       GtkStateType state;
       GtkShadowType shadow;
@@ -242,50 +268,12 @@ struct _MetaShapeSpec
   } data;
 };
 
-struct _MetaGradientSpec
+struct _MetaDrawOpList
 {
-  MetaGradientType type;
-  GSList *color_specs;
-};
-
-typedef enum
-{
-  META_TEXTURE_SOLID,
-  META_TEXTURE_GRADIENT,
-  META_TEXTURE_IMAGE,
-  META_TEXTURE_COMPOSITE,
-  META_TEXTURE_BLANK,
-  META_TEXTURE_SHAPE_LIST
-} MetaTextureType;
-
-struct _MetaTextureSpec
-{
-  MetaTextureType type;
-
-  union
-  {
-    struct {
-      MetaColorSpec *color_spec;
-    } solid;
-    struct {
-      MetaGradientSpec *gradient_spec;
-    } gradient;
-    struct {
-      GdkPixbuf *pixbuf;
-    } image;
-    struct {
-      MetaTextureSpec *background;
-      MetaTextureSpec *foreground;
-      double alpha;
-    } composite;
-    struct {
-      int dummy;
-    } blank;
-    struct {
-      MetaShapeSpec **shape_specs;
-      int n_specs;
-    } shape_list;
-  } data;
+  int refcount;
+  MetaDrawOp **ops;
+  int n_ops;
+  int n_allocated;
 };
 
 typedef enum
@@ -320,58 +308,30 @@ typedef enum
    *
    */
   
-  /* place over entire frame, scaled both */
+  /* entire frame */
   META_FRAME_PIECE_ENTIRE_BACKGROUND,
-  /* place over entire titlebar background, scaled both */
+  /* entire titlebar background */
   META_FRAME_PIECE_TITLEBAR_BACKGROUND,
-  /* place on left end of titlebar, scaled vert */
+  /* portion of the titlebar background inside the titlebar
+   * background edges
+   */
+  META_FRAME_PIECE_TITLEBAR_MIDDLE,
+  /* left end of titlebar */
   META_FRAME_PIECE_LEFT_TITLEBAR_EDGE,
-  /* place on right end of titlebar, scaled vert */
+  /* right end of titlebar */
   META_FRAME_PIECE_RIGHT_TITLEBAR_EDGE,
-  /* place on top edge of titlebar, scaled horiz */
+  /* top edge of titlebar */
   META_FRAME_PIECE_TOP_TITLEBAR_EDGE,
-  /* place on bottom edge of titlebar, scaled horiz */
+  /* bottom edge of titlebar */
   META_FRAME_PIECE_BOTTOM_TITLEBAR_EDGE,
-  /* place on left end of top edge of titlebar, unscaled */
-  META_FRAME_PIECE_LEFT_END_OF_TOP_TITLEBAR_EDGE,
-  /* place on right end of top edge of titlebar, unscaled */
-  META_FRAME_PIECE_RIGHT_END_OF_TOP_TITLEBAR_EDGE,
-  /* place on left end of bottom edge of titlebar, unscaled */
-  META_FRAME_PIECE_LEFT_END_OF_BOTTOM_TITLEBAR_EDGE,
-  /* place on right end of bottom edge of titlebar, unscaled */
-  META_FRAME_PIECE_RIGHT_END_OF_BOTTOM_TITLEBAR_EDGE,
-  /* place on top end of left titlebar edge, unscaled */
-  META_FRAME_PIECE_TOP_END_OF_LEFT_TITLEBAR_EDGE,
-  /* place on bottom end of left titlebar edge, unscaled */
-  META_FRAME_PIECE_BOTTOM_END_OF_LEFT_TITLEBAR_EDGE,
-  /* place on top end of right titlebar edge, unscaled */
-  META_FRAME_PIECE_TOP_END_OF_RIGHT_TITLEBAR_EDGE,
-  /* place on bottom end of right titlebar edge, unscaled */
-  META_FRAME_PIECE_BOTTOM_END_OF_RIGHT_TITLEBAR_EDGE,
-  /* render over title background (text area), scaled both */
+  /* render over title background (text area) */
   META_FRAME_PIECE_TITLE_BACKGROUND,
-  /* render over left side of TITLE_BACKGROUND, scaled vert */
-  META_FRAME_PIECE_LEFT_TITLE_BACKGROUND,
-  /* render over right side of TITLE_BACKGROUND, scaled vert */
-  META_FRAME_PIECE_RIGHT_TITLE_BACKGROUND,
-  /* place on left edge of the frame, scaled vert */
+  /* left edge of the frame */
   META_FRAME_PIECE_LEFT_EDGE,
-  /* place on right edge of the frame, scaled vert */
+  /* right edge of the frame */
   META_FRAME_PIECE_RIGHT_EDGE,
-  /* place on bottom edge of the frame, scaled horiz */
+  /* bottom edge of the frame */
   META_FRAME_PIECE_BOTTOM_EDGE,
-  /* place on top end of left edge of the frame, unscaled */
-  META_FRAME_PIECE_TOP_END_OF_LEFT_EDGE,
-  /* place on bottom end of left edge of the frame, unscaled */
-  META_FRAME_PIECE_BOTTOM_END_OF_LEFT_EDGE,
-  /* place on top end of right edge of the frame, unscaled */
-  META_FRAME_PIECE_TOP_END_OF_RIGHT_EDGE,
-  /* place on bottom end of right edge of the frame, unscaled */
-  META_FRAME_PIECE_BOTTOM_END_OF_RIGHT_EDGE,
-  /* place on left end of bottom edge of the frame, unscaled */
-  META_FRAME_PIECE_LEFT_END_OF_BOTTOM_EDGE,
-  /* place on right end of bottom edge of the frame, unscaled */
-  META_FRAME_PIECE_RIGHT_END_OF_BOTTOM_EDGE,
   /* place over entire frame, after drawing everything else */
   META_FRAME_PIECE_OVERLAY,
   /* Used to get size of the enum */
@@ -382,9 +342,9 @@ struct _MetaFrameStyle
 {
   int refcount;
   MetaFrameStyle *parent;
-  MetaTextureSpec *button_icons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
-  MetaTextureSpec *button_backgrounds[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
-  MetaTextureSpec *pieces[META_FRAME_PIECE_LAST];
+  MetaDrawOpList *button_icons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
+  MetaDrawOpList *button_backgrounds[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
+  MetaDrawOpList *pieces[META_FRAME_PIECE_LAST];
   MetaFrameLayout *layout;
 };
 
@@ -449,6 +409,28 @@ struct _MetaTheme
   MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
 };
 
+#define META_POSITION_EXPR_ERROR (g_quark_from_static_string ("meta-position-expr-error"))
+typedef enum
+{
+  META_POSITION_EXPR_ERROR_BAD_CHARACTER,
+  META_POSITION_EXPR_ERROR_BAD_PARENS,
+  META_POSITION_EXPR_ERROR_UNKNOWN_VARIABLE,
+  META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
+  META_POSITION_EXPR_ERROR_MOD_ON_FLOAT,
+  META_POSITION_EXPR_ERROR_FAILED
+} MetaPositionExprError;
+
+struct _MetaPositionExprEnv
+{
+  int x;
+  int y;
+  int width;
+  int height;
+  /* size of an image or whatever */
+  int object_width;
+  int object_height;
+};
+
 MetaFrameLayout* meta_frame_layout_new           (void);
 void             meta_frame_layout_free          (MetaFrameLayout       *layout);
 void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
@@ -467,31 +449,15 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
                                                   int                    client_height,
                                                   MetaFrameGeometry     *fgeom);
 
-#define META_POSITION_EXPR_ERROR (g_quark_from_static_string ("meta-position-expr-error"))
-typedef enum
-{
-  META_POSITION_EXPR_ERROR_BAD_CHARACTER,
-  META_POSITION_EXPR_ERROR_BAD_PARENS,
-  META_POSITION_EXPR_ERROR_UNKNOWN_VARIABLE,
-  META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
-  META_POSITION_EXPR_ERROR_MOD_ON_FLOAT,
-  META_POSITION_EXPR_ERROR_FAILED
-} MetaPositionExprError;
-
-gboolean meta_parse_position_expression (const char  *expr,
-                                         int          x,
-                                         int          y,
-                                         int          width,
-                                         int          height,
-                                         int         *x_return,
-                                         int         *y_return,
-                                         GError     **err);
-gboolean meta_parse_size_expression     (const char  *expr,
-                                         int          width,
-                                         int          height,
-                                         int         *val_return,
-                                         GError     **err);
-
+gboolean meta_parse_position_expression (const char                 *expr,
+                                         const MetaPositionExprEnv  *env,
+                                         int                        *x_return,
+                                         int                        *y_return,
+                                         GError                    **err);
+gboolean meta_parse_size_expression     (const char                 *expr,
+                                         const MetaPositionExprEnv  *env,
+                                         int                        *val_return,
+                                         GError                    **err);
 
 MetaColorSpec* meta_color_spec_new             (MetaColorSpecType  type);
 MetaColorSpec* meta_color_spec_new_from_string (const char        *str,
@@ -504,22 +470,32 @@ void           meta_color_spec_render          (MetaColorSpec     *spec,
                                                 GdkColor          *color);
 
 
-MetaShapeSpec* meta_shape_spec_new  (MetaShapeType        type);
-void           meta_shape_spec_free (MetaShapeSpec       *spec);
-void           meta_shape_spec_draw (const MetaShapeSpec *spec,
-                                     GtkWidget           *widget,
-                                     GdkDrawable         *drawable,
-                                     const GdkRectangle  *clip,
-                                     /* logical region being drawn,
-                                      * shape coords are offset by
-                                      * x,y and w/h variables are
-                                      * available in shape coord
-                                      * expressions.
-                                      */
-                                     int                  x,
-                                     int                  y,
-                                     int                  width,
-                                     int                  height);
+MetaDrawOp*    meta_draw_op_new  (MetaDrawType        type);
+void           meta_draw_op_free (MetaDrawOp          *op);
+void           meta_draw_op_draw (const MetaDrawOp    *op,
+                                  GtkWidget           *widget,
+                                  GdkDrawable         *drawable,
+                                  const GdkRectangle  *clip,
+                                  /* logical region being drawn */
+                                  int                  x,
+                                  int                  y,
+                                  int                  width,
+                                  int                  height);
+
+
+MetaDrawOpList* meta_draw_op_list_new   (int                   n_preallocs);
+void            meta_draw_op_list_ref   (MetaDrawOpList       *op_list);
+void            meta_draw_op_list_unref (MetaDrawOpList       *op_list);
+void            meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
+                                         GtkWidget            *widget,
+                                         GdkDrawable          *drawable,
+                                         const GdkRectangle   *clip,
+                                         int                   x,
+                                         int                   y,
+                                         int                   width,
+                                         int                   height);
+void           meta_draw_op_list_append (MetaDrawOpList       *op_list,
+                                         MetaDrawOp           *op);
 
 MetaGradientSpec* meta_gradient_spec_new    (MetaGradientType        type);
 void              meta_gradient_spec_free   (MetaGradientSpec       *desc);
@@ -528,26 +504,6 @@ GdkPixbuf*        meta_gradient_spec_render (const MetaGradientSpec *desc,
                                              int                     width,
                                              int                     height);
 
-MetaTextureSpec* meta_texture_spec_new    (MetaTextureType        type);
-void             meta_texture_spec_free   (MetaTextureSpec       *desc);
-void             meta_texture_spec_draw   (const MetaTextureSpec *desc,
-                                           GtkWidget             *widget,
-                                           GdkDrawable           *drawable,
-                                           const GdkRectangle    *clip,
-                                           MetaTextureDrawMode    mode,
-                                           /* How to align a texture
-                                            * smaller than the given area
-                                            */
-                                           double                 xalign,
-                                           double                 yalign,
-                                           /* logical region being drawn,
-                                            * scale to this area if in SCALED
-                                            * mode
-                                            */
-                                           int                    x,
-                                           int                    y,
-                                           int                    width,
-                                           int                    height);
 
 MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
 void            meta_frame_style_ref   (MetaFrameStyle *style);

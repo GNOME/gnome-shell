@@ -1,3 +1,12 @@
+2002-02-02  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme-viewer.c: test % operator
+
+	* src/theme.c (pos_tokenize): add % to switch for operators
+
+	* src/theme.c: rework theme stuff so we have
+	MetaDrawOp/MetaDrawOpList instead of MetaTextureSpec/MetaShapeSpec
+
 2002-01-28  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme.c (meta_texture_spec_render): fix shadowed variable

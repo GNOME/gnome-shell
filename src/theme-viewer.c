@@ -186,6 +186,8 @@ static const PositionExpressionTest position_expression_tests[] = {
     "14 - 10", 14, 24, NO_ERROR },
   { { 10, 20, 40, 50 },
     "8 / 2", 14, 24, NO_ERROR },
+  { { 10, 20, 40, 50 },
+    "8 % 3", 12, 22, NO_ERROR },
   /* Binary expressions with floats and mixed float/ints */
   { { 10, 20, 40, 50 },
     "7.0 / 3.5", 12, 22, NO_ERROR },
@@ -294,6 +296,10 @@ static const PositionExpressionTest position_expression_tests[] = {
   { { 10, 20, 40, 50 },
     "- width", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
   { { 10, 20, 40, 50 },
+    "5 % 1.0", 0, 0, META_POSITION_EXPR_ERROR_MOD_ON_FLOAT },
+  { { 10, 20, 40, 50 },
+    "1.0 % 5", 0, 0, META_POSITION_EXPR_ERROR_MOD_ON_FLOAT },
+  { { 10, 20, 40, 50 },
     "! * 2", 0, 0, META_POSITION_EXPR_ERROR_BAD_CHARACTER },
   { { 10, 20, 40, 50 },
     "   ", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
@@ -313,7 +319,8 @@ static void
 run_position_expression_tests (void)
 {
   int i;
-
+  MetaPositionExprEnv env;
+  
   i = 0;
   while (i < G_N_ELEMENTS (position_expression_tests))
     {
@@ -329,12 +336,16 @@ run_position_expression_tests (void)
                  test->expr, test->expected_x, test->expected_y);
       
       err = NULL;      
+
+      env.x = test->rect.x;
+      env.y = test->rect.y;
+      env.width = test->rect.width;
+      env.height = test->rect.height;
+      env.object_width = -1;
+      env.object_height = -1;
       
       retval = meta_parse_position_expression (test->expr,
-                                               test->rect.x,
-                                               test->rect.y,
-                                               test->rect.width,
-                                               test->rect.height,
+                                               &env,
                                                &x, &y,
                                                &err);
 
@@ -377,7 +388,8 @@ run_position_expression_timings (void)
   int iters;
   clock_t start;
   clock_t end;
-
+  MetaPositionExprEnv env;
+  
 #define ITERATIONS 100000
 
   start = clock ();
@@ -390,12 +402,16 @@ run_position_expression_timings (void)
       int x, y;
       
       test = &position_expression_tests[i];
+
+      env.x = test->rect.x;
+      env.y = test->rect.y;
+      env.width = test->rect.width;
+      env.height = test->rect.height;
+      env.object_width = -1;
+      env.object_height = -1;
       
       meta_parse_position_expression (test->expr,
-                                      test->rect.x,
-                                      test->rect.y,
-                                      test->rect.width,
-                                      test->rect.height,
+                                      &env,
                                       &x, &y, NULL);
 
       ++iters;
