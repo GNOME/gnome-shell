@@ -1,3 +1,14 @@
+2003-01-14  Rob Adams <robadams@ucla.edu>
+
+	* src/prefs.c: Increase the number of run_command bindings in
+	screen_bindings from 12 to 32.
+
+	* src/prefs.h: Increase the number of META_KEYBINDING_COMMAND_N
+	macros from 12 to 32.
+	
+	* src/keybindings.c: Increase the number of run_command handlers
+	from 12 to 32.
+
 2003-01-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_handle_mouse_grab_op_event): implement
