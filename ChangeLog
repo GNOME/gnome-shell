@@ -1,3 +1,10 @@
+2004-12-27  Elijah Newren  <newren@gmail.com>
+
+	* src/display.c (meta_display_set_input_focus_window,
+	meta_display_focus_the_no_focus_window): Spew warning if
+	CurrentTime is passed to the function, but don't exit prematurely.
+	(fixes #162353)
+
 2004-12-24  Elijah Newren  <newren@gmail.com>
 
 	* src/window.c (meta_window_show_menu): Don't show menu if all
@@ -59,7 +66,7 @@
 	Rename meta_window_visible_on_workspace to
 	meta_window_located_on_workspace (whether or not the window was
 	showing wasn't taken into account, which made "visible"
-	confusing).
+	confusing).  Fixes #136314.
 
 2004-12-22  Elijah Newren  <newren@gmail.com>
 

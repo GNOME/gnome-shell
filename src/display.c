@@ -4611,7 +4611,14 @@ meta_display_set_input_focus_window (MetaDisplay *display,
                                      gboolean     focus_frame,
                                      Time         timestamp)
 {
-  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+  if (timestamp == CurrentTime)
+    {
+      meta_warning ("meta_display_set_input_focus_window called with a "
+                    "timestamp of 0 for window %s.  This shouldn't happen!\n",
+                    window->desc);
+      meta_print_backtrace ();
+    }
+  else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
     return;
 
   XSetInputFocus (display->xdisplay,
@@ -4629,8 +4636,17 @@ void
 meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                         Time         timestamp)
 {
-  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+  if (timestamp == CurrentTime)
+    {
+      meta_warning ("meta_display_focus_the_no_focus_window called with a "
+                    "timestamp of 0.  This shouldn't happen!\n");
+      meta_print_backtrace ();
+    }
+  else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+    {
+      meta_warning ("Ignoring focus request for no_focus_window since %lu is less than %lu.\n", timestamp, display->last_focus_time);
     return;
+    }
 
   XSetInputFocus (display->xdisplay,
                   display->no_focus_window,
