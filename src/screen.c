@@ -460,3 +460,25 @@ meta_screen_hide_tip (MetaScreen *screen)
       screen->showing_tooltip = FALSE;
     }
 }
+
+int
+meta_screen_get_n_workspaces (MetaScreen *screen)
+{
+  GList *tmp;
+  int i;
+
+  i = 0;
+  tmp = screen->display->workspaces;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      if (w->screen == screen)
+        ++i;
+      
+      tmp = tmp->next;
+    }
+
+  return i;
+
+}

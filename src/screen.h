@@ -77,6 +77,9 @@ void          meta_screen_show_tip            (MetaScreen                 *scree
                                                const char                 *markup);
 void          meta_screen_hide_tip            (MetaScreen                 *screen);
 
+int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
+
+
 #endif
 
 

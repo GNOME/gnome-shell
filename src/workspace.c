@@ -20,8 +20,13 @@
  */
 
 #include "workspace.h"
+#include "errors.h"
+#include <X11/Xatom.h>
 
 void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
+
+static int set_current_workspace_hint (MetaWindow *window);
+static int set_number_of_spaces_hint  (MetaScreen *screen);
 
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
@@ -42,6 +47,9 @@ meta_workspace_new (MetaScreen *screen)
   workspace->workarea.y = 0;
   workspace->workarea.width = WidthOfScreen (screen->xscreen);
   workspace->workarea.height = HeightOfScreen (screen->xscreen);
+
+  /* Update hint for current number of workspaces */
+  set_number_of_spaces_hint (screen);
   
   return workspace;
 }
@@ -79,6 +87,8 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   workspace->windows = g_list_prepend (workspace->windows, window);
   window->workspaces = g_list_prepend (window->workspaces, workspace);
 
+  set_current_workspace_hint (window);
+  
   meta_window_queue_calc_showing (window);
 }
 
@@ -91,6 +101,8 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   workspace->windows = g_list_remove (workspace->windows, window);
   window->workspaces = g_list_remove (window->workspaces, workspace);
 
+  set_current_workspace_hint (window);
+  
   meta_window_queue_calc_showing (window);
 }
 
@@ -146,4 +158,71 @@ meta_workspace_index (MetaWorkspace *workspace)
     }
 
   meta_bug ("Workspace does not exist to index!\n");
+}
+
+int
+meta_workspace_screen_index  (MetaWorkspace *workspace)
+{
+  GList *tmp;
+  int i;
+
+  i = 0;
+  tmp = workspace->screen->display->workspaces;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      if (tmp->data == workspace)
+        return i;
+
+      if (w->screen == workspace->screen)
+        ++i;
+                    
+      tmp = tmp->next;
+    }
+
+  meta_bug ("Workspace does not exist to index!\n");
+}
+
+
+static int
+set_current_workspace_hint (MetaWindow *window)
+{
+  /* if on more than one workspace, we claim to be "sticky" */
+  unsigned long data[1];
+
+  if (window->workspaces == NULL)
+    return Success; /* this happens when destroying windows */
+  
+  if (g_list_length (window->workspaces) > 1)
+    data[0] = 0xFFFFFFFF;
+  else
+    data[0] = meta_workspace_screen_index (window->workspaces->data);
+
+  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %ld\n",
+                window->desc, data[0]);
+  
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom_net_wm_desktop,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (window->display);
+}
+
+static int
+set_number_of_spaces_hint (MetaScreen *screen)
+{
+  unsigned long data[1];
+  
+  data[0] = meta_screen_get_n_workspaces (screen);
+
+  meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %ld\n", data[0]);
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_number_of_desktops,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (screen->display);
 }

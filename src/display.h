@@ -50,6 +50,8 @@ struct _MetaDisplay
   Atom atom_net_wm_state_shaded;
   Atom atom_net_wm_state_maximized_horz;
   Atom atom_net_wm_state_maximized_vert;
+  Atom atom_net_wm_desktop;
+  Atom atom_net_number_of_desktops;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -105,6 +107,5 @@ MetaWorkspace* meta_display_get_workspace_by_index        (MetaDisplay   *displa
 MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *display,
                                                            MetaScreen    *screen,
                                                            int            index);
-
 
 #endif

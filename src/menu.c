@@ -22,6 +22,7 @@
 #include "menu.h"
 #include "main.h"
 #include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -44,9 +45,10 @@ static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static GtkWidget *menu = NULL;
 static MenuItem menuitems[] = {
-  { META_MESSAGE_MENU_DELETE, GTK_STOCK_CLOSE, N_("Close") },
-  { META_MESSAGE_MENU_MINIMIZE, NULL, N_("Minimize") },
-  { META_MESSAGE_MENU_MAXIMIZE, NULL, N_("Maximize") }
+  { META_MESSAGE_MENU_DELETE, GTK_STOCK_CLOSE, N_("_Close") },
+  { META_MESSAGE_MENU_MINIMIZE, NULL, N_("_Minimize") },
+  { META_MESSAGE_MENU_MAXIMIZE, NULL, N_("Ma_ximize") },
+  { META_MESSAGE_MENU_SHADE, NULL, N_("_Shade") }
 };
 
 static void
@@ -71,6 +73,67 @@ popup_position_func (GtkMenu   *menu,
   *y = CLAMP (*y, 0, MAX (0, gdk_screen_height () - req.height));
 }
 
+static gint
+get_num_desktops (void)
+{  
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  int result;
+  
+  XGetWindowProperty (gdk_display, gdk_root_window,
+                      gdk_atom_intern ("_NET_NUMBER_OF_DESKTOPS", FALSE),
+                      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&num);  
+
+  if (type != XA_CARDINAL)
+    return 0; 
+
+  result = *num;
+  
+  XFree (num);
+
+  return result;
+}
+
+static gulong
+get_current_desktop (GdkWindow *window)
+{  
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  gulong result;
+  int err;
+  
+  gdk_error_trap_push ();
+  type = None;
+  XGetWindowProperty (gdk_display, GDK_WINDOW_XID (window),
+                      gdk_atom_intern ("_NET_WM_DESKTOP", FALSE),
+                      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&num);  
+  err = gdk_error_trap_pop ();
+  if (err != Success)
+    meta_ui_warning ("Error %d getting _NET_WM_DESKTOP\n", err);
+  
+  if (type != XA_CARDINAL)
+    {
+      meta_ui_warning ("_NET_WM_DESKTOP has wrong type %s\n", gdk_atom_name (type));
+      return -1;
+    }
+
+  result = *num;
+  
+  XFree (num);
+
+  return result;
+}
+
 void
 meta_window_menu_show (gulong xwindow,
                        int root_x, int root_y,
@@ -82,6 +145,8 @@ meta_window_menu_show (gulong xwindow,
   int i;
   GdkWindow *window;
   GdkPoint *pt;
+  int n_workspaces;
+  int current_workspace;
   
   if (menu)
     gtk_widget_destroy (menu);
@@ -110,7 +175,7 @@ meta_window_menu_show (gulong xwindow,
             {
               GtkWidget *image;
               
-              mi = gtk_image_menu_item_new_with_label (menuitems[i].label);
+              mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
               image = gtk_image_new_from_stock (menuitems[i].stock_id,
                                                 GTK_ICON_SIZE_MENU);
               gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
@@ -119,7 +184,7 @@ meta_window_menu_show (gulong xwindow,
             }
           else
             {
-              mi = gtk_menu_item_new_with_label (menuitems[i].label);
+              mi = gtk_menu_item_new_with_mnemonic (menuitems[i].label);
             }
 
           if (insensitive & menuitems[i].op)
@@ -142,6 +207,60 @@ meta_window_menu_show (gulong xwindow,
         }
       ++i;
     }
+
+  if (ops & META_MESSAGE_MENU_WORKSPACES)
+    {
+      n_workspaces = get_num_desktops ();
+      current_workspace = get_current_desktop (window);
+
+      meta_ui_warning ("Creating %d workspace menu current %d\n",
+                       n_workspaces, current_workspace);
+      
+      if (n_workspaces > 0 && current_workspace >= 0)
+        {
+          i = 0;
+          while (i < n_workspaces)
+            {
+              char *label;
+              GtkWidget *mi;
+              MenuData *md;
+              
+              label = g_strdup_printf (_("Move to workspace _%d\n"),
+                                       i + 1);
+          
+              mi = gtk_menu_item_new_with_mnemonic (label);
+
+              g_free (label);
+
+              if (current_workspace == i ||
+                  insensitive & META_MESSAGE_MENU_WORKSPACES)
+                gtk_widget_set_sensitive (mi, FALSE);
+
+              md = g_new (MenuData, 1);
+
+              md->window = window;
+              md->op = META_MESSAGE_MENU_WORKSPACES;
+
+              g_object_set_data (G_OBJECT (mi),
+                                 "workspace",
+                                 GINT_TO_POINTER (i));
+          
+              gtk_signal_connect (GTK_OBJECT (mi),
+                                  "activate",
+                                  GTK_SIGNAL_FUNC (activate_cb),
+                                  md);
+
+              gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+                                     mi);
+          
+              gtk_widget_show (mi);
+          
+              ++i;
+            }
+        }
+    }
+  else
+    meta_ui_warning ("not creating workspace menu\n");
   
   gtk_signal_connect (GTK_OBJECT (menu),
                       "destroy",
@@ -197,6 +316,58 @@ close_window (GdkWindow  *window)
 }
 
 static void
+wmspec_change_state (gboolean   add,
+                     GdkWindow *window,
+                     GdkAtom    state1,
+                     GdkAtom    state2)
+{
+  XEvent xev;
+  Atom op;
+
+  if (add)
+    op = gdk_atom_intern ("_NET_WM_STATE_ADD", FALSE);
+  else
+    op = gdk_atom_intern ("_NET_WM_STATE_REMOVE", FALSE);
+  
+  xev.xclient.type = ClientMessage;
+  xev.xclient.serial = 0;
+  xev.xclient.send_event = True;
+  xev.xclient.display = gdk_display;
+  xev.xclient.window = GDK_WINDOW_XID (window);
+  xev.xclient.message_type = gdk_atom_intern ("_NET_WM_STATE", FALSE);
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = op;
+  xev.xclient.data.l[1] = state1;
+  xev.xclient.data.l[2] = state2;
+  
+  XSendEvent (gdk_display, gdk_root_window, False,
+	      SubstructureRedirectMask | SubstructureNotifyMask,
+	      &xev);
+}
+
+static void
+wmspec_change_desktop (GdkWindow *window,
+                       gint       desktop)
+{
+  XEvent xev;
+  
+  xev.xclient.type = ClientMessage;
+  xev.xclient.serial = 0;
+  xev.xclient.send_event = True;
+  xev.xclient.display = gdk_display;
+  xev.xclient.window = GDK_WINDOW_XID (window);
+  xev.xclient.message_type = gdk_atom_intern ("_NET_WM_DESKTOP", FALSE);
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = desktop;
+  xev.xclient.data.l[1] = 0;
+  xev.xclient.data.l[2] = 0;
+  
+  XSendEvent (gdk_display, gdk_root_window, False,
+	      SubstructureRedirectMask | SubstructureNotifyMask,
+	      &xev);
+}
+
+static void
 activate_cb (GtkWidget *menuitem, gpointer data)
 {
   MenuData *md;
@@ -219,6 +390,23 @@ activate_cb (GtkWidget *menuitem, gpointer data)
       gdk_error_trap_pop ();
       break;
 
+    case META_MESSAGE_MENU_SHADE:
+      wmspec_change_state (TRUE, md->window,
+                           gdk_atom_intern ("_NET_WM_STATE_SHADED", FALSE),
+                           0);
+      break;
+
+    case META_MESSAGE_MENU_WORKSPACES:
+      {
+        int workspace;
+
+        workspace = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
+                                                        "workspace"));
+
+        wmspec_change_desktop (md->window, workspace);
+      }
+      break;
+      
     default:
       meta_ui_warning (G_STRLOC": Unknown window op\n");
       break;

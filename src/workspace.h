@@ -42,6 +42,7 @@ void           meta_workspace_remove_window (MetaWorkspace *workspace,
 
 void           meta_workspace_activate      (MetaWorkspace *workspace);
 int            meta_workspace_index         (MetaWorkspace *workspace);
+int            meta_workspace_screen_index  (MetaWorkspace *workspace);
 
 #endif
 

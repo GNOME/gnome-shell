@@ -84,7 +84,9 @@ meta_display_open (const char *name)
     "MOTIF_WM_HINTS",
     "_NET_WM_STATE_SHADED",
     "_NET_WM_STATE_MAXIMIZED_HORZ",
-    "_NET_WM_STATE_MAXIMIZED_VERT"
+    "_NET_WM_STATE_MAXIMIZED_VERT",
+    "_NET_WM_DESKTOP",
+    "_NET_NUMBER_OF_DESKTOPS"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -111,13 +113,29 @@ meta_display_open (const char *name)
   display->name = g_strdup (XDisplayName (name));
   display->xdisplay = xdisplay;
   display->error_traps = NULL;
-
+  display->server_grab_count = 0;
   display->workspaces = NULL;
   
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
 
   meta_display_init_keys (display);
+
+  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
+                False, atoms);
+  display->atom_net_wm_name = atoms[0];
+  display->atom_wm_protocols = atoms[1];
+  display->atom_wm_take_focus = atoms[2];
+  display->atom_wm_delete_window = atoms[3];
+  display->atom_wm_state = atoms[4];
+  display->atom_net_close_window = atoms[5];
+  display->atom_net_wm_state = atoms[6];
+  display->atom_motif_wm_hints = atoms[7];
+  display->atom_net_wm_state_shaded = atoms[8];
+  display->atom_net_wm_state_maximized_horz = atoms[9];
+  display->atom_net_wm_state_maximized_vert = atoms[10];
+  display->atom_net_wm_desktop = atoms[11];
+  display->atom_net_number_of_desktops = atoms[12];
   
   screens = NULL;
   i = 0;
@@ -151,22 +169,6 @@ meta_display_open (const char *name)
                                           display);
 
   display->window_ids = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
-
-  display->server_grab_count = 0;
-
-  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
-                False, atoms);
-  display->atom_net_wm_name = atoms[0];
-  display->atom_wm_protocols = atoms[1];
-  display->atom_wm_take_focus = atoms[2];
-  display->atom_wm_delete_window = atoms[3];
-  display->atom_wm_state = atoms[4];
-  display->atom_net_close_window = atoms[5];
-  display->atom_net_wm_state = atoms[6];
-  display->atom_motif_wm_hints = atoms[7];
-  display->atom_net_wm_state_shaded = atoms[8];
-  display->atom_net_wm_state_maximized_horz = atoms[9];
-  display->atom_net_wm_state_maximized_vert = atoms[10];
   
   display->double_click_time = 250;
   display->last_button_time = 0;
@@ -550,6 +552,27 @@ event_queue_callback (MetaEventQueue *queue,
                * bogus. But it rarely matters most likely.
                */
               meta_window_delete (window, CurrentTime);
+            }
+          else if (event->xclient.message_type ==
+                   display->atom_net_wm_desktop)
+            {
+              int space;
+              MetaWorkspace *workspace;
+              
+              space = event->xclient.data.l[0];
+              
+              meta_verbose ("Request to move %s to screen workspace %d\n",
+                            window->desc, space);
+
+              workspace =
+                meta_display_get_workspace_by_screen_index (display,
+                                                            window->screen,
+                                                            space);
+
+              if (workspace)
+                meta_window_change_workspace (window, workspace);
+              else
+                meta_verbose ("No such workspace %d for screen\n", space);
             }
         }
       break;

@@ -112,7 +112,8 @@ void        meta_window_maximize           (MetaWindow  *window);
 void        meta_window_unmaximize         (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window);
 void        meta_window_unshade            (MetaWindow  *window);
-
+void        meta_window_change_workspace   (MetaWindow  *window,
+                                            MetaWorkspace *workspace);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
