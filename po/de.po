@@ -1,14 +1,14 @@
 # German Metacity translation.
-# Copyright (C) 2002-2003 Free Software Foundation, Inc.
+# Copyright (C) 2002-2004 Free Software Foundation, Inc.
 # Matthias Warkus <mawarkus@gnome.org>, 2002.
-# Christian Neumair <chris@gnome-de.org>, 2002, 2003.
+# Christian Neumair <chris@gnome-de.org>, 2002-2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-29 18:10+0100\n"
-"PO-Revision-Date: 2003-12-29 18:10+0100\n"
+"POT-Creation-Date: 2004-01-18 10:46+0100\n"
+"PO-Revision-Date: 2004-01-18 10:46+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 
-#: src/display.c:291
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
@@ -245,7 +245,7 @@ msgstr "Arbeitsfläche %s%d"
 
 #: src/menu.c:365
 msgid "Move to Another _Workspace"
-msgstr "Auf eine a_ndere Arbeitsfläche"
+msgstr "Auf a_ndere Arbeitsfläche verschieben"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -2063,12 +2063,12 @@ msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:415
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Bildschirm %d auf Anzeige »%s« ist ungültig\n"
 
-#: src/screen.c:429
+#: src/screen.c:431
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2078,7 +2078,7 @@ msgstr ""
 "die Option »--replace« an, um zu versuchen, den aktuellen Fenstermanager zu "
 "ersetzen.\n"
 
-#: src/screen.c:453
+#: src/screen.c:455
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2086,12 +2086,12 @@ msgstr ""
 "Markierung des Fenstermanagers auf Bildschirm %d auf Anzeige »%s« konnte "
 "nicht empfangen werden\n"
 
-#: src/screen.c:511
+#: src/screen.c:513
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager\n"
 
-#: src/screen.c:702
+#: src/screen.c:704
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Bildschirm %d auf Anzeige »%s« konnte nicht freigegeben werden\n"
@@ -3247,7 +3247,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4730
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3269,7 +3269,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5392
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3307,21 +3307,3 @@ msgid ""
 msgstr ""
 "Eigenschaft %s auf Fenster 0x%lx enthielt ungültiges UTF-8 für Objekt %d in "
 "der Liste\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Nur auf %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Auf Arbeitsfläche %s verschieben"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Das Fenster »%s« reagiert nicht.\n"
-#~ "Möchten Sie das Beenden dieser Anwendung erzwingen?\n"
-#~ "(Alle offenen Dokumente gehen dabei verloren)"
-
-#~ msgid "Kill application"
-#~ msgstr "Anwendung abwürgen"
