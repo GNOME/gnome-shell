@@ -1,5 +1,13 @@
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c: (meta_window_activate): when receiving a
+	_NET_ACTIVE_WINDOW message, switch to the desktop where the window
+	is located before activating instead of moving the window to the
+	current desktop.  Thanks to Lubos Lunak for catching this issue.
+	Fixes #128380.
+
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (meta_window_show): Ignore all focus and
 	focus-stealing-prevention code in meta_window_show when not
 	showing the window for the first time.  Fixes #167199.
