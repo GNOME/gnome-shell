@@ -1,3 +1,35 @@
+2.9.0
+==
+
+This is an unstable release heading towards Gnome 2.10.
+
+Thanks to Rob Adams, Anders Carlsson, Elijah Newren, Soeren Sandmann,
+and Vincent Untz for fixes and features in this release.
+
+ - Add a keybinding to launch a terminal (Vincent) [#154232]
+ - Correct the requested number of keycodes (Rob) [#155247]
+ - Add tracker bugs to rationales.txt file
+ - Make the "showing desktop" mode be per-workspace instead of
+   per-screen. (Elijah) [#142198]
+ - Don't try to use an ARGB visual at all if the depth isn't
+   32-bit. This caused major slowdowns with Composite
+   enabled. (Anders)
+ - Fix the modifier key breakage introduced by an Xorg
+   change. (Soeren) [#151554]
+ - Update _NET_WM_STATE_HIDDEN so the pager on the panel will know
+   whether to display windows as visible or hidden (Elijah) [#105665]
+ - Fix the alt-tab order--if the most recently used window is not
+   focused, start alt tabbing with that window instead of the one
+   after it (Elijah) [#156251]
+ - Don't lower newly mapped windows when they're denied focus if they
+   are transients of the focused window.  Instead, defocus the
+   currently focused window (Elijah) [#151996]
+ - Re-enable focus stealing prevention (Elijah)
+
+Translations
+ es(Francisco Javier F. Serrador), sq(Laurent Dhima), sr(Danilo ¦egan), 
+ cs(Miloslav Trmac), en_CA(Adam Weinberger), en_GB(David Lodge)
+
 2.8.6
 ==
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-15 23:14+0200\n"
+"POT-Creation-Date: 2004-11-01 08:27-0700\n"
 "PO-Revision-Date: 2004-10-15 23:15+0200\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -102,7 +102,7 @@ msgstr "Увећај прозор"
 msgid "Unmaximize Window"
 msgstr "Поништи увећавање прозора"
 
-#: src/keybindings.c:996
+#: src/keybindings.c:994
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,19 +111,19 @@ msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x за неку "
 "функцију\n"
 
-#: src/keybindings.c:2530
+#: src/keybindings.c:2554
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2634
+#: src/keybindings.c:2659
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
 
-#: src/keybindings.c:3465
+#: src/keybindings.c:3489
 msgid "No terminal command has been defined.\n"
 msgstr "Није дефинисана наредба терминала.\n"
 
@@ -1720,7 +1720,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Комбинација тастера која покреће терминал. Облик записа је „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. Програм за обраду је доста слободан и дозвољава велика или мала слова, као и скраћенице попут „&lt;Ctl&gt;“ или „&lt; Ctrl&gt;“. Ако подесите опцију на нарочити низ знакова „disabled“, онда неће бити коришћена ниједна комбинација тастера за ову акцију."
+msgstr ""
+"Комбинација тастера која покреће терминал. Облик записа је „&lt;Control&gt;"
+"a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. Програм за обраду је доста слободан и "
+"дозвољава велика или мала слова, као и скраћенице попут „&lt;Ctl&gt;“ или "
+"„&lt; Ctrl&gt;“. Ако подесите опцију на нарочити низ знакова „disabled“, "
+"онда неће бити коришћена ниједна комбинација тастера за ову акцију."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -2051,7 +2056,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има менаџер прозора\n"
 
-#: src/screen.c:701
+#: src/screen.c:699
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Нисам могао да испустим приказ %d на екрану „%s“\n"
@@ -3172,7 +3177,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4871
+#: src/window.c:4908
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3188,7 +3193,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5542
+#: src/window.c:5579
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-11 08:59-0700\n"
+"POT-Creation-Date: 2004-11-01 08:27-0700\n"
 "PO-Revision-Date: 2002-06-07 21:46+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -102,21 +102,26 @@ msgid "Unmaximize Window"
 msgstr "Odrazpni okno"
 
 # G:1 K:0 O:0
-#: src/keybindings.c:989
+#: src/keybindings.c:994
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
 
-#: src/keybindings.c:2529
+#: src/keybindings.c:2554
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Napaka ob zaganjanju metacity-dialog za izpis napake o ukazu: %s\n"
 
-#: src/keybindings.c:2602
+#: src/keybindings.c:2659
 #, c-format
 msgid "No command %d has been defined.\n"
+msgstr "Ukaz %d ni bil naveden.\n"
+
+#: src/keybindings.c:3489
+#, fuzzy
+msgid "No terminal command has been defined.\n"
 msgstr "Ukaz %d ni bil naveden.\n"
 
 #: src/main.c:69
@@ -238,7 +243,7 @@ msgid "Move to Workspace _Down"
 msgstr "Prestavi okno eno delovno površino navzdol"
 
 # G:1 K:0 O:0
-#: src/menu.c:162 src/prefs.c:1868
+#: src/menu.c:162 src/prefs.c:1942
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
@@ -719,14 +724,18 @@ msgid "Run a defined command"
 msgstr "Poženi določen ukaz"
 
 #: src/metacity.schemas.in.h:60
-msgid "Show the panel menu"
+msgid "Run a terminal"
 msgstr ""
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run application dialog"
+msgid "Show the panel menu"
 msgstr ""
 
 #: src/metacity.schemas.in.h:62
+msgid "Show the panel run application dialog"
+msgstr ""
+
+#: src/metacity.schemas.in.h:63
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -754,83 +763,83 @@ msgstr ""
 "brez, da se odpravi pomankljivosti samih specifikacij, zato kdaj hroščav "
 "brezobhodnem načinu ne bo mogoče popraviti brez, da se popravi specifikacija."
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
 msgstr "Preklopi na delovno površino 1"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
 msgstr "Preklopi na delovno površino 10"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
 msgstr "Preklopi na delovno površino 11"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
 msgstr "Preklopi na delovno površino 12"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
 msgstr "Preklopi na delovno površino 2"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
 msgstr "Preklopi na delovno površino 3"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
 msgstr "Preklopi na delovno površino 4"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
 msgstr "Preklopi na delovno površino 5"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
 msgstr "Preklopi na delovno površino 6"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
 msgstr "Preklopi na delovno površino 7"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
 msgstr "Preklopi na delovno površino 8"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
 msgstr "Preklopi na delovno površino 9"
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
 msgstr "Preklopi na delovno površino nad to"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
 msgstr "Preklopi na delovno površino pod to"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
 msgstr "Preklopi na delovno površino na levi"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
 msgstr "Preklopi na delovno površino na desni"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
 msgstr ""
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
 msgstr ""
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
 msgstr ""
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:83
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -841,7 +850,7 @@ msgid ""
 "currently focused window's titlebar is flashed."
 msgstr ""
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -851,7 +860,7 @@ msgstr ""
 "povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel "
 "ukaz command_N."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:85
 #, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
@@ -861,7 +870,7 @@ msgstr ""
 "povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel "
 "ukaz command_N."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:86
 #, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
@@ -872,7 +881,7 @@ msgstr ""
 "povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel "
 "ukaz command_N."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:87
 #, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -889,7 +898,7 @@ msgstr ""
 "v to možnost naastavite posebni niz \"disabled\", potem za to dejanje ne bo "
 "tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:88
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
@@ -906,7 +915,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:89
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
@@ -923,7 +932,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:90
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
@@ -940,7 +949,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:91
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
@@ -957,7 +966,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:92
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
@@ -972,7 +981,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:93
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
@@ -987,7 +996,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:94
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
@@ -1002,7 +1011,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:95
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
@@ -1017,7 +1026,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:96
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
@@ -1032,7 +1041,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:97
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
@@ -1047,7 +1056,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:98
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
@@ -1062,7 +1071,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:99
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
@@ -1077,7 +1086,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:100
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
@@ -1092,7 +1101,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:101
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
@@ -1107,7 +1116,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:102
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
@@ -1122,7 +1131,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:103
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
@@ -1137,7 +1146,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:104
 #, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
@@ -1152,7 +1161,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:105
 #, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
@@ -1167,7 +1176,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:106
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
@@ -1184,7 +1193,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:107
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
@@ -1201,7 +1210,7 @@ msgstr ""
 "Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:108
 #, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
@@ -1218,7 +1227,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:109
 #, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
@@ -1233,7 +1242,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:110
 #, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -1248,7 +1257,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:111
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
@@ -1264,7 +1273,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:112
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
@@ -1280,7 +1289,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:113
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
@@ -1296,7 +1305,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:114
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
@@ -1311,7 +1320,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:115
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
@@ -1326,7 +1335,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:116
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
@@ -1341,7 +1350,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:117
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
@@ -1356,7 +1365,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:118
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
@@ -1371,7 +1380,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:119
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
@@ -1386,7 +1395,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:120
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
@@ -1401,7 +1410,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:121
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
@@ -1416,7 +1425,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:122
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
@@ -1431,7 +1440,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:123
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
@@ -1446,7 +1455,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:124
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
@@ -1461,7 +1470,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:125
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
@@ -1476,7 +1485,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:126
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
@@ -1491,7 +1500,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:127
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1508,7 +1517,7 @@ msgstr ""
 "v to možnost naastavite posebni niz \"disabled\", potem za to dejanje ne bo "
 "tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:128
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1525,7 +1534,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:129
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
@@ -1543,7 +1552,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:130
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
@@ -1561,7 +1570,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:131
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
@@ -1578,7 +1587,7 @@ msgstr ""
 "v to možnost naastavite posebni niz \"disabled\", potem za to dejanje ne bo "
 "tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:132
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
@@ -1595,7 +1604,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:133
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
@@ -1614,7 +1623,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
@@ -1633,7 +1642,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 #, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
@@ -1650,7 +1659,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 #, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
@@ -1665,7 +1674,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 #, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
@@ -1680,7 +1689,7 @@ msgstr ""
 "Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 #, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
@@ -1696,7 +1705,7 @@ msgstr ""
 "naastavite posebni niz \"disabled\", potem za to dejanje ne bo tipkovnične "
 "vezi."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
@@ -1713,7 +1722,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
@@ -1728,7 +1737,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
@@ -1744,7 +1753,22 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
+#, fuzzy
+msgid ""
+"The keybinding which invokes a terminal. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Tipkovnična vez, ki aktivira menu oken. Oblikovano je kot \"&lt;Control&gt;a"
+"\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej toleranten in "
+"dopušča različno velikost črk ter okrajšave kot nrp. \"&lt;Ctl&gt;\" in "
+"\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
+"za to dejanje ne bo tipkovnične vezi."
+
+#: src/metacity.schemas.in.h:143
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1760,7 +1784,7 @@ msgstr ""
 "Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem za to "
 "dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:144
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1776,7 +1800,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:145
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1791,21 +1815,21 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz \"disabled\", potem "
 "za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
 msgstr "Ime namizja."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:147
 msgid "The screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:148
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Tema določa izgled robov oken, naziva oken itd."
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:149
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1813,7 +1837,7 @@ msgstr ""
 "Časovni premor preden se okno dvigne, kadar je auto_raise nastavljen na "
 "\"true\". Premor je podan v tisočinkah sekunde."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:150
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1827,11 +1851,11 @@ msgstr ""
 "pomeni, da se okna fokusirajo, ko gre v njih miška in odfokusirajo, ko jih "
 "ta zapusti."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:152
 #, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
@@ -1851,7 +1875,7 @@ msgstr ""
 "Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:153
 #, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
@@ -1866,7 +1890,7 @@ msgstr ""
 "Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:154
 #, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
@@ -1881,7 +1905,7 @@ msgstr ""
 "Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost naastavite posebni niz "
 "\"disabled\", potem za to dejanje ne bo tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:155
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
@@ -1898,7 +1922,7 @@ msgstr ""
 "možnost naastavite posebni niz \"disabled\", potem za to dejanje ne bo "
 "tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
@@ -1915,7 +1939,7 @@ msgstr ""
 "možnost naastavite posebni niz \"disabled\", potem za to dejanje ne bo "
 "tipkovnične vezi."
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 #, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
@@ -1927,67 +1951,68 @@ msgstr ""
 "\"togle_maximized\", ki spremeni razpetost okna."
 
 # G:1 K:0 O:0
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 #, fuzzy
 msgid "Toggle always on top state"
 msgstr "Preklopi stanje razpetja"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid "Toggle fullscreen mode"
 msgstr "Preklopi celozaslonski način"
 
 # G:1 K:0 O:0
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Toggle maximization state"
 msgstr "Preklopi stanje razpetja"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
 msgstr "Preklopi stanje senčenja"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Toggle window on all workspaces"
 msgstr "Preklopi ali je okno na vseh delovnih površinah"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 #, fuzzy
 msgid "Unmaximize window"
 msgstr "Odrazpni okno"
 
-#: src/metacity.schemas.in.h:163
+#: src/metacity.schemas.in.h:165
 msgid "Use standard system font in window titles"
 msgstr "V nazivih oken uporabi običajno sistemsko pisavo"
 
-#: src/metacity.schemas.in.h:164
+#: src/metacity.schemas.in.h:166
 msgid "Visual Bell Type"
 msgstr ""
 
-#: src/metacity.schemas.in.h:165
+#: src/metacity.schemas.in.h:167
 msgid "Window focus mode"
 msgstr "Način fokusiranja oken"
 
-#: src/metacity.schemas.in.h:166
+#: src/metacity.schemas.in.h:168
 msgid "Window title font"
 msgstr "Pisava naziva okna"
 
 # G:1 K:0 O:0
-#: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
-#: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
-#: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
-#: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
+#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
+#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
+#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
+#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
+#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
+#: src/prefs.c:798
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ključ GConf \"%s\" je nastavljen na neveljavno vrsto\n"
 
-#: src/prefs.c:810
+#: src/prefs.c:843
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1996,17 +2021,17 @@ msgstr ""
 "\"%s\", ki je bil najden v podatkovni zbirki nastavitev ni veljaven "
 "spremenilnik za miškine gumbe.\n"
 
-#: src/prefs.c:834 src/prefs.c:1244
+#: src/prefs.c:867 src/prefs.c:1277
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ključ GConf '%s' je nastavljen na neveljavno vrednost\n"
 
-#: src/prefs.c:961
+#: src/prefs.c:994
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nisem mogel razčleniti opisa \"%s\" iz ključa GConf %s\n"
 
-#: src/prefs.c:1146
+#: src/prefs.c:1179
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2015,7 +2040,7 @@ msgstr ""
 "%d shranjen v ključu GConf %s ni normalno število delovnih površin, trenutno "
 "največje število je %d\n"
 
-#: src/prefs.c:1206
+#: src/prefs.c:1239
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2023,17 +2048,17 @@ msgstr ""
 "Obhodi za pokvarjene programe so izključeni. Nekateri programi se morda ne "
 "bodo pravilno obnašali.\n"
 
-#: src/prefs.c:1271
+#: src/prefs.c:1304
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d shranjen v GConf ključu %s je izven meje med 0 in %d\n"
 
-#: src/prefs.c:1389
+#: src/prefs.c:1425
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Napaka ob nastavljanju števila delovnih površin na %d: %s\n"
 
-#: src/prefs.c:1632
+#: src/prefs.c:1669
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2042,7 +2067,7 @@ msgstr ""
 "\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za "
 "tipkovnično vez \"%s\"\n"
 
-#: src/prefs.c:1949
+#: src/prefs.c:2023
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Napaka ob nastavljanju imena delovne površine %d na \"%s\": %s\n"
@@ -2078,7 +2103,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken\n"
 
-#: src/screen.c:701
+#: src/screen.c:699
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nisem mogel opustiti prikaza %d prikazu \"%s\"\n"
@@ -3203,7 +3228,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program je nastavil pokvarjen _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4939
+#: src/window.c:4908
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3219,7 +3244,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5610
+#: src/window.c:5579
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

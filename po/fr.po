@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-11 08:59-0700\n"
+"POT-Creation-Date: 2004-11-01 08:27-0700\n"
 "PO-Revision-Date: 2004-09-10 19:27+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -110,7 +110,7 @@ msgstr "Maximiser la fenêtre"
 msgid "Unmaximize Window"
 msgstr "Annuler la maximisation"
 
-#: src/keybindings.c:989
+#: src/keybindings.c:994
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -119,16 +119,21 @@ msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x comme "
 "liaisons\n"
 
-#: src/keybindings.c:2529
+#: src/keybindings.c:2554
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erreur pendant le lancement de metacity-dialog pour afficher un message "
 "d'erreur pour la commande : %s\n"
 
-#: src/keybindings.c:2602
+#: src/keybindings.c:2659
 #, c-format
 msgid "No command %d has been defined.\n"
+msgstr "Aucune commande %d n'a été définie.\n"
+
+#: src/keybindings.c:3489
+#, fuzzy
+msgid "No terminal command has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
 
 #: src/main.c:69
@@ -235,7 +240,7 @@ msgstr "Déplacer vers l'espace de travail du _dessus"
 msgid "Move to Workspace _Down"
 msgstr "Déplacer vers l'espace de travail du _dessous"
 
-#: src/menu.c:162 src/prefs.c:1868
+#: src/menu.c:162 src/prefs.c:1942
 #, c-format
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
@@ -727,15 +732,19 @@ msgid "Run a defined command"
 msgstr "Exécuter la commande définie"
 
 #: src/metacity.schemas.in.h:60
+msgid "Run a terminal"
+msgstr ""
+
+#: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
 msgstr "Afficher le menu du tableau de bord"
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:62
 #, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "Afficher la boîte de dialogue « Lancer une application »"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:63
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -768,83 +777,83 @@ msgstr ""
 "bogue en mode sans solution de rechange ne pourra parfois être résolu que "
 "par la modification d'une spécification."
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
 msgstr "Passer à l'espace de travail 1"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
 msgstr "Passer à l'espace de travail 10"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
 msgstr "Passer à l'espace de travail 11"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
 msgstr "Passer à l'espace de travail 12"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
 msgstr "Passer à l'espace de travail 2"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
 msgstr "Passer à l'espace de travail 3"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
 msgstr "Passer à l'espace de travail 4"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
 msgstr "Passer à l'espace de travail 5"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
 msgstr "Passer à l'espace de travail 6"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
 msgstr "Passer à l'espace de travail 7"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
 msgstr "Passer à l'espace de travail 8"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
 msgstr "Passer à l'espace de travail 9"
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
 msgstr "Passer à l'espace de travail au-dessus de celui-ci"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
 msgstr "Passer à l'espace de travail au-dessous de celui-ci"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
 msgstr "Passer à l'espace de travail de gauche"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
 msgstr "Passer à l'espace de travail de droite"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
 msgstr "Le bip système est audible"
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
 msgstr "Prendre une capture d'écran"
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
 msgstr "Prendre une capture de la fenêtre"
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:83
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -863,7 +872,7 @@ msgstr ""
 "de la sonnerie système par défaut), la barre de titre de la fenêtre qui a "
 "actuellement le focus clignote."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -873,7 +882,7 @@ msgstr ""
 "combinaisons de touches qui corresponde à ces commandes. Presser la "
 "combinaison pour run_command_N exécutera la command_N."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -881,7 +890,7 @@ msgstr ""
 "La clé /apps/metacity/global_keybindings/run_command_screenshot defini une "
 "combinaison de touches qui invoque la commande spécifiée par ce réglage."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -891,7 +900,7 @@ msgstr ""
 "defini une combinaison de touches qui invoque la commande spécifiée par ce "
 "réglage."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:87
 #, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -910,7 +919,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:88
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
@@ -929,7 +938,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:89
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
@@ -947,7 +956,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:90
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
@@ -966,7 +975,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:91
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
@@ -985,7 +994,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:92
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
@@ -1002,7 +1011,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:93
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
@@ -1019,7 +1028,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:94
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
@@ -1036,7 +1045,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:95
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
@@ -1053,7 +1062,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:96
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
@@ -1070,7 +1079,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:97
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
@@ -1087,7 +1096,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:98
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
@@ -1104,7 +1113,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:99
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
@@ -1121,7 +1130,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:100
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
@@ -1138,7 +1147,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:101
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
@@ -1155,7 +1164,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:102
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
@@ -1172,7 +1181,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:103
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
@@ -1189,7 +1198,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:104
 #, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
@@ -1206,7 +1215,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:105
 #, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
@@ -1223,7 +1232,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:106
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
@@ -1242,7 +1251,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:107
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
@@ -1261,7 +1270,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:108
 #, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
@@ -1280,7 +1289,7 @@ msgstr ""
 "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
 "combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:109
 #, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
@@ -1297,7 +1306,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:110
 #, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -1314,7 +1323,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:111
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
@@ -1333,7 +1342,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:112
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
@@ -1352,7 +1361,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:113
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
@@ -1371,7 +1380,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:114
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
@@ -1389,7 +1398,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:115
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
@@ -1406,7 +1415,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:116
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
@@ -1423,7 +1432,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:117
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
@@ -1440,7 +1449,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:118
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
@@ -1457,7 +1466,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:119
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
@@ -1474,7 +1483,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:120
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
@@ -1491,7 +1500,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:121
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
@@ -1508,7 +1517,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:122
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
@@ -1525,7 +1534,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:123
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
@@ -1542,7 +1551,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:124
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
@@ -1559,7 +1568,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:125
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
@@ -1576,7 +1585,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:126
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
@@ -1593,7 +1602,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:127
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1612,7 +1621,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:128
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1631,7 +1640,7 @@ msgstr ""
 "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
 "combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:129
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
@@ -1652,7 +1661,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:130
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
@@ -1672,7 +1681,7 @@ msgstr ""
 "\". Si vous définissez l'option sur la chaîne spéciale \"disabled\", il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:131
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
@@ -1691,7 +1700,7 @@ msgstr ""
 "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
 "aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:132
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
@@ -1710,7 +1719,7 @@ msgstr ""
 "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
 "combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:133
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
@@ -1731,7 +1740,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
@@ -1753,7 +1762,7 @@ msgstr ""
 "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
 "cette action."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 #, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
@@ -1771,7 +1780,7 @@ msgstr ""
 "définissez l'option à la chaîne spécial « disabled », alors il n'y aura "
 "aucune combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 #, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
@@ -1788,7 +1797,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 #, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
@@ -1805,7 +1814,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 #, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
@@ -1823,7 +1832,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
@@ -1842,7 +1851,7 @@ msgstr ""
 "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
 "combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
@@ -1859,7 +1868,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
@@ -1876,7 +1885,23 @@ msgstr ""
 "définissez l'option à la chaîne spéciale « disabled »; alors il n'y aura "
 "aucune combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
+#, fuzzy
+msgid ""
+"The keybinding which invokes a terminal. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"La combinaison de touches utilisée pour afficher le menu principal du "
+"tableau de bord. Le format ressemble à « <Control>a » ou « <Shift><Alt>F1 ». "
+"L'analyseur est libéral et est insensible à la casse, de même  aux "
+"abbréviations tels que « <Ctl> » et « <Ctrl> ». Si vous définissez l'option "
+"à la chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
+"touches associée à cette action."
+
+#: src/metacity.schemas.in.h:143
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1893,7 +1918,7 @@ msgstr ""
 "« <Ctrl> ». Si vous définissez l'option à la chaîne spéciale « disabled », "
 "alors il n'y aura aucune combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:144
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1910,7 +1935,7 @@ msgstr ""
 "l'option à la chaîne spéciale « disabled », alors il n'y aura aucune "
 "combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:145
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1926,15 +1951,15 @@ msgstr ""
 "à la chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
 "touches associée à cette action."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
 msgstr "Le nom d'un espace de travail."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:147
 msgid "The screenshot command"
 msgstr "La commande de capture d'écran"
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:148
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1942,7 +1967,7 @@ msgstr ""
 "Le thème détermine l'apparence des bordures, de la barre de titre, etc. de "
 "la fenêtre."
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:149
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1950,7 +1975,7 @@ msgstr ""
 "Le délai avant la mise au premier plan de la fenêtre si l'option auto_raise "
 "a la valeur vrai. Il est indiqué en millièmes de secondes."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:150
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1965,11 +1990,11 @@ msgstr ""
 "« mouse » (« souris »), signifie que les fenêtres sont activées lorsque la "
 "souris s'y place et désactivées lorsqu'elle les quitte."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
 msgstr "La commande de capture d'écran de fenêtre"
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:152
 #, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
@@ -1991,7 +2016,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:153
 #, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
@@ -2008,7 +2033,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:154
 #, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
@@ -2025,7 +2050,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:155
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
@@ -2043,7 +2068,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
@@ -2061,7 +2086,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2072,27 +2097,27 @@ msgstr ""
 "la fenêtre à son titre, et « toggle_maximize » qui maximise la fenêtre ou la "
 "remet à sa taille initiale avant maximisation."
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
 msgstr "Basculer dans l'état toujours au-dessus"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid "Toggle fullscreen mode"
 msgstr "Basculer en mode plein écran"
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Toggle maximization state"
 msgstr "Basculer l'état d'agrandissement"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
 msgstr "Basculer l'état de réduction"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Toggle window on all workspaces"
 msgstr "Basculer la fenêtre sur tous les espaces de travail"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2102,37 +2127,38 @@ msgstr ""
 "un bip ; utile pour les malentendants et pour une utilisation dans des "
 "environnements bruyants, ou lorsque « audible bell » est off."
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 #, fuzzy
 msgid "Unmaximize window"
 msgstr "Annuler la maximisation d'une fenêtre"
 
-#: src/metacity.schemas.in.h:163
+#: src/metacity.schemas.in.h:165
 msgid "Use standard system font in window titles"
 msgstr "Utiliser la police standard du système dans les titres des fenêtres"
 
-#: src/metacity.schemas.in.h:164
+#: src/metacity.schemas.in.h:166
 msgid "Visual Bell Type"
 msgstr "Type de sonnerie visuelle"
 
-#: src/metacity.schemas.in.h:165
+#: src/metacity.schemas.in.h:167
 msgid "Window focus mode"
 msgstr "Mode de focus des fenêtres"
 
-#: src/metacity.schemas.in.h:166
+#: src/metacity.schemas.in.h:168
 msgid "Window title font"
 msgstr "Police de titre des fenêtres"
 
-#: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
-#: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
-#: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
-#: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
+#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
+#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
+#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
+#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
+#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
+#: src/prefs.c:798
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clef GConf « %s » est définie sur un type non valide\n"
 
-#: src/prefs.c:810
+#: src/prefs.c:843
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2141,19 +2167,19 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour le bouton de souris\n"
 
-#: src/prefs.c:834 src/prefs.c:1244
+#: src/prefs.c:867 src/prefs.c:1277
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clef GConf « %s » est définie sur une valeur non valide\n"
 
-#: src/prefs.c:961
+#: src/prefs.c:994
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Impossible d'analyser la description de police « %s » depuis la clef GConf %"
 "s\n"
 
-#: src/prefs.c:1146
+#: src/prefs.c:1179
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2162,7 +2188,7 @@ msgstr ""
 "%d enregistré dans la clef GConf %s n'est pas un nombre d'espaces de travail "
 "raisonnable, le maximum actuel est %d\n"
 
-#: src/prefs.c:1206
+#: src/prefs.c:1239
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2170,18 +2196,18 @@ msgstr ""
 "Solutions de rechange désactivées pour les applications endommagées. "
 "Certaines applications peuvent ne pas se comporter correctement.\n"
 
-#: src/prefs.c:1271
+#: src/prefs.c:1304
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d enregistré dans la clef GConf %s est n'est pas comprise entre 0 et %d\n"
 
-#: src/prefs.c:1389
+#: src/prefs.c:1425
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erreur de définition du nombre d'espaces de travail sur %d : %s\n"
 
-#: src/prefs.c:1632
+#: src/prefs.c:1669
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2190,7 +2216,7 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour la combinaison de touches « %s »\n"
 
-#: src/prefs.c:1949
+#: src/prefs.c:2023
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2229,7 +2255,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur le visuel « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: src/screen.c:701
+#: src/screen.c:699
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur le visuel « %s »\n"
@@ -3401,7 +3427,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4939
+#: src/window.c:4908
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3417,7 +3443,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5610
+#: src/window.c:5579
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

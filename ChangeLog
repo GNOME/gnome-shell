@@ -1,3 +1,7 @@
+2004-11-01 Elijah Newren  <newren@math.utah.edu>
+
+	* NEWS, README: Metacity 2.9.0 (unstable release)
+
 2004-10-25  Elijah Newren  <newren@math.utah.edu>
 
 	Don't lower newly mapped windows when they're denied focus, if
