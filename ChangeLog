@@ -1,3 +1,8 @@
+2002-09-06  Frederic Crozat  <fred@crozat.net>
+
+	* src/themes/Crux/metacity-theme-1.xml: Fix titlebar 
+	glitch on small dialogs.
+
 2002-09-06  Arvind Samptur <arvind.samptur@wipro.com>
 	* theme-format.txt : corrected some of the attributes
 	which were not in sync with theme-parser.c

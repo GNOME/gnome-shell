@@ -95,7 +95,7 @@
       <image filename="inactive-top-center-left.png" 
              x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
-                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
+                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth * height / 22 - 3)" 
              height="height"/>
 
       <image filename="inactive-top-center-mid.png" 
@@ -266,7 +266,7 @@
              colorize="gtk:bg[SELECTED]"
              x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
-                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
+                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth * height / 22 - 3)" 
              height="height"/>
 
       <image filename="active-top-center-mid-left.png" 
