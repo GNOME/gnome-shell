@@ -352,10 +352,11 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                                   int                  *bottommost_y)
 {
   if (leftmost_x)
-    *leftmost_x = info->nw_x + TITLEBAR_LENGTH_ONSCREEN - orig->width;
+    *leftmost_x = info->nw_x  - orig->width +
+      MIN (TITLEBAR_LENGTH_ONSCREEN, orig->width);
 
   if (rightmost_x)
-    *rightmost_x = info->se_x - TITLEBAR_LENGTH_ONSCREEN;
+    *rightmost_x = info->se_x - MIN (TITLEBAR_LENGTH_ONSCREEN, orig->width);
 
   if (topmost_y)
     *topmost_y = info->nw_y + info->fgeom.top_height;
@@ -368,7 +369,8 @@ get_outermost_onscreen_positions (MetaWindow           *window,
       if (window->frame)
         *bottommost_y = info->se_y;
       else
-        *bottommost_y = info->se_y - TITLEBAR_LENGTH_ONSCREEN;
+        *bottommost_y = info->se_y -
+	  MIN (TITLEBAR_LENGTH_ONSCREEN, orig->height);
     }
 }
 

@@ -1,3 +1,8 @@
+2003-03-14  Rob Adams <robadams@ucla.edu>
+
+	* contraints.c (get_outermost_screen_positions): Don't try to
+	force a window onscreen by more than its width.  Fix for #94815.
+
 2003-03-13  Rob Adams <robadams@ucla.edu>
 
         Make it so that the alt-tabbing won't try to go to a minimized
