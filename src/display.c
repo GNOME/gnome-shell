@@ -2226,6 +2226,9 @@ meta_spew_event (MetaDisplay *display,
   char *winname;
   MetaScreen *screen;
 
+  if (!meta_is_verbose())
+    return;
+  
   /* filter overnumerous events */
   if (event->type == Expose || event->type == MotionNotify ||
       event->type == NoExpose)

@@ -1,3 +1,8 @@
+Sun Mar 23 23:04:06 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* src/display.c (meta_spew_event): just return if we are not
+	verbose.
+
 2003-03-11  Havoc Pennington  <hp@pobox.com>
 
 	Should fix #108108, #106217, tracked down by Owen Taylor and
