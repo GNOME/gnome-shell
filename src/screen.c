@@ -1123,6 +1123,7 @@ meta_screen_set_cursor (MetaScreen *screen,
   
   xcursor = meta_display_create_x_cursor (screen->display, cursor);
   XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
+  XFlush (screen->display->xdisplay);
   XFreeCursor (screen->display->xdisplay, xcursor);
 }
 

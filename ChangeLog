@@ -1,3 +1,8 @@
+2004-08-07  Havoc Pennington  <hp@redhat.com>
+
+	* src/screen.c (meta_screen_set_cursor): add XFlush() after
+	setting cursor, #149413
+
 2004-08-06  Elijah Newren  <newren@math.utah.edu>
 
 	* src/display.c (event_callback): Focusing a window upon unshowing
