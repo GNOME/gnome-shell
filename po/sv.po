@@ -7,20 +7,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2001-10-11 12:59+0200\n"
-"PO-Revision-Date: 2001-10-11 13:04+0200\n"
+"POT-Creation-Date: 2001-12-15 17:11+0100\n"
+"PO-Revision-Date: 2001-12-15 17:11+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:153
+#: src/display.c:155
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
 
-#: src/errors.c:92
+#: src/errors.c:93
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -31,145 +31,145 @@ msgstr ""
 "troligtvis stängdes X-servern ner, eller så dödade/förstörde du\n"
 "fönsterhanteraren.\n"
 
-#: src/errors.c:99
+#: src/errors.c:100
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left edge"
 msgstr "Vänsterkant"
 
-#: src/frames.c:229
+#: src/frames.c:231
 msgid "Left window edge width"
 msgstr "Bredd på vänster fönsterkant"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right edge"
 msgstr "Högerkant"
 
-#: src/frames.c:230
+#: src/frames.c:232
 msgid "Right window edge width"
 msgstr "Bredd på höger fönsterkant"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom edge"
 msgstr "Nederkant"
 
-#: src/frames.c:231
+#: src/frames.c:233
 msgid "Bottom window edge height"
 msgstr "Höjd på nedre fönsterkant"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Title border"
 msgstr "Titelkant"
 
-#: src/frames.c:233
+#: src/frames.c:235
 msgid "Border around title area"
 msgstr "Ram runt titelområdet"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Text border"
 msgstr "Textram"
 
-#: src/frames.c:234
+#: src/frames.c:236
 msgid "Border around window title text"
 msgstr "Ram runt fönstertiteln"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Spacer padding"
 msgstr "Utfyllnadsmellanrum"
 
-#: src/frames.c:236
+#: src/frames.c:238
 msgid "Padding on either side of spacer"
 msgstr "Utfyllnad på varje sida om utfyllare"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Spacer width"
 msgstr "Utfyllnadsbredd"
 
-#: src/frames.c:237
+#: src/frames.c:239
 msgid "Width of spacer"
 msgstr "Bredd på utfyllnad"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Spacer height"
 msgstr "Utfyllnadshöjd"
 
-#: src/frames.c:238
+#: src/frames.c:240
 msgid "Height of spacer"
 msgstr "Höjd på utfyllnad"
 
 #. same as right_width left_width by default
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Right inset"
 msgstr "Höger infällning"
 
-#: src/frames.c:241
+#: src/frames.c:243
 msgid "Distance of buttons from right edge of frame"
 msgstr "Avstånd på knappar från högerkanten på ramen"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Left inset"
 msgstr "Vänster infällning"
 
-#: src/frames.c:242
+#: src/frames.c:244
 msgid "Distance of menu button from left edge of frame"
 msgstr "Avstånd på menyknapp från vänsterkanten på ramen"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Button width"
 msgstr "Knappbredd"
 
-#: src/frames.c:244
+#: src/frames.c:246
 msgid "Width of buttons"
 msgstr "Bredd på knappar"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Button height"
 msgstr "Knapphöjd"
 
-#: src/frames.c:245
+#: src/frames.c:247
 msgid "Height of buttons"
 msgstr "Höjd på knappar"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Button border"
 msgstr "Knappram"
 
-#: src/frames.c:247
+#: src/frames.c:249
 msgid "Border around buttons"
 msgstr "Ram runt knappar"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Inner button border"
 msgstr "Inre knappram"
 
-#: src/frames.c:248
+#: src/frames.c:250
 msgid "Border around the icon inside buttons"
 msgstr "Ram runt ikonen inuti knappar"
 
-#: src/frames.c:883
+#: src/frames.c:891
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:886
+#: src/frames.c:894
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:889
+#: src/frames.c:897
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:892
+#: src/frames.c:900
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:895
+#: src/frames.c:903
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:203
+#: src/keybindings.c:215
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -178,118 +178,118 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/menu.c:47
+#: src/menu.c:48
 msgid "_Close"
 msgstr "_Stäng"
 
-#: src/menu.c:48
+#: src/menu.c:49
 msgid "_Minimize"
 msgstr "_Minimera"
 
-#: src/menu.c:49
+#: src/menu.c:50
 msgid "Ma_ximize"
 msgstr "Ma_ximera"
 
-#: src/menu.c:50
+#: src/menu.c:51
 msgid "_Unmaximize"
 msgstr "_Avmaximera"
 
-#: src/menu.c:51
+#: src/menu.c:52
 msgid "_Shade"
 msgstr "_Skugga"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "U_nshade"
 msgstr "A_vskugga"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mo_ve"
 msgstr "Fl_ytta"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "_Resize"
 msgstr "_Ändra storlek"
 
 #. separator
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Put on _All Workspaces"
 msgstr "Placera på _alla arbetsytor"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "Only on _This Workspace"
 msgstr "Endast på _denna arbetsyta"
 
-#: src/menu.c:260
+#: src/menu.c:261
 #, c-format
-msgid "Only on workspace _%d"
-msgstr "Endast på arbetsyta _%d"
+msgid "Only on workspace %s%d"
+msgstr "Endast på arbetsyta %s%d"
 
-#: src/menu.c:263
+#: src/menu.c:264
 #, c-format
-msgid "Move to workspace _%d"
-msgstr "Flytta till arbetsyta _%d"
+msgid "Move to workspace %s%d"
+msgstr "Flytta till arbetsyta %s%d"
 
-#: src/screen.c:168
+#: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:183
+#: src/screen.c:189
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/session.c:742 src/session.c:749
+#: src/session.c:760 src/session.c:767
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunde inte skapa katalogen \"%s\": %s\n"
 
-#: src/session.c:759
+#: src/session.c:777
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunde inte öppna sessionsfilen \"%s\" för skrivning: %s\n"
 
-#: src/session.c:891
+#: src/session.c:909
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fel vid skrivning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:896
+#: src/session.c:914
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fel vid stängning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:970
+#: src/session.c:988
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
 
-#: src/session.c:1004
+#: src/session.c:1022
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
-#: src/session.c:1042
+#: src/session.c:1060
 msgid "nested <window> tag"
 msgstr "nästlad <window>-tagg"
 
-#: src/session.c:1092 src/session.c:1124
+#: src/session.c:1110 src/session.c:1142
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Okänt attribut %s på <window>-element"
 
-#: src/session.c:1184
+#: src/session.c:1202
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Okänt attribut %s på <geometry>-element"
 
-#: src/session.c:1204
+#: src/session.c:1222
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
 #. someone is on crack
-#: src/window.c:2852
+#: src/window.c:2939
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -297,7 +297,7 @@ msgstr ""
 "stänger av storleksändring\n"
 
 #. another cracksmoker
-#: src/window.c:2862
+#: src/window.c:2949
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
