@@ -71,7 +71,7 @@
 </draw_ops>
 
 <draw_ops name="button_pressed_bg">
-	<gtk_box state="prelight" shadow="in" x="0" y="0" width="width"
+	<gtk_box state="active" shadow="in" x="0" y="0" width="width"
 		height="height"/>
 </draw_ops>
 
@@ -102,6 +102,19 @@
 		x2="0"
 		y2="height * 1.5 + 2"/>
 </draw_ops>
+<draw_ops name="menu_button_pressed_contents">
+	<clip x="5" y="5" width="width - 10" height="height - 10"/>
+	<rectangle color="gtk:fg[ACTIVE]" filled="true"
+		x="ButtonIPad"
+		y="ButtonIPad"
+		width="width - ButtonIPad * 2 - 1"
+		height="height - ButtonIPad * 2 - 1"/>
+	<line color="gtk:bg[ACTIVE]" width="16"
+		x1="width * 1.5 + 2"
+		y1="0"
+		x2="0"
+		y2="height * 1.5 + 2"/>
+</draw_ops>
 
 <draw_ops name="minimize_button">
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
@@ -117,6 +130,23 @@
 		width="width - ButtonIPad * 2 - 1"
 		height="height - ButtonIPad * 2 - 1"/>
 	<rectangle color="gtk:fg[NORMAL]" filled="false"
+		x="ButtonIPad"
+		y="height - ButtonIPad - 4"
+		width="width - ButtonIPad * 2 - 1"
+		height="3"/>
+	<line color="gtk:fg[INSENSITIVE]" width="2"
+		x1="ButtonIPad + 1"
+		y1="height - ButtonIPad - 2"
+		x2="width - ButtonIPad - 1"
+		y2="height - ButtonIPad - 2"/>
+</draw_ops>
+<draw_ops name="minimize_button_pressed_contents">
+	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+		x="ButtonIPad"
+		y="ButtonIPad"
+		width="width - ButtonIPad * 2 - 1"
+		height="height - ButtonIPad * 2 - 1"/>
+	<rectangle color="gtk:fg[ACTIVE]" filled="false"
 		x="ButtonIPad"
 		y="height - ButtonIPad - 4"
 		width="width - ButtonIPad * 2 - 1"
@@ -152,6 +182,23 @@
 		x2="width - ButtonIPad - 1"
 		y2="ButtonIPad + 3"/>
 	<rectangle color="gtk:fg[NORMAL]" filled="false"
+		x="ButtonIPad"
+		y="ButtonIPad"
+		width="width-ButtonIPad*2-1"
+		height="height-ButtonIPad*2-1"/>
+</draw_ops>
+<draw_ops name="maximize_button_pressed_contents">
+	<line color="gtk:fg[INSENSITIVE]" width="2"
+		x1="ButtonIPad + 1"
+		y1="ButtonIPad + 2"
+		x2="width - ButtonIPad - 1"
+		y2="ButtonIPad + 2"/>
+	<line color="gtk:fg[ACTIVE]"
+		x1="ButtonIPad"
+		y1="ButtonIPad + 3"
+		x2="width - ButtonIPad - 1"
+		y2="ButtonIPad + 3"/>
+	<rectangle color="gtk:fg[ACTIVE]" filled="false"
 		x="ButtonIPad"
 		y="ButtonIPad"
 		width="width-ButtonIPad*2-1"
@@ -197,7 +244,51 @@
 		x2="width - (ButtonIPad * 2) - 2"
 		y2="ButtonIPad + 4 + 2"/>
 </draw_ops>
+<draw_ops name="restore_button_pressed_contents">
+	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+		x="ButtonIPad"
+		y="ButtonIPad"
+		width="width - (ButtonIPad * 2) - 1"
+		height="height - (ButtonIPad * 2) - 1"/>
+	<rectangle color="gtk:fg[ACTIVE]" filled="false"
+		x="ButtonIPad"
+		y="ButtonIPad + 4"
+		width="width - (ButtonIPad * 2) - 1 - 4"
+		height="height - (ButtonIPad * 2) - 1 - 4"/>
+	<line color="gtk:fg[ACTIVE]"
+		x1="ButtonIPad"
+		y1="ButtonIPad + 3 + 4"
+		x2="width - (ButtonIPad * 2) - 3"
+		y2="ButtonIPad + 3 + 4"/>
+	<line color="gtk:fg[INSENSITIVE]" width="2"
+		x1="ButtonIPad + 1"
+		y1="ButtonIPad + 4 + 2"
+		x2="width - (ButtonIPad * 2) - 2"
+		y2="ButtonIPad + 4 + 2"/>
+</draw_ops>
 
+<draw_ops name="close_button">
+	<line color="gtk:fg[INSENSITIVE]" width="2"
+		x1="ButtonIPad + 1"
+		y1="ButtonIPad + 1"
+		x2="width - ButtonIPad - 2"
+		y2="height - ButtonIPad - 2"/>
+	<line color="gtk:fg[INSENSITIVE]" width="2"
+		x1="ButtonIPad + 1"
+		y1="height - ButtonIPad - 2"
+		x2="width - ButtonIPad - 2"
+		y2="ButtonIPad + 1"/>
+	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+		x="width - ButtonIPad - 3"
+		y="height - ButtonIPad - 3"
+		width="1"
+		height="1"/>
+	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+		x="width - ButtonIPad - 3"
+		y="ButtonIPad + 1"
+		width="1"
+		height="1"/>
+</draw_ops>
 <draw_ops name="close_button_focused">
 	<line color="gtk:fg[NORMAL]" width="2"
 		x1="ButtonIPad + 1"
@@ -221,23 +312,24 @@
 		width="1"
 		height="1"/>
 </draw_ops>
-<draw_ops name="close_button">
-	<line color="gtk:fg[INSENSITIVE]" width="2"
+<draw_ops name="close_button_pressed_contents">
+	<line color="gtk:fg[ACTIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="ButtonIPad + 1"
 		x2="width - ButtonIPad - 2"
 		y2="height - ButtonIPad - 2"/>
-	<line color="gtk:fg[INSENSITIVE]" width="2"
+
+	<line color="gtk:fg[ACTIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="height - ButtonIPad - 2"
 		x2="width - ButtonIPad - 2"
 		y2="ButtonIPad + 1"/>
-	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+	<rectangle color="gtk:fg[ACTIVE]" filled="false"
 		x="width - ButtonIPad - 3"
 		y="height - ButtonIPad - 3"
 		width="1"
 		height="1"/>
-	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
+	<rectangle color="gtk:fg[ACTIVE]" filled="false"
 		x="width - ButtonIPad - 3"
 		y="ButtonIPad + 1"
 		width="1"
@@ -253,7 +345,7 @@
 
 <draw_ops name="close_button_pressed">
 	<include name="button_pressed_bg"/>
-	<include name="close_button_focused"/>
+	<include name="close_button_pressed_contents"/>
 </draw_ops>
 
 <draw_ops name="menu_button_normal">
@@ -263,7 +355,7 @@
 
 <draw_ops name="menu_button_pressed">
 	<include name="button_pressed_bg"/>
-	<include name="menu_button_focused"/>
+	<include name="menu_button_pressed_contents"/>
 </draw_ops>
 
 <draw_ops name="maximize_button_normal">
@@ -273,7 +365,7 @@
 
 <draw_ops name="maximize_button_pressed">
 	<include name="button_pressed_bg"/>
-	<include name="maximize_button_focused"/>
+	<include name="maximize_button_pressed_contents"/>
 </draw_ops>
 
 <draw_ops name="restore_button_normal">
@@ -283,7 +375,7 @@
 
 <draw_ops name="restore_button_pressed">
 	<include name="button_pressed_bg"/>
-	<include name="restore_button_focused"/>
+	<include name="restore_button_pressed_contents"/>
 </draw_ops>
 
 <draw_ops name="minimize_button_normal">
@@ -293,7 +385,7 @@
 
 <draw_ops name="minimize_button_pressed">
 	<include name="button_pressed_bg"/>
-	<include name="minimize_button_focused"/>
+	<include name="minimize_button_pressed_contents"/>
 </draw_ops>
 
 <!-- Outer Bevel -->
