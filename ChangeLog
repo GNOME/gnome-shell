@@ -1,3 +1,15 @@
+2002-05-29 Stephen Browne <stephen.browne@sun.com>
+
+	New simple metacity-properties dialog to configure focus mode
+	and auto raise.
+
+	* configure.in: added build support for metacity-properties
+	* src/tools/Makefile: more build stuff
+	* src/tools/metacity-properties.c: added these files
+	* src/tools/metacity-properties.glade:
+	* src/tools/metacity-properties.desktop.in:
+	* src/tools/metacity-properties.png:
+
 2002-05-29  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_move_resize_internal): add code to

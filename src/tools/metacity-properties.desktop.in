@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Window Focus
+Comment=Change how focus is moved from one window to another
+Exec=metacity-properties
+Icon=metacity-properties.png
+Terminal=0
+Type=Application
+Categories=Application;Settings;
