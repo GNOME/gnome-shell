@@ -1141,6 +1141,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   
   /* viewable == mapped for the root window, since root can't be unmapped */
   cwindow->viewable = (attrs->map_state == IsViewable);
+  /* FIXME this assertion can fail somehow... */
   g_assert (attrs->map_state != IsUnviewable);
   
   pa.subwindow_mode = IncludeInferiors;
