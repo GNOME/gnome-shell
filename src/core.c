@@ -75,3 +75,40 @@ meta_core_queue_frame_resize (Display *xdisplay,
   meta_window_queue_move_resize (window);
 }
 
+void
+meta_core_user_move (Display *xdisplay,
+                     Window   frame_xwindow,
+                     int      x,
+                     int      y)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  window->user_has_moved = TRUE;
+  meta_window_move (window, x, y);
+}
+
+void
+meta_core_get_position (Display *xdisplay,
+                        Window   frame_xwindow,
+                        int     *x,
+                        int     *y)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_get_position (window, x, y);
+}
+

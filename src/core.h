@@ -39,4 +39,18 @@ MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
 void meta_core_queue_frame_resize (Display *xdisplay,
                                    Window frame_xwindow);
 
+/* Move as a result of user operation */
+void meta_core_user_move    (Display *xdisplay,
+                             Window   frame_xwindow,
+                             int      x,
+                             int      y);
+/* get position of client, same coord space expected by move */
+void meta_core_get_position (Display *xdisplay,
+                             Window   frame_xwindow,
+                             int     *x,
+                             int     *y);
+
+
 #endif
+
+

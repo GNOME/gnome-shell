@@ -44,6 +44,13 @@ typedef enum
   META_FRAME_CONTROL_RESIZE_E
 } MetaFrameControl;
 
+typedef enum
+{
+  META_FRAME_STATUS_NORMAL,
+  META_FRAME_STATUS_MOVING
+
+} MetaFrameStatus;
+
 /* This is one widget that manages all the window frames
  * as subwindows.
  */
@@ -71,6 +78,16 @@ struct _MetaFrames
   int text_height;
 
   GHashTable *frames;
+  
+  /* The below is all for grabs */
+  MetaFrameStatus grab_status;
+  MetaUIFrame *grab_frame;
+  /* initial mouse position for drags */
+  int start_root_x, start_root_y;
+  /* initial window size or initial window position for drags */
+  int start_window_x, start_window_y;
+  /* button doing the dragging */
+  int start_button;
 };
 
 struct _MetaFramesClass

@@ -89,6 +89,9 @@ struct _MetaFrameGeometry
   int top_height;
   int bottom_height;
 
+  int width;
+  int height;
+  
   GdkRectangle close_rect;
   GdkRectangle max_rect;
   GdkRectangle min_rect;
@@ -96,53 +99,6 @@ struct _MetaFrameGeometry
   GdkRectangle menu_rect;
   GdkRectangle title_rect;  
 };
-
-static GdkRectangle*
-control_rect (MetaFrameControl control,
-              MetaFrameGeometry *fgeom)
-{
-  GdkRectangle *rect;
-  
-  rect = NULL;
-  switch (control)
-    {
-    case META_FRAME_CONTROL_TITLE:
-      rect = &fgeom->title_rect;
-      break;
-    case META_FRAME_CONTROL_DELETE:
-      rect = &fgeom->close_rect;
-      break;
-    case META_FRAME_CONTROL_MENU:
-      rect = &fgeom->menu_rect;
-      break;
-    case META_FRAME_CONTROL_MINIMIZE:
-      rect = &fgeom->min_rect;
-      break;
-    case META_FRAME_CONTROL_MAXIMIZE:
-      rect = &fgeom->max_rect;
-      break;
-    case META_FRAME_CONTROL_RESIZE_SE:
-      break;
-    case META_FRAME_CONTROL_RESIZE_S:
-      break;
-    case META_FRAME_CONTROL_RESIZE_SW:
-      break;
-    case META_FRAME_CONTROL_RESIZE_N:
-      break;
-    case META_FRAME_CONTROL_RESIZE_NE:
-      break;
-    case META_FRAME_CONTROL_RESIZE_NW:
-      break;
-    case META_FRAME_CONTROL_RESIZE_W:
-      break;
-    case META_FRAME_CONTROL_RESIZE_E:
-      break;
-    case META_FRAME_CONTROL_NONE:
-      break;
-    }
-
-  return rect;
-}
 
 static void meta_frames_class_init (MetaFramesClass *klass);
 static void meta_frames_init       (MetaFrames      *frames);
@@ -193,6 +149,26 @@ static void meta_frames_calc_geometry (MetaFrames        *frames,
 
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
                                                Window      xwindow);
+
+static void meta_frames_begin_grab (MetaFrames *frames,
+                                    MetaUIFrame *frame,
+                                    MetaFrameStatus status,
+                                    int start_button,
+                                    int start_root_x,
+                                    int start_root_y,
+                                    int start_window_x,
+                                    int start_window_y,
+                                    guint32 timestamp);
+static void meta_frames_end_grab (MetaFrames *frames,
+                                  guint32 timestamp);
+
+
+static GdkRectangle*    control_rect (MetaFrameControl   control,
+                                      MetaFrameGeometry *fgeom);
+static MetaFrameControl get_control  (MetaFrames        *frames,
+                                      MetaUIFrame       *frame,
+                                      int                x,
+                                      int                y);
 
 enum
 {
@@ -264,6 +240,11 @@ meta_frames_class_init (MetaFramesClass *class)
   widget_class->style_set = meta_frames_style_set;
 
   widget_class->expose_event = meta_frames_expose_event;
+  widget_class->unmap_event = meta_frames_unmap_event;
+  widget_class->destroy_event = meta_frames_destroy_event;
+  widget_class->button_press_event = meta_frames_button_press_event;
+  widget_class->button_release_event = meta_frames_button_release_event;
+  widget_class->motion_notify_event = meta_frames_motion_notify_event;
   
   INT_PROPERTY ("left_width", 6, _("Left edge"), _("Left window edge width"));
   INT_PROPERTY ("right_width", 6, _("Right edge"), _("Right window edge width"));
@@ -315,6 +296,8 @@ meta_frames_init (MetaFrames *frames)
   frames->props = g_new0 (MetaFrameProperties, 1);
 
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
+
+  frames->grab_status = META_FRAME_STATUS_NORMAL;
 }
 
 static void
@@ -508,8 +491,11 @@ meta_frames_calc_geometry (MetaFrames        *frames,
 
   meta_core_get_frame_size (gdk_display, frame->xwindow,
                             &width, &height);
-
+  
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+
+  fgeom->width = width;
+  fgeom->height = height;
   
   buttons_height = props.button_height +
     props.button_border.top + props.button_border.bottom;
@@ -693,7 +679,6 @@ meta_frames_manage_window (MetaFrames *frames,
                          GDK_BUTTON_PRESS_MASK |
                          GDK_BUTTON_RELEASE_MASK |
                          GDK_STRUCTURE_MASK);
-#endif
   
   /* This shouldn't be required if we don't select for button
    * press in frame.c?
@@ -706,6 +691,7 @@ meta_frames_manage_window (MetaFrames *frames,
                False, None);
 
   XFlush (gdk_display);
+#endif
   
   frame->xwindow = xwindow;
   frame->layout = NULL;
@@ -723,6 +709,9 @@ meta_frames_unmanage_window (MetaFrames *frames,
 
   if (frame)
     {
+      if (frames->grab_frame == frame)
+        meta_frames_end_grab (frames, GDK_CURRENT_TIME);
+      
       g_hash_table_remove (frames->frames, &frame->xwindow);
       
       g_object_unref (G_OBJECT (frame->window));
@@ -823,19 +812,131 @@ meta_frames_set_title (MetaFrames *frames,
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
 
+static void
+meta_frames_begin_grab (MetaFrames *frames,
+                        MetaUIFrame *frame,
+                        MetaFrameStatus status,
+                        int start_button,
+                        int start_root_x,
+                        int start_root_y,
+                        int start_window_x,
+                        int start_window_y,
+                        guint32 timestamp)
+{
+  g_return_if_fail (frames->grab_frame == NULL);
+
+  /* This grab isn't needed I don't think */
+  if (gdk_pointer_grab (frame->window,
+                        FALSE,
+                        GDK_BUTTON_RELEASE_MASK | GDK_BUTTON_PRESS_MASK |
+                        GDK_POINTER_MOTION_HINT_MASK | GDK_POINTER_MOTION_MASK,
+                        NULL,
+                        NULL,
+                        timestamp) == GDK_GRAB_SUCCESS)
+    {
+      frames->grab_frame = frame;
+      frames->grab_status = status;
+      frames->start_button = start_button;
+      frames->start_root_x = start_root_x;
+      frames->start_root_y = start_root_y;
+      frames->start_window_x = start_window_x;
+      frames->start_window_y = start_window_y;
+    }
+}
+
+static void
+meta_frames_end_grab (MetaFrames *frames,
+                      guint32     timestamp)
+{
+  if (frames->grab_frame)
+    {
+      frames->grab_frame = NULL;
+      frames->grab_status = META_FRAME_STATUS_NORMAL;
+      gdk_pointer_ungrab (timestamp);
+    }
+}
+
+static void
+frame_query_root_pointer (MetaUIFrame *frame,
+                          int *x, int *y)
+{
+  Window root_return, child_return;
+  int root_x_return, root_y_return;
+  int win_x_return, win_y_return;
+  unsigned int mask_return;
+
+  XQueryPointer (gdk_display,
+                 frame->xwindow,
+                 &root_return,
+                 &child_return,
+                 &root_x_return,
+                 &root_y_return,
+                 &win_x_return,
+                 &win_y_return,
+                 &mask_return);
+
+  if (x)
+    *x = root_x_return;
+  if (y)
+    *y = root_y_return;
+}
+
+static void
+update_move (MetaFrames  *frames,
+             MetaUIFrame *frame,
+             int          x,
+             int          y)
+{
+  int dx, dy;
+  
+  dx = x - frames->start_root_x;
+  dy = y - frames->start_root_y;
+
+  meta_core_user_move (gdk_display,
+                       frame->xwindow,
+                       frames->start_window_x + dx,
+                       frames->start_window_y + dy);
+}
+
 gboolean
 meta_frames_button_press_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-
+  MetaFrameControl control;
+  
   frames = META_FRAMES (widget);
 
+  if (frames->grab_frame != NULL)
+    return FALSE; /* already up to something */
+  
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
+  
+  control = get_control (frames, frame, event->x, event->y);
+  
+  if (((control == META_FRAME_CONTROL_TITLE ||
+        control == META_FRAME_CONTROL_NONE) &&
+       event->button == 1) ||
+      event->button == 2)
+    {
+      int x, y;
 
+      meta_core_get_position (gdk_display,
+                              frame->xwindow,
+                              &x, &y);
+      
+      meta_frames_begin_grab (frames, frame,
+                              META_FRAME_STATUS_MOVING,
+                              event->button,
+                              event->x_root,
+                              event->y_root,
+                              x, y,
+                              event->time);
+    }
+  
   return TRUE;
 }
 
@@ -847,11 +948,27 @@ meta_frames_button_release_event    (GtkWidget           *widget,
   MetaFrames *frames;
 
   frames = META_FRAMES (widget);
-
+  
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
 
+  if (frames->grab_frame == frame &&
+      frames->start_button == event->button)
+    {
+      meta_frames_end_grab (frames, event->time);
+
+      switch (frames->grab_status)
+        {
+        case META_FRAME_STATUS_MOVING:
+          update_move (frames, frame, event->x_root, event->y_root);
+          break;
+
+        case META_FRAME_STATUS_NORMAL:
+          break;
+        }
+    }
+  
   return TRUE;
 }
 
@@ -861,13 +978,20 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-
+  
   frames = META_FRAMES (widget);
 
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
 
+  if (frames->grab_status == META_FRAME_STATUS_MOVING)
+    {
+      int x, y;
+      frame_query_root_pointer (frame, &x, &y);
+      update_move (frames, frame, x, y);
+    }
+      
   return TRUE;
 }
 
@@ -884,6 +1008,9 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  if (frames->grab_frame == frame)
+    meta_frames_end_grab (frames, GDK_CURRENT_TIME);
+  
   return TRUE;
 }
 
@@ -1048,6 +1175,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                      fgeom.close_rect.y + inner.top);
     }
 
+#define THICK_LINE_WIDTH 3
   if (fgeom.max_rect.width > 0 && fgeom.max_rect.height > 0)
     {      
       gdk_draw_rectangle (frame->window,
@@ -1058,7 +1186,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                           fgeom.max_rect.width - inner.left - inner.right,
                           fgeom.max_rect.height - inner.top - inner.bottom);
       
-      vals.line_width = 3;
+      vals.line_width = THICK_LINE_WIDTH;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
                          &vals,
                          GDK_GC_LINE_WIDTH);
@@ -1068,7 +1196,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                      fgeom.max_rect.x + inner.left,
                      fgeom.max_rect.y + inner.top,
                      fgeom.max_rect.x + fgeom.max_rect.width - inner.right,
-                     fgeom.max_rect.y + fgeom.max_rect.height - inner.bottom);
+                     fgeom.max_rect.y + inner.top);
       
       vals.line_width = 0;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
@@ -1079,7 +1207,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
   if (fgeom.min_rect.width > 0 && fgeom.min_rect.height > 0)
     {
       
-      vals.line_width = 3;
+      vals.line_width = THICK_LINE_WIDTH;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
                          &vals,
                          GDK_GC_LINE_WIDTH);
@@ -1087,15 +1215,16 @@ meta_frames_expose_event            (GtkWidget           *widget,
       gdk_draw_line (frame->window,
                      widget->style->fg_gc[GTK_STATE_NORMAL],
                      fgeom.min_rect.x + inner.left,
-                     fgeom.min_rect.y + inner.top,
+                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH,
                      fgeom.min_rect.x + fgeom.min_rect.width - inner.right,
-                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom);
+                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH);
       
       vals.line_width = 0;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
                          &vals,
                          GDK_GC_LINE_WIDTH);
     }
+#undef THICK_LINE_WIDTH
   
   if (fgeom.spacer_rect.width > 0 && fgeom.spacer_rect.height > 0)
     {
@@ -1274,6 +1403,9 @@ meta_frames_unmap_event             (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  if (frames->grab_frame == frame)
+    meta_frames_end_grab (frames, GDK_CURRENT_TIME);
+  
   return TRUE;
 }
 
@@ -1324,6 +1456,110 @@ meta_frames_window_state_event      (GtkWidget           *widget,
 
   return TRUE;
 }
+
+
+
+
+static GdkRectangle*
+control_rect (MetaFrameControl control,
+              MetaFrameGeometry *fgeom)
+{
+  GdkRectangle *rect;
+  
+  rect = NULL;
+  switch (control)
+    {
+    case META_FRAME_CONTROL_TITLE:
+      rect = &fgeom->title_rect;
+      break;
+    case META_FRAME_CONTROL_DELETE:
+      rect = &fgeom->close_rect;
+      break;
+    case META_FRAME_CONTROL_MENU:
+      rect = &fgeom->menu_rect;
+      break;
+    case META_FRAME_CONTROL_MINIMIZE:
+      rect = &fgeom->min_rect;
+      break;
+    case META_FRAME_CONTROL_MAXIMIZE:
+      rect = &fgeom->max_rect;
+      break;
+    case META_FRAME_CONTROL_RESIZE_SE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_S:
+      break;
+    case META_FRAME_CONTROL_RESIZE_SW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_N:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_W:
+      break;
+    case META_FRAME_CONTROL_RESIZE_E:
+      break;
+    case META_FRAME_CONTROL_NONE:
+      break;
+    }
+
+  return rect;
+}
+
+#define POINT_IN_RECT(xcoord, ycoord, rect) \
+ ((xcoord) >= (rect).x &&                   \
+  (xcoord) <  ((rect).x + (rect).width) &&  \
+  (ycoord) >= (rect).y &&                   \
+  (ycoord) <  ((rect).y + (rect).height))
+
+#define RESIZE_EXTENDS 10
+static MetaFrameControl
+get_control (MetaFrames *frames,
+             MetaUIFrame *frame,
+             int x, int y)
+{
+  MetaFrameGeometry fgeom;
+  
+  meta_frames_calc_geometry (frames, frame, &fgeom);
+  
+  if (POINT_IN_RECT (x, y, fgeom.close_rect))
+    return META_FRAME_CONTROL_DELETE;
+
+  if (POINT_IN_RECT (x, y, fgeom.min_rect))
+    return META_FRAME_CONTROL_MINIMIZE;
+
+  if (POINT_IN_RECT (x, y, fgeom.max_rect))
+    return META_FRAME_CONTROL_MAXIMIZE;
+
+  if (POINT_IN_RECT (x, y, fgeom.menu_rect))
+    return META_FRAME_CONTROL_MENU;
+  
+  if (POINT_IN_RECT (x, y, fgeom.title_rect))
+    return META_FRAME_CONTROL_TITLE;
+  
+  if (y > (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+      x > (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
+    return META_FRAME_CONTROL_RESIZE_SE;
+  
+  return META_FRAME_CONTROL_NONE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #if 0
