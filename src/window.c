@@ -944,6 +944,12 @@ meta_window_free (MetaWindow  *window)
   meta_window_unqueue_move_resize (window);
   meta_window_unqueue_update_icon (window);
   meta_window_free_delete_dialog (window);
+
+  /* We need to unstick to remove the window from
+   * any workspace->mru_list for workspaces not
+   * in window->workspaces
+   */
+  meta_window_unstick (window);
   
   tmp = window->workspaces;
   while (tmp != NULL)
@@ -960,6 +966,19 @@ meta_window_free (MetaWindow  *window)
 
   g_assert (window->workspaces == NULL);
 
+#ifndef G_DISABLE_CHECKS
+  tmp = window->screen->workspaces;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *workspace = tmp->data;
+
+      g_assert (g_list_find (workspace->windows, window) == NULL);
+      g_assert (g_list_find (workspace->mru_list, window) == NULL);
+
+      tmp = tmp->next;
+    }
+#endif
+  
   meta_stack_remove (window->screen->stack, window);
   
   /* FIXME restore original size if window has maximized */
@@ -3243,7 +3262,7 @@ meta_window_stick (MetaWindow  *window)
     {
       workspace = (MetaWorkspace *) tmp->data;
       if (!g_list_find (workspace->mru_list, window))
-          workspace->mru_list = g_list_append (workspace->mru_list, window);
+        workspace->mru_list = g_list_append (workspace->mru_list, window);
 
       tmp = tmp->next;
     }
@@ -3272,7 +3291,7 @@ meta_window_unstick (MetaWindow  *window)
     {
       workspace = (MetaWorkspace *) tmp->data;
       if (!meta_workspace_contains_window (workspace, window))
-           workspace->mru_list = g_list_remove (workspace->mru_list, window);
+        workspace->mru_list = g_list_remove (workspace->mru_list, window);
       tmp = tmp->next;
     }
 

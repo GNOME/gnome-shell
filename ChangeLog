@@ -1,3 +1,9 @@
+2003-12-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_free): unstick window to get it out of
+	mru_list it should not be in; assert that window has been removed
+	from all mru_list. Perhaps fixes #122016 crash.
+
 2003-11-29  Havoc Pennington  <hp@redhat.com>
 
 	* fix up compositing manager to somewhat work
