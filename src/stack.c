@@ -183,20 +183,33 @@ window_is_fullscreen_size (MetaWindow *window)
 {
   int i;
 
-  if (window->rect.x <= 0 &&
-      window->rect.y <= 0 &&
-      window->rect.width >= window->screen->width &&
+  if (window->rect.width >= window->screen->width &&
       window->rect.height >= window->screen->height)
-    return TRUE;
+    {
+      /* we use the work area since windows that try to
+       * position at 0,0 will get pushed down by menu panel
+       */
+      MetaRectangle workarea;
+      
+      meta_window_get_work_area (window, FALSE, &workarea);
+      if (window->rect.x <= workarea.x &&
+          window->rect.y <= workarea.y) 
+        return TRUE;
+    }
   
   i = 0;
   while (i < window->screen->n_xinerama_infos)
     {
-      if (window->rect.x == window->screen->xinerama_infos[i].x_origin &&
-          window->rect.y == window->screen->xinerama_infos[i].y_origin &&
-          window->rect.width >= window->screen->xinerama_infos[i].width &&
+      if (window->rect.width >= window->screen->xinerama_infos[i].width &&
           window->rect.height >= window->screen->xinerama_infos[i].height)
-        return TRUE;
+        {
+          MetaRectangle workarea;
+          
+          meta_window_get_work_area (window, TRUE, &workarea);
+          if (window->rect.x <= workarea.x &&
+              window->rect.y <= workarea.y) 
+            return TRUE;
+        }
       
       ++i;
     }

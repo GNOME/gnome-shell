@@ -5894,6 +5894,14 @@ constrain_position (MetaWindow        *window,
       /* Now change NW limit to reflect amount offscreen in SE direction */
       if (offscreen_w > 0)
         nw_x -= offscreen_w;
+
+      /* do it for top of window for undecorated windows,
+       * since losing the titlebar isn't really an issue anyway,
+       * and it fixes fullscreen mode for stuff like Xine.
+       * but don't lose the titlebar on decorated windows.
+       */
+      if (!window->decorated && offscreen_h > 0)
+        nw_y -= offscreen_h;
       
       /* Limit movement off the right/bottom.
        * Remember, we're constraining StaticGravity position.

@@ -1,3 +1,15 @@
+2003-01-25  Havoc Pennington  <hp@pobox.com>
+	
+	* src/stack.c (window_is_fullscreen_size): When checking if a
+	window is fullscreen size, only require it to be at the origin 
+	of the work area, not at the origin of the screen/xinerama.
+	Still require it to be full screen in width x height.
+	May fix xine in the case where the user has a top panel.
+
+	* src/window.c (constrain_position): restore the ability for
+	undecorated windows to position themselves overlapping the top
+	panel, but don't let decorated windows do so. Oh the hacks...
+	
 2003-01-08  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (meta_screen_apply_startup_properties): small code
