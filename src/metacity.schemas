@@ -542,9 +542,9 @@ you set
       <type>string</type>
       <default>disabled</default>
       <locale name="C">
-         <short>Move window to workspace 6</short>
+         <short>Move window to workspace 12</short>
          <long>
-          The keybinding used to move a window to workspace 6.  
+          The keybinding used to move a window to workspace 12.  
 
           The format looks like "&lt;Control&gt;a" or
           "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -1100,7 +1100,7 @@ you set
       <applyto>/apps/metacity/global_keybindings/switch_to_workspace_up</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;Up</default>
+      <default>&lt;Control&gt;&lt;Alt&gt;Up</default>
       <locale name="C">
          <short>Switch to workspace above the current space</short>
          <long>
@@ -1125,7 +1125,7 @@ you set
       <applyto>/apps/metacity/global_keybindings/switch_to_workspace_down</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;Down</default>
+      <default>&lt;Control&gt;&lt;Alt&gt;Down</default>
       <locale name="C">
          <short>Switch to workspace below the current space</short>
          <long>
