@@ -23,7 +23,9 @@
 #include "prefs.h"
 #include "ui.h"
 #include "util.h"
+#ifdef HAVE_GCONF
 #include <gconf/gconf-client.h>
+#endif
 #include <string.h>
 #include <stdlib.h>
 
@@ -52,10 +54,13 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
+#ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
-static GList *listeners = NULL;
 static GList *changes = NULL;
 static guint changed_idle;
+#endif
+static GList *listeners = NULL;
+
 static gboolean use_system_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
 static MetaVirtualModifier mouse_button_mods = Mod1Mask;
@@ -87,7 +92,7 @@ static char *commands[MAX_COMMANDS] = { NULL, };
 
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
-
+#ifdef HAVE_GCONF
 static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
@@ -104,17 +109,13 @@ static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
                                            const char *value);
-static void     init_bindings             (void);
 static gboolean update_binding            (MetaKeyPref *binding,
                                            const char  *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
-static void     init_commands             (void);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
-static void     init_workspace_names      (void);
 
-static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
                            GConfEntry     *entry,
@@ -122,6 +123,14 @@ static void change_notify (GConfClient    *client,
 
 static char* gconf_key_for_workspace_name (int i);
 
+static void queue_changed (MetaPreference  pref);
+#endif /* HAVE_GCONF */
+
+static void     init_bindings             (void);
+static void     init_commands             (void);
+static void     init_workspace_names      (void);
+
+       
 typedef struct
 {
   MetaPrefsChangedFunc func;
@@ -167,6 +176,7 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
   meta_bug ("Did not find listener to remove\n");
 }
 
+#ifdef HAVE_GCONF
 static void
 emit_changed (MetaPreference pref)
 {
@@ -190,7 +200,9 @@ emit_changed (MetaPreference pref)
 
   g_list_free (copy);
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 changed_idle_handler (gpointer data)
 {
@@ -218,7 +230,9 @@ changed_idle_handler (gpointer data)
   
   return FALSE;
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static void
 queue_changed (MetaPreference pref)
 {
@@ -236,7 +250,9 @@ queue_changed (MetaPreference pref)
     changed_idle = g_idle_add_full (META_PRIORITY_PREFS_NOTIFY,
                                     changed_idle_handler, NULL, NULL);
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static void
 cleanup_error (GError **error)
 {
@@ -248,10 +264,12 @@ cleanup_error (GError **error)
       *error = NULL;
     }
 }
+#endif /* HAVE_GCONF */
 
 void
 meta_prefs_init (void)
 {
+#ifdef HAVE_GCONF
   GError *err = NULL;
   char *str_val;
   int int_val;
@@ -340,6 +358,7 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_button_layout (str_val);
   g_free (str_val);
+#endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
   init_bindings ();
@@ -349,15 +368,18 @@ meta_prefs_init (void)
 
   /* workspace names */
   init_workspace_names ();
-  
+
+#ifdef HAVE_GCONF
   gconf_client_notify_add (default_client, "/apps/metacity",
                            change_notify,
                            NULL,
                            NULL,
                            &err);
-  cleanup_error (&err);  
+  cleanup_error (&err);
+#endif /* HAVE_GCONF */
 }
 
+#ifdef HAVE_GCONF
 /* from eel */
 static gboolean
 str_has_prefix (const char *haystack, const char *needle)
@@ -662,7 +684,9 @@ change_notify (GConfClient    *client,
   /* nothing */
   return; /* AIX compiler wants something after a label like out: */
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 update_mouse_button_mods (const char *value)
 {
@@ -692,7 +716,9 @@ update_mouse_button_mods (const char *value)
 
   return old_mods != mouse_button_mods;
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 update_focus_mode (const char *value)
 {
@@ -713,7 +739,9 @@ update_focus_mode (const char *value)
 
   return (old_mode != focus_mode);
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 update_theme (const char *value)
 {
@@ -745,7 +773,7 @@ update_theme (const char *value)
   
   return changed;
 }
-
+#endif /* HAVE_GCONF */
 
 MetaVirtualModifier
 meta_prefs_get_mouse_button_mods  (void)
@@ -765,6 +793,7 @@ meta_prefs_get_theme (void)
   return current_theme;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_use_system_font (gboolean value)
 {
@@ -774,7 +803,9 @@ update_use_system_font (gboolean value)
 
   return old != value;
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 update_titlebar_font (const char *value)
 {
@@ -806,7 +837,9 @@ update_titlebar_font (const char *value)
       return TRUE;
     }
 }
+#endif /* HAVE_GCONF */
 
+#ifdef HAVE_GCONF
 static gboolean
 button_layout_equal (const MetaButtonLayout *a,
                      const MetaButtonLayout *b)
@@ -950,6 +983,7 @@ update_button_layout (const char *value)
 
   return changed;
 }
+#endif /* HAVE_GCONF */
 
 const PangoFontDescription*
 meta_prefs_get_titlebar_font (void)
@@ -960,6 +994,7 @@ meta_prefs_get_titlebar_font (void)
     return titlebar_font;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_num_workspaces (int value)
 {
@@ -979,6 +1014,7 @@ update_num_workspaces (int value)
 
   return old != num_workspaces;
 }
+#endif /* HAVE_GCONF */
 
 int
 meta_prefs_get_num_workspaces (void)
@@ -986,6 +1022,7 @@ meta_prefs_get_num_workspaces (void)
   return num_workspaces;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_application_based (gboolean value)
 {
@@ -995,13 +1032,17 @@ update_application_based (gboolean value)
 
   return old != application_based;
 }
+#endif /* HAVE_GCONF */
 
 gboolean
 meta_prefs_get_application_based (void)
 {
+  return FALSE; /* For now, we never want this to do anything */
+  
   return application_based;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_disable_workarounds (gboolean value)
 {
@@ -1022,6 +1063,7 @@ update_disable_workarounds (gboolean value)
   
   return old != disable_workarounds;
 }
+#endif /* HAVE_GCONF */
 
 gboolean
 meta_prefs_get_disable_workarounds (void)
@@ -1029,6 +1071,7 @@ meta_prefs_get_disable_workarounds (void)
   return disable_workarounds;
 }
 
+#ifdef HAVE_GCONF
 static MetaActionDoubleClickTitlebar
 action_double_click_titlebar_from_string (const char *str)
 {
@@ -1089,7 +1132,9 @@ update_auto_raise_delay (int value)
 
   return old != auto_raise_delay;
 }
+#endif /* HAVE_GCONF */
 
+#ifdef WITH_VERBOSE_MODE
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
@@ -1145,10 +1190,12 @@ meta_preference_to_string (MetaPreference pref)
 
   return "(unknown)";
 }
+#endif /* WITH_VERBOSE_MODE */
 
 void
 meta_prefs_set_num_workspaces (int n_workspaces)
 {
+#ifdef HAVE_GCONF
   GError *err;
   
   if (default_client == NULL)
@@ -1172,6 +1219,7 @@ meta_prefs_set_num_workspaces (int n_workspaces)
                     err->message);
       g_error_free (err);
     }
+#endif /* HAVE_GCONF */
 }
 
 /* Indexes must correspond to MetaKeybindingAction */
@@ -1253,6 +1301,7 @@ static MetaKeyPref window_bindings[] = {
 static void
 init_bindings (void)
 {
+#ifdef HAVE_GCONF
   int i;
   GError *err;
   
@@ -1297,11 +1346,13 @@ init_bindings (void)
 
       ++i;
     }
+#endif /* HAVE_GCONF */
 }
 
 static void
 init_commands (void)
 {
+#ifdef HAVE_GCONF
   int i;
   GError *err;
   
@@ -1324,11 +1375,13 @@ init_commands (void)
 
       ++i;
     }
+#endif /* HAVE_GCONF */
 }
 
 static void
 init_workspace_names (void)
 {
+#ifdef HAVE_GCONF
   int i;
   GError *err;
   
@@ -1353,8 +1406,10 @@ init_workspace_names (void)
 
       ++i;
     }
+#endif /* HAVE_GCONF */
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_binding (MetaKeyPref *binding,
                 const char  *value)
@@ -1506,6 +1561,7 @@ update_command (const char  *name,
   
   return TRUE;
 }
+#endif /* HAVE_GCONF */
 
 const char*
 meta_prefs_get_command (int i)
@@ -1525,6 +1581,7 @@ meta_prefs_get_gconf_key_for_command (int i)
   return key;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_workspace_name (const char  *name,
                        const char  *value)
@@ -1601,6 +1658,7 @@ update_workspace_name (const char  *name,
   
   return TRUE;
 }
+#endif /* HAVE_GCONF */
 
 const char*
 meta_prefs_get_workspace_name (int i)
@@ -1620,6 +1678,7 @@ void
 meta_prefs_change_workspace_name (int         i,
                                   const char *name)
 {
+#ifdef HAVE_GCONF
   char *key;
   GError *err;
   
@@ -1663,8 +1722,10 @@ meta_prefs_change_workspace_name (int         i,
     }
   
   g_free (key);
+#endif /* HAVE_GCONF */
 }
 
+#ifdef HAVE_GCONF
 static char*
 gconf_key_for_workspace_name (int i)
 {
@@ -1674,6 +1735,7 @@ gconf_key_for_workspace_name (int i)
   
   return key;
 }
+#endif /* HAVE_GCONF */
 
 void
 meta_prefs_get_button_layout (MetaButtonLayout *button_layout_p)

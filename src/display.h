@@ -161,6 +161,7 @@ struct _MetaDisplay
   Atom atom_net_wm_state_above;
   Atom atom_net_wm_state_below;
   Atom atom_net_startup_id;
+  Atom atom_metacity_toggle_verbose;
   
   /* This is the actual window from focus events,
    * not the one we last set

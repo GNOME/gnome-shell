@@ -415,6 +415,7 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
   *area = workspace->work_area;
 }
 
+#ifdef WITH_VERBOSE_MODE
 static char *
 meta_motion_direction_to_string (MetaMotionDirection direction)
 {
@@ -432,7 +433,9 @@ meta_motion_direction_to_string (MetaMotionDirection direction)
 
   return "Unknown";
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 static char *
 meta_screen_corner_to_string (MetaScreenCorner corner)
 {
@@ -450,6 +453,7 @@ meta_screen_corner_to_string (MetaScreenCorner corner)
 
   return "Unknown";
 }
+#endif /* WITH_VERBOSE_MODE */
 
 MetaWorkspace*
 meta_workspace_get_neighbor (MetaWorkspace      *workspace,

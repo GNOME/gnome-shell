@@ -11,7 +11,7 @@ ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
 GETTEXT_PACKAGE=metacity
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
 AM_MAINTAINER_MODE
 
@@ -19,7 +19,6 @@ AC_PROG_INTLTOOL([0.21])
 AC_PROG_CC
 AC_ISC_POSIX
 AC_HEADER_STDC
-AC_ARG_PROGRAM
 AM_PROG_LIBTOOL
 
 changequote(,)dnl
@@ -83,6 +82,8 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
+METACITY_PC_MODULES='gtk+-2.0 >= 2.0.0'
+
 AC_ARG_ENABLE(config-dialog,      [  --enable-config-dialog      enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)],enable_config_dialog=yes,enable_config_dialog=no)
 
 AM_CONDITIONAL(BUILD_CONFIG_DIALOG, test x$enable_config_dialog = xyes)
@@ -90,9 +91,25 @@ if test x$enable_config_dialog = xyes; then
     AC_DEFINE(BUILD_CONFIG_DIALOG,1,[Build configuration dialog])
 fi
 
+AC_ARG_ENABLE(gconf,              [  --disable-gconf             disable gconf usage, for embedded/size-sensitive non-GNOME builds],enable_gconf=no,enable_gconf=yes)
+
+if test x$enable_gconf = xyes; then
+    AC_DEFINE(HAVE_GCONF,1,[Build with gconf support])
+    METACITY_PC_MODULES="$METACITY_PC_MODULES gconf-2.0 >= 1.2.0"
+fi
+
+AC_ARG_ENABLE(verbose-mode,       [  --disable-verbose             disable metacity's ability to do verbose logging, for embedded/size-sensitive custom builds],enable_verbose_mode=no,enable_verbose_mode=yes)
+
+if test x$enable_verbose_mode = xyes; then
+    AC_DEFINE(WITH_VERBOSE_MODE,1,[Build with verbose mode support])
+fi
+
+AC_ARG_ENABLE(sm,       [  --disable-sm             disable metacity's session management support, for embedded/size-sensitive custom non-GNOME builds],enable_sm=no,enable_sm=auto)
+
+AC_ARG_ENABLE(startup-notification,   [  --disable-startup-notification             disable metacity's startup notification support, for embedded/size-sensitive custom non-GNOME builds],enable_startup_notification=no,enable_startup_notification=auto)
+
 ## try definining HAVE_BACKTRACE
 AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
-
 
 ALL_LINGUAS="az ca cs da de el es fr gl hu it ja ko lv ms no pl pt pt_BR ro ru sk sv tr uk vi zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT
@@ -100,19 +117,38 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.0.0)
-PKG_CHECK_MODULES(METACITY_PROPS, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libglade-2.0)
+
+if test x$enable_config_dialog = xyes; then
+   PKG_CHECK_MODULES(METACITY_PROPS, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libglade-2.0)
+fi
 
 STARTUP_NOTIFICATION_VERSION=0.4
+AC_MSG_CHECKING([Startup notification library >= $STARTUP_NOTIFICATION_VERSION])
 if $PKG_CONFIG --atleast-version $STARTUP_NOTIFICATION_VERSION libstartup-notification-1.0; then
+   have_startup_notification=yes
+else
+   have_startup_notification=no
+fi
+AC_MSG_RESULT($have_startup_notification)
+
+if test x$enable_startup_notification = xyes; then
+   have_startup_notification=yes
+   echo "startup-notification support forced on"
+elif test x$enable_startup_notification = xauto; then
+   true
+else
+   have_startup_notification=no
+fi
+
+if test x$have_startup_notification = xyes; then
   echo "Building with libstartup-notification"
-  PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION)
-  AC_DEFINE(HAVE_STARTUP_NOTIFICATION)
-  with_startup_notification=yes
+  METACITY_PC_MODULES="$METACITY_PC_MODULES libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION"
+  AC_DEFINE(HAVE_STARTUP_NOTIFICATION, , [Building with startup notification support])
 else
   echo "Building without libstartup-notification"
-  PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9)
-  with_startup_notification=no
 fi
+
+PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
 if $PKG_CONFIG --atleast-version 2.1.0 gtk+-2.0; then
    AC_DEFINE(HAVE_GTK_MULTIHEAD,,[gtk+ with multihead support found])
@@ -143,8 +179,8 @@ case "$host" in
                       	    if test -z "`echo $ALL_X_LIBS | grep "\-lXext" 2> /dev/null`"; then
                                 X_EXTRA_LIBS="-lXext $X_EXTRA_LIBS"
         	            fi
-                            AC_DEFINE(HAVE_SOLARIS_XINERAMA)
-          	            AC_DEFINE(HAVE_XINERAMA),
+                            AC_DEFINE(HAVE_SOLARIS_XINERAMA, , [Have Solaris-style Xinerama])
+          	            AC_DEFINE(HAVE_XINERAMA, , [Have some version of Xinerama]),
                             use_solaris_xinerama=no,
                             [#include <X11/Xlib.h>])
         fi	
@@ -160,8 +196,8 @@ case "$host" in
       	                     if test -z "`echo $ALL_X_LIBS | grep "\-lXext" 2> /dev/null`"; then
              	                 X_EXTRA_LIBS="-lXext $X_EXTRA_LIBS"
       	                     fi
-        	             AC_DEFINE(HAVE_XFREE_XINERAMA)
-      	                     AC_DEFINE(HAVE_XINERAMA), 
+        	             AC_DEFINE(HAVE_XFREE_XINERAMA, , [Have XFree86-style Xinerama])
+      	                     AC_DEFINE(HAVE_XINERAMA,, [Have some version of Xinerama]), 
       	                     use_xfree_xinerama=no,
                              [#include <X11/Xlib.h>])],
             use_xfree_xinerama=no, -lXext $ALL_X_LIBS)
@@ -180,7 +216,7 @@ AC_CHECK_LIB(Xext, XShapeQueryExtension,
                , $ALL_X_LIBS)
 
 if test "x$found_shape" = "xyes"; then
-   AC_DEFINE(HAVE_SHAPE)
+   AC_DEFINE(HAVE_SHAPE, , [Have the shape extension library])
 fi
 
 RANDR_LIBS=
@@ -192,7 +228,7 @@ AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
                , -lXrender $ALL_X_LIBS)
 
 if test "x$found_randr" = "xyes"; then
-   AC_DEFINE(HAVE_RANDR)
+   AC_DEFINE(HAVE_RANDR, , [Have the Xrandr extension library])
 fi
 
 METACITY_LIBS="$RANDR_LIBS $SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_LIBS"
@@ -213,8 +249,19 @@ case "$METACITY_LIBS" in
     ;;
 esac
 
+if test x$enable_sm = xno; then
+   found_sm=no
+fi
+
+if test x$enable_sm = xyes; then
+   if test "$found_sm" = "no"; then
+      AC_MSG_ERROR([--enable-sm forced and -lSM not found])
+      exit 1
+   fi
+fi
+
 if test "$found_sm" = "yes"; then
-   AC_DEFINE(HAVE_SM)
+   AC_DEFINE(HAVE_SM, , [Building with SM support])
 fi
 
 AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "yes") 
@@ -236,13 +283,14 @@ LDFLAGS="$METACITY_LIBS $LDFLAGS"
 AC_CHECK_FUNCS(gdk_pixbuf_new_from_stream)
 LDFLAGS=$save_LDFLAGS
 
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test x$enable_gconf = xyes; then 
+   AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+   if test x"$GCONFTOOL" = xno; then
+     AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+   fi
 
-if test x"$GCONFTOOL" = xno; then
-  AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+   AM_GCONF_SOURCE_2
 fi
-
-AM_GCONF_SOURCE_2
 
 AC_OUTPUT([
 Makefile
@@ -256,6 +304,24 @@ po/Makefile.in
 metacity.spec
 ])
 
+if test x$enable_gconf = xno; then
+        echo "*** WARNING WARNING WARNING WARNING WARNING"
+        echo "*** Building without GConf"
+        echo "*** This means there's no way to change prefs except"
+        echo "*** hacking source code, at least for now."
+        echo "*** Also, some prefs may have broken defaults."
+        echo "*** Patches needed for a simple no-gconf config file."
+        echo "*** This is intended for embedded systems etc., not for normal use."
+fi
+
+if test x$enable_verbose_mode = xno; then
+        echo "*** WARNING WARNING WARNING WARNING WARNING"
+        echo "*** Building without verbose mode"
+        echo "*** This means there's no way to debug metacity problems."
+        echo "*** Please build normal desktop versions of metacity"
+        echo "*** with verbose mode enabled so users can use it when they report bugs."
+fi
+
 dnl ==========================================================================
 echo "
 metacity-$VERSION:
@@ -264,10 +330,11 @@ metacity-$VERSION:
 	source code location:	  ${srcdir}
 	compiler:		  ${CC}
 
+	GConf:                    ${enable_gconf}
 	XFree86 Xinerama:         ${use_xfree_xinerama}
 	Solaris Xinerama:         ${use_solaris_xinerama}
 	Multihead:                ${with_multihead}
-	Startup notification:     ${with_startup_notification}
+	Startup notification:     ${have_startup_notification}
 	Session management:       ${found_sm}
 	Shape extension:          ${found_shape}
 	Resize-and-rotate:        ${found_randr}

@@ -1,5 +1,39 @@
 2002-12-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/prefs.c (meta_prefs_get_application_based): make this always
+	return FALSE for now, to avoid bug reports.
+
+	* src/util.c (ensure_logfile): put "opened log file" message on
+	stderr so it will normally land in ~/.xsession-errors
+
+	* configure.in: remove extra AC_ARG_PROGRAM
+
+	* src/display.c (event_callback): handle the toggle-verbose message
+
+	* src/tools/metacity-message.c: add a toggle-verbose message, been
+	meaning to do this for a while.
+
+	* src/util.c (meta_set_verbose): if verbose mode is enabled and we
+	don't support it, then exit.
+
+	* src/prefs.c: allow building without gconf (currently means some
+	prefs are no-ops)
+
+	* src/util.c, src/util.h: support defining macros to 
+	kill all verbose output entirely. (Removes the code and strings
+	associated with it)
+
+	* configure.in: don't get METACITY_PROPS_LIBS if not building the 
+	config dialog.
+	(HAVE_GCONF): allow building sans gconf, if you are size-sensitive
+	and not using gnome.
+	(WITH_VERBOSE_MODE): add ability to disable all the verbose debug
+	spew strings, to shrink the binary.
+	(--disable-sm): allow SM support to be forced on or off
+	(--disable-startup-notification): allow forcing this on or off
+
+2002-12-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/prefs.c (update_workspace_name): also treat empty string as 
 	"unset" in this function.
 

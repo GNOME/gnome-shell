@@ -131,6 +131,7 @@ void meta_window_flush_move_resize    (MetaWindow *window);
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
+#ifdef WITH_VERBOSE_MODE
 static const char*
 wm_state_to_string (int state)
 {
@@ -146,6 +147,7 @@ wm_state_to_string (int state)
 
   return "Unknown";
 }
+#endif
 
 MetaWindow*
 meta_window_new (MetaDisplay *display,

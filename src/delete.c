@@ -38,11 +38,9 @@ delete_ping_reply_func (MetaDisplay *display,
                         Window       xwindow,
                         void        *user_data)
 {
-  MetaWindow *window = user_data;
-
   meta_topic (META_DEBUG_PING,
               "Got reply to delete ping for %s\n",
-              window->desc);
+              ((MetaWindow*)user_data)->desc);
 
   /* we do nothing */
 }

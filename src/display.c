@@ -252,7 +252,8 @@ meta_display_open (const char *name)
     "_NET_WM_ACTION_CLOSE",
     "_NET_WM_STATE_ABOVE",
     "_NET_WM_STATE_BELOW",
-    "_NET_STARTUP_ID"
+    "_NET_STARTUP_ID",
+    "_METACITY_TOGGLE_VERBOSE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -387,6 +388,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_above = atoms[75];
   display->atom_net_wm_state_below = atoms[76];
   display->atom_net_startup_id = atoms[77];
+  display->atom_metacity_toggle_verbose = atoms[78];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -1664,6 +1666,12 @@ event_callback (XEvent   *event,
                   meta_verbose ("Received set keybindings request = %d\n",
                                 (int) event->xclient.data.l[0]);
                   meta_set_keybindings_disabled (!event->xclient.data.l[0]);
+                }
+              else if (event->xclient.message_type ==
+                       display->atom_metacity_toggle_verbose)
+                {
+                  meta_verbose ("Received toggle verbose message\n");
+                  meta_set_verbose (!meta_is_verbose ());
                 }
 	      else if (event->xclient.message_type ==
 		       display->atom_wm_protocols) 

@@ -19,10 +19,16 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <libintl.h>
+#define _(x) dgettext (GETTEXT_PACKAGE, x)
+#define N_(x) x
+
 
 static void
 send_restart (void)
@@ -108,10 +114,41 @@ send_set_keybindings (gboolean enabled)
   XSync (gdk_display, False);
 }
 
+#ifdef WITH_VERBOSE_MODE
+static void
+send_toggle_verbose (void)
+{
+  XEvent xev;
+
+  xev.xclient.type = ClientMessage;
+  xev.xclient.serial = 0;
+  xev.xclient.send_event = True;
+  xev.xclient.display = gdk_display;
+  xev.xclient.window = gdk_x11_get_default_root_xwindow ();
+  xev.xclient.message_type = XInternAtom (gdk_display,
+                                          "_METACITY_TOGGLE_VERBOSE",
+                                          False);
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = 0;
+  xev.xclient.data.l[1] = 0;
+  xev.xclient.data.l[2] = 0;
+
+  XSendEvent (gdk_display,
+              gdk_x11_get_default_root_xwindow (),
+              False,
+	      SubstructureRedirectMask | SubstructureNotifyMask,
+	      &xev);
+
+  XFlush (gdk_display);
+  XSync (gdk_display, False);
+}
+#endif
+
 static void
 usage (void)
 {
-  g_printerr ("Usage: metacity-message (restart|reload-theme|enable-keybindings|disable-keybindings)\n");
+  g_printerr (_("Usage: %s\n"),
+              "metacity-message (restart|reload-theme|enable-keybindings|disable-keybindings|toggle-verbose)");
   exit (1);
 }
 
@@ -131,6 +168,15 @@ main (int argc, char **argv)
     send_set_keybindings (TRUE);
   else if (strcmp (argv[1], "disable-keybindings") == 0)
     send_set_keybindings (FALSE);
+  else if (strcmp (argv[1], "toggle-verbose") == 0)
+    {
+#ifndef WITH_VERBOSE_MODE
+      g_printerr (_("Metacity was compiled without support for verbose mode\n"));
+      return 1;
+#else      
+      send_toggle_verbose ();
+#endif
+    }
   else
     usage ();
   

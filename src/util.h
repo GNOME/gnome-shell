@@ -33,10 +33,11 @@ void     meta_set_syncing (gboolean setting);
 gboolean meta_get_replace_current_wm (void);
 void     meta_set_replace_current_wm (gboolean setting);
 
-void meta_debug_spew (const char *format,
-                      ...) G_GNUC_PRINTF (1, 2);
-void meta_verbose    (const char *format,
-                      ...) G_GNUC_PRINTF (1, 2);
+void meta_debug_spew_real (const char *format,
+                           ...) G_GNUC_PRINTF (1, 2);
+void meta_verbose_real    (const char *format,
+                           ...) G_GNUC_PRINTF (1, 2);
+
 void meta_bug        (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);
 void meta_warning    (const char *format,
@@ -67,9 +68,9 @@ typedef enum
 
 } MetaDebugTopic;
 
-void meta_topic      (MetaDebugTopic topic,
-                      const char    *format,
-                      ...) G_GNUC_PRINTF (2, 3);
+void meta_topic_real      (MetaDebugTopic topic,
+                           const char    *format,
+                           ...) G_GNUC_PRINTF (2, 3);
 
 void meta_push_no_msg_prefix (void);
 void meta_pop_no_msg_prefix  (void);
@@ -84,6 +85,30 @@ void meta_print_backtrace (void);
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
-#endif
+
+/* To disable verbose mode, we make these functions into no-ops */
+#ifdef WITH_VERBOSE_MODE
+
+#define meta_debug_spew meta_debug_spew_real
+#define meta_verbose    meta_verbose_real
+#define meta_topic      meta_topic_real
+
+#else
+
+#  ifdef G_HAVE_ISO_VARARGS
+#    define meta_debug_spew(...)
+#    define meta_verbose(...)
+#    define meta_topic(...)
+#  elif defined(G_HAVE_GNUC_VARARGS)
+#    define meta_debug_spew(format...)
+#    define meta_verbose(format...)
+#    define meta_topic(format...)
+#  else
+#    error "This compiler does not support varargs macros and thus verbose mode can't be disabled meaningfully"
+#  endif
+
+#endif /* !WITH_VERBOSE_MODE */
+
+#endif /* META_UTIL_H */
 
 

@@ -46,6 +46,7 @@ ACLOCAL=aclocal-1.4
   }
 }
 
+CONFIGURE=configure.in
 if grep "^AM_[A-Z0-9_]\{1,\}_GETTEXT" "$CONFIGURE" >/dev/null; then
   if grep "sed.*POTFILES" "$CONFIGURE" >/dev/null; then
     GETTEXTIZE=""

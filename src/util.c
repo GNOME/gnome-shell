@@ -104,7 +104,7 @@ ensure_logfile (void)
         }
       else
         {
-          g_print (_("Opened log file %s\n"), filename);
+          g_printerr (_("Opened log file %s\n"), filename);
         }
       
       g_free (filename);
@@ -120,6 +120,11 @@ meta_is_verbose (void)
 void
 meta_set_verbose (gboolean setting)
 {
+#ifndef WITH_VERBOSE_MODE
+  if (setting)
+    meta_fatal (_("Metacity was compiled without support for verbose mode\n"));
+#endif
+  
   if (setting)
     ensure_logfile ();
   
@@ -172,8 +177,9 @@ utf8_fputs (const char *str,
   return retval;
 }
 
+#ifdef WITH_VERBOSE_MODE
 void
-meta_debug_spew (const char *format, ...)
+meta_debug_spew_real (const char *format, ...)
 {
   va_list args;
   gchar *str;
@@ -198,9 +204,11 @@ meta_debug_spew (const char *format, ...)
   
   g_free (str);
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 void
-meta_verbose (const char *format, ...)
+meta_verbose_real (const char *format, ...)
 {
   va_list args;
   gchar *str;
@@ -225,7 +233,9 @@ meta_verbose (const char *format, ...)
   
   g_free (str);
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 static const char*
 topic_name (MetaDebugTopic topic)
 {
@@ -275,9 +285,9 @@ topic_name (MetaDebugTopic topic)
 static int sync_count = 0;
 
 void
-meta_topic (MetaDebugTopic topic,
-            const char *format,
-            ...)
+meta_topic_real (MetaDebugTopic topic,
+                 const char *format,
+                 ...)
 {
   va_list args;
   gchar *str;
@@ -309,6 +319,7 @@ meta_topic (MetaDebugTopic topic,
   
   g_free (str);
 }
+#endif /* WITH_VERBOSE_MODE */
 
 void
 meta_bug (const char *format, ...)
