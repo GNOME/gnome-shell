@@ -656,11 +656,14 @@ parse_toplevel_element (GMarkupParseContext  *context,
     {
       const char *name = NULL;
       const char *parent = NULL;
+      const char *has_title = NULL;
+      gboolean has_title_val;
       MetaFrameLayout *parent_layout;
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
                               "name", &name, "parent", &parent,
+                              "has_title", &has_title,
                               NULL))
         return;
 
@@ -672,6 +675,10 @@ parse_toplevel_element (GMarkupParseContext  *context,
           return;
         }
 
+      has_title_val = TRUE;
+      if (has_title && !parse_boolean (has_title, &has_title_val, context, error))
+        return;
+      
       if (meta_theme_lookup_layout (info->theme, name))
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -700,6 +707,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
       else
         info->layout = meta_frame_layout_new ();
 
+      if (has_title) /* only if explicit, otherwise inherit */
+        info->layout->has_title = has_title_val;
+      
       meta_theme_insert_layout (info->theme, name, info->layout);
 
       push_state (info, STATE_FRAME_GEOMETRY);

@@ -78,6 +78,9 @@ struct _MetaFrameLayout
 
   /* Space around buttons */
   GtkBorder button_border;
+
+  /* Whether title text will be displayed */
+  guint has_title : 1;
 };
 
 

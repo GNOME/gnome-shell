@@ -333,6 +333,8 @@ meta_frame_layout_new  (void)
   layout->button_width = -1;
   layout->button_height = -1;
 
+  layout->has_title = TRUE;
+  
   init_border (&layout->button_border);
 
   return layout;
@@ -468,12 +470,15 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                int                   *right_width)
 {
   int buttons_height, title_height;
-
+  
   g_return_if_fail (top_height != NULL);
   g_return_if_fail (bottom_height != NULL);
   g_return_if_fail (left_width != NULL);
   g_return_if_fail (right_width != NULL);
 
+  if (!layout->has_title)
+    text_height = 0;
+  
   buttons_height = layout->button_height +
     layout->button_border.top + layout->button_border.bottom;
   title_height = text_height +

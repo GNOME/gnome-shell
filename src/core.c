@@ -91,9 +91,14 @@ meta_core_get_frame_type (Display *xdisplay,
       return META_FRAME_TYPE_MENU;
       break;
 
+    case META_WINDOW_UTILITY:
+      return META_FRAME_TYPE_UTILITY;
+      break;
+      
     case META_WINDOW_DESKTOP:
     case META_WINDOW_DOCK:
     case META_WINDOW_TOOLBAR:
+    case META_WINDOW_SPLASHSCREEN:
       /* No frame */
       return META_FRAME_TYPE_LAST;
       break;

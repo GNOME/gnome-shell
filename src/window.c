@@ -526,7 +526,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
       window->type == META_WINDOW_TOOLBAR ||
-      window->type == META_WINDOW_MENU)
+      window->type == META_WINDOW_MENU ||
+      window->type == META_WINDOW_UTILITY)
     {
       if (window->size_hints.flags & PPosition)
         {
@@ -2645,7 +2646,8 @@ meta_window_configure_request (MetaWindow *window,
         window->type == META_WINDOW_DOCK ||
         window->type == META_WINDOW_TOOLBAR ||
         window->type == META_WINDOW_MENU ||
-        window->type == META_WINDOW_NORMAL) &&
+        window->type == META_WINDOW_NORMAL ||
+        window->type == META_WINDOW_UTILITY) &&
        (window->size_hints.flags & PPosition)) ||
       (window->size_hints.flags & USPosition))
     {
@@ -2666,7 +2668,8 @@ meta_window_configure_request (MetaWindow *window,
       window->type == META_WINDOW_DOCK ||
       window->type == META_WINDOW_TOOLBAR ||
       window->type == META_WINDOW_MENU ||
-      window->type == META_WINDOW_NORMAL)
+      window->type == META_WINDOW_NORMAL ||
+      window->type == META_WINDOW_UTILITY)
     {
       if (event->xconfigurerequest.value_mask & CWWidth)
         width = event->xconfigurerequest.width;
@@ -4135,13 +4138,14 @@ update_net_wm_type (MetaWindow *window)
       /* We break as soon as we find one we recognize,
        * supposed to prefer those near the front of the list
        */
-      /* FIXME modal dialog (? see if it's in spec), utility, splashscreen */
       if (atoms[i] == window->display->atom_net_wm_window_type_desktop ||
           atoms[i] == window->display->atom_net_wm_window_type_dock ||
           atoms[i] == window->display->atom_net_wm_window_type_toolbar ||
           atoms[i] == window->display->atom_net_wm_window_type_menu ||
           atoms[i] == window->display->atom_net_wm_window_type_dialog ||
-          atoms[i] == window->display->atom_net_wm_window_type_normal)
+          atoms[i] == window->display->atom_net_wm_window_type_normal ||
+          atoms[i] == window->display->atom_net_wm_window_type_utility ||
+          atoms[i] == window->display->atom_net_wm_window_type_splashscreen)
         {
           window->type_atom = atoms[i];
           break;
@@ -4974,8 +4978,13 @@ recalc_window_type (MetaWindow *window)
         window->type = META_WINDOW_DIALOG;
       else if (window->type_atom  == window->display->atom_net_wm_window_type_normal)
         window->type = META_WINDOW_NORMAL;
+      else if (window->type_atom  == window->display->atom_net_wm_window_type_utility)
+        window->type = META_WINDOW_UTILITY;
+      else if (window->type_atom  == window->display->atom_net_wm_window_type_splashscreen)
+        window->type = META_WINDOW_SPLASHSCREEN;
       else
-        meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n");
+        meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n",
+                  window->desc);
     }
   else if (window->xtransient_for != None)
     {
@@ -5026,7 +5035,8 @@ recalc_window_features (MetaWindow *window)
   /* Semantic category overrides the MWM hints */
   
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_SPLASHSCREEN)
     {
       window->decorated = FALSE;
       window->has_close_func = FALSE;

@@ -253,7 +253,8 @@ meta_window_place (MetaWindow *window,
     }
 
   if (window->type == META_WINDOW_DIALOG ||
-      window->type == META_WINDOW_MODAL_DIALOG)
+      window->type == META_WINDOW_MODAL_DIALOG ||
+      window->type == META_WINDOW_SPLASHSCREEN)
     {
       /* Center on screen */
       int w, h;
@@ -263,14 +264,14 @@ meta_window_place (MetaWindow *window,
       h = window->screen->height;
 
       x = (w - window->rect.width) / 2;
-      y = (y - window->rect.height) / 2;
+      y = (h - window->rect.height) / 2;
 
       meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen\n",
                   window->desc);
 
       goto done;
     }
-
+  
   /* Find windows that matter (not minimized, on same workspace
    * as placed window, may be shaded - if shaded we pretend it isn't
    * for placement purposes)

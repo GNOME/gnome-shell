@@ -1,3 +1,35 @@
+2002-02-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/themes/Atlanta/metacity-theme-1.xml: put in some kind of
+	distinctive frame for UTILITY, though it's ugly. Also put in the 
+	borderless look for maximized windows.
+
+	* src/stack.c (compute_layer): put splash screen in the splash
+	layer
+
+	* src/stack.h (enum): create a splash screen layer
+
+	* src/place.c (meta_window_place): center splashscreen, and fix a 
+	typo in the centering code
+
+	* src/window.c (recalc_window_features): disable most features on
+	splash screens
+
+	* src/screen.c (set_supported_hint): add UTILITY and SPLASHSCREEN
+	hints
+
+	* src/window.c: add UTILITY, SPLASHSCREEN implementation
+
+	* src/window.h (enum): add UTILITY, SPLASHSCREEN types
+
+	* src/theme-parser.c (parse_toplevel_element): parser support 
+	for has_title attribute
+
+	* src/theme.c (meta_frame_layout_get_borders): handle a has_title
+	field in the layout, for utility windows that don't display a
+	title (would be better to be able to shrink the title text,
+	but that's kind of tricky to implement :-/)
+
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (set_supported_hint): add _NET_WM_STATE_HIDDEN 

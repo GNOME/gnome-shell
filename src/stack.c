@@ -269,6 +269,10 @@ compute_layer (MetaWindow *window)
       /* still experimenting here */
       window->layer = META_LAYER_NORMAL;
       break;
+
+    case META_WINDOW_SPLASHSCREEN:
+      window->layer = META_LAYER_SPLASH;
+      break;
       
     default:
       window->layer = META_LAYER_NORMAL;
