@@ -124,7 +124,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
             {
               MetaWorkspace* work = (MetaWorkspace*) tmp->data;
               if (!g_list_find (work->mru_list, window))
-                work->mru_list = g_list_append (work->mru_list, window);
+                work->mru_list = g_list_prepend (work->mru_list, window);
 
               tmp = tmp->next;
             }
@@ -133,7 +133,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   else
     {
       g_assert (g_list_find (workspace->mru_list, window) == NULL);
-      workspace->mru_list = g_list_append (workspace->mru_list, window);
+      workspace->mru_list = g_list_prepend (workspace->mru_list, window);
     }
 
   workspace->windows = g_list_prepend (workspace->windows, window);
