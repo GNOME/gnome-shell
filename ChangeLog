@@ -1,3 +1,13 @@
+2005-01-18  Vincent Noel  <vnoel@cox.net>
+
+	* src/screen.c: (meta_screen_ensure_tab_popup),
+	(meta_screen_ensure_workspace_popup):
+	* src/tabpopup.c: (dimm_icon), (meta_ui_tab_popup_new),
+	(free_entry):
+	* src/tabpopup.h: In the tab task switcher popup, dim the window
+	icon and put its name between brackets when the window is
+	minimized. Fixes #136666.
+
 2005-01-11  Elijah Newren  <newren@gmail.com>
 
 	Correct highlighting of windows in workspace switcher popup.

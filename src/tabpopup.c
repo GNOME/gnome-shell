@@ -40,7 +40,7 @@ struct _TabEntry
 {
   MetaTabEntryKey  key;
   char            *title;
-  GdkPixbuf       *icon;
+  GdkPixbuf       *icon, *dimmed_icon;
   GtkWidget       *widget;
   GdkRectangle     rect;
   GdkRectangle     inner_rect;
@@ -115,6 +115,44 @@ utf8_strndup (const char *src,
   return g_strndup (src, s - src);
 }
 
+static GdkPixbuf*
+dimm_icon (GdkPixbuf *pixbuf)
+{
+  int x, y, pixel_stride, row_stride;
+  guchar *row, *pixels;
+  int w, h;
+  GdkPixbuf *dimmed_pixbuf;
+
+  if (gdk_pixbuf_get_has_alpha (dimmed_pixbuf))
+    {
+      dimmed_pixbuf = gdk_pixbuf_copy (pixbuf);
+    }
+  else
+    {
+      dimmed_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
+    }
+
+  w = gdk_pixbuf_get_width (dimmed_pixbuf);
+  h = gdk_pixbuf_get_height (dimmed_pixbuf);      
+
+  pixel_stride = 4;
+
+  row = gdk_pixbuf_get_pixels (dimmed_pixbuf);
+  row_stride = gdk_pixbuf_get_rowstride (dimmed_pixbuf);
+
+  for (y = 0; y < h; y++)
+    {
+      pixels = row;			
+      for (x = 0; x < w; x++) 
+        {
+          pixels[3] /= 2;				
+          pixels += pixel_stride;
+        }			
+      row += row_stride;
+    }
+  return dimmed_pixbuf;
+}
+
 MetaTabPopup*
 meta_ui_tab_popup_new (const MetaTabEntry *entries,
                        int                 screen_number,
@@ -172,7 +210,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
    * avg char width of our font would be a better number.
    */
   max_chars_per_title = gdk_screen_get_width (screen) / 15; 
-  
+
   tab_entries = NULL;
   for (i = 0; i < entry_count; ++i)
     {
@@ -180,15 +218,31 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 
       te = g_new (TabEntry, 1);
       te->key = entries[i].key;
-      te->title =
-	entries[i].title 
-	? utf8_strndup (entries[i].title, max_chars_per_title)
-	: NULL;
+      te->title = NULL;
+      if (entries[i].title)
+        {
+          if (entries[i].minimized)
+            {
+              gchar *tmp;
+              tmp = g_strdup_printf ("[%s]", entries[i].title);
+              te->title = utf8_strndup (tmp, max_chars_per_title);
+              g_free (tmp);
+            }
+          else 
+            {
+              te->title = utf8_strndup (entries[i].title, max_chars_per_title);
+            }
+        }
       te->widget = NULL;
       te->icon = entries[i].icon;
       te->blank = entries[i].blank;
+      te->dimmed_icon = NULL;
       if (te->icon)
-        g_object_ref (G_OBJECT (te->icon));
+        {
+          g_object_ref (G_OBJECT (te->icon));
+          if (entries[i].minimized)
+            te->dimmed_icon = dimm_icon (entries[i].icon);
+        }
 
       if (outline)
         {
@@ -225,12 +279,12 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
                      vbox);
 
   align = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-  
+
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
   gtk_container_add (GTK_CONTAINER (align),
                      table);
-  
+
   popup->label = gtk_label_new ("");
   obj = gtk_widget_get_accessible (popup->label);
   atk_object_set_role (obj, ATK_ROLE_STATUSBAR);
@@ -243,7 +297,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   top = 0;
   bottom = 1;
   tmp = popup->entries;
-  
+
   while (tmp && top < height)
     {      
       left = 0;
@@ -253,7 +307,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
         {
           GtkWidget *image;
           GtkRequisition req;
-          
+
           TabEntry *te;
 
           te = tmp->data;
@@ -265,7 +319,14 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
             }
           else if (outline)
             {
-              image = selectable_image_new (te->icon);
+              if (te->dimmed_icon)
+                {
+                  image = selectable_image_new (te->dimmed_icon);
+                }
+              else 
+                {
+                  image = selectable_image_new (te->icon);
+                }
 
               gtk_misc_set_padding (GTK_MISC (image),
                                     INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1,
@@ -276,7 +337,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
             {
               image = selectable_workspace_new ((MetaWorkspace *) te->key);
             }
-          
+
           te->widget = image;
 
           gtk_table_attach (GTK_TABLE (table),
@@ -323,6 +384,8 @@ free_entry (gpointer data, gpointer user_data)
   g_free (te->title);
   if (te->icon)
     g_object_unref (G_OBJECT (te->icon));
+  if (te->dimmed_icon)
+    g_object_unref (G_OBJECT (te->dimmed_icon));
 
   g_free (te);
 }
