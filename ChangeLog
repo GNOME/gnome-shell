@@ -1,3 +1,10 @@
+2003-04-19  Masahiro Sakai  <sakai@tom.sfc.keio.ac.jp>
+
+	* configure.in: call AC_LIBTOOL_WIN32_DLL.
+
+	* src/Makefile.am: add -no-undefined to libmetacity_private_la_LDFLAGS
+	and write dependency libraries in libmetacity_private_la_LIBADD.
+
 2003-04-06  Rob Adams  <robadams@ucla.edu>
 
 	* src/place.c (find_next_cascade): cascade on xinerama with

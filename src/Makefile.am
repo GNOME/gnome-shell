@@ -101,6 +101,9 @@ libmetacity_private_la_SOURCES=	\
 	util.h			\
 	common.h
 
+libmetacity_private_la_LDFLAGS = -no-undefined
+libmetacity_private_la_LIBADD  = $(METACITY_LIBS)
+
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
 libmetacityinclude_HEADERS =	\
