@@ -1,3 +1,11 @@
+2005-01-06  Elijah Newren  <newren@gmail.com>
+
+	Make sure the save session dialog appears focused.  Fixes #162983.
+
+	* src/session.c (warn_about_lame_clients_and_finish_inter): Get a
+	timestamp by explicit request from Xserver, since none is
+	available otherwise.
+
 2005-01-06  Leena Gunda  <leena.gunda@wipro.com>
 
 	* src/window.c (meta_window_unmaximize): Restore the wireframe

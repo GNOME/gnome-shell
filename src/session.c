@@ -23,6 +23,7 @@
 #include <config.h>
 
 #include "session.h"
+#include <X11/Xatom.h>
 
 #include <time.h>
 
@@ -1888,7 +1889,27 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
-  timestamp = 0;
+  
+    {
+      XEvent property_event;
+      MetaDisplay *display;
+
+      display = meta_displays_list ()->data;
+
+      /* Using the property XA_PRIMARY because it's safe; nothing
+       * would use it as a property. The type doesn't matter.
+       */
+      XChangeProperty (display->xdisplay,
+                       display->leader_window,
+                       XA_PRIMARY, XA_STRING, 8,
+                       PropModeAppend, NULL, 0);
+      XWindowEvent (display->xdisplay,
+                    display->leader_window,
+                    PropertyChangeMask,
+                    &property_event);
+
+      timestamp = property_event.xproperty.time;
+    }
   sprintf (timestampbuf, "%lu", timestamp);
 
   len = g_slist_length (lame);
