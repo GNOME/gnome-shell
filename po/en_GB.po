@@ -9,10 +9,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2002-10-16 00:19+0100\n"
 "PO-Revision-Date: 2002-10-15 23:19+0000\n"
-"Last-Translator: Robert Brady <rwb197@zepler.org>, Bastien Nocera <hadess@hadess.net>\n"
+"Last-Translator: Robert Brady <rwb197@zepler.org>, Bastien Nocera "
+"<hadess@hadess.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
@@ -97,7 +98,8 @@ msgstr ""
 #: src/keybindings.c:2084
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Error launching metacity-dialogue to print an error about a command: %s\n"
+msgstr ""
+"Error launching metacity-dialogue to print an error about a command: %s\n"
 
 #: src/keybindings.c:2114
 #, c-format
@@ -1817,8 +1819,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK colour specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
+"GTK colour specification must have the state in brackets, e.g. gtk:fg"
+"[NORMAL] where NORMAL is the state; could not parse \"%s\""
 
 #: src/theme.c:987
 #, c-format

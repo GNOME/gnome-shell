@@ -1,16 +1,16 @@
 # Turkish translation of metacity.
 # Copyright (C) 2002 Free Software Foundation, Inc.
-# Görkem Çetin <gorkem@gelecek.com.tr>, 2002.
+# GÃ¶rkem Ã‡etin <gorkem@gelecek.com.tr>, 2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-10-29 01:26-0500\n"
 "PO-Revision-Date: 2002-01-06 07:52-0500\n"
-"Last-Translator: Görkem Çetin <gorkem@gelecek.com.tr>\n"
+"Last-Translator: GÃ¶rkem Ã‡etin <gorkem@gelecek.com.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
@@ -49,7 +49,7 @@ msgstr ""
 #: src/display.c:266
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "X window ekraný açýlamadý: '%s'\n"
+msgstr "X window ekranÄ± aÃ§Ä±lamadÄ±: '%s'\n"
 
 #: src/errors.c:235
 #, c-format
@@ -58,8 +58,8 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"'%s' görüntü ekraný ile baðlantý kesildi.\n"
-"Sunucu ya da pencere yöneticisi kapanmýþ olabilir.\n"
+"'%s' gÃ¶rÃ¼ntÃ¼ ekranÄ± ile baÄŸlantÄ± kesildi.\n"
+"Sunucu ya da pencere yÃ¶neticisi kapanmÄ±ÅŸ olabilir.\n"
 "\n"
 
 #: src/errors.c:242
@@ -2184,12 +2184,12 @@ msgstr ""
 #: src/util.c:91
 #, fuzzy, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "X window ekraný açýlamadý: '%s'\n"
+msgstr "X window ekranÄ± aÃ§Ä±lamadÄ±: '%s'\n"
 
 #: src/util.c:101
 #, fuzzy, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "X window ekraný açýlamadý: '%s'\n"
+msgstr "X window ekranÄ± aÃ§Ä±lamadÄ±: '%s'\n"
 
 #: src/util.c:107
 #, c-format

@@ -10,7 +10,7 @@ msgstr ""
 "Last-Translator: Pier Luigi Fiorini <plfiorini@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
@@ -59,7 +59,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Connessione al display \"%s\" persa;\n"
-"molto probabilmente il server X Ë stato arrestato o ucciso/distrutto\n"
+"molto probabilmente il server X √® stato arrestato o ucciso/distrutto\n"
 "il window manager.\n"
 
 #: src/errors.c:242
@@ -104,7 +104,7 @@ msgstr ""
 #: src/keybindings.c:2207
 #, fuzzy, c-format
 msgid "No command %d has been defined.\n"
-msgstr "Nessun <draw_ops> chiamato \"%s\" Ë stato definito"
+msgstr "Nessun <draw_ops> chiamato \"%s\" √® stato definito"
 
 #: src/main.c:64
 msgid ""
@@ -1295,7 +1295,7 @@ msgstr "Menu della finestra"
 #: src/prefs.c:585 src/prefs.c:602 src/prefs.c:618
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "La chiave GConf \"%s\" Ë impostata ad un tipo non valido\n"
+msgstr "La chiave GConf \"%s\" √® impostata ad un tipo non valido\n"
 
 #: src/prefs.c:661
 #, c-format
@@ -1307,7 +1307,7 @@ msgstr ""
 #: src/prefs.c:683 src/prefs.c:1030
 #, fuzzy, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "La chiave GConf \"%s\" Ë impostata ad un valore non valido"
+msgstr "La chiave GConf \"%s\" √® impostata ad un valore non valido"
 
 #: src/prefs.c:762
 #, c-format
@@ -1322,8 +1322,8 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"Il valore %d memorizzato nella chiave GConf %s non Ë un numero ragionevole "
-"di aree di lavoro, il massimo corrente Ë %d\n"
+"Il valore %d memorizzato nella chiave GConf %s non √® un numero ragionevole "
+"di aree di lavoro, il massimo corrente √® %d\n"
 
 #: src/prefs.c:994
 msgid ""
@@ -1335,7 +1335,7 @@ msgstr ""
 #, fuzzy, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
-"Il valore %d memorizzato nella chiave GConf %s non Ë una dimensione di "
+"Il valore %d memorizzato nella chiave GConf %s non √® una dimensione di "
 "carattere valida\n"
 
 #: src/prefs.c:1141
@@ -1358,14 +1358,14 @@ msgstr ""
 #: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Lo schermo %d nel display \"%s\" non Ë valido\n"
+msgstr "Lo schermo %d nel display \"%s\" non √® valido\n"
 
 #: src/screen.c:405
 #, fuzzy, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
-msgstr "Lo schermo %d nel display \"%s\" ha gi‡ un window manager\n"
+msgstr "Lo schermo %d nel display \"%s\" ha gi√† un window manager\n"
 
 #: src/screen.c:446
 #, fuzzy, c-format
@@ -1376,7 +1376,7 @@ msgstr "Impossibile rilasciare lo schermo %d nel display \"%s\"\n"
 #: src/screen.c:502
 #, fuzzy, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Lo schermo %d nel display \"%s\" ha gi‡ un window manager\n"
+msgstr "Lo schermo %d nel display \"%s\" ha gi√† un window manager\n"
 
 #: src/screen.c:648
 #, fuzzy, c-format
@@ -1423,7 +1423,7 @@ msgstr "Analisi del file della sessione salvato fallita: %s\n"
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
-"» stato visto un'attributo in <metacity_session> ma vi Ë gi‡ un ID della "
+"√à stato visto un'attributo in <metacity_session> ma vi √® gi√† un ID della "
 "sessione"
 
 #: src/session.c:1234
@@ -1470,12 +1470,12 @@ msgstr "Riga %d carattere %d: %s"
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "L'attributo \"%s\" Ë ripetuto due volte nello stesso elemento <%s>"
+msgstr "L'attributo \"%s\" √® ripetuto due volte nello stesso elemento <%s>"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "L'attributo \"%s\" non Ë valido nell'elemento <%s> in questo contesto"
+msgstr "L'attributo \"%s\" non √® valido nell'elemento <%s> in questo contesto"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -1485,7 +1485,7 @@ msgstr "L'intero %ld deve essere positivo"
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "L'intero %ld Ë troppo grande, il massimo corrente Ë %d"
+msgstr "L'intero %ld √® troppo grande, il massimo corrente √® %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
@@ -1539,12 +1539,12 @@ msgstr "<%s> di nome \"%s\" usato una seconda volta"
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "L'elemento padre \"%s\" di <%s> non Ë definito"
+msgstr "L'elemento padre \"%s\" di <%s> non √® definito"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "La geometria <%s> \"%s\" non Ë stata definita"
+msgstr "La geometria <%s> \"%s\" non √® stata definita"
 
 #: src/theme-parser.c:981
 #, c-format
@@ -1564,7 +1564,7 @@ msgstr "Style_set \"%s\" sconosciuto nell'elemento <%s>"
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Al tipo di finestra \"%s\" Ë gi‡ stato assegnato uno stile"
+msgstr "Al tipo di finestra \"%s\" √® gi√† stato assegnato uno stile"
 
 #: src/theme-parser.c:1143
 #, c-format
@@ -1579,12 +1579,12 @@ msgstr "Stato \"%s\" sconosciuto per l'icona del menu"
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Il tema ha gi‡ un'icona del menu per la funzione %s e lo stato %s"
+msgstr "Il tema ha gi√† un'icona del menu per la funzione %s e lo stato %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3180 src/theme-parser.c:3259
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Non Ë stato definito nessun <draw_ops> con il nome \"%s\""
+msgstr "Non √® stato definito nessun <draw_ops> con il nome \"%s\""
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3060 src/theme-parser.c:3114 src/theme-parser.c:3274
@@ -1592,7 +1592,7 @@ msgstr "Non Ë stato definito nessun <draw_ops> con il nome \"%s\""
 #: src/theme-parser.c:3565
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "L'elemento <%s> non Ë consentito sotto <%s>"
+msgstr "L'elemento <%s> non √® consentito sotto <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
@@ -1612,12 +1612,12 @@ msgstr ""
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "La distanza \"%s\" Ë sconosciuta"
+msgstr "La distanza \"%s\" √® sconosciuta"
 
 #: src/theme-parser.c:1402
 #, fuzzy, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "La distanza \"%s\" Ë sconosciuta"
+msgstr "La distanza \"%s\" √® sconosciuta"
 
 #: src/theme-parser.c:1446
 #, c-format
@@ -1768,12 +1768,12 @@ msgstr "Freccia \"%s\" incomprensibile per l'elemento <%s>"
 #: src/theme-parser.c:2898 src/theme-parser.c:3014
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Nessun <draw_ops> chiamato \"%s\" Ë stato definito"
+msgstr "Nessun <draw_ops> chiamato \"%s\" √® stato definito"
 
 #: src/theme-parser.c:2910 src/theme-parser.c:3026
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Includere draw_ops \"%s\" qui provocher‡ un riferimento circolare"
+msgstr "Includere draw_ops \"%s\" qui provocher√† un riferimento circolare"
 
 #: src/theme-parser.c:3089
 #, c-format
@@ -1793,7 +1793,7 @@ msgstr "Posizione \"%s\" sconosciuta per il pezzo di frame"
 #: src/theme-parser.c:3163
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "Lo stile del frame ha gi‡ un pezzo alla posizione %s"
+msgstr "Lo stile del frame ha gi√† un pezzo alla posizione %s"
 
 #: src/theme-parser.c:3208
 #, c-format
@@ -1818,7 +1818,7 @@ msgstr "Stato \"%s\" sconosciuto per il bottone"
 #: src/theme-parser.c:3242
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Lo stile di frame ha gi‡ un bottone per la funzione %s stato %s"
+msgstr "Lo stile di frame ha gi√† un bottone per la funzione %s stato %s"
 
 #: src/theme-parser.c:3312
 #, c-format
@@ -1833,17 +1833,17 @@ msgstr "Nessun attributo \"style\" nell'elemento <%s>"
 #: src/theme-parser.c:3337
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" non Ë un valore valido per l'attributo focus"
+msgstr "\"%s\" non √® un valore valido per l'attributo focus"
 
 #: src/theme-parser.c:3346
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" non Ë un valore valido per l'attributo state"
+msgstr "\"%s\" non √® un valore valido per l'attributo state"
 
 #: src/theme-parser.c:3356
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Uno stile chiamato \"%s\" non Ë stato definito"
+msgstr "Uno stile chiamato \"%s\" non √® stato definito"
 
 #: src/theme-parser.c:3366
 #, c-format
@@ -1853,7 +1853,7 @@ msgstr "Nessun attributo \"resize\" nell'elemento <%s>"
 #: src/theme-parser.c:3376
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" non Ë un valore valido per l'attributo resize"
+msgstr "\"%s\" non √® un valore valido per l'attributo resize"
 
 #: src/theme-parser.c:3386
 #, c-format
@@ -1867,12 +1867,12 @@ msgstr ""
 #: src/theme-parser.c:3400
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Stile gi‡ specificato per state %s resize %s focus %s"
+msgstr "Stile gi√† specificato per state %s resize %s focus %s"
 
 #: src/theme-parser.c:3411 src/theme-parser.c:3422 src/theme-parser.c:3433
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Lo stile Ë stato gi‡ specificato per lo stato %s focus %s"
+msgstr "Lo stile √® stato gi√† specificato per lo stato %s focus %s"
 
 #: src/theme-parser.c:3472
 msgid ""
@@ -1911,31 +1911,31 @@ msgstr "L'elemento esterno nel tema deve essere <metacity_theme> not <%s>"
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
-"L'elemento <%s> non Ë consentito denstro gli elementi name/author/date/"
+"L'elemento <%s> non √® consentito denstro gli elementi name/author/date/"
 "description"
 
 #: src/theme-parser.c:3620
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "L'elemento <%s> non Ë consentito dentro l'elemento <constant>"
+msgstr "L'elemento <%s> non √® consentito dentro l'elemento <constant>"
 
 #: src/theme-parser.c:3632
 #, fuzzy, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "L'elemento <%s> non Ë consentito dentro l'elemento distance/border"
+msgstr "L'elemento <%s> non √® consentito dentro l'elemento distance/border"
 
 #: src/theme-parser.c:3654
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr ""
-"L'elemento <%s> non Ë consentito dentro un elemento relativo un'operazione "
+"L'elemento <%s> non √® consentito dentro un elemento relativo un'operazione "
 "di disegno"
 
 #: src/theme-parser.c:3664 src/theme-parser.c:3694 src/theme-parser.c:3699
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "L'elemento <%s> non Ë consentito dentro un elemento <%s>"
+msgstr "L'elemento <%s> non √® consentito dentro un elemento <%s>"
 
 #: src/theme-parser.c:3920
 msgid "No draw_ops provided for frame piece"
@@ -1952,7 +1952,7 @@ msgstr "Nessun draw_ops viene fornito per l'icona del menu"
 #: src/theme-parser.c:3990
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr "Il testo non Ë consentito dentro l'elemento <%s>"
+msgstr "Il testo non √® consentito dentro l'elemento <%s>"
 
 #: src/theme-parser.c:4045
 msgid "<name> specified twice for this theme"
@@ -2033,7 +2033,7 @@ msgid ""
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "La specificazione di colore GTK deve avere lo stato fra parentesi, per es. "
-"gtk:fg[NORMAL] dove NORMAL Ë lo stato, impossibile analizzare \"%s\""
+"gtk:fg[NORMAL] dove NORMAL √® lo stato, impossibile analizzare \"%s\""
 
 #: src/theme.c:989
 #, c-format
@@ -2042,7 +2042,7 @@ msgid ""
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "La specificazione di colore GTK deve avere una parentesi chiusa dopo lo "
-"stato, per es. gtk:fg[NORMAL] dove NORMAL Ë lo stato, impossibile analizzare "
+"stato, per es. gtk:fg[NORMAL] dove NORMAL √® lo stato, impossibile analizzare "
 "\"%s\""
 
 #: src/theme.c:1000
@@ -2097,7 +2097,7 @@ msgstr "Impossibile analizzare il colore \"%s\""
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "La coordinata contiene il carattere \"%s\" che non Ë consentito"
+msgstr "La coordinata contiene il carattere \"%s\" che non √® consentito"
 
 #: src/theme.c:1450
 #, c-format
@@ -2105,13 +2105,13 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"La coordinata contiene il numero in virgola mobile \"%s\" che non puÚ essere "
+"La coordinata contiene il numero in virgola mobile \"%s\" che non pu√≤ essere "
 "analizzato"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "La coordinata contiene l'intero \"%s\" che non puÚ essere analizzato"
+msgstr "La coordinata contiene l'intero \"%s\" che non pu√≤ essere analizzato"
 
 #: src/theme.c:1531
 #, c-format
@@ -2124,7 +2124,7 @@ msgstr ""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr "La coordinata Ë vuota o non compresa"
+msgstr "La coordinata √® vuota o non compresa"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
@@ -2140,11 +2140,11 @@ msgstr ""
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "La coordinata ha un operatore \"%s\" dove Ë atteso un operando"
+msgstr "La coordinata ha un operatore \"%s\" dove √® atteso un operando"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "La coordinata ha un operando dove Ë atteso un operatore"
+msgstr "La coordinata ha un operando dove √® atteso un operatore"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -2164,8 +2164,8 @@ msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"L'analizzatore della coordinata ha superato il proprio buffer, questo Ë un "
-"bug di Metacity, ma si Ë sicuri di necessitare di un'espressione come quella?"
+"L'analizzatore della coordinata ha superato il proprio buffer, questo √® un "
+"bug di Metacity, ma si √® sicuri di necessitare di un'espressione come quella?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -2245,7 +2245,7 @@ msgstr ""
 #: src/theme.c:4902 src/theme.c:4964
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "La costante \"%s\" Ë gi‡ definita"
+msgstr "La costante \"%s\" √® gi√† definita"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
@@ -2345,19 +2345,19 @@ msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"
 msgstr ""
-"La finestra 0x%lx ha una propriet‡ %s che dovrebbe avere un tipo %s di "
+"La finestra 0x%lx ha una propriet√† %s che dovrebbe avere un tipo %s di "
 "formato %d e attualmente ha un tipo %s di formato %d e n_items %d\n"
 
 #: src/xprops.c:369
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Propriet‡ %s della finestra 0x%lx contiene un UTF-8 non valido\n"
+msgstr "Propriet√† %s della finestra 0x%lx contiene un UTF-8 non valido\n"
 
 #: src/xprops.c:449
 #, fuzzy, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Propriet‡ %s della finestra 0x%lx contiene un UTF-8 non valido\n"
+msgstr "Propriet√† %s della finestra 0x%lx contiene un UTF-8 non valido\n"
 
 #~ msgid "_Shade"
 #~ msgstr "_Arrotola"
