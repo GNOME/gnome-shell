@@ -33,8 +33,8 @@
 
 typedef struct _MetaGroup MetaGroup;
 
-typedef void (*MetaWindowForeachFunc) (MetaWindow *window,
-                                       void       *data);
+typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
+                                           void       *data);
 
 typedef enum
 {
@@ -442,11 +442,14 @@ void meta_window_refresh_resize_popup (MetaWindow *window);
 
 void meta_window_free_delete_dialog (MetaWindow *window);
 
-void meta_window_foreach_transient (MetaWindow            *window,
-                                    MetaWindowForeachFunc  func,
-                                    void                  *data);
-gboolean meta_window_is_ancestor_of_transient (MetaWindow *window,
-                                               MetaWindow *transient);
+void     meta_window_foreach_transient        (MetaWindow            *window,
+                                               MetaWindowForeachFunc  func,
+                                               void                  *data);
+gboolean meta_window_is_ancestor_of_transient (MetaWindow            *window,
+                                               MetaWindow            *transient);
+void     meta_window_foreach_ancestor         (MetaWindow            *window,
+                                               MetaWindowForeachFunc  func,
+                                               void                  *data);
 
 gboolean meta_window_warp_pointer (MetaWindow *window,
                                    MetaGrabOp  grab_op);

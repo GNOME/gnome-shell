@@ -1125,6 +1125,31 @@ meta_window_visible_on_workspace (MetaWindow    *window,
 }
 
 static gboolean
+is_minimized_foreach (MetaWindow *window,
+                      void       *data)
+{
+  gboolean *result = data;
+
+  *result = window->minimized;
+  if (*result)
+    return FALSE; /* stop as soon as we find one */
+  else
+    return TRUE;
+}
+
+static gboolean
+ancestor_is_minimized (MetaWindow *window)
+{
+  gboolean is_minimized;
+
+  is_minimized = FALSE;
+
+  meta_window_foreach_ancestor (window, is_minimized_foreach, &is_minimized);
+
+  return is_minimized;
+}
+
+static gboolean
 window_should_be_showing (MetaWindow  *window)
 {
   gboolean showing, on_workspace;
@@ -1173,28 +1198,8 @@ window_should_be_showing (MetaWindow  *window)
   
   if (showing)
     {
-      MetaWindow *w;
-
-      w = window;
-      while (w != NULL)
-        {
-          if (w->minimized)
-            {
-              showing = FALSE;
-              break;
-            }
-          
-          if (w->xtransient_for == None ||
-              w->transient_parent_is_root_window)
-            break;
-          
-          w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-          
-          if (w == window)
-            break; /* Cute, someone thought they'd make a transient_for cycle */
-
-          /* w may be null... */
-        }
+      if (ancestor_is_minimized (window))
+        showing = FALSE;
     }
 
   return showing;
@@ -1701,11 +1706,12 @@ meta_window_hide (MetaWindow *window)
     }
 }
 
-static void
+static gboolean
 queue_calc_showing_func (MetaWindow *window,
                          void       *data)
 {
   meta_window_queue_calc_showing (window);
+  return TRUE;
 }
 
 void
@@ -1942,27 +1948,19 @@ meta_window_unshade (MetaWindow  *window)
     }
 }
 
+static gboolean
+unminimize_func (MetaWindow *window,
+                 void       *data)
+{
+  meta_window_unminimize (window);
+  return TRUE;
+}
+
 static void
 unminimize_window_and_all_transient_parents (MetaWindow *window)
 {
-  MetaWindow *w;
-  
-  w = window;
-  while (w != NULL)
-    {
-      meta_window_unminimize (w);
-      
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
-        break;
-      
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-      
-      if (w == window)
-        break; /* Cute, someone thought they'd make a transient_for cycle */
-      
-      /* w may be null... */
-    }
+  meta_window_unminimize (window);
+  meta_window_foreach_ancestor (window, unminimize_func, NULL);
 }
 
 void
@@ -3141,11 +3139,12 @@ meta_window_change_workspace_without_transients (MetaWindow    *window,
   g_assert (window->workspaces->next == NULL);
 }
 
-static void
+static gboolean
 change_workspace_foreach (MetaWindow *window,
                           void       *data)
 {
   meta_window_change_workspace_without_transients (window, data);
+  return TRUE;
 }
 
 void
@@ -4465,10 +4464,29 @@ read_client_leader (MetaDisplay *display,
   return retval;
 }
 
+typedef struct
+{
+  Window leader;  
+} ClientLeaderData;
+
+static gboolean
+find_client_leader_func (MetaWindow *ancestor,
+                         void       *data)
+{
+  ClientLeaderData *d;
+
+  d = data;
+
+  d->leader = read_client_leader (ancestor->display,
+                                  ancestor->xwindow);
+
+  /* keep going if no client leader found */
+  return d->leader == None;
+}
+
 static void
 update_sm_hints (MetaWindow *window)
 {
-  MetaWindow *w;
   Window leader;
   
   window->xclient_leader = None;
@@ -4478,26 +4496,17 @@ update_sm_hints (MetaWindow *window)
    * leader from transient parents. If we find a client
    * leader, we read the SM_CLIENT_ID from it.
    */
-  leader = None;
-  w = window;
-  while (w != NULL)
+  leader = read_client_leader (window->display, window->xwindow);
+  if (leader == None)
     {
-      leader = read_client_leader (window->display, w->xwindow);
-
-      if (leader != None)
-        break;
-      
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
-        break;
-
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-
-      if (w == window)
-        break; /* Cute, someone thought they'd make a transient_for cycle */
+      ClientLeaderData d;
+      d.leader = None;
+      meta_window_foreach_ancestor (window, find_client_leader_func,
+                                    &d);
+      leader = d.leader;
     }
       
-  if (leader)
+  if (leader != None)
     {
       char *str;
       
@@ -6237,7 +6246,10 @@ meta_window_foreach_transient (MetaWindow            *window,
       MetaWindow *transient = tmp->data;
       
       if (meta_window_is_ancestor_of_transient (window, transient))
-        (* func) (transient, data);
+        {
+          if (!(* func) (transient, data))
+            break;
+        }
       
       tmp = tmp->next;
     }
@@ -6245,34 +6257,87 @@ meta_window_foreach_transient (MetaWindow            *window,
   g_slist_free (windows);
 }
 
+void
+meta_window_foreach_ancestor (MetaWindow            *window,
+                              MetaWindowForeachFunc  func,
+                              void                  *data)
+{
+  MetaWindow *w;
+  MetaWindow *tortoise;
+  
+  w = window;
+  tortoise = window;
+  while (TRUE)
+    {
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
+        break;
+      
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      
+      if (w == NULL || w == tortoise)
+        break;
+
+      if (!(* func) (w, data))
+        break;      
+      
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
+        break;
+
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      
+      if (w == NULL || w == tortoise)
+        break;
+
+      if (!(* func) (w, data))
+        break;
+      
+      tortoise = meta_display_lookup_x_window (tortoise->display,
+                                               tortoise->xtransient_for);
+
+      /* "w" should have already covered all ground covered by the
+       * tortoise, so the following must hold.
+       */
+      g_assert (tortoise != NULL);
+      g_assert (tortoise->xtransient_for != None);
+      g_assert (!tortoise->transient_parent_is_root_window);
+    }
+}
+
+typedef struct
+{
+  MetaWindow *ancestor;
+  gboolean found;
+} FindAncestorData;
+
+static gboolean
+find_ancestor_func (MetaWindow *window,
+                    void       *data)
+{
+  FindAncestorData *d = data;
+
+  if (window == d->ancestor)
+    {
+      d->found = TRUE;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 gboolean
 meta_window_is_ancestor_of_transient (MetaWindow *window,
                                       MetaWindow *transient)
 {
-  MetaWindow *w;
+  FindAncestorData d;
 
-  if (window == transient)
-    return FALSE;
-  
-  w = transient;
-  while (w != NULL)
-    {          
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
-        return FALSE;
+  d.ancestor = window;
+  d.found = FALSE;
 
-      if (w->xtransient_for == window->xwindow)
-        return TRUE;
-      
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-      
-      if (w == transient)
-        return FALSE; /* Cycle */
-      
-      /* w may be null... */
-    }
+  meta_window_foreach_ancestor (transient, find_ancestor_func, &d);
 
-  return FALSE;
+  return d.found;
 }
 
 static gboolean

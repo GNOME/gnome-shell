@@ -1,3 +1,19 @@
+2003-03-11  Havoc Pennington  <hp@pobox.com>
+
+	Should fix #108108, #106217, tracked down by Owen Taylor and
+	Frederic Crozat
+	
+	* src/window.c (meta_window_foreach_transient): change
+	MetaWindowForeachFunc to return a boolean for whether to continue
+	(meta_window_foreach_ancestor): new function
+	(window_should_be_showing): use meta_window_foreach_ancestor	
+	(unminimize_window_and_all_transient_parents): ditto
+	(update_sm_hints): ditto
+	(meta_window_is_ancestor_of_transient): ditto
+
+	* src/stack.c (get_maximum_layer_of_ancestor): use
+	meta_window_foreach_ancestor
+	
 2003-03-16  Rob Adams <robadams@ucla.edu>
 
 	* window.c (meta_window_show_menu): Free old window menu if it

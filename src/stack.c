@@ -262,37 +262,34 @@ get_standalone_layer (MetaWindow *window)
   return layer;
 }
 
+typedef struct
+{
+  MetaStackLayer max;
+} MaxLayerData;
+
+static gboolean
+max_layer_func (MetaWindow *window,
+                void       *data)
+{
+  MaxLayerData *d = data;
+  MetaStackLayer layer;
+  
+  layer = get_standalone_layer (window);
+  if (layer > d->max)
+    d->max = layer;
+
+  return TRUE;
+}
+
 static MetaStackLayer
 get_maximum_layer_of_ancestor (MetaWindow *window)
 {
-  MetaWindow *w;
-  MetaStackLayer max;
-  MetaStackLayer layer;
-  
-  max = get_standalone_layer (window);
-  
-  w = window;
-  while (w != NULL)
-    {
-      if (w->xtransient_for == None ||
-          w->transient_parent_is_root_window)
-        break;
-      
-      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
-      
-      if (w == window)
-        break; /* Cute, someone thought they'd make a transient_for cycle */
-      
-      /* w may be null... */
-      if (w != NULL)
-        {
-          layer = get_standalone_layer (w);
-          if (layer > max)
-            max = layer;
-        }
-    }
+  MaxLayerData d;
 
-  return max;
+  d.max = get_standalone_layer (window);
+  meta_window_foreach_ancestor (window, max_layer_func, &d);
+  
+  return d.max;
 }
 
 /* Note that this function can never use window->layer only
