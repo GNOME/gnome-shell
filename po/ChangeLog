@@ -1,3 +1,8 @@
+2003-09-08  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* vi.po: Updated Vietnamese file
+	* az.po,sq.po: Fixed syntax errors
+
 2003-09-07  Nikos Charonitakis <frolix68@yahoo.gr>
 
 	* el.po: Review of Greek translation.

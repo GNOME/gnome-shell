@@ -2851,7 +2851,7 @@ msgstr ""
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Konstantja \"$s\" është përcaktuar një herë"
+msgstr "Konstantja \"%s\" është përcaktuar një herë"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"

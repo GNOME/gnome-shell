@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
-"PO-Revision-Date: 2003-07-24 15:39+0700\n"
+"POT-Creation-Date: 2003-09-06 04:24+0200\n"
+"PO-Revision-Date: 2003-09-07 18:53+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: Gnome-Vi <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -433,7 +433,7 @@ msgstr "Khoảng chờ (mili giây) cho tùy chọn tự động hiện"
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
+msgstr "Xác định ứng dụng hoặc hệ thống có thể phát sinh tiến 'bíp' hay không; có thể dùng chung với 'visual bell' để cho phép 'bíp' câm."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -441,7 +441,7 @@ msgstr "Tắt tùy chọn này là cần thiết đối với các ứng dụng 
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Bật Chuông hình"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -648,7 +648,7 @@ msgstr "Chạy lệnh đã định nghĩa"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Hiện menu Bảng điều khiển"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
@@ -748,7 +748,7 @@ msgstr "Chuyển sang vùng làm việc bên phải"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Chuông hệ thống có thể nghe rõ"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
@@ -767,7 +767,7 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr ""
+msgstr "Cho Metacity biết cái hiển thị khi có chuông từ hệ thống hoặc từ ứng dụng khác. Hiện thời chỉ có hai gia trị hợp lệ là \"fullscreen\", làm chớp trắng-đen toàn màn hình, và \"frame_flash\" làm chớp tựa đề của ứng dụng rung chuông. Nếu không biết ứng dụng nào rung chuông (thường là \"chuông hệ thống\"), tựa đề ứng dụng đang có focus sẽ chớp."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -1653,7 +1653,7 @@ msgstr "Tên của không gian làm việc."
 
 #: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
-msgstr ""
+msgstr "Lệnh chụp hình"
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1687,7 +1687,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Lệnh chụp hình cửa sổ"
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1778,7 +1778,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle always on top state"
-msgstr ""
+msgstr "Bật tắt trạng thánh luôn nổi"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
@@ -1801,7 +1801,7 @@ msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr ""
+msgstr "Bật chỉ thị trực quan khi ứng dụng hoặc hệ thống rung chuông; rất hữu dụng trong môi trường ồn ào, không nghe rõ hoặc khi tắt 'audible bell'."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1813,7 +1813,7 @@ msgstr "Dùng font hệ thống chuẩn cho tựa đề cửa sổ"
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Kiểu Chuông hình"
 
 #: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
@@ -2900,32 +2900,32 @@ msgstr ""
 "Thuộc tính %s trên cửa sổ 0x%lx chứa chuỗi UTF-8 sai cho mục %d trong danh "
 "sách\n"
 
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Cửa sổ \"%s\" không trả lời.\n"
-#~ "Ép ứng dụng này kết thúc chứ?\n"
-#~ "(Các tài liệu đang mở có thể sẽ bị mất)"
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+"Cửa sổ \"%s\" không trả lời.\n"
+"Ép ứng dụng này kết thúc chứ?\n"
+"(Các tài liệu đang mở có thể sẽ bị mất)"
 
-#~ msgid "Kill application"
-#~ msgstr "Buộc chấm dứt ứng dụng"
+msgid "Kill application"
+msgstr "Buộc chấm dứt ứng dụng"
 
-#~ msgid "Workspace %u"
-#~ msgstr "Vùng làm việc %u"
+msgid "Workspace %u"
+msgstr "Vùng làm việc %u"
 
-#~ msgid "No <name> set for theme \"%s\""
-#~ msgstr "Chưa đặt <name> cho theme \"%s\""
+msgid "No <name> set for theme \"%s\""
+msgstr "Chưa đặt <name> cho theme \"%s\""
 
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "Chưa đặt <author> cho theme \"%s\""
+msgid "No <author> set for theme \"%s\""
+msgstr "Chưa đặt <author> cho theme \"%s\""
 
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "Chưa đặt <description> cho theme \"%s\""
+msgid "No <description> set for theme \"%s\""
+msgstr "Chưa đặt <description> cho theme \"%s\""
 
-#~ msgid "No <copyright> set for theme \"%s\""
-#~ msgstr "Chưa đặt <copyright> cho theme \"%s\""
+msgid "No <copyright> set for theme \"%s\""
+msgstr "Chưa đặt <copyright> cho theme \"%s\""
 
-#~ msgid "Change how focus is moved from one window to another"
-#~ msgstr "Đổi cách focus di chuyển từ cửa sổ này sang cửa sổ khác"
+msgid "Change how focus is moved from one window to another"
+msgstr "Đổi cách focus di chuyển từ cửa sổ này sang cửa sổ khác"
