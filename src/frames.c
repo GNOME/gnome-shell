@@ -205,8 +205,6 @@ meta_frames_destroy (GtkObject *object)
   MetaFrames *frames;
   
   frames = META_FRAMES (object);
-  
-  meta_prefs_remove_listener (font_changed_callback, frames);
 
   clear_tip (frames);
   
@@ -239,6 +237,8 @@ meta_frames_finalize (GObject *object)
   
   frames = META_FRAMES (object);
 
+  meta_prefs_remove_listener (font_changed_callback, frames);
+  
   g_hash_table_destroy (frames->text_heights);
   
   g_assert (g_hash_table_size (frames->frames) == 0);

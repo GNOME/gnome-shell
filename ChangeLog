@@ -1,5 +1,11 @@
 2002-06-01  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (meta_frames_finalize): move the remove_listener
+	to finalize instead of destroy, thanks to Jayaraj for tracking 
+	down the bug.
+
+2002-06-01  Havoc Pennington  <hp@pobox.com>
+
 	* src/session.c: add some missing \n
 	(meta_session_init): remove the #if 0 interact callback from our
 	initial SmcOpenConnection call, this arg to SmcOpenConnection
