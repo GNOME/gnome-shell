@@ -23,6 +23,8 @@
 
 static GtkWidget *tip = NULL;
 static GtkWidget *label = NULL;
+static int screen_width = 0;
+static int screen_height = 0;
 
 static gint
 expose_handler (GtkTooltips *tooltips)
@@ -40,14 +42,27 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
                      int root_x, int root_y,
                      const char *markup_text)
 {
+  int w, h;
+  
   if (tip == NULL)
-    {
+    {      
       tip = gtk_window_new (GTK_WINDOW_POPUP);
 #ifdef HAVE_GTK_MULTIHEAD
-      gtk_window_set_screen (GTK_WINDOW (tip),
-			     gdk_display_get_screen (gdk_get_default_display (),
-						     screen_number));
+      {
+        GdkScreen *gdk_screen;
+
+        gdk_screen = gdk_display_get_screen (gdk_get_default_display (),
+                                             screen_number);
+        gtk_window_set_screen (GTK_WINDOW (tip),
+                               gdk_screen);
+        screen_width = gdk_screen_get_width (gdk_screen);
+        screen_height = gdk_screen_get_height (gdk_screen);
+      }
+#else
+      screen_width = gdk_screen_width ();
+      screen_height = gdk_screen_height ();      
 #endif
+      
       gtk_widget_set_app_paintable (tip, TRUE);
       gtk_window_set_policy (GTK_WINDOW (tip), FALSE, FALSE, TRUE);
       gtk_widget_set_name (tip, "gtk-tooltips");
@@ -70,9 +85,17 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
 			  GTK_SIGNAL_FUNC (gtk_widget_destroyed),
 			  &tip);
     }
-  
-  gtk_widget_set_uposition (tip, root_x, root_y);
+
   gtk_label_set_markup (GTK_LABEL (label), markup_text);
+  
+  /* FIXME should also handle Xinerama here, just to be
+   * really cool
+   */
+  gtk_window_get_size (GTK_WINDOW (tip), &w, &h);
+  if ((root_x + w) > screen_width)
+    root_x -= (root_x + w) - screen_width;
+  
+  gtk_window_move (GTK_WINDOW (tip), root_x, root_y);
 
   gtk_widget_show (tip);
 }

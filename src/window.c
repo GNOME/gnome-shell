@@ -5473,9 +5473,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 {
   switch (event->type)
     {
-    case ButtonRelease:
-      meta_display_end_grab_op (window->display, event->xbutton.time);
-      
+    case ButtonRelease:      
       switch (window->display->grab_op)
         {
         case META_GRAB_OP_MOVING:
@@ -5496,7 +5494,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 
         default:
           break;
-        }      
+        }
+
+      meta_display_end_grab_op (window->display, event->xbutton.time);
       break;
       
     case MotionNotify:

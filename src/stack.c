@@ -376,6 +376,13 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
 {
   /* This function is used to avoid raising a window above popup
    * menus and other such things.
+   *
+   * FIXME This is sort of an expensive function, should probably
+   * do something to avoid it. One approach would be to reverse
+   * the stacking algorithm to work by placing each window above
+   * the others, and start by lowering a window to the bottom
+   * (instead of the current way, which works by placing each
+   * window below another and starting with a raise)
    */
 
   Window ignored1, ignored2;

@@ -1,3 +1,12 @@
+2002-05-11  Havoc Pennington  <hp@pobox.com>
+
+	* src/fixedtip.c (meta_fixed_tip_show): keep the tooltip 
+	on the screen horizontally, #76825
+
+	* src/window.c (meta_window_handle_mouse_grab_op_event): end grab
+	op _after_ doing the final update of the move or resize.
+	Hopefully I didn't have a reason for the order I was using before.
+
 2002-05-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/tools/metacity-window-demo.c: add override redirect test
