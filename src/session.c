@@ -1815,6 +1815,20 @@ io_from_warning_dialog (GIOChannel   *channel,
       /* Remove the callback, freeing data */
       return FALSE; 
     }
+  else if (condition & G_IO_IN)
+    {
+      /* Check for EOF */
+      
+      char buf[16];
+      int ret;
+ 
+      ret = read (d->child_pipe, buf, sizeof (buf));
+      if (ret == 0)
+ 	{
+ 	  finish_interact (d->shutdown);
+ 	  return FALSE;
+ 	}
+    }
 
   /* Keep callback installed */
   return TRUE;

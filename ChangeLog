@@ -1,3 +1,8 @@
+2003-09-24  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (io_from_warning_dialog): fix hang when we get
+	EOF, #121376 from Laurent Vivier
+
 2003-09-22  Taneem Ahmed  <taneem@bengalinux.org>
 
 	* configure.in: Added "bn" to ALL_LINGUAS.
