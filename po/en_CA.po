@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-29 00:10-0500\n"
-"PO-Revision-Date: 2005-01-29 18:28-0400\n"
+"POT-Creation-Date: 2005-02-01 02:40-0500\n"
+"PO-Revision-Date: 2005-02-01 18:28-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -203,8 +203,8 @@ msgstr "_Close"
 
 #. separator
 #: src/menu.c:66
-msgid "_Always on Current Workspace"
-msgstr "_Always on Current Workspace"
+msgid "_Always on Visible Workspace"
+msgstr "_Always on Visible Workspace"
 
 #: src/menu.c:67
 msgid "_Only on This Workspace"
