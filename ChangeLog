@@ -1,3 +1,10 @@
+2002-06-06  James M. Cape <jcape@ignore-your.tv>
+
+	* src/themes/Esco/metacity-theme-1.xml: Increase the border size
+	of the buttons so they aren't quite so huge on my box. Also get
+	a *little* closer to finally fixing the horizontal line behind
+	the icon. It now works decently with common font sizes (in pixels).
+
 2002-06-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme.c (meta_color_spec_new_from_string): parse 

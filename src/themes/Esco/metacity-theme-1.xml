@@ -15,10 +15,10 @@
  	<distance name="bottom_height" value="5"/>
 	<distance name="left_titlebar_edge" value="5"/>
 	<distance name="right_titlebar_edge" value="5"/>
-        <aspect_ratio name="button" value="1.0"/>      
+	<aspect_ratio name="button" value="1.0"/> 
 	<distance name="title_vertical_pad" value="3"/>
 	<border name="title_border" left="3" right="3" top="4" bottom="3"/>
-	<border name="button_border" left="0" right="1" top="4" bottom="3"/>
+	<border name="button_border" left="0" right="1" top="6" bottom="5"/>
 </frame_geometry>
 
 <!-- strip borders off the normal geometry -->
@@ -38,11 +38,10 @@
 	<distance name="bottom_height" value="4"/>
 	<distance name="left_titlebar_edge" value="3"/>
 	<distance name="right_titlebar_edge" value="3"/>
-	<distance name="button_width" value="11"/>
-	<distance name="button_height" value="11"/>
+	<aspect_ratio name="button" value="1.0"/>      
 	<distance name="title_vertical_pad" value="1"/>
 	<border name="title_border" left="3" right="4" top="3" bottom="3"/>
-	<border name="button_border" left="0" right="0" top="1" bottom="1"/>
+	<border name="button_border" left="0" right="0" top="2" bottom="2"/>
 </frame_geometry>
 
 <!-- define constants -->
@@ -194,7 +193,7 @@
 		y2="height - ButtonIPad - 2"/>
 
 	<line color="gtk:fg[NORMAL]" width="2"
-		x1="ButtonIPad"
+		x1="ButtonIPad + 1"
 		y1="height - ButtonIPad - 2"
 		x2="width - ButtonIPad - 2"
 		y2="ButtonIPad + 1"/>
@@ -206,7 +205,7 @@
 		x2="width - ButtonIPad - 2"
 		y2="height - ButtonIPad - 2"/>
 	<line color="gtk:fg[INSENSITIVE]" width="2"
-		x1="ButtonIPad"
+		x1="ButtonIPad + 1"
 		y1="height - ButtonIPad - 2"
 		x2="width - ButtonIPad - 2"
 		y2="ButtonIPad + 1"/>
@@ -325,10 +324,10 @@
 		width="title_width + IconTitleSpacing"
 		height="height - 4"/>
 	<line color="#ffffff" width="32"
-		x1="width - title_width - (IconTitleSpacing * 1.5) + height + (IconTitleSpacing * 2) + (height / 3)"
-		y1="0 - height"
-		x2="width - title_width - (IconTitleSpacing * 1.5) - height + (height / 8)"
-		y2="height + height"/>
+		x1="width - title_width + height + IconTitleSpacing + (height / 12)"
+		y1="0 - height + (height / 6)"
+		x2="width - title_width - height - IconTitleSpacing + (height / 12)"
+		y2="height * 2 - (height / 6)"/>
 </draw_ops>
 
 <draw_ops name="title_text_focused_with_icon">
