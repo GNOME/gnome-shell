@@ -257,6 +257,27 @@ meta_window_place (MetaWindow        *window,
   
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
+  switch (window->type)
+    {
+      /* Run placement algorithm on these. */
+    case META_WINDOW_NORMAL:
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+    case META_WINDOW_SPLASHSCREEN:
+      break;
+          
+      /* Assume the app knows best how to place these, no placement
+       * algorithm ever (other than "leave them as-is")
+       */
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_MENU:
+    case META_WINDOW_UTILITY:
+      goto done_no_constraints;
+      break;
+    }
+  
   if (meta_prefs_get_disable_workarounds ())
     {
       switch (window->type)
@@ -291,7 +312,7 @@ meta_window_place (MetaWindow        *window,
             {
               meta_topic (META_DEBUG_PLACEMENT,
                           "Not placing non-normal non-dialog window with PPosition set\n");
-              goto done;
+              goto done_no_constraints;
             }
           break;
         }
@@ -305,29 +326,8 @@ meta_window_place (MetaWindow        *window,
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Not placing window with PPosition or USPosition set\n");
-          goto done;
+          goto done_no_constraints;
         }
-    }
-
-  switch (window->type)
-    {
-      /* Run placement algorithm on these. */
-    case META_WINDOW_NORMAL:
-    case META_WINDOW_DIALOG:
-    case META_WINDOW_MODAL_DIALOG:
-    case META_WINDOW_SPLASHSCREEN:
-      break;
-          
-      /* Assume the app knows best how to place these, no placement
-       * algorithm ever (other than "leave them as-is")
-       */
-    case META_WINDOW_DESKTOP:
-    case META_WINDOW_DOCK:
-    case META_WINDOW_TOOLBAR:
-    case META_WINDOW_MENU:
-    case META_WINDOW_UTILITY:
-      goto done;
-      break;
     }
   
   if ((window->type == META_WINDOW_DIALOG ||
@@ -440,7 +440,8 @@ meta_window_place (MetaWindow        *window,
   
  done:
   constrain_placement (window, fgeom, x, y, &x, &y);
-  
+
+ done_no_constraints:
   *new_x = x;
   *new_y = y;
 }

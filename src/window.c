@@ -5108,12 +5108,12 @@ constrain_size (MetaWindow *window,
 }
 
 static void
-constrain_position (MetaWindow *window,
+constrain_position (MetaWindow        *window,
                     MetaFrameGeometry *fgeom,
-                    int         x,
-                    int         y,
-                    int        *new_x,
-                    int        *new_y)
+                    int                x,
+                    int                y,
+                    int               *new_x,
+                    int               *new_y)
 {  
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry

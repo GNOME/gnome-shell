@@ -1,5 +1,11 @@
 2002-06-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/place.c (meta_window_place): don't run constrain_placement
+	on windows we allow to go anywhere (docks, etc.). Fixes
+	positioning of panel windows in certain cases.
+
+2002-06-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/frames.c (meta_frames_button_press_event): don't raise/focus
 	the window if minimize/close are clicked, patch from Gaute
 	Lindkvist #75460
