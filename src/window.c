@@ -1337,10 +1337,31 @@ meta_window_show (MetaWindow *window)
               /* don't focus these */
               break;
             case META_WINDOW_NORMAL:
+              /* Focus only if the current focus is on a desktop element
+               * or nonexistent.
+               *
+               * (using display->focus_window is a bit of a race condition,
+               *  but I have no idea how to avoid it)
+               */
+              if (display->focus_window == NULL ||
+                  (display->focus_window &&
+                   (display->focus_window->type == META_WINDOW_DOCK ||
+                    display->focus_window->type == META_WINDOW_DESKTOP)))
+                meta_window_focus (window,
+                                   meta_display_get_current_time (window->display));
+              break;
             case META_WINDOW_DIALOG:
             case META_WINDOW_MODAL_DIALOG:
-              meta_window_focus (window,
-                                 meta_display_get_current_time (window->display));
+              /* Focus only if the transient parent has focus */
+              /* (using display->focus_window is a bit of a race condition,
+               *  but I have no idea how to avoid it)
+               */
+              if (display->focus_window == NULL ||
+                  (display->focus_window &&
+                   meta_window_is_ancestor_of_transient (display->focus_window,
+                                                         window)))
+                meta_window_focus (window,
+                                   meta_display_get_current_time (window->display));
               break;
             }
         }

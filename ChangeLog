@@ -1,5 +1,12 @@
 2002-05-24  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_show): change how focusing windows 
+	on initial map works, so that we only steal focus from our 
+	transient parent or from a panel/desktop, never from other 
+	normal windows.
+
+2002-05-24  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_configure_request): modify to ignore
 	PPosition and USPosition once the window has been placed
 
