@@ -103,7 +103,6 @@ static void     ensure_mru_position_after (MetaWindow *window,
 void meta_window_move_resize_now (MetaWindow  *window);
 
 static gboolean window_showing_on_its_workspace (MetaWindow *window);
-static gboolean window_should_be_showing  (MetaWindow  *window);
 
 /* FIXME we need an abstraction that covers all these queues. */   
 
@@ -1299,8 +1298,8 @@ window_showing_on_its_workspace (MetaWindow *window)
   return showing;
 }
 
-static gboolean
-window_should_be_showing (MetaWindow  *window)
+gboolean
+meta_window_should_be_showing (MetaWindow  *window)
 {
   gboolean on_workspace;
 
@@ -1387,7 +1386,7 @@ implement_showing (MetaWindow *window,
 void
 meta_window_calc_showing (MetaWindow  *window)
 {
-  implement_showing (window, window_should_be_showing (window));
+  implement_showing (window, meta_window_should_be_showing (window));
 }
 
 static guint calc_showing_idle = 0;
@@ -1449,7 +1448,7 @@ idle_calc_showing (gpointer data)
 
       if (!window->placed)
         unplaced = g_slist_prepend (unplaced, window);
-      else if (window_should_be_showing (window))
+      else if (meta_window_should_be_showing (window))
         should_show = g_slist_prepend (should_show, window);
       else
         should_hide = g_slist_prepend (should_hide, window);

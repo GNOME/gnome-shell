@@ -876,10 +876,7 @@ get_windows_on_same_workspace (MetaWindow *window,
     {
       MetaWindow *w = tmp->data;
       
-      if (!w->minimized &&
-          w != window && 
-          meta_window_visible_on_workspace (w,
-                                            window->screen->active_workspace))
+      if (meta_window_should_be_showing (w) && w != window)
         {            
           windows = g_slist_prepend (windows, w);
           ++i;

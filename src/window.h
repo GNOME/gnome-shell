@@ -385,6 +385,9 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
 void        meta_window_fill_horizontal     (MetaWindow  *window);
 void        meta_window_fill_vertical       (MetaWindow  *window);
 
+/* Return whether the window should be currently mapped */
+gboolean    meta_window_should_be_showing   (MetaWindow  *window);
+
 /* This recalcs the window/frame size, and recalcs the frame
  * size/contents as well.
  */

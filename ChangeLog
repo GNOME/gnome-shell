@@ -1,5 +1,24 @@
 2004-12-19  Elijah Newren  <newren@gmail.com>
 
+	When snap-moving, don't snap to transients of minimized windows
+	since they are hidden.  Fixes #157180
+
+	* src/place.c (get_windows_on_same_workspace): make the logic to
+	determine hidden windows more thorough by calling
+	meta_window_should_be_showing()
+
+	* src/window.c (meta_window_should_be_showing): rename this
+	function from window_should_be_showing and also export it,
+	(implement_showing):
+	s/window_should_be_showing/meta_window_should_be_showing/,
+	(idle_calc_showing):
+	s/window_should_be_showing/meta_window_should_be_showing/
+
+	* src/window.h (meta_window_should_be_showing): Add this function
+	to the list so that it can be used in src/place.c
+
+2004-12-19  Elijah Newren  <newren@gmail.com>
+
 	Focus the desktop when showing it.  Fixes #159257.
 
 	* src/display.c (event_callback): obtain a timestamp to pass to
