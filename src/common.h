@@ -1,4 +1,4 @@
-/* Metacity interface used by GTK+ UI to talk to core */
+/* Metacity common types shared by core.h and ui.h */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,22 +19,23 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_CORE_H
-#define META_CORE_H
+#ifndef META_COMMON_H
+#define META_COMMON_H
 
-/* Don't include core headers here */
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-#include "frames.h"
-#include "common.h"
+/* Don't include GTK or core headers here */
+#include <X11/Xlib.h>
 
-void meta_core_get_frame_size (Display *xdisplay,
-                               Window   frame_xwindow,
-                               int     *width,
-                               int     *height);
-
-void meta_core_get_frame_flags (Display *xdisplay,
-                                Window   frame_xwindow,
-                                MetaFrameFlags flags);
+typedef enum
+{
+  META_FRAME_ALLOWS_DELETE    = 1 << 0,
+  META_FRAME_ALLOWS_MENU      = 1 << 1,
+  META_FRAME_ALLOWS_MINIMIZE  = 1 << 2,
+  META_FRAME_ALLOWS_MAXIMIZE  = 1 << 3, 
+  META_FRAME_ALLOWS_RESIZE    = 1 << 4,
+  META_FRAME_TRANSIENT        = 1 << 5,
+  META_FRAME_HAS_FOCUS        = 1 << 6,
+  META_FRAME_SHADED           = 1 << 7,
+  META_FRAME_STUCK            = 1 << 8
+} MetaFrameFlags;
 
 #endif

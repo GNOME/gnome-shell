@@ -20,4 +20,42 @@
  */
 
 #include "core.h"
+#include "display.h"
 
+void
+meta_core_get_frame_size (Display *xdisplay,
+                          Window   frame_xwindow,
+                          int     *width,
+                          int     *height)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+  if (width)
+    *width = window->frame->rect.width;
+  if (height)
+    *height = window->frame->rect.height;
+}
+
+void
+meta_core_get_frame_flags (Display *xdisplay,
+                           Window   frame_xwindow,
+                           MetaFrameFlags flags)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  return meta_frame_get_flags (window->frame);
+}

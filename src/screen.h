@@ -25,6 +25,7 @@
 #include "display.h"
 #include "theme.h"
 #include <X11/Xutil.h>
+#include "ui.h"
 
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);
@@ -37,7 +38,7 @@ struct _MetaScreen
   Screen *xscreen;
   Window xroot;
   MetaThemeEngine *engine;
-  MetaUISlave *uislave;
+  MetaUI *ui;
 
   MetaWorkspace *active_workspace;
   

@@ -29,8 +29,28 @@ typedef struct _MetaUI MetaUI;
 
 void meta_ui_init (int *argc, char ***argv);
 
-MetaUI* meta_ui_new (Display *xdisplay);
+MetaUI* meta_ui_new (Display *xdisplay,
+                     Screen  *screen);
 void    meta_ui_free (MetaUI *ui);
 
+void meta_ui_get_frame_geometry (MetaUI *ui,
+                                 Window frame_xwindow,
+                                 int *top_height, int *bottom_height,
+                                 int *left_width, int *right_width);
+void meta_ui_add_frame    (MetaUI *ui,
+                           Window  xwindow);
+void meta_ui_remove_frame (MetaUI *ui,
+                           Window  xwindow);
+
+
+void meta_ui_reset_frame_bg (MetaUI *ui,
+                             Window xwindow);
+
+void meta_ui_set_frame_flags (MetaUI *ui,
+                              Window xwindow,
+                              MetaFrameFlags flags);
+
+void meta_ui_queue_frame_draw (MetaUI *ui,
+                               Window xwindow);
 
 #endif

@@ -23,8 +23,6 @@
 #include "util.h"
 #include "errors.h"
 #include "window.h"
-#include "colors.h"
-#include "uislave.h"
 #include "frame.h"
 #include "workspace.h"
 #include "keybindings.h"
@@ -35,9 +33,6 @@
 #include <locale.h>
 #include <string.h>
 
-static void  ui_slave_func   (MetaUISlave *uislave,
-                              MetaMessage *message,
-                              gpointer     data);
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
@@ -188,10 +183,9 @@ meta_screen_new (MetaDisplay *display,
                                   screen->xroot,
                                   0,
                                   &vals);
-  
-  screen->uislave = meta_ui_slave_new (screen->screen_name,
-                                       ui_slave_func,
-                                       screen);
+
+  screen->ui = meta_ui_new (screen->display,
+                            screen->xscreen);
 
   screen->stack = meta_stack_new (screen);
 
@@ -396,37 +390,6 @@ meta_screen_for_x_screen (Screen *xscreen)
   
   return meta_display_screen_for_x_screen (display, xscreen);
 }
-
-static void
-ui_slave_func (MetaUISlave *uislave,
-               MetaMessage *message,
-               gpointer     data)
-{
-  switch (message->header.message_code)
-    {
-    case MetaMessageCheckCode:
-      meta_verbose ("Received UI slave check message version: %s host alias: %s messages version: %d\n",
-                    message->check.metacity_version,
-                    message->check.host_alias,
-                    message->check.messages_version);
-
-      if (strcmp (message->check.metacity_version, VERSION) != 0 ||
-          strcmp (message->check.host_alias, HOST_ALIAS) != 0 ||
-          message->check.messages_version != META_MESSAGES_VERSION)
-        {
-          meta_warning ("metacity-uislave has the wrong version; must use the one compiled with metacity\n");
-          meta_ui_slave_disable (uislave);
-        }
-      
-      break;
-
-    default:
-      meta_verbose ("Received unhandled message from UI slave: %d\n",
-                    message->header.message_code);
-      break;
-    }
-}
-
 
 static char*
 get_screen_name (MetaDisplay *display,

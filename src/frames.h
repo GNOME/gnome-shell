@@ -24,7 +24,25 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
-#include "messages.h"
+#include "common.h"
+
+typedef enum
+{
+  META_FRAME_CONTROL_NONE,
+  META_FRAME_CONTROL_TITLE,
+  META_FRAME_CONTROL_DELETE,
+  META_FRAME_CONTROL_MENU,
+  META_FRAME_CONTROL_MINIMIZE,
+  META_FRAME_CONTROL_MAXIMIZE,
+  META_FRAME_CONTROL_RESIZE_SE,
+  META_FRAME_CONTROL_RESIZE_S,
+  META_FRAME_CONTROL_RESIZE_SW,
+  META_FRAME_CONTROL_RESIZE_N,
+  META_FRAME_CONTROL_RESIZE_NE,
+  META_FRAME_CONTROL_RESIZE_NW,
+  META_FRAME_CONTROL_RESIZE_W,
+  META_FRAME_CONTROL_RESIZE_E
+} MetaFrameControl;
 
 /* This is one widget that manages all the window frames
  * as subwindows.
@@ -72,5 +90,20 @@ void meta_frames_unmanage_window (MetaFrames *frames,
 void meta_frames_set_title (MetaFrames *frames,
                             Window      xwindow,
                             const char *title);
+
+void meta_frames_get_geometry (MetaFrames *frames,
+                               Window xwindow,
+                               int *top_height, int *bottom_height,
+                               int *left_width, int *right_width);
+
+void meta_frames_reset_bg (MetaFrames *frames,
+                           Window      xwindow);
+
+void meta_frames_set_flags (MetaFrames *frames,
+                            Window xwindow,
+                            MetaFrameFlags flags);
+
+void meta_frames_queue_draw (MetaFrames *frames,
+                             Window      xwindow);
 
 #endif

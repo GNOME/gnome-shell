@@ -24,16 +24,14 @@
 
 #include "window.h"
 
-typedef enum
-{
-  META_FRAME_ACTION_NONE,
-  META_FRAME_ACTION_MOVING,
-  META_FRAME_ACTION_DELETING,
-  META_FRAME_ACTION_TOGGLING_MAXIMIZE,
-  META_FRAME_ACTION_RESIZING_SE
-} MetaFrameAction;
-
-typedef struct _MetaFrameActionGrab MetaFrameActionGrab;
+struct _MetaFrameGeometry
+{  
+  /* border sizes (space between frame and child) */
+  int left_width;
+  int right_width;
+  int top_height;
+  int bottom_height;
+};
 
 struct _MetaFrame
 {
@@ -47,26 +45,14 @@ struct _MetaFrame
    * frame, not the result of ConfigureNotify
    */
   MetaRectangle rect;
+
+  /* position of client, size of frame */
   int child_x;
   int child_y;
   int right_width;
   int bottom_height;
-  
-  gpointer theme_data;
-  gulong bg_pixel;
 
-  MetaFrameActionGrab *grab;
-
-  MetaFrameControl current_control;
-
-  guint tooltip_timeout;
-  
-  guint theme_acquired : 1;
   guint mapped : 1;
-
-  /* world's lamest expose compression */
-  guint edges_exposed : 1;
-  guint title_exposed : 1;
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);
@@ -75,10 +61,10 @@ void     meta_frame_queue_draw              (MetaFrame  *frame);
 gboolean meta_frame_event                   (MetaFrame  *frame,
                                              XEvent     *event);
 
-/* These three should ONLY be called from meta_window_move_resize_internal */
+MetaFrameFlags meta_frame_get_flags (MetaFrame *frame);
+
+/* These should ONLY be called from meta_window_move_resize_internal */
 void meta_frame_calc_geometry      (MetaFrame         *frame,
-                                    int                child_width,
-                                    int                child_height,
                                     MetaFrameGeometry *geomp);
 void meta_frame_sync_to_window     (MetaFrame         *frame,
                                     gboolean           need_move,

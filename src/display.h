@@ -24,7 +24,6 @@
 
 #include <glib.h>
 #include <X11/Xlib.h>
-#include <pango/pangox.h>
 #include "eventqueue.h"
 
 typedef struct _MetaDisplay   MetaDisplay;

@@ -802,8 +802,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   if (window->frame)
     meta_frame_calc_geometry (window->frame,
-                              window->rect.width,
-                              window->rect.height,
                               &fgeom);
   
   constrain_size (window, &fgeom, w, h, &w, &h);
