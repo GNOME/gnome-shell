@@ -1,5 +1,18 @@
 2005-02-06  Elijah Newren  <newren@gmail.com>
 
+	Ignore xconfigurerequest events for stacking when it should be
+	safe to do so.  Again, thanks to Crispin Flowerday for the test
+	case.  Thanks to KWin for the inspiration (and to Google for
+	indexing their source code).  Fixes the other half of #166395.
+
+	* src/window.c: (meta_window_configure_request): if the
+	active_window is from a separate application than the one getting
+	the configure request and the net_wm_user_time of the active
+	window is later than that of the window getting the configure
+	request, then ignore the request.  
+
+2005-02-06  Elijah Newren  <newren@gmail.com>
+
 	If activation requests are too old, set the demands_attention hint
 	instead of actually activating.  Thanks to Crispin Flowerday for
 	the test case and for testing the patch.  Fixes half of #166395.

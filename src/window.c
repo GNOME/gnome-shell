@@ -3820,18 +3820,44 @@ meta_window_configure_request (MetaWindow *window,
    */
   if (event->xconfigurerequest.value_mask & CWStackMode)
     {
-      switch (event->xconfigurerequest.detail)
+      MetaWindow *active_window;
+      active_window = window->display->expected_focus_window;
+      if (meta_prefs_get_disable_workarounds ())
         {
-        case Above:
-          meta_window_raise (window);
-          break;
-        case Below:
-          meta_window_lower (window);
-          break;
-        case TopIf:
-        case BottomIf:
-        case Opposite:
-          break;
+          meta_topic (META_DEBUG_STACK,
+                      "%s sent an xconfigure stacking request; this is "
+                      "broken behavior and the request is being ignored.\n",
+                      window->desc);
+        }
+      else if (active_window &&
+               !meta_window_same_application (window, active_window) &&
+               XSERVER_TIME_IS_BEFORE (window->net_wm_user_time,
+                                       active_window->net_wm_user_time))
+        {
+          meta_topic (META_DEBUG_STACK,
+                      "Ignoring xconfigure stacking request from %s (with "
+                      "user_time %lu); currently active application is %s (with "
+                      "user_time %lu).\n",
+                      window->desc,
+                      window->net_wm_user_time,
+                      active_window->desc,
+                      active_window->net_wm_user_time);
+        }
+      else
+        {
+          switch (event->xconfigurerequest.detail)
+            {
+            case Above:
+              meta_window_raise (window);
+              break;
+            case Below:
+              meta_window_lower (window);
+              break;
+            case TopIf:
+            case BottomIf:
+            case Opposite:
+              break;
+            }
         }
     }      
   
