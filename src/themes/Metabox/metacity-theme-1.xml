@@ -2,7 +2,7 @@
 <metacity_theme>
 	<info>
 		<name>Metabox</name>
-		<author>Garrett LeSage &lt;garrett@redhat.com&lt; based on Havoc Pennington &lt;hp@redhat.com&gt;'s Atlanta theme</author>
+		<author>Garrett LeSage &lt;garrett@redhat.com&gt; based on Havoc Pennington &lt;hp@redhat.com&gt;'s Atlanta theme</author>
 		<copyright>&#194; Garrett LeSage, Havoc Pennington, 2002</copyright>
 		<date>Jun 12, 2002</date>
 		<description>Looks a little like BlackBox.</description>
@@ -246,15 +246,20 @@
 	</draw_ops>
 
 	<draw_ops name="close_button">
-		<include name="bg_button_active"/>
-		<line color="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.75"
-			width="2"
+                <include name="bg_button_active"/>
+                <!-- draw longer lines and clip for 'x' with symmetrical endpoints &lt;joefefifo@yahoo.com&gt;  -->
+                <clip x="ButtonIPad" y="ButtonIPad" 
+                        width="width - ButtonIPad - 4" 
+                        height="height - ButtonIPad - 4"/>
+                <line color="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.75"
+			width="2" 
 			x1="ButtonIPad" y1="ButtonIPad"
-			x2="width - ButtonIPad - 1" y2="height - ButtonIPad - 1"/>
-		<line color="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.75"
+			x2="width - ButtonIPad" y2="height - ButtonIPad"/>
+		
+                <line color="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.75"
 			width="2"
-			x1="ButtonIPad" y1="height - ButtonIPad - 1"
-			x2="width - ButtonIPad - 1" y2="ButtonIPad"/>
+    	                x1="ButtonIPad" y1="height - ButtonIPad - 1"
+			x2="width - ButtonIPad" y2="ButtonIPad - 1"/>
 	</draw_ops>
 
 	<draw_ops name="close_button_pressed">
@@ -268,15 +273,19 @@
 	</draw_ops>
 
 	<draw_ops name="close_button_unfocused">
-		<include name="bg_button_inactive"/>
-		<line color="blend/gtk:fg[INSENSITIVE]/gtk:bg[INSENSITIVE]/0.35"
+                <include name="bg_button_inactive"/>
+                <!-- draw longer lines and clip for 'x' with symmetrical endpoints &lt;joefefifo@yahoo.com&gt; -->
+                <clip x="ButtonIPad" y="ButtonIPad" 
+                        width="width - ButtonIPad - 4" 
+                        height="height - ButtonIPad - 4"/>
+                <line color="blend/gtk:fg[INSENSITIVE]/gtk:bg[INSENSITIVE]/0.35"
 			width="2"
 			x1="ButtonIPad" y1="ButtonIPad"
-			x2="width - ButtonIPad - 1" y2="height - ButtonIPad - 1"/>
-		<line color="blend/gtk:fg[INSENSITIVE]/gtk:bg[INSENSITIVE]/0.35"
+			x2="width - ButtonIPad" y2="height - ButtonIPad"/>
+                <line color="blend/gtk:fg[INSENSITIVE]/gtk:bg[INSENSITIVE]/0.35"
 			width="2"
 			x1="ButtonIPad" y1="height - ButtonIPad - 1"
-			x2="width - ButtonIPad - 1" y2="ButtonIPad"/>
+			x2="width - ButtonIPad" y2="ButtonIPad - 1"/>
 	</draw_ops>
 
 	<draw_ops name="outer_bevel">
