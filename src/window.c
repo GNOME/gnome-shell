@@ -2109,7 +2109,7 @@ meta_window_shade (MetaWindow  *window)
                   "Re-focusing window %s after shading it\n",
                   window->desc);
       meta_window_focus (window,
-                         meta_display_get_current_time (window->display));
+                         meta_display_get_current_time_roundtrip (window->display));
       
       set_net_wm_state (window);
     }
@@ -2130,7 +2130,8 @@ meta_window_unshade (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window %s after unshading it\n",
                   window->desc);
-      meta_window_focus (window, meta_display_get_current_time (window->display));
+      meta_window_focus (window,
+                         meta_display_get_current_time_roundtrip (window->display));
 
       set_net_wm_state (window);
     }

@@ -1,5 +1,18 @@
 2005-02-08  Elijah Newren  <newren@gmail.com>
 
+	Avoid using CurrentTime when focusing, handle it better in case we
+	miss any cases.  Fixes #166732.
+
+	* src/window.c: (meta_window_shade): use
+	meta_display_get_current_time_roundtrip() to ensure we have a
+	valid timestamp, (meta_window_unshade): same
+
+	* src/display.c: (meta_display_set_input_focus_window): If
+	CurrentTime was passed, get one from the XServer in addition to
+	throwing a warning, (meta_display_focus_the_no_focus_window): same
+
+2005-02-08  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c: (meta_window_activate): If we're not passed a
 	timestamp, make sure to manually get one.  Fixes #166728.
 

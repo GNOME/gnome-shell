@@ -4660,6 +4660,7 @@ meta_display_set_input_focus_window (MetaDisplay *display,
                     "timestamp of 0 for window %s.  This shouldn't happen!\n",
                     window->desc);
       meta_print_backtrace ();
+      timestamp = meta_display_get_current_time_roundtrip (display);
     }
   else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
     return;
@@ -4684,6 +4685,7 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
       meta_warning ("meta_display_focus_the_no_focus_window called with a "
                     "timestamp of 0.  This shouldn't happen!\n");
       meta_print_backtrace ();
+      timestamp = meta_display_get_current_time_roundtrip (display);
     }
   else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
     {
