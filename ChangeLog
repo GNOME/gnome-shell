@@ -1,5 +1,10 @@
 2002-09-27  Havoc Pennington  <hp@redhat.com>
 
+	* src/themes/Makefile.am (THEMES): use AgingGorilla not Gorilla
+	(renamed on the CVS server)
+
+2002-09-27  Havoc Pennington  <hp@redhat.com>
+
         Try to handle Solaris Xinerama, all coded blind, someone 
 	on Solaris will need to debug the typos.
 	

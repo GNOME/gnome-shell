@@ -3,7 +3,7 @@ THEMES=			\
 	Bright		\
 	Crux		\
 	Esco		\
-	Gorilla		\
+	AgingGorilla	\
 	Metabox
 
 THEME_DIR=$(datadir)/themes
