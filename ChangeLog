@@ -1,3 +1,8 @@
+2003-01-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/metacity.schemas.in: assign Alt+F12 to shade window, 
+	per #102658
+
 2003-01-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (update_num_workspaces): fix off-by-one, patch from
