@@ -15,14 +15,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-08-29 11:51+0300\n"
+"POT-Creation-Date: 2005-02-11 12:46+0200\n"
+"PO-Revision-Date: 2005-02-11 12:48+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team:  <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -72,7 +71,7 @@ msgid "Failed to get hostname: %s\n"
 msgstr "Αποτυχία λήψης hostname: %s\n"
 
 # gconf/gconf-internals.c:2416
-#: src/display.c:312
+#: src/display.c:313
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Αποτυχία άνοιγματος oθόνης του Παραθυρικού Συστήματος Χ '%s'\n"
@@ -136,9 +135,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Δεν έχει ορισθεί εντολή %d.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Δεν έχει ορισθεί εντολή %d.\n"
+msgstr "Δεν έχει ορισθεί εντολή τερματικού.\n"
 
 #: src/main.c:69
 msgid ""
@@ -220,15 +218,14 @@ msgstr "Αλλαγή Με_γέθους"
 msgid "_Close"
 msgstr "_Κλείσιμο"
 
-#
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Τοποθέτηση σε _Όλους τους Χώρους Εργασίας"
+msgid "_Always on Visible Workspace"
+msgstr "_Πάντα σε ορατό χώρο εργασίας"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Μόνο σε _αυτό το Χώρο Εργασίας"
+msgid "_Only on This Workspace"
+msgstr "Μόνο σε _αυτό το χώρο εργασίας"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -246,7 +243,7 @@ msgstr "Μετακίνηση Παραθύρου στο χώρο εργασίας
 msgid "Move to Workspace _Down"
 msgstr "Μετακίνηση στο χώρο εργασίας _κάτω"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Χώρος εργασίας %d"
@@ -386,7 +383,7 @@ msgstr ""
 "Αυτά τα παράθυρα δεν υποστηρίζουν \"αποθήκευση τρέχουσας εγκατάστασης\" και "
 "θα πρέπει να επανεκκινηθούν χειρονακτικά στην επόμενη είσοδο σας."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -528,7 +525,8 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Αν true, το metacity θα δίνει στον χρήστη λιγότερη ανάδραση και λιγότερη "
 "αίσθηση \"άμεσων χειρισμών\" με την χρήση wireframes και την αποφυγή "
@@ -728,7 +726,7 @@ msgstr "Εκτέλεση μιας ορισμένης εντολής φλοιού
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Εκτέλεση ενός τερματικού"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1216,7 +1214,6 @@ msgstr ""
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1735,7 +1732,6 @@ msgstr ""
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1743,7 +1739,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ο συνδυασμός πλήκτρων που εμφανίζει το κυρίως μενού του ταμπλώ.Η διαμόρφωση "
+"Ο συνδυασμός πλήκτρων που καλεί ένα τερματικό .Η διαμόρφωση "
 "μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
@@ -1975,17 +1971,17 @@ msgstr "Λειτουργία εστίασης παραθύρου"
 msgid "Window title font"
 msgstr "Γραμματοσειρά τίτλου παραθύρου"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Το GConf key \"%s\" έχει ορισθεί σε ένα μή έγκυρο τύπο\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1994,18 +1990,18 @@ msgstr ""
 "Το \"%s\" που βρέθηκε στη βάση δεδομένων ρυθμίσεων δεν είναι μια έγκυρη τιμή "
 "για μετατροπέα κουμπιού ποντικιού\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Το GConf key '%s'  έχει ορισθεί σε μια μή έγκυρη τιμή\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GConf %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2014,7 +2010,7 @@ msgstr ""
 "Το %d που αποθηκεύτηκε στο κλειδί GConf %s δεν είναι ένας λογικός αριθμός "
 "χώρων εργασίας, το τρέχον μέγιστο είναι %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2022,19 +2018,19 @@ msgstr ""
 "Οι προσωρινές λύσεις για προβληματικές εφαρμογές έχουν απενεργοποιηθεί. "
 "Μερικές εφαρμογές μπορεί να μη συμπεριφέρονται σωστά.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "Το %d που αποθηκεύτηκε στο κλειδί GConf %s είναι εκτός του εύρους 0 έως %d\n"
 
 # gconf/gconfd.c:1561
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Σφάλμα κατά τον ορισμό αριθμού χώρων εργασίας σε  %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2044,7 +2040,7 @@ msgstr ""
 "για συνδυασμό πλήκτρων\"%s\"\n"
 
 # gconf/gconfd.c:1561
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Σφάλμα κατά τον ορισμό ονόματος χώρου εργασίας %d σε \"%s\": %s\n"
@@ -3218,7 +3214,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4955
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3234,7 +3230,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5626
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3272,6 +3268,10 @@ msgid ""
 msgstr ""
 "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μη έγκυρο UTF-8\n"
 " για το αντικείμενο %d στην λίστα\n"
+
+#
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Τοποθέτηση σε _Όλους τους Χώρους Εργασίας"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Επιλέξτε τον τρόπο που θα εστιάζετε σε παράθυρα"
