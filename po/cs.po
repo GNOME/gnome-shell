@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-02 14:09+0100\n"
-"PO-Revision-Date: 2005-02-02 21:34+0100\n"
+"POT-Creation-Date: 2005-02-06 15:13+0100\n"
+"PO-Revision-Date: 2005-02-06 17:01+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -500,15 +500,8 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages"
-msgstr ""
-"Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé "
-"manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými "
-"způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může "
-"umožnit fungování starých aplikací a terminálových serverů v situacích, kde "
-"by jindy byly nepraktické. Funkce drátových rámů je ale zakázána, když je "
-"povoleno zpřístupnění, abychom se vyhnuli divným chybám prostředí pracovní "
-"plochy"
+"accessibility is on to avoid weird desktop breakages."
+msgstr "Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může umožnit fungování starých aplikací a terminálových serverů v situacích, kde by jindy byly nepraktické. Funkce drátových rámů je ale zakázána, když je povoleno zpřístupnění, abychom se vyhnuli divným chybám prostředí pracovní plochy."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -3091,7 +3084,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4911
+#: src/window.c:4912
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3107,7 +3100,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5582
+#: src/window.c:5583
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
