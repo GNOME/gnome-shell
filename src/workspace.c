@@ -27,9 +27,12 @@
 #include <X11/Xatom.h>
 #include <string.h>
 
-void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
-
-static void set_active_space_hint      (MetaScreen *screen);
+void meta_workspace_queue_calc_showing      (MetaWorkspace *workspace);
+static void set_active_space_hint           (MetaScreen *screen);
+static void meta_workspace_focus_mru_window (MetaWorkspace *workspace,
+                                             MetaWindow    *not_this_one);
+static void meta_workspace_focus_top_window (MetaWorkspace *workspace,
+                                             MetaWindow    *not_this_one);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)

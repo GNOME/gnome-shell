@@ -77,11 +77,7 @@ void meta_workspace_get_work_area_for_xinerama  (MetaWorkspace *workspace,
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
                                                  MetaRectangle *area);
 
-void meta_workspace_focus_mru_window     (MetaWorkspace *workspace,
-                                          MetaWindow    *not_this_one);
 void meta_workspace_focus_default_window (MetaWorkspace *workspace,
-                                          MetaWindow    *not_this_one);
-void meta_workspace_focus_top_window     (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one);
 
 MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,

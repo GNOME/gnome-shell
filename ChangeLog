@@ -1,8 +1,15 @@
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
+	Prevent focus inconsistencies by only providing one focus method
+	(fixes #151990)
+
+	* 
+
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
 	Remove race condition for focus window choice on window close
 	followed by rapid mouse movement in sloppy and mouse focus modes
-	(fixes #152000)
+	(partially fixes #152000)
 
 	* src/window.c (meta_window_free): Don't increment the focus
 	sentinel for windows being freed, (idle_calc_showing): don't

@@ -2239,8 +2239,6 @@ meta_screen_show_desktop (MetaScreen *screen)
   queue_windows_showing (screen);
 
   update_showing_desktop_hint (screen);
-
-  meta_workspace_focus_top_window (screen->active_workspace, NULL);
 }
 
 void
