@@ -1,3 +1,23 @@
+2002-06-25  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/display.[ch]: (meta_display_open):
+	  src/screen.c: (set_supported_hint), (set_work_area_hint):
+	Its _NET_WORKAREA, not _NET_WM_WORKAREA silly :-)
+
+2002-06-25  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/screen.[ch]:
+	(update_num_workspaces), recalc workarea hint when
+	new workspaces created. Fixes bug that workarea
+	not calculated until first non-dock window is
+	mapped.
+	(set_work_area_hint), (set_work_area_idle_func),
+	(meta_screen_queue_workarea_recalc): move all this
+	stuff from workspace.c.
+
+	* src/workspace.c: (meta_workspace_invalidate_work_area):
+	use meta_screen_queue_workarea_recalc.
+
 2002-06-23  Gediminas Paulauskas <menesis@delfi.lt>
 
 	* src/themes/Bright/metacity-theme-1.xml: Update with border-only

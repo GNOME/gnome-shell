@@ -218,7 +218,7 @@ meta_display_open (const char *name)
     "_NET_WM_PING",
     "_NET_WM_PID",
     "WM_CLIENT_MACHINE",
-    "_NET_WM_WORKAREA",
+    "_NET_WORKAREA",
     "_NET_SHOW_DESKTOP",
     "_NET_DESKTOP_LAYOUT",
     "MANAGER",
@@ -348,7 +348,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_ping = atoms[53];
   display->atom_net_wm_pid = atoms[54];
   display->atom_wm_client_machine = atoms[55];
-  display->atom_net_wm_workarea = atoms[56];
+  display->atom_net_workarea = atoms[56];
   display->atom_net_show_desktop = atoms[57];
   display->atom_net_desktop_layout = atoms[58];
   display->atom_manager = atoms[59];

@@ -114,7 +114,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[26] = screen->display->atom_net_wm_state_fullscreen;
   atoms[27] = screen->display->atom_net_wm_ping;
   atoms[28] = screen->display->atom_net_active_window;
-  atoms[29] = screen->display->atom_net_wm_workarea;
+  atoms[29] = screen->display->atom_net_workarea;
   atoms[30] = screen->display->atom_net_show_desktop;
   atoms[31] = screen->display->atom_net_desktop_layout;
   atoms[32] = screen->display->atom_net_desktop_names;
@@ -815,6 +815,8 @@ update_num_workspaces (MetaScreen *screen)
       meta_workspace_new (screen);
       ++i;
     }
+
+  meta_screen_queue_workarea_recalc (screen);
 }
 
 static void
@@ -1250,6 +1252,75 @@ meta_create_offscreen_window (Display *xdisplay,
                         CopyFromParent,
                         CWOverrideRedirect,
                         &attrs);
+}
+
+static int
+set_work_area_hint (MetaScreen *screen)
+{
+  int num_workspaces;
+  GList *tmp_list;
+  unsigned long *data, *tmp;
+  MetaRectangle area;
+  
+  num_workspaces = meta_screen_get_n_workspaces (screen);
+  data = g_new (unsigned long, num_workspaces * 4);
+  tmp_list = screen->display->workspaces;
+  tmp = data;
+  
+  while (tmp_list != NULL)
+    {
+      MetaWorkspace *workspace = tmp_list->data;
+
+      if (workspace->screen == screen)
+        {
+          meta_workspace_get_work_area (workspace, &area);
+          tmp[0] = area.x;
+          tmp[1] = area.y;
+          tmp[2] = area.width;
+          tmp[3] = area.height;
+
+	  tmp += 4;
+        }
+      
+      tmp_list = tmp_list->next;
+    }
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+		   screen->display->atom_net_workarea,
+		   XA_CARDINAL, 32, PropModeReplace,
+		   (guchar*) data, num_workspaces*4);
+  g_free (data);
+  return meta_error_trap_pop (screen->display);
+}
+
+static gboolean
+set_work_area_idle_func (MetaScreen *screen)
+{
+  meta_topic (META_DEBUG_WORKAREA,
+              "Running work area idle function\n");
+  
+  screen->work_area_idle = 0;
+  
+  set_work_area_hint (screen);
+  
+  return FALSE;
+}
+
+void
+meta_screen_queue_workarea_recalc (MetaScreen *screen)
+{
+  /* Recompute work area in an idle */
+  if (screen->work_area_idle == 0)
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Adding work area hint idle function\n");
+      screen->work_area_idle =
+        g_idle_add_full (META_PRIORITY_WORK_AREA_HINT,
+                         (GSourceFunc) set_work_area_idle_func,
+                         screen,
+                         NULL);
+    }
 }
 
 void
