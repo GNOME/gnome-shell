@@ -60,8 +60,8 @@ METACITY FEATURES
     If you hold down Alt and click inside a window, it will move the 
      window (buttons 1 and 2) or show menu (button 3).
 
-    If you pick up a window with button 1 and then switch desktops
-     the window will come with you to the new desktop, this is 
+    If you pick up a window with button 1 and then switch workspaces
+     the window will come with you to the new workspace, this is 
      a feature copied from Enlightenment.
 
     If you hold down Shift while moving a window, the window snaps
@@ -130,6 +130,10 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Metacity turns off its keybindings for Emacs, because I use 
    Alt-space in Emacs, and getting a window menu annoys me.
+   This is a broken feature. My planned fix is to use super/hyper 
+   instead of Alt as the main keybinding shortcut, if super/hyper 
+   exist, and then keyboards with a windows key can use that for 
+   WM functions and Alt for application shortcuts.
    
  - Cycling windows with Alt-Tab is flickery, AFAIK because
    Metacity passes the entire window stack to XRestackWindows() 
@@ -139,9 +143,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Various operations, such as minimize, maximize, etc., should 
    have simple animations to make them clearer to users.
-
- - Metacity registers with the session manager, but doesn't actually 
-   remember window sizes and positions. 
 
  - I haven't even read the ICCCM section about colormaps. So if you 
    have an 8-bit display you are basically screwed.
@@ -156,7 +157,7 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
  - Window placement is always cascade for now; I want to implement 
    "first fit, falling back to cascade if no fit." 
    (Configurable placement algorithms are stupid though, don't 
-   send me patches for any bogus ones.)
+   send me patches for any bogus ones. Let's just pick a good one.)
 
  - Maximization and movement constraints do not take the 
    GNOME panel into account. Most of the code already handles
@@ -165,11 +166,20 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    Metacity needs to keep this area up-to-date using the hints the
    panel sets.
 
- - Should really support click-to-focus as an option.
+ - Should support click-to-focus as an option.
 
  - Windows has a neat way of implementing Alt-Tab for 
    window cycling that I would like to copy. (The little 
    popup window thing.)
+
+ - People seem to like shortcuts using arrow keys for moving
+   between workspaces. My only question here is that I'm not sure 
+   what the spatial relationship between workspaces is. 
+   (Are they in a grid, or a horizontal row, or what.)
+   I think we may need a window manager spec extension to 
+   share this information between the WM and the pager.
+   We could add left/right arrow and pretend they're in
+   a row for the short term though.
 
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left
@@ -230,11 +240,10 @@ A: You don't, until GConf 2 is relatively easy to compile and I feel
 
 Q: Will Metacity be part of GNOME?
 
-A: If Metacity is ever better than the other options, and the GNOME
-   Project so chooses. But Metacity may continue to suck forever 
-   because I might get tired of working on it; or Metacity's feature
-   set might not make sense for GNOME. Who knows. I'm not worrying
-   about this, and you shouldn't either.
+A: This is not the current plan, though of course I'm happy to see the
+   code used by anyone who's interested. Metacity may continue to suck
+   forever because I might get tired of working on it; or Metacity's
+   feature set might not make sense for GNOME. Who knows.
 
    For now Metacity is my toy hobby project that I work on when I feel
    like it.
@@ -244,6 +253,51 @@ Q: Why can't I move XMMS?
 A: Because XMMS is broken and is trying to move itself. Metacity 
    does not tolerate insolent windows who believe they can
    self-manage. Use Alt-button1 to move XMMS using Metacity.
+
+Q: Why does Metacity remember the workspace/position of some apps 
+   but not others?
+
+A: Metacity only stores sizes/positions for apps that are session 
+   managed. As far as I can determine, there is no way to attempt 
+   to remember workspace/position for non-session-aware apps without
+   causing a lot of weird effects.
+
+   The reason is that you don't know which non-SM-aware apps were
+   launched by the session. When you initially log in, Metacity sees a
+   bunch of new windows appear. But it can't distinguish between
+   windows that were stored in your session, or windows you just
+   launched after logging in. If Metacity tried to guess that a window
+   was from the session, it could e.g. maximize a dialog, or put a
+   window you just launched on another desktop or in a weird
+   place. And in fact I see a lot of bugs like this in window managers
+   that try to handle non-session-aware apps.
+
+   However, for session-aware apps, Metacity can tell that the
+   application instance is from the session and thus restore it
+   reliably, assuming the app properly restores the windows it had 
+   open on session save.
+   
+   So the correct way to fix the situation is to make apps
+   session-aware. libSM has come with X for years, it's very
+   standardized, it's shared by GNOME and KDE - even twm is
+   session-aware. So anyone who won't take a patch to add SM is more
+   archaic than twm - and you should flame them. ;-)
+
+   Docs on session management:
+    ftp://ftp.x.org/pub/R6.4/xc/doc/hardcopy/SM/xsmp.PS.gz
+    ftp://ftp.x.org:21/pub/R6.4/xc/doc/hardcopy/SM/SMlib.PS.gz
+
+   See also the ICCCM section on SM. For GNOME apps, use 
+   the GnomeClient object. For a simple coding example using 
+   libSM directly, twm/session.c in the twm source code is 
+   pretty easy to understand.
+
+Q: How about adding viewports in addition to workspaces?
+
+A: I could conceivably be convinced to use viewports _instead_ of
+   workspaces, though currently I'm not thinking that. But I don't
+   think it makes any sense to have both; it's just confusing. They
+   are functionally equivalent.
 
 Q: Did you spend a lot of time on this?
 
