@@ -180,7 +180,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 
       te = g_new (TabEntry, 1);
       te->key = entries[i].key;
-      te->title = utf8_strndup (entries[i].title, max_chars_per_title);
+      te->title =
+	entries[i].title 
+	? utf8_strndup (entries[i].title, max_chars_per_title)
+	: NULL;
       te->widget = NULL;
       te->icon = entries[i].icon;
       te->blank = entries[i].blank;

@@ -479,6 +479,7 @@ meta_display_open (const char *name)
   display->sentinel_counter = 0;
   
   display->grab_op = META_GRAB_OP_NONE;
+  display->grab_wireframe_active = FALSE;
   display->grab_window = NULL;
   display->grab_screen = NULL;
   display->grab_resize_popup = NULL;

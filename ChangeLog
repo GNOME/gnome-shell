@@ -1,3 +1,17 @@
+2003-12-17  Rob Adams  <readams@readams.net>
+
+	* src/display.c (meta_display_open): initialize
+	grab_wireframe_active to FALSE.  Fix for #128090.
+
+2003-12-17  Rob Adams  <readams@readams.net>
+
+	* src/tabpopup.c (meta_ui_tab_popup_new): Don't try to call
+	utf8_strndup on a null title for an entry.  Fix for #128566.
+
+	* src/workspace.c (meta_workspace_free): Call g_list_free on the
+	mru_list, since with sticky windows that MRU list could well not
+	be emtpy.  See #122016.
+
 2003-12-13  Rob Adams  <readams@readams.net>
 
 	* src/window.c (meta_window_new_with_attrs): set on_all_workspaces

@@ -85,7 +85,6 @@ meta_workspace_free (MetaWorkspace *workspace)
     }
 
   g_assert (workspace->windows == NULL);
-  g_assert (workspace->mru_list == NULL);
 
   screen = workspace->screen;
   
@@ -94,6 +93,7 @@ meta_workspace_free (MetaWorkspace *workspace)
   
   g_free (workspace->work_areas);
 
+  g_list_free (workspace->mru_list);
   g_slist_free (workspace->left_struts);
   g_slist_free (workspace->right_struts);
   g_slist_free (workspace->top_struts);
