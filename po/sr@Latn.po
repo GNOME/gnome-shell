@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-08 17:00+0100\n"
-"PO-Revision-Date: 2003-12-04 20:42+0100\n"
+"POT-Creation-Date: 2003-12-21 17:21+0100\n"
+"PO-Revision-Date: 2003-12-21 17:32+0100\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nisam uspeo da saznam ime kompjutera: %s\n"
 
-#: src/display.c:287
+#: src/display.c:291
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nisam uspeo da otvorim X Window System  ekran „%s“\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kobna greška sa izlazom/ulazom: %d (%s) na ekranu „%s“.\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "Meni prozora"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "Umanji prozor"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "Uvećaj prozor"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "Poništi uvećavanje prozora"
 
@@ -146,12 +146,12 @@ msgstr ""
 "Nikakva garancija NE postoji; čak ni garancija o podobnosti za određenu "
 "namenu.\n"
 
-#: src/main.c:439
+#: src/main.c:443
 #, c-format
 msgid "Failed to scan themes directory : %s\n"
 msgstr "Nisam uspeo da pročitam direktorijum tema: %s\n"
 
-#: src/main.c:455
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -159,76 +159,90 @@ msgstr ""
 "Nisam mogao da pronđem temu! Proverite se da %s postoji i da sadrži "
 "uobičajne teme."
 
-#: src/main.c:517
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nisam uspeo da se ponovo pokrenem: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "Umanji"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "Uvećaj"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "Poništi uvećanje"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "Zamotaj"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "Odmotaj"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "Na _vrhu"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "Pomeri"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "Promeni veličinu"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "Zatvori"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "Postavi na sve radne površine"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "Samo na ovoj radnoj površini"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "Premesti na _levi radni prostor"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "Premesti na _desni radni prostor"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "Premesti na radni prostor _iznad"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "Premesti na radni prostor is_pod"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
-msgstr "%d. površ za rad"
+msgstr "%d. radni prostor"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "1_0. radni prostor"
+
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
-msgstr "%s%d. površ za rad"
+msgstr "%s%d. radni prostor"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Samo na %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Premesti na %s"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "Premesti na drugi _radni prostor"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -237,7 +251,7 @@ msgstr "Premesti na %s"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr "Šift"
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -246,7 +260,7 @@ msgstr "Šift"
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr "Kontrol"
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -1999,12 +2013,12 @@ msgstr "Greška prilikom postavljanja imena za radnu površinu %d u „%s“: %s
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:413
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Prikaz %d na ekranu „%s“ nije ispravan\n"
 
-#: src/screen.c:408
+#: src/screen.c:429
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2013,19 +2027,19 @@ msgstr ""
 "Prikaz %d na ekranu „%s“ već ima pokrenut menadžer prozora; pokušajte da "
 "koristite --replace opciju kako biste zamenili trenutni menadžer prozora.\n"
 
-#: src/screen.c:449
+#: src/screen.c:453
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nisam mogao da dobijem izbor menadžera prozora na prikazu %d erkana „%s“\n"
 
-#: src/screen.c:504
+#: src/screen.c:511
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Prikaz %d na ekranu „%s“ već ima menadžer prozora\n"
 
-#: src/screen.c:687
+#: src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nisam mogao da ispustim prikaz %d na ekranu „%s“\n"
@@ -3155,7 +3169,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program je postavio netačan _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4653
+#: src/window.c:4689
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3171,7 +3185,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5314
+#: src/window.c:5351
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3207,6 +3221,12 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Osobina %s prozora 0x%lx sadrži neispravan UTF-8 za stavku %d u listi\n"
+
+#~ msgid "Only on %s"
+#~ msgstr "Samo na %s"
+
+#~ msgid "Move to %s"
+#~ msgstr "Premesti na %s"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
