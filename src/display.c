@@ -288,6 +288,7 @@ meta_display_open (const char *name)
   display->pending_pings = NULL;
   display->autoraise_timeout_id = 0;
   display->focus_window = NULL;
+  display->expected_focus_window = NULL;
   display->mru_list = NULL;
 
   display->showing_desktop = FALSE;

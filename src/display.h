@@ -153,6 +153,11 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
+  /* WM_TAKE_FOCUS has been sent but we have not yet 
+   * received the resulting FocusIn event for this window
+   */
+  MetaWindow *expected_focus_window;
+
   /* Most recently focused list. Always contains all
    * live windows.
    */

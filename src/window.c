@@ -812,6 +812,14 @@ meta_window_free (MetaWindow  *window)
                   window->desc);
       meta_screen_focus_top_window (window->screen, window);
     }
+  else if (window->display->expected_focus_window == window)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing top window since expected focus window freed %s\n",
+                  window->desc);
+      window->display->expected_focus_window = NULL;
+      meta_screen_focus_top_window (window->screen, window);
+    }
   else
     {
       meta_topic (META_DEBUG_FOCUS,
@@ -1632,7 +1640,7 @@ meta_window_make_fullscreen (MetaWindow  *window)
       
       window->fullscreen = TRUE;
 
-      meta_window_update_layer (window);
+      meta_stack_update_layer (window->screen->stack, window);
       meta_window_raise (window);
       
       /* save size/pos as appropriate args for move_resize */
@@ -1661,7 +1669,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       
       window->fullscreen = FALSE;
 
-      meta_window_update_layer (window);
+      meta_stack_update_layer (window->screen->stack, window);
       
       meta_window_move_resize (window,
                                TRUE,
@@ -2798,6 +2806,7 @@ meta_window_focus (MetaWindow  *window,
           meta_window_send_icccm_message (window,
                                           window->display->atom_wm_take_focus,
                                           timestamp);
+          window->display->expected_focus_window = window;
         }
       
       meta_error_trap_pop (window->display);
@@ -3580,6 +3589,9 @@ meta_window_notify_focus (MetaWindow *window,
     
   if (event->type == FocusIn)
     {
+      if (window->display->expected_focus_window == window)
+        window->display->expected_focus_window = NULL;
+
       if (window != window->display->focus_window)
         {
           meta_topic (META_DEBUG_FOCUS,
