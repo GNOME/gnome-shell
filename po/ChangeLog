@@ -1,3 +1,8 @@
+2003-02-26  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
+
+	* be.po: Added Belarusian translation
+	from Belarusian team <i18n@infonet.by>.
+
 2003-02-25  Pablo Gonzalo del Campo <pablodc@bigfoot.com>
 
 	* es.po: Fixed a translation string to match with libwnck.
