@@ -129,7 +129,7 @@
       <applyto>/apps/metacity/general/titlebar_uses_system_font</applyto>      
       <owner>metacity</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
          <short>Use standard system font in window titles</short>
          <long> 
