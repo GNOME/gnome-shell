@@ -8,7 +8,7 @@
 	* src/place.c (rect_fits_in_work_area): function
 	fit_rect_in_xinerama greatly simplified to work with new placement
 	policy.
-	(find_first_fit): implement new first first placement scheme
+	(find_first_fit): implement new first fit placement scheme
 
 	* src/screen.c (meta_screen_get_xinerama_neighbor): look for an
 	xinerama in the xinerama list that is adjacent to the specified
