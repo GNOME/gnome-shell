@@ -1,5 +1,10 @@
 2003-06-12  Rob Adams  <robadams@ucla.edu>
 
+	* src/display.c (event_callback): Focus on mouse click in
+	sloppy/mouse to fix keynav.  Fix for #115072.
+
+2003-06-12  Rob Adams  <robadams@ucla.edu>
+
 	* src/Makefile.am: honor --disable-schemas-install.  Fix for
 	#106123 from Julio Merino
 

@@ -1326,7 +1326,8 @@ event_callback (XEvent   *event,
                   else
                     {
                       meta_topic (META_DEBUG_FOCUS,
-                                  "Not raising/focusing window on click due to mouse/sloppy focus mode\n");
+                                  "Not raising window on click due to mouse/sloppy focus mode\n");
+                      meta_window_focus (window, event->xbutton.time);
                     }
                 }
               
