@@ -1,5 +1,13 @@
 2004-10-04  Elijah Newren  <newren@math.utah.edu>
 
+	* src/display.c (event_callback): When no window becomes focused,
+	focus the default window instead of punting to the
+	no_focus_window.  Also, change the warning to a verbose
+	message--this will happen frequently due to brain-damage in the X
+	protocol.  (see #125492)
+
+2004-10-04  Elijah Newren  <newren@math.utah.edu>
+
 	Fix a variety of focus race conditions in all focus modes, or at
 	least make them harder to trigger (fixes #152000)
 

@@ -1838,28 +1838,10 @@ event_callback (XEvent   *event,
           if (event->type == FocusIn &&
               event->xfocus.detail == NotifyDetailNone)
             {
-              XEvent   property_event;
+              meta_topic (META_DEBUG_FOCUS, 
+                          "Focus got set to None, probably due to brain-damage in the X protocol (see bug 125492).  Setting the default focus window.\n");
 
-              /* FIXME _() gettextify on HEAD */
-              meta_warning ("Working around an application which called XSetInputFocus (None) or with RevertToNone instead of RevertToPointerRoot, this is a minor bug in some application. If you can figure out which application causes this please report it as a bug against that application.\n");
-
-              /* Fix the problem */
-              /* Using the property XA_PRIMARY because it's safe;
-               * nothing would use it as a property. The type
-               * doesn't matter.
-               */
-              XChangeProperty (display->xdisplay,
-                               display->leader_window,
-                               XA_PRIMARY, XA_STRING, 8,
-                               PropModeAppend, NULL, 0);
-              XWindowEvent (display->xdisplay,
-                            display->leader_window,
-                            PropertyChangeMask,
-                            &property_event);
-              XSetInputFocus (display->xdisplay,
-                              display->no_focus_window,
-                              RevertToPointerRoot,
-                              property_event.xproperty.time);
+              meta_workspace_focus_default_window (screen->active_workspace, NULL, meta_display_thou_shalt_return_a_timestamp (display));
             }
         }
       break;
