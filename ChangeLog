@@ -1,3 +1,9 @@
+Fri Aug 20 12:54:12 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* src/display.c (meta_display_end_grab_op): Move wireframe code
+	before grab is released to prevent endless loops with fullscreen
+	windows.
+
 2004-08-18  Havoc Pennington  <hp@redhat.com>
 
 	* src/display.h (struct _MetaDisplay): track the last_xor_rect

@@ -3284,6 +3284,21 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->ungrab_should_not_cause_focus_window = display->grab_xwindow;
     }
   
+  if (display->grab_wireframe_active)
+    {
+      display->grab_wireframe_active = FALSE;
+      meta_effects_end_wireframe (display->grab_window->screen,
+                                  &display->grab_wireframe_last_xor_rect);
+      if (!display->grab_was_cancelled)
+        meta_window_move_resize (display->grab_window,
+                                 TRUE,
+                                 display->grab_wireframe_rect.x,
+                                 display->grab_wireframe_rect.y,
+                                 display->grab_wireframe_rect.width,
+                                 display->grab_wireframe_rect.height);
+      meta_window_calc_showing (display->grab_window);
+    }
+
   if (display->grab_have_pointer)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
@@ -3310,21 +3325,6 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->grab_sync_request_alarm = None;
     }
 #endif /* HAVE_XSYNC */
-
-  if (display->grab_wireframe_active)
-    {
-      display->grab_wireframe_active = FALSE;
-      meta_effects_end_wireframe (display->grab_window->screen,
-                                  &display->grab_wireframe_last_xor_rect);
-      if (!display->grab_was_cancelled)
-        meta_window_move_resize (display->grab_window,
-                                 TRUE,
-                                 display->grab_wireframe_rect.x,
-                                 display->grab_wireframe_rect.y,
-                                 display->grab_wireframe_rect.width,
-                                 display->grab_wireframe_rect.height);
-      meta_window_calc_showing (display->grab_window);
-    }
 
   /* repaint window in case the grab op drew it in a
    * nonstandard way such as transparent or wireframe
