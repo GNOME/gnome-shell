@@ -1,3 +1,8 @@
+2004-04-11  Rob Adams  <readams@readams.net>
+
+	* configure.in: Make the --enable-xinerama switch work properly.
+	Fix for #138562 from foser@gentoo.org.
+	
 2004-04-09  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "gu" (Gujarati) to ALL_LINGUAS.
