@@ -25,6 +25,8 @@
 #include "menu.h"
 #include "core.h"
 
+#include "inlinepixbufs.h"
+
 struct _MetaUI
 {
   Display *xdisplay;
@@ -422,21 +424,53 @@ meta_ui_pop_delay_exposes  (MetaUI *ui)
 GdkPixbuf*
 meta_ui_get_default_window_icon (MetaUI *ui)
 {
-  /* FIXME */
-  return gtk_widget_render_icon (GTK_WIDGET (ui->frames),
-                                 GTK_STOCK_NEW,
-                                 GTK_ICON_SIZE_LARGE_TOOLBAR,
-                                 NULL);
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GdkPixbuf *base;
+
+      base = gdk_pixbuf_new_from_stream (-1, default_icon_data,
+                                         FALSE,
+                                         NULL);
+
+      g_assert (base);
+
+      default_icon = gdk_pixbuf_scale_simple (base,
+                                              META_ICON_WIDTH,
+                                              META_ICON_HEIGHT,
+                                              GDK_INTERP_BILINEAR);
+
+      g_object_unref (G_OBJECT (base));
+    }
+
+  return default_icon;
 }
 
 GdkPixbuf*
 meta_ui_get_default_mini_icon (MetaUI *ui)
 {
-  /* FIXME */
-  return gtk_widget_render_icon (GTK_WIDGET (ui->frames),
-                                 GTK_STOCK_NEW,
-                                 GTK_ICON_SIZE_MENU,
-                                 NULL);
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GdkPixbuf *base;
+
+      base = gdk_pixbuf_new_from_stream (-1, default_icon_data,
+                                         FALSE,
+                                         NULL);
+
+      g_assert (base);
+
+      default_icon = gdk_pixbuf_scale_simple (base,
+                                              META_MINI_ICON_WIDTH,
+                                              META_MINI_ICON_HEIGHT,
+                                              GDK_INTERP_BILINEAR);
+
+      g_object_unref (G_OBJECT (base));
+    }
+
+  return default_icon;
 }
 
 gboolean

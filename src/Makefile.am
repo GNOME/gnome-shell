@@ -53,5 +53,13 @@ metacity_LDADD= @METACITY_LIBS@
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_DATA=metacity.desktop
 
-EXTRA_DIST=$(desktopfiles_DATA)
+IMAGES=default_icon.png
+VARIABLES=default_icon_data default_icon.png
 
+noinst_DATA = inlinepixbufs.h
+CLEANFILES += $(noinst_DATA)
+
+inlinepixbufs.h: $(IMAGES)
+	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
+
+EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES)

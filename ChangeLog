@@ -1,3 +1,13 @@
+2001-09-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/ui.c: use the inline image data for default icon
+	
+	* src/common.h (META_MINI_ICON_HEIGHT): move icon size defines
+	here
+
+	* src/Makefile.am: Create an inlinepixbufs.h header with inline
+	images
+
 2001-09-16  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (process_ice_messages): disconnect this callback
