@@ -3106,9 +3106,7 @@ find_screen_for_selection (MetaDisplay *display,
   return NULL;
 }
 
-/* from fvwm2, Copyright Dominik Vogt I assume, but it
- * was unmarked.
- */
+/* from fvwm2, Copyright Matthias Clasen, Dominik Vogt */
 static gboolean
 convert_property (MetaDisplay *display,
                   MetaScreen  *screen,
@@ -3155,9 +3153,7 @@ convert_property (MetaDisplay *display,
   return TRUE;
 }
 
-/* from fvwm2, Copyright Dominik Vogt I assume, but it
- * was unmarked.
- */
+/* from fvwm2, Copyright Matthias Clasen, Dominik Vogt */
 static void
 process_selection_request (MetaDisplay   *display,
                            XEvent        *event)
