@@ -1,4 +1,4 @@
-2003-09-20  �smund Skj�veland  <aasmunds@vladimir.skjaeve.net>
+2003-09-20  Åsmund Skjæveland  <aasmunds@fys.uio.no>
 
 	* configure.in: Added Norwegian (nynorsk) translation code to
 	ALL_LINGUAS
@@ -387,7 +387,7 @@ Wed Sep 10 15:38:09 2003  Jonathan Blandford  <jrb@redhat.com>
 	* src/tools/metacity-window-demo.c: Support partial-width struts
 	on the dock window tests for metacity testing purposes.
  
-2003-06-22  Sam�ºel J�³n Gunnarsson  <sammi@techattack.nu>
+2003-06-22  SamÃÂºel JÃÂ³n Gunnarsson  <sammi@techattack.nu>
 
 	* configure.in: Added "is" to ALL_LINGUAS
 
@@ -700,7 +700,7 @@ Fri Jun  6 19:27:53 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* configure.in: Added "cy" (Welsh) to ALL_LINGUAS.
 
-2003-05-06  Danilo Å egan  <dsegan@gmx.net>
+2003-05-06  Danilo Ã egan  <dsegan@gmx.net>
 
 	* configure.in: Added "sr" and "sr@Latn" to ALL_LINGUAS.
 
@@ -4063,7 +4063,7 @@ Thu Nov  7 17:07:21 2002  Jonathan Blandford  <jrb@redhat.com>
 	don't get focused automatically. Now how do we keep them out of
 	the task list?
 
-2002-06-04  Gustavo Gir���ldez  <gustavo.giraldez@gmx.net>
+2002-06-04  Gustavo GirÃï¿½¡ldez  <gustavo.giraldez@gmx.net>
 
 	* src/theme.c (draw_op_as_pixbuf): Use icon's instead of image's
 	fill_type when type is META_DRAW_ICON.
@@ -4409,7 +4409,7 @@ Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 2002-05-21  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): fix positioning in fullscreen
-	mode, patch from Gustavo Gir���ldez
+	mode, patch from Gustavo GirÃï¿½¡ldez
 
 2002-05-20  Alessio Frusciante  <algol@firenze.linux.it>
 
@@ -4752,7 +4752,7 @@ Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 2002-04-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): oops, fix
-	maximization. Pointed out by Gustavo Gir���ldez
+	maximization. Pointed out by Gustavo GirÃï¿½¡ldez
 
 Tue Apr 30 06:24:09 2002  Jonathan Blandford  <jrb@gnome.org>
 
@@ -6176,7 +6176,7 @@ Tue Nov 20 18:49:16 2001  Owen Taylor  <otaylor@redhat.com>
 	it to current workspace, instead of moving user to the 
 	window's workspace.
 
-2001-10-14  H���ctor Garc���a ��lvarez <hector@scouts-es.org>
+2001-10-14  HÃï¿½©ctor GarcÃï¿½­a Ãï¿½Âlvarez <hector@scouts-es.org>
 
 	* configure.in: Added "es" to ALL_LINGUAS for Spanish translation.
 
