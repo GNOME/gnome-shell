@@ -469,6 +469,9 @@ ensure_tick_windows (MetaResizePopup *popup)
   if (popup->horizontal_tick_windows != NULL ||
       popup->vertical_tick_windows != NULL)
     return;    
+
+  /* FIXME the current implementation sucks too much to enable. */
+  return;
   
   max_x = gdk_screen_width ();
   max_y = gdk_screen_height ();

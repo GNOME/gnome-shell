@@ -1,5 +1,11 @@
 2002-03-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/resizepopup.c (ensure_tick_windows): turn off the tick
+	marks, that got annoying after about 5 minutes. One big shape 
+	window instead of lots of little windows might fix it.
+
+2002-03-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/resizepopup.c: Add some total crackrock resize-grid 
 	indication for windows that have width_inc/height_inc
 	so I can debug gnome-terminal sizing.
