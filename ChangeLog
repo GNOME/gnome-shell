@@ -1,5 +1,10 @@
 2002-06-07  Havoc Pennington  <hp@redhat.com>
 
+	* src/screen.c (meta_screen_new): use XineramaIsActive() not
+	XineramaQueryExtension()
+
+2002-06-07  Havoc Pennington  <hp@redhat.com>
+
 	* src/screen.c (meta_screen_get_current_xinerama): don't return
 	null on non-multihead
 

@@ -168,8 +168,6 @@ meta_screen_new (MetaDisplay *display,
   Window xroot;
   Display *xdisplay;
   XWindowAttributes attr;
-
-  int xinerama_event_base, xinerama_error_base;
   
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -239,9 +237,7 @@ meta_screen_new (MetaDisplay *display,
   screen->last_xinerama_index = 0;
   
 #ifdef HAVE_XINERAMA
-  if (XineramaQueryExtension (display->xdisplay,
-                              &xinerama_event_base,
-                              &xinerama_error_base))
+  if (XineramaIsActive (display->xdisplay))
     {
       XineramaScreenInfo *infos;
       int n_infos;
@@ -285,7 +281,7 @@ meta_screen_new (MetaDisplay *display,
   else
     {
       meta_topic (META_DEBUG_XINERAMA,
-                  "No Xinerama extension on display %s\n",
+                  "No Xinerama extension or Xinerama inactive on display %s\n",
                   display->name);
     }
 #else
