@@ -1,3 +1,20 @@
+2002-03-06  Havoc Pennington  <hp@redhat.com>
+
+	* src/frames.c (meta_frames_manage_window): use hash_table_replace
+	instead of g_hash_table_insert
+
+	* src/main.c (main): only enable verbose/debug if you set
+	METACITY_VERBOSE/METACITY_DEBUG
+
+	* src/util.c (ensure_logfile): only use a log file if
+	METACITY_USE_LOGFILE is set
+
+	* src/display.c (meta_display_for_x_display): add warning if
+	MetaDisplay isn't found
+
+	* src/window.c (meta_window_free): add an assertion that we
+	successfully cleared the grab window
+
 2002-03-05  Havoc Pennington  <hp@pobox.com>
 
         Work on opaque animations more, still suck too much 

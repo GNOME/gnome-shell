@@ -651,6 +651,9 @@ meta_display_for_x_display (Display *xdisplay)
       tmp = tmp->next;
     }
 
+  meta_warning ("Could not find display for X display %p, probably going to crash\n",
+                xdisplay);
+  
   return NULL;
 }
 

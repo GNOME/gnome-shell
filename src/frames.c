@@ -340,9 +340,9 @@ meta_frames_ensure_layout (MetaFrames  *frames,
             meta_pango_font_desc_get_text_height (font_desc,
                                                   gtk_widget_get_pango_context (widget));
 
-          g_hash_table_insert (frames->text_heights,
-                               &size,
-                               GINT_TO_POINTER (frame->text_height));
+          g_hash_table_replace (frames->text_heights,
+                                &size,
+                                GINT_TO_POINTER (frame->text_height));
         }
 
       if (pango_font_description_get_size (font_desc) !=
@@ -434,7 +434,7 @@ meta_frames_manage_window (MetaFrames *frames,
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
   
-  g_hash_table_insert (frames->frames, &frame->xwindow, frame);
+  g_hash_table_replace (frames->frames, &frame->xwindow, frame);
 }
 
 void

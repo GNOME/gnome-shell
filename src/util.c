@@ -37,7 +37,7 @@ static FILE* logfile = NULL;
 static void
 ensure_logfile (void)
 {
-  if (logfile == NULL)
+  if (logfile == NULL && g_getenv ("METACITY_USE_LOGFILE"))
     {
       char *filename = NULL;
       char *tmpl;

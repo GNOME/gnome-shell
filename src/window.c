@@ -736,6 +736,8 @@ meta_window_free (MetaWindow  *window)
   if (window->display->grab_window == window)
     meta_display_end_grab_op (window->display,
                               meta_display_get_current_time (window->display));
+
+  g_assert (window->display->grab_window != window);
   
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
