@@ -1270,7 +1270,7 @@ event_callback (XEvent   *event,
       
       if (display->grab_op != META_GRAB_OP_NONE &&
           display->grab_window != NULL &&
-          event->xany.serial > display->grab_start_serial &&
+          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (display->grab_window, event);
     }
@@ -1337,7 +1337,7 @@ event_callback (XEvent   *event,
       if ((window &&
            grab_op_is_mouse (display->grab_op) &&
            display->grab_button != (int) event->xbutton.button &&
-           event->xany.serial > display->grab_start_serial &&
+           event->xany.serial >= display->grab_start_serial &&
            display->grab_window == window) ||
           grab_op_is_keyboard (display->grab_op))
         {
@@ -1498,19 +1498,19 @@ event_callback (XEvent   *event,
       break;
     case ButtonRelease:
       if (display->grab_window == window &&
-          event->xany.serial > display->grab_start_serial &&
+          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case MotionNotify:
       if (display->grab_window == window &&
-          event->xany.serial > display->grab_start_serial &&
+          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
       if (display->grab_window == window &&
-          event->xany.serial > display->grab_start_serial &&
+          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       /* do this even if window->has_focus to avoid races */
@@ -1574,7 +1574,7 @@ event_callback (XEvent   *event,
       break;
     case LeaveNotify:
       if (display->grab_window == window &&
-          event->xany.serial > display->grab_start_serial &&
+          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       else if (window != NULL)
