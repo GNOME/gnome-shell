@@ -1,5 +1,10 @@
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
+	* src/display.c (event_callback): Remove some redundant code
+	regarding focusing the default window (#152117)
+
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
 	Patch from Ken Harris in #135786 to focus a new default window
 	when lowering via middle-click on the frame.
 
