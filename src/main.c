@@ -73,6 +73,11 @@ main (int argc, char **argv)
   gboolean disable_sm;
   const char *prev_arg;
   const char *save_file;
+
+  g_set_prgname (argv[0]);
+  
+  if (setlocale (LC_ALL, "") == NULL)
+    meta_warning ("Locale not understood by C library, internationalization will not work\n");
   
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -84,19 +89,24 @@ main (int argc, char **argv)
   if (sigaction (SIGXFSZ,  &act, 0) < 0)
     g_printerr ("Failed to register SIGXFSZ handler: %s\n", strerror (errno));
 #endif
-  
-  g_set_prgname (argv[0]);
-
-  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
 
   if (g_getenv ("METACITY_VERBOSE"))
     meta_set_verbose (TRUE);
   if (g_getenv ("METACITY_DEBUG"))
     meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
+  
+  {
+    const char *charset;
+    g_get_charset (&charset);
+    meta_verbose ("Running in locale \"%s\" with encoding \"%s\"\n",
+                  setlocale (LC_ALL, NULL), charset);
+  }
 
+  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+  
   /* Parse options lamely */
 
   display_name = NULL;

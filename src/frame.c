@@ -64,7 +64,10 @@ meta_window_ensure_frame (MetaWindow *window)
                 XVisualIDFromVisual (window->screen->default_xvisual) ?
                 "is" : "is not",
                 window->depth, window->screen->default_depth);
-
+  meta_verbose ("Frame geometry %d,%d  %dx%d\n",
+                frame->rect.x, frame->rect.y,
+                frame->rect.width, frame->rect.height);
+  
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
    * e.g. DRI games can't be children of a parent that has the same

@@ -386,6 +386,11 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
 
           if (w->has_struts)
             {
+              meta_topic (META_DEBUG_WORKAREA,
+                          "Merging win %s with %d %d %d %d with %d %d %d %d\n",
+                          w->desc,
+                          w->left_strut, w->right_strut, w->top_strut, w->bottom_strut,
+                          left_strut, right_strut, top_strut, bottom_strut);
               left_strut = MAX (left_strut, w->left_strut);
               right_strut = MAX (right_strut, w->right_strut);
               top_strut = MAX (top_strut, w->top_strut);
@@ -402,12 +407,18 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
       
       if ((left_strut + right_strut) > (workspace->screen->width - MIN_SANE_AREA))
         {
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Making left/right struts %d %d sane\n",
+                      left_strut, right_strut);
           left_strut = (workspace->screen->width - MIN_SANE_AREA) / 2;
           right_strut = left_strut;
         }
 
       if ((top_strut + bottom_strut) > (workspace->screen->height - MIN_SANE_AREA))
         {
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Making top/bottom struts %d %d sane\n",
+                      top_strut, bottom_strut);
           top_strut = (workspace->screen->height - MIN_SANE_AREA) / 2;
           bottom_strut = top_strut;
         }
