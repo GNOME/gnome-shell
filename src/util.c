@@ -64,6 +64,8 @@ static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
 static int no_prefix = 0;
+
+#ifdef WITH_VERBOSE_MODE
 static FILE* logfile = NULL;
 
 static void
@@ -110,6 +112,7 @@ ensure_logfile (void)
       g_free (filename);
     }
 }
+#endif
 
 gboolean
 meta_is_verbose (void)

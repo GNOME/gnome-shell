@@ -1,5 +1,17 @@
 2002-12-08  Havoc Pennington  <hp@pobox.com>
 
+	* README: updates
+
+	* src/window.c (MAX_RESIZES_PER_SECOND): change to 20 instead of
+	30, just as an experiment.
+	(MOVE_THRESHOLD): change 15 to 20
+	(RESIZE_THRESHOLD): change 15 to 20
+
+	* src/util.c (ensure_logfile): kill this function when verbose
+	mode is disabled.
+
+2002-12-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_fill_vertical) 
 	(meta_window_fill_horizontal): new functions to resize to 
 	fill screen

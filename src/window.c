@@ -6117,15 +6117,22 @@ check_moveresize_frequency (MetaWindow *window)
       (current_time.tv_usec - window->display->grab_last_moveresize_time.tv_usec))) / 1000.0;
 
 #define EPSILON (1e-6)
-#define MAX_RESIZES_PER_SECOND 30.0
+#define MAX_RESIZES_PER_SECOND 20.0
   if (elapsed >= 0.0 && elapsed < (1000.0 / MAX_RESIZES_PER_SECOND))
-    return FALSE;
+    {
+      meta_verbose ("Delaying move/resize as only %g of %g seconds elapsed\n",
+                    elapsed / 1000.0, 1.0 / MAX_RESIZES_PER_SECOND);
+      return FALSE;
+    }
   else if (elapsed < (0.0 - EPSILON)) /* handle clock getting set backward */
     clear_moveresize_time (window);
   
   /* store latest time */
   window->display->grab_last_moveresize_time = current_time;
 
+  meta_verbose ("Doing move/resize as %g of %g seconds elapsed\n",
+                elapsed / 1000.0, 1.0 / MAX_RESIZES_PER_SECOND);
+  
   return TRUE;
 }
 
@@ -6154,7 +6161,7 @@ update_move (MetaWindow  *window,
   /* Force a move regardless of time if a certain delta is exceeded,
    * so we don't get too out of sync with reality when dropping frames
    */
-#define MOVE_THRESHOLD 15
+#define MOVE_THRESHOLD 20
   if (!check_moveresize_frequency (window) &&
       ABS (dx) < MOVE_THRESHOLD && ABS (dy) < MOVE_THRESHOLD)
     return;
@@ -6226,7 +6233,7 @@ update_resize (MetaWindow *window,
   /* Force a move regardless of time if a certain delta
    * is exceeded
    */
-#define RESIZE_THRESHOLD 15
+#define RESIZE_THRESHOLD 20
   if (!check_moveresize_frequency (window) &&
       ABS (dx) < RESIZE_THRESHOLD && ABS (dy) < RESIZE_THRESHOLD)
     return;
