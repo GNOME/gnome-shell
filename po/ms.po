@@ -1,0 +1,1543 @@
+# terjemahan Metacity untuk Bahasa Melayu.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# 1. Hasbullah Bin Pit <sebol@ikhlas.com>, 2002.
+# 2. ??
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Metacity 2.3.x\n"
+"POT-Creation-Date: 2002-01-23 04:46+0800\n"
+"PO-Revision-Date: 2001-12-31 02:53+0800\n"
+"Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+"Language-Team: Projek Gabai (Bahasa Melayu) <gabai-penyumbang@lists."
+"sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:158
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Gagal membuka paparan %s Sistem X Window\n"
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"Hilang sambungan ke paparan '%s';\n"
+"agaknya pelayan X telah dimatikan atau anda telah membunuh\n"
+"pengurus tetingkap.\n"
+
+#: src/errors.c:100
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Ralat IO fatal %d (%s) pada paparan '%s'.\n"
+
+#: src/frames.c:175
+msgid "Left edge"
+msgstr "Pinggir Kiri"
+
+#: src/frames.c:175
+msgid "Left window edge width"
+msgstr "Lebar pinggir tetingkap kiri"
+
+#: src/frames.c:176
+msgid "Right edge"
+msgstr "Pinggir Kanan"
+
+#: src/frames.c:176
+msgid "Right window edge width"
+msgstr "Lebar pinggir tetingkap kanan"
+
+#: src/frames.c:177
+msgid "Bottom edge"
+msgstr "Pinggir bawah"
+
+#: src/frames.c:177
+msgid "Bottom window edge height"
+msgstr "Tinggi pinggir tetingkap bawah"
+
+#: src/frames.c:179
+msgid "Title border"
+msgstr "Sempadan tajuk"
+
+#: src/frames.c:179
+msgid "Border around title area"
+msgstr "Sempadan sekeliling kawasan tajuk"
+
+#: src/frames.c:180
+msgid "Text border"
+msgstr "Sempadan teks"
+
+#: src/frames.c:180
+msgid "Border around window title text"
+msgstr "Sempadan sekeliling teks tajuk tetingkap"
+
+#: src/frames.c:182
+msgid "Spacer padding"
+msgstr "Padding ruangjarak"
+
+#: src/frames.c:182
+msgid "Padding on either side of spacer"
+msgstr "Padding pada kedua-dua belah ruangjarak"
+
+#: src/frames.c:183
+msgid "Spacer width"
+msgstr "Lebar ruangjarak"
+
+#: src/frames.c:183
+msgid "Width of spacer"
+msgstr "Lebar bagi ruangjarak"
+
+#: src/frames.c:184
+msgid "Spacer height"
+msgstr "Tinggi Ruangjarak"
+
+#: src/frames.c:184
+msgid "Height of spacer"
+msgstr "Tinggi bagi ruangjarak"
+
+#. same as right_width left_width by default
+#: src/frames.c:187
+msgid "Right inset"
+msgstr "Inset kanan"
+
+#: src/frames.c:187
+msgid "Distance of buttons from right edge of frame"
+msgstr "Jarak dari butang ke pinggir kanan bingkai"
+
+#: src/frames.c:188
+msgid "Left inset"
+msgstr "Inset kiri"
+
+#: src/frames.c:188
+msgid "Distance of menu button from left edge of frame"
+msgstr "Jarak dari butang menu ke pinggir kiri bingkai"
+
+#: src/frames.c:190
+msgid "Button width"
+msgstr "Lebar butang"
+
+#: src/frames.c:190
+msgid "Width of buttons"
+msgstr "Lebar bagi butang"
+
+#: src/frames.c:191
+msgid "Button height"
+msgstr "Tinggi butang"
+
+#: src/frames.c:191
+msgid "Height of buttons"
+msgstr "Tinggi bagi butang"
+
+#: src/frames.c:193
+msgid "Button border"
+msgstr "Sempadan butang"
+
+#: src/frames.c:193
+msgid "Border around buttons"
+msgstr "Sempadan sekeliling butang"
+
+#: src/frames.c:194
+msgid "Inner button border"
+msgstr "Sempadan dalaman butang"
+
+#: src/frames.c:194
+msgid "Border around the icon inside buttons"
+msgstr "Sempadan sekeliling ikon di dalam butang"
+
+#: src/frames.c:658
+msgid "Close Window"
+msgstr "Tutup Tetingkap"
+
+#: src/frames.c:661
+msgid "Window Menu"
+msgstr "Menu Tetingkap"
+
+#: src/frames.c:664
+msgid "Minimize Window"
+msgstr "Miniatur Tetingkap"
+
+#: src/frames.c:667
+msgid "Maximize Window"
+msgstr "Maksima tetingkap"
+
+#: src/frames.c:670
+msgid "Unmaximize Window"
+msgstr "Nyah Maksima Tetingkap"
+
+# modifier=? binding=?
+#: src/keybindings.c:228
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Terdaoat program lain yang sudah menggunakan kekukci %s dengan modifier %x "
+"sebagai binding\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Gagal mengulanghidupkan: %s\n"
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr "_Tutup"
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr "_Miniatur"
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr "Ma_ksima"
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr "_Nyah maksima"
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr "_Suram"
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr "_NyahSuram"
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr "Ge_rak"
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr "_Ubahsaiz"
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr "Letak pada Semu_a Ruangkerja"
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr "_Ikon pada Ruangkerja ini"
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "Hanya pada ruangkerja %s%d"
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "Pindah ke  ruangkerja %s%d"
+
+#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "Kekunci GConf \"%s\" ditetapkan kepada jenis yang tidak sah\n"
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "Kekunci GConf \"%s\" ditetapkan kepada nilai yang tidak sah"
+
+#: src/prefs.c:399
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Tak dapat menghantar huraian font \"%s\" daripada kekunci GConf %s\n"
+
+#: src/prefs.c:436
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr "%d yang disimpan pada kekunci GConf adalah saiz font tidak sah\n"
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d yang disimpan pada kekunci GConf adalah bilangan ruang kerja yang tak "
+"munasabah, maksima semasa ialah %d\n"
+
+#: src/screen.c:174
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Skrin %d pada paparan '%s' adalah tidak sah\n"
+
+#: src/screen.c:190
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr "Skrin %d pada paparan '%s' sudah mempunyai pengurus tetingkap\n"
+
+#: src/screen.c:268
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "Tak dapat melepaskan skrin %d pada paparan '%s'\n"
+
+#: src/session.c:760 src/session.c:767
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Tak dapat mencipta direktori %s: %s\n"
+
+#: src/session.c:777
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "tak dapat membuka fail sessi '%s' untuk ditulis: %s\n"
+
+#: src/session.c:909
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Ralat ketika menulis fail sessi '%s': %s\n"
+
+#: src/session.c:914
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Ralat menutup fail sessi '%s': %s\n"
+
+#: src/session.c:988
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Gagal dapat baca fail sessi yang disimpan %s: %s\n"
+
+#: src/session.c:1022
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Gagal menghantar fail sessi yang disimpan: %s\n"
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr "tag <window> bersarang"
+
+#: src/session.c:1110 src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Atirbut tidak dikenali pada unsur <window>"
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Atirbut tidak dikenali pada unsur <geometry>"
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr "Unsur yang tidak dikenali %s"
+
+#. someone is on crack
+#: src/window.c:3411
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+"Tetingkap %s menetapkan lebar max %d kurang daripasa lebar min, mematikan "
+"ubahsaiz\n"
+
+#. another cracksmoker
+#: src/window.c:3421
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
+"Tetingkap %s menetapkan tinggi max %d kurang daripasa tinggi min, mematikan "
+"ubahsaiz\n"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"Tetingkap 0x%lx mempunyai ciri-ciri %s yang dijangka mempunyai jenis %s "
+"format %d dan sebenarnya mempunyai jenis %s format %s n_items %d\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Ciri-ciri %s pada tetingkap 0x%lx mengandungi  UTF-8 yang tidak sah\n"
+
+#~ msgid "Error"
+#~ msgstr "Ralat"
+
+#~ msgid "Could not open specified icon file"
+#~ msgstr "Tak dapat membuka fail ikon yang dinyatakan"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid ""
+#~ " will be forcibly closed.\n"
+#~ "Any unsaved changes will be lost.\n"
+#~ "Please confirm."
+#~ msgstr ""
+#~ " akan ditutup secara paksa.\n"
+#~ "Sebarang perubahan yang tidak disimpan akan hilang.\n"
+#~ "Sila pastikan."
+
+#~ msgid "Kill Application"
+#~ msgstr "Bunuh Aplikasi"
+
+#~ msgid "Yes"
+#~ msgstr "Ya"
+
+#~ msgid "No"
+#~ msgstr "Tidak"
+
+#~ msgid "Unhide Here"
+#~ msgstr "Nyahsorok di sini"
+
+#~ msgid "Hide"
+#~ msgstr "Sorok"
+
+#~ msgid "Set Icon..."
+#~ msgstr "Tetapkan Ikon..."
+
+#~ msgid "Kill"
+#~ msgstr "Bunuh"
+
+#~ msgid "Unhide"
+#~ msgstr "Nyahsorok"
+
+#~ msgid "recreating missing icon '%s'"
+#~ msgstr "Mencipta semula ikon hilang '%s'"
+
+#~ msgid "Domain %s (%s) of global defaults database is corrupted!"
+#~ msgstr "Domain %s (%s) pangkalan data default global telah rosak!"
+
+#~ msgid "could not load domain %s from global defaults database"
+#~ msgstr "Tak dapat memuatkan domain %s daripada pangkalan data defaul global"
+
+#~ msgid "could not read domain \"%s\" from defaults database"
+#~ msgstr "tak dapat membaca domain \"%s\" daripada pangakalandata default"
+
+#~ msgid "Domain %s (%s) of defaults database is corrupted!"
+#~ msgstr "Domain %s (%s) pangkalan data telah rosak!"
+
+#~ msgid "could not load domain %s from user defaults database"
+#~ msgstr "Tak dapat memuatkan domain %s daripada pangkalan data default"
+
+#~ msgid "could not load domain %s from global defaults database (%s)"
+#~ msgstr ""
+#~ "tak dapat memuatkan domain %s drpd pangkalan data default global(%s)"
+
+#~ msgid "could not load logo image for panels: %s"
+#~ msgstr "tak dapat memuatkan imej logo panels:%s"
+
+#~ msgid "Wrong option format for key \"%s\". Should be %s."
+#~ msgstr "Format opsyen salah untuk kekunci \"%s\". Sepatutnya %s."
+
+#~ msgid "using default \"%s\" instead"
+#~ msgstr "mengguna \"%s\" default sebaliknya"
+
+#~ msgid "wrong option value for key \"%s\". Should be one of %s"
+#~ msgstr ""
+#~ "Nilai opsyen salah untuk kekunci \"%s\". Sepatutnya salah satu drpd %s"
+
+#~ msgid "can't convert \"%s\" to boolean for key \"%s\""
+#~ msgstr "Tak dapat menukar \"%s\" ke boolean untuk kekunci \"%s\""
+
+#~ msgid "can't convert \"%s\" to integer for key \"%s\""
+#~ msgstr "Tak dapat menukar \"%s\" ke integer untuk kekunci \"%s\""
+
+#~ msgid "Incorrect number of elements in array for key \"%s\"."
+#~ msgstr "Bilangan unsur yang salah dalam jujukan untuk kekunci \"%s\"."
+
+#~ msgid "Wrong value for key \"%s\". Should be Coordinate."
+#~ msgstr "Nilai salah untuk kekunci \"%s\". Sepatutnya Koordinat"
+
+#~ msgid "can't convert array to integers for \"%s\"."
+#~ msgstr "tak dapat menukar array ke intiger untuk  \"%s\"."
+
+#~ msgid "\"%s\" is not a valid color name"
+#~ msgstr "\"%s\" adalah nama warna yang tidak sah"
+
+#~ msgid "bad number of arguments in gradient specification"
+#~ msgstr "nombor hujah yang salah pada spesifikasi gradient"
+
+#~ msgid "too few arguments in multicolor gradient specification"
+#~ msgstr "terlalu sedikit hujah pada spesifikasi hujah perlbagaiwarna"
+
+#~ msgid "bad number of arguments in textured gradient specification"
+#~ msgstr "bilangan hujah salah pada spesifikasi gradient tertekstur"
+
+#~ msgid "bad opacity value for tgradient texture \"%s\". Should be [0..255]"
+#~ msgstr ""
+#~ "nilai opacity salah untuk tekstur gradient \"%s\". sepatutnya [0..255]"
+
+#~ msgid "could not initialize library %s"
+#~ msgstr "tak dapat memulakan pustaka %s"
+
+#~ msgid "could not find function %s::%s"
+#~ msgstr "tak menjumpai fungsi %s::%s"
+
+#~ msgid "invalid texture type %s"
+#~ msgstr "jenis tekstur tak sah %s"
+
+#~ msgid "Error in texture specification for key \"%s\""
+#~ msgstr "Ralat pada spesifikasi tekstur untuk kekunci \"%s\""
+
+#~ msgid "Wrong type for workspace background. Should be a texture type."
+#~ msgstr "Jenis yang salah bagi latar ruang kerja. Sepatutnya jenis tekstur"
+
+#~ msgid "Wrong type for background of workspace %i. Should be a texture."
+#~ msgstr "Jenis yang salah bagi latar ruangkerja %i. Sepatutnya tekstur."
+
+#~ msgid "could not load any usable font!!!"
+#~ msgstr "tak dapat memuatkan font yang boleh digunakan"
+
+#~ msgid "could not get color for key \"%s\""
+#~ msgstr "tak boleh mendapatkan warna untuk kekunci \"%s\""
+
+#~ msgid "%s:invalid key modifier \"%s\""
+#~ msgstr "%s:kekunci modifier tak sah \"%s\""
+
+#~ msgid "%s:invalid kbd shortcut specification \"%s\""
+#~ msgstr "%s:spesifikasi pintasan kbd tidak sah  \"%s\""
+
+#~ msgid "%s:invalid key in shortcut \"%s\""
+#~ msgstr "%s: kekunci tidak sah pasa pintasan \"%s\""
+
+#~ msgid "could not load image in option %s: %s"
+#~ msgstr "tak dapat memuatkan imej pada opsyen  %s: %s"
+
+#~ msgid "\"%s\" is not a valid bitmap file"
+#~ msgstr "\"%s\" adalah fail bitmap yang tidak sah"
+
+#~ msgid "out of memory reading bitmap file \"%s\""
+#~ msgstr "kehausan memori ketika membaca fail bitmap \"%s\""
+
+#~ msgid "bad number of arguments in cursor specification"
+#~ msgstr "bilangan hujah salah pada spesifikasi kursor"
+
+#~ msgid "unknown builtin cursor name \"%s\""
+#~ msgstr "nama kursor dalaman tidak diketahui  \"%s\""
+
+#~ msgid "could not find cursor bitmap file \"%s\""
+#~ msgstr "tak menjumpai fail bitmap kursor \"%s\""
+
+#~ msgid "Error in cursor specification for key \"%s\""
+#~ msgstr "Ralat pada spesifikasi kursor bagi kekunci \"%s\""
+
+#~ msgid "could not render texture for icon background"
+#~ msgstr "tak dapat render tekstur untuk latar ikon"
+
+#~ msgid "Cancel"
+#~ msgstr "Batal"
+
+#~ msgid "Could not open directory "
+#~ msgstr "Tak dapat membuka direktori"
+
+#~ msgid "Could not load image file "
+#~ msgstr "Tak dapat memuatkan fail imej"
+
+#~ msgid "Directories"
+#~ msgstr "Direktori"
+
+#~ msgid "Icons"
+#~ msgstr "Ikon"
+
+#~ msgid "Preview"
+#~ msgstr "Pralihat"
+
+#~ msgid "File Name:"
+#~ msgstr "Nama Fail:"
+
+#~ msgid "Choose File"
+#~ msgstr "Pilih Fail"
+
+#~ msgid "Icon Chooser"
+#~ msgstr "Pemilih Ikon"
+
+#~ msgid "Version %s"
+#~ msgstr "Versi %s"
+
+#~ msgid "Window Manager for X"
+#~ msgstr "Pengurus Tetingkap untuk X"
+
+#~ msgid "Using visual 0x%x: %s %ibpp "
+#~ msgstr "Menggunakan visual 0x%x: %s %ibpp"
+
+#~ msgid "(32 thousand colors)\n"
+#~ msgstr "(32 ribu warna)\n"
+
+#~ msgid "(64 thousand colors)\n"
+#~ msgstr "(64 ribu warna)\n"
+
+#~ msgid "(16 million colors)\n"
+#~ msgstr "(16 juta warna)\n"
+
+#~ msgid "(%d colors)\n"
+#~ msgstr "(%d warna)\n"
+
+#~ msgid "Total allocated memory: %i kB. Total memory in use: %i kB.\n"
+#~ msgstr ""
+#~ "Jumlam memori diperuntukkan: %i kB. Jumlah memori digunakan: %i kB.\n"
+
+#~ msgid "Supported image formats: "
+#~ msgstr "Format imej yang disokong: "
+
+#~ msgid ""
+#~ "\n"
+#~ "Additional support for: "
+#~ msgstr ""
+#~ "\n"
+#~ "Sokongan tambahan untuk: "
+
+#~ msgid " and "
+#~ msgstr " dan "
+
+#~ msgid ""
+#~ "\n"
+#~ "Sound disabled"
+#~ msgstr ""
+#~ "\n"
+#~ "Bunyi dimatikan"
+
+#~ msgid ""
+#~ "\n"
+#~ "Sound enabled"
+#~ msgstr ""
+#~ "\n"
+#~ "Bunyi dihidupkan"
+
+#~ msgid "Info"
+#~ msgstr "Maklumat"
+
+#~ msgid "Merry Christmas!"
+#~ msgstr "Selamat Hari Natal!"
+
+#~ msgid "Legal"
+#~ msgstr "Perundangan"
+
+#~ msgid "cannot open connection for crashing dialog panel. Aborting."
+#~ msgstr ""
+#~ "Tak dapat membuka sambungan untuk panel dialog terjahaman. Diabaikan."
+
+#~ msgid "Fatal error"
+#~ msgstr "Ralat Fatal"
+
+#~ msgid ""
+#~ "Window Maker received signal %i\n"
+#~ "(%s)."
+#~ msgstr ""
+#~ "Window Maker menerima isyarat %i\n"
+#~ "(%s)."
+
+#~ msgid "Window Maker received signal %i."
+#~ msgstr "Window Maker menerima isyarat %i."
+
+#~ msgid ""
+#~ " This fatal error occured probably due to a bug. Please fill the included "
+#~ "BUGFORM and report it to bugs@windowmaker.org."
+#~ msgstr ""
+#~ " Ralat fatal ini berlaku kemungkinan disebabkan pepijat. Sila ini BUGFORM "
+#~ "yang disertakan dan laporkan ke bugs@windowmaker.org."
+
+#~ msgid "What do you want to do now?"
+#~ msgstr "Apa yang anda ingin lakukan sekarang?"
+
+#~ msgid "Select action"
+#~ msgstr "Pilih aksi"
+
+#~ msgid "Abort and leave a core file"
+#~ msgstr "Abai dan tinggalkan fail core"
+
+#~ msgid "Restart Window Maker"
+#~ msgstr "Ulanghidupkan Window Maker"
+
+#~ msgid "Start alternate window manager"
+#~ msgstr "Hidupkan pengurus tetingkap lain"
+
+#~ msgid "About GNUstep"
+#~ msgstr "Perihal GNUstep"
+
+#~ msgid "Type the name for workspace %i:"
+#~ msgstr "Taip nama ruangkerja %i:"
+
+#~ msgid "Rename Workspace"
+#~ msgstr "Tukarnama Ruangkerja"
+
+#~ msgid "Warning"
+#~ msgstr "Amaran"
+
+#~ msgid ""
+#~ "Some icons cannot be made omnipresent. Please make sure that no other "
+#~ "icon is docked in the same positions on the other workspaces and the Clip "
+#~ "is not full in some workspace."
+#~ msgstr ""
+#~ "Terdapat ikon tak dapat dijadikan omnipresent. Sila pastikan tiada ikon "
+#~ "lain dilabuhkan pada posisi sama pada ruang kerja lain dan Klipnya tidak "
+#~ "penuh pada semua ruang kerja."
+
+#~ msgid ""
+#~ "Icon cannot be made omnipresent. Please make sure that no other icon is "
+#~ "docked in the same position on the other workspaces and the Clip is not "
+#~ "full in some workspace."
+#~ msgstr ""
+#~ "Ikon tak dpaat dijadikan omnipresent. Sila pastikan tiada ikon lain "
+#~ "dilabuhkan pada posisi sama pada ruang kerja lain dan Klipnya tidak penuh "
+#~ "pada semua ruang kerja."
+
+#~ msgid "Workspace Clip"
+#~ msgstr "Klip Ruangkerja"
+
+#~ msgid "All selected icons will be removed!"
+#~ msgstr "Semua ikon yang dipilih akan dibuang!"
+
+#~ msgid "Keep Icon"
+#~ msgstr "Simpan Ikon"
+
+#~ msgid "Type the command used to launch the application"
+#~ msgstr "Taip arahan yang digunakan untuk melancarkan aplikasi"
+
+#~ msgid "could not launch application %s\n"
+#~ msgstr "tak dapat melancarkan aplikasi %s\n"
+
+#~ msgid "could not create workspace submenu for Clip menu"
+#~ msgstr "tak dapat mencipta submenu ruangkerja untuk menu Klip"
+
+#~ msgid "could not create options submenu for Clip menu"
+#~ msgstr "tak dapat mencipta submenu opsyen untuk menu Klip"
+
+#~ msgid "Keep on Top"
+#~ msgstr "Sentiada di atas"
+
+#~ msgid "Collapsed"
+#~ msgstr "Runtuh"
+
+#~ msgid "Autocollapse"
+#~ msgstr "AutoRuntuh"
+
+#~ msgid "Autoraise"
+#~ msgstr "Autonaik"
+
+#~ msgid "Autoattract Icons"
+#~ msgstr "Autotarik Ikon"
+
+#~ msgid "Clip Options"
+#~ msgstr "Opsyen Klip"
+
+#~ msgid "Selected"
+#~ msgstr "Dipilih"
+
+#~ msgid "Select All Icons"
+#~ msgstr "Pilih Semua Ikon"
+
+#~ msgid "Move Icon To"
+#~ msgstr "Pindah Ikon Ke"
+
+#~ msgid "Remove Icon"
+#~ msgstr "Buang Ikon"
+
+#~ msgid "Attract Icons"
+#~ msgstr "Tarik Ikon"
+
+#~ msgid "Launch"
+#~ msgstr "Lancar"
+
+#~ msgid "Settings..."
+#~ msgstr "Tetapan..."
+
+#~ msgid "bad value in docked icon state info %s"
+#~ msgstr "nilai salah untuk maklumat keadaan ikon terlabuh %s"
+
+#~ msgid "bad value in docked icon position %i,%i"
+#~ msgstr "nilai salah untuk posisi ikon terlabuh %i,%i"
+
+#~ msgid "Could not execute command \"%s\""
+#~ msgstr "Tak dapat melaksanakan arahan \"%s\""
+
+#~ msgid "Unselect All Icons"
+#~ msgstr "Nyahpilih Semua Ikon"
+
+#~ msgid "Keep Icons"
+#~ msgstr "Simpan Ikon"
+
+#~ msgid "Move Icons To"
+#~ msgstr "Pindahkan Ikon Ke"
+
+#~ msgid "Remove Icons"
+#~ msgstr "Buang Ikon"
+
+#~ msgid "Bring Here"
+#~ msgstr "Bawa ke sini"
+
+#~ msgid "Ignore"
+#~ msgstr "Abaikan"
+
+#~ msgid "Start when Window Maker is started"
+#~ msgstr "Dimulakan bila Window Maker dihidupkan"
+
+#~ msgid "Lock (prevent accidental removal)"
+#~ msgstr "Kunci (cegah pembuangan tak disengajakan)"
+
+#~ msgid "Application path and arguments"
+#~ msgstr "Path Aplikasi dan hujah"
+
+#~ msgid "Command for middle-click launch"
+#~ msgstr "Arahan untuk pelancaran klik-tengah"
+
+#~ msgid "%s will be replaced with current selection"
+#~ msgstr "%d akan digantikan dengan pilihan semasa"
+
+#~ msgid "Command for files dropped with DND"
+#~ msgstr "Arahan untuk fail yang dijatuhkan dengan DND"
+
+#~ msgid "%d will be replaced with the file name"
+#~ msgstr "%d akan digantikan dengan nama fail"
+
+#~ msgid "DND support was not compiled in"
+#~ msgstr "Sokongan DND tidak dikompil bersama"
+
+#~ msgid "Icon Image"
+#~ msgstr "Imej Ikon"
+
+#~ msgid "Browse..."
+#~ msgstr "Lihat..."
+
+#~ msgid "Docked Application Settings"
+#~ msgstr "Tetapan Aplikasi Limbungan"
+
+#~ msgid "could not render texture: %s"
+#~ msgstr "tak dapat render tekstur: %s"
+
+#~ msgid "error rendering image:%s"
+#~ msgstr "ralat merender imej:%s"
+
+#~ msgid "error rendering image: %s"
+#~ msgstr "ralat merender imej: %s"
+
+#~ msgid "out of memory while updating GNOME hints"
+#~ msgstr "tak cukup memori bila mengemaskini petua GNOME"
+
+#~ msgid "could not find default icon \"%s\""
+#~ msgstr "tak menjumpai ikon default \"%s\""
+
+#~ msgid "could not load default icon \"%s\":%s"
+#~ msgstr "tak dapat memuatkan ikon default \"%s\":%s"
+
+#~ msgid "Move To"
+#~ msgstr "Pindah ke"
+
+#~ msgid "%a(Run Command,Type the command to run:)"
+#~ msgstr "%a(Laksana arahan, taip arahan untuk dilaksanakan:)"
+
+#~ msgid "could not exec %s"
+#~ msgstr "tak dpaat melaksanakan %s"
+
+#~ msgid "Could not execute command: "
+#~ msgstr "tak dapat melaksanakan arahan:"
+
+#~ msgid "%s aborted.\n"
+#~ msgstr "%s diabaikan.\n"
+
+#~ msgid "Usage: %s [options]\n"
+#~ msgstr "Penggunaan: %s [opsyen]\n"
+
+#~ msgid "The Window Maker window manager for the X window system"
+#~ msgstr "Window Maker pengurus tetingkap untuk sistem Xwindow"
+
+#~ msgid " -display host:dpy\tdisplay to use"
+#~ msgstr " -display hos:dpy\tpaparan untuk digunakan"
+
+#~ msgid " --no-cpp \t\tdisable preprocessing of configuration files"
+#~ msgstr " --no-cpp \t\tmatikan praproses konfigurasi fail"
+
+#~ msgid " --no-dock\t\tdo not open the application Dock"
+#~ msgstr " --no-dock\t\tjangan buka aplikasi limbungan"
+
+#~ msgid " --no-clip\t\tdo not open the workspace Clip"
+#~ msgstr " --no-clip\t\tjangan bula Klip Ruangkerja"
+
+#~ msgid " --no-autolaunch\tdo not autolaunch applications"
+#~ msgstr " --no-autolaunch\tjangan auto laksanakan aplikasi"
+
+#~ msgid " --dont-restore\t\tdo not restore saved session"
+#~ msgstr " --dont-restore\t\tjangan pulihkan sessi tersimpan"
+
+#~ msgid " --locale locale\tlocale to use"
+#~ msgstr " --locale locale\tlocale untuk digunakan"
+
+#~ msgid ""
+#~ " --create-stdcmap\tcreate the standard colormap hint in PseudoColor "
+#~ "visuals"
+#~ msgstr ""
+#~ " --create-stdcmap\tcipta hint colormap standard pada visual PseudoColor"
+
+#~ msgid " --visual-id visualid\tvisual id of visual to use"
+#~ msgstr " --visual-id visualid\tvisual id pada visual untuk digunakan"
+
+#~ msgid " --static\t\tdo not update or save configurations"
+#~ msgstr " --static\t\tjangan kemaskini atau simpam konfigurasi"
+
+#~ msgid " --no-polling\t\tdo not periodically check for configuration updates"
+#~ msgstr ""
+#~ " --no-polling\t\tjangan periksa kemaskini konfigurasi secara berkala"
+
+#~ msgid " --synchronous\t\tturn on synchronous display mode"
+#~ msgstr " --synchronous\t\thidupkan mod paparan synchronous"
+
+#~ msgid " --version\t\tprint version and exit"
+#~ msgstr " --version\t\tcetak versi dan keluar"
+
+#~ msgid " --help\t\t\tshow this message"
+#~ msgstr " --help\t\t\tpapar mesej ini"
+
+#~ msgid ""
+#~ "could not find user GNUstep directory (%s).\n"
+#~ "Make sure you have installed Window Maker correctly and run wmaker.inst"
+#~ msgstr ""
+#~ "tak dapat menjumpai direktori GNUstep pengguna (%s).\n"
+#~ "Pastikan Window Maker dipasang dengan betul dan laksanakan wmaker.inst"
+
+#~ msgid "could not find user GNUstep directory (%s)."
+#~ msgstr "tak menjmpai direktori GNUstep pengguna (%s)"
+
+#~ msgid ""
+#~ "There was an error while creating GNUstep directory, please make sure you "
+#~ "have installed Window Maker correctly and run wmaker.inst"
+#~ msgstr ""
+#~ "terdapat ralat bila mencipta direktori GNUstep , sila pastikan Window "
+#~ "Maker dipasang dengan betul dan laksanakan wmaker.inst"
+
+#~ msgid "%s directory created with default configuration."
+#~ msgstr "%s direktori  dicpta dengan konfigurasi default"
+
+#~ msgid "%s:could not execute initialization script"
+#~ msgstr "%s:tak dapat melaksanakan skrip permulaan"
+
+#~ msgid "%s:could not execute exit script"
+#~ msgstr "%s:tak dapat melaksanakan skrip keluar"
+
+#~ msgid "too few arguments for %s"
+#~ msgstr "terlalu sedikit hujah untuk %s"
+
+#~ msgid "bad value for visualid: \"%s\""
+#~ msgstr "nilai salah untuk visualid: \"%s\""
+
+#~ msgid "%s: invalid argument '%s'\n"
+#~ msgstr "%s: hujah tidak sah '%s'\n"
+
+#~ msgid "Try '%s --help' for more information\n"
+#~ msgstr "Cuba '%s --help' untuk maklumat lanjut\n"
+
+#~ msgid "X server does not support locale"
+#~ msgstr "Pelayan X tidak menyokong locale"
+
+#~ msgid "cannot set locale modifiers"
+#~ msgstr "tak dapat menetapkan modifier locale"
+
+#~ msgid "could not grab keyboard"
+#~ msgstr "Tak dapat grab papan kekunci"
+
+#~ msgid "bad value in menus state info:%s"
+#~ msgstr "nilai salah pada maklumat keadaan menu:%s"
+
+#~ msgid "%s:could not stat menu"
+#~ msgstr "%s:tak dapat stat menu"
+
+#~ msgid "could not stat() menu file '%s'"
+#~ msgstr "Tak dapat stat() fail menu '%s'"
+
+#~ msgid "could not find menu file '%s' referenced in WMRootMenu"
+#~ msgstr "tak menjumpai fail menu yang dirujuk '%s' pada WMRootMenu"
+
+#~ msgid "could not find any usable menu files. Please check '%s'"
+#~ msgstr "tak menjumpai fail menu yang boleh digunakan. Sila periksa '%s'"
+
+#~ msgid ""
+#~ "using default menu file \"%s\" as the menu referenced in WMRootMenu could "
+#~ "not be found "
+#~ msgstr ""
+#~ "menggunakan fail menu default \"%s\" sebagai menu, menu yang dirujukkan "
+#~ "pada WMRootMenu tak dapat dijumpai"
+
+#~ msgid ""
+#~ "invalid content in menu file '%s'.\n"
+#~ "It should either be a property list menu or the path to the file, "
+#~ "enclosed in \"."
+#~ msgstr ""
+#~ "kandungan fail menu '%s' tidak sah.\n"
+#~ "Ia sepatutnya adalah menu senarai ciri-ciri atau path ke fail, ditutup "
+#~ "dengan \"."
+
+#~ msgid "could not define value for %s for cpp"
+#~ msgstr "Tak dapat nyatakan nilai untuk % cpp"
+
+#~ msgid "could not get password entry for UID %i"
+#~ msgstr "Tak dapat kemasukan katalaluan untuk UID %i"
+
+#~ msgid "your machine is misconfigured. HOSTNAME is set to %s"
+#~ msgstr "Mesin anda salah dikonfigurasikan. HOSTNAME ditetapkan sebagai %s"
+
+#~ msgid "your machine is misconfigured. HOST is set to %s"
+#~ msgstr "Mesin anda salah dikonfigurasikan. HOST ditetapkan sebagai %s"
+
+#~ msgid "Program Arguments"
+#~ msgstr "Hujah Program"
+
+#~ msgid "Enter command arguments:"
+#~ msgstr "Masukkan hujah arahan:"
+
+#~ msgid "unable to get dropped data from DND drop"
+#~ msgstr "Tak dapat menjatuhkan data daripada DND drop"
+
+#~ msgid "error getting dropped data from DND drop"
+#~ msgstr "ralat mendapatkan data yang dijatuhkan daripada DND drop"
+
+#~ msgid "out of memory while getting data from DND drop"
+#~ msgstr "tak cukup memori bila mendapatkan data daripada DND drop"
+
+#~ msgid "out of memory during expansion of \"%s\""
+#~ msgstr "tak cukup memori semasa pengembangan  \"%s\""
+
+#~ msgid "out of memory during expansion of \"%w\""
+#~ msgstr "tak cukup memori semasa pengembangan  \"%w\""
+
+#~ msgid "out of memory during expansion of \"%W\""
+#~ msgstr "tak cukup memori semasa pengembangan \"%W\""
+
+#~ msgid "out of memory during expansion of \"%a\""
+#~ msgstr "tak cukup memori semasa pengembangan \"%a\""
+
+#~ msgid "out of memory during expansion of \"%d\""
+#~ msgstr "tak cukup memori semasa pengembangan \"%a\""
+
+#~ msgid "selection not available"
+#~ msgstr "pilihan tidak ada"
+
+#~ msgid "bad window name value in %s state info"
+#~ msgstr "nilai nama tetingkap tak elok pada maklumat keadaan %s"
+
+#~ msgid "could not send message to background image helper"
+#~ msgstr "tak dapat mengirim mesej ke aplikasi bantuan imej latar"
+
+#~ msgid "could not load mask bitmap file \"%s\". Won't use mask"
+#~ msgstr "tak dapat memuatkanfail bitmap mask \"%s\". Tidak akan guna mask"
+
+#~ msgid "could not parse color \"%s\""
+#~ msgstr "tak boleh menghantar warna \"%s\""
+
+#~ msgid "could not allocate color \"%s\""
+#~ msgstr "tak dapat memperuntukkan warna \"%s\""
+
+#~ msgid "Exit"
+#~ msgstr "Keluar"
+
+#~ msgid "Exit window manager?"
+#~ msgstr "Keluar pengurus tetingkap?"
+
+#~ msgid "Close X session"
+#~ msgstr "Tutup sessi X"
+
+#~ msgid ""
+#~ "Close Window System session?\n"
+#~ "Kill might close applications with unsaved data."
+#~ msgstr ""
+#~ "Tutup sessi Sistem Tetingkap?\n"
+#~ "Pembunuhan akan menutup aplikasi tetapi data tidak disimpan."
+
+#~ msgid "Kill X session"
+#~ msgstr "Bunuh Sessi X"
+
+#~ msgid ""
+#~ "Kill Window System session?\n"
+#~ "(all applications will be closed)"
+#~ msgstr ""
+#~ "Bunuh sessi Sistem Tetingkap?\n"
+#~ "(semua aplikasi akan ditutup)"
+
+#~ msgid "%s:invalid kbd shortcut specification \"%s\" for entry %s"
+#~ msgstr "%s:spesifikasi pintasan kdb tidak sah \"%s\" untuk kemasukan %s"
+
+#~ msgid "%s:invalid key in shortcut \"%s\" for entry %s"
+#~ msgstr "%s:pintasan kekunci tidak sah \"%s\" untuk kemasukan %s"
+
+#~ msgid "%s: unmatched '\"' in menu file"
+#~ msgstr "%s: '\"' tidak dipadankan pada fail menu"
+
+#~ msgid "%s: missing command"
+#~ msgstr "%s: kehilangan arahan"
+
+#~ msgid "invalid OPEN_MENU specification: %s"
+#~ msgstr "spesifikasi OPEN_MENU tak sah: %s"
+
+#~ msgid "%s:could not stat menu:%s"
+#~ msgstr "%s:tak dapat stat menu:%s"
+
+#~ msgid "too many parameters in OPEN_MENU: %s"
+#~ msgstr "terlalu banyak parameter pada OPEN_MENU: %s"
+
+#~ msgid ""
+#~ "There are more than one WORKSPACE_MENU commands in the applications menu. "
+#~ "Only one is allowed."
+#~ msgstr ""
+#~ "Terdapat lebih daripada satu arahan WORKSPACE_MENU pada menu aplikasi."
+#~ "Hanya satu diizinkan."
+
+#~ msgid ""
+#~ "There are more than one WINDOWS_MENU commands in the applications menu. "
+#~ "Only one is allowed."
+#~ msgstr ""
+#~ "Terdapat lebih daripada satu arahan WINDOWS_MENU pada menu aplikasi.Hanya "
+#~ "satu diizinkan."
+
+#~ msgid "Window List"
+#~ msgstr "Senarai Tetingkap"
+
+#~ msgid "%s:missing parameter for menu command \"%s\""
+#~ msgstr "%s: kehilangan parameter untuk menu arahan \"%s\""
+
+#~ msgid "%s:unknown command \"%s\" in menu config."
+#~ msgstr "%s: arahan tidak diketahui \"%s\" pada config menu."
+
+#~ msgid "%s:can't add shortcut for entry \"%s\""
+#~ msgstr "%s: tak dapat menambah kemasukan pintasan \"%s\""
+
+#~ msgid "%s:maximal line size exceeded in menu config: %s"
+#~ msgstr "%s:melebihi had maksima baris pada konfigurasi menu: %s"
+
+#~ msgid "%s:missing command in menu config: %s"
+#~ msgstr "%s:arahan hilang pada konfigurasi menu: %"
+
+#~ msgid "%s:syntax error in menu file:END declaration missing"
+#~ msgstr "%s:ralat sintaks pada fail menu:%s"
+
+#~ msgid "could not make arguments for menu file preprocessor"
+#~ msgstr "tak dapat buat hujah untuk fail pra pemproses menu"
+
+#~ msgid "%s:could not open/preprocess menu file"
+#~ msgstr "%s:tak dapat membuka/mempraproses fail menu)"
+
+#~ msgid "%s:could not open menu file"
+#~ msgstr "%s: tak dapat membuka fail menu"
+
+#~ msgid "%s:invalid menu file. MENU command is missing"
+#~ msgstr "%s:fail menu tak sah. Arahan MENU hilang"
+
+#~ msgid "error reading preprocessed menu data"
+#~ msgstr "Ralat membaca data menu pra pemproses"
+
+#~ msgid "%s:no title given for the root menu"
+#~ msgstr "%s:tiada tajuk diberikan untuk menu pangkal"
+
+#~ msgid "out of memory while constructing directory menu %s"
+#~ msgstr "tak cukup memori semasa membina menu direktori %s"
+
+#~ msgid "%s:could not stat file \"%s\" in menu directory"
+#~ msgstr "%s:tak dapat stat fail \"%s\" pada direktori menu"
+
+#~ msgid "Commands"
+#~ msgstr "Arahan"
+
+#~ msgid "Restart"
+#~ msgstr "Ulanghidup"
+
+#~ msgid "Exit..."
+#~ msgstr "Keluar..."
+
+#~ msgid "could not find menu file \"%s\" referenced in WMRootMenu"
+#~ msgstr "tak menjumpai rujukan fail menu \"%s\" pada WMRootMenu"
+
+#~ msgid "could not access menu \"%s\" referenced in WMRootMenu"
+#~ msgstr "tak dapat mengakses rujukan menu \"%s\" pada WMRootMenu"
+
+#~ msgid "%s:format error in root menu configuration \"%s\""
+#~ msgstr "%s: ralat format pada configurasi menu pangkal \"%s\""
+
+#~ msgid ""
+#~ "The applications menu could not be loaded. Look at the console output for "
+#~ "a detailed description of the errors."
+#~ msgstr ""
+#~ "Aplikasi tidak dapat dimuatkan. Lihat output konsol untuk huraian "
+#~ "terperinci ralat."
+
+#~ msgid "could not initialize graphics library context: %s"
+#~ msgstr "tak dapat memulakan konteks pustaka grafik: %s "
+
+#~ msgid "could not do initialization of WINGs widget set"
+#~ msgstr "tak dapat memulakan set widget WINGs"
+
+#~ msgid "can't convert \"%s\" to boolean"
+#~ msgstr "tak dapat menukar \"%s\" pada boolean"
+
+#~ msgid "out of memory while saving session state"
+#~ msgstr "tak cukup memori ketika menyimpan keadaan sessi"
+
+#~ msgid "end of memory while saving session state"
+#~ msgstr "tak cukup memori ketika menyimpan keadaan sessi"
+
+#~ msgid "connection to the session manager was lost"
+#~ msgstr "sambungan ke pengurus sessi telah tiada"
+
+#~ msgid "could not get window list!!"
+#~ msgstr "tak dapat senarai tetingkap!!"
+
+#~ msgid "internal X error: %s\n"
+#~ msgstr "ralat dalaman X: %s\n"
+
+#~ msgid "got signal %i (%s) - restarting\n"
+#~ msgstr "dapat isyarat %i (%s) - mengulanghidup\n"
+
+#~ msgid "got signal %i - restarting\n"
+#~ msgstr "dapat isyarat %i - mengulanghidup\n"
+
+#~ msgid "got signal %i (%s) - rereading defaults\n"
+#~ msgstr "dapat isyarat  %i (%s) - membaca semula defaults\n"
+
+#~ msgid "got signal %i - rereading defaults\n"
+#~ msgstr "dapat isyarat %i - membaca semula defaults\n"
+
+#~ msgid "got signal %i (%s) - exiting...\n"
+#~ msgstr "dapat isyarat  %i (%s) - keluar...\n"
+
+#~ msgid "got signal %i - exiting...\n"
+#~ msgstr "dapat isyarat  %i - keluar...\n"
+
+#~ msgid "got signal %i (%s)\n"
+#~ msgstr "dapat isyarat %i (%s)\n"
+
+#~ msgid "got signal %i\n"
+#~ msgstr "dapat isyarat %i\n"
+
+#~ msgid ""
+#~ "crashed while trying to do some post-crash cleanup. Aborting immediatelly."
+#~ msgstr ""
+#~ "Jahanam bila cuba melakukan sesuatu pembersihan selepas jahaman. keluar "
+#~ "terus."
+
+#~ msgid "trying to restart Window Maker..."
+#~ msgstr "cuba mengulanghidupkan Window Maker..."
+
+#~ msgid "trying to start alternate window manager..."
+#~ msgstr "cuba menghidupkan pengurus tetingkap lain..."
+
+#~ msgid "failed to start alternate window manager. Aborting."
+#~ msgstr "gagl menghidupkan pengurus tetingkap lain. Diabaikan."
+
+#~ msgid ""
+#~ "a fatal error has occured, probably due to a bug. Please fill the "
+#~ "included BUGFORM and report it."
+#~ msgstr ""
+#~ "ralat fatal berlaku, mungkin kerana pepijat. Sila ini BUGFORM yang "
+#~ "disertakan dan buat laporan."
+
+#~ msgid ""
+#~ "icon size is configured to %i, but it's too small. Using 16, instead\n"
+#~ msgstr ""
+#~ "saiz ikon dikonfigurasikan sebagai %s, tapi ianya terlalu kecik. "
+#~ "Menggunakan 16 sebaliknya\n"
+
+#~ msgid "XKB is not supported. KbdModeLock is automatically disabled."
+#~ msgstr "XKB tidak disokong. KbdModeLock dimatikan secara automatik"
+
+#~ msgid "it seems that there is already a window manager running"
+#~ msgstr "Nampaknya terdapat pengurus tetingkap yang tersedia terlaksana"
+
+#~ msgid "could not manage screen %i"
+#~ msgstr "tak dapat mengurus layar %i"
+
+#~ msgid "could not manage any screen"
+#~ msgstr "tak dapat mengurus sebarang layar"
+
+#~ msgid "image file \"%s\" used as texture could not be found."
+#~ msgstr "fail imej \"%s\" digunakan sebagai tekstur tak dijumpai."
+
+#~ msgid "could not load texture pixmap \"%s\":%s"
+#~ msgstr "tak dapat memuatkan pixmap tekstur \"%s\":%s"
+
+#~ msgid "library \"%s\" cound not be opened."
+#~ msgstr "Pustaka \"%s\" tak dapat dibuka."
+
+#~ msgid "function \"%s\" not found in library \"%s\""
+#~ msgstr "fungsi \"%s\" tak dijumpai pada pustaka \"%s\""
+
+#~ msgid "function textures not supported on this system, sorry."
+#~ msgstr "fungsi tekstur tidak disokong pasa sistem ini, maaf ya"
+
+#~ msgid "could not allocate image buffer"
+#~ msgstr "tak dapat memperuntukkan buffer imej"
+
+#~ msgid "could not find icon file \"%s\""
+#~ msgstr "tak jumpa fail ikon \"%s\""
+
+#~ msgid ""
+#~ "This will kill the application.\n"
+#~ "Any unsaved changes will be lost.\n"
+#~ "Please confirm."
+#~ msgstr ""
+#~ "Ini akan membunuh aplikasi\n"
+#~ "Sebarang perubahan yang belum disimpan akan hilang.\n"
+#~ "Sila buat kepastian."
+
+#~ msgid "Set Shortcut"
+#~ msgstr "Tetapkan Pintasan"
+
+#~ msgid "could not create submenu for window menu"
+#~ msgstr "Tak dapat mencipta submenu untuk menu tetingkap"
+
+#~ msgid "Keep on top"
+#~ msgstr "Kekal di atas"
+
+#~ msgid "Keep at bottom"
+#~ msgstr "Kekal di bawah"
+
+#, fuzzy
+#~ msgid "Hide Others"
+#~ msgstr "Abaikan 'Hide Others'"
+
+#~ msgid "Resize/Move"
+#~ msgstr "Ubahsaiz/Pindah"
+
+#~ msgid "Select"
+#~ msgstr "Pilih"
+
+#~ msgid "Attributes..."
+#~ msgstr "Atribut..."
+
+#~ msgid "Options"
+#~ msgstr "Opsyen"
+
+#~ msgid "Could not find icon \"%s\" specified for this window"
+#~ msgstr "tak menjumpai ikon  \"%s\" yang dinyatakan untuk tetingkap ini"
+
+#~ msgid "Could not open specified icon \"%s\":%s"
+#~ msgstr "Tak dapat membuka ikon yang dinyatakan \"%s\":%s"
+
+#~ msgid "Inspecting  %s.%s"
+#~ msgstr "Memeriksa %s.%s"
+
+#~ msgid "Click in the window you wish to inspect."
+#~ msgstr "Klik pada tetingkap yang anda ingin periksa."
+
+#~ msgid ""
+#~ "The configuration will apply to all\n"
+#~ "windows that have their WM_CLASS\n"
+#~ "property set to the above selected\n"
+#~ "name, when saved."
+#~ msgstr ""
+#~ "Konfigurasi akan menerapkan semua\n"
+#~ "tetingkap yang mempunyai Ciri-ciri\n"
+#~ "WM_CLASS untuk ditetapkan di atas nama\n"
+#~ "dipilih, bila disimpan."
+
+#~ msgid "Save"
+#~ msgstr "Simpan"
+
+#~ msgid "Apply"
+#~ msgstr "Terapkan"
+
+#~ msgid "Reload"
+#~ msgstr "Ulangmuat"
+
+#~ msgid "Window Specification"
+#~ msgstr "Spesifikasi Window"
+
+#~ msgid "Window Attributes"
+#~ msgstr "Atribut Window"
+
+#~ msgid "Advanced Options"
+#~ msgstr "Opsyen Lanjutan"
+
+#~ msgid "Application Specific"
+#~ msgstr "Aplikasi tertentu"
+
+#~ msgid "Defaults for all windows"
+#~ msgstr "Default untuk semua tetingkap"
+
+#~ msgid "Attributes"
+#~ msgstr "Atribut"
+
+#~ msgid "Disable titlebar"
+#~ msgstr "Matikan titlebar"
+
+#~ msgid "Disable resizebar"
+#~ msgstr "Matikan resizebar"
+
+#~ msgid "Remove the resizebar of this window."
+#~ msgstr "Buang resizebar tetingkap ini"
+
+#~ msgid "Disable close button"
+#~ msgstr "Matikan butang tutup"
+
+#~ msgid "Remove the `close window' button of this window."
+#~ msgstr "Buang buang 'tutup tetingkap' tetingkap ini"
+
+#~ msgid "Disable miniaturize button"
+#~ msgstr "Matikan butang bahasa"
+
+#~ msgid "Remove the 1 pixel black border around the window."
+#~ msgstr "Buang 1 piksel sempadan hitam di sekeliling tetingkap."
+
+#~ msgid "Keep on top (floating)"
+#~ msgstr "Sentiasa di atas (terapung)"
+
+#~ msgid ""
+#~ "Keep the window over other windows, not allowing\n"
+#~ "them to cover it."
+#~ msgstr ""
+#~ "Biarkan tetingkap di atas tetingkap lain\n"
+#~ "jangan izinkan mereka menghadangnya."
+
+#~ msgid "Keep at bottom (sunken)"
+#~ msgstr "Sentiasa di bawah (tenggelam)"
+
+#~ msgid "Keep the window under all other windows."
+#~ msgstr "Sentiasa tetingkap di bawah semua tetingkap lain."
+
+#~ msgid "Make window present in all workspaces."
+#~ msgstr "Jadikan tetingkap ada semua ruangkerja."
+
+#~ msgid "Start maximized"
+#~ msgstr "Dimulakan secara maksima"
+
+#~ msgid ""
+#~ "Make the window be automatically maximized when it's\n"
+#~ "first shown."
+#~ msgstr ""
+#~ "Jadikan tetingkap automatik dimaksimakan bila ianya\n"
+#~ "pertama kali dipaparkan."
+
+#~ msgid "Full screen maximization"
+#~ msgstr "Pemaksimaan layar penuh"
+
+#~ msgid ""
+#~ "Make the window use the whole screen space when it's\n"
+#~ "maximized. The titlebar and resizebar will be moved\n"
+#~ "to outside the screen."
+#~ msgstr ""
+#~ "Buatkan tetingkap menggunakan seluruh ruang layar bila ianya\n"
+#~ "dimaksimakan. Titlebar dan resizebar akan digerakkankan\n"
+#~ "ke luar layar."
+
+#~ msgid "Advanced"
+#~ msgstr "Lanjutan"
+
+#~ msgid "Do not bind keyboard shortcuts"
+#~ msgstr "Jangan bind pintasan papan pekunci"
+
+#~ msgid "Do not bind mouse clicks"
+#~ msgstr "Jangan bind klik tetikus"
+
+#~ msgid ""
+#~ "Do not bind mouse actions, such as `Alt'+drag\n"
+#~ "in the window (when alt is the modifier you haveconfigured)."
+#~ msgstr ""
+#~ "Jangan bind aksi tetikus, seperti `Alt'+heret pada\n"
+#~ "tetingkap (bila alt ialah modifier yang telah anda konfigurasikan)."
+
+#~ msgid "Do not show in the window list"
+#~ msgstr "Jangan papar pada senarai tetingkap"
+
+#~ msgid "Do not list the window in the window list menu."
+#~ msgstr "Jangan senaraikan tetingkap pada menu senarai tetingkap"
+
+#~ msgid "Do not let it take focus"
+#~ msgstr "Jangan biarkan ia mengambil fokus"
+
+#~ msgid ""
+#~ "Do not let the window take keyboard focus when you\n"
+#~ "click on it."
+#~ msgstr ""
+#~ "Jangan biarkan tetingkap mengambil fokus papan kekunci\n"
+#~ "apabila Anda klik padanya."
+
+#~ msgid "Keep inside screen"
+#~ msgstr "Biarkan di dalam layar"
+
+#~ msgid ""
+#~ "Do not allow the window to move itself completely\n"
+#~ "outside the screen. For bug compatibility.\n"
+#~ msgstr ""
+#~ "Jangan izinkan tetingkap untuk digerakkan dirinya\n"
+#~ "terus ke luar layar. Untuk penyesuaian pepijat.\n"
+
+#~ msgid "Ignore 'Hide Others'"
+#~ msgstr "Abaikan 'Hide Others'"
+
+#~ msgid ""
+#~ "Do not hide the window when issuing the\n"
+#~ "`HideOthers' command."
+#~ msgstr ""
+#~ "Jangan sembunyikan tetingkap bila mengemukakan\n"
+#~ "arahan `HideOthers'."
+
+#~ msgid "Ignore 'Save Session'"
+#~ msgstr "Abaikan 'Simpan Sessi'"
+
+#~ msgid ""
+#~ "Do not save the associated application in the\n"
+#~ "session's state, so that it won't be restarted\n"
+#~ "together with other applications when Window Maker\n"
+#~ "starts."
+#~ msgstr ""
+#~ "Jangan simpan aplikasi yang dikaitkan pada\n"
+#~ "keadaan sessi, oleh itu ianya tidak akan diulanghidupkan\n"
+#~ "bersama dengan aplikasi lain bila Window Maker\n"
+#~ "dihidupkan."
+
+#~ msgid "Emulate application icon"
+#~ msgstr "Emulasikan ikon aplikasi"
+
+#~ msgid "Disable language button"
+#~ msgstr "Matikan butang bahasa"
+
+#~ msgid "Remove the `toggle language' button of the window."
+#~ msgstr "Buang butang `toggle bahasa' tetingkap ini"
+
+#~ msgid "Miniwindow Image"
+#~ msgstr "Imej Miniwindow"
+
+#~ msgid "Icon filename:"
+#~ msgstr "Nama fail ikon:"
+
+#~ msgid "Ignore client supplied icon"
+#~ msgstr "Abaikan ikon yang dibekali aplikasi"
+
+#~ msgid "Initial Workspace"
+#~ msgstr "Ruangkerja permulaan"
+
+#~ msgid "The workspace to place the window when it'sfirst shown."
+#~ msgstr ""
+#~ "Ruangkerja dimana letaknya tetingkap bila ianya pertamakali dipaparkan"
+
+#~ msgid "Application Attributes"
+#~ msgstr "Atribut Aplikasi"
+
+#~ msgid "Start hidden"
+#~ msgstr "Dimulakan dengan tersorok"
+
+#~ msgid "Automatically hide application when it's started."
+#~ msgstr "Automatik sorok aplikasi bila ianya dimulakan"
+
+#~ msgid "No application icon"
+#~ msgstr "Tiada ikon aplikasi"
+
+#~ msgid "Shared application icon"
+#~ msgstr "Ikon aplikasi terkongsi"
+
+#~ msgid ""
+#~ "Use a single shared application icon for all of\n"
+#~ "the instances of this application.\n"
+#~ msgstr ""
+#~ "Guna ikon aplikasi terkongsi untuk semua\n"
+#~ "instance aplikasi ini\n"
+
+#~ msgid "out of memory while updating wm hints"
+#~ msgstr "tak cukup memori bila mengemaskini petua wm"
+
+#~ msgid "Workspace %i"
+#~ msgstr "Ruangkerja %i"
+
+#~ msgid "could not create Workspace menu"
+#~ msgstr "tak dpat mencipta menu Ruangkerja"
+
+#~ msgid "New"
+#~ msgstr "Baru"
+
+#~ msgid "Destroy Last"
+#~ msgstr "Musnahkan yang terakhir"
