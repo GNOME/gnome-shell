@@ -707,9 +707,9 @@ process_tab_grab (MetaDisplay *display,
           meta_verbose ("Ending grab early so we can focus the target window\n");
           meta_display_end_grab_op (display, event->xkey.time);
 
-          meta_verbose ("Focusing target window\n");
-          meta_window_raise (target_window);
-          meta_window_focus (target_window, event->xkey.time);
+          meta_verbose ("Activating target window\n");
+
+          meta_window_activate (target_window, event->xkey.time);
 
           return TRUE; /* we already ended the grab */
         }

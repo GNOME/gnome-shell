@@ -1,3 +1,17 @@
+2001-10-29  Havoc Pennington  <hp@pobox.com>
+
+	* README: note exciting new unminimize feature for the tab popup
+
+	* src/keybindings.c (process_tab_grab): use meta_window_activate()
+	when choosing a window with tab popup, this should deiconify it
+
+	* src/window.c (meta_window_client_message): use
+	meta_window_activate for _NET_ACTIVE_WINDOW message
+	(meta_window_activate): new function to raise/focus/unminimize
+	(meta_window_flush_calc_showing): new function
+	(meta_window_focus): force a calc showing on focus, so that we can
+	focus the window if appropriate (it must be mapped)
+
 2001-10-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_grab_window_buttons): fix for 

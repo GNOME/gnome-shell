@@ -116,6 +116,7 @@ static char*    get_utf8_property (MetaDisplay *display,
                                    Atom         atom);
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
+void meta_window_flush_calc_showing   (MetaWindow *window);
 
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
@@ -957,6 +958,16 @@ meta_window_unqueue_calc_showing (MetaWindow *window)
 }
 
 void
+meta_window_flush_calc_showing (MetaWindow *window)
+{
+  if (window->calc_showing_queued)
+    {
+      meta_window_unqueue_calc_showing (window);
+      meta_window_calc_showing (window);
+    }
+}
+
+void
 meta_window_queue_calc_showing (MetaWindow  *window)
 {
   if (window->unmanaging)
@@ -1196,6 +1207,22 @@ meta_window_unshade (MetaWindow  *window)
     }
 }
 
+void
+meta_window_activate (MetaWindow *window,
+                      guint32     timestamp)
+{
+  /* Get window on current workspace */
+  if (!meta_window_visible_on_workspace (window,
+                                         window->screen->active_workspace))
+    meta_window_change_workspace (window,
+                                  window->screen->active_workspace);
+
+  if (window->minimized)
+    meta_window_unminimize (window);
+  
+  meta_window_raise (window);
+  meta_window_focus (window, timestamp);
+}
 
 /* returns values suitable for meta_window_move */
 static void
@@ -1914,6 +1941,8 @@ meta_window_focus (MetaWindow  *window,
                     window->display->grab_window->desc, window->desc);
       return;
     }
+
+  meta_window_flush_calc_showing (window);
   
   /* For output-only or shaded windows, focus the frame.
    * This seems to result in the client window getting key events
@@ -2486,14 +2515,7 @@ meta_window_client_message (MetaWindow *window,
     {
       meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s'", window->desc);
 
-      /* Get window on current workspace */
-      if (!meta_window_visible_on_workspace (window,
-                                             window->screen->active_workspace))
-        meta_window_change_workspace (window,
-                                      window->screen->active_workspace);
-      
-      meta_window_raise (window);
-      meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
+      meta_window_activate (window, CurrentTime);
 
       return TRUE;
     }

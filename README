@@ -148,11 +148,11 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
  - If you want keybindings which are not the ones mentioned above
    as features, you have to edit keybindings.c and recompile.
 
- - Metacity does not have any way to unminimize a window. So 
-   clicking the minimize button is sort of a bad idea.
+ - The only way to unminimize at the moment is to use the Alt+Tab
+   move-between-windows feature.
    (If you had a WM-spec-compliant tasklist, it would work
-   for unminimization.)
-   (Update: you can use "test-wnck" from the libwnck CVS module to 
+   for unminimization also.)
+   (Or you can use "test-wnck" from the libwnck CVS module to 
    unminimize, but it's not much of a UI ;-)
 
  - Metacity uses the new window manager spec, but only random bits of

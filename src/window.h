@@ -242,6 +242,9 @@ void        meta_window_change_workspace   (MetaWindow  *window,
 void        meta_window_stick              (MetaWindow  *window);
 void        meta_window_unstick            (MetaWindow  *window);
 
+void        meta_window_activate           (MetaWindow  *window,
+                                            guint32      current_time);
+
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
                                             gboolean     user_op,
