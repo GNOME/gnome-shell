@@ -22,7 +22,7 @@
 </frame_geometry>
 
 <!-- strip borders off the normal geometry -->
-<frame_geometry name="normal_borderless" parent="normal">
+<frame_geometry name="normal_small_borders" parent="normal">
   <distance name="left_width" value="4"/>
   <distance name="right_width" value="4"/>
   <distance name="bottom_height" value="5"/>
@@ -254,13 +254,13 @@
   <piece position="title" draw_ops="title_focused"/>
 </frame_style>
 
-<frame_style name="maximized_unfocused" geometry="normal_borderless" parent="normal_unfocused">
+<frame_style name="maximized_unfocused" geometry="normal_small_borders" parent="normal_unfocused">
   <piece position="entire_background" draw_ops="blank"/>
   <button function="maximize" state="normal" draw_ops="restore_button"/>
   <button function="maximize" state="pressed" draw_ops="restore_button_pressed"/>
 </frame_style>
 
-<frame_style name="maximized_focused" geometry="normal_borderless" parent="normal_focused">
+<frame_style name="maximized_focused" geometry="normal_small_borders" parent="normal_focused">
   <piece position="entire_background" draw_ops="focus_outline"/>
   <button function="maximize" state="normal" draw_ops="restore_button"/>
   <button function="maximize" state="pressed" draw_ops="restore_button_pressed"/>

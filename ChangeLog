@@ -1,3 +1,8 @@
+2002-03-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme-viewer.c: improve the theme viewer so people 
+	can see the broken aspects of their themes.
+
 2002-03-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c: use new functions
