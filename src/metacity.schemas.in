@@ -234,7 +234,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/minimize</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Alt&gt;F9</default>
       <locale name="C">
          <short>Minimize a window</short>
          <long>
@@ -255,7 +255,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/begin_move</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Alt&gt;F7</default>
       <locale name="C">
          <short>Move a window</short>
          <long>
@@ -277,7 +277,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/begin_resize</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Alt&gt;F8</default>
       <locale name="C">
          <short>Resize a window</short>
          <long>
