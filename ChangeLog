@@ -1,3 +1,7 @@
+2002-10-29  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: 2.4.3, why not
+
 2002-10-28  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (update_size_hints): use meta_prop_get_size_hints

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-10-24 20:39+0200\n"
+"POT-Creation-Date: 2002-10-29 01:26-0500\n"
 "PO-Revision-Date: 2002-09-24 23:28+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:243
+#: src/display.c:266
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -113,7 +113,7 @@ msgstr ""
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
-#: src/main.c:63
+#: src/main.c:64
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
 "replace] [--version]\n"
@@ -121,7 +121,7 @@ msgstr ""
 "metacity [--disable-sm] [--sm-save-file=FILNAMN] [--display=DISPLAY] [--"
 "replace] [--version]\n"
 
-#: src/main.c:70
+#: src/main.c:71
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -136,7 +136,7 @@ msgstr ""
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT "
 "SPECIELLT ÄNDAMÅL.\n"
 
-#: src/main.c:325
+#: src/main.c:326
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -144,7 +144,7 @@ msgstr ""
 "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller "
 "vanliga teman."
 
-#: src/main.c:373
+#: src/main.c:374
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
@@ -513,9 +513,6 @@ msgstr "Flytta ett fönster"
 msgid "Move focus backward between panels and the desktop immediately"
 msgstr "Flytta fokus baklänges mellan paneler och skrivbordet omedelbart"
 
-msgid "Move focus backwards between panels and the desktop immediately"
-msgstr "Flytta fokus baklänges mellan paneler och skrivbordet omedelbart"
-
 #: src/metacity.schemas.in.h:24
 msgid "Move focus backwards between panels and the desktop using popup display"
 msgstr ""
@@ -537,8 +534,7 @@ msgstr "Flytta fokus mellan paneler och skrivbordet omedelbart"
 #: src/metacity.schemas.in.h:28
 msgid "Move focus between panels and the desktop using popup display"
 msgstr ""
-"Flytta fokus mellan paneler och skrivbordet genom användning av "
-"popupfönster"
+"Flytta fokus mellan paneler och skrivbordet genom användning av popupfönster"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move focus between windows immediately"
@@ -1386,12 +1382,11 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Tangentbindningen som används för att flytta fokus baklänges mellan paneler "
-"och skrivbordet utan ett popupfönster. Formatet ser ut som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
-"tillåtande och tillåter gemener och versaler och även förkortningar som "
-"\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
-"specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
-"för denna åtgärd."
+"och skrivbordet utan ett popupfönster. Formatet ser ut som \"&lt;Control&gt;a"
+"\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och "
+"tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och "
+"\"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
+"\"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1473,13 +1468,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Tangentbindningen som används för att flytta fokus mellan fönster utan ett "
-"popupfönster (traditionellt &lt;Alt&gt;Escape). Att hålla "
-"\"skift\"-tangenten nedtryckt då denna tangentbindning används byter håll på "
-"rörelsen. Formatet ser ut som \"&lt;Control&gt;a\" eller "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och tillåter "
-"gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och "
-"\"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
-"\"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
+"popupfönster (traditionellt &lt;Alt&gt;Escape). Att hålla \"skift\"-"
+"tangenten nedtryckt då denna tangentbindning används byter håll på rörelsen. "
+"Formatet ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Tolken är ganska tillåtande och tillåter gemener och versaler och även "
+"förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+"alternativet till specialsträngen \"disabled\" kommer det inte att finnas en "
+"tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1492,13 +1487,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Tangentbindningen som används för att flytta fokus mellan fönster med ett "
-"popupfönster (traditionellt &lt;Alt&gt;Tab). Att hålla "
-"\"skift\"-tangenten nedtryckt då denna tangentbindning används byter håll på "
-"rörelsen. Formatet ser ut som \"&lt;Control&gt;a\" eller "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och tillåter "
-"gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och "
-"\"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
-"\"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
+"popupfönster (traditionellt &lt;Alt&gt;Tab). Att hålla \"skift\"-tangenten "
+"nedtryckt då denna tangentbindning används byter håll på rörelsen. Formatet "
+"ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken "
+"är ganska tillåtande och tillåter gemener och versaler och även "
+"förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+"alternativet till specialsträngen \"disabled\" kommer det inte att finnas en "
+"tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1766,12 +1761,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:384
+#: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:400
+#: src/screen.c:405
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1780,18 +1775,18 @@ msgstr ""
 "Skärm %d på display \"%s\" har redan en fönsterhanterare; försök med flaggan "
 "--replace för att ersätta den aktuella fönsterhanteraren.\n"
 
-#: src/screen.c:441
+#: src/screen.c:446
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunde inte få tag i fönsterhanterarval på skärm %d display \"%s\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/screen.c:614
+#: src/screen.c:648
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
@@ -2744,25 +2739,25 @@ msgstr "Öppnade loggfilen %s\n"
 msgid "Window manager: "
 msgstr "Fönsterhanterare: "
 
-#: src/util.c:311
+#: src/util.c:313
 msgid "Bug in window manager: "
 msgstr "Fel i fönsterhanterare: "
 
-#: src/util.c:340
+#: src/util.c:342
 msgid "Window manager warning: "
 msgstr "Fönsterhanterarvarning: "
 
-#: src/util.c:364
+#: src/util.c:366
 msgid "Window manager error: "
 msgstr "Fönsterhanterarfel: "
 
-#: src/window.c:446
+#: src/window.c:461
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4651
+#: src/window.c:4683
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2778,7 +2773,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5321
+#: src/window.c:5322
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2793,7 +2788,7 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: src/xprops.c:54
+#: src/xprops.c:124
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
@@ -2802,17 +2797,20 @@ msgstr ""
 "Fönster 0x%lx har egenskap %s som förväntades ha typen %s format %d och har "
 "i verkligheten typ %s format %d n_items %d\n"
 
-#: src/xprops.c:296
+#: src/xprops.c:369
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
 
-#: src/xprops.c:381
+#: src/xprops.c:449
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "Move focus backwards between panels and the desktop immediately"
+#~ msgstr "Flytta fokus baklänges mellan paneler och skrivbordet omedelbart"
 
 #~ msgid "_Shade"
 #~ msgstr "Sk_ugga"
