@@ -166,9 +166,11 @@ meta_compositor_new (MetaDisplay *display)
 #if HAVE_NAME_WINDOW_PIXMAP
       XCompositeQueryVersion (display->xdisplay,
                               &composite_major, &composite_minor);
-      
+
+#if 0
       if (composite_major > 0 || composite_minor >= 2)
 	compositor->have_name_window_pixmap = TRUE;
+#endif
 #endif
     }
 
@@ -324,7 +326,7 @@ paint_screen (MetaCompositor *compositor,
   meta_topic (META_DEBUG_COMPOSITOR, "Repainting screen %d root 0x%lx\n",
               screen->number, screen->xroot);
 
-  meta_display_grab (screen->display);
+  /* meta_display_grab (screen->display); */
   
   xdisplay = screen->display->xdisplay;
   
@@ -478,7 +480,7 @@ paint_screen (MetaCompositor *compositor,
   XRenderFreePicture (xdisplay, buffer_picture);
   XFreeGC (xdisplay, gc);
 
-  meta_display_ungrab (screen->display);
+  /* meta_display_ungrab (screen->display); */
 
   XSync (screen->display->xdisplay, False);
 }

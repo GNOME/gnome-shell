@@ -1,3 +1,16 @@
+2004-08-27  Havoc Pennington  <hp@redhat.com>
+
+	* src/compositor.c (meta_compositor_new): disable NameWindowPixmap
+	stuff always for now, it seemed kind of busted
+	(paint_screen): don't grab the server during repaint, adds to the
+	speed, though only slightly.
+
+	* src/frames.c (meta_frames_set_window_background): factor out all
+	the set_background stuff to one function; disable setting
+	background to transparent, because it breaks existing themes. We
+	need to add a flag in the theme XML file to say "start me with a
+	transparent background"
+
 2004-08-27  Elijah Newren  <newren@math.utah.edu>
 
 	Prevent an assertion failure that can occur after increasing the

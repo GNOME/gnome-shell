@@ -64,6 +64,9 @@ static void meta_frames_paint_to_drawable (MetaFrames   *frames,
                                            GdkDrawable  *drawable,
                                            GdkRegion    *region);
 
+static void meta_frames_set_window_background (MetaFrames   *frames,
+                                               MetaUIFrame  *frame);
+
 static void meta_frames_calc_geometry (MetaFrames        *frames,
                                        MetaUIFrame         *frame,
                                        MetaFrameGeometry *fgeom);
@@ -268,12 +271,9 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
 
   /* If a resize occurs it will cause a redraw, but the
    * resize may not actually be needed so we always redraw
-   * in case of color change. Don't change color if this is
-   * an ARGB visual
+   * in case of color change.
    */
-  if (gdk_window_get_visual (frame->window)->depth != 32)
-    gtk_style_set_background (GTK_WIDGET (frames)->style,
-                              frame->window, GTK_STATE_NORMAL);
+  meta_frames_set_window_background (frames, frame);
   
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
   meta_core_queue_frame_resize (gdk_display,
@@ -316,13 +316,9 @@ queue_draw_func (gpointer key, gpointer value, gpointer data)
 
   /* If a resize occurs it will cause a redraw, but the
    * resize may not actually be needed so we always redraw
-   * in case of color change. Only redraw if it is not
-   * an ARGB visual however since we always want background
-   * in this case to be transparent.
+   * in case of color change.
    */
-  if (gdk_window_get_visual (frame->window)->depth != 32)
-    gtk_style_set_background (GTK_WIDGET (frames)->style,
-                              frame->window, GTK_STATE_NORMAL);
+  meta_frames_set_window_background (frames, frame);
 
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
@@ -486,19 +482,8 @@ meta_frames_manage_window (MetaFrames *frames,
 
   gdk_window_set_user_data (frame->window, frames);
 
-  /* Set the window background to the current style if not ARGB and 
-   * transparent otherwise
-   */
-  if (gdk_window_get_visual (frame->window)->depth != 32)
-    {
-      gtk_style_set_background (GTK_WIDGET (frames)->style,
-                                frame->window, GTK_STATE_NORMAL);
-    }
-  else
-    {
-      col.pixel = 0;
-      gdk_window_set_background (window, &col);
-    }
+  /* Set the window background to the current style */
+  meta_frames_set_window_background (frames, frame);
 
   /* Don't set event mask here, it's in frame.c */
   
@@ -632,10 +617,8 @@ meta_frames_reset_bg (MetaFrames *frames,
   widget = GTK_WIDGET (frames);
 
   frame = meta_frames_lookup_window (frames, xwindow);
-  
-  if (gdk_window_get_visual (frame->window)->depth != 32) 
-    gtk_style_set_background (GTK_WIDGET (frames)->style,
-                              frame->window, GTK_STATE_NORMAL);
+
+  meta_frames_set_window_background (frames, frame);
 }
 
 static void
@@ -1913,6 +1896,22 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   gdk_region_destroy (edges);
   g_free (areas);
+}
+
+static void
+meta_frames_set_window_background (MetaFrames   *frames,
+                                   MetaUIFrame  *frame)
+{
+  gtk_style_set_background (GTK_WIDGET (frames)->style,
+                            frame->window, GTK_STATE_NORMAL);
+
+#if 0
+  /* This is what we want for transparent background */
+  {
+    col.pixel = 0;
+    gdk_window_set_background (window, &col);
+  }
+#endif
 }
 
 static gboolean
