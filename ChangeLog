@@ -1,3 +1,12 @@
+2004-04-19  Mark McLoughlin  <mark@skynet.ie>
+	
+        Syncing across this change from libwnck.
+	Patch from Neil Muller <neil@dip.sun.ac.za> in bug #133979.
+	
+	* src/iconcache.c: (find_largest_sizes), (find_best_size):
+	Don't down-size nitems from a gulong to an int. Fixes a
+	crash with enlightenment, apparently.
+
 2004-04-16  Iñaki Larrañaga  <dooteo@euskalgnu.org>
 
 	* configure.in: Added "eu" (Basque) to ALL_LINGUAS.
