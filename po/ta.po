@@ -1,67 +1,70 @@
+# translation of ta.po to Tamil
 # Tamil translation of Tamil Metacity 2.4.
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # Dinesh Nadarajah <n_dinesh@yahoo.com>, 2003.
-# 
-# 
+# Jayaradha N <jaya@pune.redhat.com>, 2004.
+#
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Tamil Metacity 2.4POT-Creation-Date: 2003-09-16 17:19-"
+"Project-Id-Version: ta\n"
 "0500\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2003-09-16 17:19-0500\n"
-"Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
-"Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
+"PO-Revision-Date: 2004-09-03 15:18+0530\n"
+"Last-Translator: Jayaradha N <jaya@pune.redhat.com>\n"
+"Language-Team: Tamil <zhakanini@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "பயன்பாடு: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "வெர்போஸ் ஆதரவு இல்லாமல் மெட்டாசிட்டி அமைக்கப்பட்டது\n"
 
 #: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "\"%s\" ஐ இயல் எண்ணாக பகுக்க முடியாது"
 
 #: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "\"%s\" தொடரும் சரத்தில் \"%s\" சரத்தை புரிந்துகொள்ள முடியவில்லை"
 
 #: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "செய்தி \"%s\" ஐ உரையாடலில் இருந்து பகுப்பதில் தோல்வி\n"
 
 #: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "காட்சி செயலை படிக்கும் போது பிழை: %s\n"
 
 #: src/delete.c:344
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "மெட்டாசிட்டி தகவலை ஏற்றும் போது தோல்வி எனவே பயன்பாட்டை கொல்கிறது: %s\n"
 
 #: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr ""
+msgstr "புரவலன் பெயரை பெறுவதில் தோல்வி: %s\n"
 
 #: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
+msgstr "X சாளர காட்சியை திறப்பதில் தோல்வி '%s'\n"
 
 #: src/errors.c:231
 #, c-format
@@ -70,11 +73,14 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
+"காட்ட வேண்டிய இணைப்புகளின் பட்டியல்'%s';\n"
+"X சேவகன் பணிநிறுத்தம் செய்யப்பட்டிருக்கலாம் அல்லது நீங்கள் செயலை\n"
+"சிதைத்திருக்கலாம்/கொன்றிருக்கலாம்\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "கவலைக்கிடமான IO பிழை %d (%s) திரையில் '%s'.\n"
 
 #: src/frames.c:1021
 msgid "Close Window"
@@ -86,38 +92,40 @@ msgstr "தலைப்புப் பட்டி"
 
 #: src/frames.c:1027
 msgid "Minimize Window"
-msgstr ""
+msgstr "சாளரத்தை சிறிதாக்கு"
 
 #: src/frames.c:1030
 msgid "Maximize Window"
-msgstr ""
+msgstr "சாளரத்தை பெரிதாக்கு"
 
 #: src/frames.c:1033
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "சாளரத்தை பெரிதாக்காதே"
 
 #: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
+msgstr "விசை %s ஐ மாற்றி  %x ஓடு இணைத்து வேறு நிரல் பயன்படுத்திக்கொண்டிருக்கிறது\n"
 
 #: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "மெட்டா-சிட்டி உரையை துவக்குவதில் பிழை கட்டளை பற்றிய பிழையை அச்சடிக்கவும்: %s\n"
 
 #: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "கட்டளை %d எதுவும் குறிப்பிடப்படவில்லை.\n"
 
 #: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:76
 #, c-format
@@ -128,26 +136,29 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"மெட்டாசிட்டி %s\n"
+"உரிமம் (C) 2001-2002 ஹவாக் பெனிங்டன், ரெட் ஹாட், இங்க்., மற்றும் பிறர்\n"
+"இது இலவச மென்பொருள், இதை நகலெடுக்க கீழ்கண்ட விதிமுறையை பார்க்கவும்.\n"
+"இதற்கு உத்திரவாதம் இல்லை ; குறிப்பிட்ட செயலுக்காக விற்பனை செய்யவதற்கும் உத்திரவாதம் இல்லை.\n"
 
 #: src/main.c:443
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr ""
+msgstr "கருப்பொருள் அடைவை வருடுவதில் தோல்வி: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "கருப்பொருளை காணவில்லை! %s உள்ளதா எனவும் அதில் பயனுள்ள கருப்பொருள் உள்ளதா எனவும் பார்க்கவும்."
 
 #: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "மீண்டும் துவக்குவதில் பிழை: %s\n"
 
 #: src/menu.c:54
 msgid "Mi_nimize"
-msgstr ""
+msgstr "(_n)சிறிதாக்கு"
 
 #: src/menu.c:55
 msgid "Ma_ximize"
@@ -155,7 +166,7 @@ msgstr "பெருதாக்குக"
 
 #: src/menu.c:56
 msgid "Unma_ximize"
-msgstr ""
+msgstr "(_x)பெரிதாக்காதே"
 
 #: src/menu.c:57
 msgid "Roll _Up"
@@ -167,7 +178,7 @@ msgstr "கீழ் விரி"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr ""
+msgstr "(_T)மேலே"
 
 #: src/menu.c:61
 msgid "_Move"
@@ -193,20 +204,19 @@ msgstr "þவ்வேலையிடத்தில் மட்டும்"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "(_L)பணியிடத்தின் இடது பக்கம் நகர்த்து"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr ""
+msgstr "(_i)பணியிடத்தின் வலது பக்கம் நகர்த்து"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "வேலை þடம் %d"
+msgstr "(_U)பணியிடத்தின் மேலே நகர்த்து"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "(_D)பணியிடத்தின் கீழேகம் நகர்த்து"
 
 #: src/menu.c:162 src/prefs.c:1868
 #, c-format
@@ -214,18 +224,17 @@ msgid "Workspace %d"
 msgstr "வேலை þடம் %d"
 
 #: src/menu.c:171
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "வேலை þடம் %d"
+msgstr "வேலை þடம் 1_0"
 
 #: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "வேலையிடம் %s%d"
 
 #: src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "(_W)மற்ற பணியிடத்திற்கு நகர்த்து"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -261,7 +270,7 @@ msgstr "Alt"
 #.
 #: src/metaaccellabel.c:123
 msgid "Meta"
-msgstr ""
+msgstr "மெட்டா"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -270,7 +279,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "சூப்பர்"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -279,7 +288,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr "þனம்"
+msgstr "ஹைப்பர்"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -288,7 +297,7 @@ msgstr "þனம்"
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -297,7 +306,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -306,7 +315,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -315,21 +324,20 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
 #: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "சாளரம் \"%s\" பதிலளிக்கவில்லை"
 
 #: src/metacity-dialog.c:118
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "இந்த பயன்பாட்டை நீங்கள் கட்டாயமாக மூட செய்வதால் சேமிக்காத தகவல்களை இழக்க நேரும்"
 
 #: src/metacity-dialog.c:128
 msgid "_Force Quit"
-msgstr ""
+msgstr "(_F)கட்டாயம் வெளியேறு"
 
 #: src/metacity-dialog.c:225
 msgid "Title"
@@ -337,13 +345,13 @@ msgstr "தலைப்பு"
 
 #: src/metacity-dialog.c:237
 msgid "Class"
-msgstr ""
+msgstr "Class"
 
 #: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr ""
+msgstr "\"தற்போதைய அமைப்பை சேமி\" செயலுக்கு ஆதரவு இல்லை மேலும் அடுத்த முறை உள்நுழையும் போது நீங்களாக துவக்க வேண்டும்"
 
 #: src/metacity-dialog.c:323
 #, c-format
@@ -351,14 +359,16 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"இயக்குவதில் பிழை \"%s\":\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "மெட்டாசிட்டி"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(செயல்படுத்தப்படாத) உலாவல் பயன்பாட்டின் படி சாளரத்தின் படி அல்ல"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -368,19 +378,19 @@ msgid ""
 "titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
-msgstr ""
+msgstr "சாளரத்தின் தலைப்புப்பட்டியில் இருக்கும் எழுத்துருவின் விளக்கம். titlebar_font_size தேர்வில் 0 ஐ அமைத்தால் விளக்கத்தில் உள்ள அளவு பயன்படுத்தப்படும். எனிலும் titlebar_uses_desktop_font தேர்வை உண்மை என அமைத்தால் இந்த தேர்வு செயல்படாது. பொதுவகான titlebar_font ஐ அமைக்காமல் titlebar_uses_desktop_font ஐ பொய் என அமைத்தால் அது மேல்மேசையின் எழுத்துருவை எடுத்துக்கொள்ளும்."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "தலைப்புப்பட்டியை இரண்டு-க்ளிக் செய்யும் போது நிகழவேண்டியது"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "சாளர மெனுவை செயல்படுத்து"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "தலைப்புப்பட்டியில் பட்டன்கள் அடுக்கப்பட்ட நிலை"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -390,11 +400,11 @@ msgid ""
 "Duplicate buttons are not allowed. Unknown button names are silently ignored "
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
-msgstr ""
+msgstr "தலைப்புப்பட்டியில் பட்டன்கள் அடுக்கப்பட்ட நிலை.\"menu:minimize,maximize,close\" என மதிப்புகள் இருக்க வேண்டும்; அரைப்புள்ளி சாளரத்தின் இடது மூலையிலிருந்து வலது மூலையை தனிப்படுத்த பயன்படும். மேலும் பட்டன் பெயர்கள் கமா வால் பிரிக்கப்பட்டிருக்கும் பொய் பட்டனுக்கு அனுமதி இல்லை. தெரியாத பட்டன் பெயர்கள் தவிர்க்கப்பட்டு மெட்டா சிட்டியின் அடுத்த பதிப்பின் சேர்க்கப்படும்."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "குறிக்கப்பட்ட சாளரத்தை தானாக ஏற்று"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -402,55 +412,54 @@ msgid ""
 "(left click), resize the window (middle click), or show the window menu "
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
-msgstr ""
+msgstr "இந்த விசையை அழுத்திக்கொண்டே சாளரத்தில் மேல் க்ளிக் செய்து சாளரத்தை நகர்த்தவும்(இடது க்ளிக்), அளவு மாற்ற (மைய க்ளிக்), அல்லது மெனுவைகாட்ட(வலது க்ளிக்).\"&lt;Alt&gt;\" or \"&lt;Super&gt;\" மாற்றிகளை உதாரணமாக எடுத்துக்கொள்ளவும்"
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
 msgstr "சாளரம் மூடவும்"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "பதிக் கீபைண்டிங்கை இயக்க கட்டளை"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr ""
+msgstr "தற்போதைய கருப்பொருள்"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "தானாக துவக்க தேர்வில் தாமதம் மில்லிசெகண்டில்"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
+msgstr "கணினி அல்லது பயன்பாட்டால் மணியை காட்டுவதற்கு பதில் கேட்கக்கூடிய ஒலியை உருவாக்க முடியுமா. "
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "பழைய மற்றும் உடைந்த பயன்பாடுகளாள் செயல்நீக்கம் செய்யப்பட்ட காணாமல் போன வசதிகள்"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "்சி மணகாட்சியாக ியை செயல்படுத்து"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "எல்லா சாளரங்களையும் மறைந்து மேல்மேசையை காட்டு"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
-msgstr ""
+msgstr "உண்மையெனில் குறிக்கும் இடம் \"sloppy\" அல்லது \"mouse\" எனில் சிறிது தாமததிற்கு பிறகு சாளரம் தானாக துவங்கும்(தாமதம் auto_raise_delay விசையால் குறிக்கப்படும்)"
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
-msgstr ""
+msgstr "உண்மையெனில், titlebar_font தேர்வை தவிர்கும். நிலையான எழுத்துருவை சாளர தலைப்பில் காட்டும்."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -459,7 +468,7 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr ""
+msgstr "உண்மையெனில், மெட்டாசிட்டி குறைவான கருத்து மற்றும் குறைந்த  \"நேர் மாற்றத்திற்கம்\" வசதி செய்து தரும், கம்பி சட்டங்களை பயன்படுத்தி, உயிர் சித்திரங்களை தவிர்க்கும். இது பயனீட்டாளரின் பயன்பாடுகளில் போதிய குறைகளை நீக்கும் , மேலும் பழைய பயன்பாடுகள் மற்றும் முனைய சேவைகள் பாகுபாடு பாராமல் வேலை செய்ய அனுமதிக்கும். "
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -476,173 +485,170 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "உண்மையெனில், குறைவான வளத்தை பயன்படுத்தும்"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "மற்ற சாளரத்திற்கு கீழே சாளரத்தை வைக்கவும்"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
-msgstr "பெருதாக்குக"
+msgstr "சாளரத்தை பெரிதாக்கு"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
-msgstr ""
+msgstr "சாளரத்தை செங்குத்தாக பெரிதாக்கு "
 
 #: src/metacity.schemas.in.h:25
 msgid "Maximize window vertically"
-msgstr ""
+msgstr "சாளரத்தை இடவலமாக பெரிதாக்கு "
 
 #: src/metacity.schemas.in.h:26
 msgid "Minimize window"
-msgstr ""
+msgstr "சாளரத்தை சிறிதாக்கு"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "சாளர க்ளிக் செயல்பாட்டின் போது பயன்பட வேண்டிய மாற்றி"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
+msgstr "பலகம் மற்றும் மேல்மேசையில் பின்னோக்கி நகரவும்"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
+msgstr "பலகம் மற்றும் மேல்மேசையில் தோன்றும் சாளரத்தோடு பின்னோக்கி நகரவும்"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
-msgstr ""
+msgstr "மேல்மேசையில் பின்னோக்கி நகரவும்"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "பலகம் மற்றும் மேல்மேசையில் உடனடியாக நகரவும்"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "பலகம் மற்றும் மேல்மேசையில் தோன்றும் சாளரத்தோடு நகரவும்"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "சாளரத்திற்கிடையில் உடனடியாக நகரவும்"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "சாளரம் மற்றும் தோன்றும் சாளரத்தோடு நகரவும்"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
+msgstr "தோன்றும் சாளரக்காட்சியை பயன்படுத்தி சாளரத்தின் குறியை பினோக்கி மாற்றவும்"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "சாளரம் மூடவும்"
+msgstr "சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "ஒருபணியிடத்திற்கு கீழே சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "ஒருபணியிடத்திற்கு இடது பக்கம் சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "ஒருபணியிடத்திற்கு வலதுபக்கம் சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "ஒருபணியிடத்திற்கு மேலே சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "பணியிடம் 1 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "பணியிடம் 10 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "பணியிடம் 11 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "பணியிடம் 12 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "பணியிடம் 2 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "பணியிடம் 3 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "பணியிடம் 4 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "பணியிடம் 5 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "பணியிடம் 6 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "பணியிடம் 7 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "பணியிடம் 8 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "பணியிடம் 9 க்கு சாளரத்தை நகர்த்தவும்"
 
 #: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
-msgstr ""
+msgstr "பணியிடத்தின் பெயர்"
 
 #: src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
-msgstr ""
+msgstr "பணியிடங்களின் எண்ணிக்கை"
 
 #: src/metacity.schemas.in.h:55
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr ""
+msgstr "பணியிடங்களின் எண்ணிக்கை. பூஜ்ஜியத்திலிருந்து அதிகபட்ட மதிப்பை அமைக்க வேண்டும் (34 மில்லியன் பணியிடத்தை அமைத்தால் உங்கள் கணினி செயலிழந்து போகும்)"
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "தெளிவற்ற சாளரத்தை உயர்த்து, அல்லது சிறிதாக்கு"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "மற்ற சாளரத்திற்கு மேல் இந்த சாளரத்தை உயர்த்து"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
-msgstr "சாளரம் மூடவும்"
+msgstr "சாளரத்தின் அளவை மாற்று"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
-msgstr ""
+msgstr "குறிப்பிட்ட கட்டளையை இயக்கு"
 
 #: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
-msgstr ""
+msgstr "பலக மெனுவை காட்டு"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel run application dialog"
-msgstr ""
+msgstr "பயன்பாட்டு உரையாடலை இயக்கும் பலகத்தை காட்டு"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -662,79 +668,79 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "பணியிடம் 1க்கு மாறு"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "பணியிடம் 10 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "பணியிடம் 11 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "பணியிடம் 11 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "பணியிடம் 2 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "பணியிடம் 3 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "பணியிடம் 4 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "பணியிடம் 5 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "பணியிடம் 6 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "பணியிடம் 7 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "பணியிடம் 8 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "பணியிடம் 9 க்கு மாறு"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "பணியிடத்தை ஒன்றின் மேல் ஒன்றாக நகர்த்து"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "பணியிடத்தை ஒன்றின் கீழ் ஒன்றாக நகர்த்து"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "பணியிடத்தை இடது பக்கம் ாக நகர்த்து"
 
 #: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "பணியிடத்தை வலது பக்கம் நகர்த்து"
 
 #: src/metacity.schemas.in.h:79
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "கணினி ஒலி கேட்கும்படி"
 
 #: src/metacity.schemas.in.h:80
 msgid "Take a screenshot"
-msgstr ""
+msgstr "திரைவெட்டை பதிவு செய்"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "சாளரத்தின் திரைவெட்டை பதிவு செய்"
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -753,19 +759,21 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_N கீபைன்டிங்கை அதனோடு தொடர்புடைய கட்டளையோடு இணைக்கும்.இந்த கட்டளைக்காக run_command_N "
+"கீபைன்டிங்கை அழுத்துவதால் command_N இயங்கும்."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
+msgstr " /apps/metacity/global_keybindings/run_command_screenshot கட்டளை அமைப்பை துவக்க பயன்படும் கீபைன்டிங்கை குறிக்கும்"
 
 #: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr ""
+msgstr "The /apps/metacity/global_keybindings/run_command_window_screenshot விசை இந்த கட்டளை செயல்படுத்த வேண்டிய கீபைன்டிங்கை குறிக்கும்"
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -776,6 +784,9 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
+"கீபைன்டிங் குறிப்பிட்ட எண்ணுள்ள கட்டளையை /apps/"
+"metacity/keybinding_commands இல் இயக்கும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது"
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -785,7 +796,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடங்களை தற்போதைய பணியிடத்திலிருந்து அடுத்த பணியிடத்தின் மேல்்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -795,7 +806,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடங்களை தற்போதைய பணியிடத்திலிருந்து அடுத்த பணியிடத்தின் கீழ் மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்்"
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -805,7 +816,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடங்களை தற்போதைய பணியிடத்திலிருந்து அடுத்த பணியிடத்தின் இடது பக்கம்ல் மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -815,7 +826,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடங்களை தற்போதைய பணியிடத்திலிருந்து அடுத்த பணியிடத்தின் வலது பக்கம் மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -824,7 +835,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 1 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -833,7 +844,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 10 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -842,7 +853,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 11 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -851,7 +862,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 12 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -860,7 +871,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 2 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -869,7 +880,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 3 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -878,7 +889,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 4 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -887,7 +898,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 5 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -896,7 +907,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 6 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -905,7 +916,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 7 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -914,7 +925,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 8 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -923,7 +934,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் பணியிடத்தை பணியிடம் 9 க்கு மாற்றும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -932,7 +943,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளர மெனுவை செயல்படுத்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -941,7 +952,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை மூட பயன்படும் கீபைண்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -951,7 +962,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "\"நகரும் பாங்கில்\" நுழைய மற்றும் சாளரத்தை விசைப்பலகையில் நகர்த்த பயன்படும்  கீபைண்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -961,7 +972,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "\"அளவுமாற்ற பாங்கில்\" நுழைய மற்றும் சாளரத்தை விசைப்பலகையில் அளவுமாற்ற பயன்படும்  கீபைண்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -971,7 +982,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "எல்லா சாளரங்களையும் மறைத்து மேல்மேசையை அனுமதிக்கும் கீபைன்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -980,7 +991,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை பெரிதாக்க பயன்படும் கீபைண்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -989,7 +1000,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை சிறிதாக்க பயன்படும் கீபைண்டிங் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -999,7 +1010,7 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் கீழே நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1009,7 +1020,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் இடது பக்கம் நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1019,7 +1030,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் வலது பக்கம் நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1028,7 +1039,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் மேலே நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1037,7 +1048,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 1 க்கு்கம் நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1046,7 +1057,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 10 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1055,7 +1066,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 11 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1064,7 +1075,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 12 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1073,7 +1084,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 2 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1082,7 +1093,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 3 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1091,7 +1102,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 4 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1100,7 +1111,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 5 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1109,7 +1120,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 6 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1118,7 +1129,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 7 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1127,7 +1138,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 8 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1136,7 +1147,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை ஒரு பணியிடம் 9 க்கு நகர்த்த பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1146,7 +1157,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளத்தோடு பலகம் மற்றும் மேல்மேசையின் பின்னால் குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1156,7 +1167,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளம் இல்லாமல் பலகம் மற்றும் மேல்மேசையின் பின்னால் குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1167,7 +1178,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளம் இல்லாமல் சாளரத்தில் பின்னால் குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1178,7 +1189,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளத்தோடுாமல் சாளரத்தில் பின்னால் குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1188,7 +1199,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளத்தை பயன்படுத்தி பலகம் மற்றும் மேல்மேசையை னால் குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1198,7 +1209,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளரம் பலகம் மற்றும் மேல்மேசையை குறிக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1209,7 +1220,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளரம் இல்லாமல் (lt;Alt&gt;Escape பழைய) குறிகளை நகர்த்த பயன்படும் கீபைன்டிங். இதை பயன்படுத்தி \"shift\" விசையை அழுத்திக்கொண்டே பைன்டிங்கின் திசையை மாற்ற முடியும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1220,7 +1231,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "தோன்றும் சாளரத்தோடு (lt;Alt&gt;Escape பழைய) குறிகளை நகர்த்த பயன்படும் கீபைன்டிங். இதை பயன்படுத்தி \"shift\" விசையை அழுத்திக்கொண்டே பைன்டிங்கின் திசையை மாற்ற முடியும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1231,6 +1242,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"மேலே மாற பயன்படும் கீபைன்டிங். மேலே உள்ள சாளரம் சாளரத்தின் மேலே தெரியும்"
+". இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1239,7 +1252,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "முழு திரை பாங்கிற்கு நகர பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1248,7 +1261,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை பெரிதாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1257,7 +1270,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "நிழல்/நிழலற்ற நிலைக்கு பாங்கிற்கு நகர பயன்படும் கீபைன்டிங். இதை பயன்படுத்தி . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1267,7 +1280,7 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
+msgstr "ஒரு பணியிலத்திற்கோ எல்லா பணியிடங்களுக்கோ மாற பயன்படும் கீபைன்டிங். இதை பயன்படுத்தி \"shift\" விசையை அழுத்திக்கொண்டே பைன்டிங்கின் திசையை மாற்ற முடியும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1276,7 +1289,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "சாளரத்தை சிறிதாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1287,6 +1300,8 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"பலகத்தை  \"பயன்பாடை இயக்கு\" உரையாடல் பெட்டி யில் காட்ட பயன்படும் கீபைன்டிங்"
+"சாளரத்தை சிறிதாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1296,7 +1311,7 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
+msgstr "பலகத்தின் திரைவெட்டை உருவாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:142
 msgid ""
@@ -1306,7 +1321,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "பலகத்தின் திரைவெட்டை உருவாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1315,27 +1330,27 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "பலகத்தின்தின் மூல மெனுவை காட்ட உருவாக்க பயன்படும் கீபைன்டிங். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
-msgstr ""
+msgstr "பணியிடத்தின் பெயர்"
 
 #: src/metacity.schemas.in.h:145
 msgid "The screenshot command"
-msgstr ""
+msgstr "திரைவெட்டு கட்டளை"
 
 #: src/metacity.schemas.in.h:146
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "கருப்பொருள் ஓரம், தலைப்புப்பட்டி போன்றவைகளின் தோற்றத்தை கண்டறியும்."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr ""
+msgstr "(_r)தானாக துவங்குதல் உண்மையென்று அமைக்கப்பட்டால் சாளரம் எடுத்துக்கொள்ளும் தாமத நேரம். தாமதம் 1000 நொடிகளில் குறிக்கப்பட்டுள்ளது"
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1344,11 +1359,11 @@ msgid ""
 "them, \"sloppy\" means windows are focused when the mouse enters the window, "
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
-msgstr ""
+msgstr "சாளர துவக்க குறி சாளரங்கள் எவ்வாறு செயல்படுத்தப்படுகிறது என்பதை குறிப்பிடும். இதில் மூன்றுவித மதிப்புகள் இருக்கும்,\"க்ளிக்\" எனில் க்ளிக் செய்யும் போது சாளரம் குறியை நகர்த்தும்.\"sloppy\" எனில் சுட்டி சாளரத்தில் நுழையும் போது செயல்படும் மற்றும்  \"mouse\" எனில் சுட்டி சாளரதில் நுழையும் போது செயல்படும்."
 
 #: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
-msgstr ""
+msgstr "சாளர திரைவெட்டு கட்டளை"
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1360,7 +1375,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் சாளரம் மேலே அல்லது கீழே இருப்பதை மாற்றும். சாளரம் மற்ற சாளரத்தால் மறைக்கப்பட்டிருந்தால் வேறு சாளரத்தை மேல் நோக்கி நகர்த்தும், சாளரம் ஏற்கெனவே முழுதாக தெரிந்தால் அது பின்னோக்கி நகரும். இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1369,7 +1384,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் ஒரு சாளரத்தை மற்ற சாளரத்திற்கு கீழ் தள்ளும் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1378,7 +1393,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgstr "கீபைன்டிங் ஒரு சாளரத்தை மற்ற சாளரத்திற்கு மேல் தள்ளும் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1388,7 +1403,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "மேல்கீழ் இடங்களை மறைக்குமளவிற்கு கீபைன்டிங் சாளரத்தின் அளவை மாற்றும் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:154
 msgid ""
@@ -1398,61 +1413,61 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
+msgstr "இடவல் இடங்களை மறைக்குமளவிற்கு கீபைன்டிங் சாளரத்தின் அளவை மாற்றும் . இதன் அமைப்பு \"&lt;Control&gt;a\" அல்லது \"&lt;Shift&gt;&lt;Alt&gt;F1\" வாக இருக்கும். இதன் பகுப்பி பெரிய மற்றும் சிறிய எழுத்துக்களை அனுமதிப்பதோடு,  \"&lt;Ctl&gt;\" மற்றும் \"&lt;Ctrl&gt;\".விரிவாக்கங்களை அனுமதிக்கும். \"செயல்படுத்தாதே\" தேர்வை அமைப்பதன் மூலம் கீபைன்டிங் செயலை கட்டுப்படுத்த முடியும்"
 
 #: src/metacity.schemas.in.h:155
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr ""
+msgstr "தலைப்பு பட்டியின் மேல் இரு முறை க்ளிக் செய்யும் போது ஏற்படும் விளைவை கண்டுபிடிக்கும், தற்போதுள்ள செல்லக்கூடிய தேர்வுகள் 'toggle_shade',இது சளரத்தில் நிழல்/நிழல் இல்லாமல் விளைவுகளையும், 'toggle_maximize' சாளரத்தை சிறிதாக்கவும்/பெரிதாக்கவும் உதவும்."
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
-msgstr ""
+msgstr "எப்போதும் மேல் நிலைக்கு நகர்த்து"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "எப்போதும் முழுதிரை பாங்கிற்கு செல்"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "எப்போதும் பெரிய சாளர நிலைக்கு செல்"
 
 #: src/metacity.schemas.in.h:159
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "எப்போதும் நிழை நிலைக்கு செல்"
 
 #: src/metacity.schemas.in.h:160
 msgid "Toggle window on all workspaces"
-msgstr ""
+msgstr "சாளரத்தை அனைத்து பணியிடத்திற்கும் நகர்த்து"
 
 #: src/metacity.schemas.in.h:161
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr ""
+msgstr "கணினி அல்லது பயன்பாடு 'பீப்' அல்லது 'மணி' ஓசை எழுப்பினால் காட்டும் படி செய்.hard-of-hearing மற்றும் சத்தம் அதிகம் உள்ள இடங்களில் இது பயன்படும் அல்லது 'மணியோசை' நிறுத்தப்பட்டாலும் இது உதவியாக இருக்கும்"
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize window"
-msgstr ""
+msgstr "சாளரத்தை சிறிதாக்கு"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "சாளர தலைப்பிம் நிலையான கணினி எழுத்துருவை பயன்படுத்து"
 
 #: src/metacity.schemas.in.h:164
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "காட்சி மணி வகை"
 
 #: src/metacity.schemas.in.h:165
 msgid "Window focus mode"
-msgstr ""
+msgstr "சாளர குறி பாங்கு"
 
 #: src/metacity.schemas.in.h:166
 msgid "Window title font"
-msgstr ""
+msgstr "சாளர தலைப்பு எழுத்துரு"
 
 #: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
@@ -1461,47 +1476,47 @@ msgstr ""
 #: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "GConf விசை \"%s\" செல்லாத வகை\n"
 
 #: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
+msgstr "அமைப்பு பாங்கில் உள்ள \"%s\" சுட்டி பட்டன் மாற்றியில் செல்லாத மதிப்பு\n"
 
 #: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf விசை '%s' செல்லாத மதிப்பாக அமைக்கப்பட்டுள்ளது\n"
 
 #: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "எழுத்துரு விளக்கம் \"%s\" ஐ GConf விசையிலிருந்து பகுக்க முடியவில்லை %s\n"
 
 #: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
-msgstr ""
+msgstr "%d GConf விசை %s இல் சேமிக்கப்பட்டுள்ளது ஆனால் அது செல்லாது தற்போது அதிகபட்சம் %d\n"
 
 #: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr ""
+msgstr "உடைந்த பயன்பாடுகளின் செயல்பாடு தடைசெய்யப்பட்டது, சில பயன்பாடுகள் சரியாக வேலை செய்யாது.\n"
 
 #: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%d GConf விசையில் %s சேமிக்கப்பட்டுள்ளது அதன் வரம்பு 0 லிருந்து %d\n"
 
 #: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "பணியிடத்தை அமைப்பதில் பிழை %d: %s\n"
 
 #: src/prefs.c:1632
 #, c-format
@@ -1509,21 +1524,23 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"\"%s\" அமைப்பு தரவுத்தளத்தில் உள்ள மதிப்பு செல்லாத கீபைன்டிங்"
+"\"%s\"\n"
 
 #: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "பணியிடத்தை %d லிருந்து \"%s\" க்கு மாற்றுவதில் பிழை: %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "திரை %d காட்சி '%s' இல் செல்லாது\n"
 
 #: src/screen.c:424
 #, c-format
@@ -1531,137 +1548,138 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"திரை %d காட்சி \"%s\" க்கு சாளர மேலாளர் உள்ளது; --"
+"replace தேர்வை பயன்படுத்தி தற்போதைய சாளரத்தை மாற்றவும்.\n"
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "திரையில் சாளர மேலாளர் தேர்வை பெறமுடியவில்லை %d காட்சி \"%s\"\n"
 
 #: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "திரை %d யின் காட்சி \"%s\" க்கு சாளர மேலாளர் ஏற்கெனவே உள்ளது\n"
 
 #: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "திரை %d ஐ விடுவிக்க முடியவில்லை \"%s\"\n"
 
 #: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "அடைவை உருவாக்க முடியவில்லை '%s': %s\n"
 
 #: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "அமர்வு கோப்பு '%s' எழுதுவதற்காக திறக்க முடியவில்லை: %s\n"
 
 #: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "அமர்வு கோப்பை எழுதுவதில் பிழை '%s': %s\n"
 
 #: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "அமர்வுகோப்பை மூடுவதில் பிழை '%s': %s\n"
 
 #: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "சேமிக்கப்பட்ட அமர்வு கோப்பை படிப்பதில் தோல்வி %s: %s\n"
 
 #: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "சேமிக்கப்பட்ட அமர்வு கோப்பை பகுப்பதில் தோல்வி: %s\n"
 
 #: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session> பண்பு பார்க்கப்பட்டது ஆனால் இங்கு அமர்வு ID ஏற்கெனவே உள்ளது"
 
 #: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "தெரியாத பண்பு %s <metacity_session> உறுப்பில்"
 
 #: src/session.c:1253
 msgid "nested <window> tag"
-msgstr ""
+msgstr "பின்னப்பட்ட <window> குறி"
 
 #: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "தெரியாத பண்பு %s <window> உறுப்பில்"
 
 #: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "தெரியாத பண்பு %s <maximized> உறுப்பில்"
 
 #: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "தெரியாத பண்பு %s <geometry> உறுப்பில்"
 
 #: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "தெரியாத உறுப்பு %s"
 
 #: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr ""
+msgstr "மெட்டாசிட்டி உரையாடலை துவக்குவதில் பிழை அமர்வு மேலாண்மைக்கு ஆதரவில்லா பயன்பாடுகளுக்கு எச்சரிக்கை தருகிறது: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "வரி %d எழுத்து %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "பண்பு \"%s\" ஒரே உறுப்பில் இரண்டு முறை வந்துள்ளது <%s>"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "பண்பு \"%s\" <%s> இந்த பயன்பாட்டிற்கு செல்லாது"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "இயல் எண் %ld முழு எண்ணாக இருக்க வேண்டும்"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "இயல் எண் %ld பெரிதாக இருக்கிறது, தற்போது அதிகபட்சம் %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "\"%s\" பின்ன எண் பகுக்க முடியாது"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "பூலியன் மதிப்புகள் \"true\" அல்லது \"false\" \"%s\" இல்லை"
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "கோணம் 0.0 மற்றும் 360.0, இடைப்பட்டதாக இருக்க வேண்டும் %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "ஆல்ஃபா 0.0 (பார்வைக்கு) மற்றும் 1.0 (முழுவதும் ஒலிபுகும்), %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1669,75 +1687,77 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"செல்லாத தலைப்பு அளவு \"%s\" ( xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை\"%s\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை\"%s\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> பெயர் \"%s\" இரண்டாது முறை பயன்படுத்தப்படுகிறது"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> தாய் \"%s\" குறிப்பிடப்படவில்லை"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> வடிவியல் \"%s\" குறிப்பிடப்படவில்லை"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> வடிவியல் அல்லது வடிவியல் உள்ள மூலத்தை குறிப்பிடவேண்டும்"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "தெரியாத வகை \"%s\" <%s> உறுப்பில்"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "(_s)தெரியாத பாணி அமைப்பு \"%s\" <%s> உறுப்பில்"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "சாளர வகை \"%s\" இந்த பாணிக்கு ஏற்கெனவே குறிப்பிடப்பட்டது"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "மெனு சின்னத்திற்கான \"%s\" தெரியாத செயல் "
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "மெனு சின்னத்திற்கான \"%s\" தெரியாத நிலை"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "%s நிலைக்கு %s இந்த கருப்பொருளில் ஏற்கெனவே சின்னம் உள்ளது"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "இல்லை <draw_ops> இந்த பெயர் \"%s\" எற்கெனவே குறிப்பிடப்பட்டது"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1745,83 +1765,82 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "உறுப்பு <%s> கீழே அனுமதிக்கப்படவில்லை <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"பெயர்\" உறுப்பின் பண்பு <%s>"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"மதிப்பு\" உறுப்பின் பண்பு <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "அனைத்து பட்டன் அகலம்/உயரம் குறிப்பிட முடியாது"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "தூரன் \"%s\" தெரியாது"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "சீராக்க விகிதம் \"%s\" தெரியாது"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"மேல்\" உறுப்பின் மேல் பண்பு <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"கீழ்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"இடது\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"வலது\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "ஓரம் \"%s\" தெரியாது"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"நிறம்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"x1ழ்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"y1\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"x2\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"y1\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -1829,7 +1848,7 @@ msgstr ""
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"x\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -1837,397 +1856,394 @@ msgstr ""
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"x\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"அகலம்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"உயரம்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"துவக்க கோணம்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"விரிவாக்க_கோணம்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"ஆல்ஃபா\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"வகை\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "இந்த ஒலிவிளைவிற்கான மதிப்பு \"%s\" ஐ புரிந்துகொள்ள முடியவில்லை"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"கோப்பின் பெயர்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "இந்த உறுப்பிற்கான <%s> நிரப்பல் வகை \"%s\" ஐ புரிந்துகொள்ள முடியவில்லை"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"நிலை\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"நிழல்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "இல்லை \"அம்புக்குறி\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "இந்த உறுப்பிற்கான <%s> நிலை \"%s\" ஐ புரிந்துகொள்ள முடியவில்லை"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "இந்த உறுப்பிற்கான <%s> நிழல் \"%s\" ஐ புரிந்துகொள்ள முடியவில்லை"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "இந்த உறுப்பிற்கான <%s> அம்புக்குறி \"%s\" ஐ புரிந்துகொள்ள முடியவில்லை"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "இல்லை <draw_ops> அழைக்கப்பட்ட \"%s\" குறிப்பிடப்பட்டது"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "draw_ops உம் சேர்த்து \"%s\" முழு குறிப்பை உருவாக்கும்"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"மதிப்பு\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"நிலை\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "சட்டம் ்தில் \"%s\" தெரியாத நிலை"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "%s இட சட்டம் ஏற்கெனவே உள்ளது"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"செயல்\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"நிலை\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "\"%s\" பட்டனுக்கு தெரியாத செயல்"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "\"%s\" பட்டனுக்கு தெரியாத நிலை"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "%s நிலை %s இல் ஏற்கெனவே பட்டன் அல்லது செயல் உள்ளது"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"குறி\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"பாணி\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" குறிப்பு பண்பிற்கு இது செல்லாத மதிப்பு"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" நிலை பண்பிற்கு இது செல்லாத மதிப்பு"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "பாணி \"%s\" குறிப்பிடப்படவில்லை"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "இல்லை \"அளவுமாற்றுணி\" உறுப்பின் மேல் பண்பு<%s>"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" அளவுமாற்ற ப்பு பண்பிற்கு இது செல்லாத மதிப்பு"
 
 #: src/theme-parser.c:3450
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr ""
+msgstr "<%s> உறுப்பில் பெரிதாக்கு/சிறிதாக்கு நிலையில் \"அளவு மாற்ற\" பண்பு இருக்கக்கூடாது"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr " %s அளவுமாற்று %s குறி %s ஆகியவைகளின் நிலை ஏற்கெனவே குறிப்பிடப்பட்டுள்ளது"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "%s குறி %s ஆகியவைகளின் நிலை ஏற்கெனவே குறிப்பிடப்பட்டுள்ளது"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "இரண்டு draw_ops கள் <piece> உறுப்பிற்கு இருக்கக்கூடாது (draw_ops ஐ குறிப்பிடும் கருப்பொருள் மற்றும் அதன் பண்புகள் <draw_ops> அல்லது இரண்டும்)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "இரண்டு draw_ops கள் <button> உறுப்பிற்கு இருக்கக்கூடாது (draw_ops ஐ குறிப்பிடும் கருப்பொருள் மற்றும் அதன் பண்புகள் <draw_ops> அல்லது இரண்டும்)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgstr "இரண்டு draw_ops கள் <menu_icon> உறுப்பிற்கு இருக்கக்கூடாது (draw_ops ஐ குறிப்பிடும் கருப்பொருள் மற்றும் அதன் பண்புகள் <draw_ops> அல்லது இரண்டும்)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "கருப்பொருளின் மேம்பட்ட உறுப்பு<metacity_theme>  <%s> இல்லை"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "உறுப்பு <%s> name/author/date/description க்குள் அனுமதி இல்லை"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "உறுப்பு <%s> க்கு <constant> உறுப்பில் அனுமதி இல்லை"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "உறுப்பு <%s> க்கு distance/border/aspect_ratio உறுப்பில் அனுமதி இல்லை"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "உறுப்பு <%s> க்கு வரையும் செயல்பாட்டில் பில் அனுமதி இல்லை"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "உறுப்பு <%s> க்கு <%s> உறுப்பில் அனுமதி இல்லை"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "சட்டத்திற்கு draw_ops தரப்படவில்லை"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "பட்டனுக்கு ்திற்கு draw_ops தரப்படவில்லை"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "மெனுசின்னத்திற்கு ்திற்கு draw_ops தரப்படவில்லை"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "உறுப்பிற்குள் உரை அனுமதி இல்லை<%s>"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> கருப்பொருளை இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> கருப்பொருளை இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> கருப்பொருளை இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> கருப்பொருளை இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> கருப்பொருளை இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
 #: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "%s கருப்பொருள் கோப்பில்லிருந்து படிப்பதில் தோல்வி: %s\n"
 
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "கருப்பொருள் கோப்பு %s இல் root <metacity_theme> உறுப்பு இல்லை"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "தலைப்புப் பட்டி"
+msgstr "/_Windows"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Windows/tearoff"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Windows/_Dialog"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Windows/_Modal dialog"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Windows/_Utility"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/Windows/_Splashscreen"
 
 #: src/theme-viewer.c:76
 msgid "/Windows/_Top dock"
-msgstr ""
+msgstr "/Windows/_Top dock"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Windows/_Bottom dock"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Windows/_Left dock"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Windows/_Right dock"
 
 #: src/theme-viewer.c:80
 msgid "/Windows/_All docks"
-msgstr ""
+msgstr "/Windows/_All docks"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Windows/Des_ktop"
 
 #: src/theme-viewer.c:131
 msgid "Open another one of these windows"
-msgstr ""
+msgstr "இந்த சாளரத்தின் மற்றுமொரு சாளரம்"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "இது திற சின்னத்தோடு கூடிய சோதனை பட்டன்"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "இது 'வெளிச்செல்' சின்னத்தோடு கூடிய சோதனை பட்டன்"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "இது உதாரண உரையாடல் பெட்டியில் உள்ள உதாரண செய்தி"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "பெய்யான மெனு உருப்படி %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "ஓரம்-மட்டும் சாளரம்"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "பட்டி"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "தவறான சாளர பயன்பாடு"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "உரையாடல் பெட்டி"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "மாதிரி உரையாடல் பெட்டி"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "பயன்பாடு மாதிரி"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "Torn-off மெனு"
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "ஓரம்"
 
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "பட்டன் உருவரை சோதனை %d"
 
 #: src/theme-viewer.c:760
 #, c-format
@@ -2399,8 +2415,7 @@ msgstr ""
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
 #: src/theme.c:1122
@@ -2451,14 +2466,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
 #: src/theme.c:1845
@@ -2513,8 +2526,7 @@ msgstr ""
 
 #: src/theme.c:4365 src/theme.c:4397
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 
 #: src/theme.c:4448
@@ -2544,8 +2556,7 @@ msgstr ""
 
 #: src/theme.c:5043 src/theme.c:5105
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
 #: src/theme.c:5051 src/theme.c:5113
@@ -2656,6 +2667,6 @@ msgstr ""
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
