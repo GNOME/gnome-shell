@@ -372,7 +372,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F10</default>
       <locale name="C">
-         <short>Maximize a window</short>
+         <short>Maximize window</short>
          <long>
           The keybinding used to maximize a window
           The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -392,7 +392,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F5</default>
       <locale name="C">
-         <short>Unmaximize a window</short>
+         <short>Unmaximize window</short>
          <long>
           The keybinding used to unmaximize a window.
           The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -433,7 +433,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F4</default>
       <locale name="C">
-         <short>Close a window</short>
+         <short>Close window</short>
          <long>
           The keybinding used to close a window.
           The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -454,7 +454,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F9</default>
       <locale name="C">
-         <short>Minimize a window</short>
+         <short>Minimize window</short>
          <long>
           The keybinding used to minimize a window.
           The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -475,7 +475,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F7</default>
       <locale name="C">
-         <short>Move a window</short>
+         <short>Move window</short>
          <long>
           The keybinding used to enter "move mode" and begin moving a
         window using the keyboard.
@@ -497,7 +497,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F8</default>
       <locale name="C">
-         <short>Resize a window</short>
+         <short>Resize window</short>
          <long>
           The keybinding used to enter "resize mode" and begin resizing a
         window using the keyboard.
@@ -1671,9 +1671,9 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;F2</default>
       <locale name="C">
-         <short>Show the panel run dialog</short>
+         <short>Show the panel run application dialog</short>
          <long>
-          The keybinding which display's the panel's "Run Program" dialog
+          The keybinding which display's the panel's "Run Application" dialog
           box.
 
           The format looks like "&lt;Control&gt;a" or

@@ -1,5 +1,11 @@
 2004-06-24  Elijah Newren  <newren@math.utah.edu>
 
+	* src/metacity.schemas.in: make naming for "move a window"/"move
+	the window"/"move window" more consistent.  Patch from Michael
+	Terry for #142235.
+
+2004-06-24  Elijah Newren  <newren@math.utah.edu>
+
 	* src/session.c: Change meta_warning to meta_topic on failure to
 	connect to a session manager.  Fixes #136218.
 
