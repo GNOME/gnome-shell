@@ -172,6 +172,7 @@ struct _MetaDisplay
   Atom atom_gnome_panel_action_run_dialog;
   Atom atom_metacity_sentinel;
   Atom atom_net_wm_strut_partial;
+  Atom atom_net_wm_user_time;
   
   /* This is the actual window from focus events,
    * not the one we last set

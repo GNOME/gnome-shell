@@ -242,6 +242,11 @@ struct _MetaWindow
 
   /* if TRUE we have a grab on the focus click buttons */
   guint have_focus_click_grab : 1;
+
+  /* set to the most recent user-interaction event timestamp that we
+   * know about for this window
+   */
+  Time net_wm_user_time;
   
 #ifdef HAVE_XSYNC
   /* XSync update counter */
