@@ -7,7 +7,7 @@ INCLUDES=@METACITY_WINDOW_DEMO_CFLAGS@ @METACITY_MESSAGE_CFLAGS@ \
 	@METACITY_PROPS_CFLAGS@  -DMETACITY_ICON_DIR=\"$(pkgdatadir)/icons\" \
 	-DMETACITY_PROPS_GLADEDIR=\"$(pkgdatadir)/glade\" \
 	-DMETACITY_PROPS_ICON_DIR=\"$(datadir)/pixmaps\" \
-	-DMETACITY_LOCALEDIR=\"$(datadir)/locale\"
+	-DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"
 
 metacity_message_SOURCES= 				\
 	metacity-message.c
