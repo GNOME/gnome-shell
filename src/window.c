@@ -456,11 +456,19 @@ meta_window_new (MetaDisplay *display, Window xwindow,
     {
       if (window->initial_workspace == (int) 0xFFFFFFFF)
         {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Window %s is initially on all spaces\n",
+                      window->desc);
+          
           meta_workspace_add_window (window->screen->active_workspace, window);
           window->on_all_workspaces = TRUE;
         }
       else
         {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Window %s is initially on space %d\n",
+                      window->desc, window->initial_workspace);
+
           space =
             meta_display_get_workspace_by_screen_index (window->display,
                                                         window->screen,
@@ -483,6 +491,10 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       if (parent)
         {
           GList *tmp_list;
+
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Putting window %s on some workspaces as parent %s\n",
+                      window->desc, parent->desc);
           
           if (parent->on_all_workspaces)
             window->on_all_workspaces = TRUE;
@@ -499,6 +511,10 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   if (window->workspaces == NULL)
     {
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Putting window %s on active workspace\n",
+                  window->desc);
+      
       space = window->screen->active_workspace;
 
       meta_workspace_add_window (space, window);
@@ -4260,6 +4276,9 @@ update_initial_workspace (MetaWindow *window)
     {
       window->initial_workspace_set = TRUE;
       window->initial_workspace = val;
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Read initial workspace prop %d for %s\n",
+                  window->initial_workspace, window->desc);
     }
   else if (meta_prop_get_cardinal (window->display,
                                    window->xwindow,
@@ -4268,6 +4287,10 @@ update_initial_workspace (MetaWindow *window)
     {
       window->initial_workspace_set = TRUE;
       window->initial_workspace = val;
+
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Read legacy GNOME workspace prop %d for %s\n",
+                  window->initial_workspace, window->desc);
     }
 
   return Success;

@@ -1,3 +1,7 @@
+2002-03-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c: improve debug spew about initial workspace
+
 2002-03-02  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (recalc_window_features): disable resize etc. if
