@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-10 17:14+0200\n"
-"PO-Revision-Date: 2005-03-01 00:11+0200\n"
+"POT-Creation-Date: 2005-03-29 15:43+0200\n"
+"PO-Revision-Date: 2005-03-22 18:03+0200\n"
 "Last-Translator: Canonical Ltd <translations@canonical.com>\n"
 "Language-Team: Xhosa <xh-translate@ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -127,19 +127,16 @@ msgstr "Akukho myalelo %d othe wachazwa.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Akukho myalelo wetheminali ochaziweyo.\n"
 
-# Please translate "ID", "FILENAME" and "DISPLAY" as single words or link multiple words with underscores
 #: ../src/main.c:69
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=i-ID] [--sm-save-file=IGAMA-"
+"LEFAYILE] [--display=OKUSESKRININI] [--replace] [--version]\n"
 
-# Please translate "MERCHANTABILITY" and "FITNESS FOR A PARTICULAR PURPOSE
 #: ../src/main.c:76
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -150,8 +147,7 @@ msgstr ""
 "Imetacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
 "Le yisoftwe engahlawulelwayo; jonga umboneleli kwiimeko zokukopa.\n"
-"Iwaranti AYIKHO; nakwi-MERCHANTABILITY okanye FITNESS FOR A PARTICULAR "
-"PURPOSE.\n"
+"Iwaranti AYIKHO; NAKUSHISHINO okanye UKULUNGELA INJONGO ETHILE.\n"
 
 #: ../src/main.c:443
 #, c-format
@@ -367,15 +363,13 @@ msgstr "Isihloko"
 msgid "Class"
 msgstr "Udidi"
 
-# Please translate "save current setup"
 #: ../src/metacity-dialog.c:262
-#, fuzzy
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Ezi festile azixhasi \"save current setup\" kwaye ziya kufuneka ziqaliswe "
-"ngokutsha ngesandla kwixa elizayo xa ungena."
+"Ezi festile azixhasi \"gcina umiselo lwenkqubo lwangoku\" kwaye ziya "
+"kufuneka ziqaliswe ngokutsha ngesandla kwixa elizayo xa ungena."
 
 #: ../src/metacity-dialog.c:325
 #, c-format
@@ -390,12 +384,11 @@ msgstr ""
 msgid "Metacity"
 msgstr "Imetacity"
 
-# No translation for "Navigation"?
 #: ../src/metacity.schemas.in.h:1
-#, fuzzy
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(Awuzalisekiswanga) I-Navigation isebenza ngokweenkqubo ingezizo iifestile"
+"(Awuzalisekiswanga) Ukwehla usenyuka kusebenza ngokweenkqubo ingezizo "
+"iifestile"
 
 #: ../src/metacity.schemas.in.h:2
 msgid ""
@@ -2299,11 +2292,10 @@ msgstr "Umsebenzi ongaziwayo \"%s\" womfanekiso ongumqondiso wemenyu"
 msgid "Unknown state \"%s\" for menu icon"
 msgstr "Imeko engaziwayo \"%s\" kumfanekiso ongumqondiso kwimenyu"
 
-# Please translate "state"
 #: ../src/theme-parser.c:1160
-#, fuzzy, c-format
+#, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Umxholo sele une-aykhoni yemenyu kumsebenzi %s state %s"
+msgstr "Umxholo sele unomfanekiso ongumqondios wemenyu kumsebenzi %s isimo %s"
 
 #: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
 #: ../src/theme-parser.c:3323
@@ -2722,89 +2714,53 @@ msgstr "Ayikwazi kufunda umxholo kwifayili %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Ifayili yomxholo %s ayiqulathanga ingcambu <metacity_theme> kwinto"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "/_Windows"
+msgstr "/_Iifestile"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:71
-#, fuzzy
 msgid "/Windows/tearoff"
-msgstr "/Windows/tearoff"
+msgstr "/Iifestile/susa"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:72
-#, fuzzy
 msgid "/Windows/_Dialog"
-msgstr "/Windows/_Dialog"
+msgstr "/Iifestile/_Unxibelelwano"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:73
-#, fuzzy
 msgid "/Windows/_Modal dialog"
-msgstr "/Windows/_Modal dialog"
+msgstr "/Iifestile/_Unxibelelwano lwenkqubo"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:74
-#, fuzzy
 msgid "/Windows/_Utility"
-msgstr "/Windows/_Utility"
+msgstr "/Iifestile/_Ukuba luncedo"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:75
-#, fuzzy
 msgid "/Windows/_Splashscreen"
-msgstr "/Windows/_Splashscreen"
+msgstr "/Iifestile/I_skrini sokutsala amehlo"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "/Windows/_Top dock"
+msgstr "/Iifestile/Idokisi eli_phezulu"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:77
-#, fuzzy
 msgid "/Windows/_Bottom dock"
-msgstr "/Windows/_Bottom dock"
+msgstr "/Iifestile/Idokisi eli_sezantsi"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:78
-#, fuzzy
 msgid "/Windows/_Left dock"
-msgstr "/Windows/_Left dock"
+msgstr "/Iifestile/Idokisi elisek_hohlo"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:79
-#, fuzzy
 msgid "/Windows/_Right dock"
-msgstr "/Windows/_Right dock"
+msgstr "/Iifestile/Idokisi elisek_unene"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "/Windows/_All docks"
+msgstr "/Iifestile/_Onke amadokisi"
 
-# Please translate: I know these look like folder names that should not be
-# translated but they are part of the browser for themes
 #: ../src/theme-viewer.c:81
-#, fuzzy
 msgid "/Windows/Des_ktop"
-msgstr "/Windows/Des_ktop"
+msgstr "/Iifestile/i-Des_ktop"
 
 #: ../src/theme-viewer.c:131
 msgid "Open another one of these windows"
@@ -2869,11 +2825,9 @@ msgstr "Uvavanyo lweqhosha %d"
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekondi ukuzoba isakhelo esinye sefestile"
 
-# Please translate THEMENAME
 #: ../src/theme-viewer.c:803
-#, fuzzy
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Usetyenziso: metacity-theme-viewer [THEMENAME]\n"
+msgstr "Usetyenziso: metacity-theme-viewer [IGAMA LOMXHOLO]\n"
 
 #: ../src/theme-viewer.c:810
 #, c-format
