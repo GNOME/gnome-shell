@@ -1,5 +1,14 @@
 2005-02-12  Elijah Newren  <newren@gmail.com>
 
+	Raise the ancestor of a window instead of the window itself.
+	Fixes #166894.
+
+	* src/window.c: (find_root_ancestor): new function,
+	(meta_window_raise): get the ancestor of the given window and
+	raise it if possible instead of the window
+
+2005-02-12  Elijah Newren  <newren@gmail.com>
+
 	Don't unconditionally place splashscreens (and other
 	not-to-befocused windows) below the focus window.  Fixes #167042.
 

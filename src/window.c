@@ -3654,13 +3654,44 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   meta_error_trap_pop (window->display, FALSE);
 }
 
+static gboolean
+find_root_ancestor (MetaWindow *window,
+                    void       *data)
+{
+  MetaWindow **ancestor = data;
+
+  /* Overwrite the previously "most-root" ancestor with the new one found */
+  *ancestor = window;
+
+  /* We want this to continue until meta_window_foreach_ancestor quits because
+   * there are no more valid ancestors.
+   */
+  return TRUE;
+}
+
 void
 meta_window_raise (MetaWindow  *window)
 {
-  meta_topic (META_DEBUG_WINDOW_OPS,
-              "Raising window %s\n", window->desc);
+  MetaWindow *ancestor;
+  ancestor = window;
+  meta_window_foreach_ancestor (window, find_root_ancestor, &ancestor);
 
-  meta_stack_raise (window->screen->stack, window);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Raising window %s, ancestor of %s\n", 
+              ancestor->desc, window->desc);
+
+  if (window->screen->stack != ancestor->screen->stack)
+    {
+      meta_warning (
+                    "Either stacks aren't per screen or some window has a weird "
+                    "transient_for hint; window->screen->stack != "
+                    "ancestor->screen->stack.  window = %s, ancestor = %s.\n",
+                    window->desc, ancestor->desc);
+      /* Just punt and raise the window itself */
+      meta_stack_raise (window->screen->stack, window);
+    }
+  else
+    meta_stack_raise (window->screen->stack, ancestor);
 }
 
 void
