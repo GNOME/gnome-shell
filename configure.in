@@ -117,7 +117,7 @@ AC_ARG_ENABLE(shape,       [  --disable-shape             disable metacity's use
 ## try definining HAVE_BACKTRACE
 AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
 
-ALL_LINGUAS="am az be bg ca cs cy da de el en_GB es fa fi fr ga gl he hu is it ja ko lv mk ml mn ms nl no pl pt pt_BR ro ru sl sk sr sr@Latn sv tr uk vi zh_CN zh_TW"
+ALL_LINGUAS="am az be bg ca cs cy da de el en_GB es fa fi fr ga gl he hu id is it ja ko lv mk ml mn ms nl no pl pt pt_BR ro ru sl sk sr sr@Latn sv tr uk vi zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use

@@ -1,3 +1,8 @@
+2003-06-26  Mohammad DAMT  <mdamt@bisnisweb.com>
+
+	* po/id.po: Added Indonesian translation
+	* configure.in: Added "id" to ALL_LINGUAS
+
 2003-06-10  Rob Adams  <robadams@ucla.edu>
 
 	Update constraints code to support the new _NET_WM_STRUT_PARTIAL
