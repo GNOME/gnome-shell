@@ -1,3 +1,24 @@
+2004-08-26  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: move the have_xrender variable initialization up
+	in the file since it can be set as part of composite check
+
+2004-08-19  Havoc Pennington  <hp@redhat.com>
+
+	Fixes from Rich Wareham
+
+	* src/display.h (struct _MetaDisplay): add render extension check
+	to the display
+
+	* src/display.c: check for render
+
+	* configure.in: don't build compositing manager by default, don't
+	want any nasty surprises; check for render separately from
+	compositing manager
+
+	* src/frame.c: use an ARGB visual when available for the window 
+	frame, so we can be all cool-ass
+
 2004-08-25  Elijah Newren  <newren@math.utah.edu>
 
 	Make dialogs that Metacity shows follow focus-stealing-prevention

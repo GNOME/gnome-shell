@@ -316,16 +316,32 @@ struct _MetaDisplay
 #ifdef HAVE_XSYNC
   int xsync_event_base;
   int xsync_error_base;
-#define META_DISPLAY_HAS_XSYNC(display) ((display)->xsync_event_base != 0)
-#else
-#define META_DISPLAY_HAS_XSYNC(display) FALSE
 #endif
 #ifdef HAVE_SHAPE
   int shape_event_base;
   int shape_error_base;
-#define META_DISPLAY_HAS_SHAPE(display) ((display)->shape_event_base != 0)
+#endif
+#ifdef HAVE_RENDER
+  int render_event_base;
+  int render_error_base;
+#endif
+#ifdef HAVE_XSYNC
+  unsigned int have_xsync : 1;
+#define META_DISPLAY_HAS_XSYNC(display) ((display)->have_xsync)
+#else
+#define META_DISPLAY_HAS_XSYNC(display) FALSE
+#endif
+#ifdef HAVE_SHAPE
+  unsigned int have_shape : 1;
+#define META_DISPLAY_HAS_SHAPE(display) ((display)->have_shape)
 #else
 #define META_DISPLAY_HAS_SHAPE(display) FALSE
+#endif
+#ifdef HAVE_RENDER
+  unsigned int have_render : 1;
+#define META_DISPLAY_HAS_RENDER(display) ((display)->have_render)
+#else
+#define META_DISPLAY_HAS_RENDER(display) FALSE
 #endif
 };
 

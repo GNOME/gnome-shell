@@ -53,6 +53,9 @@
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
 #endif
+#ifdef HAVE_RENDER
+#include <X11/extensions/Xrender.h>
+#endif
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
@@ -507,6 +510,8 @@ meta_display_open (const char *name)
 #ifdef HAVE_XSYNC
   {
     int major, minor;
+
+    display->have_xsync = FALSE;
     
     display->xsync_error_base = 0;
     display->xsync_event_base = 0;
@@ -524,6 +529,9 @@ meta_display_open (const char *name)
         display->xsync_error_base = 0;
         display->xsync_event_base = 0;
       }
+    else
+      display->have_xsync = TRUE;
+    
     meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
                   major, minor,
                   display->xsync_error_base,
@@ -536,6 +544,8 @@ meta_display_open (const char *name)
 
 #ifdef HAVE_SHAPE
   {
+    display->have_shape = FALSE;
+    
     display->shape_error_base = 0;
     display->shape_event_base = 0;
     
@@ -546,6 +556,9 @@ meta_display_open (const char *name)
         display->shape_error_base = 0;
         display->shape_event_base = 0;
       }
+    else
+      display->have_shape = TRUE;
+    
     meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
                   display->shape_error_base,
                   display->shape_event_base);
@@ -554,6 +567,31 @@ meta_display_open (const char *name)
   meta_verbose ("Not compiled with Shape support\n");
 #endif /* !HAVE_SHAPE */
 
+#ifdef HAVE_RENDER
+  {
+    display->have_render = FALSE;
+    
+    display->render_error_base = 0;
+    display->render_event_base = 0;
+    
+    if (!XRenderQueryExtension (display->xdisplay,
+                                &display->render_event_base,
+                                &display->render_error_base))
+      {
+        display->render_error_base = 0;
+        display->render_event_base = 0;
+      }
+    else
+      display->have_render = TRUE;
+    
+    meta_verbose ("Attempted to init Render, found error base %d event base %d\n",
+                  display->render_error_base,
+                  display->render_event_base);
+  }
+#else  /* HAVE_RENDER */
+  meta_verbose ("Not compiled with Render support\n");
+#endif /* !HAVE_RENDER */
+  
   /* Create the leader window here. Set its properties and
    * use the timestamp from one of the PropertyNotify events
    * that will follow.

@@ -2663,7 +2663,7 @@ get_gc_for_primitive (GtkWidget          *widget,
   meta_color_spec_render (color_spec, widget, &color);
 
   values.foreground = color;
-  gdk_rgb_find_color (widget->style->colormap, &values.foreground);
+  gdk_rgb_find_color (gdk_drawable_get_colormap (drawable), &values.foreground);
   values.line_width = line_width;
 
   gc = gdk_gc_new_with_values (drawable, &values,

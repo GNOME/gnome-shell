@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2003 Red Hat, Inc.
+ * Copyright (C) 2003, 2004 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,6 +26,12 @@
 #include "errors.h"
 #include "keybindings.h"
 
+#include <X11/extensions/Xrender.h>
+
+#ifdef HAVE_RENDER
+#include <X11/extensions/Xrender.h>
+#endif
+
 #define EVENT_MASK (SubstructureRedirectMask |                     \
                     StructureNotifyMask | SubstructureNotifyMask | \
                     ExposureMask |                                 \
@@ -34,6 +40,60 @@
                     EnterWindowMask | LeaveWindowMask |            \
                     FocusChangeMask |                              \
                     ColormapChangeMask)
+static Visual*
+find_argb_visual (MetaDisplay *display,
+                  int          scr)
+{
+#ifdef HAVE_RENDER
+  XVisualInfo		*xvi;
+  XVisualInfo		template;
+  int			nvi;
+  int			i;
+  XRenderPictFormat	*format;
+  Visual		*visual;
+
+  if (!META_DISPLAY_HAS_RENDER (display))
+    return NULL;
+  
+  template.screen = scr;
+  template.depth = 32;
+  template.class = TrueColor;
+  xvi = XGetVisualInfo (display->xdisplay, 
+                        VisualScreenMask |
+                        VisualDepthMask |
+                        VisualClassMask,
+                        &template,
+                        &nvi);
+  if (!xvi)
+    return 0;
+  
+  visual = NULL;
+
+  for (i = 0; i < nvi; i++)
+    {
+      format = XRenderFindVisualFormat (display->xdisplay, xvi[i].visual);
+      if (format->type == PictTypeDirect && format->direct.alphaMask)
+	{
+          visual = xvi[i].visual;
+          break;
+	}
+    }
+
+  XFree (xvi);
+
+  if (visual)
+    meta_topic (META_DEBUG_COMPOSITOR,
+                "Found ARGB visual 0x%lx\n",
+                (long) visual->visualid);
+  else
+    meta_topic (META_DEBUG_COMPOSITOR,
+                "No ARGB visual found\n");
+  
+  return visual;
+#else  /* RENDER */
+  return NULL;
+#endif /* !RENDER */
+}
 
 void
 meta_window_ensure_frame (MetaWindow *window)
@@ -77,13 +137,20 @@ meta_window_ensure_frame (MetaWindow *window)
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
    * e.g. DRI games can't be children of a parent that has the same
-   * visual as the client.
+   * visual as the client. NULL means default visual.
+   *
+   * We look for an ARGB visual if we can find one, otherwise use
+   * the default of NULL.
    */
-
-  visual = 0;
-  /* XXX special case for depth 32 windows (assumed to be ARGB) */
+  
+  /* Special case for depth 32 windows (assumed to be ARGB),
+   * we use the window's visual
+   */
   if (window->depth == 32)
-    visual = window->xvisual;  
+    visual = window->xvisual;
+  else
+    visual = find_argb_visual(window->display, 
+                              window->screen->number);
 
   frame->xwindow = meta_ui_create_frame_window (window->screen->ui,
                                                 window->display->xdisplay,

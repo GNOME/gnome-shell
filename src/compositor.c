@@ -1,7 +1,7 @@
 /* Metacity compositing manager */
 
 /* 
- * Copyright (C) 2003 Red Hat, Inc.
+ * Copyright (C) 2003, 2004 Red Hat, Inc.
  * Copyright (C) 2003 Keith Packard
  * 
  * This program is free software; you can redistribute it and/or
@@ -82,8 +82,6 @@ struct MetaCompositor
   int damage_event_base;
   int fixes_error_base;
   int fixes_event_base;
-  int render_error_base;
-  int render_event_base;
   
   GHashTable *window_hash;
 
@@ -94,7 +92,6 @@ struct MetaCompositor
   guint have_composite : 1;
   guint have_damage : 1;
   guint have_fixes : 1;
-  guint have_render : 1;
 };
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -176,25 +173,11 @@ meta_compositor_new (MetaDisplay *display)
   meta_topic (META_DEBUG_COMPOSITOR, "Fixes extension event base %d error base %d\n",
               compositor->fixes_event_base,
               compositor->fixes_error_base);
-
-  if (!XRenderQueryExtension (display->xdisplay,
-                              &compositor->render_event_base,
-                              &compositor->render_error_base))
-    {
-      compositor->render_event_base = 0;
-      compositor->render_error_base = 0;
-    }
-  else
-    compositor->have_render = TRUE;
-
-  meta_topic (META_DEBUG_COMPOSITOR, "Render extension event base %d error base %d\n",
-              compositor->render_event_base,
-              compositor->render_error_base);
   
   if (!(compositor->have_composite &&
         compositor->have_fixes &&
-        compositor->have_render &&
-        compositor->have_damage))
+        compositor->have_damage &&
+        META_DISPLAY_HAS_RENDER (compositor->display)))
     {
       meta_topic (META_DEBUG_COMPOSITOR, "Failed to find all extensions needed for compositing manager, disabling compositing manager\n");
       g_assert (!compositor->enabled);

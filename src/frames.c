@@ -268,10 +268,13 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
 
   /* If a resize occurs it will cause a redraw, but the
    * resize may not actually be needed so we always redraw
-   * in case of color change.
+   * in case of color change. Don't change color if this is
+   * an ARGB visual
    */
-  gtk_style_set_background (GTK_WIDGET (frames)->style,
-                            frame->window, GTK_STATE_NORMAL);
+  if (gdk_window_get_visual (frame->window)->depth != 32)
+    gtk_style_set_background (GTK_WIDGET (frames)->style,
+                              frame->window, GTK_STATE_NORMAL);
+  
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
   meta_core_queue_frame_resize (gdk_display,
                                 frame->xwindow);
@@ -313,10 +316,14 @@ queue_draw_func (gpointer key, gpointer value, gpointer data)
 
   /* If a resize occurs it will cause a redraw, but the
    * resize may not actually be needed so we always redraw
-   * in case of color change.
+   * in case of color change. Only redraw if it is not
+   * an ARGB visual however since we always want background
+   * in this case to be transparent.
    */
-  gtk_style_set_background (GTK_WIDGET (frames)->style,
-                            frame->window, GTK_STATE_NORMAL);
+  if (gdk_window_get_visual (frame->window)->depth != 32)
+    gtk_style_set_background (GTK_WIDGET (frames)->style,
+                              frame->window, GTK_STATE_NORMAL);
+
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
 
@@ -469,6 +476,7 @@ meta_frames_manage_window (MetaFrames *frames,
 			   GdkWindow  *window)
 {
   MetaUIFrame *frame;
+  GdkColor col;
 
   g_assert (window);
 
@@ -477,8 +485,20 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->window = window;
 
   gdk_window_set_user_data (frame->window, frames);
-  gtk_style_set_background (GTK_WIDGET (frames)->style,
-			    frame->window, GTK_STATE_NORMAL);
+
+  /* Set the window background to the current style if not ARGB and 
+   * transparent otherwise
+   */
+  if (gdk_window_get_visual (frame->window)->depth != 32)
+    {
+      gtk_style_set_background (GTK_WIDGET (frames)->style,
+                                frame->window, GTK_STATE_NORMAL);
+    }
+  else
+    {
+      col.pixel = 0;
+      gdk_window_set_background (window, &col);
+    }
 
   /* Don't set event mask here, it's in frame.c */
   
@@ -613,7 +633,9 @@ meta_frames_reset_bg (MetaFrames *frames,
 
   frame = meta_frames_lookup_window (frames, xwindow);
   
-  gtk_style_set_background (widget->style, frame->window, GTK_STATE_NORMAL);
+  if (gdk_window_get_visual (frame->window)->depth != 32) 
+    gtk_style_set_background (GTK_WIDGET (frames)->style,
+                              frame->window, GTK_STATE_NORMAL);
 }
 
 static void
