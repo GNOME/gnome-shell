@@ -191,13 +191,20 @@ calc_geometry (MetaFrameInfo *info,
   int x;
   int button_y;
   int title_right_edge;
+  gboolean shaded;
+
+  shaded = (info->flags & META_FRAME_SHADED) != 0;
   
   fgeom->top_height = MAX (d->layout_height + VERTICAL_TEXT_PAD * 2 + ABOVE_TITLE_PAD + BELOW_TITLE_PAD,
                            BUTTON_HEIGHT + BUTTON_PAD * 2);
-  
+
   fgeom->left_width = LEFT_WIDTH;
   fgeom->right_width = RIGHT_WIDTH;
-  fgeom->bottom_height = BOTTOM_HEIGHT;
+
+  if (shaded)
+    fgeom->bottom_height = 0;
+  else
+    fgeom->bottom_height = BOTTOM_HEIGHT;
 
   x = info->width - fgeom->right_width;
   button_y = (fgeom->top_height - BUTTON_HEIGHT) / 2;

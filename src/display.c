@@ -157,6 +157,12 @@ meta_display_open (const char *name)
   display->atom_wm_delete_window = atoms[3];
   display->atom_wm_state = atoms[4];
   display->atom_net_close_window = atoms[5];
+
+  display->double_click_time = 250;
+  display->last_button_time = 0;
+  display->last_button_xwindow = None;
+  display->last_button_num = 0;
+  display->is_double_click = FALSE;
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -335,6 +341,12 @@ meta_displays_list (void)
   return all_displays;
 }
 
+gboolean
+meta_display_is_double_click (MetaDisplay *display)
+{
+  return display->is_double_click;
+}
+
 static gboolean dump_events = TRUE;
 
 static void
@@ -351,6 +363,26 @@ event_queue_callback (MetaEventQueue *queue,
   if (dump_events)
     meta_spew_event (display, event);
 
+  /* mark double click events, kind of a hack, oh well. */
+  if (event->type == ButtonPress)
+    {
+      if (event->xbutton.button == display->last_button_num &&
+          event->xbutton.window == display->last_button_xwindow &&
+          event->xbutton.time < (display->last_button_time + display->double_click_time))
+        {
+          display->is_double_click = TRUE;
+          meta_verbose ("This was the second click of a double click\n");
+        }
+      else
+        {
+          display->is_double_click = FALSE;
+        }
+
+      display->last_button_num = event->xbutton.button;
+      display->last_button_xwindow = event->xbutton.window;
+      display->last_button_time = event->xbutton.time;
+    }
+  
   modified = event_get_modified_window (display, event);
 
   if (modified != None)

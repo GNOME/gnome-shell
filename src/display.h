@@ -59,6 +59,13 @@ struct _MetaDisplay
   GHashTable *window_ids;
   GSList *error_traps;
   int server_grab_count;
+
+  /* for double click */
+  int double_click_time;
+  Time last_button_time;
+  Window last_button_xwindow;
+  int last_button_num;
+  guint is_double_click : 1;
 };
 
 gboolean      meta_display_open                (const char  *name);
@@ -70,6 +77,7 @@ MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 PangoContext* meta_display_get_pango_context   (MetaDisplay *display);
+gboolean      meta_display_is_double_click     (MetaDisplay *display);
 
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.

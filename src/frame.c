@@ -44,7 +44,6 @@ struct _MetaFrameActionGrab
                     PointerMotionMask | PointerMotionHintMask |    \
                     EnterWindowMask | LeaveWindowMask)
 
-
 static void clear_tip (MetaFrame *frame);
 
 static void
@@ -58,6 +57,9 @@ meta_frame_init_info (MetaFrame     *frame,
 
   if (frame->window->has_focus)
     info->flags |= META_FRAME_HAS_FOCUS;
+
+  if (frame->window->shaded)
+    info->flags |= META_FRAME_SHADED;
   
   info->drawable = None;
   info->xoffset = 0;
@@ -145,9 +147,13 @@ meta_frame_calc_geometry (MetaFrame *frame,
    */
 
   window = frame->window;
-  
+
   frame->rect.width = child_width;
-  frame->rect.height = child_height;
+  
+  if (window->shaded)
+    frame->rect.height = 0;
+  else
+    frame->rect.height = child_height;
   
   meta_frame_init_info (frame, &info);
 
@@ -194,6 +200,7 @@ set_background_none (MetaFrame *frame)
                            CWBackPixmap,
                            &attrs);
 
+#if 0
   meta_debug_spew ("Frame size %d,%d %dx%d window size %d,%d %dx%d window pos %d,%d\n",
                    frame->rect.x,
                    frame->rect.y,
@@ -205,6 +212,7 @@ set_background_none (MetaFrame *frame)
                    frame->window->rect.height,
                    frame->child_x,
                    frame->child_y);
+#endif
 }
 
 static void
@@ -768,10 +776,26 @@ meta_frame_event (MetaFrame *frame,
           MetaFrameControl control;
           control = frame->current_control;
 
-          if (((control == META_FRAME_CONTROL_TITLE ||
-                control == META_FRAME_CONTROL_NONE) &&
-               event->xbutton.button == 1) ||
-              event->xbutton.button == 2)
+          if (control == META_FRAME_CONTROL_TITLE &&
+              event->xbutton.button == 1 &&
+              meta_display_is_double_click (frame->window->display))
+            {
+              meta_verbose ("Double click on title\n");
+
+              /* FIXME this catches double click that starts elsewhere
+               * with the second click on title, maybe no one will
+               * ever notice
+               */
+
+              if (frame->window->shaded)
+                meta_window_unshade (frame->window);
+              else
+                meta_window_shade (frame->window);
+            }
+          else if (((control == META_FRAME_CONTROL_TITLE ||
+                     control == META_FRAME_CONTROL_NONE) &&
+                    event->xbutton.button == 1) ||
+                   event->xbutton.button == 2)
             {
               meta_verbose ("Begin move on %s\n",
                             frame->window->desc);

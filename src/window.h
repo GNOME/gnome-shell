@@ -40,15 +40,21 @@ struct _MetaWindow
   char *title;
 
   /* Whether we're maximized */
-  guint maximized : 1; 
+  guint maximized : 1;
+
+  /* Whether we're shaded */
+  guint shaded : 1;
+  
   /* Mapped is what we think the mapped state should be;
    * so if we get UnmapNotify and mapped == TRUE then
    * it's a withdraw, if mapped == FALSE the UnmapNotify
    * is caused by us.
    */
   guint mapped : 1  ;
+
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
+
   /* Iconic is the state in WM_STATE; happens for workspaces/shading
    * in addition to minimize
    */
@@ -96,16 +102,24 @@ void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue_calc_showing (MetaWindow  *window);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
-void        meta_window_resize             (MetaWindow  *window,
-                                            int          w,
-                                            int          h);
 void        meta_window_maximize           (MetaWindow  *window);
 void        meta_window_unmaximize         (MetaWindow  *window);
+void        meta_window_shade              (MetaWindow  *window);
+void        meta_window_unshade            (MetaWindow  *window);
+
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
                                             int          root_x_nw,
                                             int          root_y_nw);
+void        meta_window_resize             (MetaWindow  *window,
+                                            int          w,
+                                            int          h);
+void        meta_window_move_resize        (MetaWindow  *window,
+                                            int          root_x_nw,
+                                            int          root_y_nw,
+                                            int          w,
+                                            int          h);
 void        meta_window_delete             (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_focus              (MetaWindow  *window,

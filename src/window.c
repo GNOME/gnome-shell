@@ -143,6 +143,7 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->has_focus = FALSE;
 
   window->maximized = FALSE;
+  window->shaded = FALSE;
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
   window->iconic = FALSE;
@@ -281,23 +282,35 @@ meta_window_queue_calc_showing (MetaWindow  *window)
 void
 meta_window_show (MetaWindow *window)
 {
-  meta_verbose ("Showing window %s\n", window->desc);
+  meta_verbose ("Showing window %s, shaded: %d iconic: %d\n",
+                window->desc, window->shaded, window->iconic);
+
+  /* Shaded means the frame is mapped but the window is not */
   
   if (window->frame)
     XMapWindow (window->display->xdisplay, window->frame->xwindow);
-  XMapWindow (window->display->xdisplay, window->xwindow);
 
-  /* These flags aren't always in sync, iconic
-   * is set only here in show/hide, mapped
-   * can be set in a couple other places where
-   * we map/unmap. So that's why both flags exist.
-   */
-  window->mapped = TRUE;
-
-  if (window->iconic)
+  if (window->shaded)
     {
-      window->iconic = FALSE;
-      set_wm_state (window, NormalState);
+      window->mapped = FALSE;
+      XUnmapWindow (window->display->xdisplay, window->xwindow);
+
+      if (!window->iconic)
+        {
+          window->iconic = TRUE;
+          set_wm_state (window, IconicState);
+        }
+    }
+  else
+    {
+      window->mapped = TRUE;
+      XMapWindow (window->display->xdisplay, window->xwindow);
+
+      if (window->iconic)
+        {
+          window->iconic = FALSE;
+          set_wm_state (window, NormalState);
+        }
     }
 }
 
@@ -348,19 +361,15 @@ meta_window_maximize (MetaWindow  *window)
       
       window->maximized = TRUE;
       
-      /* save size */
+      /* save size/pos */
       window->saved_rect = window->rect;
       if (window->frame)
         {
           window->saved_rect.x += window->frame->rect.x;
           window->saved_rect.y += window->frame->rect.y;
         }
-      
-      /* resize to current size with new maximization constraint */
-      meta_window_resize (window,
-                          window->rect.width, window->rect.height);
 
-      /* move to top left corner */
+      /* find top left corner */
       x = window->screen->active_workspace->workarea.x;
       y = window->screen->active_workspace->workarea.y;
       if (window->frame)
@@ -368,8 +377,14 @@ meta_window_maximize (MetaWindow  *window)
           x += window->frame->child_x;
           y += window->frame->child_y;
         }
+
       
-      meta_window_move (window, x, y);
+      /* resize to current size with new maximization constraint,
+       * and move to top-left corner
+       */
+      
+      meta_window_move_resize (window, x, y,
+                               window->rect.width, window->rect.height);
     }
 }
 
@@ -378,18 +393,138 @@ meta_window_unmaximize (MetaWindow  *window)
 {
   if (window->maximized)
     {
-      int x, y;
-      
-      window->maximized = FALSE;      
+      window->maximized = FALSE;
 
-      meta_window_resize (window,
-                          window->saved_rect.width,
-                          window->saved_rect.height);
-
-      meta_window_move (window,
-                        window->saved_rect.x,
-                        window->saved_rect.y);
+      meta_window_move_resize (window,
+                               window->saved_rect.x,
+                               window->saved_rect.y,
+                               window->saved_rect.width,
+                               window->saved_rect.height);
     }
+}
+
+void
+meta_window_shade (MetaWindow  *window)
+{
+  if (!window->shaded)
+    {
+      window->shaded = TRUE;
+      if (window->frame)
+        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_calc_showing (window);
+    }
+}
+
+void
+meta_window_unshade (MetaWindow  *window)
+{
+  if (window->shaded)
+    {
+      window->shaded = FALSE;
+      if (window->frame)
+        meta_frame_queue_recalc (window->frame);
+      meta_window_queue_calc_showing (window);
+    }
+}
+
+static void
+meta_window_move_resize_internal (MetaWindow  *window,
+                                  gboolean     move,
+                                  gboolean     resize,
+                                  int          root_x_nw,
+                                  int          root_y_nw,
+                                  int          w,
+                                  int          h)
+{  
+  if (resize)
+    meta_verbose ("Resizing %s to %d x %d\n", window->desc, w, h);
+  if (move)
+    meta_verbose ("Moving %s to %d,%d\n", window->desc,
+                  root_x_nw, root_y_nw);
+
+  if (resize)
+    {
+      constrain_size (window, w, h, &w, &h);
+      meta_verbose ("Constrained resize of %s to %d x %d\n", window->desc, w, h);
+      if (w == window->rect.width &&
+          h == window->rect.height)
+        resize = FALSE;
+
+      window->rect.width = w;
+      window->rect.height = h;
+    }
+
+  if (move)
+    {
+      if (window->frame)
+        {
+          int new_x, new_y;
+          
+          new_x = root_x_nw - window->frame->child_x;
+          new_y = root_y_nw - window->frame->child_y;
+      
+          if (new_x == window->frame->rect.x &&
+              new_y == window->frame->rect.y)
+            move = FALSE;
+          
+          window->frame->rect.x = new_x;
+          window->frame->rect.y = new_y;
+          /* window->rect.x, window->rect.y remain relative to frame,
+           * remember they are the server coords
+           */
+        }
+      else
+        {
+          if (root_x_nw == window->rect.x &&
+              root_y_nw == window->rect.y)
+            move = FALSE;
+
+          window->rect.x = root_x_nw;
+          window->rect.y = root_y_nw;
+        }
+    }
+
+  /* Sync our new size/pos with X as efficiently as possible */
+
+  if (move && window->frame)
+    {
+      XMoveWindow (window->display->xdisplay,
+                   window->frame->xwindow,
+                   window->frame->rect.x,
+                   window->frame->rect.y);
+    }
+
+  meta_error_trap_push (window->display);
+  if ((move && window->frame == NULL) && resize)
+    {
+      XMoveResizeWindow (window->display->xdisplay,
+                         window->xwindow,
+                         window->rect.x,
+                         window->rect.y,
+                         window->rect.width,
+                         window->rect.height);
+    }
+  else if (move && window->frame == NULL)
+    {
+      XMoveWindow (window->display->xdisplay,
+                   window->xwindow,
+                   window->rect.x,
+                   window->rect.y);
+    }
+  else if (resize)
+    {
+      XResizeWindow (window->display->xdisplay,
+                     window->xwindow,
+                     w, h);
+
+    }
+  meta_error_trap_pop (window->display);
+  
+  if (move)
+    send_configure_notify (window);
+
+  if (window->frame && resize)
+    meta_frame_queue_recalc (window->frame);
 }
 
 void
@@ -397,24 +532,7 @@ meta_window_resize (MetaWindow  *window,
                     int          w,
                     int          h)
 {
-  meta_verbose ("Resizing %s to %d x %d\n", window->desc, w, h);
-  constrain_size (window, w, h, &w, &h);
-  meta_verbose ("Constrained resize of %s to %d x %d\n", window->desc, w, h);
-
-  if (w != window->rect.width ||
-      h != window->rect.height)
-    {
-      meta_error_trap_push (window->display);
-      XResizeWindow (window->display->xdisplay,
-                     window->xwindow,
-                     w, h);
-      meta_error_trap_pop (window->display);
-      window->rect.width = w;
-      window->rect.height = h;
-      
-      if (window->frame)
-        meta_frame_queue_recalc (window->frame);
-    }
+  meta_window_move_resize_internal (window, FALSE, TRUE, -1, -1, w, h);
 }
 
 void
@@ -422,44 +540,20 @@ meta_window_move (MetaWindow  *window,
                   int          root_x_nw,
                   int          root_y_nw)
 {
-  if (window->frame)
-    {
-      int new_x, new_y;
+  meta_window_move_resize_internal (window, TRUE, FALSE,
+                                    root_x_nw, root_y_nw, -1, -1);
+}
 
-      new_x = root_x_nw - window->frame->child_x;
-      new_y = root_y_nw - window->frame->child_y;
-      
-      if (new_x != window->frame->rect.x ||
-          new_y != window->frame->rect.y)
-        {
-          window->frame->rect.x = new_x;
-          window->frame->rect.y = new_y;
-          /* window->rect.x, window->rect.y remain relative to frame,
-           * remember they are the server coords
-           */
-          
-          XMoveWindow (window->display->xdisplay,
-                       window->frame->xwindow,
-                       window->frame->rect.x,
-                       window->frame->rect.y);
-        }
-    }
-  else
-    {
-      if (root_x_nw != window->rect.x ||
-          root_y_nw != window->rect.y)
-        {
-          window->rect.x = root_x_nw;
-          window->rect.y = root_y_nw;
-          
-          XMoveWindow (window->display->xdisplay,
-                       window->xwindow,
-                       window->rect.x,
-                       window->rect.y);
-        }
-    }
-  
-  send_configure_notify (window);
+void
+meta_window_move_resize (MetaWindow  *window,
+                         int          root_x_nw,
+                         int          root_y_nw,
+                         int          w,
+                         int          h)
+{
+  meta_window_move_resize_internal (window, TRUE, TRUE,
+                                    root_x_nw, root_y_nw,
+                                    w, h);
 }
 
 void
