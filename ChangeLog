@@ -1,5 +1,12 @@
 2002-04-29  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (TITLEBAR_LENGTH_ONSCREEN): require 36 pixels
+	onscreen so you typically get a sliver of titlebar, suggested by
+	tigert.  Should still fix this to consider actual theme geometry.
+	(constrain_position): change to allow movement off the left
+
+2002-04-29  Havoc Pennington  <hp@redhat.com>
+
 	* src/display.c (event_callback): always raise windows on focus
 	click, regardless of focus mode.
 

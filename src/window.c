@@ -4899,15 +4899,21 @@ constrain_position (MetaWindow *window,
       int nw_x, nw_y;
       int se_x, se_y;
       int offscreen_w, offscreen_h;
-      
-      /* find furthest northwest point the window can occupy,
-       * to disallow moving titlebar off the top or left
+
+      /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
+       * size of the menu control?).
        */
+      
+#define TITLEBAR_LENGTH_ONSCREEN 36
+      
+      /* find furthest northwest point the window can occupy */
       nw_x = work_area.x;
       nw_y = work_area.y;
       if (window->frame)
         {
-          nw_x += fgeom->left_width;
+          /* Must keep TITLEBAR_LENGTH_ONSCREEN onscreen when moving left */
+          nw_x -= fgeom->left_width + window->rect.width + fgeom->right_width - TITLEBAR_LENGTH_ONSCREEN;
+          /* Can't move off the top */
           nw_y += fgeom->top_height;
         }
       
@@ -4935,41 +4941,12 @@ constrain_position (MetaWindow *window,
         nw_x -= offscreen_w;
       if (offscreen_h > 0)
         nw_y -= offscreen_h;
-
-#if 0
-      /* This is the old don't-allow-off-screen-at-all constraint */
       
-      /* Convert se_x, se_y to the most bottom-right position
-       * the window can occupy - don't allow offscreen
-       */
-      se_x -= window->rect.width;
-      se_y -= window->rect.height;
-      if (window->frame)
-        {
-          se_x -= fgeom->right_width;
-          se_y -= fgeom->bottom_height;
-        }
-
-      /* If the window is larger than screen, allow it to move, as for
-       * nw_x nw_y
-       */
-      if (offscreen_w > 0)
-        se_x += offscreen_w;
-      if (offscreen_h > 0)
-        se_y += offscreen_h;
-#endif
-      
-#if 1
-      /* Require the top-left corner of the frame to be onscreen,
-       * so people can't lose the menu control. (FIXME
-       * instead of TITLEBAR_LENGTH_ONSCREEN, get the actual size
-       * of the menu control?).
-       *
+      /* Limit movement off the right/bottom.
        * Remember, we're constraining StaticGravity position.
        */
       if (window->frame)
         {
-#define TITLEBAR_LENGTH_ONSCREEN 15
           se_x -= TITLEBAR_LENGTH_ONSCREEN;
           se_y -= 0;
         }
@@ -4981,7 +4958,6 @@ constrain_position (MetaWindow *window,
           se_x -= TITLEBAR_LENGTH_ONSCREEN;
           se_y -= TITLEBAR_LENGTH_ONSCREEN;
         }
-#endif
       
       /* If we have a micro-screen or huge frames maybe nw/se got
        * swapped
@@ -5023,6 +4999,8 @@ constrain_position (MetaWindow *window,
           if (y != nw_y)
             y = nw_y;
         }
+      
+#undef TITLEBAR_LENGTH_ONSCREEN
     }
   
   *new_x = x;
