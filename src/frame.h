@@ -60,8 +60,6 @@ struct _MetaFrame
 void     meta_window_ensure_frame           (MetaWindow *window);
 void     meta_window_destroy_frame          (MetaWindow *window);
 void     meta_frame_queue_draw              (MetaFrame  *frame);
-gboolean meta_frame_event                   (MetaFrame  *frame,
-                                             XEvent     *event);
 
 MetaFrameFlags meta_frame_get_flags (MetaFrame *frame);
 

@@ -277,6 +277,9 @@ meta_display_open (const char *name)
   display->last_button_num = 0;
   display->is_double_click = FALSE;
 
+  display->grab_op = META_GRAB_OP_NONE;
+  display->grab_window = NULL;
+  
   set_string_hint (display,
                    display->leader_window,
                    display->atom_net_wm_name,
@@ -558,6 +561,7 @@ event_callback (XEvent   *event,
   MetaWindow *window;
   MetaDisplay *display;
   Window modified;
+  gboolean frame_was_receiver;
   
   display = data;
   
@@ -590,31 +594,35 @@ event_callback (XEvent   *event,
     window = meta_display_lookup_x_window (display, modified);
   else
     window = NULL;
-  
+
+  frame_was_receiver = FALSE;
   if (window &&
       window->frame &&
       modified == window->frame->xwindow)
-    {
-      meta_frame_event (window->frame, event);
-      return FALSE;
-    }
+    frame_was_receiver = TRUE;
   
   switch (event->type)
     {
     case KeyPress:
     case KeyRelease:
-      meta_display_process_key_event (display, window, event);
+      if (window)
+        meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
+      if (display->grab_op != META_GRAB_OP_NONE)
+        {
+          meta_verbose ("Ending grab op %d on window %s due to button press\n",
+                        display->grab_op,
+                        display->grab_window->desc);
+          meta_display_end_grab_op (display,
+                                    event->xbutton.time);
+        }
       break;
     case ButtonRelease:
       break;
     case MotionNotify:
       break;
     case EnterNotify:
-      /* We handle it here if an undecorated window
-       * is involved, otherwise we handle it in frame.c
-       */
       /* do this even if window->has_focus to avoid races */
       if (window)
         meta_window_focus (window, event->xcrossing.time);
@@ -640,10 +648,23 @@ event_callback (XEvent   *event,
       break;
     case DestroyNotify:
       if (window)
-        meta_window_free (window); /* Unmanage destroyed window */
+        {
+          if (frame_was_receiver)
+            {
+              meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n",
+                            window->frame->xwindow);
+              meta_error_trap_push (display);
+              meta_window_destroy_frame (window->frame->window);
+              meta_error_trap_pop (display);
+            }
+          else
+            {
+              meta_window_free (window); /* Unmanage destroyed window */
+            }
+        }
       break;
     case UnmapNotify:
-      if (window)
+      if (!frame_was_receiver && window)
         {
           if (window->unmaps_pending == 0)
             {
@@ -664,8 +685,12 @@ event_callback (XEvent   *event,
       break;
     case MapRequest:
       if (window == NULL)
-        window = meta_window_new (display, event->xmaprequest.window, FALSE);
-      else if (window)
+        {
+          window = meta_window_new (display, event->xmaprequest.window,
+                                    FALSE);
+        }
+      /* if frame was receiver it's some malicious send event or something */
+      else if (!frame_was_receiver && window)        
         {
           if (window->minimized)
             meta_window_unminimize (window);
@@ -704,7 +729,8 @@ event_callback (XEvent   *event,
         }
       else
         {
-          meta_window_configure_request (window, event);
+          if (!frame_was_receiver)
+            meta_window_configure_request (window, event);
         }
       break;
     case GravityNotify:
@@ -716,7 +742,7 @@ event_callback (XEvent   *event,
     case CirculateRequest:
       break;
     case PropertyNotify:
-      if (window)
+      if (window && !frame_was_receiver)
         meta_window_property_notify (window, event);
       break;
     case SelectionClear:
@@ -730,7 +756,8 @@ event_callback (XEvent   *event,
     case ClientMessage:
       if (window)
         {
-          meta_window_client_message (window, event);
+          if (!frame_was_receiver)
+            meta_window_client_message (window, event);
         }
       else
         {
@@ -919,7 +946,7 @@ meta_spew_event (MetaDisplay *display,
       switch (event->type)
         {
         case KeyPress:
-          name = "KeyPress";      
+          name = "KeyPress";
           break;
         case KeyRelease:
           name = "KeyRelease";
@@ -1179,4 +1206,113 @@ meta_display_get_workspace_by_screen_index (MetaDisplay *display,
     }
 
   return NULL;
+}
+
+gboolean
+meta_display_begin_grab_op (MetaDisplay *display,
+                            MetaWindow  *window,
+                            MetaGrabOp   op,
+                            gboolean     pointer_already_grabbed,
+                            int          button,
+                            gulong       modmask,
+                            Cursor       cursor,
+                            Time         timestamp,
+                            int          root_x,
+                            int          root_y)
+{
+  Window grabwindow;
+
+  meta_verbose ("Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
+                op, window->desc, button, pointer_already_grabbed);
+  
+  grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
+  
+  if (display->grab_op != META_GRAB_OP_NONE)
+    {
+      meta_warning ("Attempt to perform window operation %d on window %s when operation %d on %s already in effect\n",
+                    op, window->desc, display->grab_op, display->grab_window->desc);
+      return FALSE;
+    }
+  
+  if (pointer_already_grabbed)
+    {
+      display->grab_have_pointer = TRUE;
+    }
+  else
+    {
+      meta_error_trap_push (display);
+      if (XGrabPointer (display->xdisplay,
+                        grabwindow,
+                        False,
+                        PointerMotionMask | PointerMotionHintMask |
+                        ButtonPressMask | ButtonReleaseMask |
+                        KeyPressMask | KeyReleaseMask,
+                        GrabModeAsync, GrabModeAsync,
+                        None,
+                        cursor,
+                        timestamp) == GrabSuccess)
+        display->grab_have_pointer = TRUE;
+      meta_error_trap_pop (display);
+    }
+
+  if (!display->grab_have_pointer)
+    {
+      meta_verbose ("XGrabPointer() failed\n");
+      return FALSE;
+    }
+  
+  switch (op)
+    {
+    case META_GRAB_OP_KEYBOARD_MOVING:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+      if (meta_window_grab_all_keys (window))
+        display->grab_have_keyboard = TRUE;
+
+      if (!display->grab_have_keyboard)
+        {
+          meta_verbose ("XGrabKeyboard() failed\n");
+          return FALSE;
+        }
+      break;
+
+    default:
+      /* non-keyboard grab ops */
+      break;
+    }
+
+                
+  display->grab_op = op;
+  display->grab_window = window;
+  display->grab_button = button;
+  display->grab_root_x = root_x;
+  display->grab_root_y = root_y;
+
+  meta_verbose ("Grab op %d on window %s successful\n",
+                display->grab_op, display->grab_window->desc);
+
+  g_assert (display->grab_window != NULL);
+  g_assert (display->grab_op != META_GRAB_OP_NONE);
+  
+  return TRUE;
+}
+
+void
+meta_display_end_grab_op (MetaDisplay *display,
+                          Time         timestamp)
+{
+  if (display->grab_op == META_GRAB_OP_NONE)
+    return;
+  
+  if (display->grab_have_pointer)
+    XUngrabPointer (display->xdisplay, timestamp);    
+
+  if (display->grab_have_keyboard)
+    meta_window_ungrab_all_keys (display->grab_window);
+
+  display->grab_window = NULL;
+  display->grab_op = META_GRAB_OP_NONE;  
 }

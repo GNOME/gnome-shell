@@ -50,6 +50,8 @@ static MenuItem menuitems[] = {
   { META_MENU_OP_UNMAXIMIZE, NULL, N_("_Unmaximize") },
   { META_MENU_OP_SHADE, NULL, N_("_Shade") },
   { META_MENU_OP_UNSHADE, NULL, N_("U_nshade") },
+  { META_MENU_OP_MOVE, NULL, N_("Mo_ve") },
+  { META_MENU_OP_RESIZE, NULL, N_("_Resize") },
   { 0, NULL, NULL }, /* separator */
   { META_MENU_OP_STICK, NULL, N_("Put on _All Workspaces") },
   { META_MENU_OP_UNSTICK, NULL, N_("Only on _This Workspace") }

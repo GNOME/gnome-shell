@@ -196,6 +196,9 @@ meta_screen_ungrab_keys (MetaScreen  *screen)
 void
 meta_window_grab_keys (MetaWindow  *window)
 {
+  if (window->all_keys_grabbed)
+    return;
+  
   if (window->keys_grabbed)
     {
       if (window->frame && !window->grab_on_frame)
@@ -235,16 +238,107 @@ meta_window_ungrab_keys (MetaWindow  *window)
     }
 }
 
+gboolean
+meta_window_grab_all_keys (MetaWindow  *window)
+{
+  int result;
+  Window grabwindow;
+  
+  if (window->all_keys_grabbed)
+    return FALSE;
+  
+  if (window->keys_grabbed)
+    meta_window_ungrab_keys (window);
+
+  /* Make sure the window is focused, otherwise the grab
+   * won't do a lot of good.
+   */
+  meta_window_focus (window, CurrentTime);
+  
+  grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
+  
+  meta_error_trap_push (window->display);
+  XGrabKey (window->display->xdisplay, AnyKey, AnyModifier,
+            grabwindow, True,
+            GrabModeAsync, GrabModeAsync);
+  
+  result = meta_error_trap_pop (window->display);
+  if (result != Success)
+    {
+      meta_verbose ("Global key grab failed for window %s\n", window->desc);
+      return FALSE;
+    }
+  else
+    {
+      window->keys_grabbed = FALSE;
+      window->all_keys_grabbed = TRUE;
+      window->grab_on_frame = window->frame != NULL;
+      return TRUE;
+    }
+}
+
+void
+meta_window_ungrab_all_keys (MetaWindow  *window)
+{
+  if (window->all_keys_grabbed)
+    {
+      Window grabwindow;
+
+      grabwindow = (window->frame && window->grab_on_frame) ?
+        window->frame->xwindow : window->xwindow;
+      
+      meta_error_trap_push (window->display);
+      XUngrabKey (window->display->xdisplay,
+                  AnyKey, AnyModifier,
+                  grabwindow);
+      meta_error_trap_pop (window->display);
+      
+      window->grab_on_frame = FALSE;
+      window->all_keys_grabbed = FALSE;
+      window->keys_grabbed = FALSE;
+
+      /* Re-establish our standard bindings */
+      meta_window_grab_keys (window);
+    }
+}
+
+static gboolean 
+is_modifier (MetaDisplay *display,
+             unsigned int keycode)
+{
+	int i;
+	int map_size;
+	XModifierKeymap *mod_keymap;
+	gboolean retval = FALSE;
+
+        /* FIXME this is ass-slow, cache the modmap */
+        
+	mod_keymap = XGetModifierMapping (display->xdisplay);
+
+	map_size = 8 * mod_keymap->max_keypermod;
+	i = 0;
+	while (i < map_size) {
+		
+		if (keycode == mod_keymap->modifiermap[i]) {
+			retval = TRUE;
+			break;
+		}
+		++i;
+	}
+
+	XFreeModifiermap (mod_keymap);
+
+	return retval;
+}
+
 static void
 process_event (MetaKeyBinding *bindings,
                MetaDisplay *display,
                MetaWindow  *window,
-               XEvent      *event)
+               XEvent      *event,
+               KeySym       keysym)
 {
-  KeySym keysym;
   int i;
-  
-  keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
 
   i = 0;
   while (bindings[i].keysym != None)
@@ -267,8 +361,102 @@ meta_display_process_key_event (MetaDisplay *display,
                                 MetaWindow  *window,
                                 XEvent      *event)
 {
-  process_event (screen_bindings, display, window, event);
-  process_event (window_bindings, display, window, event);
+  KeySym keysym;
+  gboolean handled;
+
+  g_return_if_fail (window != NULL);
+  
+  keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
+  
+  meta_verbose ("Processing key %s event, keysym: %s state: 0x%x window: %s\n",
+                event->type == KeyPress ? "press" : "release",
+                XKeysymToString (keysym), event->xkey.state,
+                window->desc);
+
+  if (!window->all_keys_grabbed)
+    {
+      /* Do the normal keybindings */
+      process_event (screen_bindings, display, window, event, keysym);
+      process_event (window_bindings, display, window, event, keysym);
+      return;
+    }
+
+  /* If we get here we have a global grab, because
+   * we're in some special keyboard mode such as window move
+   * mode.
+   */
+  
+  if (display->grab_op == META_GRAB_OP_NONE)
+    return;
+    
+  /* don't end grabs on modifier key presses */
+  if (is_modifier (display, event->xkey.keycode))
+    return;
+  
+  handled = FALSE;
+        
+  if (display->grab_op == META_GRAB_OP_KEYBOARD_MOVING &&
+      display->grab_window == window)
+    {
+      int x, y;
+      int incr;
+      gboolean smart_snap;
+      
+      if (window == NULL)
+        meta_bug ("NULL window while META_GRAB_OP_MOVING\n");
+
+      meta_window_get_position (window, &x, &y);
+
+      smart_snap =
+        (event->xkey.state & ControlMask) != 0 &&
+        (event->xkey.state & ShiftMask) != 0;
+
+      /* FIXME replace LARGE_INCREMENT with intelligent snapping */
+#define SMALL_INCREMENT 1
+#define NORMAL_INCREMENT 10
+#define LARGE_INCREMENT 100
+
+      if (smart_snap)
+        incr = LARGE_INCREMENT;
+      else if (event->xkey.state & ControlMask)
+        incr = SMALL_INCREMENT;
+      else
+        incr = NORMAL_INCREMENT;
+      
+      switch (keysym)
+        {
+        case XK_Up:
+          y -= incr;
+          handled = TRUE;
+          break;
+        case XK_Down:
+          y += incr;
+          handled = TRUE;
+          break;
+        case XK_Left:
+          x -= incr;
+          handled = TRUE;
+          break;
+        case XK_Right:
+          x += incr;
+          handled = TRUE;
+          break;
+
+        default:
+          break;
+        }
+
+      if (handled)
+        meta_window_move (window, x, y);
+    }
+
+  /* end grab if a key that isn't used gets pressed */
+  if (!handled)
+    {
+      meta_verbose ("Ending grab op %d on key press event sym %s\n",
+                    display->grab_op, XKeysymToString (keysym));
+      meta_display_end_grab_op (display, event->xkey.time);
+    }
 }
 
 static void

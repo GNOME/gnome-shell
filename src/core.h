@@ -53,6 +53,10 @@ void meta_core_user_resize  (Display *xdisplay,
 void meta_core_user_raise   (Display *xdisplay,
                              Window   frame_xwindow);
 
+void meta_core_user_focus   (Display *xdisplay,
+                             Window   frame_xwindow,
+                             Time     timestamp);
+
 /* get position of client, same coord space expected by move */
 void meta_core_get_position (Display *xdisplay,
                              Window   frame_xwindow,

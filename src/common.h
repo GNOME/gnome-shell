@@ -53,7 +53,9 @@ typedef enum
   META_MENU_OP_SHADE       = 1 << 5,
   META_MENU_OP_UNSTICK     = 1 << 6,
   META_MENU_OP_STICK       = 1 << 7,
-  META_MENU_OP_WORKSPACES  = 1 << 8
+  META_MENU_OP_WORKSPACES  = 1 << 8,
+  META_MENU_OP_MOVE        = 1 << 9,
+  META_MENU_OP_RESIZE      = 1 << 10
 } MetaMenuOp;
 
 typedef struct _MetaWindowMenu MetaWindowMenu;
@@ -65,4 +67,28 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
                                      int             workspace,
                                      gpointer        data);
 
+typedef enum
+{
+  META_GRAB_OP_NONE,
+  META_GRAB_OP_MOVING,
+  META_GRAB_OP_RESIZING_SE,
+  META_GRAB_OP_RESIZING_S,
+  META_GRAB_OP_RESIZING_SW,
+  META_GRAB_OP_RESIZING_N,
+  META_GRAB_OP_RESIZING_NE,
+  META_GRAB_OP_RESIZING_NW,
+  META_GRAB_OP_RESIZING_W,
+  META_GRAB_OP_RESIZING_E,
+  META_GRAB_OP_KEYBOARD_MOVING,
+  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+  META_GRAB_OP_KEYBOARD_RESIZING_S,
+  META_GRAB_OP_KEYBOARD_RESIZING_N,
+  META_GRAB_OP_KEYBOARD_RESIZING_W,
+  META_GRAB_OP_KEYBOARD_RESIZING_E
+} MetaGrabOp;
+
 #endif
+
+
+
+

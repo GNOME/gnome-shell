@@ -30,6 +30,8 @@ void meta_screen_grab_keys          (MetaScreen  *screen);
 void meta_screen_ungrab_keys        (MetaScreen  *screen);
 void meta_window_grab_keys          (MetaWindow  *window);
 void meta_window_ungrab_keys        (MetaWindow  *window);
+gboolean meta_window_grab_all_keys  (MetaWindow  *window);
+void meta_window_ungrab_all_keys    (MetaWindow  *window);
 void meta_display_process_key_event (MetaDisplay *display,
                                      MetaWindow  *window,
                                      XEvent      *event);

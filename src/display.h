@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 #include "eventqueue.h"
+#include "common.h"
 
 /* this doesn't really belong here, oh well. */
 typedef struct _MetaRectangle MetaRectangle;
@@ -118,6 +119,16 @@ struct _MetaDisplay
   Window last_button_xwindow;
   int last_button_num;
   guint is_double_click : 1;
+
+  /* current window operation */
+  MetaGrabOp  grab_op;
+  MetaWindow *grab_window;
+  int         grab_button;
+  int         grab_root_x;
+  int         grab_root_y;
+  gulong      grab_mask;
+  guint       grab_have_pointer : 1;
+  guint       grab_have_keyboard : 1;
 };
 
 gboolean      meta_display_open                (const char  *name);
@@ -151,5 +162,19 @@ MetaWorkspace* meta_display_get_workspace_by_index        (MetaDisplay   *displa
 MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *display,
                                                            MetaScreen    *screen,
                                                            int            index);
+gboolean meta_display_begin_grab_op (MetaDisplay *display,
+                                     MetaWindow  *window,
+                                     MetaGrabOp   op,
+                                     gboolean     pointer_already_grabbed,
+                                     int          button,
+                                     gulong       modmask,
+                                     Cursor       cursor,
+                                     Time         timestamp,
+                                     int          root_x,
+                                     int          root_y);
+void     meta_display_end_grab_op   (MetaDisplay *display,
+                                     Time         timestamp);
+
+
 
 #endif

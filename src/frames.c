@@ -1358,7 +1358,11 @@ meta_frames_button_press_event (GtkWidget      *widget,
     return FALSE; /* already up to something */
   
   if (event->button == 1)
-    meta_core_user_raise (gdk_display, frame->xwindow);
+    {
+      meta_core_user_raise (gdk_display, frame->xwindow);
+      meta_core_user_focus (gdk_display, frame->xwindow,
+                            event->time);
+    }
 
   if (event->button == 1 &&
       (control == META_FRAME_CONTROL_MAXIMIZE ||

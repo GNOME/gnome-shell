@@ -251,6 +251,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->calc_showing_queued = FALSE;
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
+  window->all_keys_grabbed = FALSE;
   window->withdrawn = FALSE;
   window->initial_workspace_set = FALSE;
   window->calc_placement = FALSE;
@@ -468,6 +469,9 @@ meta_window_free (MetaWindow  *window)
 
   window->unmanaging = TRUE;
 
+  if (window->display->grab_window == window)
+    meta_display_end_grab_op (window->display, CurrentTime);
+  
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
@@ -1510,10 +1514,18 @@ meta_window_delete (MetaWindow  *window,
 void
 meta_window_focus (MetaWindow  *window,
                    Time         timestamp)
-{
+{  
   meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
                 window->desc, window->input, window->take_focus);
 
+  if (window->display->grab_window &&
+      window->display->grab_window->all_keys_grabbed)
+    {
+      meta_verbose ("Current focus window %s has global keygrab, not focusing window %s after all\n",
+                    window->display->grab_window->desc, window->desc);
+      return;
+    }
+  
   /* For output-only or shaded windows, focus the frame.
    * This seems to result in the client window getting key events
    * though, so I don't know if it's icccm-compliant.
@@ -3561,6 +3573,19 @@ menu_callback (MetaWindowMenu *menu,
           meta_window_unstick (window);
           break;
 
+        case META_MENU_OP_MOVE:
+          meta_window_raise (window);
+          meta_display_begin_grab_op (window->display,
+                                      window,
+                                      META_GRAB_OP_KEYBOARD_MOVING,
+                                      FALSE, 0, 0, None,
+                                      CurrentTime,
+                                      0, 0);
+          break;
+
+        case META_MENU_OP_RESIZE:
+          break;
+          
         case 0:
           /* nothing */
           break;
@@ -3592,7 +3617,7 @@ meta_window_show_menu (MetaWindow *window,
   ops = 0;
   insensitive = 0;
 
-  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE);
+  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE | META_MENU_OP_MOVE | META_MENU_OP_RESIZE);
   
   if (window->maximized)
     ops |= META_MENU_OP_UNMAXIMIZE;
@@ -3620,6 +3645,12 @@ meta_window_show_menu (MetaWindow *window,
 
   if (!window->has_shade_func)
     insensitive |= META_MENU_OP_SHADE | META_MENU_OP_UNSHADE;
+
+  if (!window->has_move_func)
+    insensitive |= META_MENU_OP_MOVE;
+
+  if (!window->has_resize_func)
+    insensitive |= META_MENU_OP_RESIZE;
   
   menu =
     meta_ui_window_menu_new (window->screen->ui,
@@ -3629,7 +3660,7 @@ meta_window_show_menu (MetaWindow *window,
                              meta_window_get_net_wm_desktop (window),
                              meta_screen_get_n_workspaces (window->screen),
                              menu_callback,
-                             NULL);                                  
+                             NULL); 
 
   meta_verbose ("Popping up window menu for %s\n", window->desc);
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
