@@ -1466,6 +1466,110 @@ meta_stack_windows_cmp  (MetaStack  *stack,
     return 0; /* not reached */
 }
 
+static int
+compare_just_window_stack_position (void *a,
+                                    void *b)
+{
+  MetaWindow *window_a = a;
+  MetaWindow *window_b = b;
+
+  if (window_a->stack_position < window_b->stack_position)
+    return -1; /* move window_a earlier in list */
+  else if (window_a->stack_position > window_b->stack_position)
+    return 1;
+  else
+    return 0; /* not reached */
+}
+
+GList*
+meta_stack_get_positions (MetaStack *stack)
+{
+  GList *tmp;
+
+  /* Make sure to handle any adds or removes */
+  meta_stack_ensure_sorted (stack);
+
+  tmp = g_list_copy (stack->sorted);
+  tmp = g_list_sort (tmp, (GCompareFunc) compare_just_window_stack_position);
+
+  return tmp;
+}
+
+gint
+compare_pointers (gconstpointer a,
+                  gconstpointer b)
+{
+  if (a > b)
+    return 1;
+  else if (a < b)
+    return -1;
+  else 
+    return 0;
+}
+
+static gboolean
+lists_contain_same_windows (GList *a,
+                            GList *b)
+{
+  GList *copy1, *copy2;
+  GList *tmp1, *tmp2;
+
+  if (g_list_length (a) != g_list_length (b))
+    return FALSE;
+
+  tmp1 = copy1 = g_list_sort (g_list_copy (a), compare_pointers);
+  tmp2 = copy2 = g_list_sort (g_list_copy (b), compare_pointers);
+
+  while (tmp1 && tmp1->data == tmp2->data)   /* tmp2 is non-NULL if tmp1 is */
+    {
+      tmp1 = tmp1->next;
+      tmp2 = tmp2->next;
+    }
+
+  g_list_free (copy1);
+  g_list_free (copy2);
+
+  return (tmp1 == NULL);    /* tmp2 is non-NULL if tmp1 is */
+}
+
+void
+meta_stack_set_positions (MetaStack *stack,
+                          GList     *windows)
+{
+  int i;
+  GList *tmp;
+
+  /* Make sure any adds or removes aren't in limbo -- is this needed? */
+  meta_stack_ensure_sorted (stack);
+  
+  if (!lists_contain_same_windows (windows, stack->sorted))
+    {
+      meta_warning ("This list of windows has somehow changed; not resetting "
+                    "positions of the windows.\n");
+      return;
+    }
+
+  g_list_free (stack->sorted);
+  stack->sorted = g_list_copy (windows);
+
+  stack->need_resort = TRUE;
+  stack->need_constrain = TRUE;
+   
+  i = 0;
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      w->stack_position = i++;
+      tmp = tmp->next;
+    }
+  
+  meta_topic (META_DEBUG_STACK,
+              "Reset the stack positions of (nearly) all windows\n");
+
+  meta_stack_sync_to_server (stack);
+}
+
 void
 meta_window_set_stack_position_no_sync (MetaWindow *window,
                                         int         position)

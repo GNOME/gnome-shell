@@ -1,5 +1,33 @@
 2005-01-23  Elijah Newren  <newren@gmail.com>
 
+	Restore original stacking when aborting an alt-esc window switch
+	operation.  Fixes #123576.
+
+	* src/display.c: (GRAB_OP_IS_WINDOW_SWITCH): new macro,
+	(meta_display_close): clear grab_old_window_stacking if non-NULL,
+	(event_callback): restore stack positions if alt-esc op cancelled
+	with button press, (meta_display_begin_grab_op): store the old
+	stacking positions, (meta_display_end_grab_op): free the old stack
+	positions
+
+	* src/display.h: (struct _MetaDisplay): add a
+	grab_old_window_stacking list
+
+	* src/keybindings.c: (process_tab_grab): restore stack positions
+	if alt-esc op cancelled with an errant key press
+
+	* src/stack.c: (compare_just_window_stack_position): new
+	GCompareFunc function, (meta_stack_get_positions): get current
+	stack positions, (compare_pointers): new GCompareFunc function,
+	(lists_contain_same_windows): simple utility func to see if two
+	lists contains the same windows, (meta_stack_set_positions): new
+	function to set the positions of all the windows in the stack
+
+	* src/stack.h: (meta_stack_get_postions,
+	meta_stack_set_positions): new functions
+
+2005-01-23  Elijah Newren  <newren@gmail.com>
+
 	Patch from John Paul Wallington to fix #163420.
 
 	* src/window.c: (check_maximize_to_work_area): fix vertical

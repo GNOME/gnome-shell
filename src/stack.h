@@ -140,4 +140,8 @@ int         meta_stack_windows_cmp  (MetaStack  *stack,
 void meta_window_set_stack_position (MetaWindow *window,
                                      int         position);
 
+GList* meta_stack_get_positions (MetaStack *stack);
+void   meta_stack_set_positions (MetaStack *stack,
+                                 GList     *windows);
+
 #endif

@@ -63,6 +63,12 @@
 
 #define USE_GDK_DISPLAY
 
+#define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
+        (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
+         g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
+         g == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||  \
+         g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK)
+
 typedef struct 
 {
   MetaDisplay *display;
@@ -790,6 +796,9 @@ meta_display_close (MetaDisplay *display)
   meta_prefs_remove_listener (prefs_changed_callback, display);
   
   meta_display_remove_autoraise_callback (display);
+
+  if (display->grab_old_window_stacking)
+    g_list_free (display->grab_old_window_stacking);
   
 #ifdef USE_GDK_DISPLAY
   /* Stop caring about events */
@@ -1574,6 +1583,16 @@ event_callback (XEvent   *event,
                       (display->grab_window ?
                        display->grab_window->desc : 
                        "none"));
+          if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
+            {
+              MetaScreen *screen;
+              meta_topic (META_DEBUG_WINDOW_OPS, 
+                          "Syncing to old stack positions.\n");
+              screen = 
+                meta_display_screen_for_root (display, event->xany.window);
+              meta_stack_set_positions (screen->stack,
+                                        display->grab_old_window_stacking);
+            }
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
         }
@@ -3289,6 +3308,16 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_window != NULL || display->grab_screen != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
+  /* Save the old stacking */
+  if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Saving old stack positions; old pointer was %p.\n",
+                  display->grab_old_window_stacking);
+      display->grab_old_window_stacking = 
+        meta_stack_get_positions (screen->stack);
+    }
+
   /* Do this last, after everything is set up. */
   switch (op)
     {
@@ -3340,10 +3369,7 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_window != NULL)
     display->grab_window->shaken_loose = FALSE;
   
-  if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
-      display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK ||
-      display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||
-      display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK ||
+  if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op) ||
       display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING)
     {
       meta_ui_tab_popup_free (display->grab_screen->tab_popup);
@@ -3355,6 +3381,15 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->ungrab_should_not_cause_focus_window = display->grab_xwindow;
     }
   
+  if (display->grab_old_window_stacking != NULL)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Clearing out the old stack position, which was %p.\n",
+                  display->grab_old_window_stacking);
+      g_list_free (display->grab_old_window_stacking);
+      display->grab_old_window_stacking = NULL;
+    }
+
   if (display->grab_wireframe_active)
     {
       display->grab_wireframe_active = FALSE;

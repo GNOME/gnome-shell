@@ -2475,6 +2475,11 @@ process_tab_grab (MetaDisplay *display,
       /* end grab */
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending tabbing/cycling, uninteresting key pressed\n");
+
+      meta_topic (META_DEBUG_KEYBINDINGS, 
+                  "Syncing to old stack positions.\n");
+      meta_stack_set_positions (screen->stack,
+                                screen->display->grab_old_window_stacking);
     }
   
   return key_used;
