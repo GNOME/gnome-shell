@@ -45,7 +45,8 @@ static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);
 static Window event_get_modified_window (MetaDisplay    *display,
                                          XEvent         *event);
-
+static guint32 event_get_time           (MetaDisplay    *display,
+                                         XEvent         *event);
 
 
 
@@ -296,6 +297,7 @@ meta_display_open (const char *name)
   display->is_double_click = FALSE;
 
   display->last_ignored_unmap_serial = 0;
+  display->current_time = CurrentTime;
   
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
@@ -620,6 +622,13 @@ grab_op_is_keyboard (MetaGrabOp op)
     }
 }
 
+/* Get time of current event, or CurrentTime if none. */
+guint32
+meta_display_get_current_time (MetaDisplay *display)
+{
+  return display->current_time;
+}
+
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -633,6 +642,8 @@ event_callback (XEvent   *event,
   
   if (dump_events)
     meta_spew_event (display, event);
+
+  display->current_time = event_get_time (display, event);
   
   /* mark double click events, kind of a hack, oh well. */
   if (event->type == ButtonPress)
@@ -727,6 +738,9 @@ event_callback (XEvent   *event,
                   ((event->xbutton.state & grab_mask) != 0))
                 meta_window_raise (window);
 
+              meta_topic (META_DEBUG_FOCUS,
+                          "Focusing %s due to button 1 press (display.c)\n",
+                          window->desc);
               meta_window_focus (window, event->xbutton.time);
 
               if (!frame_was_receiver && 
@@ -805,7 +819,12 @@ event_callback (XEvent   *event,
             case META_FOCUS_MODE_MOUSE:
               if (window->type != META_WINDOW_DOCK &&
                   window->type != META_WINDOW_DESKTOP)
-                meta_window_focus (window, event->xcrossing.time);
+                {
+                  meta_topic (META_DEBUG_FOCUS,
+                              "Focusing %s due to enter notify\n",
+                              window->desc);
+                  meta_window_focus (window, event->xcrossing.time);
+                }
               break;
             case META_FOCUS_MODE_CLICK:
               break;
@@ -828,10 +847,14 @@ event_callback (XEvent   *event,
                * focused window.
                */
               if (window->has_focus)
-                XSetInputFocus (display->xdisplay,
-                                PointerRoot,
-                                RevertToPointerRoot,
-                                event->xcrossing.time);
+                {
+                  meta_verbose ("Unsetting focus from %s due to LeaveNotify\n",
+                                window->desc);
+                  XSetInputFocus (display->xdisplay,
+                                  PointerRoot,
+                                  RevertToPointerRoot,
+                                  event->xcrossing.time);
+                }
               break;
             case META_FOCUS_MODE_SLOPPY:
             case META_FOCUS_MODE_CLICK:
@@ -1032,6 +1055,7 @@ event_callback (XEvent   *event,
       break;
     }
 
+  display->current_time = CurrentTime;
   return FALSE;
 }
 
@@ -1108,6 +1132,63 @@ event_get_modified_window (MetaDisplay *display,
       return None;
     }
 }
+
+static guint32
+event_get_time (MetaDisplay *display,
+                XEvent      *event)
+{
+  switch (event->type)
+    {
+    case KeyPress:
+    case KeyRelease:
+      return event->xkey.time;
+      
+    case ButtonPress:
+    case ButtonRelease:
+      return event->xbutton.time;
+      
+    case MotionNotify:
+      return event->xmotion.time;
+
+    case PropertyNotify:
+      return event->xproperty.time;
+
+    case SelectionClear:
+    case SelectionRequest:
+    case SelectionNotify:
+      return event->xselection.time;
+
+    case EnterNotify:
+    case LeaveNotify:
+      return event->xcrossing.time;
+
+    case FocusIn:
+    case FocusOut:
+    case KeymapNotify:      
+    case Expose:
+    case GraphicsExpose:
+    case NoExpose:
+    case MapNotify:
+    case UnmapNotify:
+    case VisibilityNotify:
+    case ResizeRequest:
+    case ColormapNotify:
+    case ClientMessage:
+    case CreateNotify:
+    case DestroyNotify:
+    case MapRequest:
+    case ReparentNotify:
+    case ConfigureNotify:
+    case ConfigureRequest:
+    case GravityNotify:
+    case CirculateNotify:
+    case CirculateRequest:
+    case MappingNotify:
+    default:
+      return CurrentTime;
+    }
+}
+
 
 static const char*
 focus_detail (int d)

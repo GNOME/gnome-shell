@@ -656,9 +656,30 @@ meta_window_free (MetaWindow  *window)
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
   window->unmanaging = TRUE;
-
+  
+  /* If we have the focus, focus some other window.
+   * This is done first, so that if the unmap causes
+   * an EnterNotify the EnterNotify will have final say
+   * on what gets focused, maintaining sloppy focus
+   * invariants.
+   */
+  if (window->has_focus)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing top window since we're unmanaging %s\n",
+                  window->desc);
+      meta_screen_focus_top_window (window->screen, window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Unmanaging window %s which doesn't currently have focus\n",
+                  window->desc);
+    }
+  
   if (window->display->grab_window == window)
-    meta_display_end_grab_op (window->display, CurrentTime);
+    meta_display_end_grab_op (window->display,
+                              meta_display_get_current_time (window->display));
   
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
@@ -1041,7 +1062,7 @@ meta_window_show (MetaWindow *window)
   if (window->shaded)
     {
       if (window->mapped)
-        {
+        {          
           meta_verbose ("%s actually needs unmap\n", window->desc);
           window->mapped = FALSE;
           window->unmaps_pending += 1;
@@ -1087,9 +1108,11 @@ meta_window_show (MetaWindow *window)
           
           if (parent && parent->has_focus)
             {
-              meta_verbose ("Focusing transient window '%s' since parent had focus\n",
-                            window->desc);
-              meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
+              meta_topic (META_DEBUG_FOCUS,
+                          "Focusing transient window '%s' since parent had focus\n",
+                          window->desc);
+              meta_window_focus (window,
+                                 meta_display_get_current_time (window->display));
             }
         }
     }
@@ -1131,6 +1154,19 @@ meta_window_minimize (MetaWindow  *window)
     {
       window->minimized = TRUE;
       meta_window_queue_calc_showing (window);
+      if (window->has_focus)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focusing top window due to minimization of focus window %s\n",
+                      window->desc);
+          meta_screen_focus_top_window (window->screen, window);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Minimizing window %s which doesn't have the focus\n",
+                      window->desc);
+        }
     }
 }
 
@@ -1218,12 +1254,19 @@ meta_window_shade (MetaWindow  *window)
         }
 
       window->shaded = TRUE;
-      
-      meta_window_focus (window, CurrentTime);
 
       meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
 
+      /* After queuing the calc showing, since _focus flushes it,
+       * and we need to focus the frame
+       */
+      meta_topic (META_DEBUG_FOCUS,
+                  "Re-focusing window %s after shading it\n",
+                  window->desc);
+      meta_window_focus (window,
+                         meta_display_get_current_time (window->display));
+      
       set_net_wm_state (window);
     }
 }
@@ -1237,9 +1280,12 @@ meta_window_unshade (MetaWindow  *window)
       window->shaded = FALSE;
       meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
+
       /* focus the window */
-      /* FIXME CurrentTime is bogus */
-      meta_window_focus (window, CurrentTime);
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing window %s after unshading it\n",
+                  window->desc);
+      meta_window_focus (window, meta_display_get_current_time (window->display));
 
       set_net_wm_state (window);
     }
@@ -1259,6 +1305,9 @@ meta_window_activate (MetaWindow *window,
     meta_window_unminimize (window);
   
   meta_window_raise (window);
+  meta_topic (META_DEBUG_FOCUS,
+              "Focusing window %s due to activation\n",
+              window->desc);
   meta_window_focus (window, timestamp);
 }
 
@@ -1962,6 +2011,25 @@ meta_window_delete (MetaWindow  *window,
                     window->desc);
       XKillClient (window->display->xdisplay, window->xwindow);
     }
+  
+  if (window->has_focus)
+    {
+      /* This is unfortunately going to result in weirdness
+       * if the window doesn't respond to the delete event.
+       * I don't know how to avoid that though.
+       */
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing top window because focus window %s was deleted/killed\n",
+                  window->desc);
+      meta_screen_focus_top_window (window->screen, window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Window %s was deleted/killed but didn't have focus\n",
+                  window->desc);
+    }
+  
   meta_error_trap_pop (window->display);
 }
 
@@ -1969,9 +2037,10 @@ void
 meta_window_focus (MetaWindow  *window,
                    Time         timestamp)
 {  
-  meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
-                window->desc, window->input, window->take_focus);
-
+  meta_topic (META_DEBUG_FOCUS,
+              "Setting input focus to window %s, input: %d take_focus: %d\n",
+              window->desc, window->input, window->take_focus);
+  
   if (window->display->grab_window &&
       window->display->grab_window->all_keys_grabbed)
     {
@@ -2303,7 +2372,7 @@ meta_window_client_message (MetaWindow *window,
        * in this message, CurrentTime here is sort of
        * bogus. But it rarely matters most likely.
        */
-      meta_window_delete (window, CurrentTime);
+      meta_window_delete (window, meta_display_get_current_time (window->display));
 
       return TRUE;
     }
@@ -2538,7 +2607,7 @@ meta_window_client_message (MetaWindow *window,
                                           op,
                                           FALSE,
                                           button, 0,
-                                          CurrentTime,
+                                          meta_display_get_current_time (window->display),
                                           x_root,
                                           y_root);
             }
@@ -2549,9 +2618,10 @@ meta_window_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom_net_active_window)
     {
-      meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s'", window->desc);
+      meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s', activating",
+                    window->desc);
 
-      meta_window_activate (window, CurrentTime);
+      meta_window_activate (window, meta_display_get_current_time (window->display));
 
       return TRUE;
     }
@@ -2586,12 +2656,20 @@ meta_window_notify_focus (MetaWindow *window,
    * and prev_focus_window gets confused from what the
    * user expects once a keybinding is used.
    */
+  meta_topic (META_DEBUG_FOCUS,
+              "Focus %s event received\n",
+              event->type == FocusIn ? "in" :
+              event->type == FocusOut ? "out" :
+              event->type == UnmapNotify ? "unmap" :
+              "???");
+  
   if ((event->type == FocusIn ||
        event->type == FocusOut) &&
       (event->xfocus.mode == NotifyGrab ||
        event->xfocus.mode == NotifyUngrab))
     {
-      meta_verbose ("Ignoring focus event generated by a grab\n");
+      meta_topic (META_DEBUG_FOCUS,
+                  "Ignoring focus event generated by a grab\n");
       return TRUE;
     }
     
@@ -2602,11 +2680,13 @@ meta_window_notify_focus (MetaWindow *window,
           if (window == window->display->prev_focus_window &&
               window->display->focus_window != NULL)
             {
-              meta_verbose ("%s is now the previous focus window due to another window focused in\n",
-                            window->display->focus_window->desc);
+              meta_topic (META_DEBUG_FOCUS,
+                          "%s is now the previous focus window due to another window focused in\n",
+                          window->display->focus_window->desc);
               window->display->prev_focus_window = window->display->focus_window;
             }
-          meta_verbose ("New focus window %s\n", window->desc);
+          meta_topic (META_DEBUG_FOCUS,
+                      "New focus window %s\n", window->desc);
           window->display->focus_window = window;
         }
       window->has_focus = TRUE;
@@ -2618,10 +2698,15 @@ meta_window_notify_focus (MetaWindow *window,
     {
       if (window == window->display->focus_window)
         {
-          meta_verbose ("%s is now the previous focus window due to being focused out or unmapped\n",
-                        window->desc);
+          meta_topic (META_DEBUG_FOCUS,
+                      "%s is now the previous focus window due to being focused out or unmapped\n",
+                      window->desc);
+          
           window->display->prev_focus_window = window;
 
+          meta_topic (META_DEBUG_FOCUS,
+                      "Clearing focus window (was %s)\n", window->desc);
+          
           window->display->focus_window = NULL;
         }
       window->has_focus = FALSE;
@@ -4894,7 +4979,7 @@ menu_callback (MetaWindowMenu *menu,
       switch (op)
         {
         case META_MENU_OP_DELETE:
-          meta_window_delete (window, CurrentTime);
+          meta_window_delete (window, meta_display_get_current_time (window->display));
           break;
 
         case META_MENU_OP_MINIMIZE:
@@ -4948,7 +5033,7 @@ menu_callback (MetaWindowMenu *menu,
                                       window,
                                       META_GRAB_OP_KEYBOARD_MOVING,
                                       FALSE, 0, 0,
-                                      CurrentTime,
+                                      meta_display_get_current_time (window->display),
                                       0, 0);
           break;
 

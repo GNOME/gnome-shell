@@ -355,7 +355,11 @@ meta_window_grab_all_keys (MetaWindow  *window)
   /* Make sure the window is focused, otherwise the grab
    * won't do a lot of good.
    */
-  meta_window_focus (window, CurrentTime);
+  meta_topic (META_DEBUG_FOCUS,
+              "Focusing %s because we're grabbing all its keys\n",
+              window->desc);
+  meta_window_focus (window,
+                     meta_display_get_current_time (window->display));
   
   grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
   
@@ -376,11 +380,11 @@ meta_window_grab_all_keys (MetaWindow  *window)
        * presses
        */
        meta_error_trap_push (window->display);
-       /* FIXME CurrentTime bogus */
+
        XGrabKeyboard (window->display->xdisplay,
                       grabwindow, True,
                       GrabModeAsync, GrabModeAsync,
-                      CurrentTime);
+                      meta_display_get_current_time (window->display));
        
        result = meta_error_trap_pop (window->display);
        if (result != Success)
@@ -413,8 +417,9 @@ meta_window_ungrab_all_keys (MetaWindow  *window)
       XUngrabKey (window->display->xdisplay,
                   AnyKey, AnyModifier,
                   grabwindow);
-      /* FIXME CurrentTime bogus */
-      XUngrabKeyboard (window->display->xdisplay, CurrentTime);
+
+      XUngrabKeyboard (window->display->xdisplay,
+                       meta_display_get_current_time (window->display));
       meta_error_trap_pop (window->display);
       
       window->grab_on_frame = FALSE;
@@ -714,6 +719,8 @@ process_tab_grab (MetaDisplay *display,
 
           meta_verbose ("Activating target window\n");
 
+          meta_topic (META_DEBUG_FOCUS, "Activating %s due to tab popup selection\n",
+                      target_window->desc);
           meta_window_activate (target_window, event->xkey.time);
 
           return TRUE; /* we already ended the grab */
@@ -1072,6 +1079,9 @@ handle_focus_previous (MetaDisplay *display,
   if (window)
     {
       meta_window_raise (window);
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing %s due to 'focus previous' keybinding\n",
+                  window->desc);
       meta_window_focus (window, event->xkey.time);
     }
 }

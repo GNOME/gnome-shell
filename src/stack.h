@@ -95,6 +95,9 @@ MetaWindow* meta_stack_get_above  (MetaStack  *stack,
                                    MetaWindow *window);
 MetaWindow* meta_stack_get_below  (MetaStack  *stack,
                                    MetaWindow *window);
+MetaWindow* meta_stack_get_default_focus_window (MetaStack *stack,
+                                                 MetaWorkspace *workspace,
+                                                 MetaWindow    *not_this_one);
 
 MetaWindow* meta_stack_get_tab_next (MetaStack     *stack,
                                      MetaWorkspace *workspace,

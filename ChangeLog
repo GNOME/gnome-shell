@@ -1,3 +1,30 @@
+2002-01-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_activate): focus top window when
+	switching to a new workspace
+
+	* src/util.c (meta_topic): start putting verbose output in
+	categories
+
+	* src/window.c (meta_window_shade): focus frame after we queue 
+	the calc_showing so the maps/unmaps have already happened.
+
+	* src/display.c (meta_display_get_current_time): add the "get time
+	of current event" function and call it occasionally.
+
+	* src/window.c (meta_window_free): if we have focus, call
+	meta_screen_focus_top_window().
+	(meta_window_minimize): ditto
+	(meta_window_delete): ditto
+
+	* src/screen.c (meta_screen_ensure_tab_popup): fix memory leak -
+	didn't free tab list
+	(meta_screen_focus_top_window): new function to use when we unmap
+	or unmanage a focused window
+
+	* src/stack.c (meta_stack_get_default_focus_window): function used
+	in meta_screen_focus_top_window
+	
 2001-12-21  Havoc Pennington  <hp@redhat.com>
 
 	* src/frame.c (meta_window_ensure_frame): add a server grab 

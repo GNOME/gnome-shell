@@ -43,6 +43,16 @@ void meta_warning    (const char *format,
 void meta_fatal      (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);
 
+typedef enum
+{
+  META_DEBUG_FOCUS
+
+} MetaDebugTopic;
+
+void meta_topic      (MetaDebugTopic topic,
+                      const char    *format,
+                      ...) G_GNUC_PRINTF (2, 3);
+
 void meta_push_no_msg_prefix (void);
 void meta_pop_no_msg_prefix  (void);
 

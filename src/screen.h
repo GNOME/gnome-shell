@@ -68,6 +68,9 @@ void          meta_screen_set_cursor          (MetaScreen                 *scree
 
 void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen);
 
+void          meta_screen_focus_top_window    (MetaScreen                 *screen,
+                                               MetaWindow                 *not_this_one);
+
 #endif
 
 

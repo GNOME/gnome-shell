@@ -1032,6 +1032,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
     {
       meta_core_user_raise (gdk_display,
                             frame->xwindow);
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing frame 0x%lx due to button 1 press\n",
+                  frame->xwindow);
       meta_core_user_focus (gdk_display,
                             frame->xwindow,
                             event->time);      

@@ -640,5 +640,36 @@ meta_screen_ensure_tab_popup (MetaScreen *screen)
   screen->tab_popup = meta_ui_tab_popup_new (entries);
   g_free (entries);
 
+  g_slist_free (tab_list);
+  
   /* don't show tab popup, since proper window isn't selected yet */
+}
+
+/* Focus top window on active workspace */
+void
+meta_screen_focus_top_window (MetaScreen *screen,
+                              MetaWindow *not_this_one)
+{
+  MetaWindow *window;
+
+  if (not_this_one)
+    meta_topic (META_DEBUG_FOCUS,
+                "Focusing top window excluding %s\n", not_this_one->desc);
+  
+  window = meta_stack_get_default_focus_window (screen->stack,
+                                                screen->active_workspace,
+                                                not_this_one);
+
+  /* FIXME I'm a loser on the CurrentTime front */
+  if (window)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing top window %s\n", window->desc);
+
+      meta_window_focus (window, meta_display_get_current_time (screen->display));
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "No top window to focus found\n");
+    }
 }

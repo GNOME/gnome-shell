@@ -130,6 +130,8 @@ struct _MetaDisplay
   guint is_double_click : 1;
 
   unsigned long last_ignored_unmap_serial;
+
+  guint32 current_time;
   
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -208,5 +210,7 @@ void     meta_display_update_active_window_hint (MetaDisplay *display);
 /* Show/hide the desktop (temporarily hide all windows) */
 void     meta_display_show_desktop   (MetaDisplay *display);
 void     meta_display_unshow_desktop (MetaDisplay *display);
+
+guint32  meta_display_get_current_time (MetaDisplay *display);
 
 #endif

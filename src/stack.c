@@ -869,7 +869,61 @@ meta_stack_get_below (MetaStack      *stack,
     return link->next->data;
   else
     return find_prev_below_layer (stack, window->layer);
+}                               
+
+MetaWindow*
+meta_stack_get_default_focus_window (MetaStack     *stack,
+                                     MetaWorkspace *workspace,
+                                     MetaWindow    *not_this_one)
+{
+  /* FIXME if stack is frozen this is kind of broken. */
+
+  /* Find the topmost, focusable, mapped, window. */
+
+  MetaWindow *topmost_dock;
+  int layer = META_LAYER_LAST;  
+
+  topmost_dock = NULL;
+  
+  --layer;
+  while (layer >= 0)
+    {
+      GList *link;
+
+      g_assert (layer >= 0 && layer < META_LAYER_LAST);
+
+      /* top of this layer is at the front of the list */
+      link = stack->layers[layer];
+      
+      while (link)
+        {
+          MetaWindow *window = link->data;
+
+          if (window &&
+              window != not_this_one &&
+              (workspace == NULL ||
+               meta_window_visible_on_workspace (window, workspace)))
+            {
+              if (topmost_dock == NULL &&
+                  window->type == META_WINDOW_DOCK)
+                topmost_dock = window;
+              else
+                return window;
+            }
+
+          link = link->next;
+        }
+      
+      --layer;
+    }
+
+  /* If we didn't find a window to focus, we use the topmost dock.
+   * Note that we already tried the desktop - so we prefer focusing
+   * desktop to focusing the dock.
+   */
+  return topmost_dock;
 }
+
 
 #define IN_TAB_CHAIN(w) ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
 #define GET_XWINDOW(stack, i) (g_array_index ((stack)->windows,    \

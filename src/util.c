@@ -167,6 +167,48 @@ meta_verbose (const char *format, ...)
   g_free (str);
 }
 
+static const char*
+topic_name (MetaDebugTopic topic)
+{
+  switch (topic)
+    {
+    case META_DEBUG_FOCUS:
+      return "FOCUS";
+      break;
+    }
+
+  return "Window manager";
+}
+
+void
+meta_topic (MetaDebugTopic topic,
+            const char *format,
+            ...)
+{
+  va_list args;
+  gchar *str;
+  FILE *out;
+
+  g_return_if_fail (format != NULL);
+
+  if (!is_verbose)
+    return;
+  
+  va_start (args, format);
+  str = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  out = logfile ? logfile : stderr;
+
+  if (no_prefix == 0)
+    fprintf (out, "%s: ", topic_name (topic));
+  fputs (str, out);
+  
+  fflush (out);
+  
+  g_free (str);
+}
+
 void
 meta_bug (const char *format, ...)
 {
