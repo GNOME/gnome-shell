@@ -167,8 +167,8 @@
 
 <draw_ops name="title_gradient">
   <gradient type="diagonal" x="0" y="0" width="width-SpacerWidth" height="height">
-    <color value="shade/gtk:bg[SELECTED]/0.2"/>
-    <color value="shade/gtk:bg[SELECTED]/1.5"/>
+    <color value="blend/gtk:bg[NORMAL]/gtk:bg[SELECTED]/0.6"/>
+    <color value="gtk:bg[SELECTED]"/>
   </gradient>
 </draw_ops>
 
