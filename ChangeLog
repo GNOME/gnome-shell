@@ -14,6 +14,19 @@ Tue Dec 17 17:50:19 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 2002-12-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_begin_grab_op): don't use "(null)"
+	for null pointers, use "none", so I can distinguish
+	glibc-generated (null) which is a bug.
+	(key_event_description): ditto
+	(meta_display_begin_grab_op): ditto
+
+	* src/window.c (update_sm_hints): ditto
+
+	* src/keybindings.c (reload_modmap): ditto
+	(meta_display_process_key_event): ditto
+	
+2002-12-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/metacity.schemas.in: s/focussed/focused/
 
 2002-12-17  Havoc Pennington  <hp@pobox.com>

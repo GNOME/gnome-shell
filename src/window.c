@@ -4780,8 +4780,8 @@ update_wm_class (MetaWindow *window)
 
   meta_verbose ("Window %s class: '%s' name: '%s'\n",
                 window->desc,
-                window->res_class ? window->res_class : "(null)",
-                window->res_name ? window->res_name : "(null)");
+                window->res_class ? window->res_class : "none",
+                window->res_name ? window->res_name : "none");
 }
 
 static Window
@@ -4871,7 +4871,7 @@ update_sm_hints (MetaWindow *window)
 
   meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
                 window->desc, window->xclient_leader,
-                window->sm_client_id ? window->sm_client_id : "(null)");
+                window->sm_client_id ? window->sm_client_id : "none");
 }
 
 static void

@@ -407,7 +407,7 @@ reload_modmap (MetaDisplay *display)
                   str = XKeysymToString (syms[j]);
                   meta_topic (META_DEBUG_KEYBINDINGS,
                               "Keysym %s bound to modifier 0x%x\n",
-                              str ? str : "(null)",
+                              str ? str : "none",
                               (1 << ( i / modmap->max_keypermod)));
                 }
               
@@ -1380,7 +1380,7 @@ meta_display_process_key_event (MetaDisplay *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Processing key %s event, keysym: %s state: 0x%x window: %s\n",
               event->type == KeyPress ? "press" : "release",
-              str ? str : "(null)", event->xkey.state,
+              str ? str : "none", event->xkey.state,
               window ? window->desc : "(no window)");
 
   all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;

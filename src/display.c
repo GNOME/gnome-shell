@@ -2082,7 +2082,7 @@ key_event_description (Display *xdisplay,
   str = XKeysymToString (keysym);
   
   return g_strdup_printf ("Key '%s' state 0x%x", 
-                          str ? str : "(null)", event->xkey.state);
+                          str ? str : "none", event->xkey.state);
 }
 #endif /* WITH_VERBOSE_MODE */
 
@@ -2623,13 +2623,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
-              op, window ? window->desc : "(null)", button, pointer_already_grabbed);
+              op, window ? window->desc : "none", button, pointer_already_grabbed);
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
       meta_warning ("Attempt to perform window operation %d on window %s when operation %d on %s already in effect\n",
-                    op, window ? window->desc : "(null)", display->grab_op,
-                    display->grab_window ? display->grab_window->desc : "(null)");
+                    op, window ? window->desc : "none", display->grab_op,
+                    display->grab_window ? display->grab_window->desc : "none");
       return FALSE;
     }
 
