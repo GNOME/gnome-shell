@@ -1,3 +1,16 @@
+2002-08-02  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/screen.c: (meta_screen_new): set active_workspace
+	to NULL. Also actually activate the first workspace instead
+	of just setting active_workspace. Fixes #87367.
+	(meta_screen_ensure_workspace_popup): don't re-use our
+	iterator for setting the entries list, stop iterating
+	when we've gone beyond the last workspace (there may
+	be empty spaces in the last row).
+
+	* src/workspace.c: (meta_workspace_activate): if no workspace
+	was previously activated, return.
+
 2002-08-04  Havoc Pennington  <hp@redhat.com>
 
 	* src/theme.c (free_menu_ops): use MetaMenuIconType not button

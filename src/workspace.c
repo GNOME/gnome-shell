@@ -219,7 +219,10 @@ meta_workspace_activate (MetaWorkspace *workspace)
   workspace->screen->active_workspace = workspace;
 
   set_active_space_hint (workspace->screen);
-  
+
+  if (old == NULL)
+    return;
+
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
 

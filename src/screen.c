@@ -342,6 +342,7 @@ meta_screen_new (MetaDisplay *display,
   
   screen->work_area_idle = 0;
 
+  screen->active_workspace = NULL;
   screen->rows_of_workspaces = 1;
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
@@ -476,7 +477,7 @@ meta_screen_new (MetaDisplay *display,
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
    */
-  screen->active_workspace = meta_workspace_new (screen);
+  meta_workspace_activate (meta_workspace_new (screen));
   update_num_workspaces (screen);
 
   screen->all_keys_grabbed = FALSE;
@@ -955,28 +956,32 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   entries[len].icon = NULL;
   
   meta_screen_calc_workspace_layout (screen, len, &rows, &cols);
-  
+
   if (screen->vertical_workspaces)
     {
-      int j, k;
+      int j, k, iter;
 
-      for (i = 0; i < rows; ++i)
+      for (i = 0, iter = 0; i < rows; ++i)
         {
           for (j = 0; j < cols; ++j)
             {
               MetaWorkspace *workspace;
 
               k = i + (j * rows);
-              workspace = meta_display_get_workspace_by_index (screen->display,
-                                                               k);
+              if (k >= len)
+                break;
 
+              workspace = meta_display_get_workspace_by_index (screen->display, k);
               g_assert (workspace);
 
-              entries[i].key = (MetaTabEntryKey) workspace;
-              entries[i].title = workspace->name;
-              entries[i].icon = NULL;
+              entries[iter].key = (MetaTabEntryKey) workspace;
+              entries[iter].title = workspace->name;
+              entries[iter].icon = NULL;
+              iter++;
             }
         }
+
+      g_assert (iter == len);
     }
   else
     {
