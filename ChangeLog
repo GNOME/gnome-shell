@@ -1,3 +1,15 @@
+2002-04-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/tools/metacity-window-demo.c (do_appwindow): make one of the
+	toolbar buttons lock up the demo
+
+	* src/window.c (meta_window_delete): move error trap to be around
+	a narrower part of the function, and add part of the ping stuff, 
+	nothing user-visible yet
+
+	* src/metacity-dialog.c (main): metacity-dialog executable to 
+	live in libexecdir and pop up dialogs for us.
+
 2002-04-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme.c (multiply_alpha): fix alpha multiplication routine

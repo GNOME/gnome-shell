@@ -76,10 +76,15 @@ metacity_theme_viewer_SOURCES=  \
 	util.c			\
 	util.h	
 
+metacity_dialog_SOURCES= 	\
+	metacity-dialog.c
+
 bin_PROGRAMS=metacity metacity-theme-viewer
+libexec_PROGRAMS=metacity-dialog
 
 metacity_LDADD= @METACITY_LIBS@
 metacity_theme_viewer_LDADD= @METACITY_LIBS@
+metacity_dialog_LDADD=@METACITY_LIBS@
 
 testgradient_SOURCES=gradient.h gradient.c testgradient.c
 

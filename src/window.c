@@ -2483,6 +2483,61 @@ meta_window_get_outer_rect (MetaWindow    *window,
     *rect = window->rect;
 }
 
+static void
+delete_ping_reply_func (MetaDisplay *display,
+                        Window       xwindow,
+                        void        *user_data)
+{
+  MetaWindow *window = user_data;
+
+  meta_topic (META_DEBUG_PING,
+              "Got reply to delete ping for %s\n",
+              window->desc);
+
+  /* we do nothing */
+}
+
+static void
+delete_ping_timeout_func (MetaDisplay *display,
+                          Window       xwindow,
+                          void        *user_data)
+{
+  MetaWindow *window = user_data;
+  GError *err;
+  int child_pid;
+  int outpipe;
+  char *argv[4];
+  
+  meta_topic (META_DEBUG_PING,
+              "Got delete ping timeout for %s\n",
+              window->desc);
+
+#if 0
+  argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
+  argv[1] = "--kill-window-question";
+  argv[2] = window->title;
+  argv[3] = NULL;
+  
+  err = NULL;
+  if (!g_spawn_async_with_pipes ("/",
+                                 argv,
+                                 NULL,
+                                 0,
+                                 NULL, NULL,
+                                 &child_pid,
+                                 NULL,
+                                 &outpipe,
+                                 NULL,
+                                 &err))
+    {
+      meta_warning (_("Error launching metacity-dialog to ask about killing an application: %s\n"),
+                    err->message);
+      g_error_free (err);
+      return;
+    }
+#endif
+}
+
 void
 meta_window_delete (MetaWindow  *window,
                     Time         timestamp)
@@ -2504,6 +2559,14 @@ meta_window_delete (MetaWindow  *window,
                   window->desc);
       XKillClient (window->display->xdisplay, window->xwindow);
     }
+  meta_error_trap_pop (window->display);
+
+  meta_display_ping_window (window->display,
+                            window,
+                            timestamp,
+                            delete_ping_reply_func,
+                            delete_ping_timeout_func,
+                            window);
   
   if (window->has_focus)
     {
@@ -2522,8 +2585,6 @@ meta_window_delete (MetaWindow  *window,
                   "Window %s was deleted/killed but didn't have focus\n",
                   window->desc);
     }
-  
-  meta_error_trap_pop (window->display);
 }
 
 void

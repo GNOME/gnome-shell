@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
+#include <unistd.h>
 
 static GtkWidget* do_appwindow (void);
 
@@ -473,6 +474,13 @@ static GtkItemFactoryEntry menu_items[] =
 };
 
 static void
+sleep_cb (GtkWidget *button,
+          gpointer   data)
+{
+  sleep (1000);
+}
+
+static void
 toolbar_cb (GtkWidget *button,
             gpointer   data)
 {
@@ -611,9 +619,9 @@ do_appwindow (void)
   
   gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
                             GTK_STOCK_OPEN,
-                            "This is a demo button with an 'open' icon",
+                            "This is a demo button that locks up the demo",
                             NULL,
-                            G_CALLBACK (toolbar_cb),
+                            G_CALLBACK (sleep_cb),
                             window, /* user data for callback */
                             -1);  /* -1 means "append" */
 
