@@ -1,5 +1,18 @@
 2001-09-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/ui.c (meta_ui_get_default_mini_icon): 
+	(meta_ui_get_default_window_icon): ref the returned icon, oops.
+
+	* src/main.c (main): get the GLib warning/error output into 
+	the metacity logfile, set warnings to be always fatal
+
+	* configure.in: bump version to 2.3.13
+
+	* src/window.c (get_text_property): hrm, fix bug where we didn't
+	check errors on XGetTextProperty
+
+2001-09-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/Makefile.am (VARIABLES): fix srcdir != builddir glitch
 
 2001-09-17  Havoc Pennington  <hp@pobox.com>

@@ -444,6 +444,8 @@ meta_ui_get_default_window_icon (MetaUI *ui)
       g_object_unref (G_OBJECT (base));
     }
 
+  g_object_ref (G_OBJECT (default_icon));
+  
   return default_icon;
 }
 
@@ -470,6 +472,8 @@ meta_ui_get_default_mini_icon (MetaUI *ui)
       g_object_unref (G_OBJECT (base));
     }
 
+  g_object_ref (G_OBJECT (default_icon));
+  
   return default_icon;
 }
 

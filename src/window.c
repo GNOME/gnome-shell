@@ -3568,16 +3568,23 @@ get_text_property (MetaDisplay *display,
   
   meta_error_trap_push (display);
 
-  XGetTextProperty (display->xdisplay,
-                    xwindow,
-                    &text,
-                    atom);
+  text.nitems = 0;
+  if (XGetTextProperty (display->xdisplay,
+                        xwindow,
+                        &text,
+                        atom))
+    {
+      retval = meta_text_property_to_utf8 (display->xdisplay, &text);
 
-  retval = meta_text_property_to_utf8 (display->xdisplay, &text);
-
-  if (text.nitems > 0)
-    XFree (text.value);
-
+      if (text.nitems > 0)
+        XFree (text.value);
+    }
+  else
+    {
+      retval = NULL;
+      meta_verbose ("XGetTextProperty() failed\n");
+    }
+  
   meta_error_trap_pop (display);
 
   return retval;
@@ -4043,7 +4050,9 @@ static void
 replace_icon (MetaWindow *window,
               GdkPixbuf  *unscaled,
               GdkPixbuf  *unscaled_mini)
-{  
+{
+  clear_icon (window);
+  
   if (gdk_pixbuf_get_width (unscaled) != META_ICON_WIDTH ||
       gdk_pixbuf_get_height (unscaled) != META_ICON_HEIGHT)
     {
@@ -4296,7 +4305,6 @@ update_icon (MetaWindow *window,
     {
       meta_verbose ("No WM_NORMAL_HINTS icon, or failed to retrieve it\n");
     }
-  
 
   if (try_pixmap_and_mask (window,
                            window->kwm_pixmap,
@@ -4312,10 +4320,13 @@ update_icon (MetaWindow *window,
   
   /* Fallback to a default icon */
   if (window->icon == NULL)
-    {
-      window->icon = meta_ui_get_default_window_icon (window->screen->ui);
-      window->mini_icon = meta_ui_get_default_mini_icon (window->screen->ui);
-    }
+    window->icon = meta_ui_get_default_window_icon (window->screen->ui);
+
+  if (window->mini_icon == NULL)
+    window->mini_icon = meta_ui_get_default_mini_icon (window->screen->ui);
+
+  g_assert (window->icon);
+  g_assert (window->mini_icon);
   
   return Success;
 }

@@ -39,6 +39,15 @@ static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
 
 static void
+log_handler (const gchar   *log_domain,
+             GLogLevelFlags log_level,
+             const gchar   *message,
+             gpointer       user_data)
+{
+  meta_warning ("GLib log level %d: %s\n", log_level, message);
+}
+
+static void
 usage (void)
 {
   g_print ("metacity [--disable-sm] [--sm-client-id=ID] [--display=DISPLAY]\n");
@@ -164,6 +173,11 @@ main (int argc, char **argv)
 
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
+
+  g_log_set_handler (NULL,
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
+  g_log_set_always_fatal (G_LOG_LEVEL_MASK);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
