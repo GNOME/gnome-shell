@@ -6,13 +6,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-11-10 11:44+0100\n"
+"POT-Creation-Date: 2002-12-12 20:48+0100\n"
+"PO-Revision-Date: 2002-12-12 20:48+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Brug: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity blev oversat uden understøttelse for verbose-tilstand\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -48,7 +57,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Kunne ikke skaffe værtsnavn: %s\n"
 
-#: src/display.c:270
+#: src/display.c:273
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen '%s'\n"
@@ -482,14 +491,12 @@ msgid "Maximize a window"
 msgstr "Maksimér et vindue"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "Maksimér et vindue"
+msgstr "Maksimér et vindue vandret"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "Maksimér et vindue"
+msgstr "Maksimér et vindue lodret"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
@@ -504,39 +511,32 @@ msgid "Move a window"
 msgstr "Flyt et vindue"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Flyt fokus tilbage mellem paneler og skrivebordet med det samme"
+msgstr "Flyt tilbage mellem paneler og skrivebordet med det samme"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Flyt fokus tilbage mellem paneler og skrivebordet vha. vindue"
+msgstr "Flyt tilbage mellem paneler og skrivebordet vha. vindue"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "Flyt fokus tilbage mellem vinduer med det samme"
+msgstr "Flyt tilbage mellem vinduer med det samme"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
-msgstr "Flyt fokus mellem paneler og skrivebordet med det samme"
+msgstr "Flyt mellem paneler og skrivebordet med det samme"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
-msgstr "Flyt fokus mellem paneler og skrivebordet vha. vindue"
+msgstr "Flyt mellem paneler og skrivebordet vha. vindue"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between windows immediately"
-msgstr "Flyt fokus mellem vinduer med det samme"
+msgstr "Flyt mellem vinduer med det samme"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between windows with popup"
-msgstr "Flyt fokus mellem vinduer vha. vindue"
+msgstr "Flyt mellem vinduer vha. vindue"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
@@ -625,7 +625,6 @@ msgstr ""
 "til 117 millioner)"
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
 msgstr "Hæv vindue hvis dækket, ellers sænk det"
 
@@ -720,14 +719,12 @@ msgid "Switch to workspace 9"
 msgstr "Skift til arbejdsområde 9"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
-msgstr "Skift til arbejdsområdet over det aktuelle område"
+msgstr "Skift til arbejdsområdet over dette"
 
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
-msgstr "Skift til arbejdsområdet under det aktuelle område"
+msgstr "Skift til arbejdsområdet under dette"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
@@ -1651,7 +1648,6 @@ msgstr ""
 "denne handling."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1660,15 +1656,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Denne tastaturgenvej placerer et vindue over andre vinduer. Formatet ser ud "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
-"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
-"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne tastaturgenvej ændrer størrelsen på et vindue så det udfylder al den "
+"vandrette plads. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og "
+"små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
+"Hvis du sætter indstillingen til den specielle streng \"disabled\", vil der "
+"ikke være nogen tastaturgenvej til denne handling."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1677,23 +1672,22 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Denne tastaturgenvej placerer et vindue over andre vinduer. Formatet ser ud "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
-"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
-"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne tastaturgenvej ændrer størrelsen på et vindue så det udfylder al den "
+"lodrette plads. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og "
+"små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
+"Hvis du sætter indstillingen til den specielle streng \"disabled\", vil der "
+"ikke være nogen tastaturgenvej til denne handling."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
 "Angiver hvad der sker når der dobbeltklikkes på titellinjen. Nuværende "
-"gyldige muligheder er 'toggle_shade' som ruller vinduet op/ned og "
-"'toggle_maximize' som skifter mellem maksimeret/normal tilstand for vinduet."
+"gyldige muligheder er 'toggle_shaded' som ruller vinduet op/ned og "
+"'toggle_maximized' som skifter mellem maksimeret/normal tilstand for vinduet."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
@@ -1708,9 +1702,8 @@ msgid "Toggle shaded state"
 msgstr "Skift oprullethed"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "Skift mellem om vinduet er på alle arbejdsområder"
+msgstr "Skift vindue på alle arbejdsområder"
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
@@ -2739,23 +2732,19 @@ msgstr "Kunne ikke udføre fdopen() på logfilen %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Åbnede logfilen %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Vindueshåndtering: "
 
-#: src/util.c:343
+#: src/util.c:345
 msgid "Bug in window manager: "
 msgstr "Fejl i vindueshåndtering: "
 
-#: src/util.c:372
+#: src/util.c:374
 msgid "Window manager warning: "
 msgstr "Vindueshåndteringsadvarsel: "
 
-#: src/util.c:396
+#: src/util.c:398
 msgid "Window manager error: "
 msgstr "Vindueshåndteringsfejl: "
 
@@ -2765,7 +2754,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4859
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2781,7 +2770,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5419
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2815,12 +2804,6 @@ msgstr ""
 
 #~ msgid "Workspace %u"
 #~ msgstr "Arbejdsområde %u"
-
-#~ msgid "Change how focus is moved from one window to another"
-#~ msgstr "Vælg hvordan fokus flyttes fra ét vindue til et andet"
-
-#~ msgid "Move focus to the previously-focused window"
-#~ msgstr "Flyt fokus til det forrige fokuserede vindue"
 
 #~ msgid ""
 #~ "The keybinding used to move focus back to the window which last had the "
