@@ -1,5 +1,12 @@
 2004-10-04  Elijah Newren  <newren@math.utah.edu>
 
+	* src/display.c (event_callback): if the root window gets focused,
+	set the focus to the default window; this fixes the
+	"focus-follows-mouse" behavior seen for click-to-focus mode after
+	cancelling log out (fixes #153220)
+
+2004-10-04  Elijah Newren  <newren@math.utah.edu>
+
 	Fix a variety of issues with autoraise (#134206)
 
 	* src/display.h: (struct _MetaDisplay): add an autoraise_window
