@@ -72,8 +72,6 @@ get_layout_bitmap (PangoLayout    *layout,
   bitmap->num_grays  = 256;
   bitmap->pixel_mode = FT_PIXEL_MODE_GRAY;
 
-  printf("FT_Bitmap is %ix%i\n", bitmap->width, bitmap->rows);
-
   memset (bitmap->buffer, 0, bitmap->pitch * bitmap->rows);
 
   pango_ft2_render_layout (bitmap, layout, - ink->x, - ink->y);
@@ -152,7 +150,7 @@ font_draw(ClutterFont *font,
 {
   int layout_width, layout_height;
   PangoLayout *layout;
-  PixbufPixel  p = { 0xff,0,0,0x80 };
+  PixbufPixel  p = { 0xff,0xff,0xff,0x80 };
 
   layout = pango_layout_new (font->context);
 
@@ -160,8 +158,6 @@ font_draw(ClutterFont *font,
 
   pango_layout_get_pixel_size (layout,
 			       &layout_width, &layout_height);
-
-  printf("%s() %ix%i\n", __func__, layout_width, layout_height);
 
   /* cant rely on just clip - need to set layout width too */
 

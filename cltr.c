@@ -1,41 +1,13 @@
 #include "cltr.h"
 
-float Zoom = 0.1;
+#include <X11/keysym.h>
 
-typedef struct ClutterMainContext ClutterMainContext;
+/* temp temp temp */
 
-struct ClutterMainContext
-{
-  Display    *xdpy;
-  Window      xwin_root;
-  int         xscreen;
-  GC          xgc;
-  GLXContext  gl_context;
-};
+float Zoom = 1.0;
+ClutterPhotoGrid *Grid = NULL;
 
-typedef struct ClutterWindow ClutterWindow;
-
-struct ClutterWindow
-{
-  Window xwin;
-  int    width;
-  int    height;
-};
-
-ClutterMainContext CltrCntx;
-
-/* Event Loop Integration */
-
-typedef void (*CltrXEventFunc) (XEvent *xev, gpointer user_data);
-
-typedef struct 
-{
-  GSource  source;
-  Display *display;
-  GPollFD  event_poll_fd;
-} 
-CltrXEventSource;
-
+/* ************* */
 
 static gboolean  
 x_event_prepare (GSource  *source,
@@ -90,11 +62,44 @@ static const GSourceFuncs x_event_funcs = {
   NULL
 };
 
+void
+cltr_dispatch_keypress(XKeyEvent *xkeyev)
+{
+  KeySym kc;
+
+  kc = XKeycodeToKeysym(xkeyev->display, xkeyev->keycode, 0);
+
+  switch (kc)
+    {
+    case XK_Left:
+    case XK_KP_Left:
+      cltr_photo_grid_navigate(Grid, CLTR_WEST);
+      break;
+    case XK_Up:
+    case XK_KP_Up:
+      cltr_photo_grid_navigate(Grid, CLTR_NORTH);
+      break;
+    case XK_Right:
+    case XK_KP_Right:
+      cltr_photo_grid_navigate(Grid, CLTR_EAST);
+      break;
+    case XK_Down:	
+    case XK_KP_Down:	
+      cltr_photo_grid_navigate(Grid, CLTR_SOUTH);
+      break;
+    case XK_Return:
+      cltr_photo_grid_activate_cell(Grid);
+      break;
+    default:
+      CLTR_DBG("unhandled keysym");
+    }
+}
+
 static void
 cltr_dispatch_x_event (XEvent  *xevent,
 		       gpointer data)
 {
-
+  /* Should actually forward on to focussed widget */
 
   switch (xevent->type)
     {
@@ -103,6 +108,10 @@ cltr_dispatch_x_event (XEvent  *xevent,
       break;
     case Expose:
       CLTR_DBG("Expose");
+      break;
+    case KeyPress:
+      CLTR_DBG("KeyPress");
+      cltr_dispatch_keypress(&xevent->xkey);
       break;
     }
 }
@@ -200,8 +209,7 @@ cltr_window_new(int width, int height)
 
   XSelectInput(CltrCntx.xdpy, win->xwin, 
 	       StructureNotifyMask|ExposureMask|
-	       ButtonPressMask|ButtonReleaseMask|PointerMotionMask|
-	       PropertyChangeMask);
+	       KeyPressMask|PropertyChangeMask);
 
   glXMakeCurrent(CltrCntx.xdpy, win->xwin, CltrCntx.gl_context);
 
@@ -248,46 +256,6 @@ cltr_main_loop()
 
 }
 
-/* xxxxxxxxxxxxx */
-
-typedef struct ClutterPhotoGrid ClutterPhotoGrid;
-
-typedef struct ClutterPhotoGridCell ClutterPhotoGridCell;
-
-typedef enum ClutterPhotoGridState
-{
-  CLTR_PHOTO_GRID_STATE_BROWSE,
-  CLTR_PHOTO_GRID_STATE_ZOOM_IN,
-  CLTR_PHOTO_GRID_STATE_ZOOMED,
-  CLTR_PHOTO_GRID_STATE_ZOOM_OUT,
-} 
-ClutterPhotoGridState;
-
-struct ClutterPhotoGrid
-{
-  /* XXX should be base widget stuff  */
-  int            x,y;
-  int            width;
-  int            height;
-  ClutterWindow *parent;
-
-  /* ****** */
-
-  int            n_rows;
-  int            n_cols;
-
-  int            cell_width;
-  int            cell_height;
-
-  GList         *cells_tail;
-
-  int            tex_w;
-  int            tex_h;
-  int           *tex_data;
-  GLuint        *texs;
-
-  ClutterPhotoGridState  state;
-};
 
 void
 cltr_photo_grid_append_cell(ClutterPhotoGrid *grid,
@@ -329,6 +297,106 @@ cltr_photo_grid_append_cell(ClutterPhotoGrid *grid,
   CLTR_DBG ("loaded %s at %ix%i", filename, neww, newh);
 } 
 
+static void
+ctrl_photo_grid_cell_to_coords(ClutterPhotoGrid *grid,
+			       GList            *cell,
+			       int              *x,
+			       int              *y)
+{
+  int idx;
+
+  idx = g_list_position(grid->cells_tail, cell);
+
+  *y = idx / grid->n_cols;
+  *x = idx % grid->n_cols;
+
+  CLTR_DBG("idx: %i x: %i, y: %i", idx, *x , *y);
+}
+
+static void
+ctrl_photo_grid_get_trans_coords(ClutterPhotoGrid *grid,
+				 int              x,
+				 int              y,
+				 float           *tx,
+				 float           *ty)
+{
+  int max_x = grid->n_cols-1;
+
+  /* XXX figure out what magic 2.0 value comes from */
+
+  *tx = (float)( (max_x-x) - 1.0 ) * 2.0;
+  *ty = (float)( y - 1.0 ) * 2.0;
+
+}
+
+void
+cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
+			 CltrDirection     direction) 
+{
+  GList *cell_orig = grid->cell_active;
+
+  switch (direction)
+    {
+    case CLTR_SOUTH:
+      if (g_list_nth(grid->cell_active, grid->n_cols))
+	grid->cell_active = g_list_nth(grid->cell_active, grid->n_cols);
+      break;
+    case CLTR_NORTH:
+      if (g_list_nth_prev(grid->cell_active, grid->n_cols))
+	grid->cell_active = g_list_nth_prev(grid->cell_active, grid->n_cols);
+      break;
+    case CLTR_EAST:
+      if (g_list_next(grid->cell_active))
+	grid->cell_active = g_list_next(grid->cell_active);
+      break;
+    case CLTR_WEST:
+      if (g_list_previous(grid->cell_active))
+	grid->cell_active = g_list_previous(grid->cell_active);
+      break;
+    }
+
+  if (cell_orig != grid->cell_active) /* we've moved */
+    {
+      int   x, y;
+
+      if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED)
+	{
+	  grid->state      = CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE;
+
+	  grid->view_min_x =  grid->view_max_x; 
+	  grid->view_min_y =  grid->view_max_y ;
+
+	}
+	  
+      ctrl_photo_grid_cell_to_coords(grid, grid->cell_active, &x, &y);
+
+      ctrl_photo_grid_get_trans_coords(grid, x, y, 
+				       &grid->view_max_x,
+				       &grid->view_max_y);
+				       
+      CLTR_DBG("x: %f, y: %f", grid->view_max_x , grid->view_max_y);
+    }
+}
+
+void 				/* bleh badly named */
+cltr_photo_grid_activate_cell(ClutterPhotoGrid *grid)
+{
+  if (grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
+    {
+      grid->state = CLTR_PHOTO_GRID_STATE_ZOOM_IN;
+    }
+  else if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED)
+    {
+      grid->state = CLTR_PHOTO_GRID_STATE_ZOOM_OUT;
+	/* reset - zoomed moving will have reset */
+      grid->view_min_x = 0.0; 
+      grid->view_min_y = 0.0;
+    }
+
+  /* que a draw ? */
+}			      
+
+
 void
 cltr_photo_grid_populate(ClutterPhotoGrid *grid,
 			 const char       *imgs_path) 
@@ -339,6 +407,9 @@ cltr_photo_grid_populate(ClutterPhotoGrid *grid,
   gchar       *fullpath = NULL;
   int          n_pixb = 0, i =0;
   GList       *cell;
+  ClutterFont *font = NULL;
+
+  font = font_new("Sans Bold 96");
 
   if ((dir = g_dir_open (imgs_path, 0, &error)) == NULL)
     {
@@ -356,7 +427,13 @@ cltr_photo_grid_populate(ClutterPhotoGrid *grid,
 
       if (pixb)
 	{
+	  gchar buf[24];
+
+	  g_snprintf(&buf[0], 24, "%i", n_pixb);
+	  font_draw(font, pixb, buf, 10, 10);
+
 	  cltr_photo_grid_append_cell(grid, pixb, entry);
+
 	  n_pixb++;
 	}
 
@@ -364,6 +441,8 @@ cltr_photo_grid_populate(ClutterPhotoGrid *grid,
     }
 
   g_dir_close (dir);
+
+  grid->cell_active = g_list_first(grid->cells_tail);
 
   /* Set up textures */
 
@@ -412,6 +491,9 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 {
   int x = 0, y = 0, rows = grid->n_rows, cols = 0, i =0;
   GList *cell;
+  float zoom, trans_x, trans_y;
+
+  glLoadIdentity (); 		/* XXX pushmatrix */
 
   glClearColor( 0.0, 0.0, 0.0, 1.0);
   glClear    (GL_COLOR_BUFFER_BIT);
@@ -421,13 +503,90 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
   glTranslatef( 0.0, 0.0, 0.1);
   */
 
-  glLoadIdentity ();
-  // glTranslatef( -2.5, 2.0, 0.0);
-  glScalef( Zoom, Zoom, Zoom);
+  /* Assume zoomed out */
+  zoom    = grid->zoom_min;
+  trans_x = grid->view_min_x;
+  trans_y = grid->view_min_y;
 
-  Zoom += 0.01;
+  if (grid->state != CLTR_PHOTO_GRID_STATE_BROWSE)
+    {
+      /* Assume zoomed in */
+      zoom    = grid->zoom_max; 
+      trans_x = grid->view_max_x;
+      trans_y = grid->view_max_y;
 
-  if (Zoom > 4.0) Zoom = 0.0;
+      if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOM_IN)
+	{
+	  grid->anim_step++;
+
+	  /* Are we zoomed all the way in > */
+	  if (grid->anim_step >= grid->anim_n_steps)
+	    {
+	      grid->state     = CLTR_PHOTO_GRID_STATE_ZOOMED;
+	      grid->anim_step = 0;
+	      /* zoom            = grid->zoom_max; set above */
+	    }
+	  else 
+	    {
+	      float f = (float)grid->anim_step/grid->anim_n_steps;
+
+	      zoom = grid->zoom_min + ((grid->zoom_max - grid->zoom_min) * f);
+	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
+	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+	    }
+	
+	} 
+      else if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOM_OUT)
+	{
+	  grid->anim_step++;
+	  
+	  if (grid->anim_step >= grid->anim_n_steps)
+	    {
+	      zoom            = grid->zoom_min;
+	      grid->anim_step = 0;
+	      grid->state     = CLTR_PHOTO_GRID_STATE_BROWSE;
+	      
+	    }
+	  else 
+	    {
+	      float f = (float)(grid->anim_n_steps - grid->anim_step ) 
+		        / grid->anim_n_steps;
+
+	      zoom = grid->zoom_min + (grid->zoom_max - grid->zoom_min) * f;
+	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
+	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+
+#if 0
+	      zoom = grid->zoom_min
+		+ (( (grid->zoom_max - grid->zoom_min) / grid->anim_n_steps ) 
+                     * (grid->anim_n_steps - grid->anim_step) );
+#endif
+	    }
+	}
+      else if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE)
+	{
+	  grid->anim_step++;
+
+	  if (grid->anim_step >= grid->anim_n_steps)
+	    {
+	      grid->state     = CLTR_PHOTO_GRID_STATE_ZOOMED;
+	      grid->anim_step = 0;
+	    }
+	  else
+	    {
+	      float f = (float)grid->anim_step/grid->anim_n_steps;
+
+	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
+	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+	    }
+	}
+
+    glTranslatef( trans_x, trans_y, 0.0);
+
+    glScalef( zoom, zoom, zoom);
+
+    }
+  
 
   cell = g_list_first(grid->cells_tail);
 
@@ -471,6 +630,26 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	  glTexCoord2f (tx, 0);    glVertex2i   (x2, y1);
 	  glEnd ();	
 
+	  if (cell == grid->cell_active 
+	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
+	    {
+	      glBegin (GL_QUADS);
+	      glTexCoord2f (tx, ty);   glVertex2i   (x2+5, y2+5);
+	      glTexCoord2f (0,  ty);   glVertex2i   (x1-5, y2+5);
+	      glTexCoord2f (0,  0);    glVertex2i   (x1-5, y1-5);
+	      glTexCoord2f (tx, 0);    glVertex2i   (x2+5, y1-5);
+	      glEnd ();	
+	    }
+	  else
+	    {
+	      glBegin (GL_QUADS);
+	      glTexCoord2f (tx, ty);   glVertex2i   (x2, y2);
+	      glTexCoord2f (0,  ty);   glVertex2i   (x1, y2);
+	      glTexCoord2f (0,  0);    glVertex2i   (x1, y1);
+	      glTexCoord2f (tx, 0);    glVertex2i   (x2, y1);
+	      glEnd ();	
+	    }
+
 	  cell = g_list_next(cell);
 
 	  if (!cell)
@@ -494,6 +673,7 @@ cltr_photo_grid_new(ClutterWindow *win,
 		    const char    *imgs_path)
 {
   ClutterPhotoGrid *grid = NULL;
+  int               x,y;
 
   grid = util_malloc0(sizeof(ClutterPhotoGrid));
 
@@ -506,22 +686,42 @@ cltr_photo_grid_new(ClutterWindow *win,
   grid->cell_width  = grid->width  / n_cols;
   grid->cell_height = grid->height / n_rows;
 
-  /* Below needs to go else where */
+  grid->state = CLTR_PHOTO_GRID_STATE_BROWSE;
+
+  grid->anim_n_steps = 40; /* value needs to be calced dep on rows */
+  grid->anim_step    = 0;
+
+  /* 
+     grid->zoom_step = 0.05;
+     grid->zoom      = 1.0;
+  */
+  grid->zoom_min  = 1.0;		      
+  grid->view_min_x = 0.0;
+  grid->view_min_y = 0.0;
+
+
+  /* Assmes cols == rows */
+  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0);
+
+
+  /* Below needs to go else where - some kind of texture manager/helper */
 
   grid->tex_w    = 1024;   
   grid->tex_h    = 512;
 
   grid->tex_data = malloc (grid->tex_w * grid->tex_h * 4);
 
-  /*
-  glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA,
-		grid->tex_w, grid->tex_h,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, grid->tex_data);
-  */
-
   /* Load  */
   cltr_photo_grid_populate(grid, imgs_path);
 
+  grid->cell_active = g_list_first(grid->cells_tail);
+
+  ctrl_photo_grid_cell_to_coords(grid, grid->cell_active, &x, &y);
+
+  ctrl_photo_grid_get_trans_coords(grid, 
+				   x, y, 
+				   &grid->view_max_x,
+				   &grid->view_max_y);
   cltr_photo_grid_redraw(grid);
 
   return grid;
@@ -543,12 +743,13 @@ main(int argc, char **argv)
   ClutterPhotoGrid *grid = NULL;
   ClutterWindow    *win = NULL;
 
-
   cltr_init(&argc, &argv);
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 4, 4, argv[1]);
+  grid = cltr_photo_grid_new(win, 3, 3, argv[1]);
+
+  Grid = grid; 			/* laaaaaazy globals */
 
   cltr_photo_grid_redraw(grid);
 

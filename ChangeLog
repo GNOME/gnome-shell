@@ -1,3 +1,15 @@
+2005-03-23  mallum,,,  <mallum@openedhand.com>
+
+	* cltr.c: (cltr_dispatch_x_event), (cltr_window_new),
+	(cltr_main_loop), (cltr_photo_grid_navigate),
+	(cltr_photo_grid_activate_cell), (cltr_photo_grid_populate),
+	(cltr_photo_grid_redraw), (cltr_photo_grid_new), (idle_cb), (main):
+	* cltr.h:
+	Lots, make the grid roughly work.
+
+	* fonts.c: (get_layout_bitmap), (font_draw):
+	remove debug printfs
+
 2005-03-22  mallum,,,  <mallum@openedhand.com>
 
 	* cltr.c: (x_event_prepare), (x_event_check), (x_event_dispatch),
