@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-26 22:27-0500\n"
-"PO-Revision-Date: 2005-01-26 18:28-0400\n"
+"POT-Creation-Date: 2005-01-29 00:10-0500\n"
+"PO-Revision-Date: 2005-01-29 18:28-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -203,12 +203,12 @@ msgstr "_Close"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Put on _All Workspaces"
+msgid "_Always on Current Workspace"
+msgstr "_Always on Current Workspace"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Only on _This Workspace"
+msgid "_Only on This Workspace"
+msgstr "_Only on This Workspace"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -365,7 +365,7 @@ msgstr ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -3114,7 +3114,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application set a bogus _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4916
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3130,7 +3130,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5587
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
