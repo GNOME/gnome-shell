@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
-"POT-Creation-Date: 2002-06-01 00:42+0200\n"
+"POT-Creation-Date: 2002-06-02 23:01-0400\n"
 "PO-Revision-Date: 2002-05-31 23:45GMT -03:00\n"
 "Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: español <traductores@es.gnome.org>\n"
@@ -40,7 +40,8 @@ msgstr "Error leyendo desde el proceso de muestra de dialogo: %s\n"
 
 #: src/delete.c:333
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Error ejecutando metacity-dialog para preguntar acerca de eliminar una "
 "aplicación: %s\n"
@@ -1254,8 +1255,8 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Estas ventanas no soportar \"guardar la configuración actual\" y tendrán que ser "
-"restauradas manualmente la próxima vez que inicie una sesión."
+"Estas ventanas no soportar \"guardar la configuración actual\" y tendrán que "
+"ser restauradas manualmente la próxima vez que inicie una sesión."
 
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
 #: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
@@ -1272,7 +1273,8 @@ msgstr "La clave GConf '%s' esta configurada con un valor inválido"
 #: src/prefs.c:605
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "No se pudo analizar la descripción de la fuente \"%s\" de la clave GConf %s\n"
+msgstr ""
+"No se pudo analizar la descripción de la fuente \"%s\" de la clave GConf %s\n"
 
 #: src/prefs.c:644
 #, c-format
@@ -1330,83 +1332,83 @@ msgstr "La ventana %d en la pantalla '%s' ya tiene un gestor de ventanas\n"
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "No se pudo liberar la ventana %d en la pantalla '%s' \n"
 
-#: src/session.c:273
+#: src/session.c:267
 #, c-format
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
-"Hubo una falla al abrir una conexión con el manejador de sesiones, por esto las "
-"posiciones de las ventanas no podrás se guardadas: %s\n"
+"Hubo una falla al abrir una conexión con el manejador de sesiones, por esto "
+"las posiciones de las ventanas no podrás se guardadas: %s\n"
 
-#: src/session.c:805 src/session.c:812
+#: src/session.c:820 src/session.c:827
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "No pude crear el directorio '%s': %s\n"
 
-#: src/session.c:822
+#: src/session.c:837
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "No pude abrir el archivo de sesión '%s'para escritura: %s\n"
 
-#: src/session.c:954
+#: src/session.c:969
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Error escribiendo el archivo de sesión '%s': %s\n"
 
-#: src/session.c:959
+#: src/session.c:974
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Error cerrando el archivo de sesión '%s': %s\n"
 
-#: src/session.c:1032
+#: src/session.c:1047
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Error al leer el archivo de sesión guardado %s: %s\n"
 
-#: src/session.c:1067
+#: src/session.c:1082
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Error al analizar el archivo de sesión guardado: %s\n"
 
-#: src/session.c:1116
+#: src/session.c:1131
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "El atributo <metacity_session> ha sido visto pero ya tenemos el ID de la "
 "sesión"
 
-#: src/session.c:1129
+#: src/session.c:1144
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atributo desconocido %s en el elemento <metacity_session>"
 
-#: src/session.c:1146
+#: src/session.c:1161
 msgid "nested <window> tag"
 msgstr "Tag <window> anidada"
 
-#: src/session.c:1196 src/session.c:1228
+#: src/session.c:1211 src/session.c:1243
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo desconocido %s en el elemento <window>"
 
-#: src/session.c:1288
+#: src/session.c:1303
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo desconocido %s en el elemento <geometry>"
 
-#: src/session.c:1308
+#: src/session.c:1323
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
-#: src/session.c:1681
+#: src/session.c:1696
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Error ejecutando metacity-dialog para advertir acerca de las aplicaciones que "
-"no soportan manejo de sesión: %s\n"
+"Error ejecutando metacity-dialog para advertir acerca de las aplicaciones "
+"que no soportan manejo de sesión: %s\n"
 
 #: src/theme.c:351
 msgid "top"
@@ -1432,7 +1434,8 @@ msgstr "La geometría del marco no especifica la dimensión \"%s\""
 #: src/theme.c:390
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "La geometría del marco no especifica la dimensión \"%s\" para el borde \"%s\""
+msgstr ""
+"La geometría del marco no especifica la dimensión \"%s\" para el borde \"%s\""
 
 #: src/theme.c:749
 msgid "Gradients should have at least two colors"
@@ -1465,7 +1468,8 @@ msgstr "No se entiende el estado \"%s\" en la especificación del color"
 #: src/theme.c:903
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "No se entiende el componente de color \"%s\" en la especificación del color"
+msgstr ""
+"No se entiende el componente de color \"%s\" en la especificación del color"
 
 #: src/theme.c:933
 #, c-format
@@ -1510,7 +1514,8 @@ msgstr ""
 #: src/theme.c:1284
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "La expresión de coordenadas contenía un entero '%s' que no pudo ser analizado"
+msgstr ""
+"La expresión de coordenadas contenía un entero '%s' que no pudo ser analizado"
 
 #: src/theme.c:1351
 #, c-format
@@ -1530,25 +1535,29 @@ msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
 #: src/theme.c:1599
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar una operador mod con un número de "
 "punto flotante"
 
 #: src/theme.c:1656
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operador  '\"%s\" donde se esperaba un "
 "operando"
 
 #: src/theme.c:1665
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
+msgstr ""
+"La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
 #: src/theme.c:1673
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
+msgstr ""
+"La expresión de coordenadas termina con una operador en vez de un operando"
 
 #: src/theme.c:1683
 #, c-format
@@ -1594,7 +1603,8 @@ msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
 #: src/theme.c:2206 src/theme.c:2228 src/theme.c:2249
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "El tema contenía una expresión \"%s\" que ha resultado en un error: %s\n"
+msgstr ""
+"El tema contenía una expresión \"%s\" que ha resultado en un error: %s\n"
 
 #: src/theme.c:3579
 #, c-format
@@ -1607,8 +1617,10 @@ msgstr ""
 
 #: src/theme.c:3988 src/theme.c:4020
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4071
 #, c-format
@@ -1660,7 +1672,8 @@ msgstr ""
 
 #: src/theme.c:4660 src/theme.c:4720
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; \"%s\" no lo hace"
@@ -1758,7 +1771,8 @@ msgstr "La <%s> geometría \"%s\" no ha sido definida"
 #: src/theme-parser.c:980
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> debe especificar o una geometría o un padre para tenga una geometría"
+msgstr ""
+"<%s> debe especificar o una geometría o un padre para tenga una geometría"
 
 #: src/theme-parser.c:1079
 #, c-format
@@ -2066,7 +2080,8 @@ msgstr ""
 #: src/theme-parser.c:3308
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
+msgstr ""
+"El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
 
 #: src/theme-parser.c:3319 src/theme-parser.c:3330 src/theme-parser.c:3341
 #, c-format
@@ -2107,7 +2122,8 @@ msgstr "El elemento mas externo en un tema debe ser <metacity_theme> no <%s>"
 
 #: src/theme-parser.c:3523
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento name/author/date/"
 "description"
@@ -2120,7 +2136,8 @@ msgstr "El elemento <%s> no esta permitido dentro de un elemento <constant>"
 #: src/theme-parser.c:3539
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border element"
-msgstr "El elemento <%s> no esta permitido dentro de un elemento de distancia/borde"
+msgstr ""
+"El elemento <%s> no esta permitido dentro de un elemento de distancia/borde"
 
 #: src/theme-parser.c:3561
 #, c-format
@@ -2307,4 +2324,3 @@ msgstr "_Desplegar ventana al obtener el foco"
 #~ msgstr ""
 #~ "La ventana %s pone su altura máxima %d menor que la mínima %d, "
 #~ "deshabilitando el redimensionado\n"
-

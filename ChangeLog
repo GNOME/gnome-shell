@@ -1,3 +1,7 @@
+2002-06-02  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: 2.3.610
+
 2002-06-01  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_finalize): move the remove_listener

@@ -3,7 +3,7 @@ AC_INIT(src/display.c)
 AM_CONFIG_HEADER(config.h)
 
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987 
-AM_INIT_AUTOMAKE(metacity, 2.3.377)
+AM_INIT_AUTOMAKE(metacity, 2.3.610)
 
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
