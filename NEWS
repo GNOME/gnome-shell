@@ -1,3 +1,70 @@
+2.9.13
+==
+
+This is an unstable release to coincide with the release of Gnome
+2.10.0 Beta 2 (2.9.91).
+
+Thanks to Elijah Newren, Balamurali Viswanathan, Stephane Loeuillet,
+Benjamin Kahn, Garrett (LeSage?), Jose Moya, Dave Ahlswede, Arvind
+Samptur, John Paul Wallington, Tim Herold, Muktha Narayan, Sinisa
+Segvic, Owen Taylor, Crispin Flowerday, "RHEL-3", KWin, and Google for
+improvements in this release.
+
+ - Refuse to focus a window with a modal transient, and focus the
+   transient instead (Elijah) [#164716]
+ - Make sure we get gconf notifications about the terminal command
+   changing (Balamurali) [#160934]
+ - Specify encoding of src/metacity.desktop.in (Stephane) [#151850]
+ - New 48x48 default icon (Benjamin, Garrett) [#160660]
+ - Add man pages for metacity-window-demo and metacity-theme-viewer
+   (Jose, Dave) [#143513]
+ - Fix minimized window display in workspace switcher after relogin
+   with a saved session (Elijah) [#164677]
+ - Ignore sticky windows for non-active workspaces (Elijah) [#165259]
+ - Don't wireframe when accessibility is on, it apparently causes a
+   desktop wide freeze. (Arvind) [#159538]
+ - Keep tooltip on screen horizontally for xinerama (John) [#165261]
+ - Stick and unstick transients with their parent automatically
+   (Elijah) [#152283]
+ - Shaded windows should not show up in pagers (Elijah) [#165377]
+ - Treat splashscreens same as other windows for stacking (Elijah)
+   [#165243]
+ - Plug a pair of leaks (Elijah) [#165378]
+ - Take into account the appropriate list of windows when placing a
+   new one (Elijah) [#165381]
+ - Correct misleading and inaccurate wording (Elijah) [#165380]
+ - Handle xcomposite pkgconfig version regression (Tim) [#149368]
+ - Make the warn-about-buggy-session-management-apps dialog be sticky
+   (Elijah) [#164745]
+ - Fix the problem with fullscreen windows on a different xinerama
+   monitor not staying on top ("RHEL-3") [#156511]
+ - Make the unfocussed title bar distinguishable in cases where it
+   otherwise isn't for the Atlanta, Simple, and Bright themes (Muktha)
+   [#125291]
+ - Correct the stacking when returning from fullscreen mode (Elijah)
+   [#165718]
+ - Focus parents of dismissed transient windows in preference to the
+   window that most recently had keyboard focus (Elijah) [#157360]
+ - Make sure window->border_only is initialized so we don't get random
+   windows without decorations (Elijah, Sinisa, Owen) [#145131]
+ - Add period to the end of reduced_resources' description (Dave)
+   [#165780]
+ - If activation requests are too old, set the demands_attention hint
+   instead of actually activating (Elijah, Crispin) [#166395]
+ - Ignore xconfigurerequest events for stacking when it should be safe
+   to do so (Elijah, Crispin, KWin, Google) [#166395]
+ - Set a _METACITY_VERSION property (a utf8 string) on the WM check
+   window (Elijah) [#165350]
+
+Translations
+  Vladimir Petkov (bg), Miloslav Trmac (cs), Frank Arnold (de), 
+  Adam Weinberger (en_CA), David Lodge (en_GB), 
+  Francisco Javier F. Serrador (es), Pauli Virtanen (fi), 
+  Young-Ho, Changwoo Ryu (ko), ´ygimantas Berucka (lt),
+  Kjartan Maraas (nb),  Kjartan Maraas (no), Duarte Loreto (pt),
+  Marcel Telka (sk), Christian Rose (sv), 
+  Theppitak Karoonboonyanan (th)
+
 2.9.8
 ==
 

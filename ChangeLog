@@ -1,3 +1,7 @@
+2005-02-07  Elijah Newren  <newren@gmail.com>
+
+	* NEWS: Metacity 2.9.13 unstable release
+
 2005-02-06  Elijah Newren  <newren@gmail.com>
 
 	Set a _METACITY_VERSION property (a utf8 string) on the WM check
