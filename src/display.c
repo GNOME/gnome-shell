@@ -469,7 +469,8 @@ meta_display_open (const char *name)
                      XA_CARDINAL,
                      32, PropModeReplace, (guchar*) data, 1);
   }
-  
+
+  meta_display_grab (display);
   /* Now manage all existing windows */
   tmp = display->screens;
   while (tmp != NULL)
@@ -477,6 +478,25 @@ meta_display_open (const char *name)
       meta_screen_manage_all_windows (tmp->data);
       tmp = tmp->next;
     }
+
+  {
+    Window focus;
+    int ret_to;
+
+    /* kinda bogus because GetInputFocus has no possible errors */
+    meta_error_trap_push (display);
+
+    focus = None;
+    ret_to = RevertToNone;
+    XGetInputFocus (display->xdisplay, &focus, &ret_to);
+
+    /* Force a new FocusIn (does this work?) */
+    XSetInputFocus (display->xdisplay, focus, ret_to, CurrentTime);
+    
+    meta_error_trap_pop (display);
+  }
+  
+  meta_display_ungrab (display);  
   
   return TRUE;
 }

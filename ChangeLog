@@ -1,3 +1,14 @@
+2002-07-20  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_open): grab display across managing
+	each screen; XGetInputFocus() on startup.
+
+2002-07-19  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_configure_request): disable configure 
+	requests during a user move/resize operation, mostly a workaround 
+	for stoopid apps.
+
 2002-07-24  jacob berkman  <jacob@ximian.com>
 
 	* configure.in: fix x11 header checks when x11 is not in the

@@ -2944,6 +2944,37 @@ meta_window_configure_request (MetaWindow *window,
   int x, y, width, height;
   gboolean only_resize;
   gboolean allow_position_change;
+  gboolean in_grab_op;
+
+  /* We ignore configure requests while the user is moving/resizing
+   * the window, since these represent the app sucking and fighting
+   * the user, most likely due to a bug in the app (e.g. pfaedit
+   * seemed to do this)
+   *
+   * Still have to do the ConfigureNotify and all, but pretend the
+   * app asked for the current size/position instead of the new one.
+   */  
+  in_grab_op = FALSE;
+  if (window->display->grab_op != META_GRAB_OP_NONE &&
+      window == window->display->grab_window)
+    {
+      switch (window->display->grab_op)
+        {
+        case META_GRAB_OP_MOVING:
+        case META_GRAB_OP_RESIZING_SE:
+        case META_GRAB_OP_RESIZING_S:
+        case META_GRAB_OP_RESIZING_SW:
+        case META_GRAB_OP_RESIZING_N:
+        case META_GRAB_OP_RESIZING_NE:
+        case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_RESIZING_W:
+        case META_GRAB_OP_RESIZING_E:
+          in_grab_op = TRUE;
+          break;
+        default:
+          break;
+        }
+    }
   
   /* it's essential to use only the explicitly-set fields,
    * and otherwise use our current up-to-date position.
@@ -2978,6 +3009,9 @@ meta_window_configure_request (MetaWindow *window,
     {
       allow_position_change = TRUE;
     }
+
+  if (in_grab_op)
+    allow_position_change = FALSE;
   
   if (allow_position_change)
     {
@@ -3009,11 +3043,14 @@ meta_window_configure_request (MetaWindow *window,
   width = window->rect.width;
   height = window->rect.height;
 
-  if (event->xconfigurerequest.value_mask & CWWidth)
-    width = event->xconfigurerequest.width;
+  if (!in_grab_op)
+    {
+      if (event->xconfigurerequest.value_mask & CWWidth)
+        width = event->xconfigurerequest.width;
       
-  if (event->xconfigurerequest.value_mask & CWHeight)
-    height = event->xconfigurerequest.height;
+      if (event->xconfigurerequest.value_mask & CWHeight)
+        height = event->xconfigurerequest.height;
+    }
 
   /* ICCCM 4.1.5 */
   
