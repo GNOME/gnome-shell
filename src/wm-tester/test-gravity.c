@@ -112,6 +112,19 @@ find_window (Window window)
   return -1;
 }
 
+typedef struct {
+    unsigned long flags;
+    unsigned long functions;
+    unsigned long decorations;
+    long input_mode;
+    unsigned long status;
+} MotifWmHints, MwmHints;
+
+#define MWM_HINTS_FUNCTIONS     (1L << 0)
+#define MWM_HINTS_DECORATIONS   (1L << 1)
+#define MWM_HINTS_INPUT_MODE    (1L << 2)
+#define MWM_HINTS_STATUS        (1L << 3)
+
 int main (int argc, char **argv)
 {
   Display *d;
@@ -120,6 +133,12 @@ int main (int argc, char **argv)
   int i;
   int screen;
   XEvent ev;
+  int noframes;
+  
+  if (argc > 1 && strcmp (argv[1], "--noframes") == 0)
+    noframes = 1;
+  else
+    noframes = 0;
   
   d = XOpenDisplay (NULL);
 
@@ -166,6 +185,22 @@ int main (int argc, char **argv)
       XSetWMNormalHints (d, w, &hints);
 
       XStoreName (d, w, window_gravity_to_string (hints.win_gravity));
+
+      if (noframes)
+        {
+          MotifWmHints mwm;
+          Atom mwm_atom;
+          
+          mwm.decorations = 0;
+          mwm.flags = MWM_HINTS_DECORATIONS;
+          
+          mwm_atom = XInternAtom (d, "_MOTIF_WM_HINTS", False);
+
+          XChangeProperty (d, w, mwm_atom, mwm_atom,
+                           32, PropModeReplace,
+                           (unsigned char *)&mwm,
+                           sizeof (MotifWmHints)/sizeof (long));
+        }
       
       XMapWindow (d, w);
     }

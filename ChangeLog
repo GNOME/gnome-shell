@@ -1,3 +1,8 @@
+2003-03-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/wm-tester/test-gravity.c (main): add --noframes option for
+	testing, showing how broken we currently are.
+
 Fri Mar 28 14:13:37 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* src/window.c (update_resize): Only cap refresh rate when not
