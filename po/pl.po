@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-13 16:02+0100\n"
+"POT-Creation-Date: 2004-01-20 08:55+0100\n"
 "PO-Revision-Date: 2003-06-30 09:13+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -515,6 +515,12 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"Ustawienie tej opcji powoduje, że menedźer Metacity ogranicza użytkownikowi "
+"sprzężenie zwrotne i czucie \"bezpośredniej manipulacji\", poprzez użycie "
+"ramek przy skalowaniu okien, wyłączenie animacji i podobne. Dla wielu "
+"użytkowników może być to znaczące ograniczenie funkcjonalności, ale może "
+"pozwolić starszym serwerom aplikacji i terminalom na normalną pracę, która w "
+"innym wypadku była by nierealna."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -542,7 +548,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Jeżeli ustawione, zmniejsza zużycie zasobów kosztem funkcjonalności"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2710,7 +2716,7 @@ msgstr "/_Okna"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Okna/odłączanie"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
@@ -2771,7 +2777,7 @@ msgstr "To jest przykładowy komunikat w prostym oknie dialogowym"
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Imitacja elementu menu %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
@@ -2853,6 +2859,7 @@ msgstr "Test wydajności"
 msgid "Window Title Goes Here"
 msgstr "Tutaj znajduje się tytuł okna"
 
+# FIXME - bełkot
 #: src/theme-viewer.c:1012
 #, c-format
 msgid ""
@@ -2860,6 +2867,9 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"Narysowano %d ramek w ciągu %g sekund klienta (%g milisekund na ramkę) oraz %"
+"g sekund rzeczywistych, włączając w to zasoby serwera X (%g milisekund na "
+"ramkę)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
