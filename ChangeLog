@@ -1,3 +1,22 @@
+2001-10-25  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_visible_on_workspace):
+	I was using meta_workspace_contains_window() in a number of 
+	places where on_all_workspaces should also have been considered,
+	thus this new function. Fixes bugs such as pinned windows 
+	not appearing in the tab order.
+	(meta_window_client_message): use meta_window_visible_on_workspace
+
+	* src/stack.c (find_tab_forward): ditto
+	(find_tab_backward): ditto
+	(meta_stack_get_tab_next): ditto
+	(meta_stack_get_tab_list): ditto
+
+	* src/place.c (get_windows_on_same_workspace): ditto
+
+	* src/keybindings.c (handle_focus_previous): ditto
+	(handle_focus_previous): ditto
+
 2001-10-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_expose_event): use bg/fg not base/text

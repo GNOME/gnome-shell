@@ -335,4 +335,7 @@ void meta_window_set_gravity (MetaWindow *window,
 void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                              XEvent     *event);
 
+gboolean meta_window_visible_on_workspace (MetaWindow    *window,
+                                           MetaWorkspace *workspace);
+
 #endif

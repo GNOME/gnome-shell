@@ -894,7 +894,7 @@ find_tab_forward (MetaStack     *stack,
 
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
-           meta_workspace_contains_window (workspace, window)))
+           meta_window_visible_on_workspace (window, workspace)))
         return window;
 
       ++i;
@@ -910,7 +910,7 @@ find_tab_forward (MetaStack     *stack,
 
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
-           meta_workspace_contains_window (workspace, window)))
+           meta_window_visible_on_workspace (window, workspace)))
         return window;
 
       ++i;
@@ -939,7 +939,7 @@ find_tab_backward (MetaStack     *stack,
 
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
-           meta_workspace_contains_window (workspace, window)))
+           meta_window_visible_on_workspace (window, workspace)))
         return window;
 
       --i;
@@ -955,7 +955,7 @@ find_tab_backward (MetaStack     *stack,
 
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
-           meta_workspace_contains_window (workspace, window)))
+           meta_window_visible_on_workspace (window, workspace)))
         return window;
 
       --i;
@@ -980,7 +980,7 @@ meta_stack_get_tab_next (MetaStack     *stack,
        * you get a key shortcut or something on a window just as you
        * are moving workspaces to one the window isn't on
        */
-      if (!meta_workspace_contains_window (workspace, window))
+      if (!meta_window_visible_on_workspace (window, workspace))
         return NULL;
     }
   
@@ -1037,7 +1037,7 @@ meta_stack_get_tab_list (MetaStack     *stack,
       
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
-           meta_workspace_contains_window (workspace, window)))
+           meta_window_visible_on_workspace (window, workspace)))
         list = g_slist_prepend (list, window);
 
       ++i;

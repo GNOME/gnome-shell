@@ -1046,8 +1046,8 @@ handle_focus_previous (MetaDisplay *display,
   window = display->prev_focus_window;
 
   if (window &&
-      !meta_workspace_contains_window (screen->active_workspace,
-                                       window))
+      !meta_window_visible_on_workspace (window,
+                                         screen->active_workspace))
     window = NULL;
   
   if (window == NULL)
@@ -1060,8 +1060,8 @@ handle_focus_previous (MetaDisplay *display,
     }
 
   if (window &&
-      !meta_workspace_contains_window (screen->active_workspace,
-                                       window))
+      !meta_window_visible_on_workspace (window,
+                                         screen->active_workspace))
     window = NULL;
   
   if (window)

@@ -39,6 +39,7 @@ void           meta_workspace_add_window    (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_remove_window (MetaWorkspace *workspace,
                                              MetaWindow    *window);
+/* don't confuse with meta_window_visible_on_workspace() */
 gboolean       meta_workspace_contains_window (MetaWorkspace *workspace,
                                                MetaWindow  *window);
 void           meta_workspace_activate      (MetaWorkspace *workspace);

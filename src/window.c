@@ -798,6 +798,14 @@ set_net_wm_state (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
+gboolean
+meta_window_visible_on_workspace (MetaWindow    *window,
+                                  MetaWorkspace *workspace)
+{
+  return window->on_all_workspaces ||
+    meta_workspace_contains_window (workspace, window);
+}
+
 void
 meta_window_calc_showing (MetaWindow  *window)
 {
@@ -805,8 +813,8 @@ meta_window_calc_showing (MetaWindow  *window)
 
   meta_verbose ("Calc showing for window %s\n", window->desc);
   
-  on_workspace = g_list_find (window->workspaces,
-                              window->screen->active_workspace) != NULL;
+  on_workspace = meta_window_visible_on_workspace (window, 
+                                                   window->screen->active_workspace);
 
   if (!on_workspace)
     meta_verbose ("Window %s is not on workspace %d\n",
@@ -818,10 +826,7 @@ meta_window_calc_showing (MetaWindow  *window)
                   meta_workspace_index (window->screen->active_workspace));
 
   if (window->on_all_workspaces)
-    {
-      on_workspace = TRUE;
-      meta_verbose ("Window %s is on all workspaces\n", window->desc);
-    }
+    meta_verbose ("Window %s is on all workspaces\n", window->desc);
 
   if (on_workspace &&
       window->display->showing_desktop &&
@@ -2479,8 +2484,8 @@ meta_window_client_message (MetaWindow *window,
       meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s'", window->desc);
 
       /* Get window on current workspace */
-      if (!meta_workspace_contains_window (window->screen->active_workspace,
-                                           window))
+      if (!meta_window_visible_on_workspace (window,
+                                             window->screen->active_workspace))
         meta_window_change_workspace (window,
                                       window->screen->active_workspace);
       
