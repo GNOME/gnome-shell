@@ -1,18 +1,20 @@
+# translation of sk.po to Slovak
 # metacity Slovak translation.
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001,2002 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001.
+# Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-17 18:07-0400\n"
-"PO-Revision-Date: 2002-05-16 16:05+0200\n"
+"Project-Id-Version: sk\n"
+"POT-Creation-Date: 2002-05-24 15:36+0200\n"
+"PO-Revision-Date: 2002-05-24 17:03+0200\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0beta2\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:466
@@ -24,7 +26,7 @@ msgstr "Nepodarilo sa spracovať \"%s\" ako celé číslo"
 #: src/theme-parser.c:475 src/theme-parser.c:529
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "Nerozpoznané znaky na konci \"%s\" v reťazci \"%s\""
 
 #: src/delete.c:127
 #, c-format
@@ -34,20 +36,19 @@ msgstr "Nepodarilo sa spracovať správu \"%s\" z dialógového procesu\n"
 #: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Chyba pri čítaní z procesu pre zobrazenie dialógu: %s\n"
 
 #: src/delete.c:333
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Chyba pri spustení dialógu metacity pre zabitie aplikácie: %s\n"
 
 #: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepodarilo sa získať meno hostiteľa: %s\n"
 
-#: src/display.c:224
+#: src/display.c:231
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
@@ -67,23 +68,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: src/frames.c:698
+#: src/frames.c:706
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: src/frames.c:701
+#: src/frames.c:709
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:704
+#: src/frames.c:712
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: src/frames.c:707
+#: src/frames.c:715
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: src/frames.c:710
+#: src/frames.c:718
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
@@ -92,14 +93,12 @@ msgstr "Odmaximalizovať okno"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
 #: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
-msgstr ""
-"Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
+msgstr "Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
 
 #: src/main.c:323
 #, c-format
@@ -164,34 +163,32 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"Okno \"%s\" nereaguje.\n"
+"Chcete túto aplikáciu násilne ukončiť?\n"
+"(Všetky otvorené dokumenty budú stratené.)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr ""
+msgstr "Zabiť aplikáciu"
 
-#: src/prefs.c:326 src/prefs.c:342 src/prefs.c:358 src/prefs.c:374
-#: src/prefs.c:390 src/prefs.c:410 src/prefs.c:426 src/prefs.c:442
-#: src/prefs.c:458 src/prefs.c:474
+#: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
+#: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
+#: src/prefs.c:467 src/prefs.c:483 src/prefs.c:499
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf kľúč \"%s\" má nastavený neplatný typ\n"
 
-#: src/prefs.c:508
+#: src/prefs.c:533
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf kľúč \"%s\" má nastavený neplatnú hodnotu"
 
-#: src/prefs.c:580
+#: src/prefs.c:605
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepodarilo sa spracovať popis písma \"%s\" z GConf kľúča %s\n"
 
-#: src/prefs.c:617
-#, c-format
-msgid "%d stored in GConf key %s is not a valid font size\n"
-msgstr "%d uložená v GConf kľúči %s nie je platná veľkosť písma\n"
-
-#: src/prefs.c:643
+#: src/prefs.c:644
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -200,28 +197,37 @@ msgstr ""
 "%d uložená v GConf kľúči %s nie je rozumný počet pracovných plôch, "
 "momentálne maximum je %d\n"
 
-#: src/prefs.c:692
+#: src/prefs.c:693
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Náhradné riešenia pre nefunkčné aplikácie nie sú povolené. "
+"Niektoré aplikácie sa nemusia správne chovať.\n"
 
-#: src/prefs.c:762
+#: src/prefs.c:725
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "Hodnota %d uložená v GConf kľúči %s nie je v rozsahu od 0 do %d\n"
+
+#: src/prefs.c:796
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Chyba pri nastavovaní počtu pracovných plôch na %d: %s\n"
 
-#: src/prefs.c:890
+#: src/prefs.c:924
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\""
 msgstr ""
+"V konfiguračnej databázi nájdené \"%s\", čo nie je platná hodnota "
+"pre klávesovú skratku \"%s\"."
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:191
 #, c-format
@@ -270,7 +276,7 @@ msgstr "Nepodarilo sa spracovať uložený súbor sedenia: %s\n"
 
 #: src/session.c:1077
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "Nájdený atribút <metacity_session>, ale ID sedenia už je nastavené"
 
 #: src/session.c:1090
 #, c-format
@@ -298,33 +304,33 @@ msgstr "Neznámy element %s"
 
 #: src/theme.c:351
 msgid "top"
-msgstr ""
+msgstr "hore"
 
 #: src/theme.c:353
 msgid "bottom"
-msgstr ""
+msgstr "dole"
 
 #: src/theme.c:355
 msgid "left"
-msgstr ""
+msgstr "vľavo"
 
 #: src/theme.c:357
 msgid "right"
-msgstr ""
+msgstr "vpravo"
 
 #: src/theme.c:371
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "geometria rámca neučuje rozmer \"%s\""
 
 #: src/theme.c:390
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "geometria rámca neučuje rozmer \"%s\" pre okraj \"%s\""
 
 #: src/theme.c:744
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Prechody by mali mať aspoň dve farby"
 
 #: src/theme.c:834
 #, c-format
@@ -332,6 +338,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"Špecifikácia farby GTK musí mať stav v hranatých zátvorkách, napr. gtk:fg[NORMAL], "
+"kde NORMAL je stav. Nepodarilo sa spracovať \"%s\""
 
 #: src/theme.c:848
 #, c-format
@@ -339,33 +347,35 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"Špecifikácia farby GTK musí mať stav uzavretý v hranatých zátvorkách, "
+"napr. gtk:fg[NORMAL], kde NORMAL je stav. Nepodarilo sa spracovať \"%s\""
 
 #: src/theme.c:859
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "V špecifikácii farby nerozpoznaný stav \"%s\""
 
 #: src/theme.c:872
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "V špecifikácii farby nerozpoznaný komponent \"%s\""
 
 #: src/theme.c:902
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
+msgstr "Formát miešania he \"blend/bg_color/fg_color/alpha\", \"%s\" tomu neodpovedá"
 
 #: src/theme.c:913
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Nepodarilo sa spracovať hodnotu alfa \"%s\" v miešanej farbe"
 
 #: src/theme.c:923
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Hodnota alfa \"%s\" v miešanej farbe nie je medzi 0.0 a 1.0"
 
 #: src/theme.c:962
 #, c-format
@@ -373,30 +383,30 @@ msgid "Could not parse color \"%s\""
 msgstr "Nepodarilo sa spracovať farbu \"%s\""
 
 #: src/theme.c:1212
-#, fuzzy, c-format
+#, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Výraz umiestnenia obsahuje znak '%c', ktorý nie je povolený"
+msgstr "Výraz umiestnenia obsahuje znak '%s', ktorý nie je povolený"
 
 #: src/theme.c:1239
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
-"Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
+msgstr "Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1253
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
+msgstr "Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1320
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Výraz umiestnenie obsahuje neznámu premennú \"%s\""
+msgstr ""
+"Výraz umiestnenia obsahuje neznámy operátor na začiatku tohto textu: "
+"\"%s\""
 
 #: src/theme.c:1377
 msgid "Coordinate expression was empty or not understood"
@@ -407,15 +417,13 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
 #: src/theme.c:1568
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
 #: src/theme.c:1625
-#, fuzzy, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Výraz umiestnenie obsahuje operátor \"%c\" tam, kde sa očakáva operand"
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Výraz umiestnenia obsahuje operátor \"%s\" tam, kde sa očakáva operand"
 
 #: src/theme.c:1634
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -447,9 +455,9 @@ msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Výraz umiestnenie obsahuje zatváraciu zátvorku bez otváracej zátvorky"
 
 #: src/theme.c:1863
-#, fuzzy, c-format
+#, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Výraz umiestnenie obsahuje neznámu premennú \"%s\""
+msgstr "Výraz umiestnenia obsahuje neznámu premennú alebo konštantu \"%s\""
 
 #: src/theme.c:1920
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -470,42 +478,43 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"Pre tento štýl rámca musí byť uvedené "
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>"
 
 #: src/theme.c:3894 src/theme.c:3926
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:3977
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
+msgstr "Nepodarilo sa prečítať tému \"%s\": %s\n"
 
 #: src/theme.c:4123
 #, c-format
 msgid "No <name> set for theme \"%s\""
-msgstr ""
+msgstr "Pre tému \"%s\" nie je nastavené <name>"
 
 #: src/theme.c:4130
 #, c-format
 msgid "No <author> set for theme \"%s\""
-msgstr ""
+msgstr "Pre tému \"%s\" nie je nastavené <author>"
 
 #: src/theme.c:4137
 #, c-format
 msgid "No <date> set for theme \"%s\""
-msgstr ""
+msgstr "Pre tému \"%s\" nie je nastavené <date>"
 
 #: src/theme.c:4144
 #, c-format
 msgid "No <description> set for theme \"%s\""
-msgstr ""
+msgstr "Pre tému \"%s\" nie je nastavené <description>"
 
 #: src/theme.c:4151
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
-msgstr ""
+msgstr "Pre tému \"%s\" nie je nastavené <copyright>"
 
 #: src/theme.c:4161
 #, c-format
@@ -513,6 +522,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Pre typ okna \"%s\" nie je sada štýlov v téme \"%s\", pridajte element "
+"<window type=\"%s\" style_set=\"whatever\"/>"
 
 #: src/theme.c:4183
 #, c-format
@@ -520,62 +531,63 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon funstate=\"%s\" stav=\"%s\" draw_ops=\"whatever\"/> musí byť "
+"pre túto tému uvedený"
 
 #: src/theme.c:4566 src/theme.c:4626
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Používateľské konštanty musia začítať veľkým písmenom, \"%s\" nezačína"
 
 #: src/theme.c:4574 src/theme.c:4634
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Konštanta \"%s\" už je definovaná"
 
 #: src/theme-parser.c:223 src/theme-parser.c:241
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Riadok %d znak %d: %s"
 
 #: src/theme-parser.c:395
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Atribút \"%s\" uvedený dvakrát v jednom elemente <%s>"
 
 #: src/theme-parser.c:413 src/theme-parser.c:438
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Atribút \"%s\" je neplatný v tomto kontexte v elemente <%s>"
 
 #: src/theme-parser.c:484
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Celé číslo %ld musí byť kladné"
 
 #: src/theme-parser.c:492
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Celé číslo %ld je príliš veľké, maximum je %d"
 
 #: src/theme-parser.c:520
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
+msgstr "Nepodarilo sa spracovať \"%s\" ako reálne číslo"
 
 #: src/theme-parser.c:551
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Pravdivostná hodnota musí byť \"true\" alebo \"false\", nie \"%s\""
 
 #: src/theme-parser.c:571
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Uhol musí byť medzi 0.0 a 360.0, a je %g\n"
 
 #: src/theme-parser.c:591
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Alfa musí byť medzi 0.0 (neviditeľné) a 1.0 (úplne nakreslené), a je %g\n"
 
 #: src/theme-parser.c:624
 #, c-format
@@ -583,75 +595,77 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Neplatná mierka titulku \"%s\" (musí byť xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
 #: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
-#, fuzzy, c-format
+#, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"%s\" v elemente %s"
 
 #: src/theme-parser.c:735 src/theme-parser.c:799 src/theme-parser.c:837
 #: src/theme-parser.c:914 src/theme-parser.c:964 src/theme-parser.c:972
 #: src/theme-parser.c:1028 src/theme-parser.c:1036
-#, fuzzy, c-format
+#, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"%s\" v elemente %s"
 
 #: src/theme-parser.c:751 src/theme-parser.c:807 src/theme-parser.c:845
 #: src/theme-parser.c:922
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "Meno <%s> \"%s\" použité dvakrát"
 
 #: src/theme-parser.c:763 src/theme-parser.c:857 src/theme-parser.c:934
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "Nedefinovaný rodič <%s> \"%s\""
 
 #: src/theme-parser.c:870
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "Nedefinovaná geometria <%s> \"%s\""
 
 #: src/theme-parser.c:883
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> musí uvádzať buď geometriu alebo rodiča, ktorý má geometriu"
 
 #: src/theme-parser.c:982
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Neznámy typ \"%s\" v elemente <%s>"
 
 #: src/theme-parser.c:993
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Neznámy style_set \"%s\" v elemente <%s>"
 
 #: src/theme-parser.c:1001
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Typ okna \"%s\" už má priradenú sadu štýlov"
 
 #: src/theme-parser.c:1045
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Neznáma funkcia pre ikonu menu \"%s\""
 
 #: src/theme-parser.c:1054
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Neznámy stav \"%s\" pre ikonu menu"
 
 #: src/theme-parser.c:1062
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Téma už má ikonu menu pre funkciu %s stav %s"
 
 #: src/theme-parser.c:1079 src/theme-parser.c:2949 src/theme-parser.c:3028
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Nedefinovaná <draw_ops> nazvaná \"%s\""
 
 #: src/theme-parser.c:1094 src/theme-parser.c:1158 src/theme-parser.c:1356
 #: src/theme-parser.c:2829 src/theme-parser.c:2883 src/theme-parser.c:3043
@@ -659,253 +673,253 @@ msgstr ""
 #: src/theme-parser.c:3334
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Element <%s> nie je povolený v <%s>"
 
 #: src/theme-parser.c:1184 src/theme-parser.c:1258
-#, fuzzy, c-format
+#, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"name\" v elemente <%s>"
 
 #: src/theme-parser.c:1191
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"value\" v elemente <%s>"
 
 #: src/theme-parser.c:1221
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Vzdialenosť \"%s\" je neznáma"
 
 #: src/theme-parser.c:1265
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"top\" v elemente <%s>"
 
 #: src/theme-parser.c:1272
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"bottom\" v elemente <%s>"
 
 #: src/theme-parser.c:1279
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"left\" v elemente <%s>"
 
 #: src/theme-parser.c:1286
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"right\" v elemente <%s>"
 
 #: src/theme-parser.c:1318
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Okraj \"%s\" je neznámy"
 
 #: src/theme-parser.c:1466 src/theme-parser.c:1576 src/theme-parser.c:1679
 #: src/theme-parser.c:1866 src/theme-parser.c:2574
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"color\" v elemente <%s>"
 
 #: src/theme-parser.c:1473
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"x\" v elemente <%s>"
 
 #: src/theme-parser.c:1480 src/theme-parser.c:2437
-#, fuzzy, c-format
+#, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"y1\" v elemente <%s>"
 
 #: src/theme-parser.c:1487
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"x2\" v elemente <%s>"
 
 #: src/theme-parser.c:1494 src/theme-parser.c:2444
-#, fuzzy, c-format
+#, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"y2\" v elemente <%s>"
 
 #: src/theme-parser.c:1583 src/theme-parser.c:1686 src/theme-parser.c:1792
 #: src/theme-parser.c:1873 src/theme-parser.c:1975 src/theme-parser.c:2068
 #: src/theme-parser.c:2206 src/theme-parser.c:2332 src/theme-parser.c:2430
 #: src/theme-parser.c:2501 src/theme-parser.c:2581
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"x\" v elemente <%s>"
 
 #: src/theme-parser.c:1590 src/theme-parser.c:1693 src/theme-parser.c:1799
 #: src/theme-parser.c:1880 src/theme-parser.c:1982 src/theme-parser.c:2075
 #: src/theme-parser.c:2213 src/theme-parser.c:2339 src/theme-parser.c:2508
 #: src/theme-parser.c:2588
-#, fuzzy, c-format
+#, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"y\" v elemente <%s>"
 
 #: src/theme-parser.c:1597 src/theme-parser.c:1700 src/theme-parser.c:1806
 #: src/theme-parser.c:1887 src/theme-parser.c:1989 src/theme-parser.c:2082
 #: src/theme-parser.c:2220 src/theme-parser.c:2346 src/theme-parser.c:2515
-#, fuzzy, c-format
+#, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"width\" v elemente <%s>"
 
 #: src/theme-parser.c:1604 src/theme-parser.c:1707 src/theme-parser.c:1813
 #: src/theme-parser.c:1894 src/theme-parser.c:1996 src/theme-parser.c:2089
 #: src/theme-parser.c:2227 src/theme-parser.c:2353 src/theme-parser.c:2522
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"height\" v elemente <%s>"
 
 #: src/theme-parser.c:1714
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"start_angle\" v elemente <%s>"
 
 #: src/theme-parser.c:1721
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"extent_angle\" v elemente <%s>"
 
 #: src/theme-parser.c:1901
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"alpha\" v elemente <%s>"
 
 #: src/theme-parser.c:1968
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"type\" v elemente <%s>"
 
 #: src/theme-parser.c:2020
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Nerozpoznaná hodnota \"%s\" pre typ prechodu"
 
 #: src/theme-parser.c:2096
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"filename\" v elemente <%s>"
 
 #: src/theme-parser.c:2185 src/theme-parser.c:2318 src/theme-parser.c:2423
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"state\" v elemente <%s>"
 
 #: src/theme-parser.c:2192 src/theme-parser.c:2325
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Chýbajúci atribút \"shadow\" v elemente <%s>"
 
 #: src/theme-parser.c:2199
-#, fuzzy, c-format
+#, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"arrow\" v elemente <%s>"
 
 #: src/theme-parser.c:2252 src/theme-parser.c:2374 src/theme-parser.c:2462
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nerozpoznaný stav \"%s\" pre element <%s>"
 
 #: src/theme-parser.c:2262 src/theme-parser.c:2384
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nerozpoznaný tieň \"%s\" pre element <%s>"
 
 #: src/theme-parser.c:2272
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nerozpoznaná šipka \"%s\" pre element <%s>"
 
 #: src/theme-parser.c:2667 src/theme-parser.c:2783
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Nedefinovaná <draw_ops> nazvaná \"%s\""
 
 #: src/theme-parser.c:2679 src/theme-parser.c:2795
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Pridaním draw_ops \"%s\" na tomto mieste spôsobí cyklickú referenciu"
 
 #: src/theme-parser.c:2858
-#, fuzzy, c-format
+#, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"value\" v elemente <%s>"
 
 #: src/theme-parser.c:2915
-#, fuzzy, c-format
+#, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"position\" v elemente <%s>"
 
 #: src/theme-parser.c:2924
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Neznáma pozícia \"%s\" pre časť rámca"
 
 #: src/theme-parser.c:2932
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Štýl ramca už má časť na pozícii %s"
 
 #: src/theme-parser.c:2977
-#, fuzzy, c-format
+#, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"function\" v elemente <%s>"
 
 #: src/theme-parser.c:2985 src/theme-parser.c:3089
-#, fuzzy, c-format
+#, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"state\" v elemente <%s>"
 
 #: src/theme-parser.c:2994
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Neznáma funkcia pre tlačidlo \"%s\""
 
 #: src/theme-parser.c:3003
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Neznámy stav pre tlačidlo \"%s\""
 
 #: src/theme-parser.c:3011
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Štýl rámca už má tlačidlo pre funkciu %s stav %s"
 
 #: src/theme-parser.c:3081
-#, fuzzy, c-format
+#, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"focus\" v elemente <%s>"
 
 #: src/theme-parser.c:3097
-#, fuzzy, c-format
+#, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"style\" v elemente <%s>"
 
 #: src/theme-parser.c:3106
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" nie je platná hodnota pre atribút fokusu"
 
 #: src/theme-parser.c:3115
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" nie je platná hodnota pre atribút stavu"
 
 #: src/theme-parser.c:3125
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Štýl \"%s\" nie je definovaný"
 
 #: src/theme-parser.c:3135
-#, fuzzy, c-format
+#, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "Neznámy atribúť %s v elemente <window>"
+msgstr "Chýbajúci atribút \"resize\" v elemente <%s>"
 
 #: src/theme-parser.c:3145
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" nie je platná hodnota pre atribút zmeny veľkosti"
 
 #: src/theme-parser.c:3155
 #, c-format
@@ -913,132 +927,139 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"Pre element <%s> by nemal byť atribút \"resize\" pre stavy "
+"maximalizované/zabalené"
 
 #: src/theme-parser.c:3169
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Pre stav %s zmena veľkosti %s fokus %s už bol štýl definovaný"
 
 #: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Pre stav %s fokus %s už bol štýl definovaný"
 
 #: src/theme-parser.c:3241
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Pre element <piece> nie je možné mať dve draw_ops (téma obsahuje "
+"atribút draw_ops a aj element <draw_ops>, prípadne dva rovnaké elementy)"
 
 #: src/theme-parser.c:3279
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Pre element <button> nie je možné mať dve draw_ops (téma obsahuje "
+"atribút draw_ops a aj element <draw_ops>, prípadne dva rovnaké elementy)"
 
 #: src/theme-parser.c:3317
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Pre element <menu_icon> nie je možné mať dve draw_ops (téma obsahuje "
+"atribút draw_ops a aj element <draw_ops>, prípadne dva rovnaké elementy)"
 
 #: src/theme-parser.c:3364
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Najvyšším elementovm témy musí byť <metacity_theme>, nie <%s>"
 
 #: src/theme-parser.c:3384
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Element <%s> nie je povolený v elemente name/author/date/description"
 
 #: src/theme-parser.c:3389
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Element <%s> nie je povolený v elemente <constant>"
 
 #: src/theme-parser.c:3400
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border element"
-msgstr ""
+msgstr "Element <%s> nie je povolený v elemente vzdialenosti/okrajov"
 
 #: src/theme-parser.c:3422
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Element <%s> nie je povolený v elemente operácie pre kreslenie"
 
 #: src/theme-parser.c:3432 src/theme-parser.c:3462 src/theme-parser.c:3467
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Element <%s> nie je povolený v elemente <%s>"
 
 #: src/theme-parser.c:3684
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Pre časť rámu nie je uvedená operácia draw_ops"
 
 #: src/theme-parser.c:3699
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Pre tlačidlo nie je uvedená operácia draw_ops"
 
 #: src/theme-parser.c:3714
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Pre ikonu menu nie je uvedená operácia draw_ops"
 
 #: src/theme-parser.c:3754
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "V elemente <%s> nie je povolený žiadny text"
 
 #: src/theme-parser.c:3809
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> uvedený dvakrát pre túto tému"
 
 #: src/theme-parser.c:3820
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> uvedený dvakrát pre túto tému"
 
 #: src/theme-parser.c:3831
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> uvedený dvakrát pre túto tému"
 
 #: src/theme-parser.c:3842
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> uvedený dvakrát pre túto tému"
 
 #: src/theme-parser.c:3853
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> uvedený dvakrát pre túto tému"
 
 #: src/theme-parser.c:4055
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
+msgstr "Nepodarilo sa prečítať tému zo súboru %s: %s\n"
 
 #: src/theme-parser.c:4110
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Súbor témy %s neobsahuje koreňový element <metacity_theme>"
 
 #: src/util.c:59
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Nepodarilo sa spracovať uložený súbor sedenia: %s\n"
+msgstr "Nepodarilo sa otvoriť záznam pre ladenie: %s\n"
 
 #: src/util.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
+msgstr "Nepodarilo sa otvoriť súbor so záznamom pomocou fdopen() %s: %s\n"
 
 #: src/util.c:75
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Otvorený súbor so záznamom %s\n"
 
-#: src/window.c:426
+#: src/window.c:427
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #: src/xprops.c:53
 #, c-format
@@ -1149,3 +1170,4 @@ msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 #~ msgstr ""
 #~ "Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
 #~ "vypínam zmenu veľkosťi\n"
+
