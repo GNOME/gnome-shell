@@ -10,6 +10,8 @@ metacity_SOURCES= 				\
 	delete.c				\
 	display.c				\
 	display.h				\
+	draw-workspace.c			\
+	draw-workspace.h			\
 	effects.c				\
 	effects.h				\
 	errors.c				\

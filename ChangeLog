@@ -1,3 +1,11 @@
+2002-06-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/draw-workspace.h, src/draw-workspace.c: workspace-drawing
+	code factored out of libwnck, needs wiring up to tabpopup.c
+	(which is kind of annoying since you have to get the list of
+	workspaces and MetaWindow across the barrier between the GDK-aware
+	and non-GDK-aware sides of metacity)
+
 2002-06-14  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_show): always focus new windows, 
