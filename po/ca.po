@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2002-05-19 00:00-0400\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error d'ES %d fatal (%s) a la pantalla '%s'.\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Tanca la finestra"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Menú de la finestra"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Minimitza la finestra"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Maximitza la finestra"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Desmaximitza la finestra"
 
@@ -111,7 +111,7 @@ msgstr ""
 "Ja hi ha algun altre programa utilitzant la clau %s amb els modificadors %x "
 "com a vinculació\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, fuzzy, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
@@ -119,7 +119,7 @@ msgstr ""
 "la \n"
 "finalització d'una aplicació: %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, fuzzy, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap <draw_ops> amb el nom \"%s\""
@@ -212,12 +212,12 @@ msgstr "Només en el lloc de treball %s%d"
 msgid "Workspace %s%d"
 msgstr "Només en el lloc de treball %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, fuzzy, c-format
 msgid "Only on %s"
 msgstr "Només en el lloc de treball %s%d"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, fuzzy, c-format
 msgid "Move to %s"
 msgstr "Mou al lloc de treball %s%d"
@@ -1530,7 +1530,7 @@ msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre de llocs de treball a %d: %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"

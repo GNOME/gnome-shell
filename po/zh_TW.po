@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.0\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2003-02-05 23:05+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditioanl) <zh-l10n@linux.org.tw>\n"
@@ -75,23 +75,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "畫面‘%3$s’發生嚴重輸出/入錯誤 %1$d (%2$s)。\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "關閉視窗"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "視窗選單"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "視窗最小化"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "視窗最大化"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "視窗還原最大化"
 
@@ -102,12 +102,12 @@ msgid ""
 "binding\n"
 msgstr "其它程式已經使用了按鍵 %s 加上輔助按鍵 %x 作為按鍵組合\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "當嘗試啟動 metacity-dialog 來顯示某指令的錯誤訊息時出現錯誤：%s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "並未定義任何指令 %d。\n"
@@ -202,12 +202,12 @@ msgstr "工作區 %d"
 msgid "Workspace %s%d"
 msgstr "工作區 %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "只在「%s」顯示"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "移動至「%s」"
@@ -1906,7 +1906,7 @@ msgstr "組態資料庫中的“%s”不是按鍵組合“%s”的有效設定�
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "將第 %d 個工作區的名稱設定為“%s”時出現錯誤：%s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d×%d"

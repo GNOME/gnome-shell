@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2003-02-05 03:08--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -76,23 +76,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальна помилка вводу-виводу %d (%s) на дисплеї \"%s\".\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Мінімізувати вікно"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Максимізувати вікно"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Демаксимізувати вікно"
 
@@ -105,14 +105,14 @@ msgstr ""
 "Якась програма вже використовує клавішу %s з модифікатором %x в якості "
 "прив'язки\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Помилка при відкриванні діалогу виводу повідомлення про помилку у команді: %"
 "s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команду %d не визначено.\n"
@@ -210,12 +210,12 @@ msgstr "Робоче місце %d"
 msgid "Workspace %s%d"
 msgstr "Робоче місце %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Лише на %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Перенести на %s"
@@ -1947,7 +1947,7 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка встановлення назви робочого місця %d у \"%s\": %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"

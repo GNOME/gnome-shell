@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2003-01-08 22:44+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Vakava IO-virhe %d (%s) näytöllä \"%s\".\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Ikkunavalikko"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Pienennä ikkuna"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Suurenna ikkuna"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Palauta ikkuna"
 
@@ -109,14 +109,14 @@ msgid ""
 msgstr ""
 "Jokin muu ohjelma käyttää jo näppäintä %s muunnoksin %x pikanäppäimenään\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Virhe metacity-dialogin käynnistämisessä komennon virheen tulostamista "
 "varten: %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Mitään komentoa %d ei ole määritelty.\n"
@@ -215,12 +215,12 @@ msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
 # This is very hard to do in Finnish...
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Vain työtilassa %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Siirrä työtilaan %s"
@@ -1896,7 +1896,7 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d × %d"

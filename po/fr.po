@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.0\n"
-"POT-Creation-Date: 2003-04-03 23:14+0200\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2003-04-03 23:12+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -88,23 +88,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erreur d'ES fatale %d (%s) sur le visuel « %s ».\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Menu Fenêtre"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Réduire la fenêtre"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Agrandir la fenêtre"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Annuler l'agrandissement"
 
@@ -117,14 +117,14 @@ msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x comme "
 "liaisons\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erreur pendant le lancement de metacity-dialog pour afficher un message "
 "d'erreur pour la commande : %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
@@ -222,12 +222,12 @@ msgstr "Espace de travail %d"
 msgid "Workspace %s%d"
 msgstr "Espace de travail %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Uniquement sur %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Déplacer vers %s"
@@ -2064,7 +2064,7 @@ msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Erreur dans la définition du nom pour l'espace de travail %d à \"%s\": %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.3.x\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2002-12-19 23:51+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai (Bahasa Melayu) <gabai-penyumbang@lists."
@@ -79,23 +79,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ralat IO fatal %d (%s) pada paparan '%s'.\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Tutup Tetingkap"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Menu Tetingkap"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Miniatur Tetingkap"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Maksima tetingkap"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Nyah Maksima Tetingkap"
 
@@ -109,13 +109,13 @@ msgstr ""
 "Terdapat program lain yang sudah menggunakan kekukci %s dengan modifier %x "
 "sebagai binding\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ralat melancarkan dialog-metacity untuk mencetak ralat tentang arahan: %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Tiada arahan %d ditakrifkan.\n"
@@ -207,12 +207,12 @@ msgstr "Ruangkerja %d"
 msgid "Workspace %s%d"
 msgstr "Ruangkerja %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Hanya pada %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Pindah ke %s"
@@ -1499,7 +1499,7 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ralat menetapkan bilangan ruangkerja ke %d: %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"

@@ -6,15 +6,18 @@ on UNIX keyboards.
 The first release of Metacity was version 2.3. Metacity has no need for
 your petty hangups about version numbers.
 
+The stable releases so far are 2.4.x
+
+Unstable branches are 2.3.x, 2.5.x
+
 COMPILING METACITY
 ===
 
-You need GTK+ 2.0, ideally the latest in the 2.0.x series.  For
-multihead/Xinerama support to work, you need GTK+ 2.2.  For
-startup notification to work you need libstartup-notification at
+You need GTK+ 2.2.  For startup notification to work you need
+libstartup-notification at
 http://www.freedesktop.org/software/startup-notification/ or on the
-GNOME ftp site. You also need GConf 1.2 (unless building a funky 
-extra-small embedded metacity with --disable-gconf).
+GNOME ftp site. You also need GConf 1.2 (unless building a funky
+extra-small embedded metacity with --disable-gconf, see below).
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===

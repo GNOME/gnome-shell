@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2001-12-26 18:59GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azerbaijani Turkic <linuxaz@azerimail.net>\n"
@@ -77,23 +77,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "'%3$s' displeyində Ağır IO %1$d (%2$s) xətası.\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Pǝncǝrǝni Qapat"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Pəncərə Menüsü"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Pəncərəni Kiçilt"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Pəncərəni Böyüt"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Pəncərəni Yenidən Kiçilt"
 
@@ -106,12 +106,12 @@ msgstr ""
 "Bəzi başqa proqramlar hazırda %2$x modifayrlı %1$s açarını bağlayıcı olaraq "
 "işlədirlər\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
@@ -202,12 +202,12 @@ msgstr "Təkcə _%d İş Sahəsinə"
 msgid "Workspace %s%d"
 msgstr "Təkcə _%d İş Sahəsinə"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, fuzzy, c-format
 msgid "Only on %s"
 msgstr "Təkcə _%d İş Sahəsinə"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, fuzzy, c-format
 msgid "Move to %s"
 msgstr "_%d İş Sahəsinə Daşı"
@@ -1508,7 +1508,7 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr ""

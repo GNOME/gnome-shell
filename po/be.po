@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-2\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
+"POT-Creation-Date: 2003-05-03 12:54-0400\n"
 "PO-Revision-Date: 2003-02-21 19:19GMT+2\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: belarusian <i18n@mova.org>\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальная памылка ўводу-вываду %d (%s) на дысплэі \"%s\".\n"
 
-#: src/frames.c:1010
+#: src/frames.c:998
 msgid "Close Window"
 msgstr "Закрыць акно"
 
-#: src/frames.c:1013
+#: src/frames.c:1001
 msgid "Window Menu"
 msgstr "Мэню акна"
 
-#: src/frames.c:1016
+#: src/frames.c:1004
 msgid "Minimize Window"
 msgstr "Найменьшыць акно"
 
-#: src/frames.c:1019
+#: src/frames.c:1007
 msgid "Maximize Window"
 msgstr "Найбольшыць акно"
 
-#: src/frames.c:1022
+#: src/frames.c:1010
 msgid "Unmaximize Window"
 msgstr "Аднавіць папярэдні памер"
 
@@ -110,14 +110,14 @@ msgid ""
 msgstr ""
 "Клявішу \"%s\" з мадыфікатарамі \"%x\" ужо выкарыстоўвае іншая праграма\n"
 
-#: src/keybindings.c:2393
+#: src/keybindings.c:2402
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Памыдка загрузкі дыялёгу \"Мэтасіці\" для вываду паведамленьня пра памылку "
 "каманды: %s\n"
 
-#: src/keybindings.c:2424
+#: src/keybindings.c:2433
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Каманда %d ня была вызначана.\n"
@@ -216,12 +216,12 @@ msgstr "Працоўная прастора %d"
 msgid "Workspace %s%d"
 msgstr "Працоўная прастора %s%d"
 
-#: src/menu.c:353
+#: src/menu.c:345
 #, c-format
 msgid "Only on %s"
 msgstr "Толькі на %s"
 
-#: src/menu.c:355
+#: src/menu.c:347
 #, c-format
 msgid "Move to %s"
 msgstr "Перамясьціць на %s"
@@ -1957,7 +1957,7 @@ msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Адбылася памылка усталяваньня назвы працоўнае прасторы %d у \"%s\": %s\n"
 
-#: src/resizepopup.c:127
+#: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"

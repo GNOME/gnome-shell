@@ -1,3 +1,19 @@
+2.5.1
+===
+
+ Thanks to Rob Adams, Peter O'Shea, Dafydd Harries, Masahiro Sakai, 
+ Soeren Sandmann for fixes in this release.
+
+ - fix bug where fullscreen windows were below top panels
+ - build fix for Solaris
+ - support diagonal window movement with numeric keypad
+ - multihead fix
+ - build fix for Cygwin 
+ - place on xinerama containing the pointer
+ - fix totally hosed window placement/movement for frameless
+   windows
+ - improvement to smoothness of window move/resize
+
 2.5.0
 ===
 
