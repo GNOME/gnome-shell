@@ -1,3 +1,9 @@
+2003-02-22  Rob Adams <robadams@ucla.edu>
+
+	* *.po: change toggle_maximized to toggle_maximize and
+	toggle_shaded to toggle_shade in action_double_click_titlebar long
+	description to match the values used by metacity
+
 2003-02-12  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Some fixes for problems catched in translation review.
