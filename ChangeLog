@@ -1,3 +1,11 @@
+2002-09-23  Havoc Pennington  <hp@pobox.com>
+
+	* src/main.c (main): re-enable the log handler, maybe it will
+	break something, I don't remember why I turned it off.
+
+	* src/display.c: s/_NET_SHOW_DESKTOP/_NET_SHOWING_DESKTOP/ which
+	is what's in the spec
+
 2002-09-22  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (recalc_window_features): small reordering of 

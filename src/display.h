@@ -129,7 +129,7 @@ struct _MetaDisplay
   Atom atom_wm_client_machine;
   Atom atom_net_wm_state_fullscreen;
   Atom atom_net_workarea;
-  Atom atom_net_show_desktop;
+  Atom atom_net_showing_desktop;
   Atom atom_net_desktop_layout;
   Atom atom_manager;
   Atom atom_targets;

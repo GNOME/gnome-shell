@@ -257,7 +257,7 @@ main (int argc, char **argv)
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
 
-#if 0
+#if 1
   g_log_set_handler (NULL,
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
