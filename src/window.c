@@ -40,8 +40,6 @@
 #include "window-props.h"
 #include "constraints.h"
 
-#include "expocity.h"
-
 #include <X11/Xatom.h>
 #include <string.h>
 
@@ -1045,7 +1043,6 @@ meta_window_free (MetaWindow  *window)
 
   meta_icon_cache_free (&window->icon_cache);
   
-  expocity_free_window (window);
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
   g_free (window->startup_id);

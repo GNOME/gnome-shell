@@ -56,8 +56,6 @@
 #endif
 #include <string.h>
 
-#include "expocity.h"
-
 #define USE_GDK_DISPLAY
 
 typedef struct 
@@ -1323,19 +1321,7 @@ event_callback (XEvent   *event,
   meta_compositor_process_event (display->compositor,
                                  event,
                                  window);
-
-  /* these are the window events at which expocity updates the thumbnail image
-     of the window */
-  switch (event->type)
-    {
-    case CreateNotify:
-    case ButtonRelease:
-    case KeyRelease:
-    case FocusIn:
-    case FocusOut:
-      expocity_grab_window(window);
-    }
-
+  
   switch (event->type)
     {
     case KeyPress:
