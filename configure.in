@@ -62,8 +62,13 @@ if test "$found_sm" = "true"; then
    AC_DEFINE(HAVE_SM)
 fi
 
-# Check for shaped window extension
-AC_CHECK_LIB(Xext, XShapeCombineMask, AC_DEFINE(HAVE_SHAPE_EXT),,$METACITY_LIBS)
+AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "true") 
+
+MSM_CFLAGS=$METACITY_CFLAGS
+MSM_LIBS=$METACITY_LIBS
+
+AC_SUBST(MSM_CFLAGS)
+AC_SUBST(MSM_LIBS)
 
 HOST_ALIAS=$host_alias
 AC_SUBST(HOST_ALIAS)
@@ -72,6 +77,7 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/wm-tester/Makefile
+src/msm/Makefile
 ])
 
 

@@ -429,6 +429,16 @@ meta_ui_get_default_window_icon (MetaUI *ui)
                                  NULL);
 }
 
+GdkPixbuf*
+meta_ui_get_default_mini_icon (MetaUI *ui)
+{
+  /* FIXME */
+  return gtk_widget_render_icon (GTK_WIDGET (ui->frames),
+                                 GTK_STOCK_NEW,
+                                 GTK_ICON_SIZE_MENU,
+                                 NULL);
+}
+
 gboolean
 meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                        Window   xwindow)

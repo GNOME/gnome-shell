@@ -30,6 +30,8 @@
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32
 #define META_ICON_HEIGHT 32
+#define META_MINI_ICON_WIDTH 16
+#define META_MINI_ICON_HEIGHT 16
 
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);

@@ -42,7 +42,7 @@ static void
 usage (void)
 {
   g_print ("metacity [--disable-sm] [--sm-client-id=ID] [--display=DISPLAY]\n");
-  exit (0);
+  exit (1);
 }
 
 int

@@ -41,6 +41,24 @@ gboolean proplist_find_vector       (GList        *list,
                                      int          *argcp,
                                      char       ***argvp);
 
+GList*   proplist_replace           (GList        *list,
+                                     SmProp       *new_prop);
+
+GList*   proplist_delete           (GList        *list,
+                                    const char   *name);
+
+GList*   proplist_replace_card8     (GList        *list,
+                                     const char   *name,
+                                     int           value);
+GList*   proplist_replace_string     (GList        *list,
+                                      const char   *name,
+                                      const char   *str,
+                                      int           len);
+GList*   proplist_replace_vector     (GList        *list,
+                                      const char   *name,
+                                      int           argc,
+                                      char        **argv);
+
 gboolean smprop_get_card8  (SmProp   *prop,
                             int      *result);
 gboolean smprop_get_string (SmProp   *prop,
@@ -48,6 +66,16 @@ gboolean smprop_get_string (SmProp   *prop,
 gboolean smprop_get_vector (SmProp   *prop,
                             int      *argcp,
                             char   ***argvp);
+
+SmProp* smprop_new_card8  (const char  *name,
+                           int          value);
+SmProp* smprop_new_string (const char  *name,
+                           const char  *str,
+                           int          len);
+SmProp* smprop_new_vector (const char  *name,
+                           int          argc,
+                           char       **argv);
+
 
 SmProp* smprop_copy (SmProp *prop);
 

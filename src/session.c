@@ -97,8 +97,8 @@ new_ice_connection (IceConn connection, IcePointer client_data, Bool opening,
        */
       GIOChannel *channel;
       
-      fcntl (IceConnectionNumber(connection),F_SETFD,
-             fcntl(IceConnectionNumber(connection),F_GETFD,0) | FD_CLOEXEC);
+      fcntl (IceConnectionNumber (connection), F_SETFD,
+             fcntl (IceConnectionNumber (connection), F_GETFD, 0) | FD_CLOEXEC);
 
       channel = g_io_channel_unix_new (IceConnectionNumber (connection));
       
@@ -119,15 +119,15 @@ new_ice_connection (IceConn connection, IcePointer client_data, Bool opening,
     }
 }
 
-static IceIOErrorHandler gnome_ice_installed_handler;
+static IceIOErrorHandler ice_installed_handler;
 
 /* We call any handler installed before (or after) gnome_ice_init but 
    avoid calling the default libICE handler which does an exit() */
 static void
 ice_io_error_handler (IceConn connection)
 {
-    if (gnome_ice_installed_handler)
-      (*gnome_ice_installed_handler) (connection);
+    if (ice_installed_handler)
+      (*ice_installed_handler) (connection);
 }    
 
 static void
@@ -139,11 +139,11 @@ ice_init (void)
     {
       IceIOErrorHandler default_handler;
 
-      gnome_ice_installed_handler = IceSetIOErrorHandler (NULL);
+      ice_installed_handler = IceSetIOErrorHandler (NULL);
       default_handler = IceSetIOErrorHandler (ice_io_error_handler);
 
-      if (gnome_ice_installed_handler == default_handler)
-	gnome_ice_installed_handler = NULL;
+      if (ice_installed_handler == default_handler)
+	ice_installed_handler = NULL;
 
       IceAddConnectionWatch (new_ice_connection, NULL);
 
@@ -879,9 +879,15 @@ save_state (void)
  out:
   if (outfile)
     {
-      if (fclose (outfile) != 0)
+      /* FIXME need a dialog for this */
+      if (ferror (outfile))
         {
           meta_warning (_("Error writing session file '%s': %s\n"),
+                        session_file, g_strerror (errno));
+        }
+      if (fclose (outfile))
+        {
+          meta_warning (_("Error closing session file '%s': %s\n"),
                         session_file, g_strerror (errno));
         }
     }

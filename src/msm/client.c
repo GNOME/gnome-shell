@@ -288,25 +288,9 @@ msm_client_set_property_taking_ownership (MsmClient *client,
                                           SmProp    *prop)
 {
   /* we own prop which should be freed with SmFreeProperty() */
-  GList *list;
 
-  if (prop->name == NULL)
-    {
-      SmFreeProperty (prop);
-      return;
-    }
-  
-  list = proplist_find_link_by_name (client->properties, prop->name);
-  if (list)
-    {
-      SmFreeProperty (list->data);
-      list->data = prop;
-    }
-  else
-    {
-      client->properties = g_list_prepend (client->properties,
-                                           prop);
-    }
+  /* pass our ownership into the proplist */
+  client->properties = proplist_replace (client->properties, prop);
 
   /* update pieces of the client struct */
   if (strcmp (prop->name, "SmRestartStyleHint") == 0)
@@ -323,15 +307,7 @@ void
 msm_client_unset_property (MsmClient *client,
                            const char *name)
 {
-  GList *list;
-
-  list = proplist_find_link_by_name (client->properties, name);
-  if (list)
-    {
-      SmFreeProperty (list->data);
-      client->properties = g_list_delete_link (client->properties,
-                                               list);
-    }
+  client->properties = proplist_delete (client->properties, name);
 
   /* Return to default values */
   if (strcmp (name, "SmRestartStyleHint") == 0)

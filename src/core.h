@@ -36,6 +36,9 @@ void meta_core_get_frame_size (Display *xdisplay,
 MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
                                           Window   frame_xwindow);
 
+GdkPixbuf* meta_core_get_mini_icon (Display *xdisplay,
+                                    Window   frame_xwindow);
+
 void meta_core_queue_frame_resize (Display *xdisplay,
                                    Window frame_xwindow);
 

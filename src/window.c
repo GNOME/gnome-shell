@@ -275,6 +275,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->title = NULL;
   window->icon_name = NULL;
   window->icon = NULL;
+  window->mini_icon = NULL;
   
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
@@ -689,6 +690,9 @@ meta_window_free (MetaWindow  *window)
 
   if (window->icon)
     g_object_unref (G_OBJECT (window->icon));
+
+  if (window->mini_icon)
+    g_object_unref (G_OBJECT (window->mini_icon));
   
   g_free (window->sm_client_id);
   g_free (window->role);
@@ -3808,6 +3812,8 @@ update_icon_name (MetaWindow *window)
 static gboolean
 find_best_size (gulong  *data,
                 int      nitems,
+                int      ideal_width,
+                int      ideal_height,
                 int     *width,
                 int     *height,
                 gulong **start)
@@ -3857,7 +3863,7 @@ find_best_size (gulong  *data,
       else
         {
           /* work with averages */
-          const int ideal_size = META_ICON_WIDTH * META_ICON_HEIGHT;
+          const int ideal_size = (ideal_width + ideal_height) / 2;
           int best_size = (best_w + best_h) / 2;
           int this_size = (w + h) / 2;
           
@@ -3875,7 +3881,7 @@ find_best_size (gulong  *data,
           else if (best_size > ideal_size &&
                    this_size >= ideal_size &&
                    this_size < best_size)
-            replace = TRUE;          
+            replace = TRUE;
         }
 
       if (replace)
@@ -3900,11 +3906,46 @@ find_best_size (gulong  *data,
     return FALSE;
 }
 
+static void
+argbdata_to_pixdata (gulong *argb_data, int len, guchar **pixdata)
+{
+  guchar *p;
+  int i;
+  
+  *pixdata = g_new (guchar, len * 4);
+  p = *pixdata;
+
+  /* One could speed this up a lot. */
+  i = 0;
+  while (i < len)
+    {
+      guint argb;
+      guint rgba;
+      
+      argb = argb_data[i];
+      rgba = (argb << 8) | (argb >> 24);
+      
+      *p = rgba >> 24;
+      ++p;
+      *p = (rgba >> 16) & 0xff;
+      ++p;
+      *p = (rgba >> 8) & 0xff;
+      ++p;
+      *p = rgba & 0xff;
+      ++p;
+      
+      ++i;
+    }
+}
+
 static gboolean
 read_rgb_icon (MetaWindow    *window,
                int           *width,
                int           *height,
-               guchar       **pixdata)
+               guchar       **pixdata,
+               int           *mini_width,
+               int           *mini_height,
+               guchar       **mini_pixdata)
 {
   Atom type;
   int format;
@@ -3913,9 +3954,9 @@ read_rgb_icon (MetaWindow    *window,
   int result;
   gulong *data; /* FIXME should be guint? */
   gulong *best;
-  int i;
   int w, h;
-  guchar *p;
+  gulong *best_mini;
+  int mini_w, mini_h;
   
   if (sizeof (gulong) != 4)
     meta_warning ("%s: Whoops, I think this function may be broken on 64-bit\n",
@@ -3940,39 +3981,28 @@ read_rgb_icon (MetaWindow    *window,
       return FALSE;
     }
 
-  if (!find_best_size (data, nitems, &w, &h, &best))
+  if (!find_best_size (data, nitems, META_ICON_WIDTH, META_ICON_HEIGHT,
+                       &w, &h, &best))
     {
       XFree (data);
       return FALSE;
     }
 
+  if (!find_best_size (data, nitems, META_MINI_ICON_WIDTH, META_MINI_ICON_HEIGHT,
+                       &mini_w, &mini_h, &best_mini))
+    {
+      XFree (data);
+      return FALSE;
+    }
+  
   *width = w;
   *height = h;
 
-  *pixdata = g_new (guchar, w * h * 4);
-  p = *pixdata;
+  *mini_width = mini_w;
+  *mini_height = mini_h;
 
-  /* One could speed this up a lot. */
-  i = 0;
-  while (i < w * h)
-    {
-      guint argb;
-      guint rgba;
-      
-      argb = best[i];
-      rgba = (argb << 8) | (argb >> 24);
-      
-      *p = rgba >> 24;
-      ++p;
-      *p = (rgba >> 16) & 0xff;
-      ++p;
-      *p = (rgba >> 8) & 0xff;
-      ++p;
-      *p = rgba & 0xff;
-      ++p;
-      
-      ++i;
-    }
+  argbdata_to_pixdata (best, w * h, pixdata);
+  argbdata_to_pixdata (best_mini, mini_w * mini_h, mini_pixdata);
 
   XFree (data);
   
@@ -3987,6 +4017,12 @@ clear_icon (MetaWindow *window)
       g_object_unref (G_OBJECT (window->icon));
       window->icon = NULL;
     }
+
+  if (window->mini_icon)
+    {
+      g_object_unref (G_OBJECT (window->mini_icon));
+      window->mini_icon = NULL;
+    }
 }
 
 static void
@@ -3997,7 +4033,8 @@ free_pixels (guchar *pixels, gpointer data)
 
 static void
 replace_icon (MetaWindow *window,
-              GdkPixbuf  *unscaled)
+              GdkPixbuf  *unscaled,
+              GdkPixbuf  *unscaled_mini)
 {  
   if (gdk_pixbuf_get_width (unscaled) != META_ICON_WIDTH ||
       gdk_pixbuf_get_height (unscaled) != META_ICON_HEIGHT)
@@ -4014,6 +4051,23 @@ replace_icon (MetaWindow *window,
     {
       g_object_ref (G_OBJECT (unscaled));
       window->icon = unscaled;
+    }
+
+  if (gdk_pixbuf_get_width (unscaled_mini) != META_MINI_ICON_WIDTH ||
+      gdk_pixbuf_get_height (unscaled_mini) != META_MINI_ICON_HEIGHT)
+    {
+      /* FIXME should keep aspect ratio, but for now assuming
+       * a square source icon
+       */              
+      window->mini_icon = gdk_pixbuf_scale_simple (unscaled_mini,
+                                                   META_MINI_ICON_WIDTH,
+                                                   META_MINI_ICON_HEIGHT,
+                                                   GDK_INTERP_BILINEAR);
+    }
+  else
+    {
+      g_object_ref (G_OBJECT (unscaled_mini));
+      window->mini_icon = unscaled_mini;
     }
 }
 
@@ -4149,7 +4203,7 @@ try_pixmap_and_mask (MetaWindow *window,
   
   if (unscaled)
     {
-      replace_icon (window, unscaled);
+      replace_icon (window, unscaled, unscaled);
       g_object_unref (G_OBJECT (unscaled));
       return TRUE;
     }
@@ -4162,18 +4216,22 @@ update_icon (MetaWindow *window,
              gboolean    reload_rgb_icon)
 {
 
-  if (FALSE && reload_rgb_icon)
+  if (reload_rgb_icon)
     {
       guchar *pixdata;     
       int w, h;
+      guchar *mini_pixdata;
+      int mini_w, mini_h;
       
       pixdata = NULL;
       
-      if (read_rgb_icon (window, &w, &h, &pixdata))
+      if (read_rgb_icon (window, &w, &h, &pixdata,
+                         &mini_w, &mini_h, &mini_pixdata))
         {
           GdkPixbuf *unscaled;
+          GdkPixbuf *unscaled_mini;
 
-          meta_verbose ("successfully read RGBA icon from _NET_WM_ICON, using w = %d h = %d\n", w, h);
+          meta_verbose ("successfully read RGBA icon from _NET_WM_ICON, using w = %d h = %d mini_w = %d mini_h = %d\n", w, h, mini_w, mini_h);
           
           window->using_rgb_icon = TRUE;
 
@@ -4185,9 +4243,18 @@ update_icon (MetaWindow *window,
                                                free_pixels,
                                                NULL);
 
-          replace_icon (window, unscaled);
+          unscaled_mini = gdk_pixbuf_new_from_data (mini_pixdata,
+                                                    GDK_COLORSPACE_RGB,
+                                                    TRUE,
+                                                    8,
+                                                    mini_w, mini_h, mini_w * 4,
+                                                    free_pixels,
+                                                    NULL);
+          
+          replace_icon (window, unscaled, unscaled_mini);
           
           g_object_unref (G_OBJECT (unscaled));
+          g_object_unref (G_OBJECT (unscaled_mini));
           
           return Success; 
         }
@@ -4237,7 +4304,10 @@ update_icon (MetaWindow *window,
   
   /* Fallback to a default icon */
   if (window->icon == NULL)
-    window->icon = meta_ui_get_default_window_icon (window->screen->ui);
+    {
+      window->icon = meta_ui_get_default_window_icon (window->screen->ui);
+      window->mini_icon = meta_ui_get_default_mini_icon (window->screen->ui);
+    }
   
   return Success;
 }

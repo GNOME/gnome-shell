@@ -55,6 +55,7 @@ struct _MetaWindow
 
   char *icon_name;
   GdkPixbuf *icon;
+  GdkPixbuf *mini_icon;
   
   MetaWindowType type;
   Atom type_atom;

@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <stdio.h>
 
 #include <gtk/gtk.h>
 
@@ -38,7 +39,7 @@ typedef struct _MsmSavedClient MsmSavedClient;
 struct _MsmSavedClient
 {
   char *id;
-
+  GList *properties;
 };
 
 struct _MsmSession
@@ -70,6 +71,9 @@ static MsmSession* recover_failed_session (MsmSession              *session,
 
 static gboolean    parse_session_file     (MsmSession *session,
                                            GError    **error);
+
+static char* decode_text_from_utf8 (const char *text);
+static char* encode_text_as_utf8   (const char *text);
 
 void
 msm_session_clear (MsmSession  *session)
@@ -106,8 +110,10 @@ msm_session_client_id_known (MsmSession *session,
 void
 msm_session_launch (MsmSession  *session)
 {
-
-
+  system ("xclock &");
+  system ("xclock &");
+  system ("xclock &");
+  system ("xterm &");
 }
 
 MsmSavedClient*
@@ -118,7 +124,8 @@ saved_new (void)
   saved = g_new (MsmSavedClient, 1);
 
   saved->id = NULL;
-
+  saved->properties = NULL;
+  
   return saved;
 }
 
@@ -344,12 +351,201 @@ msm_session_get_failsafe  (void)
   return msm_session_get_for_filename (_("Failsafe"), "Failsafe.session");
 }
 
+static void
+write_proplist (FILE *fp,
+                GList *properties)
+{
+  GList *tmp;
+
+  tmp = properties;
+  while (tmp != NULL)
+    {
+      SmProp *prop = tmp->data;
+      char *name_encoded;
+      char *type_encoded;
+      
+      name_encoded = encode_text_as_utf8 (prop->name);
+      type_encoded = encode_text_as_utf8 (prop->type);
+
+      fprintf (fp, "    <prop name=\"%s\" type=\"%s\">\n",
+               name_encoded, type_encoded);
+
+      g_free (name_encoded);
+      g_free (type_encoded);
+
+      if (strcmp (prop->type, SmCARD8) == 0)
+        {
+          int val = 0;
+          smprop_get_card8 (prop, &val);
+          fprintf (fp, "      <value>%d</value>\n", val);
+        }
+      else if (strcmp (prop->type, SmARRAY8) == 0)
+        {
+          char *str = NULL;
+          char *encoded = NULL;
+          smprop_get_string (prop, &str);
+          if (str)
+            encoded = encode_text_as_utf8 (str);
+          if (encoded)
+            fprintf (fp, "      <value>%s</value>\n", encoded);
+
+          g_free (encoded);
+          g_free (str);
+        }
+      else if (strcmp (prop->type, SmLISTofARRAY8) == 0)
+        {
+          char **vec;
+          int vec_len;
+          int i;
+          
+          vec = NULL;
+          vec_len = 0;
+          
+          smprop_get_vector (prop, &vec_len, &vec);
+
+          i = 0;
+          while (i < vec_len)
+            {
+              char *encoded;
+
+              encoded = encode_text_as_utf8 (vec[i]);
+              
+              fprintf (fp, "      <value>%s</value>\n", encoded);
+
+              g_free (encoded);
+              
+              ++i;
+            }
+
+          g_strfreev (vec);
+        }
+      else
+        {
+          msm_warning (_("Not saving unknown property type '%s'\n"),
+                       prop->type);
+        }
+      
+      fputs ("    </prop>\n", fp);
+
+      tmp = tmp->next;
+    }
+}
+
 void
 msm_session_save (MsmSession  *session,
                   MsmServer   *server)
 {
+  /* We save to a secondary file then copy over, to handle
+   * out-of-disk-space robustly
+   */
+  int new_fd;
+  char *new_filename;
+  char *error;
+  FILE *fp;
   
+  error = NULL;
+  new_fd = -1;
+  
+  new_filename = g_strconcat (session->full_filename, ".new", NULL);
+  new_fd = open (session->full_filename, O_RDWR | O_CREAT | O_EXCL, 0700);
+  if (new_fd < 0)
+    {
+      error = g_strdup_printf (_("Failed to open '%s': %s\n"),
+                               new_filename, g_strerror (errno));
+      goto out;
+    }
 
+  if (lock_entire_file (new_fd) < 0)
+    {
+      error = g_strdup_printf (_("Failed to lock file '%s': %s"),
+                               new_filename,
+                               g_strerror (errno));
+      goto out;
+    }
+  
+  fp = fdopen (new_fd, "w");
+  if (fp == NULL)
+    {
+      error = g_strdup_printf (_("Failed to write to new session file '%s': %s"),
+                               new_filename, g_strerror (errno));
+      goto out;
+    }
+
+  fputs ("<msm_session>\n", fp);
+
+  {
+    GList *tmp;
+    tmp = session->clients;
+    while (tmp != NULL)
+      {
+        MsmSavedClient *saved = tmp->data;
+        char *encoded;
+
+        encoded = encode_text_as_utf8 (saved->id);
+        
+        fprintf (fp, "  <client id=\"%s\">\n",
+                 encoded);
+
+        g_free (encoded);
+
+        write_proplist (fp, saved->properties);
+        
+        fputs ("  </client>\n", fp);
+
+        tmp = tmp->next;
+      }
+  }
+
+  fputs ("</msm_session>\n", fp);
+
+  if (ferror (fp))
+    {
+      error = g_strdup_printf (_("Error writing new session file '%s': %s"),
+                               new_filename, g_strerror (errno));
+      fclose (fp);
+      goto out;
+    }
+  
+  if (fclose (fp) < 0)
+    {
+      error = g_strdup_printf (_("Failed to close to new session file '%s': %s"),
+                               new_filename, g_strerror (errno));
+      goto out;
+    }
+  
+  if (rename (new_filename, session->full_filename) < 0)
+    {
+      error = g_strdup_printf (_("Failed to replace the old session file '%s' with the new session contents in the temporary file '%s': %s"),
+                               session->full_filename,
+                               new_filename, g_strerror (errno));
+      goto out;
+    }
+
+
+  
+ out:
+  g_free (new_filename);
+  
+  if (error)
+    {
+      if (new_fd >= 0)
+        close (new_fd);
+    }
+  else
+    {
+      if (session->lock_fd >= 0)
+        close (session->lock_fd);
+      session->lock_fd = new_fd;
+      set_close_on_exec (new_fd);
+    }
+}
+
+static void
+add_details_to_dialog (GtkDialog  *dialog,
+                       const char *details)
+{
+  
+  
 }
 
 static MsmSession*
@@ -368,21 +564,43 @@ recover_failed_session (MsmSession             *session,
     case MSM_SESSION_FAILURE_OPENING_FILE:
       message = g_strdup_printf (_("Could not open the session \"%s.\""),
                                  session->name);
+      /* FIXME recovery options:
+       *  - give up and exit; something pathological is going on
+       *  - choose another session?
+       *  - use default session in read-only mode?
+       *  - open xterm to repair the problem, then try again (experts only)
+       */
       break;
       
     case MSM_SESSION_FAILURE_LOCKING:
       message = g_strdup_printf (_("You are already logged in elsewhere, using the session \"%s.\" You can only use a session from one location at a time."),
                                  session->name);
+      /* FIXME recovery options:
+       *  - log in anyhow, with possible weirdness
+       *  - try again (after logging out the other session)
+       *  - choose another session
+       *  - open xterm to repair the problem, then try again (experts only)
+       */
       break;
       
     case MSM_SESSION_FAILURE_BAD_FILE:
       message = g_strdup_printf (_("The session file for session \"%s\" appears to be invalid or corrupted."),
                                  session->name);
+      /* FIXME recovery options:
+       *  - revert session to defaults
+       *  - choose another session
+       *  - open xterm to repair the problem, then try again (experts only)
+       */
       break;
       
     case MSM_SESSION_FAILURE_EMPTY:
       message = g_strdup_printf (_("The session \"%s\" contains no applications."),
                                  session->name);
+      /* FIXME recovery options:
+       *  - put default applications in the session
+       *  - choose another session
+       *  - open xterm to repair the problem, then try again (experts only)
+       */
       break;
     }
   
@@ -392,6 +610,9 @@ recover_failed_session (MsmSession             *session,
                                    GTK_BUTTONS_CLOSE,
                                    message);
 
+  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+  add_details_to_dialog (GTK_DIALOG (dialog), details);
+  
   g_free (message);
   
   gtk_dialog_run (GTK_DIALOG (dialog));
@@ -444,4 +665,47 @@ parse_session_file (MsmSession *session,
   g_free (parse_file);
   
   return TRUE;
+}
+
+
+static char*
+encode_text_as_utf8 (const char *text)
+{
+  /* text can be any encoding, and is nul-terminated.
+   * we pretend it's Latin-1 and encode as UTF-8
+   */
+  GString *str;
+  const char *p;
+  
+  str = g_string_new ("");
+
+  p = text;
+  while (*p)
+    {
+      g_string_append_unichar (str, *p);
+      ++p;
+    }
+
+  return g_string_free (str, FALSE);
+}
+
+static char*
+decode_text_from_utf8 (const char *text)
+{
+  /* Convert back from the encoded UTF-8 */
+  GString *str;
+  const char *p;
+
+  str = g_string_new ("");
+  
+  p = text;
+  while (*p)
+    {
+      /* obviously this barfs if the UTF-8 contains chars > 255 */
+      g_string_append_c (str, g_utf8_get_char (p));
+
+      p = g_utf8_next_char (p);
+    }
+
+  return g_string_free (str, FALSE);
 }

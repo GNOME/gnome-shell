@@ -1740,11 +1740,78 @@ meta_frames_expose_event            (GtkWidget           *widget,
 
       if (frame->layout)
         {
+          PangoRectangle layout_rect;
+          int x, y, icon_x, icon_y;
+          GdkPixbuf *icon;
+          int icon_w, icon_h;
+          int area_w, area_h;
+
+#define ICON_TEXT_SPACING 2
+          
+          icon = meta_core_get_mini_icon (gdk_display,
+                                          frame->xwindow);
+
+          icon_w = gdk_pixbuf_get_width (icon);
+          icon_h = gdk_pixbuf_get_height (icon);
+          
+          pango_layout_get_pixel_extents (frame->layout,
+                                          NULL,
+                                          &layout_rect);
+
+          /* corner of whole title area */
+          x = fgeom.title_rect.x + frames->props->text_border.left;
+          y = fgeom.title_rect.y + frames->props->text_border.top;
+
+          area_w = fgeom.title_rect.width -
+            frames->props->text_border.left -
+            frames->props->text_border.right;
+
+          area_h = fgeom.title_rect.height -
+            frames->props->text_border.top -
+            frames->props->text_border.bottom;
+          
+          /* center icon vertically */
+          icon_y = y + MAX ((area_h - icon_h) / 2, 0);  
+          /* center text vertically */
+          y = y + MAX ((area_h - layout_rect.height) / 2, 0);
+
+          /* Center icon + text combo */
+          icon_x = x + MAX ((area_w - layout_rect.width - icon_w - ICON_TEXT_SPACING) / 2, 0);
+          x = icon_x + icon_w + ICON_TEXT_SPACING;
+          
           gdk_gc_set_clip_rectangle (layout_gc, &clip);
+
+          {
+            /* grumble, render_to_drawable_alpha does not accept a clip
+             * mask, so we have to go through some BS
+             */
+            GdkRectangle pixbuf_rect;
+            GdkRectangle draw_rect;
+            
+            pixbuf_rect.x = icon_x;
+            pixbuf_rect.y = icon_y;
+            pixbuf_rect.width = icon_w;
+            pixbuf_rect.height = icon_h;
+
+            if (gdk_rectangle_intersect (&clip, &pixbuf_rect, &draw_rect))
+              {
+                gdk_pixbuf_render_to_drawable_alpha (icon,
+                                                     frame->window,
+                                                     draw_rect.x - pixbuf_rect.x,
+                                                     draw_rect.y - pixbuf_rect.y,
+                                                     draw_rect.x, draw_rect.y,
+                                                     draw_rect.width,
+                                                     draw_rect.height,
+                                                     GDK_PIXBUF_ALPHA_FULL,
+                                                     128,
+                                                     GDK_RGB_DITHER_NORMAL,
+                                                     0, 0);
+              }
+          }
+          
           gdk_draw_layout (frame->window,
                            layout_gc,
-                           fgeom.title_rect.x + frames->props->text_border.left,
-                           fgeom.title_rect.y + frames->props->text_border.top,
+                           x, y,
                            frame->layout);
           gdk_gc_set_clip_rectangle (layout_gc, NULL);
         }

@@ -60,6 +60,22 @@ meta_core_get_frame_flags (Display *xdisplay,
   return meta_frame_get_flags (window->frame);
 }
 
+GdkPixbuf*
+meta_core_get_mini_icon (Display *xdisplay,
+                         Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+  return window->mini_icon;
+}
+
 void
 meta_core_queue_frame_resize (Display *xdisplay,
                               Window   frame_xwindow)

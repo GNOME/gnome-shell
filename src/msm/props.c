@@ -82,6 +82,80 @@ proplist_find_string (GList *list, const char *name,
     return smprop_get_string (prop, result);
 }
 
+GList*
+proplist_replace (GList        *list,
+                  SmProp       *new_prop)
+{
+  GList *link;
+  
+  link = proplist_find_link_by_name (list, new_prop->name);
+  if (link)
+    {
+      SmFreeProperty (link->data);
+      link->data = new_prop;
+    }
+  else
+    {
+      list = g_list_prepend (list, new_prop);
+    }
+
+  return list;
+}
+
+GList*
+proplist_delete (GList        *list,
+                 const char   *name)
+{
+  GList *link;
+  
+  link = proplist_find_link_by_name (list, name);
+  if (link)
+    {
+      SmFreeProperty (link->data);
+      list = g_list_delete_link (list, link);
+    }
+
+  return list;
+}
+
+GList*
+proplist_replace_card8 (GList        *list,
+                        const char   *name,
+                        int           value)
+{
+  SmProp *prop;
+
+  prop = smprop_new_card8 (name, value);
+
+  return proplist_replace (list, prop);  
+}
+
+GList*
+proplist_replace_string (GList        *list,
+                         const char   *name,
+                         const char   *str,
+                         int           len)
+{
+  SmProp *prop;
+
+  prop = smprop_new_string (name, str, len);
+
+  return proplist_replace (list, prop);
+}
+
+GList*
+proplist_replace_vector (GList        *list,
+                         const char   *name,
+                         int           argc,
+                         char        **argv)
+{
+  SmProp *prop;
+
+  prop = smprop_new_vector (name, argc, argv);
+
+  return proplist_replace (list, prop);
+}
+
 gboolean
 proplist_find_vector (GList *list, const char *name,
 		      int *argcp, char ***argvp)
@@ -206,5 +280,72 @@ smprop_copy (SmProp *prop)
   return copy;
 }
 
+SmProp*
+smprop_new_vector (const char  *name,
+                   int          argc,
+                   char       **argv)
+{
+  SmProp *prop;
+  int i;
+  
+  prop = msm_non_glib_malloc (sizeof (SmProp));
+  prop->name = msm_non_glib_strdup (name);
+  prop->type = msm_non_glib_strdup (SmLISTofARRAY8);
 
+  prop->num_vals = argc;
+  prop->vals = msm_non_glib_malloc (sizeof (SmPropValue) * prop->num_vals);
+  i = 0;
+  while (i < argc)
+    {
+      prop->vals[i].length = strlen (argv[i]);
+      prop->vals[i].value = msm_non_glib_strdup (argv[i]);
+      
+      ++i;
+    }
 
+  return prop;
+}
+
+SmProp*
+smprop_new_string (const char  *name,
+                   const char  *str,
+                   int          len)
+{
+  SmProp *prop;
+
+  if (len < 0)
+    len = strlen (str);
+  
+  prop = msm_non_glib_malloc (sizeof (SmProp));
+  prop->name = msm_non_glib_strdup (name);
+  prop->type = msm_non_glib_strdup (SmARRAY8);
+  
+  prop->num_vals = 1;
+  prop->vals = msm_non_glib_malloc (sizeof (SmPropValue) * prop->num_vals);
+
+  prop->vals[0].length = len;
+  prop->vals[0].value = msm_non_glib_malloc (len);
+  memcpy (prop->vals[0].value, str, len);
+
+  return prop;
+}
+
+SmProp*
+smprop_new_card8  (const char  *name,
+                   int          value)
+{
+  SmProp *prop;
+  
+  prop = msm_non_glib_malloc (sizeof (SmProp));
+  prop->name = msm_non_glib_strdup (name);
+  prop->type = msm_non_glib_strdup (SmARRAY8);
+
+  prop->num_vals = 1;
+  prop->vals = msm_non_glib_malloc (sizeof (SmPropValue) * prop->num_vals);
+
+  prop->vals[0].length = 1;
+  prop->vals[0].value = msm_non_glib_malloc (1);
+  (* (char*)  prop->vals[0].value) = (char) value;
+
+  return prop;
+}
