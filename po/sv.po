@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-07-25 16:14+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
@@ -3032,30 +3032,30 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinatuttrycket var tomt eller förstods inte"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrycket resulterar i division med noll"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrycket försöker använda mod-operator på ett flyttal"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrycket har en operator \"%s\" där en operand förväntades"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinatuttrycket hade en operand där en operator förväntades"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinatuttrycket slutade med en operator istället för en operand"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3064,7 +3064,7 @@ msgstr ""
 "Koordinatuttrycket har en operator \"%c\" som följer på operatorn \"%c\" "
 "utan någon operand imellan"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3072,31 +3072,31 @@ msgstr ""
 "Koordinatuttryckstolken spillde över dess buffert, det här är egentligen ett "
 "fel i Metacity, men är du säker på att du behöver ett så stort uttryck?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Koordinatuttrycket hade en stängningsparentes utan någon öppningsparentes"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinatuttrycket hade en okänd variabel eller konstant \"%s\""
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Koordinatuttrycket hade en öppningsparentes utan någon stängningsparentes"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck \"%s\" som resulterade i ett fel: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3105,25 +3105,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för "
 "denna ramtyp"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3132,7 +3132,7 @@ msgstr ""
 "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett "
 "<window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3141,7 +3141,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges "
 "för detta tema"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3149,7 +3149,7 @@ msgstr ""
 "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör "
 "det inte"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
@@ -3219,7 +3219,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3235,7 +3235,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

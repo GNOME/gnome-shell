@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-19 10:36+0200\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-09-19 16:36+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Errore fatale di IO %d (%s) relativo al display «%s».\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "Chiude la finestra"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "Menù della finestra"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "Minimizza la finestra"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "Massimizza la finestra"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "Demassimizza la finestra"
 
@@ -1052,7 +1052,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 4. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 4. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -1061,7 +1066,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 5. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 5. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -1070,7 +1080,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 6. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 6. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -1079,7 +1094,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 7. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 7. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -1088,7 +1108,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 8. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 8. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -1097,7 +1122,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per passare all'area di lavoro 9. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per passare all'area di lavoro 9. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -1106,7 +1136,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per attivare il menù della finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per attivare il menù della finestra. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1115,7 +1150,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per chiudere una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per chiudere una finestra. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1125,7 +1165,13 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "La scorciatoia usata per attivare la \"modalità movimento\" e cominciare a muovere la finestra utilizzando la tastiera. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per attivare la \"modalità movimento\" e cominciare a "
+"muovere la finestra utilizzando la tastiera. Il formato è \"&lt;Control$gt;a"
+"\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere "
+"maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;"
+"Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", "
+"allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1135,7 +1181,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La scorciatoia usata per attivare la \"modalità ridimensionamento\" e cominciare a ridimensionare la finestra utilizzando la tastiera. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per attivare la \"modalità ridimensionamento\" e "
+"cominciare a ridimensionare la finestra utilizzando la tastiera. Il formato "
+"è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1145,7 +1197,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La scorciatoia usata per nascondere tutte le finestre normali e assegnare il focus allo sfondo del desktop. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per nascondere tutte le finestre normali e assegnare il "
+"focus allo sfondo del desktop. Il formato è \"&lt;Control$gt;a\" oppure "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere "
+"maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;"
+"Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", "
+"allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1154,7 +1212,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per massimizzare una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per massimizzare una finestra. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1163,7 +1226,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per minimizzare una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per minimizzare una finestra. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1173,7 +1241,13 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro in basso. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro in basso. "
+"Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1183,7 +1257,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro a sinistra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro a "
+"sinistra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1193,7 +1273,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro a destra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro a destra. "
+"Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1202,7 +1288,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro in alto. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro in alto. "
+"Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1211,7 +1303,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 1. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 1. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1220,7 +1318,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 10. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 10. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1229,7 +1333,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 11. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 11. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1238,7 +1348,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 12. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 12. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1247,7 +1363,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 2. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 2. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1256,7 +1378,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 3. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 3. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1265,7 +1393,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 4. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 4. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1274,7 +1408,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 5. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 5. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1283,7 +1423,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 6. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 6. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1292,7 +1438,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 7. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 7. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1301,7 +1453,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 8. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'a alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 8. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'a alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1310,7 +1468,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare una finestra nell'area di lavoro 9. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare una finestra nell'area di lavoro 9. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1320,7 +1484,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra i pannelli ed il desktop in senso contrario, visualizzando la finestra di selezione. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra i pannelli ed il desktop in "
+"senso contrario, visualizzando la finestra di selezione. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1330,7 +1500,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra i pannelli ed il desktop in senso contrario, senza una finestra a comparsa. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra i pannelli ed il desktop in "
+"senso contrario, senza una finestra a comparsa. Il formato è \"&lt;Control"
+"$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di "
+"lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o "
+"\"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled"
+"\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1341,7 +1517,14 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "La scorciatoia per spostare il focus tra le finestre in senso contrario, senza una finestra a comparsa. La pressione contemporanea di questa scorciatoia e del tasto \"Maiusc\" inverte il senco. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per spostare il focus tra le finestre in senso contrario, "
+"senza una finestra a comparsa. La pressione contemporanea di questa "
+"scorciatoia e del tasto \"Maiusc\" inverte il senco. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1352,7 +1535,15 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra le finestre in senso contrario, con una finestra a comparsa. Tenendo premuto \"Maiusc\", mentre si utilizza questa scorciatoia, si inverte il senso dello spostamento. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra le finestre in senso "
+"contrario, con una finestra a comparsa. Tenendo premuto \"Maiusc\", mentre "
+"si utilizza questa scorciatoia, si inverte il senso dello spostamento. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1362,7 +1553,13 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra i pannelli ed in desktop, con una finestra a comparsa. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è  impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra i pannelli ed in desktop, con "
+"una finestra a comparsa. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, "
+"minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". "
+"Se l'opzione è  impostata alla stringa speciale \"disabled\", allora non c'è "
+"alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1372,7 +1569,13 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra i pannelli ed il desktop, senza una finestra a comparsa. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra i pannelli ed il desktop, "
+"senza una finestra a comparsa. Il formato è \"&lt;Control$gt;a\" oppure "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere "
+"maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;"
+"Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", "
+"allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1383,7 +1586,15 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per spostare il focus tra le finestre, senza una finestra a comparsa  (usualmente &lt;Alt&gt;Escape). Tenendo premuto \"Maiuscolo\", mentre si utilizza questa scorciatoia, si inverte il senso di spostamento. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per spostare il focus tra le finestre, senza una "
+"finestra a comparsa  (usualmente &lt;Alt&gt;Escape). Tenendo premuto "
+"\"Maiuscolo\", mentre si utilizza questa scorciatoia, si inverte il senso di "
+"spostamento. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche "
+"di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1394,7 +1605,15 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia per spostare il focus tra le finestre, con una finestra a comparsa (usualmente &lt;Alt&gt;Escape). Tenendo premuto \"Maiuscolo\", mentre si utilizza questa scorciatoia, si inverte il senso di spostamento. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia per spostare il focus tra le finestre, con una finestra a "
+"comparsa (usualmente &lt;Alt&gt;Escape). Tenendo premuto \"Maiuscolo\", "
+"mentre si utilizza questa scorciatoia, si inverte il senso di spostamento. "
+"Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1404,7 +1623,14 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per commutare la modalità sempre in primo piano. Una finestra che è sempre in primo piano risulta sempre visibile sovrapponendosi alle altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per commutare la modalità sempre in primo piano. Una "
+"finestra che è sempre in primo piano risulta sempre visibile sovrapponendosi "
+"alle altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche "
+"di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1413,7 +1639,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per commutare la modalità a schermo intero. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per commutare la modalità a schermo intero. Il formato "
+"è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1422,7 +1653,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per commutare la massimizzazione. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per commutare la massimizzazione. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1431,7 +1667,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per commutare lo stato arrotolata/srotolata. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per commutare lo stato arrotolata/srotolata. Il formato "
+"è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1441,7 +1682,13 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr "La scorciatoia usata per far sì che la finestra sia presente su tutte le aree di lavoro o soltanto su una. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per far sì che la finestra sia presente su tutte le "
+"aree di lavoro o soltanto su una. Il formato è \"&lt;Control$gt;a\" oppure "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere "
+"maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;"
+"Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", "
+"allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1450,7 +1697,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia usata per demassimizzare una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia usata per demassimizzare una finestra. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1460,7 +1712,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "La scorciatoia che mostra la casella di dialogo \"Esegui applicazione\" del pannello. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia che mostra la casella di dialogo \"Esegui applicazione\" del "
+"pannello. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1470,7 +1728,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "La scorciatoia che invoca l'utilità del pannello per catturare una schermata di una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia che invoca l'utilità del pannello per catturare una schermata "
+"di una finestra. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche "
+"di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:142
 msgid ""
@@ -1480,7 +1744,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "La scorciatoia che invoca l'utilità del pannello per le schermate. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia che invoca l'utilità del pannello per le schermate. Il "
+"formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È "
+"consentito l'utilizzo di lettere maiuscole, minuscole e anche di "
+"abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è "
+"impostata alla stringa speciale \"disabled\", allora non c'è alcuna "
+"scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1489,7 +1759,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "La scorciatoia che mostra il menù principale del pannello. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"La scorciatoia che mostra il menù principale del pannello. Il formato è "
+"\"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
@@ -1503,7 +1778,9 @@ msgstr "Il comando per le schermate"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Il tema determina l'aspetto dei bordi delle finestre, della barra del titolo e così via."
+msgstr ""
+"Il tema determina l'aspetto dei bordi delle finestre, della barra del titolo "
+"e così via."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1520,7 +1797,13 @@ msgid ""
 "them, \"sloppy\" means windows are focused when the mouse enters the window, "
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
-msgstr "La modalità di focus indica come vengono attivate le finestre. I possibili valori sono tre: \"click\" fa sì che si debba fare clic su una finestra per farle ottenere il focus, \"sloppy\" fa sì che le finestre ottengano il focus quando il puntatore entra nella loro area, \"mouse\" fa sì che le finestre ottengono il focus quando il puntantore entra nella loro area e lo perdano quando ne esce."
+msgstr ""
+"La modalità di focus indica come vengono attivate le finestre. I possibili "
+"valori sono tre: \"click\" fa sì che si debba fare clic su una finestra per "
+"farle ottenere il focus, \"sloppy\" fa sì che le finestre ottengano il focus "
+"quando il puntatore entra nella loro area, \"mouse\" fa sì che le finestre "
+"ottengono il focus quando il puntantore entra nella loro area e lo perdano "
+"quando ne esce."
 
 #: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
@@ -1536,7 +1819,15 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "Questa scorciatoia cambia se una finestra è sopra o sotto le altre finestre. Se la finestra è coperta da un'altra, la scorciatoia porta in primo piano la finestra che sta sotto. Se la finestra è già completamente visibile, la abbassa sotto le altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"Questa scorciatoia cambia se una finestra è sopra o sotto le altre finestre. "
+"Se la finestra è coperta da un'altra, la scorciatoia porta in primo piano la "
+"finestra che sta sotto. Se la finestra è già completamente visibile, la "
+"abbassa sotto le altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, "
+"minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". "
+"Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è "
+"alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1545,7 +1836,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Scorciatoia per portare una finestra sotto le altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"Scorciatoia per portare una finestra sotto le altre. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1554,7 +1850,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Scorciatoia per portare la finestra sopra le altre. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"Scorciatoia per portare la finestra sopra le altre. Il formato è \"&lt;"
+"Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito "
+"l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo "
+"\"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa "
+"speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1564,7 +1865,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Scorciatoia per ridimensionare una finestra in modo che occupi tutto lo spazio orizzontale disponibile. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"Scorciatoia per ridimensionare una finestra in modo che occupi tutto lo "
+"spazio orizzontale disponibile. Il formato è \"&lt;Control$gt;a\" oppure "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere "
+"maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;"
+"Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", "
+"allora non c'è alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:154
 msgid ""
@@ -1574,7 +1881,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Scorciatoia per ridimensionare una finestra in modo che occupi tutto lo spazio verticale disponibile. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna scorciatoia per questa azione."
+msgstr ""
+"Scorciatoia per ridimensionare una finestra in modo che occupi tutto lo "
+"spazio verticale disponibile. Il formato è \"&lt;Control$gt;a\" oppure \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". È consentito l'utilizzo di lettere maiuscole, "
+"minuscole e anche di abbreviazioni tipo \"&lt;Ctl&gt;\" o \"&lt;Ctrl&gt;\". "
+"Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è "
+"alcuna scorciatoia per questa azione."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1612,7 +1925,10 @@ msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr "Attiva un'indicazione visiva quando un'applicazione o il sistema emette un \"bip\" o \"suona una campanella\"; utile per chi ha problemi d'udito o per l'uso in ambienti rumorosi, oppure quando \"audible_bell\" è disattivata."
+msgstr ""
+"Attiva un'indicazione visiva quando un'applicazione o il sistema emette un "
+"\"bip\" o \"suona una campanella\"; utile per chi ha problemi d'udito o per "
+"l'uso in ambienti rumorosi, oppure quando \"audible_bell\" è disattivata."
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize window"
@@ -2690,36 +3006,36 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'espressione della coordinata è vuota o non compresa"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "L'espressione della coordinata risulta una divisione per zero"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "L'espressione della coordinata tenta di usare un operatore mod su un numero "
 "in virgola mobile"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "L'espressione della coordinata ha un operatore «%s» dove è atteso un operando"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "L'espressione della coordinata ha un operando dove è atteso un operatore"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "L'espressione della coordinata finisce con un operatore invece che un "
 "operando"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2728,7 +3044,7 @@ msgstr ""
 "L'espressione di coordinata ha l'operatore «%c» seguito dall'operatore «%c» "
 "senza un operando fra i due"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2737,35 +3053,35 @@ msgstr ""
 "buffer. Questo è un bug di Metacity, ma è necessaria un'espressione di "
 "queste dimensioni?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "L'espressione della coordinata ha una parentesi di chiusura senza la "
 "relativa di apertura"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "L'espressione della coordinata ha la variabile o la costante «%s» sconosciuta"
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "L'espressione della coordinata ha una parentesi di apertura senza la "
 "relativa di chiusura"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "L'espressione della coordinata non sembra avere né operatori o operandi"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Il tema contiene un'espressione «%s» che provoca errore: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2774,25 +3090,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> deve essere "
 "specificato per questo stile di cornice"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> mancante"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Caricamento del tema «%s» fallito: %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nessun <%s> impostato per il tema «%s»"
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2801,7 +3117,7 @@ msgstr ""
 "Nessuno stile del frame impostato per il tipo di finestra «%s» nel tema «%"
 "s», aggiungere un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2810,7 +3126,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> deve essere "
 "specificato per questo tema"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2818,7 +3134,7 @@ msgstr ""
 "Le costanti definite dall'utente devono iniziare con una lettera maiuscola, "
 "«%s» non lo fa"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La costante «%s» è già definita"
@@ -2888,7 +3204,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'applicazione ha impostato un _NET_WM_PID errato %ld\n"
 
 #. first time through
-#: src/window.c:4957
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2904,7 +3220,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5628
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

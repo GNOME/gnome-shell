@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.sk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2003-09-24 08:54+0200\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
@@ -2982,30 +2982,30 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "Výraz umiestnenia je prázdny alebo nerozpoznaný"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenia obsahuje operátor \"%s\" tam, kde sa očakáva operand"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Výraz umiestnenie obsahuje operand tam, kde sa očakáva operátor"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Výraz umiestnenie skončil operátorom namiesto operandom"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3014,7 +3014,7 @@ msgstr ""
 "Výraz umiestnenie obsahuje operátor \"%c\" za operátorom \"%c\" bez "
 "operandov medzi nimi."
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3022,29 +3022,29 @@ msgstr ""
 "Pri spracovaní výrazu umiestnenia bola pretečená pamäť. Toto je chyba "
 "Metacity, ale naozaj potrebujete taký veľký výraz?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Výraz umiestnenie obsahuje zatváraciu zátvorku bez otváracej zátvorky"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Výraz umiestnenia obsahuje neznámu premennú alebo konštantu \"%s\""
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Výraz umiestnenie má otváraciu zátvorku bez zatváracej zátvorky"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Výraz umiestnenie asi neobsahuje žiadne operátory ani operandy"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Téma obsahuje výraz \"%s\", ktorý vrátil chybu: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3053,25 +3053,25 @@ msgstr ""
 "Pre tento štýl rámca musí byť uvedené <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"whatever\"/>"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nepodarilo sa prečítať tému \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Pre tému \"%s\" nie je nastavené <%s>"
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3080,7 +3080,7 @@ msgstr ""
 "Pre typ okna \"%s\" nie je sada štýlov v téme \"%s\", pridajte element "
 "<window type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3089,13 +3089,13 @@ msgstr ""
 "<menu_icon funstate=\"%s\" stav=\"%s\" draw_ops=\"whatever\"/> musí byť pre "
 "túto tému uvedený"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Používateľské konštanty musia začítať veľkým písmenom, \"%s\" nezačína"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konštanta \"%s\" už je definovaná"
@@ -3165,7 +3165,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3181,7 +3181,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

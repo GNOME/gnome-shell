@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-09-03 16:47+0530\n"
 "Last-Translator: Jayaradha N <jaya@pune.redhat.com>\n"
 "Language-Team: Tamil <zhakanini@yahoogroups.com>\n"
@@ -84,23 +84,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "கவலைக்கிடமான IO பிழை %d (%s) திரையில் '%s'.\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "சாளரம் மூடவும்"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "தலைப்புப் பட்டி"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "சாளரத்தை சிறிதாக்கு"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "சாளரத்தை பெரிதாக்கு"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "சாளரத்தை பெரிதாக்காதே"
 
@@ -2868,37 +2868,37 @@ msgstr "உரையின் துவக்கத்தில் அச்ச�
 msgid "Coordinate expression was empty or not understood"
 msgstr "அச்சு கூற்று காலியாக உள்ளது அல்லது புரியவில்லை"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "அச்சு கூற்று பூஜ்ஜியத்தால் வகுத்தல் பிழையை தந்தது"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "அச்சு கூற்று mod ஆப்பரேட்டரை பின்ன எண்ணில் பயன்படுத்த முயல்கிறது"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "அச்சு கூற்றில் ஆப்பரேட்டர் உள்ளது \"%s\" ஆப்பரன் எதிர்பார்க்கப்படுகிறது"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "அச்சு கூற்றில் ஆப்பரன்ட் உள்ளது ஆனால் ஆப்பரேட்டர் எதிர்பார்க்கப்படுகிறது"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "அச்சு கூற்றில் ஆப்பரன்ட்டுக்கு பதில் ஆப்பரேட்டரால் முடிந்தது"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "அச்சு கூற்றில்  \"%c\" ஆப்பரேட்டர் உள்ளது \"%c\" ஆப்பரேட்டருக்கு ஆப்பரன்ட் இல்லை"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2906,29 +2906,29 @@ msgstr ""
 "அச்சு கூற்று பகுப்பியின் இடையகத்தில் இடமில்லை, இது மெட்டாசிட்டி பிழை,  இவ்வளவு பெரிய "
 "கூற்று தேவையா?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "அச்சு கூற்றில் மூடிய அடைப்புக்குறி உள்ளது ஆனால் திறந்த அடைப்புகுறி இல்லை"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "அச்சு கூற்றில் செல்லாத மாற்றி மற்றும் கான்ஸ்ட்டன் உள்ளது \"%s\""
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "அச்சு கூற்றில் திறந்த அடைப்புக்குறி உள்ளது ஆனால் மூடிய அடைப்புகுறி இல்லை"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "அச்சுக்கூற்றில் ஆப்பரன்ட் மற்றும் ஆப்பரேட்டர் காணப்படவில்லை"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "கருப்பொருளில் \"%s\" கூற்று உள்ளதால் பிழை ஏற்பட்டது: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2937,25 +2937,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> இந்த சட்ட பாணிக்கு "
 "குறிப்பிடப்பட வேண்டும்"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "காணவில்லை <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "கருப்பொருளை ஏற்றுவதில் தோல்வி \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "இல்லை<%s> கருப்பொருளுக்காக அமைக்கப்பட்டது \"%s\""
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2964,7 +2964,7 @@ msgstr ""
 "சட்ட பாணி சாளர வகை இல்லை\"%s\" கருப்பொருளில் \"%s\", <window type=\"%s\" "
 "style_set=\"whatever\"/> உறுப்பை சேர்க்கவும்"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2973,13 +2973,13 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>இந்த "
 "கருப்பொருளில் குறிப்பிடப்பட வேண்டும்"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "பயனீட்டாளர்-குறிப்பிட்ட கான்ஸ்டன் பெரிய எழுத்தில் துவங்க வேண்டும்; \"%s\" இல்லை"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "கான்ஸ்டன் \"%s\" ஏற்கெனவே குறிப்பிடப்பட்டது"
@@ -3049,7 +3049,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "பயன்பாடு தவறாக அமைக்கப்பட்டது _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3065,7 +3065,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

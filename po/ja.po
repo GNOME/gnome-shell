@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-08-06 09:19+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "致命的なIOエラー %d (%s) - ディスプレイ '%s' が発生しました。\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "ウィンドウを閉じます"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "ウィンドウ・メニューを表示します"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化します"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化します"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元のサイズに戻します"
 
@@ -2967,30 +2967,30 @@ msgstr "座標式は次のテキストの先頭に無効な演算子を含んで
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標式が空か解析不能です"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "座標式はゼロで除算しました"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標式は浮動小数点で mod 演算子を使用しようとしています"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "座標式はオペランドが必要な場所に演算子 \"%s\" を使用しています"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "座標式は演算子が必要な場所でオペランドを使用しています"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "座標式はオペランドの代わりに演算子で終わっています"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2999,7 +2999,7 @@ msgstr ""
 "座標式は演算子 \"%2$c\" の後に演算子 \"%1$c\" が続いており，これらの間にオペ"
 "ランドがありません"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3007,29 +3007,29 @@ msgstr ""
 "座標式の解析においてバッファがオーバーフローしました．これはMetacityのバグで"
 "すが，そのような巨大な式が本当に必要ですか?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標式は左括弧がなしに右括弧が指定されています"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標式は無効な値または定数 \"%s\" が使用されていました"
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標式は左括弧が指定されていますが，右括弧がありません"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標式は演算子もオペランドも使用していないようです"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "テーマはエラーになる式 \"%s\" を含んでいました: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3038,7 +3038,7 @@ msgstr ""
 "このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> を指定する必要があります"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -3046,18 +3046,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありませ"
 "ん"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "テーマ \"%s\" の読み込みに失敗しました: %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "テーマ \"%1$s\" の <%2$s> が設定されていません"
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3067,7 +3067,7 @@ msgstr ""
 "ません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してく"
 "ださい"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3076,13 +3076,13 @@ msgstr ""
 "このテーマは <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "を指定する必要があります"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ユーザ定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
@@ -3152,7 +3152,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3168,7 +3168,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

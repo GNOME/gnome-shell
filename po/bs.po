@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-07-30 02:16+0200\n"
 "Last-Translator: Kemal Sanjta <gomez@lugzdk.ba>\n"
 "Language-Team: Bosnian <+>\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatalna IO greška %d (%s) na prikazu %s'.\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "Izbornik prozor"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "Minimiziraj prozor"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "Maksimiziraj prozor"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "Poništi povećanje prozora"
 
@@ -2985,32 +2985,32 @@ msgstr ""
 msgid "Coordinate expression was empty or not understood"
 msgstr "Izraz koordinacije je bio prazan ili nije shvatio"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "Izraz koordinata je rezultat podjele sa nulom"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Izraz koordinacije pokušava upotrijebiti mod operator na broju sa pomičnim "
 "zarezom"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Izraz koordinacije ima operator \"%s\" gdje se očekivao operant"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Izraz koordinacije je imao operant a očekivao se operator"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Izraz koordinacije je završio sa operatorom umjesto operanta"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3019,7 +3019,7 @@ msgstr ""
 "Izraz koordinacije ima operator \"%c\" koji prati operator  \"%c\" ali bez "
 "operacija između"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3028,30 +3028,30 @@ msgstr ""
 "je u stvari bug Metacity-a, ali jeste li sigurni da vam treba tako veliki "
 "izraz?"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Izraz koordinacije je morao zatvoriti zagrade sa ne otvorenim zagradama."
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Izraz koordinacije je imao nepoznatu varijablu ili konstantu  \"%s\""
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Izraz koordinacije je imao otvorene zagrade sa ne zatvorenim zagradama"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Izraz koordinacije izgleda ne sadrži operacije ili operante."
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema sadrži izraz \"%s\" koji uzrokuje grešku: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3060,25 +3060,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"svejedno\"/> mora biti "
 "određeno za format ovog okvira"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Nedostaje <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"svejedno\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nije uspjelo učitavanje teme \"%s\": %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nije podešen <%s> za temu \"%s\""
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3087,7 +3087,7 @@ msgstr ""
 "Nije odabrana vrsta okvira za prozor tipa  \"%s\" u temi  \"%s\", dodajte "
 "<window type=\"%s\" style_set=\"svejedno\"/> element"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3096,7 +3096,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"svejedno\"/>mora biti "
 "naveden za ovu temu"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3104,7 +3104,7 @@ msgstr ""
 "Korisnički definisane konstante moraju početi velikim slovom; \"%s\" ne "
 "počinje "
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" je već definisana"
@@ -3174,7 +3174,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacija je postavila prividan _NETWM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3190,7 +3190,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-09-11 19:26+0800\n"
 "Last-Translator: Woodman Tuen <woodman@culurecom.com.hk>\n"
 "Language-Team: Chinese (traditioanl) <zh-l10n@linux.org.tw>\n"
@@ -78,23 +78,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "畫面‘%3$s’發生嚴重輸出/入錯誤 %1$d (%2$s)。\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "關閉視窗"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "視窗選單"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "視窗最小化"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "視窗最大化"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "視窗還原最大化"
 
@@ -2791,37 +2791,37 @@ msgstr "在座標表達式中，以下文字的開始部分含有不明的運算
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標表達式是空白的或是無法分析"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "座標表達式中出現被 0 整除的錯誤"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標表達式中出現將浮點數使用於餘數運算符 (mod) 的錯誤"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "在座標表達式中，應該有運算子的地方出現了運算符“%s”"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "在座標表達式中，應該有運算符的地方出現了運算子"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "結束座標表達式的是一個運算符而非運算子"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "在座標表達式中，運算符“%c”緊隨運算符“%c”出現，但中間沒有任何運算子"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2829,29 +2829,29 @@ msgstr ""
 "座標表達式分析程序令緩衝區出現溢位，這是 Metacity 的漏洞，但有沒有實際需要使"
 "用數值這麼大的表達式？"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標表達式中的閉括號沒有相應的開括號"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標表達式中出現不明的變數或常數“%s”"
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標表達式中的開括號沒有相應的閉括號"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標表達式中似乎沒有任何運算符或運算子"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "佈景主題中含有引致錯誤的表達式“%s”：%s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2860,25 +2860,25 @@ msgstr ""
 "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "無法載入佈景主題“%s”：%s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <%s>"
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2887,7 +2887,7 @@ msgstr ""
 "在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window type="
 "\"%3$s\" style_set=\"whatever\"/> 元素"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2896,13 +2896,13 @@ msgstr ""
 "本佈景主題必須指定 <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"\n"
 "whatever\"/>"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
@@ -2972,7 +2972,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "程式設定了多餘的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2988,7 +2988,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-13 18:47-0700\n"
+"POT-Creation-Date: 2004-10-11 08:59-0700\n"
 "PO-Revision-Date: 2004-08-10 03:43+0530\n"
 "Last-Translator: Gora Mohanty <gora_mohanty@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -79,23 +79,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ପ୍ରଦର୍ଶିକା '%3$s'ରେ ସାଂଘାତିକ ଆଇ.ଓ. (ନିବେଶ/ନିର୍ଗମ) ତ୍ରୁଟି %1$d (%2$s).\n"
 
-#: src/frames.c:1021
+#: src/frames.c:1020
 msgid "Close Window"
 msgstr "ୱିଣ୍ଡୋ ବନ୍ଦ କରନ୍ତୁ"
 
-#: src/frames.c:1024
+#: src/frames.c:1023
 msgid "Window Menu"
 msgstr "ୱିଣ୍ଡୋ ମେନୁ"
 
-#: src/frames.c:1027
+#: src/frames.c:1026
 msgid "Minimize Window"
 msgstr "ୱିଣ୍ଡୋକୁ କ୍ଷୁଦ୍ରତମ କରନ୍ତୁ"
 
-#: src/frames.c:1030
+#: src/frames.c:1029
 msgid "Maximize Window"
 msgstr "ୱିଣ୍ଡୋକୁ ବୃହତ୍ତମ କରନ୍ତୁ"
 
-#: src/frames.c:1033
+#: src/frames.c:1032
 msgid "Unmaximize Window"
 msgstr "ୱିଣ୍ଡୋକୁ ସାଧାରଣ ଆକାର ଦିଅନ୍ତୁ"
 
@@ -2833,31 +2833,31 @@ msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତି�
 msgid "Coordinate expression was empty or not understood"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ଖାଲି ଅଛି ବା ବୁଝିହେଲା ନାହିଁ"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
 msgid "Coordinate expression results in division by zero"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିର ପରିଣାମ ସୂନ୍ଯ ଦ୍ବାରା ବିଭାଜନ"
 
-#: src/theme.c:1779
+#: src/theme.c:1783
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତି mod ଚାଳକକୁ ଗୋଟିଏ ଅସ୍ଥାୟୀ ବିନ୍ଦୁ ସଂଖ୍ଯା ପ୍ରତି ବ୍ଯବହାର କରିବାକୁ ଚେଷ୍ଟା କରେ"
 
-#: src/theme.c:1836
+#: src/theme.c:1840
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ଚାଳକ \"%s\" ଅଛି, ଯେଉଁଠାରେ ସଂକାର୍ଯ୍ଯ ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: src/theme.c:1845
+#: src/theme.c:1849
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ଚାଳକ ଥିଲା, ଯେଉଁଠାରେ ସଂକାର୍ଯ୍ଯ ପ୍ରତ୍ଯାଶିତ ଥିଲା"
 
-#: src/theme.c:1853
+#: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତି ସଂକାର୍ଯ୍ଯ ଅପେକ୍ଷା ଚାଳକରା ଶେଷହେଲା"
 
-#: src/theme.c:1863
+#: src/theme.c:1867
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2865,7 +2865,7 @@ msgid ""
 msgstr ""
 "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ \"%2$c\" ଚାଳକ ପରେ \"%1$c\" ଚାଳକ ଅଛି, ମଝିରେ ସଂକାର୍ଯ୍ଯ ନ ଥାଇ"
 
-#: src/theme.c:1982
+#: src/theme.c:1986
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2873,29 +2873,29 @@ msgstr ""
 "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତି ବିଶ୍ଳେଷକର ସୀମା ଟପିଗଲା, ବାସ୍ତବରେ ଏହା ମେଟାସିଟିରେ ଗୋଟିଏ ତ୍ରୁଟି, କିନ୍ତୁ ଆପଣ "
 "ନିଶ୍ଚିତ କି ଆପଣଙ୍କୁ ଏତେ ବଡ଼ ଅଭିବ୍ଯକ୍ତିଟି ଦରକାର"
 
-#: src/theme.c:2011
+#: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ବାମ ବନ୍ଧନୀ ଚିହ୍ନ ବିନା ଗୋଟିଏ ଡାହାଣ ବନ୍ଧନୀ ଚିହ୍ନ ଥିଲା"
 
-#: src/theme.c:2074
+#: src/theme.c:2078
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ଅଜଣା ଚଳ ବା ସ୍ଥାୟୀ ମୂଲ୍ଯ \"%s\" ଥିଲା"
 
-#: src/theme.c:2131
+#: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ ଡାହାଣ ବନ୍ଧନୀ ଚିହ୍ନ ବିନା ଗୋଟିଏ ବାମ ବନ୍ଧନୀ ଚିହ୍ନ ଥିଲା"
 
-#: src/theme.c:2142
+#: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "ସ୍ଥାନ ନିର୍ଣ୍ଣୟ ଅଭିବ୍ଯକ୍ତିରେ କୌଣସି ଚାଳକ ବା ସଂକାର୍ଯ୍ଯ ଥାଲା ଭଳିଆ ବୋଧହେଉ ନାହିଁ"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "ପ୍ରସଙ୍ଗରେ ଗୋଟିଏ ଅଭିବ୍ଯକ୍ତି \"%s\" ଥିଲା ଯାହା ଯୋଗୁ ତ୍ରୁଟି ହେଲା: %s\n"
 
-#: src/theme.c:3915
+#: src/theme.c:3919
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2904,25 +2904,25 @@ msgstr ""
 "ଏହି ବନ୍ଧେଇ ସଜ୍ଜିକରଣ ଶୈଳୀ ପାଇଁ <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> ନିର୍ଦ୍ଦିଷ୍ଟ କରିବା ବାଧ୍ଯ"
 
-#: src/theme.c:4365 src/theme.c:4397
+#: src/theme.c:4369 src/theme.c:4401
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "ନିଖୋଜ <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4448
+#: src/theme.c:4452
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" ପ୍ରସଙ୍ଗ ଧାରଣ କରିବାରେ ଅସଫଳ: %s\n"
 
-#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
-#: src/theme.c:4622
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "\"%2$s\" ପ୍ରସଙ୍ଗ ପାଇଁ କୌଣସି <%1$s> ବିନ୍ଯାସ କରାଯାଇ ନାହିଁ"
 
-#: src/theme.c:4632
+#: src/theme.c:4636
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2931,7 +2931,7 @@ msgstr ""
 "\"%2$s\" ପ୍ରସଙ୍ଗରେ ୱିଣ୍ଡୋ ପ୍ରକାର \"%1$s\" ପାଇଁ କୌଣସି ବନ୍ଧେଇ ଶୈଳୀ ବିନ୍ଯାସ କରାଯାଇ ନାହିଁ, "
 "ଗୋଟିଏ <windowtype=\"%3$s\" style_set=\"whatever\"/> ଉପାଦାନ ଯୋଗ କରନ୍ତୁ"
 
-#: src/theme.c:4654
+#: src/theme.c:4658
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2940,7 +2940,7 @@ msgstr ""
 "ଏହି ପ୍ରସଙ୍ଗ ପାଇଁ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "ନିର୍ଦ୍ଦିଷ୍ଟ କରିବା ବାଧ୍ଯ"
 
-#: src/theme.c:5043 src/theme.c:5105
+#: src/theme.c:5047 src/theme.c:5109
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2948,7 +2948,7 @@ msgstr ""
 "ଚାଳକ ଦ୍ବାରା ବ୍ଯାଖ୍ଯା କରାଯାଇଥାବା ସ୍ଥାୟୀ ମୂଲ୍ଯଗୁଡ଼ିକ ବଡ଼ ଅକ୍ଷରରେ ଆରମ୍ଭ ହେବା ବାଧ୍ଯ; \"%s\" "
 "କରୁ ନାହିଁ"
 
-#: src/theme.c:5051 src/theme.c:5113
+#: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" ସ୍ଥାୟୀ ମୂଲ୍ଯ ପୂର୍ବରୁ ବ୍ଯାଖ୍ଯା କରାଯାଇଛି"
@@ -3018,7 +3018,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "ପ୍ରୟୋଗ ଗୋଟିଏ ନକଲି _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4954
+#: src/window.c:4939
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3034,7 +3034,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5625
+#: src/window.c:5610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

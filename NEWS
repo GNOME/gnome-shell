@@ -1,8 +1,28 @@
+2.8.6
+==
+
+This is a stable release for Gnome 2.8.1.
+
+Thanks to the Ken Harris, Kjartan Maraas, and the tireless efforts of
+Elijah Newren for fixes in this release.
+
+Fixes
+  * Ensure the correct window is focused when minimizing (Elijah)
+  * Fix keynav with mouse focus (Elijah)
+  * Fix several race conditions in window focusing (Elijah)
+  * Focus the top window when lowering by frame click (Ken)
+  * Fix some compiler warnings (Kjartan)
+  * Fix some valgrind-reported errors (Elijah)
+  * Fix some potential issues with autoraising windows (Elijah)
+
+Translations
+  * en_CA(Adam Weinberger), it(Luca Ferretti)
+
 2.8.5
 ==
 
 This is a stable release for Gnome 2.8.  Only translations and some
-new developer documentation were added since the last unstable release.  
+new developer documentation were added since the last unstable release.
 This release boasts improved standards-compliance and a number of 
 bug fixes since the last stable release.
 
