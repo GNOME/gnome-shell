@@ -173,7 +173,7 @@ typedef struct
 {
   const char   *name;
   unsigned int  keysym;
-  unsigned long mask;
+  MetaVirtualModifier modifiers;
 } MetaKeyPref;
 
 void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
@@ -181,8 +181,7 @@ void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
 void meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
                                      int                *n_bindings);
 
-MetaKeyBindingAction meta_prefs_get_keybinding_action (unsigned int  keysym,
-                                                       unsigned long mask);
+MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 
 #endif
 

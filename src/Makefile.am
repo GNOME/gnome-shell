@@ -3,6 +3,10 @@ SUBDIRS=wm-tester tools themes
 
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\"
 
+EGGFILES=			\
+	eggaccelerators.c	\
+	eggaccelerators.h
+
 metacity_SOURCES= 				\
 	common.h				\
 	core.c					\
@@ -64,7 +68,8 @@ metacity_SOURCES= 				\
 	workspace.c				\
 	workspace.h				\
 	xprops.c				\
-	xprops.h
+	xprops.h				\
+	$(EGGFILES)
 
 metacity_theme_viewer_SOURCES=  \
 	gradient.c		\
@@ -118,4 +123,9 @@ CLEANFILES = inlinepixbufs.h
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
-EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA)
+EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA) update-from-egg.sh
+
+EGGDIR=$(srcdir)/../../libegg/libegg
+
+regenerate-built-sources:
+	EGGFILES="$(EGGFILES)" EGGDIR="$(EGGDIR)" $(srcdir)/update-from-egg.sh

@@ -148,6 +148,7 @@ struct _MetaKeyBinding
   KeySym keysym;
   unsigned int mask;
   int keycode;
+  MetaVirtualModifier modifiers;
   const MetaKeyHandler *handler;
 };
 
@@ -298,6 +299,9 @@ reload_modmap (MetaDisplay *display)
   /* Multiple bits may get set in each of these */
   display->num_lock_mask = 0;
   display->scroll_lock_mask = 0;
+  display->meta_mask = 0;
+  display->hyper_mask = 0;
+  display->super_mask = 0;
   
   /* there are 8 modifiers, and the first 3 are shift, shift lock,
    * and control
@@ -344,6 +348,21 @@ reload_modmap (MetaDisplay *display)
                 {
                   display->scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
+              else if (syms[j] == XK_Super_L ||
+                       syms[j] == XK_Super_R)
+                {
+                  display->super_mask |= (1 << ( i / modmap->max_keypermod));
+                }
+              else if (syms[j] == XK_Hyper_L ||
+                       syms[j] == XK_Hyper_R)
+                {
+                  display->hyper_mask |= (1 << ( i / modmap->max_keypermod));
+                }              
+              else if (syms[j] == XK_Meta_L ||
+                       syms[j] == XK_Meta_R)
+                {
+                  display->meta_mask |= (1 << ( i / modmap->max_keypermod));
+                }
               
               ++j;
             }
@@ -357,10 +376,13 @@ reload_modmap (MetaDisplay *display)
                                     LockMask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x\n",
+              "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x hyper 0x%x super 0x%x meta 0x%x\n",
               display->ignored_modifier_mask,
               display->num_lock_mask,
-              display->scroll_lock_mask);
+              display->scroll_lock_mask,
+              display->hyper_mask,
+              display->super_mask,
+              display->meta_mask);
 }
 
 static void
@@ -399,6 +421,72 @@ reload_keycodes (MetaDisplay *display)
 }
 
 static void
+devirtualize_modifiers (MetaDisplay        *display,
+                        MetaVirtualModifier modifiers,
+                        unsigned int       *mask)
+{
+  *mask = 0;
+  
+  if (modifiers & META_VIRTUAL_SHIFT_MASK)
+    *mask |= ShiftMask;
+  if (modifiers & META_VIRTUAL_CONTROL_MASK)
+    *mask |= ControlMask;
+  if (modifiers & META_VIRTUAL_ALT_MASK)
+    *mask |= Mod1Mask;
+  if (modifiers & META_VIRTUAL_META_MASK)
+    *mask |= display->meta_mask;
+  if (modifiers & META_VIRTUAL_HYPER_MASK)
+    *mask |= display->hyper_mask;
+  if (modifiers & META_VIRTUAL_SUPER_MASK)
+    *mask |= display->super_mask;
+  if (modifiers & META_VIRTUAL_MOD2_MASK)
+    *mask |= Mod2Mask;
+  if (modifiers & META_VIRTUAL_MOD3_MASK)
+    *mask |= Mod3Mask;
+  if (modifiers & META_VIRTUAL_MOD4_MASK)
+    *mask |= Mod4Mask;
+  if (modifiers & META_VIRTUAL_MOD5_MASK)
+    *mask |= Mod5Mask;  
+}
+
+static void
+reload_modifiers (MetaDisplay *display)
+{
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Reloading keycodes for binding tables\n");
+  
+  if (display->screen_bindings)
+    {
+      int i;
+      
+      i = 0;
+      while (display->screen_bindings[i].keysym != None)
+        {
+          devirtualize_modifiers (display,
+                                  display->screen_bindings[i].modifiers,
+                                  &display->screen_bindings[i].mask);
+          
+          ++i;
+        }
+    }
+
+  if (display->window_bindings)
+    {
+      int i;
+      
+      i = 0;
+      while (display->window_bindings[i].keysym != None)
+        {
+          devirtualize_modifiers (display,
+                                  display->window_bindings[i].modifiers,
+                                  &display->window_bindings[i].mask);
+          
+          ++i;
+        }
+    }
+}
+
+static void
 rebuild_screen_binding_table (MetaDisplay *display)
 {
   const MetaKeyPref *prefs;
@@ -420,7 +508,10 @@ rebuild_screen_binding_table (MetaDisplay *display)
         {
           display->screen_bindings[dest].name = prefs[src].name;
           display->screen_bindings[dest].keysym = prefs[src].keysym;
-          display->screen_bindings[dest].mask = prefs[src].mask;
+          display->screen_bindings[dest].modifiers = prefs[src].modifiers;
+          display->screen_bindings[dest].mask = 0;
+          display->screen_bindings[dest].keycode = 0;          
+          
           ++dest;
         }
       
@@ -456,7 +547,10 @@ rebuild_window_binding_table (MetaDisplay *display)
         {
           display->window_bindings[dest].name = prefs[src].name;
           display->window_bindings[dest].keysym = prefs[src].keysym;
-          display->window_bindings[dest].mask = prefs[src].mask;
+          display->window_bindings[dest].modifiers = prefs[src].modifiers;
+          display->window_bindings[dest].mask = 0;
+          display->window_bindings[dest].keycode = 0;
+          
           ++dest;
         }
       
@@ -509,6 +603,28 @@ regrab_window_bindings (MetaDisplay *display)
   g_slist_free (windows);
 }
 
+static MetaKeyBindingAction
+display_get_keybinding_action (MetaDisplay  *display,
+                               unsigned int  keysym,
+                               unsigned long mask)
+{
+  int i;
+
+  i = display->n_screen_bindings - 1;
+  while (i >= 0)
+    {
+      if (display->screen_bindings[i].keysym == keysym &&
+          display->screen_bindings[i].mask == mask)
+        {
+          return meta_prefs_get_keybinding_action (display->screen_bindings[i].name);
+        }
+      
+      --i;
+    }
+
+  return META_KEYBINDING_ACTION_NONE;
+}
+
 void
 meta_display_process_mapping_event (MetaDisplay *display,
                                     XEvent      *event)
@@ -519,6 +635,8 @@ meta_display_process_mapping_event (MetaDisplay *display,
                   "Received MappingModifier event, will reload modmap and redo keybindings\n");
 
       reload_modmap (display);
+
+      reload_modifiers (display);
       
       regrab_screen_bindings (display);
       regrab_window_bindings (display);
@@ -551,11 +669,13 @@ bindings_changed_callback (MetaPreference pref,
     case META_PREF_SCREEN_KEYBINDINGS:
       rebuild_screen_binding_table (display);
       reload_keycodes (display);
+      reload_modifiers (display);
       regrab_screen_bindings (display);
       break;
     case META_PREF_WINDOW_KEYBINDINGS:
       rebuild_window_binding_table (display);
       reload_keycodes (display);
+      reload_modifiers (display);
       regrab_window_bindings (display);
       break;
     default:
@@ -576,6 +696,9 @@ meta_display_init_keys (MetaDisplay *display)
   display->ignored_modifier_mask = 0;
   display->num_lock_mask = 0;
   display->scroll_lock_mask = 0;
+  display->hyper_mask = 0;
+  display->super_mask = 0;
+  display->meta_mask = 0;
   display->screen_bindings = NULL;
   display->n_screen_bindings = 0;
   display->window_bindings = NULL;
@@ -597,7 +720,8 @@ meta_display_init_keys (MetaDisplay *display)
   rebuild_screen_binding_table (display);
 
   reload_keycodes (display);
-
+  reload_modifiers (display);
+  
   /* Keys are actually grabbed in meta_screen_grab_keys() */
   
   meta_prefs_add_listener (bindings_changed_callback, display);
@@ -1785,8 +1909,9 @@ process_tab_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
-  action = meta_prefs_get_keybinding_action (keysym,
-                                             display->grab_mask);
+  action = display_get_keybinding_action (display,
+                                          keysym,
+                                          display->grab_mask);
 
   /* FIXME weird side effect here is that you can use the Escape
    * key while tabbing, or the tab key while escaping
@@ -2059,8 +2184,9 @@ process_workspace_switch_grab (MetaDisplay *display,
       MetaWorkspace *target_workspace;
       MetaKeyBindingAction action;
 
-      action = meta_prefs_get_keybinding_action (keysym,
-                                                 display->grab_mask);
+      action = display_get_keybinding_action (display,
+                                              keysym,
+                                              display->grab_mask);
 
       switch (action)
         {

@@ -831,6 +831,7 @@ meta_prefs_set_num_workspaces (int n_workspaces)
     }
 }
 
+/* Indexes must correspond to MetaKeybindingAction */
 static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_WORKSPACE_1, 0, 0 },
   { META_KEYBINDING_WORKSPACE_2, 0, 0 },
@@ -979,7 +980,7 @@ update_binding (MetaKeyPref *binding,
                 const char  *value)
 {
   unsigned int keysym;
-  unsigned long mask;
+  MetaVirtualModifier mods;
   gboolean changed;
   
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -987,10 +988,10 @@ update_binding (MetaKeyPref *binding,
               binding->name, value ? value : "none");
   
   keysym = 0;
-  mask = 0;
+  mods = 0;
   if (value)
     {
-      if (!meta_ui_parse_accelerator (value, &keysym, &mask))
+      if (!meta_ui_parse_accelerator (value, &keysym, &mods))
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new gconf value\n");
@@ -1001,16 +1002,16 @@ update_binding (MetaKeyPref *binding,
   
   changed = FALSE;
   if (keysym != binding->keysym ||
-      mask != binding->mask)
+      mods != binding->modifiers)
     {
       changed = TRUE;
       
       binding->keysym = keysym;
-      binding->mask = mask;
+      binding->modifiers = mods;
       
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "New keybinding for \"%s\" is keysym = 0x%x mask = 0x%lx\n",
-                  binding->name, binding->keysym, binding->mask);
+                  "New keybinding for \"%s\" is keysym = 0x%x mods = 0x%x\n",
+                  binding->name, binding->keysym, binding->modifiers);
     }
   else
     {
@@ -1166,16 +1167,14 @@ meta_prefs_get_auto_raise_delay ()
 }
 
 MetaKeyBindingAction
-meta_prefs_get_keybinding_action (unsigned int  keysym,
-                                  unsigned long mask)
+meta_prefs_get_keybinding_action (const char *name)
 {
   int i;
 
-  i = G_N_ELEMENTS (screen_bindings) - 1;
+  i = G_N_ELEMENTS (screen_bindings) - 2; /* -2 for dummy entry at end */
   while (i >= 0)
     {
-      if (screen_bindings[i].keysym == keysym &&
-          screen_bindings[i].mask == mask)
+      if (strcmp (screen_bindings[i].name, name) == 0)
         return (MetaKeyBindingAction) i;
       
       --i;

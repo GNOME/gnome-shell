@@ -1,3 +1,20 @@
+2002-07-13  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c: adapt to virtual modifiers
+	(meta_display_process_mapping_event): we need to reload the
+	binding tables now when the modmap changes.
+
+	* src/prefs.c (update_binding): parse virtual modifiers, not
+	plain modmask
+
+	* src/common.h (MetaVirtualModifer): new enum
+
+	* src/ui.c (meta_ui_parse_accelerator): use
+	egg_accelerator_parse_virtual()
+
+	* src/Makefile.am: add eggaccelerators.[hc] for the virtual
+	accelerator parsing function
+
 2002-07-13  Christophe Fergeau <teuf@users.sourceforge.net>
 
 	* configure.in: added fr to ALL_LINGUAS

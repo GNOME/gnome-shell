@@ -27,6 +27,8 @@
 #include "core.h"
 #include "theme.h"
 
+#include "eggaccelerators.h"
+
 #include "inlinepixbufs.h"
 
 #include <pango/pangox.h>
@@ -613,11 +615,11 @@ meta_ui_have_a_theme (void)
 }
 
 gboolean
-meta_ui_parse_accelerator (const char    *accel,
-                           unsigned int  *keysym,
-                           unsigned long *mask)
+meta_ui_parse_accelerator (const char          *accel,
+                           unsigned int        *keysym,
+                           MetaVirtualModifier *mask)
 {
-  GdkModifierType gdk_mask = 0;
+  EggVirtualModifierType gdk_mask = 0;
   guint gdk_sym = 0;
   
   *keysym = 0;
@@ -626,32 +628,37 @@ meta_ui_parse_accelerator (const char    *accel,
   if (strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
+  if (!egg_accelerator_parse_virtual (accel, &gdk_sym, &gdk_mask))
+    return FALSE;
 
   if (gdk_sym == None)
     return FALSE;
   
-  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
+  if (gdk_mask & EGG_VIRTUAL_RELEASE_MASK) /* we don't allow this */
     return FALSE;
   
   *keysym = gdk_sym;
 
-  if (gdk_mask & GDK_SHIFT_MASK)
-    *mask |= ShiftMask;
-  if (gdk_mask & GDK_LOCK_MASK)
-    *mask |= LockMask;
-  if (gdk_mask & GDK_CONTROL_MASK)
-    *mask |= ControlMask;
-  if (gdk_mask & GDK_MOD1_MASK)
-    *mask |= Mod1Mask;
-  if (gdk_mask & GDK_MOD2_MASK)
-    *mask |= Mod2Mask;
-  if (gdk_mask & GDK_MOD3_MASK)
-    *mask |= Mod3Mask;
-  if (gdk_mask & GDK_MOD4_MASK)
-    *mask |= Mod4Mask;
-  if (gdk_mask & GDK_MOD5_MASK)
-    *mask |= Mod5Mask;
-
+  if (gdk_mask & EGG_VIRTUAL_SHIFT_MASK)
+    *mask |= META_VIRTUAL_SHIFT_MASK;
+  if (gdk_mask & EGG_VIRTUAL_CONTROL_MASK)
+    *mask |= META_VIRTUAL_CONTROL_MASK;
+  if (gdk_mask & EGG_VIRTUAL_ALT_MASK)
+    *mask |= META_VIRTUAL_ALT_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD2_MASK)
+    *mask |= META_VIRTUAL_MOD2_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD3_MASK)
+    *mask |= META_VIRTUAL_MOD3_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD4_MASK)
+    *mask |= META_VIRTUAL_MOD4_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD5_MASK)
+    *mask |= META_VIRTUAL_MOD5_MASK;
+  if (gdk_mask & EGG_VIRTUAL_SUPER_MASK)
+    *mask |= META_VIRTUAL_SUPER_MASK;
+  if (gdk_mask & EGG_VIRTUAL_HYPER_MASK)
+    *mask |= META_VIRTUAL_HYPER_MASK;
+  if (gdk_mask & EGG_VIRTUAL_META_MASK)
+    *mask |= META_VIRTUAL_META_MASK;
+  
   return TRUE;
 }
