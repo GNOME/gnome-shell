@@ -1,3 +1,8 @@
+2005-02-08  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c: (meta_window_activate): If we're not passed a
+	timestamp, make sure to manually get one.  Fixes #166728.
+
 2005-02-07  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.9.21

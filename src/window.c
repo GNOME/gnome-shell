@@ -2169,8 +2169,10 @@ meta_window_activate (MetaWindow *window,
       return;
     }
   
-  if (timestamp != 0)
-    window->net_wm_user_time = timestamp;
+  if (timestamp == 0)
+    timestamp = meta_display_get_current_time_roundtrip (window->display);
+
+  window->net_wm_user_time = timestamp;
 
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
