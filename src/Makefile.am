@@ -132,9 +132,7 @@ testasyncgetprop_LDADD= @METACITY_LIBS@
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_in_files=metacity.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
-if BUILD_CONFIG_DIALOG
 desktopfiles_DATA = $(desktopfiles_files)
-endif
 @INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@

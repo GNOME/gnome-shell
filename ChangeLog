@@ -1,5 +1,10 @@
 2003-01-10  Havoc Pennington  <hp@redhat.com>
 
+	* src/Makefile.am (desktopfiles_in_files): revert that change, I
+	got the wrong .desktop file. doh.
+
+2003-01-10  Havoc Pennington  <hp@redhat.com>
+
 	* src/Makefile.am (desktopfiles_DATA): don't install .desktop file
 	for properties dialog if we aren't building/installing the
 	properties dialog.
