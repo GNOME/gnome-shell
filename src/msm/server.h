@@ -29,10 +29,27 @@
 typedef struct _MsmClient MsmClient;
 typedef struct _MsmServer MsmServer;
 
+typedef void (* MsmClientFunc) (MsmClient* client);
+
 MsmServer* msm_server_new (void);
 void       msm_server_free (MsmServer *server);
 
+void       msm_server_queue_interaction (MsmServer *server,
+                                         MsmClient *client);
 
+void       msm_server_save_all          (MsmServer *server,
+                                         gboolean   allow_interaction,
+                                         gboolean   shut_down);
+void       msm_server_cancel_shutdown   (MsmServer *server);
 
+void       msm_server_consider_phase_change (MsmServer *server);
+
+void       msm_server_foreach_client    (MsmServer *server,
+                                         MsmClientFunc func);
+
+void       msm_server_drop_client       (MsmServer *server,
+                                         MsmClient *client);
+
+void       msm_server_next_pending_interaction (MsmServer *server);
 
 #endif

@@ -48,38 +48,55 @@ struct _MsmServer
   GList *clients;
   IceAuthDataEntry *auth_entries;
   int n_auth_entries;
+  MsmClient *currently_interacting;
+  GList     *interact_pending;
+  
+  guint in_shutdown : 1;
+  guint save_allows_interaction : 1;
 };
 
-static Status register_client_callback              (SmsConn         smsConn,
-                                                     SmPointer       managerData,
-                                                     char           *previousId);
-static void   interact_request_callback             (SmsConn         smsConn,
-                                                     SmPointer       managerData,
-                                                     int             dialogType);
-static void   interact_done_callback                (SmsConn         smsConn,
-                                                     SmPointer       managerData,
-                                                     Bool            cancelShutdown);
-static void   save_yourself_request_callback        (SmsConn         smsConn,
-                                                     SmPointer       managerData,
-                                                     int             saveType,
+static Status register_client_callback              (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
+                                                     char           *previous_id);
+static void   interact_request_callback             (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
+                                                     int             dialog_type);
+static void   interact_done_callback                (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
+                                                     Bool            cancel_shutdown);
+static void   save_yourself_request_callback        (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
+                                                     int             save_type,
                                                      Bool            shutdown,
-                                                     int             interactStyle,
+                                                     int             interact_style,
                                                      Bool            fast,
                                                      Bool            global);
-static void   save_yourself_phase2_request_callback (SmsConn         smsConn,
-                                                     SmPointer       managerData);
-static void   save_yourself_done_callback           (SmsConn         smsConn,
-                                                     SmPointer       managerData,
+static void   save_yourself_phase2_request_callback (SmsConn         cnxn,
+                                                     SmPointer       manager_data);
+static void   save_yourself_done_callback           (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
                                                      Bool            success);
-static void   close_connection_callback             (SmsConn         smsConn,
-                                                     SmPointer       managerData,
+static void   close_connection_callback             (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
                                                      int             count,
                                                      char          **reasonMsgs);
-static Status new_client_callback                   (SmsConn         smsConn,
-                                                     SmPointer       managerData,
+static void set_properties_callback    (SmsConn     cnxn,
+                                        SmPointer   manager_data,
+                                        int         numProps,
+                                        SmProp    **props);
+static void delete_properties_callback (SmsConn     cnxn,
+                                        SmPointer   manager_data,
+                                        int         numProps,
+                                        char      **propNames);
+static void get_properties_callback    (SmsConn     cnxn,
+                                        SmPointer   manager_data);
+
+
+static Status new_client_callback                   (SmsConn         cnxn,
+                                                     SmPointer       manager_data,
                                                      unsigned long  *maskRet,
                                                      SmsCallbacks   *callbacksRet,
-                                                     char          **failureReasonRet);
+                                                     char          **failure_reason_ret);
 static Bool   host_auth_callback                    (char           *hostname);
 
 
@@ -101,6 +118,10 @@ msm_server_new (void)
   server->clients = NULL;
   server->auth_entries = NULL;
   server->n_auth_entries = 0;
+  server->currently_interacting = NULL;
+  server->interact_pending = NULL;
+  server->in_shutdown = FALSE;
+  server->save_allows_interaction = FALSE;
   
   if (!SmsInitialize (PACKAGE, VERSION,
                       new_client_callback,
@@ -109,80 +130,343 @@ msm_server_new (void)
                       sizeof (errbuf), errbuf))
     msm_fatal (_("Could not initialize SMS: %s\n"), errbuf);
   
-  ice_init ();
+  ice_init (server);
 
-  
+  return server;
 }
 
 void
 msm_server_free (MsmServer *server)
 {
-
+  g_list_free (server->clients);
+  g_list_free (server->interact_pending);
+  
   free_auth_entries (server->auth_entries, server->n_auth_entries);
 
   g_free (server);
 }
 
+
+void
+msm_server_drop_client (MsmServer *server,
+                        MsmClient *client)
+{
+  server->clients = g_list_remove (server->clients, client);
+
+  if (server->currently_interacting == client)
+    msm_server_next_pending_interaction (server);
+
+  msm_client_free (client);
+
+  msm_server_consider_phase_change (server);
+
+  /* We can quit after all clients have been dropped. */
+  if (server->in_shutdown &&
+      server->clients == NULL)
+    msm_quit ();
+}
+
+void
+msm_server_next_pending_interaction (MsmServer *server)
+{
+  server->currently_interacting = NULL;
+  if (server->interact_pending)
+    {
+      /* Start up the next interaction */
+      server->currently_interacting = server->interact_pending->data;
+      server->interact_pending =
+        g_list_remove (server->interact_pending,
+                       server->currently_interacting);
+      msm_client_begin_interact (server->currently_interacting);
+    }
+}
+
 static Status
-register_client_callback              (SmsConn         smsConn,
-                                       SmPointer       managerData,
-                                       char           *previousId)
+register_client_callback              (SmsConn         cnxn,
+                                       SmPointer       manager_data,
+                                       char           *previous_id)
 {
+  /* This callback should:
+   *  a) if previous_id is NULL, this is a new client; register
+   *     it and return TRUE
+   *  b) if previous_id is non-NULL and is an ID we know about,
+   *     register client and return TRUE
+   *  c) if previous_id is non-NULL and we've never heard of it,
+   *     return FALSE
+   *
+   *  Whenever previous_id is non-NULL we need to free() it.
+   *  (What an incredibly broken interface...)
+   */
+
+  MsmClient *client;
+
+  client = manager_data;
+
+  if (previous_id == NULL)
+    {
+      char *id;
+
+      id = SmsGenerateClientID (msm_client_get_connection (client));
+
+      msm_client_register (client, id);
+
+      free (id);
+
+      /* FIXME ksm and gnome-session send a SaveYourself to the client
+       * here. I don't understand why though.
+       */
+      
+      return TRUE;
+    }
+  else
+    {
+      /* FIXME check for pending/known client IDs and register the client,
+       * return TRUE if we know about this previous_id
+       */
+
+      free (previous_id);
+      return FALSE;
+    }
 }
 
 static void
-interact_request_callback             (SmsConn         smsConn,
-                                       SmPointer       managerData,
-                                       int             dialogType)
+interact_request_callback (SmsConn         cnxn,
+                           SmPointer       manager_data,
+                           int             dialog_type)
 {
+  MsmClient *client;
+  MsmServer *server;
+  
+  client = manager_data;
+  server = msm_client_get_server (client);
+  
+  if (!server->save_allows_interaction)
+    {
+      msm_warning (_("Client '%s' requested interaction, but interaction is not allowed right now.\n"),
+                   msm_client_get_description (client));
+
+      return;
+    }
+  
+  msm_client_interact_request (client);
 }
 
 static void
-interact_done_callback                (SmsConn         smsConn,
-                                       SmPointer       managerData,
-                                       Bool            cancelShutdown)
+interact_done_callback (SmsConn         cnxn,
+                        SmPointer       manager_data,
+                        Bool            cancel_shutdown)
 {
+  MsmClient *client;
+  MsmServer *server;
+
+  client = manager_data;
+  server = msm_client_get_server (client);
+  
+  if (cancel_shutdown &&
+      server->in_shutdown &&
+      server->save_allows_interaction)
+    {
+      msm_server_cancel_shutdown (server);
+    }
+  else
+    {
+      if (server->currently_interacting == client)
+        {
+          msm_server_next_pending_interaction (server);
+        }
+      else
+        {
+          msm_warning (_("Received InteractDone from client '%s' which should not be interacting right now\n"),
+                       msm_client_get_description (client));
+        }
+    }
 }
 
 static void
-save_yourself_request_callback        (SmsConn         smsConn,
-                                       SmPointer       managerData,
-                                       int             saveType,
-                                       Bool            shutdown,
-                                       int             interactStyle,
-                                       Bool            fast,
-                                       Bool            global)
+save_yourself_request_callback (SmsConn         cnxn,
+                                SmPointer       manager_data,
+                                int             save_type,
+                                Bool            shutdown,
+                                int             interact_style,
+                                Bool            fast,
+                                Bool            global)
 {
+  /* The spec says we "may" honor this exactly as requested;
+   * we decide not to, because some of the fields are stupid
+   * and/or useless
+   */
+  MsmClient *client;
+  MsmServer *server;
+
+  client = manager_data;
+  server = msm_client_get_server (client);
+  
+  if (global)
+    {
+      msm_server_save_all (server,
+                           interact_style != SmInteractStyleNone,
+                           shutdown != FALSE);
+    }
+  else
+    {
+      if (msm_client_get_state (client) == MSM_CLIENT_STATE_IDLE)
+        msm_client_save (client,
+                         interact_style != SmInteractStyleNone,
+                         shutdown != FALSE);
+      else
+        msm_warning (_("Client '%s' requested save, but is not currently in the idle state\n"),
+                     msm_client_get_description (client));
+    }
 }
 
 static void
-save_yourself_phase2_request_callback (SmsConn         smsConn,
-                                       SmPointer       managerData)
+save_yourself_phase2_request_callback (SmsConn         cnxn,
+                                       SmPointer       manager_data)
 {
+  MsmClient *client;
+  MsmServer *server;
+
+  client = manager_data;
+  server = msm_client_get_server (client);
+
+  msm_client_phase2_request (client);
 }
 
 static void
-save_yourself_done_callback           (SmsConn         smsConn,
-                                       SmPointer       managerData,
+save_yourself_done_callback           (SmsConn         cnxn,
+                                       SmPointer       manager_data,
                                        Bool            success)
 {
+  MsmClient *client;
+  MsmServer *server;
+
+  client = manager_data;
+  server = msm_client_get_server (client);
+
+  msm_client_save_confirmed (client, success != FALSE);
+  
+  msm_server_consider_phase_change (server);
 }
 
 static void
-close_connection_callback             (SmsConn         smsConn,
-                                       SmPointer       managerData,
+close_connection_callback             (SmsConn         cnxn,
+                                       SmPointer       manager_data,
                                        int             count,
                                        char          **reasonMsgs)
 {
+  MsmClient *client;
+  MsmServer *server;
+
+  client = manager_data;
+  server = msm_client_get_server (client);
+
+  msm_server_drop_client (server, client);
+
+  /* I'm assuming these messages would be on crack, and therefore not
+   * displaying them.
+   */
+  SmFreeReasons (count, reasonMsgs);
 }
 
+static void
+set_properties_callback (SmsConn     cnxn,
+                         SmPointer   manager_data,
+                         int         numProps,
+                         SmProp    **props)
+{
+  
+
+}
+
+static void
+delete_properties_callback (SmsConn     cnxn,
+                            SmPointer   manager_data,
+                            int         numProps,
+                            char      **propNames)
+{
+
+}
+
+static void
+get_properties_callback (SmsConn     cnxn,
+                         SmPointer   manager_data)
+{
+
+
+}
+
+
 static Status
-new_client_callback                   (SmsConn         smsConn,
-                                       SmPointer       managerData,
+new_client_callback                   (SmsConn         cnxn,
+                                       SmPointer       manager_data,
                                        unsigned long  *maskRet,
                                        SmsCallbacks   *callbacksRet,
-                                       char          **failureReasonRet)
+                                       char          **failure_reason_ret)
 {
+  MsmClient *client;
+  MsmServer *server;
+
+  server = manager_data;
+
+  
+  /* If we want to disallow the new client, here we fill
+   * failure_reason_ret with a malloc'd string and return FALSE
+   */
+  if (server->in_shutdown)
+    {
+      /* have to use malloc() */
+      *failure_reason_ret = malloc (256);
+      g_strncpy (*failure_reason_ret, _("Refusing new client connection because the session is currently being shut down\n"), 255);
+      (*failure_reason_ret)[255] = '\0'; /* paranoia */
+      return FALSE;
+    }
+  
+  client = msm_client_new (server, cnxn);
+  server->clients = g_list_prepend (server->clients, client);
+  
+  *maskRet = 0;
+  
+  *maskRet |= SmsRegisterClientProcMask;
+  callbacksRet->register_client.callback = register_client_callback;
+  callbacksRet->register_client.manager_data  = client;
+
+  *maskRet |= SmsInteractRequestProcMask;
+  callbacksRet->interact_request.callback = interact_request_callback;
+  callbacksRet->interact_request.manager_data = client;
+
+  *maskRet |= SmsInteractDoneProcMask;
+  callbacksRet->interact_done.callback = interact_done_callback;
+  callbacksRet->interact_done.manager_data = client;
+
+  *maskRet |= SmsSaveYourselfRequestProcMask;
+  callbacksRet->save_yourself_request.callback = save_yourself_request_callback;
+  callbacksRet->save_yourself_request.manager_data = client;
+
+  *maskRet |= SmsSaveYourselfP2RequestProcMask;
+  callbacksRet->save_yourself_phase2_request.callback = save_yourself_phase2_request_callback;
+  callbacksRet->save_yourself_phase2_request.manager_data = client;
+
+  *maskRet |= SmsSaveYourselfDoneProcMask;
+  callbacksRet->save_yourself_done.callback = save_yourself_done_callback;
+  callbacksRet->save_yourself_done.manager_data = client;
+
+  *maskRet |= SmsCloseConnectionProcMask;
+  callbacksRet->close_connection.callback = close_connection_callback;
+  callbacksRet->close_connection.manager_data  = client;
+
+  *maskRet |= SmsSetPropertiesProcMask;
+  callbacksRet->set_properties.callback = set_properties_callback;
+  callbacksRet->set_properties.manager_data = client;
+
+  *maskRet |= SmsDeletePropertiesProcMask;
+  callbacksRet->delete_properties.callback = delete_properties_callback;
+  callbacksRet->delete_properties.manager_data   = client;
+
+  *maskRet |= SmsGetPropertiesProcMask;
+  callbacksRet->get_properties.callback	= get_properties_callback;
+  callbacksRet->get_properties.manager_data   = client;
+
+  return TRUE;
 }
 
 static Bool
@@ -192,6 +476,213 @@ host_auth_callback (char *hostname)
   /* not authorized */
   return False;
 }
+
+void
+msm_server_queue_interaction (MsmServer *server,
+                              MsmClient *client)
+{
+  if (server->currently_interacting == client ||
+      g_list_find (server->interact_pending, client) != NULL)
+    return;   /* Already queued */  
+
+  server->interact_pending = g_list_prepend (server->interact_pending,
+                                             client);
+
+  msm_server_next_pending_interaction (server);
+}
+
+void
+msm_server_save_all (MsmServer *server,
+                     gboolean   allow_interaction,
+                     gboolean   shut_down)
+{
+  GList *tmp;
+
+  if (shut_down) /* never cancel a shutdown here */
+    server->in_shutdown = TRUE;
+
+  /* We just assume the most recent request for interaction or no is
+   * correct
+   */
+  server->save_allows_interaction = allow_interaction;
+  
+  tmp = server->clients;
+  while (tmp != NULL)
+    {
+      MsmClient *client;
+
+      client = tmp->data;
+      
+      if (msm_client_get_state (client) == MSM_CLIENT_STATE_IDLE)
+        msm_client_save (client,
+                         server->save_allows_interaction,
+                         server->in_shutdown);
+      
+      tmp = tmp->next;
+    }
+}
+
+void
+msm_server_cancel_shutdown (MsmServer *server)
+{
+  GList *tmp;
+  
+  if (!server->in_shutdown)
+    return;
+  
+  server->in_shutdown = FALSE;
+
+  /* Cancel any interactions in progress */
+  g_list_free (server->interact_pending);
+  server->interact_pending = NULL;
+  server->currently_interacting = NULL;
+  
+  tmp = server->clients;
+  while (tmp != NULL)
+    {
+      MsmClient *client;
+
+      client = tmp->data;
+      
+      if (msm_client_get_state (client) == MSM_CLIENT_STATE_SAVING)
+        msm_client_shutdown_cancelled (client);
+      
+      tmp = tmp->next;
+    }
+}
+
+/* Think about whether to move to phase 2, return to idle state,
+ * or shut down
+ */
+void
+msm_server_consider_phase_change (MsmServer *server)
+{
+  GList *tmp;
+  gboolean some_phase1;
+  gboolean some_phase2;
+  gboolean some_phase2_requested;
+  gboolean some_alive;
+  
+  some_phase1 = FALSE;
+  some_phase2 = FALSE;
+  some_phase2_requested = FALSE;
+  some_alive = FALSE;
+  
+  tmp = server->clients;
+  while (tmp != NULL)
+    {
+      MsmClient *client;
+
+      client = tmp->data;
+      
+      switch (msm_client_get_state (client))
+        {
+        case MSM_CLIENT_STATE_SAVING:
+          some_phase1 = TRUE;
+          break;
+        case MSM_CLIENT_STATE_SAVING_PHASE2:
+          some_phase2 = TRUE;
+          break;
+        case MSM_CLIENT_STATE_PHASE2_REQUESTED:
+          some_phase2_requested = TRUE;
+          break;
+        default:
+          break;
+        }
+
+      if (msm_client_get_state (client) != MSM_CLIENT_STATE_DEAD)
+        some_alive = TRUE;
+      
+      tmp = tmp->next;
+    }
+  
+  if (some_phase1)
+    return; /* still saving phase 1 */
+
+  if (some_phase2)
+    return; /* we are in phase 2 */
+
+  if (some_phase2_requested)
+    {
+      tmp = server->clients;
+      while (tmp != NULL)
+        {
+          MsmClient *client;
+          
+          client = tmp->data;
+          
+          if (msm_client_get_state (client) == MSM_CLIENT_STATE_PHASE2_REQUESTED)
+            msm_client_save_phase2 (client);
+          
+          tmp = tmp->next;
+        }
+      
+      return;
+    }
+
+  if (server->in_shutdown)
+    {
+      /* We are shutting down, and all clients are in the idle state.
+       * Tell all clients to die. When they all close their connections,
+       * we can exit.
+       */
+
+      if (some_alive)
+        {
+          tmp = server->clients;
+          while (tmp != NULL)
+            {
+              MsmClient *client = tmp->data;
+              
+              if (msm_client_get_state (client) != MSM_CLIENT_STATE_DEAD)
+                msm_client_die (client);
+              
+              tmp = tmp->next;
+            }
+        }
+    }
+  else
+    {
+      /* Send SaveComplete to all clients that are finished saving */
+      GList *tmp;
+      
+      tmp = server->clients;
+      while (tmp != NULL)
+        {
+          MsmClient *client = tmp->data;
+
+          switch (msm_client_get_state (client))
+            {
+            case MSM_CLIENT_STATE_SAVE_DONE:
+            case MSM_CLIENT_STATE_SAVE_FAILED:
+              msm_client_save_complete (client);
+              break;
+            default:
+              break;
+            }
+          
+          tmp = tmp->next;
+        }
+    }
+}
+
+void
+msm_server_foreach_client (MsmServer *server,
+                           MsmClientFunc func)
+{
+  GList *tmp;
+  
+  tmp = server->clients;
+  while (tmp != NULL)
+    {
+      MsmClient *client = tmp->data;
+
+      (* func) (client);
+
+      tmp = tmp->next;
+    }
+}
+
 
 /*
  * ICE utility code, cut-and-pasted from Metacity, and in turn

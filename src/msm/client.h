@@ -23,11 +23,71 @@
 #define MSM_CLIENT_H
 
 #include <glib.h>
-#include <X11/ICE/ICElib.h>
-#include <X11/SM/SMlib.h>
 
 #include "server.h"
 
+/* See xsmp docs for a state description. This enum doesn't
+ * correspond exactly, but close enough.
+ */
+typedef enum
+{
+  /* Client has just newly connected, not yet registered */
+  MSM_CLIENT_STATE_NEW,
+  /* Client has registered with us successfully, isn't doing
+   * anything special
+   */
+  MSM_CLIENT_STATE_IDLE,
+  /* Client is saving self in phase 1 */
+  MSM_CLIENT_STATE_SAVING,
+  /* Client has requested phase 2 save, but we aren't in phase 2 yet */
+  MSM_CLIENT_STATE_PHASE2_REQUESTED,
+  /* Client is in phase 2 save; all the same things are
+   * allowed as with STATE_SAVING, except you can't request
+   * a phase 2 save
+   */
+  MSM_CLIENT_STATE_SAVING_PHASE2,
 
+  /* Client sent SaveYourselfDone with success = TRUE */
+  MSM_CLIENT_STATE_SAVE_DONE,
+
+  /* Client sent SaveYourselfDone with success = FALSE */
+  MSM_CLIENT_STATE_SAVE_FAILED,
+
+  /* Client was asked to die */
+  MSM_CLIENT_STATE_DEAD
+
+} MsmClientState;
+
+MsmClient* msm_client_new  (MsmServer *server,
+                            SmsConn    cnxn);
+void       msm_client_free (MsmClient *client);
+
+SmsConn        msm_client_get_connection  (MsmClient *client);
+const char*    msm_client_get_description (MsmClient *client);
+MsmClientState msm_client_get_state       (MsmClient *client);
+MsmServer*     msm_client_get_server      (MsmClient *client);
+
+void    msm_client_set_property   (MsmClient   *client,
+                                   SmProp      *prop);
+void    msm_client_unset_property (MsmClient   *client,
+                                   const char  *name);
+void    msm_client_send_properties (MsmClient  *client);
+
+void msm_client_register           (MsmClient  *client,
+                                    const char *id);
+void msm_client_interact_request   (MsmClient  *client);
+void msm_client_begin_interact     (MsmClient  *client);
+void msm_client_save               (MsmClient  *client,
+                                    gboolean    allow_interaction,
+                                    gboolean    shut_down);
+void msm_client_shutdown_cancelled (MsmClient  *client);
+void msm_client_phase2_request     (MsmClient  *client);
+void msm_client_save_phase2        (MsmClient  *client);
+void msm_client_save_confirmed     (MsmClient  *client,
+                                    gboolean    successful);
+
+void msm_client_die                (MsmClient  *client);
+void msm_client_save_complete      (MsmClient  *client);
 
 #endif
+

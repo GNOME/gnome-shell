@@ -44,6 +44,13 @@ shutdown_cleanly_on_signal (int signo)
     g_main_quit (main_loop);
 }
 
+void
+msm_quit (void)
+{
+  if (main_loop && g_main_is_running (main_loop))
+    g_main_quit (main_loop);
+}
+
 int
 main (int argc, char **argv)
 {
