@@ -1,55 +1,70 @@
 # Turkish translation of metacity.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Görkem Çetin <gorkem@gelecek.com.tr>, 2002.
+# Copyright (C) 2003 Free Software Foundation.
+# This file is distributed under the same license as the metacity package.
+# Sinan İmamoğlu <sinan@myrealbox.com>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-01-06 07:52-0500\n"
-"Last-Translator: Görkem Çetin <gorkem@gelecek.com.tr>\n"
+"POT-Creation-Date: 2003-02-04 05:03+0100\n"
+"PO-Revision-Date: 2003-02-08 12:33+0200\n"
+"Last-Translator: Sinan İmamoğlu <sinan@myrealbox.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Kullanım: %s\n"
+
+#: src/tools/metacity-message.c:174
+#: src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity, ayrıntılı kip desteği olmadan derlenmiş\n"
+
+#: src/delete.c:60
+#: src/delete.c:87
+#: src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "\"%s\" bir tamsayı olarak ayrıştırılamadı"
 
-#: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
-#: src/theme-parser.c:476 src/theme-parser.c:530
+#: src/delete.c:67
+#: src/delete.c:94
+#: src/metacity-dialog.c:53
+#: src/theme-parser.c:476
+#: src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "\"%2$s\" dizgisinin sonundaki \"%1$s\" karakterleri anlaşılmadı"
 
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "İletişim kutusu işleminden gelen \"%s\" iletisi ayrıştırılamadı\n"
 
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "İletişim kutusu gösteren işlemden okuma hatası: %s\n"
 
 #: src/delete.c:331
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "metacity-dialog'u bir uygulamanın öldürülmesiyle ilgili soru sormak amacıyla başlatırken hata: %s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr ""
+msgstr "Konak makine adının ne olduğu öğrenilemedi: %s\n"
 
-#: src/display.c:270
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "X window ekranı açılamadı: '%s'\n"
+msgstr "X Pencere Dizgesi oturumu '%s' açılamadı\n"
 
 #: src/errors.c:231
 #, c-format
@@ -58,57 +73,53 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"'%s' görüntü ekranı ile bağlantı kesildi.\n"
-"Sunucu ya da pencere yöneticisi kapanmış olabilir.\n"
-"\n"
+"'%s' ekranıyla bağlantı koptu;\n"
+"büyük olasılıkla ya X sunucusu kapandı ya da pencere yöneticisi\n"
+"öldürdünüz/yok ettiniz.\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "Ölümcül G/Ç hatası %d (%s); '%s' X oturumunda.\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
-msgstr ""
+msgstr "Pencereyi Kapat"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
-msgstr ""
+msgstr "Pencere Menüsü"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
-msgstr ""
+msgstr "Simge Durumuna Küçült"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
-msgstr ""
+msgstr "Ekranı Kapla"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "Önceki Boyut"
 
-#: src/keybindings.c:870
+#: src/keybindings.c:910
 #, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
+msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgstr "%s tuşu %x değiştiricileriyle birlikte başka bir uygulama tarafından atanmış\n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2317
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "Bir komutla ilgili hatayı göstermek için metacity-dialog başlatılırken hata: %s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2348
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "%d komutu tanımlanmamış.\n"
 
 #: src/main.c:64
-msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
-msgstr ""
+msgid "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"
+msgstr "metacity [--disable-sm] [--sm-save-file=DOSYA_ADI] [--display=X_OTURUMU] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -116,67 +127,70 @@ msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Telif Hakkı (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ve başkaları\n"
+"Bu, özgür yazılımdır; telif koşullarını öğrenmek için kaynak koda bakın.\n"
+"Hiç bir garantisi, BELİRLİ BİR AMACA UYGUNLUĞU için dahi, YOKTUR.\n"
 
 #: src/main.c:326
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Hiç tema bulunamadı! %s dizininin var olduğundan ve bildiğimiz temaları içerdiğinden emin olun."
 
 #: src/main.c:374
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "Yeniden başlanamadı: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr ""
+msgstr "_Simge Durumuna Küçült"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
-msgstr ""
+msgstr "_Ekranı Kapla"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Ö_nceki Duruma Getir"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr ""
+msgstr "To_pla"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr ""
+msgstr "_Yay"
 
 #: src/menu.c:57
 msgid "_Move"
-msgstr ""
+msgstr "_Taşı"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr ""
+msgstr "_Boyut"
 
 #. separator
 #: src/menu.c:60
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "Tüm Çalışma _Alanlarında"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "Yalnız _Bu Çalışma Alanında"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152
+#: src/prefs.c:1669
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Çalışma Alanı %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -185,17 +199,17 @@ msgstr ""
 #: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Çalışma Alanı %s%d"
 
 #: src/menu.c:353
 #, c-format
 msgid "Only on %s"
-msgstr ""
+msgstr "Yalnızca %s'de"
 
 #: src/menu.c:355
 #, c-format
 msgid "Move to %s"
-msgstr ""
+msgstr "%s'e Taşı"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -204,7 +218,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -213,7 +227,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -222,7 +236,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -231,7 +245,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:123
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -240,7 +254,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -249,7 +263,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -258,7 +272,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -267,7 +281,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -276,7 +290,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -285,7 +299,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -294,153 +308,124 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"\"%s\" penceresi yanıt vermiyor.\n"
+"Uygulama zorla kapatılsın mı?\n"
+"(Açık belgeler yitirilecek.)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr ""
+msgstr "Uygulamayı öldür"
 
 #: src/metacity-dialog.c:188
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: src/metacity-dialog.c:200
 msgid "Class"
-msgstr ""
+msgstr "Sınıf"
 
 #: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
+msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
+msgstr "Bu pencereleri, \"geçerli durumu kaydet\"me özelliğini desteklemediklerinden, bir dahaki oturumda kendiniz açmanız gerekecek."
 
 #: src/metacity-dialog.c:276
 #, c-format
-msgid ""
-"There was an error running \"%s\":\n"
+msgid "There was an error running \"%s\":\n"
 "%s."
-msgstr ""
+msgstr "\"%s\" çalıştırılırken bir hata oldu:\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(Henüz tamamlanmamış özellik) Gezinme, pencerelere değil uygulamalara göre işler"
 
 #: src/metacity.schemas.in.h:2
-msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
-msgstr ""
+msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0, however. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true. By default, titlebar_font is unset, causing Metacity to fall back to the desktop font even if titlebar_uses_desktop_font is false."
+msgstr "Pencere başlık çubuklarının yazıtipini betimleyen yazıtipi tanımlaması. Bu tanımlamanın boyut kısmı yalnızca titlebar_font_size (başlık çubuğu yazıtipi boyutu) seçeneği 0'a ayarlıysa kullanılacaktır. Ayrıca eğer titlebar_uses_desktop_font (başlık çubuğu masaüstü yazıtipini kullanır) seçeneğine açık değeri atanmışsa bu seçenek seçilemez kılınır. Öntanımlı olarak titlebar_font değişkenine değer atanmaz, böylece titlebar_uses_desktop_font seçeneği kapalı ise bile Metacity masaüstü yazıtipini yedek olarak kullanacaktır."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Başlık çubuğuna çift tıklandığında"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Pencere Menüsünü etkinleştir"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Başlık çubuğundaki düğmelerin düzeni"
 
 #: src/metacity.schemas.in.h:6
-msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
-"the window from the right corner, and the button names are comma-separated. "
-"Duplicate buttons are not allowed. Unknown button names are silently ignored "
-"so that buttons can be added in future metacity versions without breaking "
-"older versions."
-msgstr ""
+msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
+msgstr "Başlık çubuğundaki düğmelerin düzeni. Dizge türünde bir değer alır, örneğin \"menu:minimize,maximize,close\"; pencerenin sol köşesindekilerle sağ köşesindekileri iki noktayla, düğme adlarını virgülle ayırın. Bir düğme birden çok kez kullanılamaz. Gelecek metacity sürümlerinde eski sürümlerde soruna yol açmadan yeni düğmeler eklenebilmesi için bilinmeyen düğme adları sessizce göz ardı edilecektir."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Odaklanılan pencereyi kendiliğinden yükseltir"
 
 #: src/metacity.schemas.in.h:8
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
-msgstr ""
+msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
+msgstr "Bu değiştirici tuş basılıyken pencereye tıklamak [sol tuşla] pencereyi taşır, [orta tuşla] pencereyi boyutlandırır, ya da [sağ tuşla] pencere menüsünü gösterir. Değiştirici, \"&lt;Alt&gt;\" ya da \"&lt;Super&gt;\" gibi gösterilir."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
-msgstr ""
+msgstr "Pencere kapat"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "Tuş atamalarına yanıt olarak çalıştırılacak komutlar"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr ""
+msgstr "Geçerli tema"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Kendiliğinden yükseltme seçeneğinin gecikmesi"
 
 #: src/metacity.schemas.in.h:13
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Eski ya da hatalı uygulamaların gerektirdiği hatalı 'özellik'leri kapat"
 
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Tüm pencereleri gizleyip masaüstüne odaklan"
 
 #: src/metacity.schemas.in.h:15
-msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
-msgstr ""
+msgid "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay (the delay is specified by the auto_raise_delay key)."
+msgstr "Bu seçenek açıksa ve odaklama kipi \"sloppy\" ya da \"fare\" ise odaklanan pencere belirli bir süre sonra kendiliğinden üste çıkar (bu süre auto_raise_delay anahtarıyla belirlenir)."
 
 #: src/metacity.schemas.in.h:16
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
+msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgstr "titlebar_font seçeneğini göz ardı edip pencere başlıklarında standart uygulama yazıtipini kullanır."
 
 #: src/metacity.schemas.in.h:17
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr ""
+msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. The existence of this setting is somewhat questionable. But it's better than having settings for all the specific details of application-based vs. window-based, e.g. whether to pass through clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr "Metacity'nin pencerelere değil uygulamalara yönelik çalışmasına sağlar. Bu kavram biraz soyuttur, kısacası uygulama temelli çalışma Windows'tan çok Mac'takine benzer. Uygulama temelli kipte bir pencereye odaklandığınızda o uygulamanın bütün pencereleri yükseltilir. Ayrıca bu kipte odaklama amaçlı tıklamalar odaklamadan sonra bir de uygulamaya geçilmez. Böyle bir ayarın varlığı sorgulamaya açıktır; ama böylesi, uygulama tabanlı ve pencere tabanlı kiplerin her birinin bütün ayrıntıları için teker teker ayarlara (örn: tıklamalar uygulamaya geçilsin mi?) sahip olmaktan iyidir. Uygulama tabanlı kipin büyük bölümü henüz tamamlanmadı."
 
 #: src/metacity.schemas.in.h:18
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Pencereyi diğerlerinin altına gönder"
 
 #: src/metacity.schemas.in.h:19
 msgid "Maximize a window"
-msgstr ""
+msgstr "Pencereyi en büyük boyutuna getirir"
 
 #: src/metacity.schemas.in.h:20
 msgid "Maximize window horizontally"
-msgstr ""
+msgstr "Pencereyi en büyük yatay boyutuna getirir"
 
 #: src/metacity.schemas.in.h:21
 msgid "Maximize window vertically"
-msgstr ""
+msgstr "Pencereyi en büyük dikey boyutuna getirir"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
-msgstr ""
+msgstr "Pencereyi masaüstünde gizleyip panelde küçük bir düğme/simge durumuna küçültür"
 
 #: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
@@ -448,1822 +433,1513 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:24
 msgid "Move a window"
-msgstr ""
+msgstr "Pencere taşı"
 
 #: src/metacity.schemas.in.h:25
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
+msgstr "Panellerle masaüstü arasındaki geri geçişi anında yap"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
+msgstr "Panellerle masaüstü arasındaki geri geçişi beliren pencere ile yap"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backwards between windows immediately"
-msgstr ""
+msgstr "Pencereler arası geri geçişi anında yap"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "Panellerle masaüstü arasındaki geçişi anında yap"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "Panellerle masaüstü arasındaki geçişi beliren pencere ile yap"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "Pencereler arası geçişi anında yap"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "Pencereler arası geçişi beliren pencere ile yap"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
+msgstr "Odağı pencereler arasında beliren pencere aracılığıyla taşı"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "Pencereyi alttaki çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Pencereyi soldaki çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Pencereyi sağdaki çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "Pencereyi üstteki çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "Pencereyi 1. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "Pencereyi 10. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "Pencereyi 11. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "Pencereyi 12. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "Pencereyi 2. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "Pencereyi 3. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "Pencereyi 4. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "Pencereyi 5. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "Pencereyi 6. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "Pencereyi 7. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "Pencereyi 8. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "Pencereyi 9. çalışma alanına taşı"
 
 #: src/metacity.schemas.in.h:49
 msgid "Name of workspace"
-msgstr ""
+msgstr "Çalışma alanının adı"
 
 #: src/metacity.schemas.in.h:50
 msgid "Number of workspaces"
-msgstr ""
+msgstr "Çalışma alanlarının sayısı"
 
 #: src/metacity.schemas.in.h:51
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
-msgstr ""
+msgid "Number of workspaces. Must be more than zero, and has a fixed maximum (to prevent accidentally destroying your desktop by asking for 34 million workspaces)."
+msgstr "Çalışma alanlarının sayısı. Sıfırdan büyük olmalıdır ve bir üst sınırı vardır (ki yanlışlıkla 34 milyon çalışma alanı talep edip masaüstünüze zarar vermenizi önleyebilsin)."
 
 #: src/metacity.schemas.in.h:52
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "Pencere tam görünmüyorsa en üste al, yoksa aşağı gönder"
 
 #: src/metacity.schemas.in.h:53
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Pencereyi diğerlerinin üstüne çıkar"
 
 #: src/metacity.schemas.in.h:54
 msgid "Resize a window"
-msgstr ""
+msgstr "Pencereyi yeniden boyutlandır"
 
 #: src/metacity.schemas.in.h:55
 msgid "Run a defined command"
-msgstr ""
+msgstr "Tanımlanmış bir komutu çalıştır"
 
 #: src/metacity.schemas.in.h:56
-msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
-msgstr ""
+msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
+msgstr "Bazı uygulamalar belirtimlere uymayarak pencere yöneticisini yanlış işlemek durumunda bırakır. Örneğin, ideal koşullarda Metacity tüm iletişim kutularını üst pencerelerine göre tutarlı bir biçimde yerleştirirdi. Bunun için uygulamaların iletişim kutularına yönelik belirttikleri konumları gözardı etmesi gerekir. Ancak Java/Swing'in bazı sürümleri beliren menülerini iletişim kutusu gibi tanıtıyor, bu yüzden Metacity bu hatalı Java uygulamalarının çalışabilmesi için iletişim kutusu konumlandırmasını geçersiz kılmak durumunda kalıyor. Bu seçenek Metacity'yi tümüyle doğru çalışacağı kipe geçirir, böylece eğer hatalı uygulamalar kullanmanız gerekmiyorsa biraz daha hoş bir arabirime kavuşmuş olursunuz. Ne yazık ki bu incelikli çözümler öntanımlı olarak açık olmak zorunda; çünkü gerçek dünya o kadar güzel değil. Bu incelikli çözümlerin bir kısmı belirtimlerin kendi eksikliklerine yöneliktir, yani bazen tam doğru kipteki bir hata yeni bir belirtim olmadan çözülemez."
 
 #: src/metacity.schemas.in.h:57
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "1. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:58
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "10. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:59
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "11. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:60
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "12. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "2. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "3. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "4. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "5. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "6. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "7. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "8. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "9. çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Üstteki çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Alttaki çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Soldaki çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Sağdaki çalışma alanına geç"
 
 #: src/metacity.schemas.in.h:73
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
+msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgstr "/apps/metacity/global_keybindings/run_command_N anahtarları bu komutlara karşılık gelen tuş atamalarını tanımlar. run_command_N'ye atanmış tuşa basınca command_N çalışır."
 
 #: src/metacity.schemas.in.h:74
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "/apps/metacity/keybinding_commands'taki ilgili numaraya sahip komutu çalıştırmak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:75
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Geçerli çalışma alanının üstündeki çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:76
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Geçerli çalışma alanının altındaki çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:77
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Geçerli çalışma alanının solundaki çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:78
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Geçerli çalışma alanının sağındaki çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:79
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "1. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:80
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "10. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:81
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "11. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:82
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "12. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:83
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "2. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:84
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "3. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:85
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "4. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:86
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "5. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:87
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "6. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:88
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "7. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:89
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "8. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:90
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "9. çalışma alanına geçmeyi sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:91
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to activate the window menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencere menüsünü etkinleştirmek üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:92
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to close a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi kapatmak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:93
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "\"Taşıma kipi\"ne girmek, yani pencereyi klavye ile taşıma başlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:94
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "\"Boyutlandırma kipi\"ne girmek, yani pencereyi klavye ile boyutlandırmaya başlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:95
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bütün sıradan pencereleri gizlemek ve masaüstüne odaklanmak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:96
-msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to maximize a window The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi ekranı kaplar boyuta getirmek üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:97
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to minimize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi simge boyutuna küçültmek üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:98
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace down. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi bir alttaki çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:99
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the left. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi bir soldaki çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:100
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the right. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi bir sağdaki çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:101
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace up. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi bir üstteki çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:102
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 1. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:103
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 10. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:104
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 11. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:105
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 12. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 2. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 3. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 4. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 5. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 6. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 7. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 8. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi 9. çalışma alanına taşımak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın panellerle masaüstü arasındaki ters yönde geçişini beliren pencere aracılığıyla sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın panellerle masaüstü arasındaki ters yönde geçişini beliren pencere olmadan sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between windows without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın pencereler arasındaki ters yönde geçişini beliren pencere olmadan taşımak üzere atanmış tuş bileşimi. (Geleneksel olarak &lt;Alt&gt;Escape) Bu tuş bileşimini kullanırken \"shift\" tuşu basılı tutulursa haraket yönü tersine döner. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between windows, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın pencereler arasındaki ters yönde geçişini beliren pencere aracılığıyla taşımak üzere atanmış tuş bileşimi. (Geleneksel olarak &lt;Alt&gt;Escape) Bu tuş bileşimini kullanırken \"shift\" tuşu basılı tutulursa haraket yönü tersine döner. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın panellerle masaüstü arasındaki geçişini beliren pencere aracılığıyla sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın panellerle masaüstü arasındaki geçişini beliren pencere olmadan sağlamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows without a popup window. (Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın pencereler arasındaki geçişini beliren pencere olmadan taşımak üzere atanmış tuş bileşimi. (Geleneksel olarak &lt;Alt&gt;Escape) Bu tuş bileşimini kullanırken \"shift\" tuşu basılı tutulursa haraket yönü tersine döner. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Odağın pencereler arasındaki geçişini beliren pencere aracılığıyla taşımak üzere atanmış tuş bileşimi. (Geleneksel olarak &lt;Alt&gt;Escape) Bu tuş bileşimini kullanırken \"shift\" tuşu basılı tutulursa haraket yönü tersine döner. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Tam ekran kipini açmak ya da kapamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle maximization. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencerenin ekranı kaplar boyutta oluşunu açıp kapamak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencereyi toplamak, topluysa yaymak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Pencerenin görünürlüğünün bütün çalışma alanları ile yalnızca geçerli çalışma alanı arasına geçişini yapmak üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to unmaximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ekranı kaplayan pencereyi eski durumuna getirmek üzere atanmış tuş bileşimi. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:127
 msgid "The name of a workspace."
-msgstr ""
+msgstr "Çalışma alanının adı."
 
 #: src/metacity.schemas.in.h:128
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
+msgid "The theme determines the appearance of window borders, titlebar, and so forth."
+msgstr "Tema; pencere kenarları, başlık çubuğu gibi öğelerin görünümünü belirler."
 
 #: src/metacity.schemas.in.h:129
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
+msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgstr "Pencereyi auto_raise ayarı açıksa yükseltmeden önceki gecikme. Bu gecikme saniyenin binde biri cinsinden verilir."
 
 #: src/metacity.schemas.in.h:130
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
+msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgstr "Pencere odaklama kipi, pencerelerin nasıl etkinleştirileceğini belirler. Üç olası değeri vardır; \"tıkla\" olursa pencereler tıklanarak odaklanır, \"sloppy\" olursa fare pencereye girince kendiliğinden odaklanır, \"fare\" olursa fare pencereye girince odaklanır ama fare çıktığında odaklama biter."
 
 #: src/metacity.schemas.in.h:131
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another window, it raises the window above other windows. If the window is already fully visible, it lowers the window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bu tuş bileşimi pencerenin diğer pencerelerin üstünde mi altında mı olacağını belirler. Eğer pencerenin üstünde bir başkası varsa, bu ilk pencereyi diğer tüm pencerelerin üstüne yükseltir. Eğer pencere bütünüyle görünür durumdaysa diğer tüm pencerelerin altına indirir. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:132
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "This keybinding lowers a window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bu tuş bileşimi pencereyi diğerlerinin altına indirir. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:133
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "This keybinding raises the window above other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bu tuş bileşimi pencereyi diğerlerinin üstüne çıkarır. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:134
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "This keybinding resizes a window to fill available horizontal space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bu tuş bileşimi pencerenin yatay boyutunu en geniş duruma getirir. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:135
-msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "This keybinding resizes a window to fill available vertical space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bu tuş bileşimi pencerenin dikey boyutunu en geniş duruma getirir. Biçimi şunun gibi olmalıdır: \"&lt;Control&gt;a\" ya da \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ayrıştırıcı büyük/küçük harf farkı gözetmez; ayrıca \"&lt;Ctl&gt;\" ya da \"&lt;Ctrl&gt;\" gibi kısaltmalara izin verir. Seçeneğe \"disabled\" özel dizgisini değer atarsanız, o eylem için tuş ataması yapılmamış olur."
 
 #: src/metacity.schemas.in.h:136
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shaded', which will shade/unshade the "
-"window, and 'toggle_maximized' which will maximize/unmaximize the window."
-msgstr ""
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shaded', which will shade/unshade the window, and 'toggle_maximized' which will maximize/unmaximize the window."
+msgstr "Bu seçenek başlık çubuğuna çift tıklamanın ne yapacağını belirler. Geçerli seçenekler: 'toggle_shaded' pencereyi toplar/yayar, 'toggle_maximized' ekranı kaplatır / simge durumuna getirir."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Tam ekran kipini aç/kapa"
 
 #: src/metacity.schemas.in.h:138
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Ekranı kaplama durumunu aç/kapa"
 
 #: src/metacity.schemas.in.h:139
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Toplanmış durumu aç/kapa"
 
 #: src/metacity.schemas.in.h:140
 msgid "Toggle window on all workspaces"
-msgstr ""
+msgstr "Pencerenin tüm çalışma alanlarında oluşunu aç/kapa"
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
-msgstr ""
+msgstr "Pencereyi önceki boyutuna getir"
 
 #: src/metacity.schemas.in.h:142
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "Pencere başlıklarında standart sistem yazıtipini kullan"
 
 #: src/metacity.schemas.in.h:143
 msgid "Window focus mode"
-msgstr ""
+msgstr "Pencere odaklama kipi"
 
 #: src/metacity.schemas.in.h:144
 msgid "Window title font"
-msgstr ""
+msgstr "Pencere başlığı yazıtipi"
 
-#: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
-#: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
-#: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
-#: src/prefs.c:618 src/prefs.c:635 src/prefs.c:651 src/prefs.c:667
+#: src/prefs.c:422
+#: src/prefs.c:438
+#: src/prefs.c:454
+#: src/prefs.c:470
+#: src/prefs.c:486
+#: src/prefs.c:506
+#: src/prefs.c:522
+#: src/prefs.c:538
+#: src/prefs.c:554
+#: src/prefs.c:570
+#: src/prefs.c:586
+#: src/prefs.c:602
+#: src/prefs.c:618
+#: src/prefs.c:635
+#: src/prefs.c:651
+#: src/prefs.c:667
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "\"%s\" GConf anahtarına geçersiz bir tür atanmış\n"
 
 #: src/prefs.c:712
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "Yapılandırma veritabanında bulunan \"%s\", fare düğme değiştiricisi olarak geçerli bir değer değil\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736
+#: src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "'%s' GConf anahtarına geçersiz bir değer atanmış\n"
 
 #: src/prefs.c:820
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "\"%s\" yazıtipi tanımlaması %s GConf anahtarından ayrıştırılamadı\n"
 
 #: src/prefs.c:1005
 #, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
+msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+msgstr "%2$s GConf anahtarında saklı %1$d değeri geçerli bir çalışma alanı sayısı değil; şu andaki üst sınır: %3$d\n"
 
-#: src/prefs.c:1060
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
+#: src/prefs.c:1065
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "Hatalı uygulamalara yönelik çözümler devre dışı. Bazı uygulamalar düzgün davranmayabilir.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%2$s GConf anahtarında saklı %1$d değeri 0 ile %3$d aralığının dışında\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Çalışma alanı sayısının %d yapılmasında hata: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1460
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgstr "Yapılandırma veritabanında bulunan \"%s\", \"%s\" tuş ataması olarak geçerli bir değer değil\n"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1750
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "%d çalışma alanının adının \"%s\" yapılmasında hata: %s\n"
 
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "'%2$s' X oturumundaki %1$d. ekran geçersiz\n"
 
 #: src/screen.c:408
 #, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
+msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgstr "\"%2$s\" X oturumundaki %1$d. ekranın bir pencere yöneticisi zaten var; geçerli pencere yöneticisinin yerine bir başkasını koymak için --replace seçeneğini kullanabilirsiniz.\n"
 
 #: src/screen.c:449
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "\"%2$s\" X oturumundaki %1$d. ekranının pencere yöneticisi seçimi öğrenilemedi\n"
 
 #: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "\"%2$s\" X oturumundaki %1$d. ekranın bir pencere yöneticisi zaten var\n"
 
 #: src/screen.c:673
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "\"%2$s\" X oturumundaki %1$d. ekran bırakılamadı\"\n"
 
 #: src/session.c:274
 #, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
+msgid "Failed to a open connection to a session manager, so window positions will not be saved: %s\n"
+msgstr "Oturum yöneticisiyle bağlantı kurulamadığından pencere konumları kaydedilemeyecek: %s\n"
 
-#: src/session.c:881 src/session.c:888
+#: src/session.c:881
+#: src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "'%s' dizini oluşturulamadı: %s\n"
 
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "'%s' oturum dosyası yazmak için açılamadı: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "'%s' oturum dosyasına yazmada hata: %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "'%s' oturum dosyasını kapamada hata: %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Kaydedilmiş %s oturum dosyası okunamadı: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Kaydedilmiş %s oturum dosyası ayrıştırılamadı\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "Geçerli bir oturum kimliği bulunmasına karşın <metacity_session> özniteliğiyle karşılaşıldı"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "<metacity_session> öğesinde bilinmeyen öznitelik %s"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr ""
+msgstr "iç içe <window> etiketleri (tag)"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1309
+#: src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "<window> öğesinde bilinmeyen öznitelik %s"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "<maximized> öğesinde bilinmeyen öznitelik %s"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "<geometry> öğesinde bilinmeyen öznitelik %s"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Bilinmeyen öğe %s"
 
 #: src/session.c:1921
 #, c-format
-msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
+msgstr "Oturum yönetimini desteklemeyen uygulamalar hakkında uyarmak için metacity-dialog'u çalıştırmada hata: %s\n"
 
-#: src/theme-parser.c:224 src/theme-parser.c:242
+#: src/theme-parser.c:224
+#: src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Satır %d karakter %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "\"%s\" özniteliği aynı <%s> öğesinde iki kez kullanılmış"
 
-#: src/theme-parser.c:414 src/theme-parser.c:439
+#: src/theme-parser.c:414
+#: src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "\"%s\" özniteliği bu bağlamda <%s> öğesinde geçersiz"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "%ld tamsayısı pozitif olmalı"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "%ld tamsayısı fazla büyük, şu anda üst sınır %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: src/theme-parser.c:521
+#: src/theme-parser.c:602
+#: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "\"%s\" bir gerçel sayı olarak ayrıştırılamadı"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Bool değerleri ancak \"true\" (doğru/açık) ya da \"false\" (yanlış/kapalı) değerlerini alabilir; \"%s\" olmaz"
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Açı 0.0 ile 360.0 arasında olmalı, %g verilmiş\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Alfa 0.0 (görünmez) ile 1.0 (bütünüyle donuk/opak) arasında olmalıydı ama %g verilmiş\n"
 
 #: src/theme-parser.c:684
 #, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
+msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr "Geçersiz öğe ölçüsü \"%s\" (şunlardan biri olmalıdır: xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
+#: src/theme-parser.c:729
+#: src/theme-parser.c:737
+#: src/theme-parser.c:2936
+#: src/theme-parser.c:3025
+#: src/theme-parser.c:3032
+#: src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde hiç \"%s\" özniteliği yok"
 
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#: src/theme-parser.c:807
+#: src/theme-parser.c:897
+#: src/theme-parser.c:935
+#: src/theme-parser.c:1012
+#: src/theme-parser.c:1062
+#: src/theme-parser.c:1070
+#: src/theme-parser.c:1126
+#: src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde hiç \"%s\" özniteliği yok"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
+#: src/theme-parser.c:837
+#: src/theme-parser.c:905
+#: src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> adı \"%s\" ikinci kez kullanılmış"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: src/theme-parser.c:849
+#: src/theme-parser.c:955
+#: src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> atası \"%s\" ikinci kez kullanılmış"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> geometrisi \"%s\" ikinci kez kullanılmış"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s>, ya bir geometri ya da geometrisi olan bir üst öğe (ata) belirtmeli"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinde bilinmeyen type \"%1$s\""
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinde bilinmeyen style_set \"%1$s\""
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "\"%s\" pencere türünün önceden atanmış bir biçem kümesi var"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Menü simgesi için bilinmeyen işlev \"%s\""
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Menü simgesi için bilinmeyen durum \"%s\""
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Temada [%s işlevi, %s durumu] için zaten bir menü simgesi var"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#: src/theme-parser.c:1177
+#: src/theme-parser.c:3244
+#: src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "\"%s\" adında hiç <draw_ops> tanımlanmamış"
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
-#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
+#: src/theme-parser.c:1192
+#: src/theme-parser.c:1256
+#: src/theme-parser.c:1545
+#: src/theme-parser.c:3124
+#: src/theme-parser.c:3178
+#: src/theme-parser.c:3338
+#: src/theme-parser.c:3515
+#: src/theme-parser.c:3553
+#: src/theme-parser.c:3591
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "<%s> öğesi, <%s> "
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#: src/theme-parser.c:1282
+#: src/theme-parser.c:1369
+#: src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"name\" (ad) özniteliği yok"
 
-#: src/theme-parser.c:1289 src/theme-parser.c:1376
+#: src/theme-parser.c:1289
+#: src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"value\" (değer) özniteliği yok"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+#: src/theme-parser.c:1320
+#: src/theme-parser.c:1334
+#: src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Düğmelerin hem button_width/button_height (en-boy) değerleri hem de en-boy oranı verilemez"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" uzaklığı bilinmiyor"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" en-boy oranı bilinmiyor"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesine \"top\" (üst) özniteliği verilmemiş"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesine \"bottom\" (alt) özniteliği verilmemiş"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesine \"left\" (sol) özniteliği verilmemiş"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesine \"right\" (sağ) özniteliği verilmemiş"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "\"%s\" pencere kenarı bilinmiyor"
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#: src/theme-parser.c:1655
+#: src/theme-parser.c:1765
+#: src/theme-parser.c:1868
+#: src/theme-parser.c:2055
+#: src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"color\" (renk) özniteliği yok"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"x1\" özniteliği yok"
 
-#: src/theme-parser.c:1669 src/theme-parser.c:2714
+#: src/theme-parser.c:1669
+#: src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"y1\" özniteliği yok"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"x2\" özniteliği yok"
 
-#: src/theme-parser.c:1683 src/theme-parser.c:2721
+#: src/theme-parser.c:1683
+#: src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"y2\" özniteliği yok"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
-#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
-#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#: src/theme-parser.c:1772
+#: src/theme-parser.c:1875
+#: src/theme-parser.c:1981
+#: src/theme-parser.c:2062
+#: src/theme-parser.c:2168
+#: src/theme-parser.c:2266
+#: src/theme-parser.c:2483
+#: src/theme-parser.c:2609
+#: src/theme-parser.c:2707
+#: src/theme-parser.c:2781
+#: src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"x\" özniteliği yok"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
-#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
+#: src/theme-parser.c:1779
+#: src/theme-parser.c:1882
+#: src/theme-parser.c:1988
+#: src/theme-parser.c:2069
+#: src/theme-parser.c:2175
+#: src/theme-parser.c:2273
+#: src/theme-parser.c:2490
+#: src/theme-parser.c:2616
+#: src/theme-parser.c:2788
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"y\" özniteliği yok"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
-#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#: src/theme-parser.c:1786
+#: src/theme-parser.c:1889
+#: src/theme-parser.c:1995
+#: src/theme-parser.c:2076
+#: src/theme-parser.c:2182
+#: src/theme-parser.c:2280
+#: src/theme-parser.c:2497
+#: src/theme-parser.c:2623
+#: src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"width\" (en) özniteliği yok"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
-#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#: src/theme-parser.c:1793
+#: src/theme-parser.c:1896
+#: src/theme-parser.c:2002
+#: src/theme-parser.c:2083
+#: src/theme-parser.c:2189
+#: src/theme-parser.c:2287
+#: src/theme-parser.c:2504
+#: src/theme-parser.c:2630
+#: src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"height\" (boy) özniteliği yok"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"start_angle\" (açı başı) özniteliği yok"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"extent_angle\" (açı sonu) özniteliği yok"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"alpha\" özniteliği yok"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"type\" (tür) özniteliği yok"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Renk geçişi (gradient) türü olarak verilen \"%s\" değeri anlaşılmadı"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"filename\" (dosya adı) özniteliği yok"
 
-#: src/theme-parser.c:2319 src/theme-parser.c:2827
+#: src/theme-parser.c:2319
+#: src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinin doldurma türü \"%1$s\" anlaşılamadı"
 
-#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#: src/theme-parser.c:2462
+#: src/theme-parser.c:2595
+#: src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"state\" (durum) özniteliği yok"
 
-#: src/theme-parser.c:2469 src/theme-parser.c:2602
+#: src/theme-parser.c:2469
+#: src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"shadow\" (gölge) özniteliği yok"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> öğesinde \"arrow\" (ok) özniteliği yok"
 
-#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#: src/theme-parser.c:2529
+#: src/theme-parser.c:2651
+#: src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinin durumu \"%1$s\" anlaşılamadı"
 
-#: src/theme-parser.c:2539 src/theme-parser.c:2661
+#: src/theme-parser.c:2539
+#: src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinin gölgesi \"%1$s\" anlaşılamadı"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinin oku \"%1$s\" anlaşılamadı"
 
-#: src/theme-parser.c:2962 src/theme-parser.c:3078
+#: src/theme-parser.c:2962
+#: src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "\"%s\" adında hiç <draw_ops> tanımlanmamış"
 
-#: src/theme-parser.c:2974 src/theme-parser.c:3090
+#: src/theme-parser.c:2974
+#: src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Burada \"%s\" draw_ops'unu içermek çevrimsel gönderime yol açar"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"value\" (değer) özniteliği yok"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"position\" (konum) özniteliği yok"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Çerçeve parçası için bilinmeyen konum \"%s\""
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Çerçeve biçeminin %s konumunda zaten bir parça var"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"function\" (işlev) özniteliği yok"
 
-#: src/theme-parser.c:3280 src/theme-parser.c:3384
+#: src/theme-parser.c:3280
+#: src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"state\" (durum) özniteliği yok"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Düğme için geçersiz işlev \"%s\""
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Düğme için geçersiz durum \"%s\""
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Çerçeve biçeminde [%s işlevi, %s durumu] için zaten bir düğme var"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"focus\" (odak) özniteliği yok"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"style\" (biçem) özniteliği yok"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\", odak özniteliği için geçerli bir değer değil"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\", durum özniteliği için geçerli bir değer değil"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "\"%s\" adlı bir biçem tanımlanmamış"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "<%s> öğesinde \"resize\" (yeniden boyutlandırma) özniteliği yok"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\", yeniden boyutlandırma özniteliği için geçerli bir değer değil"
 
 #: src/theme-parser.c:3450
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "<%s> öğesinin ekranı kaplar / toplanmış durumlarında \"resize\" özniteliği bulunmamalı"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "[%s durumu, %s yeniden boyutlandırma, %s odak] için biçem zaten belirtilmiş"
 
-#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#: src/theme-parser.c:3475
+#: src/theme-parser.c:3486
+#: src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "[%s durumu, odak %s] için biçem zaten belirtilmiş"
 
 #: src/theme-parser.c:3536
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Bir <piece> öğesi içinde iki draw_ops olamaz (tema, ya bir draw_ops özniteliğiyle bir <draw_ops> öğesi, ya da iki öğe belirtmiş)"
 
 #: src/theme-parser.c:3574
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Bir <button> öğesi içinde iki draw_ops olamaz (tema, ya bir draw_ops özniteliğiyle bir <draw_ops> öğesi, ya da iki öğe belirtmiş)"
 
 #: src/theme-parser.c:3612
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Bir <menu_icon> öğesi içinde iki draw_ops olamaz (tema, ya bir draw_ops özniteliğiyle bir <draw_ops> öğesi, ya da iki öğe belirtmiş)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Temanın en dış öğesi <%s> değil <metacity_theme> olmalıdır"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "name/author/date/description öğelerinin içinde <%s> öğesi bulunmamalıdır"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "<constant> öğesinin içinde <%s> öğesi bulunmamalıdır"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "distance/border/aspect_ratio öğelerinin içinde <%s> öğesi bulunmamalıdır"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "draw operation öğesinin içinde <%s> öğesi bulunmamalıdır"
 
-#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#: src/theme-parser.c:3728
+#: src/theme-parser.c:3758
+#: src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "<%2$s> öğesinin içinde <%1$s> öğesi bulunmamalıdır"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Çerçeve parçası için hiç draw_ops sağlanmamış"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Düğme için hiç draw_ops sağlanmamış"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Menü simgesi için hiç draw_ops sağlanmamış"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "<%s> öğesinin içinde metin bulunmamalıdır"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "bu temada <name> iki kez belirtilmiş"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "bu temada <author> iki kez belirtilmiş"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "bu temada <copyright> iki kez belirtilmiş"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "bu temada <date> iki kez belirtilmiş"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "bu temada <description> iki kez belirtilmiş"
 
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Tema, %s dosyasından okunamadı: %s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Tema dosyası %s, kök <metacity_theme> öğesi içermiyor"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "üst"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "alt"
 
 #: src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "sol"
 
 #: src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "sağ"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "çerçeve geometrisi \"%s\" boyutunu tanımlamıyor"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "çerçeve geometrisi \"%s\" boyutunu \"%s\" pencere kenarı için tanımlamıyor"
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "%g kabul edilebilir bir düğme en-boy oranı değil"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Çerçeve geometrisi düğmelerin boyutunu tanımlamıyor"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Renk geçişlerinde (gradient) en az iki renk olmalı"
 
 #: src/theme.c:975
 #, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "GTK renk belirtiminde köşeli ayraçlar arasında durum verilmelidir; örneğin, gtk:fg[NORMAL] belirtiminde NORMAL, durumu gösterir; \"%s\" ayrıştırılamadı"
 
 #: src/theme.c:989
 #, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "GTK renk belirtiminde durumdan sonra sağ köşeli ayraç gelmelidir; örneğin, gtk:fg[NORMAL] belirtiminde NORMAL, durumu gösterir; \"%s\" ayrıştırılamadı"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Renk belirtimindeki \"%s\" durumu anlaşılamadı"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Renk belirtimindeki \"%s\" renk bileşeni anlaşılamadı"
 
 #: src/theme.c:1043
 #, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "Renk karışımının (blend) doğru biçimi \"blend/artalanrengi/önalanrengi/alfa\"dır; \"%s\" bu biçime uymuyor"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Renk karışımındaki \"%s\" alfa değeri ayrıştırılamadı"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Renk karışımının alfa değeri \"%s\", 0.0 ile 1.0 arasında değil"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Gölgelendirmenin (shade) doğru biçimi \"shade/temelrenk/katsayı\"dır; \"%s\" bu biçime uymuyor"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Gölgeli (shaded) rengin gölge katsayısı olan \"%s\" ayrıştırılamadı"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Gölgeli (shaded) rengin gölge katsayısı olan \"%s\", negatif (olmamalıydı)"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "\"%s\" rengi ayrıştırılamadı"
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Konaç deyimi, izin verilmeyen '%s' karakterini içeriyor"
 
 #: src/theme.c:1450
 #, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgstr "Konaç deyimindeki '%s' gerçel sayısı ayrıştırılamıyor"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Konaç deyimi, ayrıştırılamayan '%s' tamsayısını içeriyor"
 
 #: src/theme.c:1531
 #, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgstr "Konaç deyimi, şu metnin başında bilinmeyen bir işleç içeriyor: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Konaç deyimi boştu ya da anlaşılamadı"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1727
+#: src/theme.c:1737
+#: src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Konaç deyimi sıfıra bölümle sonuçlanıyor"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Konaç deyimi, bir gerçel sayı üzerinde mod (kalan bulma) işlecini kullanmaya çalıştı"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Konaç deyimi işleneni beklenen \"%s\" işlecini içeriyor"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Konaç deyimi işleci beklenen bir işlenen içeriyor"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Konaç deyimi bir işlenen yerine işleçle bitiyor"
 
 #: src/theme.c:1863
 #, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "Konaç deyimi, birbirlerinin izleyen ve aralarında işlenen olmayan \"%2$c\" ve \"%1$c\" işleçlerini içeriyor"
 
 #: src/theme.c:1982
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
+msgid "Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"
+msgstr "Konaç deyimi ayrıştırıcısı arabelleği taştı; bu aslında Metacity'nin bir yanlışı, ancak böylesine dev bir deyime gereksinim duyduğunuzdan emin misiniz?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Konaç deyimi, ilgili bir sol ayracı olmayan bir sağ ayraç içeriyor"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Konaç deyimi bilinmeyen bir değişken ya da sabit olan \"%s\" içeriyor"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Konaç deyimi, ilgili bir sağ ayracı olmayan bir sol ayraç içeriyor"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Konaç deyimi, göründüğü kadarıyla ne işleç ne de işlenen içeriyor"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2386
+#: src/theme.c:2408
+#: src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Temanın içerdiği \"%s\" deyimi hatalı sonuçlandı: %s\n"
 
 #: src/theme.c:3912
 #, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "Bu çerçeve biçeminde <button function=\"%s\" state=\"%s\" draw_ops=\"her neyse\"/> belirtilmek zorunda"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4362
+#: src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Eksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"her neyse\"/>"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "\"%s\" teması yüklenemedi: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4591
+#: src/theme.c:4598
+#: src/theme.c:4605
+#: src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "\"%2$s\" temasında hiç <%1$s> verilmemiş"
 
 #: src/theme.c:4629
 #, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "\"%2$s\" temasında \"%1$s\" pencere türüne çerçeve biçemi atanmamış, bir <window type=\"%3$s\" style_set=\"her neyse\"/> öğesi ekleyin"
 
 #: src/theme.c:4651
 #, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
+msgid "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"
+msgstr "Bu temada <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"her neyse\"/> belirtilmek zorunda"
 
-#: src/theme.c:5038 src/theme.c:5100
+#: src/theme.c:5038
+#: src/theme.c:5100
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Kullanıcı tanımlı sabitler büyük harfle başlamalıdır; \"%s\" buna uymuyor"
 
-#: src/theme.c:5046 src/theme.c:5108
+#: src/theme.c:5046
+#: src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "\"%s\" değişmezi zaten tanımlanmış"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Pencerelere nasıl odaklanacağını seçin"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Pencere Odaklanması"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "_Tıklayarak odakla"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Odaklanma davranışı:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Pencere Odaklanma Seçenekleri"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Göstererek odakla"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "Odaklanan pencereyi _yükselt"
 
 #: src/util.c:93
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "X window ekranı açılamadı: '%s'\n"
+msgstr "Hata ayıklama günlüğü açılamadı: %s\n"
 
 #: src/util.c:103
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "X window ekranı açılamadı: '%s'\n"
+msgstr "Günlük kütüğü %s, fdopen() ile açılamadı: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
-
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Günlük kütüğü %s açıldı\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Pencere yöneticisi: "
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Pencere yöneticisinde hata: "
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Pencere yöneticisi uyarısı: "
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Pencere yöneticisi hatası: "
 
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Uygulama _NET_WM_PID'e geçersiz %ld değerini atadı\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4897
 #, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
+msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgstr "%s penceresi SM_CLIENT_ID'yi ICCCM tarafından belirtilen WM_CLIENT_LEADER'a değil kendine atadı.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2272,27 +1948,33 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5471
+#, c-format
+msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "%s penceresi bir yandan yeniden boyutlandırılamaz olduğunu gösteren bir MWM ipucu verirken mantıksız bir biçimde en küçük (%d x %d) ve en büyük (%d x %d) boyut sınırlarını da atıyor.\n"
+
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"0x%lx penceresinin %s özelliği beklenen\n"
+"%s türü ve %d biçimi yerine %s türü, %d biçimi,\n"
+"%d n_items'e sahip.\n"
+"Bu büyük olasılıkla uygulamanın bir hatası, pencere yöneticisinin değil.\n"
+"Pencere başlığı=\"%s\", sınıfı=\"%s\", adı=\"%s\"\n"
 
-#: src/xprops.c:124
-#, c-format
-msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
-msgstr ""
-
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "0x%2$lx penceresinin %1$s özelliği geçersiz UTF-8 içeriyor\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "0x%2$lx penceresinin %1$s özelliği listedeki %3$d. öğe için geçersiz UTF-8 içeriyor\n"
+
