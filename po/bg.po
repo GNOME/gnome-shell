@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-19 14:57+0200\n"
-"PO-Revision-Date: 2002-12-19 11:41+0200\n"
+"POT-Creation-Date: 2003-01-15 02:18+0200\n"
+"PO-Revision-Date: 2003-01-14 00:17+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,17 +17,17 @@ msgstr ""
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "Употреба: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Метасити е компилиран без поддръжка на подробен режим\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Не можах да анализирам \"%s\" като число"
+msgstr "Не можах да анализирам \"%s\" като цяло число"
 
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
@@ -50,7 +50,7 @@ msgstr "Грешка при четене от процеса за изобраз
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Грешка при стартиране на диалога на метасити, който пита дали да се убие "
+"Грешка при стартиране на диалога на Метасити, който пита дали да се убие "
 "приложение: %s\n"
 
 #: src/delete.c:429
@@ -58,10 +58,10 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Не успях да получа името на хоста: %s\n"
 
-#: src/display.c:277
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Не успх да отворя дисплея на X Window '%s'\n"
+msgstr "Не успях да отворя дисплея на X Window \"%s\"\n"
 
 #: src/errors.c:231
 #, c-format
@@ -70,32 +70,32 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"Загубих връзка с дисплея '%s';\n"
+"Загубих връзка с дисплея \"%s\".\n"
 "Най-вероятно X сървърът е бил спрян или сте \n"
 "убили/унищожили мениджъра на прозорци.\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Фатална вх./изх. грешка %d (%s) на дисплей '%s'.\n"
+msgstr "Фатална вх./изх. грешка %d (%s) на дисплей \"%s\".\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Затвори прозореца"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Меню за прозорците"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Минимизирай прозореца"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Максимизирай прозореца"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Демаксимизирай прозореца"
 
@@ -110,7 +110,7 @@ msgstr "Някоя друга програма използва бързия к�
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Грешка при стартиране на диалога на метасити, за отпечатване на грешка за "
+"Грешка при стартиране на диалога на Метасити, за отпечатване на грешка за "
 "команда: %s\n"
 
 #: src/keybindings.c:2237
@@ -197,7 +197,7 @@ msgstr "Постави на _всички работни места"
 msgid "Only on _This Workspace"
 msgstr "_Само на това работно място"
 
-#: src/menu.c:152 src/prefs.c:1750
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
 msgstr "Работно място %d"
@@ -358,11 +358,10 @@ msgstr "Метасити"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(Не е осъществено) Навигацията работи в рамките на приложенията, а не на "
-"прозорците"
+"(Все още не е осъществено) Навигацията работи в рамките на приложенията, а "
+"не на прозорците"
 
 #: src/metacity.schemas.in.h:2
-#, fuzzy
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -376,7 +375,7 @@ msgstr ""
 "Тази настройка е неактивна, ако настройката titlebar_uses_desktop_font "
 "option е включена. По подразбиране titlebar_font не е зададена, което "
 "принуждава Метасити да използва шрифта за работното място, дори ако "
-"titlebar_uses_desktop_font не е зададено."
+"titlebar_uses_desktop_font не е зададено като истина."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -403,7 +402,7 @@ msgstr ""
 "\"menu:minimize,maximize,close\". С \";\" се разделят левия от десния ъгъл "
 "на прозореца, а със \",\" - имената на бутоните. Не са позволени повторения "
 "на бутоните. Непознатите имена се игнорират, така че в бъдещи версии на "
-"метасити  да могат да се добавят нови бутони без да се пречи на старите "
+"Метасити  да могат да се добавят нови бутони без да се пречи на старите "
 "версии."
 
 #: src/metacity.schemas.in.h:7
@@ -417,10 +416,10 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Щракането на заглавната лената на прозорец, когато този модифициращ клавиш е "
+"Щракането на заглавната лента на прозорец, когато този модифициращ клавиш е "
 "натиснат, премества прозореца (ляв бутон на мишката), оразмерява прозореца "
-"(среден бутон) или показва менщто за прозорци (десен бутон). Модификаторът е "
-"във вида \"&lt;Alt&gt;\" или \"&lt;Super&gt;\" например."
+"(среден бутон) или показва менюто за прозорци (десен бутон). Модификаторът е "
+"от вида \"&lt;Alt&gt;\" или \"&lt;Super&gt;\" например."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -428,58 +427,45 @@ msgstr "Затвори прозорец"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "Команди, които да се включат при натискането на бърз клавиш"
+msgstr "Команди, които да се изпълнят при натискането на бърз клавиш"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
 msgstr "Текуща тема"
 
 #: src/metacity.schemas.in.h:12
-#, fuzzy
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Забавяне в милисекунди при автоматично издигане"
+msgstr "Забавяне в милисекунди за настройката за автоматично издигане"
 
 #: src/metacity.schemas.in.h:13
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-
-#: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Изключи неправилното поведение изисквано от стари приложения или такива с "
 "грешки"
 
-#: src/metacity.schemas.in.h:15
-msgid "Enable Visual Bell"
-msgstr ""
-
-#: src/metacity.schemas.in.h:16
+#: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
 msgstr "Скрий всички прозорци и фокусирай работното място"
 
-#: src/metacity.schemas.in.h:17
-#, fuzzy
+#: src/metacity.schemas.in.h:15
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"Ако е зададено и фокусът е или \"sloppy\", или \"mouse\", фокусираният "
-"прозорец ще се издигне автоматично след забавяне, което е указано в ключа "
-"auto_raise_delay."
+"Ако е зададено като истина и фокусът е или \"sloppy\", или \"mouse\", "
+"фокусираният прозорец ще се издигне автоматично след забавяне (указано в "
+"ключа auto_raise_delay)."
 
-#: src/metacity.schemas.in.h:18
-#, fuzzy
+#: src/metacity.schemas.in.h:16
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Ако е зададено, нстройката за titlebar_font се игнорира, за заглавията на "
-"прзорците се използва стандартния шрифт за приложенията."
+"Ако е зададено като истина, настройката за titlebar_font се игнорира. За "
+"заглавията на прозорците се използва стандартният шрифт за приложенията."
 
-#: src/metacity.schemas.in.h:19
+#: src/metacity.schemas.in.h:17
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -491,169 +477,161 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Ако е зададено Метасити работи на базата на приложения, а не на прозорци. "
+"Ако е истина, Метасити работи на базата на приложения, а не на прозорци. "
 "Идеята е малко абстрактна, но като цяло подходът базиран на приложения е по-"
-"близък до Мак отколкото до Уиндоус. Когато фокусирате прозорец при подход "
-"базиран на приложения, всички прозорци на приложението ще се издигнат. При "
-"този подход щракванията за фокусиране не се предават на прозорците на други "
-"приложения. Съществуването на тази настройка е под въпрос, но е по-добре "
-"отколкото да има настройки на всички детайли на подходите на базата на "
-"прозорци и на базата на приложения - напр. дали да се предават щракванията. "
-"На този етап подходът на базата на приложения още се е осъществен изцяло."
+"близък до Макинтош отколкото до Уиндоус. Когато фокусирате прозорец при "
+"подход базиран на приложения, всички прозорци на приложението ще се "
+"издигнат. При този подход щракванията за фокусиране не се предават на "
+"прозорците на други приложения. Съществуването на тази настройка е под "
+"въпрос, но е по-добре отколкото да има настройки на всички детайли на "
+"подходите на базата на прозорци и на базата на приложения - напр. дали да се "
+"предават щракванията. На този етап подходът на базата на приложения още не е "
+"осъществен изцяло."
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:18
 msgid "Lower window below other windows"
 msgstr "Понижава прозореца под другите прозорци"
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:19
 msgid "Maximize a window"
 msgstr "Максимизира прозорец"
 
-#: src/metacity.schemas.in.h:22
-#, fuzzy
+#: src/metacity.schemas.in.h:20
 msgid "Maximize window horizontally"
-msgstr "Максимизира прозорец"
+msgstr "Максимизира прозорец хоризонтално"
 
-#: src/metacity.schemas.in.h:23
-#, fuzzy
+#: src/metacity.schemas.in.h:21
 msgid "Maximize window vertically"
-msgstr "Максимизира прозорец"
+msgstr "Максимизира прозорец вертикално"
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
 msgstr "Минимизира прозорец"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
 msgstr ""
-"Модификатор, който да се ползва за променените действия с щраквания по "
+"Модификатор, който да се ползва за модифицираните действия с щраквания по "
 "прозорците"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:24
 msgid "Move a window"
 msgstr "Премества прозорец"
 
-#: src/metacity.schemas.in.h:27
-#, fuzzy
+#: src/metacity.schemas.in.h:25
 msgid "Move backward between panels and the desktop immediately"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място в обратен ред"
 
-#: src/metacity.schemas.in.h:28
-#, fuzzy
+#: src/metacity.schemas.in.h:26
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място в обратен ред, "
 "като се използва изскачащ прозорец"
 
-#: src/metacity.schemas.in.h:29
-#, fuzzy
+#: src/metacity.schemas.in.h:27
 msgid "Move backwards between windows immediately"
 msgstr "Премества незабавно фокуса между прозорците в обратен ред"
 
-#: src/metacity.schemas.in.h:30
-#, fuzzy
+#: src/metacity.schemas.in.h:28
 msgid "Move between panels and the desktop immediately"
 msgstr "Премества незабавно фокуса между панелите и работното място"
 
-#: src/metacity.schemas.in.h:31
-#, fuzzy
+#: src/metacity.schemas.in.h:29
 msgid "Move between panels and the desktop with popup"
 msgstr ""
 "Премества незабавно фокуса между панелите и работното място, като се "
 "използва изскачащ прозорец"
 
-#: src/metacity.schemas.in.h:32
-#, fuzzy
+#: src/metacity.schemas.in.h:30
 msgid "Move between windows immediately"
 msgstr "Премества незабавно фокуса между прозорците "
 
-#: src/metacity.schemas.in.h:33
-#, fuzzy
+#: src/metacity.schemas.in.h:31
 msgid "Move between windows with popup"
 msgstr ""
 "Премества незабавно фокуса между прозорците, като се използва изскачащ "
 "прозорец"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Премества незабавно фокуса между прозорците в обратен ред, като се използва "
 "изскачащ прозорец"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:33
 msgid "Move window one workspace down"
 msgstr "Премества прозореца едно работно място надолу"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:34
 msgid "Move window one workspace to the left"
 msgstr "Премества прозореца едно работно място наляво"
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:35
 msgid "Move window one workspace to the right"
 msgstr "Премества прозореца едно работно място надясно"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:36
 msgid "Move window one workspace up"
 msgstr "Премества прозореца едно работно място нагоре"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:37
 msgid "Move window to workspace 1"
 msgstr "Премества прозореца на работно място 1"
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:38
 msgid "Move window to workspace 10"
 msgstr "Премества прозореца на работно място 10"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 11"
 msgstr "Премества прозореца на работно място 11"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 12"
 msgstr "Премества прозореца на работно място 12"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 2"
 msgstr "Премества прозореца на работно място 2"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 3"
 msgstr "Премества прозореца на работно място 3"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 4"
 msgstr "Премества прозореца на работно място 4"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 5"
 msgstr "Премества прозореца на работно място 5"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 6"
 msgstr "Премества прозореца на работно място 6"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 7"
 msgstr "Премества прозореца на работно място 7"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 8"
 msgstr "Премества прозореца на работно място 8"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 9"
 msgstr "Премества прозореца на работно място 9"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:49
 msgid "Name of workspace"
-msgstr "Име на работното място"
+msgstr "Име на работно място"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:50
 msgid "Number of workspaces"
 msgstr "Брой работни места"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:51
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -663,24 +641,23 @@ msgstr ""
 "предотврати случайното разрушаване на средата, ако поискате 34 милиона "
 "работни места)."
 
-#: src/metacity.schemas.in.h:54
-#, fuzzy
+#: src/metacity.schemas.in.h:52
 msgid "Raise obscured window, otherwise lower"
-msgstr "Издига прозореца, ако е под друг, иначе го понижава"
+msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:53
 msgid "Raise window above other windows"
 msgstr "Издига прозореца над другите"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:54
 msgid "Resize a window"
 msgstr "Оразмерява прозорец"
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:55
 msgid "Run a defined command"
 msgstr "Изпълнява дефинирана команда"
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:56
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -705,100 +682,86 @@ msgstr ""
 "менютата от развалените Java приложения да работят. Има още подобни примери. "
 "Тази настройка кара Метасити да работи в изцяло правилен режим, което дава "
 "малко по-добър потребителски интерфейс, ако няма да стартирате развалени "
-"приложения. За жалост неправилното поведение е включено по подраздиране. "
+"приложения. За жалост неправилното поведение е включено по подразбиране. "
 "Светът е гаден. Понякога заобикалянето на правилното поведение е "
 "предизвикано от ограниченията в самите спецификации, така че грешките в този "
 "режим, не могат да се оправят без изменение на стандарта."
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:57
 msgid "Switch to workspace 1"
-msgstr "Превключи към работно място 1"
+msgstr "Превключва към работно място 1"
+
+#: src/metacity.schemas.in.h:58
+msgid "Switch to workspace 10"
+msgstr "Превключва към работно място 10"
+
+#: src/metacity.schemas.in.h:59
+msgid "Switch to workspace 11"
+msgstr "Превключва към работно място 11"
 
 #: src/metacity.schemas.in.h:60
-msgid "Switch to workspace 10"
-msgstr "Превключи към работно място 10"
+msgid "Switch to workspace 12"
+msgstr "Превключва към работно място 12"
 
 #: src/metacity.schemas.in.h:61
-msgid "Switch to workspace 11"
-msgstr "Превключи към работно място 11"
+msgid "Switch to workspace 2"
+msgstr "Превключва към работно място 2"
 
 #: src/metacity.schemas.in.h:62
-msgid "Switch to workspace 12"
-msgstr "Превключи към работно място 12"
+msgid "Switch to workspace 3"
+msgstr "Превключва към работно място 3"
 
 #: src/metacity.schemas.in.h:63
-msgid "Switch to workspace 2"
-msgstr "Превключи към работно място 2"
+msgid "Switch to workspace 4"
+msgstr "Превключва към работно място 4"
 
 #: src/metacity.schemas.in.h:64
-msgid "Switch to workspace 3"
-msgstr "Превключи към работно място 3"
+msgid "Switch to workspace 5"
+msgstr "Превключва към работно място 5"
 
 #: src/metacity.schemas.in.h:65
-msgid "Switch to workspace 4"
-msgstr "Превключи към работно място 4"
+msgid "Switch to workspace 6"
+msgstr "Превключва към работно място 6"
 
 #: src/metacity.schemas.in.h:66
-msgid "Switch to workspace 5"
-msgstr "Превключи към работно място 5"
+msgid "Switch to workspace 7"
+msgstr "Превключва към работно място 7"
 
 #: src/metacity.schemas.in.h:67
-msgid "Switch to workspace 6"
-msgstr "Превключи към работно място 6"
+msgid "Switch to workspace 8"
+msgstr "Превключва към работно място 8"
 
 #: src/metacity.schemas.in.h:68
-msgid "Switch to workspace 7"
-msgstr "Превключи към работно място 7"
+msgid "Switch to workspace 9"
+msgstr "Превключва към работно място 9"
 
 #: src/metacity.schemas.in.h:69
-msgid "Switch to workspace 8"
-msgstr "Превключи към работно място 8"
+msgid "Switch to workspace above this one"
+msgstr "Превключва към работното място отгоре"
 
 #: src/metacity.schemas.in.h:70
-msgid "Switch to workspace 9"
-msgstr "Превключи към работно място 9"
+msgid "Switch to workspace below this one"
+msgstr "Превключва към работното място отдолу"
 
 #: src/metacity.schemas.in.h:71
-#, fuzzy
-msgid "Switch to workspace above this one"
-msgstr "Превключи към работното място над текущото"
+msgid "Switch to workspace on the left"
+msgstr "Превключва към работното място вляво"
 
 #: src/metacity.schemas.in.h:72
-#, fuzzy
-msgid "Switch to workspace below this one"
-msgstr "Превключи към работното място под текущото"
+msgid "Switch to workspace on the right"
+msgstr "Превключва към работното място вдясно"
 
 #: src/metacity.schemas.in.h:73
-msgid "Switch to workspace on the left"
-msgstr "Превключи към работното място вляво"
-
-#: src/metacity.schemas.in.h:74
-msgid "Switch to workspace on the right"
-msgstr "Превключи към работното място вдясно"
-
-#: src/metacity.schemas.in.h:75
-msgid "System Bell is Audible"
-msgstr ""
-
-#: src/metacity.schemas.in.h:76
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-
-#: src/metacity.schemas.in.h:77
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"Ключовете в /apps/metacity/global_keybindings/run_command_N дефинират "
+"клавишни комбинации, съответстващи на тези команди. Натискането на "
+"клавишната комбинация за run_command_N ще изпълни команда command_N."
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:74
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -807,8 +770,14 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който изпълнява командата със същия номер в /apps/metacity/"
+"keybinding_commands. Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста либерална по "
+"отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;"
+"\". Ако зададете опцията да е специалният низ \"disabled\", това действие "
+"няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:75
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -817,8 +786,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работното място над текущото. Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:76
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -827,8 +801,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работното място под текущото. Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:77
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -837,8 +816,13 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работното място вляво от текущото. "
+"Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:78
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -847,8 +831,13 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работното място вдясно от текущото. "
+"Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:79
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -856,8 +845,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 1. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:80
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -865,8 +859,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 10. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -874,8 +873,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 11. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:82
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -883,8 +887,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 12. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:83
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -892,8 +901,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 2. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -901,8 +915,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 3. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -910,8 +929,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 4. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -919,8 +943,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 5. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -928,8 +957,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 6. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -937,8 +971,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 7. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -946,8 +985,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 8. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -955,8 +999,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш, който превключва към работно място 9. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -964,8 +1013,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за активиране на менюто на прозореца. Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -973,8 +1027,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за затваряне на прозорци. Форматът е от вида \"&lt;Control&gt;"
+"a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста "
+"либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и "
+"\"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", "
+"това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -983,8 +1042,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за преминаване в режим на преместване, след което прозорецът "
+"може да се движи и с клавиатурата.Форматът е от вида \"&lt;Control&gt;a\" "
+"или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста либерална "
+"по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;"
+"Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", това "
+"действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -993,8 +1058,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преминаване в режим на оразмеряване, след което прозорецът "
+"може да се движи и с клавиатурата.Форматът е от вида \"&lt;Control&gt;a\" "
+"или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста либерална "
+"по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;"
+"Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", това "
+"действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1003,8 +1074,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за скриване на нормални прозорци и фокусиране на фона на "
+"десктопа.Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Анализиращата програма е доста либерална по отношение на "
+"регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако "
+"зададете опцията да е специалният низ \"disabled\", това действие няма да "
+"има бърз клавиш."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1012,8 +1089,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за максимизиране на прозорец. Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1021,8 +1103,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за минимизиране на прозорец.Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -1031,8 +1118,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец едно работно място надолу.Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1041,8 +1133,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец едно работно място вляво.Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1051,8 +1148,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец едно работно място вдясно.Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1060,8 +1162,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец едно работно място нагоре.Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1069,8 +1176,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 1.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1078,8 +1190,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 10.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1087,8 +1204,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 11.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1096,8 +1218,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 12.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1105,8 +1232,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 2.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1114,8 +1246,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 3.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1123,8 +1260,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 4.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1132,8 +1274,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 5.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1141,8 +1288,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 6.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1150,8 +1302,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 7.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1159,8 +1316,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 8.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1168,8 +1330,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за преместване на прозорец на работно място 9.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1178,8 +1345,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между панелите и работното "
+"място в обратен ред, като се използва изскачащ прозорец Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1188,8 +1361,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между панелите и работното "
+"място в обратен ред, без да се използва изскачащ прозорец Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1199,8 +1378,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между прозорците в обратен "
+"ред, без да се използва изскачащ прозорец Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1210,8 +1395,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между прозорците в обратен "
+"ред, като се използва изскачащ прозорец Форматът е от вида \"&lt;Control&gt;a"
+"\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста "
+"либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и "
+"\"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", "
+"това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1220,8 +1411,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между панелите и работното "
+"място, като се използва изскачащ прозорец Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1230,8 +1427,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между панелите и работното "
+"място, без да се използва изскачащ прозорец Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1241,8 +1444,16 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между прозорците, без да "
+"се използва изскачащ прозорец. (Традиционно е &lt;Alt&gt;Escape). "
+"Използването на клавиша \"shift\" при натискането на тази комбинация обръща "
+"посоката на местена на фокуса.Форматът е от вида \"&lt;Control&gt;a\" или "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста либерална по "
+"отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;"
+"\". Ако зададете опцията да е специалният низ \"disabled\", това действие "
+"няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1252,8 +1463,16 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за незабавно преместване на фокуса между прозорците, като се "
+"използва изскачащ прозорец. (Традиционно е &lt;Alt&gt;Tab). Използването на "
+"клавиша \"shift\" при натискането на тази комбинация обръща посоката на "
+"местена на фокуса.Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Анализиращата програма е доста либерална по отношение на "
+"регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако "
+"зададете опцията да е специалният низ \"disabled\", това действие няма да "
+"има бърз клавиш."
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1261,8 +1480,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за превключване на режим на цял екран.Форматът е от вида "
+"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1270,8 +1494,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за превключване на максимизирането.Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1279,8 +1508,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за превключване между навито и развито състояние.Форматът е "
+"от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1289,8 +1523,14 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за превключване между появата на прозореца на всички работни "
+"места и появата му само на едно.Форматът е от вида \"&lt;Control&gt;a\" или "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста либерална по "
+"отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;"
+"\". Ако зададете опцията да е специалният низ \"disabled\", това действие "
+"няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1298,24 +1538,32 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за демаксимизирането на прозорец.Форматът е от вида \"&lt;"
+"Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е "
+"доста либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled"
+"\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:127
 msgid "The name of a workspace."
-msgstr ""
+msgstr "Името на работното място"
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:128
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
+"Темата определя външния вид на рамките на прозорците, заглавната лента и т.н."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:129
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
+"Закъснението в милисекунди преди да се издигне прозорец, ако auto_raise е "
+"истина."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:130
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1323,8 +1571,14 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
+"Начинът за фокусирне на прозорци указва как се активират прозорците. Има три "
+"възможни стойности: \"click\" означава, че прозорците трябва да бъдат "
+"щракнати с мишката, за да се фокусират, \"sloppy\" означава, че прозорците "
+"се фокусират, когато мишката влезе в тях, а \"mouse\", че прозорците се "
+"фокусират, когато мишката влезе в тях и губят фокуса, когато мишката излезе "
+"от тях."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:131
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1335,8 +1589,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Бързият клавиш за издигането/свалянето на прозореца над/под всички останали. "
+"Ако прозорецът е под някой друг, той се издига над всички останали, Ако е "
+"най-отгоре, се сваля под всички прозорци.Форматът е от вида \"&lt;Control&gt;"
+"a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата програма е доста "
+"либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и "
+"\"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", "
+"това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:132
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1344,8 +1605,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за свалянето на прозореца под всички останали.Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:133
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1353,8 +1619,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Бързият клавиш за издигането на прозореца над всички останали. Форматът е от "
+"вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
+"програма е доста либерална по отношение на регистъра и съкращения от вида "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
+"низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:134
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1363,8 +1634,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Бързият клавиш за максималното хоризонтално разширяване на прозореца. "
+"Форматът е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:135
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1373,128 +1649,131 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Бързият клавиш за максималното вертикално разширяване на прозореца. Форматът "
+"е от вида \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Анализиращата програма е доста либерална по отношение на регистъра и "
+"съкращения от вида \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията "
+"да е специалният низ \"disabled\", това действие няма да има бърз клавиш."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:136
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
+"Тази настройка определя ефекта на двойното щракване върху заглавната лента. "
+"Засега валидни стойности са \"toggle_shaded\", която навива/развива "
+"прозореца, и \"toggle_maximized\", която максимизира/демаксимизира прозореца."
+
+#: src/metacity.schemas.in.h:137
+msgid "Toggle fullscreen mode"
+msgstr "Превключва режима за цял екран"
+
+#: src/metacity.schemas.in.h:138
+msgid "Toggle maximization state"
+msgstr "Превключва състоянието на максимизиране"
+
+#: src/metacity.schemas.in.h:139
+msgid "Toggle shaded state"
+msgstr "Превключва състоянието на навиване"
+
+#: src/metacity.schemas.in.h:140
+msgid "Toggle window on all workspaces"
+msgstr "Превключва появата на прозореца на всички работни места"
 
 #: src/metacity.schemas.in.h:141
-msgid "Toggle fullscreen mode"
-msgstr ""
+msgid "Unmaximize a window"
+msgstr "Демаксимизира прозорец"
 
 #: src/metacity.schemas.in.h:142
-msgid "Toggle maximization state"
-msgstr ""
+msgid "Use standard system font in window titles"
+msgstr "Използва стандартния системен шрифт за заглавията на прозорците"
 
 #: src/metacity.schemas.in.h:143
-msgid "Toggle shaded state"
-msgstr ""
+msgid "Window focus mode"
+msgstr "Режим на фокусиране на прозорци"
 
 #: src/metacity.schemas.in.h:144
-#, fuzzy
-msgid "Toggle window on all workspaces"
-msgstr "Премества прозореца едно работно място нагоре"
-
-#: src/metacity.schemas.in.h:145
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
-msgstr ""
-
-#: src/metacity.schemas.in.h:146
-msgid "Unmaximize a window"
-msgstr ""
-
-#: src/metacity.schemas.in.h:147
-msgid "Use standard system font in window titles"
-msgstr ""
-
-#: src/metacity.schemas.in.h:148
-msgid "Visual Bell Type"
-msgstr ""
-
-#: src/metacity.schemas.in.h:149
-msgid "Window focus mode"
-msgstr ""
-
-#: src/metacity.schemas.in.h:150
 msgid "Window title font"
-msgstr ""
+msgstr "Шрифт за заглавията на прозорците"
 
-#: src/prefs.c:445 src/prefs.c:461 src/prefs.c:477 src/prefs.c:493
-#: src/prefs.c:509 src/prefs.c:529 src/prefs.c:545 src/prefs.c:561
-#: src/prefs.c:577 src/prefs.c:593 src/prefs.c:609 src/prefs.c:625
-#: src/prefs.c:641 src/prefs.c:658 src/prefs.c:674 src/prefs.c:690
-#: src/prefs.c:722
+#: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
+#: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
+#: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
+#: src/prefs.c:618 src/prefs.c:635 src/prefs.c:651 src/prefs.c:667
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "GConf ключът \"%s\" е от невалиден тип\n"
 
-#: src/prefs.c:766
+#: src/prefs.c:712
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
+"\"%s\", който е открит в базата данни с настройките, не е валиден "
+"модификатор на бутон на мишката\n"
 
-#: src/prefs.c:790 src/prefs.c:1192
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf ключът \"%s\" е с невалидна стойност\n"
 
-#: src/prefs.c:914
+#: src/prefs.c:820
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "Не успях да анализирам шрифтовото описание \"%s\" от GConf ключа %s\n"
 
-#: src/prefs.c:1099
+#: src/prefs.c:1005
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"Стойността %d записана в GConf клавиша %s, е неподходяща за брой на "
+"работните места. Текущият максимум е %d\n"
 
-#: src/prefs.c:1154
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Триковете за развалените приложения са изключени. Някои приложения могат да "
+"са с неправилно поведение.\n"
 
-#: src/prefs.c:1219
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "Стойността %d записана в GConf ключа %s е извън обхвата от 0 до %d\n"
 
-#: src/prefs.c:1323
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Грешка при задаване на броя на работни места да е %d: %s\n"
 
-#: src/prefs.c:1541
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"Низът \"%s\" открит в базата данни с настройки е невалиден за стойност на "
+"клавишната комбинация \"%s\"\n"
 
-#: src/prefs.c:1831
+#: src/prefs.c:1730
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "Грешка при задаване на името на работното място %d да е \"%s\": %s\n"
 
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "Екранът %d на дисплей '%s' е невалиден\n"
 
 #: src/screen.c:408
 #, c-format
@@ -1502,22 +1781,26 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"Екранът %d на дисплей \"%s\" вече има мениджър на прозорци; пробвайте с "
+"опцията --replace да го замените.\n"
 
 #: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
+"Не успях да получа избрания мениджър за прозорци на екран %d, дисплей \"%s"
+"\"\n"
 
 #: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Екран %d на дисплей \"%s\" вече има мениджър за прозорци\n"
 
-#: src/screen.c:674
+#: src/screen.c:673
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Не успях да отстъпя екран %d на дисплей \"%s\"\n"
 
 #: src/session.c:274
 #, c-format
@@ -1525,69 +1808,71 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
+"Не успях да създам връзка към мениджъра на сесии, затова позициите на "
+"прозорците няма да се запомнят: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "Не успях да създам директорията \"%s\": %s\n"
 
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "Не успях да отворя сесийния файл \"%s\" за запис: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "Грешка при записване на сесийния файл \"%s\": %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "Грешка при затваряне на сесийния файл \"%s\": %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Не успях да прочета записания сесиен файл %s: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Не успях да анализирам записания сесиен файл: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "Атрибутът <metacity_session> е видян, но вече имаме сесийния ID"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "Непознат атрибут %s на елемента <metacity_session>"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr ""
+msgstr "вложен <window> етикет"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "Непознат атрибут %s на елемента <window>"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "Непознат атрибут%s на елемента <maximized>"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "Непознат атрибут%s на елемента <geometry>"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Непознат елемент %s"
 
 #: src/session.c:1921
 #, c-format
@@ -1595,51 +1880,55 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
+"Грешка при стартиране на диалога на Метасити, който предупреждава за "
+"приложения, които не поддържат управление на сесиите: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Ред %d, символ %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Атрибутът \"%s\" се повтаря два пъти в същия <%s> елемент"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Атрибутът \"%s\" е невалиден за елемента <%s> в този контекст"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Цялото число %ld трябва да е положително"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Цялото число %ld е прекалено голямо, максимумът е %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Не можах да интерпретирам \"%s\" като число с плаваща запетая"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Булевите стойности са или \"истина\", или \"лъжа\". Не са \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Ъгълът трябва да е между 0.0 и 360.0, а е %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
+"Алфа трябва да е между 0.0 (пълна прозрачност) и 1.0 (пълна непрозрачност), "
+"а е %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1647,75 +1936,77 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Невалидно увеличение на заглавието \"%s\" (трябва да е xx-small,x-small,"
+"small,medium,large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибута \"%s\""
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибута \"%s\""
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "Името \"%s\" на <%s> е използвано втори път"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "Родителят \"%s\" на <%s> не е дефиниран"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "Геометрията \"%s\" на <%s> не е дефинирана"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> трябва да указва или геометрия, или родител с геометрия"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "Непознат вид \"%s\" на елемента <%s>"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "Непознат style_set \"%s\" на елемента <%s>"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Видът прозорци \"%s\" вече има установен вид на стила"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Непозната функция \"%s\" за икона на меню"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Непознато състояние \"%s\" за икона на меню"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Темата вече има икона на меню за функцията %s, състояние %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Няма дефиниран <draw_ops> с името \"%s\""
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1723,83 +2014,85 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Елементът <%s> не е позволен под <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"name\""
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"value\""
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
+"Не може да се указват едновременно и двата размера (височина и ширина на "
+"бутоните) и отношението им"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Разстоянието \"%s\" не се знае"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Пропорциите \"%s\" не се знаят"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"top\""
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"bottom\""
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"left\""
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"right\""
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "\"%sт\" ръб не се знае"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"color\""
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"x1\""
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"y1\""
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"x2\""
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"y2\""
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -1807,7 +2100,7 @@ msgstr ""
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"x\""
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -1815,176 +2108,176 @@ msgstr ""
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"y\""
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"width\""
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"height\""
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"start_angle\""
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"extent_angle\""
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"alpha\""
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"type\""
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Не разбирам стойността \"%s\" като тип градиент"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"filename\""
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не разбирам вида запълване \"%s\" за елемента <%s>"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"state\""
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"shadow\""
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"arrow\""
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не успях да разбера състоянието \"%s\" на елемента <%s>"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не успях да разбера навиването \"%s\" на елемента <%s>"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не успях да разбера стрелката \"%s\" на елемента <%s>"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Няма дефинирани <draw_ops> с име \"%s\""
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Включването на draw_ops \"%s\" тук би предизвикало циклична зависимост"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"value\""
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"position\""
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Непозната позиция \"%s\" за елемент на рамката"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Стилът на рамката вече има елемент на позицията %s"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"function\""
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"state\""
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Непозната функция \"%s\" за бутона"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Непознато състояние \"%s\" за бутона"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Стилът на рамката има бутон за функция %s, състояние %s"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"focus\""
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"style\""
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна стойност за атрибута фокус"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна стойност за атрибута състояние"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Не е дефиниран стил на име  \"%s\""
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "Елементът <%s> няма атрибут \"resize\""
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна стойност за атрибута оразмеряване"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -1992,152 +2285,160 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"Елементът <%s> не трябва да има атрибут \"resize\" за състоянията "
+"максимизиран/засенчен"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Вече е указан стил за състояние %s, оразмеряване %s, фокус %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Вече е указан стил за състояние %s, фокус %s"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да има два draw_ops за елемент <piece> (темата е указала атрибут "
+"draw_ops и елемент <draw_ops> или два елемента)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да има два draw_ops за елемент <button> (темата е указала атрибут "
+"draw_ops и елемент <draw_ops> или два елемента)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да има два draw_ops за елемент <menu_icon> (темата е указала атрибут "
+"draw_ops и елемент <draw_ops> или два елемента)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Най-външният елемент в темата трябва да е <metacity_theme>, а не <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgstr "Елементът <%s> не е разрешен в елементите name/author/date/description"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Елементът <%s> не е позволен в <constant> елемент"
 
 #: src/theme-parser.c:3696
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgstr "Елементът <%s> не е позволен в елемент distance/border/aspect_ratio"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Елементът <%s> не е позволен в елемент с операция за чертане"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Елементът <%s> не е позволен в елемент <%s>"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Няма draw_ops за детайл от рамката"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Няма draw_ops за бутон"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Няма draw_ops за икона на менюто"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Не е позволен текст в елемента <%s>"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> е указан два пъти за тази тема"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> е указан два пъти за тази тема"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> е указан два пъти за тази тема"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> е указан два пъти за тази тема"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> е указан два пъти за тази тема"
 
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Не успях да прочета тема от файла %s: %s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Файлът-тема %s не съдържа коренов <metacity_theme> елемент"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "горния"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "долния"
 
 #: src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "левия"
 
 #: src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "десния"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "геометрията на рамката не указва \"%s\" размер"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "геометрията на рамката не указва \"%s\" размера на \"%s\" ръб"
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Отношението на размерите на бутона %g е неподходящо"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Геометрията на рамката не указва размера на бутоните"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Градиентите трябва да имат поне два цвята"
 
 #: src/theme.c:975
 #, c-format
@@ -2145,6 +2446,9 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK цветовата спецификация трябва да указва състоянието в квадратни скоби, "
+"напр. gtk:fg[NORMAL], където NORMAL е състоянието. Не можах да анализирам \"%"
+"s\""
 
 #: src/theme.c:989
 #, c-format
@@ -2152,16 +2456,19 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK цветовата спецификация трябва да съдържа квадратна скоба след "
+"състоянието, напр. gtk:fg[NORMAL], където NORMAL е състоянието. Не можах да "
+"анализирам \"%s\""
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Не разбирам състоянието \"%s\" в цветовата спецификация"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Не разбирам цветовия компонент \"%s\" в цветовата спецификация"
 
 #: src/theme.c:1043
 #, c-format
@@ -2169,42 +2476,47 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"Форматът на смесването е \"blend/bg_color/fg_color/alpha\", \"%s\" не се "
+"подчинява на формата"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Не успях да анализирам алфа стойността \"%s\" в смесения цвят"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Алфа стойността \"%s\"в смесения цвят не е между 0.0 и 1.0"
 
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
+"Форматът на навиването е \"shade/base_color/factor\", \"%s\" не се подчинява "
+"на формата"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
+"Не успях да анализирам фактора на навиването \"%s\" в цвета за навиване"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Факторът на навиване \"%s\" в цвета за навиване е отрицателен"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "Не можах да анализирам цвета \"%s\""
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Изразът за координати съдържа символа '%s', който не е позволен"
 
 #: src/theme.c:1450
 #, c-format
@@ -2212,11 +2524,14 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"Изразът за координати съдържа числото с плаваща запетая '%s', което не можах "
+"да анализирам"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
+"Изразът за координати съдържа цялото число '%s', което не можах да анализирам"
 
 #: src/theme.c:1531
 #, c-format
@@ -2224,33 +2539,39 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Изразът за координати съдържа непознат оператор в началото на този текст: \"%"
+"s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Изразът за координати бе празен или не бе разбран"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Изразът за координати дава делене на нула"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
+"Изразът за координати използва оператора mod върху число с плаваща запетая"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"Изразът за координати използва оператора \"%s\" на място, където се очаква "
+"операнд"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
+"Изразът за координати използва оператор на място, където се очаква операнд"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Изразът за координати завършва с оператор вместо  с операнд"
 
 #: src/theme.c:1863
 #, c-format
@@ -2258,34 +2579,39 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Изразът за координати използва оператора \"%c\" след \"%c\" без да има "
+"операнд между тях"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Анализаторът на координати препълни буфера си. Това е грешка на Метасити, но "
+"уверени ли сте, че се нуждаете от толкова дълъг израз?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "В израза за координати има затваряща скоба без съответна отваряща"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
+"Изразът за координати използва непознатата променлива или константа \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "В израза за координати има отваряща скоба без съответна затваряща"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Изразът за координати не съдържа нито оператори, нито операнди"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Темата съдържа израза \"%s\", който даде грешка: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2293,23 +2619,26 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"За този стил на рамката трябва да се укаже <button function=\"%s\" state=\"%s"
+"\" draw_ops=\"нещо си\"/>"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
+"Липсва <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"нещо си\"/>"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Не успях да заредя темата \"%s\": %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Не указано <%s> за темата \"%s\""
 
 #: src/theme.c:4629
 #, c-format
@@ -2317,6 +2646,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Няма указан стил на рамката за \"%s\" прозорците в тема \"%s\"> Добавете "
+"елемент <window type=\"%s\" style_set=\"нещо си\"/>"
 
 #: src/theme.c:4651
 #, c-format
@@ -2324,89 +2655,95 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"За тази тема трябва да се укаже <menu_icon function=\"%s\" state=\"%s\" "
+"draw_ops=\"нещо си\"/>"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
+"Константите дефинирани от потребителя трябва да започват с главна буква, а "
+"\"%s\" не започва така"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Константата \"%s\" вече е дефинирана"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Изберете как да фокусирате прозорците"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Фокусиране на прозорци"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "_Щракни, за да фокусираш"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Поведение на фокуса:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Настройки на фокусирането на прозорците"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Посочи, за да фокусираш"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Издигни прозореца при фокусиране"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Не успях да отворя журнала за изчистване на грешки: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Не успях да извърша fdopen() върху журналния файл %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Отворих журналния файл %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Мениджър на прозорци: "
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Грешка в мениджъра на прозорци: "
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Предупреждение от мениджъра на прозорци"
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Грешка от мениджъра на прозорци: "
 
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4863
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Прозорецът %s зададе SM_CLIENT_ID за себе, а не за прозореца "
+"WM_CLIENT_LEADER, както е указано в ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2415,12 +2752,15 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5423
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Прозорецът %s задава MWM подсказка за това, че размерът му не може да се "
+"променя, но едновременно с това указва минимален размер %d x %d и максимален "
+"размер %d x %d. Това не е смислено.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2431,14 +2771,21 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Прозорецът 0x%lx има свойството %s\n"
+"което трябва да е от вида: %s, формат: %d\n"
+"а всъщност има вида: %s, формат: %d, брой: %d.\n"
+"Това най-вероятно е грешка в приложението, а не в мениджъра на прозорци.\n"
+"Прозорецът е със заглавие=\"%s\", клас=\"%s\", име=\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
+"списъка\n"
