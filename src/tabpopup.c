@@ -842,12 +842,17 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
   while (tmp != NULL)
     {
       MetaWindow *window;
+      gboolean ignoreable_sticky;
 
       window = tmp->data;
 
+      ignoreable_sticky = window->on_all_workspaces &&
+                          workspace != workspace->screen->active_workspace;
+
       if (window->skip_pager || 
           window->minimized || 
-          window->unmaps_pending)
+          window->unmaps_pending ||
+          ignoreable_sticky)
         {
           --n_windows;
         }

@@ -1,5 +1,10 @@
 2005-01-25  Elijah Newren  <newren@gmail.com>
 
+	* src/tabpopup.c: (meta_select_workspace_expose_event): ignore
+	sticky windows for non-active workspaces.  Fixes #165259.
+
+2005-01-25  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c: (meta_window_new_with_attrs): set the window state
 	hints _after_ applying session information.  Fixes #164677.
 
