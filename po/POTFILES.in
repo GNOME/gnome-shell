@@ -20,3 +20,5 @@ src/window.c
 src/xprops.c
 # files added by intltool-prepare
 src/metacity.desktop.in
+src/tools/metacity-properties.desktop.in
+src/tools/metacity-properties.glade

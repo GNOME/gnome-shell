@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-05-27 15:07+0200\n"
-"PO-Revision-Date: 2002-05-27 15:08+0200\n"
+"POT-Creation-Date: 2002-05-31 01:16+0200\n"
+"PO-Revision-Date: 2002-05-31 01:19+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Maksimer vindu"
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:626
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -164,6 +164,8 @@ msgstr "Flytt til arbeidsområde %s%d"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
+"(Ikke implementert) Navigering fungerer med hensyn på applikasjoner, ikke "
+"vinduer"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -325,6 +327,10 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:36
+msgid "Raise window if obscured, lowers it otherwise"
+msgstr ""
+
+#: src/metacity.schemas.in.h:37
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -340,71 +346,71 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:38
 msgid "Switch to workspace 1"
 msgstr "Bytt til arbeidsområde 1"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:39
 msgid "Switch to workspace 10"
 msgstr "Bytt til arbeidsområde 10"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:40
 msgid "Switch to workspace 11"
 msgstr "Bytt til arbeidsområde 11"
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:41
 msgid "Switch to workspace 12"
 msgstr "Bytt til arbeidsområde 12"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:42
 msgid "Switch to workspace 2"
 msgstr "Bytt til arbeidsområde 2"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:43
 msgid "Switch to workspace 3"
 msgstr "Bytt til arbeidsområde 3"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:44
 msgid "Switch to workspace 4"
 msgstr "Bytt til arbeidsområde 4"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:45
 msgid "Switch to workspace 5"
 msgstr "Bytt til arbeidsområde 5"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:46
 msgid "Switch to workspace 6"
 msgstr "Bytt til arbeidsområde 6"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:47
 msgid "Switch to workspace 7"
 msgstr "Bytt til arbeidsområde 7"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:48
 msgid "Switch to workspace 8"
 msgstr "Bytt til arbeidsområde 8"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:49
 msgid "Switch to workspace 9"
 msgstr "Bytt til arbeidsområde 9"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:50
 msgid "Switch to workspace above the current space"
 msgstr "Bytt til arbeidsområdet over aktivt område"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:51
 msgid "Switch to workspace below the current space"
 msgstr "Bytt  til arbeidsområdet under aktivt område"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:52
 msgid "Switch to workspace on the left"
 msgstr "Bytt til arbeidsområdet til venstre"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:53
 msgid "Switch to workspace on the right"
 msgstr "Bytt til arbeidsområdet til høyre"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:54
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -413,8 +419,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
+"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
+"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
+"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
+"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
+"tastebinding for denne handlingen."
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:55
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -424,7 +436,7 @@ msgid ""
 "for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:56
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -434,7 +446,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:57
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -444,7 +456,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:58
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -453,7 +465,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:59
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -462,7 +474,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:60
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -471,7 +483,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:60
+#: src/metacity.schemas.in.h:61
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -480,7 +492,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:62
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -489,7 +501,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:63
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -498,7 +510,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:64
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -507,7 +519,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:65
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -516,7 +528,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:66
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -525,7 +537,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:67
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -534,7 +546,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:68
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -543,7 +555,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:69
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -552,7 +564,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:70
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -561,7 +573,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:71
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -570,7 +582,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:72
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -580,7 +592,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:73
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -590,7 +602,7 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:74
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -600,7 +612,7 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:75
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -609,7 +621,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:76
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -619,7 +631,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:77
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -629,7 +641,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:78
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -639,7 +651,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:79
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -648,7 +660,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:80
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -657,7 +669,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -666,7 +678,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:82
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -675,7 +687,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:83
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -684,7 +696,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -693,7 +705,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -702,7 +714,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -711,7 +723,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -720,7 +732,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -729,7 +741,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -738,7 +750,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -747,7 +759,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -756,7 +768,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding used to move focus back to the window which last had the "
 "focus. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -766,7 +778,7 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding used to move focus between panels and the desktop. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -776,7 +788,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding used to move focus between windows. (Traditionally &lt;Alt&gt;"
 "Tab) The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
@@ -786,7 +798,7 @@ msgid ""
 "for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -795,7 +807,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -804,7 +816,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -813,7 +825,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -823,19 +835,19 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -844,31 +856,50 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:102
+#, fuzzy
+msgid ""
+"This keybinding changes whether a window is above or below other windows. If "
+"the window is covered by another window, it raises the window above other "
+"windows. If the window is already fully visible, it lowers the window below "
+"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Tastebindingen som bytter til arbeidsområdet over aktivt arbeidsområde. "
+"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
+"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
+"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
+"alternativet til den spesielle strengen «deaktivert», vil det ikke være en "
+"tastebinding for denne handlingen."
+
+#: src/metacity.schemas.in.h:103
 msgid "Toggle fullscreen mode"
 msgstr "Slå av/på fullskjermmodus"
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:104
 msgid "Toggle maximization state"
 msgstr ""
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:105
 msgid "Toggle shaded state"
 msgstr ""
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:106
 msgid "Toggle whether the window is on all workspaces"
 msgstr ""
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:107
 msgid "Use standard system font in window titles"
 msgstr ""
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:108
 msgid "Window focus mode"
 msgstr "Fokuseringsmodus for vindu"
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:109
 msgid "Window title font"
 msgstr "Skrift for vindustittel"
 
@@ -886,6 +917,20 @@ msgstr ""
 #: src/metacity-dialog.c:94
 msgid "Kill application"
 msgstr "Terminer applikasjon"
+
+#: src/metacity-dialog.c:188
+msgid "Title"
+msgstr "Tittel"
+
+#: src/metacity-dialog.c:200
+msgid "Class"
+msgstr "Klasse"
+
+#: src/metacity-dialog.c:224
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
 
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
 #: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
@@ -931,7 +976,7 @@ msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: src/prefs.c:925
+#: src/prefs.c:926
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -960,63 +1005,77 @@ msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
-#: src/session.c:766 src/session.c:773
+#: src/session.c:273
+#, c-format
+msgid ""
+"Failed to a open connection to a session manager, so window positions will "
+"not be saved: %s\n"
+msgstr ""
+
+#: src/session.c:805 src/session.c:812
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: src/session.c:783
+#: src/session.c:822
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: src/session.c:915
+#: src/session.c:954
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:920
+#: src/session.c:959
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:993
+#: src/session.c:1032
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: src/session.c:1028
+#: src/session.c:1067
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: src/session.c:1077
+#: src/session.c:1116
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: src/session.c:1090
+#: src/session.c:1129
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Ukjent attributt %s på <metacity_session>-element"
 
-#: src/session.c:1107
+#: src/session.c:1146
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: src/session.c:1157 src/session.c:1189
+#: src/session.c:1196 src/session.c:1228
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjent attributt %s på <window>-element"
 
-#: src/session.c:1249
+#: src/session.c:1288
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukjent attributt %s på <geometry>-element"
 
-#: src/session.c:1269
+#: src/session.c:1308
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
+
+#: src/session.c:1681
+#, c-format
+msgid ""
+"Error launching metacity-dialog to warn about apps that don't support "
+"session management: %s\n"
+msgstr "Feil under oppstart av metacity-dialog for å advare om applikasjoner som ikke støtter sesjonshåndtering: %s\n"
 
 #: src/theme.c:351
 msgid "top"
@@ -1788,7 +1847,7 @@ msgstr "Feil under fdopen() av loggfil %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: src/window.c:427
+#: src/window.c:429
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
@@ -1810,3 +1869,31 @@ msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8\n"
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
+
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Change how focus is moved from one window to another"
+msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr "Vindusfokus"
+
+#: src/tools/metacity-properties.glade.h:1
+msgid "Clic_k to give focus"
+msgstr "Kli_kk for å gi fokus"
+
+#: src/tools/metacity-properties.glade.h:2
+msgid "Focus behavior:"
+msgstr "Fokusoppførsel:"
+
+#: src/tools/metacity-properties.glade.h:3
+msgid "Window Focus Preferences"
+msgstr "Brukervalg for vindusfokus"
+
+#: src/tools/metacity-properties.glade.h:4
+msgid "_Point to give focus"
+msgstr "_Pek for å gi fokus"
+
+#: src/tools/metacity-properties.glade.h:5
+msgid "_Raise window on focus"
+msgstr "Hev vindue_r når de får fokus"
