@@ -2869,12 +2869,12 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
           height <= gdk_pixbuf_get_height (info->mini_icon))
         pixbuf = scale_and_alpha_pixbuf (info->mini_icon,
                                          op->data.icon.alpha_spec,
-                                         op->data.image.fill_type,
+                                         op->data.icon.fill_type,
                                          width, height);
       else if (info->icon)
         pixbuf = scale_and_alpha_pixbuf (info->icon,
                                          op->data.icon.alpha_spec,
-                                         op->data.image.fill_type,
+                                         op->data.icon.fill_type,
                                          width, height);
       break;
 
