@@ -189,6 +189,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
 
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
+
+  window->layer = META_LAYER_NORMAL;
+  window->stack_op = NULL;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 

@@ -134,6 +134,10 @@ struct _MetaWindow
   int border_width;
   /* x/y/w/h here get filled with ConfigureRequest values */
   XSizeHints size_hints;
+
+  /* Managed by stack.c */
+  MetaStackLayer layer;
+  MetaStackOp *stack_op;
 };
 
 MetaWindow* meta_window_new                (MetaDisplay *display,

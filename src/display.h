@@ -30,6 +30,7 @@
 typedef struct _MetaDisplay   MetaDisplay;
 typedef struct _MetaFrame     MetaFrame;
 typedef struct _MetaScreen    MetaScreen;
+typedef struct _MetaStack     MetaStack;
 typedef struct _MetaUISlave   MetaUISlave;
 typedef struct _MetaWindow    MetaWindow;
 typedef struct _MetaWorkspace MetaWorkspace;
