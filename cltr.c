@@ -497,11 +497,15 @@ cltr_photo_grid_populate(ClutterPhotoGrid *grid,
 		   GL_UNSIGNED_INT_8_8_8_8,
 		   grid->tex_data);
 
+      CLTR_GLERR();
+
       glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
 		       (GLsizei)tpixb->width,
 		       (GLsizei)tpixb->height,
 		       GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
 		       tpixb->data);
+
+      CLTR_GLERR();
 
       i++;
     } 
@@ -520,7 +524,7 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
   glLoadIdentity (); 		/* XXX pushmatrix */
 
-  glClearColor( 0.0, 0.0, 0.0, 1.0);
+  glClearColor( 0.6, 0.6, 0.62, 1.0);
   glClear    (GL_COLOR_BUFFER_BIT);
 
   /*
@@ -727,7 +731,7 @@ cltr_photo_grid_new(ClutterWindow *win,
 
 
   /* Assmes cols == rows */
-  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0);
+  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0) ;
 
 
   /* Below needs to go else where - some kind of texture manager/helper */
@@ -777,7 +781,7 @@ main(int argc, char **argv)
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 3, 3, argv[1]);
+  grid = cltr_photo_grid_new(win, 4, 4, argv[1]);
 
   Grid = grid; 			/* laaaaaazy globals */
 

@@ -29,9 +29,8 @@
   GLenum err = glGetError (); 	/* Roundtrip */                \
   if (err != GL_NO_ERROR)                                      \
     {                                                          \
-      const GLubyte *message = gluErrorString (err);           \
-      g_printerr (__FILE__ ": GL Error: %s [at %s:%d]\n",      \
-		  __func__, __LINE__);                         \
+      g_printerr (__FILE__ ": GL Error: %i [at %s:%d]\n",      \
+		  err, __func__, __LINE__);                    \
     }                                                          \
  }
 
