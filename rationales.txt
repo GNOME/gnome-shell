@@ -1,3 +1,4 @@
 
 Focus windows on map: see http://bugzilla.gnome.org/show_bug.cgi?id=82921
 Keep panel always on top: http://bugzilla.gnome.org/show_bug.cgi?id=81551
+Edge flipping: http://bugzilla.gnome.org/show_bug.cgi?id=82917
