@@ -64,12 +64,6 @@ static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
 static int      set_net_wm_state          (MetaWindow     *window);
 static void     send_configure_notify     (MetaWindow     *window);
-static gboolean process_configure_request (MetaWindow     *window,
-                                           int             x,
-                                           int             y,
-                                           int             width,
-                                           int             height,
-                                           int             border_width);
 static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
 static void     meta_window_show          (MetaWindow     *window);
@@ -1631,12 +1625,65 @@ gboolean
 meta_window_configure_request (MetaWindow *window,
                                XEvent     *event)
 {
-  return process_configure_request (window,
-                                    event->xconfigurerequest.x,
-                                    event->xconfigurerequest.y,
-                                    event->xconfigurerequest.width,
-                                    event->xconfigurerequest.height,
-                                    event->xconfigurerequest.border_width);
+  int x, y, width, height, bw;
+
+  /* it's essential to use only the explicitly-set fields,
+   * and otherwise use our current up-to-date position.
+   *
+   * Otherwise you get spurious position changes when the app changes
+   * size, for example, if window->rect is not in sync with the
+   * server-side position in effect when the configure request was
+   * generated.
+   */
+
+  meta_window_get_position (window, &x, &y);
+
+  if (FALSE && /* For now, always ignore program-specified positions. */
+      (window->size_hints.flags & PPosition))
+    {
+     if (event->xconfigurerequest.value_mask & CWX)
+       x = event->xconfigurerequest.x;
+     
+     if (event->xconfigurerequest.value_mask & CWY)
+       y = event->xconfigurerequest.y;
+    }
+
+  width = window->rect.width;
+  height = window->rect.height;
+  
+  if (event->xconfigurerequest.value_mask & CWWidth)
+    width = event->xconfigurerequest.width;
+
+  if (event->xconfigurerequest.value_mask & CWHeight)
+    height = event->xconfigurerequest.height;
+
+  /* ICCCM 4.1.5 */
+  
+  /* Note that x, y is the corner of the window border,
+   * and width, height is the size of the window inside
+   * its border, but that we always deny border requests
+   * and give windows a border of 0. But we save the
+   * requested border here.
+   */
+  window->border_width = event->xconfigurerequest.border_width;
+
+  /* We're ignoring the value_mask here, since sizes
+   * not in the mask will be the current window geometry.
+   */
+  
+  window->size_hints.x = x;
+  window->size_hints.y = y;
+  window->size_hints.width = width;
+  window->size_hints.height = height;
+
+  meta_window_move_resize_internal (window, TRUE,
+                                    NorthWestGravity,
+                                    window->size_hints.x,
+                                    window->size_hints.y,
+                                    window->size_hints.width,
+                                    window->size_hints.height);
+  news.gnome.org/994407481/index_html
+  return TRUE;
 }
 
 gboolean
@@ -1993,40 +2040,6 @@ send_configure_notify (MetaWindow *window)
               window->xwindow,
               False, StructureNotifyMask, &event);
   meta_error_trap_pop (window->display);
-}
-
-static gboolean
-process_configure_request (MetaWindow *window,
-                           int x, int y,
-                           int width, int height,
-                           int border_width)
-{
-  /* ICCCM 4.1.5 */
-  
-  /* Note that x, y is the corner of the window border,
-   * and width, height is the size of the window inside
-   * its border, but that we always deny border requests
-   * and give windows a border of 0
-   */
-  window->border_width = border_width;
-
-  /* We're ignoring the value_mask here, since sizes
-   * not in the mask will be the current window geometry.
-   */
-  
-  window->size_hints.x = x;
-  window->size_hints.y = y;
-  window->size_hints.width = width;
-  window->size_hints.height = height;
-
-  meta_window_move_resize_internal (window, TRUE,
-                                    NorthWestGravity,
-                                    window->size_hints.x,
-                                    window->size_hints.y,
-                                    window->size_hints.width,
-                                    window->size_hints.height);
-  
-  return TRUE;
 }
 
 static int
