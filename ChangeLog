@@ -1,5 +1,13 @@
 2004-12-24  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c (window_takes_focus_on_map): Fix error in
+	distinguishing < vs. <= introduced by the patch in #154598,
+	restructure code so that verbose log matches code better in order
+	ensure such mistakes are harder to make in the future (fixes
+	#162172)
+
+2004-12-24  Elijah Newren  <newren@gmail.com>
+
 	Thanks to mild7@users.sourceforge.net for this fix.
 
 	* src/window.h: (META_WINDOW_IN_NORMAL_TAB_CHAIN): Excludes

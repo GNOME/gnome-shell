@@ -1624,20 +1624,20 @@ window_takes_focus_on_map (MetaWindow *window)
       compare = window->initial_timestamp_set ? window->initial_timestamp : 0;
       compare = window->net_wm_user_time_set  ? window->net_wm_user_time  : compare;
 
-      if ((window->display->focus_window == NULL) ||
-          XSERVER_TIME_IS_BEFORE (window->display->focus_window->net_wm_user_time, compare))
-        {
-          meta_topic (META_DEBUG_STARTUP,
-                      "new window %s with no intervening events\n",
-                      window->desc);
-          return TRUE;
-        }
-      else
+      if ((window->display->focus_window != NULL) &&
+          XSERVER_TIME_IS_BEFORE (compare, window->display->focus_window->net_wm_user_time))
         {
           meta_topic (META_DEBUG_STARTUP,
                       "window %s focus prevented by other activity; %lu is before %lu\n",
                       window->desc, compare, window->display->focus_window->net_wm_user_time);
           return FALSE;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_STARTUP,
+                      "new window %s with no intervening events\n",
+                      window->desc);
+          return TRUE;
         }
 
       break;
