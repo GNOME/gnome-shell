@@ -29,5 +29,5 @@ if test -z "$ONLY_WM"; then
 fi
 
 if test -z "$ONLY_SETUP"; then
-  METACITY_UISLAVE_DIR=./uislave METACITY_DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity
+  METACITY_UISLAVE_DIR=./uislave METACITY_DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity $OPTIONS
 fi

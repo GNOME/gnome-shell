@@ -21,19 +21,26 @@
 
 #include "menu.h"
 #include "main.h"
-#include <gdk/gdkx.h>
-#include <X11/Xatom.h>
-
-#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
-#define _NET_WM_STATE_ADD           1    /* add/set property */
-#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 
+typedef enum
+{
+  META_MENU_OP_DELETE      = 1 << 0,
+  META_MENU_OP_MINIMIZE    = 1 << 1,
+  META_MENU_OP_UNMAXIMIZE  = 1 << 2,
+  META_MENU_OP_MAXIMIZE    = 1 << 3,
+  META_MENU_OP_UNSHADE     = 1 << 4,
+  META_MENU_OP_SHADE       = 1 << 5,
+  META_MENU_OP_UNSTICK     = 1 << 6,
+  META_MENU_OP_STICK       = 1 << 7,
+  META_MENU_OP_WORKSPACES  = 1 << 8
+} MetaMenuOp;
+
 struct _MenuItem
 {
-  MetaMessageWindowMenuOps op;
+  MetaMenuOp op;
   const char *stock_id;
   const char *label;
 };

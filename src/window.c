@@ -1212,9 +1212,6 @@ meta_window_send_icccm_message (MetaWindow *window,
    */
   
     XClientMessageEvent ev;
-
-    /* This should always be error trapped. */
-    g_return_if_fail (window->display->error_traps != NULL);
     
     ev.type = ClientMessage;
     ev.window = window->xwindow;
@@ -1226,7 +1223,6 @@ meta_window_send_icccm_message (MetaWindow *window,
     XSendEvent (window->display->xdisplay,
                 window->xwindow, False, 0, (XEvent*) &ev);
 }
-
 
 gboolean
 meta_window_configure_request (MetaWindow *window,

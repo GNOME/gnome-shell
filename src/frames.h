@@ -47,8 +47,12 @@ typedef enum
 typedef enum
 {
   META_FRAME_STATUS_NORMAL,
-  META_FRAME_STATUS_MOVING
-
+  META_FRAME_STATUS_MOVING,
+  META_FRAME_STATUS_CLICKING_MINIMIZE,
+  META_FRAME_STATUS_CLICKING_MAXIMIZE,
+  META_FRAME_STATUS_CLICKING_DELETE,
+  META_FRAME_STATUS_CLICKING_MENU,
+  META_FRAME_STATUS_RESIZING_SE
 } MetaFrameStatus;
 
 /* This is one widget that manages all the window frames
@@ -67,6 +71,13 @@ typedef struct _MetaFramesClass   MetaFramesClass;
 
 typedef struct _MetaUIFrame         MetaUIFrame;
 typedef struct _MetaFrameProperties MetaFrameProperties;
+
+struct _MetaUIFrame
+{
+  Window xwindow;
+  GdkWindow *window;
+  PangoLayout *layout;
+};
 
 struct _MetaFrames
 {

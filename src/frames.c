@@ -23,26 +23,6 @@
 #include "util.h"
 #include "core.h"
 
-#if 0
-struct _MetaFrameActionGrab
-{
-  MetaFrameAction action;
-  /* initial mouse position for drags */
-  int start_root_x, start_root_y;
-  /* initial window size or initial window position for drags */
-  int start_window_x, start_window_y;
-  /* button doing the dragging */
-  int start_button;
-};
-#endif
-
-struct _MetaUIFrame
-{
-  Window xwindow;
-  GdkWindow *window;
-  PangoLayout *layout;
-};
-
 struct _MetaFrameProperties
 {
   /* Size of left/right/bottom sides */
@@ -255,14 +235,14 @@ meta_frames_class_init (MetaFramesClass *class)
 
   INT_PROPERTY ("spacer_padding", 3, _("Spacer padding"), _("Padding on either side of spacer"));
   INT_PROPERTY ("spacer_width", 2, _("Spacer width"), _("Width of spacer"));
-  INT_PROPERTY ("spacer_height", 10, _("Spacer height"), _("Height of spacer"));
+  INT_PROPERTY ("spacer_height", 11, _("Spacer height"), _("Height of spacer"));
 
   /* same as right_width left_width by default */
   INT_PROPERTY ("right_inset", 6, _("Right inset"), _("Distance of buttons from right edge of frame"));
   INT_PROPERTY ("left_inset", 6, _("Left inset"), _("Distance of menu button from left edge of frame"));
   
-  INT_PROPERTY ("button_width", 14, _("Button width"), _("Width of buttons"));
-  INT_PROPERTY ("button_height", 14, _("Button height"), _("Height of buttons"));
+  INT_PROPERTY ("button_width", 15, _("Button width"), _("Width of buttons"));
+  INT_PROPERTY ("button_height", 15, _("Button height"), _("Height of buttons"));
 
   BORDER_PROPERTY ("button_border", _("Button border"), _("Border around buttons"));
   BORDER_PROPERTY ("inner_button_border", _("Inner button border"), _("Border around the icon inside buttons"));
@@ -709,11 +689,13 @@ meta_frames_unmanage_window (MetaFrames *frames,
 
   if (frame)
     {
+      gdk_window_set_user_data (frame->window, NULL);
+      
       if (frames->grab_frame == frame)
         meta_frames_end_grab (frames, GDK_CURRENT_TIME);
       
       g_hash_table_remove (frames->frames, &frame->xwindow);
-      
+
       g_object_unref (G_OBJECT (frame->window));
 
       if (frame->layout)
@@ -898,6 +880,46 @@ update_move (MetaFrames  *frames,
                        frames->start_window_y + dy);
 }
 
+static void
+update_resize_se (MetaFrames *frames,
+                  MetaUIFrame *frame,
+                  int x, int y)
+{
+  int dx, dy;
+  
+  dx = x - frames->start_root_x;
+  dy = y - frames->start_root_y;
+
+  meta_core_user_resize (gdk_display,
+                         frame->xwindow,
+                         frames->start_window_x + dx,
+                         frames->start_window_y + dy);
+}
+
+static void
+redraw_control (MetaFrames *frames,
+                MetaUIFrame *frame,
+                MetaFrameControl control)
+{
+  MetaFrameGeometry fgeom;
+  GdkRectangle *rect;
+  
+  meta_frames_calc_geometry (frames, frame, &fgeom);
+
+  rect = control_rect (control, &fgeom);
+
+  gdk_window_invalidate_rect (frame->window, rect, FALSE);
+}
+
+static gboolean
+point_in_control (MetaFrames *frames,
+                  MetaUIFrame *frame,
+                  MetaFrameControl control,
+                  int x, int y)
+{
+  return control == get_control (frames, frame, x, y);
+}
+
 gboolean
 meta_frames_button_press_event (GtkWidget      *widget,
                                 GdkEventButton *event)
@@ -916,11 +938,68 @@ meta_frames_button_press_event (GtkWidget      *widget,
     return FALSE;
   
   control = get_control (frames, frame, event->x, event->y);
-  
-  if (((control == META_FRAME_CONTROL_TITLE ||
-        control == META_FRAME_CONTROL_NONE) &&
-       event->button == 1) ||
-      event->button == 2)
+
+  if (event->button == 1)
+    meta_core_user_raise (gdk_display, frame->xwindow);
+
+  if (event->button == 1 &&
+      (control == META_FRAME_CONTROL_MAXIMIZE ||
+       control == META_FRAME_CONTROL_MINIMIZE ||
+       control == META_FRAME_CONTROL_DELETE ||
+       control == META_FRAME_CONTROL_MENU))
+    {
+      MetaFrameStatus status = META_FRAME_STATUS_NORMAL;
+
+      switch (control)
+        {
+        case META_FRAME_CONTROL_MINIMIZE:
+          status = META_FRAME_STATUS_CLICKING_MINIMIZE;
+          break;
+        case META_FRAME_CONTROL_MAXIMIZE:
+          status = META_FRAME_STATUS_CLICKING_MAXIMIZE;
+          break;
+        case META_FRAME_CONTROL_DELETE:
+          status = META_FRAME_STATUS_CLICKING_DELETE;
+          break;
+        case META_FRAME_CONTROL_MENU:
+          status = META_FRAME_STATUS_CLICKING_MENU;
+          break;
+        default:
+          g_assert_not_reached ();
+          break;
+        }
+
+      g_assert (status != META_FRAME_STATUS_NORMAL);
+
+      meta_frames_begin_grab (frames, frame,
+                              status,
+                              event->button,
+                              0, 0, 0, 0, /* not needed */
+                              event->time);
+
+      redraw_control (frames, frame, control);
+    }
+  else if (control == META_FRAME_CONTROL_RESIZE_SE &&
+      event->button == 1)
+    {
+      int w, h;
+
+      meta_core_get_size (gdk_display,
+                          frame->xwindow,
+                          &w, &h);
+      
+      meta_frames_begin_grab (frames, frame,
+                              META_FRAME_STATUS_RESIZING_SE,
+                              event->button,
+                              event->x_root,
+                              event->y_root,
+                              w, h,
+                              event->time);
+    }
+  else if (((control == META_FRAME_CONTROL_TITLE ||
+             control == META_FRAME_CONTROL_NONE) &&
+            event->button == 1) ||
+           event->button == 2)
     {
       int x, y;
 
@@ -956,14 +1035,66 @@ meta_frames_button_release_event    (GtkWidget           *widget,
   if (frames->grab_frame == frame &&
       frames->start_button == event->button)
     {
+      MetaFrameStatus status;
+
+      status = frames->grab_status;
+      
       meta_frames_end_grab (frames, event->time);
 
-      switch (frames->grab_status)
+      switch (status)
         {
         case META_FRAME_STATUS_MOVING:
           update_move (frames, frame, event->x_root, event->y_root);
           break;
 
+        case META_FRAME_STATUS_RESIZING_SE:
+          update_resize_se (frames, frame, event->x_root, event->y_root);
+          break;
+
+        case META_FRAME_STATUS_CLICKING_MINIMIZE:
+          if (point_in_control (frames, frame,
+                                META_FRAME_CONTROL_MINIMIZE,
+                                event->x, event->y))
+            meta_core_minimize (gdk_display, frame->xwindow);
+
+          redraw_control (frames, frame,
+                          META_FRAME_CONTROL_MINIMIZE);
+          break;
+
+        case META_FRAME_STATUS_CLICKING_MAXIMIZE:
+          if (point_in_control (frames, frame,
+                                META_FRAME_CONTROL_MAXIMIZE,
+                                event->x, event->y))
+            {
+              if (meta_core_get_frame_flags (gdk_display, frame->xwindow) &
+                  META_FRAME_MAXIMIZED)
+                meta_core_unmaximize (gdk_display, frame->xwindow);
+              else
+                meta_core_maximize (gdk_display, frame->xwindow);
+            }
+          redraw_control (frames, frame,
+                          META_FRAME_CONTROL_MAXIMIZE);
+          break;
+
+        case META_FRAME_STATUS_CLICKING_DELETE:
+          if (point_in_control (frames, frame,
+                                META_FRAME_CONTROL_DELETE,
+                                event->x, event->y))
+            meta_core_delete (gdk_display, frame->xwindow, event->time);
+          redraw_control (frames, frame,
+                          META_FRAME_CONTROL_DELETE);
+          break;
+          
+        case META_FRAME_STATUS_CLICKING_MENU:
+          if (point_in_control (frames, frame,
+                                META_FRAME_CONTROL_MENU,
+                                event->x, event->y))
+            /* FIXME */ ;
+          
+          redraw_control (frames, frame,
+                          META_FRAME_CONTROL_MENU);
+          break;
+          
         case META_FRAME_STATUS_NORMAL:
           break;
         }
@@ -985,11 +1116,29 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
-  if (frames->grab_status == META_FRAME_STATUS_MOVING)
+  switch (frames->grab_status)
     {
-      int x, y;
-      frame_query_root_pointer (frame, &x, &y);
-      update_move (frames, frame, x, y);
+    case META_FRAME_STATUS_MOVING:
+      {
+        int x, y;
+        frame_query_root_pointer (frame, &x, &y);
+        update_move (frames, frame, x, y);
+      }
+      break;
+    case META_FRAME_STATUS_RESIZING_SE:
+      {
+        int x, y;
+        frame_query_root_pointer (frame, &x, &y);
+        update_resize_se (frames, frame, x, y);
+      }
+      break;
+
+    case META_FRAME_STATUS_CLICKING_MENU:
+    case META_FRAME_STATUS_CLICKING_DELETE:
+    case META_FRAME_STATUS_CLICKING_MINIMIZE:
+    case META_FRAME_STATUS_CLICKING_MAXIMIZE:
+    case META_FRAME_STATUS_NORMAL:
+      break;
     }
       
   return TRUE;
@@ -1015,45 +1164,36 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 }
 
 static void
-draw_current_control_bg (MetaFrames        *frames,
-                         MetaUIFrame         *frame,
-                         MetaFrameGeometry *fgeom)
+draw_control_bg (MetaFrames         *frames,
+                 MetaUIFrame        *frame,
+                 MetaFrameControl    control,
+                 MetaFrameGeometry  *fgeom)
 {
   GdkRectangle *rect;
-#if 0
-  rect = control_rect (frames->current_control, fgeom);
+  GtkWidget *widget;
+
+  widget = GTK_WIDGET (frames);
+  
+  rect = control_rect (control, fgeom);
 
   if (rect == NULL)
-    return;
+    return;  
 
-  if (frames->current_control == META_FRAME_CONTROL_TITLE)
-    return;
-  
- switch (frames->current_control_state)
+  switch (frames->grab_status)
     {
-      /* FIXME turn this off after testing */
-    case META_STATE_PRELIGHT:
-      XFillRectangle (info->display,
-                      info->drawable,
-                      screen_data->prelight_gc,
-                      xoff + rect->x,
-                      yoff + rect->y,
-                      rect->width, rect->height);
+    case META_FRAME_STATUS_CLICKING_MENU:
+    case META_FRAME_STATUS_CLICKING_DELETE:
+    case META_FRAME_STATUS_CLICKING_MAXIMIZE:
+    case META_FRAME_STATUS_CLICKING_MINIMIZE:
+      gtk_paint_box (widget->style, frame->window,
+                     GTK_STATE_ACTIVE,
+                     GTK_SHADOW_IN, NULL,
+                     widget, "button",
+                     rect->x, rect->y, rect->width, rect->height);
       break;
-
-    case META_STATE_ACTIVE:
-      XFillRectangle (info->display,
-                      info->drawable,
-                      screen_data->active_gc,
-                      xoff + rect->x,
-                      yoff + rect->y,
-                      rect->width, rect->height);
-      break;
-
     default:
       break;
     }
-#endif
 }
 
 gboolean
@@ -1116,8 +1256,6 @@ meta_frames_expose_event            (GtkWidget           *widget,
                           height - fgeom.bottom_height - fgeom.top_height + 1);
     }
 
-  draw_current_control_bg (frames, frame, &fgeom);
-
   if (event->area.y < fgeom.top_height &&
       fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
     {
@@ -1160,31 +1298,35 @@ meta_frames_expose_event            (GtkWidget           *widget,
   
   if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
     {
+      draw_control_bg (frames, frame, META_FRAME_CONTROL_DELETE, &fgeom);
+      
       gdk_draw_line (frame->window,
                      widget->style->fg_gc[GTK_STATE_NORMAL],
                      fgeom.close_rect.x + inner.left,
                      fgeom.close_rect.y + inner.top,
-                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right,
-                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom);
+                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right - 1,
+                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom - 1);
 
       gdk_draw_line (frame->window,
                      widget->style->fg_gc[GTK_STATE_NORMAL],
                      fgeom.close_rect.x + inner.left,
-                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom,
-                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right,
+                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom - 1,
+                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right - 1,
                      fgeom.close_rect.y + inner.top);
     }
 
 #define THICK_LINE_WIDTH 3
   if (fgeom.max_rect.width > 0 && fgeom.max_rect.height > 0)
-    {      
+    {
+      draw_control_bg (frames, frame, META_FRAME_CONTROL_MAXIMIZE, &fgeom);
+      
       gdk_draw_rectangle (frame->window,
                           widget->style->fg_gc[GTK_STATE_NORMAL],
                           FALSE,
                           fgeom.max_rect.x + inner.left,
                           fgeom.max_rect.y + inner.top,
-                          fgeom.max_rect.width - inner.left - inner.right,
-                          fgeom.max_rect.height - inner.top - inner.bottom);
+                          fgeom.max_rect.width - inner.left - inner.right - 1,
+                          fgeom.max_rect.height - inner.top - inner.bottom - 1);
       
       vals.line_width = THICK_LINE_WIDTH;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
@@ -1194,9 +1336,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
       gdk_draw_line (frame->window,
                      widget->style->fg_gc[GTK_STATE_NORMAL],
                      fgeom.max_rect.x + inner.left,
-                     fgeom.max_rect.y + inner.top,
+                     fgeom.max_rect.y + inner.top + 1,
                      fgeom.max_rect.x + fgeom.max_rect.width - inner.right,
-                     fgeom.max_rect.y + inner.top);
+                     fgeom.max_rect.y + inner.top + 1);
       
       vals.line_width = 0;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
@@ -1206,6 +1348,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
 
   if (fgeom.min_rect.width > 0 && fgeom.min_rect.height > 0)
     {
+      draw_control_bg (frames, frame, META_FRAME_CONTROL_MINIMIZE, &fgeom);
       
       vals.line_width = THICK_LINE_WIDTH;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
@@ -1215,9 +1358,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
       gdk_draw_line (frame->window,
                      widget->style->fg_gc[GTK_STATE_NORMAL],
                      fgeom.min_rect.x + inner.left,
-                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH,
+                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH + 1,
                      fgeom.min_rect.x + fgeom.min_rect.width - inner.right,
-                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH);
+                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH + 1);
       
       vals.line_width = 0;
       gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
@@ -1242,10 +1385,15 @@ meta_frames_expose_event            (GtkWidget           *widget,
   if (fgeom.menu_rect.width > 0 && fgeom.menu_rect.height > 0)
     {
       int x, y;
+#define ARROW_WIDTH 7
+#define ARROW_HEIGHT 5
+      
+      draw_control_bg (frames, frame, META_FRAME_CONTROL_MENU, &fgeom);
+      
       x = fgeom.menu_rect.x;
       y = fgeom.menu_rect.y;
-      x += (fgeom.menu_rect.width - 7) / 2;
-      y += (fgeom.menu_rect.height - 5) / 2;
+      x += (fgeom.menu_rect.width - ARROW_WIDTH) / 2;
+      y += (fgeom.menu_rect.height - ARROW_HEIGHT) / 2;
 
       gtk_paint_arrow (widget->style,
                        frame->window,
@@ -1256,7 +1404,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                        "metacity_menu_button",
                        GTK_ARROW_DOWN,
                        TRUE,
-                       x, y, 7, 5);
+                       x, y, ARROW_WIDTH, ARROW_HEIGHT);
     }
   
   return TRUE;

@@ -58,10 +58,6 @@ main (int argc, char **argv)
   meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
 
-  g_type_init (0); /* grumble */
-  
-  meta_errors_init ();
-
   if (g_getenv ("METACITY_DISPLAY"))
     {
       meta_verbose ("Using METACITY_DISPLAY %s\n",
@@ -72,6 +68,11 @@ main (int argc, char **argv)
       /* DO NOT FREE display_name, putenv() sucks */
     }
 
+
+  /* gtk_init() below overrides this, so it can be removed */
+  meta_errors_init ();
+  
+  g_type_init (0); /* grumble */
   meta_ui_init (&argc, &argv);
   
   if (!meta_display_open (NULL))

@@ -160,6 +160,9 @@ meta_frame_get_flags (MetaFrame *frame)
   flags =
     META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_RESIZE;
 
+  if (frame->window->maximized)
+    flags |= META_FRAME_MAXIMIZED;
+  
   if (frame->window->has_close_func)
     flags |= META_FRAME_ALLOWS_DELETE;
   

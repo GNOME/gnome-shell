@@ -23,13 +23,13 @@
 #define META_MENU_H
 
 #include <gtk/gtk.h>
-#include "messages.h"
-void meta_window_menu_show (gulong                   xwindow,
+#include "frames.h"
+
+void meta_window_menu_show (MetaFrames              *frames,
+                            MetaUIFrame             *frame,
                             int                      root_x,
                             int                      root_y,
                             int                      button,
-                            MetaMessageWindowMenuOps ops,
-                            MetaMessageWindowMenuOps insensitive,
                             guint32                  timestamp);
 void meta_window_menu_hide (void);
 

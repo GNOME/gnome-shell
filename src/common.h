@@ -35,7 +35,8 @@ typedef enum
   META_FRAME_TRANSIENT        = 1 << 5,
   META_FRAME_HAS_FOCUS        = 1 << 6,
   META_FRAME_SHADED           = 1 << 7,
-  META_FRAME_STUCK            = 1 << 8
+  META_FRAME_STUCK            = 1 << 8,
+  META_FRAME_MAXIMIZED        = 1 << 9
 } MetaFrameFlags;
 
 #endif

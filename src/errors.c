@@ -22,6 +22,7 @@
 
 #include "errors.h"
 #include <errno.h>
+#include <gdk/gdk.h>
 
 typedef struct _ErrorTrap  ErrorTrap;
 
@@ -46,6 +47,10 @@ meta_error_trap_push (MetaDisplay *display)
 {
   ErrorTrap *et;
 
+  gdk_error_trap_push ();
+  return;
+
+  /* below here is old method */
   et = g_new (ErrorTrap, 1);
 
   et->error_code = Success;
@@ -58,6 +63,9 @@ meta_error_trap_pop (MetaDisplay *display)
   int result;
   ErrorTrap *et;
   GSList *next;
+
+  return gdk_error_trap_pop ();
+  /* below here is old method */
   
   if (display->error_traps == NULL)
     meta_bug ("No error trap to pop\n");

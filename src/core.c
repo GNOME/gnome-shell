@@ -95,6 +95,41 @@ meta_core_user_move (Display *xdisplay,
 }
 
 void
+meta_core_user_resize  (Display *xdisplay,
+                        Window   frame_xwindow,
+                        int      width,
+                        int      height)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  window->user_has_resized = TRUE;
+  meta_window_resize (window, width, height);
+}
+
+void
+meta_core_user_raise (Display *xdisplay,
+                      Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+  meta_window_raise (window);
+}
+
+void
 meta_core_get_position (Display *xdisplay,
                         Window   frame_xwindow,
                         int     *x,
@@ -110,5 +145,92 @@ meta_core_get_position (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
   meta_window_get_position (window, x, y);
+}
+
+void
+meta_core_get_size (Display *xdisplay,
+                    Window   frame_xwindow,
+                    int     *width,
+                    int     *height)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  if (width)
+    *width = window->rect.width;
+  if (height)
+    *height = window->rect.height;
+}
+
+
+void
+meta_core_minimize (Display *xdisplay,
+                    Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_minimize (window);
+}
+
+void
+meta_core_maximize (Display *xdisplay,
+                    Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_maximize (window);
+}
+
+void
+meta_core_unmaximize (Display *xdisplay,
+                      Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_unmaximize (window);
+}
+
+void
+meta_core_delete (Display *xdisplay,
+                  Window   frame_xwindow,
+                  guint32  timestamp)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+  
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+     
+  meta_window_delete (window, timestamp);
 }
 

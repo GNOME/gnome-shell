@@ -18,6 +18,8 @@ metacity_SOURCES= 				\
 	keybindings.h				\
 	main.c					\
 	main.h					\
+	menu.c					\
+	menu.h					\
 	screen.c				\
 	screen.h				\
 	session.c				\

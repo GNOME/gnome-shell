@@ -44,11 +44,53 @@ void meta_core_user_move    (Display *xdisplay,
                              Window   frame_xwindow,
                              int      x,
                              int      y);
+void meta_core_user_resize  (Display *xdisplay,
+                             Window   frame_xwindow,
+                             int      width,
+                             int      height);
+
+void meta_core_user_raise   (Display *xdisplay,
+                             Window   frame_xwindow);
+
 /* get position of client, same coord space expected by move */
 void meta_core_get_position (Display *xdisplay,
                              Window   frame_xwindow,
                              int     *x,
                              int     *y);
+
+void meta_core_get_size     (Display *xdisplay,
+                             Window   frame_xwindow,
+                             int     *width,
+                             int     *height);
+
+void meta_core_minimize         (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_unmaximize       (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_maximize         (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_delete           (Display *xdisplay,
+                                 Window   frame_xwindow,
+                                 guint32  timestamp);
+void meta_core_unshade          (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_shade            (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_unstick          (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_stick            (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_change_workspace (Display *xdisplay,
+                                 Window   frame_xwindow,
+                                 int      new_workspace);
+
+
+int meta_core_get_num_workspaces (Display *xdisplay,
+                                  Screen  *xscreen);
+int meta_core_get_active_workspace (Display *xdisplay,
+                                    Screen *xscreen);
+int meta_core_get_frame_workspace (Display *xdisplay,
+                                   Window frame_xwindow);
 
 
 #endif
