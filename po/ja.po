@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-17 00:01+0900\n"
-"PO-Revision-Date: 2004-02-17 00:00+0900\n"
+"POT-Creation-Date: 2004-02-17 01:27+0900\n"
+"PO-Revision-Date: 2004-02-17 01:27+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -234,7 +234,7 @@ msgstr "ワークスペース %d"
 
 #: src/menu.c:168
 msgid "Workspace 1_0"
-msgstr "ワークスペース 10(_0)"
+msgstr "ワークスペース 1_0"
 
 #: src/menu.c:170
 #, c-format
@@ -333,7 +333,7 @@ msgstr "[MOD4]"
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr "Mod5"
+msgstr "[MOD5]"
 
 #: src/metacity-dialog.c:85
 #, c-format
