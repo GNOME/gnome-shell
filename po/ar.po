@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-19 15:24+0100\n"
-"PO-Revision-Date: 2003-12-18 14:45+0100\n"
+"POT-Creation-Date: 2004-02-29 04:20+0100\n"
+"PO-Revision-Date: 2004-03-01 00:23+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,11 @@ msgstr ""
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr "الاستخدام: %s\n"
+msgstr "الإستخدام: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "جمع ميتستي دون دعم لنمط السهب\n"
+msgstr "جمع ميتستي دون دعم لنسق السهب\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "فشل تلقي اسم المضيف: %s\n"
 
-#: src/display.c:289
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "فشل فتح شاشة نظام نوافذ X '%s'\n"
@@ -80,27 +80,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "خطأ IO فادح %d (%s) على الشاشة '%s'.\n"
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "غلق النافذة"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
-msgstr "فائمة النافذة"
+msgstr "قائمة النافذة"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "تصغير النافذة"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "تكبير النافذة"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "إلغاء تكبير النافذة"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,12 +108,12 @@ msgid ""
 msgstr ""
 "برنامج آخر بصدد استعمال المفتاح %s بالمغيرين %x كرابط\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطأ اطلاق حوار ميتستي لعرض خطأ حول الأمر: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "لم يعرف أمر %d.\n"
@@ -137,91 +137,105 @@ msgid ""
 msgstr ""
 "ميتستي %s\n"
 "جميع الحقوق محفوظة (C) 2001-2002 هافوك بنغتن، راد هات انك.، و آخرين\n"
-"هذا برنامج حر، راجع المصدر لحالات النسخ. لا يوجد أي ضمان، و لا ضمان بيع و "
-"لا مناسبة لأي هدف.\n"
+"هذا برنامج حر، راجع المصدر لحالات النسخ. لا يوجد أي ضمان، و لا ضمان بيع و لا "
+"مناسبة لأي هدف.\n"
 
-#: src/main.c:439
+#: src/main.c:443
 #, c-format
-msgid "Failed to scan themes directory : %s\n"
+msgid "Failed to scan themes directory: %s\n"
 msgstr "فشلت قراءة دليل التيمات : %s\n"
 
-#: src/main.c:455
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "لم يمكن ايجاد تيمة! تأكد من وجود %s و احتواءه على تيمات عادية."
 
-#: src/main.c:517
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "فشلت اعادة التشغيل: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "ت_صغير"
 
-#: src/menu.c:53
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "ت_كبير"
 
-#: src/menu.c:54
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "إلغاء التكبي_ر"
 
-#: src/menu.c:55
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "لف إلى ال_أعلى"
 
-#: src/menu.c:56
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "إل_غاء اللف"
 
-#: src/menu.c:57
+#: src/menu.c:59 src/menu.c:60
+msgid "On _Top"
+msgstr "إلى الأ_على"
+
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_نقل"
 
-#: src/menu.c:58
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "ت_حجيم"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_غلق"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "وضع على ج_ميع مساحات العمل"
 
-#: src/menu.c:63
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "فقط على مساحة العمل _هذه"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:68
+msgid "Move to Workspace _Left"
+msgstr "نقل لمساحة العمل على ال_يسار"
+
+#: src/menu.c:69
+msgid "Move to Workspace R_ight"
+msgstr "نقل·لمساحة·العمل·على·الي_مين"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Up"
+msgstr "نقل·لمساحة·العمل·إلى ال_أعلى"
+
+#: src/menu.c:71
+msgid "Move to Workspace _Down"
+msgstr "نقل·لمساحة·العمل·إلى الأ_سفل"
+
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:169
+msgid "Workspace 1_0"
+msgstr "مساحة العمل 1_0"
+
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "مساحة العمل %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "فقط على %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "نقل إلى %s"
+#: src/menu.c:366
+msgid "Move to Another _Workspace"
+msgstr "نقل ل_مساحة عمل أخرى"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -326,7 +340,7 @@ msgstr ""
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
-msgstr "_اجبار الانهاء"
+msgstr "_إجبار الإنهاء"
 
 #: src/metacity-dialog.c:197
 msgid "Title"
@@ -341,8 +355,8 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"هذه النوافذ لا تدعم \"حفظ الضبط الحالي\" يجب اعادة تشغيلها شخصيا عند "
-"التسجيل المرة القادمة."
+"هذه النوافذ لا تدعم \"حفظ الضبط الحالي\" يجب اعادة تشغيلها شخصيا عند التسجيل "
+"المرة القادمة."
 
 #: src/metacity-dialog.c:288
 #, c-format
@@ -681,9 +695,9 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"بعض التطبيقات تكسر المواصفات بطرق ينتج عنها ميزات مشوهة في مدير النوافذ. مثلا، مثاليا "
-"يضع ميتستي كل الحوارات في مواقع متناسقة باعتبار نوافذها الأب. يتطلب هذا"
-"تجاهل مواقع الحوارات المخصصة من طرف التطبيقات. لكن بعض اصدارات Java/"
+"بعض التطبيقات تكسر المواصفات بطرق ينتج عنها ميزات مشوهة في مدير النوافذ. "
+"مثلا، مثاليا يضع ميتستي كل الحوارات في مواقع متناسقة باعتبار نوافذها الأب. "
+"يتطلب هذاتجاهل مواقع الحوارات المخصصة من طرف التطبيقات. لكن بعض اصدارات Java/"
 "Swing تعلم نوافذها البارزة كحوارات، فيلغي ميتستي موقعة الحوارات لتمكين "
 "القوائم من العمل في تطبيقات Java المكسورة. هناك العديد من الأمثلة كالذي ذكر. "
 "هذا الخيار يضع ميتستي في نمط full-on الصحيح، مما يعطي واجهة مستخدم افضلا "
@@ -766,7 +780,7 @@ msgstr "اخذ صورة شاشة"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
-msgstr "اخذ صوؤة شاشة للنافذة"
+msgstr "اخذ صورة شاشة للنافذة"
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -795,14 +809,12 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:85
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"مفاتيح /apps/metacity/global_keybindings/run_command_N تعرف روابط مفاتيح "
-"تماثل هذه الأوامر. نقر رابط المفتاح لـ run_command_N سيشغل command_N."
+""
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -813,11 +825,11 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"رابط المفتاح المشغل للأمر المرقم مماثلة في /apps/metacity/keybinding_commands . "
-"التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر "
-"و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;"
-"Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط "
-"مفتاح لهذا العمل."
+"رابط المفتاح المشغل للأمر المرقم مماثلة في /apps/metacity/"
+"keybinding_commands . التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل "
+"\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى"
+"\"، فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -1069,10 +1081,10 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "رابط المفتاح المستخدم لدخول \"نمط النقل\" و بدأ نقل نافذة باستعمال  لوحة "
-"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;"
-"Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن "
-"يكون هناك رابط مفتاح لهذا العمل."
+"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
+"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
+"هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1084,10 +1096,10 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "رابط المفتاح المستخدم لدخول \"نمط التحجيم\" و بدأ تحجيم نافذة باستعمال  لوحة "
-"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;"
-"Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن "
-"يكون هناك رابط مفتاح لهذا العمل."
+"المفاتيح. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
+"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
+"هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1101,8 +1113,8 @@ msgstr ""
 "رابط المفتاح المستخدم لاخفاء كل النوافذ العادية و ضبط التركيز لخلفية سطح "
 "المكتب. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك "
-"رابط مفتاح لهذا العمل."
+"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
+"هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1368,8 +1380,8 @@ msgstr ""
 "رابط المفتاح المستعمل لنقل التركيز إلى الخلف بين الشرائط و سطح المكتب بدون "
 "نافذة بارزة. التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;"
 "F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;"
-"Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن "
-"يكون هناك رابط مفتاح لهذا العمل."
+"Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، "
+"فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1402,8 +1414,8 @@ msgstr ""
 "بارزة.  مسك \"shift\" مع هذا الرابط يجعل الاتجاه مرة أخرى إلى الأمام.التهيئة "
 "تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
 "بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
+"لهذا العمل."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1418,8 +1430,8 @@ msgstr ""
 "بارزة.  مسك \"shift\" مع هذا الرابط يجعل الاتجاه مرة أخرى إلى الأمام.التهيئة "
 "تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
 "بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
+"لهذا العمل."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1450,8 +1462,8 @@ msgstr ""
 "&lt;Alt&gt;Escape) مسك \"shift\" مع هذا الرابط يقلب اتجاه الحركة.التهيئة "
 "تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح "
 "بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا "
-"العمل."
+"\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح "
+"لهذا العمل."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1482,8 +1494,8 @@ msgstr ""
 "رابط المفتاح المستعمل لتفعيل وجود النافذة على جميع مساحات العمل أو مساحة "
 "واحدة فقط.التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك "
-"رابط مفتاح لهذا العمل."
+"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
+"هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1536,8 +1548,8 @@ msgstr ""
 "رابط المفتاح المستعمل لتفعيل وجود النافذة على جميع مساحات العمل أو مساحة "
 "واحدة فقط.التهيئة تكتب \"&lt;Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "المعرب حر و يسمح بحروف كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" "
-"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك "
-"رابط مفتاح لهذا العمل."
+"و \"&lt;Ctrl&gt;\". اذا تضبط الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون "
+"هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1595,7 +1607,6 @@ msgstr ""
 "الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1603,10 +1614,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"رابط المفتاح المستعمل لتنشيط قائمة النافذة. التهيئة تكتب \"&lt;Control&gt;a"
-"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة أو صغيرة، و "
-"كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
-"لالسلسلة الخاصة \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+"رابط المفتاح المستعمل لإظهار قائمة الشريط الرئيسية. التهيئة تكتب \"&lt;Control&gt;a"
+"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب منان و يسمح بحروف كبيرة أو صغيرة، و "
+"كذلك الإختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
+"للسلسلة الخاصة \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
@@ -1621,7 +1632,7 @@ msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
-"التيمة تحدد مظهر حدود النافذة و عمود العناوين، الخ..."
+"التيمة تحدد مظهر حدود النافذة و عمود العناوين، الخ."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1659,8 +1670,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"رابط المفتاح يغير ما اذا كانت النافذة تحت أم فوق النوافذ الأخرى. اذا "
-"كانت النافذة مغطات بنافذة أخرى، فسيرفع النافذة فوق النوافذ الأخرى، اذا كانت "
+"رابط المفتاح يغير ما اذا كانت النافذة تحت أم فوق النوافذ الأخرى. اذا كانت "
+"النافذة مغطات بنافذة أخرى، فسيرفع النافذة فوق النوافذ الأخرى، اذا كانت "
 "النافذة ظاهرة تماما، فستنزل النافذة تحت النوافذ الأخرى. التهيئة تكتب \"&lt;"
 "Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب حر و يسمح بحروف كبيرة "
 "أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط "
@@ -1721,14 +1732,13 @@ msgstr ""
 "الخيار للسلسلة الخاصة كـ \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:155
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"الخيار يحدد نتائج النقر الثنائي على عمود العنواين. الخيارات الممكنة حاليا هي "
-"'toggle_shaded'، مما سيخفي/يلغي اخفاء النافذة، و 'toggle_maximized' مما "
+"هذا الخيار يحدد نتائج النقر الثنائي على عمود العنواين. الخيارات الممكنة حاليا هي "
+"'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة، و 'toggle_maximized' مما "
 "سيكبر/يلغي تكبير النافذة."
 
 #: src/metacity.schemas.in.h:156
@@ -1737,7 +1747,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "تحول إلى نسق كامل الشاشة"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
@@ -1849,12 +1859,12 @@ msgstr "خطأ تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:411
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "شاشة %d على المعرض '%s' غير صحيح\n"
 
-#: src/screen.c:427
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1863,18 +1873,19 @@ msgstr ""
 "لالشاشة %d على المعرض \"%s\" مدير نوافذ، حاول استعمال خيار التبديل لتبديل "
 "مدير النوافذ الحالي.\n"
 
-#: src/screen.c:468
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d المعرض \"%s\"\n"
+msgstr ""
+"لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d المعرض \"%s\"\n"
 
-#: src/screen.c:523
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "الشاشة %d على المعرض \"%s\" لها مدير نوافذ\n"
 
-#: src/screen.c:706
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "لا يمكن تسريح الشاشة %d على المعرض \"%s\"\n"
@@ -1884,7 +1895,8 @@ msgstr "لا يمكن تسريح الشاشة %d على المعرض \"%s\"\n"
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
-msgstr "فشل فتح اتصال لمدير جلسة، لن تحفظ مواقع النوافذ: %s\n"
+msgstr ""
+"فشل فتح اتصال لمدير جلسة، لن تحفظ مواقع النوافذ: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
@@ -1954,7 +1966,8 @@ msgstr "عنصر مجهول %s"
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr "خطأ اطلاق حوار ميتاستي لالتحذير من تطبيقات لا تدعم ادارة الجلسة: %s\n"
+msgstr ""
+"خطأ اطلاق حوار ميتستي للتحذير من تطبيقات لا تدعم ادارة الجلسة: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2100,7 +2113,8 @@ msgstr "لا صفة \"قيمة\" على العنصر <%s>"
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
+msgstr ""
+"لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2146,22 +2160,22 @@ msgstr "لا صفة \"لون\" على العنصر <%s>"
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "لا صفة \"x1\" على العنصر <%s>"
+msgstr "لا صفة \"س1\" على العنصر <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "لا صفة \"y1\" على العنصر <%s>"
+msgstr "لا صفة \"ص1\" على العنصر <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "لا صفة \"x2\" على العنصر <%s>"
+msgstr "لا صفة \"س2\" على العنصر <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "لا صفة \"y2\" على العنصر <%s>"
+msgstr "لا صفة \"ص2\" على العنصر <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -2169,7 +2183,7 @@ msgstr "لا صفة \"y2\" على العنصر <%s>"
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "لا صفة \"x\" على العنصر <%s>"
+msgstr "لا صفة \"س\" على العنصر <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -2177,7 +2191,7 @@ msgstr "لا صفة \"x\" على العنصر <%s>"
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "لا صفة \"y\" على العنصر <%s>"
+msgstr "لا صفة \"ص\" على العنصر <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
@@ -2409,7 +2423,8 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <constant>"
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
+msgstr ""
+"العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2469,9 +2484,8 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "ملف التيمة %s لا يحتوي على عنصر جذري <metacity_theme>"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "تركيز النافذة"
+msgstr ""
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
@@ -2510,18 +2524,16 @@ msgid "/Windows/_Right dock"
 msgstr ""
 
 #: src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "تركيز النافذة"
+msgstr ""
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
 msgstr ""
 
 #: src/theme-viewer.c:131
-#, fuzzy
 msgid "Open another one of these windows"
-msgstr "رفع النافذة فوق النوافذ الأخرى"
+msgstr "فتح نافذة أخرى من هذه النوافذ"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
@@ -2546,7 +2558,7 @@ msgstr ""
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "عمود"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
@@ -2554,15 +2566,15 @@ msgstr ""
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "صندوق حوار"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "صندوق حوار سائد"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "لوحة الأدوات"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
@@ -2570,12 +2582,12 @@ msgstr ""
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "حد"
 
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "تحربة تصميم الأزرار %d"
 
 #: src/theme-viewer.c:760
 #, c-format
@@ -2587,39 +2599,38 @@ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr ""
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "خطأ غلق ملف الجلسة '%s': %s\n"
+msgstr "خطأ تحميل التيمة: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "حملت التيمة \"%s\" في %g ثواني\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr ""
+msgstr "خط عنوان عادي"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr ""
+msgstr "خط عنوان صغير"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr ""
+msgstr "خط عنوان عريض"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "تصاميم الأزرار"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "عمة إهتداء"
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "خط عنوان النافذة"
+msgstr "عنوان النافذة يكون هنا"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2654,12 +2665,12 @@ msgstr ""
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "قيمة·س·كانت·%d،·ترقب·%d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "قيمة ص كانت %d، ترقب %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
@@ -2738,7 +2749,8 @@ msgstr "لم يفهم جزء اللون \"%s\" في تخصيص اللون"
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr "تهيئة الخلط \"blend/bg_color/fg_color/alpha\"، \"%s\"لا يناسب التهيئة"
+msgstr ""
+"تهيئة الخلط \"blend/bg_color/fg_color/alpha\"، \"%s\"لا يناسب التهيئة"
 
 #: src/theme.c:1054
 #, c-format
@@ -2782,7 +2794,8 @@ msgstr "تعبير التنسيق يحتوي على الرمز '%s' الممنو
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "تعبير التنسيق يحتوي على عدد نقطة متغيرة '%s' لم يمكن اعرابه"
+msgstr ""
+"تعبير التنسيق يحتوي على عدد نقطة متغيرة '%s' لم يمكن اعرابه"
 
 #: src/theme.c:1464
 #, c-format
@@ -2794,7 +2807,8 @@ msgstr "تعبير التنسيق يحتوي على عدد صحيح '%s' لم ي
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "تعبير التنسيق يحتوي على مقسوم عند بداية هذا النص: \"%s\""
+msgstr ""
+"تعبير التنسيق يحتوي على مقسوم عند بداية هذا النص: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2807,13 +2821,15 @@ msgstr "تعبير التنسيق ينتج عند القسمة على صفر"
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "تعبير التنسيق يحاول استعمال مقسوم mod على عدد نقطة متغيرة"
+msgstr ""
+"تعبير التنسيق يحاول استعمال مقسوم mod على عدد نقطة متغيرة"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "تعبير التنسيق له مقسوم \"%s\" بالرغم من ترقبه قاسم"
+msgstr ""
+"تعبير التنسيق له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -2828,7 +2844,8 @@ msgstr "انتهى تعبير التنسيق بمقسوم عوض قاسم"
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "لتعبير التنسيق مقسوم \"%c\" يتبع القاسم \"%c\" بدون قاسم بينهما"
+msgstr ""
+"لتعبير التنسيق مقسوم \"%c\" يتبع القاسم \"%c\" بدون قاسم بينهما"
 
 #: src/theme.c:1982
 msgid ""
@@ -2964,15 +2981,15 @@ msgstr "فتح ملف الرسائل %s\n"
 msgid "Window manager: "
 msgstr "مدير النوافذ: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "خلل في مدير النوافذ: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "تحذير مدير النوافذ: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "خطأ مدير النوافذ: "
 
@@ -2982,7 +2999,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "ضبط التطبيق صك _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4647
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2998,7 +3015,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5309
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3033,6 +3050,12 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
+
+#~ msgid "Only on %s"
+#~ msgstr "فقط على %s"
+
+#~ msgid "Move to %s"
+#~ msgstr "نقل إلى %s"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
