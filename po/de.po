@@ -5,15 +5,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Metacity 2.4.x\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
-"PO-Revision-Date: 2003-07-12 23:26+0200\n"
+"Project-Id-Version: Metacity 2.6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-30 17:37+0200\n"
+"PO-Revision-Date: 2003-09-30 17:37+0200\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -25,13 +25,13 @@ msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "Metacity wurde ohne Unterstützung für den redseligen Modus kompiliert\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "»%s« konnte nicht als Ganzzahl verarbeitet werden"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
@@ -39,17 +39,17 @@ msgstr ""
 "Schließende Zeichen »%s« in Zeichenkette »%s« konnten nicht verarbeitet "
 "werden"
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nachricht »%s« vom Dialogprozess konnte nicht verarbeitet werden\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Fehler beim Lesen vom Dialog-Anzeigeprozess: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Beim Starten eines Metacity-Dialogs, der wegen des Abwürgens einer Anwendung "
 "nachfragen sollte, ist ein Fehler aufgetreten: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
@@ -103,7 +103,7 @@ msgstr "Fenster maximieren"
 msgid "Unmaximize Window"
 msgstr "Fenster wiederherstellen"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -112,19 +112,19 @@ msgstr ""
 "Ein anderes Programm verwendet die Taste %s bereits mit den Umschaltern %x "
 "als Tastenkombination\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Beim Starten eines Metacity-Dialogs, der einen Fehler zu einem Befehl "
 "anzeigen sollte, ist ein Fehler aufgetreten: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Es wurde kein Befehl %d festgelegt.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
@@ -133,7 +133,7 @@ msgstr ""
 "[--display=ANZEIGE] [--replace] [--version]\n"
 
 # CHECK
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -149,7 +149,7 @@ msgstr ""
 "Es besteht KEINE Garantie auf MARKTREIFE oder EIGNUNG für einen BESTIMMTEN "
 "ZWECK.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -157,7 +157,7 @@ msgstr ""
 "Es konnte kein Thema gefunden werden! Stellen Sie sicher, dass %s existiert "
 "und zumindest die mitgelieferten Themen enthält."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Neustart fehlgeschlagen: %s\n"
@@ -396,7 +396,7 @@ msgstr "Fenstermenü aktivieren"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr "Anordnung der Knöpfe auf der Titelleiste"
+msgstr "Knopfanordnung auf der Titelleiste"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -407,13 +407,14 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
-"Der Wert sollte eine Zeichenkette der Form »menu:minimize,maximize,close« "
-"sein. Der Doppelpunkt trennt die rechte von der linken Ecke der Titelleiste "
-"und die Namen der einzelnen Knöpfe sind durch Kommas getrennt. "
-"Mehrfachnennungen von Knopfnamen sind nicht erlaubt. Unbekannte Knopfnamen "
-"werden ohne Ausgabe ignoriert, sodass in zukünftigen Versionen dieses "
-"Fenstermanagers Knöpfe hinzugefügt werden können, ohne die Konfiguration "
-"älterer Versionen zu beeinflussen."
+"Die Anordnung der Knöpfe auf der Titelleiste. Der Wert muss eine "
+"Zeichenkette der Form »menu:minimize,maximize,close« sein. Der Doppelpunkt "
+"trennt die rechte von der linken Ecke der Titelleiste und die Namen der "
+"einzelnen Knöpfe sind durch Kommas getrennt. Mehrfachnennungen von "
+"Knopfnamen sind nicht erlaubt. Unbekannte Knopfnamen werden ohne Ausgabe "
+"ignoriert, sodass in zukünftigen Versionen dieses Fenstermanagers Knöpfe "
+"hinzugefügt werden können, ohne die Konfiguration älterer Versionen zu "
+"beeinflussen."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -426,7 +427,7 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Während dieser Umschalttaste gedrückt wird, verschiebt das Anklicken eines "
+"Solange diese Umschalttaste gedrückt wird, verschiebt das Anklicken eines "
 "Fensters dieses (linke Maustaste), ändert dessen Größe (mittlere Maustaste) "
 "oder zeigt das Fenstermenü (rechte Maustaste). Das Format ist »&lt;Alt&gt;«."
 
@@ -1960,7 +1961,7 @@ msgid ""
 "modifier\n"
 msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein zulässiger Wert für "
-"den Mausknopf-Umschalter\n"
+"den Maustastenumschalter\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
@@ -2128,7 +2129,7 @@ msgstr "Unbekanntes Attribut %s in Element <geometry>"
 msgid "Unknown element %s"
 msgstr "Unbekanntes Element %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
