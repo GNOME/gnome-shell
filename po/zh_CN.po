@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
+"POT-Creation-Date: 2004-06-25 15:40+0200\n"
 "PO-Revision-Date: 2004-03-12 23:37+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -60,7 +60,7 @@ msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错�
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
@@ -218,21 +218,21 @@ msgstr "移动到工作区上侧(_U)"
 msgid "Move to Workspace _Down"
 msgstr "移动到工作区下侧(_D)"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "工作区 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "工作区 %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "移动到另外的工作区(_W)"
 
@@ -354,7 +354,7 @@ msgid ""
 "restarted manually next time you log in."
 msgstr "这些窗口不支持“保存当前设置”，您在下次登录时，必须手动重启动它们。"
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -426,7 +426,7 @@ msgstr ""
 "者显示窗口菜单(右键单击)。修饰键可写作“&lt;Alt&gt;”或者“&lt;Super&gt;”。"
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
+msgid "Close window"
 msgstr "关闭窗口"
 
 #: src/metacity.schemas.in.h:10
@@ -517,7 +517,7 @@ msgid "Lower window below other windows"
 msgstr "将窗口降低到其它窗口之下"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
+msgid "Maximize window"
 msgstr "最大化窗口"
 
 #: src/metacity.schemas.in.h:24
@@ -529,7 +529,7 @@ msgid "Maximize window vertically"
 msgstr "垂直最大化窗口"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
+msgid "Minimize window"
 msgstr "最小化窗口"
 
 #: src/metacity.schemas.in.h:27
@@ -537,40 +537,40 @@ msgid "Modifier to use for modified window click actions"
 msgstr "用于修改窗口点击动作的修饰键"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "移动窗口"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "在面板和桌面之间立即反向移动焦点"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "在面板和桌面之间用弹出框反向移动焦点"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "在窗口之间立即反向移动焦点"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "在面板和桌面之间立即移动焦点"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "在面板和桌面之间用弹出框移动焦点"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "在窗口之间立即移动焦点"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "在窗口之间用弹出框移动焦点"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "在窗口之间用弹出框反向移动焦点"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "移动窗口"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -662,7 +662,7 @@ msgid "Raise window above other windows"
 msgstr "将窗口提升到其它窗口之上"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
+msgid "Resize window"
 msgstr "改变窗口大小"
 
 #: src/metacity.schemas.in.h:59
@@ -674,8 +674,8 @@ msgid "Show the panel menu"
 msgstr "显示面板菜单"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
-msgstr "显示面板运行对话框"
+msgid "Show the panel run application dialog"
+msgstr "显示面板运行应用程序对话框"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -1550,9 +1550,9 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
@@ -1749,7 +1749,7 @@ msgstr ""
 "环境中使用，或者关闭“听得见的铃声”时。"
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
+msgid "Unmaximize window"
 msgstr "取消最大化窗口"
 
 #: src/metacity.schemas.in.h:163
@@ -1772,29 +1772,29 @@ msgstr "窗口标题字体"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1803,30 +1803,30 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
 "3$d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
@@ -1866,77 +1866,70 @@ msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr "无法打开到会话管理器的连接，因此不会保存窗口位置：%s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "无法创建目录“%s”：%s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "无法打开会话文件“%s”进行写入：%s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "写入会话文件“%s”时出错：%s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "关闭会话文件“%s”时出错：%s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "无法读取保存的会话文件 %s：%s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "无法解析保存的会话文件：%s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> 属性已看到，但我们已经拥有该会话 ID"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> 元素上未知的属性 %s"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "嵌套 <window> 标记"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 元素上未知的属性 %s"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> 元素上未知的属性 %s"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> 元素上未知的属性 %s"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "未知的元素 %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2965,7 +2958,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2981,7 +2974,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3015,3 +3008,8 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr "无法打开到会话管理器的连接，因此不会保存窗口位置：%s\n"
