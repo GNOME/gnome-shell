@@ -374,13 +374,11 @@ run_speed_comparison (Display *xdisplay,
   int n_left;
   
   /* We just use atom values 0 to n_props, many are probably BadAtom,
-   * that's fine. The larger this number the worse the async case
-   * looks; my guess is it's because of display->async_handlers
-   * becoming a very long list. Need to modify async-getprop.c
-   * to install only a single async handler per display.
+   * that's fine.
    */
-  n_props = 200;
-
+  n_props = 4000;
+  printf ("Timing with %d property requests\n", n_props);
+  
   gettimeofday (&start, NULL);
   
   i = 0;

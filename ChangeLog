@@ -1,8 +1,13 @@
 2002-10-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/async-getprop.c: change to add only one _XAsyncHandler per
+	display, speeding things up a bit.
+
+2002-10-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/async-getprop.c: Add wacky hack suggested by Keith Packard
 	to get X properties asynchronously. Not actually used by metacity
-	yet, but thinking about it.
+	yet, but thinking about it.	
 
 2002-10-04  Havoc Pennington  <hp@redhat.com>
 

@@ -43,13 +43,21 @@
 #define NULL ((void*)0)
 #endif
 
+typedef struct _ListNode ListNode;
+typedef struct _AgPerDisplayData AgPerDisplayData;
+
+struct _ListNode
+{
+  ListNode *next;
+};
+
 struct _AgGetPropertyTask
 {
-  Display *display;
+  ListNode node;
+  
+  AgPerDisplayData *dd;
   Window window;
   Atom property;
-
-  _XAsyncHandler async;
 
   unsigned long request_seq;
   int error;
@@ -62,21 +70,29 @@ struct _AgGetPropertyTask
   unsigned char *data;
 
   Bool have_reply;
-
-  AgGetPropertyTask *next;
 };
 
-static AgGetPropertyTask *pending_tasks = NULL;
-static AgGetPropertyTask *pending_tasks_tail = NULL;
-static AgGetPropertyTask *completed_tasks = NULL;
-static AgGetPropertyTask *completed_tasks_tail = NULL;
-static int n_tasks_pending = 0;
-static int n_tasks_completed = 0;
+struct _AgPerDisplayData
+{
+  ListNode node;
+  _XAsyncHandler async;
+  
+  Display *display;
+  ListNode *pending_tasks;
+  ListNode *pending_tasks_tail;
+  ListNode *completed_tasks;
+  ListNode *completed_tasks_tail;
+  int n_tasks_pending;
+  int n_tasks_completed;
+};
+
+static ListNode *display_datas = NULL;
+static ListNode *display_datas_tail = NULL;
 
 static void
-append_to_list (AgGetPropertyTask **head,
-                AgGetPropertyTask **tail,
-                AgGetPropertyTask  *task)
+append_to_list (ListNode **head,
+                ListNode **tail,
+                ListNode  *task)
 {
   task->next = NULL;
   
@@ -94,12 +110,12 @@ append_to_list (AgGetPropertyTask **head,
 }
 
 static void
-remove_from_list (AgGetPropertyTask **head,
-                  AgGetPropertyTask **tail,
-                  AgGetPropertyTask  *task)
+remove_from_list (ListNode **head,
+                  ListNode **tail,
+                  ListNode  *task)
 {
-  AgGetPropertyTask *prev;
-  AgGetPropertyTask *node;
+  ListNode *prev;
+  ListNode *node;
 
   prev = NULL;
   node = *head;
@@ -129,18 +145,60 @@ remove_from_list (AgGetPropertyTask **head,
 }
 
 static void
-move_to_completed (AgGetPropertyTask *task)
+move_to_completed (AgPerDisplayData  *dd,
+                   AgGetPropertyTask *task)
 {
-  remove_from_list (&pending_tasks,
-                    &pending_tasks_tail,
-                    task);
+  remove_from_list (&dd->pending_tasks,
+                    &dd->pending_tasks_tail,
+                    &task->node);
   
-  append_to_list (&completed_tasks,
-                  &completed_tasks_tail,
-                  task);
+  append_to_list (&dd->completed_tasks,
+                  &dd->completed_tasks_tail,
+                  &task->node);
 
-  --n_tasks_pending;
-  ++n_tasks_completed;
+  dd->n_tasks_pending -= 1;
+  dd->n_tasks_completed += 1;
+}
+
+static AgGetPropertyTask*
+find_pending_by_request_sequence (AgPerDisplayData *dd,
+                                  unsigned long     request_seq)
+{
+  ListNode *node;
+
+  /* if the sequence is after our last pending task, we
+   * aren't going to find a match
+   */
+  {
+    AgGetPropertyTask *task = (AgGetPropertyTask*) dd->pending_tasks_tail;
+    if (task != NULL)
+      {
+        if (task->request_seq < request_seq)
+          return NULL;
+        else if (task->request_seq == request_seq)
+          return task; /* why not check this */
+      }
+  }
+
+  /* Generally we should get replies in the order we sent
+   * requests, so we should usually be using the task
+   * at the head of the list, if we use any task at all.
+   * I'm not sure this is 100% guaranteed, if it is,
+   * it would be a big speedup.
+   */
+  
+  node = dd->pending_tasks;
+  while (node != NULL)
+    {
+      AgGetPropertyTask *task = (AgGetPropertyTask*) node;
+      
+      if (task->request_seq == request_seq)
+        return task;
+      
+      node = node->next;
+    }
+  
+  return NULL;
 }
 
 static Bool
@@ -153,20 +211,25 @@ async_get_property_handler (Display *dpy,
   xGetPropertyReply  replbuf;
   xGetPropertyReply *reply;
   AgGetPropertyTask *task;
+  AgPerDisplayData *dd;
   int bytes_read;
 
-  task = (AgGetPropertyTask*) data;
-
+  dd = (AgPerDisplayData*) data;
+  
 #if 0
-  printf ("%s: waiting for %ld seeing %ld buflen %d\n", __FUNCTION__,
-          task->request_seq, dpy->last_request_read, len);
+  printf ("%s: seeing request seq %ld buflen %d\n", __FUNCTION__,
+          dpy->last_request_read, len);
 #endif
+  
+  task = find_pending_by_request_sequence (dd, dpy->last_request_read);
 
-  if (dpy->last_request_read != task->request_seq)
+  if (task == NULL)
     return False;
 
+  assert (dpy->last_request_read == task->request_seq);
+
   task->have_reply = True;
-  move_to_completed (task);
+  move_to_completed (dd, task);
   
   /* read bytes so far */
   bytes_read = SIZEOF (xReply);
@@ -366,6 +429,57 @@ async_get_property_handler (Display *dpy,
   return True;
 }
 
+static AgPerDisplayData*
+get_display_data (Display *display,
+                  Bool     create)
+{
+  ListNode *node;
+  AgPerDisplayData *dd;
+  
+  node = display_datas;
+  while (node != NULL)
+    {
+      dd = (AgPerDisplayData*) node;
+      
+      if (dd->display == display)
+        return dd;
+      
+      node = node->next;
+    }
+
+  if (!create)
+    return NULL;
+  
+  dd = Xcalloc (1, sizeof (AgPerDisplayData));
+  if (dd == NULL)
+    return NULL;
+
+  dd->display = display;
+  dd->async.next = display->async_handlers;
+  dd->async.handler = async_get_property_handler;
+  dd->async.data = (XPointer) dd;
+  dd->display->async_handlers = &dd->async;
+
+  append_to_list (&display_datas,
+                  &display_datas_tail,
+                  &dd->node);
+  
+  return dd;
+}
+
+static void
+maybe_free_display_data (AgPerDisplayData *dd)
+{
+  if (dd->pending_tasks == NULL &&
+      dd->completed_tasks == NULL)
+    {
+      DeqAsyncHandler (dd->display, &dd->async);
+      remove_from_list (&display_datas, &display_datas_tail,
+                        &dd->node);
+      XFree (dd);
+    }
+}
+
 AgGetPropertyTask*
 ag_task_create (Display *dpy,
                 Window   window,
@@ -378,9 +492,18 @@ ag_task_create (Display *dpy,
   AgGetPropertyTask *task;
   xGetPropertyReq *req;
   xError error;
-
+  AgPerDisplayData *dd;  
+  
   /* Fire up our request */
   LockDisplay (dpy);
+
+  dd = get_display_data (dpy, True);
+  if (dd == NULL)
+    {
+      UnlockDisplay (dpy);
+      return NULL;
+    }
+  
   GetReq (GetProperty, req);
   req->window = window;
   req->property = property;
@@ -399,25 +522,32 @@ ag_task_create (Display *dpy,
       return NULL;
     }
 
-  task->display = dpy;
+  task->dd = dd;
   task->window = window;
   task->property = property;
   task->request_seq = dpy->request;
-  task->async.next = dpy->async_handlers;
-  task->async.handler = async_get_property_handler;
-  task->async.data = (XPointer) task;
-  dpy->async_handlers = &task->async;
 
-  append_to_list (&pending_tasks,
-                  &pending_tasks_tail,
-                  task);
-  ++n_tasks_pending;
+  append_to_list (&dd->pending_tasks,
+                  &dd->pending_tasks_tail,
+                  &task->node);
+  dd->n_tasks_pending += 1;
   
   UnlockDisplay (dpy);
 
   SyncHandle ();
 
   return task;
+}
+
+static void
+free_task (AgGetPropertyTask *task)
+{
+  remove_from_list (&task->dd->completed_tasks,
+                    &task->dd->completed_tasks_tail,
+                    &task->node);
+  task->dd->n_tasks_completed -= 1;
+  maybe_free_display_data (task->dd);
+  XFree (task);
 }
 
 Status
@@ -432,24 +562,21 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
 
   *prop = NULL;
 
-  dpy = task->display; /* Xlib macros require a variable named "dpy" */
+  dpy = task->dd->display; /* Xlib macros require a variable named "dpy" */
   
   if (task->error != Success)
     {
       Status s = task->error;
-      DeqAsyncHandler (task->display, &task->async);
-      remove_from_list (&completed_tasks, &completed_tasks_tail, task);
-      --n_tasks_completed;
-      XFree (task);
+
+      free_task (task);
+      
       return s;
     }
 
   if (!task->have_reply)
     {
-      DeqAsyncHandler (task->display, &task->async);
-      remove_from_list (&completed_tasks, &completed_tasks_tail, task);
-      --n_tasks_completed;
-      XFree (task);
+      free_task (task);
+
       return BadAlloc; /* not Success */
     }
 
@@ -462,10 +589,7 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
 
   SyncHandle ();
 
-  DeqAsyncHandler (dpy, &task->async);
-  remove_from_list (&completed_tasks, &completed_tasks_tail, task);
-  --n_tasks_completed;
-  XFree (task);
+  free_task (task);
   
   return Success;
 }
@@ -491,26 +615,24 @@ ag_task_get_window (AgGetPropertyTask *task)
 Display*
 ag_task_get_display (AgGetPropertyTask *task)
 {
-  return task->display;
+  return task->dd->display;
 }
 
 AgGetPropertyTask*
 ag_get_next_completed_task (Display *display)
 {
-  AgGetPropertyTask *node;
+  AgPerDisplayData *dd;
 
-#ifdef DEBUG_SPEW
-  printf ("%d pending %d completed\n", n_tasks_pending, n_tasks_completed);
-#endif
+  dd = get_display_data (display, False);
+
+  if (dd == NULL)
+    return NULL;
   
-  node = completed_tasks;
-  while (node != NULL)
-    {
-      if (node->display == display)
-        return node;
-      
-      node = node->next;
-    }
+#ifdef DEBUG_SPEW
+  printf ("%d pending %d completed\n",
+          dd->n_tasks_pending,
+          dd->n_tasks_completed);
+#endif
 
-  return NULL;
+  return (AgGetPropertyTask*) dd->completed_tasks;
 }
