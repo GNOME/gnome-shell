@@ -1,3 +1,10 @@
+2004-08-05  Elijah Newren  <newren@math.utah.edu>
+
+	* src/window.c (meta_window_stick): prepend window to mru list
+	instead of appending, since making the window sticky should imply
+	that it is the most recently used, not the least recently.  (fixes
+	#149369)
+
 2004-08-04  Elijah Newren  <newren@math.utah.edu>
 
 	* configure.in: post-release version bump (2.8.3) that I forgot to

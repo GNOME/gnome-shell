@@ -3420,7 +3420,7 @@ meta_window_stick (MetaWindow  *window)
     {
       workspace = (MetaWorkspace *) tmp->data;
       if (!g_list_find (workspace->mru_list, window))
-        workspace->mru_list = g_list_append (workspace->mru_list, window);
+        workspace->mru_list = g_list_prepend (workspace->mru_list, window);
 
       tmp = tmp->next;
     }
