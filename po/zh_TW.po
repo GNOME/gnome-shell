@@ -1,14 +1,16 @@
 # traditional Chinese translation of metacity.
-# Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+# Copyright (C) 2002, 03, 04 Free Software Foundation, Inc.
 # Abel Cheung <maddog@linux.org.hk>, 2002-2003.
-#
+# Woodman Tuen <woodman@culturecom.com.hk>, 2004
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.5.2\n"
+"Project-Id-Version: metacity 2.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2003-07-07 22:58+0800\n"
-"Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
+"POT-Creation-Date: 2004-09-09 06:22+0800\n"
+"PO-Revision-Date: 2004-09-09 06:25+0800\n"
+"Last-Translator: Woodman Tuen <woodman@culurecom.com.hk>\n"
 "Language-Team: Chinese (traditioanl) <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -136,9 +138,9 @@ msgstr ""
 "對適售性或特定目的適用性所為的默示性擔保。\n"
 
 #: src/main.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "無法載入佈景主題“%s”：%s\n"
+msgstr "找不到佈景主題目錄：%s\n"
 
 #: src/main.c:459
 #, c-format
@@ -174,7 +176,7 @@ msgstr "放下(_U)"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr ""
+msgstr "最上層(_T)"
 
 #: src/menu.c:61
 msgid "_Move"
@@ -199,24 +201,20 @@ msgid "Only on _This Workspace"
 msgstr "只在本工作區顯示(_T)"
 
 #: src/menu.c:68
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "將視窗移動至第 9 個工作區"
+msgstr "將視窗移動至左方的工作區(_L)"
 
 #: src/menu.c:69
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "將視窗移動至第 1 個工作區"
+msgstr "將視窗移動至右方的工作區(_I)"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "將視窗移動至第 1 個工作區"
+msgstr "將視窗移動至上方的工作區(_U)"
 
 #: src/menu.c:71
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "將視窗移動至下方的工作區"
+msgstr "將視窗移動至下方的工作區(_D)"
 
 #: src/menu.c:162 src/prefs.c:1868
 #, c-format
@@ -224,9 +222,8 @@ msgid "Workspace %d"
 msgstr "工作區 %d"
 
 #: src/menu.c:171
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "工作區 %d"
+msgstr "工作區 1_0"
 
 #: src/menu.c:173
 #, c-format
@@ -234,9 +231,8 @@ msgid "Workspace %s%d"
 msgstr "工作區 %s%d"
 
 #: src/menu.c:368
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "將視窗移動至上方的工作區"
+msgstr "將視窗移動至其它的工作區"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -491,6 +487,9 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"如啟用此項 metacity 會給使用者更少的回饋及更少「直接操作」的知覺：以使用線"
+"框，禁止使用勳畫，或使用其它辦法。這很明顯會減低很多給使用者的可用性。但可能"
+"會使到在啟用此項前不能使用的舊應用程式及終端服務器可以運作。"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -514,7 +513,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "如啟用此項，以改變可用性來換取使用更少的資源"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2659,158 +2658,153 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "佈景檔 %s 沒有頂層的 <metacity_theme> 元素"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "視窗焦點"
+msgstr "/視窗(_W)"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/視窗/分開"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/視窗/對話視窗(_D)"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/視窗/模態對話視窗(_M)"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/視窗/工具(_U)"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/視窗/啟動畫面(_S)"
 
 #: src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "視窗焦點"
+msgstr "/視窗/上工作區(_T)"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/視窗/下工作區(_B)"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/視窗/左工作區(_L)"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/視窗/右工作區(_R)"
 
 #: src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "視窗焦點"
+msgstr "/視窗/所有工作區(_A)"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/視窗/桌面(_K)"
 
 #: src/theme-viewer.c:131
-#, fuzzy
 msgid "Open another one of these windows"
-msgstr "令某個視窗覆蓋其它視窗"
+msgstr "開啟一個同樣的視窗"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "這是有開啟圖示的展示用按鈕"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "這是有離開圖示的展示用按鈕"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "這是在樣版對話視窗中的樣版訊息"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "假的選單項目 %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "只有邊框的視窗"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "列"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "正常的程式視窗"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "對話視窗"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "模態對話視窗"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "公用程式控制板"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "關閉選單"
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "邊框"
 
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "按鈕配置測試 %d"
 
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "繪畫一個視窗需時 %g 毫秒"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "用法： metacity-theme-viewer·[佈景主題名稱]\n"
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "無法關閉作業階段檔案‘%s’：%s\n"
+msgstr "載入佈景主題失敗 %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "載入佈景主題 “%s” 需時 %g 秒\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr ""
+msgstr "正常標題列字型"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr ""
+msgstr "小標題列字型"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr ""
+msgstr "大標題列字型"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "按鈕配置"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "速度測試"
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "視窗標題列字型"
+msgstr "這裡是視窗標題"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2819,43 +2813,46 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"繪畫 %d 幀需時：\n"
+"在客戶端是 %g 秒（每幀 %g 毫秒）\n"
+"包括 X 伺服器資源的實際消耗時間是 %g 秒（每幀 %g 毫秒）\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "位置表現測試返回值是「正確」，但有 set error"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "位置表現測試返回值是「錯誤」，但沒有 set error"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "預期會發生錯誤，但結果並沒錯誤發生"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "預期會發生錯誤 %d ，但結果卻出現 %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "預期不會發生錯誤，但結果返回了一個：%s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "x 的數值是 %d，%d是預期中的數值"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "y 的數值是 %d，%d是預期中的數值"
 
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "分析 %d 座標表現需時 %g 秒（平均 %g 秒）\n"
 
 #: src/theme.c:202
 msgid "top"
