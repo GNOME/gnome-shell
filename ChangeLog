@@ -1,5 +1,10 @@
 2002-10-01  Havoc Pennington  <hp@pobox.com>
 
+	* src/place.c (find_next_cascade): try extra cascades alongside
+	the first, if the first fails; patch from readams@hmc.edu
+
+2002-10-01  Havoc Pennington  <hp@pobox.com>
+
 	* src/stack.c (get_standalone_layer): put ABOVE windows in same
 	layer as docks.
 

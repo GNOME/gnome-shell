@@ -88,6 +88,8 @@ find_next_cascade (MetaWindow *window,
   GList *sorted;
   int cascade_x, cascade_y;
   int x_threshold, y_threshold;
+  int window_width, window_height;
+  int cascade_stage;
   MetaRectangle work_area;  
   
   sorted = g_list_copy (windows);
@@ -98,11 +100,27 @@ find_next_cascade (MetaWindow *window,
    * new window after it. If a window is already nearly at that
    * position, we move on.
    */
-
+  
+  /* arbitrary-ish threshold, honors user attempts to
+   * manually cascade.
+   */
+#define CASCADE_FUZZ 15
+  if (fgeom)
+    {
+      x_threshold = MAX (fgeom->left_width, CASCADE_FUZZ);
+      y_threshold = MAX (fgeom->top_height, CASCADE_FUZZ);
+    }
+  else
+    {
+      x_threshold = CASCADE_FUZZ;
+      y_threshold = CASCADE_FUZZ;
+    }
+  
   /* Find furthest-SE origin of all workspaces.
    * cascade_x, cascade_y are the target position
    * of NW corner of window frame.
    */
+  
   /* FIXME this is bogus because we get the current xinerama
    * for the window based on its position, but we haven't
    * placed it yet.
@@ -111,23 +129,13 @@ find_next_cascade (MetaWindow *window,
   
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
-
-  /* Find first cascade position that's not used. */
-
-  /* arbitrary-ish threshold, honors user attempts to
-   * manually cascade.
-   */
-  if (fgeom)
-    {
-      x_threshold = MAX (fgeom->left_width, 15);
-      y_threshold = MAX (fgeom->top_height, 15);
-    }
-  else
-    {
-      x_threshold = 15;
-      y_threshold = 15;
-    }
   
+  /* Find first cascade position that's not used. */
+  
+  window_width = window->frame ? window->frame->rect.width : window->rect.width;
+  window_height = window->frame ? window->frame->rect.height : window->rect.height;
+  
+  cascade_stage = 0;
   tmp = sorted;
   while (tmp != NULL)
     {
@@ -147,7 +155,7 @@ find_next_cascade (MetaWindow *window,
           wx = w->rect.x;
           wy = w->rect.y;
         }
-
+      
       if (ABS (wx - cascade_x) < x_threshold &&
           ABS (wy - cascade_y) < y_threshold)
         {
@@ -158,6 +166,36 @@ find_next_cascade (MetaWindow *window,
           meta_window_get_position (w, &wx, &wy);
           cascade_x = wx;
           cascade_y = wy;
+          
+          /* If we go off the screen, start over with a new cascade */
+	  if (((cascade_x + window_width) >
+               (work_area.x + work_area.width)) ||
+              ((cascade_y + window_height) >
+	       (work_area.y + work_area.height)))
+	    {
+	      cascade_x = MAX (0, work_area.x);
+	      cascade_y = MAX (0, work_area.y);
+              
+#define CASCADE_INTERVAL 50 /* space between top-left corners of cascades */
+              cascade_stage += 1;
+	      cascade_x += CASCADE_INTERVAL * cascade_stage;
+              
+	      /* start over with a new cascade translated to the right, unless
+               * we are out of space
+               */
+              if ((cascade_x + window_width) <
+                  (work_area.x + work_area.width))
+                {
+                  tmp = sorted;
+                  continue;
+                }
+              else
+                {
+                  /* All out of space, this cascade_x won't work */
+                  cascade_x = MAX (0, work_area.x);
+                  break;
+                }
+	    }
         }
       else
         {
@@ -173,20 +211,6 @@ find_next_cascade (MetaWindow *window,
   
   g_list_free (sorted);
 
-  /* don't place windows off the screen */
-  if (((cascade_x + (window->frame ? window->frame->rect.width : window->rect.width)) >
-       (work_area.x + work_area.width)) ||
-      ((cascade_y + (window->frame ? window->frame->rect.height : window->rect.height)) >
-       (work_area.y + work_area.height)))
-    {
-      /* FIXME it would be better to try to start a new cascade to the
-       * right of the last one, probably. Instead of just falling back
-       * to "origin"
-       */
-      cascade_x = MAX (0, work_area.x);
-      cascade_y = MAX (0, work_area.y);
-    }
-  
   /* Convert coords to position of window, not position of frame. */
   if (fgeom == NULL)
     {
