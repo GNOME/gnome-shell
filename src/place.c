@@ -546,7 +546,7 @@ get_vertical_edges (MetaWindow *window,
   GSList *tmp;
   int n_windows;
   int *edges;
-  int i;
+  int i, j;
   int n_edges;
   MetaRectangle rect;
   MetaRectangle work_area;
@@ -554,7 +554,7 @@ get_vertical_edges (MetaWindow *window,
   windows = get_windows_on_same_workspace (window, &n_windows);
 
   i = 0;
-  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
+  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; /* 4 = workspace/screen edges */
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
@@ -573,6 +573,13 @@ get_vertical_edges (MetaWindow *window,
 
   g_assert (i == 4);
 
+  /* Now get the xinerama screen edges */
+  for (j = 0; j < window->screen->n_xinerama_infos - 1; j++) {
+    edges[i] = window->screen->xinerama_infos[j].x_origin +
+      window->screen->xinerama_infos[j].width;
+    ++i;
+  }
+  
   meta_window_get_outer_rect (window, &rect);
   
   /* get window edges */
@@ -612,7 +619,7 @@ get_horizontal_edges (MetaWindow *window,
   GSList *tmp;
   int n_windows;
   int *edges;
-  int i;
+  int i, j;
   int n_edges;
   MetaRectangle rect;
   MetaRectangle work_area;
@@ -620,7 +627,7 @@ get_horizontal_edges (MetaWindow *window,
   windows = get_windows_on_same_workspace (window, &n_windows);
 
   i = 0;
-  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
+  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; /* 4 = workspace/screen edges */
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
@@ -638,6 +645,13 @@ get_horizontal_edges (MetaWindow *window,
   ++i;
 
   g_assert (i == 4);
+  
+  /* Now get the xinerama screen edges */
+  for (j = 0; j < window->screen->n_xinerama_infos - 1; j++) {
+    edges[i] = window->screen->xinerama_infos[j].y_origin +
+      window->screen->xinerama_infos[j].height;
+    ++i;
+  }
 
   meta_window_get_outer_rect (window, &rect);
   

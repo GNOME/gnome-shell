@@ -95,6 +95,8 @@ void          meta_screen_focus_top_window    (MetaScreen                 *scree
                                                MetaWindow                 *not_this_one);
 
 const MetaXineramaScreenInfo* meta_screen_get_current_xinerama (MetaScreen *screen);
+const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen *screen,
+								   MetaWindow *window);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 

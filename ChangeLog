@@ -1,3 +1,14 @@
+2002-05-25  Anders Carlsson  <andersca@gnu.org>
+
+	* src/place.c: (get_vertical_edges), (get_horizontal_edges):
+	Take Xinerama screen edges into consideration.
+	
+	* src/screen.c: (meta_rectangle_intersect),
+	(meta_screen_get_xinerama_for_window):
+	* src/screen.h:
+	Add a new function that returns the xinerama monitor that 
+	a window is on.
+	
 2002-05-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (menu_callback): follow windows to their new
