@@ -1,3 +1,7 @@
+2002-07-13  Christophe Fergeau <teuf@users.sourceforge.net>
+
+	* configure.in: added fr to ALL_LINGUAS
+
 2002-07-12  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (warn_about_lame_clients_and_finish_interact):
@@ -101,6 +105,7 @@
 
 	* src/common.h: add a grab op for alt+esc window cycling
 
+>>>>>>> 1.366
 2002-07-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Makefile.am (THEMES): Take Gorilla out until it gets
