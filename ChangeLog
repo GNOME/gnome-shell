@@ -1,3 +1,8 @@
+2002-02-23  Havoc Pennington  <hp@pobox.com>
+
+	* src/ui.c (meta_ui_init): fix the
+	be-sure-we-create-coverage-cache hack
+
 2002-02-19  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_ui_init): put in hack to keep Pango from mangling
