@@ -1,3 +1,8 @@
+2004-12-13  Elijah Newren  <newren@math.utah.edu>
+
+	* configure.in: post-release version bump to 2.9.2 that I forgot
+	to do last week (oops)
+
 2004-12-07  Alex Duggan  <aldug@astrolinux.com>
 
 	* configure.in:
@@ -12,7 +17,7 @@
 	
 	Removed from cvs
 	
-2004-11-01  Elijah Newren  <newren@math.utah.edu>
+2004-12-06  Elijah Newren  <newren@math.utah.edu>
 
 	* NEWS: Metacity 2.9.1 unstable release
 

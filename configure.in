@@ -1,5 +1,5 @@
 AC_PREREQ(2.50)
-AC_INIT([metacity], [2.9.1],
+AC_INIT([metacity], [2.9.2],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
 AC_CONFIG_SRCDIR(src/display.c)
