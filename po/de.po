@@ -2,14 +2,15 @@
 # Copyright (C) 2002-2004 Free Software Foundation, Inc.
 # Matthias Warkus <mawarkus@gnome.org>, 2002.
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
-#
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Metacity 2.8.2\n"
+"Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
-"PO-Revision-Date: 2004-07-25 12:35+0200\n"
-"Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
+"POT-Creation-Date: 2005-01-15 23:11+0100\n"
+"PO-Revision-Date: 2005-01-15 23:11+0100\n"
+"Last-Translator: Frank Arnold <frank@scirocco-5v-turbo.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,9 +126,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Es wurde kein Befehl %d festgelegt.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Es wurde kein Befehl %d festgelegt.\n"
+msgstr "Es wurde kein Terminal-Befehl festgelegt.\n"
 
 #: src/main.c:69
 msgid ""
@@ -729,7 +729,7 @@ msgstr "Einen festgelegten Befehl ausführen"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Ein Terminal starten"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1238,7 +1238,6 @@ msgstr ""
 "festgelegt."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1247,7 +1246,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Die zum Maximieren eines Fensters verwendete Tastenkombination. Das Format "
-"ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der "
+"ist »&lt;Control&gt;a« (für Strg.+A) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der "
 "Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung sowie "
 "Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese diese "
 "Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese Aktion "
@@ -1761,7 +1760,6 @@ msgstr ""
 "ist, wird für diese Aktion keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1770,8 +1768,8 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Die zum Anzeigen des Panel-Hauptmenüs verwendete Tastenkombination. Das "
-"Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
+"Format ist »&lt;Control&gt;a« (für Strg.+A) oder »&lt;Shift&gt;&lt;Alt&gt;"
+"F1«. Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
 "sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese "
 "diese Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese "
 "Aktion keine Tastenkombination festgelegt."
