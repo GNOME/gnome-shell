@@ -367,7 +367,7 @@ msgstr "Întârzierea în milisecunde pentru opţiunea de ridicare automată"
 
 #: src/metacity.schemas.in.h:28
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Dezactivează care sunt cerute de aplicaţiile vechi sau stricate"
 
 #: src/metacity.schemas.in.h:29
 msgid "Hide all windows and focus desktop"
