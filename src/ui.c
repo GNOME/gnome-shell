@@ -151,12 +151,6 @@ meta_ui_remove_frame (MetaUI *ui,
   meta_frames_unmanage_window (ui->frames, xwindow);
 }
 
-Window
-meta_ui_get_moving_frame (MetaUI *ui)
-{
-  return meta_frames_get_moving_frame (ui->frames);
-}
-
 void
 meta_ui_map_frame   (MetaUI *ui,
                      Window  xwindow)

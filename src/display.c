@@ -29,6 +29,7 @@
 #include "keybindings.h"
 #include "workspace.h"
 #include <X11/Xatom.h>
+#include <X11/cursorfont.h>
 #include <string.h>
 
 #define USE_GDK_DISPLAY
@@ -555,6 +556,47 @@ event_queue_callback (XEvent         *event,
 }
 
 static gboolean
+grab_op_is_mouse (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_MOVING:
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:      
+    case META_GRAB_OP_RESIZING_SW:      
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+      return TRUE;
+      break;
+
+    default:
+      return FALSE;
+    }
+}
+
+static gboolean
+grab_op_is_keyboard (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_KEYBOARD_MOVING:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+      return TRUE;
+      break;
+
+    default:
+      return FALSE;
+    }
+}
+
+static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
 {
@@ -609,18 +651,48 @@ event_callback (XEvent   *event,
         meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
-      if (display->grab_op != META_GRAB_OP_NONE)
+      if ((grab_op_is_mouse (display->grab_op) &&
+           display->grab_button != event->xbutton.button && 
+           display->grab_window == window) ||
+          grab_op_is_keyboard (display->grab_op))
         {
           meta_verbose ("Ending grab op %d on window %s due to button press\n",
                         display->grab_op,
                         display->grab_window->desc);
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
+        }      
+      else if (window)
+        {
+          if (event->xbutton.button == 1)
+            {
+              meta_window_raise (window);
+              meta_window_focus (window, event->xbutton.time);
+            }
+          else if (event->xbutton.button == 2)
+            {
+              /* FIXME begin move */
+
+            }
+          else if (event->xbutton.button == 3)
+            {
+              meta_window_show_menu (window,
+                                     event->xbutton.x_root,
+                                     event->xbutton.y_root,
+                                     event->xbutton.button,
+                                     event->xbutton.time);
+            }
         }
       break;
     case ButtonRelease:
+      if (grab_op_is_mouse (display->grab_op) &&
+          display->grab_window == window)
+        meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case MotionNotify:
+      if (grab_op_is_mouse (display->grab_op) &&
+          display->grab_window == window)
+        meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
       /* do this even if window->has_focus to avoid races */
@@ -649,6 +721,10 @@ event_callback (XEvent   *event,
     case DestroyNotify:
       if (window)
         {
+          if (display->grab_op != META_GRAB_OP_NONE &&
+              display->grab_window == window)
+            meta_display_end_grab_op (display, CurrentTime);
+          
           if (frame_was_receiver)
             {
               meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n",
@@ -664,6 +740,14 @@ event_callback (XEvent   *event,
         }
       break;
     case UnmapNotify:
+      if (display->grab_op != META_GRAB_OP_NONE &&
+          display->grab_window == window)
+        meta_display_end_grab_op (display, CurrentTime);
+      
+      /* Unfocus on UnmapNotify */
+      if (window)
+        meta_window_notify_focus (window, event);
+      
       if (!frame_was_receiver && window)
         {
           if (window->unmaps_pending == 0)
@@ -932,7 +1016,6 @@ static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
 {
-
       const char *name = NULL;
       char *extra = NULL;
       char *winname;
@@ -1208,6 +1291,94 @@ meta_display_get_workspace_by_screen_index (MetaDisplay *display,
   return NULL;
 }
 
+Cursor
+meta_display_create_x_cursor (MetaDisplay *display,
+                              MetaCursor cursor)
+{
+  Cursor xcursor;
+  guint glyph;
+
+  switch (cursor)
+    {
+    case META_CURSOR_DEFAULT:
+      glyph = XC_left_ptr;
+      break;
+    case META_CURSOR_NORTH_RESIZE:
+      glyph = XC_top_side;
+      break;
+    case META_CURSOR_SOUTH_RESIZE:
+      glyph = XC_bottom_side;
+      break;
+    case META_CURSOR_WEST_RESIZE:
+      glyph = XC_left_side;
+      break;
+    case META_CURSOR_EAST_RESIZE:
+      glyph = XC_right_side;
+      break;
+    case META_CURSOR_SE_RESIZE:
+      glyph = XC_bottom_right_corner;
+      break;
+    case META_CURSOR_SW_RESIZE:
+      glyph = XC_bottom_left_corner;
+      break;
+    case META_CURSOR_NE_RESIZE:
+      glyph = XC_top_left_corner;
+      break;
+    case META_CURSOR_NW_RESIZE:
+      glyph = XC_top_right_corner;
+      break;
+
+    default:
+      g_assert_not_reached ();
+      glyph = 0; /* silence compiler */
+      break;
+    }
+  
+  xcursor = XCreateFontCursor (display->xdisplay, glyph);
+
+  return xcursor;
+}
+
+static Cursor
+xcursor_for_op (MetaDisplay *display,
+                MetaGrabOp   op)
+{
+  MetaCursor cursor = META_CURSOR_DEFAULT;
+  
+  switch (display->grab_op)
+    {
+    case META_GRAB_OP_RESIZING_SE:
+      cursor = META_CURSOR_SE_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_S:
+      cursor = META_CURSOR_SOUTH_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_SW:
+      cursor = META_CURSOR_SW_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_N:
+      cursor = META_CURSOR_NORTH_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_NE:
+      cursor = META_CURSOR_NE_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_NW:
+      cursor = META_CURSOR_NW_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_W:
+      cursor = META_CURSOR_WEST_RESIZE;
+      break;
+    case META_GRAB_OP_RESIZING_E:
+      cursor = META_CURSOR_EAST_RESIZE;
+      break;
+      
+    default:
+      break;
+    }
+
+  return meta_display_create_x_cursor (display, cursor);
+}
+
 gboolean
 meta_display_begin_grab_op (MetaDisplay *display,
                             MetaWindow  *window,
@@ -1215,13 +1386,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             gboolean     pointer_already_grabbed,
                             int          button,
                             gulong       modmask,
-                            Cursor       cursor,
                             Time         timestamp,
                             int          root_x,
                             int          root_y)
 {
   Window grabwindow;
-
+  Cursor cursor;
+  
   meta_verbose ("Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
                 op, window->desc, button, pointer_already_grabbed);
   
@@ -1233,27 +1404,31 @@ meta_display_begin_grab_op (MetaDisplay *display,
                     op, window->desc, display->grab_op, display->grab_window->desc);
       return FALSE;
     }
-  
+
   if (pointer_already_grabbed)
-    {
-      display->grab_have_pointer = TRUE;
-    }
-  else
-    {
-      meta_error_trap_push (display);
-      if (XGrabPointer (display->xdisplay,
-                        grabwindow,
-                        False,
-                        PointerMotionMask | PointerMotionHintMask |
-                        ButtonPressMask | ButtonReleaseMask |
-                        KeyPressMask | KeyReleaseMask,
-                        GrabModeAsync, GrabModeAsync,
-                        None,
-                        cursor,
-                        timestamp) == GrabSuccess)
-        display->grab_have_pointer = TRUE;
-      meta_error_trap_pop (display);
-    }
+    display->grab_have_pointer = TRUE;
+
+      /* We XGrabPointer even if we already have an autograb,
+       * just to set the cursor and event mask
+       */
+      
+  cursor = xcursor_for_op (display, op);
+      
+  meta_error_trap_push (display);
+  if (XGrabPointer (display->xdisplay,
+                    grabwindow,
+                    False,
+                    PointerMotionMask | PointerMotionHintMask |
+                    ButtonPressMask | ButtonReleaseMask |
+                    KeyPressMask | KeyReleaseMask,
+                    GrabModeAsync, GrabModeAsync,
+                    None,
+                    cursor,
+                    timestamp) == GrabSuccess)
+    display->grab_have_pointer = TRUE;
+  meta_error_trap_pop (display);
+  
+  XFreeCursor (display->xdisplay, cursor);
 
   if (!display->grab_have_pointer)
     {
@@ -1283,7 +1458,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
       /* non-keyboard grab ops */
       break;
     }
-
                 
   display->grab_op = op;
   display->grab_window = window;
@@ -1316,7 +1490,67 @@ meta_display_end_grab_op (MetaDisplay *display,
 
   if (display->grab_have_keyboard)
     meta_window_ungrab_all_keys (display->grab_window);
-
+  
   display->grab_window = NULL;
-  display->grab_op = META_GRAB_OP_NONE;  
+  display->grab_op = META_GRAB_OP_NONE;
 }
+
+void
+meta_display_grab_window_buttons (MetaDisplay *display,
+                                  Window       xwindow)
+{    
+  /* Grab Alt + button1 and Alt + button2 for moving window,
+   * and Alt + button3 for popping up window menu.
+   */
+  {
+    int i = 1;
+    while (i < 4)
+      {
+        int result;
+
+        meta_error_trap_push (display);
+        XGrabButton (display->xdisplay, i, Mod1Mask,
+                     xwindow, False,
+                     ButtonPressMask | ButtonReleaseMask |    
+                     PointerMotionMask | PointerMotionHintMask,
+                     GrabModeAsync, GrabModeAsync,
+                     False, None);
+        XSync (display->xdisplay, False);
+        result = meta_error_trap_pop (display);
+
+        if (result != Success)
+          meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx error code %d\n",
+                        i, xwindow, result);
+        
+#if 1
+        /* This is just for debugging, since I end up moving
+         * the Xnest otherwise ;-)
+         */
+        meta_error_trap_push (display);
+        result = XGrabButton (display->xdisplay, i, ControlMask,
+                              xwindow, False,
+                              ButtonPressMask | ButtonReleaseMask |    
+                              PointerMotionMask | PointerMotionHintMask,
+                              GrabModeAsync, GrabModeAsync,
+                              False, None);
+        XSync (display->xdisplay, False);
+        result = meta_error_trap_pop (display);
+        
+        if (result != Success)
+          meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx error code %d\n",
+                        i, xwindow, result);        
+#endif
+        
+        ++i;
+      }
+  }
+}
+
+void
+meta_display_ungrab_window_buttons  (MetaDisplay *display,
+                                     Window       xwindow)
+{
+
+
+}
+

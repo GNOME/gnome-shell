@@ -94,7 +94,6 @@ int meta_core_get_active_workspace (Screen *xscreen);
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
 
-
 void meta_core_show_window_menu (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      root_x,
@@ -102,6 +101,31 @@ void meta_core_show_window_menu (Display *xdisplay,
                                  int      button,
                                  Time     timestamp);
 
+gboolean   meta_core_begin_grab_op (Display    *xdisplay,
+                                    Window      frame_xwindow,
+                                    MetaGrabOp  op,
+                                    gboolean    pointer_already_grabbed,
+                                    int         button,
+                                    gulong      modmask,
+                                    Time        timestamp,
+                                    int         root_x,
+                                    int         root_y);
+void       meta_core_end_grab_op   (Display    *xdisplay,
+                                    Time        timestamp);
+MetaGrabOp meta_core_get_grab_op     (Display    *xdisplay);
+Window     meta_core_get_grab_frame  (Display   *xdisplay);
+int        meta_core_get_grab_button (Display  *xdisplay);
+
+
+void       meta_core_grab_buttons  (Display *xdisplay,
+                                    Window   frame_xwindow);
+
+void       meta_core_set_screen_cursor (Display *xdisplay,
+                                        Window   frame_on_screen,
+                                        MetaCursor cursor);
+
 #endif
+
+
 
 

@@ -119,7 +119,7 @@ struct _MetaDisplay
   Window last_button_xwindow;
   int last_button_num;
   guint is_double_click : 1;
-
+  
   /* current window operation */
   MetaGrabOp  grab_op;
   MetaWindow *grab_window;
@@ -163,19 +163,26 @@ MetaWorkspace* meta_display_get_workspace_by_index        (MetaDisplay   *displa
 MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *display,
                                                            MetaScreen    *screen,
                                                            int            index);
+
+Cursor         meta_display_create_x_cursor (MetaDisplay *display,
+                                             MetaCursor   cursor);
+
 gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      MetaWindow  *window,
                                      MetaGrabOp   op,
                                      gboolean     pointer_already_grabbed,
                                      int          button,
                                      gulong       modmask,
-                                     Cursor       cursor,
                                      Time         timestamp,
                                      int          root_x,
                                      int          root_y);
 void     meta_display_end_grab_op   (MetaDisplay *display,
                                      Time         timestamp);
 
+void     meta_display_grab_window_buttons    (MetaDisplay *display,
+                                              Window       xwindow);
+void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
+                                              Window       xwindow);
 
 
 #endif

@@ -28,7 +28,6 @@
 #include "keybindings.h"
 #include "stack.h"
 
-#include <X11/cursorfont.h>
 #include <X11/Xatom.h>
 #include <locale.h>
 #include <string.h>
@@ -113,7 +112,6 @@ meta_screen_new (MetaDisplay *display,
   MetaScreen *screen;
   Window xroot;
   Display *xdisplay;
-  Cursor cursor;
   
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -151,10 +149,6 @@ meta_screen_new (MetaDisplay *display,
                     number, display->name);
       return NULL;
     }
-
-  cursor = XCreateFontCursor (display->xdisplay, XC_left_ptr);
-  XDefineCursor (display->xdisplay, xroot, cursor);
-  XFreeCursor (display->xdisplay, cursor);
   
   screen = g_new (MetaScreen, 1);
 
@@ -165,6 +159,9 @@ meta_screen_new (MetaDisplay *display,
   screen->xroot = xroot;
   screen->width = WidthOfScreen (screen->xscreen);
   screen->height = HeightOfScreen (screen->xscreen);
+  screen->current_cursor = -1; /* invalid/unset */
+  
+  meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
   
   if (display->leader_window == None)
     display->leader_window = XCreateSimpleWindow (display->xdisplay,
@@ -399,4 +396,20 @@ meta_screen_get_n_workspaces (MetaScreen *screen)
 
   return i;
 
+}
+
+void
+meta_screen_set_cursor (MetaScreen *screen,
+                        MetaCursor  cursor)
+{
+  Cursor xcursor;
+
+  if (cursor == screen->current_cursor)
+    return;
+
+  screen->current_cursor = cursor;
+  
+  xcursor = meta_display_create_x_cursor (screen->display, cursor);
+  XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
+  XFreeCursor (screen->display->xdisplay, xcursor);
 }

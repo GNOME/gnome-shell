@@ -43,6 +43,8 @@ struct _MetaScreen
   MetaWorkspace *active_workspace;
 
   MetaStack *stack;
+
+  MetaCursor current_cursor;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
@@ -58,6 +60,8 @@ void          meta_screen_queue_window_resizes (MetaScreen                 *scre
 
 int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
 
+void          meta_screen_set_cursor          (MetaScreen                 *screen,
+                                               MetaCursor                  cursor);
 
 #endif
 

@@ -393,3 +393,104 @@ meta_core_show_window_menu (Display *xdisplay,
   meta_window_show_menu (window, root_x, root_y, button, timestamp);
 }
 
+gboolean
+meta_core_begin_grab_op (Display    *xdisplay,
+                         Window      frame_xwindow,
+                         MetaGrabOp  op,
+                         gboolean    pointer_already_grabbed,
+                         int         button,
+                         gulong      modmask,
+                         Time        timestamp,
+                         int         root_x,
+                         int         root_y)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  return meta_display_begin_grab_op (display, window,
+                                     op, pointer_already_grabbed,
+                                     button, modmask,
+                                     timestamp, root_x, root_y);
+}
+
+void
+meta_core_end_grab_op (Display *xdisplay,
+                       Time     timestamp)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (xdisplay);
+
+  meta_display_end_grab_op (display, timestamp);
+}
+
+MetaGrabOp
+meta_core_get_grab_op (Display *xdisplay)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (xdisplay);
+
+  return display->grab_op;
+}
+
+Window
+meta_core_get_grab_frame (Display *xdisplay)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (xdisplay);
+
+  if (display->grab_op != META_GRAB_OP_NONE &&
+      display->grab_window->frame)
+    return display->grab_window->frame->xwindow;
+  else
+    return None;
+}
+
+int
+meta_core_get_grab_button (Display  *xdisplay)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (xdisplay);
+
+  if (display->grab_op == META_GRAB_OP_NONE)
+    return -1;
+  
+  return display->grab_button;
+}
+
+void
+meta_core_grab_buttons  (Display *xdisplay,
+                         Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  
+  display = meta_display_for_x_display (xdisplay);
+  
+  meta_display_grab_window_buttons (display, frame_xwindow);
+}
+
+void
+meta_core_set_screen_cursor (Display *xdisplay,
+                             Window   frame_on_screen,
+                             MetaCursor cursor)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_on_screen);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
+
+  meta_screen_set_cursor (window->screen, cursor);
+}

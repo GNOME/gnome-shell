@@ -44,24 +44,6 @@ typedef enum
   META_FRAME_CONTROL_RESIZE_E
 } MetaFrameControl;
 
-typedef enum
-{
-  META_FRAME_STATUS_NORMAL,
-  META_FRAME_STATUS_MOVING,
-  META_FRAME_STATUS_CLICKING_MINIMIZE,
-  META_FRAME_STATUS_CLICKING_MAXIMIZE,
-  META_FRAME_STATUS_CLICKING_DELETE,
-  META_FRAME_STATUS_CLICKING_MENU,
-  META_FRAME_STATUS_RESIZING_SE,
-  META_FRAME_STATUS_RESIZING_S,
-  META_FRAME_STATUS_RESIZING_SW,
-  META_FRAME_STATUS_RESIZING_N,
-  META_FRAME_STATUS_RESIZING_NE,
-  META_FRAME_STATUS_RESIZING_NW,
-  META_FRAME_STATUS_RESIZING_W,
-  META_FRAME_STATUS_RESIZING_E
-} MetaFrameStatus;
-
 /* This is one widget that manages all the window frames
  * as subwindows.
  */
@@ -99,26 +81,6 @@ struct _MetaFrames
 
   guint tooltip_timeout;
   MetaUIFrame *last_motion_frame;
-
-  GdkCursor *south_resize_cursor;
-  GdkCursor *west_resize_cursor;
-  GdkCursor *east_resize_cursor;
-  GdkCursor *se_resize_cursor;
-  GdkCursor *sw_resize_cursor;
-
-  GdkCursor *current_cursor;
-  
-  /* The below is all for grabs */
-  MetaFrameStatus grab_status;
-  MetaUIFrame *grab_frame;
-  /* initial mouse position for drags */
-  int start_root_x, start_root_y;
-  /* initial window position for drags */
-  int start_window_x, start_window_y;
-  /* initial window size for drags */
-  int start_window_w, start_window_h;
-  /* button doing the dragging */
-  int start_button;
 };
 
 struct _MetaFramesClass

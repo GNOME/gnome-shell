@@ -395,7 +395,7 @@ meta_display_process_key_event (MetaDisplay *display,
     return;
   
   handled = FALSE;
-        
+
   if (display->grab_op == META_GRAB_OP_KEYBOARD_MOVING &&
       display->grab_window == window)
     {
@@ -408,7 +408,7 @@ meta_display_process_key_event (MetaDisplay *display,
         return; /* don't care about releases */
       
       if (window == NULL)
-        meta_bug ("NULL window while META_GRAB_OP_MOVING\n");
+        meta_bug ("NULL window while doing keyboard grab op\n");
 
       meta_window_get_position (window, &x, &y);
 
@@ -486,8 +486,8 @@ meta_display_process_key_event (MetaDisplay *display,
 
       if (handled)
         meta_window_move (window, x, y);
-    }
-
+    }  
+  
   /* end grab if a key that isn't used gets pressed */
   if (!handled)
     {
@@ -512,20 +512,14 @@ handle_activate_workspace (MetaDisplay *display,
 
   if (workspace)
     {
-      Window move_frame;
       MetaWindow *move_window;
 
       move_window = NULL;
-      move_frame = meta_ui_get_moving_frame (workspace->screen->ui);
+      if (display->grab_op == META_GRAB_OP_MOVING)
+        move_window = display->grab_window;
       
-      if (move_frame != None)
+      if (move_window != NULL)
         {
-          move_window = meta_display_lookup_x_window (display, move_frame);
-          
-          if (move_window == NULL ||
-              move_window->frame == NULL)
-            meta_bug ("No move_frame window 0x%lx!\n", move_frame);  
-
           if (move_window->on_all_workspaces)
             move_window = NULL; /* don't move it after all */
 

@@ -2876,7 +2876,7 @@ update_sm_hints (MetaWindow *window)
                         window->display->atom_sm_client_id,
                         &window->sm_client_id);
 
-      meta_verbose ("Window %s client leader: 0x%ld SM_CLIENT_ID: '%s'\n",
+      meta_verbose ("Window %s client leader: 0x%lx SM_CLIENT_ID: '%s'\n",
                     window->desc, window->xclient_leader, window->sm_client_id);
     }
   else
@@ -2915,7 +2915,7 @@ update_transient_for (MetaWindow *window)
   window->xtransient_for = w;
 
   if (window->xtransient_for != None)
-    meta_verbose ("Window %s transient for 0x%ld\n", window->desc,
+    meta_verbose ("Window %s transient for 0x%lx\n", window->desc,
                   window->xtransient_for);
   else
     meta_verbose ("Window %s is not transient\n", window->desc);

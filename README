@@ -31,8 +31,10 @@ METACITY FEATURES
     letter in the menu item works.
 
     Choose Move from menu, and arrow keys to move the window.
+
     While moving, hold down Control to move slower, and 
       Shift to snap to edges.
+
     Choose Resize from menu, and nothing happens yet, but 
       eventually I might implement something.   
 
@@ -85,10 +87,16 @@ METACITY FEATURES
    look in frames.c:meta_frames_class_init() for all the style
    properties that you can configure.
 
+   Metacity-specific styles can also be included in any GTK+ 
+   theme.
+
  - Metacity implements much of the new window manager spec from
    freedesktop.org, and much of the ICCCM. But then there are 
    parts of each that it doesn't implement, just because I haven't
    yet.
+
+ - Uses Pango to render text, so has cool i18n capabilities. 
+   Supports UTF-8 window titles and such.
 
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
@@ -154,6 +162,17 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    Metacity needs to keep this area up-to-date using the hints the
    panel sets.
 
+ - Should really support click-to-focus as an option.
+
+ - Windows has a neat way of implementing Alt-Tab for 
+   window cycling that I would like to copy. (The little 
+   popup window thing.)
+
+ - Should Metacity support flipping in right-to-left locales?
+   I don't know what window managers look like in a right-to-left
+   locale. I assume the window titles should be right-justified;
+   should the window controls also be flipped?
+
 COMPILING METACITY
 ===
 
@@ -161,22 +180,32 @@ You need GTK+ 1.3.x (to become 2.0). See configure.in for the exact
 version you need. Metacity is a fairly trivial 6000-line C program, so
 once you get GTK+ built it should be no problem to build Metacity.
 
-REPORTING BUGS
+REPORTING BUGS AND SUBMITTING PATCHES
 ===
 
 Report new bugs to hp@redhat.com for now. Will switch to Bugzilla
 sometime probably.
+
+Feel free to send patches too; Metacity is really small and simple, so
+if you find a bug or want to add a feature it should be pretty easy.
 
 FAQ
 ===
 
 Q: Will you add my feature?
 
-A: Probably not, unless it makes sense to turn on by unconditionally,
+A: If it makes sense to turn on unconditionally,
    or is genuinely a harmless preference that I would not 
-   be embarrassed to put in a user-friendly configuration dialog.
+   be embarrassed to put in a simple, uncluttered, user-friendly
+   configuration dialog.
 
-   Metacity has a "no crackrock" policy, with some exceptions 
+   If the only rationale for your feature is that other window
+   managers have it, or that you are personally used to it, or something
+   like that, then I will not be impressed. Metacity is firmly in the
+   "choose good defaults" camp rather than the "offer 6 equally broken
+   ways to do it, and let the user pick one" camp.
+
+   This is part of a "no crackrock" policy, despite some exceptions
    I'm mildly embarrassed about. For example, multiple workspaces
    probably constitute crackrock, they confuse most users
    and really are not that useful if you have a decent tasklist and 
@@ -185,7 +214,11 @@ A: Probably not, unless it makes sense to turn on by unconditionally,
    keybindings are definitely on crack.
 
    But don't think unlimited crack is OK just because I slipped up a
-   little. No slippery slope here.
+   little. No slippery slope here.   
+
+   Don't let this discourage patches and fixes - I love those. ;-)
+   Just be prepared to hear the above objections if your patch
+   adds some crack-ridden configuration option.
 
 Q: How do I add a configuration option?
 
@@ -196,10 +229,12 @@ Q: Will Metacity be part of GNOME?
 
 A: If Metacity is ever better than the other options, and the GNOME
    Project so chooses. But Metacity may continue to suck forever 
-   because I might get tired of it; or Metacity's conservative 
-   nature might not make sense for the snazzy world of
-   GNOME. Who knows. I'm not worrying about this, and you shouldn't
-   either.
+   because I might get tired of working on it; or Metacity's feature
+   set might not make sense for GNOME. Who knows. I'm not worrying
+   about this, and you shouldn't either.
+
+   For now Metacity is my toy hobby project that I work on when I feel
+   like it.
 
 Q: Why can't I move XMMS?
 

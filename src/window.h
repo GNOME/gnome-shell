@@ -297,4 +297,7 @@ gboolean meta_window_shares_some_workspace (MetaWindow *window,
 void meta_window_set_gravity (MetaWindow *window,
                               int         gravity);
 
+void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
+                                             XEvent     *event);
+
 #endif
