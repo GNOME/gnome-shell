@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-13 04:57+0100\n"
-"PO-Revision-Date: 2002-12-13 04:57+0100\n"
+"POT-Creation-Date: 2002-12-17 02:03+0100\n"
+"PO-Revision-Date: 2002-12-17 02:03+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1807,7 +1807,7 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "tangentbindningen \"%s\"\n"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1725
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -2813,7 +2813,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4859
+#: src/window.c:4862
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2829,7 +2829,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5419
+#: src/window.c:5422
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2839,26 +2839,60 @@ msgstr ""
 "storlek på, men ställer in minsta storleken %d × %d och största storleken %d "
 "× %d; detta verkar inte vettigt.\n"
 
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Fönster 0x%lx har egenskap %s som förväntades ha typen %s format %d och har "
-"i verkligheten typ %s format %d n_items %d\n"
+"Fönster 0x%lx har egenskap %s\n"
+"som förväntades ha typen %s format %d\n"
+"och har i verkligheten typ %s format %d n_items %d.\n"
+"Det här är sannolikt ett programfel och inte ett fel i fönsterhanteraren.\n"
+"Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug and not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "Fönster 0x%lx har egenskap %s\n"
+#~ "som förväntades ha typen %s format %d\n"
+#~ "och har i verkligheten typ %s format %d n_items %d.\n"
+#~ "Det här är sannolikt ett programfel och inte ett fel i "
+#~ "fönsterhanteraren.\n"
+#~ "Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "Fönster 0x%lx har egenskap %s\n"
+#~ "som förväntades ha typen %s format %d\n"
+#~ "och har i verkligheten typ %s format %d n_items %d.\n"
+#~ "Det här är sannolikt ett programfel och inte ett fel i "
+#~ "fönsterhanteraren.\n"
+#~ "Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
 
 #~ msgid "Workspace %u"
 #~ msgstr "Arbetsyta %u"
