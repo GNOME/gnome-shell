@@ -9,6 +9,8 @@ typedef struct ClutterPhotoGridCell ClutterPhotoGridCell;
 
 typedef enum ClutterPhotoGridState
 {
+  CLTR_PHOTO_GRID_STATE_LOADING       ,
+  CLTR_PHOTO_GRID_STATE_LOAD_COMPLETE ,
   CLTR_PHOTO_GRID_STATE_BROWSE        ,
   CLTR_PHOTO_GRID_STATE_ZOOM_IN       ,
   CLTR_PHOTO_GRID_STATE_ZOOMED        ,
@@ -17,10 +19,23 @@ typedef enum ClutterPhotoGridState
 } 
 ClutterPhotoGridState;
 
+typedef enum ClutterPhotoGridCellState
+{
+  CLTR_PHOTO_GRID_CELL_STATE_APPEARING,
+  CLTR_PHOTO_GRID_CELL_STATE_STATIC,
+} 
+ClutterPhotoGridCellState;
+
+
 struct ClutterPhotoGridCell
 {
   Pixbuf *pixb;
   float   angle;
+  GLuint  texref;
+
+  gint    anim_step;
+
+  ClutterPhotoGridCellState state;
 };
 
 struct ClutterPhotoGrid
@@ -32,6 +47,8 @@ struct ClutterPhotoGrid
   ClutterWindow *parent;
 
   /* ****** */
+
+  gchar         *img_path;
 
   int            n_rows;
   int            n_cols;
@@ -75,9 +92,8 @@ cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
 void 				/* bleh badly named */
 cltr_photo_grid_activate_cell(ClutterPhotoGrid *grid);
 
-void
-cltr_photo_grid_populate(ClutterPhotoGrid *grid,
-			 const gchar      *imgs_path) ;
+gpointer
+cltr_photo_grid_populate(gpointer data) ;
 
 void
 cltr_photo_grid_redraw(ClutterPhotoGrid *grid);

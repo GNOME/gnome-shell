@@ -1,3 +1,18 @@
+2005-03-27  mallum,,,  <mallum@openedhand.com>
+
+	* Makefile:
+	* cltr-photo-grid.c: (cltr_photo_grid_cell_new),
+	(ctrl_photo_grid_get_zoomed_coords), (cltr_photo_grid_navigate),
+	(cltr_photo_grid_activate_cell), (cltr_photo_grid_populate),
+	(cltr_photo_grid_redraw), (cltr_photo_grid_new):
+	* cltr-photo-grid.h:
+	* cltr.c: (cltr_dispatch_x_event), (cltr_init), (test_idle_cb),
+	(main):
+	* cltr.h:
+	Add a very hacky threaded image loader. 
+	* pixbuf.c: (pixel_set_vals), pixbuf.h:
+	Add copy func ( unused as yet )
+
 2005-03-25  mallum,,,  <mallum@openedhand.com>
 
 	* cltr-photo-grid.c: (cltr_photo_grid_cell_new),

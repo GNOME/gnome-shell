@@ -29,7 +29,7 @@
   GLenum err = glGetError (); 	/* Roundtrip */                \
   if (err != GL_NO_ERROR)                                      \
     {                                                          \
-      g_printerr (__FILE__ ": GL Error: %i [at %s:%d]\n",      \
+      g_printerr (__FILE__ ": GL Error: %x [at %s:%d]\n",      \
 		  err, __func__, __LINE__);                    \
     }                                                          \
  }

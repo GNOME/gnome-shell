@@ -59,6 +59,16 @@ pixel_set_vals(PixbufPixel        *p,
 	       const unsigned char b,
 	       const unsigned char a);
 
+void
+pixbuf_copy(Pixbuf *src_pixb,
+	    Pixbuf *dst_pixb,
+	    int     srcx, 
+	    int     srcy, 
+	    int     srcw, 
+	    int     srch,
+	    int     dstx, 
+	    int     dsty);
+
 Pixbuf*
 pixbuf_scale_down(Pixbuf *pixb,
 		  int     new_width, 

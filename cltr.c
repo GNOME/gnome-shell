@@ -63,6 +63,12 @@ static const GSourceFuncs x_event_funcs = {
 };
 
 void
+cltr_dispatch_expose(XExposeEvent *xexpev)
+{
+  cltr_photo_grid_redraw(Grid);
+}
+
+void
 cltr_dispatch_keypress(XKeyEvent *xkeyev)
 {
   KeySym kc;
@@ -107,7 +113,8 @@ cltr_dispatch_x_event (XEvent  *xevent,
       CLTR_DBG("Map Notify Event");
       break;
     case Expose:
-      CLTR_DBG("Expose");
+      CLTR_DBG("Expose"); 	/* TODO COMPRESS */
+      cltr_dispatch_expose(&xevent->xexpose);
       break;
     case KeyPress:
       CLTR_DBG("KeyPress");
@@ -136,10 +143,8 @@ cltr_init(int *argc, char ***argv)
   GSource              *source;
   CltrXEventSource     *display_source;
 
-  /* Not just yet ..
   g_thread_init (NULL);
-  XInitThreads ();
-  */
+  // XInitThreads ();
 
   if ((CltrCntx.xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
     {
@@ -281,15 +286,6 @@ test_idle_cb(gpointer data)
 }
 
 
-gboolean
-idle_cb(gpointer data)
-{
-  ClutterPhotoGrid *grid = (ClutterPhotoGrid *)data;
-
-  cltr_photo_grid_redraw(grid);
-
-  return TRUE;
-}
 
 int
 main(int argc, char **argv)
@@ -312,9 +308,11 @@ main(int argc, char **argv)
 
   Grid = grid; 			/* laaaaaazy globals */
 
-  cltr_photo_grid_redraw(grid);
+  // cltr_photo_grid_redraw(grid);
 
-  g_idle_add(idle_cb, grid);
+  // g_idle_add(idle_cb, grid);
+
+  // g_timeout_add (10, idle_cb, grid);
 
   // g_idle_add(test_idle_cb, (gpointer)win->xwin);
 

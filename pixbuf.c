@@ -538,6 +538,31 @@ pixel_set_vals(PixbufPixel        *p,
   p->r = r; p->g = g; p->b = b; p->a = a;
 }
 
+void
+pixbuf_copy(Pixbuf *src_pixb,
+	    Pixbuf *dst_pixb,
+	    int     srcx, 
+	    int     srcy, 
+	    int     srcw, 
+	    int     srch,
+	    int     dstx, 
+	    int     dsty)
+{
+  int j, *sp, *dp;
+  
+  sp = src_pixb->data + (srcy * src_pixb->width) + srcx;
+  dp = dst_pixb->data + (dsty * dst_pixb->width) + dstx;
+
+  while (srch--)
+    {
+      j = srcw;
+      while (j--)
+	*dp++ = *sp++;
+      dp += (dst_pixb->width - srcw);
+      sp += (src_pixb->width - srcw);
+    }
+}
+
 Pixbuf *
 pixbuf_scale_down(Pixbuf *pixb,
 		  int     new_width, 
