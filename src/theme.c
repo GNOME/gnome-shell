@@ -601,7 +601,8 @@ default_expose_frame (MetaFrameInfo *info,
 
   draw_current_control_bg (info, &fgeom);
   
-  if (fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
+  if (y < fgeom.top_height &&
+      fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
     {
       int layout_y;
       MetaRectangle clip;

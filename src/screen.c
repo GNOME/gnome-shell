@@ -194,6 +194,9 @@ meta_screen_new (MetaDisplay *display,
                                        screen);
 
   screen->stack = meta_stack_new (screen);
+
+  /* hack pango to get its coverage window */
+  meta_screen_get_pango_context (screen, NULL, PANGO_DIRECTION_LTR);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);  
@@ -354,7 +357,26 @@ meta_screen_get_pango_context (MetaScreen *screen,
        * are honored.
        */
       pango_context_set_base_dir (ctx, direction);
-      pango_context_set_font_description (ctx, desc);
+
+      if (desc == NULL)
+        {
+          desc = pango_font_description_from_string ("Sans 12");
+          pango_context_set_font_description (ctx, desc);
+          pango_font_description_free (desc);
+        }
+      else
+        {
+          pango_context_set_font_description (ctx, desc);
+        }
+
+      {
+        /* Make Pango grab server now not later */
+        PangoLayout *hack;
+        hack = pango_layout_new (ctx);
+        pango_layout_set_text (hack, "foo", -1);
+        pango_layout_get_extents (hack, NULL, NULL);
+        g_object_unref (G_OBJECT (hack));
+      }
       
       screen->pango_context = ctx;
     }

@@ -63,6 +63,10 @@ struct _MetaFrame
   
   guint theme_acquired : 1;
   guint mapped : 1;
+
+  /* world's lamest expose compression */
+  guint edges_exposed : 1;
+  guint title_exposed : 1;
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);

@@ -127,7 +127,7 @@ struct _MetaWindow
    */
   guint user_has_resized : 1;
   guint user_has_moved : 1;
-
+  
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client
    * is withdrawing the window.

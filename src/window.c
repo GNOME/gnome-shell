@@ -324,7 +324,11 @@ meta_window_free (MetaWindow  *window)
                            window->border_width);
   
   meta_error_trap_pop (window->display);
-  
+
+  g_free (window->sm_client_id);
+  g_free (window->role);
+  g_free (window->res_class);
+  g_free (window->res_name);
   g_free (window->title);
   g_free (window->desc);
   g_free (window);

@@ -47,6 +47,9 @@ struct _MetaFrameActionGrab
 
 static void clear_tip (MetaFrame *frame);
 
+static guint draw_handler = 0;
+static GSList *draw_pending = NULL;
+
 static void
 meta_frame_init_info (MetaFrame     *frame,
                       MetaFrameInfo *info)
@@ -93,26 +96,6 @@ meta_frame_init_info (MetaFrame     *frame,
     info->current_control_state = META_STATE_PRELIGHT;
 }
 
-static void
-pango_hack_start (MetaDisplay *display)
-{
-  if (display->server_grab_count > 0)
-    {
-      meta_verbose ("Pango workaround, ungrabbing server\n");
-      XUngrabServer (display->xdisplay);
-    }
-}
-
-static void
-pango_hack_end (MetaDisplay *display)
-{
-  if (display->server_grab_count > 0)
-    {
-      meta_verbose ("Pango workaround, regrabbing server\n");
-      XGrabServer (display->xdisplay);
-    }
-}
-
 void
 meta_frame_calc_geometry (MetaFrame *frame,
                           int child_width, int child_height,
@@ -140,7 +123,10 @@ meta_frame_calc_geometry (MetaFrame *frame,
     info.height = child_height;
   
   if (!frame->theme_acquired)
-    frame->theme_data = window->screen->engine->acquire_frame (&info);
+    {
+      frame->theme_data = window->screen->engine->acquire_frame (&info);
+      frame->theme_acquired = TRUE;
+    }
   
   geom.left_width = 0;
   geom.right_width = 0;
@@ -152,10 +138,8 @@ meta_frame_calc_geometry (MetaFrame *frame,
 
   geom.shape_mask = None;
 
-  pango_hack_start (frame->window->display);
   window->screen->engine->fill_frame_geometry (&info, &geom,
                                                frame->theme_data);
-  pango_hack_end (frame->window->display);
   
   *geomp = geom;
 }
@@ -191,7 +175,7 @@ set_background_color (MetaFrame *frame)
 {
   XSetWindowAttributes attrs;
 
-  attrs.background_pixel = None;
+  attrs.background_pixel = frame->bg_pixel;
   XChangeWindowAttributes (frame->window->display->xdisplay,
                            frame->xwindow,
                            CWBackPixel,
@@ -226,6 +210,9 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->bg_pixel = 0;  
 
   frame->mapped = FALSE;
+
+  frame->edges_exposed = FALSE;
+  frame->title_exposed = FALSE;
   
   attrs.event_mask = EVENT_MASK;
   
@@ -283,6 +270,11 @@ meta_window_destroy_frame (MetaWindow *window)
 
   frame = window->frame;
 
+  if (frame->title_exposed || frame->edges_exposed)
+    {
+      draw_pending = g_slist_remove (draw_pending, frame);
+    }
+  
   if (frame->tooltip_timeout)
     clear_tip (frame);
   
@@ -403,12 +395,10 @@ meta_frame_draw_now (MetaFrame *frame,
   info.drawable = p;
   info.xoffset = - x;
   info.yoffset = - y;
-  pango_hack_start (frame->window->display);
+
   frame->window->screen->engine->expose_frame (&info,
                                                0, 0, width, height,
                                                frame->theme_data);  
-  pango_hack_end (frame->window->display);
-  
 
   XCopyArea (frame->window->display->xdisplay,
              p, frame->xwindow,
@@ -419,13 +409,51 @@ meta_frame_draw_now (MetaFrame *frame,
 
   XFreePixmap (frame->window->display->xdisplay,
                p);
+
+  frame->title_exposed = FALSE;
+  frame->edges_exposed = FALSE;
+}
+
+static gboolean
+draw_idle (gpointer data)
+{
+  GSList *tmp;
+
+  tmp = draw_pending;
+  while (tmp != NULL)
+    {
+      int yoffset;
+      MetaFrame *frame;
+
+      frame = tmp->data;
+      
+      yoffset = 0;
+      if (!frame->title_exposed)
+        yoffset += frame->child_y;
+      
+      meta_frame_draw_now (frame, 0, yoffset,
+                           frame->rect.width,
+                           frame->rect.height - yoffset);
+      tmp = tmp->next;
+    }
+  g_slist_free (draw_pending);
+  draw_pending = NULL;
+
+  draw_handler = 0;
+  return FALSE;
 }
 
 void
 meta_frame_queue_draw (MetaFrame *frame)
 {
-  /* FIXME, actually queue */
-  meta_frame_draw_now (frame, 0, 0, -1, -1);
+  if (draw_handler == 0)
+    draw_handler = g_idle_add (draw_idle, NULL);
+  
+  if (!(frame->title_exposed || frame->edges_exposed))
+    draw_pending = g_slist_prepend (draw_pending, frame);
+  
+  frame->title_exposed = TRUE;
+  frame->edges_exposed = TRUE;
 }
 
 static void
@@ -938,11 +966,13 @@ meta_frame_event (MetaFrame *frame,
     case KeymapNotify:
       break;
     case Expose:
-      meta_frame_draw_now (frame,
-                           event->xexpose.x,
-                           event->xexpose.y,
-                           event->xexpose.width,
-                           event->xexpose.height);
+      {
+        gboolean title_was_exposed = frame->title_exposed;
+        meta_frame_queue_draw (frame);
+        if (!title_was_exposed &&
+            event->xexpose.y > frame->child_y)
+          frame->title_exposed = FALSE;
+      }
       break;
     case GraphicsExpose:
       break;

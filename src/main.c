@@ -39,6 +39,7 @@ main (int argc, char **argv)
 {
   struct sigaction act;
   sigset_t empty_mask;
+  char *display_name;
 
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -57,6 +58,16 @@ main (int argc, char **argv)
   g_type_init (0); /* grumble */
   
   meta_errors_init ();
+
+  if (g_getenv ("METACITY_DISPLAY"))
+    {
+      meta_verbose ("Using METACITY_DISPLAY %s\n",
+                    g_getenv ("METACITY_DISPLAY"));
+      display_name =
+        g_strconcat ("DISPLAY=", g_getenv ("METACITY_DISPLAY"), NULL);
+      putenv (display_name);
+      /* DO NOT FREE display_name, putenv() sucks */
+    }
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
