@@ -238,9 +238,8 @@ register_client_callback              (SmsConn         cnxn,
 
       free (id);
 
-      /* FIXME ksm and gnome-session send a SaveYourself to the client
-       * here. I don't understand why though.
-       */
+      /* SM spec requires this initial SaveYourself. */
+      msm_client_initial_save (client);
       
       return TRUE;
     }

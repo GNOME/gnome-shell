@@ -196,11 +196,12 @@ msm_client_begin_interact (MsmClient *client)
   SmsInteract (client->cnxn);
 }
 
-void
-msm_client_save (MsmClient *client,
-                 gboolean   allow_interaction,
-                 gboolean   shut_down)
-{  
+static void
+internal_save (MsmClient *client,
+               int        save_style,
+               gboolean   allow_interaction,
+               gboolean   shut_down)
+{
   if (client->state != MSM_CLIENT_STATE_IDLE)
     {
       msm_warning (_("Tried to save client '%s' but it was not in the idle state\n"),
@@ -212,10 +213,28 @@ msm_client_save (MsmClient *client,
   client->state = MSM_CLIENT_STATE_SAVING;
   
   SmsSaveYourself (client->cnxn,
-                   SmSaveBoth, /* This arg makes no sense whatsoever */
+                   save_style,
                    shut_down,
                    allow_interaction ? SmInteractStyleAny : SmInteractStyleNone,
                    FALSE /* not "fast" */);
+}
+
+void
+msm_client_save (MsmClient *client,
+                 gboolean   allow_interaction,
+                 gboolean   shut_down)
+{  
+  internal_save (client, SmSaveBoth, /* ? don't know what to do here */
+                 allow_interaction, shut_down);
+}
+
+void
+msm_client_initial_save (MsmClient  *client)
+{
+  /* This is the save on client registration in the spec under
+   * RegisterClientReply
+   */
+  internal_save (client, SmSaveLocal, allow_interaction, shut_down);
 }
 
 void

@@ -83,6 +83,7 @@ void msm_client_begin_interact     (MsmClient  *client);
 void msm_client_save               (MsmClient  *client,
                                     gboolean    allow_interaction,
                                     gboolean    shut_down);
+void msm_client_initial_save       (MsmClient  *client);
 void msm_client_shutdown_cancelled (MsmClient  *client);
 void msm_client_phase2_request     (MsmClient  *client);
 void msm_client_save_phase2        (MsmClient  *client);
