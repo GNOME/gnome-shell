@@ -298,6 +298,35 @@ meta_image_window_set_position (MetaImageWindow *iw,
                           x, y, req.width, req.height);
 }
 
+static GdkColormap*
+get_cmap (GdkPixmap *pixmap)
+{
+  GdkColormap *cmap;
+
+  cmap = gdk_drawable_get_colormap (pixmap);
+  if (cmap)
+    g_object_ref (G_OBJECT (cmap));
+
+  if (cmap == NULL)
+    {
+      if (gdk_drawable_get_depth (pixmap) == 1)
+        {
+          /* hell if I know */
+          meta_verbose ("Making up some sort of colormap to get 1-bit pixmap\n");
+          cmap = gdk_colormap_get_system ();
+          g_object_ref (G_OBJECT (cmap));
+        }
+      else
+        {
+          meta_verbose ("Using system cmap to snapshot pixmap\n");
+          cmap = gdk_colormap_get_system ();
+          g_object_ref (G_OBJECT (cmap));
+        }
+    }
+
+  return cmap;
+}
+
 GdkPixbuf*
 meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
                                  Window       xwindow,
@@ -310,7 +339,8 @@ meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
 {
   GdkDrawable *drawable;
   GdkPixbuf *retval;
-
+  GdkColormap *cmap;
+  
   retval = NULL;
   
   drawable = gdk_xid_table_lookup (xwindow);
@@ -319,15 +349,17 @@ meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
     g_object_ref (G_OBJECT (drawable));
   else
     drawable = gdk_window_foreign_new (xwindow);
-      
+
+  cmap = get_cmap (drawable);
+  
   retval = gdk_pixbuf_get_from_drawable (dest,
                                          drawable,
-                                         /* We assume root window cmap */
-                                         gdk_colormap_get_system (),
+                                         cmap,
                                          src_x, src_y,
                                          dest_x, dest_y,
                                          width, height);
-  
+
+  g_object_unref (G_OBJECT (cmap));
   g_object_unref (G_OBJECT (drawable));
 
   return retval;
@@ -345,7 +377,8 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
 {
   GdkDrawable *drawable;
   GdkPixbuf *retval;
-
+  GdkColormap *cmap;
+  
   retval = NULL;
   
   drawable = gdk_xid_table_lookup (xpixmap);
@@ -354,15 +387,17 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
     g_object_ref (G_OBJECT (drawable));
   else
     drawable = gdk_pixmap_foreign_new (xpixmap);
-      
+
+  cmap = get_cmap (drawable);
+  
   retval = gdk_pixbuf_get_from_drawable (dest,
                                          drawable,
-                                         /* We assume root window cmap */
-                                         gdk_colormap_get_system (),
+                                         cmap,
                                          src_x, src_y,
                                          dest_x, dest_y,
                                          width, height);
-  
+
+  g_object_unref (G_OBJECT (cmap));
   g_object_unref (G_OBJECT (drawable));
 
   return retval;

@@ -2799,9 +2799,10 @@ update_wm_hints (MetaWindow *window)
           update_icon (window, FALSE);
         }
       
-      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx icon: 0x%lx\n",
+      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx icon: 0x%lx mask: 0x%lx\n",
                     window->input, window->initially_iconic,
-                    window->xgroup_leader, window->icon_pixmap);
+                    window->xgroup_leader, window->icon_pixmap,
+                    window->icon_mask);
       
       XFree (hints);
     }
@@ -3777,12 +3778,118 @@ get_pixmap_geometry (MetaDisplay *display,
     *d = depth;
 }
 
+static GdkPixbuf*
+apply_mask (GdkPixbuf *pixbuf,
+            GdkPixbuf *mask)
+{
+  int w, h;
+  int i, j;
+  GdkPixbuf *with_alpha;
+  guchar *src;
+  guchar *dest;
+  int src_stride;
+  int dest_stride;
+  
+  w = MIN (gdk_pixbuf_get_width (mask), gdk_pixbuf_get_width (pixbuf));
+  h = MIN (gdk_pixbuf_get_height (mask), gdk_pixbuf_get_height (pixbuf));
+
+  with_alpha = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
+
+  dest = gdk_pixbuf_get_pixels (with_alpha);
+  src = gdk_pixbuf_get_pixels (mask);
+
+  dest_stride = gdk_pixbuf_get_rowstride (with_alpha);
+  src_stride = gdk_pixbuf_get_rowstride (mask);
+  
+  i = 0;
+  while (i < h)
+    {
+      j = 0;
+      while (j < w)
+        {
+          guchar *s = src + i * src_stride + j * 3;
+          guchar *d = dest + i * dest_stride + j * 4;
+
+          /* I have no idea if this is reliable. */
+          if ((s[0] + s[1] + s[2]) == 0)
+            d[3] = 0;   /* transparent */
+          else
+            d[3] = 255; /* opaque */
+          
+          ++j;
+        }
+      
+      ++i;
+    }
+
+  return with_alpha;
+}
+
+static gboolean
+try_pixmap_and_mask (MetaWindow *window,
+                     Pixmap      src_pixmap,
+                     Pixmap      src_mask)
+{
+  GdkPixbuf *unscaled = NULL;
+  GdkPixbuf *mask = NULL;
+  int w, h;
+
+  if (src_pixmap == None)
+    return FALSE;
+      
+  meta_error_trap_push (window->display);
+
+  get_pixmap_geometry (window->display, src_pixmap,
+                       &w, &h, NULL);
+      
+  unscaled = meta_gdk_pixbuf_get_from_pixmap (NULL,
+                                              src_pixmap,
+                                              0, 0, 0, 0,
+                                              w, h);
+
+  if (unscaled && src_mask != None)
+    {
+      get_pixmap_geometry (window->display, src_mask,
+                           &w, &h, NULL);
+      mask = meta_gdk_pixbuf_get_from_pixmap (NULL,
+                                              src_mask,
+                                              0, 0, 0, 0,
+                                              w, h);
+    }
+  
+  meta_error_trap_pop (window->display);
+
+
+  if (mask)
+    {
+      GdkPixbuf *masked;
+
+      meta_verbose ("Applying mask to icon pixmap\n");
+      
+      masked = apply_mask (unscaled, mask);
+      g_object_unref (G_OBJECT (unscaled));
+      unscaled = masked;
+
+      g_object_unref (G_OBJECT (mask));
+      mask = NULL;
+    }
+  
+  if (unscaled)
+    {
+      replace_icon (window, unscaled);
+      g_object_unref (G_OBJECT (unscaled));
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 static int
 update_icon (MetaWindow *window,
              gboolean    reload_rgb_icon)
 {
 
-  if (reload_rgb_icon)
+  if (FALSE && reload_rgb_icon)
     {
       guchar *pixdata;     
       int w, h;
@@ -3830,68 +3937,31 @@ update_icon (MetaWindow *window,
   
   /* Fallback to pixmap + mask */
 
-  if (window->icon_pixmap != None)
+  if (try_pixmap_and_mask (window,
+                           window->icon_pixmap,
+                           window->icon_mask))
     {
-      GdkPixbuf *unscaled;
-      int w, h;
-      
-      meta_error_trap_push (window->display);
-
-      get_pixmap_geometry (window->display, window->icon_pixmap,
-                           &w, &h, NULL);
-
-      /* FIXME get mask and copy it to alpha channel of pixmap */
-      
-      unscaled = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                                  window->icon_pixmap,
-                                                  0, 0, 0, 0,
-                                                  w, h);
-      
-      meta_error_trap_pop (window->display);
-
-      if (unscaled)
-        {
-          meta_verbose ("Used pixmap icon\n");
-          replace_icon (window, unscaled);
-          return Success;
-        }
-      else
-        {
-          meta_verbose ("Failed to get pixmap icon as pixbuf\n");
-        }
+      meta_verbose ("Using WM_NORMAL_HINTS icon for %s\n", window->desc);
+      return Success;
     }
-
-  if (window->kwm_pixmap != None)
+  else
     {
-      GdkPixbuf *unscaled;
-      int w, h;
-      
-      meta_error_trap_push (window->display);
-
-      get_pixmap_geometry (window->display, window->kwm_pixmap,
-                           &w, &h, NULL);
-
-      /* FIXME get mask and copy it to alpha channel of pixmap */
-      
-      unscaled = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                                  window->kwm_pixmap,
-                                                  0, 0, 0, 0,
-                                                  w, h);
-      
-      meta_error_trap_pop (window->display);
-
-      if (unscaled)
-        {
-          meta_verbose ("Used kwm icon\n");
-          replace_icon (window, unscaled);
-          return Success;
-        }
-      else
-        {
-          meta_verbose ("Failed to get kwm icon as pixbuf\n");
-        }
+      meta_verbose ("No WM_NORMAL_HINTS icon, or failed to retrieve it\n");
     }
+  
 
+  if (try_pixmap_and_mask (window,
+                           window->kwm_pixmap,
+                           window->kwm_mask))
+    {
+      meta_verbose ("Using KWM_WIN_ICON for %s\n", window->desc);
+      return Success;
+    }
+  else
+    {
+      meta_verbose ("No KWM_WIN_ICON, or failed to retrieve it\n");
+    }
+  
   /* Fallback to a default icon */
   if (window->icon == NULL)
     window->icon = meta_ui_get_default_window_icon (window->screen->ui);

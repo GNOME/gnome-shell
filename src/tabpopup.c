@@ -399,9 +399,8 @@ meta_select_image_expose_event (GtkWidget      *widget,
 	    - (widget->requisition.height - misc->ypad * 2)) *
 	   misc->yalign) + 0.5;
 
-      x -= INSIDE_SELECT_RECT;
-      y -= INSIDE_SELECT_RECT;
-      
+      x -= INSIDE_SELECT_RECT + 1;
+      y -= INSIDE_SELECT_RECT + 1;      
       
       w = widget->requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
       h = widget->requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
@@ -430,8 +429,3 @@ meta_select_image_expose_event (GtkWidget      *widget,
 
   return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 }
-
-
-
-
-

@@ -1,4 +1,7 @@
-2001-08-22  Havoc Pennington  <hp@pobox.com>
+2001-08-23  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (update_icon): attempt to use the mask as well as
+	the pixmap. Probably doesn't work so well.
 
 	* src/tabpopup.c: make this look a little nicer
 
