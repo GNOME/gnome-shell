@@ -271,7 +271,9 @@
         avoiding animations, or other means. This is a significant 
         reduction in usability for many users, but may allow 
         legacy applications and terminal servers to function 
-        when they would otherwise be impractical.
+        when they would otherwise be impractical. However, the wireframe
+        feature is disabled when accessibility is on to avoid weird desktop
+        breakages
          </long>
       </locale>
     </schema>

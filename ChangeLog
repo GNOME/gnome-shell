@@ -1,3 +1,17 @@
+2005-01-26  Arvind Samptur  <arvind.samptur@wipro.com>
+
+	Don't wireframe when accessibility is on, it apparently
+	causes a desktop wide freeze.
+
+	* src/prefs.[ch] (meta_prefs_init) (change_notify)
+	(update_gnome_accessibility) (meta_preference_to_string)
+	(meta_prefs_get_gnome_accessibility) : Add code to monitor
+	accessibility status.
+
+	* src/display.c (meta_display_begin_grab_op): Check
+	accessibility status before going ahead with wireframe.
+	Fixes #159538
+
 2005-01-25  Elijah Newren  <newren@gmail.com>
 
 	* src/tabpopup.c: (meta_select_workspace_expose_event): ignore

@@ -47,7 +47,8 @@ typedef enum
   META_PREF_VISUAL_BELL,
   META_PREF_AUDIBLE_BELL,
   META_PREF_VISUAL_BELL_TYPE,
-  META_PREF_REDUCED_RESOURCES
+  META_PREF_REDUCED_RESOURCES,
+  META_PREF_GNOME_ACCESSIBILITY
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -72,6 +73,7 @@ gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
 gboolean                    meta_prefs_get_reduced_resources  (void);
+gboolean                    meta_prefs_get_gnome_accessibility (void);
 
 const char*                 meta_prefs_get_command            (int i);
 

@@ -52,6 +52,7 @@
 #define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
 #define KEY_BUTTON_LAYOUT "/apps/metacity/general/button_layout"
 #define KEY_REDUCED_RESOURCES "/apps/metacity/general/reduced_resources"
+#define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 
@@ -88,6 +89,7 @@ static gboolean auto_raise_delay = 500;
 static gboolean provide_visual_bell = TRUE;
 static gboolean bell_is_audible = TRUE;
 static gboolean reduced_resources = FALSE;
+static gboolean gnome_accessibility = FALSE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_INVALID;
 static MetaButtonLayout button_layout = {
@@ -139,6 +141,7 @@ static gboolean update_terminal_command   (const char *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
 static gboolean update_reduced_resources  (gboolean     value);
+static gboolean update_gnome_accessibility  (gboolean     value);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -315,6 +318,11 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
+  gconf_client_add_dir (default_client, KEY_GNOME_ACCESSIBILITY,
+                        GCONF_CLIENT_PRELOAD_RECURSIVE,
+                        &err);
+  cleanup_error (&err);
+
   str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
                                      &err);
   cleanup_error (&err);
@@ -412,6 +420,12 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_terminal_command (str_val);
   g_free (str_val);
+
+  bool_val = gconf_client_get_bool (default_client, KEY_GNOME_ACCESSIBILITY,
+                                    &err);
+  
+  cleanup_error (&err);
+  update_gnome_accessibility (bool_val);
 #endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
@@ -434,6 +448,12 @@ meta_prefs_init (void)
                            NULL,
                            NULL,
                            &err);
+  gconf_client_notify_add (default_client, KEY_GNOME_ACCESSIBILITY,
+                           change_notify,
+                           NULL,
+                           NULL,
+                           &err);
+
   cleanup_error (&err);  
 #endif /* HAVE_GCONF */
 }
@@ -809,6 +829,22 @@ change_notify (GConfClient    *client,
 
       if (update_reduced_resources (b))
         queue_changed (META_PREF_REDUCED_RESOURCES);
+    }
+  else if (strcmp (key, KEY_GNOME_ACCESSIBILITY) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                       KEY_GNOME_ACCESSIBILITY);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : gnome_accessibility;
+
+      if (update_gnome_accessibility (b))
+        queue_changed (META_PREF_GNOME_ACCESSIBILITY);
     }
   else
     {
@@ -1326,6 +1362,16 @@ update_reduced_resources (gboolean value)
 
   return old != reduced_resources;
 }
+
+static gboolean
+update_gnome_accessibility (gboolean value)
+{
+  gboolean old = gnome_accessibility;
+
+  gnome_accessibility = value;
+  
+  return old != gnome_accessibility;
+}
 #endif /* HAVE_GCONF */
 
 #ifdef WITH_VERBOSE_MODE
@@ -1398,6 +1444,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_REDUCED_RESOURCES:
       return "REDUCED_RESOURCES";
+      break;
+    case META_PREF_GNOME_ACCESSIBILITY:
+      return "GNOME_ACCESSIBILTY";
       break;
     }
 
@@ -2110,6 +2159,12 @@ gboolean
 meta_prefs_get_reduced_resources (void)
 {
   return reduced_resources;
+}
+
+gboolean
+meta_prefs_get_gnome_accessibility ()
+{
+  return gnome_accessibility;
 }
 
 MetaKeyBindingAction
