@@ -1,3 +1,7 @@
+2003-02-05  Akira TAGOH  <tagoh@gnome.gr.jp>
+
+	* src/main.c (usage): fix a typo and missing option. (#105186)
+
 2003-02-04  Havoc Pennington  <hp@redhat.com>
 
 	* src/themes/Simple/ChangeLog: nuke subdir ChangeLog, 
