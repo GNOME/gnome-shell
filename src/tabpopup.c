@@ -101,6 +101,20 @@ outline_window_expose (GtkWidget      *widget,
   return FALSE;
 }
 
+static char*
+utf8_strndup (const char *src,
+              int         n)
+{
+  const gchar *s = src;
+  while (n && *s)
+    {
+      s = g_utf8_next_char (s);
+      n--;
+    }
+
+  return g_strndup (src, s - src);
+}
+
 MetaTabPopup*
 meta_ui_tab_popup_new (const MetaTabEntry *entries,
                        int                 screen_number,
@@ -117,9 +131,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GtkWidget *align;
   GList *tmp;
   GtkWidget *frame;
-  int max_label_width;
+  int max_label_width; /* the actual max width of the labels we create */
   AtkObject *obj;
-
+  int max_chars_per_title; /* max chars we allow in a label */
+  GdkScreen *screen;
+  
   popup = g_new (MetaTabPopup, 1);
 
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
@@ -136,9 +152,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
 
+  screen = gdk_display_get_screen (gdk_display_get_default (),
+                                   screen_number);
+  
   gtk_window_set_screen (GTK_WINDOW (popup->window),
-			 gdk_display_get_screen (gdk_display_get_default (),
-						 screen_number));
+			 screen);
 
   gtk_window_set_position (GTK_WINDOW (popup->window),
                            GTK_WIN_POS_CENTER_ALWAYS);
@@ -149,6 +167,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->entries = NULL;
   popup->current_selected_entry = NULL;
   popup->outline = outline;
+
+  /* make max title size some random relationship to the screen,
+   * avg char width of our font would be a better number.
+   */
+  max_chars_per_title = gdk_screen_get_width (screen) / 15; 
   
   tab_entries = NULL;
   for (i = 0; i < entry_count; ++i)
@@ -157,7 +180,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 
       te = g_new (TabEntry, 1);
       te->key = entries[i].key;
-      te->title = g_strdup (entries[i].title);
+      te->title = utf8_strndup (entries[i].title, max_chars_per_title);
       te->widget = NULL;
       te->icon = entries[i].icon;
       te->blank = entries[i].blank;
