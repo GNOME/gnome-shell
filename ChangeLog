@@ -1,3 +1,9 @@
+2003-11-23  Havoc Pennington  <hp@redhat.com>
+
+	* src/compositor.c: move xcompmgr code in here (minus drop
+	shadows), untested since Keith's server just crashes at the
+	moment. "It compiles"
+
 2003-11-20  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_new_with_attrs): new function

@@ -1298,6 +1298,10 @@ event_callback (XEvent   *event,
         }
     }
 #endif /* HAVE_SHAPE */
+
+  meta_compositor_process_event (display->compositor,
+                                 event,
+                                 window);
   
   switch (event->type)
     {
@@ -1636,6 +1640,9 @@ event_callback (XEvent   *event,
     case CreateNotify:
       break;
     case DestroyNotify:
+      meta_compositor_remove_window (display->compositor,
+                                     modified);
+            
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&

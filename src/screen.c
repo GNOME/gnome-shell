@@ -559,6 +559,9 @@ meta_screen_new (MetaDisplay *display,
 
   screen->showing_desktop = FALSE;
 
+  screen->compositor_windows = NULL;
+  screen->damage_region = None;
+  
   {
     XGCValues gc_values;
     
