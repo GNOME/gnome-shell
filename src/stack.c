@@ -358,6 +358,16 @@ compute_layer (MetaWindow *window)
            * and a dialog transient for the normal window; you don't want the dialog
            * above the dock if it wouldn't normally be.
            */
+
+          /* FIXME when promoting a window here,
+           * it's necessary to promote its transient children
+           * (or other windows constrained to be above it)
+           * as well, but we aren't handling that, and it's
+           * somewhat hard to fix.
+           *
+           * http://bugzilla.gnome.org/show_bug.cgi?id=96140
+           */
+          
           MetaStackLayer group_max;
           
           group_max = get_maximum_layer_in_group (window);
@@ -399,40 +409,125 @@ compare_window_position (void *a,
   else
     return 0; /* not reached */
 }
+  
+/*
+ * Stacking constraints
+ * 
+ * Assume constraints of the form "AB" meaning "window A must be
+ * below window B"
+ *
+ * If we have windows stacked from bottom to top
+ * "ABC" then raise A we get "BCA". Say C is
+ * transient for B is transient for A. So
+ * we have constraints AB and BC.
+ *
+ * After raising A, we need to reapply the constraints.
+ * If we do this by raising one window at a time -
+ *
+ *  start:    BCA
+ *  apply AB: CAB
+ *  apply BC: ABC
+ *
+ * but apply constraints in the wrong order and it breaks:
+ * 
+ *  start:    BCA
+ *  apply BC: BCA
+ *  apply AB: CAB
+ *
+ * We make a directed graph of the constraints by linking
+ * from "above windows" to "below windows as follows:
+ * 
+ *   AB -> BC -> CD
+ *          \
+ *           CE
+ *
+ * If we then walk that graph and apply the constraints in the order
+ * that they appear, we will apply them correctly. Note that the
+ * graph MAY have cycles, so we have to guard against that.
+ *
+ */
 
+typedef struct Constraint Constraint;
+
+struct Constraint
+{
+  MetaWindow *above;
+  MetaWindow *below;
+
+  /* used to keep the constraint in the
+   * list of constraints for window "below"
+   */
+  Constraint *next;
+
+  /* used to create the graph. */
+  GSList *next_nodes;
+  
+  /* constraint has been applied, used
+   * to detect cycles.
+   */
+  unsigned int applied : 1;
+
+  /* constraint has a previous node in the graph,
+   * used to find places to start in the graph.
+   * (I think this also has the side effect
+   * of preventing cycles, since cycles will
+   * have no starting point - so maybe
+   * the "applied" flag isn't needed.)
+   */
+  unsigned int has_prev : 1;
+};
+
+/* We index the array of constraints by window
+ * stack positions, just because the stack
+ * positions are a convenient index.
+ */
 static void
-ensure_above (MetaWindow *above,
-              MetaWindow *below)
-{  
-  if (above->stack_position < below->stack_position)
+add_constraint (Constraint **constraints,
+                MetaWindow  *above,
+                MetaWindow  *below)
+{
+  Constraint *c;
+  
+  /* check if constraint is a duplicate */
+  c = constraints[below->stack_position];
+  while (c != NULL)
     {
-      /* move above to below->stack_position bumping below down the stack */
-      meta_window_set_stack_position (above, below->stack_position);
-      g_assert (below->stack_position + 1 == above->stack_position);
+      if (c->above == above)
+        return;
+      c = c->next;
     }
 
-  meta_topic (META_DEBUG_STACK, "Above pos %d > below pos %d\n",
-              above->stack_position, below->stack_position);
+  /* if not, add the constraint */
+  c = g_new (Constraint, 1);
+  c->above = above;
+  c->below = below;
+  c->next = constraints[below->stack_position];
+  c->next_nodes = NULL;
+  c->applied = FALSE;
+  c->has_prev = FALSE;
+
+  constraints[below->stack_position] = c;
 }
 
-#define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)             \
-         ((w->xtransient_for == None ||                 \
-           w->transient_parent_is_root_window) &&       \
+#define WINDOW_HAS_TRANSIENT_TYPE(w)                    \
           (w->type == META_WINDOW_DIALOG ||             \
 	   w->type == META_WINDOW_MODAL_DIALOG ||       \
            w->type == META_WINDOW_TOOLBAR ||            \
            w->type == META_WINDOW_MENU ||               \
-           w->type == META_WINDOW_UTILITY))
+           w->type == META_WINDOW_UTILITY)
+
+#define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)             \
+         ((w->xtransient_for == None ||                 \
+           w->transient_parent_is_root_window) &&       \
+          WINDOW_HAS_TRANSIENT_TYPE (w))
 
 static void
-apply_constraints (GList *list)
+create_constraints (Constraint **constraints,
+                    GList       *windows)
 {
   GList *tmp;
   
-  /* This algorithm could stand to be a bit less
-   * quadratic
-   */
-  tmp = list;
+  tmp = windows;
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
@@ -455,13 +550,21 @@ apply_constraints (GList *list)
           while (tmp2 != NULL)
             {
               MetaWindow *group_window = tmp2->data;
-              
+
+#if 0
+              /* old way of doing it */
               if (!(meta_window_is_ancestor_of_transient (w, group_window)) &&
-                  !WINDOW_TRANSIENT_FOR_WHOLE_GROUP (group_window))
+                  !WINDOW_TRANSIENT_FOR_WHOLE_GROUP (group_window))  /* note */;/*note*/
+#else
+              /* better way I think, so transient-for-group are constrained
+               * only above non-transient-type windows in their group
+               */
+              if (!WINDOW_HAS_TRANSIENT_TYPE (group_window))
+#endif
                 {
-                  meta_topic (META_DEBUG_STACK, "Stacking %s above %s as it's a dialog transient for its group\n",
+                  meta_topic (META_DEBUG_STACK, "Constraining %s above %s as it's transient for its group\n",
                               w->desc, group_window->desc);
-                  ensure_above (w, group_window);
+                  add_constraint (constraints, w, group_window);
                 }
               
               tmp2 = tmp2->next;
@@ -479,14 +582,189 @@ apply_constraints (GList *list)
 
           if (parent)
             {
-              meta_topic (META_DEBUG_STACK, "Stacking %s above %s due to transiency\n",
+              meta_topic (META_DEBUG_STACK, "Constraining %s above %s due to transiency\n",
                           w->desc, parent->desc);
-              ensure_above (w, parent);
+              add_constraint (constraints, w, parent);
             }
         }
       
       tmp = tmp->next;
     }
+}
+
+static void
+graph_constraints (Constraint **constraints,
+                   int          n_constraints)
+{
+  int i;
+
+  i = 0;
+  while (i < n_constraints)
+    {
+      Constraint *c;
+
+      /* If we have "A below B" and "B below C" then AB -> BC so we
+       * add BC to next_nodes in AB.
+       */
+      
+      c = constraints[i];
+      while (c != NULL)
+        {
+          Constraint *n;
+            
+          g_assert (c->below->stack_position == i);
+
+          /* Constraints where ->above is below are our
+           * next_nodes and we are their previous
+           */
+          n = constraints[c->above->stack_position];
+          while (n != NULL)
+            {
+              c->next_nodes = g_slist_prepend (c->next_nodes,
+                                               n);
+              /* c is a previous node of n */
+              n->has_prev = TRUE;
+              
+              n = n->next;
+            }
+          
+          c = c->next;
+        }
+
+      ++i;
+    }
+}
+
+static void
+free_constraints (Constraint **constraints,
+                  int          n_constraints)
+{
+  int i;
+
+  i = 0;
+  while (i < n_constraints)
+    {
+      Constraint *c;
+      
+      c = constraints[i];
+      while (c != NULL)
+        {
+          Constraint *next = c->next;
+          
+          g_slist_free (c->next_nodes);
+
+          g_free (c);
+          
+          c = next;
+        }
+
+      ++i;
+    }
+}
+
+static void
+ensure_above (MetaWindow *above,
+              MetaWindow *below)
+{  
+  if (above->stack_position < below->stack_position)
+    {
+      /* move above to below->stack_position bumping below down the stack */
+      meta_window_set_stack_position (above, below->stack_position);
+      g_assert (below->stack_position + 1 == above->stack_position);
+    }
+
+  meta_topic (META_DEBUG_STACK, "%s above at %d > %s below at %d\n",
+              above->desc, above->stack_position,
+              below->desc, below->stack_position);
+}
+
+static void
+traverse_constraint (Constraint *c)
+{
+  GSList *tmp;
+
+  if (c->applied)
+    return;
+  
+  ensure_above (c->above, c->below);
+  c->applied = TRUE;
+  
+  tmp = c->next_nodes;
+  while (tmp != NULL)
+    {
+      traverse_constraint (tmp->data);
+
+      tmp = tmp->next;
+    }
+}
+
+static void
+apply_constraints (Constraint **constraints,
+                   int          n_constraints)
+{
+  GSList *heads;
+  GSList *tmp;
+  int i;
+
+  /* List all heads in an ordered constraint chain */
+  heads = NULL;
+  i = 0;
+  while (i < n_constraints)
+    {
+      Constraint *c;
+      
+      c = constraints[i];
+      while (c != NULL)
+        {
+          if (!c->has_prev)
+            heads = g_slist_prepend (heads, c);
+          
+          c = c->next;
+        }
+
+      ++i;
+    }
+
+  /* Now traverse the chain and apply constraints */
+  tmp = heads;
+  while (tmp != NULL)
+    {
+      Constraint *c = tmp->data;
+
+      traverse_constraint (c);
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (heads);
+}
+
+static void
+constrain_stacking (MetaStack *stack)
+{
+  Constraint **constraints;
+
+  /* It'd be nice if this were all faster, probably */
+  
+  if (!stack->need_constrain)
+    return;
+
+  meta_topic (META_DEBUG_STACK,
+              "Reapplying constraints\n");
+
+  constraints = g_new0 (Constraint*,
+                        stack->n_positions);
+
+  create_constraints (constraints, stack->sorted);
+
+  graph_constraints (constraints, stack->n_positions);
+
+  apply_constraints (constraints, stack->n_positions);
+  
+  free_constraints (constraints, stack->n_positions);
+  g_free (constraints);
+  
+  stack->need_constrain = FALSE;
 }
 
 static void
@@ -621,15 +899,7 @@ meta_stack_ensure_sorted (MetaStack *stack)
     }
 
   /* Update stack_position to reflect transiency constraints */
-  if (stack->need_constrain)
-    {
-      meta_topic (META_DEBUG_STACK,
-                  "Reapplying constraints\n");      
-      
-      apply_constraints (stack->sorted);
-      
-      stack->need_constrain = FALSE;
-    }
+  constrain_stacking (stack);
   
   /* Sort stack->sorted with layers having priority over stack_position
    */

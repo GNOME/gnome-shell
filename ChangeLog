@@ -1,3 +1,13 @@
+2002-10-18  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (constrain_stacking): replace the old
+	apply_constraints with wacky new approach involving graphing all
+	the constraints then walking the graph.  Fixes #94876 and probably
+	other stacking bugs as well, thanks to Arvind for tracking down
+	the issue.
+
+	(compute_layer): add FIXME and reference to bug #96140
+
 2002-10-17  Havoc Pennington  <hp@redhat.com>
 
 	* src/stack.c (apply_constraints): don't place

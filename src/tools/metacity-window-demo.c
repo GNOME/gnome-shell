@@ -227,11 +227,12 @@ make_dialog (GtkWidget *parent,
   GtkWidget *dialog;
   char *str;
   
-  dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+  dialog = gtk_message_dialog_new (parent ? GTK_WINDOW (parent) : NULL,
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
                                    GTK_MESSAGE_INFO,
                                    GTK_BUTTONS_CLOSE,
-                                   "Here is a dialog %d",
+                                   parent ? "Here is a dialog %d" :
+                                   "Here is a dialog %d with no transient parent",
                                    depth);
 
   str = g_strdup_printf ("%d dialog", depth);
@@ -306,21 +307,7 @@ no_parent_dialog_cb (gpointer             callback_data,
                      guint                callback_action,
                      GtkWidget           *widget)
 {
-  GtkWidget *dialog;
-  
-  dialog = gtk_message_dialog_new (NULL,
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_MESSAGE_INFO,
-                                   GTK_BUTTONS_CLOSE,
-                                   "Here is a dialog with no transient parent");
-
-  /* Close dialog on user response */
-  g_signal_connect (G_OBJECT (dialog),
-                    "response",
-                    G_CALLBACK (gtk_widget_destroy),
-                    NULL);
-  
-  gtk_widget_show (dialog);
+  make_dialog (NULL, 1);
 }
 
 static void
