@@ -1,0 +1,32 @@
+Dialogs which have no transient parent or root window being 
+their tranisent parent are the ones which will be visible in 
+the tasklist. 
+
+All such dialogs will be *always* on top of the window
+group i.e they would transients for the whole group.
+
+
+1) Modal dialogs 
+
+   
+   * If you wish to open another window from a modal dialog 
+
+     open *only* a modal dialog and set it's transient parent.
+     
+	 
+2) Normal dialog
+
+    
+   without transient parent
+
+   * If you wish to open another window from a normal dialog
+
+     open either a normal dialog or a modal dialog only.
+     Set the transient parent for the child dialog if you do not
+     want them to be transient for all the other windows in the group.
+     
+   with transient parent 
+ 
+   * If you wish to open another window from a normal dialog
+     
+     you could open any type of window.

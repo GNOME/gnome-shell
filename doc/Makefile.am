@@ -1,2 +1,2 @@
 
-EXTRA_DIST=theme-format.txt metacity-theme.dtd
+EXTRA_DIST=theme-format.txt metacity-theme.dtd dialogs.txt
