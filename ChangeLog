@@ -1,3 +1,7 @@
+2002-05-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_get_neighbor): fix it, maybe
+
 2002-05-16  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (constrain_position): lock desktop to position 0,0
