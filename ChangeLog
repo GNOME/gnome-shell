@@ -1,4 +1,6 @@
 2003-02-27  Havoc Pennington  <hp@pobox.com>
+
+	Changes made on plane from FOSDEM, syncing from laptop.
 	
 	* src/main.c (main): add more debug spew about conditional 
 	build stuff
@@ -8,8 +10,6 @@
 	WM_PROTOCOLS to new property system; don't queue move resize on
 	updating WM_PROTOCOLS; move WM_HINTS to new property system;
 	reload icon in an idle handler.
-
-	Changes made on plane from FOSDEM, syncing from laptop.
 	
 2003-02-28  Mark McLoughlin  <mark@skynet.ie>
 
