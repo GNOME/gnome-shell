@@ -1,5 +1,12 @@
 2004-09-22  Elijah Newren  <newren@math.utah.edu>
 
+	* src/keybindings.c (process_workspace_switch_grab): Focus the
+	default window after the user dismisses the workspace switcher
+	popup (fixes #123803; note that an alternate fix was made
+	independently by David Baron for sloppy and mouse focus users)
+
+2004-09-22  Elijah Newren  <newren@math.utah.edu>
+
 	Fix some uninitialized variable errors reported by valgrind (see
 	#153338)
 

@@ -2670,19 +2670,23 @@ process_workspace_switch_grab (MetaDisplay *display,
 
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending workspace tab operation, primary modifier released\n");
-      if (target_workspace)
+
+      if (target_workspace == screen->active_workspace)
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Ending grab early so we can focus the target workspace\n");
+                      "Ending grab so we can focus on the target workspace\n");
           meta_display_end_grab_op (display, event->xkey.time);
 
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Activating target workspace\n");
+                      "Focusing default window on target workspace\n");
 
-          meta_workspace_activate (target_workspace);
+          meta_workspace_focus_default_window (target_workspace, NULL);
 
           return TRUE; /* we already ended the grab */
         }
+
+      /* Workspace switching should have already occurred on KeyPress */
+      meta_warning ("target_workspace != active_workspace.  Some other event must have occurred.\n");
       
       return FALSE; /* end grab */
     }
@@ -2753,7 +2757,10 @@ process_workspace_switch_grab (MetaDisplay *display,
 
   /* end grab */
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ending workspace tabbing, uninteresting key pressed\n");
+              "Ending workspace tabbing & focusing default window; uninteresting key pressed\n");
+  workspace =
+    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+  meta_workspace_focus_default_window (workspace, NULL);
   return FALSE;
 }
 
