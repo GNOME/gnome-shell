@@ -1,3 +1,15 @@
+2004-10-08  Elijah Newren  <newren@math.utah.edu>
+
+         Alter the meaning of expected_focus_window; doesn't affect
+	 current operation but assists in fixing some other bugs
+	 (#154598)
+	
+	* src/display.c (meta_display_focus_the_no_focus_window): set the
+	expected_focus_window to NULL.
+
+	* src/window.c (meta_window_notify_focus): don't NULL the
+	expected_focus_window when that window receives a FocusIn event
+
 2004-10-04  Elijah Newren  <newren@math.utah.edu>
 
 	* src/display.c (event_callback): if the root window gets focused,

@@ -4593,6 +4593,7 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
                   display->no_focus_window,
                   RevertToPointerRoot,
                   timestamp);
+  display->expected_focus_window = NULL;
   meta_display_remove_autoraise_callback (display);
 }
 
