@@ -1,16 +1,16 @@
 # Serbian translation of metacity
 # Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003.
-# 
+#
 # This file is distributed under the same license as the metacity package.
-# 
+#
 # Maintainer: Goran Rakić <gox@devbase.net>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.2\n"
+"Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-13 22:15+0200\n"
-"PO-Revision-Date: 2003-10-13 22:17+0200\n"
+"POT-Creation-Date: 2003-10-15 22:37+0200\n"
+"PO-Revision-Date: 2003-10-15 23:04+0200\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -481,7 +481,12 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr "Ako je postavljeno, Metasiti će korisniku prikazati manje podataka i manje osećaja o „neposrednom upravljanju“, upotrebom linija, izbegavanjem animacija ili drugim sredstvima. Ovo je značajni nedostatak po pitanju upotrebljivosti za mnoge korisnike, ali može omogućiti starim programima i terminalskim serverima da rade kada bi inače bili nepraktični."
+msgstr ""
+"Ako je postavljeno, Metasiti će korisniku prikazati manje podataka i manje "
+"osećaja o „neposrednom upravljanju“, upotrebom linija, izbegavanjem animacija "
+"ili drugim sredstvima. Ovo je značajni nedostatak po pitanju upotrebljivosti "
+"za mnoge korisnike, ali može omogućiti starim programima i terminalskim "
+"serverima da rade kada bi inače bili nepraktični."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -507,7 +512,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Ukoliko je postavljeno, žrtvuj upotrebljivost zarad upotrebe manje resursa"
+msgstr ""
+"Ukoliko je postavljeno, žrtvuj upotrebljivost zarad upotrebe manje resursa"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2621,6 +2627,204 @@ msgstr "Nisam uspeo da pročitam temu iz datoteke %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Datoteka sa temom %s ne sadrži korenski <metacity_theme> element"
 
+#: src/theme-viewer.c:70
+msgid "/_Windows"
+msgstr "/_Prozori"
+
+#: src/theme-viewer.c:71
+msgid "/Windows/tearoff"
+msgstr "/Prozori/otkini"
+
+#: src/theme-viewer.c:72
+msgid "/Windows/_Dialog"
+msgstr "/Prozori/_Prozorče"
+
+#: src/theme-viewer.c:73
+msgid "/Windows/_Modal dialog"
+msgstr "/Prozori/_Važno prozorče"
+
+#: src/theme-viewer.c:74
+msgid "/Windows/_Utility"
+msgstr "/Prozori/_Alatka"
+
+#: src/theme-viewer.c:75
+msgid "/Windows/_Splashscreen"
+msgstr "/Prozori/_Uvodni ekran"
+
+#: src/theme-viewer.c:76
+msgid "/Windows/_Top dock"
+msgstr "/Prozori/_Gornje pripajanje"
+
+#: src/theme-viewer.c:77
+msgid "/Windows/_Bottom dock"
+msgstr "/Prozori/_Donje pripajanje"
+
+#: src/theme-viewer.c:78
+msgid "/Windows/_Left dock"
+msgstr "/Prozori/_Levo pripajanje"
+
+#: src/theme-viewer.c:79
+msgid "/Windows/_Right dock"
+msgstr "/Prozori/D_esno pripajanje"
+
+#: src/theme-viewer.c:80
+msgid "/Windows/_All docks"
+msgstr "/Prozori/_Sva pripajanja"
+
+#: src/theme-viewer.c:81
+msgid "/Windows/Des_ktop"
+msgstr "/Prozori/Rad_na površina"
+
+#: src/theme-viewer.c:131
+msgid "Open another one of these windows"
+msgstr "Otvori neki drugi od ovih prozora"
+
+#: src/theme-viewer.c:138
+msgid "This is a demo button with an 'open' icon"
+msgstr "Ovo je probno dugme sa „otvori“ ikonom"
+
+#: src/theme-viewer.c:145
+msgid "This is a demo button with a 'quit' icon"
+msgstr "Ovo je probno dugme sa „izađi“ ikonom"
+
+#: src/theme-viewer.c:241
+msgid "This is a sample message in a sample dialog"
+msgstr "Ovo je primer poruke u probnom prozorčetu"
+
+#: src/theme-viewer.c:324
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "Lažna stavka menija %d\n"
+
+#: src/theme-viewer.c:358
+msgid "Border-only window"
+msgstr "Prozor samo sa ivicom"
+
+#: src/theme-viewer.c:360
+msgid "Bar"
+msgstr "Traka"
+
+#: src/theme-viewer.c:377
+msgid "Normal Application Window"
+msgstr "Običan prozor programa"
+
+#: src/theme-viewer.c:382
+msgid "Dialog Box"
+msgstr "Prozorče"
+
+#: src/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "Važno prozorče"
+
+#: src/theme-viewer.c:392
+msgid "Utility Palette"
+msgstr "Paleta alatki"
+
+#: src/theme-viewer.c:397
+msgid "Torn-off Menu"
+msgstr "Otkinuti meni"
+
+#: src/theme-viewer.c:402
+msgid "Border"
+msgstr "Ivica"
+
+#: src/theme-viewer.c:731
+#, c-format
+msgid "Button layout test %d"
+msgstr "Proba rasporeda dugmića %d"
+
+# bug: plural-forms
+#: src/theme-viewer.c:760
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "%g milisekundi za iscrtavanje okvira jednog prozora"
+
+#: src/theme-viewer.c:803
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "Upotreba: metacity-theme-viewer [IME-TEME]\n"
+
+#: src/theme-viewer.c:810
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "Greška prilikom učitavanja teme: %s\n"
+
+# bug: plural-forms
+#: src/theme-viewer.c:816
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "Učitana tema „%s“ za %g sekundi\n"
+
+#: src/theme-viewer.c:839
+msgid "Normal Title Font"
+msgstr "Običan naslovni font"
+
+#: src/theme-viewer.c:845
+msgid "Small Title Font"
+msgstr "Mali naslovni font"
+
+#: src/theme-viewer.c:851
+msgid "Large Title Font"
+msgstr "Veliki naslovni font"
+
+#: src/theme-viewer.c:856
+msgid "Button Layouts"
+msgstr "Raspored dugmića"
+
+#: src/theme-viewer.c:861
+msgid "Benchmark"
+msgstr "Provera brzine"
+
+#: src/theme-viewer.c:908
+msgid "Window Title Goes Here"
+msgstr "Ovde ide naslov prozora"
+
+# bug: plural-forms
+#: src/theme-viewer.c:1012
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr "Nacrtao je %d okvira za %g klijentskih sekundi (%g milisekundi po okviru) i %g sekundi vremena na zidnom časovniku uključujući i resurse Iks servera (%g milisekundi po okviru)\n"
+
+#: src/theme-viewer.c:1227
+msgid "position expression test returned TRUE but set error"
+msgstr "provera izraza položaja je vratila tačno, ali je postavila grešku"
+
+#: src/theme-viewer.c:1229
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "provera izraza položaja je vratila netačno, ali nije postavila grešku"
+
+#: src/theme-viewer.c:1233
+msgid "Error was expected but none given"
+msgstr "Očekivana je greška, ali ona nije data"
+
+#: src/theme-viewer.c:1235
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "Očekivana je greška %d, ali je data %d"
+
+#: src/theme-viewer.c:1241
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "Greška nije očekivana, ali je vraćena: %s"
+
+#: src/theme-viewer.c:1245
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "x vrednost je bila %d, %d, a očekivana je"
+
+#: src/theme-viewer.c:1248
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "y vrednost je bila %d, %d, a očekivana je"
+
+# bug: plural-forms
+#: src/theme-viewer.c:1310
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d izraza koordinata obrađeno za %g sekundi (prosek %g sekundi)\n"
+
 #: src/theme.c:202
 msgid "top"
 msgstr "gornju"
@@ -2943,7 +3147,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program je postavio netačan _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4575
+#: src/window.c:4579
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2959,7 +3163,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5236
+#: src/window.c:5240
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
