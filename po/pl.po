@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-10-06 00:31+0200\n"
-"PO-Revision-Date: 2002-10-06 00:45+0200\n"
+"POT-Creation-Date: 2002-10-10 13:12+0200\n"
+"PO-Revision-Date: 2002-10-10 13:21+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -297,6 +297,14 @@ msgid "Automatically raises the focused window"
 msgstr "Automatyczne wysuwanie okien otrzymujących skupienie"
 
 #: src/metacity.schemas.in.h:1
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
+"for example."
+msgstr ""
+
+#: src/metacity.schemas.in.h:1
 msgid "Close a window"
 msgstr "Zamknięcie okna"
 
@@ -378,6 +386,12 @@ msgstr "Maksymalizacja okna"
 #: src/metacity.schemas.in.h:1
 msgid "Minimize a window"
 msgstr "Minimalizacja okna"
+
+#: src/metacity.schemas.in.h:1
+msgid ""
+"Modifier to use for modified window click actions (Alt+left/middle/right "
+"click)"
+msgstr ""
 
 #: src/metacity.schemas.in.h:1
 msgid "Move a window"
@@ -1526,14 +1540,24 @@ msgstr "Czcionka tytułu okna"
 #: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
 #: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
 #: src/prefs.c:1 src/prefs.c:1 src/prefs.c:1 src/prefs.c:1
+#: src/prefs.c:1
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klucz GConfa \"%s\" jest niewłaściwego typu\n"
 
 #: src/prefs.c:1
 #, c-format
-msgid "GConf key '%s' is set to an invalid value"
-msgstr "Kluczowi GConfa \"%s\" jest przypisana niepoprawna wartość"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
+"poprawnie modyfikatora przycisku myszy\n"
+
+#: src/prefs.c:1
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "Kluczowi GConfa \"%s\" jest przypisana niepoprawna wartość\n"
 
 #: src/prefs.c:1
 #, c-format
@@ -1571,10 +1595,10 @@ msgstr "Przy ustawianiu liczby obszarów roboczych na %d wystąpił błąd: %s\n
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\""
+"\"%s\"\n"
 msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
-"poprawnie skrótu klawiszowego \"%s\"."
+"poprawnie skrótu klawiszowego \"%s\"\n"
 
 #: src/resizepopup.c:1
 #, c-format
@@ -1677,6 +1701,7 @@ msgid "Unknown attribute %s on <maximized> element"
 msgstr "Nieznany atrybut %s wewnątrz elementu <maximized>"
 
 #: src/session.c:1
+#, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Nieznany atrybut %s wewnątrz elementu <geometry>"
 
