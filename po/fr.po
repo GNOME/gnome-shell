@@ -1,8 +1,8 @@
 # French translation of metacity.
-# Copyright (C) 2002 Havoc Pennington.
+# Copyright (C) 2002-2003 Free Software Foundation,, Inc.
 # This file is distributed under the same license as the metacity package.
 # maintainer: Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
-# Christophe Merlet (RedFox) <christophe@merlet.net>, 2002.
+# Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2002-2003.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # Guy CLOTILDE <guy.clotilde@wanadoo.fr>, 2002.
 #
