@@ -5370,6 +5370,8 @@ recalc_window_type (MetaWindow *window)
       
       /* update stacking constraints */
       meta_window_update_layer (window);
+
+      meta_window_grab_keys (window);
     }
 }
 

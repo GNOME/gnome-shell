@@ -1,3 +1,13 @@
+2003-02-28  Mark McLoughlin  <mark@skynet.ie>
+
+	Give me back my keys.
+
+	* src/keybindings.c: (meta_window_grab_keys): don't
+	grab keys on DOCK windows.
+
+	* src/window.c: (recalc_window_type): re-grab the
+	keys.
+
 2003-02-26  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* configure.in: Added Belarusian to ALL_LINGUAS.
