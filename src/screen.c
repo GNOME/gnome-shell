@@ -2178,6 +2178,31 @@ queue_windows_showing (MetaScreen *screen)
 }
 
 void
+meta_screen_minimize_all_except (MetaScreen *screen,
+                                 MetaWindow *keep)
+{
+  GSList *windows;
+  GSList *tmp;
+  
+  windows = meta_display_list_windows (screen->display);
+  
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      
+      if (w->screen == screen  &&
+          w->has_minimize_func &&
+	  w != keep)
+	meta_window_minimize (w);
+      
+      tmp = tmp->next;
+    }
+  
+  g_slist_free (windows);
+}
+
+void
 meta_screen_show_desktop (MetaScreen *screen)
 {
   if (screen->showing_desktop)
@@ -2188,6 +2213,8 @@ meta_screen_show_desktop (MetaScreen *screen)
   queue_windows_showing (screen);
 
   update_showing_desktop_hint (screen);
+
+  meta_screen_focus_top_window (screen, NULL);
 }
 
 void
@@ -2201,8 +2228,6 @@ meta_screen_unshow_desktop (MetaScreen *screen)
   queue_windows_showing (screen);
 
   update_showing_desktop_hint (screen);
-
-  meta_screen_focus_top_window (screen, NULL);
 }
 
 #ifdef HAVE_STARTUP_NOTIFICATION

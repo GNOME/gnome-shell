@@ -2596,7 +2596,10 @@ handle_toggle_desktop (MetaDisplay    *display,
                        MetaKeyBinding *binding)
 {
   if (screen->showing_desktop)
-    meta_screen_unshow_desktop (screen);
+    {
+      meta_screen_unshow_desktop (screen);
+      meta_screen_focus_top_window (screen, NULL);
+    }
   else
     meta_screen_show_desktop (screen);
 }

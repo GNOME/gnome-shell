@@ -136,6 +136,49 @@ wm_state_to_string (int state)
 }
 #endif
 
+static gboolean
+is_desktop_or_dock_foreach (MetaWindow *window,
+                            void       *data)
+{
+  gboolean *result = data;
+
+  *result =
+    window->type == META_WINDOW_DESKTOP ||
+    window->type == META_WINDOW_DOCK;
+  if (*result)
+    return FALSE; /* stop as soon as we find one */
+  else
+    return TRUE;
+}
+
+/* window is the window that's newly mapped provoking
+ * the possible change
+ */
+static void
+maybe_leave_show_desktop_mode (MetaWindow *window)
+{
+  gboolean is_desktop_or_dock;
+
+  if (!window->screen->showing_desktop)
+    return;
+
+  /* If the window is a transient for the dock or desktop, don't
+   * leave show desktop mode when the window opens. That's
+   * so you can e.g. hide all windows, manipulate a file on
+   * the desktop via a dialog, then unshow windows again.
+   */
+  is_desktop_or_dock = FALSE;
+
+  meta_window_foreach_ancestor (window, is_desktop_or_dock_foreach,
+                                &is_desktop_or_dock);
+
+  if (!is_desktop_or_dock)
+    {
+      meta_screen_minimize_all_except (window->screen, window);
+      meta_screen_unshow_desktop (window->screen);      
+    }
+}
+
 MetaWindow*
 meta_window_new (MetaDisplay *display,
                  Window       xwindow,
@@ -323,6 +366,8 @@ meta_window_new (MetaDisplay *display,
   
   g_assert (window->screen);
 
+  window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+  
   /* avoid tons of stack updates */
   meta_stack_freeze (window->screen->stack);
 
@@ -358,8 +403,6 @@ meta_window_new (MetaDisplay *display,
   meta_icon_cache_init (&window->icon_cache);
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
-  
-  window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
   window->frame = NULL;
   window->has_focus = FALSE;
@@ -410,6 +453,8 @@ meta_window_new (MetaDisplay *display,
   window->has_shade_func = TRUE;
 
   window->has_fullscreen_func = TRUE;
+
+  window->always_sticky = FALSE;
   
   window->wm_state_modal = FALSE;
   window->skip_taskbar = FALSE;
@@ -449,6 +494,7 @@ meta_window_new (MetaDisplay *display,
   window->using_net_wm_icon_name = FALSE;
 
   window->need_reread_icon = TRUE;
+  window->update_icon_queued = FALSE;
   
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
@@ -670,10 +716,7 @@ meta_window_new (MetaDisplay *display,
   meta_stack_thaw (window->screen->stack);
 
   /* disable show desktop mode unless we're a desktop component */
-  if (window->screen->showing_desktop &&
-      window->type != META_WINDOW_DESKTOP &&
-      window->type != META_WINDOW_DOCK)
-    meta_screen_unshow_desktop (window->screen);
+  maybe_leave_show_desktop_mode (window);
   
   meta_window_queue_calc_showing (window);
 
@@ -1181,7 +1224,7 @@ window_should_be_showing (MetaWindow  *window)
   
   /* 3. See if we're in "show desktop" mode */
   
-  if (showing &&
+  if (showing &&      
       window->screen->showing_desktop &&
       window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
@@ -1745,9 +1788,6 @@ meta_window_minimize (MetaWindow  *window)
 void
 meta_window_unminimize (MetaWindow  *window)
 {
-  if (window->screen->showing_desktop)
-    meta_screen_unshow_desktop (window->screen);
-  
   if (window->minimized)
     {
       window->minimized = FALSE;
@@ -1959,7 +1999,7 @@ unminimize_func (MetaWindow *window,
 static void
 unminimize_window_and_all_transient_parents (MetaWindow *window)
 {
-  meta_window_unminimize (window);
+  /* This also iterates over the window itself */
   meta_window_foreach_ancestor (window, unminimize_func, NULL);
 }
 
@@ -1968,11 +2008,8 @@ meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
 {
   /* disable show desktop mode unless we're a desktop component */
-  if (window->screen->showing_desktop &&
-      window->type != META_WINDOW_DESKTOP &&
-      window->type != META_WINDOW_DOCK)
-    meta_screen_unshow_desktop (window->screen);
-  
+  maybe_leave_show_desktop_mode (window);
+ 
   /* Get window on current workspace */
   if (!meta_window_visible_on_workspace (window,
                                          window->screen->active_workspace))

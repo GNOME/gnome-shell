@@ -4269,7 +4269,8 @@ meta_theme_load (const char *theme_name,
   text = NULL;
   length = 0;
   retval = NULL;
-
+  context = NULL;
+  
   theme_dir = NULL;
   theme_file = NULL;
   
@@ -4378,12 +4379,12 @@ meta_theme_load (const char *theme_name,
   if (!g_markup_parse_context_end_parse (context, &error))
     goto out;
 
-  g_markup_parse_context_free (context);
-
   goto out;
 
  out:
 
+  if (context)
+    g_markup_parse_context_free (context);
   g_free (text);
   
   if (error)

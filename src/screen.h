@@ -188,10 +188,12 @@ void meta_screen_resize (MetaScreen *screen,
                          int         width,
                          int         height);
 
+void     meta_screen_minimize_all_except (MetaScreen *screen,
+                                          MetaWindow *keep);
 
 /* Show/hide the desktop (temporarily hide all windows) */
-void     meta_screen_show_desktop   (MetaScreen *screen);
-void     meta_screen_unshow_desktop (MetaScreen *screen);
+void     meta_screen_show_desktop        (MetaScreen *screen);
+void     meta_screen_unshow_desktop      (MetaScreen *screen);
 
 void     meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);

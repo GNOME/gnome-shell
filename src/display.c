@@ -312,6 +312,10 @@ meta_display_open (const char *name)
   display->expected_focus_window = NULL;
   display->mru_list = NULL;
 
+#ifdef HAVE_XSYNC
+  display->grab_update_alarm = None;
+#endif
+  
   /* FIXME copy the checks from GDK probably */
   display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
   

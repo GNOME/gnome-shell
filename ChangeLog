@@ -1,3 +1,29 @@
+2003-05-16  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_new): fill in window->desc sooner
+	since we use it sooner now.
+
+	* src/display.c (meta_display_open): init
+	display->grab_update_alarm
+
+	* src/window.c (meta_window_new): initialize the always_sticky
+	field
+	(meta_window_new): initialize the update_icon_queued field
+
+        Patch from Julien Olivier bug #92335 for converting "show desktop 
+	mode" to "all windows are minimized" when you open a new window, 
+	instead of just mapping all the windows again.
+	
+	* src/window.c (meta_window_activate): minimize all windows before
+	coming out of show desktop mode.
+	(meta_window_unminimize): don't toggle show desktop mode here
+
+	* src/screen.c (meta_screen_minimize_all_except): new function	
+
+2003-05-01  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme-parser.c (meta_theme_load): fix memleak on error
+
 2003-05-16  Telsa Gwynne  <hobbit@aloss.ukuu.org.uk>
 
 	* configure.in: Added "cy" (Welsh) to ALL_LINGUAS.
