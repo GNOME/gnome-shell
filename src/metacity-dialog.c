@@ -296,6 +296,8 @@ warn_about_no_sm_support (char **lame_apps,
                       sw,
                       TRUE, TRUE, 0);
   
+  gtk_window_stick (GTK_WINDOW (dialog));
+
   gtk_widget_realize (dialog);
   copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
 

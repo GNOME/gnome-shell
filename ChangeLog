@@ -1,5 +1,10 @@
 2005-01-28  Elijah Newren  <newren@gmail.com>
 
+	* src/metacity-dialog.c: (warn_about_no_sm_support): make this
+	dialog be sticky.  Fixes #164745.
+
+2005-01-28  Elijah Newren  <newren@gmail.com>
+
 	Patch from Tim Herold to handle xcomposite pkgconfig version
 	regression.  Fixes #149368.
 
