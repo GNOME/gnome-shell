@@ -1,6 +1,7 @@
 [Desktop Entry]
 _Name=Metacity
 Exec=metacity
+X-GnomeWMSettingsLibrary=metacity
 
 [Window Manager]
 SessionManaged=true
