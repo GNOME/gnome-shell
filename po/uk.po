@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-12-24 14:24+0200\n"
-"PO-Revision-Date: 2002-12-24 03:41--500\n"
+"PO-Revision-Date: 2002-12-24 05:10--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -212,7 +212,7 @@ msgstr "Перенести на %s"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -221,7 +221,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -230,7 +230,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -343,7 +343,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Активувати меню вікна"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -463,11 +463,11 @@ msgstr "Перенести вікно на робочу область нижч�
 
 #: src/metacity.schemas.in.h:34
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Перенести вікно у робочу область ліворуч"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Перенести вікно у робочу область праворуч"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace up"
@@ -539,7 +539,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:53
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Підняти вікно над іншими"
 
 #: src/metacity.schemas.in.h:54
 msgid "Resize a window"
@@ -547,7 +547,7 @@ msgstr "Змінити розміри вікна"
 
 #: src/metacity.schemas.in.h:55
 msgid "Run a defined command"
-msgstr ""
+msgstr "Запустити визначену команду"
 
 #: src/metacity.schemas.in.h:56
 msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
@@ -611,11 +611,11 @@ msgstr "Перейти в робочу область нижче"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Перейти в робочу область ліворуч"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Перейти в робочу область праворуч"
 
 #: src/metacity.schemas.in.h:73
 msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
@@ -879,7 +879,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:138
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Перемикнути стан максимізації"
 
 #: src/metacity.schemas.in.h:139
 msgid "Toggle shaded state"
@@ -1867,9 +1867,8 @@ msgid "Select how to give focus to windows"
 msgstr ""
 
 #: src/tools/metacity-properties.desktop.in.h:2
-#, fuzzy
 msgid "Window Focus"
-msgstr "Меню вікна"
+msgstr "Фокус вікна"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
