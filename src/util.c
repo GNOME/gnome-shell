@@ -21,11 +21,14 @@
 
 #include "util.h"
 #include "main.h"
+#include "display.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-static gboolean is_verbose = TRUE;
+static gboolean is_verbose = FALSE;
+static gboolean is_debugging = FALSE;
+static gboolean is_syncing = FALSE;
 
 gboolean
 meta_is_verbose (void)
@@ -39,6 +42,44 @@ meta_set_verbose (gboolean setting)
   is_verbose = setting;
 }
 
+gboolean
+meta_is_debugging (void)
+{
+  return is_debugging;
+}
+
+void
+meta_set_debugging (gboolean setting)
+{
+  is_debugging = setting;
+}
+
+
+gboolean
+meta_is_syncing (void)
+{
+  return is_syncing;
+}
+
+void
+meta_set_syncing (gboolean setting)
+{
+  if (setting != is_syncing)
+    {
+      GSList *tmp;
+      
+      is_syncing = setting;
+
+      tmp = meta_displays_list ();
+      while (tmp != NULL)
+        {
+          MetaDisplay *display = tmp->data;
+          XSynchronize (display->xdisplay, is_syncing);
+          tmp = tmp->next;
+        }
+    }
+}
+
 void
 meta_debug_spew (const char *format, ...)
 {
@@ -47,7 +88,7 @@ meta_debug_spew (const char *format, ...)
 
   g_return_if_fail (format != NULL);
 
-  if (!is_verbose)
+  if (!is_debugging)
     return;
   
   va_start (args, format);

@@ -24,8 +24,23 @@
 
 #include <glib.h>
 
+typedef struct _MetaRectangle MetaRectangle;
+
+struct _MetaRectangle
+{
+  int x;
+  int y;
+  int width;
+  int height;
+};
+
 gboolean meta_is_verbose  (void);
 void     meta_set_verbose (gboolean setting);
+gboolean meta_is_debugging (void);
+void     meta_set_debugging (gboolean setting);
+gboolean meta_is_syncing (void);
+void     meta_set_syncing (gboolean setting);
+
 
 void meta_debug_spew (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);

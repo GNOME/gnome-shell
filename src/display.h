@@ -26,32 +26,44 @@
 #include <Xlib.h>
 #include "eventqueue.h"
 
-typedef struct _MetaWindow  MetaWindow;
-typedef struct _MetaScreen  MetaScreen;
 typedef struct _MetaDisplay MetaDisplay;
+typedef struct _MetaFrame   MetaFrame;
+typedef struct _MetaScreen  MetaScreen;
+typedef struct _MetaWindow  MetaWindow;
 
 struct _MetaDisplay
 {
   char *name;
   Display *xdisplay;
   
-  /*< private >*/
   MetaEventQueue *events;
   GSList *screens;
   GHashTable *window_ids;
   GSList *error_traps;
+  int server_grab_count;
 };
 
 gboolean    meta_display_open            (const char  *name);
 void        meta_display_close           (MetaDisplay *display);
 MetaScreen* meta_display_screen_for_root (MetaDisplay *display,
                                           Window       xroot);
+void        meta_display_grab            (MetaDisplay *display);
+void        meta_display_ungrab          (MetaDisplay *display);
 
-MetaWindow* meta_display_lookup_window   (MetaDisplay *display,
-                                          Window       xwindow);
-void        meta_display_register_window (MetaDisplay *display,
-                                          MetaWindow  *window);
+/* A given MetaWindow may have various X windows that "belong"
+ * to it, such as the frame window.
+ */
+MetaWindow* meta_display_lookup_x_window     (MetaDisplay *display,
+                                              Window       xwindow);
+void        meta_display_register_x_window   (MetaDisplay *display,
+                                              Window      *xwindowp,
+                                              MetaWindow  *window);
+void        meta_display_unregister_x_window (MetaDisplay *display,
+                                              Window       xwindow);
+
+
 
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
+GSList*      meta_displays_list          (void);
 
 #endif

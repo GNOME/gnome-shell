@@ -34,6 +34,10 @@ main (int argc, char **argv)
 {
   meta_main_loop = g_main_loop_new (NULL, FALSE);
 
+  meta_set_verbose (TRUE);
+  meta_set_debugging (TRUE);
+  meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
+  
   meta_errors_init ();
   
   if (!meta_display_open (NULL))

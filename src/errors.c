@@ -73,6 +73,16 @@ meta_error_trap_pop (MetaDisplay *display)
   display->error_traps = next;
 
   g_free (et);
+
+  if (result != Success)
+    {
+      gchar buf[64];
+                
+      XGetErrorText (display->xdisplay, result, buf, 63);
+
+      meta_verbose ("Popping error code %d (%s)\n",
+                    result, buf);
+    }
   
   return result;
 }
@@ -127,7 +137,7 @@ x_io_error_handler (Display *xdisplay)
   display = meta_display_for_x_display (xdisplay);
 
   if (display == NULL)
-    meta_bug ("Error received for unknown display?\n");
+    meta_bug ("IO error received for unknown display?\n");
   
   if (errno == EPIPE)
     {

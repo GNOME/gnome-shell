@@ -61,6 +61,7 @@ meta_display_open (const char *name)
   MetaDisplay *display;
   Display *xdisplay;
   GSList *screens;
+  GSList *tmp;
   int i;
 
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
@@ -74,6 +75,9 @@ meta_display_open (const char *name)
       return FALSE;
     }
 
+  if (meta_is_syncing ())
+    XSynchronize (xdisplay, True);
+  
   display = g_new (MetaDisplay, 1);
   
   display->name = g_strdup (XDisplayName (name));
@@ -115,6 +119,16 @@ meta_display_open (const char *name)
                                           display);
 
   display->window_ids = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
+
+  display->server_grab_count = 0;
+
+  /* Now manage all existing windows */
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      meta_screen_manage_all_windows (tmp->data);
+      tmp = tmp->next;
+    }
   
   return TRUE;
 }
@@ -176,6 +190,33 @@ meta_display_screen_for_root (MetaDisplay *display,
   return NULL;
 }
 
+/* Grab/ungrab routines taken from fvwm */
+void
+meta_display_grab (MetaDisplay *display)
+{
+  if (display->server_grab_count == 0)
+    {
+      XSync (display->xdisplay, False);
+      XGrabServer (display->xdisplay);
+    }
+  XSync (display->xdisplay, False);
+  display->server_grab_count += 1;
+}
+
+void
+meta_display_ungrab (MetaDisplay *display)
+{
+  if (display->server_grab_count == 0)
+    meta_bug ("Ungrabbed non-grabbed server\n");
+
+  display->server_grab_count -= 1;
+  if (display->server_grab_count == 0)
+    {
+      XUngrabServer (display->xdisplay);
+    }
+  XSync (display->xdisplay, False);
+}
+
 MetaDisplay*
 meta_display_for_x_display (Display *xdisplay)
 {
@@ -195,6 +236,12 @@ meta_display_for_x_display (Display *xdisplay)
   return NULL;
 }
 
+GSList*
+meta_displays_list (void)
+{
+  return all_displays;
+}
+
 static gboolean dump_events = TRUE;
 
 static void
@@ -204,18 +251,26 @@ event_queue_callback (MetaEventQueue *queue,
 {
   MetaWindow *window;
   MetaDisplay *display;
-
+  gboolean is_root;
+  
   display = data;
   
   if (dump_events)
     meta_spew_event (display, event);
 
-  window = meta_display_lookup_window (display, event->xany.window);
-
-  if (window)
+  is_root = meta_display_screen_for_root (display, event->xany.window) != NULL;  
+  window = NULL;
+  
+  if (!is_root)
     {
-      if (meta_window_event (window, event))
-        return;
+      if (window == NULL)
+        window = meta_display_lookup_x_window (display, event->xany.window);
+  
+      if (window != NULL)
+        {
+          if (meta_window_event (window, event))
+            return;
+        }
     }
   
   switch (event->type)
@@ -257,6 +312,16 @@ event_queue_callback (MetaEventQueue *queue,
     case MapNotify:
       break;
     case MapRequest:
+      if (is_root && !event->xmap.override_redirect)
+        {
+          /* Window requested mapping. Manage it if we haven't. Note that
+           * meta_window_new() can return NULL
+           */
+          window = meta_display_lookup_x_window (display,
+                                                 event->xmaprequest.window);
+          if (window == NULL)
+            window = meta_window_new (display, event->xmaprequest.window);
+        }
       break;
     case ReparentNotify:
       break;
@@ -430,17 +495,27 @@ meta_spew_event (MetaDisplay *display,
 }
 
 MetaWindow*
-meta_display_lookup_window (MetaDisplay *display,
-                            Window       xwindow)
+meta_display_lookup_x_window (MetaDisplay *display,
+                              Window       xwindow)
 {
   return g_hash_table_lookup (display->window_ids, &xwindow);
 }
 
 void
-meta_display_register_window (MetaDisplay *display,
-                              MetaWindow  *window)
+meta_display_register_x_window (MetaDisplay *display,
+                                Window      *xwindowp,
+                                MetaWindow  *window)
 {
-  g_return_if_fail (g_hash_table_lookup (display->window_ids, &window->xwindow) == NULL);
+  g_return_if_fail (g_hash_table_lookup (display->window_ids, xwindowp) == NULL);
   
-  g_hash_table_insert (display->window_ids, &window->xwindow, window);
+  g_hash_table_insert (display->window_ids, xwindowp, window);
+}
+
+void
+meta_display_unregister_x_window (MetaDisplay *display,
+                                  Window       xwindow)
+{
+  g_return_if_fail (g_hash_table_lookup (display->window_ids, &xwindow) != NULL);
+
+  g_hash_table_remove (display->window_ids, &xwindow);
 }

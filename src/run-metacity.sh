@@ -2,4 +2,5 @@
 
 Xnest :1 -scrns 2 -geometry 200x200 &
 sleep 1
-DISPLAY=:1 unst ./metacity
+DISPLAY=:1 unst $1 ./metacity
+killall Xnest

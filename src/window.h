@@ -23,11 +23,20 @@
 #define META_WINDOW_H
 
 #include "screen.h"
+#include "util.h"
 
 struct _MetaWindow
 {
+  MetaDisplay *display;
   MetaScreen *screen;
   Window xwindow;
+  /* may be NULL! not all windows get decorated */
+  MetaFrame *frame;
+  MetaRectangle rect;
+  int border_width;
+  int win_gravity;
+  int depth;
+  Visual *xvisual;
 };
 
 MetaWindow*  meta_window_new    (MetaDisplay *display,

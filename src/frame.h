@@ -1,4 +1,4 @@
-/* Metacity X screen handler */
+/* Metacity X window decorations */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,22 +19,30 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_SCREEN_H
-#define META_SCREEN_H
+#ifndef META_FRAME_H
+#define META_FRAME_H
 
-#include "display.h"
+#include "window.h"
 
-struct _MetaScreen
+struct _MetaFrame
 {
-  MetaDisplay *display;
-  int number;
-  Screen *xscreen;
-  Window xroot;
+  /* window we frame */
+  MetaWindow *window;
+
+  /* reparent window */
+  Window xwindow;
+
+  MetaRectangle rect;
 };
 
-MetaScreen* meta_screen_new                (MetaDisplay *display,
-                                            int          number);
-void        meta_screen_free               (MetaScreen  *screen);
-void        meta_screen_manage_all_windows (MetaScreen  *screen);
+void meta_window_ensure_frame  (MetaWindow *window);
+void meta_window_destroy_frame (MetaWindow *window);
+
+void     meta_frame_show  (MetaFrame *frame);
+void     meta_frame_hide  (MetaFrame *frame);
+
+gboolean meta_frame_event (MetaFrame *frame,
+                           XEvent    *event);
+
 
 #endif
