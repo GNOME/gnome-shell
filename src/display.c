@@ -1160,7 +1160,8 @@ event_callback (XEvent   *event,
                */
               if (window->has_focus &&
 		  event->xcrossing.mode != NotifyGrab && 
-		  event->xcrossing.mode != NotifyUngrab)
+		  event->xcrossing.mode != NotifyUngrab &&
+		  event->xcrossing.detail != NotifyInferior)
                 {
                   meta_verbose ("Unsetting focus from %s due to LeaveNotify\n",
                                 window->desc);
