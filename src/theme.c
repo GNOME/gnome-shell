@@ -2918,20 +2918,24 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
         }
       else
         {
-    	  int src_h, src_w, dest_h, dest_w, pixbuf_width, pixbuf_height;
+    	  int src_h, src_w, dest_h, dest_w;
           src_h = gdk_pixbuf_get_height (src);
           src_w = gdk_pixbuf_get_width (src);
 
-          if (vertical_stripes)
-            {
-              dest_w = width;
-              dest_h = gdk_pixbuf_get_height (src);
-            }
-          else if (horizontal_stripes)
+          /* prefer to replicate_cols if possible, as that
+           * is faster (no memory reads)
+           */
+          if (horizontal_stripes)
             {
               dest_w = gdk_pixbuf_get_width (src);
               dest_h = height;
             }
+          else if (vertical_stripes)
+            {
+              dest_w = width;
+              dest_h = gdk_pixbuf_get_height (src);
+            }
+
           else
             {
               dest_w = width;
@@ -2941,7 +2945,7 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
           if (dest_w == src_w && dest_h == src_h)
             {
               temp_pixbuf = src;
-              g_object_ref (G_OBJECT (tmp_pixbuf));
+              g_object_ref (G_OBJECT (temp_pixbuf));
             }
           else
             {
