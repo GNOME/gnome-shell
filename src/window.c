@@ -23,22 +23,33 @@
 #include "util.h"
 #include "frame.h"
 #include "errors.h"
+#include "workspace.h"
+
 #include <X11/Xatom.h>
 
-static void     constrain_size            (MetaWindow             *window,
-                                           int                     width,
-                                           int                     height,
-                                           int                    *new_width,
-                                           int                    *new_height);
-static int      update_size_hints         (MetaWindow             *window);
-static int      update_title              (MetaWindow             *window);
-static int      update_protocols          (MetaWindow             *window);
-static int      update_wm_hints           (MetaWindow             *window);
-static gboolean process_configure_request (MetaWindow             *window,
-                                           int x, int y, int width, int height,
-                                           int border_width);
-static gboolean process_property_notify   (MetaWindow             *window,
-                                           XPropertyEvent         *event);
+static void     constrain_size            (MetaWindow     *window,
+                                           int             width,
+                                           int             height,
+                                           int            *new_width,
+                                           int            *new_height);
+static int      update_size_hints         (MetaWindow     *window);
+static int      update_title              (MetaWindow     *window);
+static int      update_protocols          (MetaWindow     *window);
+static int      update_wm_hints           (MetaWindow     *window);
+static int      set_wm_state              (MetaWindow     *window,
+                                           int             state);
+static void     send_configure_notify     (MetaWindow     *window);
+static gboolean process_configure_request (MetaWindow     *window,
+                                           int             x,
+                                           int             y,
+                                           int             width,
+                                           int             height,
+                                           int             border_width);
+static gboolean process_property_notify   (MetaWindow     *window,
+                                           XPropertyEvent *event);
+static void     meta_window_show          (MetaWindow     *window);
+static void     meta_window_hide          (MetaWindow     *window);
+
 
 MetaWindow*
 meta_window_new (MetaDisplay *display, Window xwindow)
@@ -88,6 +99,7 @@ meta_window_new (MetaDisplay *display, Window xwindow)
    * type
    */
   window->display = display;
+  window->workspaces = NULL;
   
   window->screen = NULL;
   tmp = display->screens;
@@ -141,21 +153,26 @@ meta_window_new (MetaDisplay *display, Window xwindow)
 
   if (window->initially_iconic)
     {
-      /* WM_HINTS said iconic */
-      window->iconic = TRUE;
+      /* WM_HINTS said minimized */
+      window->minimized = TRUE;
+      meta_verbose ("Window %s asked to start out minimized\n", window->desc);
     }
   
-  meta_window_resize (window, window->size_hints.width, window->size_hints.height);
+  meta_window_resize (window,
+                      window->size_hints.width,
+                      window->size_hints.height);
+
+  /* FIXME we have a tendency to set this then immediately
+   * change it again.
+   */
+  set_wm_state (window, window->iconic ? IconicState : NormalState);
   
   meta_window_ensure_frame (window);
 
-  /* Put our state where it should be (ensure_frame also did this
-   * for decorated windows, but should be harmless to do twice)
-   */
-  if (window->iconic)
-    meta_window_hide (window);
-  else
-    meta_window_show (window);
+  meta_workspace_add_window (window->screen->active_workspace, window);
+  
+  /* Put our state back where it should be */
+  meta_window_queue_calc_showing (window);
   
   return window;
 }
@@ -163,7 +180,26 @@ meta_window_new (MetaDisplay *display, Window xwindow)
 void
 meta_window_free (MetaWindow  *window)
 {
+  GList *tmp;
+  
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
+
+  tmp = window->workspaces;
+  while (tmp != NULL)
+    {
+      GList *next;
+
+      next = tmp->next;
+
+      /* pops front of list */
+      meta_workspace_remove_window (tmp->data, window);
+
+      tmp = next;
+    }
+
+  g_assert (window->workspaces == NULL);
+  
+  set_wm_state (window, WithdrawnState);
   
   meta_display_unregister_x_window (window->display, window->xwindow);
 
@@ -183,9 +219,64 @@ meta_window_free (MetaWindow  *window)
   g_free (window);
 }
 
+static int
+set_wm_state (MetaWindow *window,
+              int         state)
+{
+  unsigned long data[1];
+
+  /* twm sets the icon window as data[1], I couldn't find that in
+   * ICCCM.
+   */
+  data[0] = state;
+
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom_wm_state,
+                   window->display->atom_wm_state,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (window->display);
+}
+
+void
+meta_window_calc_showing (MetaWindow  *window)
+{
+  gboolean on_workspace;
+  
+  on_workspace = g_list_find (window->workspaces,
+                              window->screen->active_workspace) != NULL;
+
+  if (!on_workspace)
+    meta_verbose ("Window %s is not on workspace %d\n",
+                  window->desc,
+                  meta_workspace_index (window->screen->active_workspace));
+  else
+    meta_verbose ("Window %s is on the active workspace %d\n",
+                  window->desc,
+                  meta_workspace_index (window->screen->active_workspace));
+  
+  if (window->minimized || !on_workspace)
+    {
+      meta_window_hide (window);
+    }
+  else
+    {
+      meta_window_show (window);
+    }
+}
+     
+void
+meta_window_queue_calc_showing (MetaWindow  *window)
+{
+  /* FIXME */
+  meta_window_calc_showing (window);
+}
+
 void
 meta_window_show (MetaWindow *window)
 {
+  meta_verbose ("Showing window %s\n", window->desc);
+  
   if (window->frame)
     XMapWindow (window->display->xdisplay, window->frame->xwindow);
   XMapWindow (window->display->xdisplay, window->xwindow);
@@ -193,25 +284,33 @@ meta_window_show (MetaWindow *window)
   /* These flags aren't always in sync, iconic
    * is set only here in show/hide, mapped
    * can be set in a couple other places where
-   * we map/unmap
+   * we map/unmap. So that's why both flags exist.
    */
   window->mapped = TRUE;
-  window->iconic = FALSE;
 
-  /* FIXME update WM_STATE */
+  if (window->iconic)
+    {
+      window->iconic = FALSE;
+      set_wm_state (window, NormalState);
+    }
 }
 
 void
 meta_window_hide (MetaWindow *window)
 {
+  meta_verbose ("Hiding window %s\n", window->desc);
+  
   if (window->frame)
     XUnmapWindow (window->display->xdisplay, window->frame->xwindow);
   XUnmapWindow (window->display->xdisplay, window->xwindow);
 
   window->mapped = FALSE;
-  window->iconic = TRUE;
 
-  /* FIXME update WM_STATE */
+  if (!window->iconic)
+    {
+      window->iconic = TRUE;
+      set_wm_state (window, IconicState);
+    }
 }
 
 void
@@ -260,6 +359,48 @@ meta_window_resize (MetaWindow  *window,
 }
 
 void
+meta_window_move (MetaWindow  *window,
+                  int          root_x_nw,
+                  int          root_y_nw)
+{
+  if (window->frame)
+    {
+      int new_x, new_y;
+
+      new_x = root_x_nw - window->frame->child_x;
+      new_y = root_y_nw - window->frame->child_y;
+      
+      if (new_x != window->frame->rect.x ||
+          new_y != window->frame->rect.y)
+        {
+          window->frame->rect.x = new_x;
+          window->frame->rect.y = new_y;
+      
+          XMoveWindow (window->display->xdisplay,
+                       window->frame->xwindow,
+                       window->frame->rect.x,
+                       window->frame->rect.y);
+        }
+    }
+  else
+    {
+      if (root_x_nw != window->rect.x ||
+          root_y_nw != window->rect.y)
+        {
+          window->rect.x = root_x_nw;
+          window->rect.y = root_y_nw;
+          
+          XMoveWindow (window->display->xdisplay,
+                       window->xwindow,
+                       window->rect.x,
+                       window->rect.y);
+        }
+    }
+  
+  send_configure_notify (window);
+}
+
+void
 meta_window_delete (MetaWindow  *window,
                     Time         timestamp)
 {
@@ -305,6 +446,26 @@ meta_window_focus (MetaWindow  *window,
                           timestamp);
         }
       meta_error_trap_pop (window->display);
+    }
+}
+
+void
+meta_window_raise (MetaWindow  *window)
+{
+  meta_verbose ("Raising window %s\n", window->desc);
+
+  if (window->frame == NULL)
+    {
+      meta_error_trap_push (window->display);
+      
+      XRaiseWindow (window->display->xdisplay, window->xwindow);
+      
+      meta_error_trap_pop (window->display);
+    }
+  else
+    {
+      XRaiseWindow (window->display->xdisplay,
+                    window->frame->xwindow);
     }
 }
 

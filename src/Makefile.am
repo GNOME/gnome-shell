@@ -49,6 +49,8 @@ metacity_SOURCES= 				\
 	eventqueue.h				\
 	frame.c					\
 	frame.h					\
+	keybindings.c				\
+	keybindings.h				\
 	main.c					\
 	main.h					\
 	screen.c				\
@@ -61,6 +63,8 @@ metacity_SOURCES= 				\
 	util.h					\
 	window.c				\
 	window.h				\
+	workspace.c				\
+	workspace.h				\
 	$(copied_sources)
 
 bin_PROGRAMS=metacity

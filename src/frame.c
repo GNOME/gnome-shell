@@ -24,6 +24,19 @@
 #include "uislave.h"
 #include "colors.h"
 
+struct _MetaFrameActionGrab
+{
+  MetaFrameAction action;
+  /* initial mouse position for drags */
+  int start_root_x, start_root_y;
+  /* initial window size or initial window position for drags */
+  int start_window_x, start_window_y;
+  /* button doing the dragging */
+  int start_button;
+};
+
+static void clear_tip (MetaFrame *frame);
+
 static void
 meta_frame_init_info (MetaFrame     *frame,
                       MetaFrameInfo *info)
@@ -47,6 +60,11 @@ meta_frame_init_info (MetaFrame     *frame,
   info->width = frame->rect.width;
   info->height = frame->rect.height;
   info->colors = &(frame->window->screen->colors);
+  info->current_control = frame->current_control;
+  if (frame->grab)
+    info->current_control_state = META_STATE_ACTIVE;
+  else
+    info->current_control_state = META_STATE_PRELIGHT;
 }
 
 static void
@@ -201,11 +219,13 @@ meta_window_ensure_frame (MetaWindow *window)
   
   frame = g_new (MetaFrame, 1);
 
-  /* Fill in values that calc_geometry will use */
   frame->window = window;
   frame->xwindow = None;
   frame->theme_acquired = FALSE;
-
+  frame->grab = NULL;
+  frame->current_control = META_FRAME_CONTROL_NONE;
+  frame->tooltip_timeout = 0;
+  
   /* This fills in frame->rect as well. */
   meta_frame_calc_geometry (frame,
                             window->rect.width,
@@ -226,7 +246,10 @@ meta_window_ensure_frame (MetaWindow *window)
   attrs.background_pixel = frame->bg_pixel;
   attrs.event_mask =
     StructureNotifyMask | SubstructureNotifyMask | ExposureMask |
-    ButtonPressMask | ButtonReleaseMask |
+    /* We need OwnerGrabButtonMask because during a button
+     * press we may need to transfer control to the UI slave.
+     */
+    ButtonPressMask | ButtonReleaseMask | OwnerGrabButtonMask |
     PointerMotionMask | PointerMotionHintMask |
     EnterWindowMask | LeaveWindowMask;
   
@@ -244,8 +267,6 @@ meta_window_ensure_frame (MetaWindow *window)
                                   &attrs);
 
   meta_verbose ("Frame is 0x%lx\n", frame->xwindow);
-  
-  frame->action = META_FRAME_ACTION_NONE;
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
@@ -277,10 +298,7 @@ meta_window_ensure_frame (MetaWindow *window)
   window->frame = frame;
 
   /* Put our state back where it should be */
-  if (window->iconic)
-    meta_window_hide (window);
-  else
-    meta_window_show (window);
+  meta_window_queue_calc_showing (window);
   
   /* Ungrab server */
   meta_display_ungrab (window->display);
@@ -297,6 +315,9 @@ meta_window_destroy_frame (MetaWindow *window)
 
   frame = window->frame;
 
+  if (frame->tooltip_timeout)
+    clear_tip (frame);
+  
   if (frame->theme_data)
     {
       meta_frame_init_info (frame, &info);
@@ -330,23 +351,7 @@ meta_window_destroy_frame (MetaWindow *window)
   g_free (frame);
   
   /* Put our state back where it should be */
-  if (window->iconic)
-    meta_window_hide (window);
-  else
-    meta_window_show (window);
-}
-
-void
-meta_frame_move  (MetaFrame *frame,
-                  int        root_x,
-                  int        root_y)
-{
-  frame->rect.x = root_x;
-  frame->rect.y = root_y;
-  
-  XMoveWindow (frame->window->display->xdisplay,
-               frame->xwindow,
-               root_x, root_y);
+  meta_window_queue_calc_showing (window);
 }
 
 /* Just a chunk of process_configure_event in window.c,
@@ -414,6 +419,8 @@ meta_frame_recalc_now (MetaFrame *frame)
                 frame->window->desc, frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
                 frame->child_x, frame->child_y);
+
+  meta_frame_queue_draw (frame);
 }
 
 void
@@ -513,48 +520,223 @@ frame_query_root_pointer (MetaFrame *frame,
     *y = root_y_return;
 }
 
+static void
+show_tip_now (MetaFrame *frame)
+{
+  const char *tiptext;
+
+  tiptext = NULL;
+  switch (frame->current_control)
+    {
+    case META_FRAME_CONTROL_TITLE:
+      break;
+    case META_FRAME_CONTROL_DELETE:
+      tiptext = _("Close Window");
+      break;
+    case META_FRAME_CONTROL_MENU:
+      tiptext = _("Menu");
+      break;
+    case META_FRAME_CONTROL_ICONIFY:
+      tiptext = _("Minimize Window");
+      break;
+    case META_FRAME_CONTROL_MAXIMIZE:
+      tiptext = _("Maximize Window");
+      break;
+    case META_FRAME_CONTROL_RESIZE_SE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_S:
+      break;
+    case META_FRAME_CONTROL_RESIZE_SW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_N:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_W:
+      break;
+    case META_FRAME_CONTROL_RESIZE_E:
+      break;
+    case META_FRAME_CONTROL_NONE:
+      break;
+    }
+
+  if (tiptext)
+    {
+      int x, y, width, height;      
+      MetaFrameInfo info;
+
+      meta_frame_init_info (frame, &info);
+      frame->window->screen->engine->get_control_rect (&info,
+                                                       frame->current_control,
+                                                       &x, &y, &width, &height,
+                                                       frame->theme_data);
+
+      /* Display tip a couple pixels below control */
+      meta_screen_show_tip (frame->window->screen,
+                            frame->rect.x + x,
+                            frame->rect.y + y + height + 2,
+                            tiptext);
+    }
+}
+
+static gboolean
+tip_timeout_func (gpointer data)
+{
+  MetaFrame *frame;
+
+  frame = data;
+
+  show_tip_now (frame);
+
+  return FALSE;
+}
+
+#define TIP_DELAY 250
+static void
+queue_tip (MetaFrame *frame)
+{
+  if (frame->tooltip_timeout)
+    g_source_remove (frame->tooltip_timeout);
+
+  frame->tooltip_timeout = g_timeout_add (250,
+                                          tip_timeout_func,
+                                          frame);  
+}
+
+static void
+clear_tip (MetaFrame *frame)
+{
+  if (frame->tooltip_timeout)
+    {
+      g_source_remove (frame->tooltip_timeout);
+      frame->tooltip_timeout = 0;
+    }
+  meta_screen_hide_tip (frame->window->screen);
+}
+
 static MetaFrameControl
 frame_get_control (MetaFrame *frame,
                    int x, int y)
 {
   MetaFrameInfo info;
-  meta_frame_init_info (frame, &info);
 
+  if (x < 0 || y < 0 ||
+      x > frame->rect.width || y > frame->rect.height)
+    return META_FRAME_CONTROL_NONE;
+  
+  meta_frame_init_info (frame, &info);
+  
   return frame->window->screen->engine->get_control (&info,
                                                      x, y,
                                                      frame->theme_data);
 }
 
 static void
-update_move (MetaFrame *frame)
+update_move (MetaFrame *frame,
+             int        x,
+             int        y)
 {
-  int x, y;
   int dx, dy;
   
-  frame_query_root_pointer (frame, &x, &y);
+  dx = x - frame->grab->start_root_x;
+  dy = y - frame->grab->start_root_y;
   
-  dx = x - frame->start_root_x;
-  dy = y - frame->start_root_y;
-  
-  meta_frame_move (frame,
-                   frame->start_window_x + dx,
-                   frame->start_window_y + dy);
+  meta_window_move (frame->window,
+                    frame->grab->start_window_x + dx,
+                    frame->grab->start_window_y + dy);
 }
 
 static void
-update_resize_se (MetaFrame *frame)
+update_resize_se (MetaFrame *frame,
+                  int x, int y)
 {
-  int x, y;
   int dx, dy;
   
-  frame_query_root_pointer (frame, &x, &y);
-  
-  dx = x - frame->start_root_x;
-  dy = y - frame->start_root_y;
+  dx = x - frame->grab->start_root_x;
+  dy = y - frame->grab->start_root_y;
   
   meta_window_resize (frame->window,
-                      frame->start_window_x + dx,
-                      frame->start_window_y + dy);
+                      frame->grab->start_window_x + dx,
+                      frame->grab->start_window_y + dy);
+}
+
+static void
+update_current_control (MetaFrame *frame,
+                        int x_root, int y_root)
+{
+  MetaFrameControl old;
+
+  if (frame->grab)
+    return;
+  
+  old = frame->current_control;
+
+  frame->current_control = frame_get_control (frame,
+                                              x_root - frame->rect.x,
+                                              y_root - frame->rect.y);
+
+  if (old != frame->current_control)
+    {
+      meta_frame_queue_draw (frame);
+
+      if (frame->current_control == META_FRAME_CONTROL_NONE)
+        clear_tip (frame);
+      else
+        queue_tip (frame);
+    }
+}
+
+static void
+grab_action (MetaFrame      *frame,
+             MetaFrameAction action,
+             Time            time)
+{
+  meta_verbose ("Grabbing action %d\n", action);
+  
+  frame->grab = g_new0 (MetaFrameActionGrab, 1);
+  
+  if (XGrabPointer (frame->window->display->xdisplay,
+                    frame->xwindow,
+                    False,
+                    ButtonPressMask | ButtonReleaseMask |
+                    PointerMotionMask | PointerMotionHintMask,
+                    GrabModeAsync, GrabModeAsync,
+                    None,
+                    None,
+                    time) != GrabSuccess)
+    meta_warning ("Grab for frame action failed\n");
+
+  frame->grab->action = action;
+
+  /* display ACTIVE state */
+  meta_frame_queue_draw (frame);
+
+  clear_tip (frame);
+}
+
+static void
+ungrab_action (MetaFrame      *frame,
+               Time            time)
+{
+  int x, y;
+
+  meta_verbose ("Ungrabbing action %d\n", frame->grab->action);
+  
+  XUngrabPointer (frame->window->display->xdisplay,
+                  time);
+  
+  g_free (frame->grab);
+  frame->grab = NULL;
+  
+  frame_query_root_pointer (frame, &x, &y);
+  update_current_control (frame, x, y);
+
+  /* undisplay ACTIVE state */
+  meta_frame_queue_draw (frame);
+
+  queue_tip (frame);
 }
 
 gboolean
@@ -568,12 +750,18 @@ meta_frame_event (MetaFrame *frame,
     case KeyRelease:
       break;
     case ButtonPress:
-      if (frame->action == META_FRAME_ACTION_NONE)
+      /* you can use button 2 to move a window without raising it */
+      if (event->xbutton.button == 1)
+        meta_window_raise (frame->window);
+      
+      update_current_control (frame,
+                              event->xbutton.x_root,
+                              event->xbutton.y_root);
+      
+      if (frame->grab == NULL)
         {
           MetaFrameControl control;
-          control = frame_get_control (frame,
-                                       event->xbutton.x,
-                                       event->xbutton.y);
+          control = frame->current_control;
 
           if (((control == META_FRAME_CONTROL_TITLE ||
                 control == META_FRAME_CONTROL_NONE) &&
@@ -582,12 +770,16 @@ meta_frame_event (MetaFrame *frame,
             {
               meta_verbose ("Begin move on %s\n",
                             frame->window->desc);
-              frame->action = META_FRAME_ACTION_MOVING;
-              frame->start_root_x = event->xbutton.x_root;
-              frame->start_root_y = event->xbutton.y_root;
-              frame->start_window_x = frame->rect.x;
-              frame->start_window_y = frame->rect.y;
-              frame->start_button = event->xbutton.button; 
+              grab_action (frame, META_FRAME_ACTION_MOVING,
+                           event->xbutton.time);
+              frame->grab->start_root_x = event->xbutton.x_root;
+              frame->grab->start_root_y = event->xbutton.y_root;
+              /* pos of client in root coords */
+              frame->grab->start_window_x =
+                frame->rect.x + frame->window->rect.x;
+              frame->grab->start_window_y =
+                frame->rect.y + frame->window->rect.y;
+              frame->grab->start_button = event->xbutton.button; 
             }
           else if (control == META_FRAME_CONTROL_DELETE &&
                    event->xbutton.button == 1)
@@ -595,63 +787,92 @@ meta_frame_event (MetaFrame *frame,
               /* FIXME delete event */
               meta_verbose ("Close control clicked on %s\n",
                             frame->window->desc);
-              meta_window_delete (frame->window, event->xbutton.time);
+              grab_action (frame, META_FRAME_ACTION_DELETING,
+                           event->xbutton.time);
+              frame->grab->start_button = event->xbutton.button;
             }
           else if (control == META_FRAME_CONTROL_RESIZE_SE &&
                    event->xbutton.button == 1)
             {
               meta_verbose ("Resize control clicked on %s\n",
                             frame->window->desc);
-              frame->action = META_FRAME_ACTION_RESIZING_SE;
-              frame->start_root_x = event->xbutton.x_root;
-              frame->start_root_y = event->xbutton.y_root;
-              frame->start_window_x = frame->window->rect.width;
-              frame->start_window_y = frame->window->rect.height;
-              frame->start_button = event->xbutton.button;
+              grab_action (frame, META_FRAME_ACTION_RESIZING_SE,
+                           event->xbutton.time);
+              frame->grab->start_root_x = event->xbutton.x_root;
+              frame->grab->start_root_y = event->xbutton.y_root;
+              frame->grab->start_window_x = frame->window->rect.width;
+              frame->grab->start_window_y = frame->window->rect.height;
+              frame->grab->start_button = event->xbutton.button;
             }
         }
       break;
     case ButtonRelease:
-      if (event->xbutton.button == frame->start_button)
+      if (frame->grab)
+        meta_debug_spew ("Here! grab %p action %d buttons %d %d\n",
+                         frame->grab, frame->grab->action, frame->grab->start_button, event->xbutton.button);
+      if (frame->grab &&
+          event->xbutton.button == frame->grab->start_button)
         {
-          switch (frame->action)
+          switch (frame->grab->action)
             {
             case META_FRAME_ACTION_MOVING:
-              update_move (frame);
+              update_move (frame, event->xbutton.x_root, event->xbutton.y_root);
+              ungrab_action (frame, event->xbutton.time);
+              update_current_control (frame,
+                                      event->xbutton.x_root, event->xbutton.y_root);
               break;
               
             case META_FRAME_ACTION_RESIZING_SE:
-              update_resize_se (frame);
+              update_resize_se (frame, event->xbutton.x_root, event->xbutton.y_root);
+              ungrab_action (frame, event->xbutton.time);
+              update_current_control (frame,
+                                      event->xbutton.x_root, event->xbutton.y_root);
               break;
-              
+
+            case META_FRAME_ACTION_DELETING:
+              /* Must ungrab before getting "real" control position */
+              ungrab_action (frame, event->xbutton.time);
+              update_current_control (frame,
+                                      event->xbutton.x_root,
+                                      event->xbutton.y_root);
+              /* delete if we're still over the button */
+              if (frame->current_control == META_FRAME_CONTROL_DELETE)
+                meta_window_delete (frame->window, event->xbutton.time);
+              break;
             default:
+              meta_warning ("Unhandled action in button release\n");
               break;
             }
-          
-          frame->action = META_FRAME_ACTION_NONE;
         }
       break;
     case MotionNotify:
-      switch (frame->action)
-        {
-        case META_FRAME_ACTION_MOVING:
-          update_move (frame);
-          break;
+      {
+        int x, y;
 
-        case META_FRAME_ACTION_RESIZING_SE:
-          update_resize_se (frame);
-          break;
-
-        case META_FRAME_ACTION_NONE:
-#if 0
-          meta_ui_slave_show_tip (frame->window->screen->uislave,
-                                  frame->rect.x,
-                                  frame->rect.y,
-                                  "Hi this is a tooltip");
-#endif
-          break;
-        default:
-          break;
+        frame_query_root_pointer (frame, &x, &y);
+        if (frame->grab)
+          {
+            switch (frame->grab->action)
+              {
+              case META_FRAME_ACTION_MOVING:
+                update_move (frame, x, y);
+                break;
+                
+              case META_FRAME_ACTION_RESIZING_SE:
+                update_resize_se (frame, x, y);
+                break;
+                
+              case META_FRAME_ACTION_NONE:
+                
+                break;
+              default:
+                break;
+              }
+          }
+        else
+          {
+            update_current_control (frame, x, y);
+          }
         }
       break;
     case EnterNotify:
@@ -663,6 +884,7 @@ meta_frame_event (MetaFrame *frame,
                          event->xcrossing.time);
       break;
     case LeaveNotify:
+      update_current_control (frame, -1, -1);
       break;
     case FocusIn:
       break;
@@ -698,10 +920,12 @@ meta_frame_event (MetaFrame *frame,
       }
       break;
     case UnmapNotify:
-      frame->action = META_FRAME_ACTION_NONE;
+      if (frame->grab)
+        ungrab_action (frame, CurrentTime);
       break;
     case MapNotify:
-      frame->action = META_FRAME_ACTION_NONE;
+      if (frame->grab)
+        ungrab_action (frame, CurrentTime);
       break;
     case MapRequest:
       break;

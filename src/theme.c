@@ -58,6 +58,8 @@ struct _DefaultScreenData
   GC black_gc;
   GC selected_gc;
   GC selected_text_gc;
+  GC active_gc;
+  GC prelight_gc;
 };
 
 /* FIXME store this on the screen */
@@ -114,6 +116,21 @@ default_acquire_frame (MetaFrameInfo *info)
                                                  RootWindowOfScreen (info->screen),
                                                  GCForeground,
                                                  &vals);
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->bg[META_STATE_ACTIVE]);
+      screen_data->active_gc = XCreateGC (info->display,
+                                          RootWindowOfScreen (info->screen),
+                                          GCForeground,
+                                          &vals);
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->bg[META_STATE_PRELIGHT]);
+      screen_data->prelight_gc = XCreateGC (info->display,
+                                            RootWindowOfScreen (info->screen),
+                                            GCForeground,
+                                            &vals);
+
       
       color.red = color.green = color.blue = 0;
       vals.foreground = meta_get_x_pixel (info->screen,
@@ -422,6 +439,97 @@ set_clip (Display *display, GC gc, MetaRectangle *rect)
     }
 }
 
+static MetaRectangle*
+control_rect (MetaFrameControl control,
+              DefaultFrameGeometry *fgeom)
+{
+  MetaRectangle *rect;
+  
+  rect = NULL;
+  switch (control)
+    {
+    case META_FRAME_CONTROL_TITLE:
+      rect = &fgeom->title_rect;
+      break;
+    case META_FRAME_CONTROL_DELETE:
+      rect = &fgeom->close_rect;
+      break;
+    case META_FRAME_CONTROL_MENU:
+      rect = &fgeom->menu_rect;
+      break;
+    case META_FRAME_CONTROL_ICONIFY:
+      rect = &fgeom->min_rect;
+      break;
+    case META_FRAME_CONTROL_MAXIMIZE:
+      rect = &fgeom->max_rect;
+      break;
+    case META_FRAME_CONTROL_RESIZE_SE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_S:
+      break;
+    case META_FRAME_CONTROL_RESIZE_SW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_N:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_NW:
+      break;
+    case META_FRAME_CONTROL_RESIZE_W:
+      break;
+    case META_FRAME_CONTROL_RESIZE_E:
+      break;
+    case META_FRAME_CONTROL_NONE:
+      break;
+    }
+
+  return rect;
+}
+
+static void
+draw_current_control_bg (MetaFrameInfo *info,
+                         DefaultFrameGeometry *fgeom)
+{
+  int xoff, yoff;
+  MetaRectangle *rect;
+  
+  xoff = info->xoffset;
+  yoff = info->yoffset;
+
+  rect = control_rect (info->current_control, fgeom);
+
+  if (rect == NULL)
+    return;
+
+  if (info->current_control == META_FRAME_CONTROL_TITLE)
+    return;
+  
+ switch (info->current_control_state)
+    {
+      /* FIXME turn this off after testing */
+    case META_STATE_PRELIGHT:
+      XFillRectangle (info->display,
+                      info->drawable,
+                      screen_data->prelight_gc,
+                      xoff + rect->x,
+                      yoff + rect->y,
+                      rect->width, rect->height);
+      break;
+
+    case META_STATE_ACTIVE:
+      XFillRectangle (info->display,
+                      info->drawable,
+                      screen_data->active_gc,
+                      xoff + rect->x,
+                      yoff + rect->y,
+                      rect->width, rect->height);
+      break;
+
+    default:
+      break;
+    }
+}
+
 static void
 default_expose_frame (MetaFrameInfo *info,
                       int x, int y,
@@ -483,6 +591,8 @@ default_expose_frame (MetaFrameInfo *info,
                       info->width - fgeom.right_width - fgeom.left_width + 1,
                       info->height - fgeom.bottom_height - fgeom.top_height + 1);
     }
+
+  draw_current_control_bg (info, &fgeom);
   
   if (fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
     {
@@ -527,7 +637,7 @@ default_expose_frame (MetaFrameInfo *info,
     }
 
   if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
-    {      
+    {
       XDrawLine (info->display,
                  info->drawable,
                  screen_data->fg_gc,
@@ -644,6 +754,15 @@ default_get_control (MetaFrameInfo *info,
   
   if (POINT_IN_RECT (x, y, fgeom.close_rect))
     return META_FRAME_CONTROL_DELETE;
+
+  if (POINT_IN_RECT (x, y, fgeom.min_rect))
+    return META_FRAME_CONTROL_ICONIFY;
+
+  if (POINT_IN_RECT (x, y, fgeom.max_rect))
+    return META_FRAME_CONTROL_MAXIMIZE;
+
+  if (POINT_IN_RECT (x, y, fgeom.menu_rect))
+    return META_FRAME_CONTROL_MENU;
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     return META_FRAME_CONTROL_TITLE;
@@ -653,6 +772,36 @@ default_get_control (MetaFrameInfo *info,
     return META_FRAME_CONTROL_RESIZE_SE;
   
   return META_FRAME_CONTROL_NONE;
+}
+
+static void
+default_get_control_rect (MetaFrameInfo *info,
+                          MetaFrameControl control,
+                          int *x, int *y,
+                          int *width, int *height,
+                          gpointer frame_data)
+{
+  MetaRectangle *rect;
+  DefaultFrameData *d;
+  DefaultFrameGeometry fgeom;
+  
+  d = frame_data;
+
+  calc_geometry (info, d, &fgeom);
+  
+  rect = control_rect (control, &fgeom);
+
+  if (rect)
+    {
+      *x = rect->x;
+      *y = rect->y;
+      *width = rect->width;
+      *height = rect->height;
+    }
+  else
+    {
+      *x = *y = *width = *height = 0;
+    }
 }
 
 /* FIXME add this to engine vtable */
@@ -668,6 +817,8 @@ default_release_screen (Screen *screen)
       XFreeGC (DisplayOfScreen (screen), screen_data->black_gc);
       XFreeGC (DisplayOfScreen (screen), screen_data->light_gc);
       XFreeGC (DisplayOfScreen (screen), screen_data->dark_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->active_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->prelight_gc);
     }
 }
 
@@ -677,5 +828,6 @@ MetaThemeEngine meta_default_engine = {
   default_release_frame,
   default_fill_frame_geometry,
   default_expose_frame,
-  default_get_control
+  default_get_control,
+  default_get_control_rect
 };

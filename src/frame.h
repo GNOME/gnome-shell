@@ -28,8 +28,11 @@ typedef enum
 {
   META_FRAME_ACTION_NONE,
   META_FRAME_ACTION_MOVING,
+  META_FRAME_ACTION_DELETING,
   META_FRAME_ACTION_RESIZING_SE
 } MetaFrameAction;
+
+typedef struct _MetaFrameActionGrab MetaFrameActionGrab;
 
 struct _MetaFrame
 {
@@ -48,23 +51,18 @@ struct _MetaFrame
   
   gpointer theme_data;
   gulong bg_pixel;
-  
-  MetaFrameAction action;
-  /* initial mouse position for drags */
-  int start_root_x, start_root_y;
-  /* initial window size or initial window position for drags */
-  int start_window_x, start_window_y;
-  /* button doing the dragging */
-  int start_button;
 
+  MetaFrameActionGrab *grab;
+
+  MetaFrameControl current_control;
+
+  guint tooltip_timeout;
+  
   guint theme_acquired : 1;
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);
 void     meta_window_destroy_frame          (MetaWindow *window);
-void     meta_frame_move                    (MetaFrame  *frame,
-                                             int         root_x,
-                                             int         root_y);
 void     meta_frame_child_configure_request (MetaFrame  *frame);
 void     meta_frame_recalc_now              (MetaFrame  *frame);
 void     meta_frame_queue_recalc            (MetaFrame  *frame);

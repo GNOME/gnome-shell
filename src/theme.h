@@ -76,6 +76,9 @@ struct _MetaFrameInfo
   const char *title;  
 
   const MetaUIColors *colors;
+
+  MetaFrameControl current_control;
+  MetaUIState current_control_state;
   
   /* Equal to child size before fill_frame_geometry
    * has been called
@@ -120,6 +123,12 @@ struct _MetaThemeEngine
 
   MetaFrameControl (* get_control)         (MetaFrameInfo *info,
                                             int x, int y,
+                                            gpointer frame_data);
+
+  void             (* get_control_rect)    (MetaFrameInfo *info,
+                                            MetaFrameControl control,
+                                            int *x, int *y,
+                                            int *width, int *height,
                                             gpointer frame_data);
 };
 

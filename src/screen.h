@@ -39,6 +39,8 @@ struct _MetaScreen
   MetaThemeEngine *engine;
   MetaUISlave *uislave;
 
+  MetaWorkspace *active_workspace;
+  
   XVisualInfo visual_info;
   MetaUIColors colors;
 
@@ -46,6 +48,8 @@ struct _MetaScreen
    * left with a clip.
    */
   GC scratch_gc;
+
+  guint showing_tooltip : 1;
   
   /*< private >*/
 
@@ -68,6 +72,12 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
                                                gpointer                    data);
 void          meta_screen_queue_frame_redraws (MetaScreen                 *screen);
 
+void          meta_screen_show_tip            (MetaScreen                 *screen,
+                                               int                         root_x,
+                                               int                         root_y,
+                                               const char                 *markup);
+
+void          meta_screen_hide_tip            (MetaScreen                 *screen);
 
 #endif
 

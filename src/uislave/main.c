@@ -63,6 +63,10 @@ message_callback (MetaMessageQueue *mq,
                            message->show_tip.root_y,
                            message->show_tip.markup);
       break;
+
+    case MetaMessageHideTipCode:
+      meta_fixed_tip_hide ();
+      break;
       
     default:
       meta_ui_warning ("Unhandled message code %d\n",

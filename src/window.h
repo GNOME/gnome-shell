@@ -30,6 +30,7 @@ struct _MetaWindow
 {
   MetaDisplay *display;
   MetaScreen *screen;
+  GList *workspaces;
   Window xwindow;
   /* may be NULL! not all windows get decorated */
   MetaFrame *frame;
@@ -51,7 +52,7 @@ struct _MetaWindow
    */
   guint iconic : 1;
   /* initially_iconic is the WM_HINTS setting when we first manage
-   * the window.
+   * the window. It's taken to mean initially minimized.
    */
   guint initially_iconic : 1;
   
@@ -75,20 +76,27 @@ struct _MetaWindow
   XSizeHints size_hints;
 };
 
-MetaWindow* meta_window_new        (MetaDisplay *display,
-                                    Window       xwindow);
-void        meta_window_free       (MetaWindow  *window);
-void        meta_window_show       (MetaWindow  *window);
-void        meta_window_hide       (MetaWindow  *window);
-void        meta_window_minimize   (MetaWindow  *window);
-void        meta_window_unminimize (MetaWindow  *window);
-void        meta_window_resize    (MetaWindow  *window,
-                                   int          w,
-                                   int          h);
-void        meta_window_delete    (MetaWindow  *window,
-                                   Time         timestamp);
-void        meta_window_focus     (MetaWindow  *window,
-                                   Time         timestamp);
+MetaWindow* meta_window_new                (MetaDisplay *display,
+                                            Window       xwindow);
+void        meta_window_free               (MetaWindow  *window);
+void        meta_window_calc_showing       (MetaWindow  *window);
+void        meta_window_queue_calc_showing (MetaWindow  *window);
+void        meta_window_minimize           (MetaWindow  *window);
+void        meta_window_unminimize         (MetaWindow  *window);
+void        meta_window_resize             (MetaWindow  *window,
+                                            int          w,
+                                            int          h);
+
+/* args to move are window pos, not frame pos */
+void        meta_window_move               (MetaWindow  *window,
+                                            int          root_x_nw,
+                                            int          root_y_nw);
+void        meta_window_delete             (MetaWindow  *window,
+                                            Time         timestamp);
+void        meta_window_focus              (MetaWindow  *window,
+                                            Time         timestamp);
+void        meta_window_raise              (MetaWindow  *window);
+
 
 /* Sends a client message */
 void meta_window_send_icccm_message (MetaWindow *window,

@@ -62,5 +62,6 @@ void         meta_ui_slave_show_tip (MetaUISlave    *uislave,
                                      int             root_x,
                                      int             root_y,
                                      const char     *markup_text);
+void         meta_ui_slave_hide_tip (MetaUISlave    *uislave);
 
 #endif

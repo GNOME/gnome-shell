@@ -26,6 +26,8 @@
 #include "colors.h"
 #include "uislave.h"
 #include "frame.h"
+#include "workspace.h"
+#include "keybindings.h"
 
 #include <X11/cursorfont.h>
 #include <locale.h>
@@ -100,9 +102,20 @@ meta_screen_new (MetaDisplay *display,
   
   screen->engine = &meta_default_engine;
 
+  screen->showing_tooltip = FALSE;
+
+  /* Screens must have at least one workspace at all times,
+   * so create that required workspace.
+   */
+  screen->active_workspace = meta_workspace_new (screen);
+  /* FIXME, for debugging create another one. */
+  meta_workspace_new (screen);
+  
   meta_screen_init_visual_info (screen);
   meta_screen_init_ui_colors (screen);
 
+  meta_screen_grab_keys (screen);
+  
   screen->scratch_gc = XCreateGC (screen->display->xdisplay,
                                   screen->xroot,
                                   0,
@@ -121,6 +134,8 @@ meta_screen_new (MetaDisplay *display,
 void
 meta_screen_free (MetaScreen *screen)
 {
+  meta_screen_ungrab_keys (screen);
+  
   meta_ui_slave_free (screen->uislave);
 
   XFreeGC (screen->display->xdisplay,
@@ -418,4 +433,26 @@ void
 meta_screen_queue_frame_redraws (MetaScreen *screen)
 {
   meta_screen_foreach_window (screen, queue_draw, NULL);
+}
+
+
+void
+meta_screen_show_tip (MetaScreen *screen,
+                      int         root_x,
+                      int         root_y,
+                      const char *markup)
+{
+  /* even if screen->showing_tip, may change position/text */
+  meta_ui_slave_show_tip (screen->uislave, root_x, root_y, markup);
+  screen->showing_tooltip = TRUE;
+}
+
+void
+meta_screen_hide_tip (MetaScreen *screen)
+{
+  if (screen->showing_tooltip)
+    {
+      meta_ui_slave_hide_tip (screen->uislave);
+      screen->showing_tooltip = FALSE;
+    }
 }

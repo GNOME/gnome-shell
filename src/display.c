@@ -26,6 +26,8 @@
 #include "window.h"
 #include "frame.h"
 #include "errors.h"
+#include "keybindings.h"
+#include "workspace.h"
 
 static GSList *all_displays = NULL;
 static void   meta_spew_event           (MetaDisplay    *display,
@@ -75,7 +77,8 @@ meta_display_open (const char *name)
     "_NET_WM_NAME",
     "WM_PROTOCOLS",
     "WM_TAKE_FOCUS",
-    "WM_DELETE_WINDOW"
+    "WM_DELETE_WINDOW",
+    "WM_STATE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -103,8 +106,12 @@ meta_display_open (const char *name)
   display->xdisplay = xdisplay;
   display->error_traps = NULL;
 
+  display->workspaces = NULL;
+  
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
+
+  meta_display_init_keys (display);
   
   screens = NULL;
   i = 0;
@@ -147,6 +154,7 @@ meta_display_open (const char *name)
   display->atom_wm_protocols = atoms[1];
   display->atom_wm_take_focus = atoms[2];
   display->atom_wm_delete_window = atoms[3];
+  display->atom_wm_state = atoms[4];
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -287,10 +295,14 @@ meta_display_ungrab (MetaDisplay *display)
 {
   if (display->server_grab_count == 0)
     meta_bug ("Ungrabbed non-grabbed server\n");
-
+  
   display->server_grab_count -= 1;
   if (display->server_grab_count == 0)
     {
+      /* FIXME we want to purge all pending "queued" stuff
+       * at this point, such as window hide/show
+       */
+      
       XUngrabServer (display->xdisplay);
     }
   XSync (display->xdisplay, False);
@@ -355,6 +367,7 @@ event_queue_callback (MetaEventQueue *queue,
   switch (event->type)
     {
     case KeyPress:
+      meta_display_process_key_press (display, event);
       break;
     case KeyRelease:
       break;
@@ -429,15 +442,6 @@ event_queue_callback (MetaEventQueue *queue,
     case ReparentNotify:
       break;
     case ConfigureNotify:
-      if (window && event->xconfigure.override_redirect)
-        {
-          /* Unmanage it, override_redirect was toggled on?
-           * Can this happen?
-           */
-          meta_verbose ("Window %s toggled on override redirect\n",
-                        window->desc);
-          meta_window_free (window);
-        }
       break;
     case ConfigureRequest:
       /* This comment and code is found in both twm and fvwm */
@@ -754,4 +758,46 @@ meta_display_unregister_x_window (MetaDisplay *display,
   g_return_if_fail (g_hash_table_lookup (display->window_ids, &xwindow) != NULL);
 
   g_hash_table_remove (display->window_ids, &xwindow);
+}
+
+MetaWorkspace*
+meta_display_get_workspace_by_index (MetaDisplay *display,
+                                     int          index)
+{
+  GList *tmp;
+  
+  tmp = g_list_nth (display->workspaces, index);
+
+  if (tmp == NULL)
+    return NULL;
+  else
+    return tmp->data;
+}
+
+MetaWorkspace*
+meta_display_get_workspace_by_screen_index (MetaDisplay *display,
+                                            MetaScreen  *screen,
+                                            int          index)
+{
+  GList *tmp;
+  int i;
+
+  i = 0;
+  tmp = display->workspaces;
+  while (tmp != NULL)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      if (w->screen == screen)
+        {
+          if (i == index)
+            return w;
+          else
+            ++i;
+        }
+      
+      tmp = tmp->next;
+    }
+
+  return NULL;
 }

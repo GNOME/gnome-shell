@@ -27,11 +27,12 @@
 #include <pango/pangox.h>
 #include "eventqueue.h"
 
-typedef struct _MetaDisplay MetaDisplay;
-typedef struct _MetaFrame   MetaFrame;
-typedef struct _MetaScreen  MetaScreen;
-typedef struct _MetaWindow  MetaWindow;
-typedef struct _MetaUISlave MetaUISlave;
+typedef struct _MetaDisplay   MetaDisplay;
+typedef struct _MetaFrame     MetaFrame;
+typedef struct _MetaScreen    MetaScreen;
+typedef struct _MetaUISlave   MetaUISlave;
+typedef struct _MetaWindow    MetaWindow;
+typedef struct _MetaWorkspace MetaWorkspace;
 
 struct _MetaDisplay
 {
@@ -42,11 +43,14 @@ struct _MetaDisplay
   Atom atom_wm_protocols;
   Atom atom_wm_take_focus;
   Atom atom_wm_delete_window;
-
+  Atom atom_wm_state;
+  
   /* This is the actual window from focus events,
    * not the one we last set
    */
   MetaWindow *focus_window;
+
+  GList *workspaces;
   
   /*< private-ish >*/
   MetaEventQueue *events;
@@ -81,5 +85,12 @@ void        meta_display_unregister_x_window (MetaDisplay *display,
 
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 GSList*      meta_displays_list          (void);
+
+MetaWorkspace* meta_display_get_workspace_by_index        (MetaDisplay   *display,
+                                                           int            index);
+MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *display,
+                                                           MetaScreen    *screen,
+                                                           int            index);
+
 
 #endif

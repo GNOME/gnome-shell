@@ -305,3 +305,15 @@ meta_ui_slave_show_tip (MetaUISlave    *uislave,
 
   send_message (uislave, (MetaMessage*)&showtip);
 }
+
+void
+meta_ui_slave_hide_tip (MetaUISlave *uislave)
+{
+  MetaMessageHideTip hidetip;
+
+  memset (&hidetip, 0, META_MESSAGE_LENGTH (MetaMessageHideTip));
+  hidetip.header.message_code = MetaMessageHideTipCode;
+  hidetip.header.length = META_MESSAGE_LENGTH (MetaMessageHideTip);
+
+  send_message (uislave, (MetaMessage*)&hidetip);
+}
