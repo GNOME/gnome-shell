@@ -178,7 +178,7 @@
     </schema>
 
     <schema>
-      <key>/apps/metacity/visual_bell</key>
+      <key>/schemas/apps/metacity/general/visual_bell</key>
       <applyto>/apps/metacity/general/visual_bell</applyto>      
       <owner>metacity</owner>
       <type>bool</type>
