@@ -1,15 +1,15 @@
 # Lithuanian translation of metacity.
-# Copyright (C) 2003-2004 Free Software Foundation, Inc.
+# Copyright (C) 2003-2005 Free Software Foundation, Inc.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# Žygimantas Beručka <uid0@akl.lt>, 2004.
+# Žygimantas Beručka <uid0@akl.lt>, 2004-2005.
 # 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-11-13 12:03+0200\n"
+"POT-Creation-Date: 2005-01-30 03:06+0200\n"
+"PO-Revision-Date: 2005-01-30 03:21+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -208,12 +208,12 @@ msgstr "_Uždaryti"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "P_atalpinti visuose darbo laukuose"
+msgid "_Always on Current Workspace"
+msgstr "_Visada dabartiniame darbo lauke"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "_Talpinti tik šiame darbo lauke"
+msgid "_Only on This Workspace"
+msgstr "_Tik šiame darbo lauke"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -225,20 +225,20 @@ msgstr "Pe_rkelti langą į dešinįjį darbo lauką"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Perkelti langą į a_ukštesnį darbo lauką"
+msgstr "Perkelti langą į a_ukštesnįjį darbo lauką"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Perkelti langą į _žemesnį darbo lauką"
+msgstr "Perkelti langą į ž_emesnįjį darbo lauką"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbo laukas %d"
 
 #: src/menu.c:171
 msgid "Workspace 1_0"
-msgstr "1_0-as darbo laukas"
+msgstr "1_0-tas darbo laukas"
 
 #: src/menu.c:173
 #, c-format
@@ -370,7 +370,7 @@ msgstr ""
 "Šie langai nepalaiko \"išsaugoti esamus nustatymus\" komandos ir turi būti "
 "paleisti rankiniu būdu, kai Jūs prisijungsite kitą kartą."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -514,13 +514,15 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages"
 msgstr ""
 "Jei reikšmė teigiama, metacity pateiks vartotojui mažiau reakcijų ir "
-"„tiesioginių pokyčių\" požymių, naudodama langų rėmelius, vengdama animacijų "
+"„tiesioginių pokyčių“ požymių, naudodama langų rėmelius, vengdama animacijų "
 "ar kitų efektų. Tai smarkiai suprastina sąsajos išraiškingumą, bet leidžia "
-"normaliai veikti senesnėms mašinoms bei terminalų serveriams. Efektų "
-"įjungimas labai pablogintųšių konfiguracijų darbo greitį ir yra nepraktiškas."
+"normaliai veikti senesnėms programoms bei terminalų serveriams, kai kitu "
+"atveju jie būtų nepraktiški. Tačiau, norint išvengti darbastalio gedimų, "
+"kai yra įjungtas prieinamumas, rėmelių naudojimas yra išjungtas."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1215,7 +1217,6 @@ msgstr ""
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1223,12 +1224,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri išplečia langą. Klavišų kombinacijos formatas gali "
-"būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias "
-"bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir "
-"\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
-"nebus susieta jokia klavišų kombinacija."
+"Klavišų kombinacija, naudojama išplėsti langui. Klavišų kombinacijos "
+"formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
+"Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
+"maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
+"kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
+"„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1764,7 +1765,7 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Klavišų kombinacija, kuri paleidžia skydelio ekrano vaizdo kopijų darymo "
-"programą tam, kad padaryti lango vaizdo kopiją. Klavišų kombinacijos "
+"programą tam, kad toji padarytų lango vaizdo kopiją. Klavišų kombinacijos "
 "formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
 "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
@@ -1836,7 +1837,7 @@ msgstr ""
 "galimos reikšmės; \"click\" reiškia, kad reikia spragtelėti ant lango norint "
 "jį aktyvuoti, \"sloppy\" aktyvuoja langus kai ant jų užvedamas pelės "
 "kursorius, o \"mouse\" reiškia, kad langai bus aktyvuojami kai ant jų bus "
-"užvestes kursorius ir aktyvacija bus atšaukta kursoriui pasitraukus."
+"užvestas kursorius ir aktyvacija bus atšaukta kursoriui pasitraukus."
 
 #: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
@@ -1984,17 +1985,17 @@ msgstr "Langų fokusavimo režimas"
 msgid "Window title font"
 msgstr "Lango antraštės šriftas"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf raktui „%s“ nustatytas neteisingas tipas\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2003,17 +2004,17 @@ msgstr ""
 "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko "
 "keitiklio aprašymui\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf raktas '%s' saugo netinkamą reikšmę\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepavyko apdoroti šrifto aprašymo „%s“ saugomo GConf rakte %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2022,7 +2023,7 @@ msgstr ""
 "%d reikšmė saugoma GConf rakte %s nurodo nepriimtina darbo laukų skaičių, "
 "šiuo metu maksimali reikšmė yra %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2030,17 +2031,17 @@ msgstr ""
 "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti "
 "keistai elgtis.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d reikšmė saugoma GConf rakte %s netelpra tarp 0 ir %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Įvyko klaida nustatant darbo laukų skaičių į %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2049,7 +2050,7 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Įvyko klaida pervadinant darbo lauką %d į „%s“: %s\n"
@@ -2071,7 +2072,7 @@ msgid ""
 "replace option to replace the current window manager.\n"
 msgstr ""
 "Ekranas %d vaizduoklyje „%s“ jau turi langų tvarkyklę; pabandykite "
-"pasinaudoti --replace raktu kad pakeisti esamą langų tvarkyklę.\n"
+"pasinaudoti --replace raktu, jei norite pakeisti esamą langų tvarkyklę.\n"
 
 #: src/screen.c:448
 #, c-format
@@ -2765,23 +2766,23 @@ msgstr "Juosta"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr "Įprastas Programos Langas"
+msgstr "Įprastas programos langas"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr "Dialogo Langas"
+msgstr "Dialogo langas"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr "Modulinis Dialogo Langas"
+msgstr "Modalinis dialogo langas"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr "Įrankių Paletė"
+msgstr "Įrankių paletė"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr "Nuplėšiamas Meniu"
+msgstr "Nuplėšiamas meniu"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2813,19 +2814,19 @@ msgstr "Tema „%s“ įkelta per %g sekundžių\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr "Normalus Antraštės Šriftas"
+msgstr "Normalus antraštės šriftas"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr "Smulkus Antraštės Šriftas"
+msgstr "Smulkus antraštės šriftas"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr "Didelis Antraštės Šriftas"
+msgstr "Didelis antraštės šriftas"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr "Mygtukų Išdėstymai"
+msgstr "Mygtukų išdėstymai"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
@@ -2833,7 +2834,7 @@ msgstr "Greičio testas"
 
 #: src/theme-viewer.c:908
 msgid "Window Title Goes Here"
-msgstr "Čia Rodomo Lango Antraštė"
+msgstr "Čia rodomo lango antraštė"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -3200,14 +3201,14 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programa nustatė apgaulingą _NET_WM_PID %ld požymį\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
 "Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad "
-"nustatyti jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM.\n"
+"ustatytų jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM..\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3216,7 +3217,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3253,6 +3254,9 @@ msgid ""
 msgstr ""
 "Požymis %s lange 0x%lx naudoja nepriimtinus UTF-8 simbolius sąrašo punkte %"
 "d\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "P_atalpinti visuose darbo laukuose"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Pasirinkite kaip aktyvuoti langus"
