@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-10-31 05:39+0100\n"
-"PO-Revision-Date: 2002-12-21 22:37+EDT\n"
+"PO-Revision-Date: 2002-12-22 22:39+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: src/frames.c:900
 msgid "Close Window"
-msgstr "መስኮቱ ዝጋ"
+msgstr "መስኮቱን ዝጋ"
 
 #: src/frames.c:903
 msgid "Window Menu"
@@ -175,11 +175,11 @@ msgstr "ዝጋ (_C)"
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr "ሁሉም መስሪይ ቦታዎች ላይ አድርግ (_A)"
+msgstr "ሁሉም መሥሪያ ቦታዎች ላይ አድርግ (_A)"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr "በዚህ የመስሪያ ቦታ ላይ ብቻ (_U)"
+msgstr "በዚህ የመሥሪያ ቦታ ላይ ብቻ (_U)"
 
 #: src/menu.c:152 src/prefs.c:1644
 #, c-format
