@@ -149,7 +149,9 @@ void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
                                      int                *n_bindings);
 void meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
                                      int                *n_bindings);
-MetaKeyBindingAction meta_prefs_get_keybinding_action (unsigned int keysym);
+
+MetaKeyBindingAction meta_prefs_get_keybinding_action (unsigned int  keysym,
+                                                       unsigned long mask);
 
 #endif
 

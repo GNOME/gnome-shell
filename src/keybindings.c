@@ -94,7 +94,7 @@ static void handle_move_to_workspace  (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
-static void handle_workspace_forward  (MetaDisplay    *display,
+static void handle_workspace_switch   (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
@@ -119,10 +119,10 @@ static gboolean process_tab_grab           (MetaDisplay *display,
                                             XEvent      *event,
                                             KeySym       keysym);
 
-static gboolean process_workspace_tab_grab (MetaDisplay *display,
-                                            MetaWindow  *window,
-                                            XEvent      *event,
-                                            KeySym       keysym);
+static gboolean process_workspace_switch_grab (MetaDisplay *display,
+                                               MetaWindow  *window,
+                                               XEvent      *event,
+                                               KeySym       keysym);
 
 static void regrab_screen_bindings         (MetaDisplay *display);
 static void regrab_window_bindings         (MetaDisplay *display);
@@ -168,13 +168,13 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (10) },
   { META_KEYBINDING_WORKSPACE_12, handle_activate_workspace,
     GINT_TO_POINTER (11) },
-  { META_KEYBINDING_WORKSPACE_LEFT, handle_workspace_forward,
+  { META_KEYBINDING_WORKSPACE_LEFT, handle_workspace_switch,
     GINT_TO_POINTER (META_MOTION_LEFT) },
-  { META_KEYBINDING_WORKSPACE_RIGHT, handle_workspace_forward,
+  { META_KEYBINDING_WORKSPACE_RIGHT, handle_workspace_switch,
     GINT_TO_POINTER (META_MOTION_RIGHT) },
-  { META_KEYBINDING_WORKSPACE_UP, handle_workspace_forward,
+  { META_KEYBINDING_WORKSPACE_UP, handle_workspace_switch,
     GINT_TO_POINTER (META_MOTION_UP) },
-  { META_KEYBINDING_WORKSPACE_DOWN, handle_workspace_forward,
+  { META_KEYBINDING_WORKSPACE_DOWN, handle_workspace_switch,
     GINT_TO_POINTER (META_MOTION_DOWN) },
   { META_KEYBINDING_SWITCH_WINDOWS, handle_tab_forward,
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
@@ -1097,13 +1097,10 @@ meta_display_process_key_event (MetaDisplay *display,
                       "Processing event for keyboard tabbing\n");
           handled = process_tab_grab (display, window, event, keysym);
           break;
-        case META_GRAB_OP_KEYBOARD_WORKSPACE_UP:
-        case META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN:
-        case META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT:
-        case META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT:
+        case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard tabbing workspace\n");
-          handled = process_workspace_tab_grab (display, window, event, keysym);
+                      "Processing event for keyboard workspace switching\n");
+          handled = process_workspace_switch_grab (display, window, event, keysym);
           break;
 
         default:
@@ -1282,7 +1279,8 @@ process_tab_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
-  action = meta_prefs_get_keybinding_action(keysym);
+  action = meta_prefs_get_keybinding_action (keysym,
+                                             display->grab_mask);
 
   switch (action)
     {
@@ -1391,10 +1389,10 @@ handle_activate_workspace (MetaDisplay    *display,
 }
 
 static gboolean
-process_workspace_tab_grab (MetaDisplay *display,
-                            MetaWindow  *window,
-                            XEvent      *event,
-                            KeySym       keysym)
+process_workspace_switch_grab (MetaDisplay *display,
+                               MetaWindow  *window,
+                               XEvent      *event,
+                               KeySym       keysym)
 {
   MetaScreen *screen;
   MetaWorkspace *workspace;
@@ -1451,7 +1449,8 @@ process_workspace_tab_grab (MetaDisplay *display,
       MetaWorkspace *target_workspace;
       MetaKeyBindingAction action;
 
-      action = meta_prefs_get_keybinding_action(keysym);
+      action = meta_prefs_get_keybinding_action (keysym,
+                                                 display->grab_mask);
 
       switch (action)
         {
@@ -1895,31 +1894,11 @@ handle_raise_or_lower (MetaDisplay    *display,
     }
 }
 
-static MetaGrabOp
-op_from_motion_direction (MetaMotionDirection motion)
-{
-  switch (motion)
-    {
-    case META_MOTION_UP:
-      return META_GRAB_OP_KEYBOARD_WORKSPACE_UP;
-    case META_MOTION_DOWN:
-      return META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN;
-    case META_MOTION_LEFT:
-      return META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT;
-    case META_MOTION_RIGHT:
-      return META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT;
-    }
-
-  g_assert_not_reached ();
-  
-  return 0;
-}
-
 static void
-handle_workspace_forward  (MetaDisplay    *display,
-                           MetaWindow     *window,
-                           XEvent         *event,
-                           MetaKeyBinding *binding)
+handle_workspace_switch  (MetaDisplay    *display,
+                          MetaWindow     *window,
+                          XEvent         *event,
+                          MetaKeyBinding *binding)
 {
   int motion;
   MetaScreen *screen;
@@ -1933,6 +1912,11 @@ handle_workspace_forward  (MetaDisplay    *display,
   if (screen == NULL)
     return;
 
+  /* FIXME this is all broken, that you need a window to grab on.
+   * There's no reason we need a window here, in fact it's broken
+   * that you have to have one.
+   */
+  
   if (display->focus_window != NULL)
     {
       window = display->focus_window;
@@ -1949,7 +1933,7 @@ handle_workspace_forward  (MetaDisplay    *display,
 
       if (meta_display_begin_grab_op (display,
                                       window,
-                                      op_from_motion_direction (motion),
+                                      META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
                                       FALSE,
                                       0,
                                       event->xkey.state & ~(display->ignored_modifier_mask),
@@ -1957,14 +1941,14 @@ handle_workspace_forward  (MetaDisplay    *display,
                                       0, 0))
         {
           MetaWorkspace *next;
-
-          next = meta_workspace_get_neighbor(window->screen->active_workspace,
-                                             motion);
+          
+          next = meta_workspace_get_neighbor (window->screen->active_workspace,
+                                              motion);
           g_assert (next); 
-
+          
           meta_ui_tab_popup_select (window->screen->tab_popup,
                                     (MetaTabEntryKey) next);
-
+          
           /* only after selecting proper window */
           meta_ui_tab_popup_set_showing (window->screen->tab_popup,
                                          TRUE);

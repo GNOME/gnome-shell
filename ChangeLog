@@ -1,5 +1,25 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+        Cleanups to workspace popup patch. Space before all parens
+	in a couple places.
+	
+	* src/prefs.c (meta_prefs_get_keybinding_action): fix brace
+	indentation, and use while instead of for loop. Take a "mask"
+	argument to avoid ambiguity issues.
+
+	* src/keybindings.c (handle_workspace_switch): rename from
+	handle_workspace_forward since there's no directionality here	
+	(handle_workspace_switch): add a FIXME about how screwed it is
+	that we need a window in order to do our grab. Should be able to 
+	grab on a dummy window like no_focus_window or the root window.
+	(process_workspace_switch_grab): rename from tab_grab for clarity, 
+	no tab involved here.
+
+	* src/common.h (enum): have only one grab op for all workspace
+	switching directions, instead of one for each.
+	
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	Apply big patch from blackc@speakeasy.net adding a popup window 
 	to the Ctrl+Alt+arrows shortcuts. #83940
 

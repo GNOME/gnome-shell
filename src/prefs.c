@@ -1033,17 +1033,21 @@ meta_prefs_get_auto_raise_delay ()
 }
 
 MetaKeyBindingAction
-meta_prefs_get_keybinding_action (unsigned int keysym)
+meta_prefs_get_keybinding_action (unsigned int  keysym,
+                                  unsigned long mask)
 {
   int i;
 
-  for (i = (int) G_N_ELEMENTS (screen_bindings) - 1; i >= 0; --i)
+  i = G_N_ELEMENTS (screen_bindings) - 1;
+  while (i >= 0)
     {
-      if (screen_bindings[i].keysym == keysym)
-      {
+      if (screen_bindings[i].keysym == keysym &&
+          screen_bindings[i].mask == mask)
         return (MetaKeyBindingAction) i;
-      }
+      
+      --i;
     }
+
   return META_KEYBINDING_ACTION_NONE;
 }
 
