@@ -505,6 +505,24 @@ window_from_results (GetPropertyResults *results,
   return TRUE;
 }
 
+#ifdef HAVE_XSYNC
+static gboolean
+counter_from_results (GetPropertyResults *results,
+                      XSyncCounter       *counter_p)
+{
+  if (!validate_or_free_results (results, 32,
+                                 results->display->atom_sync_counter,
+                                 TRUE))
+    return FALSE;  
+
+  *counter_p = *(XSyncCounter*) results->prop;
+  XFree (results->prop);
+  results->prop = NULL;
+  
+  return TRUE;
+}
+#endif
+
 gboolean
 meta_prop_get_window (MetaDisplay *display,
                       Window       xwindow,
@@ -915,6 +933,9 @@ meta_prop_get_values (MetaDisplay   *display,
             case META_PROP_VALUE_SIZE_HINTS:
               values[i].required_type = XA_WM_SIZE_HINTS;
               break;
+            case META_PROP_VALUE_SYNC_COUNTER:
+              values[i].required_type = display->atom_sync_counter;
+              break;
             }
         }
 
@@ -1042,6 +1063,15 @@ meta_prop_get_values (MetaDisplay   *display,
                                         &values[i].v.size_hints.flags))
             values[i].type = META_PROP_VALUE_INVALID;
           break;
+        case META_PROP_VALUE_SYNC_COUNTER:
+#ifdef HAVE_XSYNC
+          if (!counter_from_results (&results,
+                                     &values[i].v.xcounter))
+            values[i].type = META_PROP_VALUE_INVALID;
+#else
+          values[i].type = META_PROP_VALUE_INVALID;
+#endif
+          break;
         }
       
     next:
@@ -1092,6 +1122,8 @@ free_value (MetaPropValue *value)
       break;
     case META_PROP_VALUE_CARDINAL_LIST:
       meta_XFree (value->v.cardinal_list.cardinals);
+      break;
+    case META_PROP_VALUE_SYNC_COUNTER:
       break;
     }
 }

@@ -22,6 +22,7 @@
 #ifndef META_XPROPS_H
 #define META_XPROPS_H
 
+#include <config.h>
 #include "display.h"
 #include <X11/Xutil.h>
 
@@ -142,7 +143,8 @@ typedef enum
   META_PROP_VALUE_TEXT_PROPERTY, /* comes back as UTF-8 string */
   META_PROP_VALUE_WM_HINTS,
   META_PROP_VALUE_CLASS_HINT,
-  META_PROP_VALUE_SIZE_HINTS
+  META_PROP_VALUE_SIZE_HINTS,
+  META_PROP_VALUE_SYNC_COUNTER
 } MetaPropValueType;
 
 /* used to request/return/store property values */
@@ -160,6 +162,9 @@ typedef struct
     gulong cardinal;
     XWMHints *wm_hints;
     XClassHint class_hint;
+#ifdef HAVE_XSYNC
+    XSyncCounter xcounter;
+#endif
     
     struct
     {

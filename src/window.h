@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2002 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,6 +23,7 @@
 #ifndef META_WINDOW_H
 #define META_WINDOW_H
 
+#include <config.h>
 #include "screen.h"
 #include "util.h"
 #include "stack.h"
@@ -216,6 +218,11 @@ struct _MetaWindow
   /* Info on which props we got our attributes from */
   guint using_net_wm_name : 1; /* vs. plain wm_name */
   guint using_net_wm_icon_name : 1; /* vs. plain wm_icon_name */
+
+#ifdef HAVE_XSYNC
+  /* XSync update counter */
+  XSyncCounter update_counter;
+#endif
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client

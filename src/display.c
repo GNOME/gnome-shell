@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2002 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -253,7 +254,9 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_ABOVE",
     "_NET_WM_STATE_BELOW",
     "_NET_STARTUP_ID",
-    "_METACITY_TOGGLE_VERBOSE"
+    "_METACITY_TOGGLE_VERBOSE",
+    "_METACITY_UPDATE_COUNTER",
+    "SYNC_COUNTER"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -389,6 +392,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_below = atoms[76];
   display->atom_net_startup_id = atoms[77];
   display->atom_metacity_toggle_verbose = atoms[78];
+  display->atom_metacity_update_counter = atoms[79];
+  display->atom_sync_counter = atoms[80];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -453,6 +458,35 @@ meta_display_open (const char *name)
   display->grab_screen = NULL;
   display->grab_resize_popup = NULL;
 
+#ifdef HAVE_XSYNC
+  {
+    int major, minor;
+    
+    display->xsync_error_base = 0;
+    display->xsync_event_base = 0;
+
+    /* I don't think we really have to fill these in */
+    major = SYNC_MAJOR_VERSION;
+    minor = SYNC_MINOR_VERSION;
+    
+    if (!XSyncQueryExtension (display->xdisplay,
+                              &display->xsync_event_base,
+                              &display->xsync_error_base) ||
+        !XSyncInitialize (display->xdisplay,
+                          &major, &minor))
+      {
+        display->xsync_error_base = 0;
+        display->xsync_event_base = 0;
+      }
+    meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
+                  major, minor,
+                  display->xsync_error_base,
+                  display->xsync_event_base);
+  }
+#else  /* HAVE_XSYNC */
+  meta_verbose ("Not compiled with Xsync support\n");
+#endif /* !HAVE_XSYNC */
+  
   screens = NULL;
   
 #ifdef HAVE_GTK_MULTIHEAD  
@@ -896,6 +930,51 @@ grab_op_is_keyboard (MetaGrabOp op)
     }
 }
 
+gboolean
+meta_grab_op_is_resizing (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:      
+    case META_GRAB_OP_RESIZING_SW:      
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+      return TRUE;
+      break;
+
+    default:
+      return FALSE;
+    }
+}
+
+gboolean
+meta_grab_op_is_moving (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_MOVING:
+    case META_GRAB_OP_KEYBOARD_MOVING:
+      return TRUE;
+      break;
+      
+    default:
+      return FALSE;
+    }
+}
+
 /* Get time of current event, or CurrentTime if none. */
 guint32
 meta_display_get_current_time (MetaDisplay *display)
@@ -1093,6 +1172,20 @@ event_callback (XEvent   *event,
       frame_was_receiver = TRUE;
       meta_topic (META_DEBUG_EVENTS, "Frame was receiver of event\n");
     }
+
+#ifdef HAVE_XSYNC
+  if (META_DISPLAY_HAS_XSYNC (display) && 
+      event->type == (display->xsync_event_base + XSyncAlarmNotify) &&
+      ((XSyncAlarmNotifyEvent*)event)->alarm == display->grab_update_alarm)
+    {
+      filter_out_event = TRUE; /* GTK doesn't want to see this really */
+      
+      if (display->grab_op != META_GRAB_OP_NONE &&
+          display->grab_window != NULL &&
+          grab_op_is_mouse (display->grab_op))
+        meta_window_handle_mouse_grab_op_event (display->grab_window, event);
+    }
+#endif /* HAVE_XSYNC */
   
   switch (event->type)
     {
@@ -1242,25 +1335,22 @@ event_callback (XEvent   *event,
         }
       break;
     case ButtonRelease:
-      if (grab_op_is_mouse (display->grab_op) &&
-          display->grab_window == window)
+      if (display->grab_window == window &&
+          grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case MotionNotify:
-      if (grab_op_is_mouse (display->grab_op) &&
-          display->grab_window == window)
+      if (display->grab_window == window &&
+          grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
-      if (grab_op_is_mouse (display->grab_op) &&
-	  display->grab_window == window)
-	{
-	  meta_window_handle_mouse_grab_op_event (window, event);
-	  break;
-	}
+      if (display->grab_window == window &&
+          grab_op_is_mouse (display->grab_op))
+        meta_window_handle_mouse_grab_op_event (window, event);
       /* do this even if window->has_focus to avoid races */
-      if (window && !serial_is_ignored (display, event->xany.serial) &&
-	  event->xcrossing.detail != NotifyInferior)
+      else if (window && !serial_is_ignored (display, event->xany.serial) &&
+               event->xcrossing.detail != NotifyInferior)
         {
           switch (meta_prefs_get_focus_mode ())
             {
@@ -1317,13 +1407,10 @@ event_callback (XEvent   *event,
         }
       break;
     case LeaveNotify:
-      if (grab_op_is_mouse (display->grab_op) &&
-	  display->grab_window == window)
-	{
-	  meta_window_handle_mouse_grab_op_event (window, event);
-	  break;
-	}
-      if (window)
+      if (display->grab_window == window &&
+          grab_op_is_mouse (display->grab_op))
+        meta_window_handle_mouse_grab_op_event (window, event);
+      else if (window != NULL)
         {
           switch (meta_prefs_get_focus_mode ())
             {
@@ -1872,6 +1959,7 @@ event_get_time (MetaDisplay *display,
     }
 }
 
+#ifdef WITH_VERBOSE_MODE
 const char*
 meta_event_detail_to_string (int d)
 {
@@ -1908,7 +1996,9 @@ meta_event_detail_to_string (int d)
 
   return detail;
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 const char*
 meta_event_mode_to_string (int m)
 {
@@ -1936,7 +2026,9 @@ meta_event_mode_to_string (int m)
 
   return mode;
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 static const char*
 stack_mode_to_string (int mode)
 {
@@ -1956,7 +2048,9 @@ stack_mode_to_string (int mode)
 
   return "Unknown";
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef WITH_VERBOSE_MODE
 static char*
 key_event_description (Display *xdisplay,
                        XEvent  *event)
@@ -1971,7 +2065,43 @@ key_event_description (Display *xdisplay,
   return g_strdup_printf ("Key '%s' state 0x%x", 
                           str ? str : "(null)", event->xkey.state);
 }
+#endif /* WITH_VERBOSE_MODE */
 
+#ifdef HAVE_XSYNC
+#ifdef WITH_VERBOSE_MODE
+static gint64
+sync_value_to_64 (const XSyncValue *value)
+{
+  gint64 v;
+
+  v = XSyncValueLow32 (*value);
+  v |= (((gint64)XSyncValueHigh32 (*value)) << 32);
+  
+  return v;
+}
+#endif /* WITH_VERBOSE_MODE */
+
+#ifdef WITH_VERBOSE_MODE
+static const char*
+alarm_state_to_string (XSyncAlarmState state)
+{
+  switch (state)
+    {
+    case XSyncAlarmActive:
+      return "Active";
+    case XSyncAlarmInactive:
+      return "Inactive";
+    case XSyncAlarmDestroyed:
+      return "Destroyed";
+    default:
+      return "(unknown)";
+    }
+}
+#endif /* WITH_VERBOSE_MODE */
+
+#endif /* HAVE_XSYNC */
+
+#ifdef WITH_VERBOSE_MODE
 static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
@@ -2207,8 +2337,30 @@ meta_spew_event (MetaDisplay *display,
       name = "MappingNotify";
       break;
     default:
-      name = "(Unknown event)";
-      extra = g_strdup_printf ("type: %d", event->xany.type); 
+#ifdef HAVE_XSYNC
+      if (META_DISPLAY_HAS_XSYNC (display) && 
+          event->type == (display->xsync_event_base + XSyncAlarmNotify))
+        {
+          XSyncAlarmNotifyEvent *aevent = (XSyncAlarmNotifyEvent*) event;
+          
+          name = "XSyncAlarmNotify";
+          extra =
+            g_strdup_printf ("alarm: 0x%lx"
+                             " counter_value: %" G_GINT64_FORMAT
+                             " alarm_value: %" G_GINT64_FORMAT
+                             " time: %u alarm state: %s",
+                             aevent->alarm,
+                             (gint64) sync_value_to_64 (&aevent->counter_value),
+                             (gint64) sync_value_to_64 (&aevent->alarm_value),
+                             (unsigned int) aevent->time,
+                             alarm_state_to_string (aevent->state));
+        }
+      else
+#endif /* HAVE_XSYNC */
+        {
+          name = "(Unknown event)";
+          extra = g_strdup_printf ("type: %d", event->xany.type);
+        }
       break;
     }
 
@@ -2230,6 +2382,7 @@ meta_spew_event (MetaDisplay *display,
   if (extra)
     g_free (extra);
 }
+#endif /* WITH_VERBOSE_MODE */
 
 MetaWindow*
 meta_display_lookup_x_window (MetaDisplay *display,
@@ -2385,8 +2538,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
 
   cursor = xcursor_for_op (display, op);
 
-#define GRAB_MASK (PointerMotionMask | PointerMotionHintMask |  \
-                   ButtonPressMask | ButtonReleaseMask	     |	\
+#define GRAB_MASK (PointerMotionMask |                          \
+                   ButtonPressMask | ButtonReleaseMask |        \
 		   EnterWindowMask | LeaveWindowMask)
 
   if (change_pointer)
@@ -2515,9 +2668,14 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_initial_root_y = root_y;
   display->grab_current_root_x = root_x;
   display->grab_current_root_y = root_y;
+  display->grab_latest_motion_x = root_x;
+  display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
-
+#ifdef HAVE_XSYNC
+  display->grab_update_alarm = None;
+#endif
+  
   if (display->grab_window)
     {
       display->grab_initial_window_pos = display->grab_window->rect;
@@ -2525,6 +2683,46 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                 &display->grab_initial_window_pos.x,
                                 &display->grab_initial_window_pos.y);
       display->grab_current_window_pos = display->grab_initial_window_pos;
+
+#ifdef HAVE_XSYNC
+      if (meta_grab_op_is_resizing (display->grab_op) &&
+          display->grab_window->update_counter != None)
+        {
+          XSyncAlarmAttributes values;
+
+          /* trigger when we make a positive transition to a value
+           * one higher than the current value.
+           */
+          values.trigger.counter = display->grab_window->update_counter;
+          values.trigger.value_type = XSyncRelative;
+          values.trigger.test_type = XSyncPositiveTransition;
+          XSyncIntToValue (&values.trigger.wait_value, 1);
+
+          /* After triggering, increment test_value by this.
+           * (NOT wait_value above)
+           */
+          XSyncIntToValue (&values.delta, 1);
+
+          /* we want events (on by default anyway) */
+          values.events = True;
+          
+          meta_error_trap_push_with_return (display);
+          display->grab_update_alarm = XSyncCreateAlarm (display->xdisplay,
+                                                         XSyncCACounter |
+                                                         XSyncCAValueType |
+                                                         XSyncCAValue |
+                                                         XSyncCATestType |
+                                                         XSyncCADelta |
+                                                         XSyncCAEvents,
+                                                         &values);
+          if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+            display->grab_update_alarm = None;
+
+          meta_topic (META_DEBUG_RESIZING,
+                      "Created update alarm 0x%lx\n",
+                      display->grab_update_alarm);
+        }
+#endif
     }
   
   meta_topic (META_DEBUG_WINDOW_OPS,
@@ -2604,6 +2802,14 @@ meta_display_end_grab_op (MetaDisplay *display,
       else
         meta_screen_ungrab_all_keys (display->grab_screen);
     }
+
+#ifdef HAVE_XSYNC
+  if (display->grab_update_alarm != None)
+    {
+      XSyncDestroyAlarm (display->xdisplay,
+                         display->grab_update_alarm);
+    }
+#endif /* HAVE_XSYNC */
   
   display->grab_window = NULL;
   display->grab_screen = NULL;

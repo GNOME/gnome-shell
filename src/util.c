@@ -280,6 +280,8 @@ topic_name (MetaDebugTopic topic)
       return "PREFS";
     case META_DEBUG_GROUPS:
       return "GROUPS";
+    case META_DEBUG_RESIZING:
+      return "RESIZING";
     }
 
   return "Window manager";

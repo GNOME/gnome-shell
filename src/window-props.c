@@ -412,7 +412,32 @@ reload_net_startup_id (MetaWindow    *window,
                 window->desc);
 }
 
-#define N_HOOKS 23
+static void
+init_update_counter (MetaDisplay   *display,
+                     Atom           property,
+                     MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_SYNC_COUNTER;
+  value->atom = display->atom_metacity_update_counter;
+}
+
+static void
+reload_update_counter (MetaWindow    *window,
+                       MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+#ifdef HAVE_XSYNC
+      XSyncCounter counter = value->v.xcounter;
+
+      window->update_counter = counter;
+      meta_verbose ("Window has _METACITY_UPDATE_COUNTER 0x%lx\n",
+                    window->update_counter);
+#endif
+    }
+}
+
+#define N_HOOKS 24
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -540,6 +565,11 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = display->atom_net_startup_id;
   hooks[i].init_func = init_net_startup_id;
   hooks[i].reload_func = reload_net_startup_id;
+  ++i;
+
+  hooks[i].property = display->atom_metacity_update_counter;
+  hooks[i].init_func = init_update_counter;
+  hooks[i].reload_func = reload_update_counter;
   ++i;
   
   if (i != N_HOOKS)

@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2002 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,6 +34,10 @@
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
+#endif
+
+#ifdef HAVE_XSYNC
+#include <X11/extensions/sync.h>
 #endif
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
@@ -162,6 +167,8 @@ struct _MetaDisplay
   Atom atom_net_wm_state_below;
   Atom atom_net_startup_id;
   Atom atom_metacity_toggle_verbose;
+  Atom atom_metacity_update_counter;
+  Atom atom_sync_counter;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -229,6 +236,8 @@ struct _MetaDisplay
   int         grab_initial_root_y;
   int         grab_current_root_x;
   int         grab_current_root_y;
+  int         grab_latest_motion_x;
+  int         grab_latest_motion_y;
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
@@ -236,7 +245,10 @@ struct _MetaDisplay
   MetaRectangle grab_current_window_pos;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
-  
+#ifdef HAVE_XSYNC
+  /* alarm monitoring client's _METACITY_UPDATE_COUNTER */
+  XSyncAlarm  grab_update_alarm;
+#endif
 
   /* Keybindings stuff */
   MetaKeyBinding *screen_bindings;
@@ -275,10 +287,14 @@ struct _MetaDisplay
   MetaGroupPropHooks *group_prop_hooks;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
-  /* This is at the end in case someone doesn't include config.h before this file
-   * the results won't be catastrophic
-   */
   SnDisplay *sn_display;
+#endif
+#ifdef HAVE_XSYNC
+  int xsync_event_base;
+  int xsync_error_base;
+#define META_DISPLAY_HAS_XSYNC(display) ((display)->xsync_event_base != 0)
+#else
+#define META_DISPLAY_HAS_XSYNC(display) FALSE
 #endif
 };
 
@@ -398,6 +414,9 @@ MetaWindow* meta_display_get_tab_current (MetaDisplay   *display,
                                           MetaWorkspace *workspace);
 
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
+
+gboolean meta_grab_op_is_moving   (MetaGrabOp op);
+gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 
 gboolean meta_rectangle_intersect (MetaRectangle *src1,
                                    MetaRectangle *src2,

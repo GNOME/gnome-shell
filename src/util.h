@@ -64,7 +64,8 @@ typedef enum
   META_DEBUG_ERRORS       = 1 << 14,
   META_DEBUG_STARTUP      = 1 << 15,
   META_DEBUG_PREFS        = 1 << 16,
-  META_DEBUG_GROUPS       = 1 << 17
+  META_DEBUG_GROUPS       = 1 << 17,
+  META_DEBUG_RESIZING     = 1 << 18
 
 } MetaDebugTopic;
 
