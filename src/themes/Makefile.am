@@ -1,5 +1,6 @@
 THEMES=			\
 	Atlanta		\
+	Bright		\
 	Crux		\
 	Gorilla
 

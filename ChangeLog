@@ -1,3 +1,9 @@
+2002-03-21  Havoc Pennington  <hp@pobox.com>
+
+	* src/themes/Bright/metacity-theme-1.xml: Added "Bright" theme
+	from Gaute Lindkvist, with some small clipping tweaks to keep 
+	text/icons from overlapping their frames.
+
 2002-03-19  Havoc Pennington  <hp@redhat.com>
 
 	* src/resizepopup.c (place_vertical_size_window) 
