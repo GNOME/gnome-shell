@@ -100,6 +100,9 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
+  /* Previous focus window */
+  MetaWindow *prev_focus_window;
+  
   GList *workspaces;
   
   /*< private-ish >*/

@@ -92,6 +92,9 @@ MetaWindow* meta_stack_get_above  (MetaStack  *stack,
 MetaWindow* meta_stack_get_below  (MetaStack  *stack,
                                    MetaWindow *window);
 
+MetaWindow* meta_stack_get_tab_next (MetaStack  *stack,
+                                     MetaWindow *window,
+                                     gboolean    backward);
 
 #endif
 

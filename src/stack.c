@@ -760,3 +760,63 @@ meta_stack_get_below (MetaStack      *stack,
   else
     return find_prev_below_layer (stack, window->layer);
 }
+
+MetaWindow*
+meta_stack_get_tab_next (MetaStack  *stack,
+                         MetaWindow *window,
+                         gboolean    backward)
+{
+  int i;
+
+  if (stack->windows->len == 0)
+    return NULL;
+
+  if (window != NULL)
+    {
+      i = 0;
+      while (i < stack->windows->len)
+        {
+          Window w;
+          
+          w = g_array_index (stack->windows, Window, i);
+
+          if (w == window->xwindow)
+            {
+              if (backward && i == 0)
+                goto out;
+              else if (!backward && i == (stack->windows->len - 1))
+                goto out;
+              else
+                {
+                  if (backward)
+                    --i;
+                  else
+                    ++i;
+              
+                  return meta_display_lookup_x_window (stack->screen->display,
+                                                       g_array_index (stack->windows,
+                                                                      Window,
+                                                                      i));
+                }
+            }
+
+          ++i;
+        }     
+    }
+
+ out:
+  
+  /* window may be NULL, or maybe the origin window was already the last/first
+   * window and we need to wrap around
+   */
+  if (backward)
+    return meta_display_lookup_x_window (stack->screen->display,
+                                         g_array_index (stack->windows,
+                                                        Window,
+                                                        stack->windows->len - 1));
+  else
+    return meta_display_lookup_x_window (stack->screen->display,
+                                         g_array_index (stack->windows,
+                                                        Window,
+                                                        0));
+}

@@ -324,28 +324,34 @@ handle_tab_forward (MetaDisplay *display,
   
   if (display->focus_window != NULL)
     {
-      window = meta_stack_get_above (display->focus_window->screen->stack,
-                                     display->focus_window);
+      window = meta_stack_get_tab_next (display->focus_window->screen->stack,
+                                        display->focus_window,
+                                        FALSE);
     }
 
   if (window == NULL)
     {
-      if (event_window)
-        window = meta_stack_get_bottom (event_window->screen->stack);
-      else
+      MetaScreen *screen;
+      
+      screen = meta_display_screen_for_root (display,
+                                             event->xkey.root);
+
+      /* We get the screen because event_window may be NULL,
+       * in which case we can't use event_window->screen
+       */
+      if (screen)
         {
-          MetaScreen *screen;
-          
-          screen = meta_display_screen_for_root (display,
-                                                 event->xkey.window);
-          
-          if (screen)
-            window = meta_stack_get_bottom (screen->stack);
+          window = meta_stack_get_tab_next (screen->stack,
+                                            event_window,
+                                            FALSE);
         }
     }
 
-  if (window && window != display->focus_window)
-    meta_window_focus (window, event->xkey.time);
+  if (window)
+    {
+      meta_window_raise (window);
+      meta_window_focus (window, event->xkey.time);
+    }
 }
 
 static void
@@ -362,29 +368,34 @@ handle_tab_backward (MetaDisplay *display,
   
   if (display->focus_window != NULL)
     {
-      window = meta_stack_get_below (display->focus_window->screen->stack,
-                                     display->focus_window);
+      window = meta_stack_get_tab_next (display->focus_window->screen->stack,
+                                        display->focus_window,
+                                        TRUE);
     }
-  
+
   if (window == NULL)
     {
-      if (event_window)
-        window = meta_stack_get_top (event_window->screen->stack);
+      MetaScreen *screen;
+      
+      screen = meta_display_screen_for_root (display,
+                                             event->xkey.root);
 
-      if (window == NULL)
+      /* We get the screen because event_window may be NULL,
+       * in which case we can't use event_window->screen
+       */
+      if (screen)
         {
-          MetaScreen *screen;
-          
-          screen = meta_display_screen_for_root (display,
-                                                 event->xkey.window);
-          
-          if (screen)
-            window = meta_stack_get_top (screen->stack);
+          window = meta_stack_get_tab_next (screen->stack,
+                                            event_window,
+                                            TRUE);
         }
     }
 
-  if (window && window != display->focus_window)
-    meta_window_focus (window, event->xkey.time);
+  if (window)
+    {
+      meta_window_raise (window);
+      meta_window_focus (window, event->xkey.time);
+    }
 }
 
 static void
@@ -399,8 +410,28 @@ handle_focus_previous (MetaDisplay *display,
   
   window = display->prev_focus_window;
 
+  if (window == NULL)
+    {
+      /* Pick first window in tab order */
+      MetaScreen *screen;
+      
+      screen = meta_display_screen_for_root (display,
+                                             event->xkey.root);
+      
+      /* We get the screen because event_window may be NULL,
+       * in which case we can't use event_window->screen
+       */
+      if (screen)
+        {
+          window = meta_stack_get_tab_next (screen->stack,
+                                            event_window,
+                                            TRUE);
+        }
+    }
+  
   if (window)
-    meta_window_focus (window, event->xkey.time);
+    {
+      meta_window_raise (window);
+      meta_window_focus (window, event->xkey.time);
+    }
 }
-
-

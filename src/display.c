@@ -162,6 +162,9 @@ meta_display_open (const char *name)
   display->error_traps = NULL;
   display->server_grab_count = 0;
   display->workspaces = NULL;
+
+  display->focus_window = NULL;
+  display->prev_focus_window = NULL;
   
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
