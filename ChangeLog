@@ -1,5 +1,19 @@
 2002-11-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_grab): remove XSync calls from here
+	(meta_display_ungrab): remove XSync from here, but put in 
+	an XFlush to be sure we get the ungrab sent.
+
+	* src/util.c (meta_topic): track sync count here
+
+	* src/errors.c: move sync count out of here
+
+        Throughout: error spew on all XSync() calls
+	
+	* src/run-metacity.sh: don't set METACITY_DEBUG
+
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/window-props.c (meta_display_init_window_prop_hooks): add 
 	_NET_WM_NAME, WM_NAME, _NET_WM_ICON_NAME, WM_ICON_NAME support
 

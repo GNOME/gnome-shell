@@ -757,10 +757,8 @@ meta_display_grab (MetaDisplay *display)
 {
   if (display->server_grab_count == 0)
     {
-      XSync (display->xdisplay, False);
       XGrabServer (display->xdisplay);
     }
-  XSync (display->xdisplay, False);
   display->server_grab_count += 1;
   meta_verbose ("Grabbing display, grab count now %d\n",
                 display->server_grab_count);
@@ -778,10 +776,9 @@ meta_display_ungrab (MetaDisplay *display)
       /* FIXME we want to purge all pending "queued" stuff
        * at this point, such as window hide/show
        */
-      XSync (display->xdisplay, False);
       XUngrabServer (display->xdisplay);
+      XFlush (display->xdisplay);
     }
-  XSync (display->xdisplay, False);
 
   meta_verbose ("Ungrabbing display, grab count now %d\n",
                 display->server_grab_count);
@@ -3314,6 +3311,7 @@ convert_property (MetaDisplay *display,
    * can send SelectionNotify
    */
   /* FIXME the error trap pop synced anyway, right? */
+  meta_topic (META_DEBUG_SYNC, "Syncing on %s\n", __FUNCTION__);
   XSync (display->xdisplay, False);
 
   return TRUE;

@@ -919,6 +919,8 @@ meta_prop_get_values (MetaDisplay   *display,
     }  
   
   /* Get replies for all our tasks */
+  meta_topic (META_DEBUG_SYNC, "Syncing to get %d GetProperty replies in %s\n",
+              n_values, __FUNCTION__);
   XSync (display->xdisplay, False);
   
   /* Collect results, should arrive in order requested */

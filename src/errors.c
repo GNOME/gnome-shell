@@ -26,8 +26,6 @@
 #include <stdlib.h>
 #include <gdk/gdk.h>
 
-static int sync_count = 0;
-
 static int x_error_handler    (Display     *display,
                                XErrorEvent *error);
 static int x_io_error_handler (Display     *display);
@@ -50,7 +48,6 @@ meta_error_trap_push_internal (MetaDisplay *display,
   if (need_sync)
     {
       XSync (display->xdisplay, False);
-      ++sync_count;
     }
   
   gdk_error_trap_push ();
@@ -84,7 +81,6 @@ meta_error_trap_pop_internal  (MetaDisplay *display,
   if (need_sync)
     {
       XSync (display->xdisplay, False);
-      ++sync_count;
     }
 
   result = gdk_error_trap_pop ();
@@ -128,8 +124,8 @@ meta_error_trap_pop (MetaDisplay *display,
   need_sync = (display->error_traps == 1 && !last_request_was_roundtrip);
 
   if (need_sync)
-    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_pop, traps = %d, roundtrip = %d\n",
-                sync_count, display->error_traps, last_request_was_roundtrip);
+    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_pop, traps = %d, roundtrip = %d\n",
+                display->error_traps, last_request_was_roundtrip);
 
   display->error_trap_synced_at_last_pop = need_sync || last_request_was_roundtrip;
   
@@ -156,8 +152,8 @@ meta_error_trap_push_with_return (MetaDisplay *display)
     need_sync = FALSE;
 
   if (need_sync)
-    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_push_with_return, traps = %d\n",
-                sync_count, display->error_traps);
+    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_push_with_return, traps = %d\n",
+                display->error_traps);
   
   meta_error_trap_push_internal (display, FALSE);
 }
@@ -167,8 +163,8 @@ meta_error_trap_pop_with_return  (MetaDisplay *display,
                                   gboolean     last_request_was_roundtrip)
 {
   if (!last_request_was_roundtrip)
-    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_pop_with_return, traps = %d, roundtrip = %d\n",
-                sync_count, display->error_traps, last_request_was_roundtrip);
+    meta_topic (META_DEBUG_SYNC, "Syncing on error_trap_pop_with_return, traps = %d, roundtrip = %d\n",
+                display->error_traps, last_request_was_roundtrip);
 
   display->error_trap_synced_at_last_pop = TRUE;
   

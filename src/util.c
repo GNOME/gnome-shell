@@ -267,6 +267,8 @@ topic_name (MetaDebugTopic topic)
   return "Window manager";
 }
 
+static int sync_count = 0;
+
 void
 meta_topic (MetaDebugTopic topic,
             const char *format,
@@ -281,7 +283,7 @@ meta_topic (MetaDebugTopic topic,
   if (!is_verbose)
     return;
   
-  va_start (args, format);
+  va_start (args, format);  
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
@@ -289,6 +291,13 @@ meta_topic (MetaDebugTopic topic,
 
   if (no_prefix == 0)
     fprintf (out, "%s: ", topic_name (topic));
+
+  if (topic == META_DEBUG_SYNC)
+    {
+      ++sync_count;
+      fprintf (out, "%d: ", sync_count);
+    }
+  
   utf8_fputs (str, out);
   
   fflush (out);
