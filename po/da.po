@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-13 21:02+0200\n"
-"PO-Revision-Date: 2002-08-13 21:02+0200\n"
+"POT-Creation-Date: 2002-08-19 23:33+0200\n"
+"PO-Revision-Date: 2002-08-19 23:31+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Maksimér vindue"
 msgid "Unmaximize Window"
 msgstr "Gendan vindue"
 
-#: src/keybindings.c:809
+#: src/keybindings.c:819
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,13 +97,13 @@ msgid ""
 msgstr ""
 "Et andet program bruger allerede nøglen %s med modifikatorer %x som binding\n"
 
-#: src/keybindings.c:2093
+#: src/keybindings.c:2103
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fejl ved start af metacity-dialog for at vise en fejl for en kommando: %s\n"
 
-#: src/keybindings.c:2123
+#: src/keybindings.c:2133
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
@@ -339,90 +339,94 @@ msgstr ""
 "ikke implementeret. "
 
 #: src/metacity.schemas.in.h:14
+msgid "Lower window below other windows"
+msgstr "Sænk vindue under andre vinduer"
+
+#: src/metacity.schemas.in.h:15
 msgid "Minimize a window"
 msgstr "Minimér et vindue"
 
-#: src/metacity.schemas.in.h:15
+#: src/metacity.schemas.in.h:16
 msgid "Move a window"
 msgstr "Flyt et vindue"
 
-#: src/metacity.schemas.in.h:16
+#: src/metacity.schemas.in.h:17
 msgid "Move focus between panels and the desktop"
 msgstr "Flyt fokus mellem paneler og skrivebordet"
 
-#: src/metacity.schemas.in.h:17
+#: src/metacity.schemas.in.h:18
 msgid "Move focus between windows"
 msgstr "Flyt fokus mellem vinduer"
 
-#: src/metacity.schemas.in.h:18
+#: src/metacity.schemas.in.h:19
 msgid "Move window one workspace down"
 msgstr "Flyt vindue et arbejdsområde ned"
 
-#: src/metacity.schemas.in.h:19
+#: src/metacity.schemas.in.h:20
 msgid "Move window one workspace to the left"
 msgstr "Flyt vindue et arbejdsområde til venstre"
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:21
 msgid "Move window one workspace to the right"
 msgstr "Flyt vindue et arbejdsområde til højre"
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:22
 msgid "Move window one workspace up"
 msgstr "Flyt vindue et arbejdsområde op"
 
-#: src/metacity.schemas.in.h:22
+#: src/metacity.schemas.in.h:23
 msgid "Move window to workspace 1"
 msgstr "Flyt vindue til arbejdsområde 1"
 
-#: src/metacity.schemas.in.h:23
+#: src/metacity.schemas.in.h:24
 msgid "Move window to workspace 10"
 msgstr "Flyt vindue til arbejdsområde 10"
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:25
 msgid "Move window to workspace 11"
 msgstr "Flyt vindue til arbejdsområde 11"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:26
 msgid "Move window to workspace 12"
 msgstr "Flyt vindue til arbejdsområde 12"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:27
 msgid "Move window to workspace 2"
 msgstr "Flyt vindue til arbejdsområde 2"
 
-#: src/metacity.schemas.in.h:27
+#: src/metacity.schemas.in.h:28
 msgid "Move window to workspace 3"
 msgstr "Flyt vindue til arbejdsområde 3"
 
-#: src/metacity.schemas.in.h:28
+#: src/metacity.schemas.in.h:29
 msgid "Move window to workspace 4"
 msgstr "Flyt vindue til arbejdsområde 4"
 
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:30
 msgid "Move window to workspace 5"
 msgstr "Flyt vindue til arbejdsområde 5"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:31
 msgid "Move window to workspace 6"
 msgstr "Flyt vindue til arbejdsområde 6"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:32
 msgid "Move window to workspace 7"
 msgstr "Flyt vindue til arbejdsområde 7"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:33
 msgid "Move window to workspace 8"
 msgstr "Flyt vindue til arbejdsområde 8"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:34
 msgid "Move window to workspace 9"
 msgstr "Flyt vindue til arbejdsområde 9"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:35
 msgid "Number of workspaces"
 msgstr "Antal arbejdsområder"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:36
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -432,19 +436,23 @@ msgstr ""
 "at forhindre at dit skrivebord ødelægges ved et uheld ved at antallet sættes "
 "til 117 millioner)"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:37
+msgid "Raise window above other windows"
+msgstr "Hæv vindue over andre vinduer"
+
+#: src/metacity.schemas.in.h:38
 msgid "Raise window if obscured, lowers it otherwise"
 msgstr "Hæv vindue hvis dækket, ellers sænk det"
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:39
 msgid "Resize a window"
 msgstr "Ændr størrelsen på et vindue"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:40
 msgid "Run a defined command"
 msgstr "Kør en defineret kommando"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:41
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -474,71 +482,71 @@ msgstr ""
 "så nogle gange kan en fejl i tilstanden uden omgåelser ikke rettes uden at "
 "vedtage en ny specifikation."
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:42
 msgid "Switch to workspace 1"
 msgstr "Skift til arbejdsområde 1"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:43
 msgid "Switch to workspace 10"
 msgstr "Skift til arbejdsområde 10"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:44
 msgid "Switch to workspace 11"
 msgstr "Skift til arbejdsområde 11"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:45
 msgid "Switch to workspace 12"
 msgstr "Skift til arbejdsområde 12"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:46
 msgid "Switch to workspace 2"
 msgstr "Skift til arbejdsområde 2"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:47
 msgid "Switch to workspace 3"
 msgstr "Skift til arbejdsområde 3"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:48
 msgid "Switch to workspace 4"
 msgstr "Skift til arbejdsområde 4"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:49
 msgid "Switch to workspace 5"
 msgstr "Skift til arbejdsområde 5"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:50
 msgid "Switch to workspace 6"
 msgstr "Skift til arbejdsområde 6"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:51
 msgid "Switch to workspace 7"
 msgstr "Skift til arbejdsområde 7"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:52
 msgid "Switch to workspace 8"
 msgstr "Skift til arbejdsområde 8"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:53
 msgid "Switch to workspace 9"
 msgstr "Skift til arbejdsområde 9"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:54
 msgid "Switch to workspace above the current space"
 msgstr "Skift til arbejdsområdet over det aktuelle område"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:55
 msgid "Switch to workspace below the current space"
 msgstr "Skift til arbejdsområdet under det aktuelle område"
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:56
 msgid "Switch to workspace on the left"
 msgstr "Skift til arbejdsområdet til venstre"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:57
 msgid "Switch to workspace on the right"
 msgstr "Skift til arbejdsområdet til højre"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:58
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -548,7 +556,7 @@ msgstr ""
 "tastebindinger der svarer til disse kommandoer. Ved tryk på tastebindingen "
 "for run_command_N udføres command_N."
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:59
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -557,14 +565,14 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der kører den tilsvarende nummererede kommando i /apps/"
+"Denne tastaturgenvej kører den tilsvarende nummererede kommando i /apps/"
 "metacity/keybinding_commands. Formatet ser ud som \"&lt;Control&gt;a\" eller "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både "
 "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
 "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng \"disabled"
 "\", vil der ikke være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:60
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -573,14 +581,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområdet over det aktuelle "
+"Denne tastaturgenvej skifter til arbejdsområdet over det aktuelle "
 "arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
 "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
 "du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
 "være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:61
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -589,39 +597,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområdet under det aktuelle "
-"arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
-"bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
-"du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
-"være nogen tastaturgenvej til denne handling."
-
-#: src/metacity.schemas.in.h:60
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområdet til venstre for det "
-"aktuelle arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og "
-"små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-"Hvis du sætter indstillingen til den specielle streng \"disabled\", vil der "
-"ikke være nogen tastaturgenvej til denne handling."
-
-#: src/metacity.schemas.in.h:61
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområdet til højre for det aktuelle "
+"Denne tastaturgenvej skifter til arbejdsområdet under det aktuelle "
 "arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
 "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
@@ -630,20 +606,52 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:62
 msgid ""
+"The keybinding that switches to the workspace on the left of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
+"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+"the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Denne tastaturgenvej skifter til arbejdsområdet til venstre for det aktuelle "
+"arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
+"bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
+"du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
+"være nogen tastaturgenvej til denne handling."
+
+#: src/metacity.schemas.in.h:63
+msgid ""
+"The keybinding that switches to the workspace on the right of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
+"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+"the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr ""
+"Denne tastaturgenvej skifter til arbejdsområdet til højre for det aktuelle "
+"arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
+"bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
+"du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
+"være nogen tastaturgenvej til denne handling."
+
+#: src/metacity.schemas.in.h:64
+msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 1. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 1. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:65
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -651,14 +659,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 10. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 10. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:66
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -666,14 +674,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 11. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 11. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:67
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -681,14 +689,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 12. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 12. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:68
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -696,14 +704,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 2. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 2. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:69
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -711,14 +719,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 3. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 3. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:70
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -726,14 +734,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 4. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 4. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:71
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -741,14 +749,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 5. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 5. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:72
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -756,14 +764,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 6. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 6. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:73
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -771,14 +779,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 7. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 7. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:74
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -786,14 +794,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 8. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 8. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:75
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -801,14 +809,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter til arbejdsområde 9. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter til arbejdsområde 9. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:76
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -816,14 +824,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der aktiverer vinduesmenuen. Formatet ser ud som \"&lt;"
+"Denne tastaturgenvej aktiverer vinduesmenuen. Formatet ser ud som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:77
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -831,14 +839,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der lukker et vindue. Formatet ser ud som \"&lt;"
-"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
-"kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
-"Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne tastaturgenvej lukker et vindue. Formatet ser ud som \"&lt;Control&gt;a"
+"\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og "
+"tillader både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" "
+"og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng "
+"\"disabled\", vil der ikke være nogen tastaturgenvej til Denne handling."
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:78
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -847,14 +854,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der starter flytningstilstanden og begynder at flytte et "
+"Denne tastaturgenvej starter flytningstilstanden og begynder at flytte et "
 "vindue med tastaturet. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og "
 "små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
 "Hvis du sætter indstillingen til den specielle streng \"disabled\", vil der "
 "ikke være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:79
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -863,15 +870,15 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der starter størrelsesændringstilstanden og begynder at "
+"Denne tastaturgenvej starter størrelsesændringstilstanden og begynder at "
 "ændre størrelsen af et vindue med tastaturet. Formatet ser ud som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:80
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -880,14 +887,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skjuler alle almindelige vinduer og fokuserer "
+"Denne tastaturgenvej skjuler alle almindelige vinduer og fokuserer "
 "skrivebordsbaggrunden. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og "
 "små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
 "Hvis du sætter indstillingen til den specielle streng \"disabled\", vil der "
 "ikke være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -895,14 +902,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der minimerer et vindue. Formatet ser ud som \"&lt;"
+"Denne tastaturgenvej minimerer et vindue. Formatet ser ud som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:82
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -911,14 +918,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue et arbejdsområde ned. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue et arbejdsområde ned. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:83
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -927,14 +934,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue et arbejdsområde til venstre. "
+"Denne tastaturgenvej flytter et vindue et arbejdsområde til venstre. "
 "Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
 "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
 "indstillingen til den specielle streng \"disabled\", vil der ikke være nogen "
 "tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -943,14 +950,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue et arbejdsområde til højre. "
-"Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Denne tastaturgenvej flytter et vindue et arbejdsområde til højre. Formatet "
+"ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
 "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
 "indstillingen til den specielle streng \"disabled\", vil der ikke være nogen "
 "tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -958,14 +965,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue et arbejdsområde op. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue et arbejdsområde op. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -973,14 +980,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 1. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 1. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -988,14 +995,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 10. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 10. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1003,14 +1010,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 11. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 11. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1018,14 +1025,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 12. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 12. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1033,14 +1040,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 2. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 2. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1048,14 +1055,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 3. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 3. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1063,14 +1070,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 4. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 4. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1078,14 +1085,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 5. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 5. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1093,14 +1100,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 6. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 6. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1108,14 +1115,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 7. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 7. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1123,14 +1130,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 8. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 8. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1138,14 +1145,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter et vindue til arbejdsområde 9. Formatet ser "
-"ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
-"er ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-"som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-"den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
-"til denne handling."
+"Denne tastaturgenvej flytter et vindue til arbejdsområde 9. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1154,14 +1161,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter fokus mellem paneler og skrivebordet med et "
+"Denne tastaturgenvej flytter fokus mellem paneler og skrivebordet med et "
 "vindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
 "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
 "du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
 "være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1170,14 +1177,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter fokus mellem paneler og skrivebordet uden et "
+"Denne tastaturgenvej flytter fokus mellem paneler og skrivebordet uden et "
 "vindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
 "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
 "du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
 "være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) The format looks like \"&lt;Control&gt;a\" "
@@ -1186,14 +1193,14 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter fokus mellem vinduer uden et vindue "
+"Denne tastaturgenvej flytter fokus mellem vinduer uden et vindue "
 "(traditionelt &lt;Alt&gt;Tab). Formatet ser ud som \"&lt;Control&gt;a\" "
 "eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader "
 "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
 "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng \"disabled"
 "\", vil der ikke være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) The format looks like \"&lt;Control&gt;a\" or "
@@ -1202,14 +1209,14 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der flytter fokus mellem vinduer med et vindue "
+"Denne tastaturgenvej flytter fokus mellem vinduer med et vindue "
 "(traditionelt &lt;Alt&gt;Tab). Formatet ser ud som \"&lt;Control&gt;a\" "
 "eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader "
 "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
 "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng \"disabled"
 "\", vil der ikke være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1217,14 +1224,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter mellem fuldskærmstilstand. Formatet ser ud "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
-"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
-"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"Denne tastaturgenvej skifter mellem fuldskærmstilstand. Formatet ser ud som "
+"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
+"Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1232,14 +1239,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter maksimeringstilstand. Formatet ser ud som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
+"Denne tastaturgenvej skifter maksimeringstilstand. Formatet ser ud som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-"denne handling."
+"Denne handling."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1247,14 +1254,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter mellem oprullet og nedrullet tilstand. "
-"Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Denne tastaturgenvej skifter mellem oprullet og nedrullet tilstand. Formatet "
+"ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
 "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
 "indstillingen til den specielle streng \"disabled\", vil der ikke være nogen "
 "tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1263,20 +1270,20 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter mellem om vindue er på alle arbejdsområder "
+"Denne tastaturgenvej skifter mellem om vindue er på alle arbejdsområder "
 "eller kun ét. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
 "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis "
 "du sætter indstillingen til den specielle streng \"disabled\", vil der ikke "
 "være nogen tastaturgenvej til denne handling."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Temaet bestemmer udseendet af vindueskanter, titellinjer osv."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1284,7 +1291,7 @@ msgstr ""
 "Ventetiden før et vindue hæves hvis auto_raise er sat til sand. Tiden "
 "angives i tusinddele af et sekund."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1298,7 +1305,7 @@ msgstr ""
 "og \"mouse\" betyder at vinduer fokuseres når musen føres ind i vinduet og "
 "mister fokus igen når musen forlader vinduet."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:109
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1309,7 +1316,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Den tastaturgenvej der skifter mellem om vindue er over eller under andre "
+"Denne tastaturgenvej skifter mellem om vindue er over eller under andre "
 "vinduer. Hvis vinduet er dækket af andre vinduer, hæves det. Hvis vinduet "
 "allerede er fuldt synligt, sænkes det under alle andre vinduer. Formatet ser "
 "ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren "
@@ -1318,31 +1325,61 @@ msgstr ""
 "den specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej "
 "til denne handling."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:110
+msgid ""
+"This keybinding lowers a window below other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Denne tastaturgenvej placerer et vindue under andre vinduer. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
+
+#: src/metacity.schemas.in.h:111
+msgid ""
+"This keybinding raises the window above other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Denne tastaturgenvej placerer et vindue over andre vinduer. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
+
+#: src/metacity.schemas.in.h:112
 msgid "Toggle fullscreen mode"
 msgstr "Skift fuldskærmstilstand"
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:113
 msgid "Toggle maximization state"
 msgstr "Skift maksimeringstilstand"
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:114
 msgid "Toggle shaded state"
 msgstr "Skift oprullethed"
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:115
 msgid "Toggle whether the window is on all workspaces"
 msgstr "Skift mellem om vinduet er på alle arbejdsområder"
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:116
 msgid "Use standard system font in window titles"
 msgstr "Benyt standardskrifttypen i vinduestitler"
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:117
 msgid "Window focus mode"
 msgstr "Vinduesfokuseringstilstand"
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:118
 msgid "Window title font"
 msgstr "Skrifttype til vinduestitel"
 
@@ -1390,7 +1427,7 @@ msgstr "%d lagret i GConf-nøgle %s er uden for intervallet 0 til %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: src/prefs.c:999
+#: src/prefs.c:1001
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2361,7 +2398,7 @@ msgstr "Åbnede logfilen %s\n"
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
-#: src/workspace.c:51
+#: src/workspace.c:50
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
@@ -2399,9 +2436,9 @@ msgstr ""
 #~ "you set the option to the special string \"disabled\", then there will be "
 #~ "no keybinding for this action."
 #~ msgstr ""
-#~ "Den tastaturgenvej der flytter fokus tilbage til det vindue der sidst "
-#~ "havde fokus. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store "
-#~ "og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;"
-#~ "\". Hvis du sætter indstillingen til den specielle streng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
+#~ "Denne tastaturgenvej flytter fokus tilbage til det vindue der sidst havde "
+#~ "fokus. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både store og små "
+#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
+#~ "Hvis du sætter indstillingen til den specielle streng \"disabled\", vil "
+#~ "der ikke være nogen tastaturgenvej til denne handling."
