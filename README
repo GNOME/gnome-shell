@@ -136,6 +136,14 @@ METACITY FEATURES
  - considers the panel when placing windows and maximizing
    them.
 
+ - handles the window manager selection from the ICCCM. Will exit if
+   another WM claims it, and can claim it from another WM if you pass
+   the --replace argument. So if you're running another
+   ICCCM-compliant WM, you can run "metacity --replace" to replace it
+   with Metacity.
+
+ - does basic colormap handling
+
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
@@ -143,12 +151,8 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    to navigate graphically; this does NOT include GNOME 1.x, 
    but should include GNOME 2 and KDE 3.
 
- - I haven't even read the ICCCM section about colormaps. So if you 
-   have an 8-bit display you are probably screwed.
-
- - Metacity doesn't properly claim the window manager selection
-   as described in the ICCCM. But then, most other window managers
-   don't handle this correctly either.
+ - doesn't do WM_COLORMAPS from the ICCCM, may matter on some really
+   old obscure hardware with some really obscure apps.
 
  - There are probably other ICCCM-compliance issues.
 

@@ -1,3 +1,10 @@
+2002-07-10  Havoc Pennington  <hp@pobox.com>
+
+	* README: couple of updates
+
+	* src/main.c (usage): add --replace to usage, reported by Matthias
+	Clasen
+
 2002-07-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity.schemas.in: fix short description for 

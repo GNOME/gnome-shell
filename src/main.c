@@ -60,7 +60,7 @@ log_handler (const gchar   *log_domain,
 static void
 usage (void)
 {
-  g_print ("metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY]\n");
+  g_print (_("metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace]\n"));
   exit (1);
 }
 
