@@ -1,20 +1,20 @@
 # French translation of metacity.
-# Copyright (C) 2002-2004 Free Software Foundation, Inc.
+# Copyright (C) 2002-2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 # 
 # maintainer: Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
-# Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2002-2004.
+# Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2002-2005.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # Guy CLOTILDE <guy.clotilde@wanadoo.fr>, 2002.
 # Baptiste Mille-Mathias <baptiste@mille-mathias.info>, 2004.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.8.7\n"
+"Project-Id-Version: metacity 2.9.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-11-14 10:12+0100\n"
-"Last-Translator: Baptiste Mille-Mathias <baptiste@mille-mathias.info>\n"
+"POT-Creation-Date: 2005-02-21 23:56+0100\n"
+"PO-Revision-Date: 2005-02-21 23:27+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
@@ -133,9 +133,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Aucune commande %d n'a été définie.\n"
+msgstr "Aucune commande de terminal n'a été définie.\n"
 
 #: src/main.c:69
 msgid ""
@@ -218,11 +217,11 @@ msgstr "_Fermer"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Placer sur _tous les espaces de travail"
+msgid "_Always on Visible Workspace"
+msgstr "_Toujours sur l'espace de travail visible"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+msgid "_Only on This Workspace"
 msgstr "Seulement sur _cet espace de travail"
 
 #: src/menu.c:68
@@ -241,7 +240,7 @@ msgstr "Déplacer vers l'espace de travail du _dessus"
 msgid "Move to Workspace _Down"
 msgstr "Déplacer vers l'espace de travail du _dessous"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
@@ -382,7 +381,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -458,7 +457,7 @@ msgid ""
 "for example."
 msgstr ""
 "Cliquer sur une fenêtre en maintenant enfoncée cette touche de modification "
-"déplacera la fenêtre (clique gauche), redimenssionnera la fenêtre (clique au "
+"déplacera la fenêtre (clique gauche), redimensionnera la fenêtre (clique au "
 "milieu), ou affichera le menu de la fenêtre (clique droit). Le modificateur "
 "est défini comme « &lt;Alt&gt; » ou « &lt;Super&gt; » par exemple."
 
@@ -527,14 +526,17 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Si vrai, metacity donnera à l'utilisateur moins de retour d'informations et "
 "moins de sensations de « manipulation directe », en utilisant des cadres en "
 "fil de fer, en évitant les animations, ou d'autres moyens. C'est une "
 "réduction significative de convivialité pour beaucoup d'utilisateurs, mais "
-"peut permettre aux vielles applications et aux serveurs de terminaux de "
-"fonctionner alors qu'ils seraient impraticables."
+"peut permettre aux vieilles applications et aux serveurs de terminaux de "
+"fonctionner alors qu'ils seraient impraticables. Par ailleurs, la "
+"fonctionnalité fil de fer est désactivé lorsque l'accessibilité est activé "
+"afin d'éviter d'étranges disfonctionnements du bureau."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -729,7 +731,7 @@ msgstr "Exécuter la commande définie"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Lancer un terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1263,7 +1265,6 @@ msgstr ""
 "combinaison de touches pour cette action."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1272,12 +1273,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "La combinaison de touches utilisée pour maximiser une fenêtre. Le format "
-"ressemble à ceci : « &lt;Contrôle&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 "
-"» (la touche Shift est parfois notée Maj sur certains claviers). L'analyseur "
-"est assez souple et permet d'utiliser des majuscules ou des minuscules et "
-"des abréviations telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous "
-"définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
-"aura pas de combinaison de touches pour cette action."
+"ressemble à ceci : « &lt;Contrôle&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
+"L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
+"minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
+"Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
+"« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
+"cette action."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1828,7 +1829,6 @@ msgstr ""
 "aucune combinaison de touches associée à cette action."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1836,12 +1836,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La combinaison de touches utilisée pour afficher le menu principal du "
-"tableau de bord. Le format ressemble à « <Control>a » ou « <Shift><Alt>F1 ». "
-"L'analyseur est libéral et est insensible à la casse, de même  aux "
-"abréviations tels que « <Ctl> » et « <Ctrl> ». Si vous définissez l'option à "
-"la chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
-"touches associée à cette action."
+"La combinaison de touches qui invoque un terminal. Le format ressemble à "
+"« &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est "
+"libéral et est insensible à la casse, de même aux abréviations tels que "
+"« &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option à la chaîne "
+"spéciale « disabled », alors il n'y aura aucune combinaison de touches "
+"associée à cette action."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -2081,17 +2081,17 @@ msgstr "Mode de focus des fenêtres"
 msgid "Window title font"
 msgstr "Police de titre des fenêtres"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clef GConf « %s » est définie sur un type non valide\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2100,19 +2100,19 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour le bouton de souris\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clef GConf « %s » est définie sur une valeur non valide\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Impossible d'analyser la description de police « %s » depuis la clef GConf %"
 "s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2121,7 +2121,7 @@ msgstr ""
 "%d enregistré dans la clef GConf %s n'est pas un nombre d'espaces de travail "
 "raisonnable, le maximum actuel est %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2129,18 +2129,18 @@ msgstr ""
 "Solutions de rechange désactivées pour les applications endommagées. "
 "Certaines applications peuvent ne pas se comporter correctement.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d enregistré dans la clef GConf %s est n'est pas comprise entre 0 et %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erreur de définition du nombre d'espaces de travail sur %d : %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2149,7 +2149,7 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour la combinaison de touches « %s »\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -3332,7 +3332,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5051
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3348,7 +3348,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5722
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3387,24 +3387,3 @@ msgid ""
 msgstr ""
 "La propriété %s de la fenêtre 0x%lx contient un code UTF-8 non valide pour "
 "l'élément %d dans la liste\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Sélectionne la manière de donner le focus aux fenêtres"
-
-#~ msgid "Window Focus"
-#~ msgstr "Focus de fenêtre"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Cliquer pour activer"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Comportement de focus :"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Préférences de focus de fenêtre"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Pointer pour activer"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Mettre la fenêtre au premier plan en cas de focus"
