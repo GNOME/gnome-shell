@@ -158,15 +158,18 @@ utf8_fputs (const char *str,
             FILE       *f)
 {
   char *l;
-
+  int retval;
+  
   l = g_locale_from_utf8 (str, -1, NULL, NULL, NULL);
 
   if (l == NULL)
-    fputs (str, f); /* just print it anyway, better than nothing */
+    retval = fputs (str, f); /* just print it anyway, better than nothing */
   else
-    fputs (l, f);
+    retval = fputs (l, f);
 
   g_free (l);
+
+  return retval;
 }
 
 void
@@ -262,6 +265,8 @@ topic_name (MetaDebugTopic topic)
       return "STARTUP";
     case META_DEBUG_PREFS:
       return "PREFS";
+    case META_DEBUG_GROUPS:
+      return "GROUPS";
     }
 
   return "Window manager";

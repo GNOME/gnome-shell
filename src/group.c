@@ -21,23 +21,21 @@
 
 #include <config.h>
 #include "util.h"
-#include "group.h"
+#include "group-private.h"
+#include "group-props.h"
 #include "window.h"
-
-struct _MetaGroup
-{
-  MetaDisplay *display;
-  GSList *windows;
-  Window group_leader;
-  int refcount;
-};
 
 static MetaGroup*
 meta_group_new (MetaDisplay *display,
                 Window       group_leader)
 {
   MetaGroup *group;
-
+#define N_INITIAL_PROPS 3
+  Atom initial_props[N_INITIAL_PROPS];
+  int i;
+  
+  g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
+  
   group = g_new0 (MetaGroup, 1);
 
   group->display = display;
@@ -54,6 +52,19 @@ meta_group_new (MetaDisplay *display,
   g_hash_table_insert (display->groups_by_leader,
                        &group->group_leader,
                        group);
+
+  /* Fill these in the order we want them to be gotten */
+  i = 0;
+  initial_props[i++] = display->atom_wm_client_machine;
+  initial_props[i++] = display->atom_net_wm_pid;
+  initial_props[i++] = display->atom_net_startup_id;
+  g_assert (N_INITIAL_PROPS == i);
+  
+  meta_group_reload_properties (group, initial_props, N_INITIAL_PROPS);
+
+  meta_topic (META_DEBUG_GROUPS,
+              "Created new group with leader 0x%lx\n",
+              group->group_leader);
   
   return group;
 }
@@ -66,6 +77,10 @@ meta_group_unref (MetaGroup *group)
   group->refcount -= 1;
   if (group->refcount == 0)
     {
+      meta_topic (META_DEBUG_GROUPS,
+                  "Destroying group with leader 0x%lx\n",
+                  group->group_leader);      
+      
       g_assert (group->display->groups_by_leader != NULL);
       
       g_hash_table_remove (group->display->groups_by_leader,
@@ -78,6 +93,9 @@ meta_group_unref (MetaGroup *group)
           group->display->groups_by_leader = NULL;
         }
 
+      g_free (group->wm_client_machine);
+      g_free (group->startup_id);
+      
       g_free (group);
     }
 }
@@ -88,16 +106,23 @@ meta_window_get_group (MetaWindow *window)
   if (window->unmanaging)
     return NULL;
   
-  if (window->cached_group == NULL &&
-      window->xgroup_leader != None) /* some windows have no group */
+  if (window->cached_group == NULL)
     {
       MetaGroup *group;
 
+      /* use window->xwindow if no window->xgroup_leader */
+      
       group = NULL;
       
       if (window->display->groups_by_leader)
-        group = g_hash_table_lookup (window->display->groups_by_leader,
-                                     &window->xgroup_leader);
+        {
+          if (window->xgroup_leader != None)
+            group = g_hash_table_lookup (window->display->groups_by_leader,
+                                         &window->xgroup_leader);
+          else
+            group = g_hash_table_lookup (window->display->groups_by_leader,
+                                         &window->xwindow);
+        }
       
       if (group != NULL)
         {
@@ -106,30 +131,55 @@ meta_window_get_group (MetaWindow *window)
         }
       else
         {
-          group = meta_group_new (window->display,
-                                  window->xgroup_leader);
-
+          if (window->xgroup_leader != None)
+            group = meta_group_new (window->display,
+                                    window->xgroup_leader);
+          else
+            group = meta_group_new (window->display,
+                                    window->xwindow);
+          
           window->cached_group = group;
         }
 
       window->cached_group->windows = g_slist_prepend (window->cached_group->windows,
                                                        window);
+
+      meta_topic (META_DEBUG_GROUPS,
+                  "Adding %s to group with leader 0x%lx\n",
+                  window->desc, group->group_leader);
     }
 
   return window->cached_group;
 }
 
-void
-meta_window_shutdown_group (MetaWindow *window)
+static void
+remove_window_from_group (MetaWindow *window)
 {
   if (window->cached_group != NULL)
     {
+      meta_topic (META_DEBUG_GROUPS,
+                  "Removing %s from group with leader 0x%lx\n",
+                  window->desc, window->cached_group->group_leader);
+      
       window->cached_group->windows =
         g_slist_remove (window->cached_group->windows,
                         window);
       meta_group_unref (window->cached_group);
       window->cached_group = NULL;
     }
+}
+
+void
+meta_window_group_leader_changed (MetaWindow *window)
+{
+  remove_window_from_group (window);
+  meta_window_get_group (window);
+}
+
+void
+meta_window_shutdown_group (MetaWindow *window)
+{
+  remove_window_from_group (window);
 }
 
 MetaGroup*
@@ -189,4 +239,20 @@ meta_group_update_layers (MetaGroup *group)
     }
 
   g_slist_free (frozen_stacks);
+}
+
+const char*
+meta_group_get_startup_id (MetaGroup *group)
+{
+  return group->startup_id;
+}
+
+gboolean
+meta_group_property_notify (MetaGroup  *group,
+                            XEvent     *event)
+{
+  meta_group_reload_property (group,
+                              event->xproperty.atom);
+
+  return TRUE;
 }

@@ -152,5 +152,8 @@ void meta_screen_resize (MetaScreen *screen,
 void     meta_screen_show_desktop   (MetaScreen *screen);
 void     meta_screen_unshow_desktop (MetaScreen *screen);
 
+void     meta_screen_apply_startup_properties (MetaScreen *screen,
+                                               MetaWindow *window);
+
 
 #endif

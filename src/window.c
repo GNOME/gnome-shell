@@ -157,7 +157,7 @@ meta_window_new (MetaDisplay *display,
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
-#define N_INITIAL_PROPS 8
+#define N_INITIAL_PROPS 9
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   
@@ -401,7 +401,8 @@ meta_window_new (MetaDisplay *display,
   window->role = NULL;
   window->sm_client_id = NULL;
   window->wm_client_machine = NULL;
-
+  window->startup_id = NULL;
+  
   window->net_wm_pid = -1;
   
   window->xtransient_for = None;
@@ -439,6 +440,7 @@ meta_window_new (MetaDisplay *display,
   initial_props[i++] = XA_WM_ICON_NAME;
   initial_props[i++] = display->atom_net_wm_desktop;
   initial_props[i++] = display->atom_win_workspace;
+  initial_props[i++] = display->atom_net_startup_id;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
@@ -477,6 +479,11 @@ meta_window_new (MetaDisplay *display,
        */
       window->placed = TRUE;
     }
+
+  /* Apply any window attributes such as initial workspace
+   * based on startup notification
+   */
+  meta_screen_apply_startup_properties (window->screen, window);
   
   /* FIXME we have a tendency to set this then immediately
    * change it again.
@@ -972,6 +979,7 @@ meta_window_free (MetaWindow  *window)
   
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
+  g_free (window->startup_id);
   g_free (window->role);
   g_free (window->res_class);
   g_free (window->res_name);
@@ -2881,6 +2889,22 @@ meta_window_get_outer_rect (MetaWindow    *window,
     *rect = window->rect;
 }
 
+const char*
+meta_window_get_startup_id (MetaWindow *window)
+{
+  if (window->startup_id == NULL)
+    {
+      MetaGroup *group;
+
+      group = meta_window_get_group (window);
+
+      if (group != NULL)
+        return meta_group_get_startup_id (group);
+    }
+
+  return window->startup_id;
+}
+
 void
 meta_window_focus (MetaWindow  *window,
                    Time         timestamp)
@@ -3873,6 +3897,11 @@ static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)
 {
+  /* FIXME once we move entirely to the window-props.h framework, we
+   * can just call reload on the property in the event and get rid of
+   * this if-else chain.
+   */
+  
   if (event->atom == XA_WM_NAME)
     {
       meta_verbose ("Property notify on %s for WM_NAME\n", window->desc);
@@ -4017,6 +4046,13 @@ process_property_notify (MetaWindow     *window,
     {
       meta_verbose ("Property notify on %s for _WIN_HINTS\n", window->desc);
       update_struts (window);
+    }
+  else if (event->atom == window->display->atom_net_startup_id)
+    {
+      meta_verbose ("Property notify on %s for _NET_STARTUP_ID\n", window->desc);
+      
+      meta_window_reload_property (window,
+                                   window->display->atom_net_startup_id);
     }
   
   return TRUE;
@@ -4400,16 +4436,10 @@ update_wm_hints (MetaWindow *window)
 
   if (window->xgroup_leader != old_group_leader)
     {
-      if (old_group_leader != None)
-        {
-          meta_warning ("Window %s changed its group leader, not handled right now.\n",
-                        window->desc);
-          /* ignore the change */
-          window->xgroup_leader = old_group_leader;
-        }
-
-      /* ensure this window is listed in the group for this group leader */
-      meta_window_get_group (window);
+      meta_verbose ("Window %s changed its group leader to 0x%lx\n",
+                    window->desc, window->xgroup_leader);
+      
+      meta_window_group_leader_changed (window);
     }
 }
 
@@ -4865,7 +4895,7 @@ update_net_wm_type (MetaWindow *window)
           atoms[i] == window->display->atom_net_wm_window_type_dialog ||
           atoms[i] == window->display->atom_net_wm_window_type_normal ||
           atoms[i] == window->display->atom_net_wm_window_type_utility ||
-          atoms[i] == window->display->atom_net_wm_window_type_splashscreen)
+          atoms[i] == window->display->atom_net_wm_window_type_splash)
         {
           window->type_atom = atoms[i];
           break;
@@ -5152,7 +5182,7 @@ recalc_window_type (MetaWindow *window)
         window->type = META_WINDOW_NORMAL;
       else if (window->type_atom  == window->display->atom_net_wm_window_type_utility)
         window->type = META_WINDOW_UTILITY;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_splashscreen)
+      else if (window->type_atom  == window->display->atom_net_wm_window_type_splash)
         window->type = META_WINDOW_SPLASHSCREEN;
       else
         meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n",
@@ -6321,9 +6351,9 @@ gboolean
 meta_window_same_application (MetaWindow *window,
                               MetaWindow *other_window)
 {
-  return (window->xgroup_leader != None &&
-          other_window->xgroup_leader != None &&
-          window->xgroup_leader == other_window->xgroup_leader);
+  return
+    meta_window_get_group (window) ==
+    meta_window_get_group (other_window);
 }
 
 void

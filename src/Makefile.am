@@ -35,6 +35,9 @@ metacity_SOURCES= 				\
 	gradient.h				\
 	group.c					\
 	group.h					\
+	group-private.h				\
+	group-props.c				\
+	group-props.h				\
 	iconcache.c				\
 	iconcache.h				\
 	inlinepixbufs.h				\

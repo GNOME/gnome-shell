@@ -26,6 +26,7 @@
 #include "screen.h"
 #include "window.h"
 #include "window-props.h"
+#include "group-props.h"
 #include "frame.h"
 #include "errors.h"
 #include "keybindings.h"
@@ -225,7 +226,7 @@ meta_display_open (const char *name)
     "_METACITY_SET_KEYBINDINGS_MESSAGE",
     "_NET_WM_STATE_HIDDEN",
     "_NET_WM_WINDOW_TYPE_UTILITY",
-    "_NET_WM_WINDOW_TYPE_SPLASHSCREEN",
+    "_NET_WM_WINDOW_TYPE_SPLASH",
     "_NET_WM_STATE_FULLSCREEN",
     "_NET_WM_PING",
     "_NET_WM_PID",
@@ -250,7 +251,8 @@ meta_display_open (const char *name)
     "_NET_WM_ACTION_CHANGE_DESKTOP",
     "_NET_WM_ACTION_CLOSE",
     "_NET_WM_STATE_ABOVE",
-    "_NET_WM_STATE_BELOW"
+    "_NET_WM_STATE_BELOW",
+    "_NET_STARTUP_ID"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -358,7 +360,7 @@ meta_display_open (const char *name)
   display->atom_metacity_set_keybindings_message = atoms[48];
   display->atom_net_wm_state_hidden = atoms[49];
   display->atom_net_wm_window_type_utility = atoms[50];
-  display->atom_net_wm_window_type_splashscreen = atoms[51];
+  display->atom_net_wm_window_type_splash = atoms[51];
   display->atom_net_wm_state_fullscreen = atoms[52];
   display->atom_net_wm_ping = atoms[53];
   display->atom_net_wm_pid = atoms[54];
@@ -384,9 +386,12 @@ meta_display_open (const char *name)
   display->atom_net_wm_action_close = atoms[74];
   display->atom_net_wm_state_above = atoms[75];
   display->atom_net_wm_state_below = atoms[76];
-
+  display->atom_net_startup_id = atoms[77];
+  
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
+  display->group_prop_hooks = NULL;
+  meta_display_init_group_prop_hooks (display);
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -669,6 +674,7 @@ meta_display_close (MetaDisplay *display)
   XFlush (display->xdisplay);
 
   meta_display_free_window_prop_hooks (display);
+  meta_display_free_group_prop_hooks (display);
   
 #ifndef USE_GDK_DISPLAY
   meta_event_queue_free (display->events);
@@ -1525,25 +1531,34 @@ event_callback (XEvent   *event,
     case CirculateRequest:
       break;
     case PropertyNotify:
-      if (window && !frame_was_receiver)
-        meta_window_property_notify (window, event);
-      else
-        {
-          MetaScreen *screen;
+      {
+        MetaGroup *group;
+        MetaScreen *screen;
+        
+        if (window && !frame_was_receiver)
+          meta_window_property_notify (window, event);
 
+        group = meta_display_lookup_group (display,
+                                           event->xproperty.window);
+        if (group != NULL)
+          meta_group_property_notify (group, event);
+        
+        screen = NULL;
+        if (window == NULL &&
+            group == NULL) /* window/group != NULL means it wasn't a root window */
           screen = meta_display_screen_for_root (display,
                                                  event->xproperty.window);
-
-          if (screen)
-            {
-              if (event->xproperty.atom ==
-                  display->atom_net_desktop_layout)
-                meta_screen_update_workspace_layout (screen);
-              else if (event->xproperty.atom ==
-                       display->atom_net_desktop_names)
-                meta_screen_update_workspace_names (screen);
-            }
-        }
+            
+        if (screen != NULL)
+          {
+            if (event->xproperty.atom ==
+                display->atom_net_desktop_layout)
+              meta_screen_update_workspace_layout (screen);
+            else if (event->xproperty.atom ==
+                     display->atom_net_desktop_names)
+              meta_screen_update_workspace_names (screen);
+          }
+      }
       break;
     case SelectionClear:
       /* do this here instead of at end of function

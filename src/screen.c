@@ -90,7 +90,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 44
+#define N_SUPPORTED 45
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -119,7 +119,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[22] = screen->display->atom_net_wm_moveresize;
   atoms[23] = screen->display->atom_net_wm_state_hidden;
   atoms[24] = screen->display->atom_net_wm_window_type_utility;
-  atoms[25] = screen->display->atom_net_wm_window_type_splashscreen;
+  atoms[25] = screen->display->atom_net_wm_window_type_splash;
   atoms[26] = screen->display->atom_net_wm_state_fullscreen;
   atoms[27] = screen->display->atom_net_wm_ping;
   atoms[28] = screen->display->atom_net_active_window;
@@ -138,6 +138,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[41] = screen->display->atom_net_wm_action_close;
   atoms[42] = screen->display->atom_net_wm_state_above;
   atoms[43] = screen->display->atom_net_wm_state_below;
+  atoms[44] = screen->display->atom_net_startup_id;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -1800,7 +1801,12 @@ typedef struct
   GTimeVal now;
 } CollectTimedOutData;
 
-#define STARTUP_TIMEOUT 5000
+/* This should be fairly long, as it should never be required unless
+ * apps or .desktop files are buggy, and it's confusing if
+ * OpenOffice or whatever seems to stop launching - people
+ * might decide they need to launch it again.
+ */
+#define STARTUP_TIMEOUT 15000
 
 static void
 collect_timed_out_foreach (void *element,
@@ -1848,7 +1854,7 @@ startup_sequence_timeout (void *data)
                   "Timed out sequence %s\n",
                   sn_startup_sequence_get_id (sequence));
       
-      remove_sequence (screen, sequence);
+      sn_startup_sequence_complete (sequence);
       
       tmp = tmp->next;
     }
@@ -1913,3 +1919,68 @@ meta_screen_sn_event (SnMonitorEvent *event,
     }
 }
 #endif
+
+void
+meta_screen_apply_startup_properties (MetaScreen *screen,
+                                      MetaWindow *window)
+{
+#ifdef HAVE_STARTUP_NOTIFICATION
+  const char *startup_id;
+  GSList *tmp;
+  SnStartupSequence *sequence;
+  
+  startup_id = meta_window_get_startup_id (window);
+  if (startup_id == NULL)
+    return;
+
+  sequence = NULL;
+  tmp = screen->startup_sequences;
+  while (tmp != NULL)
+    {
+      const char *id;
+
+      id = sn_startup_sequence_get_id (tmp->data);
+
+      if (strcmp (id, startup_id) == 0)
+        {
+          sequence = tmp->data;
+          break;
+        }
+
+      tmp = tmp->next;
+    }
+
+  if (sequence != NULL)
+    {
+      int space;
+          
+      meta_topic (META_DEBUG_STARTUP,
+                  "Found startup sequence for window %s ID \"%s\"\n",
+                  window->desc, startup_id);
+
+      if (!window->initial_workspace_set)
+        {
+          space = sn_startup_sequence_get_workspace (sequence);
+          if (space >= 0)
+            {
+              meta_topic (META_DEBUG_STARTUP,
+                          "Setting initial window workspace to %d based on startup info\n",
+                          space);
+              
+              window->initial_workspace_set = TRUE;
+              window->initial_workspace = space;
+            }
+        }
+
+      return;
+    }
+  else
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "Did not find startup sequence for window %s ID \"%s\"\n",
+                  window->desc, startup_id);
+    }
+  
+#endif /* HAVE_STARTUP_NOTIFICATION */
+}
+

@@ -97,10 +97,12 @@ init_prop_value (MetaDisplay   *display,
                  MetaPropValue *value)
 {
   MetaWindowPropHooks *hooks;  
+
+  value->type = META_PROP_VALUE_INVALID;
+  value->atom = None;
   
   hooks = find_hooks (display, property);
-  g_assert (hooks != NULL);
-  if (hooks->init_func != NULL)
+  if (hooks && hooks->init_func != NULL)
     (* hooks->init_func) (display, property, value);
 }
 
@@ -111,8 +113,7 @@ reload_prop_value (MetaWindow    *window,
   MetaWindowPropHooks *hooks;  
   
   hooks = find_hooks (window->display, value->atom);
-  g_assert (hooks != NULL);
-  if (hooks->reload_func != NULL)
+  if (hooks && hooks->reload_func != NULL)
     (* hooks->reload_func) (window, value);
 }
 
@@ -385,7 +386,33 @@ reload_win_workspace (MetaWindow    *window,
     }
 }
 
-#define N_HOOKS 22
+
+static void
+init_net_startup_id (MetaDisplay   *display,
+                  Atom           property,
+                  MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_UTF8;
+  value->atom = display->atom_net_startup_id;
+}
+
+static void
+reload_net_startup_id (MetaWindow    *window,
+                       MetaPropValue *value)
+{
+  g_free (window->startup_id);
+  
+  if (value->type != META_PROP_VALUE_INVALID)
+    window->startup_id = g_strdup (value->v.str);
+  else
+    window->startup_id = NULL;
+  
+  meta_verbose ("New _NET_STARTUP_ID \"%s\" for %s\n",
+                window->startup_id ? window->startup_id : "unset",
+                window->desc);
+}
+
+#define N_HOOKS 23
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -508,6 +535,11 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = display->atom_win_hints;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
+  ++i;
+
+  hooks[i].property = display->atom_net_startup_id;
+  hooks[i].init_func = init_net_startup_id;
+  hooks[i].reload_func = reload_net_startup_id;
   ++i;
   
   if (i != N_HOOKS)

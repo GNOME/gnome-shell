@@ -96,7 +96,7 @@ PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_PROPS, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libglade-2.0)
 
-STARTUP_NOTIFICATION_VERSION=0.2
+STARTUP_NOTIFICATION_VERSION=0.4
 if $PKG_CONFIG --atleast-version $STARTUP_NOTIFICATION_VERSION libstartup-notification-1.0; then
   echo "Building with libstartup-notification"
   PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9 libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION)

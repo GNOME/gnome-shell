@@ -1,3 +1,55 @@
+2002-11-30  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (STARTUP_TIMEOUT): lengthen to 15 seconds
+
+	* src/util.c (utf8_fputs): hmm, return a value
+
+	* src/screen.c (meta_screen_apply_startup_properties): new
+	function to apply initial workspace based on startup sequence.
+
+	* src/window.c (meta_window_new): load _NET_STARTUP_ID
+	(meta_window_get_startup_id): new function
+
+	* src/window-props.c (meta_display_init_window_prop_hooks): add
+	hooks for _NET_STARTUP_ID
+
+	* src/display.c (event_callback): send property events to 
+	groups.
+
+	* src/xprops.c (meta_prop_get_values): make a type of INVALID 
+	mean to ignore that property (don't fetch its value).
+
+	* src/group.c (meta_group_property_notify): new function
+
+	* src/screen.c (set_supported_hint): support _NET_STARTUP_ID
+
+	* src/display.c (meta_display_open): add _NET_STARTUP_ID to atoms
+	we initialize
+
+	* src/group-private.h: private header shared between
+	group-props.c, group.c
+
+	* src/group-props.h, src/group-props.c: new files to contain 
+	functions for retrieving group properties
+
+	* src/window.c (meta_window_same_application): change this a bit
+	to work with new definition of group
+
+	* src/group.c (meta_window_get_group): always create a group for
+	every window, using the window's own ID as group leader if
+	required.
+
+	* src/window.c (update_wm_hints): handle changes to group leader
+
+	* src/group.c (meta_window_group_leader_changed): new function
+
+	* src/display.h (struct _MetaDisplay): _NET_WM_WINDOW_TYPE_SPLASH,
+	not SPLASHSCREEN. Reported by Gregory Merchan and Matthias Clasen.
+
+	* src/screen.c (startup_sequence_timeout): when timing out a
+	startup sequence, send a remove message, don't just time it out
+	locally.
+
 2002-11-26 Calum Benson  <calum.benson@sun.com>
 
 	* src/themes/Crux :

@@ -79,6 +79,7 @@ struct _MetaWindow
   char *role;
   char *sm_client_id;
   char *wm_client_machine;
+  char *startup_id;
 
   int net_wm_pid;
   
@@ -436,5 +437,7 @@ void meta_window_update_layer (MetaWindow *window);
 
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                         MetaRectangle *rect);
+
+const char* meta_window_get_startup_id (MetaWindow *window);
 
 #endif

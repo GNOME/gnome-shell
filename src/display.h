@@ -58,6 +58,7 @@ typedef struct _MetaWindow     MetaWindow;
 typedef struct _MetaWorkspace  MetaWorkspace;
 
 typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
+typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
 
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
@@ -133,7 +134,7 @@ struct _MetaDisplay
   Atom atom_metacity_set_keybindings_message;
   Atom atom_net_wm_state_hidden;
   Atom atom_net_wm_window_type_utility;
-  Atom atom_net_wm_window_type_splashscreen;
+  Atom atom_net_wm_window_type_splash;
   Atom atom_net_wm_ping;
   Atom atom_net_wm_pid;
   Atom atom_wm_client_machine;
@@ -159,6 +160,7 @@ struct _MetaDisplay
   Atom atom_net_wm_action_close;
   Atom atom_net_wm_state_above;
   Atom atom_net_wm_state_below;
+  Atom atom_net_startup_id;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -267,6 +269,9 @@ struct _MetaDisplay
 
   /* Managed by window-props.c */
   MetaWindowPropHooks *prop_hooks;
+
+  /* Managed by group-props.c */
+  MetaGroupPropHooks *group_prop_hooks;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   /* This is at the end in case someone doesn't include config.h before this file

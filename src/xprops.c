@@ -866,7 +866,9 @@ meta_prop_get_values (MetaDisplay   *display,
   
   tasks = g_new0 (AgGetPropertyTask*, n_values);
 
-  /* Start up tasks */
+  /* Start up tasks. The "values" array can have values
+   * with atom == None, which means to ignore that element.
+   */
   i = 0;
   while (i < n_values)
     {
@@ -875,7 +877,11 @@ meta_prop_get_values (MetaDisplay   *display,
           switch (values[i].type)
             {
             case META_PROP_VALUE_INVALID:
-              meta_bug ("META_PROP_VALUE_INVALID requested in %s\n", G_GNUC_FUNCTION);
+              /* This means we don't really want a value, e.g. got
+               * property notify on an atom we don't care about.
+               */
+              if (values[i].atom != None)
+                meta_bug ("META_PROP_VALUE_INVALID requested in %s\n", G_GNUC_FUNCTION);
               break;
             case META_PROP_VALUE_UTF8_LIST:
             case META_PROP_VALUE_UTF8:
@@ -911,10 +917,11 @@ meta_prop_get_values (MetaDisplay   *display,
               break;
             }
         }
-      
-      tasks[i] = get_task (display, xwindow,
-                           values[i].atom, values[i].required_type);
 
+      if (values[i].atom != None)
+        tasks[i] = get_task (display, xwindow,
+                             values[i].atom, values[i].required_type);
+      
       ++i;
     }  
   
@@ -932,8 +939,8 @@ meta_prop_get_values (MetaDisplay   *display,
       
       if (tasks[i] == NULL)
         {
-          /* task creation failed for this property
-           * (doesn't actually happen I guess)
+          /* Probably values[i].type was None, or ag_task_create()
+           * returned NULL.
            */
           values[i].type = META_PROP_VALUE_INVALID;
           goto next;
