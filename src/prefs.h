@@ -107,6 +107,8 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 #define META_KEYBINDING_WINDOW_MENU          "activate_window_menu"
 #define META_KEYBINDING_TOGGLE_FULLSCREEN    "toggle_fullscreen"
 #define META_KEYBINDING_TOGGLE_MAXIMIZE      "toggle_maximized"
+#define META_KEYBINDING_MAXIMIZE             "maximize"
+#define META_KEYBINDING_UNMAXIMIZE           "unmaximize"
 #define META_KEYBINDING_TOGGLE_SHADE         "toggle_shaded"
 #define META_KEYBINDING_MINIMIZE             "minimize"
 #define META_KEYBINDING_CLOSE                "close"

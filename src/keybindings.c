@@ -66,6 +66,14 @@ static void handle_toggle_maximize    (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_maximize           (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_unmaximize         (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_toggle_shade       (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -233,6 +241,8 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_WINDOW_MENU, handle_activate_menu, NULL },
   { META_KEYBINDING_TOGGLE_FULLSCREEN, handle_toggle_fullscreen, NULL },
   { META_KEYBINDING_TOGGLE_MAXIMIZE, handle_toggle_maximize, NULL },
+  { META_KEYBINDING_MAXIMIZE, handle_maximize, NULL },
+  { META_KEYBINDING_UNMAXIMIZE, handle_unmaximize, NULL },
   { META_KEYBINDING_TOGGLE_SHADE, handle_toggle_shade, NULL },
   { META_KEYBINDING_CLOSE, handle_close_window, NULL },
   { META_KEYBINDING_MINIMIZE, handle_minimize_window, NULL },
@@ -2442,6 +2452,32 @@ handle_toggle_maximize    (MetaDisplay    *display,
         meta_window_unmaximize (window);
       else if (window->has_maximize_func)
         meta_window_maximize (window);
+    }
+}
+
+static void
+handle_maximize           (MetaDisplay    *display,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      if (window->has_maximize_func)
+        meta_window_maximize (window);
+    }
+}
+
+static void
+handle_unmaximize         (MetaDisplay    *display,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      if (window->maximized)
+        meta_window_unmaximize (window);
     }
 }
 
