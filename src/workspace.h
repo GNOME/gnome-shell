@@ -40,9 +40,11 @@ struct _MetaWorkspace
   MetaScreen *screen;
   
   GList *windows;
+
+  MetaRectangle all_work_areas;
   
-  MetaRectangle work_area;
-  guint work_area_invalid : 1;
+  MetaRectangle *work_areas;
+  guint work_areas_invalid : 1;
 };
 
 MetaWorkspace* meta_workspace_new           (MetaScreen    *screen);
@@ -61,8 +63,16 @@ int            meta_workspace_index         (MetaWorkspace *workspace);
 GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
-void meta_workspace_get_work_area        (MetaWorkspace *workspace,
-                                          MetaRectangle *area);
+
+
+void meta_workspace_get_work_area_for_xinerama  (MetaWorkspace *workspace,
+                                                 int            which_xinerama,
+                                                 MetaRectangle *area);
+void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
+                                                 MetaRectangle *area);
+
+
+
 
 
 MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,

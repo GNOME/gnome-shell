@@ -413,10 +413,12 @@ void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 gboolean meta_window_visible_on_workspace (MetaWindow    *window,
                                            MetaWorkspace *workspace);
 
-/* Get minimum work area for all workspaces we're on */
-void meta_window_get_work_area (MetaWindow    *window,
-                                gboolean       for_current_xinerama,
-                                MetaRectangle *area);
+void meta_window_get_work_area_current_xinerama (MetaWindow    *window,
+                                                 MetaRectangle *area);
+void meta_window_get_work_area_for_xinerama     (MetaWindow    *window,
+                                                 int            which_xinerama,
+                                                 MetaRectangle *area);
+
 
 gboolean meta_window_same_application (MetaWindow *window,
                                        MetaWindow *other_window);

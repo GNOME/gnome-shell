@@ -5,6 +5,7 @@
  * Copyright (C) 2002, 2003 Red Hat Inc.
  * Some ICCCM manager selection code derived from fvwm2,
  * Copyright (C) 2001 Dominik Vogt, Matthias Clasen, and fvwm2 team
+ * Copyright (C) 2003 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -352,6 +353,20 @@ reload_xinerama_infos (MetaScreen *screen)
 
   g_assert (screen->n_xinerama_infos > 0);
   g_assert (screen->xinerama_infos != NULL);
+
+  {
+    GList *tmp;
+
+    tmp = screen->workspaces;
+    while (tmp != NULL)
+      {
+        MetaWorkspace *space = tmp->data;
+
+        meta_workspace_invalidate_work_area (space);
+        
+        tmp = tmp->next;
+      }
+  }
 }
 
 MetaScreen*
@@ -1283,18 +1298,15 @@ meta_screen_focus_default_window (MetaScreen *screen,
 }
 
 const MetaXineramaScreenInfo*
-meta_screen_get_xinerama_for_window (MetaScreen *screen,
-				     MetaWindow *window)
+meta_screen_get_xinerama_for_rect (MetaScreen    *screen,
+				   MetaRectangle *rect)
 {
   int i;
   int best_xinerama, xinerama_score;
-  MetaRectangle window_rect;
 
   if (screen->n_xinerama_infos == 1)
     return &screen->xinerama_infos[0];
-  
-  meta_window_get_outer_rect (window, &window_rect);
-  
+
   best_xinerama = 0;
   xinerama_score = 0;
 
@@ -1308,7 +1320,7 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
       screen_info.width = screen->xinerama_infos[i].width;
       screen_info.height = screen->xinerama_infos[i].height;
       
-      if (meta_rectangle_intersect (&screen_info, &window_rect, &dest))
+      if (meta_rectangle_intersect (&screen_info, rect, &dest))
         {
           if (dest.width * dest.height > xinerama_score)
             {
@@ -1316,7 +1328,7 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
               best_xinerama = i;
             }
         }
-
+      
       ++i;
     }
 
@@ -1324,11 +1336,43 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
 }
 
 const MetaXineramaScreenInfo*
+meta_screen_get_xinerama_for_window (MetaScreen *screen,
+				     MetaWindow *window)
+{
+  MetaRectangle window_rect;
+  
+  meta_window_get_outer_rect (window, &window_rect);
+
+  return meta_screen_get_xinerama_for_rect (screen, &window_rect);
+}
+
+gboolean
+meta_screen_window_intersects_xinerama (MetaScreen *screen,
+                                        MetaWindow *window,
+                                        int         which_xinerama)
+{
+  MetaRectangle window_rect;
+  MetaRectangle dest, screen_rect;
+  
+  meta_window_get_outer_rect (window, &window_rect);
+  
+  screen_rect.x = screen->xinerama_infos[which_xinerama].x_origin;
+  screen_rect.y = screen->xinerama_infos[which_xinerama].y_origin;
+  screen_rect.width = screen->xinerama_infos[which_xinerama].width;
+  screen_rect.height = screen->xinerama_infos[which_xinerama].height;
+  
+  if (meta_rectangle_intersect (&screen_rect, &window_rect, &dest))
+    return TRUE;
+
+  return FALSE;
+}
+
+const MetaXineramaScreenInfo*
 meta_screen_get_current_xinerama (MetaScreen *screen)
 {
   if (screen->n_xinerama_infos == 1)
     return &screen->xinerama_infos[0];
-
+  
   /* Sadly, we have to do it this way. Yuck.
    */
   
@@ -1357,9 +1401,11 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
       while (i < screen->n_xinerama_infos)
         {
           if ((root_x_return >= screen->xinerama_infos[i].x_origin &&
-               root_x_return < (screen->xinerama_infos[i].x_origin + screen->xinerama_infos[i].width) &&
+               root_x_return < (screen->xinerama_infos[i].x_origin + 
+                                screen->xinerama_infos[i].width) &&
                root_y_return >= screen->xinerama_infos[i].y_origin &&
-               root_y_return < (screen->xinerama_infos[i].y_origin + screen->xinerama_infos[i].height)))
+               root_y_return < (screen->xinerama_infos[i].y_origin + 
+                                screen->xinerama_infos[i].height)))
           {
             screen->last_xinerama_index = i;
             break;
@@ -1594,7 +1640,7 @@ set_work_area_hint (MetaScreen *screen)
 
       if (workspace->screen == screen)
         {
-          meta_workspace_get_work_area (workspace, &area);
+          meta_workspace_get_work_area_all_xineramas (workspace, &area);
           tmp[0] = area.x;
           tmp[1] = area.y;
           tmp[2] = area.width;

@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2002, 2003 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -191,9 +191,9 @@ window_is_fullscreen_size (MetaWindow *window)
        */
       MetaRectangle workarea;
       
-      meta_window_get_work_area (window, FALSE, &workarea);
+      meta_window_get_work_area_current_xinerama (window, &workarea);
       if (window->rect.x <= workarea.x &&
-          window->rect.y <= workarea.y) 
+          window->rect.y <= workarea.y)
         return TRUE;
     }
   
@@ -205,7 +205,7 @@ window_is_fullscreen_size (MetaWindow *window)
         {
           MetaRectangle workarea;
           
-          meta_window_get_work_area (window, TRUE, &workarea);
+          meta_window_get_work_area_current_xinerama (window, &workarea);
           if (window->rect.x <= workarea.x &&
               window->rect.y <= workarea.y) 
             return TRUE;

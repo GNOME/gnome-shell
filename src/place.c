@@ -2,6 +2,8 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2002, 2003 Red Hat, Inc.
+ * Copyright (C) 2003 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -120,13 +122,13 @@ find_next_cascade (MetaWindow *window,
    * cascade_x, cascade_y are the target position
    * of NW corner of window frame.
    */
-  
-  /* FIXME this is bogus because we get the current xinerama
-   * for the window based on its position, but we haven't
-   * placed it yet.
+
+  /* FIXME should use xinerama with mouse pointer
+   * (or better, xinerama where window was launched
+   * determined via startup notification)
    */
-  meta_window_get_work_area (window, TRUE, &work_area);
-  
+  meta_window_get_work_area_for_xinerama (window, 0, &work_area);
+
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
   
@@ -363,14 +365,36 @@ topmost_cmp (gconstpointer a, gconstpointer b)
     return 0;
 }
 
+static void
+center_tile_rect_in_area (MetaRectangle *rect,
+                          MetaRectangle *work_area)
+{
+  int fluff;
+
+  /* The point here is to tile a window such that "extra"
+   * space is equal on either side (i.e. so a full screen
+   * of windows tiled this way would center the windows
+   * as a group)
+   */
+  
+  fluff = (work_area->width % rect->width) / 2;
+  rect->x = work_area->x + fluff;
+  fluff = (work_area->height % rect->height) / 3;
+  rect->y = work_area->y + fluff;
+}
+
 static gboolean
-fit_rect_in_xinerama (MetaScreen    *screen,
+fit_rect_in_xinerama (MetaWindow    *window,
                       MetaRectangle *rect)
 {
   int i;
   int best_index;
   int best_overlap;
+  MetaScreen *screen;
+  MetaRectangle work_area;
   const MetaXineramaScreenInfo *xsi;
+
+  screen = window->screen;
   
   /* Find xinerama with best fit, then
    * shift rect to be entirely within it.
@@ -409,17 +433,17 @@ fit_rect_in_xinerama (MetaScreen    *screen,
   /* some overlap had to be better than -1 */
   g_assert (best_index >= 0);
 
-  xsi = &screen->xinerama_infos[best_index];
+  meta_window_get_work_area_for_xinerama (window, best_index, &work_area);
   
-  if (rect->x < xsi->x_origin)
-    rect->x = xsi->x_origin;
-  if (rect->y < xsi->y_origin)
-    rect->y = xsi->y_origin;
+  if ((rect->x < work_area.x) || (rect->y < work_area.y) ||
+      (rect->x >= work_area.x + work_area.width) ||
+      (rect->y >= work_area.y + work_area.height))
+    center_tile_rect_in_area (rect, &work_area);
 
-  /* Now return whether we are entirely within the xinerama screen */
-  return
-    ((rect->x + rect->width) < (xsi->x_origin + xsi->width)) &&
-    ((rect->y + rect->height) < (xsi->y_origin + xsi->height));
+  /* Now return whether we are entirely within the work area */
+  return 
+    ((rect->x + rect->width) < (work_area.x + work_area.width)) &&
+    ((rect->y + rect->height) < (work_area.y + work_area.height));
 }
 
 /* Find the leftmost, then topmost, empty area on the workspace
@@ -446,12 +470,12 @@ find_first_fit (MetaWindow *window,
    * the bottom of each existing window, and then to the right
    * of each existing window, aligned with the left/top of the
    * existing window in each of those cases.
-   */
-  
+   */  
   int retval;
   GList *sorted;
   GList *tmp;
   MetaRectangle rect;
+  MetaRectangle work_area;
   int i;
   
   retval = FALSE;
@@ -466,11 +490,16 @@ find_first_fit (MetaWindow *window,
       rect.height += fgeom->top_height + fgeom->bottom_height;
     }
 
-  /* Try origin of first Xinerama */
-  rect.x = window->screen->xinerama_infos[0].x_origin;
-  rect.y = window->screen->xinerama_infos[0].y_origin;
+  /* Try center-tiling on first xinerama */
+  /* FIXME should use xinerama with mouse pointer
+   * (or better, xinerama where window was launched
+   * determined via startup notification)
+   */
+  meta_window_get_work_area_for_xinerama (window, 0, &work_area);
 
-  if (fit_rect_in_xinerama (window->screen, &rect) &&
+  center_tile_rect_in_area (&rect, &work_area);
+
+  if (fit_rect_in_xinerama (window, &rect) &&
       !rectangle_overlaps_some_window (&rect, windows))
     {
       *new_x = rect.x;
@@ -497,13 +526,13 @@ find_first_fit (MetaWindow *window,
     {
       MetaWindow *w = tmp->data;
       MetaRectangle outer_rect;
-      
-      meta_window_get_outer_rect (w, &outer_rect);
 
+      meta_window_get_outer_rect (w, &outer_rect);
+      
       rect.x = outer_rect.x;
       rect.y = outer_rect.y + outer_rect.height;
       
-      if (fit_rect_in_xinerama (window->screen, &rect) &&
+      if (fit_rect_in_xinerama (window, &rect) &&
           !rectangle_overlaps_some_window (&rect, sorted))
         {
           *new_x = rect.x;
@@ -513,12 +542,12 @@ find_first_fit (MetaWindow *window,
               *new_x += fgeom->left_width;
               *new_y += fgeom->top_height;
             }
-
+          
           retval = TRUE;
-
+          
           goto out;
         }
-      
+
       tmp = tmp->next;
     }
 
@@ -531,13 +560,13 @@ find_first_fit (MetaWindow *window,
     {
       MetaWindow *w = tmp->data;
       MetaRectangle outer_rect;
-      
+     
       meta_window_get_outer_rect (w, &outer_rect);
-
+     
       rect.x = outer_rect.x + outer_rect.width;
       rect.y = outer_rect.y;
-      
-      if (fit_rect_in_xinerama (window->screen, &rect) &&
+     
+      if (fit_rect_in_xinerama (window, &rect) &&
           !rectangle_overlaps_some_window (&rect, sorted))
         {
           *new_x = rect.x;
@@ -547,23 +576,24 @@ find_first_fit (MetaWindow *window,
               *new_x += fgeom->left_width;
               *new_y += fgeom->top_height;
             }
-
+         
           retval = TRUE;
-
+         
           goto out;
-        }      
-      
-      tmp = tmp->next;
-    }  
+        }
 
-  /* Origin of each Xinerama screen which isn't the first */
+      tmp = tmp->next;
+    }
+
+  /* Try center-tile on each Xinerama screen which isn't the first */
   i = 1;
   while (i < window->screen->n_xinerama_infos)
     {
-      rect.x = window->screen->xinerama_infos[i].x_origin;
-      rect.y = window->screen->xinerama_infos[i].y_origin;
-      
-      if (fit_rect_in_xinerama (window->screen, &rect) &&
+      meta_window_get_work_area_for_xinerama (window, i, &work_area);
+
+      center_tile_rect_in_area (&rect, &work_area);
+
+      if (fit_rect_in_xinerama (window, &rect) &&
           !rectangle_overlaps_some_window (&rect, windows))
         {
           *new_x = rect.x;
@@ -578,6 +608,7 @@ find_first_fit (MetaWindow *window,
           
           goto out;
         }
+      
       ++i;
     }
   
@@ -602,17 +633,18 @@ constrain_placement (MetaWindow        *window,
   int nw_x, nw_y;
   int offscreen_w, offscreen_h;
   MetaRectangle outer_rect;
-  
+
   meta_window_get_outer_rect (window, &outer_rect);
-  
+
   /* FIXME this is bogus because we get the current xinerama
    * for the window based on its position, but we haven't
    * placed it yet.
    */
-  meta_window_get_work_area (window, TRUE, &work_area);
+  meta_window_get_work_area_current_xinerama (window, &work_area);
 
   nw_x = work_area.x;
   nw_y = work_area.y;
+
   if (window->frame)
     {
       nw_x += fgeom->left_width;
@@ -849,6 +881,7 @@ meta_window_place (MetaWindow        *window,
   constrain_placement (window, fgeom, x, y, &x, &y);
 
  done_no_constraints:
+
   *new_x = x;
   *new_y = y;
 }
@@ -946,13 +979,11 @@ get_vertical_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  meta_window_get_work_area (window, FALSE, &work_area);
+  meta_window_get_work_area_current_xinerama (window, &work_area);
 
   edges[i] = work_area.x;
   ++i;
-  edges[i] =
-    work_area.x +
-    work_area.width;
+  edges[i] = work_area.x + work_area.width;
   ++i;
   edges[i] = 0;
   ++i;
@@ -1019,13 +1050,11 @@ get_horizontal_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  meta_window_get_work_area (window, FALSE, &work_area);
+  meta_window_get_work_area_current_xinerama (window, &work_area);
   
   edges[i] = work_area.y;
   ++i;
-  edges[i] =
-    work_area.y +
-    work_area.height;
+  edges[i] = work_area.y + work_area.height;
   ++i;
   edges[i] = 0;
   ++i;

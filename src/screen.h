@@ -133,9 +133,17 @@ void          meta_screen_focus_mouse_window   (MetaScreen                 *scre
 void          meta_screen_focus_default_window (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
-const MetaXineramaScreenInfo* meta_screen_get_current_xinerama (MetaScreen *screen);
-const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen *screen,
-								   MetaWindow *window);
+
+const MetaXineramaScreenInfo* meta_screen_get_current_xinerama    (MetaScreen    *screen);
+const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_rect   (MetaScreen    *screen,
+                                                                   MetaRectangle *rect);
+const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen    *screen,
+                                                                   MetaWindow    *window);
+
+
+gboolean meta_screen_window_intersects_xinerama (MetaScreen *screen, 
+                                                 MetaWindow *window,
+                                                 int         which_xinerama);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);

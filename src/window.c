@@ -2,7 +2,8 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington, Anders Carlsson
- * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2002, 2003 Red Hat, Inc.
+ * Copyright (C) 2003 Rob Adams
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -668,9 +669,12 @@ meta_window_new (MetaDisplay *display,
     {
       MetaRectangle workarea;
       MetaRectangle outer;
-      
-      meta_window_get_work_area (window, TRUE, &workarea);      
 
+      if (!window->placed)
+        meta_warning ("Metacity issue: using position-based current xinerama prior to placement\n");
+
+      meta_window_get_work_area_current_xinerama (window, &workarea);      
+    
       meta_window_get_outer_rect (window, &outer);
       
       if (outer.width >= workarea.width &&
@@ -2181,7 +2185,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);  
-  
+
   {
     int oldx, oldy;
     meta_window_get_position (window, &oldx, &oldy);
@@ -2702,7 +2706,7 @@ meta_window_fill_horizontal (MetaWindow  *window)
   w = window->rect.width;
   h = window->rect.height;
   
-  meta_window_get_work_area (window, TRUE, &work_area);
+  meta_window_get_work_area_current_xinerama (window, &work_area);
   
   x = work_area.x;
   w = work_area.width;
@@ -2730,7 +2734,7 @@ meta_window_fill_vertical (MetaWindow  *window)
   w = window->rect.width;
   h = window->rect.height;
 
-  meta_window_get_work_area (window, TRUE, &work_area);
+  meta_window_get_work_area_current_xinerama (window, &work_area);
 
   y = work_area.y;
   h = work_area.height;
@@ -5674,7 +5678,7 @@ constrain_size (MetaWindow *window,
     {
       MetaRectangle work_area;
       
-      meta_window_get_work_area (window, TRUE, &work_area);
+      meta_window_get_work_area_current_xinerama (window, &work_area);
       
       fullw = work_area.width;
       fullh = work_area.height;
@@ -5823,9 +5827,15 @@ constrain_position (MetaWindow        *window,
     }
   else if (window->maximized)
     {
+      const MetaXineramaScreenInfo* xsi;
       MetaRectangle work_area;
-      
-      meta_window_get_work_area (window, TRUE, &work_area);
+
+      xsi = meta_screen_get_xinerama_for_rect (window->screen, 
+					       &window->saved_rect);
+
+      meta_window_get_work_area_for_xinerama (window, 
+					      xsi->number, 
+					      &work_area);
       
       x = work_area.x;
       y = work_area.y;
@@ -5848,8 +5858,25 @@ constrain_position (MetaWindow        *window,
       int se_x, se_y;
       int offscreen_w, offscreen_h;
       MetaRectangle work_area;
+      MetaRectangle window_area;
+      const MetaXineramaScreenInfo* xsi;
+
+      /* this is the rect for the window if it were where we're moving
+       * it now
+       */
+      meta_window_get_outer_rect (window, &window_area);
+      window_area.x = x;
+      window_area.y = y;
+      if (fgeom)
+	{
+	  window_area.x -= fgeom->left_width;
+	  window_area.y -= fgeom->top_height;
+	}
       
-      meta_window_get_work_area (window, FALSE, &work_area);
+      xsi = meta_screen_get_xinerama_for_rect (window->screen, &window_area);
+      meta_window_get_work_area_for_xinerama (window, 
+					      xsi->number, 
+					      &work_area);
       
       /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
        * size of the menu control?).
@@ -5936,7 +5963,7 @@ constrain_position (MetaWindow        *window,
           nw_y = se_y;
           se_y = tmp;
         }
-      
+
       /* Clamp window to the given positions.
        * Do the SE clamp first, so that the NW clamp has precedence
        * and we don't tend to lose the titlebar for too-large
@@ -5951,7 +5978,7 @@ constrain_position (MetaWindow        *window,
         x = nw_x;
       if (y < nw_y)
         y = nw_y;
-      
+
 #undef TITLEBAR_LENGTH_ONSCREEN
     }
   
@@ -6568,63 +6595,87 @@ meta_window_set_gravity (MetaWindow *window,
   meta_error_trap_pop (window->display, FALSE);
 }
 
-void
-meta_window_get_work_area (MetaWindow    *window,
-                           gboolean       for_current_xinerama,
-                           MetaRectangle *area)
+static void
+get_work_area (MetaWindow    *window,
+               MetaRectangle *area,
+               int            which_xinerama)
 {
   MetaRectangle space_area;
-  GList *tmp;
-  
+  GList *tmp;  
   int left_strut;
   int right_strut;
   int top_strut;
   int bottom_strut;  
-
-  if (for_current_xinerama)
-    {
-      const MetaXineramaScreenInfo *xinerama;
-      
-      xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                      window);
-      
-      left_strut = xinerama->x_origin;
-      right_strut = window->screen->width - xinerama->width - xinerama->x_origin;
-      top_strut = xinerama->y_origin;
-      bottom_strut = window->screen->height - xinerama->height - xinerama->y_origin;
-    }
-  else
-    {
-      left_strut = 0;
-      right_strut = 0;
-      top_strut = 0;
-      bottom_strut = 0;
-    }
-      
-  tmp = meta_window_get_workspaces (window);
+  int xinerama_origin_x;
+  int xinerama_origin_y;
+  int xinerama_width;
+  int xinerama_height;
   
+  g_assert (which_xinerama >= 0);
+
+  xinerama_origin_x = window->screen->xinerama_infos[which_xinerama].x_origin;
+  xinerama_origin_y = window->screen->xinerama_infos[which_xinerama].y_origin;
+  xinerama_width = window->screen->xinerama_infos[which_xinerama].width;
+  xinerama_height = window->screen->xinerama_infos[which_xinerama].height;
+  
+  left_strut = 0;
+  right_strut = 0;
+  top_strut = 0;
+  bottom_strut = 0;
+  
+  tmp = meta_window_get_workspaces (window);  
   while (tmp != NULL)
     {
-      meta_workspace_get_work_area (tmp->data, &space_area);
+      meta_workspace_get_work_area_for_xinerama (tmp->data,
+                                                 which_xinerama,
+                                                 &space_area);
 
-      left_strut = MAX (left_strut, space_area.x);
+      left_strut = MAX (left_strut, space_area.x - xinerama_origin_x);
       right_strut = MAX (right_strut,
-                         (window->screen->width - space_area.x - space_area.width));
-      top_strut = MAX (top_strut, space_area.y);
+			 (xinerama_width - 
+			  (space_area.x - xinerama_origin_x) - 
+			  space_area.width));
+      top_strut = MAX (top_strut, space_area.y - xinerama_origin_y);
       bottom_strut = MAX (bottom_strut,
-                          (window->screen->height - space_area.y - space_area.height));      
-      
+			  (xinerama_height - 
+			   (space_area.y - xinerama_origin_y) - 
+			   space_area.height));      
       tmp = tmp->next;
     }
   
-  area->x = left_strut;
-  area->y = top_strut;
-  area->width = window->screen->width - left_strut - right_strut;
-  area->height = window->screen->height - top_strut - bottom_strut;
+  area->x = xinerama_origin_x + left_strut;
+  area->y = xinerama_origin_y + top_strut;
+  area->width = xinerama_width - left_strut - right_strut;
+  area->height = xinerama_height - top_strut - bottom_strut;
 
   meta_topic (META_DEBUG_WORKAREA,
               "Window %s has work area %d,%d %d x %d\n",
               window->desc, area->x, area->y, area->width, area->height);
+}
+
+void
+meta_window_get_work_area_current_xinerama (MetaWindow    *window,
+					    MetaRectangle *area)
+{
+  const MetaXineramaScreenInfo *xinerama = NULL;
+  xinerama = meta_screen_get_xinerama_for_window (window->screen,
+						  window);
+
+  meta_window_get_work_area_for_xinerama (window,
+                                          xinerama->number,
+                                          area);
+}
+
+void
+meta_window_get_work_area_for_xinerama (MetaWindow    *window,
+					int            which_xinerama,
+					MetaRectangle *area)
+{
+  g_return_if_fail (which_xinerama >= 0);
+  
+  get_work_area (window,
+                 area,
+                 which_xinerama);
 }
 
 gboolean
