@@ -309,6 +309,8 @@ place_vertical_size_window (MetaResizePopup *popup,
                             double           align)
 {
   int w, h;
+
+  return;
   
   if (popup->vertical_size_window == NULL)
     {
@@ -336,6 +338,8 @@ place_horizontal_size_window (MetaResizePopup *popup,
                               double           align)
 {
   int w, h;
+
+  return;
   
   if (popup->horizontal_size_window == NULL)
     {

@@ -1,3 +1,10 @@
+2002-03-19  Havoc Pennington  <hp@redhat.com>
+
+	* src/resizepopup.c (place_vertical_size_window) 
+	(place_horizontal_size_window): disable the little shaped windows
+	with the window size, they caused a crash anytime you tried to
+	resize with Xft. And they were kind of on crack anyway.
+
 2002-03-17  Havoc Pennington  <hp@pobox.com>
 
 	* src/resizepopup.c (ensure_tick_windows): turn off the tick
