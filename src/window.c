@@ -4707,7 +4707,7 @@ redraw_icon (MetaWindow *window)
   /* We could probably be smart and just redraw the icon here,
    * instead of the whole frame.
    */
-  if (window->frame && window->mapped)
+  if (window->frame && (window->mapped || window->frame->mapped))
     meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 
@@ -4776,8 +4776,8 @@ idle_update_icon (gpointer data)
 
       window = tmp->data;
 
-      /* As a side effect, sets window->update_icon_queued = FALSE */
       meta_window_update_icon_now (window); 
+      window->update_icon_queued = FALSE;
       
       tmp = tmp->next;
     }

@@ -1,3 +1,11 @@
+2003-07-28  Rached Ben Mustapha <rached@benmur.net>
+
+        Fix bug #118428
+	
+        * src/window.c (redraw_icon): Also redraw window icon if the window
+	is not mapped but its frame is.
+	(idle_update_icon): Unset the window->update_icon_queued flag.	
+	
 2003-09-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/tabpopup.c (meta_ui_tab_popup_new): put a random cap on
