@@ -1,21 +1,25 @@
+# metacity.po fordítása Hungarianra
 # Hungarian translation of metacity.
 # Copyright (C) 2002-2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 # Andras Timar <timar@gnome.hu>, 2002-2003.
 # Gabor Sari <saga@chello.hu>, 2003.
 # Laszlo Dvornik <dvornikl@mailbox.hu>, 2004.
+# Gabor Kelemen <kg0021@stud.unideb.hu>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2004-03-19 19:54+0100\n"
-"Last-Translator: Laszlo Dvornik <dvornikl@mailbox.hu>\n"
-"Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2004-03-23 04:12+0100\n"
+"PO-Revision-Date: 2004-04-12 17:51+0200\n"
+"Last-Translator: Gabor Kelemen <kg0021@stud.unideb.hu>\n"
+"Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -24,8 +28,7 @@ msgstr "Használat: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-"A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
+msgstr "A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -51,8 +54,7 @@ msgstr ""
 
 #: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 
 #: src/delete.c:446
@@ -140,8 +142,7 @@ msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
 #: src/main.c:521
@@ -325,10 +326,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "A(z) \"%s\" ablak nem válaszol."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
-"Ha erőszakkal bezárja az alkalmazást, minden mentetlen változtatás elvész."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "Ha erőszakkal bezárja az alkalmazást, minden mentetlen változtatás elvész."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -422,7 +421,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr "Aktuális téma"
+msgstr "Jelenlegi téma"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
@@ -717,11 +716,11 @@ msgstr "Átváltás a 9. munkaterületre"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace above this one"
-msgstr "Átváltás az aktuális feletti munkaterületre"
+msgstr "Átváltás a jelenlegi feletti munkaterületre"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace below this one"
-msgstr "Átváltás az aktuális alatti munkaterületre"
+msgstr "Átváltás a jelenlegi alatti munkaterületre"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace on the left"
@@ -1447,7 +1446,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
-msgstr "A rendszer általános betűtípusának használata az ablak címsorában"
+msgstr "A rendszer szabvány betűtípusának használata az ablak címsorában"
 
 #: src/metacity.schemas.in.h:164
 msgid "Visual Bell Type"
@@ -1541,8 +1540,7 @@ msgstr ""
 
 #: src/screen.c:439
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
 #: src/screen.c:497
@@ -1772,8 +1770,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr ""
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 
 #: src/theme-parser.c:1343
@@ -2064,8 +2061,7 @@ msgstr ""
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 
 #: src/theme-parser.c:3684
@@ -2075,8 +2071,7 @@ msgstr ""
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 
 #: src/theme-parser.c:3718
@@ -2412,8 +2407,7 @@ msgstr ""
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
 #: src/theme.c:1122
@@ -2464,14 +2458,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
 #: src/theme.c:1845
@@ -2526,8 +2518,7 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 
 #: src/theme.c:4445
@@ -2557,8 +2548,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -2669,6 +2659,6 @@ msgstr ""
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
