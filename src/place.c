@@ -899,7 +899,7 @@ meta_window_place (MetaWindow        *window,
   if (placed_on == -1)
     {
       find_next_cascade (window, fgeom, windows, x, y, &x, &y);
-      placed_on = 0;
+      placed_on = window->screen->last_xinerama_index;
     }
 
   /* Maximize windows if they are too big for their work area (bit of

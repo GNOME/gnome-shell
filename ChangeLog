@@ -1,5 +1,13 @@
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
+	Fix an obscure xinerama placement bug with windows that are too
+	large to fit in the workarea in both dimensions.  #166757
+
+	* src/place.c: (meta_window_place): use the current xinerama
+	instead of arbitrarily resetting to 0
+
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
 	Patch from Joe Marcus Clarke to fix a possible crash on logout.
 	#167935.  Thanks for fixing my mistakes, Joe!
 
@@ -73,7 +81,7 @@
 2005-02-12  Elijah Newren  <newren@gmail.com>
 
 	Don't unconditionally place splashscreens (and other
-	not-to-befocused windows) below the focus window.  Fixes #167042.
+	not-to-be-focused windows) below the focus window.  Fixes #167042.
 
 	* src/window.c: (intervening_user_event_occurred): new function
 	taken from the timestamp comparison portion of the old
