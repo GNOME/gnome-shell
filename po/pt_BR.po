@@ -1,13 +1,13 @@
 # Metacity Brazilian Portuguese translation.
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
-# Evandro Fernandes Giovanini <evandrofg@ig.com.br>, 2002.
+# Evandro Fernandes Giovanini <evandrofg@ig.com.br>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-07-06 22:30-0300\n"
-"PO-Revision-Date: 2003-05-09 20:00-0300\n"
+"POT-Creation-Date: 2003-07-20 08:35-0300\n"
+"PO-Revision-Date: 2003-07-20 08:34-0300\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: GNOME-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -316,16 +316,18 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "A janela \"%s\" não está respondendo."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Forçar esta aplicação a sair fará com que você perca todas as alterações não "
+"salvas."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Forçar Sair"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -446,6 +448,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Determina se aplicações ou o sistema podem gerar 'beeps' audíveis; pode ser "
+"usado em conjunto com 'visual bell' para permitir 'beeps' silenciosos."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -455,7 +459,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Habilitar Campainha Visual"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -666,11 +670,11 @@ msgstr "Executar um comando definido"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Mostrar o menu do painel"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Mostrar o diálogo Executar do painel"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -769,15 +773,15 @@ msgstr "Alternar para a área de trabalho à direita"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Campainha do sistema é audível"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Capturar tela"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Fazer uma captura de tela de uma janela"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -789,6 +793,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Implementar uma indicação visual que a campainha do sistema ou de uma "
+"aplicação foi tocada. Atualmente são dois valores possíveis, \"fullscreen\" "
+"que causa um flash preto e branco em toda tela, e \"frame_flash\", que causa "
+"um flash na barra de título da aplicação que emitiu o 'beep'. Se a aplicação "
+"que enviou o 'beep' é desconhecida (como é normalmente o caso para o 'beep' "
+"do sistema), a barra de título da janela focada irá emitir um flash."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -848,8 +858,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
 "e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -864,8 +874,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;"
 "F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -880,8 +890,8 @@ msgstr ""
 "atual. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -896,8 +906,8 @@ msgstr ""
 "atual. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -911,8 +921,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -926,8 +936,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -941,8 +951,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -956,8 +966,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -971,8 +981,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -986,8 +996,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -1001,8 +1011,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -1016,8 +1026,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -1031,8 +1041,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -1046,8 +1056,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -1061,8 +1071,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -1076,8 +1086,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -1091,8 +1101,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -1106,8 +1116,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"desabilitada\", não haverá vinculação de teclas para essa "
-"ação."
+"string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -1123,7 +1132,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string "
-"especial \"desabilitada\", não haverá vinculação de teclas para essa ação."
+"especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1139,8 +1148,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"desabilitada\", não haverá vinculação de teclas para essa "
-"ação."
+"string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1156,7 +1164,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string "
-"especial \"desabilitada\", não haverá vinculação de teclas para essa ação."
+"especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1170,8 +1178,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1185,8 +1193,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1201,8 +1209,8 @@ msgstr ""
 "abaixo. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1217,8 +1225,8 @@ msgstr ""
 "esquerda. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como a string especial \"desabilitada\", não "
-"haverá vinculação de teclas para essa ação."
+"\". Se você definir a opção como a string especial \"disabled\", não haverá "
+"vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1233,8 +1241,8 @@ msgstr ""
 "direita. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1248,8 +1256,8 @@ msgstr ""
 "acima. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1263,8 +1271,8 @@ msgstr ""
 "1. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1278,8 +1286,8 @@ msgstr ""
 "10. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1293,8 +1301,8 @@ msgstr ""
 "11. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1308,8 +1316,8 @@ msgstr ""
 "12. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1323,8 +1331,8 @@ msgstr ""
 "2. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1338,8 +1346,8 @@ msgstr ""
 "3. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1353,8 +1361,8 @@ msgstr ""
 "4. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1368,8 +1376,8 @@ msgstr ""
 "5. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como a string especial \"desabilitada\", não haverá "
-"vinculação de teclas para essa ação."
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1567,7 +1575,6 @@ msgstr ""
 "string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1576,12 +1583,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"A vinculação de teclas usada para alternar entre a exibição da janela em "
-"todas ou em apenas uma área de trabalho. O formato é semelhante a \"&lt;"
-"Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é bastante "
-"flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
-"\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string "
-"especial \"desabilitada\", não haverá vinculação de teclas para essa ação."
+"A vinculação de teclas usada para alternar sempre no topo. A janela que está "
+"sempre no topo será sempre visível sobre outras janelas. O formato é "
+"semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
+"analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
+"abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1595,8 +1603,8 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1610,8 +1618,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1625,8 +1633,8 @@ msgstr ""
 "sombreado. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como a string especial \"desabilitada\", não "
-"haverá vinculação de teclas para essa ação."
+"\". Se você definir a opção como a string especial \"disabled\", não haverá "
+"vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1642,7 +1650,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string "
-"especial \"desabilitada\", não haverá vinculação de teclas para essa ação."
+"especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1656,11 +1664,10 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1669,15 +1676,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"A vinculação de teclas usada para fechar uma janela. O formato é semelhante "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é "
-"bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
-"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"desabilitada\", não haverá vinculação de teclas para essa "
-"ação."
+"A vinculação de teclas que executa o diálogo \"Executar Aplicação\" do "
+"painel. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
+"maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
+"definir a opção como a string especial \"disabled\", não haverá vinculação "
+"de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1686,15 +1692,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"A vinculação de teclas usada para fechar uma janela. O formato é semelhante "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é "
-"bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
-"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"desabilitada\", não haverá vinculação de teclas para essa "
-"ação."
+"A vinculação de teclas usada para abrir o programa de captura de tela do "
+"painel para capturar uma janela. O formato é semelhante a \"&lt;Control&gt;a"
+"\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O analisador é bastante flexível, "
+"permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
+"\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string especial "
+"\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1703,15 +1708,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"A vinculação de teclas que alterna para a área de trabalho 9. O formato é "
-"semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
-"analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
-"abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"A vinculação de teclas que inicia o programa de captura de tela do painel. O "
+"formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
+"e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1719,12 +1723,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"A vinculação de teclas usada para ativar o menu da janela. O formato é "
-"semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
-"analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
-"abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"A vinculação de teclas usada para mostrar o menu principal do painel. O "
+"formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
+"e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -1787,8 +1791,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:149
 msgid ""
@@ -1802,8 +1806,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1817,8 +1821,8 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como a string especial \"desabilitada\", não haverá vinculação de "
-"teclas para essa ação."
+"opção como a string especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1833,8 +1837,8 @@ msgstr ""
 "horizontalmente. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como a string especial \"desabilitada\", não "
-"haverá vinculação de teclas para essa ação."
+"\". Se você definir a opção como a string especial \"disabled\", não haverá "
+"vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1849,8 +1853,8 @@ msgstr ""
 "verticalmente. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como a string especial \"desabilitada\", não "
-"haverá vinculação de teclas para essa ação."
+"\". Se você definir a opção como a string especial \"disabled\", não haverá "
+"vinculação de teclas para essa ação."
 
 #: src/metacity.schemas.in.h:153
 msgid ""
@@ -1863,9 +1867,8 @@ msgstr ""
 "'toggle_maximize', que irá maximizar/desmaximizar a janela."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid "Toggle always on top state"
-msgstr "Alternar estado de maximização"
+msgstr "Alternar estado sempre no topo"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
@@ -1889,6 +1892,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Habilita uma indicação visual quando uma aplicação ou o sistema emite um "
+"'beep'; útil para quem tem pouca audição ou para ambientes barulhentos, ou "
+"quando a campainha audível está desligada."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1900,7 +1906,7 @@ msgstr "Usar fonte do sistema padrão nos títulos das janelas"
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Tipo de Campainha Visual"
 
 #: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
@@ -3021,15 +3027,3 @@ msgid ""
 msgstr ""
 "A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
 "lista\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "A janela \"%s\" não está respondendo.\n"
-#~ "Forçar esta aplicação a sair?\n"
-#~ "(Todos os documentos abertos serão perdidos.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Matar aplicação"
