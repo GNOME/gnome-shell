@@ -81,9 +81,10 @@ kill_window_question (const char *window_name,
   GtkWidget *dialog;
   char *str, *tmp;
 
-  str = g_strdup_printf (_("The window \"%s\" is not responding."),
-			 window_name);
-  
+  tmp = g_markup_escape_text (window_name, -1);
+  str = g_strdup_printf (_("The window \"%s\" is not responding."), tmp);
+  g_free (tmp);
+
   dialog = gtk_message_dialog_new (NULL, 0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
@@ -239,7 +240,7 @@ warn_about_no_sm_support (char **lame_apps)
   /* Wait 4 minutes then force quit, so we don't wait around all night */
   g_timeout_add (4 * 60 * 1000, (GSourceFunc) gtk_main_quit, NULL);
 
-  gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_CLOSE);     
+  gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_CLOSE);
   list = create_lame_apps_list (lame_apps);
 
   sw = gtk_scrolled_window_new (NULL, NULL);

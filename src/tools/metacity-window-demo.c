@@ -704,6 +704,7 @@ sleep_cb (GtkWidget *button,
   sleep (1000);
 }
 
+static void
 toggle_aspect_ratio (GtkWidget *button,
                      gpointer   data)
 {

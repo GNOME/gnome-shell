@@ -1,3 +1,10 @@
+2003-08-08  Bastien Nocera  <hadess@hadess.net>
+
+	* src/metacity-dialog.c: (kill_window_question),
+	(warn_about_no_sm_support): fix markup being ignored when a window
+	title has a forbidden character in it (eg. "Send & Receive")
+	* src/tools/metacity-window-demo.c: fix warning
+
 2003-07-29  Arvind Samptur  <arvind.samptur@wipro.com>
 
 	* src/xprops.c (utf8_list_from_results): Number of
