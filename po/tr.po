@@ -1,0 +1,348 @@
+# Turkish translation of metacity.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Görkem Çetin <gorkem@gelecek.com.tr>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity\n"
+"POT-Creation-Date: 2002-01-06 07:52-0500\n"
+"PO-Revision-Date: 2002-01-06 07:52-0500\n"
+"Last-Translator: Görkem Çetin <gorkem@gelecek.com.tr>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:156
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "X window ekraný açýlamadý: '%s'\n"
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"'%s' görüntü ekraný ile baðlantý kesildi.\n"
+"Sunucu ya da pencere yöneticisi kapanmýþ olabilir.\n"
+"\n"
+
+#: src/errors.c:100
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr ""
+
+#: src/frames.c:232
+msgid "Left edge"
+msgstr ""
+
+#: src/frames.c:232
+msgid "Left window edge width"
+msgstr ""
+
+#: src/frames.c:233
+msgid "Right edge"
+msgstr ""
+
+#: src/frames.c:233
+msgid "Right window edge width"
+msgstr ""
+
+#: src/frames.c:234
+msgid "Bottom edge"
+msgstr ""
+
+#: src/frames.c:234
+msgid "Bottom window edge height"
+msgstr ""
+
+#: src/frames.c:236
+msgid "Title border"
+msgstr ""
+
+#: src/frames.c:236
+msgid "Border around title area"
+msgstr ""
+
+#: src/frames.c:237
+msgid "Text border"
+msgstr ""
+
+#: src/frames.c:237
+msgid "Border around window title text"
+msgstr ""
+
+#: src/frames.c:239
+msgid "Spacer padding"
+msgstr ""
+
+#: src/frames.c:239
+msgid "Padding on either side of spacer"
+msgstr ""
+
+#: src/frames.c:240
+msgid "Spacer width"
+msgstr ""
+
+#: src/frames.c:240
+msgid "Width of spacer"
+msgstr ""
+
+#: src/frames.c:241
+msgid "Spacer height"
+msgstr ""
+
+#: src/frames.c:241
+msgid "Height of spacer"
+msgstr ""
+
+#. same as right_width left_width by default
+#: src/frames.c:244
+msgid "Right inset"
+msgstr ""
+
+#: src/frames.c:244
+msgid "Distance of buttons from right edge of frame"
+msgstr ""
+
+#: src/frames.c:245
+msgid "Left inset"
+msgstr ""
+
+#: src/frames.c:245
+msgid "Distance of menu button from left edge of frame"
+msgstr ""
+
+#: src/frames.c:247
+msgid "Button width"
+msgstr ""
+
+#: src/frames.c:247
+msgid "Width of buttons"
+msgstr ""
+
+#: src/frames.c:248
+msgid "Button height"
+msgstr ""
+
+#: src/frames.c:248
+msgid "Height of buttons"
+msgstr ""
+
+#: src/frames.c:250
+msgid "Button border"
+msgstr ""
+
+#: src/frames.c:250
+msgid "Border around buttons"
+msgstr ""
+
+#: src/frames.c:251
+msgid "Inner button border"
+msgstr ""
+
+#: src/frames.c:251
+msgid "Border around the icon inside buttons"
+msgstr ""
+
+#: src/frames.c:892
+msgid "Close Window"
+msgstr ""
+
+#: src/frames.c:895
+msgid "Window Menu"
+msgstr ""
+
+#: src/frames.c:898
+msgid "Minimize Window"
+msgstr ""
+
+#: src/frames.c:901
+msgid "Maximize Window"
+msgstr ""
+
+#: src/frames.c:904
+msgid "Unmaximize Window"
+msgstr ""
+
+#: src/keybindings.c:215
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr ""
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr ""
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr ""
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr ""
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr ""
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr ""
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr ""
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr ""
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr ""
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr ""
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr ""
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr ""
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr ""
+
+#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr ""
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr ""
+
+#: src/prefs.c:399
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr ""
+
+#: src/prefs.c:436
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr ""
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+
+#: src/screen.c:174
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: src/screen.c:190
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr ""
+
+#: src/screen.c:268
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr ""
+
+#: src/session.c:760 src/session.c:767
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr ""
+
+#: src/session.c:777
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr ""
+
+#: src/session.c:909
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:914
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:988
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr ""
+
+#: src/session.c:1022
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr ""
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr ""
+
+#: src/session.c:1110 src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr ""
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr ""
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr ""
+
+#. someone is on crack
+#: src/window.c:3048
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+
+#. another cracksmoker
+#: src/window.c:3058
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr ""
