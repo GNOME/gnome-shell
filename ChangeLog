@@ -1,3 +1,8 @@
+2003-01-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_apply_startup_properties): small code
+	snippet to fix startup sequences that set legacy class/name
+
 2003-01-22  Havoc Pennington  <hp@redhat.com>
 	
 	* src/async-getprop.c (async_get_property_handler): do not read 
@@ -132,7 +137,7 @@
 	default.
 
 2003-01-08  Havoc Pennington  <hp@pobox.com>
-
+	
 	* src/metacity.schemas.in: assign Alt+F12 to shade window, 
 	per #102658
 

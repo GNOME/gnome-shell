@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001, 2002 Havoc Pennington
- * Copyright (C) 2002 Red Hat Inc.
+ * Copyright (C) 2002, 2003 Red Hat Inc.
  * Some ICCCM manager selection code derived from fvwm2,
  * Copyright (C) 2001 Dominik Vogt, Matthias Clasen, and fvwm2 team
  * 
@@ -2182,9 +2182,14 @@ meta_screen_sn_event (SnMonitorEvent *event,
     {
     case SN_MONITOR_EVENT_INITIATED:
       {
+        const char *wmclass;
+
+        wmclass = sn_startup_sequence_get_wmclass (sequence);
+        
         meta_topic (META_DEBUG_STARTUP,
-                    "Received startup initiated for %s\n",
-                    sn_startup_sequence_get_id (sequence));
+                    "Received startup initiated for %s wmclass %s\n",
+                    sn_startup_sequence_get_id (sequence),
+                    wmclass ? wmclass : "(unset)");
         add_sequence (screen, sequence);
       }
       break;
@@ -2224,24 +2229,67 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   SnStartupSequence *sequence;
   
   startup_id = meta_window_get_startup_id (window);
+
+  meta_topic (META_DEBUG_STARTUP,
+              "Applying startup props to %s id \"%s\"\n",
+              window->desc,
+              startup_id ? startup_id : "(none)");
+  
+  sequence = NULL;
+  if (startup_id == NULL)
+    {
+      tmp = screen->startup_sequences;
+      while (tmp != NULL)
+        {
+          const char *wmclass;
+
+          wmclass = sn_startup_sequence_get_wmclass (tmp->data);
+
+          if (wmclass != NULL &&
+              ((window->res_class &&
+                strcmp (wmclass, window->res_class) == 0) ||
+               (window->res_name &&
+                strcmp (wmclass, window->res_name) == 0)))
+            {
+              sequence = tmp->data;
+
+              g_assert (window->startup_id == NULL);
+              window->startup_id = g_strdup (sn_startup_sequence_get_id (sequence));
+              startup_id = window->startup_id;
+
+              meta_topic (META_DEBUG_STARTUP,
+                          "Ending legacy sequence %s due to window %s\n",
+                          sn_startup_sequence_get_id (sequence),
+                          window->desc);
+              
+              sn_startup_sequence_complete (sequence);
+              break;
+            }
+          
+          tmp = tmp->next;
+        }
+    }
+
   if (startup_id == NULL)
     return;
-
-  sequence = NULL;
-  tmp = screen->startup_sequences;
-  while (tmp != NULL)
+  
+  if (sequence == NULL)
     {
-      const char *id;
-
-      id = sn_startup_sequence_get_id (tmp->data);
-
-      if (strcmp (id, startup_id) == 0)
+      tmp = screen->startup_sequences;
+      while (tmp != NULL)
         {
-          sequence = tmp->data;
-          break;
+          const char *id;
+          
+          id = sn_startup_sequence_get_id (tmp->data);
+          
+          if (strcmp (id, startup_id) == 0)
+            {
+              sequence = tmp->data;
+              break;
+            }
+          
+          tmp = tmp->next;
         }
-
-      tmp = tmp->next;
     }
 
   if (sequence != NULL)
