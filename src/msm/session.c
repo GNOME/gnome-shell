@@ -111,9 +111,6 @@ void
 msm_session_launch (MsmSession  *session)
 {
   system ("xclock &");
-  system ("xclock &");
-  system ("xclock &");
-  system ("xterm &");
 }
 
 MsmSavedClient*
@@ -304,6 +301,7 @@ msm_session_get_for_filename (const char *name,
       return session;
     }
 
+  /* FIXME FALSE */
   if (FALSE && session->clients == NULL)
     {
       session = recover_failed_session (session,

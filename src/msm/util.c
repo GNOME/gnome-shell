@@ -70,8 +70,6 @@ msm_warning (const char *format, ...)
   fflush (stderr);
   
   g_free (str);
-
-  exit (1);
 }
      
 gboolean

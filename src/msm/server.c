@@ -870,6 +870,8 @@ process_ice_messages (GIOChannel *channel,
   IceConn connection = (IceConn) client_data;
   IceProcessMessagesStatus status;
 
+  g_print ("process messages %p\n", connection);
+  
   /* This blocks infinitely sometimes. I don't know what
    * to do about it. Checking "condition" just breaks
    * session management.
@@ -877,29 +879,39 @@ process_ice_messages (GIOChannel *channel,
   status = IceProcessMessages (connection, NULL, NULL);
 
   if (status == IceProcessMessagesIOError)
-    {
-#if 0
-      IcePointer context = IceGetConnectionContext (connection);
-#endif
-      
+    {      
       /* We were disconnected */
       IceSetShutdownNegotiation (connection, False);
       IceCloseConnection (connection);
 
+      g_print ("closing %p due to IO error\n", connection);
+      
+      return FALSE;
+    }
+  else if (status == IceProcessMessagesConnectionClosed)
+    {
+      /* connection is now invalid */
+      g_print ("%p closed\n", connection);
+      
       return FALSE;
     }
 
   return TRUE;
 }
 
-/* This is called when a new ICE connection is made.  It arranges for
-   the ICE connection to be handled via the event loop.  */
+/* This is called when a new ICE connection is made and again when
+ * it's closed. ICE connections may be used by multiple clients. The
+ * function arranges for the ICE connection to be handled or stop
+ * being handled via the event loop.
+ */
 static void
 new_ice_connection (IceConn connection, IcePointer client_data, Bool opening,
 		    IcePointer *watch_data)
 {
   guint input_id;
 
+  g_print ("new connection %p opening = %d\n", connection, opening);
+  
   if (opening)
     {
       /* Make sure we don't pass on these file descriptors to any
@@ -937,19 +949,22 @@ accept_connection (GIOChannel *channel,
   IceListenObj listen_obj;
   IceAcceptStatus status;
   IceConnectStatus cstatus;
+  IceProcessMessagesStatus pstatus;
   IceConn cnxn;
   
   listen_obj = client_data;
 
   cnxn = IceAcceptConnection (listen_obj,
                               &status);
-
+  
   if (cnxn == NULL || status != IceAcceptSuccess)
     {
       msm_warning (_("Failed to accept new ICE connection\n"));
       return TRUE;
     }
 
+  g_print ("accept connection %p\n", cnxn);
+  
   /* I believe this means we refuse to argue with clients over
    * whether we are going to shut their ass down. But I could
    * be wrong.
@@ -970,7 +985,22 @@ accept_connection (GIOChannel *channel,
   cstatus = IceConnectionStatus (cnxn);
   while (cstatus == IceConnectPending)
     {
-      IceProcessMessages (cnxn, NULL, NULL);
+      pstatus = IceProcessMessages (cnxn, NULL, NULL);
+
+      if (pstatus == IceProcessMessagesIOError)
+        {      
+          /* We were disconnected */
+          IceCloseConnection (cnxn);
+          cnxn = NULL;
+          break;
+        }
+      else if (pstatus == IceProcessMessagesConnectionClosed)
+        {
+          /* cnxn is now invalid */
+          cnxn = NULL;
+          break;
+        }
+
       cstatus = IceConnectionStatus (cnxn);
     }
 
@@ -981,20 +1011,45 @@ accept_connection (GIOChannel *channel,
       else
         msm_warning (_("Rejecting new connection (some client was not allowed to connect to the session manager)\n"));
 
-      /*       IceCloseConnection (cnxn);*/
+      if (cnxn)
+        IceCloseConnection (cnxn);
     }
 
   return TRUE;
 }
 
-/* We call any handler installed before (or after) ice_init but 
- * avoid calling the default libICE handler which does an exit()
- */
 static void
 ice_io_error_handler (IceConn connection)
 {
-  IceCloseConnection (connection);
-}    
+  /* do nothing; next IceProcessMessages on the connection wil get
+   * an IOError resulting in us calling IceCloseConnection()
+   */
+}
+
+static void
+ice_error_handler (IceConn       connection,
+                   Bool          swap,
+                   int           offending_minor_opcode,
+                   unsigned long offending_sequence,
+                   int           error_class,
+                   int           severity,
+                   IcePointer    values)
+{
+  /* The default error handler would give a more informative message
+   * than we are, but it would also exit most of the time, which
+   * is not appropriate here.
+   *
+   * gnome-session closes the connection in here, but I'm not sure that
+   * counts as a good idea. the default handler doesn't do that.
+   */
+
+  msm_warning (_("ICE error received, opcode: %d sequence: %lu class: %d severity: %d\n"),
+               offending_minor_opcode,
+               offending_sequence,
+               error_class,
+               severity);
+}
+
 
 static void
 ice_init (MsmServer *server)
@@ -1012,7 +1067,8 @@ ice_init (MsmServer *server)
       int i;
 
       IceSetIOErrorHandler (ice_io_error_handler);
-
+      IceSetErrorHandler (ice_error_handler);
+      
       IceAddConnectionWatch (new_ice_connection, NULL);
 
       /* Some versions of IceListenForConnections have a bug which causes
