@@ -2712,10 +2712,10 @@ meta_window_notify_focus (MetaWindow *window,
           meta_topic (META_DEBUG_FOCUS,
                       "New focus window %s\n", window->desc);
           window->display->focus_window = window;
+          window->has_focus = TRUE;
+          if (window->frame)
+            meta_frame_queue_draw (window->frame);
         }
-      window->has_focus = TRUE;
-      if (window->frame)
-        meta_frame_queue_draw (window->frame);
     }
   else if (event->type == FocusOut ||
            event->type == UnmapNotify)
@@ -2742,10 +2742,10 @@ meta_window_notify_focus (MetaWindow *window,
                       "Clearing focus window (was %s)\n", window->desc);
           
           window->display->focus_window = NULL;
+          window->has_focus = FALSE;
+          if (window->frame)
+            meta_frame_queue_draw (window->frame);
         }
-      window->has_focus = FALSE;
-      if (window->frame)
-        meta_frame_queue_draw (window->frame);
     }
 
   /* Now set _NET_ACTIVE_WINDOW hint */

@@ -24,307 +24,403 @@
 #include "gradient.h"
 #include <string.h>
 
-#if 0
-/* fill_gradient routine from GNOME background-properties, CVS says
- * Michael Fulbright checked it in, Copyright 1998 Red Hat Inc.
- */
-static void
-fill_gradient (GdkPixbuf       *pixbuf,
-               const GdkColor  *c1,
-	       const GdkColor  *c2,
-               int              vertical,
-               int              gradient_width,
-               int              gradient_height,
-               int              pixbuf_x,
-               int              pixbuf_y)
+
+MetaGradientSpec*
+meta_gradient_spec_new (MetaGradientType type)
 {
-  int i, j;
-  int dr, dg, db;
-  int gs1;
-  int vc = (!vertical || (c1 == c2));
-  int w = gdk_pixbuf_get_width (pixbuf);
-  int h = gdk_pixbuf_get_height (pixbuf);
-  guchar *b, *row;
-  guchar *d = gdk_pixbuf_get_pixels (pixbuf);
-  int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  MetaGradientSpec *spec;
 
-#define R1 c1->red
-#define G1 c1->green
-#define B1 c1->blue
-#define R2 c2->red
-#define G2 c2->green
-#define B2 c2->blue
+  spec = g_new (MetaGradientSpec, 1);
 
-  dr = R2 - R1;
-  dg = G2 - G1;
-  db = B2 - B1;
-
-  gs1 = (vertical) ? gradient_height - 1 : gradient_width - 1;
-
-  row = g_new (unsigned char, rowstride);
-
-  if (vc)
-    {
-      b = row;
-      for (j = 0; j < w; j++)
-        {
-          *b++ = (R1 + ((j + pixbuf_x) * dr) / gs1) >> 8;
-          *b++ = (G1 + ((j + pixbuf_x) * dg) / gs1) >> 8;
-          *b++ = (B1 + ((j + pixbuf_x) * db) / gs1) >> 8;
-        }
-    }
+  spec->type = type;
+  spec->color_specs = NULL;
   
-  for (i = 0; i < h; i++)
-    {
-      if (!vc)
-        {
-          unsigned char cr, cg, cb;
-          cr = (R1 + ((i + pixbuf_y) * dr) / gs1) >> 8;
-          cg = (G1 + ((i + pixbuf_y) * dg) / gs1) >> 8;
-          cb = (B1 + ((i + pixbuf_y) * db) / gs1) >> 8;
-          b = row;
-          for (j = 0; j < w; j++)
-            {
-              *b++ = cr;
-              *b++ = cg;
-              *b++ = cb;
-            }
-        }
-      memcpy (d, row, w * 3);
-      d += rowstride;
-    }
-  
-#undef R1
-#undef G1
-#undef B1
-#undef R2
-#undef G2
-#undef B2
-
-  g_free (row);
-}
-#endif
-
-typedef struct _CachedGradient CachedGradient;
-
-struct _CachedGradient
-{
-  MetaGradientType  type;
-  GdkColor          color_one;
-  GdkColor          color_two;
-  int               width;
-  int               height;
-  GdkPixbuf        *pixbuf;
-  int               access_serial;
-};
-
-static GHashTable *gradient_cache = NULL;
-static int access_counter = 0;
-static int cache_size = 0;
-
-#define GRADIENT_SIZE(g) ((g)->width * (g)->height * 4)
-
-#define MAX_CACHE_SIZE (1024 * 128) /* 128k */
-
-static guint
-cached_gradient_hash (gconstpointer value)
-{
-  /* I have no idea how to write a hash function. */
-  const CachedGradient *gradient = value;
-  guint colorone_hash = gdk_color_hash (&gradient->color_one);
-  guint colortwo_hash = gdk_color_hash (&gradient->color_two);
-  guint hash = (colorone_hash >> 16) | (colortwo_hash << 16);
-
-  hash ^= gradient->width << 22;
-  hash ^= gradient->height;
-  hash ^= gradient->type << 15;
-
-  return hash;
+  return spec;
 }
 
-static gboolean
-cached_gradient_equal (gconstpointer value_a,
-                       gconstpointer value_b)
+void
+meta_gradient_spec_free (MetaGradientSpec *spec)
 {
-  const CachedGradient *gradient_a = value_a;
-  const CachedGradient *gradient_b = value_b;
+  g_return_if_fail (spec != NULL);
   
-  return gradient_a->type == gradient_b->type &&
-    gradient_a->width == gradient_b->width &&
-    gradient_a->height == gradient_b->height &&
-    gdk_color_equal (&gradient_a->color_one, &gradient_b->color_one) &&
-    gdk_color_equal (&gradient_a->color_two, &gradient_b->color_two);
-}
-
-static void
-hash_listify (gpointer key, gpointer value, gpointer data)
-{
-  GSList **list = data;
-
-  if (key != value)
-    meta_bug ("Gradient cache got munged (value was overwritten)\n");
-  
-  *list = g_slist_prepend (*list, value);
-}
-
-/* sort gradients so that least-recently-used are first */
-static int
-gradient_lru_compare (gconstpointer a,
-                      gconstpointer b)
-{
-  const CachedGradient *gradient_a = a;
-  const CachedGradient *gradient_b = b;
-
-  if (gradient_a->access_serial < gradient_b->access_serial)
-    return -1;
-  else if (gradient_a->access_serial > gradient_b->access_serial)
-    return 1;
-  else
-    return 0;
-}
-
-static void
-expire_some_old_gradients (void)
-{
-  GSList *all_gradients;
-  GSList *tmp;
-  
-  all_gradients = NULL;
-
-  g_hash_table_foreach (gradient_cache, hash_listify, &all_gradients);
-
-  all_gradients = g_slist_sort (all_gradients, gradient_lru_compare);
-
-  tmp = all_gradients;
-  while (tmp != NULL)
-    {
-      CachedGradient *gradient = tmp->data;
-      
-      if (cache_size < MAX_CACHE_SIZE)
-        break;
-
-      meta_topic (META_DEBUG_GRADIENT_CACHE,
-                  " Removing gradient of size %d from cache of size %d\n",
-                  GRADIENT_SIZE (gradient), cache_size);
-                  
-      cache_size -= GRADIENT_SIZE (gradient);
-
-      g_hash_table_remove (gradient_cache, gradient);
-
-      g_object_unref (G_OBJECT (gradient->pixbuf));
-      g_free (gradient);
-      
-      tmp = tmp->next;
-    }
-
-  g_slist_free (all_gradients);
-
-  meta_topic (META_DEBUG_GRADIENT_CACHE,
-              "Cache reduced to size %d bytes %d gradients after expiring old gradients\n",
-              cache_size, g_hash_table_size (gradient_cache));
+  g_slist_foreach (spec->color_specs, (GFunc) meta_color_spec_free, NULL);
+  g_slist_free (spec->color_specs);
+  g_free (spec);
 }
 
 GdkPixbuf*
-meta_theme_get_gradient (MetaGradientType  type,
-                         const GdkColor   *color_one,
-                         const GdkColor   *color_two,
-                         int               width,
-                         int               height)
+meta_gradient_spec_render (const MetaGradientSpec *spec,
+                           GtkWidget              *widget,
+                           int                     width,
+                           int                     height)
 {
-  CachedGradient gradient;
-  CachedGradient *cached;
-  GdkPixbuf *retval;
+  int n_colors;
+  GdkColor *colors;
+  GSList *tmp;
+  int i;
+  GdkPixbuf *pixbuf;
   
-  meta_topic (META_DEBUG_GRADIENT_CACHE,
-              "Requesting %s gradient one %d/%d/%d two %d/%d/%d "
-              "%d x %d\n",
-              type == META_GRADIENT_VERTICAL ? "vertical" : "horizontal",
-              color_one->red / 256, color_one->green / 256, color_one->blue / 256,
-              color_two->red / 256, color_two->green / 256, color_two->blue / 256,
-              width, height);
+  n_colors = g_slist_length (spec->color_specs);
+
+  if (n_colors == 0)
+    return NULL;
   
-  if (gradient_cache == NULL)
+  colors = g_new (GdkColor, n_colors);
+
+  i = 0;
+  tmp = spec->color_specs;
+  while (tmp != NULL)
     {
-      gradient_cache = g_hash_table_new (cached_gradient_hash,
-                                         cached_gradient_equal);
-    }
-
-  gradient.type = type;
-  gradient.color_one = *color_one;
-  gradient.color_two = *color_two;
-  gradient.width = width;
-  gradient.height = height;
-  gradient.pixbuf = NULL;
-  gradient.access_serial = access_counter;
-  
-  cached = g_hash_table_lookup (gradient_cache, &gradient);
-
-  if (cached)
-    {
-      meta_topic (META_DEBUG_GRADIENT_CACHE,
-                  "Found gradient in cache\n");
-      ++access_counter;
-      cached->access_serial = access_counter;
-      g_object_ref (G_OBJECT (cached->pixbuf));
-      return cached->pixbuf;
-    }
-
-#if 0
-  gradient.pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
-                                    gradient.width, gradient.height);
-
-  fill_gradient (gradient.pixbuf,
-                 &gradient.color_one,
-                 &gradient.color_two,
-                 type == META_GRADIENT_VERTICAL ? TRUE : FALSE,
-                 gradient.width,
-                 gradient.height,
-                 0, 0);
-#else
-  gradient.pixbuf = meta_gradient_create_simple (gradient.width,
-                                                 gradient.height,
-                                                 &gradient.color_one,
-                                                 &gradient.color_two,
-                                                 type);
-
-  if (gradient.pixbuf == NULL)
-    {
-      meta_topic (META_DEBUG_GRADIENT_CACHE,
-                  "Not enough memory to create gradient of size %d bytes\n",
-                  GRADIENT_SIZE (&gradient));
-      return NULL;
-    }
-#endif
-  
-  if (GRADIENT_SIZE (&gradient) > MAX_CACHE_SIZE)
-    {
-      cached = g_new (CachedGradient, 1);
-      *cached = gradient;
+      meta_color_spec_render (tmp->data, widget, &colors[i]);
       
-      g_hash_table_insert (gradient_cache, cached, cached);
-
-      meta_topic (META_DEBUG_GRADIENT_CACHE,
-                  "Caching newly-created gradient, size is %d bytes, total cache size %d bytes %d gradients, maximum %d bytes\n",
-                  GRADIENT_SIZE (cached),
-                  cache_size, g_hash_table_size (gradient_cache), MAX_CACHE_SIZE);
+      tmp = tmp->next;
+      ++i;
+    }
   
-      cache_size += GRADIENT_SIZE (cached);
-      
-      g_object_ref (G_OBJECT (cached->pixbuf)); /* to return to caller */
-      retval = cached->pixbuf;
+  pixbuf = meta_gradient_create_multi (width, height,
+                                       colors, n_colors,
+                                       spec->type);
 
-      if (cache_size > MAX_CACHE_SIZE)
-        expire_some_old_gradients (); /* may unref "cached->pixbuf" and free "cached" */
+  g_free (colors);
+
+  return pixbuf;
+}
+
+MetaColorSpec*
+meta_color_spec_new (MetaColorSpecType type)
+{
+  MetaColorSpec *spec;
+  MetaColorSpec dummy;
+  int size;
+
+  size = G_STRUCT_OFFSET (MetaColorSpec, data);
+  
+  switch (type)
+    {
+    case META_COLOR_SPEC_BASIC:
+      size += sizeof (dummy.data.basic);
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      size += sizeof (dummy.data.gtk);
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      size += sizeof (dummy.data.blend);
+      break;
+    }
+  
+  spec = g_malloc0 (size);
+
+  spec->type = type;  
+  
+  return spec;
+}
+
+void
+meta_color_spec_free (MetaColorSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+  
+  switch (spec->type)
+    {
+    case META_COLOR_SPEC_BASIC:      
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      if (spec->data.blend.foreground)
+        meta_color_spec_free (spec->data.blend.foreground);      
+      if (spec->data.blend.background)
+        meta_color_spec_free (spec->data.blend.background);
+      break;
+    }
+  
+  g_free (spec);
+}
+
+void
+meta_color_spec_render (MetaColorSpec *spec,
+                        GtkWidget     *widget,
+                        GdkColor      *color)
+{
+  g_return_if_fail (spec != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (widget->style != NULL);
+  
+  switch (spec->type)
+    {
+    case META_COLOR_SPEC_BASIC:
+      *color = spec->data.basic.color;
+      break;
+
+    case META_COLOR_SPEC_GTK:
+      switch (spec->data.gtk.component)
+        {
+        case GTK_RC_BG:
+          *color = widget->style->bg[spec->data.gtk.state];
+          break;
+        case GTK_RC_FG:
+          *color = widget->style->fg[spec->data.gtk.state];
+          break;
+        case GTK_RC_BASE:
+          *color = widget->style->base[spec->data.gtk.state];
+          break;
+        case GTK_RC_TEXT:
+          *color = widget->style->text[spec->data.gtk.state];
+          break;
+        }
+      break;
+
+    case META_COLOR_SPEC_BLEND:
+      {
+        GdkColor fg, bg;
+        int alpha;
+        
+        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+        meta_color_spec_render (spec->data.blend.background, widget, &bg);
+
+        *color = fg;
+        alpha = spec->data.blend.alpha * 0xffff;
+        color->red = color->red + (((bg.red - color->red) * alpha + 0x8000) >> 16);
+        color->green = color->green + (((bg.green - color->green) * alpha + 0x8000) >> 16);
+        color->blue = color->blue + (((bg.blue - color->blue) * alpha + 0x8000) >> 16);        
+      }
+      break;
+    }
+}
+
+
+MetaTextureSpec*
+meta_texture_spec_new (MetaTextureType type)
+{
+  MetaTextureSpec *spec;
+  MetaTextureSpec dummy;
+  int size;
+
+  size = G_STRUCT_OFFSET (MetaTextureSpec, data);
+  
+  switch (type)
+    {
+    case META_TEXTURE_SOLID:
+      size += sizeof (dummy.data.solid);
+      break;
+
+    case META_TEXTURE_GRADIENT:
+      size += sizeof (dummy.data.gradient);
+      break;
+
+    case META_TEXTURE_IMAGE:
+      size += sizeof (dummy.data.image);
+      break;
+    }
+  
+  spec = g_malloc0 (size);
+
+  spec->type = type;  
+  
+  return spec;
+}
+
+void
+meta_texture_spec_free (MetaTextureSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+  
+  switch (spec->type)
+    {
+    case META_TEXTURE_SOLID:
+      if (spec->data.solid.color_spec)
+        meta_color_spec_free (spec->data.solid.color_spec);
+      break;
+
+    case META_TEXTURE_GRADIENT:
+      if (spec->data.gradient.gradient_spec)
+        meta_gradient_spec_free (spec->data.gradient.gradient_spec);
+      break;
+
+    case META_TEXTURE_IMAGE:
+      if (spec->data.image.pixbuf)
+        g_object_unref (G_OBJECT (spec->data.image.pixbuf));
+      break;
+    }
+
+  g_free (spec);
+}
+
+static void
+render_pixbuf (GdkDrawable        *drawable,
+               const GdkRectangle *clip,
+               GdkPixbuf          *pixbuf,
+               int                 x,
+               int                 y)
+{
+  /* grumble, render_to_drawable_alpha does not accept a clip
+   * mask, so we have to go through some BS
+   */
+  GdkRectangle pixbuf_rect;
+  GdkRectangle draw_rect;
+  
+  pixbuf_rect.x = x;
+  pixbuf_rect.y = y;
+  pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
+  pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
+
+  if (clip)
+    {
+      if (!gdk_rectangle_intersect ((GdkRectangle*)clip,
+                                    &pixbuf_rect, &draw_rect))
+        return;
     }
   else
     {
-      meta_topic (META_DEBUG_GRADIENT_CACHE,
-                  "Gradient of size %d bytes is too large to cache\n",
-                  GRADIENT_SIZE (&gradient));
-
-      retval = gradient.pixbuf;
+      draw_rect = pixbuf_rect;
     }
   
-  return retval;
+  gdk_pixbuf_render_to_drawable_alpha (pixbuf,
+                                       drawable,
+                                       draw_rect.x - pixbuf_rect.x,
+                                       draw_rect.y - pixbuf_rect.y,
+                                       draw_rect.x, draw_rect.y,
+                                       draw_rect.width,
+                                       draw_rect.height,
+                                       GDK_PIXBUF_ALPHA_FULL, /* ignored */
+                                       128,                   /* ignored */
+                                       GDK_RGB_DITHER_NORMAL,
+                                       draw_rect.x - pixbuf_rect.x,
+                                       draw_rect.y - pixbuf_rect.y);
 }
 
+
+void
+meta_texture_spec_draw   (const MetaTextureSpec *spec,
+                          GtkWidget             *widget,
+                          GdkDrawable           *drawable,
+                          const GdkRectangle    *clip,
+                          MetaTextureDrawMode    mode,
+                          int                    x,
+                          int                    y,
+                          int                    width,
+                          int                    height)
+{
+  g_return_if_fail (spec != NULL);
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+  g_return_if_fail (widget->style != NULL);
+  
+  switch (spec->type)
+    {
+    case META_TEXTURE_SOLID:
+      {
+        GdkGC *gc;
+        GdkGCValues values;
+
+        g_return_if_fail (spec->data.solid.color_spec != NULL);
+        
+        meta_color_spec_render (spec->data.solid.color_spec,
+                                widget,
+                                &values.foreground);
+        
+        gdk_rgb_find_color (widget->style->colormap, &values.foreground);
+        gc = gdk_gc_new_with_values (drawable, &values, GDK_GC_FOREGROUND);
+                         
+        gdk_draw_rectangle (drawable,
+                            gc, TRUE, x, y, width, height);
+
+        g_object_unref (G_OBJECT (gc));
+      }
+      break;
+
+    case META_TEXTURE_GRADIENT:
+      {
+        GdkPixbuf *pixbuf;
+        
+        g_return_if_fail (spec->data.gradient.gradient_spec != NULL);
+
+        pixbuf = meta_gradient_spec_render (spec->data.gradient.gradient_spec,
+                                            widget, width, height);
+
+        if (pixbuf == NULL)
+          return;
+        
+        render_pixbuf (drawable, clip, pixbuf, x, y);
+        
+        g_object_unref (G_OBJECT (pixbuf));
+      }      
+      break;
+
+    case META_TEXTURE_IMAGE:
+      {
+        GdkPixbuf *pixbuf;
+        
+        g_return_if_fail (spec->data.image.pixbuf != NULL);
+
+        pixbuf = NULL;
+        
+        switch (mode)
+          {
+          case META_TEXTURE_DRAW_UNSCALED:
+            pixbuf = spec->data.image.pixbuf;
+            g_object_ref (G_OBJECT (pixbuf));
+            break;
+          case META_TEXTURE_DRAW_SCALED_VERTICALLY:
+            pixbuf = spec->data.image.pixbuf;
+            if (gdk_pixbuf_get_height (pixbuf) == height)
+              {
+                g_object_ref (G_OBJECT (pixbuf));
+              }
+            else
+              {
+                pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                                  gdk_pixbuf_get_width (pixbuf),
+                                                  height,
+                                                  GDK_INTERP_BILINEAR);
+                if (pixbuf == NULL)
+                  return;
+              }
+            break;
+          case META_TEXTURE_DRAW_SCALED_HORIZONTALLY:
+            pixbuf = spec->data.image.pixbuf;
+            if (gdk_pixbuf_get_width (pixbuf) == width)
+              {
+                g_object_ref (G_OBJECT (pixbuf));
+              }
+            else
+              {
+                pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                                  width,
+                                                  gdk_pixbuf_get_height (pixbuf),
+                                                  GDK_INTERP_BILINEAR);
+                if (pixbuf == NULL)
+                  return;
+              }
+            break;
+          case META_TEXTURE_DRAW_SCALED_BOTH:
+            pixbuf = spec->data.image.pixbuf;
+            if (gdk_pixbuf_get_width (pixbuf) == width &&
+                gdk_pixbuf_get_height (pixbuf) == height)
+              {
+                g_object_ref (G_OBJECT (pixbuf));
+              }
+            else
+              {
+                pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                                  width, height,
+                                                  GDK_INTERP_BILINEAR);
+                if (pixbuf == NULL)
+                  return;
+              }
+            break;
+          }
+
+        g_return_if_fail (pixbuf != NULL);
+        
+        render_pixbuf (drawable, clip, pixbuf, x, y);
+        
+        g_object_unref (G_OBJECT (pixbuf));
+      }
+      break;
+    }  
+}

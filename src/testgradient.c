@@ -47,7 +47,7 @@ render_simple (GdkDrawable *drawable,
                                  gc,
                                  0, 0,
                                  0, 0, width, height,
-                                 GDK_RGB_DITHER_NORMAL,
+                                 GDK_RGB_DITHER_MAX,
                                  0, 0);
 
   g_object_unref (G_OBJECT (pixbuf));

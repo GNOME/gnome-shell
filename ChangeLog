@@ -1,8 +1,26 @@
+2002-01-08  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in (ACLOCAL): add code to save ACLOCAL_FLAGS
+
+	* src/frames.c (meta_frames_expose_event): max dither
+
+	* src/testgradient.c (render_simple): change dither mode to MAX
+	to avoid banding
+
+	* src/theme.c: lose the gradient cache, and put in some initial
+	data types for the theme format
+
 2002-01-07  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (meta_frames_expose_event): make gradient a bit
 	more subtle (don't go to the full background, but to a blend of
 	selection and background; put lighter color on top)
+
+2002-01-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_notify_focus): rearrange code a bit to
+	make it clear that has_focus flag always follows
+	display->focus_window
 
 2002-01-06  Havoc Pennington  <hp@pobox.com>
 

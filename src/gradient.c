@@ -20,6 +20,7 @@
  * 02111-1307, USA.  */
 
 #include "gradient.h"
+#include "util.h"
 #include <string.h>
 
 /* This is all Alfredo's and Dan's usual very nice WindowMaker code,
@@ -277,10 +278,7 @@ meta_gradient_create_horizontal (int width, int height,
   int rf, gf, bf;
   int rowstride;
 
-  /* FIXME the no_padding = TRUE here is a workaround for a problem
-   * create_diagonal that can't handle a funky rowstride
-   */
-  pixbuf = blank_pixbuf (width, height, TRUE);
+  pixbuf = blank_pixbuf (width, height, FALSE);
   if (pixbuf == NULL)
     return NULL;
     
@@ -448,9 +446,6 @@ meta_gradient_create_diagonal (int width, int height,
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 
-  /* FIXME here is the pixbuf that we require to have width == rowstride
-   * resulting in no_padding = TRUE in create_horizontal
-   */
   tmp = meta_gradient_create_horizontal (2*width-1, 1, from, to);
   if (!tmp)
     {
@@ -473,9 +468,6 @@ meta_gradient_create_diagonal (int width, int height,
   /* copy the first line to the other lines with corresponding offset */
   for (j=0, offset=0.0; j<rowstride*height; j += rowstride)
     {
-      /* FIXME this algorithm assumes rowstride == width in the source
-       * pixbuf, because otherwise we'd accidentally copy junk pixels.
-       */
       memcpy (&(pixels[j]), &ptr[3*(int)offset], width);
       offset += a;
     }
@@ -702,9 +694,6 @@ meta_gradient_create_multi_diagonal (int width, int height,
   if (count > height)
     count = height;
 
-  /* FIXME here again is a bug that requires multi_horizontal
-   * to have width == rowstride
-   */
   if (count > 2)
     tmp = meta_gradient_create_multi_horizontal (2*width-1, 1, colors, count);
   else
@@ -736,39 +725,3 @@ meta_gradient_create_multi_diagonal (int width, int height,
   return pixbuf;
 }
 
-MetaGradientDescription*
-meta_gradient_description_new (MetaGradientType type,
-                               const GdkColor  *colors,
-                               int              n_colors)
-{
-  MetaGradientDescription *desc;
-
-  desc = g_new (MetaGradientDescription, 1);
-
-  desc->type = type;
-  desc->colors = g_new (GdkColor, n_colors);
-  desc->n_colors = n_colors;
-
-  memcpy (desc->colors, colors, sizeof (GdkColor) * n_colors);
-  
-  return desc;
-}
-
-void
-meta_gradient_description_free (MetaGradientDescription *desc)
-{
-  g_return_if_fail (desc != NULL);
-  
-  g_free (desc->colors);
-  g_free (desc);
-}
-
-GdkPixbuf*
-meta_gradient_description_render (const MetaGradientDescription *desc,
-                                  int                            width,
-                                  int                            height)
-{
-  return meta_gradient_create_multi (width, height,
-                                     desc->colors, desc->n_colors,
-                                     desc->type);
-}

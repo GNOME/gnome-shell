@@ -32,27 +32,6 @@ typedef enum
   META_GRADIENT_DIAGONAL
 } MetaGradientType;
 
-typedef struct _MetaGradientDescription MetaGradientDescription;
-
-/* this doesn't support interwoven at the moment, since
- * I don't know what interwoven is good for
- */
-struct _MetaGradientDescription
-{
-  MetaGradientType type;
-  GdkColor *colors;
-  int       n_colors;
-};
-
-MetaGradientDescription* meta_gradient_description_new    (MetaGradientType               type,
-                                                           const GdkColor                *colors,
-                                                           int                            n_colors);
-void                     meta_gradient_description_free   (MetaGradientDescription       *desc);
-GdkPixbuf*               meta_gradient_description_render (const MetaGradientDescription *desc,
-                                                           int                            width,
-                                                           int                            height);
-
-
 GdkPixbuf* meta_gradient_create_simple     (int               width,
                                             int               height,
                                             const GdkColor   *from,
@@ -69,5 +48,6 @@ GdkPixbuf* meta_gradient_create_interwoven (int               width,
                                             int               thickness1,
                                             const GdkColor    colors2[2],
                                             int               thickness2);
+
 
 #endif

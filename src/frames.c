@@ -1771,12 +1771,12 @@ meta_frames_expose_event            (GtkWidget           *widget,
           
           layout_gc = widget->style->fg_gc[GTK_STATE_SELECTED];
 
-          gradient = meta_theme_get_gradient (META_GRADIENT_DIAGONAL,
-                                              &selected_faded,
-                                              &widget->style->bg[GTK_STATE_SELECTED],
-                                              fgeom.title_rect.width,
-                                              fgeom.title_rect.height);
-
+          gradient = meta_gradient_create_simple (fgeom.title_rect.width,
+                                                  fgeom.title_rect.height,
+                                                  &selected_faded,
+                                                  &widget->style->bg[GTK_STATE_SELECTED],
+                                                  META_GRADIENT_DIAGONAL);
+          
           if (gradient != NULL)
             {            
               gdk_pixbuf_render_to_drawable (gradient,
@@ -1787,7 +1787,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                                              fgeom.title_rect.y,
                                              fgeom.title_rect.width,
                                              fgeom.title_rect.height,
-                                             GDK_RGB_DITHER_NORMAL,
+                                             GDK_RGB_DITHER_MAX,
                                              0, 0);
                 
               g_object_unref (G_OBJECT (gradient));
