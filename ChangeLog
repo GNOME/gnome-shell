@@ -1,5 +1,20 @@
 2002-01-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_notify_focus): put in attempted fix
+	for the GTK 1.2 plug/socket screwup, now that my fixed debug spew
+	reveals what's actually happening. ;-)
+
+	* src/gradient.c (meta_gradient_description_new): object 
+	to store gradient descriptions
+
+	* src/window.c (meta_window_notify_focus): fix the debug spew
+	that was confusing me
+
+	* src/wm-tester/focus-window.c: add little program to focus 
+	a window ID
+
+2002-01-06  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (meta_theme_get_gradient): change to use spiffy 
 	gradient code.
 

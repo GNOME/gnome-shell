@@ -28,7 +28,14 @@
 /* theme.[hc] is basically responsible for drawing parts of the UI using
  * theme data
  */
+typedef struct _MetaFrameStyle MetaFrameStyle;
 
+struct _MetaFrameStyle
+{
+  MetaGradientDescription *title_gradient;
+  
+  
+};
 
 GdkPixbuf* meta_theme_get_gradient (MetaGradientType  type,
                                     const GdkColor   *color_one,

@@ -7,7 +7,11 @@ wm_tester_SOURCES= 				\
 test_gravity_SOURCES=				\
 	test-gravity.c
 
-noinst_PROGRAMS=wm-tester test-gravity
+focus_window_SOURCES=				\
+	focus-window.c
+
+noinst_PROGRAMS=wm-tester test-gravity focus-window
 
 wm_tester_LDADD= @METACITY_LIBS@
 test_gravity_LDADD= @METACITY_LIBS@
+focus_window_LDADD= @METACITY_LIBS@

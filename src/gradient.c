@@ -736,118 +736,39 @@ meta_gradient_create_multi_diagonal (int width, int height,
   return pixbuf;
 }
 
-#ifdef META_TEST_GRADIENTS
-#include <gtk/gtk.h>
-
-typedef void (* RenderGradientFunc) (GdkDrawable *drawable,
-                                     GdkGC       *gc,
-                                     int          width,
-                                     int          height);
-
-static void
-render_simple (GdkDrawable *drawable,
-               GdkGC       *gc,
-               int width, int height,
-               MetaGradientType type)
+MetaGradientDescription*
+meta_gradient_description_new (MetaGradientType type,
+                               const GdkColor  *colors,
+                               int              n_colors)
 {
-  GdkPixbuf *pixbuf;
-  GdkColor from, to;
+  MetaGradientDescription *desc;
 
-  gdk_color_parse ("blue", &from);
-  gdk_color_parse ("green", &to);
+  desc = g_new (MetaGradientDescription, 1);
 
-  pixbuf = meta_gradient_create_simple (width, height,
-                                        &from, &to,
-                                        type);
+  desc->type = type;
+  desc->colors = g_new (GdkColor, n_colors);
+  desc->n_colors = n_colors;
 
-  gdk_pixbuf_render_to_drawable (pixbuf,
-                                 drawable,
-                                 gc,
-                                 0, 0,
-                                 0, 0, width, height,
-                                 GDK_RGB_DITHER_NORMAL,
-                                 0, 0);
-
-  g_object_unref (G_OBJECT (pixbuf));
-}
-
-static void
-render_vertical_func (GdkDrawable *drawable,
-                      GdkGC *gc,
-                      int width, int height)
-{
-  render_simple (drawable, gc, width, height, META_GRADIENT_VERTICAL);
-}
-
-static void
-render_horizontal_func (GdkDrawable *drawable,
-                        GdkGC *gc,
-                        int width, int height)
-{
-  render_simple (drawable, gc, width, height, META_GRADIENT_HORIZONTAL);
-}
-
-static void
-render_diagonal_func (GdkDrawable *drawable,
-                      GdkGC *gc,
-                      int width, int height)
-{
-  render_simple (drawable, gc, width, height, META_GRADIENT_DIAGONAL);
-}
-
-static gboolean
-expose_callback (GtkWidget *widget,
-                 GdkEventExpose *event,
-                 gpointer data)
-{
-  RenderGradientFunc func = data;
-
-  (* func) (widget->window,
-            widget->style->fg_gc[widget->state],
-            widget->allocation.width,
-            widget->allocation.height);
-
-  return TRUE;
-}
-
-static GtkWidget*
-create_gradient_window (RenderGradientFunc func)
-{
-  GtkWidget *window;
-  GtkWidget *drawing_area;
-
-  window = gtk_window_new (GTK_WINDOW_POPUP);
-
-  drawing_area = gtk_drawing_area_new ();
-
-  gtk_widget_set_size_request (drawing_area, 175, 175);
-
-  g_signal_connect (G_OBJECT (drawing_area),
-                    "expose_event",
-                    G_CALLBACK (expose_callback),
-                    func);
-
-  gtk_container_add (GTK_CONTAINER (window), drawing_area);
-
-  return window;
+  memcpy (desc->colors, colors, sizeof (GdkColor) * n_colors);
+  
+  return desc;
 }
 
 void
-meta_gradient_test (void)
+meta_gradient_description_free (MetaGradientDescription *desc)
 {
-  GtkWidget *window;
-
-  window = create_gradient_window (render_vertical_func);
-  gtk_window_move (GTK_WINDOW (window), 0, 0);
-  gtk_widget_show_all (window);
+  g_return_if_fail (desc != NULL);
   
-  window = create_gradient_window (render_horizontal_func);
-  gtk_window_move (GTK_WINDOW (window), 0, 200);
-  gtk_widget_show_all (window);
-
-  window = create_gradient_window (render_diagonal_func);
-  gtk_window_move (GTK_WINDOW (window), 200, 0);
-  gtk_widget_show_all (window);
+  g_free (desc->colors);
+  g_free (desc);
 }
-#endif
 
+GdkPixbuf*
+meta_gradient_description_render (const MetaGradientDescription *desc,
+                                  int                            width,
+                                  int                            height)
+{
+  return meta_gradient_create_multi (width, height,
+                                     desc->colors, desc->n_colors,
+                                     desc->type);
+}

@@ -2683,13 +2683,13 @@ meta_window_notify_focus (MetaWindow *window,
               event->type != UnmapNotify ?
               meta_focus_mode_to_string (event->xfocus.mode) : "n/a",
               event->type != UnmapNotify ?
-              meta_focus_detail_to_string (event->xfocus.mode) : "n/a");
+              meta_focus_detail_to_string (event->xfocus.detail) : "n/a");
   
   if ((event->type == FocusIn ||
        event->type == FocusOut) &&
       (event->xfocus.mode == NotifyGrab ||
        event->xfocus.mode == NotifyUngrab ||
-       /* From WindowMaker */
+       /* From WindowMaker, ignore all funky pointer root events */
        event->xfocus.detail > NotifyNonlinearVirtual))
     {
       meta_topic (META_DEBUG_FOCUS,
@@ -2720,6 +2720,16 @@ meta_window_notify_focus (MetaWindow *window,
   else if (event->type == FocusOut ||
            event->type == UnmapNotify)
     {
+      if (event->type == FocusOut &&
+          event->xfocus.detail == NotifyInferior)
+        {
+          /* This event means the client moved focus to a subwindow */
+          meta_topic (META_DEBUG_FOCUS,
+                      "Ignoring focus out on %s with NotifyInferior\n",
+                      window->desc);
+          return TRUE;
+        }
+      
       if (window == window->display->focus_window)
         {
           meta_topic (META_DEBUG_FOCUS,
