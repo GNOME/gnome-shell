@@ -7,19 +7,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2003-09-04 12:47-0400\n"
-"PO-Revision-Date: 2003-07-20 12:23+0900\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-06 18:32+0900\n"
+"PO-Revision-Date: 2003-09-06 18:31+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr "使い方: %s\n"
+msgstr "用法: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
@@ -83,11 +83,11 @@ msgstr "致命的なIOエラー %d (%s) - ディスプレイ '%s' が発生し�
 
 #: src/frames.c:1015
 msgid "Close Window"
-msgstr "ウィンドウを閉じる"
+msgstr "ウィンドウを閉じます"
 
 #: src/frames.c:1018
 msgid "Window Menu"
-msgstr "ウィンドウ・メニュー"
+msgstr "ウィンドウ・メニューを表示します"
 
 #: src/frames.c:1021
 msgid "Minimize Window"
@@ -173,7 +173,7 @@ msgstr "元のサイズに戻す(_X)"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr "巻き上げ(_U)"
+msgstr "巻き上げる(_U)"
 
 #: src/menu.c:56
 msgid "_Unroll"
@@ -185,7 +185,7 @@ msgstr "移動(_M)"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr "サイズ変更(_R)"
+msgstr "サイズの変更(_R)"
 
 #. separator
 #: src/menu.c:60
@@ -2860,7 +2860,7 @@ msgstr "ユーザ定義の定数は大文字で始まらなければなりませ
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "定数 \"%s\" はすでに定義されています"
+msgstr "定数 \"%s\" は既に定義されています"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
@@ -2868,7 +2868,7 @@ msgstr "ウィンドウへのフォーカスの当て方を選択します"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr "ウィンドウフォーカス"
+msgstr "ウィンドウ・フォーカス"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
