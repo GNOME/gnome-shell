@@ -278,6 +278,8 @@ meta_frames_init (MetaFrames *frames)
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
   frames->tooltip_timeout = 0;
+
+  frames->expose_delay_count = 0;
 }
 
 static void
@@ -698,6 +700,7 @@ meta_frames_manage_window (MetaFrames *frames,
   
   frame->xwindow = xwindow;
   frame->layout = NULL;
+  frame->expose_delayed = FALSE;
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
   
@@ -1601,6 +1604,13 @@ meta_frames_expose_event            (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  if (frames->expose_delay_count > 0)
+    {
+      /* Redraw this entire frame later */
+      frame->expose_delayed = TRUE;
+      return TRUE;
+    }
+  
   meta_frames_calc_geometry (frames, frame, &fgeom);
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
   meta_core_get_frame_size (gdk_display, frame->xwindow, &width, &height);
@@ -2095,4 +2105,41 @@ get_control (MetaFrames *frames,
     }
   
   return META_FRAME_CONTROL_NONE;
+}
+
+void
+meta_frames_push_delay_exposes (MetaFrames *frames)
+{
+  frames->expose_delay_count += 1;
+}
+
+static void
+queue_pending_exposes_func (gpointer key, gpointer value, gpointer data)
+{
+  MetaUIFrame *frame;
+  MetaFrames *frames;
+
+  frames = META_FRAMES (data);
+  frame = value;
+
+  if (frame->expose_delayed)
+    {
+      gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+      frame->expose_delayed = FALSE;
+    }
+}
+
+void
+meta_frames_pop_delay_exposes  (MetaFrames *frames)
+{
+  g_return_if_fail (frames->expose_delay_count > 0);
+  
+  frames->expose_delay_count -= 1;
+
+  if (frames->expose_delay_count == 0)
+    {
+      g_hash_table_foreach (frames->frames,
+                            queue_pending_exposes_func,
+                            frames);
+    }
 }

@@ -100,6 +100,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
       else
         {
           meta_display_ungrab (context->screen->display);
+          meta_ui_pop_delay_exposes (context->screen->ui);
           XFreeGC (context->screen->display->xdisplay,
                    context->gc);
         }
@@ -235,6 +236,7 @@ meta_effects_draw_box_animation (MetaScreen *screen,
       
       /* Grab the X server to avoid screen dirt */
       meta_display_grab (context->screen->display);
+      meta_ui_push_delay_exposes (context->screen->ui);
     }
 
   /* Do this only after we get the pixbuf from the server,

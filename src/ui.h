@@ -109,4 +109,13 @@ GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
                                             int          dest_y,
                                             int          width,
                                             int          height);
+
+/* Used when we have a server grab and draw all over everything,
+ * then we need to handle exposes after doing that, instead of
+ * during it
+ */
+void      meta_ui_push_delay_exposes (MetaUI *ui);
+void      meta_ui_pop_delay_exposes  (MetaUI *ui);
+
 #endif
+

@@ -66,6 +66,7 @@ struct _MetaUIFrame
   Window xwindow;
   GdkWindow *window;
   PangoLayout *layout;
+  guint expose_delayed : 1;
 };
 
 struct _MetaFrames
@@ -81,6 +82,8 @@ struct _MetaFrames
 
   guint tooltip_timeout;
   MetaUIFrame *last_motion_frame;
+
+  int expose_delay_count;
 };
 
 struct _MetaFramesClass
@@ -120,5 +123,8 @@ void meta_frames_get_pixmap_for_control (MetaFrames *frames,
 void meta_frames_notify_menu_hide (MetaFrames *frames);
 
 Window meta_frames_get_moving_frame (MetaFrames *frames);
+
+void meta_frames_push_delay_exposes (MetaFrames *frames);
+void meta_frames_pop_delay_exposes  (MetaFrames *frames);
 
 #endif

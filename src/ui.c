@@ -285,7 +285,7 @@ meta_image_window_set_position (MetaImageWindow *iw,
                                 int              x,
                                 int              y)
 {
-  gtk_widget_set_uposition (iw->window, x, y);
+  gtk_window_move (iw->window, x, y);
 }
 
 GdkPixbuf*
@@ -321,5 +321,17 @@ meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
   g_object_unref (G_OBJECT (drawable));
 
   return retval;
+}
+
+void
+meta_ui_push_delay_exposes (MetaUI *ui)
+{
+  meta_frames_push_delay_exposes (ui->frames);
+}
+
+void
+meta_ui_pop_delay_exposes  (MetaUI *ui)
+{
+  meta_frames_pop_delay_exposes (ui->frames);
 }
 
