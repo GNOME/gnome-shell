@@ -316,7 +316,7 @@ meta_window_menu_new   (MetaFrames         *frames,
       meta_verbose ("Creating %d-workspace menu current space %d\n",
                     n_workspaces, active_workspace);
       
-      if (n_workspaces > 0)
+      if (n_workspaces > 1)
         {
           GtkWidget *mi;
           Display *display;

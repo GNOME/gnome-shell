@@ -1,3 +1,9 @@
+2003-01-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/menu.c (meta_window_menu_new): don't create workspaces
+	menu items if only 1 workspace. Fix for #101952 from 
+	Orien Vandenbergh
+
 2003-01-28  Bill Haneman <bill.haneman@sun.com>
 
 	* Re-instated visual-bell patch 
