@@ -1,5 +1,10 @@
 2002-07-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/tabpopup.c (selectable_workspace_new): increase the size of 
+	the mini workspaces
+
+2002-07-06  Havoc Pennington  <hp@pobox.com>
+
         Apply blackc@speakeasy.net patch, bug #83940, to do
 	mini-workspaces similar to the pager, when switching 
 	spaces.

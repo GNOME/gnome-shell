@@ -628,6 +628,7 @@ struct _MetaSelectWorkspaceClass
 static GType meta_select_workspace_get_type (void) G_GNUC_CONST;
 
 #define SELECT_OUTLINE_WIDTH 2
+#define MINI_WORKSPACE_WIDTH 48
 
 static GtkWidget*
 selectable_workspace_new (MetaWorkspace *workspace)
@@ -641,8 +642,8 @@ selectable_workspace_new (MetaWorkspace *workspace)
   
   /* account for select rect */ 
   gtk_widget_set_size_request (widget,
-                               META_ICON_WIDTH + SELECT_OUTLINE_WIDTH * 2,
-                               META_ICON_WIDTH * screen_aspect + SELECT_OUTLINE_WIDTH * 2);
+                               MINI_WORKSPACE_WIDTH + SELECT_OUTLINE_WIDTH * 2,
+                               MINI_WORKSPACE_WIDTH * screen_aspect + SELECT_OUTLINE_WIDTH * 2);
 
   META_SELECT_WORKSPACE (widget)->workspace = workspace;
 
