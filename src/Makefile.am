@@ -114,8 +114,11 @@ schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
-IMAGES=default_icon.png
-VARIABLES=default_icon_data $(srcdir)/default_icon.png
+IMAGES=default_icon.png stock_maximize.png stock_minimize.png stock_delete.png
+VARIABLES=default_icon_data $(srcdir)/default_icon.png \
+          stock_maximize_data $(srcdir)/stock_maximize.png \
+          stock_minimize_data $(srcdir)/stock_minimize.png \
+          stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
 CLEANFILES = inlinepixbufs.h

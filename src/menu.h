@@ -25,6 +25,11 @@
 #include <gtk/gtk.h>
 #include "frames.h"
 
+/* Stock icons */
+#define METACITY_STOCK_DELETE   "metacity-delete"
+#define METACITY_STOCK_MINIMIZE "metacity-minimize"
+#define METACITY_STOCK_MAXIMIZE "metacity-maximize"
+
 struct _MetaWindowMenu
 {
   MetaFrames *frames;

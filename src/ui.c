@@ -1,7 +1,8 @@
 /* Metacity interface for talking to GTK+ UI module */
 
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2002 Havoc Pennington
+ * stock icon code Copyright (C) 2002 Jorn Baayen <jorn@nl.linux.org>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -34,6 +35,8 @@
 #include <pango/pangox.h>
 
 #include <string.h>
+
+static void meta_stock_icons_init (void);
 
 struct _MetaUI
 {
@@ -69,6 +72,8 @@ meta_ui_init (int *argc, char ***argv)
     pango_font_description_free (font_desc);
     g_object_unref (G_OBJECT (context));
   }
+
+  meta_stock_icons_init ();
 }
 
 Display*
@@ -680,4 +685,46 @@ meta_ui_window_is_widget (MetaUI *ui,
     }
   else
     return FALSE;
+}
+
+/* stock icon code Copyright (C) 2002 Jorn Baayen <jorn@nl.linux.org> */
+typedef struct
+{
+  char *stock_id;
+  const guint8 *icon_data;
+} MetaStockIcon;
+
+static void
+meta_stock_icons_init (void)
+{
+  GtkIconFactory *factory;
+  int i;
+
+  MetaStockIcon items[] =
+  {
+    { METACITY_STOCK_DELETE,   stock_delete_data   },
+    { METACITY_STOCK_MINIMIZE, stock_minimize_data },
+    { METACITY_STOCK_MAXIMIZE, stock_maximize_data }
+  };
+
+  factory = gtk_icon_factory_new ();
+  gtk_icon_factory_add_default (factory);
+
+  for (i = 0; i < (gint) G_N_ELEMENTS (items); i++)
+    {
+      GtkIconSet *icon_set;
+      GdkPixbuf *pixbuf;
+
+      pixbuf = gdk_pixbuf_new_from_inline (-1, items[i].icon_data,
+					   FALSE,
+					   NULL);
+
+      icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
+      gtk_icon_factory_add (factory, items[i].stock_id, icon_set);
+      gtk_icon_set_unref (icon_set);
+		
+      g_object_unref (G_OBJECT (pixbuf));
+    }
+
+  g_object_unref (G_OBJECT (factory));
 }

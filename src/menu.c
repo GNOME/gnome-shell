@@ -27,6 +27,7 @@
 #include "util.h"
 #include "core.h"
 #include "themewidget.h"
+#include "stock-icons.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -48,9 +49,9 @@ struct _MenuData
 static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static MenuItem menuitems[] = {
-  { META_MENU_OP_DELETE, NULL, N_("_Close") },
-  { META_MENU_OP_MINIMIZE, NULL, N_("_Minimize") },
-  { META_MENU_OP_MAXIMIZE, NULL, N_("Ma_ximize") },
+  { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, N_("_Close") },
+  { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, N_("_Minimize") },
+  { META_MENU_OP_MAXIMIZE, METACITY_STOCK_MAXIMIZE, N_("Ma_ximize") },
   { META_MENU_OP_UNMAXIMIZE, NULL, N_("Unma_ximize") },
   { META_MENU_OP_SHADE, NULL, N_("_Shade") },
   { META_MENU_OP_UNSHADE, NULL, N_("Un_shade") },
@@ -118,40 +119,6 @@ activate_cb (GtkWidget *menuitem, gpointer data)
                       md->menu->data);
 
   /* menu may now be freed */
-}
-
-static void
-menu_icon_size_func (MetaArea *area,
-                     int      *width,
-                     int      *height,
-                     void     *user_data)
-{
-  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,
-                        width, height);
-}
-
-static void
-menu_icon_expose_func (MetaArea       *area,
-                       GdkEventExpose *event,
-                       int             x_offset,
-                       int             y_offset,
-                       void           *user_data)
-{
-  int width, height;
-  MetaMenuIconType type;
-  
-  type = GPOINTER_TO_INT (user_data);
-  
-  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,
-                        &width, &height);
-  
-  meta_theme_draw_menu_icon (meta_theme_get_current (),
-                             GTK_WIDGET (area),
-                             GTK_WIDGET (area)->window,
-                             &event->area,
-                             x_offset, y_offset,
-                             width, height,
-                             type);
 }
 
 /*
@@ -262,49 +229,7 @@ meta_window_menu_new   (MetaFrames         *frames,
 
               image = NULL;
               
-              switch (menuitems[i].op)
-                {
-                case META_MENU_OP_MAXIMIZE:
-                  image = meta_area_new ();
-                  meta_area_setup (META_AREA (image),
-                                   menu_icon_size_func,
-                                   menu_icon_expose_func,
-                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_MAXIMIZE),
-                                   NULL);
-                  break;
-
-                case META_MENU_OP_UNMAXIMIZE:
-                  image = meta_area_new ();
-                  meta_area_setup (META_AREA (image),
-                                   menu_icon_size_func,
-                                   menu_icon_expose_func,
-                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_UNMAXIMIZE),
-                                   NULL);
-                  break;
-                  
-                case META_MENU_OP_MINIMIZE:
-                  image = meta_area_new ();
-                  meta_area_setup (META_AREA (image),
-                                   menu_icon_size_func,
-                                   menu_icon_expose_func,
-                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_MINIMIZE),
-                                   NULL);
-                  break;
-
-                case META_MENU_OP_DELETE:
-                  image = meta_area_new ();
-                  meta_area_setup (META_AREA (image),
-                                   menu_icon_size_func,
-                                   menu_icon_expose_func,
-                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_CLOSE),
-                                   NULL);
-                  break;
-                default:
-                  break;
-                }
-              
-              if (image == NULL && 
-                  menuitems[i].stock_id)
+              if (menuitems[i].stock_id)
                 {
                   image = gtk_image_new_from_stock (menuitems[i].stock_id,
                                                     GTK_ICON_SIZE_MENU);
