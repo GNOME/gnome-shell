@@ -26,8 +26,6 @@
 #include "errors.h"
 #include "keybindings.h"
 
-#include <X11/extensions/Xrender.h>
-
 #ifdef HAVE_RENDER
 #include <X11/extensions/Xrender.h>
 #endif
@@ -40,6 +38,61 @@
                     EnterWindowMask | LeaveWindowMask |            \
                     FocusChangeMask |                              \
                     ColormapChangeMask)
+static Visual*
+find_argb_visual (MetaDisplay *display,
+                  int          scr)
+{
+#ifdef HAVE_RENDER
+  XVisualInfo		*xvi;
+  XVisualInfo		template;
+  int			nvi;
+  int			i;
+  XRenderPictFormat	*format;
+  Visual		*visual;
+
+  if (!META_DISPLAY_HAS_RENDER (display))
+    return NULL;
+  
+  template.screen = scr;
+  template.depth = 32;
+  template.class = TrueColor;
+  xvi = XGetVisualInfo (display->xdisplay, 
+                        VisualScreenMask |
+                        VisualDepthMask |
+                        VisualClassMask,
+                        &template,
+                        &nvi);
+  if (!xvi)
+    return 0;
+  
+  visual = NULL;
+
+  for (i = 0; i < nvi; i++)
+    {
+      format = XRenderFindVisualFormat (display->xdisplay, xvi[i].visual);
+      if (format->type == PictTypeDirect && format->direct.alphaMask)
+	{
+          visual = xvi[i].visual;
+          break;
+	}
+    }
+
+  XFree (xvi);
+
+  if (visual)
+    meta_topic (META_DEBUG_COMPOSITOR,
+                "Found ARGB visual 0x%lx\n",
+                (long) visual->visualid);
+  else
+    meta_topic (META_DEBUG_COMPOSITOR,
+                "No ARGB visual found\n");
+  
+  return visual;
+#else  /* RENDER */
+  return NULL;
+#endif /* !RENDER */
+}
+
 static Visual*
 find_argb_visual (MetaDisplay *display,
                   int          scr)

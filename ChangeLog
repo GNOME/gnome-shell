@@ -1,5 +1,11 @@
 2004-08-26  Havoc Pennington  <hp@redhat.com>
 
+	* src/frame.c, src/theme.c: couple of cosmetic tweaks from
+	resolving my local patch with the bugzilla patch from the 8-19
+	entry below
+
+2004-08-26  Havoc Pennington  <hp@redhat.com>
+
 	* configure.in: move the have_xrender variable initialization up
 	in the file since it can be set as part of composite check
 
