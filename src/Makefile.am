@@ -54,7 +54,7 @@ desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_DATA=metacity.desktop
 
 IMAGES=default_icon.png
-VARIABLES=default_icon_data default_icon.png
+VARIABLES=default_icon_data $(srcdir)/default_icon.png
 
 noinst_DATA = inlinepixbufs.h
 CLEANFILES += $(noinst_DATA)

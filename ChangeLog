@@ -1,5 +1,9 @@
 2001-09-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/Makefile.am (VARIABLES): fix srcdir != builddir glitch
+
+2001-09-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/ui.c: use the inline image data for default icon
 	
 	* src/common.h (META_MINI_ICON_HEIGHT): move icon size defines
