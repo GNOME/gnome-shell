@@ -16,9 +16,9 @@
 	<distance name="left_titlebar_edge" value="5"/>
 	<distance name="right_titlebar_edge" value="5"/>
 	<aspect_ratio name="button" value="1.0"/> 
-	<distance name="title_vertical_pad" value="3"/>
-	<border name="title_border" left="3" right="3" top="4" bottom="4"/>
-	<border name="button_border" left="0" right="0" top="5" bottom="5"/>
+	<distance name="title_vertical_pad" value="2"/>
+	<border name="title_border" left="0" right="0" top="4" bottom="4"/>
+	<border name="button_border" left="0" right="0" top="4" bottom="4"/>
 </frame_geometry>
 
 <!-- strip borders off the normal geometry -->
@@ -28,7 +28,7 @@
 	<distance name="bottom_height" value="0"/>
 	<distance name="left_titlebar_edge" value="0"/>
 	<distance name="right_titlebar_edge" value="0"/>
-	<border name="title_border" left="3" right="3" top="0" bottom="3"/>
+	<border name="title_border" left="0" right="0" top="0" bottom="3"/>
 	<border name="button_border" left="0" right="0" top="0" bottom="3"/>
 </frame_geometry>
 
@@ -40,7 +40,7 @@
 	<distance name="right_titlebar_edge" value="3"/>
 	<aspect_ratio name="button" value="1.0"/>      
 	<distance name="title_vertical_pad" value="1"/>
-	<border name="title_border" left="3" right="4" top="3" bottom="3"/>
+	<border name="title_border" left="0" right="0" top="3" bottom="3"/>
 	<border name="button_border" left="0" right="0" top="2" bottom="2"/>
 </frame_geometry>
 
@@ -77,6 +77,7 @@
 
 <!-- Button Icons -->
 <draw_ops name="menu_button">
+	
 	<clip x="5" y="5" width="width - 10" height="height - 10"/>
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="true"
 		x="ButtonIPad"
@@ -103,6 +104,7 @@
 		y2="height * 1.5 + 2"/>
 </draw_ops>
 <draw_ops name="menu_button_pressed">
+	<include name="button_pressed_bg"/>
 	<clip x="5" y="5" width="width - 10" height="height - 10"/>
 	<rectangle color="gtk:fg[ACTIVE]" filled="true"
 		x="ButtonIPad"
@@ -141,6 +143,7 @@
 		y2="height - ButtonIPad - 2"/>
 </draw_ops>
 <draw_ops name="minimize_button_pressed">
+	<include name="button_pressed_bg"/>
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
 		x="ButtonIPad"
 		y="ButtonIPad"
@@ -188,6 +191,7 @@
 		height="height-ButtonIPad*2-1"/>
 </draw_ops>
 <draw_ops name="maximize_button_pressed">
+	<include name="button_pressed_bg"/>
 	<line color="gtk:fg[INSENSITIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="ButtonIPad + 2"
@@ -245,6 +249,7 @@
 		y2="ButtonIPad + 4 + 2"/>
 </draw_ops>
 <draw_ops name="restore_button_pressed">
+	<include name="button_pressed_bg"/>
 	<rectangle color="gtk:fg[INSENSITIVE]" filled="false"
 		x="ButtonIPad"
 		y="ButtonIPad"
@@ -313,6 +318,7 @@
 		height="1"/>
 </draw_ops>
 <draw_ops name="close_button_pressed">
+	<include name="button_pressed_bg"/>
 	<line color="gtk:fg[ACTIVE]" width="2"
 		x1="ButtonIPad + 1"
 		y1="ButtonIPad + 1"
@@ -346,13 +352,21 @@
 </draw_ops>
 
 <draw_ops name="outer_bevel_focused">
+	<gtk_box state="selected" shadow="out" x="2" y="2" width="width - 2"
+		height="height - 2"/>
+	<gradient type="diagonal" x="3" y="3" width="width - 6" height="title_height + 6">
+		<color value="blend/#ffffff/gtk:bg[SELECTED]/0.5"/>
+		<color value="gtk:bg[SELECTED]"/>
+	</gradient>
 	<rectangle color="gtk:fg[NORMAL]"
 		x="0" y="0" width="width - 1" height="height - 1"/>
-	<gtk_box state="normal" shadow="out"
-		x="1"
-		y="1"
-		width="width - 2"
-		height="height - 2"/>
+</draw_ops>
+
+<draw_ops name="gradient_background">
+	<gradient type="diagonal" x="0" y="0" width="width" height="title_height + 8">
+		<color value="blend/#ffffff/gtk:bg[SELECTED]/0.5"/>
+		<color value="gtk:bg[SELECTED]"/>
+	</gradient>
 </draw_ops>
 
 <draw_ops name="blank">
@@ -384,61 +398,49 @@
 </draw_ops>
 
 <draw_ops name="title_background">
-	<gtk_box state="normal" shadow="in" x="0" y="0" width="width"
-		height="height"/>
-	<clip x="2" y="2" width="width - 4" height="height - 4"/>
-	<rectangle color="gtk:bg[SELECTED]" filled="true"
-		x="2"
-		y="2"
-		width="width - 4"
-		height="height - 4"/>
 	<rectangle color="#ffffff" filled="true"
-		x="width - title_width - IconTitleSpacing + (height / 2)"
-		y="2"
-		width="title_width + IconTitleSpacing"
-		height="height - 4"/>
-	<line color="#ffffff" width="32"
-		x1="width - title_width + height + IconTitleSpacing + (height / 12)"
-		y1="0 - height + (height / 6)"
-		x2="width - title_width - height - IconTitleSpacing + (height / 12)"
-		y2="height * 2 - (height / 6)"/>
+		x="width - title_width - IconTitleSpacing + (height / 2) + height"
+		y="0"
+		width="width"
+		height="height"/>
+	<line color="#ffffff" width="48"
+		x1="width - title_width + (height / 2) + (height * 2)"
+		y1="0 - height"
+		x2="width - title_width + (height / 2) - height"
+		y2="height * 2"/>
 </draw_ops>
 
 <draw_ops name="title_text_focused_with_icon">
-	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="#000000"
-		x="width - title_width - IconTitleSpacing"
+		x="width - title_width - IconTitleSpacing + 3"
 		y="((height - title_height) / 2) `max` 0"/>
 	<icon
-		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5)"
-		y="(height - mini_icon_height) / 2"
+		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5) + 3"
+		y="(height - mini_icon_height) / 2 + 1"
 		width="mini_icon_width"
 		height="mini_icon_height"/>
 </draw_ops>
 
 <draw_ops name="title_text_focused_no_icon">
-	<clip x="0" y="0" width="width" height="height"/>
 	<title color="#000000"
-		x="width - title_width - IconTitleSpacing - 3"
-		y="((height - title_height) / 2) `max` 0"/>
+		x="width - title_width - IconTitleSpacing + 3"
+		y="((height - title_height) / 2) `max` 0 + 1"/>
 </draw_ops>
 
 <draw_ops name="title_text_with_icon">
-	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="gtk:fg[INSENSITIVE]"
-		x="width - title_width - IconTitleSpacing"
+		x="width - title_width - IconTitleSpacing + 3"
 		y="((height - title_height) / 2) `max` 0"/>
 	<icon alpha="0.25"
-		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5)"
-		y="(height - mini_icon_height) / 2"
+		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5) + 3"
+		y="(height - mini_icon_height) / 2 + 1"
 		width="mini_icon_width"
 		height="mini_icon_height"/>
 </draw_ops>
 
 <draw_ops name="title_text_no_icon">
-	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="gtk:fg[INSENSITIVE]"
-		x="width - title_width - IconTitleSpacing"
+		x="width - title_width - IconTitleSpacing + 3"
 		y="((height - title_height) / 2) `max` 0"/>
 </draw_ops>
 
@@ -467,30 +469,19 @@
 
 	<!-- we don't specify for normal or prelight, so nothing is used for
 		 those -->
-	<button function="left_middle_background" state="pressed"
-		draw_ops="button_pressed_bg"/>
-	<button function="right_middle_background" state="pressed"
-		draw_ops="button_pressed_bg"/>
+	<button function="menu" state="normal" draw_ops="menu_button"/>
+	<button function="menu" state="pressed" draw_ops="menu_button_pressed"/>
 
-	<button function="menu" state="normal"
-		draw_ops="menu_button"/>
-	<button function="menu" state="pressed"
-		draw_ops="menu_button_pressed"/>
-
-	<button function="minimize" state="normal"
-		draw_ops="minimize_button"/>
+	<button function="minimize" state="normal" draw_ops="minimize_button"/>
 	<button function="minimize" state="pressed"
 		draw_ops="minimize_button_pressed"/>
 
-	<button function="maximize" state="normal"
-		draw_ops="maximize_button"/>
+	<button function="maximize" state="normal" draw_ops="maximize_button"/>
 	<button function="maximize" state="pressed"
 		draw_ops="maximize_button_pressed"/>
 
-	<button function="close" state="normal"
-		draw_ops="close_button"/>
-	<button function="close" state="pressed"
-		draw_ops="close_button_pressed"/>
+	<button function="close" state="normal" draw_ops="close_button"/>
+	<button function="close" state="pressed" draw_ops="close_button_pressed"/>
 </frame_style>
 
 <frame_style name="normal_focused" geometry="normal" parent="normal_unfocused">
@@ -498,9 +489,18 @@
 	<piece position="title" draw_ops="title_focused"/>
 
 	<!-- we don't specify for prelight, so normal is used -->
+	<button function="left_left_background" state="normal"
+		draw_ops="button_normal_bg"/>
 	<button function="left_middle_background" state="normal"
 		draw_ops="button_normal_bg"/>
+	<button function="left_right_background" state="normal"
+		draw_ops="button_normal_bg"/>
+
+	<button function="right_left_background" state="normal"
+		draw_ops="button_normal_bg"/>
 	<button function="right_middle_background" state="normal"
+		draw_ops="button_normal_bg"/>
+	<button function="right_right_background" state="normal"
 		draw_ops="button_normal_bg"/>
 
 	<button function="close" state="normal" draw_ops="close_button_focused"/>
@@ -522,7 +522,7 @@
 
 <frame_style name="maximized_focused" geometry="normal_small_borders"
 	parent="normal_focused">
-	<piece position="entire_background" draw_ops="outline_focused"/>
+	<piece position="entire_background" draw_ops="gradient_background"/>
 	<button function="maximize" state="normal"
 		draw_ops="restore_button_focused"/>
 	<button function="maximize" state="pressed"
