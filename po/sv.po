@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-07-25 16:39+0200\n"
-"PO-Revision-Date: 2002-07-25 16:39+0200\n"
+"POT-Creation-Date: 2002-07-25 18:13+0200\n"
+"PO-Revision-Date: 2002-07-25 18:13+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,14 +35,15 @@ msgstr "Misslyckades med att tolka meddelandet \"%s\" från dialogprocess\n"
 #: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Fel vid läsande från dialogvisningsprocess: %s\n"
+msgstr "Fel vid läsning från dialogvisningsprocess: %s\n"
 
+# SUN CHANGED MESSAGE
 #: src/delete.c:333
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Fel vid start av metacity-dialog för att fråga om dödandet av ett program: %"
+"Fel vid start av metacity-dialog för att fråga om ett program skulle dödas: %"
 "s\n"
 
 #: src/delete.c:431
@@ -469,7 +470,7 @@ msgid ""
 msgstr ""
 "En del program bryter mot specifikationer på sätt som resulterar i oönskade "
 "beteenden i fönsterhanterare. Till exempel vill Metacity helst placera alla "
-"dialogfönster på en konsekvent position i förhållande till förälderfönstret. "
+"dialogfönster på en konsekvent position i förhållande till föräldrafönstret. "
 "Detta kräver att dialogpositioner som program anger ignoreras. Men en del "
 "versioner av Java/Swing märker sina popupmenyer som dialogfönster, vilket "
 "gör att Metacity måste inaktivera dialogpositionering för att menyer ska "
@@ -1365,13 +1366,13 @@ msgstr "Typsnitt för fönstertitel"
 #: src/prefs.c:478 src/prefs.c:494 src/prefs.c:510 src/prefs.c:527
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-nyckeln \"%s\" är inställd till en ogiltig typ\n"
+msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
 # SUN CHANGED MESSAGE
 #: src/prefs.c:561
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
-msgstr "GConf-nyckeln \"%s\" är inställd till ogiltigt värde"
+msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde"
 
 #: src/prefs.c:633
 #, c-format
