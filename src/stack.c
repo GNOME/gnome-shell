@@ -580,7 +580,7 @@ meta_stack_sync_to_server (MetaStack *stack)
    */
   stacked = g_array_new (FALSE, FALSE, sizeof (Window));
   root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
-  i = META_LAYER_LAST; 
+  i = META_LAYER_LAST;
   do
     {
       --i;

@@ -1682,7 +1682,7 @@ meta_window_configure_request (MetaWindow *window,
                                     window->size_hints.y,
                                     window->size_hints.width,
                                     window->size_hints.height);
-  news.gnome.org/994407481/index_html
+
   return TRUE;
 }
 
