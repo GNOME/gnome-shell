@@ -1,3 +1,14 @@
+2002-04-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (update_title): fix issue with GNU libc 
+	mangling %.10s format
+
+	* metacity.spec: Fix up spec file
+
+	* README: update README
+
+	* configure.in (ALL_LINGUAS): require GTK 2.0.0
+
 2002-04-15  Havoc Pennington  <hp@redhat.com>
 
 	* src/display.c (meta_display_ping_window): reply immediately for 

@@ -3740,8 +3740,11 @@ update_title (MetaWindow *window)
   if (window->title == NULL)
     window->title = g_strdup ("");
 
+  /* strndup is a hack since GNU libc has broken %.10s */
+  str = g_strndup (window->title, 10);
   g_free (window->desc);
-  window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
+  g_free (str);
 
   if (window->frame)
     meta_ui_set_frame_title (window->screen->ui,

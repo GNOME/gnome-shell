@@ -1,4 +1,4 @@
 
 SUBDIRS=src po
 
-EXTRA_DIST=HACKING theme-format.txt
+EXTRA_DIST=HACKING theme-format.txt metacity.spec

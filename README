@@ -9,13 +9,7 @@ your petty hangups about version numbers.
 COMPILING METACITY
 ===
 
-You need GTK+ 1.3.x (to become 2.0), at least version 1.3.13.  At the
-moment CVS HEAD works, but that can change.
-
-There are SRPMs and sometimes RPMs on the ftp site, but you'd be
-pretty lucky to get them to work for now, since they are often out of
-sync with GTK. You might try with the GTK from ftp.gtk.org, and also
-the GTK from http://people.redhat.com/hp/gnomehide/.
+You need GTK+ 2.0, ideally the latest in the 2.0.x series.
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
@@ -42,9 +36,15 @@ METACITY FEATURES
      gconftool-2 --type=string --set /apps/metacity/general/theme Crux
      gconftool-2 --type=string --set /apps/metacity/general/theme Gorilla
      gconftool-2 --type=string --set /apps/metacity/general/theme Atlanta
+     gconftool-2 --type=string --set /apps/metacity/general/theme Bright
+
+   See theme-format.txt for docs on the theme format. Use 
+   metacity-theme-viewer to preview themes.
 
  - Change number of workspaces via gconf-editor or gconftool:
      gconftool-2 --type=int --set /apps/metacity/general/num_workspaces 5
+
+   Can also change workspaces from GNOME 2 pager.
 
  - Change focus mode:
      gconftool-2 --type=string --set /apps/metacity/general/focus_mode mouse
@@ -56,6 +56,8 @@ METACITY FEATURES
     Alt-1  to Alt-6        switch workspaces
     Alt-Tab                forward cycle window focus
     Alt-Shift-Tab          backward cycle focus
+    Alt-Ctrl-Tab           forward cycle focus among panels
+    Alt-Ctrl-Shift-Tab     backward cycle focus among panels
     Alt-Escape             focus previous window
     Ctrl-Alt-Left Arrow    previous workspace
     Ctrl-Alt-Right Arrow   next workspace
@@ -107,23 +109,6 @@ METACITY FEATURES
      be respawned. It theoretically restores sizes/positions/workspace
      for session-aware applications.
 
- - Here is an example of how you can configure GTK colors/fonts
-   for metacity windows only, in ~/.gtkrc-2.0:
-
-       style "metacity-style"
-       {
-          font_name = "Sans 16"
-          bg[NORMAL] = { 0.0, 0.0, 0.0 }
-       }
-
-       class "MetaFrames" style "metacity-style"
-
-   You get the idea. It is just your basic GTK+ rc file, the 
-   window borders are a widget called MetaFrames.
-
-   Metacity-specific styles can also be included in any GTK+ 
-   theme.
-
  - Metacity implements much of the new window manager spec from
    freedesktop.org, and much of the ICCCM. But then there are 
    parts of each that it doesn't implement, just because I haven't
@@ -134,7 +119,7 @@ METACITY FEATURES
 
  - There are simple animations for actions such as minimization, 
    to help users see what is happening. Should probably 
-   have a few more of these.
+   have a few more of these and make them nicer.
 
  - if you have the proper X setup, set the GDK_USE_XFT=1 
    environment variable to get antialiased window titles.
@@ -145,42 +130,25 @@ METACITY FEATURES
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
- - Metacity creates a big file in your home directory called
-   ~/metacity.log with a bunch of debug spew.
-
  - If you want keybindings which are not the ones mentioned above
    as features, you have to edit keybindings.c and recompile.
 
  - Some of the default keybindings (notable Alt+number) are total
-   crackrock.
+   crackrock. This is just because I like those keybindings and 
+   things aren't configurable yet. Once bindings are configurable
+   the dumb defaults will go away.
 
- - The only way to unminimize at the moment is to use the Alt+Tab
-   move-between-windows feature, or to run the GNOME 2 panel
-   and tasklist.
-
- - Metacity uses the new window manager spec, but only random bits of
-   the old GNOME spec. It correctly advertises exactly which parts of
-   the GNOME spec it supports, but it does not support enough of it to
-   make the GNOME task list and desk guide happy, and they do not
-   support the new spec. I don't want anyone to spend time sending me
-   patches to support the old GNOME spec in Metacity; instead, send
-   patches to the task list and desk guide to support the new spec. As
-   far as I know, Metacity does support enough of the new spec to
-   allow a working tasklist and pager.
-
-   Upshot: GNOME 1.x task list and desk guide DO NOT WORK with
-   Metacity.
+ - You need an EWMH-spec compliant pager/tasklist to be able 
+   to navigate graphically; this does NOT include GNOME 1.x, 
+   but should include GNOME 2 and KDE 3.
 
  - Metacity turns off its keybindings for Emacs, because I use 
    Alt-space in Emacs, and getting a window menu annoys me.
-   This is a broken feature. My planned fix is to use super/hyper 
-   instead of Alt as the main keybinding shortcut, if super/hyper 
-   exist, and then keyboards with a windows key can use that for 
-   WM functions and Alt for application shortcuts.
-   We'd fall back to Alt if no other suitable modifier existed.
+   This is a broken feature that will go away when keybindings are 
+   configurable.
 
  - I haven't even read the ICCCM section about colormaps. So if you 
-   have an 8-bit display you are basically screwed.
+   have an 8-bit display you are probably screwed.
 
  - Metacity doesn't properly claim the window manager selection
    as described in the ICCCM. But then, most other window managers
@@ -198,13 +166,12 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    locale. I assume the window titles should be right-justified;
    should the window controls also be flipped?
 
- - Need keyboard shortcuts for focusing dock windows.
-
  - Resize menu item doesn't do anything. It's intended to enter
    resize-with-the-keyboard mode, similar to Move menu item.
 
- - If you switch from sawfish to metacity without restarting X, 
-   the panel often ends up buried behind the Nautilus desktop window.
+ - In GNOME 1.x, if you switch from sawfish to metacity without
+   restarting X, the panel often ends up buried behind the Nautilus
+   desktop window.
 
    What happens is that the panel detects Sawfish has gone away, and
    turns on override redirect mode because no GNOME-aware WM is
@@ -221,13 +188,13 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
     xstuff.c:xstuff_is_compliant_wm() in the panel to get started on
     how the panel deals with this.)
 
- - If you have "put panel below other windows" turned on 
-   in panel Global Preferences, Miscellaneous tab, you need to change  
+ - In GNOME 1.x, If you have "put panel below other windows" turned on
+   in panel Global Preferences, Miscellaneous tab, you need to change
    this to "Put panel on top of other windows." That's because
-   Metacity uses semantic categories, not the legacy layer system 
-   in the GNOME spec. It treats things in the legacy "dock" layer
-   as semantic type dock, but if you have the panel set to be 
-   in another layer, Metacity will think it's a normal window.
+   Metacity uses semantic categories, not the legacy layer system in
+   the GNOME spec. It treats things in the legacy "dock" layer as
+   semantic type dock, but if you have the panel set to be in another
+   layer, Metacity will think it's a normal window.
 
    You can diagnose this problem because Metacity will put panels in 
    the wrong place, and Alt+rightclick will let you perform operations
@@ -274,13 +241,11 @@ A: If it makes sense to turn on unconditionally,
 
 Q: Will Metacity be part of GNOME?
 
-A: This is not the current plan, though of course I'm happy to see the
-   code used by anyone who's interested. Metacity may continue to suck
-   forever because I might get tired of working on it; or Metacity's
-   feature set might not make sense for GNOME. Who knows.
+A: Many people are now asking for this, though it was not the original 
+   plan - Metacity started out as sort of an experiment. 
 
-   For now Metacity is my toy hobby project that I work on when I feel
-   like it.
+   A decision hasn't really been made but the issue will probably 
+   be raised shortly after the GNOME 2 release.
 
 Q: Is Metacity a Red Hat project?
 
@@ -332,6 +297,20 @@ A: I could conceivably be convinced to use viewports _instead_ of
    workspaces, though currently I'm not thinking that. But I don't
    think it makes any sense to have both; it's just confusing. They
    are functionally equivalent.
+
+   You may think this means that you won't have certain keybindings, 
+   or something like that. This is a misconception. The only 
+   _fundamental_ difference between viewports and workspaces is that 
+   with viewports, windows can "overlap" and appear partially on 
+   one and partially on another. All other differences that
+   traditionally exist in other window managers are accidental - 
+   the features commonly associated with viewports can be implemented
+   for workspaces, and vice versa.
+
+   So I don't want to have two kinds of
+   workspace/desktop/viewport/whatever, but I'm willing to add
+   features traditionally associated with either kind if those
+   features make sense.
 
 Q: Did you spend a lot of time on this?
 
