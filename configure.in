@@ -28,10 +28,10 @@ if test "x$GCC" = "xyes"; then
   *) CFLAGS="$CFLAGS -Wall" ;;
   esac
 
-  case " $CFLAGS " in
-  *[\ \	]-Wshadow[\ \	]*) ;;
-  *) CFLAGS="$CFLAGS -Wshadow" ;;
-  esac
+#  case " $CFLAGS " in
+#  *[\ \	]-Wshadow[\ \	]*) ;;
+#  *) CFLAGS="$CFLAGS -Wshadow" ;;
+#  esac
 
   case " $CFLAGS " in
   *[\ \	]-Wchar-subscripts[\ \	]*) ;;

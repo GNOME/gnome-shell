@@ -267,7 +267,7 @@ compute_layer (MetaWindow *window)
 
     case META_WINDOW_DOCK:
       /* still experimenting here */
-      window->layer = META_LAYER_NORMAL;
+      window->layer = META_LAYER_DOCK;
       break;
 
     case META_WINDOW_SPLASHSCREEN:

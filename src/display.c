@@ -1022,6 +1022,10 @@ event_callback (XEvent   *event,
       window->frame &&
       modified == window->frame->xwindow)
     {
+      /* Note that if the frame and the client both have an
+       * XGrabButton (as is normal with our setup), the event
+       * goes to the frame.
+       */
       frame_was_receiver = TRUE;
       meta_topic (META_DEBUG_EVENTS, "Frame was receiver of event\n");
     }

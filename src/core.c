@@ -610,7 +610,8 @@ meta_core_grab_buttons  (Display *xdisplay,
   MetaDisplay *display;
   
   display = meta_display_for_x_display (xdisplay);
-  
+
+  meta_verbose ("Grabbing buttons on frame 0x%lx\n", frame_xwindow);
   meta_display_grab_window_buttons (display, frame_xwindow);
 }
 
