@@ -1,5 +1,9 @@
 2001-08-22  Havoc Pennington  <hp@pobox.com>
 
+	* src/tabpopup.c: make this look a little nicer
+
+2001-08-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_mwm_hints): all the MWM flag tests were
 	backward
 

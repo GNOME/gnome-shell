@@ -24,6 +24,9 @@
 #include <math.h>
 #include <gtk/gtk.h>
 
+#define OUTSIDE_SELECT_RECT 2
+#define INSIDE_SELECT_RECT 2
+
 typedef struct _TabEntry TabEntry;
 
 struct _TabEntry
@@ -42,6 +45,10 @@ struct _MetaTabPopup
   GList *entries;
   GtkWidget *current_selected_widget;
 };
+
+static GtkWidget* selectable_image_new (GdkPixbuf *pixbuf);
+static void       select_image         (GtkWidget *widget);
+static void       unselect_image       (GtkWidget *widget);
 
 MetaTabPopup*
 meta_ui_tab_popup_new (const MetaTabEntry *entries)
@@ -108,7 +115,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
                     popup->label,
                     0, width,              height, height + 1,
                     GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL,
-                    0,                     2);
+                    3,                     3);
   
 
   top = 0;
@@ -123,27 +130,24 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
       while (tmp && left < width)
         {
           GtkWidget *image;
-          GtkWidget *highlight;
           
           TabEntry *te;
 
           te = tmp->data;
-
-          highlight = gtk_frame_new (NULL);
-          gtk_frame_set_shadow_type (GTK_FRAME (highlight),
-                                     GTK_SHADOW_NONE);
-          image = gtk_image_new_from_pixbuf (te->icon);
-          gtk_misc_set_padding (GTK_MISC (image), 3, 3);
           
-          gtk_container_add (GTK_CONTAINER (highlight), image);
+          image = selectable_image_new (te->icon);
+          gtk_misc_set_padding (GTK_MISC (image),
+                                INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1,
+                                INSIDE_SELECT_RECT + OUTSIDE_SELECT_RECT + 1);
+          gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.5);
           
-          te->widget = highlight;
+          te->widget = image;
 
           gtk_table_attach (GTK_TABLE (table),
                             te->widget,
-                            left, right,   top, bottom,
-                            0,             0,
-                            0,             0);
+                            left, right,           top, bottom,
+                            GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL,
+                            0,                     0);
           
           tmp = tmp->next;
           
@@ -199,14 +203,11 @@ display_entry (MetaTabPopup *popup,
                TabEntry     *te)
 {
   if (popup->current_selected_widget)
-    {
-      gtk_frame_set_shadow_type (GTK_FRAME (popup->current_selected_widget),
-                                 GTK_SHADOW_NONE);
-    }
+    unselect_image (popup->current_selected_widget);
   
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
-  gtk_frame_set_shadow_type (GTK_FRAME (te->widget),
-                             GTK_SHADOW_ETCHED_IN);
+  select_image (te->widget);
+
   popup->current_selected_widget = te->widget;
 }
 
@@ -288,3 +289,149 @@ meta_ui_tab_popup_select (MetaTabPopup *popup,
       tmp = tmp->next;
     }
 }
+
+#define META_TYPE_SELECT_IMAGE            (meta_select_image_get_type ())
+#define META_SELECT_IMAGE(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_SELECT_IMAGE, MetaSelectImage))
+
+typedef struct _MetaSelectImage       MetaSelectImage;
+typedef struct _MetaSelectImageClass  MetaSelectImageClass;
+
+struct _MetaSelectImage
+{
+  GtkImage parent_instance;
+  guint selected : 1;
+};
+
+struct _MetaSelectImageClass
+{
+  GtkImageClass parent_class;
+};
+
+
+static GType meta_select_image_get_type (void) G_GNUC_CONST;
+
+static GtkWidget*
+selectable_image_new (GdkPixbuf *pixbuf)
+{
+  GtkWidget *w;
+
+  w = g_object_new (meta_select_image_get_type (), NULL);
+  gtk_image_set_from_pixbuf (GTK_IMAGE (w), pixbuf); 
+
+  return w;
+}
+
+static void
+select_image (GtkWidget *widget)
+{
+  META_SELECT_IMAGE (widget)->selected = TRUE;
+  gtk_widget_queue_draw (widget);
+}
+
+static void
+unselect_image (GtkWidget *widget)
+{
+  META_SELECT_IMAGE (widget)->selected = FALSE;
+  gtk_widget_queue_draw (widget);
+}
+
+static void     meta_select_image_class_init   (MetaSelectImageClass *klass);
+static gboolean meta_select_image_expose_event (GtkWidget            *widget,
+                                                GdkEventExpose       *event);
+
+static GtkImageClass *parent_class;
+
+GType
+meta_select_image_get_type (void)
+{
+  static GtkType image_type = 0;
+
+  if (!image_type)
+    {
+      static const GTypeInfo image_info =
+      {
+	sizeof (MetaSelectImageClass),
+	NULL,           /* base_init */
+	NULL,           /* base_finalize */
+	(GClassInitFunc) meta_select_image_class_init,
+	NULL,           /* class_finalize */
+	NULL,           /* class_data */
+	sizeof (MetaSelectImage),
+	16,             /* n_preallocs */
+	(GInstanceInitFunc) NULL,
+      };
+
+      image_type = g_type_register_static (GTK_TYPE_IMAGE, "MetaSelectImage", &image_info, 0);
+    }
+
+  return image_type;
+}
+
+static void
+meta_select_image_class_init (MetaSelectImageClass *klass)
+{
+  GtkWidgetClass *widget_class;
+  
+  parent_class = gtk_type_class (gtk_image_get_type ());
+
+  widget_class = GTK_WIDGET_CLASS (klass);
+  
+  widget_class->expose_event = meta_select_image_expose_event;
+}
+
+static gboolean
+meta_select_image_expose_event (GtkWidget      *widget,
+                                GdkEventExpose *event)
+{
+  if (META_SELECT_IMAGE (widget)->selected)
+    {
+      int x, y, w, h;
+      GtkMisc *misc;
+
+      misc = GTK_MISC (widget);
+      
+      x = (widget->allocation.x * (1.0 - misc->xalign) +
+	   (widget->allocation.x + widget->allocation.width
+	    - (widget->requisition.width - misc->xpad * 2)) *
+	   misc->xalign) + 0.5;
+      y = (widget->allocation.y * (1.0 - misc->yalign) +
+	   (widget->allocation.y + widget->allocation.height
+	    - (widget->requisition.height - misc->ypad * 2)) *
+	   misc->yalign) + 0.5;
+
+      x -= INSIDE_SELECT_RECT;
+      y -= INSIDE_SELECT_RECT;
+      
+      
+      w = widget->requisition.width - OUTSIDE_SELECT_RECT * 2 - 1;
+      h = widget->requisition.height - OUTSIDE_SELECT_RECT * 2 - 1;
+      
+      gdk_draw_rectangle (widget->window,
+                          widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+                          FALSE,
+                          x, y, w, h);
+      gdk_draw_rectangle (widget->window,
+                          widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+                          FALSE,
+                          x - 1, y - 1, w + 2, h + 2);
+      
+#if 0
+      gdk_draw_rectangle (widget->window,
+                          widget->style->bg_gc[GTK_STATE_SELECTED],
+                          TRUE,
+                          x, y, w, h);
+#endif
+#if 0      
+      gtk_paint_focus (widget->style, widget->window,
+                       &event->area, widget, "meta-tab-image",
+                       x, y, w, h);
+#endif
+    }
+
+  return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+}
+
+
+
+
+
