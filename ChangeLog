@@ -1,3 +1,7 @@
+2001-09-06  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: bump version 2.3.5, require newer GTK release
+
 2001-09-04  Havoc Pennington  <hp@pobox.com>
 
 	* src/wm-tester/Makefile.am (noinst_PROGRAMS): make test apps
