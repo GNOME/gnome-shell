@@ -1,3 +1,7 @@
+2002-04-25  Havoc Pennington  <hp@redhat.com>
+
+	* metacity.spec: fix to install gconf schemas
+
 2002-04-25  jacob berkman  <jacob@ximian.com>
 
 	* src/session.c (load_state): g_file_get_contents() takes a gsize

@@ -1,7 +1,7 @@
 Summary: Metacity window manager
 Name: metacity
 Version: 2.3.89
-Release: 1
+Release: 2
 URL: http://people.redhat.com/~hp/metacity/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
@@ -24,10 +24,21 @@ make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 %makeinstall
+unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+
+export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+SCHEMAS="metacity.schemas"
+for S in $SCHEMAS; do
+  gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/$S > /dev/null
+done
 
 %files
 %defattr(-,root,root)
@@ -39,6 +50,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/metacity
 
 %changelog
+* Thu Apr 25 2002 Havoc Pennington <hp@redhat.com>
+- rebuild in different environment
+- add gconf schemas boilerplate
+
 * Mon Apr 15 2002 Havoc Pennington <hp@pobox.com>
 - 2.3.89
 
