@@ -961,10 +961,10 @@ handle_tab_forward (MetaDisplay *display,
   
   if (display->focus_window != NULL)
     {
-      window = meta_stack_get_tab_next (display->focus_window->screen->stack,
-                                        display->focus_window->screen->active_workspace,
-                                        display->focus_window,
-                                        FALSE);
+      window = meta_display_get_tab_next (display,
+                                          display->focus_window->screen->active_workspace,
+                                          display->focus_window,
+                                          FALSE);
     }
 
   if (window == NULL)
@@ -979,10 +979,10 @@ handle_tab_forward (MetaDisplay *display,
        */
       if (screen)
         {
-          window = meta_stack_get_tab_next (screen->stack,
-                                            screen->active_workspace,
-                                            NULL,
-                                            FALSE);
+          window = meta_display_get_tab_next (screen->display,
+                                              screen->active_workspace,
+                                              NULL,
+                                              FALSE);
         }
     }
 
@@ -1022,10 +1022,10 @@ handle_tab_backward (MetaDisplay *display,
   
   if (display->focus_window != NULL)
     {
-      window = meta_stack_get_tab_next (display->focus_window->screen->stack,
-                                        display->focus_window->screen->active_workspace,
-                                        display->focus_window,
-                                        TRUE);
+      window = meta_display_get_tab_next (display,
+                                          display->focus_window->screen->active_workspace,
+                                          display->focus_window,
+                                          TRUE);
     }
 
   if (window == NULL)
@@ -1040,10 +1040,10 @@ handle_tab_backward (MetaDisplay *display,
        */
       if (screen)
         {
-          window = meta_stack_get_tab_next (screen->stack,
-                                            screen->active_workspace,
-                                            NULL,
-                                            TRUE);
+          window = meta_display_get_tab_next (screen->display,
+                                              screen->active_workspace,
+                                              NULL,
+                                              TRUE);
         }
     }
 
@@ -1085,8 +1085,15 @@ handle_focus_previous (MetaDisplay *display,
 
   if (screen == NULL)
     return;
-  
-  window = display->prev_focus_window;
+
+  window = NULL;
+
+  /* get previously-focused window, front of list is currently
+   * focused window
+   */
+  if (display->mru_list &&
+      display->mru_list->next)
+    window = display->mru_list->next->data;
 
   if (window &&
       !meta_window_visible_on_workspace (window,
@@ -1096,10 +1103,10 @@ handle_focus_previous (MetaDisplay *display,
   if (window == NULL)
     {
       /* Pick first window in tab order */      
-      window = meta_stack_get_tab_next (screen->stack,
-                                        screen->active_workspace,
-                                        NULL,
-                                        TRUE);
+      window = meta_display_get_tab_next (screen->display,
+                                          screen->active_workspace,
+                                          NULL,
+                                          TRUE);
     }
 
   if (window &&

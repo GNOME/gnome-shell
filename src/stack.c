@@ -929,8 +929,6 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
   return topmost_dock;
 }
 
-
-#define IN_TAB_CHAIN(w) ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
 #define GET_XWINDOW(stack, i) (g_array_index ((stack)->windows,    \
                                               Window, (i)))
 
@@ -951,7 +949,7 @@ find_tab_forward (MetaStack     *stack,
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
 
-      if (window && IN_TAB_CHAIN (window) &&
+      if (window && META_WINDOW_IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -967,7 +965,7 @@ find_tab_forward (MetaStack     *stack,
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
 
-      if (window && IN_TAB_CHAIN (window) &&
+      if (window && META_WINDOW_IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -996,7 +994,7 @@ find_tab_backward (MetaStack     *stack,
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
 
-      if (window && IN_TAB_CHAIN (window) &&
+      if (window && META_WINDOW_IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -1012,7 +1010,7 @@ find_tab_backward (MetaStack     *stack,
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
 
-      if (window && IN_TAB_CHAIN (window) &&
+      if (window && META_WINDOW_IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -1094,7 +1092,7 @@ meta_stack_get_tab_list (MetaStack     *stack,
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
       
-      if (window && IN_TAB_CHAIN (window) &&
+      if (window && META_WINDOW_IN_TAB_CHAIN (window) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         list = g_slist_prepend (list, window);

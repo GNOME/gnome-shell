@@ -240,7 +240,7 @@ meta_display_open (const char *name)
 
   display->pending_pings = NULL;
   display->focus_window = NULL;
-  display->prev_focus_window = NULL;
+  display->mru_list = NULL;
 
   display->showing_desktop = FALSE;
 
@@ -1509,7 +1509,7 @@ meta_event_mode_to_string (int m)
   return mode;
 }
 
-const char*
+static const char*
 stack_mode_to_string (int mode)
 {
   switch (mode)
@@ -1654,7 +1654,7 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ConfigureRequest:
       name = "ConfigureRequest";
-      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %sabove: %lx %sstackmode: %lx %s",
+      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %sabove: %lx %sstackmode: %s %s",
                                event->xconfigurerequest.parent,
                                event->xconfigurerequest.window,
                                event->xconfigurerequest.x,
@@ -2506,3 +2506,154 @@ meta_display_window_has_pending_pings (MetaDisplay *display,
   return FALSE;
 }
 
+static MetaWindow*
+find_tab_forward (MetaDisplay   *display,
+                  MetaWorkspace *workspace,
+                  GList         *start)
+{
+  GList *tmp;
+
+  g_return_val_if_fail (start != NULL, NULL);
+  
+  tmp = start->next;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_window_visible_on_workspace (window, workspace)))
+        return window;
+
+      tmp = tmp->next;
+    }
+
+  tmp = display->mru_list;
+  while (tmp != start)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_window_visible_on_workspace (window, workspace)))
+        return window;
+
+      tmp = tmp->next;
+    }  
+
+  return NULL;
+}
+
+static MetaWindow*
+find_tab_backward (MetaDisplay   *display,
+                   MetaWorkspace *workspace,
+                   GList         *start)
+{
+  GList *tmp;
+
+  g_return_val_if_fail (start != NULL, NULL);
+  
+  tmp = start->prev;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_window_visible_on_workspace (window, workspace)))
+        return window;
+
+      tmp = tmp->prev;
+    }
+
+  tmp = g_list_last (display->mru_list);
+  while (tmp != start)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_window_visible_on_workspace (window, workspace)))
+        return window;
+
+      tmp = tmp->prev;
+    }
+
+  return NULL;
+}
+
+GSList*
+meta_display_get_tab_list (MetaDisplay   *display,
+                           MetaScreen    *screen,
+                           MetaWorkspace *workspace)
+{
+  GSList *tab_list;
+
+  /* workspace can be NULL for all workspaces */
+  
+#ifdef JOEL_RECOMMENDATION
+  /* mapping order */
+  tab_list = meta_stack_get_tab_list (screen->stack, workspace);
+#else
+  /* Windows sellout mode - MRU order */
+  {
+    GList *tmp;
+    
+    tab_list = NULL;
+    tmp = screen->display->mru_list;
+    while (tmp != NULL)
+      {
+        MetaWindow *window = tmp->data;
+        
+        if (window->screen == screen &&
+            META_WINDOW_IN_TAB_CHAIN (window) &&
+            (workspace == NULL ||
+             meta_window_visible_on_workspace (window, workspace)))
+          tab_list = g_slist_prepend (tab_list, window);
+        
+        tmp = tmp->next;
+      }
+    tab_list = g_slist_reverse (tab_list);
+  }
+#endif
+
+  return tab_list;
+}
+
+MetaWindow*
+meta_display_get_tab_next (MetaDisplay   *display,
+                           MetaWorkspace *workspace,
+                           MetaWindow    *window,
+                           gboolean       backward)
+{
+#ifdef JOEL_RECOMMENDATION
+  return meta_stack_get_tab_next (window->screen->stack,
+                                  workspace,
+                                  window,
+                                  backward);
+#else
+  if (display->mru_list == NULL)
+    return NULL;
+  
+  if (window != NULL)
+    {
+      g_assert (window->display == display);
+      
+      if (backward)
+        return find_tab_backward (display, workspace,
+                                  g_list_find (display->mru_list,
+                                               window));
+      else
+        return find_tab_forward (display, workspace,
+                                 g_list_find (display->mru_list,
+                                              window));
+    }
+  
+  if (backward)
+    return find_tab_backward (display, workspace,
+                              g_list_last (display->mru_list));
+  else
+    return find_tab_forward (display, workspace,
+                             display->mru_list);
+#endif
+}

@@ -602,8 +602,10 @@ meta_screen_ensure_tab_popup (MetaScreen *screen)
   if (screen->tab_popup)
     return;
 
-  tab_list = meta_stack_get_tab_list (screen->stack,
-                                      screen->active_workspace);
+  tab_list = meta_display_get_tab_list (screen->display,
+                                        screen,
+                                        screen->active_workspace);
+  
   len = g_slist_length (tab_list);
 
   entries = g_new (MetaTabEntry, len + 1);

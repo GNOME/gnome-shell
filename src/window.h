@@ -364,4 +364,7 @@ void meta_window_get_work_area (MetaWindow    *window,
 gboolean meta_window_same_application (MetaWindow *window,
                                        MetaWindow *other_window);
 
+#define META_WINDOW_IN_TAB_CHAIN(w) \
+  ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
+
 #endif

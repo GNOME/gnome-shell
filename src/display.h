@@ -133,8 +133,10 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
-  /* Previous focus window */
-  MetaWindow *prev_focus_window;
+  /* Most recently focused list. Always contains all
+   * live windows.
+   */
+  GList *mru_list;
   
   GList *workspaces;
 
@@ -271,5 +273,13 @@ void     meta_display_ping_window              (MetaDisplay        *display,
 gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
 						MetaWindow         *window);
 
+GSList* meta_display_get_tab_list (MetaDisplay   *display,
+                                   MetaScreen    *screen,
+                                   MetaWorkspace *workspace);
+
+MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
+                                       MetaWorkspace *workspace,
+                                       MetaWindow    *window,
+                                       gboolean       backward);
 
 #endif

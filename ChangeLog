@@ -1,3 +1,16 @@
+2002-03-11  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c: use new functions
+
+	* src/display.c (meta_display_get_tab_next): 
+	(meta_display_get_tab_list): new tab order functions using 
+	MRU list instead of map order
+
+	* src/window.c (meta_window_notify_focus): maintain focus MRU list
+
+	* src/display.h (struct _MetaDisplay): Keep an MRU list of 
+	windows.
+
 2002-03-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): support _NET_NUMBER_OF_DESKTOPS
