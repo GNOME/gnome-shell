@@ -1,14 +1,14 @@
 # Metacity in Vietnamese.
 # Copyright (C) 2002 Free Software Foundation, Inc.
-# pclouds <pclouds@gmx.net>, 2002-2003.
+# pclouds <pclouds@vnlinux.org>, 2002-2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2003-09-07 18:53+0700\n"
-"Last-Translator: pclouds <pclouds@gmx.net>\n"
+"PO-Revision-Date: 2004-09-14 08:26+0700\n"
+"Last-Translator: pclouds <pclouds@vnlinux.org>\n"
 "Language-Team: Gnome-Vi <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -139,16 +139,17 @@ msgstr ""
 "cho một mục đích đặc biệt nào cả.\n"
 
 #: src/main.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Lỗi nạp theme \"%s\": %s\n"
+msgstr "Lỗi quét thư mục sắc thái: %s\n"
 
 #: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"Không thể tìm thấy theme! Hãy chắc rằng %s tồn tại và chứa theme thường dùng."
+"Không thể tìm thấy sắc thái! Hãy chắc rằng %s tồn tại và chứa sắc thái "
+"thường dùng."
 
 #: src/main.c:521
 #, c-format
@@ -173,15 +174,15 @@ msgstr "Cuộn _lên"
 
 #: src/menu.c:58
 msgid "_Unroll"
-msgstr "Kh_ông cuộn"
+msgstr "_Bỏ cuộn"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr ""
+msgstr "_Trên Đỉnh"
 
 #: src/menu.c:61
 msgid "_Move"
-msgstr "Di chuy_ển"
+msgstr "_Di chuyển"
 
 #: src/menu.c:62
 msgid "_Resize"
@@ -202,24 +203,20 @@ msgid "Only on _This Workspace"
 msgstr "Chỉ trong vùng làm việc _này"
 
 #: src/menu.c:68
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "Chuyển cửa sổ sang vùng làm việc 9"
+msgstr "Chuyển sang vùng làm việc bên t_rái"
 
 #: src/menu.c:69
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "Chuyển cửa sổ sang vùng làm việc 1"
+msgstr "Chuyển sang vùng làm việc bên _phải"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "Chuyển cửa sổ sang vùng làm việc 1"
+msgstr "Chuyển sang vùng làm việc bên _trên"
 
 #: src/menu.c:71
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "Chuyển cửa sổ xuống vùng làm việc dưới"
+msgstr "Chuyển sang vùng làm việc bên _dưới"
 
 #: src/menu.c:162 src/prefs.c:1868
 #, c-format
@@ -227,9 +224,8 @@ msgid "Workspace %d"
 msgstr "Vùng làm việc %d"
 
 #: src/menu.c:171
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "Vùng làm việc %d"
+msgstr "Vùng làm việc 1_0"
 
 #: src/menu.c:173
 #, c-format
@@ -237,9 +233,8 @@ msgid "Workspace %s%d"
 msgstr "Vùng làm việc %s%d"
 
 #: src/menu.c:368
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "Chuyển cửa sổ lên vùng làm việc trên"
+msgstr "Chuyển sang Vùng làm việc _khác"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -389,11 +384,11 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"Chuỗi mô tả font mô tả font cho tựa đề cửa sổ. Tuy nhiên kích thước theo mô "
-"tả này sẽ chỉ được dùng nếu tùy chọn titlebar_font_size được đặt là 0. Ngoài "
-"ra, tùy chọn này sẽ tắt nếu tùy chọn titlebar_uses_desktop_font bật. Mặc "
-"định, tùy chọn titlebar_font không được bật, làm cho Metacity dùng lại font "
-"desktop ngay cả khi titlebar_uses_desktop_font không bật."
+"Chuỗi mô tả phông mô tả phông cho tựa đề cửa sổ. Tuy nhiên kích thước theo "
+"mô tả này sẽ chỉ được dùng nếu tùy chọn titlebar_font_size được đặt là 0. "
+"Ngoài ra, tùy chọn này sẽ tắt nếu tùy chọn titlebar_uses_desktop_font bật. "
+"Mặc định, tùy chọn titlebar_font không được bật, làm cho Metacity dùng lại "
+"phông desktop ngay cả khi titlebar_uses_desktop_font không bật."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -439,7 +434,6 @@ msgstr ""
 "\" hay \"&lt;Super&gt;\" để làm ví dụ."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
 msgstr "Đóng cửa sổ"
 
@@ -449,7 +443,7 @@ msgstr "Lệnh cần chạy khi nhấn phím nóng"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr "Theme hiện tại"
+msgstr "Sắc thái hiện tại"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
@@ -490,7 +484,7 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Nếu bật, bỏ qua tùy chọn titlebar_font, và dùng font ứng dụng chuẩn cho tựa "
+"Nếu bật, bỏ qua tùy chọn titlebar_font, và dùng phông ứng dụng chuẩn cho tựa "
 "đề cửa sổ."
 
 #: src/metacity.schemas.in.h:19
@@ -526,14 +520,13 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Nếu đúng, thoả hiệp giữa tính hữu dụng và dùng ít tài nguyên"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
 msgstr "Hạ thấp cửa sổ xuống dưới các cửa sổ khác"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "Phóng to cửa sổ"
 
@@ -546,7 +539,6 @@ msgid "Maximize window vertically"
 msgstr "Phóng to cửa sổ theo chiều dọc"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
 msgstr "Thu nhỏ cửa sổ"
 
@@ -588,7 +580,6 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Di chuyển lùi lại giữa các cửa sổ dùng hiển thị bật lên"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
 msgstr "Di chuyển cửa sổ"
 
@@ -683,7 +674,6 @@ msgid "Raise window above other windows"
 msgstr "Nâng cửa sổ lên trên các cửa sổ khác"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "Đổi cỡ cửa sổ"
 
@@ -697,7 +687,7 @@ msgstr "Hiện menu Bảng điều khiển"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel run application dialog"
-msgstr ""
+msgstr "Hiện hộp thoại chạy ứng dụng"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -848,7 +838,6 @@ msgstr ""
 "khóa này."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -865,7 +854,6 @@ msgstr ""
 "này."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -881,7 +869,6 @@ msgstr ""
 "thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -897,7 +884,6 @@ msgstr ""
 "có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -913,7 +899,6 @@ msgstr ""
 "thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -929,7 +914,6 @@ msgstr ""
 "thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -944,7 +928,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -959,7 +942,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -974,7 +956,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -989,7 +970,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1004,7 +984,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1019,7 +998,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1034,7 +1012,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1049,7 +1026,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1064,7 +1040,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1079,7 +1054,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1094,7 +1068,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1109,7 +1082,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1124,7 +1096,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1139,7 +1110,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1155,7 +1125,6 @@ msgstr ""
 "chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1172,7 +1141,6 @@ msgstr ""
 "động này."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1180,15 +1148,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"Phím nóng dùng để ẩn mọi cửa sổ thường và đặt focys cho nền. Dạng thức tương "
-"tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân "
-"tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;"
-"Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" "
-"thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr "Phím nóng dùng để ẩn mọi cửa sổ thường và đặt focus cho nền. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Bộ phân tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1203,7 +1165,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1218,7 +1179,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1234,7 +1194,6 @@ msgstr ""
 "có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1250,7 +1209,6 @@ msgstr ""
 "thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1266,7 +1224,6 @@ msgstr ""
 "thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1281,7 +1238,6 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1296,7 +1252,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1311,7 +1266,6 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1326,7 +1280,6 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1341,7 +1294,6 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1356,7 +1308,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1371,7 +1322,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1386,7 +1336,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1401,7 +1350,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1416,7 +1364,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1431,7 +1378,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1446,7 +1392,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1461,7 +1406,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1478,7 +1422,6 @@ msgstr ""
 "này."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1495,7 +1438,6 @@ msgstr ""
 "động này."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1513,7 +1455,6 @@ msgstr ""
 "\"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1531,7 +1472,6 @@ msgstr ""
 "không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1547,7 +1487,6 @@ msgstr ""
 "\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1563,7 +1502,6 @@ msgstr ""
 "chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1582,7 +1520,6 @@ msgstr ""
 "động này."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1600,7 +1537,6 @@ msgstr ""
 "chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1617,7 +1553,6 @@ msgstr ""
 "động này."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1632,7 +1567,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1647,7 +1581,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1662,7 +1595,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1678,7 +1610,6 @@ msgstr ""
 "chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1693,7 +1624,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1709,7 +1639,6 @@ msgstr ""
 "phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1725,7 +1654,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1741,7 +1669,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1768,7 +1695,7 @@ msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
-"Theme xác định diện mạo của đường viền cửa sổ, thanh tựa đề, và nhiều thứ "
+"Sắc thái xác định diện mạo của đường viền cửa sổ, thanh tựa đề, và nhiều thứ "
 "khác."
 
 #: src/metacity.schemas.in.h:147
@@ -1798,7 +1725,6 @@ msgid "The window screenshot command"
 msgstr "Lệnh chụp hình cửa sổ"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1818,7 +1744,6 @@ msgstr ""
 "thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1833,7 +1758,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1848,7 +1772,6 @@ msgstr ""
 "nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1856,15 +1779,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"Tổ hợp phím tắt này dùng để nâng cửa sổ vào không gian ngang hiện có. Dạng "
-"thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Trình phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt như "
-"\"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled"
-"\" thì sẽ không có phím nóng nào thực hiện hành động này."
+msgstr "Tổ hợp phím tắt này dùng để giãn cửa sổ hết chiều ngang hiện có. Dạng thức tương tự như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Trình phân tích hiểu cả chữ hoa lẫn chữ thường, và cả những từ viết tắt như \"&lt;Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1873,11 +1790,6 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Tổ hợp phím này nâng cửa sổ chiếm không gian dọc hiện có. Dạng thức tương tự "
-"như \"&lt;Control&gt;a\" hoặc \"&lt;Shift&gt;&lt;Alt&gt;F1\". Trình phân "
-"tích hiểu cả chữ hoa lẫn chữ thường,  và cả những từ viết tắt như \"&lt;"
-"Ctl&gt;\" và \"&lt;Ctrl&gt;\". Nếu bạn đặt tùy chọn là chuỗi \"disabled\" "
-"thì sẽ không có phím nóng nào thực hiện hành động này."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1891,11 +1803,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
-msgstr "Bật tắt trạng thánh luôn nổi"
+msgstr "Bật/Tắt trạng thánh luôn nổi"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
-msgstr "Bật tắt chế độ toàn màn hình"
+msgstr "Bật/Tắt Chế độ Toàn màn hình"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
@@ -1919,13 +1831,12 @@ msgstr ""
 "trong môi trường ồn ào, không nghe rõ hoặc khi tắt 'audible bell'."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "Bỏ phóng to cửa sổ"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
-msgstr "Dùng font hệ thống chuẩn cho tựa đề cửa sổ"
+msgstr "Dùng phông hệ thống chuẩn cho tựa đề cửa sổ"
 
 #: src/metacity.schemas.in.h:164
 msgid "Visual Bell Type"
@@ -1937,7 +1848,7 @@ msgstr "Chế độ focus cửa sổ"
 
 #: src/metacity.schemas.in.h:166
 msgid "Window title font"
-msgstr "Font tựa đề cửa sổ"
+msgstr "Phông tựa đề cửa sổ"
 
 #: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
@@ -1965,7 +1876,7 @@ msgstr "Khóa GConf '%s' được đặt giá trị không hợp lệ\n"
 #: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Không thể phân tích mô tả font \"%s\" từ khóa GConf %s\n"
+msgstr "Không thể phân tích mô tả phông \"%s\" từ khóa GConf %s\n"
 
 #: src/prefs.c:1146
 #, c-format
@@ -2052,27 +1963,27 @@ msgstr "Không thể tạo thư mục '%s': %s\n"
 #: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Không thể mở tập tin sessin '%s' để ghi: %s\n"
+msgstr "Không thể mở tập tin phiên làm việc '%s' để ghi: %s\n"
 
 #: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Lỗi ghi tập tin session '%s': %s\n"
+msgstr "Lỗi ghi tập tin phiên làm việc '%s': %s\n"
 
 #: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Lỗi đóng tập tin session '%s': %s\n"
+msgstr "Lỗi đóng tập tin phiên làm việc '%s': %s\n"
 
 #: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Lỗi đọc tập tin session đã lưu %s: %s\n"
+msgstr "Lỗi đọc tập tin phiên làm việc đã lưu %s: %s\n"
 
 #: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Lỗi phân tích tập tin session đã lưu: %s\n"
+msgstr "Lỗi phân tích tập tin phiên làm việc đã lưu: %s\n"
 
 #: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -2113,7 +2024,8 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Lỗi chạy metacity-dialog để cảnh báo về ứng dụng không hỗ trợ session: %s\n"
+"Lỗi chạy metacity-dialog để cảnh báo về ứng dụng không hỗ trợ phiên làm "
+"việc: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2232,7 +2144,7 @@ msgstr "Trạng thái lạ \"%s\" cho biểu tượng menu"
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Theme đã có biểu tượng menu cho hàm %s trạng thái %s"
+msgstr "Sắc thái đã có biểu tượng menu cho hàm %s trạng thái %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
@@ -2531,7 +2443,7 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Không thể có hai draw_ops cho một phần tử <piece> (theme xác định một "
+"Không thể có hai draw_ops cho một phần tử <piece> (sắc thái xác định một "
 "draw_ops và thêm một phần tử <draw_ops>, hoặc them xác định cả hai phần tử)"
 
 #: src/theme-parser.c:3574
@@ -2539,7 +2451,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Không thể có hai draw_ops trong một phần tử <button> (theme xác định một "
+"Không thể có hai draw_ops trong một phần tử <button> (sắc thái xác định một "
 "draw_ops và có một phần tử <draw_ops>, hoặc xác định cả hai phần tử)"
 
 #: src/theme-parser.c:3612
@@ -2547,8 +2459,8 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Không thể có hai draw_ops cho phần tử <menu_icon> (theme xác định thuộc tính "
-"draw_ops và một phần tử <draw_ops>, hoặc xác định hai phần tử)"
+"Không thể có hai draw_ops cho phần tử <menu_icon> (sắc thái xác định thuộc "
+"tính draw_ops và một phần tử <draw_ops>, hoặc xác định hai phần tử)"
 
 #: src/theme-parser.c:3659
 #, c-format
@@ -2603,187 +2515,182 @@ msgstr "Chữ không được phép nằm trong <%s>"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr "<name> được xác định hai lần trong theme này"
+msgstr "<name> được xác định hai lần trong sắc thái này"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr "<author> được xác định hai lần trong theme này"
+msgstr "<author> được xác định hai lần trong sắc thái này"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> được xác định hai lần trong theme này"
+msgstr "<copyright> được xác định hai lần trong sắc thái này"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr "<date> được xác định hai lần trong theme này"
+msgstr "<date> được xác định hai lần trong sắc thái này"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr "<description> được xác định hai lần trong theme này"
+msgstr "<description> được xác định hai lần trong sắc thái này"
 
 #: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Lỗi đọc theme từ tập tin %s: %s\n"
+msgstr "Lỗi đọc sắc thái từ tập tin %s: %s\n"
 
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Tập tin theme %s không chứa phần tử gốc <metacity_theme>"
+msgstr "Tập tin sắc thái %s không chứa phần tử gốc <metacity_theme>"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "Focus cửa sổ"
+msgstr "/_Cửa sổ"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Cửa sổ/tearoff"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Cửa sổ/_Hộp thoại"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Cửa sổ/Hộp thoại _Modal"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Cửa sổ/_Tiện ích"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/Cửa sổ/_Splashscreen"
 
 #: src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "Focus cửa sổ"
+msgstr "/Cửa sổ/Neo đỉ_nh"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Cửa sổ/Neo đá_y"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Cửa sổ/Neo t_rái"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Cửa sổ/Neo _phải"
 
 #: src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "Focus cửa sổ"
+msgstr "/Cửa sổ/Mọi neo"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Cửa sổ/Des_ktop"
 
 #: src/theme-viewer.c:131
-#, fuzzy
 msgid "Open another one of these windows"
-msgstr "Nâng cửa sổ lên trên các cửa sổ khác"
+msgstr "Mở cái khác trong những cửa sổ này"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "Đây là nút demo với biểu tượng 'mở'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Đây là nút demo với biểu tượng 'thoát'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Đây là thông điệp mẫu trong hộp thoại mẫu"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Menu item giả %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "Cửa sổ chỉ có viền"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "Thanh"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Cửa sổ ứng dụng thông thường"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "Hộp thoại"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Hộp thoại Modal"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "Hộp tiện ích"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "Menu tách rời"
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "Viền"
 
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "Thử Bố cục nút %d"
 
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "%g mili giây để vẽ một khung cửa sổ"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "Cách dùng: metacity-theme-viewer [TÊN_SẮC_THÁI]\n"
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Lỗi đóng tập tin session '%s': %s\n"
+msgstr "Lỗi nạp sắc thái: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "Nạp sắc thái \"%s\" trong %g giây\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr ""
+msgstr "Phông Tựa đề thường"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr ""
+msgstr "Phông Tựa đề nhỏ"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr ""
+msgstr "Phông Tựa đề lớn"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "Bố cục nút"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
 msgstr ""
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "Font tựa đề cửa sổ"
+msgstr "Tựa đề Cửa sổ ở đây"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -3050,13 +2957,13 @@ msgstr "Thiếu <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"gì đó\
 #: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Lỗi nạp theme \"%s\": %s\n"
+msgstr "Lỗi nạp sắc thái \"%s\": %s\n"
 
 #: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
 #: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Không có bộ <%s> cho theme \"%s\""
+msgstr "Không có bộ <%s> cho sắc thái \"%s\""
 
 #: src/theme.c:4632
 #, c-format
@@ -3064,8 +2971,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Chưa đặt kiểu khung cho loại cửa sổ \"%s\" trong theme \"%s\", hãy thêm phần "
-"tử <window type=\"%s\" style_set=\"gì đó\"/>"
+"Chưa đặt kiểu khung cho loại cửa sổ \"%s\" trong sắc thái \"%s\", hãy thêm "
+"phần tử <window type=\"%s\" style_set=\"gì đó\"/>"
 
 #: src/theme.c:4654
 #, c-format
@@ -3074,7 +2981,7 @@ msgid ""
 "specified for this theme"
 msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"gì đó\"/> phải xác định "
-"cho theme này"
+"cho sắc thái này"
 
 #: src/theme.c:5043 src/theme.c:5105
 #, c-format
@@ -3206,45 +3113,45 @@ msgstr ""
 "Thuộc tính %s trên cửa sổ 0x%lx chứa chuỗi UTF-8 sai cho mục %d trong danh "
 "sách\n"
 
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Lỗi mở kết nối tới bộ quản lý session, vì thế vị trí cửa sổ sẽ không được "
-#~ "lưu: %s\n"
+msgid ""
+"Failed to a open connection to a session manager, so window positions will "
+"not be saved: %s\n"
+msgstr ""
+"Lỗi mở kết nối tới bộ quản lý phiên làm việc, vì thế vị trí cửa sổ sẽ không "
+"được lưu: %s\n"
 
-#~ msgid "Only on %s"
-#~ msgstr "Chỉ trong %s"
+msgid "Only on %s"
+msgstr "Chỉ trong %s"
 
-#~ msgid "Move to %s"
-#~ msgstr "Chuyển tới %s"
+msgid "Move to %s"
+msgstr "Chuyển tới %s"
 
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Cửa sổ \"%s\" không trả lời.\n"
-#~ "Ép ứng dụng này kết thúc chứ?\n"
-#~ "(Các tài liệu đang mở có thể sẽ bị mất)"
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+"Cửa sổ \"%s\" không trả lời.\n"
+"Ép ứng dụng này kết thúc chứ?\n"
+"(Các tài liệu đang mở có thể sẽ bị mất)"
 
-#~ msgid "Kill application"
-#~ msgstr "Buộc chấm dứt ứng dụng"
+msgid "Kill application"
+msgstr "Buộc chấm dứt ứng dụng"
 
-#~ msgid "Workspace %u"
-#~ msgstr "Vùng làm việc %u"
+msgid "Workspace %u"
+msgstr "Vùng làm việc %u"
 
-#~ msgid "No <name> set for theme \"%s\""
-#~ msgstr "Chưa đặt <name> cho theme \"%s\""
+msgid "No <name> set for theme \"%s\""
+msgstr "Chưa đặt <name> cho sắc thái \"%s\""
 
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "Chưa đặt <author> cho theme \"%s\""
+msgid "No <author> set for theme \"%s\""
+msgstr "Chưa đặt <author> cho sắc thái \"%s\""
 
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "Chưa đặt <description> cho theme \"%s\""
+msgid "No <description> set for theme \"%s\""
+msgstr "Chưa đặt <description> cho sắc thái \"%s\""
 
-#~ msgid "No <copyright> set for theme \"%s\""
-#~ msgstr "Chưa đặt <copyright> cho theme \"%s\""
+msgid "No <copyright> set for theme \"%s\""
+msgstr "Chưa đặt <copyright> cho sắc thái \"%s\""
 
-#~ msgid "Change how focus is moved from one window to another"
-#~ msgstr "Đổi cách focus di chuyển từ cửa sổ này sang cửa sổ khác"
+msgid "Change how focus is moved from one window to another"
+msgstr "Đổi cách focus di chuyển từ cửa sổ này sang cửa sổ khác"
