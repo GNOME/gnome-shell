@@ -48,6 +48,14 @@ typedef enum
   META_SCREEN_BOTTOMRIGHT
 } MetaScreenCorner;
 
+typedef enum
+{
+  META_SCREEN_UP,
+  META_SCREEN_DOWN,
+  META_SCREEN_LEFT,
+  META_SCREEN_RIGHT
+} MetaScreenDirection;
+
 struct _MetaScreen
 {
   MetaDisplay *display;
@@ -140,10 +148,16 @@ const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_rect   (MetaScreen   
 const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen    *screen,
                                                                    MetaWindow    *window);
 
+gboolean      meta_screen_window_intersects_xinerama (MetaScreen *screen, 
+                                                      MetaWindow *window,
+                                                      int         which_xinerama);
 
-gboolean meta_screen_window_intersects_xinerama (MetaScreen *screen, 
-                                                 MetaWindow *window,
-                                                 int         which_xinerama);
+const MetaXineramaScreenInfo* meta_screen_get_xinerama_neighbor (MetaScreen *screen,
+                                                                 int         which_xinerama,
+                                                                 MetaScreenDirection dir);
+void          meta_screen_get_natural_xinerama_list (MetaScreen *screen,
+                                                     int**       xineramas_list,
+                                                     int*        n_xineramas);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);

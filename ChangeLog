@@ -1,5 +1,27 @@
 2003-04-05  Rob Adams  <robadams@ucla.edu>
 
+	Update placement policy for screen with multiple xineramas.
+	Windows will be placed preferentially on the xinerama with the
+	pointer, and progressively further away as needed to find a place
+	where the window does not overlap other windows.
+	
+	* src/place.c (rect_fits_in_work_area): function
+	fit_rect_in_xinerama greatly simplified to work with new placement
+	policy.
+	(find_first_fit): implement new first first placement scheme
+
+	* src/screen.c (meta_screen_get_xinerama_neighbor): look for an
+	xinerama in the xinerama list that is adjacent to the specified
+	xinerama.
+	(meta_screen_get_natural_xinerama_list): return a list of
+	xineramas in the order to be preferred by the placement algorithm
+	as determined by the current location of the pointer.
+
+	* src/screen.h: add function prototypes and an enum used by
+	meta_screen_get_xinerama_neighbor.
+
+2003-04-05  Rob Adams  <robadams@ucla.edu>
+
 	* src/place.c (center_tile_rect_in_area):  Fix a minor off-by-one
 	error.  See #110079.
 

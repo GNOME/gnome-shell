@@ -1346,6 +1346,138 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
   return meta_screen_get_xinerama_for_rect (screen, &window_rect);
 }
 
+const MetaXineramaScreenInfo* 
+meta_screen_get_xinerama_neighbor (MetaScreen         *screen,
+                                   int                 which_xinerama,
+                                   MetaScreenDirection direction)
+{
+  MetaXineramaScreenInfo* input = screen->xinerama_infos + which_xinerama;
+  MetaXineramaScreenInfo* current;
+  int i;
+
+  for (i = 0; i < screen->n_xinerama_infos; i++)
+    {
+      current = screen->xinerama_infos + i;
+
+      if (((direction == META_SCREEN_RIGHT) && 
+           (current->x_origin == input->x_origin + input->width) &&
+           (current->y_origin >= input->y_origin) &&
+           (current->y_origin <= input->y_origin+input->height)) ||
+          ((direction == META_SCREEN_LEFT) && 
+           (input->x_origin == current->x_origin + current->width) &&
+           (current->y_origin >= input->y_origin) &&
+           (current->y_origin <= input->y_origin + input->height)) ||
+          ((direction == META_SCREEN_UP) && 
+           (input->y_origin == current->y_origin + current->height) &&
+           (current->x_origin >= input->x_origin) &&
+           (current->x_origin <= input->x_origin + input->width)) ||
+          ((direction == META_SCREEN_DOWN) && 
+           (current->y_origin == input->y_origin + input->height) &&
+           (current->x_origin >= input->x_origin) &&
+           (current->x_origin <= input->x_origin + input->width)))
+        {
+          return current;
+        }
+    }
+  
+  return NULL;
+}
+
+void
+meta_screen_get_natural_xinerama_list (MetaScreen *screen,
+                                       int**       xineramas_list,
+                                       int*        n_xineramas)
+{
+  const MetaXineramaScreenInfo* current;
+  const MetaXineramaScreenInfo* tmp;
+  GQueue* xinerama_queue;
+  int* visited;
+  int cur = 0;
+  int i;
+
+  *n_xineramas = screen->n_xinerama_infos;
+  *xineramas_list = g_new (int, screen->n_xinerama_infos);
+
+  /* we calculate a natural ordering by which to choose xineramas for
+   * window placement.  We start at the current xinerama, and perform
+   * a breadth-first search of the xineramas starting from that
+   * xinerama.  We choose preferentially left, then right, then down,
+   * then up.  The visitation order produced by this traversal is the
+   * natural xinerama ordering.
+   */
+
+  visited = g_new (int, screen->n_xinerama_infos);
+  for (i = 0; i < screen->n_xinerama_infos; i++)
+    {
+      visited[i] = FALSE;
+    }
+
+  current = meta_screen_get_current_xinerama (screen);
+  xinerama_queue = g_queue_new ();
+  g_queue_push_tail (xinerama_queue, (gpointer) current);
+  visited[current->number] = TRUE;
+
+  while (!g_queue_is_empty (xinerama_queue))
+    {
+      current = (const MetaXineramaScreenInfo*) 
+        g_queue_pop_head (xinerama_queue);
+
+      (*xineramas_list)[cur++] = current->number;
+
+      /* enqueue each of the directions */
+      tmp = meta_screen_get_xinerama_neighbor (screen,
+                                               current->number,
+                                               META_SCREEN_LEFT);
+      if (tmp && !visited[tmp->number])
+        {
+          g_queue_push_tail (xinerama_queue,
+                             (MetaXineramaScreenInfo*) tmp);
+          visited[tmp->number] = TRUE;
+        }
+      tmp = meta_screen_get_xinerama_neighbor (screen,
+                                               current->number,
+                                               META_SCREEN_RIGHT);
+      if (tmp && !visited[tmp->number])
+        {
+          g_queue_push_tail (xinerama_queue,
+                             (MetaXineramaScreenInfo*) tmp);
+          visited[tmp->number] = TRUE;
+        }
+      tmp = meta_screen_get_xinerama_neighbor (screen,
+                                               current->number,
+                                               META_SCREEN_UP);
+      if (tmp && !visited[tmp->number])
+        {
+          g_queue_push_tail (xinerama_queue,
+                             (MetaXineramaScreenInfo*) tmp);
+          visited[tmp->number] = TRUE;
+        }
+      tmp = meta_screen_get_xinerama_neighbor (screen,
+                                               current->number,
+                                               META_SCREEN_DOWN);
+      if (tmp && !visited[tmp->number])
+        {
+          g_queue_push_tail (xinerama_queue,
+                             (MetaXineramaScreenInfo*) tmp);
+          visited[tmp->number] = TRUE;
+        }
+    }
+
+  /* in case we somehow missed some set of xineramas, go through the
+   * visited list and add in any xineramas that were missed
+   */
+  for (i = 0; i < screen->n_xinerama_infos; i++)
+    {
+      if (visited[i] == FALSE)
+        {
+          (*xineramas_list)[cur++] = i;
+        }
+    }
+
+  g_free (visited);
+  g_queue_free (xinerama_queue);
+}
+
 gboolean
 meta_screen_window_intersects_xinerama (MetaScreen *screen,
                                         MetaWindow *window,

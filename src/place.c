@@ -384,66 +384,13 @@ center_tile_rect_in_area (MetaRectangle *rect,
 }
 
 static gboolean
-fit_rect_in_xinerama (MetaWindow    *window,
-                      MetaRectangle *rect)
+rect_fits_in_work_area (MetaRectangle *work_area,
+                        MetaRectangle *rect)
 {
-  int i;
-  int best_index;
-  int best_overlap;
-  MetaScreen *screen;
-  MetaRectangle work_area;
-  const MetaXineramaScreenInfo *xsi;
-
-  screen = window->screen;
-  
-  /* Find xinerama with best fit, then
-   * shift rect to be entirely within it.
-   */
-  best_overlap = -1;
-  best_index = -1;
-  
-  i = 0;
-  while (i < screen->n_xinerama_infos)
-    {
-      MetaRectangle xinerama_rect;
-      MetaRectangle intersect;
-      int overlap;
-
-      xsi = &screen->xinerama_infos[i];
-      
-      xinerama_rect.x = xsi->x_origin;
-      xinerama_rect.y = xsi->y_origin;
-      xinerama_rect.width = xsi->width;
-      xinerama_rect.height = xsi->height;
-
-      if (meta_rectangle_intersect (rect, &xinerama_rect, &intersect))
-        overlap = intersect.width * intersect.height;
-      else
-        overlap = 0;
-
-      if (overlap > best_overlap)
-        {
-          best_index = i;
-          best_overlap = overlap;
-        }
-      
-      ++i;
-    }
-
-  /* some overlap had to be better than -1 */
-  g_assert (best_index >= 0);
-
-  meta_window_get_work_area_for_xinerama (window, best_index, &work_area);
-  
-  if ((rect->x < work_area.x) || (rect->y < work_area.y) ||
-      (rect->x >= work_area.x + work_area.width) ||
-      (rect->y >= work_area.y + work_area.height))
-    center_tile_rect_in_area (rect, &work_area);
-
-  /* Now return whether we are entirely within the work area */
-  return 
-    ((rect->x + rect->width) < (work_area.x + work_area.width)) &&
-    ((rect->y + rect->height) < (work_area.y + work_area.height));
+  return ((rect->x >= work_area->x) &&
+	  (rect->y >= work_area->y) &&
+	  (rect->x + rect->width <= work_area->x + work_area->width) &&
+	  (rect->y + rect->height <= work_area->y + work_area->height));
 }
 
 /* Find the leftmost, then topmost, empty area on the workspace
@@ -472,14 +419,26 @@ find_first_fit (MetaWindow *window,
    * existing window in each of those cases.
    */  
   int retval;
-  GList *sorted;
+  GList *below_sorted;
+  GList *right_sorted;
   GList *tmp;
   MetaRectangle rect;
   MetaRectangle work_area;
   int i;
+  int* xineramas_list;
+  int  n_xineramas;
   
   retval = FALSE;
-  sorted = NULL;
+
+  /* Below each window */
+  below_sorted = g_list_copy (windows);
+  below_sorted = g_list_sort (below_sorted, leftmost_cmp);
+  below_sorted = g_list_sort (below_sorted, topmost_cmp);  
+
+  /* To the right of each window */
+  right_sorted = g_list_copy (windows);
+  right_sorted = g_list_sort (right_sorted, topmost_cmp);
+  right_sorted = g_list_sort (right_sorted, leftmost_cmp);
   
   rect.width = window->rect.width;
   rect.height = window->rect.height;
@@ -490,110 +449,29 @@ find_first_fit (MetaWindow *window,
       rect.height += fgeom->top_height + fgeom->bottom_height;
     }
 
-  /* Try center-tiling on first xinerama */
-  /* FIXME should use xinerama with mouse pointer
-   * (or better, xinerama where window was launched
-   * determined via startup notification)
-   */
-  meta_window_get_work_area_for_xinerama (window, 0, &work_area);
-
-  center_tile_rect_in_area (&rect, &work_area);
-
-  if (fit_rect_in_xinerama (window, &rect) &&
-      !rectangle_overlaps_some_window (&rect, windows))
+  meta_screen_get_natural_xinerama_list (window->screen,
+					 &xineramas_list,
+					 &n_xineramas);
+  for (i = 0; i < n_xineramas; i++)
     {
-      *new_x = rect.x;
-      *new_y = rect.y;
-      if (fgeom)
-        {
-          *new_x += fgeom->left_width;
-          *new_y += fgeom->top_height;
-        }
-      
-      retval = TRUE;
-      
-      goto out;
-    }
-  
-  sorted = g_list_copy (windows);
-
-  /* Below each window */
-  sorted = g_list_sort (sorted, leftmost_cmp);
-  sorted = g_list_sort (sorted, topmost_cmp);  
-  
-  tmp = sorted;
-  while (tmp != NULL)
-    {
-      MetaWindow *w = tmp->data;
-      MetaRectangle outer_rect;
-
-      meta_window_get_outer_rect (w, &outer_rect);
-      
-      rect.x = outer_rect.x;
-      rect.y = outer_rect.y + outer_rect.height;
-      
-      if (fit_rect_in_xinerama (window, &rect) &&
-          !rectangle_overlaps_some_window (&rect, sorted))
-        {
-          *new_x = rect.x;
-          *new_y = rect.y;
-          if (fgeom)
-            {
-              *new_x += fgeom->left_width;
-              *new_y += fgeom->top_height;
-            }
-          
-          retval = TRUE;
-          
-          goto out;
-        }
-
-      tmp = tmp->next;
+      meta_topic (META_DEBUG_XINERAMA,
+		  "Natural xinerama %d is %d,%d %dx%d\n",
+		  i,
+		  window->screen->xinerama_infos[xineramas_list[i]].x_origin,
+		  window->screen->xinerama_infos[xineramas_list[i]].y_origin,
+		  window->screen->xinerama_infos[xineramas_list[i]].width,
+		  window->screen->xinerama_infos[xineramas_list[i]].height);
     }
 
-  /* To the right of each window */
-  sorted = g_list_sort (sorted, topmost_cmp);
-  sorted = g_list_sort (sorted, leftmost_cmp);
-  
-  tmp = sorted;
-  while (tmp != NULL)
+  /* try each xinerama in the natural ordering in turn */
+  i = 0;
+  while (i < n_xineramas)
     {
-      MetaWindow *w = tmp->data;
-      MetaRectangle outer_rect;
-     
-      meta_window_get_outer_rect (w, &outer_rect);
-     
-      rect.x = outer_rect.x + outer_rect.width;
-      rect.y = outer_rect.y;
-     
-      if (fit_rect_in_xinerama (window, &rect) &&
-          !rectangle_overlaps_some_window (&rect, sorted))
-        {
-          *new_x = rect.x;
-          *new_y = rect.y;
-          if (fgeom)
-            {
-              *new_x += fgeom->left_width;
-              *new_y += fgeom->top_height;
-            }
-         
-          retval = TRUE;
-         
-          goto out;
-        }
-
-      tmp = tmp->next;
-    }
-
-  /* Try center-tile on each Xinerama screen which isn't the first */
-  i = 1;
-  while (i < window->screen->n_xinerama_infos)
-    {
-      meta_window_get_work_area_for_xinerama (window, i, &work_area);
+      meta_window_get_work_area_for_xinerama (window, xineramas_list[i], &work_area);
 
       center_tile_rect_in_area (&rect, &work_area);
 
-      if (fit_rect_in_xinerama (window, &rect) &&
+      if (rect_fits_in_work_area (&work_area, &rect) &&
           !rectangle_overlaps_some_window (&rect, windows))
         {
           *new_x = rect.x;
@@ -608,12 +486,77 @@ find_first_fit (MetaWindow *window,
           
           goto out;
         }
+
+      /* try below each window */
+      tmp = below_sorted;
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+          MetaRectangle outer_rect;
+
+          meta_window_get_outer_rect (w, &outer_rect);
+      
+          rect.x = outer_rect.x;
+          rect.y = outer_rect.y + outer_rect.height;
+      
+          if (rect_fits_in_work_area (&work_area, &rect) &&
+              !rectangle_overlaps_some_window (&rect, below_sorted))
+            {
+              *new_x = rect.x;
+              *new_y = rect.y;
+              if (fgeom)
+                {
+                  *new_x += fgeom->left_width;
+                  *new_y += fgeom->top_height;
+                }
+          
+              retval = TRUE;
+          
+              goto out;
+            }
+
+          tmp = tmp->next;
+        }
+
+      /* try to the right of each window */
+      tmp = right_sorted;
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+          MetaRectangle outer_rect;
+     
+          meta_window_get_outer_rect (w, &outer_rect);
+     
+          rect.x = outer_rect.x + outer_rect.width;
+          rect.y = outer_rect.y;
+     
+          if (rect_fits_in_work_area (&work_area, &rect) &&
+              !rectangle_overlaps_some_window (&rect, right_sorted))
+            {
+              *new_x = rect.x;
+              *new_y = rect.y;
+              if (fgeom)
+                {
+                  *new_x += fgeom->left_width;
+                  *new_y += fgeom->top_height;
+                }
+         
+              retval = TRUE;
+         
+              goto out;
+            }
+
+          tmp = tmp->next;
+        }
       
       ++i;
     }
   
  out:
-  g_list_free (sorted);
+
+  g_free (xineramas_list);
+  g_list_free (below_sorted);
+  g_list_free (right_sorted);
   return retval;
 }
 
@@ -975,7 +918,9 @@ get_vertical_edges (MetaWindow *window,
   windows = get_windows_on_same_workspace (window, &n_windows);
 
   i = 0;
-  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; /* 4 = workspace/screen edges */
+  /* 4 = workspace/screen edges */
+  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; 
+
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
@@ -1235,7 +1180,6 @@ meta_window_find_next_horizontal_edge (MetaWindow *window,
   
   return retval;
 }
-
 
 int
 meta_window_find_nearest_vertical_edge (MetaWindow *window,
