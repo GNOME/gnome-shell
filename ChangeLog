@@ -1,5 +1,9 @@
 2004-12-20  Elijah Newren  <newren@gmail.com>
 
+	* configure.in: post-release version bump to 2.9.3
+
+2004-12-20  Elijah Newren  <newren@gmail.com>
+
 	* NEWS: Metacity 2.9.2 unstable release
 
 2004-12-20  Elijah Newren  <newren@gmail.com>
