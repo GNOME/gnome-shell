@@ -1,3 +1,8 @@
+2004-10-15  Elijah Newren  <newren@math.utah.edu>
+
+	* src/keybindings.c (reload_keymap): Fix from Rob to correct
+	requested number of keycodes (#155247)
+
 2004-10-13  Elijah Newren  <newren@math.utah.edu>
 
 	Code cleanup

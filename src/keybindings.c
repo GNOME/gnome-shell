@@ -429,7 +429,7 @@ reload_keymap (MetaDisplay *display)
   display->keymap = XGetKeyboardMapping (display->xdisplay,
                                          display->min_keycode,
                                          display->max_keycode -
-                                         display->min_keycode,
+                                         display->min_keycode + 1,
                                          &display->keysyms_per_keycode);  
 }
 
