@@ -1,3 +1,8 @@
+2001-12-21  Havoc Pennington  <hp@redhat.com>
+
+	* src/frame.c (meta_window_ensure_frame): add a server grab 
+	here since we were failing to have one when calling the function
+
 2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
 
         * configure.in: Added portuguese to ALL_LINGUAS

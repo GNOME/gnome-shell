@@ -36,11 +36,12 @@ meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   XSetWindowAttributes attrs;
-
-  g_return_if_fail (window->display->server_grab_count > 0);
   
   if (window->frame)
     return;
+
+  /* See comment below for why this is required. */
+  meta_display_grab (window->display);
   
   frame = g_new (MetaFrame, 1);
 
@@ -127,6 +128,8 @@ meta_window_ensure_frame (MetaWindow *window)
 
   /* Move keybindings to frame instead of window */
   meta_window_grab_keys (window);
+
+  meta_display_ungrab (window->display);
 }
 
 void
