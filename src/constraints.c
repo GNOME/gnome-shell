@@ -1411,7 +1411,6 @@ meta_window_constrain (MetaWindow          *window,
       current = *new;
     }
 
-#if 0
   /* Now we have to sort out the aspect ratio */
   if (!window->fullscreen)
     {
@@ -1429,19 +1428,33 @@ meta_window_constrain (MetaWindow          *window,
       width = current.width;
       height = current.height;
 
-      /* Use the standard cut-and-pasted-between-every-WM code: */
       if (min_aspect * height > width)
         {
           int delta;
           
-          delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
-          if (height - delta >= window->size_hints.min_height)
-            height -= delta;
-          else
+          if (y_direction == META_RESIZE_CENTER)
             {
               delta = FLOOR (height * min_aspect - width, window->size_hints.width_inc);
               if (width + delta <= window->size_hints.max_width)
                 width += delta;
+              else
+                {
+                  delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
+                  if (height - delta >= window->size_hints.min_height)
+                    height -= delta;
+                }
+            }
+          else
+            {
+              delta = FLOOR (height - width / min_aspect, window->size_hints.height_inc);
+              if (height - delta >= window->size_hints.min_height)
+                height -= delta;
+              else
+                {
+                  delta = FLOOR (height * min_aspect - width, window->size_hints.width_inc);
+                  if (width + delta <= window->size_hints.max_width)
+                    width += delta;
+                }
             }
         }
       
@@ -1449,14 +1462,29 @@ meta_window_constrain (MetaWindow          *window,
         {
           int delta;
           
-          delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
-          if (width - delta >= window->size_hints.min_width)
-            width -= delta;
-          else
+          if (x_direction == META_RESIZE_CENTER)
             {
               delta = FLOOR (width / max_aspect - height, window->size_hints.height_inc);
               if (height + delta <= window->size_hints.max_height)
                 height += delta;
+              else
+                {
+                  delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
+                  if (width - delta >= window->size_hints.min_width)
+                    width -= delta;
+                }
+            }
+          else
+            {
+              delta = FLOOR (width - height * max_aspect, window->size_hints.width_inc);
+              if (width - delta >= window->size_hints.min_width)
+                width -= delta;
+              else
+                {
+                  delta = FLOOR (width / max_aspect - height, window->size_hints.height_inc);
+                  if (height + delta <= window->size_hints.max_height)
+                    height += delta;
+                }
             }
         }
       
@@ -1508,13 +1536,8 @@ meta_window_constrain (MetaWindow          *window,
         }
       
       current = *new;
-
-      g_print ("3 x_delta = %d y_delta = %d pos = %d,%d size = %dx%d\n",
-               x_delta, y_delta,
-               current.x, current.y, current.width, current.height);
     }
 
-#endif
   meta_topic (META_DEBUG_GEOMETRY,
               "Constrained %s new %d,%d %dx%d old %d,%d %dx%d\n",
               window->desc,

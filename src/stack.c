@@ -193,7 +193,9 @@ window_is_fullscreen_size (MetaWindow *window)
       
       meta_window_get_work_area_current_xinerama (window, &workarea);
       if (window->rect.x <= workarea.x &&
-          window->rect.y <= workarea.y)
+          window->rect.y <= workarea.y &&
+	  window->rect.x + window->rect.width >= workarea.x + workarea.width &&
+	  window->rect.y + window->rect.height >= workarea.y + workarea.height) 
         return TRUE;
     }
   
@@ -207,7 +209,9 @@ window_is_fullscreen_size (MetaWindow *window)
           
           meta_window_get_work_area_current_xinerama (window, &workarea);
           if (window->rect.x <= workarea.x &&
-              window->rect.y <= workarea.y) 
+              window->rect.y <= workarea.y &&
+	      window->rect.x + window->rect.width >= workarea.x + workarea.width &&
+	      window->rect.y + window->rect.height >= workarea.y + workarea.height) 
             return TRUE;
         }
       

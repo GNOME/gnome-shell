@@ -5623,17 +5623,27 @@ update_move (MetaWindow  *window,
     
   if (window->maximized && ABS (dy) >= shake_threshold)
     {
-      /* Shake loose */
-          
-      window->shaken_loose = TRUE;
+      double prop;
 
-      /* Unmaximize at wherever the window would have moved to if it
-       * hadn't been maximized. FIXME if you grab the right side of
-       * the titlebar then on unmaximize the pointer isn't on the
-       * titlebar which is kind of odd.
-       */
-      window->saved_rect.x = new_x;
-      window->saved_rect.y = new_y;
+      /* Shake loose */
+      window->shaken_loose = TRUE;
+		  
+      /* move the unmaximized window to the cursor */
+      prop = 
+	((double)(x - window->display->grab_initial_window_pos.x)) / 
+	((double)window->display->grab_initial_window_pos.width);
+
+      window->display->grab_initial_window_pos.x = 
+	x - window->saved_rect.width * prop;
+      window->display->grab_initial_window_pos.y = y;
+
+      if (window->frame)
+	{
+	  window->display->grab_initial_window_pos.y += window->frame->child_y / 2;
+	}
+
+      window->saved_rect.x = window->display->grab_initial_window_pos.x-dx;
+      window->saved_rect.y = window->display->grab_initial_window_pos.y-dy;
           
       meta_window_unmaximize (window);
 
@@ -5645,30 +5655,28 @@ update_move (MetaWindow  *window,
   else if (window->shaken_loose || window->maximized)
     {
       const MetaXineramaScreenInfo *wxinerama;
+      MetaRectangle work_area;
       int monitor;
 
       wxinerama = meta_screen_get_xinerama_for_window (window->screen, window);
 
       for (monitor = 0; monitor < window->screen->n_xinerama_infos; monitor++)
         {
-          /* FIXME this should check near the top of the work area probably,
-           * maybe only counting full-monitor-width panels in work area
-           * for this purpose.
-           */
-          /* check if cursor is near the top of a xinerama monitor */ 
-          if (x >= window->screen->xinerama_infos[monitor].x_origin &&
-              x < (window->screen->xinerama_infos[monitor].x_origin + 
-                   window->screen->xinerama_infos[monitor].width) &&
-              y >= window->screen->xinerama_infos[monitor].y_origin &&
-              y < (window->screen->xinerama_infos[monitor].y_origin + shake_threshold))
+	  meta_window_get_work_area_for_xinerama (window, monitor, &work_area);
+
+          /* check if cursor is near the top of a xinerama work area */ 
+          if (x >= work_area.x &&
+              x < (work_area.x + work_area.width) &&
+	      y >= work_area.y &&
+	      y < (work_area.y + shake_threshold))
             {
               /* move the saved rect if window will become maximized on an
                * other monitor so user isn't surprised on a later unmaximize
                */
               if (wxinerama->number != monitor)
                 {
-                  window->saved_rect.x = window->screen->xinerama_infos[monitor].x_origin;
-                  window->saved_rect.y = window->screen->xinerama_infos[monitor].y_origin;
+                  window->saved_rect.x = work_area.x;
+		  window->saved_rect.y = work_area.y;
                   
                   if (window->frame) 
                     {
@@ -5679,11 +5687,12 @@ update_move (MetaWindow  *window,
                   meta_window_unmaximize (window);
                 }
 
-              window->shaken_loose = FALSE;
+	      window->display->grab_initial_window_pos = work_area;
+	      window->shaken_loose = FALSE;
+	      
+	      meta_window_maximize (window);
 
-              meta_window_maximize (window);
-
-              return;
+	      return;
             }
         }
     }

@@ -1,3 +1,23 @@
+2003-07-27  Rob Adams  <robadams@ucla.edu>
+
+	* src/window.c (update_move):  Update window shaking loose so that
+	the window is moved to the pointer and certain drag state is
+	properly restored once windows "reattach".  Fix for #115000 based
+	on the patch by Jurg Billeter.
+
+	* src/screen.c (meta_screen_resize): Invalidate work areas after
+	an xrandr screen size update.  Fix for #117230.
+
+	* src/stack.c (window_is_fullscreen_size): Check the bottom corner
+	of the window in addition to the top corner.  Fix for #118194.
+
+	* src/constraints.c (meta_window_constrain): Support aspect ratio
+	hints in the new constraints code.  Fix for #113798.
+
+	* src/tools/metacity-window-demo.c (toggle_aspect_ratio): toggle
+	the aspect ratio hints to force a 16:9 aspect ratio.
+	(do_appwindow): add a button to toggle aspect ratio.
+
 2003-07-27  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme-viewer.c (run_theme_benchmark): also measure wall
