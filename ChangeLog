@@ -1,3 +1,9 @@
+2004-11-16  Marco Pesenti Gritti  <marco@gnome.org>
+
+	* src/Makefile.am:
+
+	Fix build out of src directory. Bug #158325
+
 2004-11-10  James Henstridge  <james@jamesh.id.au>
 
 	* Makefile.am (DISTCLEANFILES): remove intltool stuff on distclean.
