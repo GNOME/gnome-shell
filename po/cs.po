@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2004-07-23 19:42+0200\n"
+"POT-Creation-Date: 2004-09-05 12:12+0200\n"
+"PO-Revision-Date: 2004-09-05 16:22+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1463,13 +1463,7 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"Klávesová zkratka pro přepínání zpět mezi okny bez pomocného okna. Držení "
-"\"shift\" spolu s touto zkratou přepne směr zase vpřed. Formát je jako \"&lt;"
-"Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
-"liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
-"\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
-"tak pro tuto akci nebude žádná klávesová zkratka."
+msgstr "Klávesová zkratka pro přepínání zpět mezi okny bez pomocného okna. Držení \"shift\" spolu s touto zkratkou přepne směr zase vpřed. Formát je jako \"&lt;Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci nebude žádná klávesová zkratka."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -2199,7 +2193,7 @@ msgstr "Chybí atribut \"value\" v elementu <%s>"
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "Pro tlačítka nelze zadat button_width/button_height i aspect ratio"
+msgstr "Pro tlačítka nelze zadat button_width/button_height i poměr stran"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2209,7 +2203,7 @@ msgstr "Vzdálenost \"%s\" není známa"
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Aspect ratio \"%s\" není známo"
+msgstr "Poměr stran \"%s\" není znám"
 
 #: src/theme-parser.c:1446
 #, c-format
