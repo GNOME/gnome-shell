@@ -153,8 +153,29 @@ set_gtk_window_type (GtkWindow  *window,
 int
 main (int argc, char **argv)
 {
+  GList *list;
+  GdkPixbuf *pixbuf;
+  GError *err;
+  
   gtk_init (&argc, &argv);
 
+  err = NULL;
+  pixbuf = gdk_pixbuf_new_from_file (METACITY_ICON_DIR"/metacity-window-demo.png",
+                                     &err);
+  if (pixbuf)
+    {
+      list = g_list_prepend (NULL, pixbuf);
+      
+      gtk_window_set_default_icon_list (list);
+      g_list_free (list);
+      g_object_unref (G_OBJECT (pixbuf));
+    }
+  else
+    {
+      g_printerr ("Could not load icon: %s\n", err->message);
+      g_error_free (err);
+    }
+  
   do_appwindow ();
 
   gtk_main ();

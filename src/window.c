@@ -81,9 +81,7 @@ static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
 static int      update_icon_name          (MetaWindow     *window);
-static int      update_icon               (MetaWindow     *window,
-                                           gboolean        reread_rgb_icon);
-static int      update_kwm_icon           (MetaWindow     *window);
+static int      update_icon               (MetaWindow     *window);
 static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
@@ -299,6 +297,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->icon_name = NULL;
   window->icon = NULL;
   window->mini_icon = NULL;
+  meta_icon_cache_init (&window->icon_cache);
+  window->wm_hints_pixmap = None;
+  window->wm_hints_mask = None;
   
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
@@ -360,14 +361,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->xtransient_for = None;
   window->xgroup_leader = None;
   window->xclient_leader = None;
-
-  window->icon_pixmap = None;
-  window->icon_mask = None;
-
-  window->kwm_pixmap = None;
-  window->kwm_mask = None;
-  
-  window->using_rgb_icon = FALSE;
   
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
@@ -407,9 +400,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_net_wm_type (window);
   update_initial_workspace (window);
   update_icon_name (window);
-  update_kwm_icon (window);
-  /* should come after wm_hints and kwm_icon updates */
-  update_icon (window, TRUE);
+  update_icon (window);
 
   if (!window->mapped &&
       (window->size_hints.flags & PPosition) == 0 &&
@@ -781,6 +772,8 @@ meta_window_free (MetaWindow  *window)
 
   if (window->mini_icon)
     g_object_unref (G_OBJECT (window->mini_icon));
+
+  meta_icon_cache_free (&window->icon_cache);
   
   g_free (window->sm_client_id);
   g_free (window->role);
@@ -3186,9 +3179,13 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == XA_WM_HINTS)
     {
       meta_verbose ("Property notify on %s for WM_HINTS\n", window->desc);
+
+      meta_icon_cache_property_changed (&window->icon_cache,
+                                        window->display,
+                                        event->atom);
       
       update_wm_hints (window);
-      update_icon (window, FALSE);
+      update_icon (window);
       
       meta_window_queue_move_resize (window);
     }
@@ -3252,13 +3249,20 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == window->display->atom_net_wm_icon)
     {
       meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
-      update_icon (window, TRUE);
+
+      meta_icon_cache_property_changed (&window->icon_cache,
+                                        window->display,
+                                        event->atom);
+      update_icon (window);
     }
   else if (event->atom == window->display->atom_kwm_win_icon)
     {
       meta_verbose ("Property notify on %s for KWM_WIN_ICON\n", window->desc);
-      update_kwm_icon (window);
-      update_icon (window, FALSE);
+
+      meta_icon_cache_property_changed (&window->icon_cache,
+                                        window->display,
+                                        event->atom);
+      update_icon (window);
     }
   else if (event->atom == window->display->atom_net_wm_strut)
     {
@@ -3650,18 +3654,13 @@ static int
 update_wm_hints (MetaWindow *window)
 {
   XWMHints *hints;
-  Pixmap old_icon;
-  Pixmap old_mask;
-
-  old_icon = window->icon_pixmap;
-  old_mask = window->icon_mask;
   
   /* Fill in defaults */
   window->input = FALSE;
   window->initially_iconic = FALSE;
   window->xgroup_leader = None;
-  window->icon_pixmap = None;
-  window->icon_mask = None;
+  window->wm_hints_pixmap = None;
+  window->wm_hints_mask = None;
   
   meta_error_trap_push (window->display);
   
@@ -3678,23 +3677,16 @@ update_wm_hints (MetaWindow *window)
         window->xgroup_leader = hints->window_group;
 
       if (hints->flags & IconPixmapHint)
-        window->icon_pixmap = hints->icon_pixmap;
+        window->wm_hints_pixmap = hints->icon_pixmap;
 
       if (hints->flags & IconMaskHint)
-        window->icon_mask = hints->icon_mask;
-
-      if (window->icon_pixmap != old_icon ||
-          window->icon_mask != old_mask)
-        {
-          meta_verbose ("Icon pixmap or mask changed in WM_HINTS for %s\n",
-                        window->desc);
-          update_icon (window, FALSE);
-        }
+        window->wm_hints_mask = hints->icon_mask;
       
-      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx icon: 0x%lx mask: 0x%lx\n",
+      meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx pixmap: 0x%lx mask: 0x%lx\n",
                     window->input, window->initially_iconic,
-                    window->xgroup_leader, window->icon_pixmap,
-                    window->icon_mask);
+                    window->xgroup_leader,
+                    window->wm_hints_pixmap,
+                    window->wm_hints_mask);
       
       meta_XFree (hints);
     }
@@ -4252,545 +4244,39 @@ update_icon_name (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
-static gboolean
-find_best_size (gulong  *data,
-                int      nitems,
-                int      ideal_width,
-                int      ideal_height,
-                int     *width,
-                int     *height,
-                gulong **start)
-{
-  int best_w;
-  int best_h;
-  gulong *best_start;
-
-  *width = 0;
-  *height = 0;
-  *start = NULL;
-  
-  best_w = 0;
-  best_h = 0;
-  best_start = NULL;
-  
-  while (nitems > 0)
-    {
-      int w, h;
-      gboolean replace;
-
-      meta_debug_spew ("n_items = %d\n", nitems);
-      
-      replace = FALSE;
-      
-      if (nitems < 3)
-        {
-          meta_verbose ("_NET_WM_ICON contained too little data\n"); 
-          return FALSE;
-        }
-      
-      w = data[0];
-      h = data[1];
-
-      meta_debug_spew ("w = %d h = %d\n", w, h);
-      
-      if (nitems < ((w * h) + 2))
-        {
-          meta_verbose ("_NET_WM_ICON contained too little data?\n"); 
-          break;
-        }
-
-      if (best_start == NULL)
-        {
-          replace = TRUE;
-        }
-      else
-        {
-          /* work with averages */
-          const int ideal_size = (ideal_width + ideal_height) / 2;
-          int best_size = (best_w + best_h) / 2;
-          int this_size = (w + h) / 2;
-          
-          /* larger than desired is always better than smaller */
-          if (best_size < ideal_size &&
-              this_size >= ideal_size)
-            replace = TRUE;
-          /* if we have too small, pick anything bigger */
-          else if (best_size < ideal_size &&
-                   this_size > best_size)
-            replace = TRUE;
-          /* if we have too large, pick anything smaller
-           * but still >= the ideal
-           */
-          else if (best_size > ideal_size &&
-                   this_size >= ideal_size &&
-                   this_size < best_size)
-            replace = TRUE;
-        }
-
-      if (replace)
-        {
-          best_start = data + 2;
-          best_w = w;
-          best_h = h;
-        }
-
-      data += (w * h) + 2;
-      nitems -= (w * h) + 2;
-    }
-
-  if (best_start)
-    {
-      *start = best_start;
-      *width = best_w;
-      *height = best_h;
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static void
-argbdata_to_pixdata (gulong *argb_data, int len, guchar **pixdata)
-{
-  guchar *p;
-  int i;
-  
-  *pixdata = g_new (guchar, len * 4);
-  p = *pixdata;
-
-  /* One could speed this up a lot. */
-  i = 0;
-  while (i < len)
-    {
-      guint argb;
-      guint rgba;
-      
-      argb = argb_data[i];
-      rgba = (argb << 8) | (argb >> 24);
-      
-      *p = rgba >> 24;
-      ++p;
-      *p = (rgba >> 16) & 0xff;
-      ++p;
-      *p = (rgba >> 8) & 0xff;
-      ++p;
-      *p = rgba & 0xff;
-      ++p;
-      
-      ++i;
-    }
-}
-
-static gboolean
-read_rgb_icon (MetaWindow    *window,
-               int           *width,
-               int           *height,
-               guchar       **pixdata,
-               int           *mini_width,
-               int           *mini_height,
-               guchar       **mini_pixdata)
-{
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  int result;
-  gulong *data; /* FIXME should be guint? */
-  gulong *best;
-  int w, h;
-  gulong *best_mini;
-  int mini_w, mini_h;  
-  
-  meta_error_trap_push (window->display);
-  type = None;
-  data = NULL;
-  result = XGetWindowProperty (window->display->xdisplay,
-                               window->xwindow,
-                               window->display->atom_net_wm_icon,
-                               0, G_MAXLONG,
-                               False, XA_CARDINAL, &type, &format, &nitems,
-                               &bytes_after, ((guchar **)&data));
-  
-  meta_error_trap_pop (window->display);
-  
-  if (result != Success || type != XA_CARDINAL)
-    {
-      meta_verbose ("%s doesn't seem to set _NET_WM_ICON\n",
-                    window->desc);
-      return FALSE;
-    }
-
-  if (!find_best_size (data, nitems, META_ICON_WIDTH, META_ICON_HEIGHT,
-                       &w, &h, &best))
-    {
-      meta_XFree (data);
-      return FALSE;
-    }
-
-  if (!find_best_size (data, nitems, META_MINI_ICON_WIDTH, META_MINI_ICON_HEIGHT,
-                       &mini_w, &mini_h, &best_mini))
-    {
-      meta_XFree (data);
-      return FALSE;
-    }
-  
-  *width = w;
-  *height = h;
-
-  *mini_width = mini_w;
-  *mini_height = mini_h;
-
-  argbdata_to_pixdata (best, w * h, pixdata);
-  argbdata_to_pixdata (best_mini, mini_w * mini_h, mini_pixdata);
-
-  meta_XFree (data);
-  
-  return TRUE;
-}
-
-static void
-clear_icon (MetaWindow *window)
-{
-  if (window->icon)
-    {
-      g_object_unref (G_OBJECT (window->icon));
-      window->icon = NULL;
-    }
-
-  if (window->mini_icon)
-    {
-      g_object_unref (G_OBJECT (window->mini_icon));
-      window->mini_icon = NULL;
-    }
-}
-
-static void
-free_pixels (guchar *pixels, gpointer data)
-{
-  g_free (pixels);
-}
-
-static void
-replace_icon (MetaWindow *window,
-              GdkPixbuf  *unscaled,
-              GdkPixbuf  *unscaled_mini)
-{
-  clear_icon (window);
-  
-  if (gdk_pixbuf_get_width (unscaled) != META_ICON_WIDTH ||
-      gdk_pixbuf_get_height (unscaled) != META_ICON_HEIGHT)
-    {
-      /* FIXME should keep aspect ratio, but for now assuming
-       * a square source icon
-       */              
-      window->icon = gdk_pixbuf_scale_simple (unscaled,
-                                              META_ICON_WIDTH,
-                                              META_ICON_HEIGHT,
-                                              GDK_INTERP_BILINEAR);
-    }
-  else
-    {
-      g_object_ref (G_OBJECT (unscaled));
-      window->icon = unscaled;
-    }
-
-  if (gdk_pixbuf_get_width (unscaled_mini) != META_MINI_ICON_WIDTH ||
-      gdk_pixbuf_get_height (unscaled_mini) != META_MINI_ICON_HEIGHT)
-    {
-      /* FIXME should keep aspect ratio, but for now assuming
-       * a square source icon
-       */              
-      window->mini_icon = gdk_pixbuf_scale_simple (unscaled_mini,
-                                                   META_MINI_ICON_WIDTH,
-                                                   META_MINI_ICON_HEIGHT,
-                                                   GDK_INTERP_BILINEAR);
-    }
-  else
-    {
-      g_object_ref (G_OBJECT (unscaled_mini));
-      window->mini_icon = unscaled_mini;
-    }
-}
-
-static void
-get_pixmap_geometry (MetaDisplay *display,
-                     Pixmap       pixmap,
-                     int         *w,
-                     int         *h,
-                     int         *d)
-{
-  Window root_ignored;
-  int x_ignored, y_ignored;
-  guint width, height;
-  guint border_width_ignored;
-  guint depth;
-
-  if (w)
-    *w = 1;
-  if (h)
-    *h = 1;
-  if (d)
-    *d = 1;
-  
-  XGetGeometry (display->xdisplay,
-                pixmap, &root_ignored, &x_ignored, &y_ignored,
-                &width, &height, &border_width_ignored, &depth);
-
-  if (w)
-    *w = width;
-  if (h)
-    *h = height;
-  if (d)
-    *d = depth;
-}
-
-static GdkPixbuf*
-apply_mask (GdkPixbuf *pixbuf,
-            GdkPixbuf *mask)
-{
-  int w, h;
-  int i, j;
-  GdkPixbuf *with_alpha;
-  guchar *src;
-  guchar *dest;
-  int src_stride;
-  int dest_stride;
-  
-  w = MIN (gdk_pixbuf_get_width (mask), gdk_pixbuf_get_width (pixbuf));
-  h = MIN (gdk_pixbuf_get_height (mask), gdk_pixbuf_get_height (pixbuf));
-  
-  with_alpha = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
-
-  dest = gdk_pixbuf_get_pixels (with_alpha);
-  src = gdk_pixbuf_get_pixels (mask);
-
-  dest_stride = gdk_pixbuf_get_rowstride (with_alpha);
-  src_stride = gdk_pixbuf_get_rowstride (mask);
-  
-  i = 0;
-  while (i < h)
-    {
-      j = 0;
-      while (j < w)
-        {
-          guchar *s = src + i * src_stride + j * 3;
-          guchar *d = dest + i * dest_stride + j * 4;
-          
-          /* s[0] == s[1] == s[2], they are 255 if the bit was set, 0
-           * otherwise
-           */
-          if (s[0] == 0)
-            d[3] = 0;   /* transparent */
-          else
-            d[3] = 255; /* opaque */
-          
-          ++j;
-        }
-      
-      ++i;
-    }
-
-  return with_alpha;
-}
-
-static gboolean
-try_pixmap_and_mask (MetaWindow *window,
-                     Pixmap      src_pixmap,
-                     Pixmap      src_mask)
-{
-  GdkPixbuf *unscaled = NULL;
-  GdkPixbuf *mask = NULL;
-  int w, h;
-
-  if (src_pixmap == None)
-    return FALSE;
-      
-  meta_error_trap_push (window->display);
-
-  get_pixmap_geometry (window->display, src_pixmap,
-                       &w, &h, NULL);
-      
-  unscaled = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                              src_pixmap,
-                                              0, 0, 0, 0,
-                                              w, h);
-
-  if (unscaled && src_mask != None)
-    {
-      get_pixmap_geometry (window->display, src_mask,
-                           &w, &h, NULL);
-      mask = meta_gdk_pixbuf_get_from_pixmap (NULL,
-                                              src_mask,
-                                              0, 0, 0, 0,
-                                              w, h);
-    }
-  
-  meta_error_trap_pop (window->display);
-
-
-  if (mask)
-    {
-      GdkPixbuf *masked;
-
-      meta_verbose ("Applying mask to icon pixmap\n");
-      
-      masked = apply_mask (unscaled, mask);
-      g_object_unref (G_OBJECT (unscaled));
-      unscaled = masked;
-
-      g_object_unref (G_OBJECT (mask));
-      mask = NULL;
-    }
-  
-  if (unscaled)
-    {
-      replace_icon (window, unscaled, unscaled);
-      g_object_unref (G_OBJECT (unscaled));
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
 static int
-update_icon (MetaWindow *window,
-             gboolean    reload_rgb_icon)
+update_icon (MetaWindow *window)
 {
+  GdkPixbuf *icon;
+  GdkPixbuf *mini_icon;
 
-  if (reload_rgb_icon)
+  icon = NULL;
+  mini_icon = NULL;
+  
+  if (meta_read_icons (window->screen,
+                       window->xwindow,
+                       &window->icon_cache,
+                       window->wm_hints_pixmap,
+                       window->wm_hints_mask,
+                       &icon,
+                       META_ICON_WIDTH, META_ICON_HEIGHT,
+                       &mini_icon,
+                       META_MINI_ICON_WIDTH,
+                       META_MINI_ICON_HEIGHT))
     {
-      guchar *pixdata;     
-      int w, h;
-      guchar *mini_pixdata;
-      int mini_w, mini_h;
+      if (window->icon)
+        g_object_unref (G_OBJECT (window->icon));
       
-      pixdata = NULL;
+      if (window->mini_icon)
+        g_object_unref (G_OBJECT (window->mini_icon));
       
-      if (read_rgb_icon (window, &w, &h, &pixdata,
-                         &mini_w, &mini_h, &mini_pixdata))
-        {
-          GdkPixbuf *unscaled;
-          GdkPixbuf *unscaled_mini;
-
-          meta_verbose ("successfully read RGBA icon from _NET_WM_ICON, using w = %d h = %d mini_w = %d mini_h = %d\n", w, h, mini_w, mini_h);
-          
-          window->using_rgb_icon = TRUE;
-
-          unscaled = gdk_pixbuf_new_from_data (pixdata,
-                                               GDK_COLORSPACE_RGB,
-                                               TRUE,
-                                               8,
-                                               w, h, w * 4,
-                                               free_pixels,
-                                               NULL);
-
-          unscaled_mini = gdk_pixbuf_new_from_data (mini_pixdata,
-                                                    GDK_COLORSPACE_RGB,
-                                                    TRUE,
-                                                    8,
-                                                    mini_w, mini_h, mini_w * 4,
-                                                    free_pixels,
-                                                    NULL);
-          
-          replace_icon (window, unscaled, unscaled_mini);
-          
-          g_object_unref (G_OBJECT (unscaled));
-          g_object_unref (G_OBJECT (unscaled_mini));
-          
-          return Success; 
-        }
-      else
-        {
-          if (window->using_rgb_icon)
-            clear_icon (window);
-          window->using_rgb_icon = FALSE;
-
-          /* We'll try to fall back to something else below. */
-        }
-    }
-  else if (window->using_rgb_icon)
-    {
-      /* There's no way we want to use the fallbacks,
-       * keep using this.
-       */
-      return Success;
+      window->icon = icon;
+      window->mini_icon = mini_icon;
     }
   
-  /* Fallback to pixmap + mask */
-
-  if (try_pixmap_and_mask (window,
-                           window->icon_pixmap,
-                           window->icon_mask))
-    {
-      meta_verbose ("Using WM_NORMAL_HINTS icon for %s\n", window->desc);
-      return Success;
-    }
-  else
-    {
-      meta_verbose ("No WM_NORMAL_HINTS icon, or failed to retrieve it\n");
-    }
-
-  if (try_pixmap_and_mask (window,
-                           window->kwm_pixmap,
-                           window->kwm_mask))
-    {
-      meta_verbose ("Using KWM_WIN_ICON for %s\n", window->desc);
-      return Success;
-    }
-  else
-    {
-      meta_verbose ("No KWM_WIN_ICON, or failed to retrieve it\n");
-    }
-  
-  /* Fallback to a default icon */
-  if (window->icon == NULL)
-    window->icon = meta_ui_get_default_window_icon (window->screen->ui);
-
-  if (window->mini_icon == NULL)
-    window->mini_icon = meta_ui_get_default_mini_icon (window->screen->ui);
-
   g_assert (window->icon);
   g_assert (window->mini_icon);
   
-  return Success;
-}
-
-static int
-update_kwm_icon (MetaWindow *window)
-{
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  Pixmap *icons;
-  int result;
-
-  window->kwm_pixmap = None;
-  window->kwm_mask = None;
-  
-  meta_error_trap_push (window->display);
-  icons = NULL;
-  result = XGetWindowProperty (window->display->xdisplay, window->xwindow,
-                               window->display->atom_kwm_win_icon,
-                               0, G_MAXLONG,
-                               False, window->display->atom_kwm_win_icon,
-                               &type, &format, &nitems,
-                               &bytes_after, (guchar **)&icons);  
-
-  meta_error_trap_pop (window->display);
-  if (result != Success)
-    return result;
-  
-  if (type != window->display->atom_kwm_win_icon)
-    return -1; /* FIXME mem leak? */
-
-  window->kwm_pixmap = icons[0];
-  window->kwm_mask = icons[1];
-
-  meta_verbose ("Found KWM_WIN_ICON 0x%lx\n", window->kwm_pixmap);
-  
-  meta_XFree (icons);
-
   return Success;
 }
 

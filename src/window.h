@@ -25,6 +25,7 @@
 #include "screen.h"
 #include "util.h"
 #include "stack.h"
+#include "iconcache.h"
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -58,6 +59,9 @@ struct _MetaWindow
   char *icon_name;
   GdkPixbuf *icon;
   GdkPixbuf *mini_icon;
+  MetaIconCache icon_cache;
+  Pixmap wm_hints_pixmap;
+  Pixmap wm_hints_mask;
   
   MetaWindowType type;
   Atom type_atom;
@@ -76,18 +80,6 @@ struct _MetaWindow
 
   /* Initial workspace property */
   int initial_workspace;  
-  
-  Pixmap icon_pixmap;
-  Pixmap icon_mask;
-
-  /* these are legacy and should die once we have _NET_WM_ICON in
-   * most apps
-   */
-  Pixmap kwm_pixmap;
-  Pixmap kwm_mask;
-  
-  /* Whether ->icon is from NET_WM_ICON instead of pixmap */
-  guint using_rgb_icon : 1;
   
   /* Whether we're maximized */
   guint maximized : 1;

@@ -1,5 +1,14 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (update_icon): port to icon cache
+
+	* src/iconcache.c, src/iconcache.c: begin process of cleaning up
+	window.c by moving the icon-reading code in here, based on the
+	code in libwnck, which was in turn based on the earlier metacity
+	code
+
+2002-02-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/stack.c (meta_stack_sync_to_server): hmm, and don't set
 	last_window at all if we don't ++newp. Fixes even more obscure
 	stacking bug.

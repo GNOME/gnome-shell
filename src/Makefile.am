@@ -23,6 +23,8 @@ metacity_SOURCES= 				\
 	frames.h				\
 	gradient.c				\
 	gradient.h				\
+	iconcache.c				\
+	iconcache.h				\
 	inlinepixbufs.h				\
 	keybindings.c				\
 	keybindings.h				\
