@@ -46,16 +46,28 @@ ACLOCAL=aclocal-1.4
   }
 }
 
-grep "^AM_GLIB_GNU_GETTEXT" configure.in >/dev/null && {
-  grep "sed.*POTFILES" $srcdir/configure.in >/dev/null || \
-  (gettext --version) < /dev/null > /dev/null 2>&1 || {
-    echo
-    echo "**Error**: You must have \`gettext' installed to compile $PROJECT."
-    echo "Get ftp://alpha.gnu.org/gnu/gettext-0.10.35.tar.gz"
-    echo "(or a newer version if it is available)"
-    DIE=1
-  }
-}
+if grep "^AM_[A-Z0-9_]\{1,\}_GETTEXT" "$CONFIGURE" >/dev/null; then
+  if grep "sed.*POTFILES" "$CONFIGURE" >/dev/null; then
+    GETTEXTIZE=""
+  else
+    if grep "^AM_GLIB_GNU_GETTEXT" "$CONFIGURE" >/dev/null; then
+      GETTEXTIZE="glib-gettextize"
+      GETTEXTIZE_URL="ftp://ftp.gtk.org/pub/gtk/v2.0/glib-2.0.0.tar.gz"
+    else
+      GETTEXTIZE="gettextize"
+      GETTEXTIZE_URL="ftp://alpha.gnu.org/gnu/gettext-0.10.35.tar.gz"
+    fi
+
+    $GETTEXTIZE --version < /dev/null > /dev/null 2>&1
+    if test $? -ne 0; then
+      echo
+      echo "**Error**: You must have \`$GETTEXTIZE' installed to compile $PKG_NAME."
+      echo "Get $GETTEXTIZE_URL"
+      echo "(or a newer version if it is available)"
+      DIE=1
+    fi
+  fi
+fi
 
 if test "$DIE" -eq 1; then
 	exit 1

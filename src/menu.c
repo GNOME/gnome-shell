@@ -48,12 +48,12 @@ struct _MenuData
 static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static MenuItem menuitems[] = {
-  { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, N_("_Minimize") },
+  { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, N_("Mi_nimize") },
   { META_MENU_OP_MAXIMIZE, METACITY_STOCK_MAXIMIZE, N_("Ma_ximize") },
   { META_MENU_OP_UNMAXIMIZE, NULL, N_("Unma_ximize") },
   { META_MENU_OP_SHADE, NULL, N_("Roll _Up") },
   { META_MENU_OP_UNSHADE, NULL, N_("_Unroll") },
-  { META_MENU_OP_MOVE, NULL, N_("Mo_ve") },
+  { META_MENU_OP_MOVE, NULL, N_("_Move") },
   { META_MENU_OP_RESIZE, NULL, N_("_Resize") },
   { 0, NULL, NULL }, /* separator */
   { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, N_("_Close") },

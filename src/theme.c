@@ -4229,35 +4229,35 @@ meta_theme_validate (MetaTheme *theme,
   if (theme->readable_name == NULL)
     {
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                   _("No <name> set for theme \"%s\""), theme->name);
+                   _("No <%s> set for theme \"%s\""), "name", theme->name);
       return FALSE;
     }
 
   if (theme->author == NULL)
     {
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                   _("No <author> set for theme \"%s\""), theme->name);
+                   _("No <%s> set for theme \"%s\""), "author", theme->name);
       return FALSE;
     }
 
   if (theme->date == NULL)
     {
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                   _("No <date> set for theme \"%s\""), theme->name);
+                   _("No <%s> set for theme \"%s\""), "date", theme->name);
       return FALSE;
     }
 
   if (theme->description == NULL)
     {
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                   _("No <description> set for theme \"%s\""), theme->name);
+                   _("No <%s> set for theme \"%s\""), "description", theme->name);
       return FALSE;
     }
 
   if (theme->copyright == NULL)
     {
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                   _("No <copyright> set for theme \"%s\""), theme->name);
+                   _("No <%s> set for theme \"%s\""), "copyright", theme->name);
       return FALSE;
     }
 

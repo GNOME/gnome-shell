@@ -1,3 +1,16 @@
+2002-09-24  Havoc Pennington  <hp@redhat.com>
+
+	* src/main.c (main): support --version, #92796 patch from 
+	Christian Neumair
+
+	* autogen.sh: change gettext test to be happy with
+	glib-gettextize, #81425
+
+	* src/menu.c: change mnemonics to match bug #78999
+
+	* src/theme.c (meta_theme_validate): consolidate some
+	nearly-identical themes for ease of translation, #70962
+	
 2002-09-24  Arvind Samptur  <arvind.samptur@wipro.com>
 	* src/menu.c: Replace strings Shade with Roll Up and 
 	Unshade with Unroll.

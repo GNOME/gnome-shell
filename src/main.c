@@ -60,8 +60,19 @@ log_handler (const gchar   *log_domain,
 static void
 usage (void)
 {
-  g_print (_("metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace]\n"));
+  g_print (_("metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"));
   exit (1);
+}
+
+static void
+version (void)
+{
+  g_print (_("metacity %s\n"
+             "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+             "This is free software; see the source for copying conditions.\n"
+             "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
+           VERSION);
+  exit (0);
 }
 
 int
@@ -136,6 +147,8 @@ main (int argc, char **argv)
           strcmp (arg, "-h") == 0 ||
           strcmp (arg, "-?") == 0)
         usage ();
+      else if (strcmp (arg, "--version") == 0)
+        version ();
       else if (strcmp (arg, "--sm-disable") == 0)
         disable_sm = TRUE;
       else if (strcmp (arg, "--replace") == 0)
