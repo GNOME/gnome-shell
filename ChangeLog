@@ -1,3 +1,8 @@
+2002-05-26  Matthias Warkus  <mawarkus@gnome.org>
+
+	* po/de.po: Added.
+	* configure.in: de added to ALL_LINGUAS
+
 2002-05-25 Erwann Chenede - <erwann.chenede@sun.com>
 
 	* src/keybindings.c (rebuild_screen_binding_table,
