@@ -1,3 +1,10 @@
+2004-05-02  Rob Adams  <readams@readams.net>
+
+	* src/metacity-dialog.c (warn_about_no_sm_support): make the no sm
+	support warning dialog resizable, since the default GTK warning
+	dialog not has default not resizable.  Fix for #141672 from
+	Olivier Crete.
+
 2004-04-29  Rob Adams  <readams@readams.net>
 
 	* src/prefs.c (change_notify): Add a value type check for the

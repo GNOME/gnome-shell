@@ -255,6 +255,8 @@ warn_about_no_sm_support (char **lame_apps)
   gtk_window_set_geometry_hints (GTK_WINDOW (dialog),
                                  sw, NULL, 0);
 
+  gtk_window_set_resizable (GTK_WINDOW(dialog), TRUE);
+
   /* applies to geometry widget; try to avoid scrollbars,
    * but don't make the window huge
    */
