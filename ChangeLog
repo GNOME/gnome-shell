@@ -1,3 +1,10 @@
+2004-08-29  Elijah Newren  <newren@math.utah.edu>
+
+	* src/window.c (window_takes_focus_on_map): Disable
+	focus-stealing-prevention for now; there are still some issues and
+	hard code freeze is tomorrow...so this will have to wait until
+	Gnome 2.10.
+
 2004-08-27  Havoc Pennington  <hp@redhat.com>
 
 	* src/compositor.c (meta_compositor_new): disable NameWindowPixmap

@@ -1621,6 +1621,9 @@ window_takes_focus_on_map (MetaWindow *window)
     case META_WINDOW_NORMAL:
     case META_WINDOW_DIALOG:
     case META_WINDOW_MODAL_DIALOG:
+      /* Disable the focus-stealing-prevention stuff for now; see #149028 */
+      return TRUE;
+
       meta_topic (META_DEBUG_STARTUP,
                   "COMPARISON:\n"
                   "  net_wm_user_time_set : %d\n"
