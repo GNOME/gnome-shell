@@ -34,7 +34,6 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
-#include <sys/select.h>
 #include <assert.h>
 
 #ifndef TRUE

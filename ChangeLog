@@ -1,5 +1,10 @@
 2003-09-30  Havoc Pennington  <hp@redhat.com>
 
+	* src/testasyncgetprop.c: remove nonstandard header include, 
+	#121870
+
+2003-09-30  Havoc Pennington  <hp@redhat.com>
+
 	* src/tools/metacity-message.c (main): call
 	bind_textdomain_codeset(), fix from Yukihiro Nakai bug #121743
 
