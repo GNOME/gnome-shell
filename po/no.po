@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-05-17 18:07-0400\n"
-"PO-Revision-Date: 2002-04-22 13:00+0200\n"
+"POT-Creation-Date: 2002-05-18 23:27+0200\n"
+"PO-Revision-Date: 2002-05-18 23:28+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -123,18 +123,16 @@ msgid "Ma_ximize"
 msgstr "Ma_ksimer"
 
 #: src/menu.c:52
-#, fuzzy
 msgid "Unma_ximize"
-msgstr "_Gjenopprett"
+msgstr "G_jenopprett"
 
 #: src/menu.c:53
 msgid "_Shade"
 msgstr "_Skyggelegg"
 
 #: src/menu.c:54
-#, fuzzy
 msgid "Un_shade"
-msgstr "Fjer_n skygge"
+msgstr "Fjern _skygge"
 
 #: src/menu.c:55
 msgid "Mo_ve"
@@ -213,7 +211,7 @@ msgstr ""
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr ""
+msgstr "Funskjonalietet for å gå rundt ødelagte applikasjoner er deaktivert. Noen applikasjoner vil kanskje ikke oppføre seg korrekt.\n"
 
 #: src/prefs.c:762
 #, c-format
@@ -226,6 +224,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\""
 msgstr ""
+"«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
+"tastaturbinding «%s»"
 
 #: src/resizepopup.c:168
 #, c-format
