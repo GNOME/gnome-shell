@@ -1137,6 +1137,10 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_BUTTON_LAYOUT:
       return "BUTTON_LAYOUT";
       break;
+
+    case META_PREF_WORKSPACE_NAMES:
+      return "WORKSPACE_NAMES";
+      break;
     }
 
   return "(unknown)";
@@ -1342,6 +1346,8 @@ init_workspace_names (void)
 
       update_workspace_name (key, str_val);
 
+      g_assert (workspace_names[i] != NULL);
+      
       g_free (str_val);    
       g_free (key);
 
@@ -1553,21 +1559,23 @@ update_workspace_name (const char  *name,
       return FALSE;
     }
 
-  if ((workspace_names[i] == NULL && value == NULL) ||
-      (workspace_names[i] && value && strcmp (workspace_names[i], value) == 0))
+  if (workspace_names[i] && value && strcmp (workspace_names[i], value) == 0)
     {
       meta_topic (META_DEBUG_PREFS,
                   "Workspace name %d is unchanged\n", i);
       return FALSE;
-    }
-  
-  g_free (workspace_names[i]);
+    }  
+
   if (value != NULL)
-    workspace_names[i] = g_strdup (value);
+    {
+      g_free (workspace_names[i]);
+      workspace_names[i] = g_strdup (value);
+    }
   else
     {
       /* use a default name */
       char *d;
+
       d = g_strdup_printf (_("Workspace %d"), i + 1);
       if (workspace_names[i] && strcmp (workspace_names[i], d) == 0)
         {
@@ -1576,6 +1584,7 @@ update_workspace_name (const char  *name,
         }
       else
         {
+          g_free (workspace_names[i]);
           workspace_names[i] = d;
         }
     }
@@ -1591,6 +1600,8 @@ const char*
 meta_prefs_get_workspace_name (int i)
 {
   g_return_val_if_fail (i >= 0 && i < MAX_REASONABLE_WORKSPACES, NULL);
+
+  g_assert (workspace_names[i] != NULL);
   
   return workspace_names[i];
 }

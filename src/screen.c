@@ -1137,6 +1137,9 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
               entries[iter].key = (MetaTabEntryKey) workspace;
               entries[iter].title = meta_workspace_get_name (workspace);
               entries[iter].icon = NULL;
+
+              g_assert (entries[iter].title != NULL);
+              
               iter++;
             }
         }
@@ -1156,6 +1159,8 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
           entries[i].key = (MetaTabEntryKey) workspace;
           entries[i].title = meta_workspace_get_name (workspace);
           entries[i].icon = NULL;
+
+          g_assert (entries[i].title != NULL);
         }
     }
 
@@ -1416,7 +1421,7 @@ update_workspace_names (MetaScreen *screen)
       name = meta_prefs_get_workspace_name (i);
 
       if (name)
-        g_string_append_len (flattened, name, 
+        g_string_append_len (flattened, name,
                              strlen (name) + 1);
       else
         g_string_append_len (flattened, "", 1);
@@ -1462,6 +1467,9 @@ meta_screen_update_workspace_names (MetaScreen *screen)
   i = 0;
   while (i < n_names)
     {
+      meta_topic (META_DEBUG_PREFS,
+                  "Setting workspace %d name to \"%s\" due to _NET_DESKTOP_NAMES change\n",
+                  i, names[i] ? names[i] : "null");
       meta_prefs_change_workspace_name (i, names[i]);
       
       ++i;

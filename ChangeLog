@@ -1,3 +1,24 @@
+2002-11-19  Havoc Pennington  <hp@pobox.com>
+
+        Fix #98303 and assorted cleanup
+	
+	* src/prefs.c (meta_preference_to_string): handle
+	META_PREF_WORKSPACE_NAMES
+
+	* src/menu.c (get_workspace_name_with_accel): assert that the
+	workspace has a name
+
+	* src/screen.c (meta_screen_ensure_workspace_popup): assert that
+	we got a workspace name
+	(meta_screen_ensure_workspace_popup): assert that we got a
+	workspace name
+
+	* src/prefs.c (update_workspace_name): fix screwiness (strcmp with
+	a freed string, assorted bad logic)
+	(init_workspace_names): assert that we filled in a default
+	workspace name
+	(meta_prefs_get_workspace_name): assert non-NULL workspace name
+
 2002-11-16  Bill Haneman <bill.haneman@sun.com>
 
 	* src/themes/Atlanta/metacity-theme-1.xml:

@@ -141,6 +141,8 @@ get_workspace_name_with_accel (Display *display,
 
   name = meta_core_get_workspace_name_with_index (display, xroot, index);
 
+  g_assert (name != NULL);
+  
   /*
    * If the name is of the form "Workspace x" where x is an unsigned
    * integer, insert a '_' before the number if it is less than 10 and
@@ -188,7 +190,7 @@ get_workspace_name_with_accel (Display *display,
        * *new_name to the calling code.
        */
       return new_name;
-  }
+    }
 }
 
 static GtkWidget*
