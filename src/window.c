@@ -3409,6 +3409,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->wm_state_above);
 
+          meta_window_update_layer (window);
           set_net_wm_state (window);
         }
 
@@ -3418,7 +3419,8 @@ meta_window_client_message (MetaWindow *window,
           window->wm_state_below = 
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->wm_state_below);
-          
+
+          meta_window_update_layer (window);
           set_net_wm_state (window);
         }
       

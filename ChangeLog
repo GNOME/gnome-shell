@@ -1,3 +1,8 @@
+2002-10-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_client_message): update window layer
+	when above/below state is changed. Fixed by Ross Burton.
+
 2002-10-14  Federico Mena Quintero  <federico@ximian.com>
 
 	* src/display.c (event_callback): Ignore EnterNotify events when
