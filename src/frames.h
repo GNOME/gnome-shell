@@ -89,6 +89,8 @@ struct _MetaFrames
   int text_height;
 
   GHashTable *frames;
+
+  GtkWidget *menu;
   
   /* The below is all for grabs */
   MetaFrameStatus grab_status;
@@ -129,5 +131,11 @@ void meta_frames_reset_bg (MetaFrames *frames,
 
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);
+
+void meta_frames_get_pixmap_for_control (MetaFrames *frames,
+                                         MetaFrameControl control,
+                                         GdkPixmap   **pixmap,
+                                         GdkBitmap   **mask);
+void meta_frames_notify_menu_hide (MetaFrames *frames);
 
 #endif

@@ -130,6 +130,8 @@ meta_debug_spew (const char *format, ...)
   if (no_prefix == 0)
     fputs ("Window manager: ", out);
   fputs (str, out);
+
+  fflush (out);
   
   g_free (str);
 }
@@ -155,6 +157,8 @@ meta_verbose (const char *format, ...)
   if (no_prefix == 0)
     fputs ("Window manager: ", out);
   fputs (str, out);
+
+  fflush (out);
   
   g_free (str);
 }
@@ -177,6 +181,8 @@ meta_bug (const char *format, ...)
   if (no_prefix == 0)
     fputs ("Bug in window manager: ", out);
   fputs (str, out);
+
+  fflush (out);
   
   g_free (str);
 
@@ -224,6 +230,8 @@ meta_fatal (const char *format, ...)
   if (no_prefix == 0)
     fputs ("Window manager: ", out);
   fputs (str, out);
+
+  fflush (out);
   
   g_free (str);
 

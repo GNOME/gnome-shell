@@ -220,4 +220,6 @@ gboolean meta_window_client_message    (MetaWindow *window,
                                         XEvent     *event);
 
 int      meta_window_set_current_workspace_hint (MetaWindow *window);
+
+unsigned long meta_window_get_net_wm_desktop (MetaWindow *window);
 #endif

@@ -21,6 +21,7 @@
 
 #include "core.h"
 #include "frame.h"
+#include "workspace.h"
 
 void
 meta_core_get_frame_size (Display *xdisplay,
@@ -233,4 +234,125 @@ meta_core_delete (Display *xdisplay,
      
   meta_window_delete (window, timestamp);
 }
+
+void
+meta_core_unshade (Display *xdisplay,
+                   Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_unshade (window);
+}
+
+void
+meta_core_shade (Display *xdisplay,
+                 Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_shade (window);
+}
+
+void
+meta_core_unstick (Display *xdisplay,
+                   Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_unstick (window);
+}
+
+void
+meta_core_stick (Display *xdisplay,
+                 Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_stick (window);
+}
+
+void
+meta_core_change_workspace (Display *xdisplay,
+                            Window   frame_xwindow,
+                            int      new_workspace)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  meta_window_change_workspace (window,
+                                meta_display_get_workspace_by_screen_index (display,
+                                                                            window->screen,
+                                                                            new_workspace));
+}
+
+int
+meta_core_get_num_workspaces (Screen  *xscreen)
+{
+  MetaScreen *screen;
+
+  screen = meta_screen_for_x_screen (xscreen);
+
+  return meta_screen_get_n_workspaces (screen);
+}
+
+int
+meta_core_get_active_workspace (Screen *xscreen)
+{
+  MetaScreen *screen;
+
+  screen = meta_screen_for_x_screen (xscreen);
+
+  return meta_workspace_screen_index (screen->active_workspace);
+}
+
+int
+meta_core_get_frame_workspace (Display *xdisplay,
+                               Window frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+
+  return meta_window_get_net_wm_desktop (window);
+}
+
 

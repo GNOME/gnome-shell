@@ -359,6 +359,20 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
   meta_core_queue_frame_resize (gdk_display,
                                 frame->xwindow);
+  if (frame->layout)
+    {
+      /* recreate layout */
+      char *text;
+      
+      text = g_strdup (pango_layout_get_text (frame->layout));
+
+      g_object_unref (G_OBJECT (frame->layout));
+      
+      frame->layout = gtk_widget_create_pango_layout (GTK_WIDGET (frames),
+                                                      text);
+
+      g_free (text);
+    }
 }
 
 static void
@@ -946,9 +960,6 @@ meta_frames_button_press_event (GtkWidget      *widget,
   MetaFrameControl control;
   
   frames = META_FRAMES (widget);
-
-  if (frames->grab_frame != NULL)
-    return FALSE; /* already up to something */
   
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
@@ -956,6 +967,27 @@ meta_frames_button_press_event (GtkWidget      *widget,
   
   control = get_control (frames, frame, event->x, event->y);
 
+  if (control == META_FRAME_CONTROL_TITLE &&
+      event->button == 1 &&
+      event->type == GDK_2BUTTON_PRESS)
+    {
+      MetaFrameFlags flags;
+      
+      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+
+      if (flags & META_FRAME_SHADED)
+        meta_core_unshade (gdk_display,
+                           frame->xwindow);
+      else
+        meta_core_shade (gdk_display,
+                         frame->xwindow);
+
+      return TRUE;
+    }
+
+  if (frames->grab_frame != NULL)
+    return FALSE; /* already up to something */
+  
   if (event->button == 1)
     meta_core_user_raise (gdk_display, frame->xwindow);
 
@@ -1006,7 +1038,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
         }
     }
   else if (control == META_FRAME_CONTROL_RESIZE_SE &&
-      event->button == 1)
+           event->button == 1)
     {
       int w, h;
 

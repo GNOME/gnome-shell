@@ -1479,7 +1479,9 @@ process_property_notify (MetaWindow     *window,
       meta_warning ("Broken client changed client leader window or SM client ID\n");
     }
   else if (event->atom ==
-           window->display->atom_net_wm_window_type)
+           window->display->atom_net_wm_window_type ||
+           /* update_net_wm_type falls back to this */
+           event->atom == window->display->atom_win_layer)
     {
       update_net_wm_type (window);
     }
@@ -1993,12 +1995,14 @@ update_mwm_hints (MetaWindow *window)
 
   result = meta_error_trap_pop (window->display);
 
-  if (result != Success)
-    return result;
+  if (result != Success ||
+      type == None)
+    {
+      meta_verbose ("Window %s has no MWM hints\n", window->desc);
+      /* may be Success, unused anyhow */
+      return result;
+    }
   
-  if (type == None)
-    return -1; /* whatever */
-
   /* We support MWM hints deemed non-stupid */
 
   meta_verbose ("Window %s has MWM hints\n",
@@ -2006,14 +2010,20 @@ update_mwm_hints (MetaWindow *window)
   
   if (hints->flags & MWM_HINTS_DECORATIONS)
     {
-      meta_verbose ("Window %s sets MWM decorations to 0x%lx\n",
+      meta_verbose ("Window %s sets MWM_HINTS_DECORATIONS 0x%lx\n",
                     window->desc, hints->decorations);
+
       if (hints->decorations == 0)
         window->decorated = FALSE;
     }
+  else
+    meta_verbose ("Decorations flag unset\n");
 
   if (hints->flags & MWM_HINTS_FUNCTIONS)
     {
+      meta_verbose ("Window %s sets MWM_HINTS_FUNCTIONS 0x%lx\n",
+                    window->desc, hints->functions);
+
       if ((hints->functions & MWM_FUNC_CLOSE) == 0)
         {
           meta_verbose ("Window %s disables close via MWM hints\n",
@@ -2033,6 +2043,8 @@ update_mwm_hints (MetaWindow *window)
           window->has_maximize_func = FALSE;
         }
     }
+  else
+    meta_verbose ("Functions flag unset\n");
 
   XFree (hints);
   
@@ -2241,6 +2253,52 @@ update_transient_for (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
+
+static gboolean
+get_cardinal (MetaWindow *window,
+              Atom        atom,
+              gulong     *val)
+{  
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *num;
+  int err;
+  
+  meta_error_trap_push (window->display);
+  type = None;
+  XGetWindowProperty (window->display->xdisplay,
+                      window->xwindow,
+                      atom,
+                      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&num);  
+  err = meta_error_trap_pop (window->display);
+  if (err != Success)
+    return FALSE;
+  
+  if (type != XA_CARDINAL)
+    return FALSE;
+
+  *val = *num;
+  
+  XFree (num);
+
+  return TRUE;
+}
+
+/* some legacy cruft */
+typedef enum
+{
+  WIN_LAYER_DESKTOP     = 0,
+  WIN_LAYER_BELOW       = 2,
+  WIN_LAYER_NORMAL      = 4,
+  WIN_LAYER_ONTOP       = 6,
+  WIN_LAYER_DOCK        = 8,
+  WIN_LAYER_ABOVE_DOCK  = 10
+} GnomeWinLayer;
+
 static int
 update_net_wm_type (MetaWindow *window)
 {
@@ -2262,16 +2320,38 @@ update_net_wm_type (MetaWindow *window)
 		      &bytes_after, (guchar **)&atoms);  
 
   result = meta_error_trap_pop (window->display);
-  if (result != Success)
+  if (result != Success ||
+      type != XA_ATOM)
     {
+      /* Fall back to WIN_LAYER */
+      gulong layer = WIN_LAYER_NORMAL;
+
+      if (get_cardinal (window, window->display->atom_win_layer,
+                        &layer))
+        {
+          meta_verbose ("%s falling back to _WIN_LAYER hint, layer %ld\n",
+                        window->desc, layer);
+          switch (layer)
+            {
+            case WIN_LAYER_DESKTOP:
+              window->type_atom =
+                window->display->atom_net_wm_window_type_desktop;
+              break;
+            case WIN_LAYER_NORMAL:
+              window->type_atom =
+                window->display->atom_net_wm_window_type_normal;
+              break;
+            case WIN_LAYER_DOCK:
+              window->type_atom =
+                window->display->atom_net_wm_window_type_dock;
+              break;
+            default:
+              break;
+            }
+        }
+      
       recalc_window_type (window);
       return result;
-    }
-  
-  if (type != XA_ATOM)
-    {
-      recalc_window_type (window);
-      return -1; /* whatever */
     }
 
   i = 0;
@@ -2314,40 +2394,6 @@ update_net_wm_type (MetaWindow *window)
   
   recalc_window_type (window);
   return Success;
-}
-
-static gboolean
-get_cardinal (MetaWindow *window,
-              Atom        atom,
-              gulong     *val)
-{  
-  Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
-  int err;
-  
-  meta_error_trap_push (window->display);
-  type = None;
-  XGetWindowProperty (window->display->xdisplay,
-                      window->xwindow,
-                      atom,
-                      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&num);  
-  err = meta_error_trap_pop (window->display);
-  if (err != Success)
-    return FALSE;
-  
-  if (type != XA_CARDINAL)
-    return FALSE;
-
-  *val = *num;
-  
-  XFree (num);
-
-  return TRUE;
 }
 
 static int

@@ -31,7 +31,6 @@ void meta_window_menu_show (MetaFrames              *frames,
                             int                      root_y,
                             int                      button,
                             guint32                  timestamp);
-void meta_window_menu_hide (void);
 
 
 

@@ -64,6 +64,7 @@ meta_error_trap_pop (MetaDisplay *display)
   ErrorTrap *et;
   GSList *next;
 
+  XSync (display->xdisplay, False);
   return gdk_error_trap_pop ();
   /* below here is old method */
   

@@ -21,6 +21,8 @@
 
 #include "menu.h"
 #include "main.h"
+#include "util.h"
+#include "core.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -48,23 +50,23 @@ struct _MenuItem
 
 struct _MenuData
 {
-  GdkWindow *window;
-  MetaMessageWindowMenuOps op;
+  MetaFrames *frames;
+  MetaUIFrame *frame;
+  MetaMenuOp op;
 };
 
 static void activate_cb (GtkWidget *menuitem, gpointer data);
 
-static GtkWidget *menu = NULL;
 static MenuItem menuitems[] = {
-  { META_MESSAGE_MENU_DELETE, GTK_STOCK_CLOSE, N_("_Close") },
-  { META_MESSAGE_MENU_MINIMIZE, NULL, N_("_Minimize") },
-  { META_MESSAGE_MENU_MAXIMIZE, NULL, N_("Ma_ximize") },
-  { META_MESSAGE_MENU_UNMAXIMIZE, NULL, N_("_Unmaximize") },
-  { META_MESSAGE_MENU_SHADE, NULL, N_("_Shade") },
-  { META_MESSAGE_MENU_UNSHADE, NULL, N_("U_nshade") },
+  { META_MENU_OP_DELETE, NULL, N_("_Close") },
+  { META_MENU_OP_MINIMIZE, NULL, N_("_Minimize") },
+  { META_MENU_OP_MAXIMIZE, NULL, N_("Ma_ximize") },
+  { META_MENU_OP_UNMAXIMIZE, NULL, N_("_Unmaximize") },
+  { META_MENU_OP_SHADE, NULL, N_("_Shade") },
+  { META_MENU_OP_UNSHADE, NULL, N_("U_nshade") },
   { 0, NULL, NULL }, /* separator */
-  { META_MESSAGE_MENU_STICK, NULL, N_("Put on _All Workspaces") },
-  { META_MESSAGE_MENU_UNSTICK, NULL, N_("Only on _This Workspace") }
+  { META_MENU_OP_STICK, NULL, N_("Put on _All Workspaces") },
+  { META_MENU_OP_UNSTICK, NULL, N_("Only on _This Workspace") }
 };
 
 static void
@@ -89,121 +91,71 @@ popup_position_func (GtkMenu   *menu,
   *y = CLAMP (*y, 0, MAX (0, gdk_screen_height () - req.height));
 }
 
-static gint
-get_num_desktops (void)
-{  
-  Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
-  int result;
-  
-  XGetWindowProperty (gdk_display, gdk_root_window,
-                      gdk_atom_intern ("_NET_NUMBER_OF_DESKTOPS", FALSE),
-                      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&num);  
+static void
+menu_closed (GtkMenu *menu,
+             gpointer data)
+{
+  MetaFrames *frames;
 
-  if (type != XA_CARDINAL)
-    return 0; 
+  frames = META_FRAMES (data);
 
-  result = *num;
-  
-  XFree (num);
+  meta_frames_notify_menu_hide (frames);
 
-  return result;
-}
-
-static gint
-get_active_desktop (void)
-{  
-  Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
-  int result;
-  
-  XGetWindowProperty (gdk_display, gdk_root_window,
-                      gdk_atom_intern ("_NET_CURRENT_DESKTOP", FALSE),
-                      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&num);  
-
-  if (type != XA_CARDINAL)
-    return 0; 
-
-  result = *num;
-  
-  XFree (num);
-
-  return result;
-}
-
-static gulong
-get_current_desktop (GdkWindow *window)
-{  
-  Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
-  gulong result;
-  int err;
-  
-  gdk_error_trap_push ();
-  type = None;
-  XGetWindowProperty (gdk_display, GDK_WINDOW_XID (window),
-                      gdk_atom_intern ("_NET_WM_DESKTOP", FALSE),
-                      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&num);  
-  err = gdk_error_trap_pop ();
-  if (err != Success)
-    meta_ui_warning ("Error %d getting _NET_WM_DESKTOP\n", err);
-  
-  if (type != XA_CARDINAL)
-    {
-      meta_ui_warning ("_NET_WM_DESKTOP has wrong type %s\n", gdk_atom_name (type));
-      return 0xFFFFFFFF; /* sticky */
-    }
-
-  result = *num;
-  
-  XFree (num);
-
-  return result;
+  gtk_widget_destroy (frames->menu);
+  frames->menu = NULL;
 }
 
 void
-meta_window_menu_show (gulong xwindow,
-                       int root_x, int root_y,
-                       int button,
-                       MetaMessageWindowMenuOps ops,
-                       MetaMessageWindowMenuOps insensitive,
-                       guint32 timestamp)
+meta_window_menu_show (MetaFrames              *frames,
+                       MetaUIFrame             *frame,
+                       int                      root_x,
+                       int                      root_y,
+                       int                      button,
+                       guint32                  timestamp)
 {
   int i;
-  GdkWindow *window;
   GdkPoint *pt;
   int n_workspaces;
   int current_workspace;
+  MetaMenuOp ops;
+  MetaMenuOp insensitive;
+  MetaFrameFlags flags;
   
-  if (menu)
-    gtk_widget_destroy (menu);
+  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+  
+  ops = 0;
+  insensitive = 0;
+  
+  if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+    {
+      if (flags & META_FRAME_MAXIMIZED)
+        ops |= META_MENU_OP_UNMAXIMIZE;
+      else
+        ops |= META_MENU_OP_MAXIMIZE;
+    }
 
-  window = gdk_xid_table_lookup (xwindow);
-  if (window)
-    g_object_ref (G_OBJECT (window));
+  if (flags & META_FRAME_SHADED)
+    ops |= META_MENU_OP_UNSHADE;
   else
-    window = gdk_window_foreign_new (xwindow);
+    ops |= META_MENU_OP_SHADE;
 
-  /* X error creating the foreign window means NULL here */
-  if (window == NULL)
-    return;
+  if (flags & META_FRAME_STUCK)
+    ops |= META_MENU_OP_UNSTICK;
+  else
+    ops |= META_MENU_OP_STICK;
   
-  menu = gtk_menu_new ();
+  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE);
+
+  if (!(flags & META_FRAME_ALLOWS_MINIMIZE))
+    insensitive |= META_MENU_OP_MINIMIZE;
+  
+  if (!(flags & META_FRAME_ALLOWS_DELETE))
+    insensitive |= META_MENU_OP_DELETE;
+  
+  if (frames->menu)
+    gtk_widget_destroy (frames->menu);
+  
+  frames->menu = gtk_menu_new ();
 
   i = 0;
   while (i < G_N_ELEMENTS (menuitems))
@@ -219,13 +171,55 @@ meta_window_menu_show (gulong xwindow,
             }
           else
             {
-              if (menuitems[i].stock_id)
+              GtkWidget *image;
+              GdkPixmap *pix;
+              GdkBitmap *mask;
+
+              image = NULL;
+              pix = NULL;
+              mask = NULL;
+              
+              switch (menuitems[i].op)
                 {
-                  GtkWidget *image;
+                case META_MENU_OP_MAXIMIZE:
+                  meta_frames_get_pixmap_for_control (frames,
+                                                      META_FRAME_CONTROL_MAXIMIZE,
+                                                      &pix, &mask);
+                  break;
                   
-                  mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
+                case META_MENU_OP_MINIMIZE:
+                  meta_frames_get_pixmap_for_control (frames,
+                                                      META_FRAME_CONTROL_MINIMIZE,
+                                                      &pix, &mask);
+                  break;
+
+                case META_MENU_OP_DELETE:
+                  meta_frames_get_pixmap_for_control (frames,
+                                                      META_FRAME_CONTROL_DELETE,
+                                                      &pix, &mask);
+                  break;
+                default:
+                  break;
+                }
+
+              if (pix)
+                {
+                  image = gtk_image_new_from_pixmap (pix, mask);
+                  g_object_unref (G_OBJECT (pix));
+                  g_object_unref (G_OBJECT (mask));
+                }
+              
+              if (image == NULL && 
+                  menuitems[i].stock_id)
+                {
                   image = gtk_image_new_from_stock (menuitems[i].stock_id,
                                                     GTK_ICON_SIZE_MENU);
+
+                }
+              
+              if (image)
+                {
+                  mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
                   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
                                                  image);
                   gtk_widget_show (image);
@@ -240,16 +234,19 @@ meta_window_menu_show (gulong xwindow,
               
               md = g_new (MenuData, 1);
               
-              md->window = window;
+              md->frames = frames;
+              md->frame = frame;
               md->op = menuitems[i].op;
               
-              gtk_signal_connect (GTK_OBJECT (mi),
-                                  "activate",
-                                  GTK_SIGNAL_FUNC (activate_cb),
-                                  md);
+              gtk_signal_connect_full (GTK_OBJECT (mi),
+                                       "activate",
+                                       GTK_SIGNAL_FUNC (activate_cb),
+                                       NULL,
+                                       md,
+                                       g_free, FALSE, FALSE);
             }
           
-          gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+          gtk_menu_shell_append (GTK_MENU_SHELL (frames->menu),
                                  mi);
           
           gtk_widget_show (mi);
@@ -257,13 +254,14 @@ meta_window_menu_show (gulong xwindow,
       ++i;
     }
 
-  if (ops & META_MESSAGE_MENU_WORKSPACES)
+  if (ops & META_MENU_OP_WORKSPACES)
     {
-      n_workspaces = get_num_desktops ();
-      current_workspace = get_current_desktop (window);
+      n_workspaces = meta_core_get_num_workspaces (DefaultScreenOfDisplay (gdk_display));
+      current_workspace = meta_core_get_frame_workspace (gdk_display,
+                                                         frame->xwindow);
 
-      meta_ui_warning ("Creating %d workspace menu current %d\n",
-                       n_workspaces, current_workspace);
+      meta_warning ("Creating %d-workspace menu current %d\n",
+                    n_workspaces, current_workspace);
       
       if (n_workspaces > 0)
         {
@@ -275,7 +273,7 @@ meta_window_menu_show (gulong xwindow,
               char *label;
               MenuData *md;
 
-              if (current_workspace == 0xFFFFFFFF)
+              if (flags & META_FRAME_STUCK)
                 label = g_strdup_printf (_("Only on workspace _%d\n"),
                                          i + 1);
               else
@@ -286,25 +284,29 @@ meta_window_menu_show (gulong xwindow,
 
               g_free (label);
 
-              if (current_workspace == i ||
-                  insensitive & META_MESSAGE_MENU_WORKSPACES)
+              if (!(flags & META_FRAME_STUCK) &&
+                  (current_workspace == i ||
+                   insensitive & META_MENU_OP_WORKSPACES))
                 gtk_widget_set_sensitive (mi, FALSE);
 
               md = g_new (MenuData, 1);
 
-              md->window = window;
-              md->op = META_MESSAGE_MENU_WORKSPACES;
+              md->frames = frames;
+              md->frame = frame;
+              md->op = META_MENU_OP_WORKSPACES;
 
               g_object_set_data (G_OBJECT (mi),
                                  "workspace",
                                  GINT_TO_POINTER (i));
           
-              gtk_signal_connect (GTK_OBJECT (mi),
-                                  "activate",
-                                  GTK_SIGNAL_FUNC (activate_cb),
-                                  md);
+              gtk_signal_connect_full (GTK_OBJECT (mi),
+                                       "activate",
+                                       GTK_SIGNAL_FUNC (activate_cb),
+                                       NULL,
+                                       md,
+                                       g_free, FALSE, FALSE);
 
-              gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+              gtk_menu_shell_append (GTK_MENU_SHELL (frames->menu),
                                      mi);
           
               gtk_widget_show (mi);
@@ -314,16 +316,16 @@ meta_window_menu_show (gulong xwindow,
         }
     }
   else
-    meta_ui_warning ("not creating workspace menu\n");
+    meta_verbose ("not creating workspace menu\n");
   
-  gtk_signal_connect (GTK_OBJECT (menu),
-                      "destroy",
-                      GTK_SIGNAL_FUNC (gtk_widget_destroyed),
-                      &menu);
-
+  gtk_signal_connect (GTK_OBJECT (frames->menu),
+                      "selection_done",
+                      GTK_SIGNAL_FUNC (menu_closed),
+                      frames);
+  
   pt = g_new (GdkPoint, 1);
 
-  g_object_set_data_full (G_OBJECT (menu),
+  g_object_set_data_full (G_OBJECT (frames->menu),
                           "destroy-point",
                           pt,
                           g_free);
@@ -331,163 +333,82 @@ meta_window_menu_show (gulong xwindow,
   pt->x = root_x;
   pt->y = root_y;
   
-  gtk_menu_popup (GTK_MENU (menu),
+  gtk_menu_popup (GTK_MENU (frames->menu),
                   NULL, NULL,
                   popup_position_func, pt,
                   button,
                   timestamp);
 
-  if (!GTK_MENU_SHELL (menu)->have_xgrab)
-    meta_ui_warning ("GtkMenu failed to grab the pointer\n");
-}
-
-void
-meta_window_menu_hide (void)
-{
-  if (menu)
-    gtk_widget_destroy (menu);
-}
-
-static void
-close_window (GdkWindow  *window)
-{  
-  XClientMessageEvent ev;
-  
-  ev.type = ClientMessage;
-  ev.window = GDK_WINDOW_XID (window);
-  ev.message_type = gdk_atom_intern ("_NET_CLOSE_WINDOW", FALSE);
-  ev.format = 32;
-  ev.data.l[0] = 0;
-  ev.data.l[1] = 0;
-
-  gdk_error_trap_push ();
-  XSendEvent (gdk_display,
-              gdk_root_window, False,
-              SubstructureNotifyMask | SubstructureRedirectMask,
-              (XEvent*) &ev);
-  gdk_flush ();
-  gdk_error_trap_pop ();
-}
-
-static void
-wmspec_change_state (gboolean   add,
-                     GdkWindow *window,
-                     GdkAtom    state1,
-                     GdkAtom    state2)
-{
-  XEvent xev;
-  gulong op;
-
-  if (add)
-    op = _NET_WM_STATE_ADD;
-  else
-    op = _NET_WM_STATE_REMOVE;
-  
-  xev.xclient.type = ClientMessage;
-  xev.xclient.serial = 0;
-  xev.xclient.send_event = True;
-  xev.xclient.display = gdk_display;
-  xev.xclient.window = GDK_WINDOW_XID (window);
-  xev.xclient.message_type = gdk_atom_intern ("_NET_WM_STATE", FALSE);
-  xev.xclient.format = 32;
-  xev.xclient.data.l[0] = op;
-  xev.xclient.data.l[1] = state1;
-  xev.xclient.data.l[2] = state2;
-  
-  XSendEvent (gdk_display, gdk_root_window, False,
-	      SubstructureRedirectMask | SubstructureNotifyMask,
-	      &xev);
-}
-
-static void
-wmspec_change_desktop (GdkWindow *window,
-                       gint       desktop)
-{
-  XEvent xev;
-  
-  xev.xclient.type = ClientMessage;
-  xev.xclient.serial = 0;
-  xev.xclient.send_event = True;
-  xev.xclient.display = gdk_display;
-  xev.xclient.window = GDK_WINDOW_XID (window);
-  xev.xclient.message_type = gdk_atom_intern ("_NET_WM_DESKTOP", FALSE);
-  xev.xclient.format = 32;
-  xev.xclient.data.l[0] = desktop;
-  xev.xclient.data.l[1] = 0;
-  xev.xclient.data.l[2] = 0;
-  
-  XSendEvent (gdk_display, gdk_root_window, False,
-	      SubstructureRedirectMask | SubstructureNotifyMask,
-	      &xev);
+  if (!GTK_MENU_SHELL (frames->menu)->have_xgrab)
+    meta_warning ("GtkMenu failed to grab the pointer\n");
 }
 
 static void
 activate_cb (GtkWidget *menuitem, gpointer data)
 {
   MenuData *md;
-
+  
+  g_return_if_fail (GTK_IS_WIDGET (menuitem));
+  
   md = data;
   
   switch (md->op)
     {
-    case META_MESSAGE_MENU_DELETE:
-      close_window (md->window);
+    case META_MENU_OP_DELETE:
+      meta_core_delete (gdk_display,
+                        md->frame->xwindow,
+                        gtk_get_current_event_time ());
       break;
 
-    case META_MESSAGE_MENU_MINIMIZE:
-      gdk_window_iconify (md->window);
+    case META_MENU_OP_MINIMIZE:
+      meta_core_minimize (gdk_display,
+                          md->frame->xwindow);
       break;
 
-    case META_MESSAGE_MENU_UNMAXIMIZE:
-      wmspec_change_state (FALSE, md->window,
-                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_HORZ", FALSE),
-                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_VERT", FALSE));
+    case META_MENU_OP_UNMAXIMIZE:
+      meta_core_unmaximize (gdk_display,
+                            md->frame->xwindow);
       break;
       
-    case META_MESSAGE_MENU_MAXIMIZE:
-      wmspec_change_state (TRUE, md->window,
-                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_HORZ", FALSE),
-                           gdk_atom_intern ("_NET_WM_STATE_MAXIMIZED_VERT", FALSE));
+    case META_MENU_OP_MAXIMIZE:
+      meta_core_maximize (gdk_display,
+                          md->frame->xwindow);
       break;
 
-    case META_MESSAGE_MENU_UNSHADE:
-      wmspec_change_state (FALSE, md->window,
-                           gdk_atom_intern ("_NET_WM_STATE_SHADED", FALSE),
-                           0);
+    case META_MENU_OP_UNSHADE:
+      meta_core_unshade (gdk_display,
+                         md->frame->xwindow);
       break;
       
-    case META_MESSAGE_MENU_SHADE:
-      wmspec_change_state (TRUE, md->window,
-                           gdk_atom_intern ("_NET_WM_STATE_SHADED", FALSE),
-                           0);
+    case META_MENU_OP_SHADE:
+      meta_core_shade (gdk_display,
+                       md->frame->xwindow);
       break;
       
-    case META_MESSAGE_MENU_WORKSPACES:
+    case META_MENU_OP_WORKSPACES:
       {
         int workspace;
 
         workspace = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
                                                         "workspace"));
 
-        wmspec_change_desktop (md->window, workspace);
+        meta_core_change_workspace (gdk_display, md->frame->xwindow,
+                                    workspace);
       }
       break;
 
-    case META_MESSAGE_MENU_STICK:
-      wmspec_change_desktop (md->window, 0xFFFFFFFF);
+    case META_MENU_OP_STICK:
+      meta_core_stick (gdk_display,
+                       md->frame->xwindow);
       break;
 
-    case META_MESSAGE_MENU_UNSTICK:
-      wmspec_change_desktop (md->window, get_active_desktop ());
+    case META_MENU_OP_UNSTICK:
+      meta_core_unstick (gdk_display,
+                         md->frame->xwindow);
       break;
       
     default:
-      meta_ui_warning (G_STRLOC": Unknown window op\n");
+      meta_warning (G_STRLOC": Unknown window op\n");
       break;
     }
-
-  if (menu)
-    gtk_widget_destroy (menu);
-  g_object_unref (G_OBJECT (md->window));
-  g_free (md);
 }

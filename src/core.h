@@ -85,10 +85,8 @@ void meta_core_change_workspace (Display *xdisplay,
                                  int      new_workspace);
 
 
-int meta_core_get_num_workspaces (Display *xdisplay,
-                                  Screen  *xscreen);
-int meta_core_get_active_workspace (Display *xdisplay,
-                                    Screen *xscreen);
+int meta_core_get_num_workspaces (Screen  *xscreen);
+int meta_core_get_active_workspace (Screen *xscreen);
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
 

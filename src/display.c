@@ -99,7 +99,7 @@ meta_display_open (const char *name)
     "WM_STATE",
     "_NET_CLOSE_WINDOW",
     "_NET_WM_STATE",
-    "MOTIF_WM_HINTS",
+    "_MOTIF_WM_HINTS",
     "_NET_WM_STATE_SHADED",
     "_NET_WM_STATE_MAXIMIZED_HORZ",
     "_NET_WM_STATE_MAXIMIZED_VERT",
@@ -124,7 +124,8 @@ meta_display_open (const char *name)
     "_NET_CLIENT_LIST_STACKING",
     "_NET_WM_STATE_SKIP_TASKBAR",
     "_NET_WM_STATE_SKIP_PAGER",
-    "_WIN_WORKSPACE"
+    "_WIN_WORKSPACE",
+    "_WIN_LAYER"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -198,6 +199,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_skip_taskbar = atoms[30];
   display->atom_net_wm_state_skip_pager = atoms[31];
   display->atom_win_workspace = atoms[32];
+  display->atom_win_layer = atoms[33];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

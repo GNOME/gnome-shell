@@ -49,6 +49,7 @@ void meta_pop_no_msg_prefix  (void);
 /* FIXME */
 #include <config.h>
 #define _(x) x
+#define N_(x) x
 
 #endif
 
