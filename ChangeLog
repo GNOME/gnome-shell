@@ -1,3 +1,19 @@
+2003-06-26  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_invalidate_work_area): nuke the
+	lists of struts here, to improve confidence that we never try to
+	use them after a window with rects in the list gets freed.
+	(it wasn't broken before I don't think, just making the 
+	code more robust against future mods)
+
+	* src/window.c (meta_window_update_struts): replace magic "75"
+	with a macro
+
+	* src/constraints.c (constraint_hints_applies_func): don't apply
+	hints to maximized or fullscreen, rather than only fullscreen
+	(constrain_move): add paranoia max number of iterations to the 
+	heuristic loop
+
 2003-06-26  Rob Adams  <robadams@ucla.edu>
 
 	Add keybinding to allow the user to toggle _NET_WM_STATE_ABOVE on

@@ -4842,6 +4842,8 @@ meta_window_update_struts (MetaWindow *window)
   MetaRectangle new_right;
   MetaRectangle new_top;
   MetaRectangle new_bottom;
+
+#define MIN_EMPTY (75)
   
   meta_verbose ("Updating struts for %s\n", window->desc);
   
@@ -4893,13 +4895,13 @@ meta_window_update_struts (MetaWindow *window)
         {
           new_has_struts = TRUE;
           new_left.width = MIN ((int)struts[0], 
-                                window->screen->width/2 - 75);
+                                window->screen->width/2 - MIN_EMPTY);
           new_right.width = MIN ((int)struts[1], 
-                                 window->screen->width/2 - 75);
+                                 window->screen->width/2 - MIN_EMPTY);
           new_top.height = MIN ((int)struts[2], 
-                                window->screen->height/2 - 75);
+                                window->screen->height/2 - MIN_EMPTY);
           new_bottom.height = MIN ((int)struts[3], 
-                                   window->screen->height/2 - 75);
+                                   window->screen->height/2 - MIN_EMPTY);
           new_right.x = window->screen->width - 
             new_right.width;
           new_bottom.y = window->screen->height - 
@@ -4945,13 +4947,13 @@ meta_window_update_struts (MetaWindow *window)
             {
               new_has_struts = TRUE;
               new_left.width = MIN ((int)struts[0], 
-                                    window->screen->width/2 - 75);
+                                    window->screen->width/2 - MIN_EMPTY);
               new_right.width = MIN ((int)struts[1], 
-                                     window->screen->width/2 - 75);
+                                     window->screen->width/2 - MIN_EMPTY);
               new_top.height = MIN ((int)struts[2], 
-                                    window->screen->height/2 - 75);
+                                    window->screen->height/2 - MIN_EMPTY);
               new_bottom.height = MIN ((int)struts[3], 
-                                       window->screen->height/2 - 75);
+                                       window->screen->height/2 - MIN_EMPTY);
               new_left.x = 0;
               new_right.x = window->screen->width - 
                 new_right.width;

@@ -364,9 +364,8 @@ get_outermost_onscreen_positions (MetaWindow           *window,
   /* to handle struts, we get the list of workspaces for the window
    * and traverse all the struts in each of the cached strut lists for
    * the workspaces.  Note that because the workarea has already been
-   * computed, these strut lists should already be up to date.  No
-   * memory allocation should take place in this function for
-   * performance.
+   * computed, these strut lists should already be up to date. This function
+   * should have good performance since we call it a lot.
    */
 
   current = *orig;
@@ -681,10 +680,12 @@ static const Constraint constraint_onscreen = {
  *
  */
 
+#define USE_HINTS_FOR_WINDOW_STATE(window) (!((window)->fullscreen || (window)->maximized))
+
 static gboolean
 constraint_hints_applies_func (MetaWindow *window)
 {
-  return (!window->fullscreen);
+  return USE_HINTS_FOR_WINDOW_STATE (window);
 }
 
 static void
@@ -912,8 +913,12 @@ constrain_move (MetaWindow           *window,
 {
   const Constraint **cp;
   int old_x, old_y;
+  int paranoia;
 
-
+  /* Evidence that we can't actually prove this algorithm is right */
+#define MAX_ITERATIONS 10
+  paranoia = 0;
+  
   do {
     old_x = x_delta;
     old_y = y_delta;
@@ -936,10 +941,16 @@ constrain_move (MetaWindow           *window,
         ++cp;
       }
 
-  } while ((old_x != x_delta) || (old_y != y_delta));
+    ++paranoia;
+  } while (((old_x != x_delta) || (old_y != y_delta)) && paranoia < MAX_ITERATIONS);
 
   new->x = orig->x + x_delta;
   new->y = orig->y + y_delta;
+
+  if (paranoia >= MAX_ITERATIONS)
+    meta_topic (META_DEBUG_GEOMETRY,
+                "Constraints were never satisfied for window %s\n",
+                window->desc);
 }
 
 static void
@@ -1154,6 +1165,10 @@ update_position_limits (MetaWindow          *window,
   int nw_x, nw_y;
   int se_x, se_y;
 
+  /* For maximized windows the limits are the work area, for
+   * other windows we see which struts apply based on the
+   * window's position later on
+   */
   if (window->maximized)
     {
       nw_x = MIN (info->work_area_xinerama.x, info->work_area_screen.x);

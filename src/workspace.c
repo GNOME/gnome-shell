@@ -348,6 +348,15 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   g_free (workspace->work_areas);
   workspace->work_areas = NULL;
+      
+  g_slist_free (workspace->left_struts);
+  workspace->left_struts = NULL;
+  g_slist_free (workspace->right_struts);
+  workspace->right_struts = NULL;
+  g_slist_free (workspace->top_struts);
+  workspace->top_struts = NULL;
+  g_slist_free (workspace->bottom_struts);
+  workspace->bottom_struts = NULL;
   
   workspace->work_areas_invalid = TRUE;
 
@@ -385,16 +394,12 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   if (!workspace->work_areas_invalid)
     return;
-      
-  g_slist_free (workspace->left_struts);
-  workspace->left_struts = NULL;
-  g_slist_free (workspace->right_struts);
-  workspace->right_struts = NULL;
-  g_slist_free (workspace->top_struts);
-  workspace->top_struts = NULL;
-  g_slist_free (workspace->bottom_struts);
-  workspace->bottom_struts = NULL;
 
+  g_assert (workspace->top_struts == NULL);
+  g_assert (workspace->bottom_struts == NULL);
+  g_assert (workspace->left_struts == NULL);
+  g_assert (workspace->right_struts == NULL);
+  
   windows = meta_workspace_list_windows (workspace);
 
   g_free (workspace->work_areas);
