@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.5.2\n"
+"Project-Id-Version: metacity 2.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2003-06-28 18:42+0200\n"
+"POT-Creation-Date: 2004-03-29 14:22+0200\n"
+"PO-Revision-Date: 2004-03-29 14:31+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -149,9 +149,9 @@ msgstr ""
 "o ADEQUACIÓ PER UN PROPÒSIT PARTICULAR.\n"
 
 #: src/main.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "És impossible de carregar el tema \"%s\": %s\n"
+msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -188,7 +188,7 @@ msgstr "Desenro_tlla"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr ""
+msgstr "Damun_t"
 
 #: src/menu.c:61
 msgid "_Move"
@@ -213,24 +213,20 @@ msgid "Only on _This Workspace"
 msgstr "Només en aques_t espai de treball"
 
 #: src/menu.c:68
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "Mou la finestra a l'espai de treball 9"
+msgstr "Mou a l'espai de treball de l'es_querra"
 
 #: src/menu.c:69
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou a l'espai de treball de la _dreta"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou a l'espai de treball de da_lt"
 
 #: src/menu.c:71
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "Mou la finestra un espai de treball avall"
+msgstr "Mou a l'espai de treball d'a_vall"
 
 #: src/menu.c:160 src/prefs.c:1854
 #, c-format
@@ -238,9 +234,8 @@ msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
 #: src/menu.c:169
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "Espai de treball %d"
+msgstr "Espai de treball 1_0"
 
 #: src/menu.c:171
 #, c-format
@@ -248,9 +243,8 @@ msgid "Workspace %s%d"
 msgstr "espai de treball %s%d"
 
 #: src/menu.c:366
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "Mou la finestra un espai de treball amunt"
+msgstr "Mou a un altre espai de _treball"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -536,7 +530,7 @@ msgstr ""
 "Windows. Quan feu focus en una finestra en el mode basat en aplicacions, "
 "totes les finestres en l'aplicació s'alçaran. També, en el mode basat en "
 "aplicacions, els clics de focus no es passen a les finestres d'altres "
-"aplicacions. La existència d'aquesta configuració és un poc qüestionable, "
+"aplicacions. L'existència d'aquesta configuració és un poc qüestionable, "
 "però és millor que tindre configuracions per a tots els detalls específics "
 "dels dos modes, com per exemple si s'han de passar els clics o no. A més, el "
 "mode basat en aplicacions encara no està massa implementat."
@@ -874,7 +868,7 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que executa la ordre amb la numeració corresponent "
+"La vinculació de tecles que executa l'ordre amb la numeració corresponent "
 "en /apps/metacity/keybinding_commands. El format és paregut a «&lt;"
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
@@ -2633,60 +2627,56 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "El fitxer de tema %s no conté un element arrel <metacity_theme>"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "Focus de les finestres"
+msgstr "/_Finestres"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Finestres/tearoff"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Finestres/_Diàleg"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Finestres/Diàleg _modal"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Finestres/_Utilitat"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/Finestres/_Pantalla de benvinguda"
 
 #: src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "Focus de les finestres"
+msgstr "/Finestres/Anclatge _superior"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Finestres/Anclatge _inferior"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Finestres/Anclatge es_querre"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Finestres/Anclatge d_ret"
 
 #: src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "Focus de les finestres"
+msgstr "/Finestres/_Tots els anclatges"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Finestres/_Escriptori"
 
 #: src/theme-viewer.c:131
-#, fuzzy
 msgid "Open another one of these windows"
-msgstr "Alça una finestra per damunt de les altres"
+msgstr "Obre una altra d'aquestes finestres"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
@@ -2711,23 +2701,23 @@ msgstr ""
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "Barra"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Finestra d'aplicació normal"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "Caixa de diàleg"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Caixa de diàleg modal"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "Paleta d'utilitat"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
@@ -2735,7 +2725,7 @@ msgstr ""
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "Contorn"
 
 #: src/theme-viewer.c:731
 #, c-format
@@ -2749,17 +2739,17 @@ msgstr ""
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "Forma d'ús: metacity-theme-viewer [NOMDELTEMA]\n"
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "S'ha produït un error en tancar el fitxer de sessió «%s»: %s\n"
+msgstr "S'ha produït un error en carregar el tema: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "S'ha carregat el tema «%s» en %g segons\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
@@ -2782,9 +2772,8 @@ msgid "Benchmark"
 msgstr ""
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "Tipus de lletra del títol de les finestres"
+msgstr "El títol de la finestra va aquí"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -3221,12 +3210,6 @@ msgid ""
 msgstr ""
 "La propietat %s en la finestra 0x%lx contenia UTF-8 invàlid per a l'element %"
 "d en la lista\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Només en l'%s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Mou a l'%s"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
