@@ -328,7 +328,7 @@ egg_accelerator_parse_virtual (const gchar            *accelerator,
   if (accelerator_mods)
     *accelerator_mods = mods;
 
-  return !bad_keyval && mods != 0;
+  return !bad_keyval;
 }
 
 
