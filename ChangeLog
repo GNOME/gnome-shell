@@ -1,3 +1,15 @@
+2004-10-25  Elijah Newren  <newren@math.utah.edu>
+
+	Fix the alt-tab order--if the most recently used window is not
+	focused, start alt tabbing with that window instead of the one
+	after it (fixes #156251)
+
+	* src/display.c (find_tab_forward): add a skip_first parameter,
+	(find_tab_backward): add a skip_last parameter,
+	(meta_display_get_tab_next): if a beginning window wasn't given
+	and the focused window isn't the tab chain, don't skip the MRU
+	window
+
 2004-10-22  Elijah Newren  <newren@math.utah.edu>
 
 	Update _NET_WM_STATE_HIDDEN so the pager on the panel will know

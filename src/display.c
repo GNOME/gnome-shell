@@ -3927,16 +3927,20 @@ meta_display_window_has_pending_pings (MetaDisplay *display,
 static MetaWindow*
 find_tab_forward (MetaDisplay   *display,
                   MetaTabList    type,
-		  MetaScreen    *screen, 
+                  MetaScreen    *screen, 
                   MetaWorkspace *workspace,
-                  GList        *start)
+                  GList         *start,
+                  gboolean       skip_first)
 {
   GList *tmp;
 
   g_return_val_if_fail (start != NULL, NULL);
   g_return_val_if_fail (workspace != NULL, NULL);
 
-  tmp = start->next;
+  tmp = start;
+  if (skip_first)
+    tmp = tmp->next;
+
   while (tmp != NULL)
     {
       MetaWindow *window = tmp->data;
@@ -3965,16 +3969,19 @@ find_tab_forward (MetaDisplay   *display,
 static MetaWindow*
 find_tab_backward (MetaDisplay   *display,
                    MetaTabList    type,
-		   MetaScreen    *screen, 
+                   MetaScreen    *screen, 
                    MetaWorkspace *workspace,
-                   GList         *start)
+                   GList         *start,
+                   gboolean       skip_last)
 {
   GList *tmp;
 
   g_return_val_if_fail (start != NULL, NULL);
   g_return_val_if_fail (workspace != NULL, NULL);
-  
-  tmp = start->prev;
+
+  tmp = start;
+  if (skip_last)  
+    tmp = tmp->prev;
   while (tmp != NULL)
     {
       MetaWindow *window = tmp->data;
@@ -4061,6 +4068,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
                            MetaWindow    *window,
                            gboolean       backward)
 {
+  gboolean skip;
   GList *tab_list;
   tab_list = meta_display_get_tab_list(display,
                                        type,
@@ -4077,19 +4085,23 @@ meta_display_get_tab_next (MetaDisplay   *display,
       if (backward)
         return find_tab_backward (display, type, screen, workspace,
                                   g_list_find (tab_list,
-                                               window));
+                                               window),
+                                  TRUE);
       else
         return find_tab_forward (display, type, screen, workspace,
                                  g_list_find (tab_list,
-                                              window));
+                                              window),
+                                 TRUE);
     }
-  
+
+  skip = display->focus_window != NULL && 
+         IN_TAB_CHAIN (display->focus_window, type);
   if (backward)
     return find_tab_backward (display, type, screen, workspace,
-                              tab_list);
+                              tab_list, skip);
   else
     return find_tab_forward (display, type, screen, workspace,
-                             tab_list);
+                             tab_list, skip);
 
   g_list_free (tab_list);
 }
