@@ -5711,15 +5711,18 @@ meta_window_show_menu (MetaWindow *window,
                                      meta_workspace_index ( window->screen->active_workspace),
                                      &layout);
 
-  if (layout.current_col > 0)
-    ops |= META_MENU_OP_MOVE_LEFT;
-  if (layout.current_col < layout.cols - 1)
-    ops |= META_MENU_OP_MOVE_RIGHT;
-  if (layout.current_row > 0)
-    ops |= META_MENU_OP_MOVE_UP;
-  if (layout.current_row < layout.rows - 1)
-    ops |= META_MENU_OP_MOVE_DOWN;
-  
+  if (!window->on_all_workspaces)
+    {
+      if (layout.current_col > 0)
+        ops |= META_MENU_OP_MOVE_LEFT;
+      if (layout.current_col < layout.cols - 1)
+        ops |= META_MENU_OP_MOVE_RIGHT;
+      if (layout.current_row > 0)
+        ops |= META_MENU_OP_MOVE_UP;
+      if (layout.current_row < layout.rows - 1)
+        ops |= META_MENU_OP_MOVE_DOWN;
+    }
+
   if (window->maximized)
     ops |= META_MENU_OP_UNMAXIMIZE;
   else
@@ -5736,7 +5739,7 @@ meta_window_show_menu (MetaWindow *window,
     ops |= META_MENU_OP_UNSTICK;
   else
     ops |= META_MENU_OP_STICK;
-  
+
   if (window->wm_state_above)
     ops |= META_MENU_OP_UNABOVE;
   else
@@ -5762,6 +5765,11 @@ meta_window_show_menu (MetaWindow *window,
 
    if (window->always_sticky)
      insensitive |= META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES;
+
+  if ((window->type == META_WINDOW_DESKTOP) ||
+      (window->type == META_WINDOW_DOCK) ||
+      (window->type == META_WINDOW_SPLASHSCREEN))
+    insensitive |= META_MENU_OP_ABOVE | META_MENU_OP_UNABOVE;
   
   menu =
     meta_ui_window_menu_new (window->screen->ui,
