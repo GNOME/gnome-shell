@@ -1,3 +1,9 @@
+2002-10-20  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c (handle_raise_or_lower): check above->mapped 
+	before deciding if it overlaps the window being raiselowered, 
+	fix from Stephane Chauveau 
+
 2002-10-19  Jeremy Katz  <katzj@redhat.com>
 
 	* configure.in: make Xrandr check less noisy

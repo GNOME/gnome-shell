@@ -2711,15 +2711,18 @@ handle_raise_or_lower (MetaDisplay    *display,
 	{
 	  MetaRectangle tmp, win_rect, above_rect;
 
-	  meta_window_get_outer_rect (window, &win_rect);
-	  meta_window_get_outer_rect (above, &above_rect);
-	  
-	  /* Check if obscured */
-	  if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))
-	    {
-	      meta_window_raise (window);
-	      return;
-	    }
+          if (above->mapped)
+            {
+              meta_window_get_outer_rect (window, &win_rect);
+              meta_window_get_outer_rect (above, &above_rect);
+              
+              /* Check if obscured */
+              if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))
+                {
+                  meta_window_raise (window);
+                  return;
+                }
+            }
 	  
 	  above = meta_stack_get_above (window->screen->stack, above, TRUE); 
 	}
