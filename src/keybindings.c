@@ -88,7 +88,8 @@ struct _MetaKeyBinding
   int keycode;
 };
 
-#define INTERESTING_MODIFIERS (ShiftMask | ControlMask | Mod1Mask)
+#define IGNORED_MODIFIERS (LockMask | Mod2Mask | Mod3Mask | Mod4Mask | Mod5Mask)
+#define INTERESTING_MODIFIERS (~IGNORED_MODIFIERS)
 
 static MetaKeyBinding screen_bindings[] = {
   { XK_F1, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
@@ -144,6 +145,88 @@ meta_display_init_keys (MetaDisplay *display)
   init_bindings (display, window_bindings);
 }
 
+/* Grab/ungrab, ignoring all annoying modifiers like NumLock etc. */
+static void
+meta_change_keygrab (MetaDisplay *display,
+                     Window       xwindow,
+                     gboolean     grab,
+                     int          keysym,
+                     int          keycode,
+                     int          modmask)
+{
+  int result;
+  int ignored_mask;
+
+  /* Grab keycode/modmask, together with
+   * all combinations of IGNORED_MODIFIERS.
+   * X provides no better way to do this.
+   */
+
+  /* modmask can't contain any non-interesting modifiers */
+  g_return_if_fail ((modmask & INTERESTING_MODIFIERS) == modmask);
+  
+  ignored_mask = 0;
+  while (ignored_mask < IGNORED_MODIFIERS)
+    {
+      if (ignored_mask & INTERESTING_MODIFIERS)
+        {
+          /* Not a combination of IGNORED_MODIFIERS
+           * (it contains some non-ignored modifiers)
+           */
+          ++ignored_mask;
+          continue;
+        }
+      
+      meta_error_trap_push (display);
+      if (grab)
+        XGrabKey (display->xdisplay, keycode,
+                  modmask | ignored_mask,
+                  xwindow,
+                  True,
+                  GrabModeAsync, GrabModeAsync);
+      else
+        XUngrabKey (display->xdisplay, keycode,
+                    modmask | ignored_mask,
+                    xwindow);
+      
+      result = meta_error_trap_pop (display);
+
+      if (grab && result != Success)
+        {
+          const char *name;
+      
+          name = XKeysymToString (keysym);
+          if (name == NULL)
+            name = "(unknown)";
+      
+          if (result == BadAccess)
+            meta_warning (_("Some other program is already using the key %s with modifiers %x as a binding\n"), name, modmask | ignored_mask);
+        }
+
+      ++ignored_mask;
+    }
+}
+
+static void
+meta_grab_key (MetaDisplay *display,
+               Window       xwindow,
+               int          keysym,
+               int          keycode,
+               int          modmask)
+{
+  meta_change_keygrab (display, xwindow, TRUE, keysym, keycode, modmask);
+}
+
+static void
+meta_ungrab_key (MetaDisplay *display,
+                 Window       xwindow,
+                 int          keysym,
+                 int          keycode,
+                 int          modmask)
+{
+  meta_change_keygrab (display, xwindow, FALSE, keysym, keycode, modmask);
+}
+
 static void
 grab_keys (MetaKeyBinding *bindings,
            MetaDisplay    *display,
@@ -156,24 +239,10 @@ grab_keys (MetaKeyBinding *bindings,
     {
       if (bindings[i].keycode != 0)
         {
-          int result;
-          
-          meta_error_trap_push (display);
-          XGrabKey (display->xdisplay, bindings[i].keycode,
-                    bindings[i].mask, xwindow, True,
-                    GrabModeAsync, GrabModeAsync);
-          result = meta_error_trap_pop (display);
-          if (result != Success)
-            {
-              const char *name;
-
-              name = XKeysymToString (bindings[i].keysym);
-              if (name == NULL)
-                name = "(unknown)";
-              
-              if (result == BadAccess)
-                meta_warning (_("Some other program is already using the key %s as a binding\n"), name);
-            }
+          meta_grab_key (display, xwindow,
+                         bindings[i].keysym,
+                         bindings[i].keycode,
+                         bindings[i].mask);
         }
       
       ++i;
@@ -192,10 +261,10 @@ ungrab_keys (MetaKeyBinding *bindings,
     {
       if (bindings[i].keycode != 0)
         {
-          meta_error_trap_push (display);
-          XUngrabKey (display->xdisplay, bindings[i].keycode,
-                      bindings[i].mask, xwindow);
-          meta_error_trap_pop (display);
+          meta_ungrab_key (display, xwindow,
+                           bindings[i].keysym,
+                           bindings[i].keycode,
+                           bindings[i].mask);
         }
       
       ++i;

@@ -665,13 +665,14 @@ window_gravity_from_string (const char *str)
 }
 
 static char*
-encode_text_as_utf8 (const char *text)
+encode_text_as_utf8_markup (const char *text)
 {
   /* text can be any encoding, and is nul-terminated.
    * we pretend it's Latin-1 and encode as UTF-8
    */
   GString *str;
   const char *p;
+  char *escaped;
   
   str = g_string_new ("");
 
@@ -682,13 +683,16 @@ encode_text_as_utf8 (const char *text)
       ++p;
     }
 
-  return g_string_free (str, FALSE);
+  escaped = g_markup_escape_text (str->str, str->len);
+  g_string_free (str, TRUE);
+  
+  return escaped;
 }
 
 static char*
 decode_text_from_utf8 (const char *text)
 {
-  /* Convert back from the encoded UTF-8 */
+  /* Convert back from the encoded (but not escaped) UTF-8 */
   GString *str;
   const char *p;
 
@@ -803,13 +807,13 @@ save_state (void)
                * in practice they are always ascii though.)
                */
               
-              sm_client_id = encode_text_as_utf8 (window->sm_client_id);
+              sm_client_id = encode_text_as_utf8_markup (window->sm_client_id);
               res_class = window->res_class ?
-                encode_text_as_utf8 (window->res_class) : NULL;
+                encode_text_as_utf8_markup (window->res_class) : NULL;
               res_name = window->res_name ?
-                encode_text_as_utf8 (window->res_name) : NULL;
+                encode_text_as_utf8_markup (window->res_name) : NULL;
               role = window->role ?
-                encode_text_as_utf8 (window->role) : NULL;
+                encode_text_as_utf8_markup (window->role) : NULL;
               
               meta_verbose ("Saving session managed window %s, client ID '%s'\n",
                             window->desc, window->sm_client_id);

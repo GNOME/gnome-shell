@@ -1,3 +1,16 @@
+2001-10-04  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c (meta_change_keygrab): add code to grab all
+	modifier combinations, so keybindings work with NumLock etc.
+
+	* src/menu.c (meta_window_menu_new): remove newlines from menu
+	items
+
+2001-09-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (save_state): when encoding text for session file, 
+	escape XML entities
+
 2001-09-21  Alex Graveley  <alex@ximian.com>
 
 	* src/Makefile.am (metacity_SOURCES): Add inlinepixbufs.h so
