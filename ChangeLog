@@ -1,3 +1,11 @@
+2002-11-20  Havoc Pennington  <hp@pobox.com>
+
+	* doc/metacity-theme.dtd: add DTD for themes from Ross Burton
+
+	* doc/Makefile.am: doc subdir
+
+	* doc/theme-format.txt: move to doc subdir
+
 2002-11-19  Havoc Pennington  <hp@pobox.com>
 
 	Should really fix #98303
