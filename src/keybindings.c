@@ -44,6 +44,14 @@ static void handle_activate_menu      (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
+static void handle_tab_forward        (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
+static void handle_tab_backward       (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 
 typedef struct _MetaKeyBinding MetaKeyBinding;
 
@@ -51,6 +59,7 @@ struct _MetaKeyBinding
 {
   KeySym keysym;
   gulong mask;
+  int event_type;
   MetaKeyHandler handler;
   gpointer data;
   int keycode;
@@ -59,24 +68,27 @@ struct _MetaKeyBinding
 #define INTERESTING_MODIFIERS (ShiftMask | ControlMask | Mod1Mask)
 
 static MetaKeyBinding screen_bindings[] = {
-  { XK_F1, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
-  { XK_F2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
-  { XK_F3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
-  { XK_F4, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
-  { XK_F5, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
-  { XK_F6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
-  { XK_1, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
-  { XK_2, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
-  { XK_3, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
-  { XK_4, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
-  { XK_5, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
-  { XK_6, Mod1Mask, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
-  { None, 0, NULL, NULL, 0 }
+  { XK_F1, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
+  { XK_F2, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
+  { XK_F3, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
+  { XK_F4, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
+  { XK_F5, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
+  { XK_F6, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
+  { XK_1, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (0), 0 },
+  { XK_2, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (1), 0 },
+  { XK_3, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (2), 0 },
+  { XK_4, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
+  { XK_5, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
+  { XK_6, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
+  { None, 0, 0, NULL, NULL, 0 }
 };
 
 static MetaKeyBinding window_bindings[] = {
-  { XK_space, Mod1Mask, handle_activate_menu, NULL, 0 },
-  { None, 0, NULL, NULL, 0 }
+  { XK_space, Mod1Mask, KeyPress, handle_activate_menu, NULL, 0 },
+  { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, NULL, 0 },
+  { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { None, 0, 0, NULL, NULL, 0 }
 };
 
 static void
@@ -230,7 +242,8 @@ process_event (MetaKeyBinding *bindings,
     {
       if (bindings[i].keysym == keysym && 
           ((event->xkey.state & INTERESTING_MODIFIERS) ==
-           bindings[i].mask))
+           bindings[i].mask) &&
+          bindings[i].event_type == event->type)
         {
           (* bindings[i].handler) (display, window, event, bindings[i].data);
           break;
@@ -241,7 +254,7 @@ process_event (MetaKeyBinding *bindings,
 }
                 
 void
-meta_display_process_key_press (MetaDisplay *display,
+meta_display_process_key_event (MetaDisplay *display,
                                 MetaWindow  *window,
                                 XEvent      *event)
 {
@@ -290,4 +303,50 @@ handle_activate_menu (MetaDisplay *display,
                              0,
                              event->xkey.time);
     }
+}
+
+static void
+handle_tab_forward (MetaDisplay *display,
+                    MetaWindow  *window,
+                    XEvent      *event,
+                    gpointer     data)
+{
+  meta_verbose ("Tab forward\n");
+  
+  window = NULL;
+  
+  if (display->focus_window != NULL)
+    {
+      window = meta_stack_get_above (display->focus_window->screen->stack,
+                                     display->focus_window);
+    }
+
+  if (window == NULL)
+    window = meta_stack_get_bottom (display->focus_window->screen->stack);
+
+  if (window && window != display->focus_window)
+    meta_window_focus (window, event->xkey.time);
+}
+
+static void
+handle_tab_backward (MetaDisplay *display,
+                     MetaWindow  *window,
+                     XEvent      *event,
+                     gpointer     data)
+{
+  meta_verbose ("Tab backward\n");
+  
+  window = NULL;
+  
+  if (display->focus_window != NULL)
+    {
+      window = meta_stack_get_below (display->focus_window->screen->stack,
+                                     display->focus_window);
+    }
+  
+  if (window == NULL)
+    window = meta_stack_get_top (display->focus_window->screen->stack);
+
+  if (window && window != display->focus_window)
+    meta_window_focus (window, event->xkey.time);
 }

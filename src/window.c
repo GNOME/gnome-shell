@@ -55,6 +55,8 @@ static void     update_sm_hints           (MetaWindow     *window);
 static int      update_role               (MetaWindow     *window);
 static int      update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
+static int      update_icon_name          (MetaWindow     *window);
+static int      update_icon               (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
@@ -210,7 +212,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->xvisual = attrs.visual;
 
   window->title = NULL;
-
+  window->icon_name = NULL;
+  window->icon = NULL;
+  
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
   window->frame = NULL;
@@ -265,6 +269,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->xgroup_leader = None;
   window->xclient_leader = None;
 
+  window->icon_pixmap = None;
+  window->icon_mask = None;
+  
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
 
@@ -286,6 +293,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_role (window);
   update_net_wm_type (window);
   update_initial_workspace (window);
+  update_icon_name (window);
+  update_icon (window);
   
   if (window->initially_iconic)
     {
@@ -418,6 +427,7 @@ meta_window_free (MetaWindow  *window)
   g_free (window->res_class);
   g_free (window->res_name);
   g_free (window->title);
+  g_free (window->icon_name);
   g_free (window->desc);
   g_free (window);
 }
@@ -1621,7 +1631,7 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
       update_size_hints (window);
-
+      
       /* See if we need to constrain current size */
       meta_window_queue_move_resize (window);
     }
@@ -1634,7 +1644,8 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == XA_WM_HINTS)
     {
       update_wm_hints (window);
-
+      update_icon (window);
+      
       meta_window_queue_move_resize (window);
     }
   else if (event->atom == window->display->atom_motif_wm_hints)
@@ -1676,6 +1687,16 @@ process_property_notify (MetaWindow     *window,
            event->atom == window->display->atom_win_layer)
     {
       update_net_wm_type (window);
+    }
+  else if (event->atom ==
+           window->display->atom_net_wm_icon_name ||
+           event->atom == XA_WM_ICON_NAME)
+    {
+      update_icon_name (window);
+    }
+  else if (event->atom == window->display->atom_net_wm_icon)
+    {
+      update_icon (window);
     }
   
   return TRUE;
@@ -1968,7 +1989,7 @@ update_title (MetaWindow *window)
               g_error_free (err);
             }
 
-          if (window->title)
+          if (str)
             meta_verbose ("Using WM_NAME for new title of %s: '%s'\n",
                           window->desc, text.value);
 
@@ -2037,6 +2058,9 @@ update_wm_hints (MetaWindow *window)
   /* Fill in defaults */
   window->input = FALSE;
   window->initially_iconic = FALSE;
+  window->xgroup_leader = None;
+  window->icon_pixmap = None;
+  window->icon_mask = None;
   
   meta_error_trap_push (window->display);
   
@@ -2052,6 +2076,12 @@ update_wm_hints (MetaWindow *window)
       if (hints->flags & WindowGroupHint)
         window->xgroup_leader = hints->window_group;
 
+      if (hints->flags & IconPixmapHint)
+        window->icon_pixmap = hints->icon_pixmap;
+
+      if (hints->flags & IconMaskHint)
+        window->icon_mask = hints->icon_mask;
+      
       meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%ld\n",
                     window->input, window->initially_iconic,
                     window->xgroup_leader);
@@ -2654,6 +2684,100 @@ update_initial_workspace (MetaWindow *window)
     window->initial_workspace = val;
 
   return Success;
+}
+
+static int
+update_icon_name (MetaWindow *window)
+{
+  XTextProperty text;
+
+  meta_error_trap_push (window->display);
+  
+  if (window->icon_name)
+    {
+      g_free (window->icon_name);
+      window->icon_name = NULL;
+    }  
+
+  XGetTextProperty (window->display->xdisplay,
+                    window->xwindow,
+                    &text,
+                    window->display->atom_net_wm_icon_name);
+
+  if (text.nitems > 0 &&
+      text.format == 8 && 
+      g_utf8_validate (text.value, text.nitems, NULL))
+    {
+      meta_verbose ("Using _NET_WM_ICON_NAME for new title of %s: '%s'\n",
+                    window->desc, text.value);
+
+      window->icon_name = g_strdup (text.value);
+    }
+
+  if (text.nitems > 0)
+    XFree (text.value);
+  
+  if (window->icon_name == NULL &&
+      text.nitems > 0)
+    meta_warning ("_NET_WM_ICON_NAME property for %s contained invalid UTF-8\n",
+                  window->desc);
+
+  if (window->icon_name == NULL)
+    {
+      XGetTextProperty (window->display->xdisplay,
+                        window->xwindow,
+                        &text,
+                        XA_WM_ICON_NAME);
+
+      if (text.nitems > 0)
+        {
+          /* FIXME This isn't particularly correct. Need to copy the
+           * GDK code...
+           */
+          char *str;
+          GError *err;
+
+          err = NULL;
+          str = g_locale_to_utf8 (text.value,
+                                  (text.format / 8) * text.nitems,
+                                  NULL, NULL,
+                                  &err);
+          if (err != NULL)
+            {
+              meta_warning ("WM_ICON_NAME property for %s contained stuff we are too dumb to figure out: %s\n", window->desc, err->message);
+              g_error_free (err);
+            }
+
+          if (str)
+            meta_verbose ("Using WM_ICON_NAME for new title of %s: '%s'\n",
+                          window->desc, text.value);
+
+          window->icon_name = str;
+
+          XFree (text.value);
+        }
+    }
+  
+  if (window->icon_name == NULL)
+    window->icon_name = g_strdup ("");
+  
+  return meta_error_trap_pop (window->display);
+}
+
+static int
+update_icon (MetaWindow *window)
+{
+  meta_error_trap_push (window->display);
+  
+  if (window->icon)
+    {
+      g_object_unref (G_OBJECT (window->icon));
+      window->icon = NULL;
+    }  
+  
+  /* FIXME */
+  
+  return meta_error_trap_pop (window->display);
 }
 
 static void
