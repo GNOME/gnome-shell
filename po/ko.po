@@ -104,9 +104,7 @@ msgstr "창 최대화 취소"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"몇몇 다른 프로그램에서 이미 단축 글쇠로 변경키 %2$x와(과) 글쇠 %1$s을(를) 사"
-"용하고 있습니다\n"
+msgstr "몇몇 다른 프로그램에서 이미 단축키로 변경 키 %2$x와(과) 키 %1$s을(를) 사용하고 있습니다\n"
 
 #: src/keybindings.c:2413
 #, c-format
@@ -423,7 +421,7 @@ msgstr "창 닫기"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "단축글쇠를 누르면 실행할 명령"
+msgstr "단축키를 누르면 실행할 명령"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
@@ -1818,9 +1816,7 @@ msgstr "GConf 키 \"%s\"이(가) 잘못된 형식으로 설정되어 있습니�
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"설정 데이터베이스에서 찾은 \"%s\"이(가) 마우스 단추 설정 글쇠의 올바른 값이 "
-"아닙니다\n"
+msgstr "설정 데이터베이스에서 찾은 \"%s\"이(가) 마우스 단추 설정 키의 올바른 값이 아닙니다\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
@@ -1864,9 +1860,7 @@ msgstr "작업 공간의 수를 %d(으)로 설정하는 중 오류: %s\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
-"설정 데이터베이스에서 찾은 \"%s\"이(가) 단축글쇠 \"%s\"에 대한 올바른 값이 아"
-"닙니다\n"
+msgstr "설정 데이터베이스에서 찾은 \"%s\"이(가) 단축키 \"%s\"에 대한 올바른 값이 아닙니다\n"
 
 #: src/prefs.c:1896
 #, c-format
