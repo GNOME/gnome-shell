@@ -1,3 +1,9 @@
+2005-01-06  Leena Gunda  <leena.gunda@wipro.com>
+
+	* src/window.c (meta_window_unmaximize): Restore the wireframe
+	rectangle co-ordinates to saved window co-ordinates. Fixes
+	bug #161236.
+
 2005-01-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* src/Makefile.am (install-data-local): Install schema data from

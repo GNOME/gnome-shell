@@ -1991,6 +1991,11 @@ meta_window_unmaximize (MetaWindow  *window)
                                window->saved_rect.width,
                                window->saved_rect.height);
 
+      if (window->display->grab_wireframe_active)
+        {
+          window->display->grab_wireframe_rect = window->saved_rect;
+        }
+
       recalc_window_features (window);
       set_net_wm_state (window);
     }
