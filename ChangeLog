@@ -1,3 +1,23 @@
+2005-01-25  Elijah Newren  <newren@gmail.com>
+
+	Add man pages for metacity-window-demo and metacity-theme-viewer.
+	Man pages from Jose Moya, auto-fu from Dave Ahlswede. (#143513)
+
+	* doc/man/metacity-theme-viewer.1:
+	* doc/man/metacity-window-demo.1:
+
+	New man pages
+
+	* doc/man/Makefile.am:
+	* doc/Makefile.am:
+	* configure.in:
+
+	Make sure to install the man pages
+	
+	* doc/man/.cvsignore:
+	
+	Silence cvs
+
 2005-01-25  Benjamin Kahn  <xkahn@novell.com>
 
 	New 48x48 default icon as specified in bug #160660

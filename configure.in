@@ -451,6 +451,7 @@ fi
 AC_CONFIG_FILES([
 Makefile
 doc/Makefile
+doc/man/Makefile
 src/Makefile
 src/wm-tester/Makefile
 src/libmetacity-private.pc
