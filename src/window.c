@@ -168,6 +168,8 @@ maybe_leave_show_desktop_mode (MetaWindow *window)
    * the desktop via a dialog, then unshow windows again.
    */
   is_desktop_or_dock = FALSE;
+  is_desktop_or_dock_foreach (window,
+                              &is_desktop_or_dock);
 
   meta_window_foreach_ancestor (window, is_desktop_or_dock_foreach,
                                 &is_desktop_or_dock);
@@ -1999,7 +2001,7 @@ unminimize_func (MetaWindow *window,
 static void
 unminimize_window_and_all_transient_parents (MetaWindow *window)
 {
-  /* This also iterates over the window itself */
+  meta_window_unminimize (window);
   meta_window_foreach_ancestor (window, unminimize_func, NULL);
 }
 

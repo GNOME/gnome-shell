@@ -1,3 +1,10 @@
+2003-05-18  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (unminimize_window_and_all_transient_parents):
+	revert broken change that assumed foreach_ancestor iterated
+	over the window itself. Andrew Sobala, Rob Adams, 
+	#113232
+
 2003-05-16  Rob Adams  <robadams@ucla.edu>
 
 	Flip the workspace when using up/down/left/right for move window
