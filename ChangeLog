@@ -1,5 +1,13 @@
 2002-11-19  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_client_message): do a
+	recalc_window_features after setting new wm_state in order
+	to update skip_pager in addition to wm_state_skip_pager
+	(set_net_wm_state): base _NET_WM_STATE on skip_pager not 
+	wm_state_skip_pager, ditto for skip_taskbar
+
+2002-11-19  Havoc Pennington  <hp@pobox.com>
+
         Fix #98303 and assorted cleanup
 	
 	* src/prefs.c (meta_preference_to_string): handle

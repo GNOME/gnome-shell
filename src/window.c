@@ -1021,12 +1021,12 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_modal;
       ++i;
     }
-  if (window->wm_state_skip_pager)
+  if (window->skip_pager)
     {
       data[i] = window->display->atom_net_wm_state_skip_pager;
       ++i;
     }
-  if (window->wm_state_skip_taskbar)
+  if (window->skip_taskbar)
     {
       data[i] = window->display->atom_net_wm_state_skip_taskbar;
       ++i;
@@ -3000,6 +3000,9 @@ meta_window_change_workspace (MetaWindow    *window,
 void
 meta_window_stick (MetaWindow  *window)
 {
+  meta_verbose ("Sticking window %s current on_all_workspaces = %d\n",
+                window->desc, window->on_all_workspaces);
+  
   if (window->on_all_workspaces)
     return;
 
@@ -3358,7 +3361,7 @@ meta_window_client_message (MetaWindow *window,
               
       space = event->xclient.data.l[0];
               
-      meta_verbose ("Request to move %s to screen workspace %d\n",
+      meta_verbose ("Request to move %s to workspace %d\n",
                     window->desc, space);
 
       workspace =
@@ -3380,6 +3383,9 @@ meta_window_client_message (MetaWindow *window,
           meta_verbose ("No such workspace %d for screen\n", space);
         }
 
+      meta_verbose ("Window %s now on_all_workspaces = %d\n",
+                    window->desc, window->on_all_workspaces);
+      
       return TRUE;
     }
   else if (event->xclient.message_type ==
@@ -3476,6 +3482,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_pager);
 
+          recalc_window_features (window);
           set_net_wm_state (window);
         }
 
@@ -3486,6 +3493,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_taskbar);
 
+          recalc_window_features (window);
           set_net_wm_state (window);
         }
 
