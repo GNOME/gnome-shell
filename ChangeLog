@@ -1,5 +1,11 @@
 2003-11-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/display.c (meta_display_begin_grab_op): add an event_serial
+	argument and use it when the pointer is already grabbed
+	automatically on the button press. May fix bug #126871
+
+2003-11-24  Havoc Pennington  <hp@redhat.com>
+
 	* Apply patch from Gregory Merchan to avoid using CurrentTime when
 	setting input focus. Bug #108881
 

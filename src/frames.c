@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2003 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1257,6 +1258,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                frame->xwindow,
                                op,
                                TRUE,
+                               meta_ui_get_last_event_serial (gdk_display),
                                event->button,
                                0,
                                event->time,
@@ -1336,6 +1338,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                frame->xwindow,
                                op,
                                TRUE,
+                               meta_ui_get_last_event_serial (gdk_display),
                                event->button,
                                0,
                                event->time,
@@ -1355,6 +1358,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                    frame->xwindow,
                                    META_GRAB_OP_MOVING,
                                    TRUE,
+                                   meta_ui_get_last_event_serial (gdk_display),
                                    event->button,
                                    0,
                                    event->time,

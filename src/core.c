@@ -678,6 +678,7 @@ meta_core_begin_grab_op (Display    *xdisplay,
                          Window      frame_xwindow,
                          MetaGrabOp  op,
                          gboolean    pointer_already_grabbed,
+                         int         event_serial,
                          int         button,
                          gulong      modmask,
                          Time        timestamp,
@@ -699,6 +700,7 @@ meta_core_begin_grab_op (Display    *xdisplay,
 
   return meta_display_begin_grab_op (display, screen, window,
                                      op, pointer_already_grabbed,
+                                     event_serial,
                                      button, modmask,
                                      timestamp, root_x, root_y);
 }

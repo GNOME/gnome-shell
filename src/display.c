@@ -1427,6 +1427,7 @@ event_callback (XEvent   *event,
                                               window,
                                               op,
                                               TRUE,
+                                              event->xbutton.serial,
                                               event->xbutton.button,
                                               0,
                                               event->xbutton.time,
@@ -1481,6 +1482,7 @@ event_callback (XEvent   *event,
                                           window,
                                           META_GRAB_OP_MOVING,
                                           TRUE,
+                                          event->xbutton.serial,
                                           event->xbutton.button,
                                           0,
                                           event->xbutton.time,
@@ -2880,6 +2882,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             MetaWindow  *window,
                             MetaGrabOp   op,
                             gboolean     pointer_already_grabbed,
+                            int          event_serial,
                             int          button,
                             gulong       modmask,
                             Time         timestamp,
@@ -2902,7 +2905,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
     }
 
   /* We'll ignore any events < this serial. */
-  display->grab_start_serial = XNextRequest (display->xdisplay);
+  if (pointer_already_grabbed)
+    display->grab_start_serial = event_serial;
+  else
+    display->grab_start_serial = XNextRequest (display->xdisplay);
   
   /* FIXME:
    *   If we have no MetaWindow we do our best

@@ -133,6 +133,7 @@ gboolean   meta_core_begin_grab_op (Display    *xdisplay,
                                     Window      frame_xwindow,
                                     MetaGrabOp  op,
                                     gboolean    pointer_already_grabbed,
+                                    int         event_serial,
                                     int         button,
                                     gulong      modmask,
                                     Time        timestamp,
@@ -162,6 +163,8 @@ void       meta_core_get_screen_size (Display *xdisplay,
  * of the EnterNotify and the UnmapNotify.
  */
 void meta_core_increment_event_serial (Display *display);
+
+int meta_ui_get_last_event_serial (Display *xdisplay);
 
 #endif
 
