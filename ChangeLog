@@ -1,3 +1,8 @@
+2002-12-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/prefs.c (update_workspace_name): also treat empty string as 
+	"unset" in this function.
+
 Thu Dec  5 18:41:02 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* src/window.h (META_WINDOW_IN_NORMAL_TAB_CHAIN,

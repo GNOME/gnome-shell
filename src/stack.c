@@ -537,6 +537,8 @@ create_constraints (Constraint **constraints,
 
       if (!WINDOW_IN_STACK (w))
         {
+          meta_topic (META_DEBUG_STACK, "Window %s not in the stack, not constraining it\n",
+                      w->desc);
           tmp = tmp->next;
           continue;
         }

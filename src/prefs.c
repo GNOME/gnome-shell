@@ -1566,7 +1566,13 @@ update_workspace_name (const char  *name,
       return FALSE;
     }  
 
-  if (value != NULL)
+  /* This is a bad hack. We have to treat empty string as
+   * "unset" because the root window property can't contain
+   * null. So it gets empty string instead and we don't want
+   * that to result in setting the empty string as a value that
+   * overrides "unset".
+   */
+  if (value != NULL && *value != '\0')
     {
       g_free (workspace_names[i]);
       workspace_names[i] = g_strdup (value);
