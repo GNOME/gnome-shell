@@ -2486,12 +2486,14 @@ static void
 error_on_command (int         command_index,
                   const char *command,
                   const char *message,
-                  int         screen_number)
+                  int         screen_number,
+                  Time        timestamp)
 {
   GError *err;
-  char *argv[8];
+  char *argv[10];
   char *key;
   char numbuf[32];
+  char timestampbuf[32];
   
   meta_warning ("Error on command %d \"%s\": %s\n",
                 command_index, command, message);  
@@ -2499,15 +2501,18 @@ error_on_command (int         command_index,
   key = meta_prefs_get_gconf_key_for_command (command_index);
 
   sprintf (numbuf, "%d", screen_number);
+  sprintf (timestampbuf, "%lu", timestamp);
   
   argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
   argv[1] = "--screen";
   argv[2] = numbuf;
-  argv[3] = "--command-failed-error";
-  argv[4] = key;
-  argv[5] = (char*) (command ? command : "");
-  argv[6] = (char*) message;
-  argv[7] = NULL;
+  argv[3] = "--timestamp";
+  argv[4] = timestampbuf;
+  argv[5] = "--command-failed-error";
+  argv[6] = key;
+  argv[7] = (char*) (command ? command : "");
+  argv[8] = (char*) message;
+  argv[9] = NULL;
   
   err = NULL;
   if (!g_spawn_async_with_pipes ("/",
@@ -2596,7 +2601,7 @@ handle_run_command (MetaDisplay    *display,
       
       s = g_strdup_printf (_("No command %d has been defined.\n"),
                            which + 1);
-      error_on_command (which, NULL, s, screen->number);
+      error_on_command (which, NULL, s, screen->number, event->xkey.time);
       g_free (s);
       
       return;
@@ -2605,7 +2610,7 @@ handle_run_command (MetaDisplay    *display,
   err = NULL;
   if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_command (which, command, err->message, screen->number);
+      error_on_command (which, command, err->message, screen->number, event->xkey.time);
       
       g_error_free (err);
     }

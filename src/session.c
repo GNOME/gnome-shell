@@ -1851,6 +1851,8 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   GError *err;
   GIOChannel *channel;
   LameClientsDialogData *d;
+  Time timestamp;
+  char timestampbuf[32];
   
   lame = NULL;
   displays = meta_displays_list ();
@@ -1893,8 +1895,12 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
+  timestamp = 0;
+  sprintf (timestampbuf, "%lu", timestamp);
+
   len = g_slist_length (lame);
   len *= 2; /* titles and also classes */
+  len += 2; /* --timestamp flag and actual timestamp */
   len += 1; /* NULL term */
   len += 2; /* metacity-dialog command and option */
   
@@ -1903,6 +1909,10 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   i = 0;
 
   argv[i] = METACITY_LIBEXECDIR"/metacity-dialog";
+  ++i;
+  argv[i] = "--timestamp";
+  ++i;
+  argv[i] = timestampbuf;
   ++i;
   argv[i] = "--warn-about-no-sm-support";
   ++i;

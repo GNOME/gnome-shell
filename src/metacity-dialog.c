@@ -30,6 +30,30 @@
 #define N_(x) x
 
 #include <gdk/gdkx.h>
+#include <X11/Xatom.h>
+
+/* FIXME: When we switch to gtk+-2.6, use of this function should be
+ * replaced by using the real gdk_x11_window_set_user_time.
+ */
+static void
+copy_of_gdk_x11_window_set_user_time (GdkWindow *window,
+                                      Time       timestamp)
+{
+  GdkDisplay *display;
+
+  g_return_if_fail (window != NULL);
+  g_return_if_fail (GDK_IS_WINDOW (window));
+
+  if (GDK_WINDOW_DESTROYED (window))
+    return;
+
+  display = gdk_drawable_get_display (window);
+
+  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
+                   gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_USER_TIME"),
+                   XA_CARDINAL, 32, PropModeReplace,
+                   (guchar *)&timestamp, 1);
+}
 
 static Window
 window_from_string (const char *str)
@@ -76,7 +100,8 @@ on_realize (GtkWidget *dialog,
 
 static int
 kill_window_question (const char *window_name,
-                      const char *parent_str)
+                      const char *parent_str,
+                      Time        timestamp)
 {
   GtkWidget *dialog;
   char *str, *tmp;
@@ -109,6 +134,9 @@ kill_window_question (const char *window_name,
   g_signal_connect (G_OBJECT (dialog), "realize",
                     G_CALLBACK (on_realize), (char*) parent_str);
   
+  gtk_widget_realize (dialog);
+  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+
   /* return our PID, then window ID that should be killed */
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     g_print ("%d\n%s\n", (int) getpid (), parent_str);
@@ -220,7 +248,8 @@ create_lame_apps_list (char **lame_apps)
 }
 
 static int
-warn_about_no_sm_support (char **lame_apps)
+warn_about_no_sm_support (char **lame_apps,
+                          Time   timestamp)
 {
   GtkWidget *dialog;
   GtkWidget *list;
@@ -267,6 +296,9 @@ warn_about_no_sm_support (char **lame_apps)
                       sw,
                       TRUE, TRUE, 0);
   
+  gtk_widget_realize (dialog);
+  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+
   gtk_widget_show_all (dialog);
 
   gtk_main ();
@@ -277,7 +309,8 @@ warn_about_no_sm_support (char **lame_apps)
 static int
 error_about_command (const char *gconf_key,
                      const char *command,
-                     const char *error)
+                     const char *error,
+                     Time        timestamp)
 {
   GtkWidget *dialog;
 
@@ -296,6 +329,9 @@ error_about_command (const char *gconf_key,
                                      GTK_BUTTONS_CLOSE,
                                      "%s", error);
   
+  gtk_widget_realize (dialog);
+  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+
   gtk_dialog_run (GTK_DIALOG (dialog));
 
   gtk_widget_destroy (dialog);
@@ -306,52 +342,61 @@ error_about_command (const char *gconf_key,
 int
 main (int argc, char **argv)
 {
+  Time timestamp;
+
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
   gtk_init (&argc, &argv);
     
-  if (argc < 2)
+  if (argc < 4)
     {
       g_printerr ("bad args to metacity-dialog\n");
       return 1;
     }
-  
-  if (strcmp (argv[1], "--kill-window-question") == 0)
+
+  if (strcmp (argv[1], "--timestamp") != 0)
     {
-      if (argc < 4)
+      g_printerr ("bad args to metacity-dialog\n");
+      return 1;
+    }
+  timestamp = strtoul (argv[2], NULL, 10);
+  
+  if (strcmp (argv[3], "--kill-window-question") == 0)
+    {
+      if (argc < 6)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
         }
 
-      return kill_window_question (argv[2], argv[3]);
+      return kill_window_question (argv[4], argv[5], timestamp);
     }
-  else if (strcmp (argv[1], "--warn-about-no-sm-support") == 0)
+  else if (strcmp (argv[3], "--warn-about-no-sm-support") == 0)
     {
       /* argc must be even because we want title-class pairs */
-      if (argc < 3 || (argc % 2) != 0)
+      if (argc < 5 || (argc % 2) != 0)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
         }
 
-      return warn_about_no_sm_support (&argv[2]);
+      return warn_about_no_sm_support (&argv[4], timestamp);
     }
-  else if (strcmp (argv[1], "--command-failed-error") == 0)
+  else if (strcmp (argv[3], "--command-failed-error") == 0)
     {
 
       /* the args are the gconf key of the failed command, the text of
        * the command, and the error message
        */
-      if (argc != 5)
+      if (argc != 7)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
         }
 
-      return error_about_command (argv[2], argv[3], argv[4]);
+      return error_about_command (argv[4], argv[5], argv[6], timestamp);
     }
   
   g_printerr ("bad args to metacity-dialog\n");

@@ -69,6 +69,7 @@ typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
 
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
+				     Time         timestamp,
 				     gpointer     user_data);
 
 

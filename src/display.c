@@ -3675,7 +3675,7 @@ meta_display_ping_timeout (gpointer data)
               ping_data->timestamp, ping_data->xwindow);
   
   (* ping_data->ping_timeout_func) (ping_data->display, ping_data->xwindow,
-                                    ping_data->user_data);
+                                    ping_data->timestamp, ping_data->user_data);
 
   ping_data->display->pending_pings =
     g_slist_remove (ping_data->display->pending_pings,
@@ -3704,7 +3704,7 @@ meta_display_ping_window (MetaDisplay       *display,
   if (!window->net_wm_ping)
     {
       if (ping_reply_func)
-        (* ping_reply_func) (display, window->xwindow, user_data);
+        (* ping_reply_func) (display, window->xwindow, timestamp, user_data);
 
       return;
     }
@@ -3830,7 +3830,9 @@ process_pong_message (MetaDisplay    *display,
             }
           
           /* Call callback */
-          (* ping_data->ping_reply_func) (display, ping_data->xwindow,
+          (* ping_data->ping_reply_func) (display, 
+                                          ping_data->xwindow,
+                                          ping_data->timestamp, 
                                           ping_data->user_data);
 			      
           ping_data_free (ping_data);
