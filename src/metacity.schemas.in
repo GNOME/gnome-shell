@@ -374,7 +374,7 @@ you set
       <locale name="C">
          <short>Maximize window</short>
          <long>
-          The keybinding used to maximize a window
+          The keybinding used to maximize a window.
           The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
           The parser is
           fairly liberal and allows lower or upper case, and also

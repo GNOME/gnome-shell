@@ -1,5 +1,12 @@
 2004-12-19  Elijah Newren  <newren@gmail.com>
 
+	Thanks to Baptiste Mille-Mathias for this fix.
+
+	* src/metacity.schemas.in: Add a missing period at the end of a
+	sentence.
+
+2004-12-19  Elijah Newren  <newren@gmail.com>
+
 	When snap-moving, don't snap to transients of minimized windows
 	since they are hidden.  Fixes #157180
 
