@@ -1,3 +1,10 @@
+2002-04-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (multiply_alpha): fix alpha multiplication routine
+	to perhaps work correctly, reported by tigert. Also, be sure 
+	we always copy the image if necessary before modifying the 
+	alpha channel.
+
 2002-04-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c: remove the unused tab stuff

@@ -2460,7 +2460,8 @@ get_gc_for_primitive (GtkWidget          *widget,
 
 static GdkPixbuf*
 multiply_alpha (GdkPixbuf *pixbuf,
-                guchar     alpha)
+                guchar     alpha,
+                gboolean   force_copy)
 {
   GdkPixbuf *new_pixbuf;
   guchar *pixels;
@@ -2469,7 +2470,7 @@ multiply_alpha (GdkPixbuf *pixbuf,
   int row;
 
   g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-
+  
   if (alpha == 255)
     return pixbuf;
 
@@ -2479,7 +2480,15 @@ multiply_alpha (GdkPixbuf *pixbuf,
       g_object_unref (G_OBJECT (pixbuf));
       pixbuf = new_pixbuf;
     }
-
+  else if (force_copy)
+    {
+      new_pixbuf = gdk_pixbuf_copy (pixbuf);
+      g_object_unref (G_OBJECT (pixbuf));
+      pixbuf = new_pixbuf;
+    }
+  
+  g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+  
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);
@@ -2502,8 +2511,9 @@ multiply_alpha (GdkPixbuf *pixbuf,
            * then it should be modified to contain "alpha"; if the
            * pixbuf contains 0, it should remain 0.
            */
-          *p = (*p * alpha) / 65025; /* (*p / 255) * (alpha / 255); */
-
+          /* ((*p / 255.0) * (alpha / 255.0)) * 255; */
+          *p = (guchar) (((int) *p * (int) alpha) / (int) 255);
+          
           ++p; /* skip A */
         }
 
@@ -2597,8 +2607,9 @@ scale_and_alpha_pixbuf (GdkPixbuf     *src,
 
   if (pixbuf)
     pixbuf = multiply_alpha (pixbuf,
-                             ALPHA_TO_UCHAR (alpha));
-
+                             ALPHA_TO_UCHAR (alpha),
+                             pixbuf == src);
+  
   return pixbuf;
 }
 
@@ -2672,7 +2683,8 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
                                             widget, width, height);
 
         pixbuf = multiply_alpha (pixbuf,
-                                 ALPHA_TO_UCHAR (op->data.gradient.alpha));
+                                 ALPHA_TO_UCHAR (op->data.gradient.alpha),
+                                 FALSE);
       }
       break;
 
