@@ -5885,24 +5885,26 @@ update_move (MetaWindow  *window,
 
       /* Shake loose */
       window->shaken_loose = TRUE;
-		  
+                  
       /* move the unmaximized window to the cursor */
       prop = 
-	((double)(x - window->display->grab_initial_window_pos.x)) / 
-	((double)window->display->grab_initial_window_pos.width);
+        ((double)(x - window->display->grab_initial_window_pos.x)) / 
+        ((double)window->display->grab_initial_window_pos.width);
 
       window->display->grab_initial_window_pos.x = 
-	x - window->saved_rect.width * prop;
+        x - window->saved_rect.width * prop;
       window->display->grab_initial_window_pos.y = y;
 
       if (window->frame)
-	{
-	  window->display->grab_initial_window_pos.y += window->frame->child_y / 2;
-	}
+        {
+          window->display->grab_initial_window_pos.y += window->frame->child_y / 2;
+        }
 
-      window->saved_rect.x = window->display->grab_initial_window_pos.x-dx;
-      window->saved_rect.y = window->display->grab_initial_window_pos.y-dy;
-          
+      window->saved_rect.x = window->display->grab_initial_window_pos.x;
+      window->saved_rect.y = window->display->grab_initial_window_pos.y;
+      window->display->grab_anchor_root_x = x;
+      window->display->grab_anchor_root_y = y;
+
       meta_window_unmaximize (window);
 
       return;
@@ -5920,13 +5922,13 @@ update_move (MetaWindow  *window,
 
       for (monitor = 0; monitor < window->screen->n_xinerama_infos; monitor++)
         {
-	  meta_window_get_work_area_for_xinerama (window, monitor, &work_area);
+          meta_window_get_work_area_for_xinerama (window, monitor, &work_area);
 
           /* check if cursor is near the top of a xinerama work area */ 
           if (x >= work_area.x &&
               x < (work_area.x + work_area.width) &&
-	      y >= work_area.y &&
-	      y < (work_area.y + shake_threshold))
+              y >= work_area.y &&
+              y < (work_area.y + shake_threshold))
             {
               /* move the saved rect if window will become maximized on an
                * other monitor so user isn't surprised on a later unmaximize
@@ -5934,7 +5936,7 @@ update_move (MetaWindow  *window,
               if (wxinerama->number != monitor)
                 {
                   window->saved_rect.x = work_area.x;
-		  window->saved_rect.y = work_area.y;
+                  window->saved_rect.y = work_area.y;
                   
                   if (window->frame) 
                     {
@@ -5945,12 +5947,14 @@ update_move (MetaWindow  *window,
                   meta_window_unmaximize (window);
                 }
 
-	      window->display->grab_initial_window_pos = work_area;
-	      window->shaken_loose = FALSE;
-	      
-	      meta_window_maximize (window);
+              window->display->grab_initial_window_pos = work_area;
+              window->display->grab_anchor_root_x = x;
+              window->display->grab_anchor_root_y = y;
+              window->shaken_loose = FALSE;
+              
+              meta_window_maximize (window);
 
-	      return;
+              return;
             }
         }
     }
