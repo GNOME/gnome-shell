@@ -1,5 +1,10 @@
 2005-01-25  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c: (meta_window_new_with_attrs): set the window state
+	hints _after_ applying session information.  Fixes #164677.
+
+2005-01-25  Elijah Newren  <newren@gmail.com>
+
 	Add man pages for metacity-window-demo and metacity-theme-viewer.
 	Man pages from Jose Moya, auto-fu from Dave Ahlswede. (#143513)
 

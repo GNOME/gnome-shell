@@ -588,12 +588,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    */
   meta_screen_apply_startup_properties (window->screen, window);
   
-  /* FIXME we have a tendency to set this then immediately
-   * change it again.
-   */
-  set_wm_state (window, window->iconic ? IconicState : NormalState);
-  set_net_wm_state (window);
-
   if (window->decorated)
     meta_window_ensure_frame (window);
 
@@ -714,6 +708,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       }
   }
   
+  /* FIXME we have a tendency to set this then immediately
+   * change it again.
+   */
+  set_wm_state (window, window->iconic ? IconicState : NormalState);
+  set_net_wm_state (window);
+
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
 
