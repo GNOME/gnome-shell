@@ -1,7 +1,25 @@
 # Translation of metacity to Croatian
 # Copyright (C) Croatian team
 # Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
 
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
+# Translation of metacity to Croatian
+# Copyright (C) Croatian team
+# Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
 # Translation of metacity to Croatian
 # Copyright (C) Croatian team
 # Translators: Antun Krasic <butch@gawab.com>,Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,Kresimir Kalafatic <>,Ljubomir Božić <ljubo108@vip.hr>,Nikola Planinac <>,Robert Sedak <robert.sedak@sk.tel.hr>,Tanja Minarik <tanja@finte.net>,Tomislav Cavrag <tcavrag@vuka.hr>,Vedran Vyroubal <vedran.vyroubal@inet.hr>,pr pr <delacko@192.168.0.1>,Željko Brajdić <zorz@iskon.hr>,
@@ -11,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0\n"
-"POT-Creation-Date: 2004-01-02 15:35+0100\n"
-"PO-Revision-Date: 2004-01-02 20:37+CET\n"
+"POT-Creation-Date: 2004-01-04 04:31+0100\n"
+"PO-Revision-Date: 2004-01-04 08:45+CET\n"
 "Last-Translator: Robert Sedak <robert.sedak@sk.tel.hr>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
