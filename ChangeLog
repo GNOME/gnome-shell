@@ -1,5 +1,13 @@
 2002-06-25  Mark McLoughlin  <mark@skynet.ie>
 
+	* src/fixedtip.c: (meta_fixed_tip_show):
+	* src/frames.c: (meta_frames_new):
+	* src/tabpopup.c: (meta_ui_tab_popup_new):
+	s/gdk_get_default_display/gdk_display_get_default/
+	s/gdk_get_default_screen/gdk_screen_get_default/
+
+2002-06-25  Mark McLoughlin  <mark@skynet.ie>
+
 	* src/themes/Crux/active-border-top-left-border.png:
 	* src/themes/Crux/active-border-top-right-border.png:
 	* src/themes/Crux/active-top-left-corner.png:

@@ -115,7 +115,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
 #ifdef HAVE_GTK_MULTIHEAD
   gtk_window_set_screen (GTK_WINDOW (popup->outline_window),
-			 gdk_display_get_screen (gdk_get_default_display (),
+			 gdk_display_get_screen (gdk_display_get_default (),
 						 screen_number));
 #endif
 
@@ -128,7 +128,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
 #ifdef HAVE_GTK_MULTIHEAD
   gtk_window_set_screen (GTK_WINDOW (popup->window),
-			 gdk_display_get_screen (gdk_get_default_display (),
+			 gdk_display_get_screen (gdk_display_get_default (),
 						 screen_number));
 #endif
 

@@ -417,7 +417,7 @@ meta_frames_new (int screen_number)
 #ifdef HAVE_GTK_MULTIHEAD
   GdkScreen *screen;
 
-  screen = gdk_display_get_screen (gdk_get_default_display (),
+  screen = gdk_display_get_screen (gdk_display_get_default (),
 				   screen_number);
 
   return g_object_new (META_TYPE_FRAMES,

@@ -52,7 +52,7 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       {
         GdkScreen *gdk_screen;
 
-        gdk_screen = gdk_display_get_screen (gdk_get_default_display (),
+        gdk_screen = gdk_display_get_screen (gdk_display_get_default (),
                                              screen_number);
         gtk_window_set_screen (GTK_WINDOW (tip),
                                gdk_screen);
