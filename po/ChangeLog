@@ -1,3 +1,8 @@
+2002-04-16  Abel Cheung  <maddog@linux.org.hk>
+
+	* .cvsignore: Added some file(s).
+	* POTFILES.in: Synced with source tree.
+
 2002-04-15  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* pl.po: Updated Polish translation by

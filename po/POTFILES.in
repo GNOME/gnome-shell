@@ -1,15 +1,19 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+src/delete.c
 src/display.c
 src/errors.c
 src/frames.c
 src/keybindings.c
 src/main.c
 src/menu.c
+src/metacity-dialog.c
 src/prefs.c
+src/resizepopup.c
 src/screen.c
 src/session.c
-src/theme-parser.c
 src/theme.c
+src/theme-parser.c
+src/util.c
 src/window.c
 src/xprops.c
