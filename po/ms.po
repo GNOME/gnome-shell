@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.3.x\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-02-11 01:01+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai (Bahasa Melayu) <gabai-penyumbang@lists."
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Gagal mengulanghidupkan: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka paparan %s Sistem X Window\n"
@@ -68,28 +68,28 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ralat IO fatal %d (%s) pada paparan '%s'.\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Tutup Tetingkap"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Menu Tetingkap"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Miniatur Tetingkap"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Maksima tetingkap"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Nyah Maksima Tetingkap"
 
 # modifier=? binding=?
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,12 +98,12 @@ msgstr ""
 "Terdapat program lain yang sudah menggunakan kekukci %s dengan modifier %x "
 "sebagai binding\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Gagal mengulanghidupkan: %s\n"
@@ -151,12 +151,12 @@ msgstr "Letak pada Semu_a Ruangkerja"
 msgid "Only on _This Workspace"
 msgstr "_Ikon pada Ruangkerja ini"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Hanya pada ruangkerja %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Pindah ke  ruangkerja %s%d"
@@ -227,17 +227,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skrin %d pada paparan '%s' adalah tidak sah\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skrin %d pada paparan '%s' sudah mempunyai pengurus tetingkap\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Tak dapat melepaskan skrin %d pada paparan '%s'\n"
@@ -1041,7 +1041,7 @@ msgstr "Gagal dapat baca fail sessi yang disimpan %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr ""
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""

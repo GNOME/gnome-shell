@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity for latvian\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-01-27 22:50+0200\n"
 "Last-Translator: Peteris Krisjanis <peteris.krisjanis@ttc.lv>\n"
 "Language-Team: Latvian <ll10nt@ttc.lv>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nevarēja pārstartēt: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nevarēja atvērt X Logu Sistēmas displeju '%s'\n"
@@ -67,27 +67,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatāla IO kļūda %d (%s) displejā '%s'.\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Aizvērt Logu"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Loga Izvēlne"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Samazināt Logu"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Palielināt Logu"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Atjaunot Logu"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -95,12 +95,12 @@ msgid ""
 msgstr ""
 "Kāda cita programma jau lieto taustiņu %s ar modifcētājiem %x kā sasaisti\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nevarēja pārstartēt: %s\n"
@@ -148,12 +148,12 @@ msgstr "Uzstādīt uz visām d_arba virsmām"
 msgid "Only on _This Workspace"
 msgstr "Tikai uz Šīs Darba vie_tas"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Tikai uz darba virsmas %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Pārvietot uz darba virsmas %s%d"
@@ -224,17 +224,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Displeja '%s' ekrāns %d  ir nepareizs\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Displeja '%s' ekrānam %d  jau ir logu menedžeris\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Nevarēja izlaist displeja '%s' ekrānu %d\n"
@@ -1030,7 +1030,7 @@ msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr ""
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-02-08 19:32+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -69,27 +69,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,14 +98,14 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller "
 "vanliga teman."
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
@@ -153,12 +153,12 @@ msgstr "Placera på _alla arbetsytor"
 msgid "Only on _This Workspace"
 msgstr "Endast på _denna arbetsyta"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Endast på arbetsyta %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Flytta till arbetsyta %s%d"
@@ -229,17 +229,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
@@ -1070,7 +1070,7 @@ msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr ""
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""

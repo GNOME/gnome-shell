@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-02-12 01:34+0100\n"
 "Last-Translator: Keld simonsen <keld@dkuug.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Fejl under genstart: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Fejl under åbning af X Window System skærm '%s'\n"
@@ -68,27 +68,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IO-fejl %d (%s) på skærm '%s'.\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Luk vindue"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Vinduesmenu"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Minimér vindue"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Maksimér vindue"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Genopret vindue"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -96,12 +96,12 @@ msgid ""
 msgstr ""
 "Et andet program bruger allerede nøglen %s med modifikatorer %x som binding\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Fejl under genstart: %s\n"
@@ -149,12 +149,12 @@ msgstr "Placér på _alle arbejdsområder"
 msgid "Only on _This Workspace"
 msgstr "Kun på de_tte arbejdsområde"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Kun på arbejdsområde %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Flyt til arbejdsområde %s%d"
@@ -225,17 +225,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på display '%s' er ugyldig\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skærm %d på display '%s' har allerede en vindueshåndterer\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunne ikke frigive skærm %d på display '%s'\n"
@@ -1036,7 +1036,7 @@ msgstr "Fejl under læsning af lagret sessionsfil %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr ""
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""

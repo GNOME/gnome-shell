@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-04-24 09:39+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Збій аналізування збереженого файлу сеансу: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не вдалося відкрити дисплей X Window System \"%s\"\n"
@@ -66,27 +66,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальна помилка вводу-виводу %d (%s) на дисплеї \"%s\".\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Мінімізувати вікно"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Максимізувати вікно"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Демаксимізувати вікно"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -95,12 +95,12 @@ msgstr ""
 "Якась програма вже використовує клавішу %s з модифікатором %x в якості "
 "прив'язки\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Збій перезапуску: %s\n"
@@ -148,12 +148,12 @@ msgstr "Помістити на всі робочі місця"
 msgid "Only on _This Workspace"
 msgstr "Лише на цьому робочому місці"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Лише на робочому місці %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Перемістити на робоче місце %s%d"
@@ -222,17 +222,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї \"%s\" не вірний\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Екран %d на дисплеї \"%s\" вже має віконного менеджера\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, fuzzy, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Не вдалось створити каталог \"%s\": %s\n"
@@ -1030,7 +1030,7 @@ msgstr "Збій виконання fdopen() для журналу %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Відкрито журнал %s\n"
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity CVS-20020416\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-04-16 21:15+0900\n"
 "Last-Translator: Akira TAGOH <tagoh@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Xウィンドウシステムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -69,27 +69,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "致命的なIOエラー %d (%s) がディスプレイ '%s' で発生しました\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "ウィンドウメニュー"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元の大きさに戻す"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,14 +97,14 @@ msgid ""
 msgstr ""
 "別のプログラムですでにバインディングにキー %s と修飾キー %x を使っています\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "テーマが見つかりませんでした! %s が存在して普通のテーマが含まれていることを確"
 "認してください"
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "リスタートに失敗しました: %s\n"
@@ -152,12 +152,12 @@ msgstr "すべてのワークスペースに含める(_A)"
 msgid "Only on _This Workspace"
 msgstr "このワークスペースにだけ含める(_T)"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "ワークスペース %s%d にだけ含める"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "ワークスペース %s%d に移動"
@@ -232,18 +232,18 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "スクリーン %d(ディスプレイ '%s')は無効です\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr ""
 "スクリーン %d(ディスプレイ '%s')はすでにウィンドウマネージャを持っています\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "スクリーン %d(ディスプレイ '%s')を解放できませんでした\n"
@@ -1048,7 +1048,7 @@ msgstr "ログファイル %s の fdopen() に失敗しました: %s\n"
 msgid "Opened log file %s\n"
 msgstr "ログファイル %s をオープンしました\n"
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の_NET_WM_PID %ld を設定しました\n"

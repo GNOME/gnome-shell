@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-05-06 23:40+0100\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-05-06 23:50+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -40,14 +40,15 @@ msgstr "Erro ao ler do processo de visualização de diálogo: %s\n"
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Erro ao lançar diálogo-metacity para questionar sobre o matar uma aplicação: %s\n"
+"Erro ao lançar diálogo-metacity para questionar sobre o matar uma aplicação: "
+"%s\n"
 
 #: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter nome máquina: %s\n"
 
-#: src/display.c:223
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã Sistema Janelas X '%s'\n"
@@ -68,27 +69,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
 
-#: src/frames.c:663
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: src/frames.c:666
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Menu Janela"
 
-#: src/frames.c:669
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: src/frames.c:672
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: src/frames.c:675
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,14 +98,14 @@ msgstr ""
 "Outra aplicação está já a utilizar a chave %s com modificadores %x como "
 "binding\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "Incapaz de encontrar um tema! Certifique-se que %s sai e contém os temas "
 "normais."
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Falha ao reiniciar: %s\n"
@@ -150,12 +151,12 @@ msgstr "Colocar em Todas as _Áreas Trabalho"
 msgid "Only on _This Workspace"
 msgstr "Apenas Nesta Área _Trabalho"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Apenas na área de trabalho %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Mover para área de trabalho %s%d"
@@ -233,17 +234,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:187
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: src/screen.c:203
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Ecrã %d no monitor '%s' já tem um gestor de janelas\n"
 
-#: src/screen.c:355
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Incapaz libertar ecrã %d no monitor '%s'\n"
@@ -1085,7 +1086,7 @@ msgstr "Falha ao executar fdopen() do ficheiro de log %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Ficheiro de log aberto %s\n"
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID fictício %ld\n"

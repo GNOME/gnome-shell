@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-16 16:03+0200\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-05-16 16:05+0200\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -38,7 +38,8 @@ msgstr ""
 
 #: src/delete.c:333
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 
 #: src/delete.c:431
@@ -91,12 +92,14 @@ msgstr "Odmaximalizovať okno"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr ""
+"Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
 #: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
-msgstr "Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
+msgstr ""
+"Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
 
 #: src/main.c:323
 #, c-format
@@ -379,12 +382,14 @@ msgstr "Výraz umiestnenia obsahuje znak '%c', ktorý nie je povolený"
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
+msgstr ""
+"Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1253
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
+msgstr ""
+"Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1320
 #, fuzzy, c-format
@@ -402,12 +407,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
 #: src/theme.c:1568
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
 #: src/theme.c:1625
 #, fuzzy, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenie obsahuje operátor \"%c\" tam, kde sa očakáva operand"
 
 #: src/theme.c:1634
@@ -466,7 +473,8 @@ msgstr ""
 
 #: src/theme.c:3894 src/theme.c:3926
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 
 #: src/theme.c:3977
@@ -515,7 +523,8 @@ msgstr ""
 
 #: src/theme.c:4566 src/theme.c:4626
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
 #: src/theme.c:4574 src/theme.c:4634
@@ -940,7 +949,8 @@ msgstr ""
 
 #: src/theme-parser.c:3384
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 
 #: src/theme-parser.c:3389
@@ -1139,4 +1149,3 @@ msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 #~ msgstr ""
 #~ "Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
 #~ "vypínam zmenu veľkosťi\n"
-

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.89\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-04-17 09:50+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'를 여는데 실패하였습니다\n"
@@ -69,27 +69,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "디스플레이 '%3$s'에서 치명적인 입출력 오류 %1$d (%2$s).\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "창 닫기"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "창 메뉴"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "창 최소화"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "창 최대화"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "창 최대화 취소"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,13 +98,13 @@ msgstr ""
 "몇몇 다른 프로그램에서 이미 단축 글쇠로 변경키 %2$x와 글쇠 %1$s를 사용하고 있"
 "습니다\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "테마를 찾을 수 없습니다! %s에 사용할 수 있는 테마가 있는지 확인하십시오."
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "재시작 실패: %s\n"
@@ -152,12 +152,12 @@ msgstr "모든 작업공간에 놓기(_A)"
 msgid "Only on _This Workspace"
 msgstr "이 작업공간에만 놓기(_T)"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "작업공간 %s%d에만 놓기"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "작업공간 %s%d로 이동"
@@ -231,17 +231,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d는 잘못되었습니다\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d는 이미 창 관리자가 실행되고 있습니다\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d를 떼어 놓을수 없습니다\n"
@@ -1069,7 +1069,7 @@ msgstr "로그 파일 %s를 fdopen()하기 실패: %s\n"
 msgid "Opened log file %s\n"
 msgstr "로그 파일 %s를 엽니다\n"
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld를 설정하였습니다\n"

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-02 18:20-0400\n"
+"POT-Creation-Date: 2002-05-17 18:07-0400\n"
 "PO-Revision-Date: 2002-04-26 01:21+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nie można uzyskać nazwy komputera: %s\n"
 
-#: src/display.c:222
+#: src/display.c:224
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nie można otworzyć połączenia z ekranem \"%s\" systemu X Window\n"
@@ -73,27 +73,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Poważny błąd we/wy %d (%s) na ekranie \"%s\".\n"
 
-#: src/frames.c:661
+#: src/frames.c:698
 msgid "Close Window"
 msgstr "Zamyka okno"
 
-#: src/frames.c:664
+#: src/frames.c:701
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:667
+#: src/frames.c:704
 msgid "Minimize Window"
 msgstr "Minimalizuje okno"
 
-#: src/frames.c:670
+#: src/frames.c:707
 msgid "Maximize Window"
 msgstr "Maksymalizuje okno"
 
-#: src/frames.c:673
+#: src/frames.c:710
 msgid "Unmaximize Window"
 msgstr "Przywraca zmaksymalizowane okno"
 
-#: src/keybindings.c:629
+#: src/keybindings.c:630
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -102,14 +102,14 @@ msgstr ""
 "Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny "
 "program\n"
 
-#: src/main.c:273
+#: src/main.c:277
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "Nie można odnaleźć żadnego motywu! Upewnij się, że istnieje katalog \"%s\" i "
 "zawiera standardowe motywy."
 
-#: src/main.c:319
+#: src/main.c:323
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
@@ -157,12 +157,12 @@ msgstr "Na _wszystkich obszarach roboczych"
 msgid "Only on _This Workspace"
 msgstr "Tylko na _tym obszarze roboczym"
 
-#: src/menu.c:298
+#: src/menu.c:301
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Tylko na obszarze %s%d"
 
-#: src/menu.c:301
+#: src/menu.c:304
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Przenieś na obszar roboczy %s%d"
@@ -238,17 +238,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:186
+#: src/screen.c:191
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest niepoprawny\n"
 
-#: src/screen.c:202
+#: src/screen.c:212
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: src/screen.c:352
+#: src/screen.c:370
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -1107,7 +1107,7 @@ msgstr "Nie można wykonać fdopen() na pliku dziennika %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Otwarty plik dziennika %s\n"
 
-#: src/window.c:425
+#: src/window.c:426
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacja ustawiła błędną wartość _NET_WM_PID %ld\n"
