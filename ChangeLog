@@ -1,3 +1,11 @@
+2004-12-24  Elijah Newren  <newren@gmail.com>
+
+	Thanks to mild7@users.sourceforge.net for this fix.
+
+	* src/window.h: (META_WINDOW_IN_NORMAL_TAB_CHAIN): Excludes
+	windows with skip_taskbar hint set from the alt-tab list; they'll
+	appear in the ctrl-alt-tab list instead. (fixes #106249)
+
 2004-12-22  Elijah Newren  <newren@gmail.com>
 
 	Wrap XSetInputFocus, making display->expected_focus_window a

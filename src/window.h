@@ -484,7 +484,7 @@ gboolean meta_window_same_application (MetaWindow *window,
 #define META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE(w) \
   ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
 #define META_WINDOW_IN_NORMAL_TAB_CHAIN(w) \
-  (((w)->input || (w)->take_focus) && META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w))
+  (((w)->input || (w)->take_focus ) && META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w) && (!(w)->skip_taskbar))
 #define META_WINDOW_IN_DOCK_TAB_CHAIN(w) \
   (((w)->input || (w)->take_focus) && ! META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w))
 
