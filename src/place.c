@@ -116,8 +116,16 @@ find_next_cascade (MetaWindow *window,
   /* arbitrary-ish threshold, honors user attempts to
    * manually cascade.
    */
-  x_threshold = MAX (fgeom->left_width, 10);
-  y_threshold = MAX (fgeom->top_height, 10);
+  if (fgeom)
+    {
+      x_threshold = MAX (fgeom->left_width, 10);
+      y_threshold = MAX (fgeom->top_height, 10);
+    }
+  else
+    {
+      x_threshold = 10;
+      y_threshold = 10;
+    }
   
   tmp = sorted;
   while (tmp != NULL)
