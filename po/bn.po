@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: METACITY 2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-02 02:00-0500\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2003-10-12 20:33+0530\n"
 "Last-Translator: Dr Anirban Mitra <mitra_anirban@yahoo.co.in>\n"
 "Language-Team: Bengali <gnome-trans@bengalinux.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "এই হোস্টনেম পেতে ভুল হয়েছে: %s\n"
 
-#: src/display.c:291
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "এক্স উইন্ডো সিস্টেম প্রদর্শক %s খুলতে পারছি না\n"
@@ -104,7 +104,7 @@ msgid "Unmaximize Window"
 msgstr "মাঝারি আকার কর"
 
 # " উইন্ডো অবৃহদায়ত কর"
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -112,12 +112,12 @@ msgid ""
 msgstr ""
 "অন্য একটি প্রোগ্রাম ইতিমধ্যেই %s চাবি %x পরিবর্তক সহ কার্যকারক হিসাবে ব্যবহার করছে\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "একটি আদেশ বিষয়ে ভুল ছাপার মেটাসিটি বার্তালাপ চালু করতে গন্ডগোল হয়েছে: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "আদেশ %d জানা  নেই।\n"
@@ -160,88 +160,88 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "আবার চালু করতে পারলাম না: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "ছো_ট কর"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "পুরো _বড় কর"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "মাঝারি _বড় কর"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "গোটা_ও"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "খো_ল"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr ""
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_সরাও"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "_আকার পরিবর্তণ কর"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "বন্ধ _কর"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "স_মস্ত কার্যক্ষেত্রে রাখ"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "শুধুমাত্র _এই কার্যক্ষেত্রে"
 
-#: src/menu.c:67
+#: src/menu.c:68
 #, fuzzy
 msgid "Move to Workspace _Left"
 msgstr "জানালাটিকে কার্যক্ষেত্র 9-এ পাঠাও"
 
-#: src/menu.c:68
+#: src/menu.c:69
 #, fuzzy
 msgid "Move to Workspace R_ight"
 msgstr "জানালাটিকে কার্যক্ষেত্র 1-এ পাঠাও"
 
-#: src/menu.c:69
+#: src/menu.c:70
 #, fuzzy
 msgid "Move to Workspace _Up"
 msgstr "জানালাটিকে কার্যক্ষেত্র 1-এ পাঠাও"
 
-#: src/menu.c:70
+#: src/menu.c:71
 #, fuzzy
 msgid "Move to Workspace _Down"
 msgstr "জানালাটিকে নিচের কার্যক্ষেত্র পাঠাও"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "কার্যক্ষেত্র %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 #, fuzzy
 msgid "Workspace 1_0"
 msgstr "কার্যক্ষেত্র %d"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "কার্যক্ষেত্র %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 #, fuzzy
 msgid "Move to Another _Workspace"
 msgstr "জানালাটিকে ওপরের  কার্যক্ষেত্র  পাঠাও"
@@ -1967,12 +1967,12 @@ msgstr "কার্যক্ষেত্র %d -র নাম \"%s\" করত�
 msgid "%d x %d"
 msgstr "%d  X %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "পর্দা %d (প্রদর্শক '%s') কার্যকর নয়\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1981,19 +1981,19 @@ msgstr ""
 "পর্দা %d প্রদর্শক \"%s\" তে ইতিমধ্যেই একটি জানালা প্রবন্ধক আছে; বর্তমান জানালা "
 "প্রবন্ধক কে বদলাবার জন্য --replace বিকল্প ব্যবহার করুন।\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "পর্দা %d প্রদর্শক \"%s\"  এর চয়ণিত জানালা প্রবন্ধক কে অধিগ্রহণ করতে পারলাম না\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "পর্দা %d প্রদর্শক \"%s\"এ ইতিমধ্যেই একটি জানালা প্রবন্ধক আছে\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "পর্দা %d প্রদর্শক \"%s\" কে ছাড়তে পারলাম না\n"
@@ -3120,7 +3120,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "প্রোগ্রামটি একটি অর্থহীন _NET_WM_PID স্থির করেছে %ld\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3136,7 +3136,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

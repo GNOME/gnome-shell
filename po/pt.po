@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
-"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
-"POT-Creation-Date: 2004-01-04 13:48+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2004-01-04 14:20+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -22,7 +22,8 @@ msgstr "Utilização: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity foi compilado sem suporte para modo de registo detalhado (verbose)\n"
+msgstr ""
+"Metacity foi compilado sem suporte para modo de registo detalhado (verbose)\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -59,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter nome de máquina: %s\n"
 
-#: src/display.c:291
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
@@ -100,22 +101,22 @@ msgstr "Maximizar Janela"
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"A tecla %s com os modificadores %x já está a ser utilizada como atalho "
-"por outra aplicação\n"
+"A tecla %s com os modificadores %x já está a ser utilizada como atalho por "
+"outra aplicação\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erro ao abrir diálogo-metacity para imprimir um erro sobre um comando: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"
@@ -139,7 +140,8 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., e outros\n"
-"Esta é uma aplicação livre; consulte o código fonte para condições de cópia.\n"
+"Esta é uma aplicação livre; consulte o código fonte para condições de "
+"cópia.\n"
 "NÃO existe qualquer garantia; nem sequer de COMERCIALIZAÇÃO ou ADEQUAÇÃO "
 "PARA QUALQUER PROPÓSITO ESPECÍFICO.\n"
 
@@ -161,83 +163,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Falha ao reiniciar: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "Mi_nimizar"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Ma_ximizar"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "Resta_urar"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "_Enrolar"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "D_esenrolar"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "No _Topo"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_Mover"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "_Redimensionar"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Fechar"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "Colocar em _Todas as Áreas de Trabalho"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Apenas Nesta Área de _Trabalho"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "Mover para Área de Trabalho à Es_querda"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "Mover para Área de Trabalho à _Direita"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Mover para Área de Trabalho _Acima"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "Mover para Área de Trabalho A_baixo"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "Área de Trabalho 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de Trabalho %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "Mover para Outra Área de _Trabalho"
 
@@ -339,7 +341,8 @@ msgstr "A janela \"%s\" não está a responder."
 #: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Ao forçar esta aplicação a terminar perderá quaisquer dados por gravar."
+msgstr ""
+"Ao forçar esta aplicação a terminar perderá quaisquer dados por gravar."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -461,7 +464,8 @@ msgid ""
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Determina se as aplicações ou o sistema podem gerar 'beeps' audíveis; pode "
-"ser utilizado em conjunto com 'visual bell' para permitir 'beeps' silenciosos."
+"ser utilizado em conjunto com 'visual bell' para permitir 'beeps' "
+"silenciosos."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -483,8 +487,8 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\" então a "
-"janela com foco será automaticamente elevada após um atraso (o atraso é "
+"Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\" então a janela "
+"com foco será automaticamente elevada após um atraso (o atraso é "
 "especificado pela chave auto_raise_delay)."
 
 #: src/metacity.schemas.in.h:18
@@ -528,8 +532,8 @@ msgstr ""
 "janela em modo aplicação, todas as janelas da aplicação são elevadas. "
 "Também, em modo aplicação, cliques de foco não são passados para janelas "
 "noutras aplicações. A existência desta definição é algo questionável. Mas é "
-"preferível a ter definições para todos os detalhes específicos de baseado "
-"em aplicações vs. baseado em janelas, por ex. se passar ou não os cliques. "
+"preferível a ter definições para todos os detalhes específicos de baseado em "
+"aplicações vs. baseado em janelas, por ex. se passar ou não os cliques. "
 "Adicionalmente, o modo aplicação está ainda quase todo por implementar."
 
 #: src/metacity.schemas.in.h:21
@@ -719,17 +723,18 @@ msgid ""
 msgstr ""
 "Algumas aplicações quebram as especificações de uma forma que resulta no mau "
 "funcionamento do gestor de janelas. Por exemplo, idealmente o Metacity "
-"colocaria todos os diálogos numa posição consistente em relação à janela pai. "
-"Isto requer ignorar posições de diálogos definidos pelas aplicações. Mas "
-"algumas versões de Java/Swing marcam os seus menus popup como diálogos, pelo "
-"que o Metacity tem de desactivar o posicionamento de diálogos para permitir "
-"que os menus funcionem em aplicações Java problemáticas. Existem outros exemplos "
-"como este. Esta opção coloca o Metacity em modo de Correcção Completa, que "
-"provavelmente disponibiliza um Interface melhor caso não tenha de executar "
-"nenhuma aplicação problemática. Infelizmente têm de ser activados recursos por "
-"omissão; o mundo real é um sitio horrível. Alguns dos recursos servem para "
-"limitações nas próprias especificações, pelo que por vezes um erro em modo "
-"sem recursos pode não ser corrijível sem alterar a própria especificação."
+"colocaria todos os diálogos numa posição consistente em relação à janela "
+"pai. Isto requer ignorar posições de diálogos definidos pelas aplicações. "
+"Mas algumas versões de Java/Swing marcam os seus menus popup como diálogos, "
+"pelo que o Metacity tem de desactivar o posicionamento de diálogos para "
+"permitir que os menus funcionem em aplicações Java problemáticas. Existem "
+"outros exemplos como este. Esta opção coloca o Metacity em modo de Correcção "
+"Completa, que provavelmente disponibiliza um Interface melhor caso não tenha "
+"de executar nenhuma aplicação problemática. Infelizmente têm de ser "
+"activados recursos por omissão; o mundo real é um sitio horrível. Alguns dos "
+"recursos servem para limitações nas próprias especificações, pelo que por "
+"vezes um erro em modo sem recursos pode não ser corrijível sem alterar a "
+"própria especificação."
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
@@ -821,10 +826,9 @@ msgstr ""
 "sistema ou o indicador de 'campainha' de outra aplicação tocou. Actualmente "
 "existem dois valores válidos, \"fullscreen\", que causa um flash branco-"
 "preto de ecrã completo, e \"frame_flash\" que faz com que a barra de título "
-"da aplicação que emitiu a campainha emita um flash. Se a aplicação que "
-"tocou a campainha for desconhecida (é normalmente o caso para o \"beep de "
-"sistema\" por omissão), irá emitir flash a barra de título da aplicação com "
-"o foco."
+"da aplicação que emitiu a campainha emita um flash. Se a aplicação que tocou "
+"a campainha for desconhecida (é normalmente o caso para o \"beep de sistema"
+"\" por omissão), irá emitir flash a barra de título da aplicação com o foco."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -928,12 +932,12 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"O atalho de teclado que alterna para a área de trabalho à direita da "
-"actual. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
-"maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
-"\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
-"não existirão quaisquer atalhos de teclado para esta acção."
+"O atalho de teclado que alterna para a área de trabalho à direita da actual. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1. O parseador é razoavelmente liberal e permite capitalização maiúscula ou "
+"minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
+"\". Se definir a opção para a expressão especial \"disabled\", não existirão "
+"quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -1189,12 +1193,12 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "O atalho de teclado utilizado para esconder todas as janelas normais e "
-"colocar o foco no fundo da área de trabalho. O formato assemelha-se a "
-"\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é "
-"razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
-"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se "
-"definir a opção para a expressão especial \"disabled\", não existirão "
-"quaisquer atalhos de teclado para esta acção."
+"colocar o foco no fundo da área de trabalho. O formato assemelha-se a \"&lt;"
+"Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é razoavelmente "
+"liberal e permite capitalização maiúscula ou minúscula e também abreviaturas "
+"tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a "
+"expressão especial \"disabled\", não existirão quaisquer atalhos de teclado "
+"para esta acção."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1297,9 +1301,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 1. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"1. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1312,9 +1316,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 10. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"10. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1327,9 +1331,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 11. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"11. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1342,9 +1346,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 12. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"12. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1357,9 +1361,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 2. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"2. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1372,9 +1376,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 3. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"3. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1387,9 +1391,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 4. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"4. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1402,9 +1406,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 5. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"5. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1417,9 +1421,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 6. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"6. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1432,9 +1436,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 7. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"7. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1447,9 +1451,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 8. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"8. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1462,9 +1466,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover uma janela para a área de "
-"trabalho 9. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
+"O atalho de teclado utilizado para mover uma janela para a área de trabalho "
+"9. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
 "maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
 "\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
 "não existirão quaisquer atalhos de teclado para esta acção."
@@ -1478,13 +1482,13 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover o foco atrás entre paineis e a "
-"área de trabalho, utilizando uma janela de popup. O formato assemelha-se "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é "
-"razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
-"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir "
-"a opção para a expressão especial \"disabled\", não existirão quaisquer "
-"atalhos de teclado para esta acção."
+"O atalho de teclado utilizado para mover o foco atrás entre paineis e a área "
+"de trabalho, utilizando uma janela de popup. O formato assemelha-se a \"&lt;"
+"Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é razoavelmente "
+"liberal e permite capitalização maiúscula ou minúscula e também abreviaturas "
+"tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a "
+"expressão especial \"disabled\", não existirão quaisquer atalhos de teclado "
+"para esta acção."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1495,9 +1499,9 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para mover o foco atrás entre paineis e a "
-"área de trabalho, sem utilizar uma janela de popup. O formato assemelha-"
-"se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é "
+"O atalho de teclado utilizado para mover o foco atrás entre paineis e a área "
+"de trabalho, sem utilizar uma janela de popup. O formato assemelha-se a "
+"\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é "
 "razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
 "também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir "
 "a opção para a expressão especial \"disabled\", não existirão quaisquer "
@@ -1571,9 +1575,9 @@ msgstr ""
 "trabalho, sem utilizar uma janela de popup. O formato assemelha-se a \"&lt;"
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é razoavelmente "
 "liberal e permite capitalização maiúscula ou minúscula e também abreviaturas "
-"tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a expressão "
-"especial \"disabled\", não existirão quaisquer atalhos de teclado para esta "
-"acção."
+"tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a "
+"expressão especial \"disabled\", não existirão quaisquer atalhos de teclado "
+"para esta acção."
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1638,9 +1642,9 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para alternar o modo de ecrã completo. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
-"parseador é razoavelmente liberal e permite capitalização maiúscula ou "
+"O atalho de teclado utilizado para alternar o modo de ecrã completo. O "
+"formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"O parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
@@ -1653,12 +1657,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado utilizado para alternar a maximização. O formato assemelha-"
-"se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O parseador é "
-"razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
-"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir "
-"a opção para a expressão especial \"disabled\", não existirão quaisquer "
-"atalhos de teclado para esta acção."
+"O atalho de teclado utilizado para alternar a maximização. O formato "
+"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. O "
+"parseador é razoavelmente liberal e permite capitalização maiúscula ou "
+"minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
+"\". Se definir a opção para a expressão especial \"disabled\", não existirão "
+"quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1803,9 +1807,9 @@ msgid ""
 msgstr ""
 "O modo de foco de janela indica como as janelas são activadas. Tem três "
 "valores possíveis; \"click\" significa que a janela tem de ser clicada para "
-"obter o foco, \"sloppy\" significa que a janela fica com foco quando o "
-"rato entra na janela, e \"mouse\" significa que a janela fica com o foco "
-"quando o rato entra na janela e o perde quando o rato sai."
+"obter o foco, \"sloppy\" significa que a janela fica com foco quando o rato "
+"entra na janela, e \"mouse\" significa que a janela fica com o foco quando o "
+"rato entra na janela e o perde quando o rato sai."
 
 #: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
@@ -1886,12 +1890,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Este atalho de teclado redimensiona uma janela para preencher o espaço vertical "
-"disponível. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite capitalização "
-"maiúscula ou minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e "
-"\"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial \"disabled\", "
-"não existirão quaisquer atalhos de teclado para esta acção."
+"Este atalho de teclado redimensiona uma janela para preencher o espaço "
+"vertical disponível. O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. O parseador é razoavelmente liberal e permite "
+"capitalização maiúscula ou minúscula e também abreviaturas tais como \"&lt;"
+"Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir a opção para a expressão especial "
+"\"disabled\", não existirão quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1930,8 +1934,8 @@ msgid ""
 "environments, or when 'audible bell' is off."
 msgstr ""
 "Activar indicador visual de quando uma aplicação ou o sistema emitem uma "
-"'campainha' ou 'beep'; útil para os deficientes auditivos e para utilizar "
-"em ambientes ruidosos, ou quando 'audible bell' está inactiva."
+"'campainha' ou 'beep'; útil para os deficientes auditivos e para utilizar em "
+"ambientes ruidosos, ou quando 'audible bell' está inactiva."
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize a window"
@@ -1995,8 +1999,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Recursos para aplicações problemáticas inactivos. Algumas aplicações "
-"poderão não funcionar correctamente.\n"
+"Recursos para aplicações problemáticas inactivos. Algumas aplicações poderão "
+"não funcionar correctamente.\n"
 
 #: src/prefs.c:1257
 #, c-format
@@ -2027,12 +2031,12 @@ msgstr "Erro ao definir nome da área de trabalho %d para \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ecrã %d no monitor '%s' é inválido\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2041,19 +2045,19 @@ msgstr ""
 "Ecrã %d no monitor \"%s\" já tem um gestor de janelas; tente utilizar a "
 "opção --replace para substituir o gestor de janelas actual.\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Incapaz de obter selecção do gestor de janelas no ecrã %d monitor \"%s\"\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ecrã %d no monitor \"%s\" já tem um gestor de janelas\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Incapaz libertar ecrã %d no monitor \"%s\"\n"
@@ -2136,8 +2140,8 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Erro ao abrir diálogo-metacity para avisar sobre aplicações que não "
-"suportam gestão de sessões: %s\n"
+"Erro ao abrir diálogo-metacity para avisar sobre aplicações que não suportam "
+"gestão de sessões: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2591,7 +2595,8 @@ msgstr "Elemento mais externo tem de ser <metacity_theme> não <%s>"
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
-"Elemento <%s> não é permitido dentro de um elemento name/author/date/description"
+"Elemento <%s> não é permitido dentro de um elemento name/author/date/"
+"description"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2609,7 +2614,8 @@ msgstr ""
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Elemento <%s> não é permitido dentro de um elemento de operação de desenho"
+msgstr ""
+"Elemento <%s> não é permitido dentro de um elemento de operação de desenho"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
@@ -2820,8 +2826,8 @@ msgid ""
 "frame)\n"
 msgstr ""
 "Desenhadas %d frames em %g segundos no lado do cliente (%g milisegundos por "
-"frame) e %g segundos globais incluindo recursos do servidor X (%g milisegundos "
-"por frame)\n"
+"frame) e %g segundos globais incluindo recursos do servidor X (%g "
+"milisegundos por frame)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -2858,7 +2864,8 @@ msgstr "valor y era %d, era esperado %d"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "expressões de coordenada %d parseadas em %g segundos (%g segundos em média)\n"
+msgstr ""
+"expressões de coordenada %d parseadas em %g segundos (%g segundos em média)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2905,8 +2912,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Especificação de cor GTK tem de ter o estado entre parentesis rectos, por ex. "
-"gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de parsear \"%s\""
+"Especificação de cor GTK tem de ter o estado entre parentesis rectos, por "
+"ex. gtk:fg[NORMAL] em que NORMAL é o estado; incapaz de parsear \"%s\""
 
 #: src/theme.c:989
 #, c-format
@@ -3040,8 +3047,9 @@ msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Parseador de expressão de coordenada transbordou o seu buffer, o que é um erro "
-"do Metacity, mas tem a certeza de que precisa de uma expressão tão grande?"
+"Parseador de expressão de coordenada transbordou o seu buffer, o que é um "
+"erro do Metacity, mas tem a certeza de que precisa de uma expressão tão "
+"grande?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -3192,7 +3200,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID %ld fictício\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3208,7 +3216,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

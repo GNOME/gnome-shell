@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-17 01:27+0900\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2004-02-17 01:27+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:296
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -102,7 +102,7 @@ msgstr "ウィンドウを最大化します"
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元のサイズに戻します"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,14 +111,14 @@ msgstr ""
 "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
 "す\n"
 
-#: src/keybindings.c:2516
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "コマンドのエラーを表示する metacity-dialog を起動する際にエラーが発生しまし"
 "た: %s\n"
 
-#: src/keybindings.c:2589
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
@@ -165,83 +165,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "再起動に失敗しました: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "元のサイズに戻す(_X)"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "巻き上げる(_U)"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "展開する(_U)"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "最前面へ(_T)"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "移動(_M)"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "サイズの変更(_R)"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "閉じる(_C)"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "全てのワークスペースに含める(_A)"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "このワークスペースにだけ含める(_T)"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "左のワークスペースへ移動する(_L)"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "右のワークスペースへ移動する(_I)"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "上のワークスペースへ移動する(_U)"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "下のワークスペースへ移動する(_D)"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "ワークスペース 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "ワークスペース %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "別のワークスペースへ移動する(_W)"
 
@@ -3161,7 +3161,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4730
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3177,7 +3177,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5392
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

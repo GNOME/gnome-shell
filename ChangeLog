@@ -1,3 +1,9 @@
+2004-03-21  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: 2.8.0
+
+	* NEWS: update
+
 2004-03-07  Elijah Newren  <newren@math.utah.edu>
 
 	* rationales.txt: Bring up to date (see bug 136252).

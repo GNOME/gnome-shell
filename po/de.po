@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-18 10:46+0100\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2004-01-18 10:46+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 
-#: src/display.c:296
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
@@ -103,7 +103,7 @@ msgstr "Fenster maximieren"
 msgid "Unmaximize Window"
 msgstr "Fenster wiederherstellen"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -112,14 +112,14 @@ msgstr ""
 "Ein anderes Programm verwendet die Taste %s bereits mit den Umschaltern %x "
 "als Tastenkombination\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Beim Starten eines Metacity-Dialogs, der einen Fehler zu einem Befehl "
 "anzeigen sollte, ist ein Fehler aufgetreten: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Es wurde kein Befehl %d festgelegt.\n"
@@ -167,83 +167,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Neustart fehlgeschlagen: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "_Minimieren"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Ma_ximieren"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "_Wiederherstellen"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "Ein_rollen"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "Aus_rollen"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "Im V_ordergrund"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_Verschieben"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "_Größe ändern"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "S_chließen"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "Auf _alle Arbeitsflächen legen"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Nur auf _dieser Arbeitsfläche"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "Auf Arbeitsfläche _links verschieben"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "Auf Arbeitsfläche _rechts verschieben"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Auf Arbeitsfläche darü_ber verschieben"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "Auf Arbeitsfläche dar_unter verschieben"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "Arbeitsfläche 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeitsfläche %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "Auf a_ndere Arbeitsfläche verschieben"
 
@@ -2063,12 +2063,12 @@ msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:415
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Bildschirm %d auf Anzeige »%s« ist ungültig\n"
 
-#: src/screen.c:431
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2078,7 +2078,7 @@ msgstr ""
 "die Option »--replace« an, um zu versuchen, den aktuellen Fenstermanager zu "
 "ersetzen.\n"
 
-#: src/screen.c:455
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2086,12 +2086,12 @@ msgstr ""
 "Markierung des Fenstermanagers auf Bildschirm %d auf Anzeige »%s« konnte "
 "nicht empfangen werden\n"
 
-#: src/screen.c:513
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager\n"
 
-#: src/screen.c:704
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Bildschirm %d auf Anzeige »%s« konnte nicht freigegeben werden\n"
@@ -3247,7 +3247,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4730
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3269,7 +3269,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5392
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

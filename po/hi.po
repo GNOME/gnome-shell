@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-20 04:25+0100\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2003-09-09 14:42+0530\n"
 "Last-Translator: Ravishankar Shrivastava <raviratlami@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "होस्टनाम पाने में असफल : %s\n"
 
-#: src/display.c:296
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X विंडो पद्धति प्रदर्शक '%s'  खोलने में असफल\n"
@@ -100,7 +100,7 @@ msgstr "विंडो को अधिकतम करें"
 msgid "Unmaximize Window"
 msgstr "विंडो को अधिकतम न करें"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,12 +109,12 @@ msgstr ""
 "कोई अन्य प्रोग्राम पहले से ही कुंजी  %s  उपयोग में ले रहा है, माडिफायर्स  %x के बाइंडिंग "
 "जैसे\n"
 
-#: src/keybindings.c:2516
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "कमांड : %s  के लिए हुई त्रुटि छापने हेतु मेटासिटी डायलॉग चालू करने में त्रुटि हुई\n"
 
-#: src/keybindings.c:2589
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "कोई कमांड  %d पारिभाषित नहीं है.\n"
@@ -158,88 +158,88 @@ msgstr "थीम नहीं ढूंढ सके! सुनिश्चि�
 msgid "Failed to restart: %s\n"
 msgstr "पुनः शुरु करने में असफल : %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "छोटा करें (_M)"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "बडा करें (_x)"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "अधिकतम नहीं करें (_x)"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "उपर घुमाएं (_U)"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "घुमाया वापस लें (_U)"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr ""
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "खिसकाएं (_M)"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "आकार बदलें (_R)"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "बंद करें (_C)"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "सभी कार्यस्थान मे रखें (_A)"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "केवल यही कार्यस्थान (_T)"
 
-#: src/menu.c:67
+#: src/menu.c:68
 #, fuzzy
 msgid "Move to Workspace _Left"
 msgstr "खिड़की को कार्यस्थान 9 पर ले जाएं"
 
-#: src/menu.c:68
+#: src/menu.c:69
 #, fuzzy
 msgid "Move to Workspace R_ight"
 msgstr "खिड़की को कार्यस्थान 1 पर ले जाएं"
 
-#: src/menu.c:69
+#: src/menu.c:70
 #, fuzzy
 msgid "Move to Workspace _Up"
 msgstr "खिड़की को कार्यस्थान 1 पर ले जाएं"
 
-#: src/menu.c:70
+#: src/menu.c:71
 #, fuzzy
 msgid "Move to Workspace _Down"
 msgstr "विंडो को एक कार्यस्थान नीचे लाएं"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "कार्यस्थान %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 #, fuzzy
 msgid "Workspace 1_0"
 msgstr "कार्यस्थान %d"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "कार्यस्थान %s %d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 #, fuzzy
 msgid "Move to Another _Workspace"
 msgstr "विंडो को एक कार्यस्थान ऊपर लाएं"
@@ -3081,7 +3081,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "अनुप्रयोग ने सेट किया एक बोगस bogus _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4730
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3097,7 +3097,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5392
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

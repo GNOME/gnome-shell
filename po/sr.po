@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-22 08:34+0100\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2003-12-22 08:34+0100\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Нисам успео да сазнам име компјутера: %s\n"
 
-#: src/display.c:291
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим X Window System  екран „%s“\n"
@@ -102,7 +102,7 @@ msgstr "Увећај прозор"
 msgid "Unmaximize Window"
 msgstr "Поништи увећавање прозора"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,14 +111,14 @@ msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x за неку "
 "функцију\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
@@ -164,83 +164,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Нисам успео да се поново покренем: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "Умањи"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Увећај"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "Поништи увећање"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "Замотај"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "Одмотај"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "На _врху"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "Помери"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "Промени величину"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "Затвори"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "Постави на све радне површине"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Само на овој радној површини"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "Премести на _леви радни простор"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "Премести на _десни радни простор"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Премести на радни простор _изнад"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "Премести на радни простор ис_под"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "1_0. радни простор"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "%s%d. радни простор"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "Премести на други _радни простор"
 
@@ -2013,12 +2013,12 @@ msgstr "Грешка приликом постављања имена за ра�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Приказ %d на екрану „%s“ није исправан\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2027,19 +2027,19 @@ msgstr ""
 "Приказ %d на екрану „%s“ већ има покренут менаџер прозора; покушајте да "
 "користите --replace опцију како бисте заменили тренутни менаџер прозора.\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Нисам могао да добијем избор менаџера прозора на приказу %d еркана „%s“\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има менаџер прозора\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Нисам могао да испустим приказ %d на екрану „%s“\n"
@@ -3151,15 +3151,15 @@ msgstr "Отворена датотека са историјатом %s\n"
 msgid "Window manager: "
 msgstr "Менаџер прозора:"
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "Грешка у менаџеру прозора: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "Упозорење менаџера прозора: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "Грешка менаџера прозора: "
 
@@ -3169,7 +3169,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3185,7 +3185,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

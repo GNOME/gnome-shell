@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-20 10:43-0500\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2004-03-20 11:05-0500\n"
 "Last-Translator: Gareth Owen <gowen72@yahoo.com>\n"
 "Language-Team: \n"
@@ -375,7 +375,8 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Not implemented) Navigation works in terms of applications not windows"
+msgstr ""
+"(Not implemented) Navigation works in terms of applications not windows"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -2990,7 +2991,8 @@ msgstr "Coordinate expression had unknown variable or constant \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"Coordinate expression had an open parenthesis with no close parenthesis"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"

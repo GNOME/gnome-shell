@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-17 04:25+0100\n"
+"POT-Creation-Date: 2004-03-07 11:13-0500\n"
 "PO-Revision-Date: 2004-03-08 19:05 GMT\n"
 "Last-Translator: Alastair McKinstry <mckinstry@computer.org>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Teip ag leámh óstainm: %s\n"
 
-#: src/display.c:291
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Teipeadh ag oscailt scathán Corás Fhunneoga X '%s'\n"
@@ -96,19 +96,19 @@ msgstr ""
 msgid "Unmaximize Window"
 msgstr ""
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
@@ -130,9 +130,9 @@ msgid ""
 msgstr ""
 
 #: src/main.c:443
-#, c-format
-msgid "Failed to scan themes directory : %s\n"
-msgstr ""
+#, fuzzy, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Teip ag leámh óstainm: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -145,71 +145,91 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr ""
 
-#: src/menu.c:52
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr ""
 
-#: src/menu.c:53
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr ""
 
-#: src/menu.c:54
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr ""
 
-#: src/menu.c:55
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr ""
 
-#: src/menu.c:56
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr ""
 
-#: src/menu.c:57
+#: src/menu.c:59 src/menu.c:60
+msgid "On _Top"
+msgstr ""
+
+#: src/menu.c:61
 msgid "_Move"
 msgstr ""
 
-#: src/menu.c:58
+#: src/menu.c:62
 msgid "_Resize"
 msgstr ""
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Dún"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "Chuir ar G_ach Deascanna"
 
-#: src/menu.c:63
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Ar an Deas _Seo amhain"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:68
+#, fuzzy
+msgid "Move to Workspace _Left"
+msgstr "Chuir an fhuinneog seo ar deasc a 9"
+
+#: src/menu.c:69
+#, fuzzy
+msgid "Move to Workspace R_ight"
+msgstr "Chuir an fhuinneog seo ar deasc a 1"
+
+#: src/menu.c:70
+#, fuzzy
+msgid "Move to Workspace _Up"
+msgstr "Chuir an fhuinneog seo ar deasc a 1"
+
+#: src/menu.c:71
+#, fuzzy
+msgid "Move to Workspace _Down"
+msgstr "Chuir an fhuinneog aon deasc síos"
+
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Deasc %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:169
+#, fuzzy
+msgid "Workspace 1_0"
+msgstr "Deasc %d"
+
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Deasc %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Ar %s amhain"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Bog go %s"
+#: src/menu.c:366
+#, fuzzy
+msgid "Move to Another _Workspace"
+msgstr "Chuir an fhuinneog aon deasc suas"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -1502,30 +1522,30 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr ""
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
@@ -2588,15 +2608,15 @@ msgstr "Oscail comhad log %s\n"
 msgid "Window manager: "
 msgstr ""
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr ""
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr ""
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr ""
 
@@ -2606,7 +2626,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2620,7 +2640,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2647,3 +2667,9 @@ msgstr ""
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
+#~ msgid "Only on %s"
+#~ msgstr "Ar %s amhain"
+
+#~ msgid "Move to %s"
+#~ msgstr "Bog go %s"
