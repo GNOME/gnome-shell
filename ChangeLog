@@ -1,5 +1,10 @@
 2004-06-24  Elijah Newren  <newren@math.utah.edu>
 
+	* src/keybindings.c: (handle_toggle_desktop): Choose correct
+	window to focus when "un-showing" the desktop.  Fixes #144900.
+
+2004-06-24  Elijah Newren  <newren@math.utah.edu>
+
 	Make choice of focus window be consistent for each focus mode.
 	Fixes #135810.
 
