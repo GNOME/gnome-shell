@@ -1,3 +1,11 @@
+2002-03-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (set_clone_restart_commands): use proper property
+	name for SmDiscardCommand (instead of setting the clone command to
+	"rm"). Also fix typo that iterated over clonev not discardv to
+	fill in prop list, and NULL-terminate discardv. #74584 from Kang
+	Jeong-Hee.
+
 2002-03-13  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c (main): put back --sm-client-id argument, needed

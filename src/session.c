@@ -532,13 +532,15 @@ set_clone_restart_commands (void)
   discardv[i] = "-f";
   ++i;
   discardv[i] = (char*) full_save_file ();
-
-  prop3.name = SmCloneCommand;
+  ++i;
+  discardv[i] = NULL;
+  
+  prop3.name = SmDiscardCommand;
   prop3.type = SmLISTofARRAY8;
   
   prop3.vals = g_new (SmPropValue, i);
   i = 0;
-  while (clonev[i])
+  while (discardv[i])
     {
       prop3.vals[i].value = discardv[i];
       prop3.vals[i].length = strlen (discardv[i]);
