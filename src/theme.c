@@ -242,7 +242,7 @@ colorize_pixbuf (GdkPixbuf *orig,
           intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
 
           dr = dh;
-          dg = ds;
+          dg = intensity;
           db = intensity;
           hsv_to_rgb (&dr, &dg, &db);
           

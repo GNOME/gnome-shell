@@ -1,5 +1,10 @@
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (colorize_pixbuf): use the intensity of the gray
+	pixel for both saturation and value, not just value.
+
+2002-02-07  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (INTENSITY): don't define the macro twice
 
 2002-02-07  Havoc Pennington  <hp@pobox.com>
