@@ -2182,10 +2182,14 @@ meta_screen_update_showing_desktop_hint (MetaScreen *screen)
 static void
 queue_windows_showing (MetaScreen *screen)
 {
-  GList *windows;
-  GList *tmp;
+  GSList *windows;
+  GSList *tmp;
 
-  windows = screen->active_workspace->windows;
+  /* Must operate on all windows on display instead of just on the
+   * active_workspace's window list, because the active_workspace's
+   * window list may not contain the on_all_workspace windows.
+   */
+  windows = meta_display_list_windows (screen->display);
 
   tmp = windows;
   while (tmp != NULL)
@@ -2197,6 +2201,8 @@ queue_windows_showing (MetaScreen *screen)
       
       tmp = tmp->next;
     }
+
+  g_slist_free (windows);
 }
 
 void

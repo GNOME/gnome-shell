@@ -1,3 +1,18 @@
+2004-10-22  Elijah Newren  <newren@math.utah.edu>
+
+	Update _NET_WM_STATE_HIDDEN so the pager on the panel will know
+	whether to display windows as visible or hidden (#105665)
+
+	* src/screen.c (queue_windows_showing): Revert the
+	queue_windows_showing portion of the patch committed on 2004-10-16
+	for #142198--it was an ill-advised optimization.
+
+	* src/window.c (window_showing_on_its_workspace,
+	window_should_be_showing): split the old window_should_be_showing
+	into these two functions, (set_net_wm_state): hidden state is more
+	complex; use window_showing_on_its_workspace to determine the
+	correct value
+
 2004-10-20  Elijah Newren  <newren@math.utah.edu>
 
 	Patch from Soeren to fix the modifier key breakage introduced by

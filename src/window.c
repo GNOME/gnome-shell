@@ -102,6 +102,9 @@ static void     ensure_mru_position_after (MetaWindow *window,
 
 void meta_window_move_resize_now (MetaWindow  *window);
 
+static gboolean window_showing_on_its_workspace (MetaWindow *window);
+static gboolean window_should_be_showing  (MetaWindow  *window);
+
 /* FIXME we need an abstraction that covers all these queues. */   
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
@@ -1161,7 +1164,7 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_fullscreen;
       ++i;
     }
-  if (window->shaded || window->minimized)
+  if (!window_showing_on_its_workspace (window))
     {
       data[i] = window->display->atom_net_wm_state_hidden;
       ++i;
@@ -1227,20 +1230,86 @@ ancestor_is_minimized (MetaWindow *window)
 }
 
 static gboolean
+window_showing_on_its_workspace (MetaWindow *window)
+{
+  gboolean showing;
+  gboolean is_desktop_or_dock;
+  MetaWorkspace* workspace_of_window;
+
+  showing = TRUE;
+
+  /* 1. See if we're minimized */
+  if (window->minimized)
+    showing = FALSE;
+  
+  /* 2. See if we're in "show desktop" mode */
+  is_desktop_or_dock = FALSE;
+  is_desktop_or_dock_foreach (window,
+                              &is_desktop_or_dock);
+
+  meta_window_foreach_ancestor (window, is_desktop_or_dock_foreach,
+                                &is_desktop_or_dock);
+
+  if (window->on_all_workspaces)
+    /* Unless the behavior in bug 87531 is implemented, or else
+     * _NET_WM_STATE_HIDDEN can be made per-workspace instead of
+     * global, or else we get rid of on_all_workspaces windows
+     * altogether, then this will be just a hack that only sort of
+     * works.
+     */
+    workspace_of_window = window->screen->active_workspace;
+  else if (window->workspaces)
+    /* This is sort of hacky too; would like to guarantee that
+     * window->workspaces only contains a single workspace.  I believe
+     * that's currently true in Metacity, but it isn't guaranteed to
+     * remain true in the future.
+     */
+    workspace_of_window = window->workspaces->data;
+  else /* This only seems to be needed for startup */
+    workspace_of_window = NULL;
+
+  if (showing &&      
+      workspace_of_window && workspace_of_window->showing_desktop &&
+      !is_desktop_or_dock)
+    {
+      meta_verbose ("We're showing the desktop on the workspace(s) that window %s is on\n",
+                    window->desc);
+      showing = FALSE;
+    }
+
+  /* 3. See if an ancestor is minimized (note that
+   *    ancestor's "mapped" field may not be up to date
+   *    since it's being computed in this same idle queue)
+   */
+  
+  if (showing)
+    {
+      if (ancestor_is_minimized (window))
+        showing = FALSE;
+    }
+
+#if 0
+  /* 4. See if we're drawing wireframe
+   */
+  if (window->display->grab_window == window &&
+      window->display->grab_wireframe_active)    
+    showing = FALSE;
+#endif
+
+  return showing;
+}
+
+static gboolean
 window_should_be_showing (MetaWindow  *window)
 {
-  gboolean showing, on_workspace;
-  gboolean is_desktop_or_dock;
+  gboolean on_workspace;
 
   meta_verbose ("Should be showing for window %s\n", window->desc);
 
-  /* 1. See if we're on the workspace */
-  
+  /* See if we're on the workspace */
   on_workspace = meta_window_visible_on_workspace (window, 
                                                    window->screen->active_workspace);
 
-  showing = on_workspace;
-  
   if (!on_workspace)
     meta_verbose ("Window %s is not on workspace %d\n",
                   window->desc,
@@ -1253,47 +1322,7 @@ window_should_be_showing (MetaWindow  *window)
   if (window->on_all_workspaces)
     meta_verbose ("Window %s is on all workspaces\n", window->desc);
 
-  /* 2. See if we're minimized */
-  if (window->minimized)
-    showing = FALSE;
-  
-  /* 3. See if we're in "show desktop" mode */
-  is_desktop_or_dock = FALSE;
-  is_desktop_or_dock_foreach (window,
-                              &is_desktop_or_dock);
-
-  meta_window_foreach_ancestor (window, is_desktop_or_dock_foreach,
-                                &is_desktop_or_dock);
-
-  if (showing &&      
-      window->screen->active_workspace->showing_desktop &&
-      !is_desktop_or_dock)
-    {
-      meta_verbose ("Window %s is on current workspace, but we're showing the desktop\n",
-                    window->desc);
-      showing = FALSE;
-    }
-
-  /* 4. See if an ancestor is minimized (note that
-   *    ancestor's "mapped" field may not be up to date
-   *    since it's being computed in this same idle queue)
-   */
-  
-  if (showing)
-    {
-      if (ancestor_is_minimized (window))
-        showing = FALSE;
-    }
-
-#if 0
-  /* 5. See if we're drawing wireframe
-   */
-  if (window->display->grab_window == window &&
-      window->display->grab_wireframe_active)    
-    showing = FALSE;
-#endif
-  
-  return showing;
+  return on_workspace && window_showing_on_its_workspace (window);
 }
 
 static void
