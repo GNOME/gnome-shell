@@ -1,5 +1,14 @@
 2002-05-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (constrain_position): when maximizing/fullscreening
+	something with a grid, like a terminal, center it in the
+	maximization area in case it can't fill the whole area.
+	#70554
+
+	* src/main.c (main): use g_strerror() to get proper UTF-8.
+
+2002-05-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/keybindings.c (reload_modmap): put LockMask into the
 	ignored_modifier_mask so that caps lock doesn't mess up 
 	keybindings.
