@@ -1,3 +1,8 @@
+2003-04-06  Rob Adams  <robadams@ucla.edu>
+
+	* src/place.c (find_next_cascade): cascade on xinerama with
+	pointer instead of on first xinerama.
+
 2003-04-05  Rob Adams  <robadams@ucla.edu>
 
 	Update placement policy for screen with multiple xineramas.

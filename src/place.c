@@ -92,7 +92,8 @@ find_next_cascade (MetaWindow *window,
   int x_threshold, y_threshold;
   int window_width, window_height;
   int cascade_stage;
-  MetaRectangle work_area;  
+  MetaRectangle work_area;
+  const MetaXineramaScreenInfo* current;
   
   sorted = g_list_copy (windows);
   sorted = g_list_sort (sorted, northwestcmp);
@@ -123,11 +124,8 @@ find_next_cascade (MetaWindow *window,
    * of NW corner of window frame.
    */
 
-  /* FIXME should use xinerama with mouse pointer
-   * (or better, xinerama where window was launched
-   * determined via startup notification)
-   */
-  meta_window_get_work_area_for_xinerama (window, 0, &work_area);
+  current = meta_screen_get_current_xinerama (window->screen);
+  meta_window_get_work_area_for_xinerama (window, current->number, &work_area);
 
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
