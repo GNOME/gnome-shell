@@ -1,5 +1,11 @@
 2002-06-17  Havoc Pennington  <hp@pobox.com>
 
+	* src/place.c (find_next_cascade): increase the cascade threshold
+	a bit.
+	(find_first_fit): implement a somewhat lame first fit algorithm
+
+2002-06-17  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_change_workspace): fix from Gaute
 	Lindkvist #82977 for unsticking windows
 

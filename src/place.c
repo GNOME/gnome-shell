@@ -103,6 +103,10 @@ find_next_cascade (MetaWindow *window,
    * cascade_x, cascade_y are the target position
    * of NW corner of window frame.
    */
+  /* FIXME this is bogus because we get the current xinerama
+   * for the window based on its position, but we haven't
+   * placed it yet.
+   */
   meta_window_get_work_area (window, TRUE, &work_area);
   
   cascade_x = MAX (0, work_area.x);
@@ -115,13 +119,13 @@ find_next_cascade (MetaWindow *window,
    */
   if (fgeom)
     {
-      x_threshold = MAX (fgeom->left_width, 10);
-      y_threshold = MAX (fgeom->top_height, 10);
+      x_threshold = MAX (fgeom->left_width, 15);
+      y_threshold = MAX (fgeom->top_height, 15);
     }
   else
     {
-      x_threshold = 10;
-      y_threshold = 10;
+      x_threshold = 15;
+      y_threshold = 15;
     }
   
   tmp = sorted;
@@ -179,6 +183,201 @@ find_next_cascade (MetaWindow *window,
     }
 }
 
+static int
+intcmp (const void* a, const void* b)
+{
+  const int *ai = a;
+  const int *bi = b;
+
+  if (*ai < *bi)
+    return -1;
+  else if (*ai > *bi)
+    return 1;
+  else
+    return 0;
+}
+
+static void
+window_get_edges (MetaWindow *w,
+                  int        *left,
+                  int        *right,
+                  int        *top,
+                  int        *bottom)
+{
+  int left_edge;
+  int right_edge;
+  int top_edge;
+  int bottom_edge;
+  MetaRectangle rect;
+
+  meta_window_get_outer_rect (w, &rect);
+  
+  left_edge = rect.x;
+  right_edge = rect.x + rect.width;
+  top_edge = rect.y;
+  bottom_edge = rect.y + rect.height;
+  
+  if (left)
+    *left = left_edge;
+  if (right)
+    *right = right_edge;
+  if (top)
+    *top = top_edge;
+  if (bottom)
+    *bottom = bottom_edge;
+}
+
+static gboolean
+rectangle_overlaps_some_window (MetaRectangle *rect,
+                                GList         *windows)
+{
+  GList *tmp;
+  MetaRectangle dest;
+  
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *other = tmp->data;
+      MetaRectangle other_rect;      
+
+      switch (other->type)
+        {
+        case META_WINDOW_DOCK:
+        case META_WINDOW_SPLASHSCREEN:
+        case META_WINDOW_DESKTOP:
+        case META_WINDOW_DIALOG:
+        case META_WINDOW_MODAL_DIALOG:
+          break;
+
+        case META_WINDOW_NORMAL:
+        case META_WINDOW_UTILITY:
+        case META_WINDOW_TOOLBAR:
+        case META_WINDOW_MENU:
+          meta_window_get_outer_rect (other, &other_rect);
+          
+          if (meta_rectangle_intersect (rect, &other_rect, &dest))
+            return TRUE;
+          break;
+        }
+      
+      tmp = tmp->next;
+    }
+
+  return FALSE;
+}
+
+static gint
+leftmost_cmp (gconstpointer a, gconstpointer b)
+{
+  MetaWindow *aw = (gpointer) a;
+  MetaWindow *bw = (gpointer) b;
+  int ax, bx;
+
+  /* we're interested in the frame position for cascading,
+   * not meta_window_get_position()
+   */
+  if (aw->frame)
+    ax = aw->frame->rect.x;
+  else
+    ax = aw->rect.x;
+
+  if (bw->frame)
+    bx = bw->frame->rect.x;
+  else
+    bx = bw->rect.x;
+
+  if (ax < bx)
+    return -1;
+  else if (ax > bx)
+    return 1;
+  else
+    return 0;
+}
+
+static gint
+topmost_cmp (gconstpointer a, gconstpointer b)
+{
+  MetaWindow *aw = (gpointer) a;
+  MetaWindow *bw = (gpointer) b;
+  int ay, by;
+
+  /* we're interested in the frame position for cascading,
+   * not meta_window_get_position()
+   */
+  if (aw->frame)
+    ay = aw->frame->rect.y;
+  else
+    ay = aw->rect.y;
+
+  if (bw->frame)
+    by = bw->frame->rect.y;
+  else
+    by = bw->rect.y;
+
+  if (ay < by)
+    return -1;
+  else if (ay > by)
+    return 1;
+  else
+    return 0;
+}
+
+static gboolean
+fit_rect_in_xinerama (MetaScreen    *screen,
+                      MetaRectangle *rect)
+{
+  int i;
+  int best_index;
+  int best_overlap;
+  const MetaXineramaScreenInfo *xsi;
+  
+  /* Find xinerama with best fit, then
+   * shift rect to be entirely within it.
+   */
+  best_overlap = -1;
+  best_index = -1;
+  
+  i = 0;
+  while (i < screen->n_xinerama_infos)
+    {
+      MetaRectangle xinerama_rect;
+      MetaRectangle intersect;
+      int overlap;
+
+      xsi = &screen->xinerama_infos[i];
+      
+      xinerama_rect.x = xsi->x_origin;
+      xinerama_rect.y = xsi->y_origin;
+      xinerama_rect.width = xsi->width;
+      xinerama_rect.height = xsi->height;
+
+      if (meta_rectangle_intersect (rect, &xinerama_rect, &intersect))
+        overlap = intersect.width * intersect.height;
+      else
+        overlap = 0;
+
+      if (overlap > best_overlap)
+        best_index = i; 
+      
+      ++i;
+    }
+
+  /* some overlap had to be better than -1 */
+  g_assert (best_index >= 0);
+
+  xsi = &screen->xinerama_infos[best_index];
+  
+  if (rect->x < xsi->x_origin)
+    rect->x = xsi->x_origin;
+  if (rect->y < xsi->y_origin)
+    rect->y = xsi->y_origin;
+
+  /* Now return whether we are entirely within the xinerama screen */
+  return
+    ((rect->x + rect->width) < (xsi->x_origin + xsi->width)) &&
+    ((rect->y + rect->height) < (xsi->y_origin + xsi->height));
+}
+
 /* Find the leftmost, then topmost, empty area on the workspace
  * that can contain the new window.
  *
@@ -197,7 +396,103 @@ find_first_fit (MetaWindow *window,
                 int        *new_x,
                 int        *new_y)
 {
-  /* FIXME */
+  /* This algorithm is limited - it just brute-force tries
+   * to fit the window in a small number of locations that are aligned
+   * with existing windows. It tries to place the window on
+   * the bottom of each existing window, and then to the right
+   * of each existing window, aligned with the left/top of the
+   * existing window in each of those cases.
+   */
+  
+  int retval;
+  GList *sorted;
+  GList *tmp;
+  MetaRectangle rect;
+  
+  retval = FALSE;
+
+  rect.width = window->rect.width;
+  rect.height = window->rect.height;
+  
+  if (fgeom)
+    {
+      rect.width += fgeom->left_width + fgeom->right_width;
+      rect.height += fgeom->top_height + fgeom->bottom_height;
+    }
+  
+  sorted = g_list_copy (windows);
+
+  /* Below each window */
+  sorted = g_list_sort (sorted, leftmost_cmp);
+  sorted = g_list_sort (sorted, topmost_cmp);  
+  
+  tmp = sorted;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle outer_rect;
+      
+      meta_window_get_outer_rect (w, &outer_rect);
+
+      rect.x = outer_rect.x;
+      rect.y = outer_rect.y + outer_rect.height;
+      
+      if (fit_rect_in_xinerama (window->screen, &rect) &&
+          !rectangle_overlaps_some_window (&rect, sorted))
+        {
+          *new_x = rect.x;
+          *new_y = rect.y;
+          if (fgeom)
+            {
+              *new_x += fgeom->left_width;
+              *new_y += fgeom->top_height;
+            }
+
+          retval = TRUE;
+
+          goto out;
+        }      
+      
+      tmp = tmp->next;
+    }
+
+  /* To the right of each window */
+  sorted = g_list_sort (sorted, topmost_cmp);
+  sorted = g_list_sort (sorted, leftmost_cmp);
+  
+  tmp = sorted;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle outer_rect;
+      
+      meta_window_get_outer_rect (w, &outer_rect);
+
+      rect.x = outer_rect.x + outer_rect.width;
+      rect.y = outer_rect.y;
+      
+      if (fit_rect_in_xinerama (window->screen, &rect) &&
+          !rectangle_overlaps_some_window (&rect, sorted))
+        {
+          *new_x = rect.x;
+          *new_y = rect.y;
+          if (fgeom)
+            {
+              *new_x += fgeom->left_width;
+              *new_y += fgeom->top_height;
+            }
+
+          retval = TRUE;
+
+          goto out;
+        }      
+      
+      tmp = tmp->next;
+    }  
+  
+ out:
+  g_list_free (sorted);
+  return retval;
 }
 
 static void
@@ -214,7 +509,11 @@ constrain_placement (MetaWindow        *window,
    */
   MetaRectangle work_area;  
   int nw_x, nw_y;
-  
+
+  /* FIXME this is bogus because we get the current xinerama
+   * for the window based on its position, but we haven't
+   * placed it yet.
+   */
   meta_window_get_work_area (window, TRUE, &work_area);
 
   nw_x = work_area.x;
@@ -235,7 +534,7 @@ constrain_placement (MetaWindow        *window,
 
   *new_x = x;
   *new_y = y;
-}                    
+}
 
 void
 meta_window_place (MetaWindow        *window,
@@ -257,6 +556,8 @@ meta_window_place (MetaWindow        *window,
   
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
+  windows = NULL;
+  
   switch (window->type)
     {
       /* Run placement algorithm on these. */
@@ -405,7 +706,6 @@ meta_window_place (MetaWindow        *window,
    * as placed window, may be shaded - if shaded we pretend it isn't
    * for placement purposes)
    */
-  windows = NULL;
   {
     GSList *all_windows;
     GSList *tmp;
@@ -433,12 +733,14 @@ meta_window_place (MetaWindow        *window,
   x = xi->x_origin;
   y = xi->y_origin;
 
-  /* Cascade */
+  if (find_first_fit (window, fgeom, windows, x, y, &x, &y))
+    goto done;
+  
   find_next_cascade (window, fgeom, windows, x, y, &x, &y);
-
-  g_list_free (windows);
   
  done:
+  g_list_free (windows);
+  
   constrain_placement (window, fgeom, x, y, &x, &y);
 
  done_no_constraints:
@@ -489,50 +791,6 @@ get_windows_on_same_workspace (MetaWindow *window,
     *n_windows = i;
   
   return windows;
-}
-
-static void
-window_get_edges (MetaWindow *w,
-                  int        *left,
-                  int        *right,
-                  int        *top,
-                  int        *bottom)
-{
-  int left_edge;
-  int right_edge;
-  int top_edge;
-  int bottom_edge;
-  MetaRectangle rect;
-
-  meta_window_get_outer_rect (w, &rect);
-  
-  left_edge = rect.x;
-  right_edge = rect.x + rect.width;
-  top_edge = rect.y;
-  bottom_edge = rect.y + rect.height;
-  
-  if (left)
-    *left = left_edge;
-  if (right)
-    *right = right_edge;
-  if (top)
-    *top = top_edge;
-  if (bottom)
-    *bottom = bottom_edge;
-}
-
-static int
-intcmp (const void* a, const void* b)
-{
-  const int *ai = a;
-  const int *bi = b;
-
-  if (*ai < *bi)
-    return -1;
-  else if (*ai > *bi)
-    return 1;
-  else
-    return 0;
 }
 
 static gboolean
