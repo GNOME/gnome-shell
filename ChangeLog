@@ -1,5 +1,10 @@
 2002-09-29  Havoc Pennington  <hp@pobox.com>
 
+	* src/eggaccelerators.c: update from libegg to get fix from Ralph
+	Loader for <Super> <Hyper> <Meta> parsing, #93005
+
+2002-09-29  Havoc Pennington  <hp@pobox.com>
+
 	* src/effects.h (META_MINIMIZE_ANIMATION_LENGTH): shorten minimize
 	animation a bit
 

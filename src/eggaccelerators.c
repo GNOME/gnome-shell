@@ -148,7 +148,7 @@ is_meta (const gchar *string)
 	  (string[2] == 'e' || string[2] == 'E') &&
 	  (string[3] == 't' || string[3] == 'T') &&
 	  (string[4] == 'a' || string[4] == 'A') &&
-	  (string[8] == '>'));
+	  (string[5] == '>'));
 }
 
 static inline gboolean
@@ -160,7 +160,7 @@ is_super (const gchar *string)
 	  (string[3] == 'p' || string[3] == 'P') &&
 	  (string[4] == 'e' || string[4] == 'E') &&
 	  (string[5] == 'r' || string[5] == 'R') &&
-	  (string[8] == '>'));
+	  (string[6] == '>'));
 }
 
 static inline gboolean
@@ -172,7 +172,7 @@ is_hyper (const gchar *string)
 	  (string[3] == 'p' || string[3] == 'P') &&
 	  (string[4] == 'e' || string[4] == 'E') &&
 	  (string[5] == 'r' || string[5] == 'R') &&
-	  (string[8] == '>'));
+	  (string[6] == '>'));
 }
 
 /**
