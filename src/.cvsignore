@@ -10,3 +10,4 @@ inlinepixbufs.h
 metacity.desktop
 metacity.schemas
 libmetacity-private.pc
+testasyncgetprop
