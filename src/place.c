@@ -755,6 +755,8 @@ meta_window_place (MetaWindow        *window,
 
         tmp = tmp->next;
       }
+
+    g_slist_free (all_windows);
   }
 
   /* Warning, this is a round trip! */
@@ -888,6 +890,8 @@ get_windows_on_same_workspace (MetaWindow *window,
   if (n_windows)
     *n_windows = i;
   
+  g_slist_free (all_windows);
+
   return windows;
 }
 

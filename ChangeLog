@@ -1,5 +1,12 @@
 2005-01-27  Elijah Newren  <newren@gmail.com>
 
+	Plug a pair of leaks.  Fixes #165378
+
+	* src/place.c: (meta_window_place, get_windows_on_same_workspace):
+	free list returned by meta_display_list_windows.
+
+2005-01-27  Elijah Newren  <newren@gmail.com>
+
 	Treat splashscreens same as other windows for stacking.  Fixes
 	#165243.
 
