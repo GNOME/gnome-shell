@@ -1,5 +1,12 @@
 2001-12-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_update_unfocused_button_grabs): don't 
+	allow grab on docks/desktop for now; needs fixing later to 
+	do the grab, but pass thru click, so we can focus those windows.
+	And in fact we need to do that even in sloppy mode.
+
+2001-12-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_foreach_window): fix broken 
 	"tmp = tmp->data"
 

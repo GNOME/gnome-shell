@@ -2028,16 +2028,16 @@ void
 meta_window_update_unfocused_button_grabs (MetaWindow *window)
 {
   /* Grab buttons if we're unfocused and in click-to-focus mode,
-   * ungrab otherwise
+   * ungrab otherwise, never grab on panels, menus, etc.
    */
-  if (window->unfocused_buttons_grabbed)
+  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
     {
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+      if (window->unfocused_buttons_grabbed)
         {
           if (window->has_focus)
             {
               /* Focused so undo grab */
-              meta_verbose ("Ungrabbing on focused window %s since mode is click-to-focus\n",
+              meta_verbose ("Ungrabbing on focused window %s\n",
                             window->desc);
               meta_display_ungrab_unfocused_window_buttons (window->display,
                                                             window->xwindow);
@@ -2046,19 +2046,12 @@ meta_window_update_unfocused_button_grabs (MetaWindow *window)
         }
       else
         {
-          /* Not in click-to-focus so undo grab */
-          meta_verbose ("Ungrabbing on window %s since mode is not click-to-focus\n",
-                        window->desc);
-          meta_display_ungrab_unfocused_window_buttons (window->display,
-                                                        window->xwindow);
-          window->unfocused_buttons_grabbed = FALSE;
-        }
-    }
-  else
-    {
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        {
-          if (!window->has_focus)
+          /* FIXME This type thing is a temporary hack; what we need to
+           * do is focus these windows, but pass thru click. What we
+           * do now is ignore clicks on them.
+           */
+          if (window->type != META_WINDOW_DOCK &&
+              window->type != META_WINDOW_DESKTOP)
             {
               /* Not focused so grab */
               meta_verbose ("Grabbing on unfocused window %s since mode is click-to-focus\n",
@@ -2067,6 +2060,18 @@ meta_window_update_unfocused_button_grabs (MetaWindow *window)
                                                           window->xwindow);
               window->unfocused_buttons_grabbed = TRUE;
             }
+        }
+    }
+  else
+    {
+      if (window->unfocused_buttons_grabbed)
+        {
+          /* Not in click-to-focus so undo grab */
+          meta_verbose ("Ungrabbing on window %s since mode is not click-to-focus\n",
+                        window->desc);
+          meta_display_ungrab_unfocused_window_buttons (window->display,
+                                                        window->xwindow);
+          window->unfocused_buttons_grabbed = FALSE;
         }
     }
 }
