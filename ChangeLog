@@ -1,3 +1,7 @@
+2002-07-15  jacob berkman  <jacob@ximian.com>
+
+	* src/update-from-egg.sh: steal from profterm to fix build
+
 2002-07-13  Havoc Pennington  <hp@pobox.com>
 
 	* src/workspace.c (meta_workspace_new): don't put a newline after
