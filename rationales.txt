@@ -1,0 +1,2 @@
+
+Focus windows on map: see http://bugzilla.gnome.org/show_bug.cgi?id=82921

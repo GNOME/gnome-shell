@@ -2737,21 +2737,14 @@ meta_window_change_workspace (MetaWindow    *window,
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
   
-  /* See if we're already on this space */
-  if (g_list_find (window->workspaces, workspace) != NULL)
+  /* See if we're already on this space. If not, make sure we are */
+  if (g_list_find (window->workspaces, workspace) == NULL)
     {
-      meta_verbose ("%s already on this workspace\n", window->desc);
-      return;
+      meta_workspace_add_window (workspace, window);
     }
-
-  /* Add first, to maintain invariant that we're always
-   * on some workspace.
-   */
-  meta_workspace_add_window (workspace, window);
-
   /* unstick if stuck */
   if (window->on_all_workspaces)
-    window->on_all_workspaces = FALSE;
+    meta_window_unstick (window);
   
   /* Lamely rely on prepend */
   g_assert (window->workspaces->data == workspace);  

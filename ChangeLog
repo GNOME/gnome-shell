@@ -1,3 +1,8 @@
+2002-06-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_change_workspace): fix from Gaute
+	Lindkvist #82977 for unsticking windows
+
 2002-06-17  Frederic Crozat  <fcrozat@mandrakesoft.com>
 
 	* src/metacity.schemas.in: associate close_window keybinding to 
