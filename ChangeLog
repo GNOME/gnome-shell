@@ -1,3 +1,24 @@
+2005-02-11  Elijah Newren  <newren@gmail.com>
+
+	Avoid new windows being obscured by the focus window (and thus
+	possibly lost).  Fixes #166524.
+
+	* src/place.c: new MetaWindowDirection enum,
+	(find_most_freespace): new function to find where there is the
+	most space available around the focused window,
+	(meta_window_place): if a window is denied focus and the window
+	overlaps the focused window, retry the first-fit algorithm only
+	paying attention to the focus window position and if that fails
+	just find the location on the screen with the most space
+	available.
+
+	* src/window.h: (struct MetaWindow): new
+	denied_focus_and_not_transient bitfield
+
+	* src/window.c: (meta_window_new_with_attrs): initialize
+	denied_focus_and_not_transient, (meta_window_show): set and unset
+	the denied_focus_and_not_transient field appropriately
+
 2005-02-08  Aidan Delaney  <adelaney@cs.may.ie>
 
 	Removed useless function call.  #166730

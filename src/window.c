@@ -444,6 +444,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     meta_topic (META_DEBUG_PLACEMENT,
                 "Not placing window 0x%lx since it's already mapped\n",
                 xwindow);
+  window->denied_focus_and_not_transient = FALSE;
   window->unmanaging = FALSE;
   window->calc_showing_queued = FALSE;
   window->move_resize_queued = FALSE;
@@ -1678,6 +1679,8 @@ meta_window_show (MetaWindow *window)
         {
           meta_window_stack_just_below (window, window->display->focus_window);
           ensure_mru_position_after (window, window->display->focus_window);
+          if (!window->placed)
+            window->denied_focus_and_not_transient = TRUE;
         }
     }
 
@@ -1701,6 +1704,11 @@ meta_window_show (MetaWindow *window)
        */
       window->placed = TRUE;
       did_placement = TRUE;
+
+      /* Don't want to accidentally reuse the fact that we had been denied
+       * focus in any future constraints unless we're denied focus again.
+       */
+      window->denied_focus_and_not_transient = FALSE;
     }
   
   /* Shaded means the frame is mapped but the window is not */

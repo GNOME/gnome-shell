@@ -30,6 +30,14 @@
 #include <math.h>
 #include <stdlib.h>
 
+typedef enum
+{
+  META_LEFT,
+  META_RIGHT,
+  META_TOP,
+  META_BOTTOM
+} MetaWindowDirection;
+
 static gint
 northwestcmp (gconstpointer a, gconstpointer b)
 {
@@ -223,6 +231,80 @@ find_next_cascade (MetaWindow *window,
       *new_y = cascade_y + fgeom->top_height;
     }
 }
+
+static void
+find_most_freespace (MetaWindow *window,
+                     MetaFrameGeometry *fgeom,
+                     /* visible windows on relevant workspaces */
+                     MetaWindow *focus_window,
+                     int         x,
+                     int         y,
+                     int        *new_x,
+                     int        *new_y)
+{
+  MetaWindowDirection side;
+  int max_area;
+  int max_width, max_height, left, right, top, bottom;
+  int frame_size_left, frame_size_top;
+  MetaRectangle work_area;
+  MetaRectangle avoid;
+  MetaRectangle outer;
+
+  frame_size_left = fgeom ? fgeom->left_width : 0;
+  frame_size_top  = fgeom ? fgeom->top_height : 0;
+
+  meta_window_get_work_area_current_xinerama (focus_window, &work_area);
+  meta_window_get_outer_rect (focus_window, &avoid);
+  meta_window_get_outer_rect (window, &outer);
+
+  /* Find the areas of choosing the various sides of the focus window */
+  max_width  = MIN (avoid.width, outer.width);
+  max_height = MIN (avoid.height, outer.height);
+  left   = MIN (avoid.x, outer.width);
+  right  = MIN (work_area.width - (avoid.x + avoid.width), outer.width);
+  top    = MIN (avoid.y, outer.height);
+  bottom = MIN (work_area.height - (avoid.y + avoid.height), outer.height);
+
+  /* Find out which side of the focus_window can show the most of the window */
+  side = META_LEFT;
+  max_area = left*max_height;
+  if (right*max_height > max_area)
+    {
+      side = META_RIGHT;
+      max_area = right*max_height;
+    }
+  if (top*max_width > max_area)
+    {
+      side = META_TOP;
+      max_area = top*max_width;
+    }
+  if (bottom*max_width > max_area)
+    side = META_BOTTOM;
+
+  /* Place the window on the relevant side; convert coord to position of window,
+   * not position of frame.
+   */
+  switch (side)
+    {
+    case META_LEFT:
+      *new_x = work_area.x + frame_size_left;
+      *new_y = avoid.y + frame_size_top;
+      break;
+    case META_RIGHT:
+      *new_x = work_area.x + work_area.width - outer.width + frame_size_left;
+      *new_y = avoid.y + frame_size_top;
+      break;
+    case META_TOP:
+      *new_x = avoid.x + frame_size_left;
+      *new_y = work_area.y + frame_size_top;
+      break;
+    case META_BOTTOM:
+      *new_x = avoid.x + frame_size_left;
+      *new_y = work_area.y + work_area.height - outer.height + frame_size_top;
+      break;
+    }
+}
+
 
 static int
 intcmp (const void* a, const void* b)
@@ -774,7 +856,7 @@ meta_window_place (MetaWindow        *window,
   if (find_first_fit (window, fgeom, windows,
                       xineramas_list, n_xineramas,
                       x, y, &x, &y))
-    goto done;
+    goto done_check_denied_focus;
 
   /* This is a special-case origin-cascade so that windows that are
    * too large to fit onto a workspace (and which will be
@@ -840,6 +922,51 @@ meta_window_place (MetaWindow        *window,
         {
           window->maximize_after_placement = TRUE;
         }
+    }
+
+ done_check_denied_focus:
+  /* If the window is being denied focus and isn't a transient of the
+   * focus window, we do NOT want it to overlap with the focus window
+   * if at all possible.  This is guaranteed to only be called if the
+   * focus_window is non-NULL, and we try to avoid that window.
+   */
+  if (window->denied_focus_and_not_transient)
+    {
+      gboolean       found_fit;
+      MetaWindow    *focus_window;
+      MetaRectangle  overlap;
+
+      focus_window = window->display->focus_window;
+      g_assert (focus_window != NULL);
+
+      /* No need to do anything if the window doesn't overlap at all */
+      found_fit = !meta_rectangle_intersect (&window->rect,
+                                             &focus_window->rect,
+                                             &overlap);
+
+      /* Try to do a first fit again, this time only taking into account the
+       * focus window.
+       */
+      if (!found_fit)
+        {
+          GList *focus_window_list;
+          focus_window_list = g_list_prepend (NULL, focus_window);
+
+          /* Reset x and y ("origin" placement algorithm) */
+          x = xi->x_origin;
+          y = xi->y_origin;
+
+          found_fit = find_first_fit (window, fgeom, focus_window_list,
+                                      xineramas_list, n_xineramas,
+                                      x, y, &x, &y);
+          g_list_free (focus_window_list);
+	}
+
+      /* If that still didn't work, just place it where we can see as much
+       * as possible.
+       */
+      if (!found_fit)
+        find_most_freespace (window, fgeom, focus_window, x, y, &x, &y);
     }
   
  done:
