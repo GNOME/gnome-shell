@@ -439,7 +439,7 @@ meta_ui_get_default_window_icon (MetaUI *ui)
     {
       GdkPixbuf *base;
 
-      base = gdk_pixbuf_new_from_stream (-1, default_icon_data,
+      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
                                          FALSE,
                                          NULL);
 
@@ -467,7 +467,7 @@ meta_ui_get_default_mini_icon (MetaUI *ui)
     {
       GdkPixbuf *base;
 
-      base = gdk_pixbuf_new_from_stream (-1, default_icon_data,
+      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
                                          FALSE,
                                          NULL);
 

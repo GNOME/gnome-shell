@@ -1,3 +1,10 @@
+2001-10-12  Mikael Hallendal  <micke@codefactory.se>
+
+	* src/ui.c (meta_ui_get_default_window_icon): use
+	gdk_pixbuf_new_from_inline
+	(meta_ui_get_default_mini_icon): use
+	gdk_pixbuf_new_from_inline
+
 2001-10-11  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "sv" to ALL_LINGUAS.
