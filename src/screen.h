@@ -77,6 +77,8 @@ struct _MetaScreen
   guint vertical_workspaces : 1;
   
   guint keys_grabbed : 1;
+
+  int closing;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
@@ -98,6 +100,8 @@ void          meta_screen_set_cursor          (MetaScreen                 *scree
 void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen,
                                                MetaTabList                 type);
 
+void          meta_screen_ensure_workspace_popup (MetaScreen *screen);
+
 void          meta_screen_focus_top_window    (MetaScreen                 *screen,
                                                MetaWindow                 *not_this_one);
 
@@ -110,6 +114,11 @@ void          meta_screen_update_workspace_names  (MetaScreen             *scree
 
 Window meta_create_offscreen_window (Display *xdisplay,
                                      Window   parent);
+
+void meta_screen_calc_workspace_layout (MetaScreen *screen,
+                                        int         num_workspaces,
+                                        int        *r,
+                                        int        *c);
 
 #endif
 

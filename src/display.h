@@ -220,6 +220,9 @@ struct _MetaDisplay
 
   /* Xinerama cache */
   unsigned int xinerama_cache_invalidated : 1;
+
+  /* Closing down the display */
+  int closing;
 };
 
 gboolean      meta_display_open                (const char  *name);

@@ -262,6 +262,8 @@ meta_display_open (const char *name)
   
   display = g_new (MetaDisplay, 1);
 
+  display->closing = 0;
+  
   /* here we use XDisplayName which is what the user
    * probably put in, vs. DisplayString(display) which is
    * canonicalized by XOpenDisplay()
@@ -556,6 +558,8 @@ meta_display_close (MetaDisplay *display)
   if (display->error_traps > 0)
     meta_bug ("Display closed with error traps pending\n");
 
+  display->closing += 1;
+  
   if (display->autoraise_timeout_id != 0)
     {
       g_source_remove (display->autoraise_timeout_id);
@@ -2267,7 +2271,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
       break;
       
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
-      meta_workspace_ensure_tab_popup (display, window->screen);
+      meta_screen_ensure_workspace_popup (window->screen);
       break;
 
     default:

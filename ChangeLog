@@ -1,5 +1,17 @@
 2002-06-22  Havoc Pennington  <hp@pobox.com>
 
+	* src/workspace.c (set_number_of_spaces_hint): do nothing if
+	screen is being unmanaged, we don't want to blow away state, 
+	we want to remember it for the next window manager.
+
+2002-06-22  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_screen_ensure_workspace_popup): rename
+	from meta_workspace_ensure_tab_popup, and use workspace->name
+	instead of a hardcoded name
+
+2002-06-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/xprops.c (meta_prop_get_utf8_list): new utility function
 
 	* src/display.c (meta_display_open): _NET_DESKTOP_NAMES atom

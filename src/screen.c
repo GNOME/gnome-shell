@@ -314,6 +314,7 @@ meta_screen_new (MetaDisplay *display,
     }
   
   screen = g_new (MetaScreen, 1);
+  screen->closing = 0;
   
   screen->display = display;
   screen->number = number;
@@ -493,6 +494,8 @@ meta_screen_free (MetaScreen *screen)
   MetaDisplay *display;
 
   display = screen->display;
+
+  screen->closing += 1;
   
   meta_display_grab (display);
 
@@ -922,6 +925,79 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
   /* don't show tab popup, since proper window isn't selected yet */
 }
 
+void
+meta_screen_ensure_workspace_popup (MetaScreen *screen)
+{
+  MetaTabEntry *entries;
+  GdkPixbuf *icon;
+  int len, rows, cols;
+  int i;
+
+  if (screen->tab_popup)
+    return;
+
+  icon = meta_ui_get_default_window_icon (NULL);
+
+  len = meta_screen_get_n_workspaces (screen);
+
+  entries = g_new (MetaTabEntry, len + 1);
+  entries[len].key = NULL;
+  entries[len].title = NULL;
+  entries[len].icon = NULL;
+  
+  meta_screen_calc_workspace_layout (screen, len, &rows, &cols);
+  
+  if (screen->vertical_workspaces)
+    {
+      int j, k;
+
+      for (i = 0; i < rows; ++i)
+        {
+          for (j = 0; j < cols; ++j)
+            {
+              MetaWorkspace *workspace;
+
+              k = i + (j * rows);
+              workspace = meta_display_get_workspace_by_index (screen->display,
+                                                               k);
+
+              g_assert (workspace);
+
+              entries[i].key = (MetaTabEntryKey) workspace;
+              entries[i].title = workspace->name;
+              entries[i].icon = icon;
+            }
+        }
+    }
+  else
+    {
+      for (i = 0; i < len; ++i)
+        {
+          MetaWorkspace *workspace;
+
+          workspace = meta_display_get_workspace_by_index (screen->display, i);
+
+          g_assert (workspace);
+
+          entries[i].key = (MetaTabEntryKey) workspace;
+          entries[i].title = workspace->name;
+          entries[i].icon = icon;
+        }
+    }
+
+  screen->tab_popup = meta_ui_tab_popup_new (entries, 
+                                             screen->number,
+                                             len,
+                                             cols,
+                                             FALSE);      
+
+  g_free (entries);
+
+  g_object_unref (G_OBJECT (icon));
+
+  /* don't show tab popup, since proper window isn't selected yet */
+}
+
 /* Focus top window on active workspace */
 void
 meta_screen_focus_top_window (MetaScreen *screen,
@@ -1174,4 +1250,53 @@ meta_create_offscreen_window (Display *xdisplay,
                         CopyFromParent,
                         CWOverrideRedirect,
                         &attrs);
+}
+
+void
+meta_screen_calc_workspace_layout (MetaScreen *screen,
+                                   int         num_workspaces,
+                                   int        *r,
+                                   int        *c)
+{
+  int cols, rows;
+
+  /*
+   * 3 rows, 4 columns, horizontal layout:
+   *  +--+--+--+--+
+   *  | 1| 2| 3| 4|
+   *  +--+--+--+--+
+   *  | 5| 6| 7| 8|
+   *  +--+--+--+--+
+   *  | 9|10|11|12|
+   *  +--+--+--+--+
+   *
+   * vertical layout:
+   *  +--+--+--+--+
+   *  | 1| 4| 7|10|
+   *  +--+--+--+--+
+   *  | 2| 5| 8|11|
+   *  +--+--+--+--+
+   *  | 3| 6| 9|12|
+   *  +--+--+--+--+
+   *
+   */
+     
+  rows = screen->rows_of_workspaces;
+  cols = screen->columns_of_workspaces;
+  if (rows <= 0 && cols <= 0)
+    cols = num_workspaces;
+
+  if (rows <= 0)
+    rows = num_workspaces / cols + ((num_workspaces % cols) > 0 ? 1 : 0);
+  if (cols <= 0)
+    cols = num_workspaces / rows + ((num_workspaces % rows) > 0 ? 1 : 0);
+
+  /* paranoia */
+  if (rows < 1)
+    rows = 1;
+  if (cols < 1)
+    cols = 1;
+
+  *r = rows;
+  *c = cols;
 }
