@@ -1,3 +1,7 @@
+2002-09-24  Arvind Samptur  <arvind.samptur@wipro.com>
+	* src/menu.c: Replace strings Shade with Roll Up and 
+	Unshade with Unroll.
+
 2002-09-23  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c (main): re-enable the log handler, maybe it will
