@@ -95,6 +95,7 @@ struct _MetaDisplay
   Atom atom_win_supporting_wm_check;
   Atom atom_net_wm_icon_name;
   Atom atom_net_wm_icon;
+  Atom atom_net_wm_icon_geometry;
   
   /* This is the actual window from focus events,
    * not the one we last set

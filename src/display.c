@@ -130,7 +130,8 @@ meta_display_open (const char *name)
     "_WIN_PROTOCOLS",
     "_WIN_SUPPORTING_WM_CHECK",
     "_NET_WM_ICON_NAME",
-    "_NET_WM_ICON"
+    "_NET_WM_ICON",
+    "_NET_WM_ICON_GEOMETRY"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -212,6 +213,7 @@ meta_display_open (const char *name)
   display->atom_win_supporting_wm_check = atoms[35];
   display->atom_net_wm_icon_name = atoms[36];
   display->atom_net_wm_icon = atoms[37];
+  display->atom_net_wm_icon_geometry = atoms[38];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

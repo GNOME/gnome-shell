@@ -1,7 +1,7 @@
 /* Metacity X managed windows */
 
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2001 Havoc Pennington, Anders Carlsson
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,6 +29,7 @@
 #include "ui.h"
 #include "place.h"
 #include "session.h"
+#include "effects.h"
 
 #include <X11/Xatom.h>
 
@@ -69,6 +70,9 @@ static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
+
+static gboolean meta_window_get_icon_geometry (MetaWindow    *window,
+                                               MetaRectangle *rect);
 
 static void adjust_for_gravity               (MetaWindow        *window,
                                               MetaFrameGeometry *fgeom,
@@ -758,6 +762,41 @@ meta_window_calc_showing (MetaWindow  *window)
   
   if (window->minimized || !on_workspace)
     {
+      /* Really this effects code should probably
+       * be in meta_window_hide so the window->mapped
+       * test isn't duplicated here. Anyhow, we animate
+       * if we are mapped now, we are supposed to
+       * be minimized, and we are on the current workspace.
+       */
+      if (on_workspace && window->minimized && window->mapped)
+        {
+	  MetaRectangle icon_rect, window_rect;
+	  gboolean result;
+	  
+	  /* Check if the window has an icon geometry */
+	  result = meta_window_get_icon_geometry (window, &icon_rect);
+          
+          if (!result)
+            {
+              /* just animate into the corner somehow - maybe
+               * not a good idea...
+               */              
+              icon_rect.x = window->screen->width;
+              icon_rect.y = window->screen->height;
+              icon_rect.width = 1;
+              icon_rect.height = 1;
+            }
+
+          meta_window_get_outer_rect (window, &window_rect);
+          
+          /* Draw a nice cool animation */
+          meta_effects_draw_box_animation (window->screen,
+                                           &window_rect,
+                                           &icon_rect,
+                                           META_MINIMIZE_ANIMATION_STEPS,
+                                           META_MINIMIZE_ANIMATION_DELAY);
+	}
+
       meta_window_hide (window);
     }
   else
@@ -2668,7 +2707,7 @@ update_net_wm_state (MetaWindow *window)
    * clients don't change the property.
    */
   Atom type;
-  gint format;
+  int format;
   gulong n_atoms;
   gulong bytes_after;
   Atom *atoms;
@@ -2767,7 +2806,7 @@ update_mwm_hints (MetaWindow *window)
 {
   MotifWmHints *hints;
   Atom type;
-  gint format;
+  int format;
   gulong nitems;
   gulong bytes_after;
   int result;
@@ -2884,6 +2923,44 @@ update_mwm_hints (MetaWindow *window)
   return Success;
 }
 
+static gboolean
+meta_window_get_icon_geometry (MetaWindow    *window,
+                               MetaRectangle *rect)
+{
+  Atom type;
+  int format;
+  gulong nitems;
+  gulong bytes_after;
+  gulong *geometry;
+  int result;
+  
+  meta_error_trap_push (window->display);
+  type = None;
+  XGetWindowProperty (window->display->xdisplay,
+		      window->xwindow,
+		      window->display->atom_net_wm_icon_geometry,
+		      0, G_MAXLONG,
+		      False, XA_CARDINAL, &type, &format, &nitems,
+		      &bytes_after, ((guchar **)&geometry));
+  
+  result = meta_error_trap_pop (window->display);
+  
+  if (result != Success || type != XA_CARDINAL || nitems != 4)
+    return FALSE;  
+  
+  if (rect)
+    {
+      rect->x = geometry[0];
+      rect->y = geometry[1];
+      rect->width = geometry[2];
+      rect->height = geometry[3];
+    }
+
+  XFree (geometry);
+
+  return TRUE;
+}
+
 static int
 update_wm_class (MetaWindow *window)
 {
@@ -2933,7 +3010,7 @@ read_string_prop (MetaDisplay *display,
                   char       **strp)
 {
   Atom type;
-  gint format;
+  int format;
   gulong nitems;
   gulong bytes_after;
   guchar *str;
@@ -2966,7 +3043,7 @@ read_client_leader (MetaDisplay *display,
                     Window       xwindow)
 {
   Atom type;
-  gint format;
+  int format;
   gulong nitems;
   gulong bytes_after;
   Window *leader;
@@ -3094,7 +3171,7 @@ get_cardinal (MetaDisplay *display,
               gulong     *val)
 {  
   Atom type;
-  gint format;
+  int format;
   gulong nitems;
   gulong bytes_after;
   gulong *num;
@@ -3137,7 +3214,7 @@ static int
 update_net_wm_type (MetaWindow *window)
 {
   Atom type;
-  gint format;
+  int format;
   gulong n_atoms;
   gulong bytes_after;
   Atom *atoms;
@@ -3482,7 +3559,7 @@ constrain_size (MetaWindow *window,
 
   /* frame member variables should NEVER be used in here */
   
-#define FLOOR(value, base)	( ((gint) ((value) / (base))) * (base) )
+#define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
   
   /* Get the allowed size ranges, considering maximized, etc. */
   fullw = window->screen->active_workspace->workarea.width;

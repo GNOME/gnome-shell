@@ -1,3 +1,17 @@
+2001-08-05  Anders Carlsson  <andersca@gnu.org>
+
+	* src/display.h, src/display.c: Add _NET_WM_ICON_GEOMETRY atom.
+
+	* src/window.c (meta_window_calc_showing): See if the window has
+	an icon geometry and show a morphing animation from the window's
+	coordinates to the icon's coordinates.
+	(meta_window_get_icon_geometry): New function that fetches a
+	window's icon geometry.
+
+	* src/Makefile.am: Add effects.[ch].
+	
+        * src/effects.c: New file with cool effects.
+
 2001-08-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c: Add Alt + left/right arrow to 

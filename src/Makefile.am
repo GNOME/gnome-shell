@@ -9,6 +9,8 @@ metacity_SOURCES= 				\
 	core.h					\
 	display.c				\
 	display.h				\
+	effects.c				\
+	effects.h				\
 	errors.c				\
 	errors.h				\
 	eventqueue.c				\
