@@ -2474,7 +2474,7 @@ handle_activate_workspace (MetaDisplay    *display,
   
   if (workspace)
     {
-      meta_workspace_activate (workspace);
+      meta_workspace_activate (workspace, event->xkey.time);
     }
   else
     {
@@ -2680,7 +2680,9 @@ process_workspace_switch_grab (MetaDisplay *display,
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Focusing default window on target workspace\n");
 
-          meta_workspace_focus_default_window (target_workspace, NULL);
+          meta_workspace_focus_default_window (target_workspace, 
+                                               NULL,
+                                               event->xkey.time);
 
           return TRUE; /* we already ended the grab */
         }
@@ -2749,7 +2751,7 @@ process_workspace_switch_grab (MetaDisplay *display,
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target workspace\n");
 
-          meta_workspace_activate (target_workspace);
+          meta_workspace_activate (target_workspace, event->xkey.time);
 
           return TRUE; /* we already ended the grab */
         }
@@ -2760,7 +2762,7 @@ process_workspace_switch_grab (MetaDisplay *display,
               "Ending workspace tabbing & focusing default window; uninteresting key pressed\n");
   workspace =
     (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
-  meta_workspace_focus_default_window (workspace, NULL);
+  meta_workspace_focus_default_window (workspace, NULL, event->xkey.time);
   return FALSE;
 }
 
@@ -2774,7 +2776,9 @@ handle_toggle_desktop (MetaDisplay    *display,
   if (screen->showing_desktop)
     {
       meta_screen_unshow_desktop (screen);
-      meta_workspace_focus_default_window (screen->active_workspace, NULL);
+      meta_workspace_focus_default_window (screen->active_workspace, 
+                                           NULL,
+                                           event->xkey.time);
     }
   else
     meta_screen_show_desktop (screen);
@@ -3210,7 +3214,7 @@ do_handle_move_to_workspace  (MetaDisplay    *display,
       /* Activate second, so the window is never unmapped */
       meta_window_change_workspace (window, workspace);
       if (flip)
-        meta_workspace_activate_with_focus (workspace, window);
+        meta_workspace_activate_with_focus (workspace, window, event->xkey.time);
     }
   else
     {
@@ -3374,7 +3378,7 @@ handle_workspace_switch  (MetaDisplay    *display,
           meta_display_end_grab_op (display, event->xkey.time);
         }
       
-      meta_workspace_activate (next);
+      meta_workspace_activate (next, event->xkey.time);
 
       if (grabbed_before_release)
         {

@@ -422,7 +422,8 @@ void     meta_display_increment_event_serial (MetaDisplay *display);
 
 void     meta_display_update_active_window_hint (MetaDisplay *display);
 
-guint32  meta_display_get_current_time (MetaDisplay *display);
+guint32  meta_display_get_current_time           (MetaDisplay *display);
+guint32  meta_display_get_current_time_roundtrip (MetaDisplay *display);
 
 /* utility goo */
 const char* meta_event_mode_to_string   (int m);

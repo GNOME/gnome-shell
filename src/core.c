@@ -237,7 +237,8 @@ meta_core_user_raise (Display *xdisplay,
 
 void
 meta_core_user_lower_and_unfocus (Display *xdisplay,
-                                  Window   frame_xwindow)
+                                  Window   frame_xwindow,
+                                  Time     timestamp)
 {
   MetaDisplay *display;
   MetaWindow *window;
@@ -277,7 +278,9 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
 
       /* focus on the (new) topmost window */
       if (window->has_focus)
-        meta_workspace_focus_default_window (window->screen->active_workspace, window);
+        meta_workspace_focus_default_window (window->screen->active_workspace,
+                                             window,
+                                             timestamp);
     }
 }
 

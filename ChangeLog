@@ -1,3 +1,58 @@
+2004-10-04  Elijah Newren  <newren@math.utah.edu>
+
+	Fix a variety of focus race conditions in all focus modes, or at
+	least make them harder to trigger (fixes #152000)
+
+	* src/core.[ch] (meta_core_user_lower_and_unfocus): add a
+	timestamp parameter; pass it along to
+	meta_workspace_focus_default_window
+
+	* src/display.[ch] (meta_display_get_current_time_roundtrip): new
+	function
+
+	* src/display.c (event_callback): pass a timestamp to the
+	meta_workspace_activate and meta_workspace_focus_default_window
+	function calls
+
+	* src/frames.c (meta_frames_button_press_event): pass a timestamp
+	to meta_core_user_lower_and_unfocus
+
+	* src/keybindings.c (handle_activate_workspace): pass a timestamp
+	to meta_workspace_activate, (process_workspace_switch_grab): pass
+	a timestamp to meta_workspace_focus_default_window and
+	meta_workspace_activate, (handle_toggle_desktop): pass a timestamp
+	to meta_workspace_focus_default_window,
+	(do_handle_move_to_workspace): pass a timestamp to
+	meta_workspace_activate_with_focus, (handle_workspace_switch):
+	meta_workspace_activate
+
+	* src/screen.c (meta_screen_new): pass a timestamp to
+	meta_workspace_activate
+
+	* src/window.c (meta_window_free): pass a timestamp to
+	meta_workspace_focus_default_window, (idle_calc_showing): don't
+	increment the focus sentinel here, (meta_window_minimize): pass a
+	timestamp to meta_workspace_focus_default_window,
+	(meta_window_client_message), pass a timestamp to
+	meta_workspace_focus_default_window
+
+	* src/workspace.h (meta_workspace_activate): add timestamp
+	parameter, (meta_workspace_activate_with_focus): add timestamp
+	parameter, (meta_workspace_focus_default_window): add timestamp
+	parameter
+
+	* src/workspace.c (meta_workspace_focus_mru_window): make this
+	function take a timestamp and use it for meta_window_focus or
+	XSetInputFocus, (meta_workspace_activate_with_focus): make this
+	function take a timestamp and pass it along to meta_window_focus
+	and meta_workspace_focus_default_window,
+	(meta_workspace_activate): make this function take a timestamp and
+	pass it to meta_workspace_activate_with_focus),
+	(meta_workspace_focus_default_window): make this function take a
+	timestamp, warn if its 0 but try to handle that case sanely, and
+	pass the timestamp on to meta_window_focus or
+	meta_workspace_focus_mru_window or XSetInputFocus
+
 2004-09-22  Elijah Newren  <newren@math.utah.edu>
 
 	* src/keybindings.c (process_workspace_switch_grab): Focus the

@@ -931,7 +931,7 @@ meta_window_free (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing default window since we're unmanaging %s\n",
                   window->desc);
-      meta_workspace_focus_default_window (window->screen->active_workspace, window);
+      meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
     }
   else if (window->display->expected_focus_window == window)
     {
@@ -939,7 +939,7 @@ meta_window_free (MetaWindow  *window)
                   "Focusing default window since expected focus window freed %s\n",
                   window->desc);
       window->display->expected_focus_window = NULL;
-      meta_workspace_focus_default_window (window->screen->active_workspace, window);
+      meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
     }
   else
     {
@@ -1487,25 +1487,6 @@ idle_calc_showing (gpointer data)
       tmp = tmp->next;
     }
 
-  /* for all displays used in the queue, set a sentinel property on
-   * the root window so that we can ignore EnterNotify events that
-   * occur before the window maps occur.  This avoids a race
-   * condition.
-   */
-  tmp = should_show;
-  while (tmp != NULL)
-    {
-      MetaWindow *window = tmp->data;
-      
-      if (g_slist_find (displays, window->display) == NULL)
-        {
-          displays = g_slist_prepend (displays, window->display);
-          meta_display_increment_focus_sentinel (window->display);
-        }
-
-      tmp = tmp->next;
-    }
-
   g_slist_free (copy);
 
   g_slist_free (unplaced);
@@ -1898,7 +1879,7 @@ meta_window_minimize (MetaWindow  *window)
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing default window due to minimization of focus window %s\n",
                       window->desc);
-          meta_workspace_focus_default_window (window->screen->active_workspace, window);
+          meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
         }
       else
         {
@@ -4021,7 +4002,7 @@ meta_window_client_message (MetaWindow *window,
               meta_topic (META_DEBUG_FOCUS,
                           "Focusing default window because of minimization of former focus window %s, which was due to a wm_change_state client message\n",
                       window->desc);
-              meta_workspace_focus_default_window (window->screen->active_workspace, window);
+              meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
             }
         }
 

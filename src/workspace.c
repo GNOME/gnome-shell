@@ -30,7 +30,8 @@
 void meta_workspace_queue_calc_showing      (MetaWorkspace *workspace);
 static void set_active_space_hint           (MetaScreen *screen);
 static void meta_workspace_focus_mru_window (MetaWorkspace *workspace,
-                                             MetaWindow    *not_this_one);
+                                             MetaWindow    *not_this_one,
+                                             Time           timestamp);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
@@ -270,7 +271,8 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
 
 void
 meta_workspace_activate_with_focus (MetaWorkspace *workspace,
-                                    MetaWindow    *focus_this)
+                                    MetaWindow    *focus_this,
+                                    Time           timestamp)
 {
   MetaWorkspace *old;
   MetaWindow *move_window;
@@ -322,8 +324,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
   if (focus_this)
     {
-      meta_window_focus (focus_this,
-                         meta_display_get_current_time (focus_this->display));
+      meta_window_focus (focus_this, timestamp);
       meta_window_raise (focus_this);
     }
   else if (move_window)
@@ -333,15 +334,15 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   else
     {
       meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
-      meta_workspace_focus_default_window (workspace, NULL);
+      meta_workspace_focus_default_window (workspace, NULL, timestamp);
     }
 }
 
 void
-meta_workspace_activate (MetaWorkspace *workspace)
+meta_workspace_activate (MetaWorkspace *workspace,
+                         Time           timestamp)
 {
-  meta_workspace_activate_with_focus (workspace,
-                                      NULL);
+  meta_workspace_activate_with_focus (workspace, NULL, timestamp);
 }
 
 int
@@ -790,10 +791,18 @@ meta_workspace_get_name (MetaWorkspace *workspace)
 
 void
 meta_workspace_focus_default_window (MetaWorkspace *workspace,
-                                     MetaWindow *not_this_one)
+                                     MetaWindow    *not_this_one,
+                                     Time           timestamp)
 {
+  if (timestamp == CurrentTime)
+    {
+      meta_warning ("CurrentTime used to choose focus window; "
+                    "focus window may not be correct.\n");
+    }
+
+
   if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-    meta_workspace_focus_mru_window (workspace, not_this_one);
+    meta_workspace_focus_mru_window (workspace, not_this_one, timestamp);
   else
     {
       MetaWindow * window;
@@ -802,13 +811,28 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           window->type != META_WINDOW_DOCK &&
           window->type != META_WINDOW_DESKTOP)
         {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Focusing mouse window %s\n", window->desc);
+          if (timestamp == CurrentTime)
+            {
 
-          meta_window_focus (window, meta_display_get_current_time (workspace->screen->display));
+              /* We would like for this to never happen.  However, if
+               * it does happen then we kludge since using CurrentTime
+               * can mean ugly race conditions--and we can avoid these
+               * by allowing EnterNotify events (which come with
+               * timestamps) to handle focus.
+               */
+
+              meta_topic (META_DEBUG_FOCUS,
+                          "Not focusing mouse window %s because EnterNotify events should handle that\n", window->desc);
+            }
+          else
+            {
+              meta_topic (META_DEBUG_FOCUS,
+                          "Focusing mouse window %s\n", window->desc);
+              meta_window_focus (window, timestamp);
+            }
         }
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_SLOPPY)
-        meta_workspace_focus_mru_window (workspace, not_this_one);
+        meta_workspace_focus_mru_window (workspace, not_this_one, timestamp);
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_MOUSE)
         {
           meta_topic (META_DEBUG_FOCUS,
@@ -817,7 +841,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           XSetInputFocus (workspace->screen->display->xdisplay,
                           workspace->screen->display->no_focus_window,
                           RevertToPointerRoot,
-                          meta_display_get_current_time (workspace->screen->display));
+                          timestamp);
         }
     }
 }
@@ -825,7 +849,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
 /* Focus MRU window (or top window if failed) on active workspace */
 void
 meta_workspace_focus_mru_window (MetaWorkspace *workspace,
-                                 MetaWindow *not_this_one)
+                                 MetaWindow    *not_this_one,
+                                 Time           timestamp)
 {
   MetaWindow *window = NULL;
   GList *tmp;
@@ -857,8 +882,7 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing workspace MRU window %s\n", window->desc);
       
-      meta_window_focus (window,
-                         meta_display_get_current_time (workspace->screen->display));
+      meta_window_focus (window, timestamp);
 
       /* Also raise the window if in click-to-focus */
       if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
@@ -870,6 +894,6 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
       XSetInputFocus (workspace->screen->display->xdisplay,
                       workspace->screen->display->no_focus_window,
                       RevertToPointerRoot,
-                      meta_display_get_current_time (workspace->screen->display));
+                      timestamp);
     }
 }

@@ -604,7 +604,7 @@ meta_screen_new (MetaDisplay *display,
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
    */
-  meta_workspace_activate (meta_workspace_new (screen));
+  meta_workspace_activate (meta_workspace_new (screen), timestamp);
   update_num_workspaces (screen);
   
   set_workspace_names (screen);
@@ -641,7 +641,7 @@ meta_screen_new (MetaDisplay *display,
                                                 current_workspace);
     
     if (space != NULL)
-      meta_workspace_activate (space);
+      meta_workspace_activate (space, timestamp);
   }
 
   meta_compositor_manage_screen (screen->display->compositor,
@@ -1077,7 +1077,7 @@ update_num_workspaces (MetaScreen *screen)
     }
 
   if (need_change_space)
-    meta_workspace_activate (last_remaining);
+    meta_workspace_activate (last_remaining, meta_display_get_current_time_roundtrip (screen->display));
 
   /* Should now be safe to free the workspaces */
   tmp = extras;

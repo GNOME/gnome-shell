@@ -1099,6 +1099,35 @@ meta_display_get_current_time (MetaDisplay *display)
   return display->current_time;
 }
 
+/* Get a timestamp, even if it means a roundtrip */
+guint32
+meta_display_get_current_time_roundtrip (MetaDisplay *display)
+{
+  guint32 timestamp;
+  
+  timestamp = meta_display_get_current_time (display);
+  if (timestamp == CurrentTime)
+    {
+      XEvent property_event;
+
+      /* Using the property XA_PRIMARY because it's safe; nothing
+       * would use it as a property. The type doesn't matter.
+       */
+      XChangeProperty (display->xdisplay,
+                       display->leader_window,
+                       XA_PRIMARY, XA_STRING, 8,
+                       PropModeAppend, NULL, 0);
+      XWindowEvent (display->xdisplay,
+                    display->leader_window,
+                    PropertyChangeMask,
+                    &property_event);
+
+      timestamp = property_event.xproperty.time;
+    }
+
+  return timestamp;
+}
+
 static void
 add_ignored_serial (MetaDisplay  *display,
                     unsigned long serial)
@@ -2100,7 +2129,7 @@ event_callback (XEvent   *event,
                                                         space);
 
                   if (workspace)
-                    meta_workspace_activate (workspace);
+                    meta_workspace_activate (workspace, meta_display_get_current_time_roundtrip (display));
                   else
                     meta_verbose ("Don't know about workspace %d\n", space);
                 }
@@ -2129,7 +2158,7 @@ event_callback (XEvent   *event,
 		  else
 		    {
 		      meta_screen_unshow_desktop (screen);
-		      meta_workspace_focus_default_window (screen->active_workspace, NULL);
+		      meta_workspace_focus_default_window (screen->active_workspace, NULL, meta_display_get_current_time_roundtrip (display));
 		    }
 		}
               else if (event->xclient.message_type ==
