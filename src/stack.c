@@ -415,6 +415,15 @@ ensure_above (MetaWindow *above,
               above->stack_position, below->stack_position);
 }
 
+#define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)             \
+         ((w->xtransient_for == None ||                 \
+           w->transient_parent_is_root_window) &&       \
+          (w->type == META_WINDOW_DIALOG ||             \
+	   w->type == META_WINDOW_MODAL_DIALOG ||       \
+           w->type == META_WINDOW_TOOLBAR ||            \
+           w->type == META_WINDOW_MENU ||               \
+           w->type == META_WINDOW_UTILITY))
+
 static void
 apply_constraints (GList *list)
 {
@@ -428,13 +437,7 @@ apply_constraints (GList *list)
     {
       MetaWindow *w = tmp->data;
       
-      if ((w->xtransient_for == None ||
-           w->transient_parent_is_root_window) &&
-          (w->type == META_WINDOW_DIALOG ||
-	   w->type == META_WINDOW_MODAL_DIALOG ||
-           w->type == META_WINDOW_TOOLBAR ||
-           w->type == META_WINDOW_MENU ||
-           w->type == META_WINDOW_UTILITY))
+      if (WINDOW_TRANSIENT_FOR_WHOLE_GROUP (w))
         {
           GSList *group_windows;
           GSList *tmp2;
@@ -453,7 +456,8 @@ apply_constraints (GList *list)
             {
               MetaWindow *group_window = tmp2->data;
               
-              if (!(meta_window_is_ancestor_of_transient (w, group_window)))
+              if (!(meta_window_is_ancestor_of_transient (w, group_window)) &&
+                  !WINDOW_TRANSIENT_FOR_WHOLE_GROUP (group_window))
                 {
                   meta_topic (META_DEBUG_STACK, "Stacking %s above %s as it's a dialog transient for its group\n",
                               w->desc, group_window->desc);

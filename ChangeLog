@@ -1,5 +1,12 @@
 2002-10-17  Havoc Pennington  <hp@redhat.com>
 
+	* src/stack.c (apply_constraints): don't place
+	transient-for-whole-group windows above _each other_, only 
+	above other windows in the group that aren't themselves
+	transient-for-whole-group. Should help with part of #94876	
+
+2002-10-17  Havoc Pennington  <hp@redhat.com>
+
 	* src/stack.c (apply_constraints): fix memory leak of
 	group_windows, and don't use the variable name "tmp" twice. Shadow
 	variables bad.
