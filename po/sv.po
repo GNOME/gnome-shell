@@ -1,6 +1,6 @@
 # Swedish messages for metacity.
-# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003.
+# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004.
 #
 # $Id$
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2003-12-22 01:44+0100\n"
+"POT-Creation-Date: 2004-07-14 21:48+0200\n"
+"PO-Revision-Date: 2004-07-14 21:49+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -226,21 +226,21 @@ msgstr "Flytta till arbetsyta _uppåt"
 msgid "Move to Workspace _Down"
 msgstr "Flytta till arbetsyta _nedanför"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Arbetsyta 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbetsyta %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Flytta till en annan _arbetsyta"
 
@@ -366,7 +366,7 @@ msgstr ""
 "Dessa fönster stöder inte \"spara nuvarande inställningar\" och kommer att "
 "behöva startas om manuellt nästa gång du loggar in."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -446,8 +446,8 @@ msgstr ""
 "till exempel \"&lt;Alt&gt;\" eller \"&lt;Super&gt;\"."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Stäng ett fönster"
+msgid "Close window"
+msgstr "Stäng fönster"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -550,8 +550,8 @@ msgid "Lower window below other windows"
 msgstr "Sänk fönster under andra fönster"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Maximera ett fönster"
+msgid "Maximize window"
+msgstr "Maximera fönster"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -562,50 +562,50 @@ msgid "Maximize window vertically"
 msgstr "Maximera fönster vertikalt"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Minimera ett fönster"
+msgid "Minimize window"
+msgstr "Minimera fönster"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr "Modifierare att använda för modifierade fönsterklickåtgärder"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Flytta ett fönster"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Flytta baklänges mellan paneler och skrivbordet omedelbart"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Flytta baklänges mellan paneler och skrivbordet genom användning av "
 "popupfönster"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Flytta baklänges mellan fönster omedelbart"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Flytta mellan paneler och skrivbordet omedelbart"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Flytta mellan paneler och skrivbordet genom användning av popupfönster"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Flytta mellan fönster omedelbart"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Flytta mellan fönster genom användning av popupfönster"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "Flytta fokus baklänges mellan fönster genom användning av popupfönster"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Flytta fönster"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -698,8 +698,8 @@ msgid "Raise window above other windows"
 msgstr "Höj fönstret över andra fönster"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
-msgstr "Ändra storlek på ett fönster"
+msgid "Resize window"
+msgstr "Ändra storlek på fönster"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -710,8 +710,8 @@ msgid "Show the panel menu"
 msgstr "Visa panelmenyn"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
-msgstr "Visa panelens kördialogfönster"
+msgid "Show the panel run application dialog"
+msgstr "Visa paneldialogfönstret för körning av program"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -1715,15 +1715,15 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
 "Tangentbindningen som visar panelens \"Kör program\"-dialogruta. Formatet "
-"ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken "
+"ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Tolken "
 "är ganska tillåtande och tillåter gemener och versaler och även "
 "förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
 "alternativet till specialsträngen \"disabled\" kommer det inte att finnas en "
@@ -1940,8 +1940,8 @@ msgstr ""
 "bullriga miljöer, eller när \"audible bell\" inte är på."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
-msgstr "Avmaximera ett fönster"
+msgid "Unmaximize window"
+msgstr "Avmaximera fönster"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1964,12 +1964,12 @@ msgstr "Typsnitt för fönstertitel"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1978,17 +1978,17 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "musknappsmodifierare\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1997,7 +1997,7 @@ msgstr ""
 "%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt "
 "maxvärde är %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2005,17 +2005,17 @@ msgstr ""
 "Fixar för trasiga program är inaktiverade. En del program fungerar kanske "
 "inte korrekt.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2024,7 +2024,7 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "tangentbindningen \"%s\"\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -2064,82 +2064,73 @@ msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Misslyckades med att öppna en anslutning till en sessionshanterare, så "
-"fönsterpositioner kommer inte att sparas: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunde inte skapa katalogen \"%s\": %s\n"
 
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunde inte öppna sessionsfilen \"%s\" för skrivning: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fel vid skrivning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fel vid stängning av sessionsfilen \"%s\": %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Misslyckades med att läsa sparad sessionsfil %s: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attribut hittat men vi har redan sessions-ID"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Okänt attribut %s i <metacity_session>-element"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "nästlad <window>-tagg"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Okänt attribut %s i <window>-element"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Okänt attribut %s i <maximized>-element"
 
 # SUN CHANGED MESSAGE
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Okänt attribut %s i <geometry>-element"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3228,7 +3219,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3244,7 +3235,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3280,6 +3271,46 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "Close a window"
+#~ msgstr "Stäng ett fönster"
+
+#~ msgid "Maximize a window"
+#~ msgstr "Maximera ett fönster"
+
+#~ msgid "Minimize a window"
+#~ msgstr "Minimera ett fönster"
+
+#~ msgid "Move a window"
+#~ msgstr "Flytta ett fönster"
+
+#~ msgid "Resize a window"
+#~ msgstr "Ändra storlek på ett fönster"
+
+#~ msgid ""
+#~ "The keybinding which display's the panel's \"Run Application\" dialog "
+#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
+#~ "you set the option to the special string \"disabled\", then there will be "
+#~ "no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som visar panelens \"Kör program\"-dialogruta. Formatet "
+#~ "ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Tolken är ganska tillåtande och tillåter gemener och versaler och även "
+#~ "förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+#~ "alternativet till specialsträngen \"disabled\" kommer det inte att finnas "
+#~ "en tangentbindning för denna åtgärd."
+
+#~ msgid "Unmaximize a window"
+#~ msgstr "Avmaximera ett fönster"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Misslyckades med att öppna en anslutning till en sessionshanterare, så "
+#~ "fönsterpositioner kommer inte att sparas: %s\n"
 
 #~ msgid "Failed to scan themes directory : %s\n"
 #~ msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
