@@ -5613,6 +5613,7 @@ static void
 menu_callback (MetaWindowMenu *menu,
                Display        *xdisplay,
                Window          client_xwindow,
+	       Time	       timestamp,
                MetaMenuOp      op,
                int             workspace_index,
                gpointer        data)
@@ -5633,7 +5634,7 @@ menu_callback (MetaWindowMenu *menu,
       switch (op)
         {
         case META_MENU_OP_DELETE:
-          meta_window_delete (window, meta_display_get_current_time (window->display));
+          meta_window_delete (window, timestamp);
           break;
 
         case META_MENU_OP_MINIMIZE:

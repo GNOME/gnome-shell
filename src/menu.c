@@ -104,6 +104,7 @@ menu_closed (GtkMenu *widget,
   meta_frames_notify_menu_hide (menu->frames);
   (* menu->func) (menu, gdk_display,
                   menu->client_xwindow,
+		  gtk_get_current_event_time (),
                   0, 0,
                   menu->data);
   
@@ -122,6 +123,7 @@ activate_cb (GtkWidget *menuitem, gpointer data)
   meta_frames_notify_menu_hide (md->menu->frames);
   (* md->menu->func) (md->menu, gdk_display,
                       md->menu->client_xwindow,
+		      gtk_get_current_event_time (),
                       md->op,
                       GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
                                                           "workspace")),

@@ -1,5 +1,13 @@
 2004-06-21  Anders Carlsson  <andersca@gnome.org>
 
+	* src/common.h:
+	* src/menu.c: (menu_closed), (activate_cb):
+	* src/window.c: (menu_callback):
+	Add a timestamp argument to menu functions and
+	use it in meta_window_delete.
+	
+2004-06-21  Anders Carlsson  <andersca@gnome.org>
+
 	* src/window.c: (meta_window_client_message):
 	Get the timestamp from the client message.
 

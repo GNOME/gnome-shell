@@ -72,6 +72,7 @@ typedef struct _MetaWindowMenu MetaWindowMenu;
 typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
                                      Display        *xdisplay,
                                      Window          client_xwindow,
+				     Time	     timestamp,
                                      MetaMenuOp      op,
                                      int             workspace,
                                      gpointer        data);
