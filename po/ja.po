@@ -1,21 +1,21 @@
-# metacity ja.po
-# Copyright (C) 2002-2003 Free Software Foundation, Inc.
+# metacity ja.po.
+# Copyright (C) 2002-2004 Free Software Foundation, Inc.
 # Akira TAGOH <tagoh@gnome.gr.jp>, 2002.
 # KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
-# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003.
+# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003-2004.
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2003-12-18 20:31+0900\n"
-"PO-Revision-Date: 2003-12-18 20:31+0900\n"
-"Last-Translator: Yukihiro Nakai <nakai@gnome.gr.jp>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-02-17 00:01+0900\n"
+"PO-Revision-Date: 2004-02-17 00:00+0900\n"
+"Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:291
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -111,14 +111,14 @@ msgstr ""
 "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
 "す\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2516
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "コマンドのエラーを表示する metacity-dialog を起動する際にエラーが発生しまし"
 "た: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2589
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
@@ -149,8 +149,8 @@ msgstr ""
 
 #: src/main.c:443
 #, c-format
-msgid "Failed to scan themes directory : %s\n"
-msgstr "テーマディレクトリのスキャンに失敗しました: %s\n"
+msgid "Failed to scan themes directory: %s\n"
+msgstr "テーマ・フォルダのスキャンに失敗しました: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -165,71 +165,85 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "再起動に失敗しました: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "元のサイズに戻す(_X)"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "巻き上げる(_U)"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "展開する(_U)"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "最前面へ(_T)"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "移動(_M)"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "サイズの変更(_R)"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "閉じる(_C)"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "全てのワークスペースに含める(_A)"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "このワークスペースにだけ含める(_T)"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "左のワークスペースへ移動する(_L)"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "右のワークスペースへ移動する(_I)"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "上のワークスペースへ移動する(_U)"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "下のワークスペースへ移動する(_D)"
+
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "ワークスペース 10(_0)"
+
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
 msgstr "ワークスペース %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "%s にだけ含める"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "%s に移動する"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "別のワークスペースへ移動する(_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -238,7 +252,7 @@ msgstr "%s に移動する"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr "Shift"
+msgstr "[SHIFT]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -247,7 +261,7 @@ msgstr "Shift"
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr "Ctrl"
+msgstr "[CTRL]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -256,7 +270,7 @@ msgstr "Ctrl"
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr "Alt"
+msgstr "[ALT]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -265,7 +279,7 @@ msgstr "Alt"
 #.
 #: src/metaaccellabel.c:123
 msgid "Meta"
-msgstr "Meta"
+msgstr "[META]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -274,7 +288,7 @@ msgstr "Meta"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr "Super"
+msgstr "[SUPER]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -283,7 +297,7 @@ msgstr "Super"
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr "Hyper"
+msgstr "[HYPER]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -292,7 +306,7 @@ msgstr "Hyper"
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr "Mod2"
+msgstr "[MOD2]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -301,7 +315,7 @@ msgstr "Mod2"
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr "Mod3"
+msgstr "[MOD3]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -310,7 +324,7 @@ msgstr "Mod3"
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr "Mod4"
+msgstr "[MOD4]"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -1980,12 +1994,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1995,7 +2009,7 @@ msgstr ""
 "ています; 現在のウィンドウマネージャを上書きするために--replaceオプションの使"
 "用を試してください\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2003,14 +2017,14 @@ msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャの選択を取得"
 "できませんでした\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャを持っ"
 "ています\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
@@ -3129,15 +3143,15 @@ msgstr "ログファイル %s をオープンしました\n"
 msgid "Window manager: "
 msgstr "ウィンドウマネージャ: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "ウィンドウマネージャのバグ: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "ウィンドウマネージャの警告: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "ウィンドウマネージャのエラー: "
 
@@ -3147,7 +3161,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4730
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3163,7 +3177,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5392
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3200,15 +3214,3 @@ msgid ""
 msgstr ""
 "ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な "
 "UTF-8を含んでいました\n"
-
-#~ msgid "specify a single image on the command line\n"
-#~ msgstr "コマンドラインでひとつ画像を指定して下さい\n"
-
-#~ msgid "failed to load image: %s\n"
-#~ msgstr "画像の読みこみに失敗しました: %s\n"
-
-#~ msgid "failed to save image: %s\n"
-#~ msgstr "画像の保存に失敗しました: %s\n"
-
-#~ msgid "wrote grayscale.png\n"
-#~ msgstr "grayscale.pngを書きこみました\n"
