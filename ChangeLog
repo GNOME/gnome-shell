@@ -1,3 +1,9 @@
+2002-04-21  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_move_resize_now): never revert to
+	user_rect.width, user_rect.height. Maybe fixes assorted resize
+	screwups e.g. with gnome-terminal.
+
 2002-04-21  Anders Carlsson  <andersca@gnu.org>
 
 	* src/iconcache.c (scaled_from_pixdata): Add padding if

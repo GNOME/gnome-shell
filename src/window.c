@@ -2240,12 +2240,16 @@ meta_window_move_resize_now (MetaWindow  *window)
    * the user had the window
    */
   meta_window_get_user_position (window, &x, &y);
-  
+
+  /* This used to use the user width/height if the user hadn't resized,
+   * but it turns out that breaks things pretty often, because configure
+   * requests from the app or size hints changes from the app frequently
+   * reflect user actions such as changing terminal font size
+   * or expanding a disclosure triangle.
+   */
   meta_window_move_resize (window, FALSE, x, y,
-                           window->user_has_move_resized ?
-                           window->user_rect.width : window->rect.width,
-                           window->user_has_move_resized ?
-                           window->user_rect.height : window->rect.height);
+                           window->rect.width,
+                           window->rect.height);
 }
 
 
