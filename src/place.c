@@ -374,7 +374,10 @@ fit_rect_in_xinerama (MetaScreen    *screen,
         overlap = 0;
 
       if (overlap > best_overlap)
-        best_index = i; 
+        {
+          best_index = i;
+          best_overlap = overlap;
+        }
       
       ++i;
     }
@@ -425,6 +428,7 @@ find_first_fit (MetaWindow *window,
   GList *sorted;
   GList *tmp;
   MetaRectangle rect;
+  int i;
   
   retval = FALSE;
   sorted = NULL;
@@ -527,6 +531,31 @@ find_first_fit (MetaWindow *window,
       
       tmp = tmp->next;
     }  
+
+  /* Origin of each Xinerama screen which isn't the first */
+  i = 1;
+  while (i < window->screen->n_xinerama_infos)
+    {
+      rect.x = window->screen->xinerama_infos[i].x_origin;
+      rect.y = window->screen->xinerama_infos[i].y_origin;
+      
+      if (fit_rect_in_xinerama (window->screen, &rect) &&
+          !rectangle_overlaps_some_window (&rect, windows))
+        {
+          *new_x = rect.x;
+          *new_y = rect.y;
+          if (fgeom)
+            {
+              *new_x += fgeom->left_width;
+              *new_y += fgeom->top_height;
+            }
+      
+          retval = TRUE;
+          
+          goto out;
+        }
+      ++i;
+    }
   
  out:
   g_list_free (sorted);

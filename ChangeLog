@@ -1,3 +1,10 @@
+2002-09-24  Havoc Pennington  <hp@pobox.com>
+
+	* src/place.c (fit_rect_in_xinerama): update best_overlap as we go
+	through the loop - doh. Fix from readams@hmc.edu for #90799.
+	(find_first_fit): try the origin of each xinerama screen
+	after the first. Also from readams@hmc.edu
+
 2002-09-24  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_save_rect): new function, 
