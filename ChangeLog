@@ -1,3 +1,9 @@
+2005-01-25  Elijah Newren  <newren@math.utah.edu>
+
+	Patch from Stephane LOEUILLET in bug #151850.
+
+	* src/metacity.desktop.in: specify encoding
+
 2005-01-25  Balamurali Viswanathan <balamurali.viswanathan@wipro.com>
  
  	* src/prefs.c (meta_prefs_init): Get gconf to load the

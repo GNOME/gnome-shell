@@ -1,4 +1,5 @@
 [Desktop Entry]
+Encoding=UTF-8
 _Name=Metacity
 Exec=metacity
 # name of loadable control center module
