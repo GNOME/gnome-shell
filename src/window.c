@@ -1131,7 +1131,7 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_fullscreen;
       ++i;
     }
-  if (!window_showing_on_its_workspace (window))
+  if (!window_showing_on_its_workspace (window) || window->shaded)
     {
       data[i] = window->display->atom_net_wm_state_hidden;
       ++i;
