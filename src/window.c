@@ -5686,15 +5686,12 @@ constrain_position (MetaWindow        *window,
        * the screen area.
        */
       x += (xinerama->width - window->rect.width) / 2;
-      y += (xinerama->height - window->rect.height) / 2;
 
       /* If the window is somehow larger than the screen be paranoid
        * and fix the resulting negative coords
        */
       if (x < xinerama->x_origin)
         x = xinerama->x_origin;
-      if (y < xinerama->y_origin)
-        y = xinerama->y_origin;      
     }
   else if (window->maximized)
     {

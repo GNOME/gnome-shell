@@ -1,3 +1,8 @@
+2002-10-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (constrain_position): always align fullscreen
+	windows to top, as we do with maximized windows.
+
 2002-10-01  Stanislav Brabec  <sbrabec@suse.cz>
 
 	* configure.in: Added cs to ALL_LINGUAS.
