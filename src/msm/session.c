@@ -197,10 +197,13 @@ msm_session_get_for_filename (const char *name,
   int fd = -1;
   GError *dir_error = NULL;
   GError *err;
-  
-  session = g_hash_table_lookup (sessions, filename);
-  if (session)
-    return session;
+
+  if (sessions)
+    {
+      session = g_hash_table_lookup (sessions, filename);
+      if (session)
+        return session;
+    }
 
   session = g_new0 (MsmSession, 1);
   session->name = g_strdup (name);
@@ -228,7 +231,7 @@ msm_session_get_for_filename (const char *name,
    * for users than the usual issues one worries about when locking.
    */
   
-  fd = open (session->full_filename, O_RDWR | O_CREAT | O_EXCL, 0700);
+  fd = open (session->full_filename, O_RDWR | O_CREAT, 0700);
   
   if (fd < 0)
     {
@@ -301,11 +304,11 @@ msm_session_get_for_filename (const char *name,
       return session;
     }
 
-  if (session->clients == NULL)
+  if (FALSE && session->clients == NULL)
     {
       session = recover_failed_session (session,
                                         MSM_SESSION_FAILURE_EMPTY,
-                                        _("Session doesn't contain any applications"));
+                                        NULL);
 
       return session;
     }
@@ -544,8 +547,54 @@ static void
 add_details_to_dialog (GtkDialog  *dialog,
                        const char *details)
 {
+  GtkWidget *hbox;
+  GtkWidget *button;
+  GtkWidget *label;
+  GtkRequisition req;
   
+  hbox = gtk_hbox_new (FALSE, 0);
+
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
   
+  gtk_box_pack_start (GTK_BOX (dialog->vbox),
+                      hbox,
+                      FALSE, FALSE, 0);
+
+  button = gtk_button_new_with_mnemonic (_("_Details"));
+  
+  gtk_box_pack_end (GTK_BOX (hbox), button,
+                    FALSE, FALSE, 0);
+  
+  label = gtk_label_new (details);
+
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  
+  gtk_box_pack_start (GTK_BOX (hbox), label,
+                      TRUE, TRUE, 0);
+
+  /* show the label on click */
+  g_signal_connect_swapped (G_OBJECT (button),
+                            "clicked",
+                            G_CALLBACK (gtk_widget_show),
+                            label);
+  
+  /* second callback destroys the button (note disconnects first callback) */
+  g_signal_connect (G_OBJECT (button), "clicked",
+                    G_CALLBACK (gtk_widget_destroy),
+                    NULL);
+
+  /* Set default dialog size to size with the label,
+   * and without the button, but then rehide the label
+   */
+  gtk_widget_show_all (hbox);
+
+  gtk_widget_size_request (GTK_WIDGET (dialog), &req);
+#if 0
+  /* Omitted for now because it triggers a GTK 1.3.7 bug */
+  gtk_window_set_default_size (GTK_WINDOW (dialog), req.width, req.height);
+#endif
+  
+  gtk_widget_hide (label);
 }
 
 static MsmSession*
@@ -611,7 +660,8 @@ recover_failed_session (MsmSession             *session,
                                    message);
 
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
-  add_details_to_dialog (GTK_DIALOG (dialog), details);
+  if (details)
+    add_details_to_dialog (GTK_DIALOG (dialog), details);
   
   g_free (message);
   

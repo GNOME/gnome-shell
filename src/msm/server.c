@@ -50,7 +50,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <errno.h>
 
 #include "server.h"
 #include "session.h"
@@ -885,6 +885,8 @@ process_ice_messages (GIOChannel *channel,
       /* We were disconnected */
       IceSetShutdownNegotiation (connection, False);
       IceCloseConnection (connection);
+
+      return FALSE;
     }
 
   return TRUE;
@@ -975,11 +977,11 @@ accept_connection (GIOChannel *channel,
   if (cstatus != IceConnectAccepted)
     {
       if (cstatus == IceConnectIOError)
-        msm_warning (_("IO error trying to accept new connection (client may have crashed trying to connect to the session manager, or client may be broken, or someone yanked the ethernet cable)"));
+        msm_warning (_("IO error trying to accept new connection (client may have crashed trying to connect to the session manager, or client may be broken, or someone yanked the ethernet cable)\n"));
       else
-        msm_warning (_("Rejecting new connection (some client was not allowed to connect to the session manager)"));
+        msm_warning (_("Rejecting new connection (some client was not allowed to connect to the session manager)\n"));
 
-      IceCloseConnection (cnxn);
+      /*       IceCloseConnection (cnxn);*/
     }
 
   return TRUE;
@@ -1146,40 +1148,32 @@ create_auth_entries (MsmServer       *server,
   int original_umask;
   int i;
   int fd = -1;
-  char *tmpl = NULL;
-  GError *err;
   IceAuthDataEntry *entries;
   
   original_umask = umask (0077); /* disallow non-owner access */
 
   path = msm_get_work_directory ();
 
-  err = NULL;
-  tmpl = g_strconcat (path, "/msm-add-commands-XXXXXX", NULL);
-  fd = g_file_open_tmp (tmpl, &add_file, &err);
-  if (err)
+  add_file = g_strconcat (path, "/msm-add-commands-XXXXXX", NULL);
+  fd = g_mkstemp (add_file);
+  if (fd < 0)
     {
-      msm_fatal (_("Could not create ICE authentication script: %s\n"),
-                 err->message);
+      msm_fatal (_("Could not create ICE authentication script '%s': %s\n"),
+                 add_file, g_strerror (errno));
       g_assert_not_reached ();
       return FALSE;
     }
   
   addfp = fdopen (fd, "w");
   if (addfp == NULL)
-    goto bad;
+    goto bad;  
 
-  g_free (tmpl);
-  tmpl = NULL;
-  
-
-  err = NULL;
-  tmpl = g_strconcat (path, "/msm-remove-commands-XXXXXX", NULL);
-  fd = g_file_open_tmp (tmpl, &remove_file, &err);
-  if (err)
+  remove_file = g_strconcat (path, "/msm-remove-commands-XXXXXX", NULL);
+  fd = g_mkstemp (remove_file);
+  if (fd < 0)
     {
-      msm_fatal (_("Could not create ICE authentication script: %s\n"),
-                 err->message);
+      msm_fatal (_("Could not create ICE authentication script '%s': %s\n"),
+                 remove_file, g_strerror (errno));
       g_assert_not_reached ();
       return FALSE;
     }
@@ -1187,9 +1181,6 @@ create_auth_entries (MsmServer       *server,
   removefp = fdopen (fd, "w");
   if (removefp == NULL)
     goto bad;
-
-  g_free (tmpl);
-  tmpl = NULL;
 
   server->n_auth_entries = n_listen_objs * 2;
   server->auth_entries = g_new (IceAuthDataEntry, server->n_auth_entries);
@@ -1236,9 +1227,6 @@ create_auth_entries (MsmServer       *server,
   return TRUE;
 
  bad:
-
-  if (tmpl)
-  g_free (tmpl);
   
   if (addfp)
     fclose (addfp);
