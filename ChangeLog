@@ -1,3 +1,9 @@
+2003-03-11  Rob Adams <robadams@ucla.edu>
+
+	* src/constraints.c (meta_window_constrain): include left frame
+	geometry when maximizing or fullscreening windows.  Fix for
+	#108127.
+
 2003-03-10  Roozbeh Pournader  <roozbeh@sharif.edu>
 
 	* configure.in: Added "fa" to ALL_LINGUAS.
