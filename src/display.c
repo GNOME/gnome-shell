@@ -60,6 +60,7 @@ meta_display_open (const char *name)
 {
   MetaDisplay *display;
   Display *xdisplay;
+  GSList *screens;
   int i;
 
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
@@ -72,27 +73,48 @@ meta_display_open (const char *name)
                     XDisplayName (name));
       return FALSE;
     }
-  
-  display = g_new (MetaDisplay, 1);
 
+  display = g_new (MetaDisplay, 1);
+  
   display->name = g_strdup (XDisplayName (name));
   display->xdisplay = xdisplay;
+  display->error_traps = NULL;
+
+  /* we have to go ahead and do this so error handlers work */
+  all_displays = g_slist_prepend (all_displays, display);
+  
+  screens = NULL;
+  i = 0;
+  while (i < ScreenCount (xdisplay))
+    {
+      MetaScreen *screen;
+
+      screen = meta_screen_new (display, i);
+
+      if (screen)
+        screens = g_slist_prepend (screens, screen);
+      ++i;
+    }
+
+  if (screens == NULL)
+    {
+      /* This would typically happen because all the screens already
+       * have window managers
+       */
+      XCloseDisplay (xdisplay);
+      all_displays = g_slist_remove (all_displays, display);
+      g_free (display->name);
+      g_free (display);
+      return FALSE;
+    }
+  
+  display->screens = screens;
+  
   display->events = meta_event_queue_new (display->xdisplay,
                                           event_queue_callback,
                                           display);
 
   display->window_ids = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
-  
-  all_displays = g_slist_prepend (all_displays, display);
-  
-  display->screens = NULL;
-  i = 0;
-  while (i < ScreenCount (xdisplay))
-    {
-      display->screens = g_slist_prepend (display->screens,
-                                          meta_screen_new (display, i));
-      ++i;
-    }
   
   return TRUE;
 }
@@ -110,6 +132,9 @@ free_window (gpointer key, gpointer value, gpointer data)
 void
 meta_display_close (MetaDisplay *display)
 {
+  if (display->error_traps)
+    meta_bug ("Display closed with error traps pending\n");
+  
   g_hash_table_foreach (display->window_ids,
                         free_window,
                         NULL);
@@ -126,7 +151,7 @@ meta_display_close (MetaDisplay *display)
 
   if (all_displays == NULL)
     {
-      meta_verbose ("Last display closed, quitting\n");
+      meta_verbose ("Last display closed, exiting\n");
       meta_quit (META_EXIT_SUCCESS);
     }
 }
@@ -144,6 +169,25 @@ meta_display_screen_for_root (MetaDisplay *display,
 
       if (xroot == screen->xroot)
         return screen;
+
+      tmp = tmp->next;
+    }
+
+  return NULL;
+}
+
+MetaDisplay*
+meta_display_for_x_display (Display *xdisplay)
+{
+  GSList *tmp;
+
+  tmp = all_displays;
+  while (tmp != NULL)
+    {
+      MetaDisplay *display = tmp->data;
+
+      if (display->xdisplay == xdisplay)
+        return display;
 
       tmp = tmp->next;
     }

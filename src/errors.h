@@ -1,4 +1,4 @@
-/* Metacity main() */
+/* Metacity X error handling */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,49 +19,15 @@
  * 02111-1307, USA.
  */
 
-#include "main.h"
+#ifndef META_ERRORS_H
+#define META_ERRORS_H
+
 #include "util.h"
 #include "display.h"
-#include "errors.h"
 
-#include <stdlib.h>
+void     meta_errors_init     (void);
+void     meta_error_trap_push (MetaDisplay *display);
+/* returns X error code, or 0 for no error */
+int      meta_error_trap_pop  (MetaDisplay *display);
 
-static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
-static GMainLoop *meta_main_loop = NULL;
-
-int
-main (int argc, char **argv)
-{
-  meta_main_loop = g_main_loop_new (NULL, FALSE);
-
-  meta_errors_init ();
-  
-  if (!meta_display_open (NULL))
-    meta_exit (META_EXIT_ERROR);
-  
-  g_main_run (meta_main_loop);
-
-  return meta_exit_code;
-}
-
-GMainLoop*
-meta_get_main_loop (void)
-{
-  return meta_main_loop;
-}
-
-void
-meta_quit (MetaExitCode code)
-{
-  meta_exit_code = code;
-  
-  g_main_quit (meta_main_loop);
-}
-
-void
-meta_exit (MetaExitCode code)
-{
-  
-  exit (code);
-}
-
+#endif

@@ -39,6 +39,7 @@ struct _MetaDisplay
   MetaEventQueue *events;
   GSList *screens;
   GHashTable *window_ids;
+  GSList *error_traps;
 };
 
 gboolean    meta_display_open            (const char  *name);
@@ -51,6 +52,6 @@ MetaWindow* meta_display_lookup_window   (MetaDisplay *display,
 void        meta_display_register_window (MetaDisplay *display,
                                           MetaWindow  *window);
 
-
+MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 
 #endif

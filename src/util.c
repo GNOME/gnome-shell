@@ -23,6 +23,7 @@
 #include "main.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 static gboolean is_verbose = TRUE;
 
@@ -78,6 +79,27 @@ meta_verbose (const char *format, ...)
   fputs (str, stderr);
   
   g_free (str);
+}
+
+void
+meta_bug (const char *format, ...)
+{
+  va_list args;
+  gchar *str;
+
+  g_return_if_fail (format != NULL);
+  
+  va_start (args, format);
+  str = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  fputs ("Bug in window manager: ", stderr);
+  fputs (str, stderr);
+  
+  g_free (str);
+
+  /* stop us in a debugger */
+  abort ();
 }
 
 void
