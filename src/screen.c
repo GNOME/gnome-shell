@@ -81,7 +81,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 32
+#define N_SUPPORTED 33
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -117,6 +117,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[29] = screen->display->atom_net_wm_workarea;
   atoms[30] = screen->display->atom_net_show_desktop;
   atoms[31] = screen->display->atom_net_desktop_layout;
+  atoms[32] = screen->display->atom_net_desktop_names;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -460,6 +461,7 @@ meta_screen_new (MetaDisplay *display,
   set_wm_check_hint (screen);
 
   meta_screen_update_workspace_layout (screen);
+  meta_screen_update_workspace_names (screen);
   
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
@@ -1110,6 +1112,45 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
                 screen->rows_of_workspaces,
                 screen->columns_of_workspaces,
                 screen->vertical_workspaces);
+}
+
+void
+meta_screen_update_workspace_names (MetaScreen *screen)
+{
+  char **names;
+  int n_names;
+  int i;
+  GList *tmp;
+  
+  names = NULL;
+  n_names = 0;
+  if (!meta_prop_get_utf8_list (screen->display,
+                                screen->xroot,
+                                screen->display->atom_net_desktop_names,
+                                &names, &n_names))
+    {
+      meta_verbose ("Failed to get workspace names from root window %d\n",
+                    screen->number);
+      return;
+    }
+
+  i = 0;
+  tmp = screen->display->workspaces;
+  while (tmp != NULL && i < n_names)
+    {
+      MetaWorkspace *w = tmp->data;
+
+      if (w->screen == screen)
+        {
+          meta_workspace_set_name (w, names[i]);
+          
+          ++i;
+        }
+      
+      tmp = tmp->next;
+    }
+  
+  g_strfreev (names);
 }
 
 Window

@@ -137,6 +137,7 @@ struct _MetaDisplay
   Atom atom_timestamp;
   Atom atom_version;
   Atom atom_atom_pair;
+  Atom atom_net_desktop_names;
   
   /* This is the actual window from focus events,
    * not the one we last set

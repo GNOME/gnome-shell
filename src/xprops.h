@@ -89,6 +89,11 @@ gboolean meta_prop_get_utf8_string   (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
                                       char         **str_p);
+gboolean meta_prop_get_utf8_list     (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      char        ***str_p,
+                                      int           *n_str_p);
 gboolean meta_prop_get_window        (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,

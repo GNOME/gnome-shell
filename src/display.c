@@ -355,6 +355,7 @@ meta_display_open (const char *name)
   display->atom_timestamp = atoms[62];
   display->atom_version = atoms[63];
   display->atom_atom_pair = atoms[64];
+  display->atom_net_desktop_names = atoms[65];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1383,6 +1384,9 @@ event_callback (XEvent   *event,
               if (event->xproperty.atom ==
                   display->atom_net_desktop_layout)
                 meta_screen_update_workspace_layout (screen);
+              else if (event->xproperty.atom ==
+                       display->atom_net_desktop_names)
+                meta_screen_update_workspace_names (screen);
             }
         }
       break;

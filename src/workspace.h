@@ -41,6 +41,8 @@ struct _MetaWorkspace
   
   GList *windows;
 
+  char *name;
+  
   MetaRectangle work_area;
   guint work_area_invalid : 1;
 };
@@ -71,6 +73,9 @@ MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
 
 void meta_workspace_ensure_tab_popup (MetaDisplay *display,
                                       MetaScreen *screen);
+
+void meta_workspace_set_name (MetaWorkspace *workspace,
+                              const char    *name);
 
 #endif
 

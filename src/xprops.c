@@ -24,6 +24,7 @@
 #include "errors.h"
 #include "util.h"
 #include <X11/Xatom.h>
+#include <string.h>
 
 static gboolean
 check_type_and_format (MetaDisplay *display,
@@ -288,6 +289,101 @@ meta_prop_get_utf8_string (MetaDisplay   *display,
   
   *str_p = str;
 
+  return TRUE;
+}
+
+gboolean
+meta_prop_get_utf8_list (MetaDisplay   *display,
+                         Window         xwindow,
+                         Atom           xatom,
+                         char        ***str_p,
+                         int           *n_str_p)
+{
+  Atom type;
+  int format;
+  gulong bytes_after;
+  guchar *val;
+  gulong n_items;
+  int i;
+  int n_strings;
+  char **retval;
+  const char *p;
+  
+  *str_p = NULL;
+  *n_str_p = 0;
+  
+  meta_error_trap_push (display);
+  if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
+                          0, G_MAXLONG,
+                          False, display->atom_utf8_string,
+                          &type, &format, &n_items,
+                          &bytes_after, (guchar **)&val) != Success ||
+      type == None)
+    {
+      meta_error_trap_pop (display);
+      return FALSE;
+    }
+
+  if (meta_error_trap_pop (display) != Success)
+    return FALSE;
+
+  if (!check_type_and_format (display, xwindow, xatom, 8,
+                              display->atom_utf8_string,
+                              -1, format, type))
+    {
+      XFree (val);
+      return FALSE;
+    }
+
+  /* I'm not sure this is right, but I'm guessing the
+   * property is nul-separated
+   */
+  i = 0;
+  n_strings = 1;
+  while (i < (int) n_items)
+    {
+      if (val[i] == '\0')
+        ++n_strings;
+      ++i;
+    }
+
+  /* we're guaranteed that val has a nul on the end
+   * by XGetWindowProperty
+   */
+  
+  retval = g_new0 (char*, n_strings + 1);
+
+  p = val;
+  i = 0;
+  while (i < n_strings)
+    {
+      if (!g_utf8_validate (p, -1, NULL))
+        {
+          char *name;
+
+          meta_error_trap_push (display);
+          name = XGetAtomName (display->xdisplay, xatom);
+          meta_error_trap_pop (display);
+          meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"),
+                        name, xwindow, i);
+          meta_XFree (name);
+          meta_XFree (val);
+          
+          g_strfreev (retval);
+          return FALSE;
+        }
+
+      retval[i] = g_strdup (p);
+      
+      p = p + strlen (p) + 1;
+      ++i;
+    }
+  
+  *str_p = retval;
+  *n_str_p = i;
+
+  meta_XFree (val);
+  
   return TRUE;
 }
 

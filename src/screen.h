@@ -106,6 +106,7 @@ const MetaXineramaScreenInfo* meta_screen_get_xinerama_for_window (MetaScreen *s
 								   MetaWindow *window);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
+void          meta_screen_update_workspace_names  (MetaScreen             *screen);
 
 Window meta_create_offscreen_window (Display *xdisplay,
                                      Window   parent);

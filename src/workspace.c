@@ -23,6 +23,7 @@
 #include "workspace.h"
 #include "errors.h"
 #include <X11/Xatom.h>
+#include <string.h>
 
 void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
@@ -47,6 +48,9 @@ meta_workspace_new (MetaScreen *screen)
   workspace->work_area.width = screen->width;
   workspace->work_area.height = screen->height;
   workspace->work_area_invalid = TRUE;
+
+  workspace->name = g_strdup_printf (_("Workspace %d\n"),
+                                     meta_workspace_index (workspace) + 1);
   
   /* Update hint for current number of workspaces */
   set_number_of_spaces_hint (screen);
@@ -87,10 +91,15 @@ meta_workspace_free (MetaWorkspace *workspace)
   workspace->screen->display->workspaces =
     g_list_remove (workspace->screen->display->workspaces, workspace);
 
+  g_free (workspace->name);
+  
   g_free (workspace);
 
   /* Update hint for current number of workspaces */
   set_number_of_spaces_hint (screen);
+  /* don't bother to reset names, pagers can just ignore
+   * extra ones
+   */
 }
 
 void
@@ -747,3 +756,16 @@ meta_workspace_ensure_tab_popup (MetaDisplay *display,
   /* don't show tab popup, since proper window isn't selected yet */
 }
 
+void
+meta_workspace_set_name (MetaWorkspace *workspace,
+                         const char    *name)
+{
+  if (strcmp (name, workspace->name) == 0)
+    return;
+  
+  g_free (workspace->name);
+  workspace->name = g_strdup (name);
+
+  meta_verbose ("Workspace has new name \"%s\"\n",
+                workspace->name);
+}
