@@ -12,6 +12,8 @@ if test -z "$SCREENS"; then
   SCREENS=1
 fi
 
+MAX_SCREEN=`echo $SCREENS-1 | bc`
+
 if test "$DEBUG" = none; then
   DEBUG=
 elif test -z "$DEBUG"; then
@@ -56,7 +58,7 @@ if test -z "$ONLY_WM"; then
 
   echo "Launching clients"
   if test -n "$TEST_CLIENT"; then
-      for I in `seq 0 $SCREENS`; do
+      for I in `seq 0 $MAX_SCREEN`; do
           DISPLAY=$CLIENT_DISPLAY.$I $TEST_CLIENT &
       done
   fi
@@ -81,7 +83,7 @@ if test -z "$ONLY_WM"; then
  
   usleep 50000
 
-  for I in `seq 0 $SCREENS`; do
+  for I in `seq 0 $MAX_SCREEN`; do
       DISPLAY=$CLIENT_DISPLAY.$I xsetroot -solid royalblue3
   done
 fi

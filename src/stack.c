@@ -408,6 +408,7 @@ ensure_above (MetaWindow *above,
     {
       /* move above to below->stack_position bumping below down the stack */
       meta_window_set_stack_position (above, below->stack_position);
+      g_assert (below->stack_position + 1 == above->stack_position);
     }
 
   meta_topic (META_DEBUG_STACK, "Above pos %d > below pos %d\n",

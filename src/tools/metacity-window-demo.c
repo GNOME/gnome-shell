@@ -225,6 +225,7 @@ make_dialog (GtkWidget *parent,
              int        depth)
 {
   GtkWidget *dialog;
+  char *str;
   
   dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -233,6 +234,10 @@ make_dialog (GtkWidget *parent,
                                    "Here is a dialog %d",
                                    depth);
 
+  str = g_strdup_printf ("%d dialog", depth);
+  gtk_window_set_title (GTK_WINDOW (dialog), str);
+  g_free (str);
+  
   gtk_dialog_add_button (GTK_DIALOG (dialog),
                          "Open child dialog",
                          GTK_RESPONSE_ACCEPT);
