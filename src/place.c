@@ -668,6 +668,7 @@ meta_window_place (MetaWindow        *window,
       if (parent)
         {
           int w;
+          MetaRectangle area;
 
           meta_window_get_position (parent, &x, &y);
           w = parent->rect.width;
@@ -677,16 +678,24 @@ meta_window_place (MetaWindow        *window,
           /* center of child over center of parent */
           x -= window->rect.width / 2;
 
-          /* put child down 1/5 or so from the top of parent, unless
-           * it makes us have more of parent showing above child than
-           * below
+          /* "visually" center window over parent, leaving twice as
+           * much space below as on top.
            */
-          if (window->rect.height <= (parent->rect.height - (parent->rect.height / 5) * 2))
-            y += parent->rect.height / 5;
+          y += (parent->rect.height - window->rect.height)/3;
 
           /* put top of child's frame, not top of child's client */
           if (fgeom)
             y += fgeom->top_height;
+
+          /* clip to xinerama of parent*/
+          meta_window_get_work_area_current_xinerama (parent, &area);
+
+          if (x + window->rect.width > area.x + area.width) 
+            x = area.x + area.width - window->rect.width;
+          if (y + window->rect.height > area.y + area.height) 
+            y = area.y + area.height - window->rect.height;
+          if (x < area.x) x = area.x;
+          if (y < area.y) y = area.y;     
 
           meta_topic (META_DEBUG_PLACEMENT, "Centered window %s over transient parent\n",
                       window->desc);

@@ -1,3 +1,13 @@
+2003-11-07  Rob Adams  <readams@readams.net>
+
+	* src/main.c (main): Try harder to find a theme in the event that
+	the theme in the preference cannot be found.  Patch from Marcin
+	Krzyzanowski.  See #125815.
+
+	* src/place.c (meta_window_place): use "visual" centering for
+	dialog placement and clip new dialogs to an xinerama workspace.
+	Fix for #118336.
+
 2003-10-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/menu.c (meta_window_menu_new): patch to avoid creating
