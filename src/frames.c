@@ -81,7 +81,7 @@ struct _MetaFrameGeometry
   GdkRectangle min_rect;
   GdkRectangle spacer_rect;
   GdkRectangle menu_rect;
-  GdkRectangle title_rect;  
+  GdkRectangle title_rect;
 };
 
 static void meta_frames_class_init (MetaFramesClass *klass);
@@ -496,6 +496,12 @@ meta_frames_calc_geometry (MetaFrames        *frames,
   
   props = *(frames->props);
 
+  /* FIXME this is totally broken - the w/h here are the size of the
+   * frame xwindow, which is computed from the size the frame wants to
+   * be, which we are currently computing - stuff just happens to work
+   * now because we always go through this codepath twice, or don't
+   * really use these values, or something.
+   */
   meta_core_get_frame_size (gdk_display, frame->xwindow,
                             &width, &height);
   
@@ -910,7 +916,9 @@ show_tip_now (MetaFrames *frames)
       break;
     case META_FRAME_CONTROL_RESIZE_E:
       break;
-    case META_FRAME_CONTROL_NONE:
+    case META_FRAME_CONTROL_NONE:      
+      break;
+    case META_FRAME_CONTROL_CLIENT_AREA:
       break;
     }
 
@@ -1015,6 +1023,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
   
   control = get_control (frames, frame, event->x, event->y);
 
+  if (control == META_FRAME_CONTROL_CLIENT_AREA)
+    return FALSE; /* not on the frame, just passed through from client */
+  
   /* We want to shade even if we have a GrabOp, since we'll have a move grab
    * if we double click the titlebar.
    */
@@ -1357,6 +1368,8 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 
         switch (control)
           {
+          case META_FRAME_CONTROL_CLIENT_AREA:
+            break;
           case META_FRAME_CONTROL_NONE:
             break;
           case META_FRAME_CONTROL_TITLE:
@@ -2151,6 +2164,8 @@ control_rect (MetaFrameControl control,
       break;
     case META_FRAME_CONTROL_NONE:
       break;
+    case META_FRAME_CONTROL_CLIENT_AREA:
+      break;
     }
 
   return rect;
@@ -2181,7 +2196,7 @@ get_control (MetaFrames *frames,
   client.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
 
   if (POINT_IN_RECT (x, y, client))
-    return META_FRAME_CONTROL_NONE;
+    return META_FRAME_CONTROL_CLIENT_AREA;
   
   if (POINT_IN_RECT (x, y, fgeom.close_rect))
     return META_FRAME_CONTROL_DELETE;

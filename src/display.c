@@ -693,15 +693,25 @@ event_callback (XEvent   *event,
       else if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           gboolean begin_move = FALSE;
+          guint grab_mask;
+
+          grab_mask = Mod1Mask;
+          if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
+            grab_mask |= ControlMask;
           
-          if (event->xbutton.button == 1)
+          if ((event->xbutton.state & grab_mask) == 0)
+            {
+              ; /* nothing, not getting event from our button grabs,
+                 * rather from a client that just let button presses
+                 * pass through to our frame
+                 */
+            }
+          else if (event->xbutton.button == 1)
             {
               meta_window_raise (window);
               meta_window_focus (window, event->xbutton.time);
 
-              /* frames.c handles it if frame was receiver */
-              if (!frame_was_receiver)
-                begin_move = TRUE;
+              begin_move = TRUE;
             }
           else if (event->xbutton.button == 2)
             {
@@ -1600,6 +1610,11 @@ meta_display_grab_window_buttons (MetaDisplay *display,
       {
         int result;
 
+        /* Note: changing the modifier for this keybinding also
+         * requires a change to the button press handling
+         * in the display event handler
+         */
+        
         meta_error_trap_push (display);
         XGrabButton (display->xdisplay, i, Mod1Mask,
                      xwindow, False,

@@ -1,3 +1,14 @@
+2001-10-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (event_callback): only handle events here if 
+	the modmask from our button grab is active. i.e. only the
+	Alt-click is handled here.
+
+	* src/frames.c: add check for whether button presses are in the
+	frame client area before handling them, so we don't weirdly let
+	you move a frame by clicking in its client area if the client
+	hasn't selected button press events.
+
 2001-10-13  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (meta_stack_sync_to_server): set last window before 

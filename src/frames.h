@@ -42,7 +42,8 @@ typedef enum
   META_FRAME_CONTROL_RESIZE_NE,
   META_FRAME_CONTROL_RESIZE_NW,
   META_FRAME_CONTROL_RESIZE_W,
-  META_FRAME_CONTROL_RESIZE_E
+  META_FRAME_CONTROL_RESIZE_E,
+  META_FRAME_CONTROL_CLIENT_AREA
 } MetaFrameControl;
 
 /* This is one widget that manages all the window frames
