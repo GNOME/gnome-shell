@@ -1,5 +1,10 @@
 2002-12-16  Havoc Pennington  <hp@pobox.com>
 
+	* src/window-props.c (init_wm_name): argh, screwed that up. get
+	WM_NAME as VALUE_TEXT_PROPERTY #101383
+
+2002-12-16  Havoc Pennington  <hp@pobox.com>
+
 	* src/window-props.c: use META_PROP_VALUE_STRING_AS_UTF8 so 
 	we convert old Latin-1 WM_NAME to UTF-8
 
