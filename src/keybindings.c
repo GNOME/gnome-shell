@@ -2442,44 +2442,6 @@ process_tab_grab (MetaDisplay *display,
 }
 
 static void
-switch_to_workspace (MetaDisplay *display,
-                     MetaWorkspace *workspace)
-{
-  MetaWindow *move_window;
-
-  move_window = NULL;
-  if (display->grab_op == META_GRAB_OP_MOVING)
-    move_window = display->grab_window;
-      
-  if (move_window != NULL)
-    {
-      if (move_window->on_all_workspaces)
-        move_window = NULL; /* don't move it after all */
-
-      /* We put the window on the new workspace, flip spaces,
-       * then remove from old workspace, so the window
-       * never gets unmapped and we maintain the button grab
-       * on it.
-       */
-      if (move_window)
-        {
-          if (!meta_workspace_contains_window (workspace,
-                                               move_window))
-            meta_workspace_add_window (workspace, move_window);
-        }
-    }
-      
-  meta_workspace_activate (workspace);
-
-  if (move_window)
-    {
-      /* Removes window from other spaces */
-      meta_window_change_workspace (move_window, workspace);
-      meta_window_raise (move_window);
-    }
-}
-
-static void
 handle_activate_workspace (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *event_window,
@@ -2504,7 +2466,7 @@ handle_activate_workspace (MetaDisplay    *display,
   
   if (workspace)
     {
-      switch_to_workspace (display, workspace);
+      meta_workspace_activate (workspace);
     }
   else
     {
@@ -2704,7 +2666,7 @@ process_workspace_switch_grab (MetaDisplay *display,
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target workspace\n");
 
-          switch_to_workspace (display, target_workspace);
+          meta_workspace_activate (target_workspace);
 
           return TRUE; /* we already ended the grab */
         }
@@ -2770,7 +2732,7 @@ process_workspace_switch_grab (MetaDisplay *display,
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target workspace\n");
 
-          switch_to_workspace (display, target_workspace);
+          meta_workspace_activate (target_workspace);
 
           return TRUE; /* we already ended the grab */
         }
@@ -3392,7 +3354,7 @@ handle_workspace_switch  (MetaDisplay    *display,
           meta_display_end_grab_op (display, event->xkey.time);
         }
       
-      switch_to_workspace (display, next);
+      meta_workspace_activate (next);
 
       if (grabbed_before_release)
         {

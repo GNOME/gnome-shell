@@ -1,5 +1,22 @@
 2004-02-14  Rob Adams  <readams@readams.net>
 
+	If we're moving a window and receive a _NET_CURRENT_DESKTOP
+	message indicating a workspace switch, bring along the drag window
+	to the new workspace, solving a potentially weird bug where the
+	window would be lost on the old workspace.  This also makes it
+	possible to implement edge flipping in an external program with
+	just a few lines of code.  Patch for #131630 from ed@catmur.co.uk.
+	
+	* src/keybindings.c (switch_to_workspace): remove function -- no
+	longer needed.
+	(handle_activate_workspace): call meta_workspace_activate instead
+	of switch_to_workspace
+
+	* src/workspace.c (meta_workspace_activate_with_focus): if we're
+	in a move grab op, bring along the drag window.
+
+2004-02-14  Rob Adams  <readams@readams.net>
+
 	* configure.in: Add configure option to not even try using
 	xinerama, to make metacity buildable on systems with no shared
 	library version of the xinerama libraries.  Patch for #134203 from

@@ -261,6 +261,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                     MetaWindow    *focus_this)
 {
   MetaWorkspace *old;
+  MetaWindow *move_window;
   
   meta_verbose ("Activating workspace %d\n",
                 meta_workspace_index (workspace));
@@ -277,14 +278,45 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   if (old == NULL)
     return;
 
+  move_window = NULL;
+  if (workspace->screen->display->grab_op == META_GRAB_OP_MOVING ||
+      workspace->screen->display->grab_op == META_GRAB_OP_KEYBOARD_MOVING)
+    move_window = workspace->screen->display->grab_window;
+      
+  if (move_window != NULL)
+    {
+      if (move_window->on_all_workspaces)
+        move_window = NULL; /* don't move it after all */
+
+      /* We put the window on the new workspace, flip spaces,
+       * then remove from old workspace, so the window
+       * never gets unmapped and we maintain the button grab
+       * on it.
+       */
+      if (move_window)
+        {
+          if (!meta_workspace_contains_window (workspace,
+                                               move_window))
+            meta_workspace_add_window (workspace, move_window);
+        }
+    }
+
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
+
+  if (move_window)
+      /* Removes window from other spaces */
+      meta_window_change_workspace (move_window, workspace);
 
   if (focus_this)
     {
       meta_window_focus (focus_this,
                          meta_display_get_current_time (focus_this->display));
       meta_window_raise (focus_this);
+    }
+  else if (move_window)
+    {
+      meta_window_raise (move_window);
     }
   else
     {
