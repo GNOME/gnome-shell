@@ -23,16 +23,12 @@
 #define META_THEME_H
 
 #include "frames.h"
+#include "gradient.h"
 
 /* theme.[hc] is basically responsible for drawing parts of the UI using
  * theme data
  */
 
-typedef enum
-{
-  META_GRADIENT_VERTICAL,
-  META_GRADIENT_HORIZONTAL
-} MetaGradientType;
 
 GdkPixbuf* meta_theme_get_gradient (MetaGradientType  type,
                                     const GdkColor   *color_one,

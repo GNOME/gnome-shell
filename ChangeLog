@@ -1,3 +1,11 @@
+2002-01-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (meta_theme_get_gradient): change to use spiffy 
+	gradient code.
+
+	* src/gradient.c: copy lovely gradient code from WindowMaker,
+	as usual Dan and Alfredo have very nice code
+
 2002-01-06  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "tr" to the languages list.
@@ -9,7 +17,7 @@
 	dumb-looking
 
 	* src/theme.c: replace old theme.[hc] contents with newer stuff
-	that doesn't do anything 
+	that doesn't do anything
 	
 2002-01-05  Havoc Pennington  <hp@pobox.com>
 

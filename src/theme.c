@@ -21,8 +21,10 @@
 
 #include "theme.h"
 #include "util.h"
+#include "gradient.h"
 #include <string.h>
 
+#if 0
 /* fill_gradient routine from GNOME background-properties, CVS says
  * Michael Fulbright checked it in, Copyright 1998 Red Hat Inc.
  */
@@ -101,6 +103,7 @@ fill_gradient (GdkPixbuf       *pixbuf,
 
   g_free (row);
 }
+#endif
 
 typedef struct _CachedGradient CachedGradient;
 
@@ -236,8 +239,8 @@ meta_theme_get_gradient (MetaGradientType  type,
               "Requesting %s gradient one %d/%d/%d two %d/%d/%d "
               "%d x %d\n",
               type == META_GRADIENT_VERTICAL ? "vertical" : "horizontal",
-              color_one->red / 255, color_one->green / 255, color_one->blue / 255,
-              color_two->red / 255, color_two->green / 255, color_two->blue / 255,
+              color_one->red / 256, color_one->green / 256, color_one->blue / 256,
+              color_two->red / 256, color_two->green / 256, color_two->blue / 256,
               width, height);
   
   if (gradient_cache == NULL)
@@ -266,6 +269,7 @@ meta_theme_get_gradient (MetaGradientType  type,
       return cached->pixbuf;
     }
 
+#if 0
   gradient.pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
                                     gradient.width, gradient.height);
 
@@ -276,24 +280,50 @@ meta_theme_get_gradient (MetaGradientType  type,
                  gradient.width,
                  gradient.height,
                  0, 0);
+#else
+  gradient.pixbuf = meta_gradient_create_simple (gradient.width,
+                                                 gradient.height,
+                                                 &gradient.color_one,
+                                                 &gradient.color_two,
+                                                 type);
 
-  cached = g_new (CachedGradient, 1);
-  *cached = gradient;
+  if (gradient.pixbuf == NULL)
+    {
+      meta_topic (META_DEBUG_GRADIENT_CACHE,
+                  "Not enough memory to create gradient of size %d bytes\n",
+                  GRADIENT_SIZE (&gradient));
+      return NULL;
+    }
+#endif
   
-  g_hash_table_insert (gradient_cache, cached, cached);
+  if (GRADIENT_SIZE (&gradient) > MAX_CACHE_SIZE)
+    {
+      cached = g_new (CachedGradient, 1);
+      *cached = gradient;
+      
+      g_hash_table_insert (gradient_cache, cached, cached);
 
-  meta_topic (META_DEBUG_GRADIENT_CACHE,
-              "Caching newly-created gradient, size is %d bytes, total cache size %d bytes %d gradients, maximum %d bytes\n",
-              GRADIENT_SIZE (cached),
-              cache_size, g_hash_table_size (gradient_cache), MAX_CACHE_SIZE);
+      meta_topic (META_DEBUG_GRADIENT_CACHE,
+                  "Caching newly-created gradient, size is %d bytes, total cache size %d bytes %d gradients, maximum %d bytes\n",
+                  GRADIENT_SIZE (cached),
+                  cache_size, g_hash_table_size (gradient_cache), MAX_CACHE_SIZE);
   
-  cache_size += GRADIENT_SIZE (cached);
+      cache_size += GRADIENT_SIZE (cached);
+      
+      g_object_ref (G_OBJECT (cached->pixbuf)); /* to return to caller */
+      retval = cached->pixbuf;
 
-  g_object_ref (G_OBJECT (cached->pixbuf)); /* to return to caller */
-  retval = cached->pixbuf;
-  
-  if (cache_size > MAX_CACHE_SIZE)
-    expire_some_old_gradients (); /* may unref "cached->pixbuf" and free "cached" */
+      if (cache_size > MAX_CACHE_SIZE)
+        expire_some_old_gradients (); /* may unref "cached->pixbuf" and free "cached" */
+    }
+  else
+    {
+      meta_topic (META_DEBUG_GRADIENT_CACHE,
+                  "Gradient of size %d bytes is too large to cache\n",
+                  GRADIENT_SIZE (&gradient));
+
+      retval = gradient.pixbuf;
+    }
   
   return retval;
 }

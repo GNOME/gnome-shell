@@ -21,6 +21,8 @@ metacity_SOURCES= 				\
 	frame.h					\
 	frames.c				\
 	frames.h				\
+	gradient.c				\
+	gradient.h				\
 	inlinepixbufs.h				\
 	keybindings.c				\
 	keybindings.h				\
@@ -56,6 +58,12 @@ metacity_SOURCES= 				\
 bin_PROGRAMS=metacity
 
 metacity_LDADD= @METACITY_LIBS@
+
+testgradient_SOURCES=gradient.h gradient.c testgradient.c
+
+noinst_PROGRAMS=testgradient
+
+testgradient_LDADD= @METACITY_LIBS@
 
 desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_DATA=metacity.desktop

@@ -1758,41 +1758,42 @@ meta_frames_expose_event            (GtkWidget           *widget,
       layout_gc = widget->style->fg_gc[GTK_STATE_NORMAL];
       if (flags & META_FRAME_HAS_FOCUS)
         {
+          GdkPixbuf *gradient;
+
           layout_gc = widget->style->fg_gc[GTK_STATE_SELECTED];
 
-#if 0
-          /* Draw blue background */
-          gdk_draw_rectangle (frame->window,
-                              widget->style->bg_gc[GTK_STATE_SELECTED],
-                              TRUE,
-                              fgeom.title_rect.x,
-                              fgeom.title_rect.y,
-                              fgeom.title_rect.width,
-                              fgeom.title_rect.height);
-#else
-          {
-            GdkPixbuf *gradient;
+          gradient = meta_theme_get_gradient (META_GRADIENT_DIAGONAL,
+                                              &widget->style->bg[GTK_STATE_SELECTED],
+                                              &widget->style->bg[GTK_STATE_NORMAL],
+                                              fgeom.title_rect.width,
+                                              fgeom.title_rect.height);
 
-            gradient = meta_theme_get_gradient (META_GRADIENT_HORIZONTAL,
-                                                &widget->style->bg[GTK_STATE_SELECTED],
-                                                &widget->style->bg[GTK_STATE_NORMAL],
-                                                fgeom.title_rect.width,
-                                                fgeom.title_rect.height);
-
-            gdk_pixbuf_render_to_drawable (gradient,
-                                           frame->window,
-                                           widget->style->bg_gc[GTK_STATE_SELECTED],
-                                           0, 0,
-                                           fgeom.title_rect.x,
-                                           fgeom.title_rect.y,
-                                           fgeom.title_rect.width,
-                                           fgeom.title_rect.height,
-                                           GDK_RGB_DITHER_NORMAL,
-                                           0, 0);
-                                           
-            g_object_unref (G_OBJECT (gradient));            
-          }
-#endif
+          if (gradient != NULL)
+            {            
+              gdk_pixbuf_render_to_drawable (gradient,
+                                             frame->window,
+                                             widget->style->bg_gc[GTK_STATE_SELECTED],
+                                             0, 0,
+                                             fgeom.title_rect.x,
+                                             fgeom.title_rect.y,
+                                             fgeom.title_rect.width,
+                                             fgeom.title_rect.height,
+                                             GDK_RGB_DITHER_NORMAL,
+                                             0, 0);
+                
+              g_object_unref (G_OBJECT (gradient));
+            }
+          else
+            {
+              /* Fallback to plain selection color */
+              gdk_draw_rectangle (frame->window,
+                                  widget->style->bg_gc[GTK_STATE_SELECTED],
+                                  TRUE,
+                                  fgeom.title_rect.x,
+                                  fgeom.title_rect.y,
+                                  fgeom.title_rect.width,
+                                  fgeom.title_rect.height);
+            }
         }
 
       if (frame->layout)
