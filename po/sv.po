@@ -1,5 +1,5 @@
 # Swedish messages for metacity.
-# Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001, 2002.
 #
 # $Id$
@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-17 09:44+0100\n"
-"PO-Revision-Date: 2002-12-17 09:44+0100\n"
+"POT-Creation-Date: 2003-02-12 00:21+0100\n"
+"PO-Revision-Date: 2003-02-12 00:23+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:277
+#: src/display.c:283
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -81,27 +81,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:870
+#: src/keybindings.c:910
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -110,22 +110,23 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2317
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %"
 "s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2348
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
 #: src/main.c:64
+#, fuzzy
 msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
 "metacity [--disable-sm] [--sm-save-file=FILNAMN] [--display=DISPLAY] [--"
 "replace] [--version]\n"
@@ -200,7 +201,7 @@ msgstr "Placera på _alla arbetsytor"
 msgid "Only on _This Workspace"
 msgstr "Endast på _denna arbetsyta"
 
-#: src/menu.c:152 src/prefs.c:1750
+#: src/menu.c:152 src/prefs.c:1778
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
@@ -771,7 +772,7 @@ msgid ""
 "flash, and \"frame_flash\" which causes the titlebar of the application "
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focussed window's titlebar is flashed."
+"currently focused window's titlebar is flashed."
 msgstr ""
 "Talar om för Metacity hur den synliga indikeringen att systemsignalen eller "
 "en annan programsignal har ljudit ska implementeras. För tillfället finns "
@@ -1448,10 +1449,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Tangentbindningen som används för att flytta fokus baklänges mellan fönster "
-"utan ett popupfönster (traditionellt &lt;Alt&gt;Escape). Formatet ser ut som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
-"tillåtande och tillåter gemener och versaler och även förkortningar som "
-"\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
+"utan ett popupfönster. Att hålla \"skift\"-tangenten nedtryckt tillsammans "
+"med denna tangentbindning gör att riktningen går framåt igen. Formatet ser "
+"ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
+"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
+"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
 "specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
 "för denna åtgärd."
 
@@ -1466,10 +1468,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Tangentbindningen som används för att flytta fokus baklänges mellan fönster "
-"med ett popupfönster (traditionellt &lt;Alt&gt;Tab). Formatet ser ut som "
-"\"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
-"tillåtande och tillåter gemener och versaler och även förkortningar som "
-"\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
+"med ett popupfönster. Att hålla \"skift\"-tangenten nedtryckt tillsammans "
+"med denna tangentbindning gör att riktningen går framåt igen. Formatet ser "
+"ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
+"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
+"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
 "specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
 "för denna åtgärd."
 
@@ -1810,17 +1813,17 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "musknappsmodifierare\n"
 
-#: src/prefs.c:790 src/prefs.c:1192
+#: src/prefs.c:790 src/prefs.c:1200
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: src/prefs.c:914
+#: src/prefs.c:917
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: src/prefs.c:1099
+#: src/prefs.c:1102
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1829,7 +1832,7 @@ msgstr ""
 "%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt "
 "maxvärde är %d\n"
 
-#: src/prefs.c:1154
+#: src/prefs.c:1162
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1837,17 +1840,17 @@ msgstr ""
 "Fixar för trasiga program är inaktiverade. En del program fungerar kanske "
 "inte korrekt.\n"
 
-#: src/prefs.c:1219
+#: src/prefs.c:1227
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 
-#: src/prefs.c:1323
+#: src/prefs.c:1331
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: src/prefs.c:1541
+#: src/prefs.c:1569
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1856,7 +1859,7 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "tangentbindningen \"%s\"\n"
 
-#: src/prefs.c:1831
+#: src/prefs.c:1859
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -2844,15 +2847,15 @@ msgstr "Öppnade loggfilen %s\n"
 msgid "Window manager: "
 msgstr "Fönsterhanterare: "
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr "Fel i fönsterhanterare: "
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "Fönsterhanterarvarning: "
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr "Fönsterhanterarfel: "
 
@@ -2862,7 +2865,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4862
+#: src/window.c:4897
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2878,7 +2881,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5422
+#: src/window.c:5471
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2894,7 +2897,7 @@ msgid ""
 "Window 0x%lx has property %s\n"
 "that was expected to have type %s format %d\n"
 "and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug not a window manager bug.\n"
+"This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 "Fönster 0x%lx har egenskap %s\n"
@@ -2922,7 +2925,7 @@ msgstr ""
 #~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
 #~ "application which sent the bell signal to flash. If the application which "
 #~ "sent the bell is unknown (as is usually the case for the default \"system "
-#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ "beep\"), the currently focussed window's titlebar is flashed."
 #~ msgstr ""
 #~ "Talar om för Metacity hur den synliga indikeringen att systemsignalen "
 #~ "eller en annan programsignal har ljudit ska implementeras. För tillfället "
@@ -2936,7 +2939,7 @@ msgstr ""
 #~ "Window 0x%lx has property %s\n"
 #~ "that was expected to have type %s format %d\n"
 #~ "and actually has type %s format %d n_items %d.\n"
-#~ "This is most likely an application bug and not a window manager bug.\n"
+#~ "This is most likely an application bug not a window manager bug.\n"
 #~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 #~ msgstr ""
 #~ "Fönster 0x%lx har egenskap %s\n"
@@ -2950,7 +2953,7 @@ msgstr ""
 #~ "Window 0x%lx has property %s\n"
 #~ "that was expected to have type %s format %d\n"
 #~ "and actually has type %s format %d n_items %d.\n"
-#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "This is most likely an application bug and not a window manager bug.\n"
 #~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 #~ msgstr ""
 #~ "Fönster 0x%lx har egenskap %s\n"
