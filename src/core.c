@@ -586,16 +586,16 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
       name = META_KEYBINDING_MAXIMIZE;
       break;
     case META_MENU_OP_UNSHADE:
-      name = META_KEYBINDING_TOGGLE_SHADE;
-      break;
     case META_MENU_OP_SHADE:
       name = META_KEYBINDING_TOGGLE_SHADE;
       break;
     case META_MENU_OP_UNSTICK:
-      name = META_KEYBINDING_TOGGLE_STICKY;
-      break;
     case META_MENU_OP_STICK:
       name = META_KEYBINDING_TOGGLE_STICKY;
+      break;
+    case META_MENU_OP_ABOVE:
+    case META_MENU_OP_UNABOVE:
+      name = META_KEYBINDING_TOGGLE_ABOVE;
       break;
     case META_MENU_OP_WORKSPACES:
       switch (workspace)
@@ -643,6 +643,18 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
       break;
     case META_MENU_OP_RESIZE:
       name = META_KEYBINDING_BEGIN_RESIZE;
+      break;
+    case META_MENU_OP_MOVE_LEFT:
+      name = META_KEYBINDING_MOVE_WORKSPACE_LEFT;
+      break;
+    case META_MENU_OP_MOVE_RIGHT:
+      name = META_KEYBINDING_MOVE_WORKSPACE_RIGHT;
+      break;
+    case META_MENU_OP_MOVE_UP:
+      name = META_KEYBINDING_MOVE_WORKSPACE_UP;
+      break;
+    case META_MENU_OP_MOVE_DOWN:
+      name = META_KEYBINDING_MOVE_WORKSPACE_DOWN;
       break;
     }
 

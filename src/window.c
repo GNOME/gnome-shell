@@ -5518,9 +5518,11 @@ menu_callback (MetaWindowMenu *menu,
 {
   MetaDisplay *display;
   MetaWindow *window;
+  MetaWorkspace *workspace;
   
   display = meta_display_for_x_display (xdisplay);
   window = meta_display_lookup_x_window (display, client_xwindow);
+  workspace = NULL;
   
   if (window != NULL) /* window can be NULL */
     {
@@ -5553,26 +5555,29 @@ menu_callback (MetaWindowMenu *menu,
           meta_window_shade (window);
           break;
       
+        case META_MENU_OP_MOVE_LEFT:
+          workspace = meta_workspace_get_neighbor (window->screen->active_workspace,
+                                                   META_MOTION_LEFT);
+          break;
+
+        case META_MENU_OP_MOVE_RIGHT:
+          workspace = meta_workspace_get_neighbor (window->screen->active_workspace,
+                                                   META_MOTION_RIGHT);
+          break;
+
+        case META_MENU_OP_MOVE_UP:
+          workspace = meta_workspace_get_neighbor (window->screen->active_workspace,
+                                                   META_MOTION_UP);
+          break;
+
+        case META_MENU_OP_MOVE_DOWN:
+          workspace = meta_workspace_get_neighbor (window->screen->active_workspace,
+                                                   META_MOTION_DOWN);
+          break;
+
         case META_MENU_OP_WORKSPACES:
-          {
-            MetaWorkspace *workspace;
-
-            workspace =
-              meta_screen_get_workspace_by_index (window->screen,
-                                                  workspace_index);
-
-            if (workspace)
-              {
-                meta_window_change_workspace (window,
-                                              workspace);
-#if 0
-                meta_workspace_activate (workspace);
-                meta_window_raise (window);
-#endif
-              }
-            else
-              meta_warning ("Workspace %d doesn't exist\n", workspace_index);
-          }
+          workspace = meta_screen_get_workspace_by_index (window->screen,
+                                                          workspace_index);
           break;
 
         case META_MENU_OP_STICK:
@@ -5581,6 +5586,14 @@ menu_callback (MetaWindowMenu *menu,
 
         case META_MENU_OP_UNSTICK:
           meta_window_unstick (window);
+          break;
+
+        case META_MENU_OP_ABOVE:
+          meta_window_make_above (window);
+          break;
+
+        case META_MENU_OP_UNABOVE:
+          meta_window_unmake_above (window);
           break;
 
         case META_MENU_OP_MOVE:
@@ -5603,6 +5616,16 @@ menu_callback (MetaWindowMenu *menu,
           meta_warning (G_STRLOC": Unknown window op\n");
           break;
         }
+
+      if (workspace)
+	{
+	  meta_window_change_workspace (window,
+					workspace);
+#if 0
+	  meta_workspace_activate (workspace);
+	  meta_window_raise (window);
+#endif
+	}
     }
   else
     {
@@ -5628,6 +5651,7 @@ meta_window_show_menu (MetaWindow *window,
   MetaMenuOp ops;
   MetaMenuOp insensitive;
   MetaWindowMenu *menu;
+  MetaWorkspaceLayout layout;
   
   if (window->display->window_menu)
     {
@@ -5640,21 +5664,42 @@ meta_window_show_menu (MetaWindow *window,
   insensitive = 0;
 
   ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE | META_MENU_OP_MOVE | META_MENU_OP_RESIZE);
+
+  meta_screen_calc_workspace_layout (window->screen,
+                                     meta_screen_get_n_workspaces (window->screen),
+                                     meta_workspace_index ( window->screen->active_workspace),
+                                     &layout);
+
+  if (layout.current_col > 0)
+    ops |= META_MENU_OP_MOVE_LEFT;
+  if (layout.current_col < layout.cols - 1)
+    ops |= META_MENU_OP_MOVE_RIGHT;
+  if (layout.current_row > 0)
+    ops |= META_MENU_OP_MOVE_UP;
+  if (layout.current_row < layout.rows - 1)
+    ops |= META_MENU_OP_MOVE_DOWN;
   
   if (window->maximized)
     ops |= META_MENU_OP_UNMAXIMIZE;
   else
     ops |= META_MENU_OP_MAXIMIZE;
   
+#if 0
   if (window->shaded)
     ops |= META_MENU_OP_UNSHADE;
   else
     ops |= META_MENU_OP_SHADE;
+#endif
 
   if (window->on_all_workspaces)
     ops |= META_MENU_OP_UNSTICK;
   else
     ops |= META_MENU_OP_STICK;
+  
+  if (window->wm_state_above)
+    ops |= META_MENU_OP_UNABOVE;
+  else
+    ops |= META_MENU_OP_ABOVE;
   
   if (!window->has_maximize_func)
     insensitive |= META_MENU_OP_UNMAXIMIZE | META_MENU_OP_MAXIMIZE;

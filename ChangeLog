@@ -1,3 +1,31 @@
+2003-12-20  Rob Adams  <readams@readams.net>
+
+	Reorganize the window menu according to discussion on #110904.
+	The workspace name mnemonic chunk of the patch is thanks to
+	Jonathan Blandford.
+	
+	* src/common.h: add MENU_OP_ABOVE, MENU_OP_UNABOVE, MENU_UP_MOVE_TO_*
+	menu ops.
+
+	* src/core.c (meta_core_get_menu_accelerator): add accelerator for
+	the new menu ops.
+
+	* src/menu.c: add checked attribute in _MenuItem struct to display
+	a checkmark next to a menu item.  Add the new menu items to
+	menuitems.
+	(get_workspace_name_with_accel): Add mnemonics even to renamed
+	workspaces.
+	(menu_item_new): provide support for the checked attribute
+	(meta_window_menu_new): construct new submenu for workspace
+	switching.
+
+	* src/window.c (menu_callback): implement support for the new menu
+	ops.
+	(meta_window_show_menu): don't use the OP_*SHAPE operations, and
+	compute which of the OP_MOVE_TO_* ops should be used for the
+	current workspace and workspace layout.  Add the OP_*ABOVE
+	operations.
+	
 2003-12-20  Arafat Medini <lumina@silverpen.de>
 
 	* configure.in: Added Arabic locale "ar" to ALL_LINGUAS
