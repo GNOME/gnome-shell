@@ -1,3 +1,7 @@
+2002-08-17  Evandro Fernandes Giovanini <evandrofg@ig.com.br>
+
+	* configure.in (ALL_LINGUAS): Added Brazilian Portuguese (pt_BR).
+
 2002-08-15  Havoc Pennington  <hp@redhat.com>
 
 	* src/metacity.schemas.in: default to "Sans Bold 10" for the
