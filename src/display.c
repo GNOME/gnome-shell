@@ -200,7 +200,7 @@ meta_display_open (const char *name)
     "_NET_WM_STATE_HIDDEN",
     "_NET_WM_WINDOW_TYPE_UTILITY",
     "_NET_WM_WINDOW_TYPE_SPLASHSCREEN",
-    "_NET_WM_STATE_FULLSCREEN"
+    "_NET_WM_STATE_FULLSCREEN",
     "_NET_WM_PING",
     "_NET_WM_PID",
     "WM_CLIENT_MACHINE"

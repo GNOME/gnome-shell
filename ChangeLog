@@ -1,5 +1,15 @@
 2002-03-02  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (recalc_window_features): disable resize etc. if
+	we're fullscreen
+	(constrain_size): fix size constraints when fullscreen
+
+	* src/display.c (meta_display_open): fix missing comma that
+	ended up concatenating two of the properties breaking 
+	FULLSCREEN state and PING protocol
+
+2002-03-02  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c: Add hacking to fix the problem that we made our
 	XGrabPointer() during Alt+Tab actually succeed, so on popping down
 	Alt+Tab we got an EnterNotify from the ungrab, which resulted in

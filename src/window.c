@@ -4606,7 +4606,7 @@ recalc_window_features (MetaWindow *window)
       window->has_move_func = FALSE;
       window->has_resize_func = FALSE;
     }
-
+  
   if (window->type != META_WINDOW_NORMAL)
     {
       window->has_minimize_func = FALSE;
@@ -4614,6 +4614,17 @@ recalc_window_features (MetaWindow *window)
       window->has_fullscreen_func = FALSE;
     }
 
+  /* We leave fullscreen windows decorated, just push the frame outside
+   * the screen. This avoids flickering to unparent them.
+   */
+  if (window->fullscreen)
+    {
+      window->has_shade_func = FALSE;
+      window->has_move_func = FALSE;
+      window->has_resize_func = FALSE;
+      window->has_maximize_func = FALSE;
+    }
+  
   /* If min_size == max_size, then don't allow resize */
   if (window->size_hints.min_width == window->size_hints.max_width &&
       window->size_hints.min_height == window->size_hints.max_height)
@@ -4684,7 +4695,7 @@ constrain_size (MetaWindow *window,
   maxw = window->size_hints.max_width;
   maxh = window->size_hints.max_height;
   
-  if (window->maximized)
+  if (window->maximized || window->fullscreen)
     {
       maxw = MIN (maxw, fullw);
       maxh = MIN (maxh, fullh);
@@ -4701,7 +4712,7 @@ constrain_size (MetaWindow *window,
   if (maxh < minh)
     maxh = minh;
   
-  if (window->maximized)
+  if (window->maximized || window->fullscreen)
     {
       minw = MAX (minw, fullw);
       minh = MAX (minh, fullh);
