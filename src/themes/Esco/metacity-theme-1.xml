@@ -398,11 +398,11 @@
 </draw_ops>
 
 <draw_ops name="title_background">
-	<rectangle color="#ffffff" filled="true"
-		x="width - title_width - IconTitleSpacing + (height / 2) + height"
-		y="0"
-		width="width"
-		height="height"/>
+	<line color="#ffffff" width="100"
+		x1="width - title_width - IconTitleSpacing + (height / 2) + height"
+		y1="height / 2"
+		x2="width"
+		y2="height / 2"/>
 	<line color="#ffffff" width="48"
 		x1="width - title_width + (height / 2) + (height * 2)"
 		y1="0 - height"
