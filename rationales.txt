@@ -24,6 +24,10 @@ raise windows on click:
   http://bugzilla.gnome.org/show_bug.cgi?id=115072
   http://bugzilla.gnome.org/show_bug.cgi?id=115753
 
+Some discussion of how pointer focus is inherently a bit buggy because
+of the "sometimes focus window that isn't under the mouse" heuristics:
+  http://bugzilla.gnome.org/show_bug.cgi?id=124798
+  (there are some other bugs that may have better explanation)
 
 Tracking bugs
 ====
