@@ -46,11 +46,11 @@
  * A constraint that the position can't go above the top panel would
  * look like this:
  *
- *   new_y > screen_top_bound
+ *   new_y >= screen_top_bound
  *
  * Substitute:
  *
- *   orig_y + dy > screen_top_bound
+ *   orig_y + dy >= screen_top_bound
  *
  * Find the "boundary point" by changing to an equality:
  *
@@ -60,11 +60,11 @@
  *
  *   dy = screen_top_bound - orig_y
  *
- * Plug that back into the size/position computations:
+ * This dy is now the _maximum_ dy and you constrain dy with that
+ * value, applying it to both the move and the resize:
  *
- *   new_y = orig_y + screen_top_bound - orig_y
- *   new_y = screen_top_bound
- *   new_height = orig_height - screen_top_bound + orig_y;
+ *   new_height = orig_height - dy;
+ *   new_y      = orig_y + dy;
  * 
  * This way the constraint is applied simultaneously to size/position,
  * so you aren't running the risk of constraining one but still
@@ -91,7 +91,10 @@
  * to the requested ref. point but at its current size, without
  * applying any constraints. Then we constrain it with the top and
  * left edges as the edges that vary, with a dx/dy that are the delta
- * from the current size to the requested size. 
+ * from the current size to the requested size.
+ *
+ * This method applies to any ConfigureRequest that does a simultaneous
+ * move/resize.
  *
  */
 
@@ -100,18 +103,20 @@ typedef void (* MetaConstraintFunc) (MetaWindow          *window,
                                      const MetaRectangle *orig,
                                      MetaRectangle       *new);
 
-enum
-{
-  VERTICAL_TOP,
-  VERTICAL_BOTTOM,
-  VERTICAL_CENTER
-};
 
+/* Things we can move, constraints apply
+ * in the context of these dimensions
+ */
 enum
 {
-  HORIZONTAL_LEFT,
-  HORIZONTAL_RIGHT,
-  HORIZONTAL_CENTER
+  RESIZE_TOP,
+  RESIZE_BOTTOM,
+  RESIZE_LEFT,
+  RESIZE_RIGHT,
+  RESIZE_VERTICAL_CENTER,
+  RESIZE_HORIZONTAL_CENTER,
+  MOVE_VERTICAL,
+  MOVE_HORIZONTAL
 };
 
 /* Maximization constraint:
@@ -122,18 +127,86 @@ enum
  *  new_h = workarea_h - frame_top - frame_bottom
  *
  * No need to do anything hard because it just locks specific
- * size/pos
+ * size/pos.
+ *
+ * The min/max size constraints override maximization.
+ */
+
+/* Full screen constraint:
+ *
+ * new_x = 0;
+ * new_y = 0;
+ * new_w = xinerama_width;
+ * new_h = xinerama_height;
+ *
+ * The min/max size constraints override fullscreen.
+ */
+
+/* Titlebar is onscreen constraint:
+ *
+ * Constants:
+ *  titlebar_width_onscreen = amount of titlebar width that has to be onscreen
+ *  nw_x, nw_y = left/top edges that titlebar can't go outside
+ *  se_x, se_y = right/bottom edges
+ *
+ * NW limit has priority over SE, since titlebar is on NW
+ *
+ * RESIZE_LEFT:
+ *   new_width = orig_width + dx
+ *   new_x = orig_x - dx
+ * 
+ *   new_x >= nw_x - (left_width + new_width + right_width - titlebar_width_onscreen)
+ *
+ *   orig_x - dx >= nw_x - (left_width + orig_width + dx + right_width - titlebar_width_onscreen)
+ *   0 >= nw_x - left_width - orig_width - right_width + titlebar_width_onscreen - orig_x
+ *
+ *   i.e. dx drops out so there is no constraint at all when moving left edge.
+ *
+ * RESIZE_RIGHT and RESIZE_BOTTOM are the same, cannot break this constraint
+ * by moving in those directions.
+ *
+ * RESIZE_TOP:
+ *
+ *  new_height = orig_height - dy
+ *  new_y      = orig_y + dy
+ *
+ * Can't move titlebar off the top at all regardless of height:
+ *  new_y >= nw_y + top_height
+ *
+ *  orig_y + dy = nw_y + top_height
+ *  dy = nw_y + top_height - orig_y
+ *
+ * Max dy is thus (nw_y + top_height - orig_y)
+ *
+ * RESIZE_VERTICAL_CENTER:
+ *
+ *    
+ *       
+ *   
  */
 
 void
 meta_window_constrain (MetaWindow          *window,
-                       MetaFrameGeometry   *fgeom,
+                       MetaFrameGeometry   *orig_fgeom,
                        int                  resize_gravity,
                        const MetaRectangle *orig,
                        MetaRectangle       *new)
 {
+  MetaFrameGeometry fgeom;
 
+  /* Create a fake frame geometry if none really exists */
+  if (orig_fgeom)
+    fgeom = *orig_fgeom;
+  else
+    {
+      fgeom.top_height = 0;
+      fgeom.bottom_height = 0;
+      fgeom.left_width = 0;
+      fgeom.right_width = 0;
+    }
 
+  
+  
 
 }
 
