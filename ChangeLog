@@ -1,3 +1,7 @@
+2004-03-27  Tõivo Leedjärv  <toivo@linux.ee>
+
+	* configure.in: Added et to ALL_LINGUAS.
+
 2004-03-24  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "pa" (Punjabi) to ALL_LINGUAS.
