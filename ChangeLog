@@ -1,3 +1,21 @@
+2004-10-13  Vincent Untz  <vincent@vuntz.net>
+
+	Add a keybinding to launch a terminal
+
+	* src/keybindings.c: (handle_run_terminal): new function,
+	(error_on_generic_command): new function, (error_on_command): wrapper
+	around error_on_generic_command(), (error_on_terminal_command): new
+	function
+
+	* src/metacity.schemas.in: add run_command_terminal key
+
+	* src/prefs.[ch]: (meta_prefs_init): cache the terminal command and
+	register a gconf callback to update it, (change_notify): handle the
+	notification of terminal command changes, (meta_preference_to_string):
+	add the terminal command case, (update_terminal_command): new function,
+	(meta_prefs_get_terminal_command): new function,
+	(meta_prefs_get_gconf_key_for_terminal_command): new function
+
 2004-10-11  Rob Adams  <readams@readams.net>
 
 	* configure.in: bump version to 2.9.0.  Add UNSTABLE warning.

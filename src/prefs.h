@@ -41,6 +41,7 @@ typedef enum
   META_PREF_SCREEN_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
   META_PREF_COMMANDS,
+  META_PREF_TERMINAL_COMMAND,
   META_PREF_BUTTON_LAYOUT,
   META_PREF_WORKSPACE_NAMES,
   META_PREF_VISUAL_BELL,
@@ -75,6 +76,9 @@ gboolean                    meta_prefs_get_reduced_resources  (void);
 const char*                 meta_prefs_get_command            (int i);
 
 char*                       meta_prefs_get_gconf_key_for_command (int i);
+
+const char*                 meta_prefs_get_terminal_command   (void);
+const char*                 meta_prefs_get_gconf_key_for_terminal_command (void);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 MetaActionDoubleClickTitlebar meta_prefs_get_action_double_click_titlebar (void);
@@ -147,6 +151,7 @@ void        meta_prefs_change_workspace_name (int         i,
 #define META_KEYBINDING_COMMAND_32               "run_command_32"
 #define META_KEYBINDING_COMMAND_SCREENSHOT       "run_command_screenshot"
 #define META_KEYBINDING_COMMAND_WIN_SCREENSHOT   "run_command_window_screenshot"
+#define META_KEYBINDING_RUN_COMMAND_TERMINAL     "run_command_terminal"
 
 /* Window bindings */
 #define META_KEYBINDING_WINDOW_MENU              "activate_window_menu"

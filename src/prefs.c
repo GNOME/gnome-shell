@@ -54,6 +54,9 @@
 #define KEY_REDUCED_RESOURCES "/apps/metacity/general/reduced_resources"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
+
+#define KEY_TERMINAL_COMMAND "/desktop/gnome/applications/terminal/exec"
+
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 
@@ -105,6 +108,8 @@ static MetaButtonLayout button_layout = {
 /* The screenshot commands are at the end */
 static char *commands[MAX_COMMANDS] = { NULL, };
 
+static char *terminal_command = NULL;
+
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
 #ifdef HAVE_GCONF
@@ -130,6 +135,7 @@ static gboolean update_binding            (MetaKeyPref *binding,
                                            const char  *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
+static gboolean update_terminal_command   (const char *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
 static gboolean update_reduced_resources  (gboolean     value);
@@ -395,6 +401,12 @@ meta_prefs_init (void)
 				    &err);
   cleanup_error (&err);
   update_reduced_resources (bool_val);
+
+  str_val = gconf_client_get_string (default_client, KEY_TERMINAL_COMMAND,
+                                     &err);
+  cleanup_error (&err);
+  update_terminal_command (str_val);
+  g_free (str_val);
 #endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
@@ -408,6 +420,11 @@ meta_prefs_init (void)
 
 #ifdef HAVE_GCONF
   gconf_client_notify_add (default_client, "/apps/metacity",
+                           change_notify,
+                           NULL,
+                           NULL,
+                           &err);
+  gconf_client_notify_add (default_client, KEY_TERMINAL_COMMAND,
                            change_notify,
                            NULL,
                            NULL,
@@ -678,6 +695,22 @@ change_notify (GConfClient    *client,
 
       if (update_command (key, str))
         queue_changed (META_PREF_COMMANDS);
+    }
+  else if (strcmp (key, KEY_TERMINAL_COMMAND) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_TERMINAL_COMMAND);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_terminal_command (str))
+        queue_changed (META_PREF_TERMINAL_COMMAND);
     }
   else if (str_has_prefix (key, KEY_WORKSPACE_NAME_PREFIX))
     {
@@ -1335,6 +1368,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_COMMANDS:
       return "COMMANDS";
 
+    case META_PREF_TERMINAL_COMMAND:
+      return "TERMINAL_COMMAND";
+
     case META_PREF_BUTTON_LAYOUT:
       return "BUTTON_LAYOUT";
       break;
@@ -1457,6 +1493,7 @@ static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_COMMAND_32, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_SCREENSHOT, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, 0, 0, FALSE },
+  { META_KEYBINDING_RUN_COMMAND_TERMINAL, 0, 0, FALSE },
   { NULL, 0, 0, FALSE}
 };
 
@@ -1776,6 +1813,31 @@ update_command (const char  *name,
   
   return TRUE;
 }
+
+static gboolean
+update_terminal_command (const char *value)
+{
+  char *old_terminal_command;
+  gboolean changed;
+  
+  old_terminal_command = terminal_command;
+  
+  if (value != NULL && *value)
+    {
+      terminal_command = g_strdup (value);
+    }
+
+  changed = TRUE;
+  if ((old_terminal_command && terminal_command &&
+       strcmp (old_terminal_command, terminal_command) == 0) ||
+      (old_terminal_command == NULL && terminal_command == NULL))
+    changed = FALSE;
+
+  if (old_terminal_command != terminal_command)
+    g_free (old_terminal_command);
+
+  return changed;
+}
 #endif /* HAVE_GCONF */
 
 const char*
@@ -1805,6 +1867,18 @@ meta_prefs_get_gconf_key_for_command (int i)
     }
   
   return key;
+}
+
+const char*
+meta_prefs_get_terminal_command (void)
+{
+  return terminal_command;
+}
+
+const char*
+meta_prefs_get_gconf_key_for_terminal_command (void)
+{
+  return KEY_TERMINAL_COMMAND;
 }
 
 #ifdef HAVE_GCONF

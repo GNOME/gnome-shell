@@ -184,6 +184,11 @@ static void handle_maximize_horiz     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_run_terminal       (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 
 /* debug */
 static void handle_spew_mark          (MetaDisplay *display,
@@ -357,6 +362,8 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (32) },
   { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, handle_run_command,
     GINT_TO_POINTER (33) },
+  { META_KEYBINDING_RUN_COMMAND_TERMINAL, handle_run_terminal,
+    NULL },
   { NULL, NULL, NULL }
 };
   
@@ -2483,23 +2490,17 @@ handle_activate_workspace (MetaDisplay    *display,
 }
 
 static void
-error_on_command (int         command_index,
-                  const char *command,
-                  const char *message,
-                  int         screen_number,
-                  Time        timestamp)
+error_on_generic_command (const char *key,
+                          const char *command,
+                          const char *message,
+                          int         screen_number,
+                          Time        timestamp)
 {
   GError *err;
   char *argv[10];
-  char *key;
   char numbuf[32];
   char timestampbuf[32];
   
-  meta_warning ("Error on command %d \"%s\": %s\n",
-                command_index, command, message);  
-
-  key = meta_prefs_get_gconf_key_for_command (command_index);
-
   sprintf (numbuf, "%d", screen_number);
   sprintf (timestampbuf, "%lu", timestamp);
   
@@ -2530,8 +2531,39 @@ error_on_command (int         command_index,
                     err->message);
       g_error_free (err);
     }
+}
+
+static void
+error_on_command (int         command_index,
+                  const char *command,
+                  const char *message,
+                  int         screen_number,
+                  Time        timestamp)
+{
+  char *key;
+  
+  meta_warning ("Error on command %d \"%s\": %s\n",
+                command_index, command, message);  
+
+  key = meta_prefs_get_gconf_key_for_command (command_index);
+
+  error_on_generic_command (key, command, message, screen_number, timestamp);
   
   g_free (key);
+}
+
+error_on_terminal_command (const char *command,
+                           const char *message,
+                           int         screen_number,
+                           Time        timestamp)
+{
+  char *key;
+  
+  meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
+
+  key = meta_prefs_get_gconf_key_for_terminal_command ();
+
+  error_on_generic_command (key, command, message, screen_number, timestamp);
 }
 
 static void
@@ -3408,4 +3440,41 @@ meta_set_keybindings_disabled (gboolean setting)
   all_bindings_disabled = setting;
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
+}
+
+static void
+handle_run_terminal (MetaDisplay    *display,
+                     MetaScreen     *screen,
+                     MetaWindow     *window,
+                     XEvent         *event,
+                     MetaKeyBinding *binding)
+{
+  const char *command;
+  GError *err;
+  
+  command = meta_prefs_get_terminal_command ();
+
+  if (command == NULL)
+    {
+      char *s;
+
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "No terminal command to run in response to "
+		  "keybinding press\n");
+      
+      s = g_strdup_printf (_("No terminal command has been defined.\n"));
+      error_on_terminal_command (NULL, s, screen->number, event->xkey.time);
+      g_free (s);
+      
+      return;
+    }
+
+  err = NULL;
+  if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
+    {
+      error_on_terminal_command (command, err->message, screen->number,
+		      		 event->xkey.time);
+      
+      g_error_free (err);
+    }
 }
