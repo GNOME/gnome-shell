@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: evolution 0.13\n"
-"POT-Creation-Date: 2001-10-13 23:35+0200\n"
+"POT-Creation-Date: 2001-10-27 22:15+0200\n"
 "PO-Revision-Date: 2001-10-13 22:43+0200\n"
 "Last-Translator: Héctor García Álvarez <hector@scouts-es.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 #: src/errors.c:99
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "Error fatal de ES %s (%s) en la pantalla '%s'.\n"
 
 #: src/frames.c:229
 msgid "Left edge"
@@ -42,23 +42,23 @@ msgstr "Ancho del borde izquierdo de la ventana"
 
 #: src/frames.c:230
 msgid "Right edge"
-msgstr ""
+msgstr "Borde derecho"
 
 #: src/frames.c:230
 msgid "Right window edge width"
-msgstr ""
+msgstr "Anchura del borde derecho de la ventana"
 
 #: src/frames.c:231
 msgid "Bottom edge"
-msgstr ""
+msgstr "Borde inferior"
 
 #: src/frames.c:231
 msgid "Bottom window edge height"
-msgstr ""
+msgstr "Altura del borde inferior de la ventana"
 
 #: src/frames.c:233
 msgid "Title border"
-msgstr ""
+msgstr "Borde del título"
 
 #: src/frames.c:233
 msgid "Border around title area"
@@ -66,11 +66,11 @@ msgstr ""
 
 #: src/frames.c:234
 msgid "Text border"
-msgstr ""
+msgstr "Borde del texto"
 
 #: src/frames.c:234
 msgid "Border around window title text"
-msgstr ""
+msgstr "Borde alrededor del texto del título de la ventana"
 
 #: src/frames.c:236
 msgid "Spacer padding"
@@ -103,7 +103,7 @@ msgstr ""
 
 #: src/frames.c:241
 msgid "Distance of buttons from right edge of frame"
-msgstr ""
+msgstr "Distacia de los botones al borde derecho"
 
 #: src/frames.c:242
 msgid "Left inset"
@@ -111,82 +111,84 @@ msgstr ""
 
 #: src/frames.c:242
 msgid "Distance of menu button from left edge of frame"
-msgstr ""
+msgstr "Distacia del menu al borde izquierdo"
 
 #: src/frames.c:244
 msgid "Button width"
-msgstr ""
+msgstr "Anchura del botón"
 
 #: src/frames.c:244
 msgid "Width of buttons"
-msgstr ""
+msgstr "Anchura de los botones"
 
 #: src/frames.c:245
 msgid "Button height"
-msgstr ""
+msgstr "Altura del botón"
 
 #: src/frames.c:245
 msgid "Height of buttons"
-msgstr ""
+msgstr "Altura de los botones"
 
 #: src/frames.c:247
 msgid "Button border"
-msgstr ""
+msgstr "Borde del botón"
 
 #: src/frames.c:247
 msgid "Border around buttons"
-msgstr ""
+msgstr "Borde alrededor de los botones"
 
 #: src/frames.c:248
 msgid "Inner button border"
-msgstr ""
+msgstr "Borde interior del botón"
 
 #: src/frames.c:248
 msgid "Border around the icon inside buttons"
-msgstr ""
-
-#: src/frames.c:883
-msgid "Close Window"
-msgstr ""
-
-#: src/frames.c:886
-msgid "Window Menu"
-msgstr ""
+msgstr "Borde alrededor del icono dentro del botón"
 
 #: src/frames.c:889
-msgid "Minimize Window"
-msgstr ""
+msgid "Close Window"
+msgstr "Cerrar ventana"
 
 #: src/frames.c:892
-msgid "Maximize Window"
-msgstr ""
+msgid "Window Menu"
+msgstr "Menú de la ventana"
 
 #: src/frames.c:895
-msgid "Unmaximize Window"
-msgstr ""
+msgid "Minimize Window"
+msgstr "Minimizar ventana"
 
-#: src/keybindings.c:203
+#: src/frames.c:898
+msgid "Maximize Window"
+msgstr "Maximizar ventana"
+
+#: src/frames.c:901
+msgid "Unmaximize Window"
+msgstr "Des-maximizar ventana"
+
+#: src/keybindings.c:210
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
+"Algún otro programa está usando la clave %s con el modificador %s como "
+"referencia\n"
 
 #: src/menu.c:47
 msgid "_Close"
-msgstr ""
+msgstr "_Cerrar"
 
 #: src/menu.c:48
 msgid "_Minimize"
-msgstr ""
+msgstr "_Minimizar"
 
 #: src/menu.c:49
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximizar"
 
 #: src/menu.c:50
 msgid "_Unmaximize"
-msgstr ""
+msgstr "_Des-maximizar"
 
 #: src/menu.c:51
 msgid "_Shade"
@@ -198,99 +200,104 @@ msgstr ""
 
 #: src/menu.c:53
 msgid "Mo_ve"
-msgstr ""
+msgstr "Mo_ver"
 
 #: src/menu.c:54
 msgid "_Resize"
-msgstr ""
+msgstr "_Redimensionar"
 
 #. separator
 #: src/menu.c:56
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "Poner en todas l_as areas de trabajo"
 
 #: src/menu.c:57
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "Poner en es_te area de trabajo"
 
 #: src/menu.c:260
 #, c-format
 msgid "Only on workspace _%d"
-msgstr ""
+msgstr "Solo en el area de trabajo _%d"
 
 #: src/menu.c:263
 #, c-format
 msgid "Move to workspace _%d"
-msgstr ""
+msgstr "Mover al area de trabajo _%d"
 
 #: src/screen.c:168
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "La ventana %d en la patalla '%s' no es válida\n"
 
 #: src/screen.c:183
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr ""
+msgstr "La ventana %d en la patalla '%s' ya tiene un gestor de ventanas\n"
 
-#: src/session.c:751 src/session.c:758
+#: src/session.c:746 src/session.c:753
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "No pude crear el directorio '%s': %s\n"
 
-#: src/session.c:768
+#: src/session.c:763
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "No pude abrir el archivo de sesión '%s'para escritura: %s\n"
+
+#: src/session.c:895
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Error escribiendo el archivo de sesión '%s': %s\n"
 
 #: src/session.c:900
 #, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr ""
-
-#: src/session.c:905
-#, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "Error cerrando el archivo de sesión '%s': %s\n"
 
-#: src/session.c:979
+#: src/session.c:974
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Error al leer el archivo de sesión guardado %s: %s\n"
 
-#: src/session.c:1013
+#: src/session.c:1008
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Error al parsear el archivo de sesión guardado: %s\n"
 
-#: src/session.c:1051
+#: src/session.c:1046
 msgid "nested <window> tag"
 msgstr ""
 
-#: src/session.c:1101 src/session.c:1133
+#: src/session.c:1096 src/session.c:1128
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr ""
 
-#: src/session.c:1193
+#: src/session.c:1188
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr ""
 
-#: src/session.c:1213
+#: src/session.c:1208
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Elemento desconocido %s"
 
 #. someone is on crack
-#: src/window.c:2852
+#: src/window.c:2881
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
+"La ventana %s pone su anchura máxima %d menor que la mínima %d, "
+"deshabilitando el redimensionado\n"
 
 #. another cracksmoker
-#: src/window.c:2862
+#: src/window.c:2891
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
 msgstr ""
+"La ventana %s pone su altura máxima %d menor que la mínima %d, deshabilitando "
+"el redimensionado\n"
+
