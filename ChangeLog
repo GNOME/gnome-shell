@@ -1,5 +1,15 @@
 2003-08-20  Rob Adams  <robadams@ucla.edu>
 
+	Complete the transition to using the MRU window as the default
+	focus window instead of the topmost window; fixes a number of
+	problems with sloppy focus and utility windows.  See #112031.
+
+	* src/window.c (meta_window_free): call
+	meta_workspace_focus_mru_window
+	(meta_window_minimize): call meta_workspace_focus_mru_window
+
+2003-08-20  Rob Adams  <robadams@ucla.edu>
+
 	* src/constraints.c (meta_window_constrain): do northwest resize
 	when maximizing and fullscreening to avoid potential "off-by-one"
 	problems.
