@@ -1,3 +1,7 @@
+2002-10-18  Andras Timar  <timar@gnome.hu>
+
+	* configure.in: Added hu to ALL_LINGUAS.
+
 2002-10-18  Havoc Pennington  <hp@pobox.com>
 
 	* src/stack.c (constrain_stacking): replace the old
