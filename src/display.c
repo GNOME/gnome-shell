@@ -34,7 +34,6 @@
 #include "prefs.h"
 #include "resizepopup.h"
 #include "workspace.h"
-#include "bell.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
 #ifdef HAVE_SOLARIS_XINERAMA
@@ -42,9 +41,6 @@
 #endif
 #ifdef HAVE_XFREE_XINERAMA
 #include <X11/extensions/Xinerama.h>
-#endif
-#ifdef HAVE_XKB
-#include <X11/XKBlib.h>
 #endif
 #include <string.h>
 
@@ -308,8 +304,6 @@ meta_display_open (const char *name)
   
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
-
-  meta_bell_init (display);
 
   meta_display_init_keys (display);
 
@@ -1828,19 +1822,6 @@ event_callback (XEvent   *event,
       }
       break;
     default:
-#ifdef HAVE_XKB
-      if (event->type == display->xkb_base_event_type) 
-	{
-	  XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
-	  
-	  switch (xkb_ev->xkb_type)
-	    {
-	    case XkbBellNotify:
-	      meta_bell_notify (display, xkb_ev);
-	      break;
-	    }
-	}
-#endif
       break;
     }
 
@@ -3864,10 +3845,5 @@ prefs_changed_callback (MetaPreference pref,
         }
 
       g_slist_free (windows);
-    }
-  else if (pref == META_PREF_AUDIBLE_BELL)
-    {
-      MetaDisplay *display = data;
-      meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
     }
 }

@@ -11,8 +11,6 @@ EGGFILES=			\
 metacity_SOURCES= 				\
 	async-getprop.c				\
 	async-getprop.h				\
-	bell.h					\
-	bell.c					\
 	common.h				\
 	core.c					\
 	core.h					\

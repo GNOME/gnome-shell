@@ -221,17 +221,6 @@ if test "x$found_shape" = "xyes"; then
    AC_DEFINE(HAVE_SHAPE, , [Have the shape extension library])
 fi
 
-found_xkb=no
-AC_CHECK_LIB(X11, XkbQueryExtension,
-               [AC_CHECK_HEADER(X11/XKBlib.h,
-                                found_xkb=yes)],
-	, $ALL_X_LIBS)
-
-if test "x$found_xkb" = "xyes"; then
-   AC_DEFINE(HAVE_XKB, , [Have keyboard extension library])
-fi
-
-
 RANDR_LIBS=
 found_randr=no
 AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,

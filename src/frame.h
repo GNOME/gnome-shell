@@ -57,7 +57,6 @@ struct _MetaFrame
   int bottom_height;
 
   guint mapped : 1;
-  guint is_flashing : 1; /* used by the visual bell flash */
 };
 
 void     meta_window_ensure_frame           (MetaWindow *window);
