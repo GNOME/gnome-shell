@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.0\n"
-"POT-Creation-Date: 2003-03-26 21:27-0500\n"
-"PO-Revision-Date: 2003-03-27 01:12+0100\n"
+"POT-Creation-Date: 2003-04-03 23:14+0200\n"
+"PO-Revision-Date: 2003-04-03 23:12+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -1937,16 +1937,15 @@ msgstr ""
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Cette option détermine les effets lors du double-clique sur la barre de "
-"titre. Les options possibles sont « bascule_réduction_au_titre » qui réduit "
-"ou pas la fenêtre à son titre, « bascule_maximisation » qui maximize la "
-"fenêtre ou la remet à la taille précédente aprés maximisation."
+"titre. Les options possibles sont « toggle_shade » qui réduit ou pas la "
+"fenêtre à son titre, « toggle_maximize » qui maximise la fenêtre ou la remet "
+"à la taille précédente aprés maximisation."
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
