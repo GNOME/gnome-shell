@@ -216,25 +216,64 @@ main (int argc, char **argv)
 }
 
 static void
+response_cb (GtkDialog *dialog,
+             int        response_id,
+             void      *data);
+
+static void
+make_dialog (GtkWidget *parent,
+             int        depth)
+{
+  GtkWidget *dialog;
+  
+  dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_INFO,
+                                   GTK_BUTTONS_CLOSE,
+                                   "Here is a dialog %d",
+                                   depth);
+
+  gtk_dialog_add_button (GTK_DIALOG (dialog),
+                         "Open child dialog",
+                         GTK_RESPONSE_ACCEPT);
+  
+  /* Close dialog on user response */
+  g_signal_connect (G_OBJECT (dialog),
+                    "response",
+                    G_CALLBACK (response_cb),
+                    NULL);
+
+  g_object_set_data (G_OBJECT (dialog), "depth",
+                     GINT_TO_POINTER (depth));
+  
+  gtk_widget_show (dialog);
+}
+
+static void
+response_cb (GtkDialog *dialog,
+             int        response_id,
+             void      *data)
+{
+  switch (response_id)
+    {
+    case GTK_RESPONSE_ACCEPT:
+      make_dialog (GTK_WIDGET (dialog),
+                   GPOINTER_TO_INT (g_object_get_data (G_OBJECT (dialog),
+                                                       "depth")) + 1);
+      break;
+
+    default:
+      gtk_widget_destroy (GTK_WIDGET (dialog));
+      break;
+    }
+}
+
+static void
 dialog_cb (gpointer             callback_data,
            guint                callback_action,
            GtkWidget           *widget)
 {
-  GtkWidget *dialog;
-  
-  dialog = gtk_message_dialog_new (GTK_WINDOW (callback_data),
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_MESSAGE_INFO,
-                                   GTK_BUTTONS_CLOSE,
-                                   "Here is a dialog");
-
-  /* Close dialog on user response */
-  g_signal_connect (G_OBJECT (dialog),
-                    "response",
-                    G_CALLBACK (gtk_widget_destroy),
-                    NULL);
-  
-  gtk_widget_show (dialog);
+  make_dialog (GTK_WIDGET (callback_data), 1);
 }
 
 static void

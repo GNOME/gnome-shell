@@ -1,3 +1,8 @@
+2002-10-17  Havoc Pennington  <hp@redhat.com>
+
+	* src/tools/metacity-window-demo.c (dialog_cb): add code to create
+	big stacks of dialogs transient for each other, for testing.
+
 2002-10-16  Havoc Pennington  <hp@redhat.com>
 
 	* src/workspace.c: workspaces are all per-screen now, fix
