@@ -902,3 +902,40 @@ meta_stack_get_tab_next (MetaStack  *stack,
     return find_tab_forward (stack, NULL, -1);
 }
 
+int
+meta_stack_windows_cmp  (MetaStack  *stack,
+                         MetaWindow *window_a,
+                         MetaWindow *window_b)
+{
+  g_return_val_if_fail (window_a->screen == window_b->screen, 0);
+
+  /* -1 means a below b */
+  
+  if (window_a->layer < window_b->layer)
+    return -1;
+  else if (window_a->layer > window_b->layer)
+    return 1;
+  else
+    {
+      GList *tmp;
+
+      g_assert (window_a->layer == window_b->layer);
+      
+      tmp = stack->layers[window_a->layer];
+      while (tmp != NULL)
+        {
+          /* earlier in list is higher in stack */
+          if (tmp->data == window_a)
+            return 1;
+          else if (tmp->data == window_b)
+            return -1;
+
+          tmp = tmp->next;
+        }
+
+      meta_bug ("Didn't find windows in layer in meta_stack_windows_cmp()\n");
+    }
+
+  /* not reached */
+  return 0;
+}

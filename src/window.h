@@ -169,6 +169,11 @@ struct _MetaWindow
    * it was withdrawn
    */
   guint withdrawn : 1;
+
+  /* TRUE if constrain_position should calc placement.
+   * only relevant if !window->placed
+   */
+  guint calc_placement : 1;
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client
@@ -269,5 +274,8 @@ void meta_window_show_menu (MetaWindow *window,
                             int         root_y,
                             int         button,
                             Time        timestamp);
+
+gboolean meta_window_shares_some_workspace (MetaWindow *window,
+                                            MetaWindow *with);
 
 #endif

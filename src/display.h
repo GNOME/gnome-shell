@@ -141,7 +141,7 @@ void        meta_display_register_x_window   (MetaDisplay *display,
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
 
-
+GSList*     meta_display_list_windows        (MetaDisplay *display);
 
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 GSList*      meta_displays_list          (void);

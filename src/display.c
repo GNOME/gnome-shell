@@ -328,6 +328,57 @@ ptrcmp (gconstpointer a, gconstpointer b)
     return 0;
 }
 
+GSList*
+meta_display_list_windows (MetaDisplay *display)
+{
+  GSList *winlist;
+  GSList *tmp;
+  GSList *prev;
+  
+  winlist = NULL;
+  g_hash_table_foreach (display->window_ids,
+                        listify_func,
+                        &winlist);
+
+  /* Uniquify the list, since both frame windows and plain
+   * windows are in the hash
+   */
+  winlist = g_slist_sort (winlist, ptrcmp);
+
+  prev = NULL;
+  tmp = winlist;
+  while (tmp != NULL)
+    {
+      GSList *next;
+
+      next = tmp->next;
+      
+      if (next &&
+          next->data == tmp->data)
+        {
+          /* Delete tmp from list */
+
+          if (prev)
+            prev->next = next;
+
+          if (tmp == winlist)
+            winlist = next;
+          
+          g_slist_free_1 (tmp);
+
+          /* leave prev unchanged */
+        }
+      else
+        {
+          prev = tmp;
+        }
+      
+      tmp = next;
+    }
+
+  return winlist;
+}
+
 void
 meta_display_close (MetaDisplay *display)
 {
@@ -337,21 +388,14 @@ meta_display_close (MetaDisplay *display)
   if (display->error_traps)
     meta_bug ("Display closed with error traps pending\n");
 
-  winlist = NULL;
-  g_hash_table_foreach (display->window_ids,
-                        listify_func,
-                        &winlist);
-
-  winlist = g_slist_sort (winlist, ptrcmp);
-
+  winlist = meta_display_list_windows (display);
+  
   /* Unmanage all windows */
   meta_display_grab (display);
   tmp = winlist;
   while (tmp != NULL)
     {      
-      if (tmp->next == NULL ||
-          (tmp->next && tmp->next->data != tmp->data))
-        meta_window_free (tmp->data);
+      meta_window_free (tmp->data);
       
       tmp = tmp->next;
     }

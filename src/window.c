@@ -82,6 +82,7 @@ static void   meta_window_move_resize_internal (MetaWindow  *window,
                                                 int          w,
                                                 int          h);
 
+void meta_window_move_resize_now (MetaWindow  *window);
 
 static gboolean get_cardinal (MetaDisplay *display,
                               Window       xwindow,
@@ -235,12 +236,16 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->mapped = attrs.map_state != IsUnmapped;
   /* if already mapped we don't want to do the placement thing */
   window->placed = window->mapped;
+  if (window->placed)
+    meta_verbose ("Not placing window 0x%lx since it's already mapped\n",
+                  xwindow);
   window->unmanaging = FALSE;
   window->calc_showing_queued = FALSE;
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
   window->withdrawn = FALSE;
   window->initial_workspace_set = FALSE;
+  window->calc_placement = FALSE;
   
   window->unmaps_pending = 0;
 
@@ -617,11 +622,31 @@ meta_window_calc_showing (MetaWindow  *window)
 static guint calc_showing_idle = 0;
 static GSList *calc_showing_pending = NULL;
 
+static int
+stackcmp (gconstpointer a, gconstpointer b)
+{
+  MetaWindow *aw = (gpointer) a;
+  MetaWindow *bw = (gpointer) b;
+
+  if (aw->screen != bw->screen)
+    return 0; /* don't care how they sort with respect to each other */
+  else
+    return meta_stack_windows_cmp (aw->screen->stack,
+                                   aw, bw);
+}
+
 static gboolean
 idle_calc_showing (gpointer data)
 {
   GSList *tmp;
 
+  /* sort them from bottom to top, so we map the
+   * bottom windows first, so that placement (e.g. cascading)
+   * works properly
+   */
+  calc_showing_pending = g_slist_sort (calc_showing_pending,
+                                       stackcmp);
+  
   tmp = calc_showing_pending;
   while (tmp != NULL)
     {
@@ -685,14 +710,29 @@ meta_window_queue_calc_showing (MetaWindow  *window)
 void
 meta_window_show (MetaWindow *window)
 {
-  meta_verbose ("Showing window %s, shaded: %d iconic: %d\n",
-                window->desc, window->shaded, window->iconic);
+  meta_verbose ("Showing window %s, shaded: %d iconic: %d placed: %d\n",
+                window->desc, window->shaded, window->iconic, window->placed);
 
-  /* don't ever do the initial position constraint thing again.
-   * This is toggled here so that initially-iconified windows
-   * still get placed when they are ultimately shown.
-   */
-  window->placed = TRUE;
+  if (!window->placed)
+    {
+      /* We have to recalc the placement here since other windows may
+       * have been mapped/placed since we last did constrain_position
+       */
+
+      /* calc_placement is an efficiency hack to avoid
+       * multiple placement calculations before we finally
+       * show the window.
+       */
+      window->calc_placement = TRUE;
+      meta_window_move_resize_now (window);
+      window->calc_placement = FALSE;
+
+      /* don't ever do the initial position constraint thing again.
+       * This is toggled here so that initially-iconified windows
+       * still get placed when they are ultimately shown.
+       */
+      window->placed = TRUE;      
+    }
   
   /* Shaded means the frame is mapped but the window is not */
   
@@ -1235,15 +1275,21 @@ meta_window_move_resize (MetaWindow  *window,
 }
 
 void
-meta_window_queue_move_resize (MetaWindow  *window)
+meta_window_move_resize_now (MetaWindow  *window)
 {
-  /* FIXME actually queue, don't do it immediately */
   int x, y;
   
   meta_window_get_position (window, &x, &y);
   
   meta_window_move_resize (window, x, y,
                            window->rect.width, window->rect.height);
+}
+
+void
+meta_window_queue_move_resize (MetaWindow  *window)
+{
+  /* FIXME actually queue, don't do it immediately */
+  meta_window_move_resize_now (window);
 }
 
 void
@@ -3116,12 +3162,12 @@ constrain_position (MetaWindow *window,
                     int         y,
                     int        *new_x,
                     int        *new_y)
-{  
+{
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry
    */
 
-  if (!window->placed)
+  if (!window->placed && window->calc_placement)
     meta_window_place (window, fgeom, x, y, &x, &y);
   
   if (window->type != META_WINDOW_DESKTOP &&
@@ -3318,4 +3364,26 @@ meta_window_show_menu (MetaWindow *window,
 
   meta_verbose ("Popping up window menu for %s\n", window->desc);
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
+}
+
+gboolean
+meta_window_shares_some_workspace (MetaWindow *window,
+                                   MetaWindow *with)
+{
+  GList *tmp;
+  
+  if (window->on_all_workspaces ||
+      with->on_all_workspaces)
+    return TRUE;
+  
+  tmp = window->workspaces;
+  while (tmp != NULL)
+    {
+      if (g_list_find (with->workspaces, tmp->data) != NULL)
+        return TRUE;
+
+      tmp = tmp->next;
+    }
+
+  return FALSE;
 }

@@ -95,6 +95,10 @@ MetaWindow* meta_stack_get_below  (MetaStack  *stack,
 MetaWindow* meta_stack_get_tab_next (MetaStack  *stack,
                                      MetaWindow *window,
                                      gboolean    backward);
+/* -1 if a < b, etc. */
+int         meta_stack_windows_cmp  (MetaStack  *stack,
+                                     MetaWindow *window_a,
+                                     MetaWindow *window_b);
 
 #endif
 
