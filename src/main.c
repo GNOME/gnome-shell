@@ -257,9 +257,10 @@ main (int argc, char **argv)
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
 
-  if (meta_is_debugging ())
-    g_log_set_always_fatal (G_LOG_LEVEL_MASK);
 #endif
+
+  if (g_getenv ("METACITY_G_FATAL_WARNINGS") != NULL)
+    g_log_set_always_fatal (G_LOG_LEVEL_MASK);
   
   meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
 
