@@ -246,7 +246,6 @@ reload_modmap (MetaDisplay *display)
   /* Multiple bits may get set in each of these */
   display->num_lock_mask = 0;
   display->scroll_lock_mask = 0;
-  display->mode_switch_mask = 0;
   
   /* there are 8 modifiers, and the first 3 are shift, shift lock,
    * and control
@@ -290,15 +289,13 @@ reload_modmap (MetaDisplay *display)
       ++i;
     }
 
-  display->ignored_modifier_mask = (display->mode_switch_mask |
-                                    display->num_lock_mask |
+  display->ignored_modifier_mask = (display->num_lock_mask |
                                     display->scroll_lock_mask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ignoring modmask 0x%x num lock 0x%x mode switch 0x%x scroll lock 0x%x\n",
+              "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x\n",
               display->ignored_modifier_mask,
               display->num_lock_mask,
-              display->mode_switch_mask,
               display->scroll_lock_mask);
 }
 
@@ -517,7 +514,6 @@ meta_display_init_keys (MetaDisplay *display)
   display->ignored_modifier_mask = 0;
   display->num_lock_mask = 0;
   display->scroll_lock_mask = 0;
-  display->mode_switch_mask = 0;
   display->screen_bindings = NULL;
   display->n_screen_bindings = 0;
   display->window_bindings = NULL;

@@ -205,7 +205,6 @@ struct _MetaDisplay
   unsigned int ignored_modifier_mask;
   unsigned int num_lock_mask;
   unsigned int scroll_lock_mask;
-  unsigned int mode_switch_mask;
 };
 
 gboolean      meta_display_open                (const char  *name);

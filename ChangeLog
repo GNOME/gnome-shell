@@ -1,5 +1,12 @@
 2002-04-30  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c: finish mopping up mode_switch_mask field
+
+	* src/display.h (struct _MetaDisplay): remove mode_switch_mask 
+	field
+
+2002-04-30  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (recalc_window_features): don't try to decorate
 	toolbars.
 
