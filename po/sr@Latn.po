@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-11-08 17:00+0100\n"
-"PO-Revision-Date: 2003-11-08 17:17+0100\n"
+"PO-Revision-Date: 2003-12-04 20:42+0100\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -209,7 +209,7 @@ msgstr "Samo na ovoj radnoj površini"
 #: src/menu.c:152 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
-msgstr "Radna površina %d"
+msgstr "%d. površ za rad"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -218,7 +218,7 @@ msgstr "Radna površina %d"
 #: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Radna površina %s%d"
+msgstr "%s%d. površ za rad"
 
 #: src/menu.c:347
 #, c-format
