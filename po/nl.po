@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "POT-Creation-Date: 2003-01-07 06:08+0100\n"
-"PO-Revision-Date: 2003-01-08 23:51+0100\n"
+"PO-Revision-Date: 2003-01-10 01:21+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -1904,6 +1904,8 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
+"Fout bij opstarten metacity-dialoogvenster waarin wordt gewaarschuwd voor "
+"toepassingen die sessie-management niet ondersteunen: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2029,7 +2031,7 @@ msgstr "Thema heeft reeds een menu-pictogram voor functie %s status %s"
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Geen <draw_ops> met de naam \"%s\" is gedefinieerd"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -2037,83 +2039,85 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Element <%s> is niet toegestaan onder <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"naam\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"waarde\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
+"Kan niet tegelijk knop_breedte/knop_hoogte en de verhouding specificeren "
+"voor knoppen"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Afstand \"%s\" is onbekend"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Verhouding \"%s\" is onbekend"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"boven\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"onder\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"links\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"rechts\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Rand \"%s\" is onbekend"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"kleur\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"x1\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"y1\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"x2\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"y2\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -2121,7 +2125,7 @@ msgstr ""
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"x\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -2129,166 +2133,166 @@ msgstr ""
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"y\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"breedte\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"hoogte\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"begin_hoek\" attribuut op element <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"reikweidte_hoek\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"alpha\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"type\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Begreep de waarde \"%s\" niet voor type gradiënt"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"bestandsnaam\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "Begreep vul-type \"%s\" voor <%s> element niet "
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"status\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"schaduw\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"pijl\" attribuut op element <%s>"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Begreep status \"%s\" voor <%s> element niet"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Begreep schaduw \"%s\" voor <%s> element niet"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Begreep pijl \"%s\" voor <%s> element niet"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Er zijn geen <draw_ops> genaamd \"%s\" gedefinieerd"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Hier draw_ops \"%s\" meenemen zou een circulaire verwijzing creëren"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"waarde\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"positie\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Onbekende positie \"%s\" voor kader-onderdeel"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Kader-stijl heeft al een onderdeel op positie %s"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"functie\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"status\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Onbekende functie \"%s\" voor knop"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Onbekende status \"%s\" voor knop"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Kader-stijl heeft reeds een knop voor functie %s status %s"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"aandacht\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"stijl\" attribuut op <%s> element"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" is geen geldige waarde voor aandacht-attribuut"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" is geen geldige waarde voor status-attribuut"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Een stijl genaamd \"%s\" is niet gedefinieerd"
 
 #: src/theme-parser.c:3430
 #, c-format
