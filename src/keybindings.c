@@ -748,6 +748,8 @@ meta_window_ungrab_keys (MetaWindow  *window)
       else if (!window->grab_on_frame)
         ungrab_all_keys (window->display,
                          window->xwindow);
+
+      window->keys_grabbed = FALSE;
     }
 }
 

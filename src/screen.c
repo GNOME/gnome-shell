@@ -67,12 +67,6 @@ set_wm_check_hint (MetaScreen *screen)
 
   /* Legacy GNOME hint (uses cardinal, dunno why) */
 
-  /* legacy hint window should have property containing self */
-  XChangeProperty (screen->display->xdisplay, screen->display->leader_window,
-                   screen->display->atom_win_supporting_wm_check,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-
   /* do this after setting up window fully, to avoid races
    * with clients listening to property notify on root.
    */

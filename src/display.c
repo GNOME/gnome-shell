@@ -457,6 +457,12 @@ meta_display_open (const char *name)
                      display->atom_win_supporting_wm_check,
                      XA_CARDINAL,
                      32, PropModeReplace, (guchar*) data, 1);
+
+    XChangeProperty (display->xdisplay,
+                     display->leader_window,
+                     display->atom_net_supporting_wm_check,
+                     XA_CARDINAL,
+                     32, PropModeReplace, (guchar*) data, 1);
   }
   
   /* Now manage all existing windows */

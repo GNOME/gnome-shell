@@ -1,5 +1,15 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_open): set net_supporting_wm_check 
+	in addition to win_supporting_wm_check, patch from 
+	JeyaSudha for #83365
+
+	* src/screen.c (set_wm_check_hint): remove setting
+	win_supporting_wm_check on leader window here, done already in
+	display.c
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/keybindings.c (meta_window_ungrab_keys): set keys_grabbed to
 	FALSE, patch from Jayaraj for #81857
 
