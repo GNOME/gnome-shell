@@ -356,7 +356,17 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_title (window);
   update_protocols (window);
   update_wm_hints (window);
+
   update_net_wm_state (window);
+  /* Initially maximize if window is fullscreen; FIXME
+   * assume fullscreen state instead once we have that state...
+   */
+  if (!window->maximized &&
+      window->rect.x == 0 && window->rect.y == 0 &&
+      window->rect.width == window->screen->width &&
+      window->rect.height == window->screen->height)
+    window->maximized = TRUE;
+  
   update_mwm_hints (window);
   update_wm_class (window);
   update_transient_for (window);
@@ -481,12 +491,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
           window->placed = TRUE;
           meta_verbose ("Not placing non-normal non-dialog window with PPosition set\n");
         }
-    }
-
-  if (window->type == META_WINDOW_FULLSCREEN)
-    {
-      meta_verbose ("Won't place fullscreen window\n");
-      window->placed = TRUE;
     }
   
   if (window->type == META_WINDOW_DESKTOP ||
@@ -1074,6 +1078,8 @@ meta_window_maximize (MetaWindow  *window)
   if (!window->maximized)
     {
       window->maximized = TRUE;
+
+      meta_window_raise (window);
       
       /* save size/pos as appropriate args for move_resize */
       window->saved_rect = window->rect;
@@ -2454,14 +2460,11 @@ meta_window_client_message (MetaWindow *window,
     {
       meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s'", window->desc);
 
-      /* Switch to window's workspace - alternatively we could move
-       * window back to this workspace. I don't know which is right.
-       */
+      /* Get window on current workspace */
       if (!meta_workspace_contains_window (window->screen->active_workspace,
-                                           window) &&
-          /* this check shouldn't actually be required, I don't think it is */
-          window->workspaces)
-        meta_workspace_activate (window->workspaces->data); 
+                                           window))
+        meta_window_change_workspace (window,
+                                      window->screen->active_workspace);
       
       meta_window_raise (window);
       meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
@@ -4427,13 +4430,6 @@ recalc_window_type (MetaWindow *window)
   if (window->type == META_WINDOW_DIALOG &&
       window->wm_state_modal)
     window->type = META_WINDOW_MODAL_DIALOG;
-
-  if (window->type == META_WINDOW_NORMAL &&
-      !window->mwm_decorated &&
-      (window->rect.x == 0 && window->rect.y == 0 &&
-       window->rect.width == window->screen->width &&
-       window->rect.height == window->screen->height))
-    window->type = META_WINDOW_FULLSCREEN;
   
   meta_verbose ("Calculated type %d for %s, old type %d\n",
                 window->type, window->desc, old_type);
@@ -4471,8 +4467,7 @@ recalc_window_features (MetaWindow *window)
   /* Semantic category overrides the MWM hints */
   
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_FULLSCREEN)
+      window->type == META_WINDOW_DOCK)
     {
       window->decorated = FALSE;
       window->has_close_func = FALSE;
@@ -4530,8 +4525,7 @@ constrain_size (MetaWindow *window,
   
   /* Get the allowed size ranges, considering maximized, etc. */
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_FULLSCREEN)
+      window->type == META_WINDOW_DOCK)
     {
       fullw = window->screen->width;
       fullh = window->screen->height;
@@ -4652,13 +4646,15 @@ constrain_position (MetaWindow *window,
   if (!window->placed && window->calc_placement)
     meta_window_place (window, fgeom, x, y, &x, &y);
 
-  if (window->type == META_WINDOW_FULLSCREEN)
+#if 0
+  if (window->fullscreen)
     {
       x = 0;
       y = 0;
     }
-  else if (window->type != META_WINDOW_DESKTOP &&
-           window->type != META_WINDOW_DOCK)
+#endif
+  if (window->type != META_WINDOW_DESKTOP &&
+      window->type != META_WINDOW_DOCK)
     {
       int nw_x, nw_y;
       int se_x, se_y;

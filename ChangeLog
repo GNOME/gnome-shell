@@ -1,3 +1,21 @@
+2001-10-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_new): take a window mapped at
+	fullscreen size/pos to desire maximization; once I add a
+	fullscreen state, will change to copy kwin and take this mapping
+	as a desire for fullscreen, but for now testing with maximization.
+
+	* src/window.h: remove fullscreen window type, now proposing it 
+	as a window state instead.	
+
+2001-10-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_maximize): always raise windows on
+	maximize
+	(meta_window_client_message): when activating a window, move 
+	it to current workspace, instead of moving user to the 
+	window's workspace.
+
 2001-10-14  Héctor García Álvarez <hector@scouts-es.org>
 
 	* configure.in: Added "es" to ALL_LINGUAS for Spanish translation.

@@ -268,10 +268,6 @@ compute_layer (MetaWindow *window)
       /* still experimenting here */
       window->layer = META_LAYER_NORMAL;
       break;
-
-    case META_WINDOW_FULLSCREEN:
-      window->layer = META_LAYER_FULLSCREEN;
-      break;
       
     default:
       window->layer = META_LAYER_NORMAL;
