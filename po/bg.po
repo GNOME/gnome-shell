@@ -1,21 +1,22 @@
 # Bulgarian translation for metacity.
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Alexander Shopov <al_shopov@yahoo.com>, 2002.
-# Vladimir Petkov <vpetkov@i-space.org>, small updates, 2004. 
+# Vladimir Petkov <vpetkov@i-space.org>, huge updates, 2004. 
 # Rostislav Raykov <zbrox@i-space.org>, updates, 2004
 # 
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.8\n"
+"Project-Id-Version: metacity 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
-"PO-Revision-Date: 2004-07-26 16:34+0300\n"
-"Last-Translator: Rostislav Raykov <zbrox@i-space.org>\n"
+"POT-Creation-Date: 2004-12-16 09:37+0200\n"
+"PO-Revision-Date: 2004-12-16 09:37+0200\n"
+"Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -36,7 +37,7 @@ msgstr "Не можах да анализирам \"%s\" като цяло чи�
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Не разбирам крайните символи \"%s\" в низа \"%s\""
+msgstr "Крайните символи \"%s\" в низа \"%s\" са неразбираеми"
 
 #: src/delete.c:128
 #, c-format
@@ -113,8 +114,8 @@ msgstr "Някоя друга програма използва бързия к�
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Грешка при стартиране на диалога на Метасити, за отпечатване на грешка за "
-"команда: %s\n"
+"Грешка при стартиране на диалоговия прозорец на Metacity, за отпечатване на "
+"грешка за команда: %s\n"
 
 #: src/keybindings.c:2659
 #, c-format
@@ -122,9 +123,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Не е дефинирана команда %d.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Не е дефинирана команда %d.\n"
+msgstr "Не е дефинирана терминална команда.\n"
 
 #: src/main.c:69
 msgid ""
@@ -160,8 +160,8 @@ msgstr "Неуспех при сканирането на директорият
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"Не успях да намеря тема! Проверете дали %s съществува и съдържа обичайните "
-"теми."
+"Неуспех при намирането на тема! Проверете дали %s съществува и съдържа "
+"обичайните теми."
 
 #: src/main.c:521
 #, c-format
@@ -208,45 +208,45 @@ msgstr "_Затваряне"
 #. separator
 #: src/menu.c:66
 msgid "Put on _All Workspaces"
-msgstr "Поставяне на _всички работни места"
+msgstr "Поставяне на _всички работни плотове"
 
 #: src/menu.c:67
 msgid "Only on _This Workspace"
-msgstr "_Само на това работно място"
+msgstr "_Само на този работен плот"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Преместване до _Лявото Работно място"
+msgstr "Преместване в _левия работен плот"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Преместване до _Дясното Работно място"
+msgstr "Преместване в _дясния работен плот"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Преместване до _Горното Работно място"
+msgstr "Преместване в _горния работен плот"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Преместване до _Долното Работно място"
+msgstr "Преместване в _долния работен плот"
 
 #: src/menu.c:162 src/prefs.c:1942
 #, c-format
 msgid "Workspace %d"
-msgstr "Работно място %d"
+msgstr "Работен плот %d"
 
 #: src/menu.c:171
 msgid "Workspace 1_0"
-msgstr "Работно място·1_0"
+msgstr "Работен плот 1_0"
 
 #: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Работно място %s%d"
+msgstr "Работен плот %s%d"
 
 #: src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr "Преместване в Друго _Работно място"
+msgstr "Преместване в друг _работен плот"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -341,18 +341,18 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "Прозорецът·\"%s\"·не отговаря."
+msgstr "Прозорецът \"%s\" не отговаря."
 
 #: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Принудителното спиране на тази програма, ще доведе до загуба на всякакви "
+"Принудителното спиране на тази програма, ще доведе до загуба на всички "
 "незапазени промени."
 
 #: src/metacity-dialog.c:128
 msgid "_Force Quit"
-msgstr "_Насилствено Напускане"
+msgstr "_Насилствено спиране"
 
 #: src/metacity-dialog.c:225
 msgid "Title"
@@ -407,7 +407,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Действие при двойно щракване върху заглавната лента"
+msgstr "Действие при двойно натискане върху заглавната лента"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
@@ -621,75 +621,75 @@ msgstr "Преместване на прозорец"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr "Премества прозореца едно работно място надолу"
+msgstr "Преместване на прозореца един работен плот надолу"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr "Премества прозореца едно работно място наляво"
+msgstr "Преместване на прозореца един работен плот наляво"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr "Премества прозореца едно работно място надясно"
+msgstr "Преместване на прозореца един работен плот надясно"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr "Премества прозореца едно работно място нагоре"
+msgstr "Преместване на прозореца един работен плот нагоре"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
-msgstr "Премества прозореца на работно място 1"
+msgstr "Преместване на прозореца в работен плот 1"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
-msgstr "Премества прозореца на работно място 10"
+msgstr "Преместване на прозореца в работен плот 10"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
-msgstr "Премества прозореца на работно място 11"
+msgstr "Преместване на прозореца в работен плот 11"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
-msgstr "Премества прозореца на работно място 12"
+msgstr "Преместване на прозореца в работен плот 12"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
-msgstr "Премества прозореца на работно място 2"
+msgstr "Преместване на прозореца в работен плот 2"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
-msgstr "Премества прозореца на работно място 3"
+msgstr "Преместване на прозореца в работен плот 3"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
-msgstr "Премества прозореца на работно място 4"
+msgstr "Преместване на прозореца в работен плот 4"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
-msgstr "Премества прозореца на работно място 5"
+msgstr "Преместване на прозореца в работен плот 5"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
-msgstr "Премества прозореца на работно място 6"
+msgstr "Преместване на прозореца в работен плот 6"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
-msgstr "Премества прозореца на работно място 7"
+msgstr "Преместване на прозореца в работен плот 7"
 
 #: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
-msgstr "Премества прозореца на работно място 8"
+msgstr "Преместване на прозореца в работен плот 8"
 
 #: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
-msgstr "Премества прозореца на работно място 9"
+msgstr "Премества прозореца на работен плот 9"
 
 #: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
-msgstr "Име на работно място"
+msgstr "Име на работния плот"
 
 #: src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
-msgstr "Брой работни места"
+msgstr "Брой работни плотове"
 
 #: src/metacity.schemas.in.h:55
 msgid ""
@@ -697,7 +697,7 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Брой работни места. Трябва да е над 0. Има горна граница (за да се "
+"Брой работни плотове. Трябва да е над 0. Има горна граница (за да се "
 "предотврати случайното разрушаване на средата, ако поискате 34 милиона "
 "работни места)."
 
@@ -719,7 +719,7 @@ msgstr "Изпълняване на определена команда"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Стартиране на терминал"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -727,7 +727,7 @@ msgstr "Показване на менюто на панела"
 
 #: src/metacity.schemas.in.h:62
 msgid "Show the panel run application dialog"
-msgstr ""
+msgstr "Показване на диалоговия прозорец на панела за стартиране на програма"
 
 #: src/metacity.schemas.in.h:63
 msgid ""
@@ -761,67 +761,67 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
-msgstr "Превключване към работно място 1"
+msgstr "Превключване към работен плот 1"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
-msgstr "Превключване към работно място 10"
+msgstr "Превключване към работен плот 10"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
-msgstr "Превключване към работно място 11"
+msgstr "Превключване към работен плот 11"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
-msgstr "Превключване към работно място 12"
+msgstr "Превключване към работен плот 12"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
-msgstr "Превключване към работно място 2"
+msgstr "Превключване към работен плот 2"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
-msgstr "Превключване към работно място 3"
+msgstr "Превключване към работен плот 3"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
-msgstr "Превключване към работно място 4"
+msgstr "Превключване към работен плот 4"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
-msgstr "Превключване към работно място 5"
+msgstr "Превключване към работен плот 5"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
-msgstr "Превключване към работно място 6"
+msgstr "Превключване към работен плот 6"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
-msgstr "Превключване към работно място 7"
+msgstr "Превключване към работен плот 7"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
-msgstr "Превключване към работно място 8"
+msgstr "Превключване към работен плот 8"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
-msgstr "Превключване към работно място 9"
+msgstr "Превключване към работен плот 9"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
-msgstr "Превключване към работното място отгоре"
+msgstr "Превключване към работния плот отгоре"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
-msgstr "Превключване към работното място отдолу"
+msgstr "Превключване към работния плот отдолу"
 
 #: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
-msgstr "Превключване към работното място вляво"
+msgstr "Превключване към работния плот вляво"
 
 #: src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
-msgstr "Превключване към работното място вдясно"
+msgstr "Превключване към работния плот вдясно"
 
 #: src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
@@ -829,7 +829,7 @@ msgstr "Системния звънец е звуков"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
-msgstr "Снима екрана"
+msgstr "Снимане на екрана"
 
 #: src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
@@ -845,6 +845,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Задава начинът, по който Metacity визуално представя системния звънец или "
+"звънеца на приложение. В момента валидни са следните две стойности: "
+"\"fullscreen\", което съответства на черно-бяло премигване на целия екран, и "
+"\"frame_flash\", което съответства на премигване на заглавната лента на "
+"приложението, което звънва. Ако приложението, което звънва е неизвестно "
+"(какъвто е най-честия случай при подразбиращият се системен звънец), "
+"премигва заглавната лента на текущо фокусирания прозорец."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1688,7 +1695,6 @@ msgstr ""
 "това действие няма да има бърз клавиш."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1696,11 +1702,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Бързият клавиш за активиране на менюто на прозореца. Форматът е от вида "
-"\"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. Анализиращата "
-"програма е доста либерална по отношение на регистъра и съкращения от вида "
-"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният "
-"низ \"disabled\", това действие няма да има бърз клавиш."
+"Бързият клавиш, който стартира терминал. Форматът е от вида \"&lt;Control&gt;"
+"a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Анализиращата програма е доста "
+"либерална по отношение на регистъра и съкращения от вида \"&lt;Ctl&gt;\" и "
+"\"&lt;Ctrl&gt;\". Ако зададете опцията да е специалният низ \"disabled\", "
+"това действие няма да има бърз клавиш.\"\n"
+" "
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1748,7 +1755,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
-msgstr "Името на работното място"
+msgstr "Името на работния плот"
 
 #: src/metacity.schemas.in.h:147
 msgid "The screenshot command"
@@ -1786,7 +1793,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
-msgstr "Командата са снимане на прозорец"
+msgstr "Командата за снимка на екрана"
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -2287,7 +2294,7 @@ msgstr "Елементът <%s> няма атрибут \"right\""
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "\"%sт\" ръб не се знае"
+msgstr "Границата \"%s\" е непозната"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
@@ -2628,7 +2635,7 @@ msgstr "/_Прозорци"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Прозорци/откъсване"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
@@ -2644,7 +2651,7 @@ msgstr "/Прозорци/_Инструмент"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr "/Прозорци/_Стартиращ Екран"
+msgstr "/Прозорци/_Стартиращ екран"
 
 #: src/theme-viewer.c:76
 msgid "/Windows/_Top dock"
@@ -2652,15 +2659,15 @@ msgstr "/Прозорци/_Горен док"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Прозорци/_Долен док"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Прозорци/_Ляв док"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Прозорци/_Десен док"
 
 #: src/theme-viewer.c:80
 msgid "/Windows/_All docks"
@@ -2668,11 +2675,11 @@ msgstr "/Прозорци/_Всички докове"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr "/Прозорци/Работно _Място"
+msgstr "/Прозорци/Работен _плот"
 
 #: src/theme-viewer.c:131
 msgid "Open another one of these windows"
-msgstr "Отваря някой друг от тези прозорци"
+msgstr "Отваряне на някой друг от тези прозорци"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
@@ -2701,23 +2708,23 @@ msgstr "Лента"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr "Нормален Прозорец на Програма"
+msgstr "Нормален прозорец на програма"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr "Диалогова Кутия"
+msgstr "Диалогова кутия"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr "Модална Диалогова Кутия"
+msgstr "Модална диалогова кутия"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr "Палитра на Инструментите"
+msgstr "Палитра на инструментите"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr "Откъсва Менюто"
+msgstr "Откъсване на менюто"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2740,28 +2747,28 @@ msgstr "Употреба: metacity-theme-viewer [ИМЕНАТЕМАТА]\n"
 #: src/theme-viewer.c:810
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Грешка при зареждането на темата:·%s\n"
+msgstr "Грешка при зареждането на темата: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Темата·\"%s\"·е заредена за·%g·секунди\n"
+msgstr "Темата \"%s\" е заредена за %g секунди\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr "Нормален Шрифт на Заглавието"
+msgstr "Нормален шрифт на заглавието"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr "Малък Шрифт на Заглавието"
+msgstr "Малък шрифт на заглавието"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr "Голям Шрифт на Заглавието"
+msgstr "Голям шрифт на заглавието"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr "Изглед на Бутоните"
+msgstr "Изглед на бутоните"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
@@ -2769,7 +2776,7 @@ msgstr "Статистика"
 
 #: src/theme-viewer.c:908
 msgid "Window Title Goes Here"
-msgstr "Тук се Постявя Заглавието на Прозорците"
+msgstr "Тук се постявя заглавието на прозорците"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2778,14 +2785,21 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"Изчертаха се %d кадъра за %g секунди от страна на клиента (по %g милисекунди "
+"на кадър) и %g секунди нормално време, което включва ресурси от страна на "
+"сървъра X (по %g милисекунди на кадър)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
 msgstr ""
+"изразът за проверка на разположението върна TRUE, но установи състояние за "
+"грешка"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
+"изразът за проверка на разположението върна FALSE, но установи състояние за "
+"грешка<"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2804,12 +2818,12 @@ msgstr "Не се очакваше грешка, но беше върната е
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr "стойността x·беше·%d,·%d·беше очакваното"
+msgstr "стойността x беше %d, %d беше очакваното"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr "стойността y беше %d,·%d·беше очаквана"
+msgstr "стойността y беше %d, %d беше очаквана"
 
 #: src/theme-viewer.c:1310
 #, c-format
@@ -2931,7 +2945,7 @@ msgstr "Не можах да анализирам цвета \"%s\""
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Изразът за координати съдържа символа '%s', който не е позволен"
+msgstr "Изразът за координати съдържа символа \"%s\", който не е позволен"
 
 #: src/theme.c:1450
 #, c-format
@@ -2939,14 +2953,15 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"Изразът за координати съдържа числото с плаваща запетая '%s', което не можах "
-"да анализирам"
+"Изразът за координати съдържа числото с плаваща запетая \"%s\", което не "
+"може да бъде анализирано"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
-"Изразът за координати съдържа цялото число '%s', което не можах да анализирам"
+"Изразът за координати съдържа цялото число \"%s\", което не можах да "
+"анализирам"
 
 #: src/theme.c:1531
 #, c-format
@@ -3086,34 +3101,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константата \"%s\" вече е дефинирана"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "Изберете как да фокусирате прозорците"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "Фокусиране на прозорци"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "_Щракване, за фокусиране"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "Поведение на фокуса:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "Настройки на фокусирането на прозорците"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "_Посочване, за фокусиране"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "_Издигане на прозореца при фокусиране"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -3127,7 +3114,7 @@ msgstr "Не успях да извърша fdopen() върху журнални
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Отворих журналния файл %s\n"
+msgstr "Отворен е журналния файл %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
@@ -3204,6 +3191,27 @@ msgid ""
 msgstr ""
 "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
 "списъка\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "Изберете как да фокусирате прозорците"
+
+#~ msgid "Window Focus"
+#~ msgstr "Фокусиране на прозорци"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "_Натискане, за фокусиране"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "Поведение на фокуса:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "Настройки на фокусирането на прозорците"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "_Посочване, за фокусиране"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "_Издигане на прозореца при фокусиране"
 
 #~ msgid ""
 #~ "Failed to a open connection to a session manager, so window positions "
