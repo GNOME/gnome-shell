@@ -2,19 +2,20 @@
 # metacity Slovak translation.
 # Copyright (C) 2001,2002,2003 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001,2003.
-# Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002
+# Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
+# Stanislav Visnovsky <visnovsky@kde.org>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
 "POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-01-05 14:28+0100\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
-"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
+"PO-Revision-Date: 2003-09-01 17:56+0200\n"
+"Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
+"Language-Team: Slovak <sk-i18n@linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.2\n"
+"X-Generator: KBabel 1.2beta3\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -49,8 +50,7 @@ msgstr "Chyba pri čítaní z procesu pre zobrazenie dialógu: %s\n"
 
 #: src/delete.c:331
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zabitie aplikácie: %s\n"
 
 #: src/delete.c:429
@@ -103,8 +103,7 @@ msgstr "Odmaximalizovať okno"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
 #: src/keybindings.c:2407
 #, c-format
@@ -117,13 +116,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=SÚBOR] [--display=DISPLEJ] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=SÚBOR] [--"
+"display=DISPLEJ] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -142,10 +140,8 @@ msgstr ""
 
 #: src/main.c:345
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Nepodarilo sa nájsť tému. Overte, že %s existuje a obrazuje obvyklé témy."
 
 #: src/main.c:393
 #, c-format
@@ -311,16 +307,15 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Okno \"%s\" neodpovedá."
 
 #: src/metacity-dialog.c:92
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "Vynútené ukončenie tejto aplikácie spôsobí stratu neuložených zmien."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Vynútiť ukončenie"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -434,6 +429,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Určuje, či majú aplikácie alebo systém generovať zvukové pípnutia. "
+"Spolu s vizuálnym zvončekom umožňuje tiché pípanie."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -443,7 +440,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Povoliť vizuálny zvonček"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -648,11 +645,11 @@ msgstr "Spustiť definovaný príkaz"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Zobraziť menu panelu"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Zobraziť dialóg pre spustenie programu"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -748,15 +745,15 @@ msgstr "Prepnúť na plochu vpravo"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Systémový zvonček je počuteľný"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Zachytiť obsah obrazovky"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Zachytiť obsah okna"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -768,6 +765,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Určuje, ako má Metacity implementovať vizuálne zobrazenie pípnutia "
+"aplikáciou alebo systémom. Momentálne sú platné dve hodnoty, \"fullscreen\", "
+"ktorá čiernobielo blikne celou obrazovkou a \"frame_flash\", kde blikne "
+"titulok okna, v ktorom je pípajúca aplikácia. Ak nie je možné určiť pípajúcu "
+"aplikáciu (napríklad u \"pípnutia systému\"), blikne titulok momentálne aktívneho "
+"okna."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -780,25 +783,21 @@ msgstr ""
 "spustíte command_N."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Kľúče /apps/metacity/global_keybindings/run_command_N definujú klávesové "
-"skratky odpovedajúce týmto príkazom. Stlačením skratky pre run_command_N "
-"spustíte command_N."
+"Kľúč /apps/metacity/global_keybindings/run_command_screenshot definuje klávesovú"
+"skratku, ktorá spustí zadaný príkaz."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Kľúče /apps/metacity/global_keybindings/run_command_N definujú klávesové "
-"skratky odpovedajúce týmto príkazom. Stlačením skratky pre run_command_N "
-"spustíte command_N."
+"Kľúč /apps/metacity/global_keybindings/run_command_window_screenshot definuje klávesovú"
+"skratku, ktorá spustí zadaný príkaz."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1585,7 +1584,6 @@ msgstr ""
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1594,14 +1592,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Táto klávesová skratka pre zatvorenie okna Formát je \"&lt;Control&gt;a\" "
+"Táto klávesová skratka pre zobrazenie okna pre spustenie príkazu. Formát je \"&lt;Control&gt;a\" "
 "alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje "
 "malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
 "Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu "
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1610,14 +1607,13 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre zatvorenie okna Formát je \"&lt;Control&gt;a\" "
+"Táto klávesová skratka pre zachytenie obsahu okna. Formát je \"&lt;Control&gt;a\" "
 "alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a umožňuje "
 "malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
 "Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre túto akciu "
 "nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1626,14 +1622,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Táto klávesová skratka prepne na pracovnú plochu 9. Formát je \"&lt;"
+"Táto klávesová skratka pre zachytenie obsahu obrazovky. Formát je \"&lt;"
 "Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť "
 "liberálne a umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" "
 "a \"&lt;Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled"
 "\", pre túto akciu nebude definovaná žiadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1641,7 +1636,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka pre aktiváciu menu okna. Formát je \"&lt;Control&gt;a"
+"Táto klávesová skratka pre zobrazenie hlavného menu panelu. Formát je \"&lt;Control&gt;a"
 "\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dosť liberálne a "
 "umožňuje malé aj veľké písmená a skratky ako je \"&lt;Ctl&gt;\" a \"&lt;"
 "Ctrl&gt;\". Ak nastavíte túto možnosť na špeciálnu hodnotu \"disabled\", pre "
@@ -1653,7 +1648,7 @@ msgstr "Meno pracovnej plochy."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Príkaz pre zachytenie obrazovky"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1685,7 +1680,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Príkaz pre zachytenie obsahu okna"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1798,6 +1793,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Zapne vizuálnu zobrazenie pokusu aplikácie alebo systému o pípnutie. "
+"To sa hodí pre slabo počujúcich ľudí alebo ak pracujete v hlučnom "
+"prostredí, alebo pri vypnutom počuteľnom zvončeku."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -1809,7 +1807,7 @@ msgstr "Použiť štandardné systémové písmo v titulkoch okna"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Typ vizuálneho zvončeka"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
@@ -1909,8 +1907,7 @@ msgstr ""
 
 #: src/screen.c:464
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nepodarilo sa získať výber správcu okien pre obrazovku %d na displeji \"%s"
 "\".\n"
@@ -2049,8 +2046,7 @@ msgstr "Uhol musí byť medzi 0.0 a 360.0, a je %g\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfa musí byť medzi 0.0 (neviditeľné) a 1.0 (úplne nakreslené), a je %g\n"
+msgstr "Alfa musí byť medzi 0.0 (neviditeľné) a 1.0 (úplne nakreslené), a je %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2149,10 +2145,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Chýbajúci atribút \"value\" v elemente <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-"Nie je možné zadať aj button_width/button_height a aj pomer strán tlačidiel"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Nie je možné zadať aj button_width/button_height a aj pomer strán tlačidiel"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2450,8 +2444,7 @@ msgstr "Najvyšším elementovm témy musí byť <metacity_theme>, nie <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Element <%s> nie je povolený v elemente name/author/date/description"
 
 #: src/theme-parser.c:3684
@@ -2461,10 +2454,8 @@ msgstr "Element <%s> nie je povolený v elemente <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"Element <%s> nie je povolený v elemente vzdialenosti/okrajov/pomeru strán"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Element <%s> nie je povolený v elemente vzdialenosti/okrajov/pomeru strán"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2595,8 +2586,7 @@ msgstr "V špecifikácii farby nerozpoznaný komponent \"%s\""
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
-"Formát miešania he \"blend/bg_color/fg_color/alpha\", \"%s\" tomu neodpovedá"
+msgstr "Formát miešania he \"blend/bg_color/fg_color/alpha\", \"%s\" tomu neodpovedá"
 
 #: src/theme.c:1054
 #, c-format
@@ -2610,8 +2600,7 @@ msgstr "Hodnota alfa \"%s\" v miešanej farbe nie je medzi 0.0 a 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Formát tieňa je \"shade/base_color/factor\", \"%s\" tomu neodpovedá"
 
 #: src/theme.c:1122
@@ -2639,22 +2628,19 @@ msgstr "Výraz umiestnenia obsahuje znak '%s', ktorý nie je povolený"
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
-"Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
+msgstr "Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
+msgstr "Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
 
 #: src/theme.c:1531
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr ""
-"Výraz umiestnenia obsahuje neznámy operátor na začiatku tohto textu: \"%s\""
+msgstr "Výraz umiestnenia obsahuje neznámy operátor na začiatku tohto textu: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2665,14 +2651,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenia obsahuje operátor \"%s\" tam, kde sa očakáva operand"
 
 #: src/theme.c:1845
@@ -2733,10 +2717,8 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2769,8 +2751,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Používateľské konštanty musia začítať veľkým písmenom, \"%s\" nezačína"
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -2891,20 +2872,8 @@ msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 
 #: src/xprops.c:479
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8 pre položku %d v "
 "zozname\n"
 
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Okno \"%s\" nereaguje.\n"
-#~ "Chcete túto aplikáciu násilne ukončiť?\n"
-#~ "(Všetky otvorené dokumenty budú stratené.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Zabiť aplikáciu"
