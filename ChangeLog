@@ -1,3 +1,7 @@
+2004-09-14  Gora Mohanty  <gmohanty@cvs.gnome.org>
+                                                                                
+        * configure.in: Added 'or' to ALL_LINGUAS.
+   
 2004-09-07  Elijah Newren  <newren@math.utah.edu>
 
 	Add a new write-up on making window focus consistent (see #152004)
