@@ -427,6 +427,7 @@ meta_window_new (MetaDisplay *display,
   window->initial_workspace_set = FALSE;
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
+  window->have_focus_click_grab = FALSE;
   
   window->unmaps_pending = 0;
   
@@ -556,7 +557,7 @@ meta_window_new (MetaDisplay *display,
 
   meta_window_grab_keys (window);
   meta_display_grab_window_buttons (window->display, window->xwindow);
-  meta_display_grab_focus_window_button (window->display, window->xwindow);
+  meta_display_grab_focus_window_button (window->display, window);
   
   /* For the workspace, first honor hints,
    * if that fails put transients with parents,
@@ -982,7 +983,7 @@ meta_window_free (MetaWindow  *window)
 
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);
-  meta_display_ungrab_focus_window_button (window->display, window->xwindow);
+  meta_display_ungrab_focus_window_button (window->display, window);
   
   meta_display_unregister_x_window (window->display, window->xwindow);
   
@@ -4003,8 +4004,11 @@ meta_window_notify_focus (MetaWindow *window,
           /* move into FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
 
-          /* Ungrab click to focus button */
-          meta_display_ungrab_focus_window_button (window->display, window->xwindow);
+          /* Ungrab click to focus button since the sync grab can interfere
+           * with some things you might do inside the focused window, by
+           * causing the client to get funky enter/leave events.
+           */
+          meta_display_ungrab_focus_window_button (window->display, window);
         }
     }
   else if (event->type == FocusOut ||
@@ -4042,8 +4046,8 @@ meta_window_notify_focus (MetaWindow *window,
           /* move out of FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
 
-          /* Re-grab for click to focus */
-          meta_display_grab_focus_window_button (window->display, window->xwindow);
+          /* Re-grab for click to focus, if necessary */
+          meta_display_grab_focus_window_button (window->display, window);
         }
     }
 

@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2002, 2003 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1339,7 +1339,12 @@ event_callback (XEvent   *event,
                    * frames.c or special-cased if the click was on a
                    * minimize/close button.
                    */
-                  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+
+                  /* Raise on clicking the client area always or only
+                   * in click to focus mode? The debate rages.
+                   * Feel free to change TRUE to FALSE
+                   */
+                  if (TRUE /* meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK */) 
                     {
                       meta_window_raise (window);
                       
@@ -1428,6 +1433,10 @@ event_callback (XEvent   *event,
                 mode = AsyncPointer; /* eat focus click */
               else
                 mode = ReplayPointer; /* give event back */
+
+              meta_verbose ("Allowing events mode %s time %lu\n",
+                            mode == AsyncPointer ? "AsyncPointer" : "ReplayPointer",
+                            (unsigned long) event->xbutton.time);
               
               XAllowEvents (display->xdisplay,
                             mode, event->xbutton.time);
@@ -3084,6 +3093,11 @@ meta_change_button_grab (MetaDisplay *display,
                          int          modmask)
 {
   unsigned int ignored_mask;
+
+  meta_verbose ("%s 0x%lx sync = %d button = %d modmask 0x%x\n",
+                grab ? "Grabbing" : "Ungrabbing",
+                xwindow,
+                sync, button, modmask);
   
   meta_error_trap_push (display);
   
@@ -3101,6 +3115,8 @@ meta_change_button_grab (MetaDisplay *display,
 
       if (meta_is_debugging ())
         meta_error_trap_push_with_return (display);
+
+      /* GrabModeSync means freeze until XAllowEvents */
       
       if (grab)
         XGrabButton (display->xdisplay, button, modmask | ignored_mask,
@@ -3202,11 +3218,29 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
 #define MAX_FOCUS_BUTTON 4
 void
 meta_display_grab_focus_window_button (MetaDisplay *display,
-                                       Window       xwindow)
+                                       MetaWindow  *window)
 {
   /* Grab button 1 for activating unfocused windows */
-  meta_verbose ("Grabbing unfocused window buttons for 0x%lx\n", xwindow);
+  meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
 
+  /* Don't grab at all unless in click to focus mode. In click to
+   * focus, we may sometimes be clever about intercepting and eating
+   * the focus click. But in mouse focus, we never do that since the
+   * focus window may not be raised, and who wants to think about
+   * mouse focus anyway.
+   */
+  if (meta_prefs_get_focus_mode () != META_FOCUS_MODE_CLICK)
+    {
+      meta_verbose (" (well, not grabbing since not in click to focus mode)\n");
+      return;
+    }
+  
+  if (window->have_focus_click_grab)
+    {
+      meta_verbose (" (well, not grabbing since we already have the grab)\n");
+      return;
+    }
+  
   /* FIXME If we ignored errors here instead of spewing, we could
    * put one big error trap around the loop and avoid a bunch of
    * XSync()
@@ -3217,29 +3251,37 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
     while (i < MAX_FOCUS_BUTTON)
       {
         meta_change_button_grab (display,
-                                 xwindow,
-                                 TRUE, TRUE, i, 0);
+                                 window->xwindow,
+                                 TRUE, TRUE,
+                                 i, 0);
         
         ++i;
       }
+
+    window->have_focus_click_grab = TRUE;
   }
 }
 
 void
 meta_display_ungrab_focus_window_button (MetaDisplay *display,
-                                         Window       xwindow)
+                                         MetaWindow  *window)
 {
-  meta_verbose ("Ungrabbing unfocused window buttons for 0x%lx\n", xwindow);
+  meta_verbose ("Ungrabbing unfocused window buttons for %s\n", window->desc);
 
+  if (!window->have_focus_click_grab)
+    return;
+  
   {
     int i = 1;
     while (i < MAX_FOCUS_BUTTON)
       {
-        meta_change_button_grab (display, xwindow,
-                                 FALSE, TRUE, i, 0);
+        meta_change_button_grab (display, window->xwindow,
+                                 FALSE, FALSE, i, 0);
         
         ++i;
       }
+
+    window->have_focus_click_grab = FALSE;
   }
 }
 
@@ -4063,12 +4105,17 @@ static void
 prefs_changed_callback (MetaPreference pref,
                         void          *data)
 {
-  if (pref == META_PREF_MOUSE_BUTTON_MODS)
+  /* It may not be obvious why we regrab on focus mode
+   * change; it's because we handle focus clicks a
+   * bit differently for the different focus modes.
+   */
+  if (pref == META_PREF_MOUSE_BUTTON_MODS ||
+      pref == META_PREF_FOCUS_MODE)
     {
       MetaDisplay *display = data;
       GSList *windows;
       GSList *tmp;
-
+      
       windows = meta_display_list_windows (display);
       
       /* Ungrab all */
@@ -4077,19 +4124,20 @@ prefs_changed_callback (MetaPreference pref,
         {
           MetaWindow *w = tmp->data;
           meta_display_ungrab_window_buttons (display, w->xwindow);
-          meta_display_ungrab_focus_window_button (display, w->xwindow);
+          meta_display_ungrab_focus_window_button (display, w);
           tmp = tmp->next;
         }
-      
+
       /* change our modifier */
-      update_window_grab_modifiers (display);
+      if (pref == META_PREF_MOUSE_BUTTON_MODS)
+        update_window_grab_modifiers (display);
 
       /* Grab all */
       tmp = windows;
       while (tmp != NULL)
         {
           MetaWindow *w = tmp->data;
-          meta_display_grab_focus_window_button (display, w->xwindow);
+          meta_display_grab_focus_window_button (display, w);
           meta_display_grab_window_buttons (display, w->xwindow);
           tmp = tmp->next;
         }

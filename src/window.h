@@ -240,6 +240,9 @@ struct _MetaWindow
   /* if TRUE, window was maximized at start of current grab op */
   guint shaken_loose : 1;
 
+  /* if TRUE we have a grab on the focus click buttons */
+  guint have_focus_click_grab : 1;
+  
 #ifdef HAVE_XSYNC
   /* XSync update counter */
   XSyncCounter update_counter;

@@ -374,9 +374,9 @@ void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                               Window       xwindow);
 
 void meta_display_grab_focus_window_button   (MetaDisplay *display,
-                                              Window       xwindow);
+                                              MetaWindow  *window);
 void meta_display_ungrab_focus_window_button (MetaDisplay *display,
-                                              Window       xwindow);
+                                              MetaWindow  *window);
 
 /* make a request to ensure the event serial has changed */
 void     meta_display_increment_event_serial (MetaDisplay *display);

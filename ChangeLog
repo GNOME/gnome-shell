@@ -1,3 +1,16 @@
+2003-10-13  Havoc Pennington  <hp@redhat.com>
+
+        In the "prefs cause code complexity" department, here's a "sloppy
+	focus die die die" kind of moment.
+
+	* src/display.c (meta_display_grab_focus_window_button): don't
+	grab in sloppy focus mode, since we were dropping the grab on
+	window enter anyway this just removes races from the current
+	behavior.
+
+	* src/display.c (prefs_changed_callback): ungrab/grab on focus
+	mode changes, since we treat sloppy and click differently.
+	
 2003-10-12  Havoc Pennington  <hp@redhat.com>
 
         Merge reduced_resources mode patch from the branch. Offers
