@@ -1,3 +1,11 @@
+2005-01-20  Vincent Noel  <vnoel@cox.net>
+
+	* src/screen.c: (meta_screen_ensure_tab_popup),
+	(meta_screen_ensure_workspace_popup):
+	* src/tabpopup.c: (meta_ui_tab_popup_new), (display_entry):
+	* src/tabpopup.h: Show labels in bold for windows that demand
+	attention. Fixes #164590.
+
 2005-01-18  Vincent Noel  <vnoel@cox.net>
 
 	* src/screen.c: (meta_screen_ensure_tab_popup),

@@ -221,17 +221,28 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       te->title = NULL;
       if (entries[i].title)
         {
+          gchar *tmp;
           if (entries[i].minimized)
             {
-              gchar *tmp;
               tmp = g_strdup_printf ("[%s]", entries[i].title);
-              te->title = utf8_strndup (tmp, max_chars_per_title);
-              g_free (tmp);
             }
           else 
             {
-              te->title = utf8_strndup (entries[i].title, max_chars_per_title);
+              tmp = g_strdup (entries[i].title);
             }
+          
+          if (entries[i].demands_attention) 
+            {
+              gchar *escaped, *markup;
+              escaped = g_markup_escape_text (tmp, -1);
+              markup = g_strdup_printf ("<b>%s</b>", escaped);
+              g_free (escaped);
+              g_free (tmp);
+              tmp = markup;
+            }
+            
+          te->title = utf8_strndup (tmp, max_chars_per_title);
+          g_free (tmp);
         }
       te->widget = NULL;
       te->icon = entries[i].icon;
@@ -347,7 +358,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
                             0,                     0);
 
           /* Efficiency rules! */
-          gtk_label_set_text (GTK_LABEL (popup->label),
+          gtk_label_set_markup (GTK_LABEL (popup->label),
                               te->title);
           gtk_widget_size_request (popup->label, &req);
           max_label_width = MAX (max_label_width, req.width);
@@ -441,7 +452,7 @@ display_entry (MetaTabPopup *popup,
       unselect_workspace (popup->current_selected_entry->widget);
   }
   
-  gtk_label_set_text (GTK_LABEL (popup->label), te->title);
+  gtk_label_set_markup (GTK_LABEL (popup->label), te->title);
 
   if (popup->outline)
     select_image (te->widget);

@@ -1164,6 +1164,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       entries[i].icon = window->icon;
       entries[i].blank = FALSE;
       entries[i].minimized = window->minimized;
+      entries[i].demands_attention = window->wm_state_demands_attention;
       
       if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
         meta_window_get_outer_rect (window, &r);
@@ -1256,7 +1257,6 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
           entries[i].title = meta_workspace_get_name (workspace);
           entries[i].icon = NULL;
           entries[i].blank = FALSE;
-          entries[i].minimized = FALSE;
           
           g_assert (entries[i].title != NULL);
         }
@@ -1266,8 +1266,9 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
           entries[i].title = NULL;
           entries[i].icon = NULL;
           entries[i].blank = TRUE;
-          entries[i].minimized = FALSE;
         }
+      entries[i].minimized = FALSE;
+      entries[i].demands_attention = FALSE;
 
       ++i;
     }
