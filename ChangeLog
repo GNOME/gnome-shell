@@ -1,3 +1,8 @@
+2005-01-20  Elijah Newren  <newren@gmail.com>
+
+	* src/tabpopup.c (dimm_icon): use pixbuf, not dimmed_pixbuf (which
+	isn't defined yet).  Fixes crash from #136666.
+
 2005-01-20  Vincent Noel  <vnoel@cox.net>
 
 	* src/screen.c: (meta_screen_ensure_tab_popup),

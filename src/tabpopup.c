@@ -123,7 +123,7 @@ dimm_icon (GdkPixbuf *pixbuf)
   int w, h;
   GdkPixbuf *dimmed_pixbuf;
 
-  if (gdk_pixbuf_get_has_alpha (dimmed_pixbuf))
+  if (gdk_pixbuf_get_has_alpha (pixbuf))
     {
       dimmed_pixbuf = gdk_pixbuf_copy (pixbuf);
     }
