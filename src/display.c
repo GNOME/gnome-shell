@@ -3237,7 +3237,6 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
     {
       MetaWindow *window = tmp->data;
       
-      meta_warning("from retheme\n");
       meta_window_queue_move_resize (window);
       if (window->frame)
         {

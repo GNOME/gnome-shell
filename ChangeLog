@@ -1,5 +1,17 @@
 2003-09-30  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (meta_window_queue_move_resize): add the moveresize
+	idle at META_PRIORITY_RESIZE so it runs before GTK does any
+	drawing, may fix bug #109211 (seem to for me)
+	
+	* src/ui.h (META_PRIORITY_RESIZE): add this between GTK
+	resize/redraw priorities
+
+	* src/display.c (meta_display_queue_retheme_all_windows): remove
+	some debug spew from meta_warning
+
+2003-09-30  Havoc Pennington  <hp@redhat.com>
+
 	* src/testasyncgetprop.c: remove nonstandard header include, 
 	#121870
 

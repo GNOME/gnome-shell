@@ -2882,7 +2882,8 @@ meta_window_queue_move_resize (MetaWindow  *window)
   window->move_resize_queued = TRUE;
   
   if (move_resize_idle == 0)
-    move_resize_idle = g_idle_add (idle_move_resize, NULL);
+    move_resize_idle = g_idle_add_full (META_PRIORITY_RESIZE,
+                                        idle_move_resize, NULL, NULL);
   
   move_resize_pending = g_slist_prepend (move_resize_pending, window);
 }
