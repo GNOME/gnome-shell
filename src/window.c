@@ -1047,8 +1047,8 @@ set_wm_state (MetaWindow *window,
   meta_verbose ("Setting wm state %s on %s\n",
                 wm_state_to_string (state), window->desc);
   
-  /* twm sets the icon window as data[1], I couldn't find that in
-   * ICCCM.
+  /* Metacity doesn't use icon windows, so data[1] should be None
+   * according to the ICCCM 2.0 Section 4.1.3.1.
    */
   data[0] = state;
   data[1] = None;
