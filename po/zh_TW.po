@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.3.377\n"
-"POT-Creation-Date: 2002-06-09 23:42-0400\n"
-"PO-Revision-Date: 2002-05-28 19:42+0800\n"
+"Project-Id-Version: metacity 2.3.987\n"
+"POT-Creation-Date: 2002-06-24 05:31+0800\n"
+"PO-Revision-Date: 2002-06-25 01:07+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: traditioanl Chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr "視窗最大化"
 msgid "Unmaximize Window"
 msgstr ""
 
-#: src/keybindings.c:639
+#: src/keybindings.c:655
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -93,13 +93,14 @@ msgstr ""
 
 #: src/main.c:290
 #, c-format
-msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
 #: src/main.c:338
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "無法重新啟動：%s\n"
 
 #: src/menu.c:49
 msgid "_Close"
@@ -119,11 +120,11 @@ msgstr ""
 
 #: src/menu.c:53
 msgid "_Shade"
-msgstr ""
+msgstr "捲起(_S)"
 
 #: src/menu.c:54
 msgid "Un_shade"
-msgstr ""
+msgstr "放下(_S)"
 
 #: src/menu.c:55
 msgid "Mo_ve"
@@ -152,6 +153,36 @@ msgstr ""
 msgid "Move to workspace %s%d"
 msgstr "移動至工作區 %s%d"
 
+#: src/metacity-dialog.c:86
+#, c-format
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+
+#: src/metacity-dialog.c:94
+msgid "Kill application"
+msgstr "強行中止應用程式"
+
+#: src/metacity-dialog.c:188
+msgid "Title"
+msgstr "標題"
+
+#: src/metacity-dialog.c:200
+msgid "Class"
+msgstr ""
+
+#: src/metacity-dialog.c:224
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+
+#: src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
+
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
@@ -175,13 +206,12 @@ msgid "Automatically raises the focused window"
 msgstr ""
 
 #: src/metacity.schemas.in.h:5
-#, fuzzy
 msgid "Close a window"
 msgstr "關閉視窗"
 
 #: src/metacity.schemas.in.h:6
 msgid "Current theme"
-msgstr ""
+msgstr "目前的佈景主題"
 
 #: src/metacity.schemas.in.h:7
 msgid "Delay in milliseconds for the auto raise option"
@@ -222,14 +252,12 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:13
-#, fuzzy
 msgid "Minimize a window"
-msgstr "視窗最小化"
+msgstr "將視窗最小化"
 
 #: src/metacity.schemas.in.h:14
-#, fuzzy
 msgid "Move a window"
-msgstr "關閉視窗"
+msgstr "移動視窗"
 
 #: src/metacity.schemas.in.h:15
 msgid "Move focus between panels and the desktop"
@@ -244,87 +272,72 @@ msgid "Move focus to the previously-focused window"
 msgstr ""
 
 #: src/metacity.schemas.in.h:18
-#, fuzzy
 msgid "Move window one workspace down"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至下方的工作區"
 
 #: src/metacity.schemas.in.h:19
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "將視窗移動至左方的工作區"
 
 #: src/metacity.schemas.in.h:20
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "將視窗移動至右方的工作區"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Move window one workspace up"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至上方的工作區"
 
 #: src/metacity.schemas.in.h:22
-#, fuzzy
 msgid "Move window to workspace 1"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 1 個工作區"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Move window to workspace 10"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 10 個工作區"
 
 #: src/metacity.schemas.in.h:24
-#, fuzzy
 msgid "Move window to workspace 11"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 11 個工作區"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move window to workspace 12"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 12 個工作區"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move window to workspace 2"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 2 個工作區"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move window to workspace 3"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 3 個工作區"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move window to workspace 4"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 4 個工作區"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move window to workspace 5"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 5 個工作區"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move window to workspace 6"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 6 個工作區"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move window to workspace 7"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 7 個工作區"
 
 #: src/metacity.schemas.in.h:32
-#, fuzzy
 msgid "Move window to workspace 8"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 8 個工作區"
 
 #: src/metacity.schemas.in.h:33
-#, fuzzy
 msgid "Move window to workspace 9"
-msgstr "移動至工作區 %s%d"
+msgstr "將視窗移動至第 9 個工作區"
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
 msgid "Number of workspaces"
-msgstr "移動至工作區 %s%d"
+msgstr "工作區數目"
 
 #: src/metacity.schemas.in.h:35
 msgid ""
@@ -354,80 +367,68 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:38
-#, fuzzy
 msgid "Switch to workspace 1"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 1 個工作區"
 
 #: src/metacity.schemas.in.h:39
-#, fuzzy
 msgid "Switch to workspace 10"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 10 個工作區"
 
 #: src/metacity.schemas.in.h:40
-#, fuzzy
 msgid "Switch to workspace 11"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 11 個工作區"
 
 #: src/metacity.schemas.in.h:41
-#, fuzzy
 msgid "Switch to workspace 12"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 12 個工作區"
 
 #: src/metacity.schemas.in.h:42
-#, fuzzy
 msgid "Switch to workspace 2"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 2 個工作區"
 
 #: src/metacity.schemas.in.h:43
-#, fuzzy
 msgid "Switch to workspace 3"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 3 個工作區"
 
 #: src/metacity.schemas.in.h:44
-#, fuzzy
 msgid "Switch to workspace 4"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 4 個工作區"
 
 #: src/metacity.schemas.in.h:45
-#, fuzzy
 msgid "Switch to workspace 5"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 5 個工作區"
 
 #: src/metacity.schemas.in.h:46
-#, fuzzy
 msgid "Switch to workspace 6"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 6 個工作區"
 
 #: src/metacity.schemas.in.h:47
-#, fuzzy
 msgid "Switch to workspace 7"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 7 個工作區"
 
 #: src/metacity.schemas.in.h:48
-#, fuzzy
 msgid "Switch to workspace 8"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 8 個工作區"
 
 #: src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Switch to workspace 9"
-msgstr "移動至工作區 %s%d"
+msgstr "切換至第 9 個工作區"
 
 #: src/metacity.schemas.in.h:50
 msgid "Switch to workspace above the current space"
-msgstr ""
+msgstr "切換至上方的工作區"
 
 #: src/metacity.schemas.in.h:51
 msgid "Switch to workspace below the current space"
-msgstr ""
+msgstr "切換至下方的工作區"
 
 #: src/metacity.schemas.in.h:52
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "切換至左方的工作區"
 
 #: src/metacity.schemas.in.h:53
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "切換至右方的工作區"
 
 #: src/metacity.schemas.in.h:54
 msgid ""
@@ -438,6 +439,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至目前工作區上方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
+"如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:55
 msgid ""
@@ -448,6 +453,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至目前工作區下方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
+"如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:56
 msgid ""
@@ -458,6 +467,10 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至目前工作區左方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
+"如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:57
 msgid ""
@@ -468,6 +481,10 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至目前工作區右方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
+"如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:58
 msgid ""
@@ -477,6 +494,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 1 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:59
 msgid ""
@@ -486,6 +507,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 10 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -495,6 +520,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 11 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:61
 msgid ""
@@ -504,6 +533,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 12 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -513,6 +546,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 2 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:63
 msgid ""
@@ -522,6 +559,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 3 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:64
 msgid ""
@@ -531,6 +572,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 4 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:65
 msgid ""
@@ -540,6 +585,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 5 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:66
 msgid ""
@@ -549,6 +598,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 6 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:67
 msgid ""
@@ -558,6 +611,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 7 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:68
 msgid ""
@@ -567,6 +624,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 8 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:69
 msgid ""
@@ -576,6 +637,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以將畫面切換至第 9 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:70
 msgid ""
@@ -594,6 +659,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
+"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:72
 msgid ""
@@ -604,6 +673,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"此按鍵組合可以進入「移動模式」，這時可以使用鍵盤來移動視窗。格式可以像\n"
+"“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時\n"
+"是比較自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl\n"
+"&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任\n"
+"何按鍵組合。"
 
 #: src/metacity.schemas.in.h:73
 msgid ""
@@ -614,6 +688,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"此按鍵組合可以進入「重定尺寸模式」，這時可以使用鍵盤來改變視窗尺寸。格式可\n"
+"以像“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字\n"
+"串時是比較自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;\n"
+"Ctrl&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安\n"
+"排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:74
 msgid ""
@@ -624,6 +703,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"此按鍵組合會隱藏所有普通的視窗並將輸入焦點移至桌面背景。格式可以像“&lt;\n"
+"Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較\n"
+"自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等\n"
+"的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合\n"
+"。"
 
 #: src/metacity.schemas.in.h:75
 msgid ""
@@ -633,6 +717,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"此按鍵組合會令視窗最小化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
+"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:76
 msgid ""
@@ -903,38 +991,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:108
 msgid "Window focus mode"
-msgstr ""
+msgstr "視窗焦點模式"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid "Window title font"
-msgstr "視窗選單"
-
-#: src/metacity-dialog.c:86
-#, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
-msgstr ""
-
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "強行中止應用程式"
-
-#: src/metacity-dialog.c:188
-msgid "Title"
-msgstr ""
-
-#: src/metacity-dialog.c:200
-msgid "Class"
-msgstr ""
-
-#: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
+msgstr "視窗標題列字型"
 
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
 #: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
@@ -988,33 +1049,33 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d×%d"
 
-#: src/screen.c:195
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr ""
 
-#: src/screen.c:211
+#: src/screen.c:212
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to override the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:252
+#: src/screen.c:253
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:307
+#: src/screen.c:308
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: src/screen.c:510
-#, fuzzy, c-format
+#: src/screen.c:515
+#, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "無法分析顏色“%s”"
+msgstr ""
 
 #: src/session.c:273
 #, c-format
@@ -1023,328 +1084,70 @@ msgid ""
 "not be saved: %s\n"
 msgstr ""
 
-#: src/session.c:851 src/session.c:858
+#: src/session.c:869 src/session.c:876
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "無法建立目錄‘%s’：%s\n"
 
-#: src/session.c:868
+#: src/session.c:886
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "無法開啟作業階段檔案‘%s’以供寫入：%s\n"
 
-#: src/session.c:1000
+#: src/session.c:1032
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "無法寫入作業階段檔案‘%s’：%s\n"
 
-#: src/session.c:1005
+#: src/session.c:1037
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "無法關閉作業階段檔案‘%s’：%s\n"
 
-#: src/session.c:1078
+#: src/session.c:1112
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "無法讀入已儲存的作業階段檔案 %s：%s\n"
 
-#: src/session.c:1113
+#: src/session.c:1147
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "無法分析已儲存的作業階段檔案：%s\n"
 
-#: src/session.c:1162
+#: src/session.c:1196
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 
-#: src/session.c:1175
+#: src/session.c:1209
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> 元素中出現不明的屬性 %s"
 
-#: src/session.c:1192
+#: src/session.c:1226
 msgid "nested <window> tag"
 msgstr ""
 
-#: src/session.c:1242 src/session.c:1274
+#: src/session.c:1284 src/session.c:1316
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 元素中出現不明的屬性 %s"
 
-#: src/session.c:1334
+#: src/session.c:1386
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> 元素中出現不明的屬性 %s"
 
-#: src/session.c:1354
+#: src/session.c:1406
 #, c-format
 msgid "Unknown element %s"
 msgstr "不明的元素 %s"
 
-#: src/session.c:1727
+#: src/session.c:1779
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-
-#: src/theme.c:202
-msgid "top"
-msgstr ""
-
-#: src/theme.c:204
-msgid "bottom"
-msgstr ""
-
-#: src/theme.c:206
-msgid "left"
-msgstr ""
-
-#: src/theme.c:208
-msgid "right"
-msgstr ""
-
-#: src/theme.c:222
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
-
-#: src/theme.c:241
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-
-#: src/theme.c:278
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
-
-#: src/theme.c:290
-msgid "Frame geometry does not specify size of buttons"
-msgstr ""
-
-#: src/theme.c:654
-msgid "Gradients should have at least two colors"
-msgstr "漸層應該最少有兩種顏色"
-
-#: src/theme.c:780
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: src/theme.c:794
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: src/theme.c:805
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
-
-#: src/theme.c:818
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
-
-#: src/theme.c:848
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-
-#: src/theme.c:859
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
-
-#: src/theme.c:869
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
-
-#: src/theme.c:916
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-
-#: src/theme.c:927
-#, fuzzy, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "無法分析顏色“%s”"
-
-#: src/theme.c:937
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
-
-#: src/theme.c:966
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "無法分析顏色“%s”"
-
-#: src/theme.c:1228
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "座標表達式中出現不可接受的字元‘%s’"
-
-#: src/theme.c:1255
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "座標表達式中出現無法分析的浮點小數‘%s’"
-
-#: src/theme.c:1269
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "座標表達式中出現無法分析的整數‘%s’"
-
-#: src/theme.c:1336
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-
-#: src/theme.c:1393
-msgid "Coordinate expression was empty or not understood"
-msgstr "座標表達式是空白的或是無法分析"
-
-#: src/theme.c:1532 src/theme.c:1542 src/theme.c:1576
-msgid "Coordinate expression results in division by zero"
-msgstr "座標表達式出現被 0 整除的錯誤"
-
-#: src/theme.c:1584
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-
-#: src/theme.c:1641
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-
-#: src/theme.c:1650
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-
-#: src/theme.c:1658
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-
-#: src/theme.c:1668
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-
-#: src/theme.c:1787
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-
-#: src/theme.c:1816
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "座標表達式中的閉括號沒有相應的開括號"
-
-#: src/theme.c:1879
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "座標表達式中出現不明的變數或常數“%s”"
-
-#: src/theme.c:1936
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "座標表達式中的開括號沒有相應的閉括號"
-
-#: src/theme.c:1947
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-
-#: src/theme.c:2191 src/theme.c:2213 src/theme.c:2234
-#, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "佈景主題中含有引致錯誤的表達式“%s”：%s\n"
-
-#: src/theme.c:3564
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
-"\"/>"
-
-#: src/theme.c:3973 src/theme.c:4005
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-
-#: src/theme.c:4056
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "無法載入佈景主題“%s”：%s\n"
-
-#: src/theme.c:4202
-#, c-format
-msgid "No <name> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <name>"
-
-#: src/theme.c:4209
-#, c-format
-msgid "No <author> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <author>"
-
-#: src/theme.c:4216
-#, c-format
-msgid "No <date> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <date>"
-
-#: src/theme.c:4223
-#, c-format
-msgid "No <description> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <description>"
-
-#: src/theme.c:4230
-#, c-format
-msgid "No <copyright> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <copyright>"
-
-#: src/theme.c:4240
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-
-#: src/theme.c:4262
-#, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
-
-#: src/theme.c:4645 src/theme.c:4705
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "使用者定義的常數必須以大寫字母開始；但“%s”不是"
-
-#: src/theme.c:4653 src/theme.c:4713
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "已定義了“%s”常數"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -1435,12 +1238,12 @@ msgstr ""
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "不明的類型“%s”出現於<%s> 元素 之內"
+msgstr "不明的類型“%s”出現於 <%s> 元素 之內"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "不明的 style_set“%s”出現於<%s> 元素 之內"
+msgstr "不明的 style_set“%s”出現於 <%s> 元素 之內"
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -1612,9 +1415,9 @@ msgid "No \"filename\" attribute on element <%s>"
 msgstr "<%s> 元素中沒有任何“filename”屬性"
 
 #: src/theme-parser.c:2316 src/theme-parser.c:2763
-#, fuzzy, c-format
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "不明的類型“%s”出現於<%s> 元素 之內"
+msgstr ""
 
 #: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
 #, c-format
@@ -1788,10 +1591,10 @@ msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<%s> 元素不可出現在 <constant> 元素內"
 
 #: src/theme-parser.c:3632
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> 元素不可出現在 distance/border 元素內"
+msgstr "<%s> 元素不可出現於 distance/border/aspect_ratio 元素之內"
 
 #: src/theme-parser.c:3654
 #, c-format
@@ -1850,6 +1653,292 @@ msgstr ""
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr ""
 
+#: src/theme.c:202
+msgid "top"
+msgstr "頂"
+
+#: src/theme.c:204
+msgid "bottom"
+msgstr "底"
+
+#: src/theme.c:206
+msgid "left"
+msgstr "左"
+
+#: src/theme.c:208
+msgid "right"
+msgstr "右"
+
+#: src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr ""
+
+#: src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr ""
+
+#: src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr ""
+
+#: src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr ""
+
+#: src/theme.c:656
+msgid "Gradients should have at least two colors"
+msgstr "漸層應該最少有兩種顏色"
+
+#: src/theme.c:782
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:796
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:807
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:820
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:850
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+
+#: src/theme.c:861
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr ""
+
+#: src/theme.c:871
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+
+#: src/theme.c:918
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+
+#: src/theme.c:929
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr ""
+
+#: src/theme.c:939
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr ""
+
+#: src/theme.c:968
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "無法分析顏色“%s”"
+
+#: src/theme.c:1230
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "座標表達式中出現不可接受的字元‘%s’"
+
+#: src/theme.c:1257
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "座標表達式中出現無法分析的浮點小數‘%s’"
+
+#: src/theme.c:1271
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "座標表達式中出現無法分析的整數‘%s’"
+
+#: src/theme.c:1338
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+
+#: src/theme.c:1395
+msgid "Coordinate expression was empty or not understood"
+msgstr "座標表達式是空白的或是無法分析"
+
+#: src/theme.c:1534 src/theme.c:1544 src/theme.c:1578
+msgid "Coordinate expression results in division by zero"
+msgstr "座標表達式出現被 0 整除的錯誤"
+
+#: src/theme.c:1586
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+
+#: src/theme.c:1643
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+
+#: src/theme.c:1652
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+
+#: src/theme.c:1660
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+
+#: src/theme.c:1670
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+
+#: src/theme.c:1789
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+
+#: src/theme.c:1818
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "座標表達式中的閉括號沒有相應的開括號"
+
+#: src/theme.c:1881
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "座標表達式中出現不明的變數或常數“%s”"
+
+#: src/theme.c:1938
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "座標表達式中的開括號沒有相應的閉括號"
+
+#: src/theme.c:1949
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+
+#: src/theme.c:2193 src/theme.c:2215 src/theme.c:2236
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "佈景主題中含有引致錯誤的表達式“%s”：%s\n"
+
+#: src/theme.c:3566
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
+"\"/>"
+
+#: src/theme.c:3976 src/theme.c:4008
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+
+#: src/theme.c:4059
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "無法載入佈景主題“%s”：%s\n"
+
+#: src/theme.c:4205
+#, c-format
+msgid "No <name> set for theme \"%s\""
+msgstr "佈景主題“%s”未指定 <name>"
+
+#: src/theme.c:4212
+#, c-format
+msgid "No <author> set for theme \"%s\""
+msgstr "佈景主題“%s”未指定 <author>"
+
+#: src/theme.c:4219
+#, c-format
+msgid "No <date> set for theme \"%s\""
+msgstr "佈景主題“%s”未指定 <date>"
+
+#: src/theme.c:4226
+#, c-format
+msgid "No <description> set for theme \"%s\""
+msgstr "佈景主題“%s”未指定 <description>"
+
+#: src/theme.c:4233
+#, c-format
+msgid "No <copyright> set for theme \"%s\""
+msgstr "佈景主題“%s”未指定 <copyright>"
+
+#: src/theme.c:4243
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+
+#: src/theme.c:4265
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+
+#: src/theme.c:4648 src/theme.c:4708
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "使用者定義的常數必須以大寫字母開始；但“%s”不是"
+
+#: src/theme.c:4656 src/theme.c:4716
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "已定義了“%s”常數"
+
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Change how focus is moved from one window to another"
+msgstr ""
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr "視窗焦點"
+
+#: src/tools/metacity-properties.glade.h:1
+msgid "Clic_k to give focus"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:2
+msgid "Focus behavior:"
+msgstr "焦點運作方式："
+
+#: src/tools/metacity-properties.glade.h:3
+msgid "Window Focus Preferences"
+msgstr "視窗焦點偏好設定"
+
+#: src/tools/metacity-properties.glade.h:4
+msgid "_Point to give focus"
+msgstr ""
+
+#: src/tools/metacity-properties.glade.h:5
+msgid "_Raise window on focus"
+msgstr ""
+
 #: src/util.c:60
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -1865,52 +1954,30 @@ msgstr "無法 fdopen() 紀錄檔 %s：%s\n"
 msgid "Opened log file %s\n"
 msgstr "已開啟紀錄檔 %s\n"
 
-#: src/window.c:430
+#: src/window.c:431
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
-#: src/xprops.c:53
+#: src/workspace.c:52
+#, c-format
+msgid "Workspace %d\n"
+msgstr "工作區 %d\n"
+
+#: src/xprops.c:54
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"
 msgstr ""
 
-#: src/xprops.c:281
+#: src/xprops.c:282
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr ""
-
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Change how focus is moved from one window to another"
-msgstr ""
-
-#: src/tools/metacity-properties.desktop.in.h:2
-#, fuzzy
-msgid "Window Focus"
-msgstr "視窗選單"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
+#: src/xprops.c:367
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
