@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-07-27 18:02+0100\n"
+"POT-Creation-Date: 2005-02-16 16:04+0100\n"
+"PO-Revision-Date: 2005-02-16 22:54+0100\n"
 "Last-Translator: Michiel Sikkes <michiel@eyesopened.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:312
+#: src/display.c:313
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -128,9 +128,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Er is geen opdracht %d gedefinieerd.\n"
+msgstr "Er is geen opdracht voor de terminal gedefinieerd.\n"
 
 #: src/main.c:69
 msgid ""
@@ -212,11 +211,11 @@ msgstr "Sl_uiten"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Op _alle werkbladen tonen"
+msgid "_Always on Visible Workspace"
+msgstr "_Altijd op zichtbare werkblad"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+msgid "_Only on This Workspace"
 msgstr "Alleen op dit _werkblad"
 
 #: src/menu.c:68
@@ -235,7 +234,7 @@ msgstr "Verplaatsen naar _bovenliggend werkblad"
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar _onderliggend werkblad"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
@@ -375,7 +374,7 @@ msgstr ""
 "Deze vensters ondersteunen niet \"huidige instellingen opslaan\" en zullen "
 "bij een volgende sessie opnieuw moeten worden opgestart."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -512,12 +511,14 @@ msgstr ""
 "font gebruiken voor venstertitels."
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Indien waar, geeft metacity de gebruiker minder directe terugkoppeling door "
 "raamwerken te gebruiken en animaties te minimaliseren. Dit is een "
@@ -715,14 +716,14 @@ msgstr "Venstergrootte veranderen"
 msgid "Run a defined command"
 msgstr "Voorgedefineerde opdracht uitvoeren"
 
+# Terminal opstarten/Een terminal opstarten
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Een terminal opstarten"
 
-# aan elkaar hier is niet consistent met het andere bericht: panel run dialog
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
-msgstr "Het paneel-menu tonen"
+msgstr "Het paneelmenu tonen"
 
 #: src/metacity.schemas.in.h:62
 msgid "Show the panel run application dialog"
@@ -1961,17 +1962,17 @@ msgstr "Vensteraandacht-modus"
 msgid "Window title font"
 msgstr "Venstertitellettertype"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-sleutel \"%s\" is op een ongeldig type ingesteld\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1980,18 +1981,18 @@ msgstr ""
 "\"%s\", gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kon lettertypebeschrijving \"%s\" niet verwerken van Gconf-sleutel %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2000,7 +2001,7 @@ msgstr ""
 "%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
 "huidige maximum is %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2008,17 +2009,17 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2027,7 +2028,7 @@ msgstr ""
 "\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
 "\"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
@@ -3177,7 +3178,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5036
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3193,7 +3194,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5707
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3231,6 +3232,9 @@ msgid ""
 msgstr ""
 "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
 "lijst\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Op _alle werkbladen tonen"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Kiezen hoe u vensters aandacht geeft"
