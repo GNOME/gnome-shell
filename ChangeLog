@@ -1,3 +1,7 @@
+2004-09-06  Elijah Newren  <newren@math.utah.edu>
+
+	* rationales.txt: Add bugs regarding window focus
+
 2004-08-29  Elijah Newren  <newren@math.utah.edu>
 
 	* NEWS: 2.8.4 release
