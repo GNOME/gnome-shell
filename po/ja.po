@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-20 14:44-0700\n"
-"PO-Revision-Date: 2004-11-04 22:09+0900\n"
+"POT-Creation-Date: 2004-12-21 14:31+0900\n"
+"PO-Revision-Date: 2004-12-21 14:29+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -1190,7 +1190,6 @@ msgstr ""
 "キーバインドはなくなります。"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -3201,24 +3200,3 @@ msgid ""
 msgstr ""
 "ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な "
 "UTF-8を含んでいました\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "ウィンドウへのフォーカスの当て方を選択します"
-
-#~ msgid "Window Focus"
-#~ msgstr "ウィンドウ・フォーカス"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "マウス・クリックでフォーカスさせる(_K)"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "フォーカスの動作:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "ウィンドウ・フォーカスの設定"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "マウス・カーソルでフォーカスさせる(_P)"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "フォーカスでウィンドウを手前に表示する(_R)"
