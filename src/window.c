@@ -1075,7 +1075,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
   int pos_dy;
   int frame_size_dx;
   int frame_size_dy;
-  int client_gravity;
   
   {
     int oldx, oldy;
@@ -2114,6 +2113,26 @@ update_size_hints (MetaWindow *window)
       window->size_hints.max_width = G_MAXINT;
       window->size_hints.max_height = G_MAXINT;
       window->size_hints.flags |= PMaxSize;
+    }
+
+  if (window->size_hints.max_width < window->size_hints.min_width)
+    {
+      /* someone is on crack */
+      meta_warning (_("Window %s sets max width %d less than min width %d, disabling resize\n"),
+                    window->desc,
+                    window->size_hints.max_width,
+                    window->size_hints.min_width);
+      window->size_hints.max_width = window->size_hints.min_width;
+    }
+
+  if (window->size_hints.max_height < window->size_hints.min_height)
+    {
+      /* another cracksmoker */
+      meta_warning (_("Window %s sets max height %d less than min height %d, disabling resize\n"),
+                    window->desc,
+                    window->size_hints.max_height,
+                    window->size_hints.min_height);
+      window->size_hints.max_height = window->size_hints.min_height;
     }
   
   if (window->size_hints.flags & PResizeInc)

@@ -99,6 +99,14 @@ struct _MetaFrames
 
   guint tooltip_timeout;
   MetaUIFrame *last_motion_frame;
+
+  GdkCursor *south_resize_cursor;
+  GdkCursor *west_resize_cursor;
+  GdkCursor *east_resize_cursor;
+  GdkCursor *se_resize_cursor;
+  GdkCursor *sw_resize_cursor;
+
+  GdkCursor *current_cursor;
   
   /* The below is all for grabs */
   MetaFrameStatus grab_status;

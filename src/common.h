@@ -28,18 +28,19 @@
 
 typedef enum
 {
-  META_FRAME_ALLOWS_DELETE    = 1 << 0,
-  META_FRAME_ALLOWS_MENU      = 1 << 1,
-  META_FRAME_ALLOWS_MINIMIZE  = 1 << 2,
-  META_FRAME_ALLOWS_MAXIMIZE  = 1 << 3, 
-  META_FRAME_ALLOWS_RESIZE    = 1 << 4,
-  META_FRAME_TRANSIENT        = 1 << 5,
-  META_FRAME_HAS_FOCUS        = 1 << 6,
-  META_FRAME_SHADED           = 1 << 7,
-  META_FRAME_STUCK            = 1 << 8,
-  META_FRAME_MAXIMIZED        = 1 << 9,
-  META_FRAME_ALLOWS_SHADE     = 1 << 10,
-  META_FRAME_ALLOWS_MOVE      = 1 << 11
+  META_FRAME_ALLOWS_DELETE            = 1 << 0,
+  META_FRAME_ALLOWS_MENU              = 1 << 1,
+  META_FRAME_ALLOWS_MINIMIZE          = 1 << 2,
+  META_FRAME_ALLOWS_MAXIMIZE          = 1 << 3, 
+  META_FRAME_ALLOWS_VERTICAL_RESIZE   = 1 << 4,
+  META_FRAME_ALLOWS_HORIZONTAL_RESIZE = 1 << 5,
+  META_FRAME_TRANSIENT                = 1 << 6,
+  META_FRAME_HAS_FOCUS                = 1 << 7,
+  META_FRAME_SHADED                   = 1 << 8,
+  META_FRAME_STUCK                    = 1 << 9,
+  META_FRAME_MAXIMIZED                = 1 << 10,
+  META_FRAME_ALLOWS_SHADE             = 1 << 11,
+  META_FRAME_ALLOWS_MOVE              = 1 << 12
 } MetaFrameFlags;
 
 typedef enum

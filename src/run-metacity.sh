@@ -6,7 +6,7 @@ fi
 if test "$DEBUG" = none; then
   DEBUG=
 elif test -z "$DEBUG"; then
-  DEBUG=gdb
+  DEBUG=
 fi
 
 if test -z "$CLIENTS"; then
@@ -14,8 +14,8 @@ if test -z "$CLIENTS"; then
 fi
 
 if test -z "$ONLY_WM"; then
-  Xnest -ac :1 -scrns $SCREENS -geometry 640x480 -bw 15 &
-  usleep 50000
+  Xnest -ac :1 -scrns $SCREENS -geometry 640x600 -bw 15 &
+  usleep 100000
 
   if test $CLIENTS != 0; then
     for I in `seq 1 $CLIENTS`; do
@@ -23,7 +23,7 @@ if test -z "$ONLY_WM"; then
     done
   fi
  
-  usleep 5000
+  usleep 50000
 
   DISPLAY=:1 xsetroot -solid royalblue3
 fi

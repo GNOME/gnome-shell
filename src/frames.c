@@ -90,41 +90,44 @@ static void meta_frames_destroy    (GtkObject       *object);
 static void meta_frames_finalize   (GObject         *object);
 static void meta_frames_style_set  (GtkWidget       *widget,
                                     GtkStyle        *prev_style);
+static void meta_frames_realize    (GtkWidget       *widget);
+static void meta_frames_unrealize  (GtkWidget       *widget);
 
-gboolean meta_frames_button_press_event      (GtkWidget           *widget,
-                                              GdkEventButton      *event);
-gboolean meta_frames_button_release_event    (GtkWidget           *widget,
-                                              GdkEventButton      *event);
-gboolean meta_frames_motion_notify_event     (GtkWidget           *widget,
-                                              GdkEventMotion      *event);
-gboolean meta_frames_destroy_event           (GtkWidget           *widget,
-                                              GdkEventAny         *event);
-gboolean meta_frames_expose_event            (GtkWidget           *widget,
-                                              GdkEventExpose      *event);
-gboolean meta_frames_key_press_event         (GtkWidget           *widget,
-                                              GdkEventKey         *event);
-gboolean meta_frames_key_release_event       (GtkWidget           *widget,
-                                              GdkEventKey         *event);
-gboolean meta_frames_enter_notify_event      (GtkWidget           *widget,
-                                              GdkEventCrossing    *event);
-gboolean meta_frames_leave_notify_event      (GtkWidget           *widget,
-                                              GdkEventCrossing    *event);
-gboolean meta_frames_configure_event         (GtkWidget           *widget,
-                                              GdkEventConfigure   *event);
-gboolean meta_frames_focus_in_event          (GtkWidget           *widget,
-                                              GdkEventFocus       *event);
-gboolean meta_frames_focus_out_event         (GtkWidget           *widget,
-                                              GdkEventFocus       *event);
-gboolean meta_frames_map_event               (GtkWidget           *widget,
-                                              GdkEventAny         *event);
-gboolean meta_frames_unmap_event             (GtkWidget           *widget,
-                                              GdkEventAny         *event);
-gboolean meta_frames_property_notify_event   (GtkWidget           *widget,
-                                              GdkEventProperty    *event);
-gboolean meta_frames_client_event            (GtkWidget           *widget,
-                                              GdkEventClient      *event);
-gboolean meta_frames_window_state_event      (GtkWidget           *widget,
-                                              GdkEventWindowState *event);
+static gboolean meta_frames_button_press_event    (GtkWidget           *widget,
+                                                   GdkEventButton      *event);
+static gboolean meta_frames_button_release_event  (GtkWidget           *widget,
+                                                   GdkEventButton      *event);
+static gboolean meta_frames_motion_notify_event   (GtkWidget           *widget,
+                                                   GdkEventMotion      *event);
+static gboolean meta_frames_destroy_event         (GtkWidget           *widget,
+                                                   GdkEventAny         *event);
+static gboolean meta_frames_expose_event          (GtkWidget           *widget,
+                                                   GdkEventExpose      *event);
+static gboolean meta_frames_key_press_event       (GtkWidget           *widget,
+                                                   GdkEventKey         *event);
+static gboolean meta_frames_key_release_event     (GtkWidget           *widget,
+                                                   GdkEventKey         *event);
+static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
+                                                   GdkEventCrossing    *event);
+static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
+                                                   GdkEventCrossing    *event);
+static gboolean meta_frames_configure_event       (GtkWidget           *widget,
+                                                   GdkEventConfigure   *event);
+static gboolean meta_frames_focus_in_event        (GtkWidget           *widget,
+                                                   GdkEventFocus       *event);
+static gboolean meta_frames_focus_out_event       (GtkWidget           *widget,
+                                                   GdkEventFocus       *event);
+static gboolean meta_frames_map_event             (GtkWidget           *widget,
+                                                   GdkEventAny         *event);
+static gboolean meta_frames_unmap_event           (GtkWidget           *widget,
+                                                   GdkEventAny         *event);
+static gboolean meta_frames_property_notify_event (GtkWidget           *widget,
+                                                   GdkEventProperty    *event);
+static gboolean meta_frames_client_event          (GtkWidget           *widget,
+                                                   GdkEventClient      *event);
+static gboolean meta_frames_window_state_event    (GtkWidget           *widget,
+                                                   GdkEventWindowState *event);
+
 
 
 static void meta_frames_calc_geometry (MetaFrames        *frames,
@@ -226,6 +229,9 @@ meta_frames_class_init (MetaFramesClass *class)
 
   widget_class->style_set = meta_frames_style_set;
 
+  widget_class->realize = meta_frames_realize;
+  widget_class->unrealize = meta_frames_unrealize;
+  
   widget_class->expose_event = meta_frames_expose_event;
   widget_class->unmap_event = meta_frames_unmap_event;
   widget_class->destroy_event = meta_frames_destroy_event;
@@ -765,6 +771,46 @@ meta_frames_unmanage_window (MetaFrames *frames,
     meta_warning ("Frame 0x%lx not managed, can't unmanage\n", xwindow);
 }
 
+static void
+meta_frames_realize (GtkWidget *widget)
+{
+  MetaFrames *frames;
+
+  frames = META_FRAMES (widget);
+
+  frames->south_resize_cursor = gdk_cursor_new (GDK_BOTTOM_SIDE);
+  frames->east_resize_cursor = gdk_cursor_new (GDK_RIGHT_SIDE);
+  frames->west_resize_cursor = gdk_cursor_new (GDK_LEFT_SIDE);
+  frames->se_resize_cursor = gdk_cursor_new (GDK_BOTTOM_RIGHT_CORNER);
+  frames->sw_resize_cursor = gdk_cursor_new (GDK_BOTTOM_LEFT_CORNER);
+  
+  if (GTK_WIDGET_CLASS (parent_class)->realize)
+    GTK_WIDGET_CLASS (parent_class)->realize (widget);
+}
+
+static void
+meta_frames_unrealize (GtkWidget *widget)
+{
+  MetaFrames *frames;
+
+  frames = META_FRAMES (widget);
+
+  gdk_cursor_unref (frames->south_resize_cursor);
+  gdk_cursor_unref (frames->east_resize_cursor);
+  gdk_cursor_unref (frames->west_resize_cursor);
+  gdk_cursor_unref (frames->se_resize_cursor);
+  gdk_cursor_unref (frames->sw_resize_cursor);
+
+  frames->south_resize_cursor = NULL;
+  frames->east_resize_cursor = NULL;
+  frames->west_resize_cursor = NULL;
+  frames->se_resize_cursor = NULL;
+  frames->sw_resize_cursor = NULL;
+  
+  if (GTK_WIDGET_CLASS (parent_class)->unrealize)
+    GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+}
+
 static MetaUIFrame*
 meta_frames_lookup_window (MetaFrames *frames,
                            Window      xwindow)
@@ -968,6 +1014,44 @@ clear_tip (MetaFrames *frames)
   meta_fixed_tip_hide ();
 }
 
+static GdkCursor*
+cursor_for_resize (MetaFrames *frames,
+                   MetaFrameStatus status)
+{
+  GdkCursor *cursor;
+  
+  cursor = NULL;
+  switch (status)
+    {          
+    case META_FRAME_STATUS_RESIZING_E:
+      cursor = frames->east_resize_cursor;
+      break;
+    case META_FRAME_STATUS_RESIZING_W:
+      cursor = frames->west_resize_cursor;
+      break;
+    case META_FRAME_STATUS_RESIZING_S:
+      cursor = frames->south_resize_cursor;
+      break;
+    case META_FRAME_STATUS_RESIZING_SE:
+      cursor = frames->se_resize_cursor;
+      break;
+    case META_FRAME_STATUS_RESIZING_SW:
+      cursor = frames->sw_resize_cursor;
+      break;
+      
+    case META_FRAME_STATUS_RESIZING_N:
+    case META_FRAME_STATUS_RESIZING_NE:
+    case META_FRAME_STATUS_RESIZING_NW:
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+  return cursor;
+}
+
 static void
 meta_frames_begin_grab (MetaFrames *frames,
                         MetaUIFrame *frame,
@@ -981,9 +1065,44 @@ meta_frames_begin_grab (MetaFrames *frames,
                         int start_window_h,
                         guint32 timestamp)
 {
+  GdkCursor *cursor;
+  
   g_return_if_fail (frames->grab_frame == NULL);
 
   clear_tip (frames);
+
+  cursor = NULL;
+  switch (status)
+    {
+    case META_FRAME_STATUS_MOVING:
+      break;
+          
+    case META_FRAME_STATUS_RESIZING_E:
+    case META_FRAME_STATUS_RESIZING_W:
+    case META_FRAME_STATUS_RESIZING_S:
+    case META_FRAME_STATUS_RESIZING_SE:
+    case META_FRAME_STATUS_RESIZING_SW:
+    case META_FRAME_STATUS_RESIZING_N:
+    case META_FRAME_STATUS_RESIZING_NE:
+    case META_FRAME_STATUS_RESIZING_NW:
+      cursor = cursor_for_resize (frames, status);
+      break;
+
+    case META_FRAME_STATUS_CLICKING_MINIMIZE:
+      break;
+
+    case META_FRAME_STATUS_CLICKING_MAXIMIZE:
+      break;
+
+    case META_FRAME_STATUS_CLICKING_DELETE:
+      break;
+          
+    case META_FRAME_STATUS_CLICKING_MENU:
+      break;
+          
+    case META_FRAME_STATUS_NORMAL:
+      break;
+    }
   
   /* This grab isn't needed I don't think */
   if (gdk_pointer_grab (frame->window,
@@ -991,7 +1110,7 @@ meta_frames_begin_grab (MetaFrames *frames,
                         GDK_BUTTON_RELEASE_MASK | GDK_BUTTON_PRESS_MASK |
                         GDK_POINTER_MOTION_HINT_MASK | GDK_POINTER_MOTION_MASK,
                         NULL,
-                        NULL,
+                        cursor,
                         timestamp) == GDK_GRAB_SUCCESS)
     {
       frames->grab_frame = frame;
@@ -1171,7 +1290,7 @@ point_in_control (MetaFrames *frames,
   return control == get_control (frames, frame, x, y);
 }
 
-gboolean
+static gboolean
 meta_frames_button_press_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
@@ -1285,65 +1404,58 @@ meta_frames_button_press_event (GtkWidget      *widget,
             control == META_FRAME_CONTROL_RESIZE_E ||
             control == META_FRAME_CONTROL_RESIZE_W))
     {
-      MetaFrameFlags flags;
+      int w, h, x, y;
+      MetaFrameStatus status;
       
-      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-
-      if (flags & META_FRAME_ALLOWS_RESIZE)
-        {
-          int w, h, x, y;
-          MetaFrameStatus status;
-          
-          meta_core_get_size (gdk_display,
+      meta_core_get_size (gdk_display,
+                          frame->xwindow,
+                          &w, &h);
+      
+      meta_core_get_position (gdk_display,
                               frame->xwindow,
-                              &w, &h);
-
-          meta_core_get_position (gdk_display,
-                                  frame->xwindow,
-                                  &x, &y);
-
-          status = META_FRAME_STATUS_NORMAL;
-
-          switch (control)
-            {
-            case META_FRAME_CONTROL_RESIZE_SE:
-              status = META_FRAME_STATUS_RESIZING_SE;
-              break;
-            case META_FRAME_CONTROL_RESIZE_S:
-              status = META_FRAME_STATUS_RESIZING_S;
-              break;
-            case META_FRAME_CONTROL_RESIZE_SW:
-              status = META_FRAME_STATUS_RESIZING_SW;
-              break;
-            case META_FRAME_CONTROL_RESIZE_NE:
-              status = META_FRAME_STATUS_RESIZING_NE;
-              break;
-            case META_FRAME_CONTROL_RESIZE_N:
-              status = META_FRAME_STATUS_RESIZING_N;
-              break;
-            case META_FRAME_CONTROL_RESIZE_NW:
-              status = META_FRAME_STATUS_RESIZING_NW;
-              break;
-            case META_FRAME_CONTROL_RESIZE_E:
-              status = META_FRAME_STATUS_RESIZING_E;
-              break;
-            case META_FRAME_CONTROL_RESIZE_W:
-              status = META_FRAME_STATUS_RESIZING_W;
-              break;
-            default:
-              g_assert_not_reached ();
-              break;
-            }
-          
-          meta_frames_begin_grab (frames, frame,
-                                  status,
-                                  event->button,
-                                  event->x_root,
-                                  event->y_root,
-                                  x, y,
-                                  w, h,
-                                  event->time);
+                              &x, &y);
+      
+      status = META_FRAME_STATUS_NORMAL;
+      
+      switch (control)
+        {
+        case META_FRAME_CONTROL_RESIZE_SE:
+          status = META_FRAME_STATUS_RESIZING_SE;
+          break;
+        case META_FRAME_CONTROL_RESIZE_S:
+          status = META_FRAME_STATUS_RESIZING_S;
+          break;
+        case META_FRAME_CONTROL_RESIZE_SW:
+          status = META_FRAME_STATUS_RESIZING_SW;
+          break;
+        case META_FRAME_CONTROL_RESIZE_NE:
+          status = META_FRAME_STATUS_RESIZING_NE;
+          break;
+        case META_FRAME_CONTROL_RESIZE_N:
+          status = META_FRAME_STATUS_RESIZING_N;
+          break;
+        case META_FRAME_CONTROL_RESIZE_NW:
+          status = META_FRAME_STATUS_RESIZING_NW;
+          break;
+        case META_FRAME_CONTROL_RESIZE_E:
+          status = META_FRAME_STATUS_RESIZING_E;
+          break;
+        case META_FRAME_CONTROL_RESIZE_W:
+          status = META_FRAME_STATUS_RESIZING_W;
+          break;
+        default:
+          g_assert_not_reached ();
+          break;
         }
+          
+      meta_frames_begin_grab (frames, frame,
+                              status,
+                              event->button,
+                              event->x_root,
+                              event->y_root,
+                              x, y,
+                              w, h,
+                              event->time);
     }
   else if (((control == META_FRAME_CONTROL_TITLE ||
              control == META_FRAME_CONTROL_NONE) &&
@@ -1390,7 +1502,7 @@ meta_frames_notify_menu_hide (MetaFrames *frames)
     }
 }
 
-gboolean
+static gboolean
 meta_frames_button_release_event    (GtkWidget           *widget,
                                      GdkEventButton      *event)
 {
@@ -1478,7 +1590,7 @@ meta_frames_button_release_event    (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_motion_notify_event     (GtkWidget           *widget,
                                      GdkEventMotion      *event)
 {
@@ -1525,14 +1637,69 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
     case META_FRAME_STATUS_CLICKING_MAXIMIZE:
       break;
     case META_FRAME_STATUS_NORMAL:
-      queue_tip (frames);
+      {
+        MetaFrameControl control;
+        GdkCursor *cursor;
+        int x, y;
+
+        gdk_window_get_pointer (frame->window, &x, &y, NULL);
+
+        control = get_control (frames, frame, x, y);
+        
+        cursor = NULL;
+
+        switch (control)
+          {
+          case META_FRAME_CONTROL_NONE:
+            break;
+          case META_FRAME_CONTROL_TITLE:
+            break;
+          case META_FRAME_CONTROL_DELETE:
+            break;
+          case META_FRAME_CONTROL_MENU:
+            break;
+          case META_FRAME_CONTROL_MINIMIZE:
+            break;
+          case META_FRAME_CONTROL_MAXIMIZE:
+            break;
+          case META_FRAME_CONTROL_RESIZE_SE:
+            cursor = frames->se_resize_cursor;
+            break;
+          case META_FRAME_CONTROL_RESIZE_S:
+            cursor = frames->south_resize_cursor;
+            break;
+          case META_FRAME_CONTROL_RESIZE_SW:
+            cursor = frames->sw_resize_cursor;
+            break;
+          case META_FRAME_CONTROL_RESIZE_N:
+            break;
+          case META_FRAME_CONTROL_RESIZE_NE:
+            break;
+          case META_FRAME_CONTROL_RESIZE_NW:
+            break;
+          case META_FRAME_CONTROL_RESIZE_W:
+            cursor = frames->west_resize_cursor;
+            break;
+          case META_FRAME_CONTROL_RESIZE_E:
+            cursor = frames->east_resize_cursor;
+            break;
+          }
+
+        if (cursor != frames->current_cursor)
+          {
+            gdk_window_set_cursor (frame->window, cursor);
+            frames->current_cursor = cursor;
+          }
+        
+        queue_tip (frames);
+      }
       break;
     }
       
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_destroy_event           (GtkWidget           *widget,
                                      GdkEventAny         *event)
 {
@@ -1726,7 +1893,7 @@ draw_control_bg (MetaFrames         *frames,
     }
 }
 
-gboolean
+static gboolean
 meta_frames_expose_event            (GtkWidget           *widget,
                                      GdkEventExpose      *event)
 {
@@ -1905,7 +2072,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_key_press_event         (GtkWidget           *widget,
                                      GdkEventKey         *event)
 {
@@ -1921,7 +2088,7 @@ meta_frames_key_press_event         (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_key_release_event       (GtkWidget           *widget,
                                      GdkEventKey         *event)
 {
@@ -1937,7 +2104,7 @@ meta_frames_key_release_event       (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_enter_notify_event      (GtkWidget           *widget,
                                      GdkEventCrossing    *event)
 {
@@ -1953,7 +2120,7 @@ meta_frames_enter_notify_event      (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_leave_notify_event      (GtkWidget           *widget,
                                      GdkEventCrossing    *event)
 {
@@ -1966,10 +2133,16 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  if (frames->current_cursor)
+    {
+      gdk_window_set_cursor (frame->window, NULL);
+      frames->current_cursor = NULL;
+    }
+  
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_configure_event         (GtkWidget           *widget,
                                      GdkEventConfigure   *event)
 {
@@ -1985,7 +2158,7 @@ meta_frames_configure_event         (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_focus_in_event          (GtkWidget           *widget,
                                      GdkEventFocus       *event)
 {
@@ -2001,7 +2174,7 @@ meta_frames_focus_in_event          (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_focus_out_event         (GtkWidget           *widget,
                                      GdkEventFocus       *event)
 {
@@ -2017,7 +2190,7 @@ meta_frames_focus_out_event         (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_map_event               (GtkWidget           *widget,
                                      GdkEventAny         *event)
 {
@@ -2033,7 +2206,7 @@ meta_frames_map_event               (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_unmap_event             (GtkWidget           *widget,
                                      GdkEventAny         *event)
 {
@@ -2052,7 +2225,7 @@ meta_frames_unmap_event             (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_property_notify_event   (GtkWidget           *widget,
                                      GdkEventProperty    *event)
 {
@@ -2068,7 +2241,7 @@ meta_frames_property_notify_event   (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_client_event            (GtkWidget           *widget,
                                      GdkEventClient      *event)
 {
@@ -2084,7 +2257,7 @@ meta_frames_client_event            (GtkWidget           *widget,
   return TRUE;
 }
 
-gboolean
+static gboolean
 meta_frames_window_state_event      (GtkWidget           *widget,
                                      GdkEventWindowState *event)
 {
@@ -2163,8 +2336,19 @@ get_control (MetaFrames *frames,
              int x, int y)
 {
   MetaFrameGeometry fgeom;
+  MetaFrameFlags flags;
+  gboolean has_vert, has_horiz;
+  GdkRectangle client;
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
+
+  client.x = fgeom.left_width;
+  client.y = fgeom.top_height;
+  client.width = fgeom.width - fgeom.left_width - fgeom.right_width;
+  client.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
+
+  if (POINT_IN_RECT (x, y, client))
+    return META_FRAME_CONTROL_NONE;
   
   if (POINT_IN_RECT (x, y, fgeom.close_rect))
     return META_FRAME_CONTROL_DELETE;
@@ -2180,19 +2364,50 @@ get_control (MetaFrames *frames,
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     return META_FRAME_CONTROL_TITLE;
-  
-  if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-      x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
-    return META_FRAME_CONTROL_RESIZE_SE;
-  else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-           x <= (fgeom.left_width + RESIZE_EXTENDS))
-    return META_FRAME_CONTROL_RESIZE_SW;
-  else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
-    return META_FRAME_CONTROL_RESIZE_S;
-  else if (x <= fgeom.left_width)
-    return META_FRAME_CONTROL_RESIZE_W;
-  else if (x >= (fgeom.width - fgeom.right_width))
-    return META_FRAME_CONTROL_RESIZE_E;
+      
+  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+
+  has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
+  has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
+
+  if (has_vert || has_horiz)
+    {
+      if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+          x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
+        {
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_SE;
+          else if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_S;
+          else
+            return META_FRAME_CONTROL_RESIZE_E;
+        }
+      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+               x <= (fgeom.left_width + RESIZE_EXTENDS))
+        {
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_SW;
+          else if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_S;
+          else
+            return META_FRAME_CONTROL_RESIZE_W;
+        }
+      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
+        {
+          if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_S;
+        }
+      else if (x <= fgeom.left_width)
+        {
+          if (has_horiz)
+            return META_FRAME_CONTROL_RESIZE_W;
+        }
+      else if (x >= (fgeom.width - fgeom.right_width))
+        {
+          if (has_horiz)
+            return META_FRAME_CONTROL_RESIZE_E;
+        }
+    }
   
   return META_FRAME_CONTROL_NONE;
 }
