@@ -91,18 +91,16 @@
 </draw_ops>
 
 <draw_ops name="menu_button">
-  <clip x="2" y="2" width="width-4" height="height-4"/>
-  <icon  x="(0 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2 + 2"
-         y="(height-mini_icon_height) / 2 + 2"
-         width="mini_icon_width-6" height="mini_icon_height-6"/>
+  <clip x="0" y="0" width="width" height="height"/>
+<icon  x="(0 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2"
+         y="(height-mini_icon_height) / 2"
+         width="mini_icon_width-1" height="mini_icon_height-1"/>
 </draw_ops>
 
 <draw_ops name="menu_button_normal">
-  <include name="button_normal_bg"/>
   <include name="menu_button"/>
 </draw_ops>
 <draw_ops name="menu_button_pressed">
-  <include name="button_pressed_bg"/>
   <include name="menu_button"/>
 </draw_ops>
 
@@ -220,9 +218,9 @@
   <include name="focus_outline"/>
 </draw_ops>
 
-<draw_ops name="title_gradient">
+<draw_ops name="title_box">
 <rectangle color="gtk:fg[NORMAL]" filled="false"
-             x="1" y="1" width="width-SpacerWidth" height="height-4"/>
+             x="0" y="1" width="width-SpacerWidth+3" height="height-2"/>
 <line color="#BBBBBB"
         x1="2"
         y1="height-2"
@@ -236,7 +234,7 @@
         y2="height-2"
         width="1"/>
 <rectangle color="gtk:bg[SELECTED]" filled="true"
-	     x="2" y="2" width="width-8" height="height-5"/>
+	     x="1" y="2" width="width-5" height="height-3"/>
 </draw_ops>
 
 <draw_ops name="title_spacer">
@@ -245,37 +243,17 @@
              y2="height - (height-SpacerHeight)/2"/>
 </draw_ops>
 
-<draw_ops name="title_text_focused_with_icon">
-  <clip x="2" y="2" width="width-SpacerWidth-1" height="height-5"/>
-  <title color="gtk:fg[SELECTED]"
-         x="(3 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2 + mini_icon_width + IconTitleSpacing"
-         y="((height - title_height) / 2) `max` 0"/>
-  <icon  x="(3 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2"
-         y="(height-mini_icon_height) / 2"
-         width="mini_icon_width" height="mini_icon_height"/>
-</draw_ops>
-
 <draw_ops name="title_text_focused_no_icon">
-  <clip x="2" y="2" width="width-SpacerWidth-1" height="height-5"/>
+  <clip x="3" y="2" width="width-SpacerWidth-2" height="height-4"/>
   <title color="gtk:fg[SELECTED]"
-         x="(3 `max` (width-title_width)) / 2"
+         x="(3 `max` (width-title_width)) / 2+2"
          y="((height - title_height) / 2) `max` 0"/>
-</draw_ops>
-
-<draw_ops name="title_text_with_icon">
-  <clip x="2" y="2" width="width-SpacerWidth-1" height="height-5"/>
-  <title color="gtk:fg[NORMAL]"
-         x="(3 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2 + mini_icon_width + IconTitleSpacing"
-         y="((height - title_height) / 2) `max` 0"/>
-  <icon  x="(3 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2"
-         y="(height-mini_icon_height) / 2"
-         width="mini_icon_width" height="mini_icon_height"/>
 </draw_ops>
 
 <draw_ops name="title_text_no_icon">
-  <clip x="2" y="2" width="width-SpacerWidth-1" height="height-5"/>
+  <clip x="3" y="2" width="width-SpacerWidth-2" height="height-4"/>
   <title color="gtk:fg[NORMAL]"
-         x="(3 `max` (width-title_width)) / 2"
+         x="(3 `max` (width-title_width)) / 2+2"
          y="((height - title_height) / 2) `max` 0"/>
 </draw_ops>
 
@@ -284,7 +262,7 @@
 </draw_ops>
 
 <draw_ops name="title_focused">
-  <include name="title_gradient"/>
+  <include name="title_box"/>
   <include name="title_text_focused_no_icon"/>
 </draw_ops>
 
@@ -294,7 +272,7 @@
 </draw_ops>
 
 <draw_ops name="title_utility_focused">
-  <include name="title_gradient"/>
+  <include name="title_box"/>
   <include name="title_spacer"/>
   <include name="title_text_focused_no_icon"/>
 </draw_ops>
