@@ -1,3 +1,7 @@
+2004-06-25  Rob Adams  <readams@readams.net>
+
+	* COMPLIANCE: indicate that _NET_WM_USER_TIME is now supported
+
 2004-06-24  Elijah Newren  <newren@math.utah.edu>
 
 	* src/keybindings.c: (handle_toggle_desktop): Choose correct

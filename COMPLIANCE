@@ -143,9 +143,9 @@ standard is available at http://freedesktop.org/Standards/wm-spec/
   Metacity does not read or set this property.  However, metacity
   never managed iconified windows, and so has no need to do so.
 
-- _NET_WM_USER_TIME (-)
-  Metacity does not read or set this property.  The EWMH does not
-  require it to do so, but it should support it.
++ _NET_WM_USER_TIME (1.3)
+  Metacity uses this property to prevent applications from stealing
+  focus if supported by the toolkit.
 
 + _NET_FRAME_EXTENTS (1.3)
   If set in response to a _NET_REQUEST_FRAME_EXTENTS message received
