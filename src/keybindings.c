@@ -2553,7 +2553,7 @@ meta_spawn_command_line_async_on_screen (const gchar *command_line,
                                          GError     **error)
 {
   gboolean retval;
-  gchar **argv = 0;
+  gchar **argv = NULL;
 
   g_return_val_if_fail (command_line != NULL, FALSE);
 
@@ -3379,6 +3379,7 @@ handle_workspace_switch  (MetaDisplay    *display,
     }
 }
 
+#if 0
 static void
 handle_spew_mark (MetaDisplay    *display,
                   MetaScreen     *screen,
@@ -3388,6 +3389,7 @@ handle_spew_mark (MetaDisplay    *display,
 {
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
+#endif
 
 void
 meta_set_keybindings_disabled (gboolean setting)

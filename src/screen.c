@@ -1769,7 +1769,7 @@ meta_create_offscreen_window (Display *xdisplay,
                         0,
                         CopyFromParent,
                         CopyFromParent,
-                        CopyFromParent,
+                        (Visual *)CopyFromParent,
                         CWOverrideRedirect | CWEventMask,
                         &attrs);
 }

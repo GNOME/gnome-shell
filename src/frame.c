@@ -63,7 +63,7 @@ find_argb_visual (MetaDisplay *display,
                         &template,
                         &nvi);
   if (!xvi)
-    return 0;
+    return NULL;
   
   visual = NULL;
 

@@ -4350,7 +4350,7 @@ meta_theme_load (const char *theme_name,
           g_propagate_error (err, error);
           g_free (theme_file);
           g_free (theme_dir);
-          return FALSE; /* all fallbacks failed */
+          return NULL; /* all fallbacks failed */
         }
     }
 

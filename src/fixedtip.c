@@ -64,10 +64,8 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       gtk_widget_set_name (tip, "gtk-tooltips");
       gtk_container_set_border_width (GTK_CONTAINER (tip), 4);
 
-      gtk_signal_connect_object (GTK_OBJECT (tip), 
-				 "expose_event",
-				 GTK_SIGNAL_FUNC (expose_handler),
-                                 NULL);
+      g_signal_connect_swapped (tip, "expose_event",
+				 G_CALLBACK (expose_handler), NULL);
 
       label = gtk_label_new (NULL);
       gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -76,10 +74,8 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       
       gtk_container_add (GTK_CONTAINER (tip), label);
 
-      gtk_signal_connect (GTK_OBJECT (tip),
-			  "destroy",
-			  GTK_SIGNAL_FUNC (gtk_widget_destroyed),
-			  &tip);
+      g_signal_connect (tip, "destroy",
+			G_CALLBACK (gtk_widget_destroyed), &tip);
     }
 
   gtk_label_set_markup (GTK_LABEL (label), markup_text);

@@ -1602,6 +1602,7 @@ pos_tokenize (const char  *expr,
   return FALSE;
 }
 
+#if 0
 static void
 debug_print_tokens (PosToken *tokens,
                     int       n_tokens)
@@ -1642,6 +1643,7 @@ debug_print_tokens (PosToken *tokens,
 
   g_print ("\n");
 }
+#endif
 
 typedef enum
 {
@@ -1661,6 +1663,7 @@ typedef struct
   } d;
 } PosExpr;
 
+#if 0
 static void
 debug_print_exprs (PosExpr *exprs,
                    int      n_exprs)
@@ -1687,6 +1690,7 @@ debug_print_exprs (PosExpr *exprs,
     }
   g_print ("\n");
 }
+#endif
 
 static gboolean
 do_operation (PosExpr *a,
@@ -5157,7 +5161,7 @@ meta_gtk_widget_get_font_desc (GtkWidget *widget,
 {
   PangoFontDescription *font_desc;
   
-  g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), 0);
+  g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), NULL);
 
   font_desc = pango_font_description_copy (widget->style->font_desc);
 

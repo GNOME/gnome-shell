@@ -34,7 +34,7 @@ meta_bell_flash_screen (MetaDisplay *display,
   
   if (screen->flash_window == None)
     {
-      Visual *visual = CopyFromParent;
+      Visual *visual = (Visual *)CopyFromParent;
       XSetWindowAttributes xswa;
       int depth = CopyFromParent;
       xswa.save_under = True;

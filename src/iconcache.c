@@ -66,7 +66,7 @@ find_largest_sizes (gulong *data,
       w = data[0];
       h = data[1];
 
-      if (nitems < ((w * h) + 2))
+      if (nitems < ((gulong)(w * h) + 2))
         return FALSE; /* not enough data */
 
       *width = MAX (w, *width);
@@ -122,7 +122,7 @@ find_best_size (gulong  *data,
       w = data[0];
       h = data[1];
 
-      if (nitems < ((w * h) + 2))
+      if (nitems < ((gulong)(w * h) + 2))
         break; /* not enough data */
 
       if (best_start == NULL)

@@ -421,10 +421,8 @@ meta_window_menu_new   (MetaFrames         *frames,
   else
     meta_verbose ("not creating workspace menu\n");
   
-  gtk_signal_connect (GTK_OBJECT (menu->menu),
-                      "selection_done",
-                      GTK_SIGNAL_FUNC (menu_closed),
-                      menu);  
+  g_signal_connect (menu->menu, "selection_done",
+                    G_CALLBACK (menu_closed), menu);  
 
   return menu;
 }

@@ -159,7 +159,7 @@ unsigned_long_hash (gconstpointer v)
   gulong val = * (const gulong *) v;
 
   /* I'm not sure this works so well. */
-#if G_SIZEOF_LONG > 4
+#if GLIB_SIZEOF_LONG > 4
   return (guint) (val ^ (val >> 32));
 #else
   return val;
@@ -472,7 +472,6 @@ meta_frames_manage_window (MetaFrames *frames,
 			   GdkWindow  *window)
 {
   MetaUIFrame *frame;
-  GdkColor col;
 
   g_assert (window);
 
@@ -853,7 +852,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
                                     0,
                                     CopyFromParent,
                                     CopyFromParent,
-                                    CopyFromParent,
+                                    (Visual *)CopyFromParent,
                                     CWOverrideRedirect,
                                     &attrs);
 

@@ -211,12 +211,10 @@ mouse_press (GtkWidget      *invisible,
   if (event->type == GDK_BUTTON_PRESS &&
       event->button == 1)
     {
-      gtk_signal_connect (GTK_OBJECT (invisible), "motion_notify_event",
-                          GTK_SIGNAL_FUNC (mouse_motion),
-                          NULL);
-      gtk_signal_connect (GTK_OBJECT (invisible), "button_release_event",
-                          GTK_SIGNAL_FUNC (mouse_release),
-                          NULL);
+      g_signal_connect (invisible, "motion_notify_event",
+                        G_CALLBACK (mouse_motion), NULL);
+      g_signal_connect (invisible, "button_release_event",
+                        G_CALLBACK (mouse_release), NULL);
       gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
                                      GTK_SIGNAL_FUNC (mouse_press),
                                      NULL);
@@ -264,10 +262,10 @@ begin_area_grab (void)
 
   gtk_grab_add (grab_widget);
   
-  gtk_signal_connect (GTK_OBJECT (grab_widget), "button_press_event",
-                      GTK_SIGNAL_FUNC (mouse_press), NULL);
-  gtk_signal_connect (GTK_OBJECT (grab_widget), "key_press_event",
-                      GTK_SIGNAL_FUNC (key_press), NULL);
+  g_signal_connect (grab_widget, "button_press_event",
+                    G_CALLBACK (mouse_press), NULL);
+  g_signal_connect (grab_widget, "key_press_event",
+                    G_CALLBACK (key_press), NULL);
 }
 
 int

@@ -100,7 +100,7 @@ struct MetaCompositor
   guint have_composite : 1;
   guint have_damage : 1;
   guint have_fixes : 1;
-#if HAVE_NAME_WINDOW_PIXMAP
+#ifdef HAVE_NAME_WINDOW_PIXMAP
   guint have_name_window_pixmap : 1;
 #endif
 };

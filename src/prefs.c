@@ -1975,19 +1975,19 @@ meta_prefs_get_button_layout (MetaButtonLayout *button_layout_p)
 }
 
 gboolean
-meta_prefs_get_visual_bell ()
+meta_prefs_get_visual_bell (void)
 {
   return provide_visual_bell;
 }
 
 gboolean
-meta_prefs_bell_is_audible ()
+meta_prefs_bell_is_audible (void)
 {
   return bell_is_audible;
 }
 
 MetaVisualBellType
-meta_prefs_get_visual_bell_type ()
+meta_prefs_get_visual_bell_type (void)
 {
   return visual_bell_type;
 }
@@ -2010,25 +2010,25 @@ meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
 }
 
 MetaActionDoubleClickTitlebar
-meta_prefs_get_action_double_click_titlebar ()
+meta_prefs_get_action_double_click_titlebar (void)
 {
   return action_double_click_titlebar;
 }
 
 gboolean
-meta_prefs_get_auto_raise ()
+meta_prefs_get_auto_raise (void)
 {
   return auto_raise;
 }
 
 int
-meta_prefs_get_auto_raise_delay ()
+meta_prefs_get_auto_raise_delay (void)
 {
   return auto_raise_delay;
 }
 
 gboolean
-meta_prefs_get_reduced_resources ()
+meta_prefs_get_reduced_resources (void)
 {
   return reduced_resources;
 }

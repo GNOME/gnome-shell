@@ -473,7 +473,7 @@ meta_ui_tab_popup_get_selected (MetaTabPopup *popup)
       return te->key;
     }
   else
-    return None;
+    return (MetaTabEntryKey)None;
 }
 
 void

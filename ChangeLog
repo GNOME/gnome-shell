@@ -1,3 +1,29 @@
+2004-09-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* src/bell.c: (meta_bell_flash_screen):
+	* src/compositor.c:
+	* src/effects.c: (meta_effects_draw_box_animation):
+	* src/fixedtip.c: (meta_fixed_tip_show):
+	* src/frame.c: (find_argb_visual):
+	* src/frames.c: (unsigned_long_hash), (meta_frames_manage_window),
+	(meta_frames_apply_shapes):
+	* src/iconcache.c: (find_largest_sizes), (find_best_size):
+	* src/keybindings.c: (meta_spawn_command_line_async_on_screen):
+	* src/main.c: (main):
+	* src/menu.c: (meta_window_menu_new):
+	* src/prefs.c: (meta_prefs_get_visual_bell),
+	(meta_prefs_bell_is_audible), (meta_prefs_get_visual_bell_type),
+	(meta_prefs_get_action_double_click_titlebar),
+	(meta_prefs_get_auto_raise), (meta_prefs_get_auto_raise_delay),
+	(meta_prefs_get_reduced_resources):
+	* src/screen.c: (meta_create_offscreen_window):
+	* src/tabpopup.c: (meta_ui_tab_popup_get_selected):
+	* src/theme-parser.c: (meta_theme_load):
+	* src/theme.c: (meta_gtk_widget_get_font_desc):
+	* src/tools/metacity-mag.c: (mouse_press), (begin_area_grab):
+	* src/util.c: (meta_unsigned_long_hash): A load of fixes of issues
+	reported by sparse. Closes bug #152849
+
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
 	* src/display.c (event_callback): Remove some redundant code

@@ -382,7 +382,7 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
                                                   0,
                                                   CopyFromParent,
                                                   CopyFromParent,
-                                                  CopyFromParent,
+                                                  (Visual *)CopyFromParent,
                                                   CWOverrideRedirect | CWBackPixel,
                                                   &attrs);
 
