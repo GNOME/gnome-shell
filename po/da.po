@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-04-29 14:02-0400\n"
+"POT-Creation-Date: 2002-05-02 18:20-0400\n"
 "PO-Revision-Date: 2002-02-12 01:34+0100\n"
 "Last-Translator: Keld simonsen <keld@dkuug.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -88,7 +88,7 @@ msgstr "Maksimér vindue"
 msgid "Unmaximize Window"
 msgstr "Genopret vindue"
 
-#: src/keybindings.c:639
+#: src/keybindings.c:629
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -119,7 +119,8 @@ msgid "Ma_ximize"
 msgstr "Ma_ksimér"
 
 #: src/menu.c:52
-msgid "_Unmaximize"
+#, fuzzy
+msgid "Unma_ximize"
 msgstr "_Genopret"
 
 #: src/menu.c:53
@@ -127,7 +128,8 @@ msgid "_Shade"
 msgstr "_Skyggelæg"
 
 #: src/menu.c:54
-msgid "U_nshade"
+#, fuzzy
+msgid "Un_shade"
 msgstr "Fjer_n skygge"
 
 #: src/menu.c:55
@@ -169,29 +171,29 @@ msgstr ""
 msgid "Kill application"
 msgstr ""
 
-#: src/prefs.c:318 src/prefs.c:334 src/prefs.c:350 src/prefs.c:366
-#: src/prefs.c:382 src/prefs.c:402 src/prefs.c:418 src/prefs.c:434
-#: src/prefs.c:450
+#: src/prefs.c:326 src/prefs.c:342 src/prefs.c:358 src/prefs.c:374
+#: src/prefs.c:390 src/prefs.c:410 src/prefs.c:426 src/prefs.c:442
+#: src/prefs.c:458 src/prefs.c:474
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøgle '%s' er sat til en ugyldig type\n"
 
-#: src/prefs.c:484
+#: src/prefs.c:508
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf-nøgle '%s' er sat til en ugyldig værdi"
 
-#: src/prefs.c:556
+#: src/prefs.c:580
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skrifttypebeskrivelsen '%s' fra GConf-nøgle %s\n"
 
-#: src/prefs.c:593
+#: src/prefs.c:617
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d lagret i GConf-nøgle %s er ikke en gyldig skriftstørrelse\n"
 
-#: src/prefs.c:619
+#: src/prefs.c:643
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -200,12 +202,18 @@ msgstr ""
 "%d lagret i GConf-nøgle %s er ikke et læseligt antal arbejdsområder, aktivt "
 "maksimum er %d\n"
 
-#: src/prefs.c:708
+#: src/prefs.c:692
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+
+#: src/prefs.c:762
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 
-#: src/prefs.c:836
+#: src/prefs.c:890
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -217,17 +225,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:185
+#: src/screen.c:186
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på display '%s' er ugyldig\n"
 
-#: src/screen.c:201
+#: src/screen.c:202
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skærm %d på display '%s' har allerede en vindueshåndterer\n"
 
-#: src/screen.c:349
+#: src/screen.c:352
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunne ikke frigive skærm %d på display '%s'\n"

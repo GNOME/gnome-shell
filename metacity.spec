@@ -1,7 +1,7 @@
 Summary: Metacity window manager
 Name: metacity
-Version: 2.3.89
-Release: 2
+Version: 2.3.233
+Release: 1
 URL: http://people.redhat.com/~hp/metacity/
 Source0: %{name}-%{version}.tar.gz
 License: GPL
@@ -50,6 +50,9 @@ done
 %{_datadir}/metacity
 
 %changelog
+* Thu May  2 2002 Havoc Pennington <hp@redhat.com>
+- 2.3.233
+
 * Thu Apr 25 2002 Havoc Pennington <hp@redhat.com>
 - rebuild in different environment
 - add gconf schemas boilerplate

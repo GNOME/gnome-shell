@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-04-29 14:02-0400\n"
+"POT-Creation-Date: 2002-05-02 18:20-0400\n"
 "PO-Revision-Date: 2002-01-30 16:23CET\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -87,7 +87,7 @@ msgstr "Maximalizovať okno"
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
-#: src/keybindings.c:639
+#: src/keybindings.c:629
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -118,7 +118,8 @@ msgid "Ma_ximize"
 msgstr "Ma_ximalizovať"
 
 #: src/menu.c:52
-msgid "_Unmaximize"
+#, fuzzy
+msgid "Unma_ximize"
 msgstr "_Odmaximalizovať"
 
 #: src/menu.c:53
@@ -126,7 +127,8 @@ msgid "_Shade"
 msgstr "Za_baliť"
 
 #: src/menu.c:54
-msgid "U_nshade"
+#, fuzzy
+msgid "Un_shade"
 msgstr "_Rozbaliť"
 
 #: src/menu.c:55
@@ -168,29 +170,29 @@ msgstr ""
 msgid "Kill application"
 msgstr ""
 
-#: src/prefs.c:318 src/prefs.c:334 src/prefs.c:350 src/prefs.c:366
-#: src/prefs.c:382 src/prefs.c:402 src/prefs.c:418 src/prefs.c:434
-#: src/prefs.c:450
+#: src/prefs.c:326 src/prefs.c:342 src/prefs.c:358 src/prefs.c:374
+#: src/prefs.c:390 src/prefs.c:410 src/prefs.c:426 src/prefs.c:442
+#: src/prefs.c:458 src/prefs.c:474
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf kľúč \"%s\" má nastavený neplatný typ\n"
 
-#: src/prefs.c:484
+#: src/prefs.c:508
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf kľúč \"%s\" má nastavený neplatnú hodnotu"
 
-#: src/prefs.c:556
+#: src/prefs.c:580
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepodarilo sa spracovať popis písma \"%s\" z GConf kľúča %s\n"
 
-#: src/prefs.c:593
+#: src/prefs.c:617
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d uložená v GConf kľúči %s nie je platná veľkosť písma\n"
 
-#: src/prefs.c:619
+#: src/prefs.c:643
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -199,12 +201,18 @@ msgstr ""
 "%d uložená v GConf kľúči %s nie je rozumný počet pracovných plôch, "
 "momentálne maximum je %d\n"
 
-#: src/prefs.c:708
+#: src/prefs.c:692
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+
+#: src/prefs.c:762
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 
-#: src/prefs.c:836
+#: src/prefs.c:890
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -216,17 +224,17 @@ msgstr ""
 msgid "%d x %d"
 msgstr ""
 
-#: src/screen.c:185
+#: src/screen.c:186
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' nie je platná\n"
 
-#: src/screen.c:201
+#: src/screen.c:202
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Obrazovka %d na displeji '%s' už má správcu okien\n"
 
-#: src/screen.c:349
+#: src/screen.c:352
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Nepodarilo sa uvoľniť obrazovku %d na displeji '%s'\n"

@@ -58,8 +58,8 @@ METACITY FEATURES
     Alt-Ctrl-Tab           forward cycle focus among panels
     Alt-Ctrl-Shift-Tab     backward cycle focus among panels
     Alt-Escape             focus previous window
-    Alt-Left Arrow         previous workspace
-    Alt-Right Arrow        next workspace
+    Ctrl-Alt-Left Arrow    previous workspace
+    Ctrl-Alt-Right Arrow   next workspace
     Ctrl-Alt-D             minimize/unminimize all, to show desktop
 
    Change keybindings for example:
@@ -234,6 +234,8 @@ A: If it makes sense to turn on unconditionally,
    Don't let this discourage patches and fixes - I love those. ;-)
    Just be prepared to hear the above objections if your patch
    adds some crack-ridden configuration option.
+
+   http://pobox.com/~hp/free-software-ui.html
 
 Q: Will Metacity be part of GNOME?
 
