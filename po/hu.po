@@ -1,22 +1,21 @@
-# translation of metacity.gnome-2-4.hu.po to Hungarian
-# Metacity Hungarian translation
-# Copyright (C) 2002
-# This file is distributed under the same license as the PACKAGE package.
-# Andras Timar <timar@gnome.hu>, 2002, 2003.
-# Gabor Sari <saga@chello.hu>, 2003
+# Hungarian translation of metacity.
+# Copyright (C) 2002-2004 Free Software Foundation, Inc.
+# This file is distributed under the same license as the metacity package.
+# Andras Timar <timar@gnome.hu>, 2002-2003.
+# Gabor Sari <saga@chello.hu>, 2003.
+# Laszlo Dvornik <dvornikl@mailbox.hu>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.gnome-2-4.hu\n"
-"POT-Creation-Date: 2003-10-20 11:49+0200\n"
-"PO-Revision-Date: 2003-10-20 10:55+0200\n"
-"Last-Translator: Andras Timar <timar@gnome.hu>\n"
-"Language-Team: Hungarian <hu@gnome.hu>\n"
+"Project-Id-Version: metacity\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-03-19 04:17+0100\n"
+"PO-Revision-Date: 2004-03-19 19:54+0100\n"
+"Last-Translator: Laszlo Dvornik <dvornikl@mailbox.hu>\n"
+"Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
-"X-Generator: KBabel 1.2\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -61,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Hiba a gépnév lekérdezése közben: %s\n"
 
-#: src/display.c:287
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -79,39 +78,39 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr ""
 
-#: src/frames.c:1015
+#: src/frames.c:1016
 msgid "Close Window"
 msgstr "Ablak bezárása"
 
-#: src/frames.c:1018
+#: src/frames.c:1019
 msgid "Window Menu"
 msgstr "Ablak menü"
 
-#: src/frames.c:1021
+#: src/frames.c:1022
 msgid "Minimize Window"
 msgstr "Ablak minimalizálása"
 
-#: src/frames.c:1024
+#: src/frames.c:1025
 msgid "Maximize Window"
 msgstr "Ablak maximalizálása"
 
-#: src/frames.c:1027
+#: src/frames.c:1028
 msgid "Unmaximize Window"
 msgstr "Ablak eredeti mérete"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
@@ -134,82 +133,101 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:437
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
+
+#: src/main.c:459
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
-#: src/main.c:499
+#: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Újraindítás sikertelen: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "Mi_nimalizálás"
 
-#: src/menu.c:53
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Ma_ximalizálás"
 
-#: src/menu.c:54
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "_Eredeti méret"
 
-#: src/menu.c:55
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "_Felgördítés"
 
-#: src/menu.c:56
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "_Legördítés"
 
-#: src/menu.c:57
+#: src/menu.c:59 src/menu.c:60
+msgid "On _Top"
+msgstr "_Legfelül"
+
+#: src/menu.c:61
 msgid "_Move"
 msgstr "Át_helyezés"
 
-#: src/menu.c:58
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "Át_méretezés"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Bezárás"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "_Megjelenítés minden munkaterületen"
 
-#: src/menu.c:63
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "M_unkaterületre korlátozás"
 
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:68
+msgid "Move to Workspace _Left"
+msgstr "Áthelyezés a balra lévő munkaterületre"
+
+#: src/menu.c:69
+msgid "Move to Workspace R_ight"
+msgstr "Áthelyezés a jobbra lévő munkaterületre"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Up"
+msgstr "Áthelyezés a felső munkaterületre"
+
+#: src/menu.c:71
+msgid "Move to Workspace _Down"
+msgstr "Áthelyezés az alsó munkaterületre"
+
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. munkaterület"
 
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:169
+msgid "Workspace 1_0"
+msgstr "1_0. munkaterület"
+
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "%s%d. munkaterület"
 
-#: src/menu.c:345
-#, c-format
-msgid "Only on %s"
-msgstr "Csak %s"
-
-#: src/menu.c:347
-#, c-format
-msgid "Move to %s"
-msgstr "Áthelyezés: %s"
+#: src/menu.c:366
+msgid "Move to Another _Workspace"
+msgstr "Áthelyezés másik _munkaterületre"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -310,7 +328,7 @@ msgstr "A(z) \"%s\" ablak nem válaszol."
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Ha erőszakkal bezárod az alkalmazást, minden mentetlen változtatás elvész."
+"Ha erőszakkal bezárja az alkalmazást, minden mentetlen változtatás elvész."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -331,7 +349,7 @@ msgid ""
 msgstr ""
 "Az alábbi alkalmazások nem támogatják a Munkaterület beállításainak "
 "mentését, emiatt ezeket a legközelebbi bejelentkezéskor manuálisan újra kell "
-"indítanod."
+"indítania."
 
 #: src/metacity-dialog.c:288
 #, c-format
@@ -606,7 +624,7 @@ msgid ""
 "workspaces)."
 msgstr ""
 "A munkaterületek száma. Az értéknek nullánál nagyobbnak kell lennie, és van "
-"beépített maximális érték, nehogy véletlenül szétrombold a munkaasztalodat "
+"beépített maximális érték, nehogy véletlenül szétrombolja a munkaasztalát "
 "34 millió munkaterület beállításával."
 
 #: src/metacity.schemas.in.h:56
@@ -1398,7 +1416,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
-msgstr "Mindig az előtérben"
+msgstr "Mindig legfelül"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
@@ -1509,30 +1527,30 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr ""
 
-#: src/screen.c:408
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:449
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:504
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
-#: src/screen.c:687
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
@@ -1547,7 +1565,7 @@ msgstr ""
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "A(z) %s könyvtár létrehozása nem sikerült: %s\n"
+msgstr "Nem lehet létrehozni a(z) '%s' könyvtárat: %s\n"
 
 #: src/session.c:898
 #, c-format
@@ -1557,17 +1575,17 @@ msgstr ""
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Hiba történt a(z) %s session fájl írása közben: %s\n"
+msgstr "Hiba történt a(z) '%s' session fájl írása közben: %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Hiba történt a(z) %s session fájl lezárása közben: %s\n"
+msgstr "Hiba történt a(z) '%s' session fájl lezárása közben: %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Hiba történt a(z) %s session fájl olvasása közben: %s\n"
+msgstr "Hiba történt a(z) '%s' session fájl olvasása közben: %s\n"
 
 #: src/session.c:1172
 #, c-format
@@ -2119,9 +2137,8 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr ""
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "Ablak menü"
+msgstr ""
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
@@ -2235,9 +2252,9 @@ msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr ""
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Hiba történt a(z) %s session fájl lezárása közben: %s\n"
+msgstr "Hiba történt a téma betöltése közben: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
@@ -2265,9 +2282,8 @@ msgid "Benchmark"
 msgstr ""
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "Az ablak címsorának betűtípusa"
+msgstr ""
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2597,15 +2613,15 @@ msgstr ""
 msgid "Window manager: "
 msgstr "Ablakkezelő: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "Hiba az ablakkezelőben: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "Figyelmeztetés az ablakkezelőtől: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "Hibaüzenet az ablakkezelőtől: "
 
@@ -2615,7 +2631,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Az alkalmazás hamis _NET_WM_PID-értéket állított be: %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2629,7 +2645,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5240
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
