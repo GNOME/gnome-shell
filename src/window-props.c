@@ -22,6 +22,7 @@
 #include <config.h>
 #include "window-props.h"
 #include "xprops.h"
+#include "frame.h"
 #include <X11/Xatom.h>
 
 typedef void (* InitValueFunc)   (MetaDisplay   *display,
@@ -167,6 +168,170 @@ reload_net_wm_pid (MetaWindow    *window,
     }
 }
 
+static void
+set_window_title (MetaWindow *window,
+                  const char *title)
+{
+  char *str;
+  
+  g_free (window->title);
+  
+  if (title == NULL)
+    window->title = g_strdup ("");
+  else
+    window->title = g_strdup (title);
+  
+  /* strndup is a hack since GNU libc has broken %.10s */
+  str = g_strndup (window->title, 10);
+  g_free (window->desc);
+  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
+  g_free (str);
+
+  if (window->frame)
+    meta_ui_set_frame_title (window->screen->ui,
+                             window->frame->xwindow,
+                             window->title);
+}
+
+static void
+init_net_wm_name (MetaDisplay   *display,
+                  Atom           property,
+                  MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_UTF8;
+  value->atom = display->atom_net_wm_name;
+}
+
+static void
+reload_net_wm_name (MetaWindow    *window,
+                    MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      set_window_title (window, value->v.str);
+      window->using_net_wm_name = TRUE;
+
+      meta_verbose ("Using _NET_WM_NAME for new title of %s: \"%s\"\n",
+                    window->desc, window->title);
+    }
+  else
+    {
+      set_window_title (window, NULL);
+      window->using_net_wm_name = FALSE;
+    }
+}
+
+
+static void
+init_wm_name (MetaDisplay   *display,
+                  Atom           property,
+                  MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_STRING;
+  value->atom = XA_WM_NAME;
+}
+
+static void
+reload_wm_name (MetaWindow    *window,
+                MetaPropValue *value)
+{
+  if (window->using_net_wm_name)
+    {
+      meta_verbose ("Ignoring WM_NAME \"%s\" as _NET_WM_NAME is set\n",
+                    value->v.str);
+      return;
+    }
+  
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      set_window_title (window, value->v.str);
+
+      meta_verbose ("Using WM_NAME for new title of %s: \"%s\"\n",
+                    window->desc, window->title);
+    }
+  else
+    {
+      set_window_title (window, NULL);
+    }
+}
+
+static void
+set_icon_title (MetaWindow *window,
+                const char *title)
+{
+  char *str;
+  
+  g_free (window->icon_name);
+  
+  if (title == NULL)
+    window->icon_name = g_strdup ("");
+  else
+    window->icon_name = g_strdup (title);
+}
+
+static void
+init_net_wm_icon_name (MetaDisplay   *display,
+                  Atom           property,
+                  MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_UTF8;
+  value->atom = display->atom_net_wm_icon_name;
+}
+
+static void
+reload_net_wm_icon_name (MetaWindow    *window,
+                    MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      set_icon_title (window, value->v.str);
+      window->using_net_wm_icon_name = TRUE;
+
+      meta_verbose ("Using _NET_WM_ICON_NAME for new title of %s: \"%s\"\n",
+                    window->desc, window->title);
+    }
+  else
+    {
+      set_icon_title (window, NULL);
+      window->using_net_wm_icon_name = FALSE;
+    }
+}
+
+
+static void
+init_wm_icon_name (MetaDisplay   *display,
+                  Atom           property,
+                  MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_STRING;
+  value->atom = XA_WM_ICON_NAME;
+}
+
+static void
+reload_wm_icon_name (MetaWindow    *window,
+                MetaPropValue *value)
+{
+  if (window->using_net_wm_icon_name)
+    {
+      meta_verbose ("Ignoring WM_ICON_NAME \"%s\" as _NET_WM_ICON_NAME is set\n",
+                    value->v.str);
+      return;
+    }
+  
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      set_icon_title (window, value->v.str);
+      
+      meta_verbose ("Using WM_ICON_NAME for new title of %s: \"%s\"\n",
+                    window->desc, window->title);
+    }
+  else
+    {
+      set_icon_title (window, NULL);
+    }
+}
+
+
 #define N_HOOKS 22
 
 void
@@ -203,15 +368,25 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = display->atom_net_wm_name;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_net_wm_name;
+  hooks[i].reload_func = reload_net_wm_name;
   ++i;
 
   hooks[i].property = XA_WM_NAME;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_wm_name;
+  hooks[i].reload_func = reload_wm_name;
   ++i;
 
+  hooks[i].property = display->atom_net_wm_icon_name;
+  hooks[i].init_func = init_net_wm_icon_name;
+  hooks[i].reload_func = reload_net_wm_icon_name;
+  ++i;
+
+  hooks[i].property = XA_WM_ICON_NAME;
+  hooks[i].init_func = init_wm_icon_name;
+  hooks[i].reload_func = reload_wm_icon_name;
+  ++i;
+  
   hooks[i].property = XA_WM_HINTS;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
@@ -268,16 +443,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = display->atom_win_workspace;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom_net_wm_icon_name;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = XA_WM_ICON_NAME;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;

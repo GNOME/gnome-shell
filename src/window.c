@@ -74,7 +74,6 @@ static void constrain_position (MetaWindow        *window,
                                 int               *new_y);
 
 static void     update_size_hints         (MetaWindow     *window);
-static void     update_title              (MetaWindow     *window);
 static void     update_protocols          (MetaWindow     *window);
 static void     update_wm_hints           (MetaWindow     *window);
 static void     update_net_wm_state       (MetaWindow     *window);
@@ -85,7 +84,6 @@ static void     update_sm_hints           (MetaWindow     *window);
 static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
 static void     update_initial_workspace  (MetaWindow     *window);
-static void     update_icon_name          (MetaWindow     *window);
 static void     update_icon               (MetaWindow     *window);
 static void     redraw_icon               (MetaWindow     *window); 
 static void     update_struts             (MetaWindow     *window);
@@ -160,8 +158,9 @@ meta_window_new (MetaDisplay *display,
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
-#define N_INITIAL_PROPS 2
+#define N_INITIAL_PROPS 6
   Atom initial_props[N_INITIAL_PROPS];
+  int i;
   
   g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
   
@@ -422,6 +421,9 @@ meta_window_new (MetaDisplay *display,
   window->bottom_strut = 0;
 
   window->cached_group = NULL;
+
+  window->using_net_wm_name = FALSE;
+  window->using_net_wm_icon_name = FALSE;
   
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
@@ -429,14 +431,18 @@ meta_window_new (MetaDisplay *display,
   meta_display_register_x_window (display, &window->xwindow, window);
   
   /* Fill these in the order we want them to be gotten */
-  initial_props[0] = display->atom_wm_client_machine;
-  initial_props[1] = display->atom_net_wm_pid;
-  g_assert (N_INITIAL_PROPS == 2);
+  i = 0;
+  initial_props[i++] = display->atom_wm_client_machine;
+  initial_props[i++] = display->atom_net_wm_pid;
+  initial_props[i++] = display->atom_net_wm_name;
+  initial_props[i++] = XA_WM_NAME;
+  initial_props[i++] = display->atom_net_wm_icon_name;
+  initial_props[i++] = XA_WM_ICON_NAME;
+  g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
-    
+  
   update_size_hints (window);
-  update_title (window);
   update_protocols (window);
   update_wm_hints (window);
   update_struts (window);
@@ -450,7 +456,6 @@ meta_window_new (MetaDisplay *display,
   update_role (window);
   update_net_wm_type (window);
   update_initial_workspace (window);
-  update_icon_name (window);
   update_icon (window);
   
   if (window->initially_iconic)
@@ -3843,12 +3848,40 @@ static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)
 {
-  if (event->atom == XA_WM_NAME ||
-      event->atom == window->display->atom_net_wm_name)
+  if (event->atom == XA_WM_NAME)
     {
-      meta_verbose ("Property notify on %s for WM_NAME or NET_WM_NAME\n", window->desc);
-      update_title (window);
+      meta_verbose ("Property notify on %s for WM_NAME\n", window->desc);
+
+      /* don't bother reloading WM_NAME if using _NET_WM_NAME already */
+      if (!window->using_net_wm_name)
+        meta_window_reload_property (window, XA_WM_NAME);
     }
+  else if (event->atom == window->display->atom_net_wm_name)
+    {
+      meta_verbose ("Property notify on %s for NET_WM_NAME\n", window->desc);
+      meta_window_reload_property (window, window->display->atom_net_wm_name);
+      
+      /* if _NET_WM_NAME was unset, reload WM_NAME */
+      if (!window->using_net_wm_name)
+        meta_window_reload_property (window, XA_WM_NAME);      
+    }
+  else if (event->atom == XA_WM_ICON_NAME)
+    {
+      meta_verbose ("Property notify on %s for WM_ICON_NAME\n", window->desc);
+
+      /* don't bother reloading WM_ICON_NAME if using _NET_WM_ICON_NAME already */
+      if (!window->using_net_wm_icon_name)
+        meta_window_reload_property (window, XA_WM_ICON_NAME);
+    }
+  else if (event->atom == window->display->atom_net_wm_icon_name)
+    {
+      meta_verbose ("Property notify on %s for NET_WM_ICON_NAME\n", window->desc);
+      meta_window_reload_property (window, window->display->atom_net_wm_icon_name);
+      
+      /* if _NET_WM_ICON_NAME was unset, reload WM_ICON_NAME */
+      if (!window->using_net_wm_icon_name)
+        meta_window_reload_property (window, XA_WM_ICON_NAME);
+    }  
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
       meta_verbose ("Property notify on %s for WM_NORMAL_HINTS\n", window->desc);
@@ -3930,14 +3963,6 @@ process_property_notify (MetaWindow     *window,
     {
       meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE or WIN_LAYER\n", window->desc);
       update_net_wm_type (window);
-    }
-  else if (event->atom ==
-           window->display->atom_net_wm_icon_name ||
-           event->atom == XA_WM_ICON_NAME)
-    {
-      meta_verbose ("Property notify on %s for NET_WM_ICON_NAME or WM_ICON_NAME\n", window->desc);
-      
-      update_icon_name (window);
     }
   else if (event->atom == window->display->atom_net_wm_icon)
     {
@@ -4259,60 +4284,6 @@ update_size_hints (MetaWindow *window)
   recalc_window_features (window);
 
   spew_size_hints_differences (&old_hints, &window->size_hints);
-}
-
-static void
-update_title (MetaWindow *window)
-{
-  char *str;
-  
-  if (window->title)
-    {
-      g_free (window->title);
-      window->title = NULL;
-    }  
-
-  str = NULL;
-  meta_prop_get_utf8_string (window->display,
-                             window->xwindow,
-                             window->display->atom_net_wm_name,
-                             &str);
-  window->title = g_strdup (str);
-  meta_XFree (str);
-
-  if (window->title)
-    {
-      meta_verbose ("Using _NET_WM_NAME for new title of %s: '%s'\n",
-                    window->desc, window->title);
-    }
-
-  if (window->title == NULL)
-    {
-      meta_prop_get_text_property (window->display,
-                                   window->xwindow,
-                                   XA_WM_NAME,
-                                   &window->title);
-
-      if (window->title)
-        {
-          meta_verbose ("Using WM_NAME for new title of %s: '%s'\n",
-                        window->desc, window->title);
-        }
-    }
-  
-  if (window->title == NULL)
-    window->title = g_strdup ("");
-
-  /* strndup is a hack since GNU libc has broken %.10s */
-  str = g_strndup (window->title, 10);
-  g_free (window->desc);
-  window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, str);
-  g_free (str);
-
-  if (window->frame)
-    meta_ui_set_frame_title (window->screen->ui,
-                             window->frame->xwindow,
-                             window->title);
 }
 
 static void
@@ -4936,49 +4907,6 @@ update_initial_workspace (MetaWindow *window)
                   "Read legacy GNOME workspace prop %d for %s\n",
                   window->initial_workspace, window->desc);
     }
-}
-
-static void
-update_icon_name (MetaWindow *window)
-{
-  char *str;
-  
-  if (window->icon_name)
-    {
-      g_free (window->icon_name);
-      window->icon_name = NULL;
-    }  
-
-  str = NULL;
-  meta_prop_get_utf8_string (window->display, window->xwindow,
-                             window->display->atom_net_wm_icon_name,
-                             &str);
-
-  window->icon_name = g_strdup (str);
-  if (str)
-    meta_XFree (str);
-  
-  if (window->icon_name)
-    {
-      meta_verbose ("Using _NET_WM_ICON_NAME for new icon name of %s: '%s'\n",
-                    window->desc, window->icon_name);
-    }  
-
-  if (window->icon_name == NULL)
-    {
-      meta_prop_get_text_property (window->display, window->xwindow,
-                                   XA_WM_ICON_NAME,
-                                   &window->icon_name);
-
-      if (window->icon_name)
-        {
-          meta_verbose ("Using WM_ICON_NAME for new title of %s: '%s'\n",
-                        window->desc, window->icon_name);
-        }
-    }
-  
-  if (window->icon_name == NULL)
-    window->icon_name = g_strdup ("");
 }
 
 static void
