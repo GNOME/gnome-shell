@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-31 10:15+0100\n"
-"PO-Revision-Date: 2005-01-31 10:15+0100\n"
+"POT-Creation-Date: 2005-01-31 23:18+0100\n"
+"PO-Revision-Date: 2005-01-31 23:18+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -207,8 +207,8 @@ msgstr "_Stäng"
 
 #. separator
 #: src/menu.c:66
-msgid "_Always on Current Workspace"
-msgstr "_Alltid på aktuell arbetsyta"
+msgid "_Always on Visible Workspace"
+msgstr "_Alltid på synlig arbetsyta"
 
 #: src/menu.c:67
 msgid "_Only on This Workspace"
@@ -3270,6 +3270,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "_Always on Current Workspace"
+#~ msgstr "_Alltid på aktuell arbetsyta"
 
 #~ msgid ""
 #~ "If true, metacity will give the user less feedback and less sense of "
