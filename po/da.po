@@ -4,14 +4,14 @@
 # Kjartan Maraas <kmaraas@gnome.org>, 2002
 # Keld simonsen <keld@dkuug.dk>, 2002
 # Ole Laursen <olau@hardworking.dk>, 2002.
-# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004.
+# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004, 05.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-11-23 13:49+0100\n"
+"POT-Creation-Date: 2005-02-21 14:10+0100\n"
+"PO-Revision-Date: 2005-02-21 14:10+0100\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Kunne ikke skaffe værtsnavn: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen '%s'\n"
@@ -206,12 +206,12 @@ msgstr "_Luk"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Placér på _alle arbejdsområder"
+msgid "_Always on Visible Workspace"
+msgstr "_Altid på synligt arbejdsområde"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Kun på de_tte arbejdsområde"
+msgid "_Only on This Workspace"
+msgstr "_Kun på dette arbejdsområde"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -229,7 +229,7 @@ msgstr "Flyt til arbejdsområde _op"
 msgid "Move to Workspace _Down"
 msgstr "Flyt til arbejdsområde _ned"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
@@ -369,7 +369,7 @@ msgstr ""
 "Disse vinduer understøtter ikke gemning af deres opsætning og skal "
 "genstartes manuelt næste gang du logger på."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -506,13 +506,16 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Hvis sand, vil Metacity give brugeren mindre feedback og mindre fornemmelse "
-"af direkte manipulering ved at bruge rammelinjer, undgå animeringer og "
+"af \"direkte manipulering\" ved at bruge rammelinjer, undgå animeringer og "
 "andet. Dette er en betydelig formindskelse af brugbarheden for mange "
 "brugere, men kan sætte gamle programmer og terminalservere i stand til at "
-"fungere når de ellers ville være umulige."
+"fungere hvor de ellers ville være upraktiske. Rammelinje-faciliteten er "
+"deaktiveret når tilgængelighed er slået til for at undgå underlige "
+"skrivebordsfejl."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1203,7 +1206,6 @@ msgstr ""
 "der ikke være nogen tastaturgenvej til denne handling."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1963,17 +1965,17 @@ msgstr "Vinduesfokuseringstilstand"
 msgid "Window title font"
 msgstr "Skrifttype til vinduestitel"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøglen '%s' er sat til en ugyldig type\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1982,17 +1984,17 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi som "
 "museknapsmodifikation\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøglen '%s' er sat til en ugyldig værdi\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke fortolke skrifttypebeskrivelsen '%s' fra GConf-nøglen %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2001,7 +2003,7 @@ msgstr ""
 "%d lagret i GConf-nøgle %s er ikke et fornuftigt antal arbejdsområder, "
 "aktuelt maksimum er %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2009,17 +2011,17 @@ msgstr ""
 "Omgåelser for ødelagte programmer deaktiveret. Nogle programmer opfører sig "
 "måske ikke korrekt.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøgle %s er uden for intervallet 0 til %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2028,7 +2030,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
@@ -3159,7 +3161,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5051
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3175,7 +3177,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5722
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3212,6 +3214,9 @@ msgid ""
 msgstr ""
 "Egenskaben %s for vinduet 0x%lx indeholdt ugyldig UTF-8 for element %d i "
 "listen\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Placér på _alle arbejdsområder"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Vælg hvordan vinduer skal fokuseres"
