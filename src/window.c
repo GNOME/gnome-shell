@@ -4653,8 +4653,21 @@ update_struts (MetaWindow *window)
 {
   gulong *struts = NULL;
   int nitems;
-
+  gboolean old_has_struts;
+  gboolean old_do_not_cover;
+  int old_left;
+  int old_right;
+  int old_top;
+  int old_bottom;
+  
   meta_verbose ("Updating struts for %s\n", window->desc);
+  
+  old_has_struts = window->has_struts;
+  old_do_not_cover = window->do_not_cover;
+  old_left = window->left_strut;
+  old_right = window->right_strut;
+  old_top = window->top_strut;
+  old_bottom = window->bottom_strut;  
   
   window->has_struts = FALSE;
   window->do_not_cover = FALSE;
@@ -4727,10 +4740,23 @@ update_struts (MetaWindow *window)
         }
     }
 
-  meta_topic (META_DEBUG_WORKAREA,
-              "Invalidating work areas of window %s due to struts update\n",
-              window->desc);
-  invalidate_work_areas (window);
+  if (old_has_struts != window->has_struts ||
+      old_do_not_cover != window->do_not_cover ||
+      old_left != window->left_strut ||
+      old_right != window->right_strut ||
+      old_top != window->top_strut ||
+      old_bottom != window->bottom_strut)
+    {  
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Invalidating work areas of window %s due to struts update\n",
+                  window->desc);
+      invalidate_work_areas (window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Struts on %s were unchanged\n", window->desc);
+    }
 }
 
 static void

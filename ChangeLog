@@ -1,3 +1,9 @@
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (update_struts): only invalidate things if the
+	struts actually change, since the panel likes to set them over and
+	over. May fix the infinite loop that caused 100% CPU usage.
+
 2002-06-07  Havoc Pennington  <hp@redhat.com>
 
 	* src/screen.c (meta_screen_new): use XineramaIsActive() not
