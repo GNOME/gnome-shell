@@ -1666,10 +1666,34 @@ event_callback (XEvent   *event,
         }
       break;
     case MappingNotify:
-      /* Let XLib know that there is a new keyboard mapping.
-       */
-      XRefreshKeyboardMapping (&event->xmapping);
-      meta_display_process_mapping_event (display, event);
+      {
+        gboolean ignore_current;
+
+        ignore_current = FALSE;
+        
+        /* Check whether the next event is an identical MappingNotify
+         * event.  If it is, ignore the current event, we'll update
+         * when we get the next one.
+         */
+	if (XPending (display->xdisplay))
+          {
+            XEvent next_event;
+            
+            XPeekEvent (display->xdisplay, &next_event);
+            
+            if (next_event.type == MappingNotify &&
+                next_event.xmapping.request == event->xmapping.request)
+              ignore_current = TRUE;
+          }
+
+        if (!ignore_current)
+          {
+            /* Let XLib know that there is a new keyboard mapping.
+             */
+            XRefreshKeyboardMapping (&event->xmapping);
+            meta_display_process_mapping_event (display, event);
+          }
+      }
       break;
     default:
       break;
@@ -3311,7 +3335,7 @@ convert_property (MetaDisplay *display,
    * can send SelectionNotify
    */
   /* FIXME the error trap pop synced anyway, right? */
-  meta_topic (META_DEBUG_SYNC, "Syncing on %s\n", __FUNCTION__);
+  meta_topic (META_DEBUG_SYNC, "Syncing on %s\n", G_GNUC_FUNCTION);
   XSync (display->xdisplay, False);
 
   return TRUE;

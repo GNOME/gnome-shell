@@ -604,6 +604,8 @@ regrab_screen_bindings (MetaDisplay *display)
 {
   GSList *tmp;
 
+  meta_error_trap_push (display); /* for efficiency push outer trap */
+  
   tmp = display->screens;
   while (tmp != NULL)
     {
@@ -614,6 +616,8 @@ regrab_screen_bindings (MetaDisplay *display)
 
       tmp = tmp->next;
     }
+
+  meta_error_trap_pop (display, FALSE);
 }
 
 static void
@@ -624,6 +628,7 @@ regrab_window_bindings (MetaDisplay *display)
 
   windows = meta_display_list_windows (display);
 
+  meta_error_trap_push (display); /* for efficiency push outer trap */
   tmp = windows;
   while (tmp != NULL)
     {
@@ -634,6 +639,7 @@ regrab_window_bindings (MetaDisplay *display)
       
       tmp = tmp->next;
     }
+  meta_error_trap_pop (display, FALSE);
 
   g_slist_free (windows);
 }
@@ -882,6 +888,8 @@ grab_keys (MetaKeyBinding *bindings,
   int i;
 
   g_assert (n_bindings == 0 || bindings != NULL);
+
+  meta_error_trap_push (display);
   
   i = 0;
   while (i < n_bindings)
@@ -896,24 +904,34 @@ grab_keys (MetaKeyBinding *bindings,
       
       ++i;
     }
+
+  meta_error_trap_pop (display, FALSE);
 }
 
 static void
 ungrab_all_keys (MetaDisplay *display,
                  Window       xwindow)
 {
-  int result;
-  
-  meta_error_trap_push_with_return (display);
+  if (meta_is_debugging ())
+    meta_error_trap_push_with_return (display);
+  else
+    meta_error_trap_push (display);
 
   XUngrabKey (display->xdisplay, AnyKey, AnyModifier,
               xwindow);
+
+  if (meta_is_debugging ())
+    {
+      int result;
       
-  result = meta_error_trap_pop_with_return (display, FALSE);
-  
-  if (result != Success)    
-    meta_topic (META_DEBUG_KEYBINDINGS,
-                "Ungrabbing all keys on 0x%lx failed\n", xwindow);
+      result = meta_error_trap_pop_with_return (display, FALSE);
+      
+      if (result != Success)    
+        meta_topic (META_DEBUG_KEYBINDINGS,
+                    "Ungrabbing all keys on 0x%lx failed\n", xwindow);
+    }
+  else
+    meta_error_trap_pop (display, FALSE);
 }
 
 void

@@ -1,3 +1,15 @@
+2002-11-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/keybindings.c (grab_keys): push an error trap around the
+	whole window-key-grab loop
+	(ungrab_all_keys): avoid requiring return value from the error 
+	trap, unless in debugging mode
+	(regrab_window_bindings, regrab_screen_bindings): push traps
+	around the loops, for efficiency
+
+	* src/display.c (event_callback): fix from Padraig O'Briain to
+	compress extra MappingNotify events to avoid extra work.
+
 2002-11-05  Calum Benson  <calum.benson@sun.com>
 
 	* src/themes/Crux/active-restore-button.png:

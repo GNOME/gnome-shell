@@ -8,6 +8,10 @@ if test -z "$CLIENT_DISPLAY"; then
   CLIENT_DISPLAY=:1
 fi
 
+if test -z "$METACITY_DISPLAY"; then
+  export METACITY_DISPLAY=$CLIENT_DISPLAY
+fi
+
 if test -z "$SCREENS"; then
   SCREENS=1
 fi
@@ -52,7 +56,17 @@ if test -z "$ONLY_WM"; then
 
   if test -n "$XMON_DIR"; then
     echo "Launching xmond"
-    $XMON_DIR/xmonui | $XMON_DIR/xmond -server $XNEST_DISPLAY &
+    $XMON_DIR/xmonui | $XMON_DIR/xmond -server localhost:$XNEST_DISPLAY &
+    sleep 1
+  fi
+
+  if test -n "$XSCOPE_DIR"; then
+    ## xscope doesn't like to die when it should, it backgrounds itself
+    killall -9 xscope
+    killall -9 xscope
+    echo "Launching xscope"
+    DISPLAY= $XSCOPE_DIR/xscope -o1 -i28  > xscoped-replies.txt &
+    export METACITY_DISPLAY=localhost:28
     sleep 1
   fi
 
@@ -89,5 +103,5 @@ if test -z "$ONLY_WM"; then
 fi
 
 if test -z "$ONLY_SETUP"; then
-  METACITY_VERBOSE=1 METACITY_USE_LOGFILE=1 METACITY_DEBUG_BUTTON_GRABS=1 METACITY_DISPLAY=$CLIENT_DISPLAY exec $DEBUG ./metacity $OPTIONS
+  METACITY_VERBOSE=1 METACITY_USE_LOGFILE=1 METACITY_DEBUG_BUTTON_GRABS=1 exec $DEBUG ./metacity $OPTIONS
 fi
