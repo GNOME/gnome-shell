@@ -1,3 +1,7 @@
+2003-06-22  Samúel Jón Gunnarsson  <sammi@techattack.nu>
+
+	* configure.in: Added "is" to ALL_LINGUAS
+
 2003-06-12  Rob Adams  <robadams@ucla.edu>
 
 	* src/display.c (event_callback): Focus on mouse click in
