@@ -317,6 +317,8 @@ void        meta_window_maximize           (MetaWindow  *window);
 void        meta_window_maximize_internal  (MetaWindow    *window,
                                             MetaRectangle *saved_rect);
 void        meta_window_unmaximize         (MetaWindow  *window);
+void        meta_window_make_above         (MetaWindow  *window);
+void        meta_window_unmake_above       (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window);
 void        meta_window_unshade            (MetaWindow  *window);
 void        meta_window_change_workspace   (MetaWindow  *window,

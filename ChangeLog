@@ -1,9 +1,26 @@
+2003-06-26  Rob Adams  <robadams@ucla.edu>
+
+	Add keybinding to allow the user to toggle _NET_WM_STATE_ABOVE on
+	windows.  Disabled by default.  See #98387.
+
+	* src/keybindings.c (handle_toggle_above): new function implements
+	the keybinding
+
+	* src/metacity.schemas.in: add toggle_above keybinding
+
+	* src/prefs.[ch]: add toggle_above keybinding
+
+	* src/window.[ch] (meta_window_make_above): new function to put a
+	window into the above state
+	(meta_window_unmake_above): new function takes a window out of the
+	above state
+
 2003-06-26  Mohammad DAMT  <mdamt@bisnisweb.com>
 
 	* po/id.po: Added Indonesian translation
 	* configure.in: Added "id" to ALL_LINGUAS
 
-2003-06-10  Rob Adams  <robadams@ucla.edu>
+2003-06-25  Rob Adams  <robadams@ucla.edu>
 
 	Update constraints code to support the new _NET_WM_STRUT_PARTIAL
 	EWMH draft specification.  See #86682.  Also, fix a bug involving

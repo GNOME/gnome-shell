@@ -1867,6 +1867,23 @@ meta_window_unmaximize (MetaWindow  *window)
     }
 }
 
+void
+meta_window_make_above (MetaWindow  *window)
+{
+  window->wm_state_above = TRUE;
+  meta_window_update_layer (window);
+  meta_window_raise (window);
+  set_net_wm_state (window);
+}
+
+void
+meta_window_unmake_above (MetaWindow  *window)
+{
+  window->wm_state_above = FALSE;
+  meta_window_raise (window);
+  meta_window_update_layer (window);
+  set_net_wm_state (window);
+}
 
 void
 meta_window_make_fullscreen (MetaWindow  *window)

@@ -150,6 +150,7 @@ void        meta_prefs_change_workspace_name (int         i,
 #define META_KEYBINDING_WINDOW_MENU              "activate_window_menu"
 #define META_KEYBINDING_TOGGLE_FULLSCREEN        "toggle_fullscreen"
 #define META_KEYBINDING_TOGGLE_MAXIMIZE          "toggle_maximized"
+#define META_KEYBINDING_TOGGLE_ABOVE             "toggle_above"
 #define META_KEYBINDING_MAXIMIZE                 "maximize"
 #define META_KEYBINDING_UNMAXIMIZE               "unmaximize"
 #define META_KEYBINDING_TOGGLE_SHADE             "toggle_shaded"

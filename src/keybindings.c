@@ -84,6 +84,11 @@ static void handle_panel_keybinding   (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_toggle_above       (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_toggle_maximize    (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -353,6 +358,7 @@ static const MetaKeyHandler screen_handlers[] = {
 static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_WINDOW_MENU, handle_activate_menu, NULL },
   { META_KEYBINDING_TOGGLE_FULLSCREEN, handle_toggle_fullscreen, NULL },
+  { META_KEYBINDING_TOGGLE_ABOVE, handle_toggle_above, NULL },
   { META_KEYBINDING_TOGGLE_MAXIMIZE, handle_toggle_maximize, NULL },
   { META_KEYBINDING_MAXIMIZE, handle_maximize, NULL },
   { META_KEYBINDING_UNMAXIMIZE, handle_unmaximize, NULL },
@@ -2857,6 +2863,22 @@ handle_toggle_fullscreen  (MetaDisplay    *display,
         meta_window_unmake_fullscreen (window);
       else if (window->has_fullscreen_func)
         meta_window_make_fullscreen (window);
+    }
+}
+
+static void
+handle_toggle_above       (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      if (window->wm_state_above)
+        meta_window_unmake_above (window);
+      else
+        meta_window_make_above (window);
     }
 }
 

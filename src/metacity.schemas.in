@@ -303,6 +303,29 @@ you set
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/window_keybindings/toggle_above</key>
+      <applyto>/apps/metacity/window_keybindings/toggle_above</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Toggle always on top state</short>
+         <long>
+
+          The keybinding used to toggle always on top.  A window that
+	  is always on top will always be visible over other overlapping windows.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/window_keybindings/toggle_maximized</key>
       <applyto>/apps/metacity/window_keybindings/toggle_maximized</applyto>
       <owner>metacity</owner>
