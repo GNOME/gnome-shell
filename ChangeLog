@@ -1,5 +1,7 @@
 2002-11-20  Havoc Pennington  <hp@pobox.com>
 
+	* configure.in: add doc/Makefile
+
 	* doc/metacity-theme.dtd: add DTD for themes from Ross Burton
 
 	* doc/Makefile.am: doc subdir

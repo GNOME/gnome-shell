@@ -240,6 +240,7 @@ AM_GCONF_SOURCE_2
 
 AC_OUTPUT([
 Makefile
+doc/Makefile
 src/Makefile
 src/wm-tester/Makefile
 src/libmetacity-private.pc
