@@ -1202,6 +1202,67 @@ meta_window_queue_calc_showing (MetaWindow  *window)
   calc_showing_pending = g_slist_prepend (calc_showing_pending, window);
 }
 
+static gboolean
+window_takes_focus_on_map (MetaWindow *window)
+{
+  /* don't initially focus windows that are intended to not accept
+   * focus
+   */
+  if (!(window->input || window->take_focus))
+    return FALSE;
+
+  switch (window->type)
+    {
+    case META_WINDOW_DOCK:
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_UTILITY:
+    case META_WINDOW_SPLASHSCREEN:
+    case META_WINDOW_TOOLBAR:
+    case META_WINDOW_MENU:
+      /* don't focus these */
+      break;
+    case META_WINDOW_NORMAL:
+
+      /* Always focus new windows */
+      return TRUE;
+
+      /* Old Windows-XP style rule for reference */
+      /* Focus only if the current focus is on a desktop element
+       * or nonexistent.
+       *
+       * (using display->focus_window is a bit of a race condition,
+       *  but I have no idea how to avoid it)
+       */
+      if (window->display->focus_window == NULL ||
+          (window->display->focus_window &&
+           (window->display->focus_window->type == META_WINDOW_DOCK ||
+            window->display->focus_window->type == META_WINDOW_DESKTOP)))
+        return TRUE;
+      break;
+    case META_WINDOW_DIALOG:
+    case META_WINDOW_MODAL_DIALOG:
+
+      /* Always focus */
+      return TRUE;
+
+      /* Old Windows-XP style rule for reference */
+      /* Focus only if the transient parent has focus */
+      /* (using display->focus_window is a bit of a race condition,
+       *  but I have no idea how to avoid it)
+       */
+      if (window->display->focus_window == NULL ||
+          (window->display->focus_window &&
+           meta_window_is_ancestor_of_transient (window->display->focus_window,
+                                                 window)) ||
+          (window->display->focus_window->type == META_WINDOW_DOCK ||
+           window->display->focus_window->type == META_WINDOW_DESKTOP))
+        return TRUE;
+      break;
+    }
+
+  return FALSE;
+}
+
 void
 meta_window_show (MetaWindow *window)
 {
@@ -1310,50 +1371,14 @@ meta_window_show (MetaWindow *window)
             }
         }
 
-      /* Always focus new windows in click-to-focus */
+      /* In sloppy focus, new windows aren't focused unless
+       * they are under the pointer.
+       */
       if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
-          (window->input || window->take_focus))
-        {
-          switch (window->type)
-            {
-            case META_WINDOW_DOCK:
-            case META_WINDOW_DESKTOP:
-            case META_WINDOW_UTILITY:
-            case META_WINDOW_SPLASHSCREEN:
-            case META_WINDOW_TOOLBAR:
-            case META_WINDOW_MENU:
-              /* don't focus these */
-              break;
-            case META_WINDOW_NORMAL:
-              /* Focus only if the current focus is on a desktop element
-               * or nonexistent.
-               *
-               * (using display->focus_window is a bit of a race condition,
-               *  but I have no idea how to avoid it)
-               */
-              if (window->display->focus_window == NULL ||
-                  (window->display->focus_window &&
-                   (window->display->focus_window->type == META_WINDOW_DOCK ||
-                    window->display->focus_window->type == META_WINDOW_DESKTOP)))
-                meta_window_focus (window,
-                                   meta_display_get_current_time (window->display));
-              break;
-            case META_WINDOW_DIALOG:
-            case META_WINDOW_MODAL_DIALOG:
-              /* Focus only if the transient parent has focus */
-              /* (using display->focus_window is a bit of a race condition,
-               *  but I have no idea how to avoid it)
-               */
-              if (window->display->focus_window == NULL ||
-                  (window->display->focus_window &&
-                   meta_window_is_ancestor_of_transient (window->display->focus_window,
-                                                         window)) ||
-                  (window->display->focus_window->type == META_WINDOW_DOCK ||
-                   window->display->focus_window->type == META_WINDOW_DESKTOP))
-                meta_window_focus (window,
-                                   meta_display_get_current_time (window->display));
-              break;
-            }
+          window_takes_focus_on_map (window))
+        {                
+          meta_window_focus (window,
+                             meta_display_get_current_time (window->display));
         }
     }
 

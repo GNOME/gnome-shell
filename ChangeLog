@@ -1,3 +1,8 @@
+2002-06-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_show): always focus new windows, 
+	trying to be smart about it was a flop.
+
 2002-06-14  Jayaraj Rajappan <jayaraj.rajappan@wipro.com>
 
 	* src/delete.c (io_from_ping_dialog): Check for NULL string
