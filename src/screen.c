@@ -849,7 +849,7 @@ const MetaXineramaScreenInfo*
 meta_screen_get_current_xinerama (MetaScreen *screen)
 {
   if (screen->n_xinerama_infos == 1)
-    return 0;
+    return &screen->xinerama_infos[0];
 
   /* Sadly, we have to do it this way. Yuck.
    */
