@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-06-09 23:42-0400\n"
-"PO-Revision-Date: 2002-06-03 22:04+0200\n"
+"POT-Creation-Date: 2002-06-23 15:13+0200\n"
+"PO-Revision-Date: 2002-06-23 15:21+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgid ""
 msgstr ""
 "Mistet forbindelsen til skjerm «%s»;\n"
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
-"vindushåndtereren.\n"
+"vinduhåndtereren.\n"
 
 #: src/errors.c:161
 #, c-format
@@ -89,7 +89,7 @@ msgstr "Maksimer vindu"
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:639
+#: src/keybindings.c:655
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -100,7 +100,8 @@ msgstr ""
 
 #: src/main.c:290
 #, c-format
-msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene."
@@ -160,6 +161,39 @@ msgstr "Kun på arbeidsområde %s%d"
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Flytt til arbeidsområde %s%d"
+
+#: src/metacity-dialog.c:86
+#, c-format
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+"Vinduet «%s» svarer ikke.\n"
+"Tving denne applikasjonen til å avslutte?\n"
+"(Alle åpne dokumenter vil gå tapt.)"
+
+#: src/metacity-dialog.c:94
+msgid "Kill application"
+msgstr "Terminer applikasjon"
+
+#: src/metacity-dialog.c:188
+msgid "Title"
+msgstr "Tittel"
+
+#: src/metacity-dialog.c:200
+msgid "Class"
+msgstr "Klasse"
+
+#: src/metacity-dialog.c:224
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+
+#: src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -881,19 +915,19 @@ msgstr "Slå av/på fullskjermmodus"
 
 #: src/metacity.schemas.in.h:104
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Endre tilstand for maksimering"
 
 #: src/metacity.schemas.in.h:105
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Endre tilstand for skyggelegging"
 
 #: src/metacity.schemas.in.h:106
 msgid "Toggle whether the window is on all workspaces"
-msgstr ""
+msgstr "Endre innstilling for vising av vindu på alle arbeidsområder"
 
 #: src/metacity.schemas.in.h:107
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "Bruk forvalgt systemskrift i vinsutitler"
 
 #: src/metacity.schemas.in.h:108
 msgid "Window focus mode"
@@ -901,36 +935,7 @@ msgstr "Fokuseringsmodus for vindu"
 
 #: src/metacity.schemas.in.h:109
 msgid "Window title font"
-msgstr "Skrift for vindustittel"
-
-#: src/metacity-dialog.c:86
-#, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
-msgstr ""
-"Vinduet «%s» svarer ikke.\n"
-"Tving denne applikasjonen til å avslutte?\n"
-"(Alle åpne dokumenter vil gå tapt.)"
-
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Terminer applikasjon"
-
-#: src/metacity-dialog.c:188
-msgid "Title"
-msgstr "Tittel"
-
-#: src/metacity-dialog.c:200
-msgid "Class"
-msgstr "Klasse"
-
-#: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
+msgstr "Skrift for vindutittel"
 
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
 #: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
@@ -990,31 +995,31 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:195
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: src/screen.c:211
+#: src/screen.c:212
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to override the current window manager.\n"
 msgstr ""
 
-#: src/screen.c:252
-#, fuzzy, c-format
+#: src/screen.c:253
+#, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
+msgstr "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: src/screen.c:307
-#, fuzzy, c-format
+#: src/screen.c:308
+#, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
+msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: src/screen.c:510
-#, fuzzy, c-format
+#: src/screen.c:515
+#, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
@@ -1025,65 +1030,65 @@ msgid ""
 "not be saved: %s\n"
 msgstr ""
 
-#: src/session.c:851 src/session.c:858
+#: src/session.c:869 src/session.c:876
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: src/session.c:868
+#: src/session.c:886
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: src/session.c:1000
+#: src/session.c:1032
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:1005
+#: src/session.c:1037
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:1078
+#: src/session.c:1112
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: src/session.c:1113
+#: src/session.c:1147
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: src/session.c:1162
+#: src/session.c:1196
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-attributt sett men vi har allerede sesjons-ID"
 
-#: src/session.c:1175
+#: src/session.c:1209
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Ukjent attributt %s på <metacity_session>-element"
 
-#: src/session.c:1192
+#: src/session.c:1226
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: src/session.c:1242 src/session.c:1274
+#: src/session.c:1284 src/session.c:1316
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjent attributt %s på <window>-element"
 
-#: src/session.c:1334
+#: src/session.c:1386
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukjent attributt %s på <geometry>-element"
 
-#: src/session.c:1354
+#: src/session.c:1406
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: src/session.c:1727
+#: src/session.c:1779
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -1091,285 +1096,6 @@ msgid ""
 msgstr ""
 "Feil under oppstart av metacity-dialog for å advare om applikasjoner som "
 "ikke støtter sesjonshåndtering: %s\n"
-
-#: src/theme.c:202
-msgid "top"
-msgstr "topp"
-
-#: src/theme.c:204
-msgid "bottom"
-msgstr "bunn"
-
-#: src/theme.c:206
-msgid "left"
-msgstr "venstre"
-
-#: src/theme.c:208
-msgid "right"
-msgstr "høyre"
-
-#: src/theme.c:222
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "rammegeometrien spesifiserer ikke «%s»-dimensjon"
-
-#: src/theme.c:241
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "rammegeometri spesifiserer ikke dimensjon «%s» for kant «%s»"
-
-#: src/theme.c:278
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
-
-#: src/theme.c:290
-#, fuzzy
-msgid "Frame geometry does not specify size of buttons"
-msgstr "rammegeometrien spesifiserer ikke «%s»-dimensjon"
-
-#: src/theme.c:654
-msgid "Gradients should have at least two colors"
-msgstr "Gradienter må ha minst to farger"
-
-#: src/theme.c:780
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-fargespesifikasjon må ha tilstand i klammer, f.eks. gtk:fg[NORMAL], hvor "
-"NORMAL er tilstanden; kunne ikke lese «%s»"
-
-#: src/theme.c:794
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-fargespesifikasjon må ha en avsluttende klamme etter tilstanden, f.eks. "
-"gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
-
-#: src/theme.c:805
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Forsto ikke tilstand «%s» i fargespesifikasjonen"
-
-#: src/theme.c:818
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Forsto ikke fargekomponent «%s» i fargespesifikasjonen"
-
-#: src/theme.c:848
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i "
-"formatet"
-
-#: src/theme.c:859
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Kunne ikke lese alpha-verdi «%s» i blandet farge"
-
-#: src/theme.c:869
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Alpha-verdi «%s» i blandet farge er ikke mellom 0.0 og 1.0"
-
-#: src/theme.c:916
-#, fuzzy, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i "
-"formatet"
-
-#: src/theme.c:927
-#, fuzzy, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Kunne ikke lese alpha-verdi «%s» i blandet farge"
-
-#: src/theme.c:937
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
-
-#: src/theme.c:966
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Kunne ikke lese farge «%s»"
-
-#: src/theme.c:1228
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinatuttrykk inneholder tegn «%s» som ikke er tillatt"
-
-#: src/theme.c:1255
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "Koordinatuttrykk inneholder flyttall «%s» som ikke kunne tolkes"
-
-#: src/theme.c:1269
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
-
-#: src/theme.c:1336
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Koordinatuttrykket inneholdt en ukjent operator ved begynnelsen av denne "
-"teksten: «%s»"
-
-#: src/theme.c:1393
-msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinatuttrykket var tomt eller ble ikke forstått"
-
-#: src/theme.c:1532 src/theme.c:1542 src/theme.c:1576
-msgid "Coordinate expression results in division by zero"
-msgstr "Koordinatuttrykket resulterer i divisjon med null"
-
-#: src/theme.c:1584
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Koordinatuttrykket prøver å bruke mod-operator på et flyttall"
-
-#: src/theme.c:1641
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordinatuttrykket har en operator «%s» hvor en operand var ventet"
-
-#: src/theme.c:1650
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Koordinatuttrykket hadde en operand hvor en operator var ventet"
-
-#: src/theme.c:1658
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Koordinatuttrykket sluttet med en operator i stedet for en operand"
-
-#: src/theme.c:1668
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Koordinatuttrykket har en operator «%c» etter en operator «%c» og ingen "
-"operand mellom dem."
-
-#: src/theme.c:1787
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"Koordinatuttrykkets tolkeprosess overfløt bufferen sin. Dette er virkelig en "
-"Metacity feil, men er du sikker på at du trenger så store uttrykk?"
-
-#: src/theme.c:1816
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Koordinatuttrykket hadde en parantes slutt uten parantes start"
-
-#: src/theme.c:1879
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinatuttrykket haddeen ukjent variabel eller konstant «%s»"
-
-#: src/theme.c:1936
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordinatuttrykket hadde en åpen parantes uten en avsluttende parantes"
-
-#: src/theme.c:1947
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"Koordinatuttrykket ser ikke ut til å ha noen operatorer eller operander"
-
-#: src/theme.c:2191 src/theme.c:2213 src/theme.c:2234
-#, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
-
-#: src/theme.c:3564
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må "
-"spesifiseres for denne rammestilen"
-
-#: src/theme.c:3973 src/theme.c:4005
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
-
-#: src/theme.c:4056
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Klarte ikke å laste tema «%s»: %s\n"
-
-#: src/theme.c:4202
-#, c-format
-msgid "No <name> set for theme \"%s\""
-msgstr "<name> er ikke satt for tema «%s»"
-
-#: src/theme.c:4209
-#, c-format
-msgid "No <author> set for theme \"%s\""
-msgstr "<author> er ikke satt for tema «%s»"
-
-#: src/theme.c:4216
-#, c-format
-msgid "No <date> set for theme \"%s\""
-msgstr "<date> er ikke satt for tema «%s»"
-
-#: src/theme.c:4223
-#, c-format
-msgid "No <description> set for theme \"%s\""
-msgstr "<description> er ikks satt for tema «%s»"
-
-#: src/theme.c:4230
-#, c-format
-msgid "No <copyright> set for theme \"%s\""
-msgstr "<copyright> er ikke satt for tema «%s»"
-
-#: src/theme.c:4240
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Ingen rammestil satt for vindustype «%s» i tema «%s», legg til et <window "
-"type=«%s» style_set=«ett-eller-annet»/>-element"
-
-#: src/theme.c:4262
-#, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
-"<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være "
-"spesifisert for dette temaet"
-
-#: src/theme.c:4645 src/theme.c:4705
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
-
-#: src/theme.c:4653 src/theme.c:4713
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Konstant «%s» er allerede definert"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -1524,9 +1250,9 @@ msgid "Distance \"%s\" is unknown"
 msgstr "Avstand «%s» er ukjent"
 
 #: src/theme-parser.c:1402
-#, fuzzy, c-format
+#, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Avstand «%s» er ukjent"
+msgstr "Aspektrate «%s» er ukjent"
 
 #: src/theme-parser.c:1446
 #, c-format
@@ -1829,10 +1555,10 @@ msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> er ikke tillatt inne i et <constand> element"
 
 #: src/theme-parser.c:3632
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Element <%s> er ikke tillatt inne i et avstands/kant element"
+msgstr "Element <%s> er ikke tillatt inne i et avstand/kant/aspektrate-element"
 
 #: src/theme-parser.c:3654
 #, c-format
@@ -1891,6 +1617,308 @@ msgstr "Feil under lesing av tema fra fil %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
 
+#: src/theme.c:202
+msgid "top"
+msgstr "topp"
+
+#: src/theme.c:204
+msgid "bottom"
+msgstr "bunn"
+
+#: src/theme.c:206
+msgid "left"
+msgstr "venstre"
+
+#: src/theme.c:208
+msgid "right"
+msgstr "høyre"
+
+#: src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "rammegeometrien spesifiserer ikke «%s»-dimensjon"
+
+#: src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "rammegeometri spesifiserer ikke dimensjon «%s» for kant «%s»"
+
+#: src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr ""
+
+#: src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Rammegeometrien spesifiserer ikke størrelse på knapper"
+
+#: src/theme.c:656
+msgid "Gradients should have at least two colors"
+msgstr "Gradienter må ha minst to farger"
+
+#: src/theme.c:782
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK-fargespesifikasjon må ha tilstand i klammer, f.eks. gtk:fg[NORMAL], hvor "
+"NORMAL er tilstanden; kunne ikke lese «%s»"
+
+#: src/theme.c:796
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK-fargespesifikasjon må ha en avsluttende klamme etter tilstanden, f.eks. "
+"gtk:fg[NORMAL], hvor NORMAL er tilstanden; kunne ikke lese «%s»"
+
+#: src/theme.c:807
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Forsto ikke tilstand «%s» i fargespesifikasjonen"
+
+#: src/theme.c:820
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Forsto ikke fargekomponent «%s» i fargespesifikasjonen"
+
+#: src/theme.c:850
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Blandingsformat er «blend/bg_color/fg_color/alpha», «%s» passer ikke i "
+"formatet"
+
+#: src/theme.c:861
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "Kunne ikke lese alpha-verdi «%s» i blandet farge"
+
+#: src/theme.c:871
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "Alpha-verdi «%s» i blandet farge er ikke mellom 0.0 og 1.0"
+
+#: src/theme.c:918
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Skyggeformatet er «shade/base_color/factor», «%s» passer ikke i formatet"
+
+#: src/theme.c:929
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Kunne ikke lese skyggefaktor «%s» i skyggelagt farge"
+
+#: src/theme.c:939
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Skyggefaktor «%s» i skyggelagt farge er negativ"
+
+#: src/theme.c:968
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Kunne ikke lese farge «%s»"
+
+#: src/theme.c:1230
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Koordinatuttrykk inneholder tegn «%s» som ikke er tillatt"
+
+#: src/theme.c:1257
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "Koordinatuttrykk inneholder flyttall «%s» som ikke kunne tolkes"
+
+#: src/theme.c:1271
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
+
+#: src/theme.c:1338
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Koordinatuttrykket inneholdt en ukjent operator ved begynnelsen av denne "
+"teksten: «%s»"
+
+#: src/theme.c:1395
+msgid "Coordinate expression was empty or not understood"
+msgstr "Koordinatuttrykket var tomt eller ble ikke forstått"
+
+#: src/theme.c:1534 src/theme.c:1544 src/theme.c:1578
+msgid "Coordinate expression results in division by zero"
+msgstr "Koordinatuttrykket resulterer i divisjon med null"
+
+#: src/theme.c:1586
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Koordinatuttrykket prøver å bruke mod-operator på et flyttall"
+
+#: src/theme.c:1643
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Koordinatuttrykket har en operator «%s» hvor en operand var ventet"
+
+#: src/theme.c:1652
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "Koordinatuttrykket hadde en operand hvor en operator var ventet"
+
+#: src/theme.c:1660
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Koordinatuttrykket sluttet med en operator i stedet for en operand"
+
+#: src/theme.c:1670
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Koordinatuttrykket har en operator «%c» etter en operator «%c» og ingen "
+"operand mellom dem."
+
+#: src/theme.c:1789
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+"Koordinatuttrykkets tolkeprosess overfløt bufferen sin. Dette er virkelig en "
+"Metacity feil, men er du sikker på at du trenger så store uttrykk?"
+
+#: src/theme.c:1818
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "Koordinatuttrykket hadde en parantes slutt uten parantes start"
+
+#: src/theme.c:1881
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "Koordinatuttrykket haddeen ukjent variabel eller konstant «%s»"
+
+#: src/theme.c:1938
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "Koordinatuttrykket hadde en åpen parantes uten en avsluttende parantes"
+
+#: src/theme.c:1949
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+"Koordinatuttrykket ser ikke ut til å ha noen operatorer eller operander"
+
+#: src/theme.c:2193 src/theme.c:2215 src/theme.c:2236
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
+
+#: src/theme.c:3566
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må "
+"spesifiseres for denne rammestilen"
+
+#: src/theme.c:3976 src/theme.c:4008
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Mangler <frame state=«%s» resize=«%s» focus=«%s» stil=«ett-eller-annet»/>"
+
+#: src/theme.c:4059
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Klarte ikke å laste tema «%s»: %s\n"
+
+#: src/theme.c:4205
+#, c-format
+msgid "No <name> set for theme \"%s\""
+msgstr "<name> er ikke satt for tema «%s»"
+
+#: src/theme.c:4212
+#, c-format
+msgid "No <author> set for theme \"%s\""
+msgstr "<author> er ikke satt for tema «%s»"
+
+#: src/theme.c:4219
+#, c-format
+msgid "No <date> set for theme \"%s\""
+msgstr "<date> er ikke satt for tema «%s»"
+
+#: src/theme.c:4226
+#, c-format
+msgid "No <description> set for theme \"%s\""
+msgstr "<description> er ikks satt for tema «%s»"
+
+#: src/theme.c:4233
+#, c-format
+msgid "No <copyright> set for theme \"%s\""
+msgstr "<copyright> er ikke satt for tema «%s»"
+
+#: src/theme.c:4243
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window type=«%s» style_set=«ett-eller-annet»/>-element"
+
+#: src/theme.c:4265
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+"<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være "
+"spesifisert for dette temaet"
+
+#: src/theme.c:4648 src/theme.c:4708
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
+
+#: src/theme.c:4656 src/theme.c:4716
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "Konstant «%s» er allerede definert"
+
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Change how focus is moved from one window to another"
+msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr "Vindufokus"
+
+#: src/tools/metacity-properties.glade.h:1
+msgid "Clic_k to give focus"
+msgstr "Kli_kk for å gi fokus"
+
+#: src/tools/metacity-properties.glade.h:2
+msgid "Focus behavior:"
+msgstr "Fokusoppførsel:"
+
+#: src/tools/metacity-properties.glade.h:3
+msgid "Window Focus Preferences"
+msgstr "Brukervalg for vindufokus"
+
+#: src/tools/metacity-properties.glade.h:4
+msgid "_Point to give focus"
+msgstr "_Pek for å gi fokus"
+
+#: src/tools/metacity-properties.glade.h:5
+msgid "_Raise window on focus"
+msgstr "Hev vindue_r når de får fokus"
+
 #: src/util.c:60
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -1906,12 +1934,17 @@ msgstr "Feil under fdopen() av loggfil %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Åpnet loggfil %s\n"
 
-#: src/window.c:430
+#: src/window.c:431
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
-#: src/xprops.c:53
+#: src/workspace.c:52
+#, c-format
+msgid "Workspace %d\n"
+msgstr "Arbeidsområde %d\n"
+
+#: src/xprops.c:54
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
@@ -1920,39 +1953,13 @@ msgstr ""
 "Vindu 0x%lx har egenskap %s. Forventet type %s format %d. Faktisk type %s "
 "format %d n_items %d\n"
 
-#: src/xprops.c:281
+#: src/xprops.c:282
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8\n"
 
-#: src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
-
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Change how focus is moved from one window to another"
-msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "Vindusfokus"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "Kli_kk for å gi fokus"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "Fokusoppførsel:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "Brukervalg for vindusfokus"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "_Pek for å gi fokus"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "Hev vindue_r når de får fokus"
+#: src/xprops.c:367
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8 for oppføring %d i listen\n"
