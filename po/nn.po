@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
-"PO-Revision-Date: 2004-08-30 22:41+0000\n"
+"POT-Creation-Date: 2005-01-21 13:39+0100\n"
+"PO-Revision-Date: 2005-01-21 13:41+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -126,9 +126,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Kommandoen %d er ikkje definert.\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Kommandoen %d er ikkje definert.\n"
+msgstr "Ingen terminalkommando er definert.\n"
 
 #: src/main.c:69
 msgid ""
@@ -713,7 +712,7 @@ msgstr "Køyr ein definert kommando"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Køyr ein terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1199,7 +1198,6 @@ msgstr ""
 "nokon snøggtast."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1694,20 +1692,13 @@ msgstr ""
 "verdien «disabled», vil ikkje denne handlinga ha nokon snøggtast."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Snøggtasten som køyrer panelet sitt skjermbileteverktøy for å ta eit bilete "
-"av eit vindauge. Formatet er på forma «&lt;Control&gt;a» og «&lt;Shift&gt;"
-"&lt;Alt&gt;F1». Tolkaren er ganske romsleg og tillet små og store bokstavar, "
-"og forkortingar slik som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set "
-"dette valet til den spesielle verdien «disabled», vil ikkje denne handlinga "
-"ha nokon snøggtast."
+msgstr "Snøggtasten som køyrer ein terminal. Formatet er på forma «&lt;Control&gt;a» og «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske romsleg og tillet små og store bokstavar, og forkortingar slik som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle verdien «disabled», vil ikkje denne handlinga ha nokon snøggtast."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
