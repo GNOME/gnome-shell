@@ -2155,6 +2155,20 @@ void
 meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
 {
+  /* Older EWMH spec didn't specify a timestamp, so it can be 0 and we
+   * have to treat that as a new request.
+   */
+  if (XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_focus_time) &&
+      timestamp != 0)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "_NET_ACTIVE_WINDOW message sent but with a timestamp that"
+                  "requests the window not be active, so we're ignoring it.\n");
+      window->wm_state_demands_attention = TRUE;
+      set_net_wm_state (window);
+      return;
+    }
+  
   if (timestamp != 0)
     window->net_wm_user_time = timestamp;
 

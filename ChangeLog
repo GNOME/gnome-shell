@@ -1,3 +1,12 @@
+2005-02-06  Elijah Newren  <newren@gmail.com>
+
+	If activation requests are too old, set the demands_attention hint
+	instead of actually activating.  Thanks to Crispin Flowerday for
+	the test case and for testing the patch.  Fixes half of #166395.
+
+	* src/window.c: (meta_window_activate): if the request came before
+	the last focus time, set the demands attention hint instead
+
 2005-02-04  Dave Ahlswede  <mightyquinn@letterboxes.org>
 
 	* src/metacity.schemas.in: Add period to the end of
