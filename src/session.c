@@ -585,6 +585,116 @@ window_type_from_string (const char *str)
     return META_WINDOW_NORMAL;
 }
 
+static const char*
+window_gravity_to_string (int gravity)
+{
+  switch (gravity)
+    {
+    case NorthWestGravity:
+      return "NorthWestGravity";
+      break;
+    case NorthGravity:
+      return "NorthGravity";
+      break;
+    case NorthEastGravity:
+      return "NorthEastGravity";
+      break;
+    case WestGravity:
+      return "WestGravity";
+      break;
+    case CenterGravity:
+      return "CenterGravity";
+      break;
+    case EastGravity:
+      return "EastGravity";
+      break;
+    case SouthWestGravity:
+      return "SouthWestGravity";
+      break;
+    case SouthGravity:
+      return "SouthGravity";
+      break;
+    case SouthEastGravity:
+      return "SouthEastGravity";
+      break;
+    case StaticGravity:
+      return "StaticGravity";
+      break;
+    default:
+      return "NorthWestGravity";
+      break;
+    }
+}
+  
+static int
+window_gravity_from_string (const char *str)
+{
+  if (strcmp (str, "NorthWestGravity") == 0)
+    return NorthWestGravity;
+  else if (strcmp (str, "NorthGravity") == 0)
+    return NorthGravity;
+  else if (strcmp (str, "NorthEastGravity") == 0)
+    return NorthEastGravity;
+  else if (strcmp (str, "WestGravity") == 0)
+    return WestGravity;
+  else if (strcmp (str, "CenterGravity") == 0)
+    return CenterGravity;
+  else if (strcmp (str, "EastGravity") == 0)
+    return EastGravity;
+  else if (strcmp (str, "SouthWestGravity") == 0)
+    return SouthWestGravity;
+  else if (strcmp (str, "SouthGravity") == 0)
+    return SouthGravity;
+  else if (strcmp (str, "SouthEastGravity") == 0)
+    return SouthEastGravity;
+  else if (strcmp (str, "StaticGravity") == 0)
+    return StaticGravity;
+  else
+    return NorthWestGravity;
+}
+
+static char*
+encode_text_as_utf8 (const char *text)
+{
+  /* text can be any encoding, and is nul-terminated.
+   * we pretend it's Latin-1 and encode as UTF-8
+   */
+  GString *str;
+  const char *p;
+  
+  str = g_string_new ("");
+
+  p = text;
+  while (*p)
+    {
+      g_string_append_unichar (str, *p);
+      ++p;
+    }
+
+  return g_string_free (str, FALSE);
+}
+
+static char*
+decode_text_from_utf8 (const char *text)
+{
+  /* Convert back from the encoded UTF-8 */
+  GString *str;
+  const char *p;
+
+  str = g_string_new ("");
+  
+  p = text;
+  while (*p)
+    {
+      /* obviously this barfs if the UTF-8 contains chars > 255 */
+      g_string_append_c (str, g_utf8_get_char (p));
+
+      p = g_utf8_next_char (p);
+    }
+
+  return g_string_free (str, FALSE);
+}
+
 static void
 save_state (void)
 {
@@ -651,10 +761,6 @@ save_state (void)
    * child elements are the saved state to be applied.
    * 
    */
-
-  /* FIXME we are putting non-UTF-8 in here. */
-
-  meta_warning ("FIXME Saving session ID, class, name, etc. pretending that they are valid UTF-8, but no such thing is necessarily true");
   
   fprintf (outfile, "<metacity_session id=\"%s\">\n",
            client_id);
@@ -676,18 +782,41 @@ save_state (void)
 
           if (window->sm_client_id)
             {
+              char *sm_client_id;
+              char *res_class;
+              char *res_name;
+              char *role;
+
+              /* client id, class, name, role are not expected to be
+               * in UTF-8 (I think they are in XPCS which is Latin-1?
+               * in practice they are always ascii though.)
+               */
+              
+              sm_client_id = encode_text_as_utf8 (window->sm_client_id);
+              res_class = window->res_class ?
+                encode_text_as_utf8 (window->res_class) : NULL;
+              res_name = window->res_name ?
+                encode_text_as_utf8 (window->res_name) : NULL;
+              role = window->role ?
+                encode_text_as_utf8 (window->role) : NULL;
+              
               meta_verbose ("Saving session managed window %s, client ID '%s'\n",
                             window->desc, window->sm_client_id);
 
               fprintf (outfile,
                        "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\">\n",
-                       window->sm_client_id,
-                       window->res_class ? window->res_class : "",
-                       window->res_name ? window->res_name : "",
+                       sm_client_id,
+                       res_class ? res_class : "",
+                       res_name ? res_name : "",
                        window->title ? window->title : "",
-                       window->role ? window->role : "",
+                       role ? role : "",
                        window_type_to_string (window->type));
 
+              g_free (sm_client_id);
+              g_free (res_class);
+              g_free (res_name);
+              g_free (role);
+              
               /* Sticky */
               if (window->on_all_workspaces)
                 fputs ("    <sticky/>\n", outfile);
@@ -705,6 +834,17 @@ save_state (void)
 
                     w = w->next;
                   }
+              }
+
+              /* Gravity */
+              {
+                int x, y, w, h;
+                meta_window_get_geometry (window, &x, &y, &w, &h);
+
+                fprintf (outfile,
+                         "    <geometry x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" gravity=\"%s\"/>\n",
+                         x, y, w, h,
+                         window_gravity_to_string (window->size_hints.win_gravity));
               }
               
               fputs ("  </window>\n", outfile);
@@ -813,6 +953,10 @@ load_state (const char *previous_id)
       return;
     }
 
+  meta_verbose ("Parsing saved session file %s\n", session_file);
+  g_free (session_file);
+  session_file = NULL;
+  
   parse_data.info = NULL;
   
   context = g_markup_parse_context_new (&metacity_session_parser,
@@ -835,13 +979,16 @@ load_state (const char *previous_id)
   goto out;
 
  error:
-
+  
   meta_warning (_("Failed to parse saved session file: %s\n"),
                 error->message);
   g_error_free (error);
 
+  if (parse_data.info)
+    session_info_free (parse_data.info);
+  
  out:
-
+  
   g_free (text);
 }
 
@@ -889,17 +1036,17 @@ start_element_handler  (GMarkupParseContext *context,
           if (strcmp (name, "id") == 0)
             {
               if (*val)
-                pd->info->id = g_strdup (val);
+                pd->info->id = decode_text_from_utf8 (val);
             }
           else if (strcmp (name, "class") == 0)
             {
               if (*val)
-                pd->info->res_class = g_strdup (val);
+                pd->info->res_class = decode_text_from_utf8 (val);
             }
           else if (strcmp (name, "name") == 0)
             {
               if (*val)
-                pd->info->res_name = g_strdup (val);
+                pd->info->res_name = decode_text_from_utf8 (val);
             }
           else if (strcmp (name, "title") == 0)
             {
@@ -909,7 +1056,7 @@ start_element_handler  (GMarkupParseContext *context,
           else if (strcmp (name, "role") == 0)
             {
               if (*val)
-                pd->info->role = g_strdup (val);
+                pd->info->role = decode_text_from_utf8 (val);
             }
           else if (strcmp (name, "type") == 0)
             {
@@ -970,8 +1117,63 @@ start_element_handler  (GMarkupParseContext *context,
     }
   else if (strcmp (element_name, "geometry") == 0)
     {
+      int i;
 
+      pd->info->geometry_set = TRUE;
+      
+      i = 0;
+      while (attribute_names[i])
+        {
+          const char *name;
+          const char *val;
+          
+          name = attribute_names[i];
+          val = attribute_values[i];
+          
+          if (strcmp (name, "x") == 0)
+            {
+              if (*val)
+                pd->info->rect.x = atoi (val);
+            }
+          else if (strcmp (name, "y") == 0)
+            {
+              if (*val)
+                pd->info->rect.y = atoi (val);
+            }
+          else if (strcmp (name, "width") == 0)
+            {
+              if (*val)
+                pd->info->rect.width = atoi (val);
+            }
+          else if (strcmp (name, "height") == 0)
+            {
+              if (*val)
+                pd->info->rect.height = atoi (val);
+            }
+          else if (strcmp (name, "gravity") == 0)
+            {
+              if (*val)
+                pd->info->gravity = window_gravity_from_string (val);
+            }
+          else
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+                           _("Unknown attribute %s on <geometry> element"),
+                           name);
+              return;
+            }
+          
+          ++i;
+        }
 
+      meta_verbose ("Loaded geometry %d,%d %dx%d gravity %s\n",
+                    pd->info->rect.x,
+                    pd->info->rect.y,
+                    pd->info->rect.width,
+                    pd->info->rect.height,
+                    window_gravity_to_string (pd->info->gravity));
     }
   else
     {
@@ -1045,9 +1247,12 @@ get_possible_matches (MetaWindow *window)
   /* Get all windows with this client ID */
   GSList *retval;
   GSList *tmp;
+  gboolean ignore_client_id;
   
   retval = NULL;
 
+  ignore_client_id = g_getenv ("METACITY_DEBUG_SM") != NULL;
+  
   tmp = window_info_list;
   while (tmp != NULL)
     {
@@ -1055,7 +1260,8 @@ get_possible_matches (MetaWindow *window)
 
       info = tmp->data;
       
-      if (both_null_or_matching (info->id, window->sm_client_id) && 
+      if ((ignore_client_id ||
+           both_null_or_matching (info->id, window->sm_client_id)) && 
           both_null_or_matching (info->res_class, window->res_class) &&
           both_null_or_matching (info->res_name, window->res_name) &&
           both_null_or_matching (info->role, window->role))
@@ -1216,6 +1422,7 @@ session_info_new (void)
   info = g_new0 (MetaWindowSessionInfo, 1);
 
   info->type = META_WINDOW_NORMAL;
+  info->gravity = NorthWestGravity;
   
   return info;
 }

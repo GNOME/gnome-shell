@@ -6,6 +6,23 @@ on UNIX keyboards.
 The first release of Metacity is version 2.3. Metacity has no need for
 your petty hangups about version numbers.
 
+COMPILING METACITY
+===
+
+You need GTK+ 1.3.x (to become 2.0). At the moment CVS HEAD is
+required. Once 1.3.7 is available that will probably work. Metacity is
+a fairly trivial 6000-line C program, so once you get GTK+ built it
+should be no problem to build Metacity.
+
+REPORTING BUGS AND SUBMITTING PATCHES
+===
+
+Report new bugs to hp@redhat.com for now. Will switch to Bugzilla
+sometime probably.
+
+Feel free to send patches too; Metacity is really small and simple, so
+if you find a bug or want to add a feature it should be pretty easy.
+
 METACITY FEATURES
 ===
 
@@ -69,8 +86,9 @@ METACITY FEATURES
 
  - Session management:
 
-    Metacity connects to the session manager and will set itself up 
-     to be respawned.
+    Metacity connects to the session manager and will set itself up to
+     be respawned. It theoretically restores sizes/positions/workspace
+     for session-aware applications.
 
  - Here is an example of how you can configure the Metacity 
    window border appearance in ~/.gtkrc-2.0:
@@ -115,16 +133,18 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - Metacity does not have any way to unminimize a window. So 
    clicking the minimize button is sort of a bad idea.
+   (If you had a WM-spec-compliant tasklist, it would work
+   for unminimization.)
 
- - Metacity uses the new window manager spec, but only random bits
-   of the old GNOME spec. It correctly advertises exactly which 
-   parts of the GNOME spec it supports, but it does not support 
-   enough of it to make the GNOME task list and desk guide happy,
-   and they do not support the new spec. I don't want anyone to 
-   spend time sending me patches to support the old GNOME spec; 
-   instead, send patches to the task list and desk guide to support
-   the new spec. As far as I know, Metacity does support enough 
-   of the new spec to allow a working tasklist and pager.
+ - Metacity uses the new window manager spec, but only random bits of
+   the old GNOME spec. It correctly advertises exactly which parts of
+   the GNOME spec it supports, but it does not support enough of it to
+   make the GNOME task list and desk guide happy, and they do not
+   support the new spec. I don't want anyone to spend time sending me
+   patches to support the old GNOME spec in Metacity; instead, send
+   patches to the task list and desk guide to support the new spec. As
+   far as I know, Metacity does support enough of the new spec to
+   allow a working tasklist and pager.
 
    Upshot: task list and desk guide DO NOT WORK with Metacity.
 
@@ -134,12 +154,14 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    instead of Alt as the main keybinding shortcut, if super/hyper 
    exist, and then keyboards with a windows key can use that for 
    WM functions and Alt for application shortcuts.
+   We'd fall back to Alt if no other suitable modifier existed.
    
  - Cycling windows with Alt-Tab is flickery, AFAIK because
    Metacity passes the entire window stack to XRestackWindows() 
    every time you restack. Instead it should probably only restack 
    windows that have changed their stacking with respect to one 
-   another.
+   another. (But sometimes I don't see the flicker, so 
+   I'm not sure.)
 
  - Various operations, such as minimize, maximize, etc., should 
    have simple animations to make them clearer to users.
@@ -151,8 +173,13 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    as described in the ICCCM. But then, most other window managers
    don't handle this correctly either.
 
- - I know there's at least one race condition involving rapidly 
-   created and destroyed windows that will crash Metacity.
+ - There are probably other ICCCM-compliance issues.
+
+ - I know there's at least one race condition involving rapidly
+   created and destroyed windows that will crash Metacity.  I think a
+   small test app that did a lot of rapid show/hide on a GtkWindow,
+   in combination with the METACITY_SYNC environment variable and
+   Metacity in a debugger, would turn this up quickly.
 
  - Window placement is always cascade for now; I want to implement 
    "first fit, falling back to cascade if no fit." 
@@ -186,21 +213,18 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    locale. I assume the window titles should be right-justified;
    should the window controls also be flipped?
 
-COMPILING METACITY
-===
+ - Need keyboard shortcuts for hide/show desktop (minimize/unminimize
+   all windows temporarily, basically, and focus desktop); also 
+   for focusing dock windows (though since current GNOME panel has 
+   no useful keynav, this doesn't get you far at the moment).
 
-You need GTK+ 1.3.x (to become 2.0). See configure.in for the exact
-version you need. Metacity is a fairly trivial 6000-line C program, so
-once you get GTK+ built it should be no problem to build Metacity.
+ - Resize menu item doesn't do anything. It's intended to enter
+   resize-with-the-keyboard mode, similar to Move menu item.
 
-REPORTING BUGS AND SUBMITTING PATCHES
-===
-
-Report new bugs to hp@redhat.com for now. Will switch to Bugzilla
-sometime probably.
-
-Feel free to send patches too; Metacity is really small and simple, so
-if you find a bug or want to add a feature it should be pretty easy.
+ - I haven't set up the po subdir and translations, mostly because
+   autotools seem to get all confused if you set these up but 
+   don't actually have any translations. So if someone translates
+   something we can set it up.
 
 FAQ
 ===
@@ -267,8 +291,8 @@ A: Metacity only stores sizes/positions for apps that are session
    bunch of new windows appear. But it can't distinguish between
    windows that were stored in your session, or windows you just
    launched after logging in. If Metacity tried to guess that a window
-   was from the session, it could e.g. maximize a dialog, or put a
-   window you just launched on another desktop or in a weird
+   was from the session, it could e.g. end up maximizing a dialog, or
+   put a window you just launched on another desktop or in a weird
    place. And in fact I see a lot of bugs like this in window managers
    that try to handle non-session-aware apps.
 
@@ -287,10 +311,9 @@ A: Metacity only stores sizes/positions for apps that are session
     ftp://ftp.x.org/pub/R6.4/xc/doc/hardcopy/SM/xsmp.PS.gz
     ftp://ftp.x.org:21/pub/R6.4/xc/doc/hardcopy/SM/SMlib.PS.gz
 
-   See also the ICCCM section on SM. For GNOME apps, use 
-   the GnomeClient object. For a simple coding example using 
-   libSM directly, twm/session.c in the twm source code is 
-   pretty easy to understand.
+   See also the ICCCM section on SM. For GNOME apps, use the
+   GnomeClient object. For a simple example of using libSM directly,
+   twm/session.c in the twm source code is pretty easy to understand.
 
 Q: How about adding viewports in addition to workspaces?
 
