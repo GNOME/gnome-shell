@@ -1,3 +1,14 @@
+2002-10-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (apply_constraints): also keep utility/menu/toolbar
+	windows above their whole group.
+
+	(get_standalone_layer): don't use META_LAYER_FOCUSED_WINDOW, but
+	only use META_LAYER_FULLSCREEN while the fullscreen window has
+	focus.  Also, put screen-sized windows in the fullscreen layer,
+	even if we didn't dare to actually put them in the fullscreen
+	state.
+
 2002-10-07  Havoc Pennington  <hp@redhat.com>
 
         Add a modifier key preference for the Alt+click stuff. 

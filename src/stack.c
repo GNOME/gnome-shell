@@ -177,6 +177,32 @@ meta_stack_thaw (MetaStack *stack)
   meta_stack_sync_to_server (stack);
 }
 
+static gboolean
+window_is_fullscreen_size (MetaWindow *window)
+{
+  int i;
+
+  if (window->rect.x == 0 &&
+      window->rect.y == 0 &&
+      window->rect.width == window->screen->width &&
+      window->rect.height == window->screen->height)
+    return TRUE;
+  
+  i = 0;
+  while (i < window->screen->n_xinerama_infos)
+    {
+      if (window->rect.x == window->screen->xinerama_infos[i].x_origin &&
+          window->rect.y == window->screen->xinerama_infos[i].y_origin &&
+          window->rect.width == window->screen->xinerama_infos[i].width &&
+          window->rect.height == window->screen->xinerama_infos[i].height)
+        return TRUE;
+      
+      ++i;
+    }
+
+  return FALSE;
+}
+
 /* Get layer ignoring any transient or group relationships */
 static MetaStackLayer
 get_standalone_layer (MetaWindow *window)
@@ -201,12 +227,16 @@ get_standalone_layer (MetaWindow *window)
       layer = META_LAYER_SPLASH;
       break;
       
-    default:
-       
+    default:       
+
+#if 0
       if (window->has_focus &&
           meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
         layer = META_LAYER_FOCUSED_WINDOW;
-      else if (window->fullscreen)
+#endif
+      
+      if (window->has_focus &&
+          (window->fullscreen || window_is_fullscreen_size (window)))
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)
         layer = META_LAYER_DOCK;
@@ -400,7 +430,10 @@ apply_constraints (GList *list)
       if ((w->xtransient_for == None ||
            w->transient_parent_is_root_window) &&
           (w->type == META_WINDOW_DIALOG ||
-	   w->type == META_WINDOW_MODAL_DIALOG))
+	   w->type == META_WINDOW_MODAL_DIALOG ||
+           w->type == META_WINDOW_TOOLBAR ||
+           w->type == META_WINDOW_MENU ||
+           w->type == META_WINDOW_UTILITY))
         {
           GSList *group_windows;
           GSList *tmp;
