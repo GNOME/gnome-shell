@@ -245,14 +245,14 @@ meta_window_menu_new   (MetaFrames         *frames,
               
               if (image)
                 {
-                  mi = gtk_image_menu_item_new_with_mnemonic (menuitems[i].label);
+                  mi = gtk_image_menu_item_new_with_mnemonic (_(menuitems[i].label));
                   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
                                                  image);
                   gtk_widget_show (image);
                 }
               else
                 {
-                  mi = gtk_menu_item_new_with_mnemonic (menuitems[i].label);
+                  mi = gtk_menu_item_new_with_mnemonic (_(menuitems[i].label));
                 }
               
               if (insensitive & menuitems[i].op)
