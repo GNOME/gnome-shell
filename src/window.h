@@ -64,7 +64,7 @@ struct _MetaWindow
 {
   MetaDisplay *display;
   MetaScreen *screen;
-  GList *workspaces;
+  MetaWorkspace *workspace;
   Window xwindow;
   /* may be NULL! not all windows get decorated */
   MetaFrame *frame;
@@ -457,9 +457,6 @@ void meta_window_show_menu (MetaWindow *window,
                             int         root_y,
                             int         button,
                             Time        timestamp);
-
-gboolean meta_window_shares_some_workspace (MetaWindow *window,
-                                            MetaWindow *with);
 
 void meta_window_set_gravity (MetaWindow *window,
                               int         gravity);

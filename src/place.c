@@ -750,7 +750,7 @@ meta_window_place (MetaWindow        *window,
 
         if (!w->minimized &&
             w != window && 
-            meta_window_shares_some_workspace (window, w))
+            window->workspace == w->workspace)
           windows = g_list_prepend (windows, w);
 
         tmp = tmp->next;

@@ -368,7 +368,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * type
    */
   window->display = display;
-  window->workspaces = NULL;
+  window->workspace = NULL;
 
 #ifdef HAVE_XSYNC
   window->sync_request_counter = None;
@@ -652,7 +652,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
         }
     }
   
-  if (window->workspaces == NULL && 
+  if (window->workspace == NULL && 
       window->xtransient_for != None)
     {
       /* Try putting dialog on parent's workspace */
@@ -663,28 +663,20 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
       if (parent)
         {
-          GList *tmp_list;
-
           meta_topic (META_DEBUG_PLACEMENT,
-                      "Putting window %s on some workspaces as parent %s\n",
+                      "Putting window %s on same workspace as parent %s\n",
                       window->desc, parent->desc);
           
           if (parent->on_all_workspaces)
             window->on_all_workspaces = TRUE;
           
-          tmp_list = parent->workspaces;
-          while (tmp_list != NULL)
-            {
-	      /* this will implicitly add to the appropriate MRU lists
-	       */
-              meta_workspace_add_window (tmp_list->data, window);
-              
-              tmp_list = tmp_list->next;
-            }
+	  /* this will implicitly add to the appropriate MRU lists
+	   */
+          meta_workspace_add_window (parent->workspace, window);
         }
     }
   
-  if (window->workspaces == NULL)
+  if (window->workspace == NULL)
     {
       meta_topic (META_DEBUG_PLACEMENT,
                   "Putting window %s on active workspace\n",
@@ -831,26 +823,20 @@ meta_window_apply_session_info (MetaWindow *window,
            * ensured that one of the workspaces from the session was
            * indeed valid, so we know we'll go right back to one.
            */
-          while (window->workspaces)
-            meta_workspace_remove_window (window->workspaces->data, window);
+          if (window->workspace)
+            meta_workspace_remove_window (window->workspace, window);
 
-          tmp = spaces;
-          while (tmp != NULL)
-            {
-              MetaWorkspace *space;
+          /* Only restore to the first workspace if the window
+           * happened to be on more than one, since we have replaces
+           * window->workspaces with window->workspace
+           */
+          meta_workspace_add_window (spaces->data, window);              
 
-              space = tmp->data;
+          meta_topic (META_DEBUG_SM,
+                      "Restoring saved window %s to workspace %d\n",
+                      window->desc,
+                      meta_workspace_index (spaces->data));
               
-              meta_workspace_add_window (space, window);              
-
-              meta_topic (META_DEBUG_SM,
-                          "Restoring saved window %s to workspace %d\n",
-                          window->desc,
-                          meta_workspace_index (space));
-              
-              tmp = tmp->next;
-            }
-
           g_slist_free (spaces);
         }
     }
@@ -978,20 +964,10 @@ meta_window_free (MetaWindow  *window)
   meta_window_unqueue_update_icon (window);
   meta_window_free_delete_dialog (window);
   
-  tmp = window->workspaces;
-  while (tmp != NULL)
-    {
-      GList *next;
+  if (window->workspace)
+    meta_workspace_remove_window (window->workspace, window);
 
-      next = tmp->next;
-
-      /* pops front of list */
-      meta_workspace_remove_window (tmp->data, window);
-
-      tmp = next;
-    }
-
-  g_assert (window->workspaces == NULL);
+  g_assert (window->workspace == NULL);
 
 #ifndef G_DISABLE_CHECKS
   tmp = window->screen->workspaces;
@@ -1200,7 +1176,7 @@ meta_window_visible_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)
 {
   return (window->on_all_workspaces && window->screen == workspace->screen) ||
-    meta_workspace_contains_window (workspace, window);
+    (window->workspace == workspace);
 }
 
 static gboolean
@@ -1250,20 +1226,12 @@ window_showing_on_its_workspace (MetaWindow *window)
                                 &is_desktop_or_dock);
 
   if (window->on_all_workspaces)
-    /* Unless the behavior in bug 87531 is implemented, or else
-     * _NET_WM_STATE_HIDDEN can be made per-workspace instead of
-     * global, or else we get rid of on_all_workspaces windows
-     * altogether, then this will be just a hack that only sort of
-     * works.
+    /* Until the behavior in bug 87531 is implemented, this will be
+     * just a hack that only sort of works.
      */
     workspace_of_window = window->screen->active_workspace;
-  else if (window->workspaces)
-    /* This is sort of hacky too; would like to guarantee that
-     * window->workspaces only contains a single workspace.  I believe
-     * that's currently true in Metacity, but it isn't guaranteed to
-     * remain true in the future.
-     */
-    workspace_of_window = window->workspaces->data;
+  else if (window->workspace)
+    workspace_of_window = window->workspace;
   else /* This only seems to be needed for startup */
     workspace_of_window = NULL;
 
@@ -3369,8 +3337,6 @@ static void
 meta_window_change_workspace_without_transients (MetaWindow    *window,
                                                  MetaWorkspace *workspace)
 {
-  GList *next;
-  
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
   
@@ -3382,24 +3348,11 @@ meta_window_change_workspace_without_transients (MetaWindow    *window,
     meta_window_unstick (window);
 
   /* See if we're already on this space. If not, make sure we are */
-  if (g_list_find (window->workspaces, workspace) == NULL)
-    meta_workspace_add_window (workspace, window);
-  
-  /* Remove from all other spaces */
-  next = window->workspaces;
-  while (next != NULL)
+  if (window->workspace != workspace)
     {
-      MetaWorkspace *remove;
-      remove = next->data;
-      next = next->next;
-
-      if (remove != workspace)
-        meta_workspace_remove_window (remove, window);
+      meta_workspace_remove_window (window->workspace, window);
+      meta_workspace_add_window (workspace, window);
     }
-
-  /* list size == 1 */
-  g_assert (window->workspaces != NULL);
-  g_assert (window->workspaces->next == NULL);
 }
 
 static gboolean
@@ -3473,7 +3426,7 @@ meta_window_unstick (MetaWindow  *window)
   while (tmp)
     {
       workspace = (MetaWorkspace *) tmp->data;
-      if (!meta_workspace_contains_window (workspace, window))
+      if (window->workspace != workspace)
         workspace->mru_list = g_list_remove (workspace->mru_list, window);
       tmp = tmp->next;
     }
@@ -3483,8 +3436,7 @@ meta_window_unstick (MetaWindow  *window)
    * on more than one workspace this should probably be add_workspace
    * not change_workspace.
    */
-  if (!meta_workspace_contains_window (window->screen->active_workspace,
-                                       window))
+  if (window->screen->active_workspace != window->workspace)
     meta_window_change_workspace (window, window->screen->active_workspace);
   
   meta_window_set_current_workspace_hint (window);
@@ -3495,11 +3447,10 @@ meta_window_unstick (MetaWindow  *window)
 unsigned long
 meta_window_get_net_wm_desktop (MetaWindow *window)
 {
-  if (window->on_all_workspaces ||
-      g_list_length (window->workspaces) > 1)
+  if (window->on_all_workspaces)
     return 0xFFFFFFFF;
   else
-    return meta_workspace_index (window->workspaces->data);
+    return meta_workspace_index (window->workspace);
 }
 
 static void
@@ -3540,7 +3491,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
    */
   unsigned long data[1];
 
-  if (window->workspaces == NULL)
+  if (window->workspace == NULL)
     {
       /* this happens when unmanaging windows */      
       return;
@@ -5189,7 +5140,7 @@ meta_window_get_workspaces (MetaWindow *window)
   if (window->on_all_workspaces)
     return window->screen->workspaces;
   else
-    return window->workspaces;
+    return g_list_prepend (NULL, window->workspace);
 }
 
 static void
@@ -6589,28 +6540,6 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
     default:
       break;
     }
-}
-
-gboolean
-meta_window_shares_some_workspace (MetaWindow *window,
-                                   MetaWindow *with)
-{
-  GList *tmp;
-  
-  if (window->on_all_workspaces ||
-      with->on_all_workspaces)
-    return TRUE;
-  
-  tmp = window->workspaces;
-  while (tmp != NULL)
-    {
-      if (g_list_find (with->workspaces, tmp->data) != NULL)
-        return TRUE;
-
-      tmp = tmp->next;
-    }
-
-  return FALSE;
 }
 
 void

@@ -1005,17 +1005,10 @@ save_state (void)
               
               /* Workspaces we're on */
               {
-                GList *w;
-                w = window->workspaces;
-                while (w != NULL)
-                  {
-                    int n;
-                    n = meta_workspace_index (w->data);
-                    fprintf (outfile,
-                             "    <workspace index=\"%d\"/>\n", n);
-
-                    w = w->next;
-                  }
+                int n;
+                n = meta_workspace_index (window->workspace);
+                fprintf (outfile,
+                         "    <workspace index=\"%d\"/>\n", n);
               }
 
               /* Gravity */

@@ -1947,8 +1947,7 @@ event_callback (XEvent   *event,
           if (window->minimized)
             {
               meta_window_unminimize (window);
-              if (!meta_workspace_contains_window (window->screen->active_workspace,
-                                                   window))
+              if (window->workspace != window->screen->active_workspace)
                 {
                   meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
                                 window->mapped, window->minimized);

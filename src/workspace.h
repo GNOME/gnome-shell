@@ -61,9 +61,6 @@ void           meta_workspace_remove_window (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                                 MetaWorkspace *new_home);
-/* don't confuse with meta_window_visible_on_workspace() */
-gboolean       meta_workspace_contains_window (MetaWorkspace *workspace,
-                                               MetaWindow  *window);
 void           meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                                    MetaWindow    *focus_this,
                                                    Time           timestamp);

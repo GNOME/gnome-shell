@@ -94,7 +94,7 @@ meta_workspace_free (MetaWorkspace *workspace)
 
       /* pop front of list we're iterating over */
       meta_workspace_remove_window (workspace, window);
-      g_assert (window->workspaces != NULL);
+      g_assert (window->workspace != NULL);
 
       tmp = next;
     }
@@ -125,14 +125,14 @@ void
 meta_workspace_add_window (MetaWorkspace *workspace,
                            MetaWindow    *window)
 {
-  g_return_if_fail (!meta_workspace_contains_window (workspace, window));
+  g_return_if_fail (window->workspace == NULL);
   
   /* If the window is on all workspaces, we want to add it to all mru
    * lists, otherwise just add it to this workspaces mru list
    */
   if (window->on_all_workspaces) 
     {
-      if (window->workspaces == NULL)
+      if (window->workspace == NULL)
         {
           GList* tmp = window->screen->workspaces;
           while (tmp)
@@ -152,7 +152,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
     }
 
   workspace->windows = g_list_prepend (workspace->windows, window);
-  window->workspaces = g_list_prepend (window->workspaces, workspace);
+  window->workspace = workspace;
 
   meta_window_set_current_workspace_hint (window);
   
@@ -175,10 +175,10 @@ void
 meta_workspace_remove_window (MetaWorkspace *workspace,
                               MetaWindow    *window)
 {
-  g_return_if_fail (meta_workspace_contains_window (workspace, window));
+  g_return_if_fail (window->workspace == workspace);
 
   workspace->windows = g_list_remove (workspace->windows, window);
-  window->workspaces = g_list_remove (window->workspaces, workspace);
+  window->workspace = NULL;
 
   /* If the window is on all workspaces, we don't want to remove it
    * from the MRU list unless this causes it to be removed from all 
@@ -186,16 +186,13 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
    */
   if (window->on_all_workspaces) 
     {
-      if (window->workspaces == NULL)
+      GList* tmp = window->screen->workspaces;
+      while (tmp)
         {
-          GList* tmp = window->screen->workspaces;
-          while (tmp)
-            {
-              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
-              work->mru_list = g_list_remove (work->mru_list, window);
+          MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+          work->mru_list = g_list_remove (work->mru_list, window);
 
-              tmp = tmp->next;
-            }
+          tmp = tmp->next;
         }
     }
   else
@@ -248,13 +245,6 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
   g_list_free (copy);
   
   g_assert (workspace->windows == NULL);
-}
-
-gboolean
-meta_workspace_contains_window (MetaWorkspace *workspace,
-                                MetaWindow    *window)
-{
-  return g_list_find (window->workspaces, workspace) != NULL;
 }
 
 void
@@ -317,11 +307,10 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
        * never gets unmapped and we maintain the button grab
        * on it.
        */
-      if (move_window)
+      if (move_window && (move_window->workspace != workspace))
         {
-          if (!meta_workspace_contains_window (workspace,
-                                               move_window))
-            meta_workspace_add_window (workspace, move_window);
+          meta_workspace_remove_window (workspace, move_window);
+          meta_workspace_add_window (workspace, move_window);
         }
     }
 

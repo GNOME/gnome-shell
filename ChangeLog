@@ -1,3 +1,40 @@
+2004-12-22  Elijah Newren  <newren@gmail.com>
+
+	Partially resolve the conflicting requirements of windows on
+	multiple workspaces and hidden being a global quantity for windows
+	(fixes bug 156182; the remainder of the work is bug 87531 and is a
+	libwnck issue)
+
+	* src/display.c (event_callback):
+	* src/window.c (meta_window_visible_on_workspace, meta_window_unstick):
+	* src/workspace.c (meta_workspace_add_window,
+	meta_workspace_contains_window,
+	meta_workspace_queue_calc_showing):
+	* src/workspace.h:
+
+	Remove meta_workspace_contains_window, replace with simple
+	comparison utilizing window->workspace
+
+	* src/place.c (meta_window_place):
+	* src/window.c (meta_window_shares_some_workspace):
+	* src/window.h:
+
+	Remove meta_window_shares_some_workspace, replace with a simple
+	comparison utilizing window->workspace
+
+	* src/session.c (save_state),
+	* src/window.c (meta_window_new_with_attrs,
+	meta_window_apply_session_info, meta_window_free,
+	window_showing_on_its_workspace,
+	meta_window_change_workspace_without_transients,
+	meta_window_unstick, meta_window_set_current_workspace_hint,
+	meta_window_get_workspaces):
+	* src/window.h:
+	* src/workspace.c (meta_workspace_free, meta_workspace_add_window,
+	meta_workspace_remove_window):
+
+	Only one workspace now
+
 2004-12-20  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.9.3
