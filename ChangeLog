@@ -1,3 +1,12 @@
+2005-02-04  Elijah Newren  <newren@gmail.com>
+
+	Make sure window->border_only is initialized so we don't get
+	random windows without decorations.  Thanks to Sinisa Segvic and
+	Owen Taylor for providing test cases.  Fixes #145131.
+
+	* src/window.c: (update_mwm_hints): Be sure to call
+	recalc_window_features even if no MWM hints are set
+
 2005-02-02  Elijah Newren  <newren@gmail.com>
 
 	Focus parents of dismissed transient windows in preference to the

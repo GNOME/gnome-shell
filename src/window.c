@@ -4655,6 +4655,7 @@ update_mwm_hints (MetaWindow *window)
                                   &hints))
     {
       meta_verbose ("Window %s has no MWM hints\n", window->desc);
+      recalc_window_features (window);
       return;
     }
   
