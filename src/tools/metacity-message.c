@@ -155,6 +155,8 @@ usage (void)
 int
 main (int argc, char **argv)
 {
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  
   gtk_init (&argc, &argv);
 
   if (argc < 2)
