@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: METACITY 2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2003-10-12 20:33+0530\n"
 "Last-Translator: Dr Anirban Mitra <mitra_anirban@yahoo.co.in>\n"
 "Language-Team: Bengali <gnome-trans@bengalinux.org>\n"
@@ -25,29 +25,29 @@ msgstr "ব্যবহার: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "মেটাসিটি বক্তৃতাকারী (ভার্বোজ) স্থিতির সহায়তা ছাড়াই গ্রন্থিত হয়েছে\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" কে পুর্ণসংখ্যা হিসাবে প্রক্রিয়া করতে পারি নি"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "শেষ অক্ষরগুলি \"%s\" যা বাক্যাংশ \"%s\" তে আছে বুঝতে পারিনি"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "বার্তালাপ প্রক্রিয়া থেকে \"%s\" বার্তাটি ব্যবহার করতে ভুল হয়েছে\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "এই বার্তালাপ প্রদর্শণকারী পদ্ধতি থেকে পড়তে ভুল হয়েছে: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -55,12 +55,12 @@ msgstr ""
 "এই প্রোগ্রামকে মেরে ফেলার বিষয়ে প্রশ্নকারী মেটাসিটি বার্তালাপ চালু করতে ভুল হয়েছে: %"
 "s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "এই হোস্টনেম পেতে ভুল হয়েছে: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "এক্স উইন্ডো সিস্টেম প্রদর্শক %s খুলতে পারছি না\n"
@@ -81,25 +81,25 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ঘাতক IO ভুল %d(%s) হয়েছে প্রদর্শক '%s' তে\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "জানালা  বন্ধ কর "
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "জানালা পছন্দতালিকা"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "ছোটো কর"
 
 # "উইন্ডো ক্ষুদ্রায়ত কর"
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "পুরো পর্দা জুড়ে কর"
 
 # "উইন্ডো বৃহদায়ত কর"
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "মাঝারি আকার কর"
 
@@ -112,12 +112,12 @@ msgid ""
 msgstr ""
 "অন্য একটি প্রোগ্রাম ইতিমধ্যেই %s চাবি %x পরিবর্তক সহ কার্যকারক হিসাবে ব্যবহার করছে\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "একটি আদেশ বিষয়ে ভুল ছাপার মেটাসিটি বার্তালাপ চালু করতে গন্ডগোল হয়েছে: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "আদেশ %d জানা  নেই।\n"
@@ -336,31 +336,31 @@ msgstr ""
 msgid "Mod5"
 msgstr ""
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" জানালাটি সাড়া দিচ্ছে না"
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "এই অ্যাপ্লিকেসনটিকে বন্ধ হতে বাধ্য করলে আপনি যে সমস্ত পরিবর্তনসঞ্চিত করেন নি সে সব "
 "চলে যাবে"
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "বন্ধ হতে বাধ্য কর [_ধ]"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "শীর্ষক"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "শ্রেণী"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -368,7 +368,7 @@ msgstr ""
 "এই জানালাগুলি \"বর্তমান অবস্থা সঞ্চিত কর \" কে সাহায্য করে না এবং পরবর্তীবার যখন "
 "আপনি লগ্-ইন্ করবেন তখন এদের আপনাকেই চালু করতে হবে"
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2127,7 +2127,7 @@ msgstr "<geometry> উপাদানে অজানা বৈশিষ্ট�
 msgid "Unknown element %s"
 msgstr "অজানা উপাদান %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3053,7 +3053,7 @@ msgstr "অবস্থানের সমীকরণ এ কোনও কা�
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "থীমে একটি সমীকরণ  \"%s\" আছে যা একটি গন্ডগোল করেছে: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3062,25 +3062,25 @@ msgstr ""
 "এই থীমের জন্য <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/"
 ">অবশ্যই নির্ধারিত করতে হবে"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> নিখোঁজ"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "থীম \"%s\" লোড করতে পারি নি: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr " <%s> টি থীম  \"%s\" এর জন্য স্থির করা নেই"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3089,7 +3089,7 @@ msgstr ""
 "জানালা প্রকার  \"%s\" যা থীম \"%s\"তে আছে তাতে কোন ফ্রেমের প্রকার ঠিক করা নেই,"
 "একটি  <window type=\"%s\" style_set=\"whatever\"/> অংশ যোগ করতে হবে"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3098,7 +3098,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> এই থীমের জন্য "
 "অবশ্যই স্থির করতে হবে"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3106,7 +3106,7 @@ msgstr ""
 "ব্যবহারকারী দ্বারা স্থির করা ধ্রুবক সব সময় বড় হাতের অক্ষর দিয়ে শুরু হবে; \"%s\" তা "
 "হয় নি"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ধ্রুবক \"%s\" ইতিমধ্যেই স্থির করা আছে"
@@ -3176,7 +3176,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "প্রোগ্রামটি একটি অর্থহীন _NET_WM_PID স্থির করেছে %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3192,7 +3192,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

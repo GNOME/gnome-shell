@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-08-15 10:59+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -24,29 +24,29 @@ msgstr "사용법: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity가 자세한 모드 지원 없이 컴파일 되었습니다\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "정수값 \"%s\"을(를) 분석할 수 없습니다"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "문자열 \"%2$s\"에서 이어진 문자 \"%1$s\"을(를) 이해할 수 없습니다"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "대화상자 진행에서 메세지 \"%s\"을(를) 분석하는데 실패했습니다\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "대화상자 보여주기 진행중에 읽기 오류: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -54,12 +54,12 @@ msgstr ""
 "응용 프로그램을 강제로 마치려고 물어보기 위해 metacity-dialog를 실행하는 중 "
 "오류가 발생했습니다: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
@@ -80,23 +80,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "디스플레이 '%3$s'에서 치명적인 입출력 오류 %1$d (%2$s).\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "창 닫기"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "창 메뉴"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "창 최소화"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "창 최대화"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "창 최대화 취소"
 
@@ -109,14 +109,14 @@ msgstr ""
 "몇몇 다른 프로그램에서 이미 단축키로 변경 키 %2$x와(과) 키 %1$s을(를) 사용하"
 "고 있습니다\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "명령에 대한 오류를 출력하기 위해 metacity-dialog를 실행하는 중 오류가 발생했"
 "습니다: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
@@ -331,30 +331,30 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "창 \"%s\"(이)가 반응하지 않습니다."
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "이 프로그램을 강제로 끝낸다면 저장되지 않은 바뀐 점을 잃을 수 있습니다."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "강제로 끝내기(_F)"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "제목"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "클래스"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -362,7 +362,7 @@ msgstr ""
 "이 창은 \"현재 설정 저장\"을 지원하지 않기 때문에 다음 번에 로그인 할 때수동"
 "으로 재시작 하여야 합니다."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2009,7 +2009,7 @@ msgstr "<geometry> 요소에 알 수 없는 속성 %s"
 msgid "Unknown element %s"
 msgstr "알 수 없는 속성 %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2936,7 +2936,7 @@ msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "테마가 오류 값을 내는 표현 \"%s\"을(를) 포함하고 있습니다: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2945,7 +2945,7 @@ msgstr ""
 "이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
 "\"/>가 지정되어야 합니다"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -2953,18 +2953,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
 "다"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2973,7 +2973,7 @@ msgstr ""
 "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
 "type=\"%3$s\" style_set=\"whatever\"/> 요소를 더하십시오"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2982,14 +2982,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> 가 이 테마에 "
 "지정되어 있어야 합니다"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "사용자 정의 상수는 대문자로 시작되어야 합니다; \"%s\"은(는) 그렇지 않습니다"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
@@ -3059,7 +3059,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3075,7 +3075,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-07-25 16:14+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -25,30 +25,30 @@ msgstr "Användning: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity kompilerades utan stöd för utförligt läge\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kunde inte tolka \"%s\" som ett heltal"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Förstod inte de avslutande tecknen \"%s\" i strängen \"%s\""
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Misslyckades med att tolka meddelandet \"%s\" från dialogprocess\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Fel vid läsning från dialogvisningsprocess: %s\n"
 
 # SUN CHANGED MESSAGE
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -56,12 +56,12 @@ msgstr ""
 "Fel vid start av metacity-dialog för att fråga om ett program skulle dödas: %"
 "s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
@@ -111,14 +111,14 @@ msgstr ""
 "Ett annat program använder redan tangenten %s med modifierarna %x som en "
 "bindning\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %"
 "s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
@@ -334,31 +334,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Fönstret \"%s\" svarar inte."
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Att tvinga detta program att avsluta kommer att göra att alla osparade "
 "ändringar går förlorade."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Tvinga avslutande"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Titel"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Klass"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -366,7 +366,7 @@ msgstr ""
 "Dessa fönster stöder inte \"spara nuvarande inställningar\" och kommer att "
 "behöva startas om manuellt nästa gång du loggar in."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2130,7 +2130,7 @@ msgstr "Okänt attribut %s i <geometry>-element"
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3096,7 +3096,7 @@ msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck \"%s\" som resulterade i ett fel: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3105,25 +3105,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för "
 "denna ramtyp"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3132,7 +3132,7 @@ msgstr ""
 "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett "
 "<window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3141,7 +3141,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges "
 "för detta tema"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3149,7 +3149,7 @@ msgstr ""
 "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör "
 "det inte"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
@@ -3219,7 +3219,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3235,7 +3235,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

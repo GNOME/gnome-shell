@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-08-07 14:55+0200\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -26,29 +26,29 @@ msgstr "Употреба: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Метасити је преведен без подршке за обавештајни начин рада\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Нисам могао да издвојим „%s“ као целобројну вредност"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Нисам разумео водеће карактере „%s“ у низу карактера „%s“"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Нисам успео да издвојим поруку „%s“ из прозорчета процеса\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Грешка приликом читања из прозорчета процеса: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -56,12 +56,12 @@ msgstr ""
 "Грешка приликом покретања metacity-dialog због упита о убијању програма „%"
 "s“\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Нисам успео да сазнам име компјутера: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим X Window System  екран „%s“\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Кобна грешка са излазом/улазом: %d (%s) на екрану „%s“.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Затвори прозор"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Мени прозора"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Умањи прозор"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Увећај прозор"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Поништи увећавање прозора"
 
@@ -111,14 +111,14 @@ msgstr ""
 "Неки други програм већ користи тастер %s са измењивачима %x за неку "
 "функцију\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
@@ -334,29 +334,29 @@ msgstr "Мод4"
 msgid "Mod5"
 msgstr "Мод5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Прозор „%s“ не одговара."
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Приморавањем програма на излаз ћете изгубити све несачуване измене."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Приморај излаз"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Наслов"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Класа"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -364,7 +364,7 @@ msgstr ""
 "Ови прозори не подржавају могућност „сними тренутна подешавања“ па ћете "
 "морати да их ручно поново покренете када се следећи пут пријавите."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2102,7 +2102,7 @@ msgstr "Непознат атрибут %s у <geometry> елементу"
 msgid "Unknown element %s"
 msgstr "Непознат елемент %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3032,7 +3032,7 @@ msgstr "Израз са координатама нема ни један опе
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Тема садржи израз „%s“ који резултира грешком: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3041,25 +3041,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"било шта\"/> мора бити "
 "наведен за овај стил оквира"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Недостаје <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"било шта\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Нисам успео да учитам тему „%s“: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Није дефинисан елемент <%s> за тему „%s“"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3068,7 +3068,7 @@ msgstr ""
 "Није подешен стил оквира за прозор типа „%s“ у теми „%s“. Додајте <window "
 "type=\"%s\" style_set=\"било шта\"/> елемент."
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3077,14 +3077,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"било шта\"/> мора бити "
 "дефинисан за ову тему"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Кориснички дефинисане константе морају почети великим словом; „%s“ не почиње"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константа „%s“ је већ дефинисана"
@@ -3154,7 +3154,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3170,7 +3170,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

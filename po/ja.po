@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-08-06 09:19+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -26,29 +26,29 @@ msgstr "用法: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "この metacity は verbose モードをサポートしていません\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\"を整数として構文解釈できませんでした"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "末尾の文字列 \"%s\" (文字列 \"%s\") を理解できませんでした"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "ダイアログのプロセスからメッセージ \"%s\" の構文解釈に失敗しました\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "ダイアログ表示プロセスから読み込み際にエラーが発生しました: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -56,12 +56,12 @@ msgstr ""
 "アプリケーションの強制終了を尋ねる metacity-dialog を起動する際にエラーが発生"
 "しました: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -82,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "致命的なIOエラー %d (%s) - ディスプレイ '%s' が発生しました。\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "ウィンドウを閉じます"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "ウィンドウ・メニューを表示します"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化します"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化します"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元のサイズに戻します"
 
@@ -111,14 +111,14 @@ msgstr ""
 "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
 "す\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "コマンドのエラーを表示する metacity-dialog を起動する際にエラーが発生しまし"
 "た: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
@@ -335,29 +335,29 @@ msgstr "[MOD4]"
 msgid "Mod5"
 msgstr "[MOD5]"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "ウィンドウ \"%s\" から応答がありません。"
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "このアプリを強制終了すると、保存していない変更点を失うことになります。"
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "強制終了(_F)"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "タイトル"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "クラス"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -365,7 +365,7 @@ msgstr ""
 "これらのウィンドウは \"現在の設定を保存\" をサポートしません。次回ログインす"
 "る時に手動で再起動する必要があります。"
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2094,7 +2094,7 @@ msgstr "<geometry> エレメントに不明な属性 %s があります"
 msgid "Unknown element %s"
 msgstr "不明なエレメント %s があります"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3029,7 +3029,7 @@ msgstr "座標式は演算子もオペランドも使用していないようで
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "テーマはエラーになる式 \"%s\" を含んでいました: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3038,7 +3038,7 @@ msgstr ""
 "このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> を指定する必要があります"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -3046,18 +3046,18 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありませ"
 "ん"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "テーマ \"%s\" の読み込みに失敗しました: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "テーマ \"%1$s\" の <%2$s> が設定されていません"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3067,7 +3067,7 @@ msgstr ""
 "ません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してく"
 "ださい"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3076,13 +3076,13 @@ msgstr ""
 "このテーマは <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "を指定する必要があります"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ユーザ定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
@@ -3152,7 +3152,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3168,7 +3168,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

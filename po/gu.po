@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-18 12:11+0200\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-08-20 15:36+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "<magnet@magnet-i.com>\n"
 "X-Generator: KBabel 1.3.1\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 
@@ -28,39 +29,40 @@ msgstr "વપરાશ: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "મેટાસીટીને વર્ણનિય પદ્ધતિના આધાર વગર કમ્પાઈલ કરાયુ હતુ\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" ને પૂર્ણંાક તરીકે પદચ્છેદ કરી શકાયુ નહિ"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "શબ્દમાળા \"%s\" માં પૂંછડિયા અક્ષરો \"%s\" સમજી શકાયા નહિં"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "સંવાદ પ્રક્રિયામાંથી \"%s\" સંદેશો પદચ્છેદ કરવામાં નિષ્ફળ\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "સંવાદ દર્શાવનાર પ્રક્રિયામાંથી વાંચવામાં ભૂલ: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "કાર્યક્રમને મૃત કરવા માટે પૂછવા માટે મેટાસીટી-સંવાદ શરુ કરવામાં ભૂલ: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "યજમાનનું નામ મેળવવામાં નિષ્ફળ: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X વિન્ડો સિસ્ટમ ડિસ્પ્લે '%s' ને ખોલવામાં નિષ્ફળ\n"
@@ -81,23 +83,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ઘાતક IO ભૂલ %d (%s) %s ડિસ્પ્લે પર.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "વિન્ડો બંધ કરો"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "વિન્ડોનું મેનુ"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "વિન્ડોને ન્યૂનત્તમ સ્થિતિમાં લાવો"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાં લાવો"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાંથી પાછી લાવો"
 
@@ -108,12 +110,12 @@ msgid ""
 "binding\n"
 msgstr "કોઈ બીજો કાર્યક્રમ પહેલેથીજ કી %s ને બદલનાર %x સાથે જોડાણ તરીકે વાપરી રહ્યુ છે\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "આદેશ વિશેની ભૂલ છાપવા માટે મેટાસીટી-સંવાદને શરુ કરવામાં ભૂલ: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "કોઈ અાદેશ %d વ્યાખ્યાયિત કરાયો નથી.\n"
@@ -148,7 +150,8 @@ msgstr "થીમની ડિરેક્ટરી જોવામાં નિ
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "થીમ શોધી શકાઈ નહિં! ખાતરી કરો કે %s અસ્તિત્વ ધરાવે છે અને તેમાં સામાન્ય થીમ છે."
 
 #: src/main.c:521
@@ -326,31 +329,32 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "વિન્ડો \"%s\" જવાબ આપી રહ્યું નથી."
 
-#: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+#: src/metacity-dialog.c:118
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "અા કાર્યક્રમને જબરદસ્તી બંધ કરવાથી કોઈપણ અસંગ્રહિત બદલાવો ખોરવાઈ જશે."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "જબરદસ્તી બહાર કાઢો (_F)"
 
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-druid-page-standard.c:121
 # libgnomeui/gnome-font-picker.c:155
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "શીર્ષક"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "વર્ગ"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -358,7 +362,7 @@ msgstr ""
 "આ બધી વિન્ડો \"વર્તમાન સુયોજનનો સંગ્રહ કરો\" ને આધાર આપતી નથી અને બીજી વખત તમે પ્રવેશ "
 "કરો ત્યારે જાતે જ ફરી શરુ કરવું પડશે."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1870,7 +1874,8 @@ msgstr "જીકોન્ફ કી \"%s\" એ અયોગ્ય પ્રક�
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "માઉસ બટનની કિંમત બદલવા માટે રુપરેખાના ડેટાબેઝમાંથી મળેલ કિંમત \"%s\" એ યોગ્ય નથી\n"
+msgstr ""
+"માઉસ બટનની કિંમત બદલવા માટે રુપરેખાના ડેટાબેઝમાંથી મળેલ કિંમત \"%s\" એ યોગ્ય નથી\n"
 
 #: src/prefs.c:834 src/prefs.c:1244
 #, c-format
@@ -1942,8 +1947,10 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તે વિન્ડો વ્યવસ્થાપકની પસંદગીને મેળવી શકાતી નથી\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તે વિન્ડો વ્યવસ્થાપકની પસંદગીને મેળવી શકાતી નથી\n"
 
 #: src/screen.c:506
 #, c-format
@@ -2018,7 +2025,7 @@ msgstr "અજાણ્યું લક્ષણ %s એ <geometry> વસ્ત�
 msgid "Unknown element %s"
 msgstr "અજાણી વસ્તુ %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2169,7 +2176,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "કોઈ \"કિંમત\" લક્ષણ વસ્તુ <%s> પર નથી"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "બટન માટે બટન_પહોળાઈ/બટન_ઊંચાઈ અને ધારેલુ પ્રમાણ બંનેને સ્પષ્ટ કરી શકાતા નથી"
 
 #: src/theme-parser.c:1343
@@ -2466,7 +2474,8 @@ msgstr "થીમની સાૈથી બહારની વસ્તુ <meta
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "વસ્તુ <%s> name/author/date/description ની અંદર સ્વીકાર્ય નથી"
 
 #: src/theme-parser.c:3684
@@ -2476,7 +2485,8 @@ msgstr "વસ્તુ <%s> એ <constant> વસ્તુની અંદર �
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "વસ્તુ <%s> એ distance/border/aspect_ratio વસ્તુની અંદર સ્વીકાર્ય નથી"
 
 #: src/theme-parser.c:3718
@@ -2804,7 +2814,8 @@ msgstr "રંગના સ્પષ્ટીકરણમાં રંગની 
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr "\"blend/bg_color/fg_color/alpha\" એ મિશ્રિત માળખું છે, \"%s\" માળખામાં બેસતું નથી "
+msgstr ""
+"\"blend/bg_color/fg_color/alpha\" એ મિશ્રિત માળખું છે, \"%s\" માળખામાં બેસતું નથી "
 
 #: src/theme.c:1054
 #, c-format
@@ -2818,7 +2829,8 @@ msgstr "મિશ્રિત રંગમાં આલ્ફાની કિં
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "છાયાનું માળખું \"shade/base_color/factor\" છે, \"%s\" માળખામાં બેસતુ નથી"
 
 #: src/theme.c:1122
@@ -2869,12 +2881,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "યામાક્ષ સમીકરણ શૂન્ય વડે ભાગાકારમાં પરિણમશે"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "યામાક્ષ સમીકરણ અપૂર્ણાંક સંખ્યાની ઉપર શેષ કારકનો ઉપયોગ કરવાનો પ્રયત્ન કરે છે"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "યામાક્ષ સમીકરણ માટે \"%s\" કારક છે જેના માટે ઓપરન્ડ હોવા જોઈએ"
 
 #: src/theme.c:1845
@@ -2890,7 +2904,8 @@ msgstr "યામાક્ષ સમીકરણનો અંત ઓપરન્
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "યામાક્ષ સમીકરણમાં \"%c\" કારક પછી તરત જ \"%c\" કારક છે જેમની વચ્ચે કોઈ ઓપરન્ડ નથી"
+msgstr ""
+"યામાક્ષ સમીકરણમાં \"%c\" કારક પછી તરત જ \"%c\" કારક છે જેમની વચ્ચે કોઈ ઓપરન્ડ નથી"
 
 #: src/theme.c:1982
 msgid ""
@@ -2922,7 +2937,7 @@ msgstr "યામાક્ષ સમીકરણમાં કોઈ કારક
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "થીમ \"%s\" સમીકરણ ધરાવે છે જેના પરિણામે ભૂલ થઈ: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2931,23 +2946,25 @@ msgstr ""
 "આ માળખાની શૈલી માટે <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/"
 "> સ્પષ્ટ કરેલી હોવી જરુરી છે"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ખોવાય છે"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ખોવાય છે"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "થીમ \"%s\" લાવવામાં નિષ્ફળ: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "કોઈ <%s> ગોઠવણ થીમ \"%s\" માટે નથી"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2956,7 +2973,7 @@ msgstr ""
 "થીમ \"%s\" માં વિન્ડોના પ્રકાર \"%s\" માટે કોઈ માળખાની શૈલી ગોઠવાયેલી નથી, <window "
 "type=\"%s\" style_set=\"whatever\"/> વસ્તુ ઊમેરો"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2965,12 +2982,13 @@ msgstr ""
 "આ થીમ માટે <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "સ્પષ્ટ કરેલુ હોવુ જોઈએ"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "વપરાશકર્તા દ્વારા વ્યાખ્યાયિત અચલો મોટા અક્ષરથી જ શરુ થવા જોઈએ; \"%s\" નહિં"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "અચલ \"%s\" પહેલેથી જ વ્યાખ્યાયિત છે"
@@ -3040,7 +3058,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "કાર્યક્રમે ખોટી ગોઠવણી _NET_WM_PID %ld કરી છે\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3056,7 +3074,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3087,6 +3105,6 @@ msgstr "ગુણધર્મ %s વિન્ડો 0x%lx પર અયોગ્
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "ગુણધર્મ %s વિન્ડો 0x%lx પર યાદીમાં %d વસ્તુ પર અયોગ્ય UTF-8 ધરાવે છે\n"
-

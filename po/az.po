@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-16 12:07+0200\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-08-17 21:53+0300\n"
 "Last-Translator: Metin Amiroff <metin@karegen.com>\n"
 "Language-Team: Azerbaijani <translation-team-az@lists.sourceforge.net>\n"
-"net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"net>\n"
 "X-Generator: KBabel 1.3.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -28,39 +28,40 @@ msgstr "İstifadə Qaydası: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity interaaktiv mod dəstəyi olmadan dərlənib\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" integer olaraq oxuna bilmədi"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "\"%s\" qatarının sonundakı \"%s\" hərfləri başa düşülmədi"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Dialoq prosesindən gələn \"%s\" ismarışı oxuna bilmədi\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Dialoq ekran gedişatından oxuma xətası: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Tə'minatı sonlandırma haqqında metacity-dialoqu başlatma xətası: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Verici adı alına bilmədi: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Window System displeyi '%s' açıla bilmədi\n"
@@ -81,23 +82,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IO error %d (%s) on display '%s'.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Pəncərəni Bağla"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Pəncərə Menyusu"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Pəncərəni Kiçilt"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Pəncərəni Böyüt"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Pəncərəni Balacalaşdır"
 
@@ -106,14 +107,15 @@ msgstr "Pəncərəni Balacalaşdır"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq işlədir\n"
+msgstr ""
+"Başqa bir proqram hazırda %s açarını %x modifayrlı bağlayıcı olaraq işlədir\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Əmr haqqında xəta metacity-dialoqu başlatma xətası: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d əmri tə'yin edilməyib.\n"
@@ -145,7 +147,8 @@ msgstr "Örtük qovluğu oxuna bilmədi: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Örtük tapıla bilmədi! %s'in yerində olduğundanə əyani örtüklər daxil "
 "etdiyindən əmin olun."
@@ -325,30 +328,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" pəncərəsi cavab vermir."
 
-#: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+#: src/metacity-dialog.c:118
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Bu tə'minatı çıxışa məcbur etmək qeyd edilməmiş mə'lumatları itirməyə səbəb "
 "olacaq."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "Çixmağa _Məcbur Et"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Başlıq"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Sinif"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -356,7 +360,7 @@ msgstr ""
 "Bu pəncərələr \"hazırkı iclası qeyd et\" xassəsini dəstəkləmir və növbəti "
 "girişdə əllə başladılmalıdır."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1885,7 +1889,8 @@ msgstr "GConf açarı \"%s\" hökmsüz növlə tə'yin edilib\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
+msgstr ""
+"Quraşdırma bazasında tapılan \"%s\" hökmlü siçan sür'ətləndiricisi deyil\n"
 
 #: src/prefs.c:834 src/prefs.c:1244
 #, c-format
@@ -1959,8 +1964,10 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"%d ekranı \"%s\" displeyi üstündə pəncərə idarəçisi seçimi alına bilmədi\n"
 
 #: src/screen.c:506
 #, c-format
@@ -2004,7 +2011,8 @@ msgstr "Qeyd edilmiş iclas faylı darana bilmədi: %s\n"
 
 #: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
+msgstr ""
+"<metacity_session> atribut görüldü yalnız onsuzda iclas ID'miz mövcuddur"
 
 #: src/session.c:1236
 #, c-format
@@ -2035,7 +2043,7 @@ msgstr "<geometry> elementində namə'lum %s atributu"
 msgid "Unknown element %s"
 msgstr "Namə'lum %s elementi"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2188,7 +2196,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> elementinin \"value\" atributu yoxdur"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Düymələr üçün button_width/button_height və görünüş nisbətinin ikisi də "
 "verilə bilməz"
@@ -2451,7 +2460,8 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
+msgstr ""
+"Tərz onsuzda %s vəziyyəti, %s ölçüləndirməsi və %s fokusu üçün tə'yin edilib"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2483,8 +2493,10 @@ msgstr "Örtükdəki outermost elementi <%s> yox <metacity_theme> olmalıdır"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"<%s> elementi name/author/date/description elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2493,8 +2505,10 @@ msgstr "<%s> elementi <constant> elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"<%s> elementi distance/border/aspect_ratio elementinin içində yer ala bilməz"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2748,7 +2762,8 @@ msgstr "y qiyməti %d oldu, %d gözlənirdi"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
+msgstr ""
+"%d koordinat ifadəsi %g saniyə içində oxundu (ortalama olaraq %g saniyə)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2838,8 +2853,10 @@ msgstr "Alfa qiyməti \"%s\" 0.0 ilə 1.0 arasında deyil"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Bükmə formatı \"shade/base_color/factor\"dır, \"%s\" formata uyğun gəlmir"
 
 #: src/theme.c:1122
 #, c-format
@@ -2889,12 +2906,15 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Birgə ifadə sıfıra bölmə ilə nəticələnir"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Birgə ifadə üzən-nöqtə ədədi üstündə mod idarəçisini işlətməyə cəhd edir"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Birgə ifadə operand gözlənildiyi yerdə \"%s\" idarəçisinə malikdir"
 
 #: src/theme.c:1845
@@ -2942,7 +2962,7 @@ msgstr "Birgə ifadə operatorlara malik görünmür"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Örtükdə xətaya səbəb olan \"%s\" idafəsi var: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2951,23 +2971,25 @@ msgstr ""
 "Bu örtük növü üçün <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/> tə'yin edilməlidir"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Əksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" örtüyü yüklənə bilmədi: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "\"%s\" örtüyü üçün <%s> tə'yin edilməyib"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2976,7 +2998,7 @@ msgstr ""
 "\"%s\" örtüyündə \"%s\" pəncərə növü üçün heç bir çərçivə tərzi tə'yin "
 "edilməyib. <window type=\"%s\" style_set=\"whatever\"/> elementini əlavə edin"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2985,12 +3007,14 @@ msgstr ""
 "Bu örtük üçün <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/"
 "> tə'yin edilməlidir"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"İstifadəçi tə'yinli sabitlər böyük hərflə başlamalıdır; \"%s\" isə başlamır"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" sabiti onsuzda tə'yin edilib"
@@ -3060,7 +3084,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Proqram tə'minatı xətalı _NET_WM_PID %ld tə'yin etdi\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3076,7 +3100,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3108,6 +3132,7 @@ msgstr "Property %s on window 0x%lx contained invalid UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

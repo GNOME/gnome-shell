@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-03-13 14:37+0700\n"
 "Last-Translator: Paisa Seeluangsawat <paisa@users.sf.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
@@ -33,40 +33,40 @@ msgstr "วิธีใช้: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมด verbose\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "ไม่สามารถแปลง \"%s\" เป็นเลขจำนวนเต็ม"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "ไม่เข้าใจตัวอักษร \"%s\" ที่ข้างท้ายข้อความ \"%s\""
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "ไม่เข้าใจข้อความ \"%s\" จากหน้าต่างโต้ตอบ\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะอ่านจากหน้าต่างโต้ตอบ: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "เกิดข้อผิดพลาด ขณะเปิดหน้าต่าง ถามการฆ่าโปรแกรม: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิด display '%s' ของระบบ X Window\n"
@@ -86,23 +86,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "เกิดข้อผิดพลาดสาหัส %d (%s) ในการอ่านเขียนข้อมูลจาก display '%s'\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "ปิดหน้าต่าง"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "เมนูหน้าต่าง"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "ขยายหน้าต่างเต็ม"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
@@ -113,12 +113,12 @@ msgid ""
 "binding\n"
 msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ไม่สามารถเปิดหน้าต่างโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
@@ -333,29 +333,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "หน้าต่าง \"%s\" ไม่ตอบสนอง"
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "ถ้าบังคับออกจากโปรแกรมนี้ ข้อมูลที่ยังไม่ได้ถูกบันทึกจะสูญหาย"
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_บังคับออก"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "หัวหน้าต่าง"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "คลาส"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -363,7 +363,7 @@ msgstr ""
 "หน้าต่างเหล่านี้ไม่สนับสนุนการ \"บันทึกค่าตั้งปัจจุบัน\" และคุณต้องเรียกใช้มันใหม่เอง "
 "เมื่อคุณเข้าสู่ระบบครั้งต่อไป"
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2042,7 +2042,7 @@ msgstr "ไม่รู้จักแอตทริบิวต์ %s ใน�
 msgid "Unknown element %s"
 msgstr "ไม่รู้จักอีลิเมนต์ %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2956,7 +2956,7 @@ msgstr "นิพจน์พิกัดท่าทางจะไม่มี
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "ชุดตกแต่งมีนิพจน์ \"%s\" ซึ่งทำให้เกิดข้อผิดพลาด: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2965,25 +2965,25 @@ msgstr ""
 "ต้องระบุ <button function =\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับรูปแบบเฟรมด้วย"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "ขาด <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"อะไรก็ตามแต่\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2992,7 +2992,7 @@ msgstr ""
 "ไม่ได้กำหนดรูปแบบเฟรมสำหรับชนิดหน้าต่าง \"%s\" ในชุดตกแต่ง \"%s\", กรุณาเพิ่มอีลิเมนต์ "
 "<window type=\"%s\" style_set=\"อะไรก็ตามแต่\"/>"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3001,13 +3001,13 @@ msgstr ""
 "ต้องระบุ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับชุดตกแต่งนี้"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเองต้องเริ่มต้นด้วยอักษรตัวใหญ่; แต่ \"%s\" ไม่ได้เป็นตามนั้น"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
@@ -3077,7 +3077,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %ld ซึ่งไม่มีอยู่จริง\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3091,7 +3091,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

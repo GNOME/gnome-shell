@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-28 20:03+0200\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-07-30 02:16+0200\n"
 "Last-Translator: Kemal Sanjta <gomez@lugzdk.ba>\n"
 "Language-Team: Bosnian <+>\n"
@@ -25,39 +25,42 @@ msgstr "Iskorištenost: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metaciti je kompajliran bez podrške za preopširan način rada\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nije moguće analizirati  \"%s\" kao cijeli broj"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Ne razumijem karaktere \"%s\" u stringu \"%s\""
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nije uspjelo analiziranje poruke \"%s\" iz dijaloškog procesa\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Greška pri čitanju iz dijaloga procesa: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Greška pri pokretanju metacity dijaloga za potvrdu o ubijanju aplikacije: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Greška pri pokretanju metacity dijaloga za potvrdu o ubijanju aplikacije: %"
+"s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Neuspjeh pri primanju imena računara %s\n"
 
-#: src/display.c:298
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Neuspjeh pri otvaranju X Window Sistem prikaza %s'\n"
@@ -78,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatalna IO greška %d (%s) na prikazu %s'.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Izbornik prozor"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Minimiziraj prozor"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Maksimiziraj prozor"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Poništi povećanje prozora"
 
@@ -103,14 +106,15 @@ msgstr "Poništi povećanje prozora"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Neki drugi program već koristi kljuć %s sa modifikacijama %x kao spoj\n"
+msgstr ""
+"Neki drugi program već koristi kljuć %s sa modifikacijama %x kao spoj\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Greška pri pokretanju metacity dijaloga za ispis greške komande: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nijedna komanda %d nije definisana.\n"
@@ -143,8 +147,10 @@ msgstr "Neuspjeh pri skeniranju direktorija tema: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Ne mogu pronaći temu! Budite sigurni %s da postoji i sadrži iskoristive teme."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Ne mogu pronaći temu! Budite sigurni %s da postoji i sadrži iskoristive teme."
 
 #: src/main.c:521
 #, c-format
@@ -321,30 +327,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Prozor \"%s\" ne reaguje."
 
-#: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+#: src/metacity-dialog.c:118
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Prisiljavanje ove aplikacije da završi rad uzrokovati će gubitak svih ne "
 "pohranjenih promjena."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Prisili izlazak"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Naslov"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Klasa"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -352,7 +359,7 @@ msgstr ""
 "Ovi prozori ne podržavaju mogućnost \"snimi trenutne postavke\" i morati "
 "ćete ih ručno ponovno pokrenuti sljedeći put kada se prijavite."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -406,11 +413,12 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
-"Raspored dugmadi na naslovnoj traci. Vrijednost treba biti niz znakova, kao na "
-"primjer „menu:minimize,maximize,close“; dvije tačke razdvajaju lijevi ugao "
-"prozora od desnog, a dugmad su razdvojena tačka-zarezima. Dupliranje dugmadi "
-"nije dozvoljeno. Nepoznata imena dugmadi  se zanemaruju tako da se dugmad koja "
-"će se dodavati u buduće verzije metacity-a bez poremećenja starijih verzija."
+"Raspored dugmadi na naslovnoj traci. Vrijednost treba biti niz znakova, kao "
+"na primjer „menu:minimize,maximize,close“; dvije tačke razdvajaju lijevi "
+"ugao prozora od desnog, a dugmad su razdvojena tačka-zarezima. Dupliranje "
+"dugmadi nije dozvoljeno. Nepoznata imena dugmadi  se zanemaruju tako da se "
+"dugmad koja će se dodavati u buduće verzije metacity-a bez poremećenja "
+"starijih verzija."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -493,8 +501,8 @@ msgstr ""
 "Ukoliko je postavljeno, metacity će korisniku dati manje povratnih "
 "informacija i manje osjećaja \"direktne manipulacije\", korištenjem žičanih "
 "okvira, izbjegavanjem animacija i drugo. Ovo je značajno smanjenje "
-"funkcionalnosti za mnoge korisnike, ali omogućava nasljeđivanje programa i rad "
-"server terminala kada bi oni u suprotnom bili nepraktični."
+"funkcionalnosti za mnoge korisnike, ali omogućava nasljeđivanje programa i "
+"rad server terminala kada bi oni u suprotnom bili nepraktični."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -510,17 +518,18 @@ msgid ""
 msgstr ""
 "Ako je aktivirano, onda Metacity radi u okvirima aplikacija umjesto prozora. "
 "Koncept je malo apstraktan, ali u širem pogledu podešavanje na razini "
-"aplikacije je više poput Mac a manje nego Windows okruženja. Kad "
-"fokusirate prozor u načinu rada baziranom na aplikaciji, klikovi "
-"fokusiranja nisu preusmjereni na prozore u drugim aplikacijama. Postojanje "
-"ove opcije je malo upitno. Ali bolje je nego imati svojstva za sve "
-"specifične detalje u aplikacijski orijentiranom protiv prozorski "
-"orijentiranom, naprimjer da li preusmjeriti preko klikova. Također "
-"aplikacijski orjentiran način rada je jako neupotrebljen trenutno."
+"aplikacije je više poput Mac a manje nego Windows okruženja. Kad fokusirate "
+"prozor u načinu rada baziranom na aplikaciji, klikovi fokusiranja nisu "
+"preusmjereni na prozore u drugim aplikacijama. Postojanje ove opcije je malo "
+"upitno. Ali bolje je nego imati svojstva za sve specifične detalje u "
+"aplikacijski orijentiranom protiv prozorski orijentiranom, naprimjer da li "
+"preusmjeriti preko klikova. Također aplikacijski orjentiran način rada je "
+"jako neupotrebljen trenutno."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Ako je postavljno, mijenja se iskorištenost za manje korištenje resursa"
+msgstr ""
+"Ako je postavljno, mijenja se iskorištenost za manje korištenje resursa"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -704,13 +713,13 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 "Neke aplikacije krše specifikacije na način koji dovodi do nepoželjnih "
-"osobina upravljaća prozora.Na primjer, idealno Metacity stavlja sve "
-"dijaloge u određeni položaj relativan na njihov roditeljski prozor. Ovo "
-"zahtjeva ignoriranje specifičnih osobina aplikacijskih prozora za dijaloge. "
-"Ali neke verzije Jave/Swinga označe svoj popup izbornik kao dijalog, pa "
-"Metacity mora onemogućiti smještanje dijaloga da bi dozvolio izbornicima da "
-"rade u neispravnim Java aplikacijama. Postoji još primjera za poput ovog. "
-"Ova opcija stavlja Metacity u puni-on Correct  način rada koji možda daje "
+"osobina upravljaća prozora.Na primjer, idealno Metacity stavlja sve dijaloge "
+"u određeni položaj relativan na njihov roditeljski prozor. Ovo zahtjeva "
+"ignoriranje specifičnih osobina aplikacijskih prozora za dijaloge. Ali neke "
+"verzije Jave/Swinga označe svoj popup izbornik kao dijalog, pa Metacity mora "
+"onemogućiti smještanje dijaloga da bi dozvolio izbornicima da rade u "
+"neispravnim Java aplikacijama. Postoji još primjera za poput ovog. Ova "
+"opcija stavlja Metacity u puni-on Correct  način rada koji možda daje "
 "umjereno jači UI ako nije potrebno koristiti neispravne aplikacije. "
 "Nažalost, zaobilaženja moraju biti aktivirana uobičajeno, svijet je ružno "
 "mjesto. Neke od zaobilaznica su zaobilaznice za ograničenja u samim "
@@ -817,8 +826,8 @@ msgid ""
 "will execute command_N."
 msgstr ""
 "Ključ /apps/metacity/global_keybindings/run_command_N definiše dugmad koja "
-"odgovaraju ovim komandama. Pritiskom kombinacije dugmadi za pokretanje_komandu_N "
-"će izvršiti komandu_N."
+"odgovaraju ovim komandama. Pritiskom kombinacije dugmadi za "
+"pokretanje_komandu_N će izvršiti komandu_N."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -849,10 +858,10 @@ msgstr ""
 "Kombinacije dugmadi koja pokreću odgovarajuće označenu naredbu u /apps/"
 "metacity/keybinding_commands ključu. Oblik zapisa izgleda kao \"&lt;"
 "Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu je "
-"dosta slobodan i dozvoljava velika ili mala slova, također i skraćenice poput "
-"\"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju na specijalni niz "
-"znakova \"disabled\", tada neće biti korištena niti jedna kombinacija tipki "
-"za ovu aktivnost."
+"dosta slobodan i dozvoljava velika ili mala slova, također i skraćenice "
+"poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju na "
+"specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
+"kombinacija tipki za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -895,12 +904,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja prebacuje na radnu površinu lijevo od trenutnog radne "
-"površine. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava velika ili "
-"mala slova, također i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". "
-"Ako postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
-"korištena niti jedna kombinacija tipki za ovu aktivnost."
+"Kombinacija dugmadi koja prebacuje na radnu površinu lijevo od trenutnog "
+"radne površine. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
+"velika ili mala slova, također i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
+"Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
+"tada neće biti korištena niti jedna kombinacija tipki za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -911,12 +920,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinacija digmadi koja prebacuje na radnu površinu desno od trenutne "
-"radne površine. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
-"velika ili mala slova, također i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
-"Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
-"tada neće biti korištena niti jedna kombinacija tipki za ovu aktivnost."
+"Kombinacija digmadi koja prebacuje na radnu površinu desno od trenutne radne "
+"površine. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava velika ili "
+"mala slova, također i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". "
+"Ako postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija tipki za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -941,9 +950,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja prebacuje na radnu površinu 10. Oblik zapisa izgleda "
-"kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program za "
-"obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
+"Kombinacija dugmadi koja prebacuje na radnu površinu 10. Oblik zapisa "
+"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program "
+"za obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
 "skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
 "na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
 "kombinacija tipki za ovu aktivnost."
@@ -956,9 +965,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja prebacuje na radnu površinu 11. Oblik zapisa izgleda "
-"kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program za "
-"obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
+"Kombinacija dugmadi koja prebacuje na radnu površinu 11. Oblik zapisa "
+"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program "
+"za obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
 "skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
 "na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
 "kombinacija tipki za ovu aktivnost."
@@ -971,9 +980,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja prebacuje na radnu površinu 12. Oblik zapisa izgleda "
-"kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program za "
-"obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
+"Kombinacija dugmadi koja prebacuje na radnu površinu 12. Oblik zapisa "
+"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\".Program "
+"za obradu je dosta slobodan i dozvoljava velika ili mala slova, također i "
 "skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
 "na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
 "kombinacija tipki za ovu aktivnost."
@@ -1138,12 +1147,12 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Kombinacijadugmadi koja postavlja prozor u način rada za pomicanje i "
-"omogućava pomicanje prozora pomoću tastature. Oblik zapisa izgleda kao "
-"\"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu "
-"je dosta slobodan i dozvoljava velika ili mala slova, takođe i skraćenice "
-"poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju na "
-"specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
-"kombinacija tipki za ovu aktivnost."
+"omogućava pomicanje prozora pomoću tastature. Oblik zapisa izgleda kao \"&lt;"
+"Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu je "
+"dosta slobodan i dozvoljava velika ili mala slova, takođe i skraćenice poput "
+"\"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju na specijalni niz "
+"znakova \"disabled\", tada neće biti korištena niti jedna kombinacija tipki "
+"za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1218,12 +1227,12 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu niže. Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija tipki za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu niže. "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija tipki za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1250,12 +1259,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu desno. Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu desno. "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1265,12 +1274,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu više. Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor za jednu radnu površinu više. "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1295,12 +1304,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor na radnu površinu 10. Oblik zapisa "
-"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program "
-"za obradu je dosta slobodan i dozvoljava velika ili mala slova, takođe i "
-"skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
-"na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
-"kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor na radnu površinu 10. Oblik "
+"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
+"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
+"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
+"jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1310,12 +1319,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor na radnu površinu 11. Oblik zapisa "
-"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program "
-"za obradu je dosta slobodan i dozvoljava velika ili mala slova, takođe i "
-"skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
-"na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
-"kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor na radnu površinu 11. Oblik "
+"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
+"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
+"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
+"jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1325,12 +1334,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiješta prozor na radnu površinu 12. Oblik zapisa "
-"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program "
-"za obradu je dosta slobodan i dozvoljava velika ili mala slova, takođe i "
-"skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
-"na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
-"kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja premiješta prozor na radnu površinu 12. Oblik "
+"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
+"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
+"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
+"jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1550,8 +1559,8 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja premiještaju fokus između ploče i radne površine bez "
-"skočnog prozora. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
+"Kombinacija dugmadi koja premiještaju fokus između ploče i radne površine "
+"bez skočnog prozora. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
 "velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
 "Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
@@ -1604,8 +1613,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja uključuje ili isključuje opciju da prozor bude uvijek "
-"na vrhu. Prozor koji je uvijek na vrhu videti će se preko drugih "
+"Kombinacija dugmadi koja uključuje ili isključuje opciju da prozor bude "
+"uvijek na vrhu. Prozor koji je uvijek na vrhu videti će se preko drugih "
 "preklapajućih prozora. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i "
 "dozvoljava velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" "
@@ -1621,11 +1630,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja uključuje ili isključuje prikaz preko cijelog zaslona."
-"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
-"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
-"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"Kombinacija dugmadi koja uključuje ili isključuje prikaz preko cijelog "
+"zaslona.Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava velika ili "
+"mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". "
+"Ako postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
 "korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:136
@@ -1636,12 +1645,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja uključuje ili isključuje uvećanje prozora na najveću "
-"moguću veličinu. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
-"velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
-"Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
-"tada neće biti korištena niti jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja uključuje ili isključuje uvećanje prozora na "
+"najveću moguću veličinu. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i "
+"dozvoljava velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" "
+"i \"&lt; Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova "
+"\"disabled\", tada neće biti korištena niti jedna kombinacija dugmadi za ovu "
+"aktivnost."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1667,8 +1677,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja uključuje ili isključuje mogučnost da prozor bude na "
-"svim radnim površinama. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili "
+"Kombinacija dugmadi koja uključuje ili isključuje mogučnost da prozor bude "
+"na svim radnim površinama. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i "
 "dozvoljava velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" "
 "i \"&lt; Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova "
@@ -1699,12 +1709,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinacija dugmadi koja prikazuje dijaloški okvir \"Pokreni program\". Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja prikazuje dijaloški okvir \"Pokreni program\". "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1715,12 +1725,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja pokreće alat ploče za snimanje izgleda prozora. Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja pokreće alat ploče za snimanje izgleda prozora. "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:142
 msgid ""
@@ -1731,12 +1741,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinacija dugmadi koja pokreće alat ploče za snimanje izgleda zaslona. Oblik "
-"zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Program za obradu je dosta slobodan i dozvoljava velika ili mala slova, "
-"takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite "
-"opciju na specijalni niz znakova \"disabled\", tada neće biti korištena niti "
-"jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja pokreće alat ploče za snimanje izgleda zaslona. "
+"Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Program za obradu je dosta slobodan i dozvoljava velika ili mala "
+"slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako "
+"postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
+"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1746,9 +1756,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja prikazuje glavni izbornik ploče. Oblik zapisa izgleda "
-"kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program za "
-"obradu je dosta slobodan i dozvoljava velika ili mala slova, takođe i "
+"Kombinacija dugmadi koja prikazuje glavni izbornik ploče. Oblik zapisa "
+"izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;Alt&gt;F1\". Program "
+"za obradu je dosta slobodan i dozvoljava velika ili mala slova, takođe i "
 "skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". Ako postavite opciju "
 "na specijalni niz znakova \"disabled\", tada neće biti korištena niti jedna "
 "kombinacija dugmadi za ovu aktivnost."
@@ -1765,7 +1775,8 @@ msgstr "Naredba za slikanje zaslona"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Tema utvrđuje izgled rubova prozora, naslovne linije i svega ostalog sličnog."
+msgstr ""
+"Tema utvrđuje izgled rubova prozora, naslovne linije i svega ostalog sličnog."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1804,14 +1815,14 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinacija dugmadi koja postavlja prozor iznad ili ispod ostalih prozora. Ako "
-"je prozor prekriven drugim prozorom, on se podiže iznad njega. Ako je prozor "
-"već na vrhu, on se spušta ispod ostalih prozora postavljajući drugi prozor na "
-"vrh. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava velika ili "
-"mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". "
-"Ako postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
-"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja postavlja prozor iznad ili ispod ostalih prozora. "
+"Ako je prozor prekriven drugim prozorom, on se podiže iznad njega. Ako je "
+"prozor već na vrhu, on se spušta ispod ostalih prozora postavljajući drugi "
+"prozor na vrh. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
+"velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
+"Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
+"tada neće biti korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1868,12 +1879,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinacija dugmadi koja mijenja veličinu prozora tako da popuni čitav okomiti "
-"prostor. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava velika ili "
-"mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; Ctrl&gt;\". "
-"Ako postavite opciju na specijalni niz znakova \"disabled\", tada neće biti "
-"korištena niti jedna kombinacija dugmadi za ovu aktivnost."
+"Kombinacija dugmadi koja mijenja veličinu prozora tako da popuni čitav "
+"okomiti prostor. Oblik zapisa izgleda kao \"&lt;Control&gt;a\" ili \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". Program za obradu je dosta slobodan i dozvoljava "
+"velika ili mala slova, takođe i skraćenice poput \"&lt;Ctl&gt;\" i \"&lt; "
+"Ctrl&gt;\". Ako postavite opciju na specijalni niz znakova \"disabled\", "
+"tada neće biti korištena niti jedna kombinacija dugmadi za ovu aktivnost."
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1995,7 +2006,9 @@ msgstr "Greška prilikom podešavanja broja radnih površina na %d: %s\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr "\"%s\" nađen u konfiguracijskoj bazi nije ispravna kombinacija dugmadi \"%s\"\n"
+msgstr ""
+"\"%s\" nađen u konfiguracijskoj bazi nije ispravna kombinacija dugmadi \"%s"
+"\"\n"
 
 #: src/prefs.c:1949
 #, c-format
@@ -2007,12 +2020,12 @@ msgstr "Greška prilikom podešavanja imena radne površine %d  u \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:399
+#: src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekran %d na prikazu '%s' je neispravan\n"
 
-#: src/screen.c:415
+#: src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2021,17 +2034,19 @@ msgstr ""
 "Ekran %d na prikazu \"%s\" već ima upravitelja prozora; pokušajte koristiti "
 "--replace opciju da zamjenite trenutni upravitelj prozora.\n"
 
-#: src/screen.c:439
+#: src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Nije moguće dobiti biranje upravitelja prozora na ekranu %d prikaza \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Nije moguće dobiti biranje upravitelja prozora na ekranu %d prikaza \"%s\"\n"
 
-#: src/screen.c:497
+#: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekran %d na prikazu \"%s\" već ima rukovoditelja prozora\n"
 
-#: src/screen.c:688
+#: src/screen.c:701
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nije moguće otpustiti ekran %d na prikazu \"%s\"\n"
@@ -2099,7 +2114,7 @@ msgstr "Nepoznata osobina %s u <geometry> elementu"
 msgid "Unknown element %s"
 msgstr "Nepoznati element %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2252,7 +2267,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Bez \"vrijednost\" atributa na  elementu <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Nije moguće odrediti istovremeno dugme_širine/dugme_visine i omjer slike za "
 "dugmad"
@@ -2553,7 +2569,8 @@ msgstr "Najdalji element u temi mora biti <metacity_theme> a ne<%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Element <%s> nije dozvoljen unutar imena/autora/datuma/opisa ."
 
 #: src/theme-parser.c:3684
@@ -2563,8 +2580,10 @@ msgstr "Element <%s> nije dozvoljen unutar <constant> elementa"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Element <%s> nije dozvoljen unutar udaljenost/granica/omjer_slike elementa"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Element <%s> nije dozvoljen unutar udaljenost/granica/omjer_slike elementa"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2822,7 +2841,8 @@ msgstr "vrijednost za y je bila %d, a očekivana je %d"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinatni izrazi parsirani u  %g sekundi (%g sekundi u prosjeku)\n"
+msgstr ""
+"%d koordinatni izrazi parsirani u  %g sekundi (%g sekundi u prosjeku)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2879,7 +2899,8 @@ msgid ""
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "GTK specifikacija boje mora imati zatvorenu zagradu poslije stanja,"
-"naprimjer  gtk:fg[NORMAL] gdje je NORMAL stanje;nije moguće analizirati \"%s\""
+"naprimjer  gtk:fg[NORMAL] gdje je NORMAL stanje;nije moguće analizirati \"%s"
+"\""
 
 #: src/theme.c:1000
 #, c-format
@@ -2912,8 +2933,10 @@ msgstr "Alfa vrijednost \"%s\" u nijansiranoj boji nije između 0.0 i 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Format osjenčenja je \"shade/base_color/factor\", \"%s\" ne odgovara formatu"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Format osjenčenja je \"shade/base_color/factor\", \"%s\" ne odgovara formatu"
 
 #: src/theme.c:1122
 #, c-format
@@ -2947,14 +2970,16 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Izraz koordinacije sadrži cijeli broj '%s' koji nije mogao biti analiziran"
+msgstr ""
+"Izraz koordinacije sadrži cijeli broj '%s' koji nije mogao biti analiziran"
 
 #: src/theme.c:1531
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Izraz koordinacije sadrži nepoznati operator na početku ovog teksta \"%s\""
+msgstr ""
+"Izraz koordinacije sadrži nepoznati operator na početku ovog teksta \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2965,14 +2990,16 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Izraz koordinata je rezultat podjele sa nulom"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Izraz koordinacije pokušava upotrijebiti mod operator na broju sa pomičnim "
 "zarezom"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Izraz koordinacije ima operator \"%s\" gdje se očekivao operant"
 
 #: src/theme.c:1845
@@ -2997,13 +3024,14 @@ msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Izraz koordinacije analizom je preopteretio svoj međumemorijski prostor, "
-"ovo je u stvari bug Metacity-a, ali jeste li sigurni da vam treba tako "
-"veliki izraz?"
+"Izraz koordinacije analizom je preopteretio svoj međumemorijski prostor, ovo "
+"je u stvari bug Metacity-a, ali jeste li sigurni da vam treba tako veliki "
+"izraz?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Izraz koordinacije je morao zatvoriti zagrade sa ne otvorenim zagradama."
+msgstr ""
+"Izraz koordinacije je morao zatvoriti zagrade sa ne otvorenim zagradama."
 
 #: src/theme.c:2074
 #, c-format
@@ -3023,7 +3051,7 @@ msgstr "Izraz koordinacije izgleda ne sadrži operacije ili operante."
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema sadrži izraz \"%s\" koji uzrokuje grešku: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3032,23 +3060,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"svejedno\"/> mora biti "
 "određeno za format ovog okvira"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Nedostaje <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"svejedno\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Nedostaje <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"svejedno\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nije uspjelo učitavanje teme \"%s\": %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nije podešen <%s> za temu \"%s\""
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3057,7 +3087,7 @@ msgstr ""
 "Nije odabrana vrsta okvira za prozor tipa  \"%s\" u temi  \"%s\", dodajte "
 "<window type=\"%s\" style_set=\"svejedno\"/> element"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3066,14 +3096,15 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"svejedno\"/>mora biti "
 "naveden za ovu temu"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Korisnički definisane konstante moraju početi velikim slovom; \"%s\" ne "
 "počinje "
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" je već definisana"
@@ -3143,7 +3174,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacija je postavila prividan _NETWM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4881
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3159,14 +3190,15 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5543
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Prozor %s je postavio MWM hint navodeći da mu se veličina ne može promijeniti, ali postavlja min. veličinu %"
-"d x %d a maksimalnu %d x %d; ovo nema previše smisla.\n"
+"Prozor %s je postavio MWM hint navodeći da mu se veličina ne može "
+"promijeniti, ali postavlja min. veličinu %d x %d a maksimalnu %d x %d; ovo "
+"nema previše smisla.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -3190,8 +3222,7 @@ msgstr "Osobina %s na prozoru 0x%lx je sadržala neispravan UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Osobina %s na prozoru 0x%lx sadrži neispravni UTF-8 za predmet %d na "
-"popisu\n"
-
+"Osobina %s na prozoru 0x%lx sadrži neispravni UTF-8 za predmet %d na popisu\n"

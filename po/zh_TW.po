@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2003-07-07 22:58+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditioanl) <zh-l10n@linux.org.tw>\n"
@@ -23,40 +23,40 @@ msgstr "用法：%s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "當編譯 metacity 時沒有使用詳細偵錯模式\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "無法以整數的方式分析“%s”"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "無法理解字串“%2$s”中的結束字元“%1$s”"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "無法從對話方塊進程中分析訊息“%s”\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "從對話方塊進程中讀取資料時出現錯誤：%s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "嘗試啟動 metacity-dialog 來詢問是否強行中止其它程式時出現錯誤：%s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "無法獲取主機名稱：%s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 畫面‘%s’\n"
@@ -76,23 +76,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "畫面‘%3$s’發生嚴重輸出/入錯誤 %1$d (%2$s)。\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "關閉視窗"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "視窗選單"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "視窗最小化"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "視窗最大化"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "視窗還原最大化"
 
@@ -103,12 +103,12 @@ msgid ""
 "binding\n"
 msgstr "其它程式已經使用了按鍵 %s 加上特殊按鍵 %x 作為按鍵組合\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "當嘗試啟動 metacity-dialog 來顯示某指令的錯誤訊息時出現錯誤：%s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "並未定義任何指令 %d。\n"
@@ -328,29 +328,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "視窗“%s”沒有回應。"
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "如果強制這個程式結束，會失去所有未儲存的資料。"
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "強制結束(_F)"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "標題"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "分類"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -358,7 +358,7 @@ msgstr ""
 "即使登出時選取「儲存目前的設定」，以下的視窗仍然無法記錄設定，必須在下次登入"
 "後以人手啟動。"
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2137,7 +2137,7 @@ msgstr "<geometry> 元素中出現不明的屬性 %s"
 msgid "Unknown element %s"
 msgstr "不明的元素 %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3050,7 +3050,7 @@ msgstr "座標表達式中似乎沒有任何運算符或運算子"
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "佈景主題中含有引致錯誤的表達式“%s”：%s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3059,25 +3059,25 @@ msgstr ""
 "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "無法載入佈景主題“%s”：%s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <%s>"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3086,7 +3086,7 @@ msgstr ""
 "在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window type="
 "\"%3$s\" style_set=\"whatever\"/> 元素"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3095,13 +3095,13 @@ msgstr ""
 "本佈景主題必須指定 <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"\n"
 "whatever\"/>"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
@@ -3171,7 +3171,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "程式設定了多餘的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3187,7 +3187,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -1,3 +1,41 @@
+2.8.4
+==
+
+This release features a number of bug fixes, and also the disabling of
+the focus-stealing-prevention code (we're entering hard code freeze in
+Gnome so it's too late to fix the remaining issues, especially since
+it requires several patches to modules other than Metacity).
+
+Thanks to Havoc Pennington, Soeren Sandmann, Elijah Newren, and Rich
+Wareham for fixes in this release
+
+Fixes
+  * track the last_xor_rect, for wireframe painting (Havoc)
+  * Move wireframe code before grab is released to prevent endless
+    loops with fullscreen windows. (Soeren)
+  * Make dialogs that Metacity shows follow focus-stealing-prevention
+    conventions. (Elijah; part of #149028)
+  * add render extension check to the display, don't build the
+    compositing manager by default, use an ARGB visual when available
+    for the window frame (Rich Wareham; various tweaks added later by
+    Havoc)
+  * move the have_xrender variable initialization up in the file since
+    it can be set as part of composite check (Havoc)
+  * make argb stuff compile, add some code from xcompmgr (Havoc)
+  * fix an assertion failure that would occur after increasing the
+    number of workspaces; fix stacking order when a window is denied
+    focus (Elijah; #150615)
+  * disable some compositor code that wasn't working, don't grab the
+    server during repaint, various set_background fixes and
+    refactoring (Havoc)
+
+Translations
+  * az(Metin Amiroff), bs(Kemal Sanjta), ca(Jordi Mallach), 
+    el(Kostas Papadimas), es(Francisco Javier F. Serrador), 
+    eu(IÅÒaki LarraÅÒaga Murgoitio), fi(Pauli Virtanen),
+    nb(Kjartan Maraas), sq(Laurent Dhima), uk(Maxim Dziumanenko)
+
+
 2.8.3
 ==
 

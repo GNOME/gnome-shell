@@ -1,5 +1,9 @@
 2004-08-29  Elijah Newren  <newren@math.utah.edu>
 
+	* NEWS: 2.8.4 release
+
+2004-08-29  Elijah Newren  <newren@math.utah.edu>
+
 	* src/window.c (window_takes_focus_on_map): Disable
 	focus-stealing-prevention for now; there are still some issues and
 	hard code freeze is tomorrow...so this will have to wait until

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
+"POT-Creation-Date: 2004-08-29 23:19-0600\n"
 "PO-Revision-Date: 2004-03-06 20:56+0200\n"
 "Last-Translator: Baris Cicek <baris@teamforce.name.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -28,29 +28,29 @@ msgstr "Kullanım: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity, ayrıntılı kip desteği olmadan derlenmiş\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" bir tamsayı olarak ayrıştırılamadı"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "\"%2$s\" dizgisinin sonundaki \"%1$s\" karakterleri anlaşılmadı"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "İletişim kutusu işleminden gelen \"%s\" iletisi ayrıştırılamadı\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "İletişim kutusu gösteren işlemde okuma hatası: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -58,12 +58,12 @@ msgstr ""
 "metacity-dialog'u bir uygulamanın öldürülmesiyle ilgili soru sormak amacıyla "
 "başlatırken hata: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Makine adı alınamadı: %s\n"
 
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Pencere Sistemi '%s' ekranı açılamadı\n"
@@ -84,23 +84,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ölümcül G/Ç hatası %d (%s); '%s' ekranında.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Pencereyi Kapat"
 
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Pencere Menüsü"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Pencereyi Küçült"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Pencereyi Büyült"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Pencereyi Büyültmeyi Geri Al"
 
@@ -113,14 +113,14 @@ msgstr ""
 "%s tuşu %x değiştiricileriyle birlikte başka bir uygulama tarafından tuş "
 "bağıolarak kullanılıyor\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Bir komutla ilgili hatayı göstermek için metacity-dialog başlatılırken hata: "
 "%s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komutu tanımlanmamış.\n"
@@ -335,31 +335,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" penceresi cevap vermiyor."
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Bu uygulamayı sonlandırmak kaydetmediğiniz değişikliklerin kaybolmasına "
 "sebep olacaktır."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Sonlandır"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Başlık"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Sınıf"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -367,7 +367,7 @@ msgstr ""
 "Bu pencereler, \"geçerli durumu kaydet\" özelliğini desteklemiyorlar ve bir "
 "dahaki girişte kendiniz yeniden başlatmalısınız."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2156,7 +2156,7 @@ msgstr "<geometry> öğesinde bilinmeyen öznitelik %s"
 msgid "Unknown element %s"
 msgstr "Bilinmeyen öğe %s"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3093,7 +3093,7 @@ msgstr "Kordinat ifadesi göründüğü kadarıyla ne işleç ne de işlenen iç
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Temanın içerdiği \"%s\" ifadesi hata ile sonuçlandı: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3102,25 +3102,25 @@ msgstr ""
 "Bu çerçeve biçeminde <button function=\"%s\" state=\"%s\" draw_ops=\"her "
 "neyse\"/> belirtilmek zorunda"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Eksik <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"her neyse\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" teması yüklenemedi: %s\n"
 
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "\"%2$s\" temasında hiç <%1$s> atanmamış"
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3129,7 +3129,7 @@ msgstr ""
 "\"%2$s\" temasında \"%1$s\" pencere türüne çerçeve biçemi atanmamış, bir "
 "<window type=\"%3$s\" style_set=\"her neyse\"/> öğesi ekleyin"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3138,14 +3138,14 @@ msgstr ""
 "Bu temada <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"her neyse\"/> "
 "belirtilmek zorunda"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Kullanıcı tanımlı sabitler büyük harfle başlamalıdır; \"%s\" buna uymuyor"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" sabit değeri zaten tanımlanmış"
@@ -3215,7 +3215,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Uygulama _NET_WM_PID'e geçersiz %ld değerini atadı\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4954
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3231,7 +3231,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5625
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
