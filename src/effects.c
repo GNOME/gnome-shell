@@ -165,7 +165,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
  * system beefiness or someting, or have some global
  * "my system is slow" config option.
  */
-static gboolean use_opaque_animations = TRUE;
+static gboolean use_opaque_animations = FALSE;
 
 void
 meta_effects_draw_box_animation (MetaScreen *screen,
