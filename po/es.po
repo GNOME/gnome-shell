@@ -1,4 +1,3 @@
-# translation of es.po to español
 # Metacity's Spanish translation.
 # Copyright (C) 2001,2002 Free Software Foundation, Inc.
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
@@ -6,8 +5,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
-"POT-Creation-Date: 2002-06-17 00:39+0200\n"
+"Project-Id-Version: Metacity\n"
+"POT-Creation-Date: 2002-06-25 00:46+0200\n"
 "PO-Revision-Date: 2002-06-10 11:53GMT-03:00\n"
 "Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -91,7 +90,7 @@ msgstr "Maximizar la ventana"
 msgid "Unmaximize Window"
 msgstr "Restaurar la ventana"
 
-#: src/keybindings.c:650
+#: src/keybindings.c:655
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -104,8 +103,8 @@ msgstr ""
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene los "
-"temas usuales."
+"¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
+"los temas usuales."
 
 #: src/main.c:338
 #, c-format
@@ -1320,12 +1319,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:195
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: src/screen.c:211
+#: src/screen.c:212
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1334,19 +1333,19 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un manejador de ventanas, intente "
 "usar la opción «--replace» para anular el manejador de ventanas actual.\n"
 
-#: src/screen.c:252
+#: src/screen.c:253
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "No se ha podido obtener la selección del manejador de ventanas en la ventana "
 "%d en la pantalla «%s»\n"
 
-#: src/screen.c:307
+#: src/screen.c:308
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: src/screen.c:510
+#: src/screen.c:515
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No se ha podido liberar la ventana %d en la pantalla «%s»\n"
@@ -1360,67 +1359,67 @@ msgstr ""
 "Hubo una falla al abrir una conexión con el manejador de sesiones, por esto "
 "las posiciones de las ventanas no podrás se guardadas: %s\n"
 
-#: src/session.c:851 src/session.c:858
+#: src/session.c:869 src/session.c:876
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "No se ha podido crear el directorio «%s»: %s\n"
 
-#: src/session.c:868
+#: src/session.c:886
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:1000
+#: src/session.c:1032
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:1005
+#: src/session.c:1037
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
 
-#: src/session.c:1078
+#: src/session.c:1112
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Ocurrió un error al leer el archivo de sesión guardado %s: %s\n"
 
-#: src/session.c:1113
+#: src/session.c:1147
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ocurrió un error al analizar el archivo de sesión guardado: %s\n"
 
-#: src/session.c:1162
+#: src/session.c:1196
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "El atributo <metacity_session> ha sido visto pero ya tenemos el ID de la "
 "sesión"
 
-#: src/session.c:1175
+#: src/session.c:1209
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atributo desconocido %s en el elemento <metacity_session>"
 
-#: src/session.c:1192
+#: src/session.c:1226
 msgid "nested <window> tag"
 msgstr "Tag <window> anidada"
 
-#: src/session.c:1242 src/session.c:1274
+#: src/session.c:1284 src/session.c:1316
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo desconocido %s en el elemento <window>"
 
-#: src/session.c:1334
+#: src/session.c:1386
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo desconocido %s en el elemento <geometry>"
 
-#: src/session.c:1354
+#: src/session.c:1406
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
-#: src/session.c:1727
+#: src/session.c:1779
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2282,17 +2281,17 @@ msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Archivo de registro %s abierto\n"
 
-#: src/window.c:430
+#: src/window.c:431
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "La aplicación configuro un _NET_WM_PID %ld erróneo\n"
 
-#: src/workspace.c:708 src/workspace.c:727
+#: src/workspace.c:52
 #, c-format
-msgid "Workspace %d"
-msgstr "Área de trabajo %d"
+msgid "Workspace %d\n"
+msgstr "Área de trabajo %d\n"
 
-#: src/xprops.c:53
+#: src/xprops.c:54
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
@@ -2301,10 +2300,15 @@ msgstr ""
 "La ventana 0x%lx tiene la propiedad %s que se esperaba tuviese el tipo %s "
 "formato %d y actualmente tiene un tipo %s formato %d n_items %d\n"
 
-#: src/xprops.c:281
+#: src/xprops.c:282
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
+
+#: src/xprops.c:367
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido para el elemento %d de la lista\n"
 
 #~ msgid "Left edge"
 #~ msgstr "Borde izquierdo"
