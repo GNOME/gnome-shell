@@ -2013,6 +2013,7 @@ switch_to_workspace (MetaDisplay *display,
     {
       /* Removes window from other spaces */
       meta_window_change_workspace (move_window, workspace);
+      meta_window_raise (move_window);
     }
 }
 
