@@ -6,15 +6,15 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity gnome-2-2\n"
-"POT-Creation-Date: 2003-06-26 10:43+0700\n"
-"PO-Revision-Date: 2003-06-26 00:21+0700\n"
+"Project-Id-Version: metacity HEAD\n"
+"Report-Msgid-Bugs-To: (null)\n"
+"POT-Creation-Date: 2003-06-26 22:28+0700\n"
+"PO-Revision-Date: 2003-06-26 22:41+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: (null)\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -121,13 +121,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Tidak ada perintah %d.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -314,16 +313,16 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Window \"%s\" tidak ada tanda-tanda kehidupan."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgstr "Perubahan yang telah dilakukan akan hilang bila Anda mematikan aplikasi ini secara paksa."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Paksa Berhenti"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -440,7 +439,8 @@ msgstr "Jeda dalam milidetik untuk pilihan naikan window secara otomatis"
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
+msgstr "Menentukan apakah aplikasi atau sistem dapat membuat bel yang dapat terdengar."
+"Hal ini berlawanan dengan bel visual yang tidak mengeluarkan suara pada saat membunyikan bel."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -448,7 +448,7 @@ msgstr "Nonaktifkan fitur yang diperlukan oleh aplikasi tua dan aplikasi jelek"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Gunakan Bel Visual"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -656,11 +656,11 @@ msgstr "Jalankan perintah tertentu"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Tampilkan menu panel"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Tampilkkan kotak dialog panel untuk menjalankan aplikasi"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -677,6 +677,20 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
+"Ada aplikasi yang melanggar aturan spesifikasi sehingga membuat manajer "
+"window berlaku aneh. Misalnya, pada kondisi normal seharusnya Metacity akan "
+"meletakkan semua kotak dialog pada posisi yang konsisten sesuai dengan "
+"window bapaknya. Hal ini dikerjakan dengan mengabaikan posisi yang "
+"ditentukan aplikasi tersebut. Namun pada beberapa aplikasi Java/Swing, ada "
+"yang memberi tanda khusus pada menu popup seolah-olah merupakan kotak "
+"dialog, alhasil Metacity akan menonaktifkan poletakan posisi agar menu dapat "
+"berjalan baik pada aplikasi seperti ini. Ada beberapa contoh kasus seperti "
+"ini. Pilihan ini membuat Metacity akan selalu bertingkah benar, sehingga "
+"akan menjanjikan antar muka yang lebih rapi saat menjalankan aplikasi yang "
+"semacam tadi. Namun hal ini harus diaktifkan secara default. Cara ini dibuat "
+"dengan cara misalnya menangani masalah  pada spesifikasi itu sendiri, jadi "
+"kadang kala ada bug yang apabila ditemukan saat pilihan ini tidak aktif, "
+"maka bug itu tidak dapat dibetulkan tanpa mengabaikan spesifikasi yang ada."
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
@@ -744,15 +758,15 @@ msgstr "Ganti ke workspace sbelah kanan"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Bel sistem dapat terdengar"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Ambil screenshot"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Ambil screenshot khusus window tertentu"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -763,7 +777,13 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr ""
+msgstr "Menentukan cara Metacity menyajikan indikasi visual saat bel sistem atau"
+"aplikasi sedang dibunyikan. Ada dua cara yang digunakan, yaitu \"fullscreen\""
+"yang akan menampilkan kilatan hitam putih di seluruh area layar, dan \"frame_flash\""
+"yang akan menampikan kilatan pada kotak judul window aplikasi yang membunyikan bel."
+"Jika tidak diketahui aplikasi mana yang membunyikan bel (biasanya karena ini"
+"merupakan bel sistem standar) maka kilatan akan ditampilkan pada kotak judul "
+"window yang sedang memiliki fokus saat ini."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -771,30 +791,26 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"Key /app/metacity/global_keybindings/run_command_N menentukan kombinasi "
+"Key /apps/metacity/global_keybindings/run_command_N menentukan kombinasi "
 "tombol untuk perintah ini. Dengan menekan kombinasi tombol tersebut maka "
 "perintah command_N akan dijalankan."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Key /app/metacity/global_keybindings/run_command_N menentukan kombinasi "
-"tombol untuk perintah ini. Dengan menekan kombinasi tombol tersebut maka "
-"perintah command_N akan dijalankan."
+"Key /apps/metacity/global_keybindings/run_command_screenshot menentukan kombinasi "
+"tombol untuk menjalankan perintah ini"
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Key /app/metacity/global_keybindings/run_command_N menentukan kombinasi "
-"tombol untuk perintah ini. Dengan menekan kombinasi tombol tersebut maka "
-"perintah command_N akan dijalankan."
+"Key /apps/metacity/global_keybindings/run_command_window_screenshot menentukan kombinasi "
+"tombol untuk menjalankan perintah ini."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1678,7 +1694,6 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1687,7 +1702,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk menutup window. Format penulisannya seperti \"&lt;"
+"Kombinasi tombol untuk menampilkan kotak dialog panel \"Jalankan Program\". Format penulisannya seperti \"&lt;"
 "Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
@@ -1695,7 +1710,6 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1704,7 +1718,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menutup window. Format penulisannya seperti \"&lt;"
+"Kombinasi tombol untuk menangkap screenshot pada window. Format penulisannya seperti \"&lt;"
 "Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
@@ -1712,7 +1726,6 @@ msgstr ""
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1721,7 +1734,7 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 9. Format "
+"Kombinasi tombol untuk menangkap screenshot. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1730,7 +1743,6 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1738,7 +1750,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengaktifkan menu window. Format penulisannya seperti "
+"Kombinasi tombol untuk mengaktifkan menu utama panel. Format penulisannya seperti "
 "\"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
@@ -1751,7 +1763,7 @@ msgstr "Nama workspace."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Perintah screenshot"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1785,7 +1797,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Perintah screenshot pada window"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1877,15 +1889,14 @@ msgstr ""
 "perintah ini tidak memiliki kombinasi tombol."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Pilihan ini menentukan efek samping klik ganda pada judul window. Pilihan "
-"yang sah adalah 'toggle_shaded' yang akan menggulung/membuka window, dan "
-"'toggle_maximized' yang akan memaksimalkan dan mengecilkan window."
+"yang sah adalah 'toggle_shade' yang akan menggulung/membuka window, dan "
+"'toggle_maximize' yang akan memaksimalkan dan mengecilkan window."
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
@@ -1909,6 +1920,10 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Nyalakan indikasi visual saat aplikasi atau sistem mengeluarkan "
+"'bell' atau 'beep'. Ini berguna bagi pengguna yang mengalami kurang pendengaran  "
+"atau pada penggunaan di tempat-tempat yang berisik atau apabila "
+"suara bell komputer dimatikan."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -1920,7 +1935,7 @@ msgstr "Gunakan jenis huruf sistem standar pada judul window"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Tipe Bel Visual"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
@@ -2767,7 +2782,7 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Ekspresi koordinat berisi integer '%s' yang tidak dapat dibaca"
 
 #: src/theme.c:1531
 #, c-format
@@ -2775,33 +2790,36 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Ekspresi koordinat berisi operator tak dikenal pada awal teks berikut: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Ekspresi koordinat kosong atau tidak dapat dimengerti"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Ekspresi koordinat menghasilkan pembagiuan dengan nol"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "Ekspresi koordinat menggunakan operator mod pada angka bilangan nyata"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgstr "Ekspresi koordinat menggunakan operator \"%s\" tanpa adanya operan"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Ekspresi koordinat menggunakan operand tanpa operator"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
+"Ekspresi koordinat diakhiri dengan operator, seharusnya diakhiri dengan "
+"operand"
 
 #: src/theme.c:1863
 #, c-format
@@ -2809,34 +2827,39 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Ekspresi koordinat memiliki operator \"%c\" diikuti operator \"%c\" tanpa "
+"adanya operand di antarany"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Ekspresi koordinat mengalami overflow pada buffernya, ini merupakan bug "
+"Metacity, namun sepertinya ekspresinya terlalu besar."
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Terdapat kurung tutup tanpa kurung buka pada ekspresi koordinat"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
+"Ada variabel atau konstanta \"%s\" tidak diketahui pada ekspresi koordinat"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Terdapat kurung buka tanpa kurung tutup pada ekspresi koordinat "
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Ekspresi koordinat sepertinya tidak memiliki operator atau operan"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Tema berisi ekspresi \"%s\" yang menghasilkan error: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2844,23 +2867,26 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> tidak "
+"disebutkan pada gaya frame ini"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> tidak ada"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Gagal membuka tema \"%s\": %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Tidak ada <%s> yang ditentukan untuk tema \"%s\""
 
 #: src/theme.c:4629
 #, c-format
@@ -2868,6 +2894,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Tidak ada gaya frame untuk tipe window \"%s\" pada tema \"%s\". Tambah dulu "
+"elemen <window type=\"%s\" style_set=\"whatever\"/>"
 
 #: src/theme.c:4651
 #, c-format
@@ -2875,81 +2903,83 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> harus "
+"disebutkan pada tema ini"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgstr "Konstanta buatan user harus dimulai dengan huruf besar: \"%s\" tidak"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Konstanta \"%s\" telah didefinisikan sebelumnya"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Pilih bagaimana cara fokus dapat dikenakan pada window"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Fokus window"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "Kli_k untuk memberi fokus"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Kelakuan fokus:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Setingan Fokus pada Window"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Tunjuk untuk memberi fokus"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Naikkan window saat kena fokus"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Gagal membuka log debug: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Gagal melakukan fdopen pada file log %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Log file yang dibuka %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Manajer window: "
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Bug pada manajer window: "
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Peringatan manajer window: "
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Eror manajer window: "
 
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Aplikasi telah membuat _NET_WM_PID %ld bohongan\n"
 
 #. first time through
 #: src/window.c:4506
@@ -2958,6 +2988,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Window %s menyetel SM_CLIENT_ID pada dirinya sendiri, padahal seharusnya "
+"disetel pada window WM_CLIENT_LEADER sesuai aturan ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2972,6 +3004,9 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Window %s menyetel hint MWM yang menandakan bahwa ia tidak dapat dirubah "
+"ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x %d "
+"yang tidak masuk di akal.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2982,17 +3017,23 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Window 0x%lx memiliki properti %s\n"
+"yang seharusnya memiliki tipe %s format %d.\n"
+"Sekarang dia memiliki tipe %s format %d n_items %d.\n"
+"Sepertinya ini adalah bug aplikasinya, bukan bug manajer window.\n"
+"Judul windownya adalah \"%s\" class=\"%s\" dan bernama=\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Properti %s pada window 0x%lx berisi karakter UTF-8 yang salah\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Properti %s pada window 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
