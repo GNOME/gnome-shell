@@ -1,3 +1,7 @@
+2002-04-17  Changwoo Ryu  <cwryu@debian.org>
+
+	* configure.in (ALL_LINGUAS): Added ko (Korean).
+
 2002-04-16  Akira TAGOH  <tagoh@gnome.gr.jp>
 
 	* configure.in (ALL_LINGUAS): add ja.po entry.
