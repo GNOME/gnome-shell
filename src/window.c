@@ -1944,12 +1944,17 @@ meta_window_configure_request (MetaWindow *window,
 
   meta_window_get_gravity_position (window, &x, &y);
 
-  if ((window->type == META_WINDOW_DESKTOP ||
-       window->type == META_WINDOW_DOCK ||
-       window->type == META_WINDOW_TOOLBAR ||
-       window->type == META_WINDOW_MENU) &&
-      (window->size_hints.flags & PPosition))
-    {
+  if (((window->type == META_WINDOW_DESKTOP ||
+        window->type == META_WINDOW_DOCK ||
+        window->type == META_WINDOW_TOOLBAR ||
+        window->type == META_WINDOW_MENU) &&
+       (window->size_hints.flags & PPosition)) ||
+      /* This is here exactly until some crap app annoys me
+       * by misusing it. ;-) Then I remove it and only honor
+       * USPosition at map time.
+       */
+      (window->size_hints.flags & USPosition))
+  {
       if (event->xconfigurerequest.value_mask & CWX)
         x = event->xconfigurerequest.x;
       
