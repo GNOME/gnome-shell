@@ -1,66 +1,72 @@
+# translation of metacity.HEAD.mk.po to
+# translation of metacity.HEAD.mk.po to
+# translation of metacity.HEAD.mk.po to Macedonian
 # translation of metacity.HEAD.po to Macedonian
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # Ivan Stojmirov <stojmir@linux.net.mk>, 2002
+# Marko Ivanoski <marko@programmer.net>, 2003
+# Vladislav Bidikov <bidikovi@mail.com.mk>, 2003
+# Ivan Dimitrov <ivan34mk@yahoo.com>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2002-12-15 23:18+0100\n"
-"Last-Translator: Ivan Stojmirov <stojmir@linux.net.mk>\n"
-"Language-Team: Macedonian <mk@li.org>\n"
+"Project-Id-Version: metacity.HEAD.mk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-13 20:53+0200\n"
+"PO-Revision-Date: 2003-06-15 15:16+0000\n"
+"Last-Translator: Marko Ivanoski <marko@programmer.net>\n"
+"Language-Team: Macedonian <lug@lists.linux.net.mk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0beta2\n"
+"X-Generator: KBabel 1.0.1\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "Употреба: %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "Metacity беше компајлиран без поддршка на verbose модот\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "Не може да го парсува \"%s\" како integer"
 
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "Дали не  ги разбираш трејлинг карактерите \"%s\" во стрингот \"%s\""
 
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "Неуспеа да парсира порака \"%s\" од процесот на дијалогот\n"
 
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Грешка во читањето од процесот на дијалогот: %s\n"
 
 #: src/delete.c:331
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Грешка при отварањето на metacity-дијалог да се праша за затварање на апликација: %s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr ""
+msgstr "Не успеа да земе hostname: %s\n"
 
-#: src/display.c:286
+#: src/display.c:280
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
+msgstr "Не успеа да отвори X Window System дисплејот '%s'\n"
 
 #: src/errors.c:231
 #, c-format
@@ -69,11 +75,14 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
+"Изгубена конекција со дисплејот '%s';\n"
+"најверојатно X server-от беше исклучен или уништен\n"
+"менаџерот на прозорци.\n"
 
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "Фатална IO грешка %d (%s) на приказ '%s'.\n"
 
 #: src/frames.c:998
 msgid "Close Window"
@@ -81,42 +90,44 @@ msgstr "Затвори Прозорец"
 
 #: src/frames.c:1001
 msgid "Window Menu"
-msgstr ""
+msgstr "Мени во прозорец"
 
 #: src/frames.c:1004
 msgid "Minimize Window"
-msgstr ""
+msgstr "Намали прозорец"
 
 #: src/frames.c:1007
 msgid "Maximize Window"
-msgstr ""
+msgstr "Зголеми прозорец"
 
 #: src/frames.c:1010
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "Одзголеми прозорец"
 
 #: src/keybindings.c:978
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
+msgstr "Некој друг програм веќе го користи тоа копче %s со изменувачи %x како биндинг\n"
 
 #: src/keybindings.c:2407
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "Грешка при отварањето на metacity-дијалог да печати грешка за команда: %s\n"
 
 #: src/keybindings.c:2438
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "Ниедна команда %d не е дефинирана.\n"
 
 #: src/main.c:64
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -127,64 +138,67 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Ова е слободен софтвер; види го изворниот код за услови.\n"
+"НЕМА гаранција; нема ни СТОКОВНОСТ или ФИТНЕС ЗА НЕКОЈА НАМЕНА.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Не може да најде тема! Биди сигурен %s постои и содржи вообичаени теми."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "Не успеа да се рестартира: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Минимизирај"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
-msgstr "Ма_ксимизирај"
+msgstr "Максимизирај"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Демаксимизирај"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr "_Завиткај"
+msgstr "Завиткај"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr "_Одвиткај"
+msgstr "Одвиткај"
 
 #: src/menu.c:57
 msgid "_Move"
-msgstr "П_омести"
+msgstr "Помести"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr "_Промени Големина"
+msgstr "Промени големина"
 
 #. separator
 #: src/menu.c:60
 msgid "_Close"
-msgstr "_Затвори"
+msgstr "Затвори"
 
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr "Стави на _Сите Работни простори"
+msgstr "Стави на Сите работни простори"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr "Само на _Овој Работен простор"
+msgstr "Само на Овој работен простор"
 
 #: src/menu.c:152 src/prefs.c:1814
 #, c-format
 msgid "Workspace %d"
-msgstr "Работно Место %d"
+msgstr "Работно место %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -193,17 +207,17 @@ msgstr "Работно Место %d"
 #: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Работно место %s%d"
 
 #: src/menu.c:345
 #, c-format
 msgid "Only on %s"
-msgstr ""
+msgstr "Само на %s"
 
 #: src/menu.c:347
 #, c-format
 msgid "Move to %s"
-msgstr ""
+msgstr "Премести во %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -221,7 +235,7 @@ msgstr "Shift"
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -230,7 +244,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -239,7 +253,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:123
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -248,7 +262,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Супер"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -257,7 +271,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Хипер"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -266,7 +280,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Мод2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -275,7 +289,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Мод3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -284,7 +298,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Мод4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -293,21 +307,20 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Мод5"
 
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Прозорецот \"%s\" не одговара."
 
 #: src/metacity-dialog.c:92
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "Принудување оваа апликација да излези ќе направи да ги изгубите неснимените документи."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "Принуди Излез"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -315,28 +328,32 @@ msgstr "Наслов"
 
 #: src/metacity-dialog.c:208
 msgid "Class"
-msgstr ""
+msgstr "Класа"
 
 #: src/metacity-dialog.c:232
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
+"Овие прозорци не поддржуваат \"сними моментални измени\" и ќе мора да бидат "
+"рестартирани рачно нареднит пат кога ќе се логираш."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"Имаше грешка при работата \"%s\":\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(Не е имплементирано) Навигацијата работи во услови на апликација, не прозорец"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -347,18 +364,24 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
+"Променлива со опис на фонтот опишува фонт за линијата со наслов на прозорецот. "
+"Големината од описот ќе биде користена само за линијата со наслов, фонт, големина "
+"опцијата е наместена на 0, како и да е. Истотака, оваа опција е оневозможена ако "
+"линијата со наслов користи фонт од работната површин е овозможена. По стандард, "
+"фонтот линијата со наслов е одподесен, правеќи Metacity да се врати на фонтот "
+"од работната површина дури ако тоа е оневозможено."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Дејство на линијата со наслов дупли-клик"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr ""
+msgstr "Активно мени во прозорец"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Уредување на копчиња на линијата со наслов"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -369,10 +392,15 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"Уредување на копчиња на линијата со наслов. вредноста треба да биде променлива, "
+" како \"мени:минимизирај,максимизирај,затвори\"; колоната го одвојува левиот ќош "
+"од прозорецот од десниот, и имињата на копчињата се со запирка одвоени. "
+"Дупли копчиња не се дозволени. Непознатите имиња на копчиња се игнорирани "
+"за да се додадат нови копчиња во идните metacity верзии без кршење на постарите верзии.."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Автоматски кревај го фокусираниот прозорец"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -381,40 +409,45 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
+"Кликнување на прозорец додека е стегнато модификационото копче "
+"ќе го премести прозорецот (лев клик), смени големина на прозорец (среден клик), "
+"или прикажи фо менито од прозорецот (десен клик). Модифаерот е изразен како "
+" \"&lt;Alt&gt;\" или \"&lt;Супер&gt;\" "
+"за пример."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
-msgstr ""
+msgstr "Затвори прозорец"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "Команди да се активираат како одговор на биндозите од копчината"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr ""
+msgstr "Моментална тема"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Прикажи во милисекунди за авто кревање опцијата"
 
 #: src/metacity.schemas.in.h:13
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
+msgstr "Одлучува дали апликацијата или системот може да генерира звуци кои ќе бидат користени заедно со други"
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Оневозможи  можности кои се барани од стари или скршени апликации"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Овозможи визуелно ѕвонче"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Сокриј ги сите прозорци и фокусирај го десктопот"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -422,12 +455,17 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
+"Ако е точно, и фокус модот е или \"слопи\"или\"глувче\" тогаш фокусираниот прозорец "
+"ќе биде автоматски кренат после одложување (одложувањето е специфицирано од "
+"авто_крени_одложи копчето)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
+"Ако точно, игнорирај ја линија со наслов_фонт опцијата, и користи го стандардниот "
+"апликациски фонт за насловите на прозорците."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -441,138 +479,141 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
+"Ако е точно, Metacity работи во услови на апликации отколку прозорци. "
+"Концептот е малку апстрактен, но генерално абликационо-базираното подесување "
+"е повеќе како Мас и помалку како Windows"
 
 #: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "намали го прозорецот под другите"
 
 #: src/metacity.schemas.in.h:21
 msgid "Maximize a window"
-msgstr ""
+msgstr "Максимизирај прозорец"
 
 #: src/metacity.schemas.in.h:22
 msgid "Maximize window horizontally"
-msgstr ""
+msgstr "Максимизирај прозорец хоризонтално"
 
 #: src/metacity.schemas.in.h:23
 msgid "Maximize window vertically"
-msgstr ""
+msgstr "Максимизирај прозорец вертикално"
 
 #: src/metacity.schemas.in.h:24
 msgid "Minimize a window"
-msgstr ""
+msgstr "Минимизирај прозорец"
 
 #: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "Специјални копчиња за изменет прозорец клик дејства"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move a window"
-msgstr ""
+msgstr "Премести прозорец"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
+msgstr "Премести назад меѓу панел и работната околина одма"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
+msgstr "Премести назад помеѓу панелите и работната околина со поп-ап"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
-msgstr ""
+msgstr "Премести назад меѓу прозорци веднаш"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
-msgstr ""
+msgstr "Премести помеѓу панели и работната околина веднаш"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
-msgstr ""
+msgstr "Премести меѓу панели и работната околина со поп-ап"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
-msgstr ""
+msgstr "Премести меѓу прозорци веднаш"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between windows with popup"
-msgstr ""
+msgstr "премести меѓу прозорци со поп-ап"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
+msgstr "Премести го фокусот назад меѓу прозорци користејќи поп-ап дисплеј"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "Премести прозорец за еден работен простор подолу"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Премести прозорец за една работна површина на лево"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Премести прозорец за една работна површина на десно"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "Премести работна површина за едно работно место на горе"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "Премести прозорец на работна површина 1"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "Премести прозорец на работна површина 10"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "Премести прозорец на работна површина 11"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "Премести прозорец на работна површина 12"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "Премести прозорец на работна површина 2"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "Премести прозорец на работна површина 3"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "Премести прозорец на работна површина 4"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "Премести прозорец на работна површина 5"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "Премести прозорец на работна површина 6"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "Премести прозорец на работна површина 7"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "Премести прозорец на работна површина 8"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "Премести прозорец на работна површина 9"
 
 #: src/metacity.schemas.in.h:51
 msgid "Name of workspace"
-msgstr ""
+msgstr "Име на работниот простор"
 
 #: src/metacity.schemas.in.h:52
 msgid "Number of workspaces"
-msgstr ""
+msgstr "Број на работни простори"
 
 #: src/metacity.schemas.in.h:53
 msgid ""
@@ -580,30 +621,33 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
+"Број на работни површини. Мора да е број поголем од нула, а постои максимум "
+"(со цел да се спречи случајно уништување на десктопот барајќи 34 "
+"милиони површини) "
 
 #: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
+msgstr "Крени опскјурд прозорец, инаку спушти"
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Крени прозорец над другите прозорци"
 
 #: src/metacity.schemas.in.h:56
 msgid "Resize a window"
-msgstr ""
+msgstr "Промени големина на прозорец"
 
 #: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
-msgstr ""
+msgstr "Изврши друга команда"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Покажи го менито на панелот"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Покажи го извршниот дијалог на панелот"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -620,82 +664,89 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
+"Некои апликации ги прекршуваат спецификациите што предизвикува "
+"неправилности во менаџерот на прозорци. На пример, идеално Metacity ги "
+"сместува сите дијалози во еден конзистентет простор со почитување на нивниот "
+"прозор-родител. за ова е потребно игнорирање на позициите специфицирани "
+"за прозорите. Меѓутоа некои верзии од Java/Swing своите менија ги декларираат "
+"како дијалози,па затоа Metacity мора да ги деактивира подесувањата на дијалози "
+"за да дозволи менијата да работат во некои Јава апликации.  "
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "Префрли на работен простор 1"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "Префрли на работен простор 10"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "Префрли на работен простор 11"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "Префрли на работен простор 12"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "Префрли на работен простор 2"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "Префрли на работен простор 3"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "Префрли на работен простор 4"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "Префрли на работен простор 5"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "Префрли на работен простор 6"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "Префрли на работен простор 7"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "Префрли на работен простор 8"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "Префрли на работен простор 9"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Префрли на работен простор над овој"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Префрли на работен простор под овој"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Префрли на работниот простор на лево"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Префрли на работен простор на десно"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Системското ѕвоно е Audible"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Земи слика на екран"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Земи слика на екран на прозорец"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -707,6 +758,10 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Објаснува како Metacity да го имплементира визуелното прикажување на системското "
+"ѕвонче или друг тип на ѕвонче. Моментално постојат 2 можности: fullscreen за целосно "
+"трепнување на екранот и frame_flash што предизвикува трепнување на насловот "
+"на апликацијата која го испратила сигналот."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -714,12 +769,18 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"Фајлот /apps/metacity/global_keybindings/run_command_N keys ги "
+"дефинира копчињата кои одговараат на соодветните команди. Притискањето "
+"на соодветното копче предизвикува соодветна акција."
 
 #: src/metacity.schemas.in.h:82
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
+"Фајлот /apps/metacity/global_keybindings/run_command_screenshot го "
+"означува тастерот кој предизвикува командата специфицирана од ова "
+"подесување да биде повикана."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -727,6 +788,9 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
+"Фајлот /apps/metacity/global_keybindings/run_command_window_screenshot го "
+"означува тастерот кој предизвикува командата специфицирана од ова "
+"подесување да биде повикана."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -737,6 +801,12 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки што ја стартуваат соодветната означена наредба во "
+"/apps/metacity/наредбите означени со кратенки, "
+"форматот изгледа како \"&It;Control&gt;a\" или \"&It;Shift&gt;&It;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&It;Ctl&gt;\" и \"&It;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш ќе нема кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -747,6 +817,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа над тековниот простор за работа. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -757,6 +832,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа под тековниот простор за работа. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:87
 msgid ""
@@ -767,6 +847,12 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа на десната страна од тековниот "
+"простор за работа. Форматот изгледа како \"&lt;Control&gt;a\" или "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Парсерот дозволува мали и големи "
+"букви и исто така кратенки како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". "
+"Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:88
 msgid ""
@@ -777,6 +863,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа на десната страна од тековниот простор за работа. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -786,6 +877,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 1."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:90
 msgid ""
@@ -795,6 +891,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 10."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:91
 msgid ""
@@ -804,6 +905,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 11."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:92
 msgid ""
@@ -813,6 +919,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 12."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:93
 msgid ""
@@ -822,6 +933,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 2."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:94
 msgid ""
@@ -831,6 +947,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 3."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:95
 msgid ""
@@ -840,6 +961,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 4."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:96
 msgid ""
@@ -849,6 +975,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 5."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:97
 msgid ""
@@ -858,6 +989,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 6."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:98
 msgid ""
@@ -867,6 +1003,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 7."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -876,6 +1017,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 8."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -885,6 +1031,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои водат до просторот за работа 9."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -894,6 +1045,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои се користат за активирање на менито на прозорецот."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -903,6 +1059,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои се користат за затворање на прозорецот."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -913,6 +1074,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за внесување \"mode mode\" и отпочнување на движење на прозорец користејќи ја тастатурата."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -923,6 +1089,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за внесување \"resize mode\" и отпочнување на "
+"промена на големината на прозорец користејќи ја тастатурата."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -933,6 +1105,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за криење на сите нормални прозорци и "
+"подесување на фокусот на позадината на десктопот."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -942,6 +1120,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за зголемување на прозорец "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -951,6 +1134,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за намалување на прозорец. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -961,6 +1149,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец еден простор за работа надоле. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -971,6 +1164,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец еден простор за работа налево. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -981,6 +1179,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец еден простор за работа надесно. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -990,6 +1193,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец еден простор за работа нагоре. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -999,6 +1207,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 1. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1008,6 +1221,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 10. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:114
 msgid ""
@@ -1017,6 +1235,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 11. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1026,6 +1249,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 12. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:116
 msgid ""
@@ -1035,6 +1263,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 2. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:117
 msgid ""
@@ -1044,6 +1277,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 3. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1053,6 +1291,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 4. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1062,6 +1305,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 5. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1071,6 +1319,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 6. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:121
 msgid ""
@@ -1080,6 +1333,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 7. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1089,6 +1347,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 8. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1098,6 +1361,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за поместување на прозорец на просторот за работа 9. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1108,6 +1376,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот наназад "
+"помеѓу панелите и десктопот, користејќи поп-ап прозорец."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1118,6 +1392,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот наназад "
+"помеѓу панелите и десктопот, не користејќи поп-ап прозорец."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:126
 msgid ""
@@ -1129,6 +1409,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот наназад помеѓу "
+"прозорци без поп-ап прозорец. Држејќи \"shift \" заедно со ова "
+"копче го насочува правецот нанапред поврторно."
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1140,6 +1427,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот наназад помеѓу "
+"прозорци користејќи поп-ап прозорец. Држејќи \"shift \" заедно со ова "
+"копче го насочува правецот нанапред поврторно. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1150,6 +1444,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот помеѓу "
+"панели и десктопот користејќи поп-ап прозорец. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1160,6 +1460,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот помеѓу "
+"панели и десктопот без поп-ап прозорец. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот дозволува мали и големи букви и исто така кратенки како "
+"\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг "
+"\"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
 #: src/metacity.schemas.in.h:130
 msgid ""
@@ -1171,6 +1477,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот помеѓу "
+"прозорци и поп-ап. "
+"(Традиционално &lt;Alt&gt;Escape) Држејќи го \"shift\" копчето додека го користиш "
+"binding ја менува насоката на движење. Форматот изгледа како \"&lt;"
+"Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. Парсерот е либеларен "
+"и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема биндинг на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:131
 msgid ""
@@ -1182,6 +1496,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот помеѓу "
+"прозорци и користејќи поп-ап. "
+"(Традиционално &lt;Alt&gt;Tab) Држејќи го \"shift\" копчето додека го користиш "
+"binding ја менува насоката на движење. Форматот изгледа како \"&lt;"
+"Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. Парсерот е либеларен "
+"и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:132
 msgid ""
@@ -1191,6 +1513,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за движење на фокусот помеѓу "
+"прозорци и користејќи поп-ап. "
+"(Традиционално &lt;Alt&gt;Tab) Држејќи го \"shift\" копчето додека го користиш "
+"binding ја менува насоката на движење. Форматот изгледа како \"&lt;"
+"Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. Парсерот е либеларен "
+"и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1200,6 +1530,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за максимизација. Форматот изгледа како \"&lt;"
+"Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. Парсерот е либеларен "
+"и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:134
 msgid ""
@@ -1209,6 +1544,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за додавање/одземање сенка. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:135
 msgid ""
@@ -1219,6 +1559,12 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за дали прозорецот ќе биде на сите работни простори "
+"или само на еден. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1228,6 +1574,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за отмаксимизирање на прозорец. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:137
 msgid ""
@@ -1238,6 +1589,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за отмаксимизирање на прозорец. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:138
 msgid ""
@@ -1248,6 +1604,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат програмот за превземање на слики да слика прозорец. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1258,6 +1619,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Копчињата-кратенки кои служат за активирање на панелот на алатката за превземање слики. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1267,26 +1633,33 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Копчињата-кратенки кои служат за покажување на панелот на главното мени. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:141
 msgid "The name of a workspace."
-msgstr ""
+msgstr "Името на работниот простор"
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Командата за слика на екранот"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "Темата одлучува за изгледот на границите, линијата со наслов, и.т.н."
 
 #: src/metacity.schemas.in.h:144
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
+"Времето се одложува пред кревање на прозорец ако авто_кревај опцијата "
+"е овозможена. Одложувањето е во илјадинки од секунда."
 
 #: src/metacity.schemas.in.h:145
 msgid ""
@@ -1296,10 +1669,15 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
+"Режимот за фокусирање на прозорци покажува колку прозорци се активни. Има три "
+"можни вредности; \"клик\" значи дека прозорецот мора да биде кликнат за да "
+"биде фокусиран , \"закос\" значи дека прозорецот е фокусиран кога глувчето ќе влезе во него, "
+"и \"глувче\" значи дека прозорецот ќе биде фокусиран кога глувчето ќе влезе во него, "
+"и излегува од фокус кога ќе го напушти прозорецот."
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Командата за слика на екранот"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1312,6 +1690,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"Копчињата кратенки се муваат во зависност од тоа дали прозорецот е над или под "
+"друг прозорец. Ако прозорецот е покриен од друг, го крева прозорецот на другиот. "
+"Ако прозорецот е целосно визибилен, го враќа зад другите. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција. "
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1321,6 +1706,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Оваа кратенка за копче го намалува прозорецот под други. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:149
 msgid ""
@@ -1330,6 +1720,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Оваа кратенка за копче го подигнува прозорецот над други. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1340,6 +1735,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Оваа кратенка за копче ја променува големината на прозорецот и ги пополнува хоризонталните места на екранот. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:151
 msgid ""
@@ -1350,6 +1750,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
+"Оваа кратенка за копче ја променува големината на прозорецот и ги пополнува вертикалните места на екранот. "
+"Форматот изгледа како \"&lt;Контрола&gt;a\"  или\"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Парсерот е либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;Ctl&gt;"
+"\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
+"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
 #: src/metacity.schemas.in.h:152
 msgid ""
@@ -1357,22 +1762,25 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
+"Оваа опција ги детерминира ефектите на дупло кликање на лентата со наслов. "
+"Моментални валидни опции се 'вклучи_сенка'. која ќе вклучи/исклучи сенка на "
+"прозорецот, и 'вклучи_максимизирање' која максимизира/минимизира прозорец"
 
 #: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Промени на цел екран"
 
 #: src/metacity.schemas.in.h:154
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Промени ја состојбата на максимизација"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Промени ја состојбата на сенка"
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle window on all workspaces"
-msgstr ""
+msgstr "Промени прозорец на сите работни простори"
 
 #: src/metacity.schemas.in.h:157
 msgid ""
@@ -1380,26 +1788,29 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Го вклучува визуелниот индикатор кога некоја апликација или системот ќе издаде "
+"'ѕвоно' или 'бип'; корисно за луѓето со оштетен слух за користење "
+"во бучна околина, или кога 'аудио ѕвоното' е исклучено."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
-msgstr ""
+msgstr "Демаксимизирај прозорец"
 
 #: src/metacity.schemas.in.h:159
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "Користи стандарсен систем на фонт во насловите на прозорците"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Визуелно ѕвоно тип"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
-msgstr ""
+msgstr "Фокус на прозорци "
 
 #: src/metacity.schemas.in.h:162
 msgid "Window title font"
-msgstr ""
+msgstr "Фонт на линијата со наслов"
 
 #: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
 #: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
@@ -1408,7 +1819,7 @@ msgstr ""
 #: src/prefs.c:727
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "GConf копче \"%s\" е наместено на невалиден тип \n"
 
 #: src/prefs.c:771
 #, c-format
@@ -1416,16 +1827,18 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
+"\"%s\" пронајдено во конфигурацијата на базата не е валидна вредност за "
+"спец. копчиња на глувче \n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf копче '%s' е наместено на невалидна вредност\n"
 
 #: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "Не може да парсува опис на фонт \"%s\" од GConf копчето %s\n"
 
 #: src/prefs.c:1107
 #, c-format
@@ -1433,22 +1846,26 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"%d ставено во GConf копчето %s не е разумен број на работни околини, "
+"моментален максимум е %d\n"
 
 #: src/prefs.c:1167
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Работни околини за скршени апликации е оневозможено. "
+"Некои апликации можеби нема да работат добро.\n"
 
 #: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%d ставено во GConf копче %s е надвор од дострел 0 до %d\n"
 
 #: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Грешка при поставката на број на работни простори %d: %s\n"
 
 #: src/prefs.c:1578
 #, c-format
@@ -1456,44 +1873,47 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"\"%s\" пронајдено при конфигурирањето на базата не е валидна вредност за keybinding "
+"\"%s\"\n"
 
 #: src/prefs.c:1895
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "Грешка при поставката на имиња на работните  простори %d до \"%s\": %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "Екран %d на приказ '%s' е невалиден\n"
 
-#: src/screen.c:423
+#: src/screen.c:405
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"Екран %d на приказ \"%s\" веќе има менџер на прозорци; пробај со --"
+"преклопи опција да го преклопиш моменталниот менаџер на прозорци.\n"
 
-#: src/screen.c:464
+#: src/screen.c:446
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Не можи да обезбеди менаџер на прозорци на екранот %d прикажи \"%s\"\n"
 
-#: src/screen.c:520
+#: src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Екран %d на приказ \"%s\" веќе има менаџер на прозорец\n"
 
-#: src/screen.c:690
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Не може да отпушти екран %d на приказ \"%s\"\n"
 
 #: src/session.c:274
 #, c-format
@@ -1501,69 +1921,71 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
+"Не успеа да оствари конекција со менаџерот на сесии, па позициите на "
+" прозорците нема да бидат снимени: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "Не може да креира директориум '%s': %s\n"
 
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "Не можи да отвори сесија на датотеката  '%s' за пишување: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "Грешка при пишувањето на сесионата датотека '%s': %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "Грешка при затворање на сесионата датотека '%s': %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Не успеа да ја прочита снимена сесиона датотека %s: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Не успеа да парсува снимена сесиона датотека: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session> атрибутот е виден но веќе го имаме ID-от на сесијата"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "Непознат атрибут %s на <metacity_session> елемент"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr ""
+msgstr "вгнездена <window> ознака"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "Непознат атрибут %s на <window> елемент."
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "Непознат атрибут %s на <maximized> елемент"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "Непознат атрибут %s на <geometry> елемент"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Непознат елемент %s"
 
 #: src/session.c:1921
 #, c-format
@@ -1571,51 +1993,53 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
+"Грешка при отварањето на metacity-дијалогот за да предупреди за апликации "
+"кои што не поддржуваат менаџирање на сесии : %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Линија %d карактер %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Атрибутот %s се повторува два пати на истиот <%s> елемент"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Атрибутот %s е невалиден во <%s> елемент во овој контекст"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Целиот број %ld мора да бите позитивен"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Целиот број %ld е преголем, максимумот изнесува %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Неможе да се парсира %s како децимален број"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Логичките вредности мора бидат \"true\" или \"false\" не \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Аголот мора да е меѓу 0.0 и 360.0, беше %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Алфа каналот мора да биде меѓу 0.0 (невидлив) и 1.0 (целосно видлив), беше %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1623,75 +2047,78 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Невалидна големина на насловиоте \"%s\" "
+"(мора да биди една од xx-мало,x-мало,мало,средно,"
+"големо,x-големо,xx-големо)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема %s атрибут на елементот <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема %s атрибут на <%s> елементот"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> името %s употребено по вторпат"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> родителот %s  не е дефиниран"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> геометрија %s не е дефинирана"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> морате да специфицирате геометрија или родител кој име геометрија"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "Непознат тип %s на <%s> елемент"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "Непознат каскаден стил %s на <%s> елемент"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "На прозорецот %s веќе е доделен сет од стилови"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Непозната функција %s за икона на мени"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Непозната состојба %s за икона за мени"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Темата веќе има икона за менито за функцијата %s состојбата %s "
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Нема <draw_ops> со името %s дефинирано"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1699,83 +2126,84 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Елементот <%s> не е дозволен под <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема име атрибутот на елементот <%s>"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема вредност атрибутот на елементот <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
+"Неможе да се специфицира истовремено ширина на копче/висина на копче и "
+"степен на сголемување за копчиња"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Растојанието %s е непознато"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Степен на приказ %s е непознат"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"горен\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"долен\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"лев\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"десен\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Границата %s е непозната"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"боја\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"x1\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"y1\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"x2\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"y2\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -1783,7 +2211,7 @@ msgstr ""
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"x\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -1791,176 +2219,176 @@ msgstr ""
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"y\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"ширина\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"висина\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"почетен_агол\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"опсег_агол\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"alpha\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"тип\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Не ја разбирам вредноста \"%s\" како тип на градиент"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"име на датотека\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не го разбирам типот на поплнување \"%s\" за <%s> елемент"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"состојба\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"сенка\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "Нема \"стрелка\" атрибут на елементот <%s>"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не ја разбирам состојбата \"%s\" за <%s> елемент"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не ја разбирам сенката \"%s\" за <%s> елемент"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Не го разбирам курсорот \"%s\" за <%s> елемент"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Ниеден <draw_ops> повикан \"%s\" е дефиниран"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Вклучува draw_ops \"%s\" тука ќе креира циркуларна референца"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"вредност\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"позиција\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Непозната позиција \"%s\" за дел од рамката"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Стилот на рамката веќе има дел во позицијата %s"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"функција\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"состојба\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Непозната функција \"%s\" за копче"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Непозната состојба \"%s\" за копче"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Стилот на рамката има копче за функцијата %s состојба %s"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"фокус\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"стил\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна вредност за атрибутот на фокусот"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна вредност за состојбата на атрибутот"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Стил наречен \"%s\" не е дефинирано"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "Нема \"смени големина\" атрибут на <%s> елемент"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" не е валидна вредност за атрибутот за менување на вредноста"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -1968,121 +2396,127 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"Не треба да има \"смени големина\" атрибут на <%s> "
+"елемент за максимизирано/засенето"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Стилот веќе беше специфициран за состојба %s промени големина %s фокус %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Стилот веќе беше специфициран за состојба %s фокус %s"
 
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да имаш две draw_ops за <piece> елемент (тема специфицирана за draw_ops "
+"и истотака за <draw_ops> елемент, или одредени два елементи)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да имаш две draw_ops за <button> елемент (тема специфицирана за draw_ops "
+"и истотака за <draw_ops> елемент, или одредени два елементи)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Не може да имаш две draw_ops за <menu_icon> елемент (тема специфицирана за draw_ops "
+"и истотака за <draw_ops> елемент, или одредени два елементи)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Најнадворешните елементи во темата мора да бидат <metacity_theme> не <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Елемент <%s> не е дозволено внатрешно име/автор/датум/опис на елементот"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Елемент <%s> не е дозволен во <constant> елемент"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Елемент <%s> не е дозволен во дистанца/граница/однос на аспект елемент"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Елемент <%s> не е дозволен во операцијата на елементот на цртање"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Елемент <%s> не е дозволен во <%s> елемент"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Нема draw_ops овозможени за овој дел од рамката"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Нема draw_ops овозможени за копче"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Нема draw_ops овозможена за икона од менито"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Забранет е текстот во елементот <%s>"
 
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> специфицирано два пати за оваа тема"
 
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> специфицирано два пати за оваа тема"
 
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> специфицирано два пати за оваа тема"
 
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> специфицирано два пати за оваа тема"
 
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> специфицирано два пати за оваа тема"
 
 #: src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Не успеа да ја прочита темата од датотеката %s: %s\n"
 
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Датотеката на темата %s не содржи корен <metacity_theme> елемент"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "горе"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "долу"
 
 #: src/theme.c:206
 msgid "left"
@@ -2095,25 +2529,25 @@ msgstr "десно"
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "геометријата на рамката не одредува \"%s\" димензија"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "геометријата на рамката не одредува димензија \"%s\" за граница \"%s\""
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Аспектот на односот на копчето %g не е разумен"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Геометријата на рамката не одредува големина за копчињата"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Градиентите треба да имаат најмаку две бои"
 
 #: src/theme.c:975
 #, c-format
@@ -2121,6 +2555,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK спецификациите на боите мора да бидат во загради, пр. gtk:fg[НОРМАЛНО] "
+"каде што НОРМАЛНО е состојбата; не може да разложува \"%s\""
 
 #: src/theme.c:989
 #, c-format
@@ -2128,71 +2564,72 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK спецификациите на боите мора да имаат блиску заграда,после состојбата, пр. gtk:fg[НОРМАЛНО] "
+"каде што НОРМАЛНО е состојбата; не може да разложува \"%s\""
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Не ја разбра состојбата \"%s\" во спецификациите на боите"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Не ја разбра компонентата на боја \"%s\" во спецификациите за боја"
 
 #: src/theme.c:1043
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
+msgstr "Blend форматот е \"blend/bg_color/fg_color/alpha\", \"%s\" не го собира форматот"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Не може да разложи alpha вредност \"%s\" во блендирани бои"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alpha вредност \"%s\" во блендираните бои не е помеѓу 0.0 и 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Засенет формат е \"shade/base_color/factor\", \"%s\" не го собира форматот"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Не може да го разложи факторот на засенување \"%s\" во засенетите бои"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Факторот на засенување \"%s\" во засенетите бои е негатив"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "Неможе да се разложи бојата \"%s\""
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Координираниот израз содржи карактери '%s' кои не се дозволени"
 
 #: src/theme.c:1450
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
+msgstr "Координираниот израз содржи лебдечко поинт броеви '%s' кои не може да бидат разложени"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Координираниот израз содржи цели броеви '%s' кои не може да бидат разложени"
 
 #: src/theme.c:1531
 #, c-format
@@ -2200,68 +2637,70 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Координираниот израз содржи непознат оператор на почетокот на овој текст: "
+"\"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Координираниот израз беше празен или погрешно разбран"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Координираниот израз даде резултати поделени со нула"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Координираниот израз пробува да користи оператор на мод на лебдечките поинт броеви"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Координираниот израз има оператор \"%s\" каде што беше очекуван операнд"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Координираниот израз имаше операнд каде што беше очекуван оператор"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Координираниот израз беше завршен со оператор наместо со операнд"
 
 #: src/theme.c:1863
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
+msgstr "Координираниот израз има оператор \"%c\" што следи оператор \"%c\" без операнд измеѓу"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Разложувачот на координираниот израз го преоптовари баферот, ова е бубачка на Metacity, "
+"но дали си сигурен дека ти треба голем израз како тој?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Координираниот израз имаше затворена заграда, но немаше отворена"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Координираниот израз имаше непозната променлија или константа \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Координираниот израз имаше отворена заграда, но немаше затворена"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Координираниот израз нема оператори или операнди"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Темата која содржи израз \"%s\" кој што резултираше со грешка: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2269,23 +2708,24 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> мора да биде специфицирано "
+"за овој стил на рамки"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Недостасува <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Неуспешно вчитување на темата \"%s\": %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Нема <%s> подесено за темата \"%s\""
 
 #: src/theme.c:4629
 #, c-format
@@ -2293,6 +2733,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Нема стил на рамката за овој тип на прозорец \"%s\" во темата \"%s\", додаде <window "
+"type=\"%s\" style_set=\"whatever\"/> елемент"
 
 #: src/theme.c:4651
 #, c-format
@@ -2300,89 +2742,92 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>  мора да биде специфицирана"
+"за оваа тема"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Корисничко дефинирана константа мора да започнува со прва голема буква, \"%s\" не"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Константата \"%s\" веќе беше дефинирана"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Одбери како да дава фокус на прозорец"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Фокус на прозорецот"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "Кликни да дадеш фокус"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Однесување на фокусот:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Параметри на фокусот на прозорци"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "Точка што дава фокус"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "Крени прозорец на фокус"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Не успеа да го отвори дневникот на дебагирање: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Не успеа да fdopen() дневник датотеката %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Отворив дневник датотека %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Менаџер на прозори"
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Бубачка во менаџерот на прозори"
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Предупредување од менаџерот на прозори:"
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Грешка од менаџерот на прозори:"
 
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Апликацијата намести лажно _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4509
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Прозорецот %s намести SM_CLIENT_ID на себе, наместо на WM_CLIENT_LEADER "
+"прозорецот специфициран во ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2391,12 +2836,15 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5071
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Прозорец %s намести MWM совет кој што покажува дека ја менува големината "
+"но мести мин. големина %d x %d и макс. големина %d x %d; "
+"што нема смисла.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2407,14 +2855,19 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Прозорец 0x%lx има својсто %s\n"
+"кое што се очекува да има тип %s формат %d\n"
+"и всушност има тип %s формат %d n_предмети %d.\n"
+"Ова е најверојатно бубачка , не е бубачка на менаџерот на прозорци.\n"
+"Насловот на лентата од прозорецот=\"%s\" класа=\"%s\" име=\"%s\"\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Својство %s на прозорец 0x%lx содржи невалиден UTF-8\n"
 
 #: src/xprops.c:479
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Својствата %s на прозорецот 0x%lx содржи невалиден UTF-8 за предмет %d во листата\n"
+
