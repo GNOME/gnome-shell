@@ -3280,7 +3280,7 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom_net_wm_state_skip_pager ||
           second == display->atom_net_wm_state_skip_pager)
         {
-          window->skip_pager =
+          window->wm_state_skip_pager = 
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_pager);
 
@@ -3290,7 +3290,7 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom_net_wm_state_skip_taskbar ||
           second == display->atom_net_wm_state_skip_taskbar)
         {
-          window->skip_taskbar =
+          window->wm_state_skip_taskbar =
             (action == _NET_WM_STATE_ADD) ||
             (action == _NET_WM_STATE_TOGGLE && !window->skip_taskbar);
 

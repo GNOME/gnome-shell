@@ -1,3 +1,9 @@
+2002-08-05  Ross Burton <ross@burtonini.com>
+
+	* src/window.c: (meta_window_client_message): Set
+	->wm_state_skip_pager (ditto for _taskbar) instead of ->skip_pager
+	so that these hints actually work. Fixes #89850.
+	
 2002-08-04  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (meta_frames_paint_to_drawable): init button 
