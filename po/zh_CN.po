@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
-"PO-Revision-Date: 2004-03-12 23:37+0800\n"
+"POT-Creation-Date: 2005-01-23 12:40+0100\n"
+"PO-Revision-Date: 2005-01-23 23:41+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -119,9 +119,8 @@ msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "命令 %d 尚未定义。\n"
+msgstr "终端命令尚未定义。\n"
 
 #: src/main.c:69
 msgid ""
@@ -676,7 +675,7 @@ msgstr "运行预定义的命令"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "运行终端"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1121,7 +1120,6 @@ msgstr ""
 "串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1573,7 +1571,6 @@ msgstr ""
 "此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1581,7 +1578,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于显示面板主菜单的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"调用终端的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
@@ -3006,23 +3003,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
 
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "选择如何为窗口设置焦点"
-
-#~ msgid "Window Focus"
-#~ msgstr "窗口焦点"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "单击时设置焦点(_K)"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "焦点行为："
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "窗口焦点首选项"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "指向时设置焦点(_P)"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "提升焦点窗口(_R)"
