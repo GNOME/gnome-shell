@@ -1415,7 +1415,7 @@ process_event (MetaKeyBinding       *bindings,
   i = 0;
   while (i < n_bindings)
     {
-      if (bindings[i].keysym == keysym && 
+      if (bindings[i].keycode == event->xkey.keycode && 
           ((event->xkey.state & ~(display->ignored_modifier_mask)) ==
            bindings[i].mask) &&
           event->type == KeyPress)

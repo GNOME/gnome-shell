@@ -1,3 +1,13 @@
+2003-02-04  Havoc Pennington  <hp@redhat.com>
+
+	* src/themes/Simple/ChangeLog: nuke subdir ChangeLog, 
+	there can be only one true ChangeLog.
+
+2003-01-30  Havoc Pennington  <hp@redhat.com>
+
+	* src/keybindings.c (process_event): match handlers to key events 
+	using key codes, not key syms
+
 Thu Jan 30 22:55:16 2003  Jonathan Blandford  <jrb@redhat.com>
 
 	* src/themes/Makefile.am (THEMES): add Simple to the list of
