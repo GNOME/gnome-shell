@@ -1144,7 +1144,7 @@ meta_window_constrain (MetaWindow          *window,
       center_x -= OUTER_WIDTH (current) / 2;
 
       constrain_move (window, &info, &current,
-                      center_x - current.x,
+                      center_x - current.x + info.fgeom.left_width,
                       info.xinerama->y_origin - current.y + info.fgeom.top_height,
                       new);
 
@@ -1169,7 +1169,7 @@ meta_window_constrain (MetaWindow          *window,
       center_x -= OUTER_WIDTH (current) / 2;
 
       constrain_move (window, &info, &current,
-                      center_x - current.x,
+                      center_x - current.x + info.fgeom.left_width,
                       info.work_area_xinerama.y - current.y + info.fgeom.top_height,
                       new);
 
