@@ -1,0 +1,295 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity 0.1\n"
+"POT-Creation-Date: 2001-12-16 16:22+0100\n"
+"PO-Revision-Date: 2001-12-16 16:27+0100\n"
+"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
+"Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:155
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Feil under åpning av X Window System skjerm «%s»\n"
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+
+#: src/errors.c:100
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr ""
+
+#: src/frames.c:231
+msgid "Left edge"
+msgstr "Venstre kant"
+
+#: src/frames.c:231
+msgid "Left window edge width"
+msgstr ""
+
+#: src/frames.c:232
+msgid "Right edge"
+msgstr "Høyre kant"
+
+#: src/frames.c:232
+msgid "Right window edge width"
+msgstr ""
+
+#: src/frames.c:233
+msgid "Bottom edge"
+msgstr "Nedre kant"
+
+#: src/frames.c:233
+msgid "Bottom window edge height"
+msgstr ""
+
+#: src/frames.c:235
+msgid "Title border"
+msgstr "Tittelkant"
+
+#: src/frames.c:235
+msgid "Border around title area"
+msgstr ""
+
+#: src/frames.c:236
+msgid "Text border"
+msgstr "Tekstkant"
+
+#: src/frames.c:236
+msgid "Border around window title text"
+msgstr ""
+
+#: src/frames.c:238
+msgid "Spacer padding"
+msgstr ""
+
+#: src/frames.c:238
+msgid "Padding on either side of spacer"
+msgstr ""
+
+#: src/frames.c:239
+msgid "Spacer width"
+msgstr ""
+
+#: src/frames.c:239
+msgid "Width of spacer"
+msgstr ""
+
+#: src/frames.c:240
+msgid "Spacer height"
+msgstr ""
+
+#: src/frames.c:240
+msgid "Height of spacer"
+msgstr ""
+
+#. same as right_width left_width by default
+#: src/frames.c:243
+msgid "Right inset"
+msgstr ""
+
+#: src/frames.c:243
+msgid "Distance of buttons from right edge of frame"
+msgstr ""
+
+#: src/frames.c:244
+msgid "Left inset"
+msgstr ""
+
+#: src/frames.c:244
+msgid "Distance of menu button from left edge of frame"
+msgstr ""
+
+#: src/frames.c:246
+msgid "Button width"
+msgstr "Knappbredde"
+
+#: src/frames.c:246
+msgid "Width of buttons"
+msgstr "Bredde på knapper"
+
+#: src/frames.c:247
+msgid "Button height"
+msgstr "Knapphøyde"
+
+#: src/frames.c:247
+msgid "Height of buttons"
+msgstr "Høyde på knapper"
+
+#: src/frames.c:249
+msgid "Button border"
+msgstr "Knappekant"
+
+#: src/frames.c:249
+msgid "Border around buttons"
+msgstr ""
+
+#: src/frames.c:250
+msgid "Inner button border"
+msgstr ""
+
+#: src/frames.c:250
+msgid "Border around the icon inside buttons"
+msgstr ""
+
+#: src/frames.c:891
+msgid "Close Window"
+msgstr "Lukk vindu"
+
+#: src/frames.c:894
+msgid "Window Menu"
+msgstr "Vindumeny"
+
+#: src/frames.c:897
+msgid "Minimize Window"
+msgstr "Minimer vindu"
+
+#: src/frames.c:900
+msgid "Maximize Window"
+msgstr "Maksimer vindu"
+
+#: src/frames.c:903
+msgid "Unmaximize Window"
+msgstr "Gjenopprett vindu"
+
+#: src/keybindings.c:215
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr "_Lukk"
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr "_Minimer"
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr "Ma_ksimer"
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr "_Gjenopprett"
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr "_Skyggelegg"
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr "Fjer_n skygge"
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr "_Flytt"
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr "End_re størrelse"
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr "Plasser på _alle arbeidsområder"
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr "Kun på de_tte arbeidsområdet"
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "Kun på arbeidsområde %s%d"
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "Flytt til arbeidsområde %s%d"
+
+#: src/screen.c:174
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: src/screen.c:189
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr ""
+
+#: src/session.c:760 src/session.c:767
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Kunne ikke opprette katalog «%s»: %s\n"
+
+#: src/session.c:777
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr ""
+
+#: src/session.c:909
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:914
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:988
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr ""
+
+#: src/session.c:1022
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr ""
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr ""
+
+#: src/session.c:1110 src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr ""
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr ""
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr ""
+
+#. someone is on crack
+#: src/window.c:2939
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+
+#. another cracksmoker
+#: src/window.c:2949
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
