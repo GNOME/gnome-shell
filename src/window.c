@@ -696,7 +696,25 @@ meta_window_apply_session_info (MetaWindow *window,
                   info->maximized, window->desc);
       
       if (window->has_maximize_func && info->maximized)
-        meta_window_maximize (window);
+	{
+	  meta_window_maximize (window);
+
+          if (info->saved_rect_set)
+            {
+              meta_topic (META_DEBUG_SM,
+                          "Restoring saved rect %d,%d %dx%d for window %s\n",
+                          info->saved_rect.x,
+                          info->saved_rect.y,
+                          info->saved_rect.width,
+                          info->saved_rect.height,
+                          window->desc);
+              
+              window->saved_rect.x = info->saved_rect.x;
+              window->saved_rect.y = info->saved_rect.y;
+              window->saved_rect.width = info->saved_rect.width;
+              window->saved_rect.height = info->saved_rect.height;
+            }
+	}
     }
   
   if (info->on_all_workspaces_set)

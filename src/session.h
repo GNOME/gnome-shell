@@ -50,6 +50,7 @@ struct _MetaWindowSessionInfo
    */
   int gravity;
   MetaRectangle rect;
+  MetaRectangle saved_rect;
   guint on_all_workspaces : 1;
   guint minimized : 1;
   guint maximized : 1;
@@ -59,6 +60,7 @@ struct _MetaWindowSessionInfo
   guint on_all_workspaces_set : 1;
   guint minimized_set : 1;
   guint maximized_set : 1;
+  guint saved_rect_set : 1;
 };
 
 /* If lookup_saved_state returns something, it should be used,

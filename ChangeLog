@@ -1,3 +1,8 @@
+2002-06-25 JeyaSudha <jeyasudha.duraipandy@wipro.com>
+ 
+ 	* src/session.c, src/window.c: Session saves the unmaximized
+	postion, size of a maximized window. #86059
+ 
 2002-09-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_update_prelit_control): don't filter

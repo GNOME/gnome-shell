@@ -986,7 +986,14 @@ save_state (void)
 
               /* Maximized */
               if (window->maximized)
-                fputs ("    <maximized/>\n", outfile);
+		{
+                  fprintf (outfile,
+                           "    <maximized saved_x=\"%d\" saved_y=\"%d\" saved_width=\"%d\" saved_height=\"%d\"/>\n", 
+                           window->saved_rect.x,
+                           window->saved_rect.y,
+                           window->saved_rect.width,
+                           window->saved_rect.height);
+		}
               
               /* Workspaces we're on */
               {
@@ -1347,8 +1354,70 @@ start_element_handler  (GMarkupParseContext *context,
     }
   else if (strcmp (element_name, "maximized") == 0)
     {
+      int i;
+
+      i = 0;
       pd->info->maximized = TRUE;
       pd->info->maximized_set = TRUE;
+      while (attribute_names[i])
+        {
+          const char *name;
+          const char *val;
+
+          name = attribute_names[i];
+          val = attribute_values[i];
+
+          if (strcmp (name, "saved_x") == 0)
+            {
+              if (*val)
+                {
+                  pd->info->saved_rect.x = atoi (val);
+                  pd->info->saved_rect_set = TRUE;
+                }
+            }
+          else if (strcmp (name, "saved_y") == 0)
+            {
+              if (*val)
+                {
+                  pd->info->saved_rect.y = atoi (val);
+                  pd->info->saved_rect_set = TRUE;
+                }
+            }
+          else if (strcmp (name, "saved_width") == 0)
+            {
+              if (*val)
+                {
+                  pd->info->saved_rect.width = atoi (val);
+                  pd->info->saved_rect_set = TRUE;
+                }
+            }
+          else if (strcmp (name, "saved_height") == 0)
+            {
+              if (*val)
+                {
+                  pd->info->saved_rect.height = atoi (val);
+                  pd->info->saved_rect_set = TRUE;
+                }
+            }
+          else
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+                           _("Unknown attribute %s on <maximized> element"),
+                           name);
+              return;
+            }
+
+          ++i;
+        }
+
+      if (pd->info->saved_rect_set)
+        meta_topic (META_DEBUG_SM, "Saved unmaximized size %d,%d %dx%d \n",
+                    pd->info->saved_rect.x,
+                    pd->info->saved_rect.y,
+                    pd->info->saved_rect.width,
+                    pd->info->saved_rect.height);
     }  
   else if (strcmp (element_name, "geometry") == 0)
     {
