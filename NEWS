@@ -1,3 +1,36 @@
+2.8.2
+===
+
+Many bugfixes and better support for the freedesktop.org EWMH spec.
+
+Thanks to Rob Adams, Anders Carlsson, Elijah Newren, Soeren Sandmann,
+Emil Soleyman-Zomalan, Michael Terry, and Jeff Waugh for fixes in this
+release.
+
+  - set titlebar_uses_system_font = false (it was ugly)
+  - make naming for "move a window"/"move the window"/"move window"
+    more consistent (fixes #142235)
+  - Add trailing quotes to keybinding explanation text.
+  - support for EWMH update counter spec & add compensation events
+    when events are ignored. (fixes #143333 and #109362)
+  - Fix focus bugs: remove race condition on window close/minimize
+    (#131582), make focus choice consistent for each focus mode
+    (#135810), choose correct focus window when "un-showing the
+    desktop (#144900), make sure correct window is focused when using
+    the workspace switcher (#120100).
+  - Use meta_topic instead of meta_warning when failing to connect to
+    a session manager; reduces metacity verbosity. (fixes #136218)
+  - Make meta_window_delete take a timestamp, and be sure to pass it
+    one.
+  - Add support for EWMH _NET_WM_USER_TIME spec.  This enables part of
+    preventing focus stealing.  (bug #118372) Also fix bug with
+    windows not being focused on unminimizing caused by original
+    patch.  (also bug #118372)
+  - Fix some support for EWMH hints, and fix USER_TIME support to
+    include the DEMANDS_ATTENTION hint.  Also includes some code for
+    implementing _NET_RESTACK_WINDOW and _NET_MOVERESIZE_WINDOW, but
+    this is disabled pending feature thaw.
+
 2.8.1
 ===
 

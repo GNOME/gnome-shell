@@ -1,3 +1,9 @@
+2004-08-03  Elijah Newren  <newren@math.utah.edu>
+
+	Released 2.8.2
+
+	* NEWS, README: update
+
 2004-08-02  Elijah Newren  <newren@math.utah.edu>
 
 	Fix some bugs (reported in #120100) regarding the focus window
