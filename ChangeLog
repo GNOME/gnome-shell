@@ -1,5 +1,16 @@
 2002-01-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (update_net_wm_state): clean up using
+	meta_prop_get_atom_list
+	(update_mwm_hints): clean up using meta_prop_get_motif_hints
+
+	* src/Makefile.am (metacity_SOURCES): add xprops.[hc]
+
+	* src/xprops.c: new file with convenience functions for X
+	properties
+
+2002-01-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/workspace.c (meta_workspace_activate): focus top window when
 	switching to a new workspace
 

@@ -47,7 +47,9 @@ metacity_SOURCES= 				\
 	window.c				\
 	window.h				\
 	workspace.c				\
-	workspace.h
+	workspace.h				\
+	xprops.c				\
+	xprops.h
 
 bin_PROGRAMS=metacity
 

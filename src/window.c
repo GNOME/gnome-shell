@@ -32,6 +32,7 @@
 #include "session.h"
 #include "effects.h"
 #include "prefs.h"
+#include "xprops.h"
 
 #include <X11/Xatom.h>
 
@@ -59,8 +60,8 @@ static int      update_size_hints         (MetaWindow     *window);
 static int      update_title              (MetaWindow     *window);
 static int      update_protocols          (MetaWindow     *window);
 static int      update_wm_hints           (MetaWindow     *window);
-static int      update_net_wm_state       (MetaWindow     *window);
-static int      update_mwm_hints          (MetaWindow     *window);
+static void     update_net_wm_state       (MetaWindow     *window);
+static void     update_mwm_hints          (MetaWindow     *window);
 static int      update_wm_class           (MetaWindow     *window);
 static int      update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
@@ -3248,116 +3249,52 @@ update_wm_hints (MetaWindow *window)
   return meta_error_trap_pop (window->display);
 }
 
-static int
+static void
 update_net_wm_state (MetaWindow *window)
 {
   /* We know this is only on initial window creation,
    * clients don't change the property.
    */
-  Atom type;
-  int format;
-  gulong n_atoms;
-  gulong bytes_after;
+
+  int n_atoms;
   Atom *atoms;
-  int result;
-  int i;
 
   window->shaded = FALSE;
   window->maximized = FALSE;
   window->wm_state_modal = FALSE;
-  
-  meta_error_trap_push (window->display);
-  XGetWindowProperty (window->display->xdisplay, window->xwindow,
-		      window->display->atom_net_wm_state,
-                      0, G_MAXLONG,
-		      False, XA_ATOM, &type, &format, &n_atoms,
-		      &bytes_after, (guchar **)&atoms);  
 
-  result = meta_error_trap_pop (window->display);
-  if (result != Success)
+  if (meta_prop_get_atom_list (window->display, window->xwindow,
+                               window->display->atom_net_wm_state,
+                               &atoms, &n_atoms))
     {
-      recalc_window_type (window);
-      return result;
-    }
-    
-  if (type != XA_ATOM)
-    {
-      recalc_window_type (window);
-      return -1; /* whatever */
-    }
-
-  i = 0;
-  while (i < n_atoms)
-    {
-      if (atoms[i] == window->display->atom_net_wm_state_shaded)
-        window->shaded = TRUE;
-      else if (atoms[i] == window->display->atom_net_wm_state_maximized_horz)
-        window->maximized = TRUE;
-      else if (atoms[i] == window->display->atom_net_wm_state_maximized_vert)
-        window->maximized = TRUE;
-      else if (atoms[i] == window->display->atom_net_wm_state_modal)
-        window->wm_state_modal = TRUE;
+      int i;
       
-      ++i;
+      i = 0;
+      while (i < n_atoms)
+        {
+          if (atoms[i] == window->display->atom_net_wm_state_shaded)
+            window->shaded = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_maximized_horz)
+            window->maximized = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_maximized_vert)
+            window->maximized = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_modal)
+            window->wm_state_modal = TRUE;
+      
+          ++i;
+        }
+  
+      XFree (atoms);
     }
   
-  XFree (atoms);
-
   recalc_window_type (window);
-  
-  return Success;
 }
 
 
-/* I don't know of any docs anywhere on what the
- * hell most of this means. Copied from Lesstif by
- * way of GTK
- */
-typedef struct {
-    unsigned long flags;
-    unsigned long functions;
-    unsigned long decorations;
-    long input_mode;
-    unsigned long status;
-} MotifWmHints, MwmHints;
-
-#define MWM_HINTS_FUNCTIONS     (1L << 0)
-#define MWM_HINTS_DECORATIONS   (1L << 1)
-#define MWM_HINTS_INPUT_MODE    (1L << 2)
-#define MWM_HINTS_STATUS        (1L << 3)
-
-#define MWM_FUNC_ALL            (1L << 0)
-#define MWM_FUNC_RESIZE         (1L << 1)
-#define MWM_FUNC_MOVE           (1L << 2)
-#define MWM_FUNC_MINIMIZE       (1L << 3)
-#define MWM_FUNC_MAXIMIZE       (1L << 4)
-#define MWM_FUNC_CLOSE          (1L << 5)
-
-#define MWM_DECOR_ALL           (1L << 0)
-#define MWM_DECOR_BORDER        (1L << 1)
-#define MWM_DECOR_RESIZEH       (1L << 2)
-#define MWM_DECOR_TITLE         (1L << 3)
-#define MWM_DECOR_MENU          (1L << 4)
-#define MWM_DECOR_MINIMIZE      (1L << 5)
-#define MWM_DECOR_MAXIMIZE      (1L << 6)
-
-#define MWM_INPUT_MODELESS 0
-#define MWM_INPUT_PRIMARY_APPLICATION_MODAL 1
-#define MWM_INPUT_SYSTEM_MODAL 2
-#define MWM_INPUT_FULL_APPLICATION_MODAL 3
-#define MWM_INPUT_APPLICATION_MODAL MWM_INPUT_PRIMARY_APPLICATION_MODAL
-
-#define MWM_TEAROFF_WINDOW	(1L<<0)
-
-static int
+static void
 update_mwm_hints (MetaWindow *window)
 {
   MotifWmHints *hints;
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  int result;
 
   window->mwm_decorated = TRUE;
   window->mwm_has_close_func = TRUE;
@@ -3365,25 +3302,16 @@ update_mwm_hints (MetaWindow *window)
   window->mwm_has_maximize_func = TRUE;
   window->mwm_has_move_func = TRUE;
   window->mwm_has_resize_func = TRUE;
-  
-  meta_error_trap_push (window->display);
-  XGetWindowProperty (window->display->xdisplay, window->xwindow,
-		      window->display->atom_motif_wm_hints,
-                      0, sizeof (MotifWmHints)/sizeof (long),
-		      False, AnyPropertyType, &type, &format, &nitems,
-		      &bytes_after, (guchar **)&hints);
 
-  result = meta_error_trap_pop (window->display);
-
-  if (result != Success ||
-      type == None)
+  if (!meta_prop_get_motif_hints (window->display, window->xwindow,
+                                  window->display->atom_motif_wm_hints,
+                                  &hints))
     {
       meta_verbose ("Window %s has no MWM hints\n", window->desc);
-      /* may be Success, unused anyhow */
-      return result;
+      return;
     }
   
-  /* We support MWM hints deemed non-stupid */
+  /* We support those MWM hints deemed non-stupid */
 
   meta_verbose ("Window %s has MWM hints\n",
                 window->desc);
@@ -3467,52 +3395,42 @@ update_mwm_hints (MetaWindow *window)
   XFree (hints);
 
   recalc_window_features (window);
-  
-  return Success;
 }
 
 static gboolean
 meta_window_get_icon_geometry (MetaWindow    *window,
                                MetaRectangle *rect)
 {
-  Atom type;
-  int format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *geometry;
-  int result;
-  
-  meta_error_trap_push (window->display);
-  type = None;
-  XGetWindowProperty (window->display->xdisplay,
-		      window->xwindow,
-		      window->display->atom_net_wm_icon_geometry,
-		      0, G_MAXLONG,
-		      False, XA_CARDINAL, &type, &format, &nitems,
-		      &bytes_after, ((guchar **)&geometry));
-  
-  result = meta_error_trap_pop (window->display);
-  
-  if (result != Success || type != XA_CARDINAL)
-    return FALSE;
+  gulong *geometry = NULL;
+  int nitems;
 
-  if (nitems != 4)
+  if (meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom_net_wm_icon_geometry,
+                                   &geometry, &nitems))
     {
+      if (nitems != 4)
+        {
+          meta_verbose ("_NET_WM_ICON_GEOMETRY on %s has %d values instead of 4\n",
+                        window->desc, nitems);
+          XFree (geometry);
+          return FALSE;
+        }
+  
+      if (rect)
+        {
+          rect->x = geometry[0];
+          rect->y = geometry[1];
+          rect->width = geometry[2];
+          rect->height = geometry[3];
+        }
+
       XFree (geometry);
-      return FALSE;
-    }
-  
-  if (rect)
-    {
-      rect->x = geometry[0];
-      rect->y = geometry[1];
-      rect->width = geometry[2];
-      rect->height = geometry[3];
+
+      return TRUE;
     }
 
-  XFree (geometry);
-
-  return TRUE;
+  return FALSE;
 }
 
 static int
