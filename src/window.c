@@ -5902,6 +5902,12 @@ meta_window_show_menu (MetaWindow *window,
       (window->type == META_WINDOW_DOCK) ||
       (window->type == META_WINDOW_SPLASHSCREEN))
     insensitive |= META_MENU_OP_ABOVE | META_MENU_OP_UNABOVE;
+
+  /* If all operations are disabled, just quit without showing the menu.
+   * This is the case, for example, with META_WINDOW_DESKTOP windows.
+   */
+  if ((ops & ~insensitive) == 0)
+    return;
   
   menu =
     meta_ui_window_menu_new (window->screen->ui,

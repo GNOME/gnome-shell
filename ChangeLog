@@ -1,5 +1,10 @@
 2004-12-24  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c (meta_window_show_menu): Don't show menu if all
+	options are invalid (fixes #148915)
+
+2004-12-24  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (window_takes_focus_on_map): Fix error in
 	distinguishing < vs. <= introduced by the patch in #154598,
 	restructure code so that verbose log matches code better in order
