@@ -26,6 +26,7 @@
 #include "menu.h"
 #include "fixedtip.h"
 #include "theme.h"
+#include "prefs.h"
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
@@ -68,6 +69,7 @@ static void meta_frames_ensure_layout (MetaFrames      *frames,
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
                                                Window      xwindow);
 
+static void meta_frames_font_changed (MetaFrames *frames);
 
 static GdkRectangle*    control_rect (MetaFrameControl   control,
                                       MetaFrameGeometry *fgeom);
@@ -155,6 +157,16 @@ unsigned_long_hash (gconstpointer v)
 }
 
 static void
+font_changed_callback (MetaPreference pref,
+		       void          *data)
+{
+  if (pref == META_PREF_TITLEBAR_FONT)
+    {
+      meta_frames_font_changed (META_FRAMES (data));
+    }
+}
+
+static void
 meta_frames_init (MetaFrames *frames)
 {
   GTK_WINDOW (frames)->type = GTK_WINDOW_POPUP;
@@ -168,6 +180,8 @@ meta_frames_init (MetaFrames *frames)
   frames->expose_delay_count = 0;
 
   gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
+
+  meta_prefs_add_listener (font_changed_callback, frames);
 }
 
 static void
@@ -187,6 +201,8 @@ meta_frames_destroy (GtkObject *object)
   MetaFrames *frames;
   
   frames = META_FRAMES (object);
+
+  meta_prefs_remove_listener (font_changed_callback, frames);
 
   clear_tip (frames);
   
@@ -258,13 +274,8 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
 }
 
 static void
-meta_frames_style_set  (GtkWidget *widget,
-                        GtkStyle  *prev_style)
+meta_frames_font_changed (MetaFrames *frames)
 {
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
   if (g_hash_table_size (frames->text_heights) > 0)
     {
       g_hash_table_destroy (frames->text_heights);
@@ -274,6 +285,18 @@ meta_frames_style_set  (GtkWidget *widget,
   /* Queue a draw/resize on all frames */
   g_hash_table_foreach (frames->frames,
                         queue_recalc_func, frames);
+
+}
+
+static void
+meta_frames_style_set  (GtkWidget *widget,
+                        GtkStyle  *prev_style)
+{
+  MetaFrames *frames;
+
+  frames = META_FRAMES (widget);
+
+  meta_frames_font_changed (frames);
 
   GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 }
@@ -326,7 +349,8 @@ meta_frames_ensure_layout (MetaFrames  *frames,
       
       frame->layout = gtk_widget_create_pango_layout (widget, frame->title);
       
-      font_desc = meta_gtk_widget_get_font_desc (widget, scale);
+      font_desc = meta_gtk_widget_get_font_desc (widget, scale,
+						 meta_prefs_get_titlebar_font ());
 
       size = pango_font_description_get_size (font_desc);
       
@@ -346,25 +370,9 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                                 &size,
                                 GINT_TO_POINTER (frame->text_height));
         }
-
-      if (pango_font_description_get_size (font_desc) !=
-          pango_font_description_get_size (widget->style->font_desc))
-        {
-          PangoAttrList *attrs;
-          PangoAttribute *attr;
-          
-          attrs = pango_attr_list_new ();
-          
-          attr = pango_attr_size_new (pango_font_description_get_size (font_desc));
-          attr->start_index = 0;
-          attr->end_index = G_MAXINT;
-
-          pango_attr_list_insert (attrs, attr);
-
-          pango_layout_set_attributes (frame->layout, attrs);
-
-          pango_attr_list_unref (attrs);
-        }
+      
+      pango_layout_set_font_description (frame->layout, 
+					 font_desc);
       
       pango_font_description_free (font_desc);
 

@@ -143,7 +143,7 @@ ensure_info (MetaPreview *preview)
       preview->layout = gtk_widget_create_pango_layout (widget,
                                                         preview->title);
       
-      font_desc = meta_gtk_widget_get_font_desc (widget, scale);
+      font_desc = meta_gtk_widget_get_font_desc (widget, scale, NULL);
       
       preview->text_height =
         meta_pango_font_desc_get_text_height (font_desc,

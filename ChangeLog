@@ -1,3 +1,8 @@
+2002-05-23  Jayaraj Rajappan <jayaraj.rajappan@wipro.com>
+
+	* src/display.c (event_callback): fix for bugzilla bug #72314,
+	filter out LeaveNotify caused by grabs when in mouse focus mode.
+
 2002-05-23  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity.schemas: clean up the font preference

@@ -33,9 +33,8 @@
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
-#define KEY_USE_DESKTOP_FONT  "/apps/metacity/general/titlebar_uses_desktop_font"
+#define KEY_USE_SYSTEM_FONT  "/apps/metacity/general/titlebar_uses_system_font"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
-#define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 #define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
@@ -47,9 +46,8 @@ static GConfClient *default_client = NULL;
 static GList *listeners = NULL;
 static GList *changes = NULL;
 static guint changed_idle;
-static gboolean use_desktop_font = TRUE;
+static gboolean use_system_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
-static int titlebar_font_size = 0;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
@@ -58,9 +56,8 @@ static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
 
-static gboolean update_use_desktop_font   (gboolean    value);
+static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
-static gboolean update_titlebar_font_size (int         value);
 static gboolean update_focus_mode         (const char *value);
 static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
@@ -259,15 +256,10 @@ meta_prefs_init (void)
    * just lazy. But they keys ought to be set, anyhow.
    */
   
-  bool_val = gconf_client_get_bool (default_client, KEY_USE_DESKTOP_FONT,
+  bool_val = gconf_client_get_bool (default_client, KEY_USE_SYSTEM_FONT,
                                     &err);
   cleanup_error (&err);
-  update_use_desktop_font (bool_val);
-  
-  int_val = gconf_client_get_int (default_client, KEY_TITLEBAR_FONT_SIZE,
-                                  &err);
-  cleanup_error (&err);
-  update_titlebar_font_size (int_val);
+  update_use_system_font (bool_val);  
   
   str_val = gconf_client_get_string (default_client, KEY_TITLEBAR_FONT,
                                      &err);
@@ -382,30 +374,14 @@ change_notify (GConfClient    *client,
       if (update_titlebar_font (str))
         queue_changed (META_PREF_TITLEBAR_FONT);
     }
-  else if (strcmp (key, KEY_TITLEBAR_FONT_SIZE) == 0)
-    {
-      int d;
-
-      if (value && value->type != GCONF_VALUE_INT)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_TITLEBAR_FONT_SIZE);
-          goto out;
-        }        
-      
-      d = value ? gconf_value_get_int (value) : 0;
-
-      if (update_titlebar_font_size (d))
-        queue_changed (META_PREF_TITLEBAR_FONT_SIZE);
-    }
-  else if (strcmp (key, KEY_USE_DESKTOP_FONT) == 0)
+  else if (strcmp (key, KEY_USE_SYSTEM_FONT) == 0)
     {
       gboolean b;
 
       if (value && value->type != GCONF_VALUE_BOOL)
         {
           meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_USE_DESKTOP_FONT);
+                        KEY_USE_SYSTEM_FONT);
           goto out;
         }
 
@@ -415,7 +391,7 @@ change_notify (GConfClient    *client,
        * get_titlebar_font returns NULL, so that's what we queue
        * the change on
        */
-      if (update_use_desktop_font (b))
+      if (update_use_system_font (b))
         queue_changed (META_PREF_TITLEBAR_FONT);
     }
   else if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
@@ -606,11 +582,11 @@ meta_prefs_get_theme (void)
 }
 
 static gboolean
-update_use_desktop_font (gboolean value)
+update_use_system_font (gboolean value)
 {
-  gboolean old = use_desktop_font;
+  gboolean old = use_system_font;
 
-  use_desktop_font = value;
+  use_system_font = value;
 
   return old != value;
 }
@@ -650,35 +626,11 @@ update_titlebar_font (const char *value)
 const PangoFontDescription*
 meta_prefs_get_titlebar_font (void)
 {
-  if (use_desktop_font)
+  if (use_system_font)
     return NULL;
   else
     return titlebar_font;
 }
-
-static gboolean
-update_titlebar_font_size (int value)
-{
-  int old = titlebar_font_size;
-
-  if (value < 0)
-    {
-      meta_warning (_("%d stored in GConf key %s is not a valid font size\n"),
-                    value, KEY_TITLEBAR_FONT_SIZE);
-      value = 0;
-    }
-  
-  titlebar_font_size = value;
-
-  return old != titlebar_font_size;
-}
-
-int
-meta_prefs_get_titlebar_font_size (void)
-{
-  return titlebar_font_size;
-}
-
 
 #define MAX_REASONABLE_WORKSPACES 32
 
@@ -794,9 +746,6 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_TITLEBAR_FONT:
       return "TITLEBAR_FONT";
-
-    case META_PREF_TITLEBAR_FONT_SIZE:
-      return "TITLEBAR_FONT_SIZE";
 
     case META_PREF_NUM_WORKSPACES:
       return "NUM_WORKSPACES";

@@ -4671,13 +4671,17 @@ meta_theme_lookup_float_constant (MetaTheme   *theme,
 
 PangoFontDescription*
 meta_gtk_widget_get_font_desc (GtkWidget *widget,
-                               double     scale)
+                               double     scale,
+			       const PangoFontDescription *override)
 {
   PangoFontDescription *font_desc;
   
   g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), 0);
 
   font_desc = pango_font_description_copy (widget->style->font_desc);
+
+  if (override)
+    pango_font_description_merge (font_desc, override, TRUE);
 
   pango_font_description_set_size (font_desc,
                                    MAX (pango_font_description_get_size (font_desc) * scale, 1));
