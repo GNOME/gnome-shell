@@ -487,17 +487,24 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   /* FIXME this isn't using any sane layout, just assuming
    * the spaces are in a big row
    */
-  int i;
+  int i, num_workspaces;
   
   i = meta_workspace_index (workspace);
+
+  /* Wrap from the last workspace to the first one, and vice-versa */
+  num_workspaces = g_list_length (workspace->screen->display->workspaces);
 
   switch (direction)
     {
     case META_MOTION_LEFT:
       --i;
+      if (i == -1)
+        i = num_workspaces - 1;
       break;
     case META_MOTION_RIGHT:
       ++i;
+      if (i == num_workspaces)
+        i = 0;
       break;
     case META_MOTION_UP:
     case META_MOTION_DOWN:

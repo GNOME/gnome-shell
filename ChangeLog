@@ -1,3 +1,10 @@
+2002-05-05  Bastien Nocera  <hadess@hadess.net>
+
+	* src/workspace.c: (meta_workspace_get_neighbor):
+	Wrap-around workspaces (ie. when on the last workspace,
+	"switch_to_workspace_right" goes back to the
+	first one)
+
 2002-05-05  Anders Carlsson  <andersca@gnu.org>
 
 	* src/metacity.schemas: Fix a spelling error and change 
