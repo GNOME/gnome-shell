@@ -1,3 +1,20 @@
+2002-05-30  Havoc Pennington  <hp@redhat.com>
+
+	* src/main.c (main): verbose-log on startup whether we were
+	compiled with various extensions
+
+	* src/display.c (meta_display_queue_retheme_all_windows): reapply
+	shape mask when changing themes, sucks to do it here though, makes
+	theme changing slower. Needs fixing.
+
+	* src/theme-parser.c (parse_toplevel_element): parse rounded
+	corner options to frame_geometry
+
+	* src/frames.c (meta_frames_apply_shapes): apply rounded corners
+	if requested by the theme
+
+	* configure.in (HAVE_SHAPE): check for shape extension
+
 2002-05-30  Stephen Browne <stephen.browne@sun.com>
 
 	* src/tools/metacity-properties.c:

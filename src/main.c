@@ -225,6 +225,17 @@ main (int argc, char **argv)
   
   g_type_init ();
 
+#ifdef HAVE_SHAPE
+  meta_verbose ("Compiled with shape extension\n");
+#else
+  meta_verbose ("Compiled without shape extension\n");
+#endif
+#ifdef HAVE_XINERAMA
+  meta_verbose ("Compiled with Xinerama extension\n");
+#else
+  meta_verbose ("Compiled without Xinerama extension\n");
+#endif
+  
   /* Load prefs */
   meta_prefs_init ();
   meta_prefs_add_listener (prefs_changed_callback, NULL);

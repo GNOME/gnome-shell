@@ -15,8 +15,11 @@ metacity_message_SOURCES= 				\
 metacity_window_demo_SOURCES=				\
 	metacity-window-demo.c
 
-metacity_mag_SOURCES=				\
+metacity_mag_SOURCES=					\
 	metacity-mag.c
+
+metacity_grayscale_SOURCES=				\
+	metacity-grayscale.c
 
 metacity_properties_SOURCES=				\
 	metacity-properties.c
@@ -35,13 +38,14 @@ desktop_DATA=$(Desktop_in_files:.desktop.in=.desktop)
 
 bin_PROGRAMS=metacity-message metacity-window-demo metacity-properties
 
-## cheesy hack I use, doesn't really have any business existing. ;-)
-noinst_PROGRAMS=metacity-mag
+## cheesy hacks I use, don't really have any business existing. ;-)
+noinst_PROGRAMS=metacity-mag metacity-grayscale
 
 metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
 metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
 metacity_properties_LDADD= @METACITY_PROPS_LIBS@
 metacity_mag_LDADD= @METACITY_WINDOW_DEMO_LIBS@
+metacity_grayscale_LDADD = @METACITY_WINDOW_DEMO_LIBS@
 
 EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA) $(Desktop_in_files)
 

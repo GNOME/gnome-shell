@@ -28,6 +28,10 @@
 #include "theme.h"
 #include "prefs.h"
 
+#ifdef HAVE_SHAPE
+#include <X11/extensions/shape.h>
+#endif
+
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
 static void meta_frames_class_init (MetaFramesClass *klass);
@@ -201,7 +205,7 @@ meta_frames_destroy (GtkObject *object)
   MetaFrames *frames;
   
   frames = META_FRAMES (object);
-
+  
   meta_prefs_remove_listener (font_changed_callback, frames);
 
   clear_tip (frames);
@@ -616,6 +620,158 @@ meta_frames_unflicker_bg (MetaFrames *frames,
 #endif
 
   set_background_none (gdk_display, frame->xwindow);
+}
+
+void
+meta_frames_apply_shapes (MetaFrames *frames,
+                          Window      xwindow,
+                          int         new_window_width,
+                          int         new_window_height)
+{
+#ifdef HAVE_SHAPE
+  /* Apply shapes as if window had new_window_width, new_window_height */
+  GtkWidget *widget;
+  MetaUIFrame *frame;
+  MetaFrameGeometry fgeom;
+  XRectangle xrect;
+  Region corners_xregion;
+  Region window_xregion;
+  
+  widget = GTK_WIDGET (frames);
+
+  frame = meta_frames_lookup_window (frames, xwindow);
+  g_return_if_fail (frame != NULL);
+
+  meta_frames_calc_geometry (frames, frame, &fgeom);
+
+  if (!(fgeom.top_left_corner_rounded ||
+        fgeom.top_right_corner_rounded ||
+        fgeom.bottom_left_corner_rounded ||
+        fgeom.bottom_right_corner_rounded))
+    {
+      XShapeCombineMask (gdk_display, frame->xwindow,
+                         ShapeBounding, 0, 0, None, ShapeSet);
+      
+      return; /* nothing to do */
+    }
+  
+  corners_xregion = XCreateRegion ();
+  
+  if (fgeom.top_left_corner_rounded)
+    {
+      xrect.x = 0;
+      xrect.y = 0;
+      xrect.width = 5;
+      xrect.height = 1;
+      
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = 1;
+      xrect.width = 3;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = 2;
+      xrect.width = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = 3;
+      xrect.width = 1;
+      xrect.height = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+    }
+
+  if (fgeom.top_right_corner_rounded)
+    {
+      xrect.x = new_window_width - 5;
+      xrect.y = 0;
+      xrect.width = 5;
+      xrect.height = 1;
+      
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = 1;
+      xrect.x = new_window_width - 3;
+      xrect.width = 3;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = 2;
+      xrect.x = new_window_width - 2;
+      xrect.width = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = 3;
+      xrect.x = new_window_width - 1;
+      xrect.width = 1;
+      xrect.height = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+    }
+
+  if (fgeom.bottom_left_corner_rounded)
+    {
+      xrect.x = 0;
+      xrect.y = new_window_height - 1;
+      xrect.width = 5;
+      xrect.height = 1;
+      
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = new_window_height - 2;
+      xrect.width = 3;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = new_window_height - 3;
+      xrect.width = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = new_window_height - 5;
+      xrect.width = 1;
+      xrect.height = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+    }
+
+  if (fgeom.bottom_right_corner_rounded)
+    {
+      xrect.x = new_window_width - 5;
+      xrect.y = new_window_height - 1;
+      xrect.width = 5;
+      xrect.height = 1;
+      
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = new_window_height - 2;
+      xrect.x = new_window_width - 3;
+      xrect.width = 3;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+      
+      xrect.y = new_window_height - 3;
+      xrect.x = new_window_width - 2;
+      xrect.width = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+
+      xrect.y = new_window_height - 5;
+      xrect.x = new_window_width - 1;
+      xrect.width = 1;
+      xrect.height = 2;
+      XUnionRectWithRegion (&xrect, corners_xregion, corners_xregion);
+    }
+  
+  window_xregion = XCreateRegion ();
+  
+  xrect.x = 0;
+  xrect.y = 0;
+  xrect.width = new_window_width;
+  xrect.height = new_window_height;
+
+  XUnionRectWithRegion (&xrect, window_xregion, window_xregion);
+
+  XSubtractRegion (window_xregion, corners_xregion, window_xregion);
+
+  XShapeCombineRegion (gdk_display, frame->xwindow,
+                       ShapeBounding, 0, 0, window_xregion, ShapeSet);
+  
+  XDestroyRegion (window_xregion);
+  XDestroyRegion (corners_xregion);
+#endif
 }
 
 void

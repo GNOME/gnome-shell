@@ -84,6 +84,12 @@ struct _MetaFrameLayout
   
   /* Whether title text will be displayed */
   guint has_title : 1;
+
+  /* Round corners */
+  guint top_left_corner_rounded : 1;
+  guint top_right_corner_rounded : 1;
+  guint bottom_left_corner_rounded : 1;
+  guint bottom_right_corner_rounded : 1;
 };
 
 
@@ -108,6 +114,12 @@ struct _MetaFrameGeometry
   int right_titlebar_edge;
   int top_titlebar_edge;
   int bottom_titlebar_edge;
+
+  /* Round corners */
+  guint top_left_corner_rounded : 1;
+  guint top_right_corner_rounded : 1;
+  guint bottom_left_corner_rounded : 1;
+  guint bottom_right_corner_rounded : 1;
 };
 
 

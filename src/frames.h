@@ -124,6 +124,11 @@ void meta_frames_unflicker_bg (MetaFrames *frames,
                                int         target_width,
                                int         target_height);
 
+void meta_frames_apply_shapes (MetaFrames *frames,
+                               Window      xwindow,
+                               int         new_window_width,
+                               int         new_window_height);
+
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);
 

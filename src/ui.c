@@ -231,6 +231,15 @@ meta_ui_reset_frame_bg (MetaUI *ui,
 }
 
 void
+meta_ui_apply_frame_shape  (MetaUI *ui,
+                            Window  xwindow,
+                            int     new_window_width,
+                            int     new_window_height)
+{
+  meta_frames_apply_shapes (ui->frames, xwindow, new_window_width, new_window_height);
+}
+
+void
 meta_ui_queue_frame_draw (MetaUI *ui,
                           Window xwindow)
 {

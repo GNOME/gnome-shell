@@ -138,6 +138,12 @@ meta_window_ensure_frame (MetaWindow *window)
   /* Move keybindings to frame instead of window */
   meta_window_grab_keys (window);
 
+  /* Shape mask */
+  meta_ui_apply_frame_shape (frame->window->screen->ui,
+                             frame->xwindow,
+                             frame->rect.width,
+                             frame->rect.height);
+  
   meta_display_ungrab (window->display);
 }
 
@@ -280,11 +286,25 @@ meta_frame_sync_to_window (MetaFrame *frame,
 
   /* set bg to none to avoid flicker */
   if (need_resize)
-    meta_ui_unflicker_frame_bg (frame->window->screen->ui,
-                                frame->xwindow,
-                                frame->rect.width,
-                                frame->rect.height);
+    {
+      meta_ui_unflicker_frame_bg (frame->window->screen->ui,
+                                  frame->xwindow,
+                                  frame->rect.width,
+                                  frame->rect.height);
 
+      /* Done before the window resize, because doing it before means
+       * part of the window being resized becomes unshaped, which may
+       * be sort of hard to see with bg = None. If we did it after
+       * window resize, part of the window being resized would become
+       * shaped, which might be more visible.
+       */
+      
+      meta_ui_apply_frame_shape (frame->window->screen->ui,
+                                 frame->xwindow,
+                                 frame->rect.width,
+                                 frame->rect.height);
+    }
+  
   if (need_move && need_resize)
     XMoveResizeWindow (frame->window->display->xdisplay,
                        frame->xwindow,

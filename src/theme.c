@@ -659,6 +659,11 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
       fgeom->title_rect.width = 0;
       fgeom->title_rect.height = 0;
     }
+
+  fgeom->top_left_corner_rounded = layout->top_left_corner_rounded;
+  fgeom->top_right_corner_rounded = layout->top_right_corner_rounded;
+  fgeom->bottom_left_corner_rounded = layout->bottom_left_corner_rounded;
+  fgeom->bottom_right_corner_rounded = layout->bottom_right_corner_rounded;
 }
 
 

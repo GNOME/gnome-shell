@@ -718,7 +718,15 @@ parse_toplevel_element (GMarkupParseContext  *context,
       const char *parent = NULL;
       const char *has_title = NULL;
       const char *title_scale = NULL;
+      const char *rounded_top_left = NULL;
+      const char *rounded_top_right = NULL;
+      const char *rounded_bottom_left = NULL;
+      const char *rounded_bottom_right = NULL;
       gboolean has_title_val;
+      gboolean rounded_top_left_val;
+      gboolean rounded_top_right_val;
+      gboolean rounded_bottom_left_val;
+      gboolean rounded_bottom_right_val;
       double title_scale_val;
       MetaFrameLayout *parent_layout;
 
@@ -726,6 +734,10 @@ parse_toplevel_element (GMarkupParseContext  *context,
                               error,
                               "name", &name, "parent", &parent,
                               "has_title", &has_title, "title_scale", &title_scale,
+                              "rounded_top_left", &rounded_top_left,
+                              "rounded_top_right", &rounded_top_right,
+                              "rounded_bottom_left", &rounded_bottom_left,
+                              "rounded_bottom_right", &rounded_bottom_right,
                               NULL))
         return;
 
@@ -741,6 +753,20 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (has_title && !parse_boolean (has_title, &has_title_val, context, error))
         return;
 
+      rounded_top_left_val = FALSE;
+      rounded_top_right_val = FALSE;
+      rounded_bottom_left_val = FALSE;
+      rounded_bottom_right_val = FALSE;
+
+      if (rounded_top_left && !parse_boolean (rounded_top_left, &rounded_top_left_val, context, error))
+        return;
+      if (rounded_top_right && !parse_boolean (rounded_top_right, &rounded_top_right_val, context, error))
+        return;
+      if (rounded_bottom_left && !parse_boolean (rounded_bottom_left, &rounded_bottom_left_val, context, error))
+        return;      
+      if (rounded_bottom_right && !parse_boolean (rounded_bottom_right, &rounded_bottom_right_val, context, error))
+        return;
+      
       title_scale_val = 1.0;
       if (title_scale && !parse_title_scale (title_scale, &title_scale_val, context, error))
         return;
@@ -778,6 +804,18 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (title_scale)
 	info->layout->title_scale = title_scale_val;
+
+      if (rounded_top_left)
+        info->layout->top_left_corner_rounded = rounded_top_left_val;
+
+      if (rounded_top_right)
+        info->layout->top_right_corner_rounded = rounded_top_right_val;
+
+      if (rounded_bottom_left)
+        info->layout->bottom_left_corner_rounded = rounded_bottom_left_val;
+
+      if (rounded_bottom_right)
+        info->layout->bottom_right_corner_rounded = rounded_bottom_right_val;
       
       meta_theme_insert_layout (info->theme, name, info->layout);
 

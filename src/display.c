@@ -2543,7 +2543,21 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
       
       meta_window_queue_move_resize (window);
       if (window->frame)
-        meta_frame_queue_draw (window->frame);
+        {
+          meta_frame_queue_draw (window->frame);
+
+          /* FIXME this sucks and is slooooooooow. Do it in the idle with the
+           * redraw or the window resize. 
+           */
+
+#if 0
+          /* in case the theme doesn't affect the frame size */
+          meta_ui_apply_frame_shape (window->screen->ui,
+                                     window->frame->xwindow,
+                                     window->frame->rect.width,
+                                     window->frame->rect.height);
+#endif
+        }                                     
       
       tmp = tmp->next;
     }

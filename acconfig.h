@@ -11,3 +11,4 @@
 #undef HAVE_XFT
 #undef HAVE_SM
 #undef HAVE_XINERAMA
+#undef HAVE_SHAPE
