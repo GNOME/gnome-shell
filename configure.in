@@ -352,7 +352,6 @@ src/libmetacity-private.pc
 src/tools/Makefile
 src/themes/Makefile
 po/Makefile.in
-metacity.spec
 ])
 
 if test x$enable_gconf = xno; then
