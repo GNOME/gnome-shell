@@ -60,7 +60,8 @@ meta_stack_new (MetaScreen *screen)
     }
   stack->pending = NULL;
   stack->freeze_count = 0;
-
+  stack->n_added = 0;
+  
   return stack;
 }
 
@@ -124,6 +125,8 @@ meta_stack_add (MetaStack  *stack,
 {
   MetaStackOp *op;
 
+  meta_verbose ("Adding window %s to the stack\n", window->desc);
+  
   op = ensure_op (stack, window);
 
   if (op->add_order >= 0)
@@ -148,6 +151,8 @@ meta_stack_remove (MetaStack  *stack,
                    MetaWindow *window)
 {
   MetaStackOp *op;
+
+  meta_verbose ("Removing window %s from the stack\n", window->desc);
   
   op = ensure_op (stack, window);
 

@@ -76,7 +76,8 @@ static void   meta_window_move_resize_internal (MetaWindow  *window,
                                                 int          h);
 
 MetaWindow*
-meta_window_new (MetaDisplay *display, Window xwindow)
+meta_window_new (MetaDisplay *display, Window xwindow,
+                 gboolean must_be_viewable)
 {
   MetaWindow *window;
   XWindowAttributes attrs;
@@ -107,6 +108,13 @@ meta_window_new (MetaDisplay *display, Window xwindow)
       return NULL;
     }
 
+  if (must_be_viewable && attrs.map_state != IsViewable)
+    {
+      meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
+      meta_display_ungrab (display);
+      return NULL;
+    }
+  
   meta_error_trap_push (display);
   
   XAddToSaveSet (display->xdisplay, xwindow);
@@ -203,6 +211,8 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->has_maximize_func = TRUE;
 
   window->wm_state_modal = FALSE;
+  window->wm_state_skip_taskbar = FALSE;
+  window->wm_state_skip_pager = FALSE;
   
   window->res_class = NULL;
   window->res_name = NULL;
@@ -345,7 +355,24 @@ set_net_wm_state (MetaWindow *window)
 {
   int i;
   unsigned long data[10];
+  gboolean skip_pager;
+  gboolean skip_taskbar;
 
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_TOOLBAR ||
+      window->type == META_WINDOW_MENU)
+    skip_pager = TRUE;
+  else
+    skip_pager = FALSE;
+
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_MENU)
+    skip_taskbar = TRUE;
+  else
+    skip_taskbar = FALSE;
+  
   i = 0;
   if (window->shaded)
     {
@@ -355,6 +382,16 @@ set_net_wm_state (MetaWindow *window)
   if (window->wm_state_modal)
     {
       data[i] = window->display->atom_net_wm_state_modal;
+      ++i;
+    }
+  if (window->wm_state_skip_pager || skip_pager)
+    {
+      data[i] = window->display->atom_net_wm_state_skip_pager;
+      ++i;
+    }
+  if (window->wm_state_skip_taskbar || skip_pager)
+    {
+      data[i] = window->display->atom_net_wm_state_skip_taskbar;
       ++i;
     }
   if (window->maximized)
@@ -1307,9 +1344,28 @@ meta_window_client_message (MetaWindow *window,
           
           recalc_window_type (window);
           meta_window_queue_move_resize (window);
+        }
+
+      if (first == display->atom_net_wm_state_skip_pager ||
+          second == display->atom_net_wm_state_skip_pager)
+        {
+          window->wm_state_skip_pager =
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_skip_pager);
+
           set_net_wm_state (window);
         }
 
+      if (first == display->atom_net_wm_state_skip_taskbar ||
+          second == display->atom_net_wm_state_skip_taskbar)
+        {
+          window->wm_state_skip_taskbar =
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_skip_taskbar);
+
+          set_net_wm_state (window);
+        }
+      
       return TRUE;
     }
   else if (event->xclient.message_type ==
@@ -2211,6 +2267,10 @@ update_net_wm_type (MetaWindow *window)
 static void
 recalc_window_type (MetaWindow *window)
 {
+  int old_type;
+
+  old_type = window->type;
+  
   if (window->type_atom != None)
     {
       if (window->type_atom  == window->display->atom_net_wm_window_type_desktop)
@@ -2241,8 +2301,13 @@ recalc_window_type (MetaWindow *window)
 
   meta_verbose ("Calculated type %d for %s\n", window->type, window->desc);
 
-  /* update stacking constraints */
-  meta_stack_update_layer (window->screen->stack, window);
+  if (old_type != window->type)
+    {
+      set_net_wm_state (window);
+  
+      /* update stacking constraints */
+      meta_stack_update_layer (window->screen->stack, window);
+    }
 }
 
 static void

@@ -109,12 +109,18 @@ struct _MetaWindow
 
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
+  /* If these are TRUE, it just means a client explicitly
+   * toggled them on; we compute actual _NET_WM_STATE from
+   * window type usually
+   */
+  guint wm_state_skip_taskbar : 1;
+  guint wm_state_skip_pager : 1;
   
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus
    */
   guint has_focus : 1;
-
+  
   /* Track whether the user has ever manually modified
    * the window; if so, we remove some constraints
    * that exist on program modifications.
@@ -153,7 +159,8 @@ struct _MetaWindow
 };
 
 MetaWindow* meta_window_new                (MetaDisplay *display,
-                                            Window       xwindow);
+                                            Window       xwindow,
+                                            gboolean     must_be_viewable);
 void        meta_window_free               (MetaWindow  *window);
 void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue_calc_showing (MetaWindow  *window);

@@ -30,6 +30,29 @@ static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
 static gboolean is_syncing = FALSE;
 static int no_prefix = 0;
+static FILE* logfile = NULL;
+
+static void
+ensure_logfile (void)
+{
+  if (logfile == NULL)
+    {
+      const char *dir;
+      char *str;
+      
+      dir = g_get_home_dir ();
+      str = g_strconcat (dir, "/", "metacity.log", NULL);
+      
+      logfile = fopen (str, "w");
+
+      if (logfile == NULL)
+        meta_warning ("Failed to open log file %s\n", str);
+      else
+        meta_verbose ("Opened log file %s\n", str);
+      
+      g_free (str);
+    }
+}
 
 gboolean
 meta_is_verbose (void)
@@ -40,6 +63,9 @@ meta_is_verbose (void)
 void
 meta_set_verbose (gboolean setting)
 {
+  if (setting)
+    ensure_logfile ();
+  
   is_verbose = setting;
 }
 
@@ -52,9 +78,11 @@ meta_is_debugging (void)
 void
 meta_set_debugging (gboolean setting)
 {
+  if (setting)
+    ensure_logfile ();
+  
   is_debugging = setting;
 }
-
 
 gboolean
 meta_is_syncing (void)
@@ -86,7 +114,8 @@ meta_debug_spew (const char *format, ...)
 {
   va_list args;
   gchar *str;
-
+  FILE *out;
+  
   g_return_if_fail (format != NULL);
 
   if (!is_debugging)
@@ -96,9 +125,11 @@ meta_debug_spew (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+  out = logfile ? logfile : stderr;
+  
   if (no_prefix == 0)
-    fputs ("Window manager: ", stderr);
-  fputs (str, stderr);
+    fputs ("Window manager: ", out);
+  fputs (str, out);
   
   g_free (str);
 }
@@ -108,6 +139,7 @@ meta_verbose (const char *format, ...)
 {
   va_list args;
   gchar *str;
+  FILE *out;
 
   g_return_if_fail (format != NULL);
 
@@ -118,9 +150,11 @@ meta_verbose (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+  out = logfile ? logfile : stderr;
+  
   if (no_prefix == 0)
-    fputs ("Window manager: ", stderr);
-  fputs (str, stderr);
+    fputs ("Window manager: ", out);
+  fputs (str, out);
   
   g_free (str);
 }
@@ -130,6 +164,7 @@ meta_bug (const char *format, ...)
 {
   va_list args;
   gchar *str;
+  FILE *out;
 
   g_return_if_fail (format != NULL);
   
@@ -137,9 +172,11 @@ meta_bug (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+  out = logfile ? logfile : stderr;
+  
   if (no_prefix == 0)
-    fputs ("Bug in window manager: ", stderr);
-  fputs (str, stderr);
+    fputs ("Bug in window manager: ", out);
+  fputs (str, out);
   
   g_free (str);
 
@@ -152,16 +189,19 @@ meta_warning (const char *format, ...)
 {
   va_list args;
   gchar *str;
-
+  FILE *out;
+  
   g_return_if_fail (format != NULL);
   
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+  out = logfile ? logfile : stderr;
+  
   if (no_prefix == 0)
-    fputs ("Window manager: ", stderr);
-  fputs (str, stderr);
+    fputs ("Window manager: ", out);
+  fputs (str, out);
   
   g_free (str);
 }
@@ -171,16 +211,19 @@ meta_fatal (const char *format, ...)
 {
   va_list args;
   gchar *str;
-
+  FILE *out;
+  
   g_return_if_fail (format != NULL);
   
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+  out = logfile ? logfile : stderr;
+  
   if (no_prefix == 0)
-    fputs ("Window manager: ", stderr);
-  fputs (str, stderr);
+    fputs ("Window manager: ", out);
+  fputs (str, out);
   
   g_free (str);
 

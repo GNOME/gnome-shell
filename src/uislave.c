@@ -56,7 +56,7 @@ meta_ui_slave_new (const char *display_name,
   reset_vals (uislave);
   
   /* This may fail; all UISlave functions become no-ops
-   * if uislave->child_pids == 0, and metacity just runs
+   * if uislave->disabled, and metacity just runs
    * with no UI features other than window borders.
    */
   respawn_child (uislave);  
@@ -86,6 +86,7 @@ meta_ui_slave_disable (MetaUISlave *uislave)
    */
   kill_child (uislave);
   uislave->no_respawn = TRUE;
+  meta_warning ("UI slave disabled, no tooltips or window menus will work\n");
 }
 
 static void
@@ -105,21 +106,36 @@ respawn_child (MetaUISlave *uislave)
 {
   GError *error;
   const char *uislavedir;
-  char *argv[] = { "./metacity-uislave", NULL };
+  char *argv[] = { NULL, NULL, NULL, NULL, NULL };
   char *envp[2] = { NULL, NULL };
   int child_pid, inpipe, outpipe, errpipe;
-
+  char *path;
+  
   if (uislave->no_respawn)
+    return;
+
+  if (uislave->child_pid != 0)
     return;
   
   uislavedir = g_getenv ("METACITY_UISLAVE_DIR");
   if (uislavedir == NULL)
     uislavedir = METACITY_LIBEXECDIR;
-
+  
   envp[0] = g_strconcat ("DISPLAY=", uislave->display_name, NULL);
+
+  path = g_strconcat (uislavedir, "/", "metacity-uislave", NULL);
+#if 0
+  argv[0] = "/usr/bin/strace";
+  argv[1] = "-o";
+  argv[2] = "uislave-strace.log";
+#endif
+  argv[0] = path;
+  
+  meta_verbose ("Launching UI slave in dir %s display %s\n",
+                uislavedir, envp[0]);
   
   error = NULL;
-  if (g_spawn_async_with_pipes (uislavedir,
+  if (g_spawn_async_with_pipes (NULL,
                                 argv,
                                 envp,
                                 /* flags */
@@ -155,7 +171,8 @@ respawn_child (MetaUISlave *uislave)
       g_error_free (error);
     }
   
-  g_free (envp[0]);  
+  g_free (envp[0]);
+  g_free (path);
 }
 
 static gboolean
@@ -168,14 +185,35 @@ error_callback  (GIOChannel   *source,
   MetaUISlave *uislave;
   char buf[1024];
   int n;
+  static int logfile = -1;
+  
+  if (meta_is_debugging () && logfile < 0)
+    {
+      const char *dir;
+      char *str;
+      
+      dir = g_get_home_dir ();
+      str = g_strconcat (dir, "/", "metacity-uislave.log", NULL);
+      
+      logfile = open (str, O_TRUNC | O_CREAT, 0644);
+
+      if (logfile < 0)
+        meta_warning ("Failed to open uislave log file %s\n", str);
+      else
+        meta_verbose ("Opened uislave log file %s\n", str);
+      
+      g_free (str);
+    }
+
+  if (logfile < 0)
+    logfile = 2;
   
   uislave = data;
   
-  /* Classic loop from Stevens */
   n = read (uislave->err_pipe, buf, BUFSIZE);
   if (n > 0)
     {
-      if (write (2, buf, n) != n)
+      if (write (logfile, buf, n) != n)
         ; /* error, but printing a message to stderr will hardly help. */
     }
   else if (n < 0)
@@ -270,6 +308,11 @@ send_message (MetaUISlave *uislave, MetaMessage *message)
 {
   static int serial = 0;
   MetaMessageFooter *footer;
+
+  if (uislave->no_respawn)
+    return;
+  
+  respawn_child (uislave);
   
   message->header.serial = serial;
   footer = META_MESSAGE_FOOTER (message);
@@ -279,12 +322,18 @@ send_message (MetaUISlave *uislave, MetaMessage *message)
   
   if (write_bytes (uislave->in_pipe,
                    META_MESSAGE_ESCAPE, META_MESSAGE_ESCAPE_LEN) < 0)
-    meta_warning ("Failed to write escape sequence: %s\n",
-                  g_strerror (errno));
+    {
+      meta_warning ("Failed to write escape sequence: %s\n",
+                    g_strerror (errno));
+      kill_child (uislave);
+    }
   if (write_bytes (uislave->in_pipe,
                    message, message->header.length) < 0)
-    meta_warning ("Failed to write message: %s\n",
-                  g_strerror (errno));
+    {
+      meta_warning ("Failed to write message: %s\n",
+                    g_strerror (errno));
+      kill_child (uislave);
+    }
 }
 
 void

@@ -589,7 +589,7 @@ event_queue_callback (MetaEventQueue *queue,
           xwc.height = event->xconfigurerequest.height;
           xwc.border_width = event->xconfigurerequest.border_width;
 
-          meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d\n",
+          meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d (some values may not be in mask)\n",
                         xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
           XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
                             xwcm, &xwc);
@@ -897,14 +897,24 @@ meta_spew_event (MetaDisplay *display,
           break;
         case ConfigureRequest:
           name = "ConfigureRequest";
-          extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d y: %d w: %d h: %d border: %d",
+          extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %s",
                                    event->xconfigurerequest.parent,
                                    event->xconfigurerequest.window,
                                    event->xconfigurerequest.x,
+                                   event->xconfigurerequest.value_mask &
+                                   CWX ? "" : "(unset) ",
                                    event->xconfigurerequest.y,
+                                   event->xconfigurerequest.value_mask &
+                                   CWY ? "" : "(unset) ",
                                    event->xconfigurerequest.width,
+                                   event->xconfigurerequest.value_mask &
+                                   CWWidth ? "" : "(unset) ",
                                    event->xconfigurerequest.height,
-                                   event->xconfigurerequest.border_width);
+                                   event->xconfigurerequest.value_mask &
+                                   CWHeight ? "" : "(unset) ",
+                                   event->xconfigurerequest.border_width,
+                                   event->xconfigurerequest.value_mask &
+                                   CWBorderWidth ? "" : "(unset)");
           break;
         case GravityNotify:
           name = "GravityNotify";

@@ -25,6 +25,11 @@
 #include "errors.h"
 
 #include <stdlib.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <string.h>
+#include <signal.h>
+#include <unistd.h>
 
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
@@ -32,6 +37,15 @@ static GMainLoop *meta_main_loop = NULL;
 int
 main (int argc, char **argv)
 {
+  struct sigaction act;
+  sigset_t empty_mask;
+
+  sigemptyset (&empty_mask);
+  act.sa_handler = SIG_IGN;
+  act.sa_mask    = empty_mask;
+  act.sa_flags   = 0;
+  sigaction (SIGPIPE,  &act, 0);
+  
   g_set_prgname (PACKAGE);
   
   meta_main_loop = g_main_loop_new (NULL, FALSE);

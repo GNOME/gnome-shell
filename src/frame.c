@@ -250,10 +250,13 @@ meta_window_ensure_frame (MetaWindow *window)
                            * we don't want to take that as a withdraw
                            */
   window->unmaps_pending += 1;
+  window->rect.x = 0;
+  window->rect.y = 0;
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
-                   0, 0);
+                   window->rect.x,
+                   window->rect.y);
   meta_error_trap_pop (window->display);
   
   /* stick frame to the window */

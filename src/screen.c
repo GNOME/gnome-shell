@@ -61,7 +61,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 19
+#define N_SUPPORTED 21
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -83,6 +83,8 @@ set_supported_hint (MetaScreen *screen)
   atoms[16] = screen->display->atom_net_wm_state_modal;
   atoms[17] = screen->display->atom_net_client_list;
   atoms[18] = screen->display->atom_net_client_list_stacking;
+  atoms[19] = screen->display->atom_net_wm_state_skip_taskbar;
+  atoms[20] = screen->display->atom_net_wm_state_skip_pager;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_wm_supported,
@@ -244,7 +246,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   i = 0;
   while (i < n_children)
     {
-      meta_window_new (screen->display, children[i]);
+      meta_window_new (screen->display, children[i], TRUE);
 
       ++i;
     }
