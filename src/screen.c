@@ -72,7 +72,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 22
+#define N_SUPPORTED 23
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -98,9 +98,10 @@ set_supported_hint (MetaScreen *screen)
   atoms[19] = screen->display->atom_net_wm_state_skip_taskbar;
   atoms[20] = screen->display->atom_net_wm_state_skip_pager;
   atoms[21] = screen->display->atom_net_wm_icon;
+  atoms[22] = screen->display->atom_net_wm_moveresize;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_wm_supported,
+                   screen->display->atom_net_supported,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) atoms, N_SUPPORTED);
 

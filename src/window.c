@@ -2095,12 +2095,18 @@ meta_window_configure_request (MetaWindow *window,
 
   width = window->rect.width;
   height = window->rect.height;
-  
-  if (event->xconfigurerequest.value_mask & CWWidth)
-    width = event->xconfigurerequest.width;
 
-  if (event->xconfigurerequest.value_mask & CWHeight)
-    height = event->xconfigurerequest.height;
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_TOOLBAR ||
+      window->type == META_WINDOW_MENU)
+    {
+      if (event->xconfigurerequest.value_mask & CWWidth)
+        width = event->xconfigurerequest.width;
+      
+      if (event->xconfigurerequest.value_mask & CWHeight)
+        height = event->xconfigurerequest.height;
+    }
 
   /* ICCCM 4.1.5 */
   
@@ -2145,6 +2151,16 @@ meta_window_property_notify (MetaWindow *window,
 {
   return process_property_notify (window, &event->xproperty);  
 }
+
+#define _NET_WM_MOVERESIZE_SIZE_TOPLEFT      0
+#define _NET_WM_MOVERESIZE_SIZE_TOP          1
+#define _NET_WM_MOVERESIZE_SIZE_TOPRIGHT     2
+#define _NET_WM_MOVERESIZE_SIZE_RIGHT        3
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT  4
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOM       5
+#define _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT   6
+#define _NET_WM_MOVERESIZE_SIZE_LEFT         7
+#define _NET_WM_MOVERESIZE_MOVE              8
 
 gboolean
 meta_window_client_message (MetaWindow *window,
@@ -2303,6 +2319,103 @@ meta_window_client_message (MetaWindow *window,
                     event->xclient.data.l[0]);
       if (event->xclient.data.l[0] == IconicState)
         meta_window_minimize (window);
+
+      return TRUE;
+    }
+  else if (event->xclient.message_type ==
+           display->atom_net_wm_moveresize)
+    {
+      int x_root;
+      int y_root;
+      int action;
+      MetaGrabOp op;
+      
+      x_root = event->xclient.data.l[0];
+      y_root = event->xclient.data.l[1];
+      action = event->xclient.data.l[2];
+
+      meta_verbose ("Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d\n",
+                    window->desc,
+                    x_root, y_root, action);
+      
+      op = META_GRAB_OP_NONE;
+      switch (action)
+        {
+        case _NET_WM_MOVERESIZE_SIZE_TOPLEFT:
+          op = META_GRAB_OP_RESIZING_NW;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_TOP:
+          op = META_GRAB_OP_RESIZING_N;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_TOPRIGHT:
+          op = META_GRAB_OP_RESIZING_NE;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_RIGHT:
+          op = META_GRAB_OP_RESIZING_E;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT:
+          op = META_GRAB_OP_RESIZING_SE;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_BOTTOM:          
+          op = META_GRAB_OP_RESIZING_S;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT:
+          op = META_GRAB_OP_RESIZING_SW;
+          break;
+        case _NET_WM_MOVERESIZE_SIZE_LEFT:
+          op = META_GRAB_OP_RESIZING_W;
+          break;
+        case _NET_WM_MOVERESIZE_MOVE:
+          op = META_GRAB_OP_MOVING;
+          break;
+        default:
+          break;
+        }
+
+      if (op != META_GRAB_OP_NONE &&
+          ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
+           (window->has_resize_func && op != META_GRAB_OP_MOVING)))
+        {
+          int x, y, query_root_x, query_root_y;
+          Window root, child;
+          guint mask;
+          int button;
+
+          /* The race conditions in this _NET_WM_MOVERESIZE thing
+           * are mind-boggling
+           */
+          mask = 0;
+          meta_error_trap_push (window->display);
+          XQueryPointer (window->display->xdisplay,
+                         window->xwindow,
+                         &root, &child,
+                         &query_root_x, &query_root_y,
+                         &x, &y,
+                         &mask);
+          meta_error_trap_pop (window->display);
+
+          if (mask & Button1Mask)
+            button = 1;
+          else if (mask & Button2Mask)
+            button = 2;
+          else if (mask & Button3Mask)
+            button = 3;
+          else
+            button = 0;
+
+          if (button != 0)
+            {
+              meta_verbose ("Beginning move/resize with button = %d\n", button);
+              meta_display_begin_grab_op (window->display,
+                                          window,
+                                          op,
+                                          FALSE,
+                                          button, 0,
+                                          CurrentTime,
+                                          x_root,
+                                          y_root);
+            }
+        }
 
       return TRUE;
     }

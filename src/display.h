@@ -76,7 +76,7 @@ struct _MetaDisplay
   Atom atom_wm_window_role;
   Atom atom_net_current_desktop;
   Atom atom_net_supporting_wm_check;
-  Atom atom_net_wm_supported;
+  Atom atom_net_supported;
   Atom atom_net_wm_window_type;
   Atom atom_net_wm_window_type_desktop;
   Atom atom_net_wm_window_type_dock;
@@ -99,6 +99,7 @@ struct _MetaDisplay
   Atom atom_utf8_string;
   Atom atom_wm_icon_size;
   Atom atom_kwm_win_icon;
+  Atom atom_net_wm_moveresize;
   
   /* This is the actual window from focus events,
    * not the one we last set

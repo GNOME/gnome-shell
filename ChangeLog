@@ -1,3 +1,16 @@
+2001-08-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_open): wrong atom name -
+	_NET_SUPPORTED not _NET_WM_SUPPORTED
+
+	* src/window.c (meta_window_configure_request): geez, why were we
+	honoring configure requests for width/height for normal windows. 
+	Denied!
+	(meta_window_client_message): _NET_WM_MOVERESIZE support, sort of
+	(doesn't quite work, acts like owner_events = true?)
+
+	* src/display.c: add _NET_WM_MOVERESIZE atom
+
 2001-08-28  Havoc Pennington  <hp@pobox.com>
 
         Unbreak tab popup a bit.

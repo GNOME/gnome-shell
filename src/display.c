@@ -112,7 +112,7 @@ meta_display_open (const char *name)
     "WM_WINDOW_ROLE",
     "_NET_CURRENT_DESKTOP",
     "_NET_SUPPORTING_WM_CHECK",
-    "_NET_WM_SUPPORTED",
+    "_NET_SUPPORTED",
     "_NET_WM_WINDOW_TYPE",
     "_NET_WM_WINDOW_TYPE_DESKTOP",
     "_NET_WM_WINDOW_TYPE_DOCK",
@@ -134,7 +134,8 @@ meta_display_open (const char *name)
     "_NET_WM_ICON_GEOMETRY",
     "UTF8_STRING",
     "WM_ICON_SIZE",
-    "_KWM_WIN_ICON"
+    "_KWM_WIN_ICON",
+    "_NET_WM_MOVERESIZE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -197,7 +198,7 @@ meta_display_open (const char *name)
   display->atom_wm_window_role = atoms[16];
   display->atom_net_current_desktop = atoms[17];
   display->atom_net_supporting_wm_check = atoms[18];
-  display->atom_net_wm_supported = atoms[19];
+  display->atom_net_supported = atoms[19];
   display->atom_net_wm_window_type = atoms[20];
   display->atom_net_wm_window_type_desktop = atoms[21];
   display->atom_net_wm_window_type_dock = atoms[22];
@@ -220,6 +221,7 @@ meta_display_open (const char *name)
   display->atom_utf8_string = atoms[39];
   display->atom_wm_icon_size = atoms[40];
   display->atom_kwm_win_icon = atoms[41];
+  display->atom_net_wm_moveresize = atoms[42];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1480,7 +1482,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
                     None,
                     cursor,
                     timestamp) == GrabSuccess)
-    display->grab_have_pointer = TRUE;
+    {
+      display->grab_have_pointer = TRUE;
+      meta_debug_spew ("Successful XGrabPointer()\n");
+    }
   meta_error_trap_pop (display);
   
   XFreeCursor (display->xdisplay, cursor);
