@@ -94,6 +94,10 @@ static void handle_move_to_workspace  (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_workspace_forward  (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_raise_or_lower     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -111,6 +115,11 @@ static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             KeySym       keysym);
 
 static gboolean process_tab_grab           (MetaDisplay *display,
+                                            MetaWindow  *window,
+                                            XEvent      *event,
+                                            KeySym       keysym);
+
+static gboolean process_workspace_tab_grab (MetaDisplay *display,
                                             MetaWindow  *window,
                                             XEvent      *event,
                                             KeySym       keysym);
@@ -159,13 +168,13 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (10) },
   { META_KEYBINDING_WORKSPACE_12, handle_activate_workspace,
     GINT_TO_POINTER (11) },
-  { META_KEYBINDING_WORKSPACE_LEFT, handle_activate_workspace,
+  { META_KEYBINDING_WORKSPACE_LEFT, handle_workspace_forward,
     GINT_TO_POINTER (META_MOTION_LEFT) },
-  { META_KEYBINDING_WORKSPACE_RIGHT, handle_activate_workspace,
+  { META_KEYBINDING_WORKSPACE_RIGHT, handle_workspace_forward,
     GINT_TO_POINTER (META_MOTION_RIGHT) },
-  { META_KEYBINDING_WORKSPACE_UP, handle_activate_workspace,
+  { META_KEYBINDING_WORKSPACE_UP, handle_workspace_forward,
     GINT_TO_POINTER (META_MOTION_UP) },
-  { META_KEYBINDING_WORKSPACE_DOWN, handle_activate_workspace,
+  { META_KEYBINDING_WORKSPACE_DOWN, handle_workspace_forward,
     GINT_TO_POINTER (META_MOTION_DOWN) },
   { META_KEYBINDING_SWITCH_WINDOWS, handle_tab_forward,
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
@@ -593,10 +602,10 @@ meta_change_keygrab (MetaDisplay *display,
    */
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "%s keybinding %s mask 0x%x\n",
+              "%s keybinding %s mask 0x%x on 0x%lx\n",
               grab ? "Grabbing" : "Ungrabbing",
               keysym_name (keysym),
-              modmask);
+              modmask, xwindow);
   
   ignored_mask = 0;
   while (ignored_mask < (int) display->ignored_modifier_mask)
@@ -1062,7 +1071,7 @@ meta_display_process_key_event (MetaDisplay *display,
 
       return;
     }
-  
+
   if (display->grab_op == META_GRAB_OP_NONE)
     return;    
 
@@ -1088,6 +1097,15 @@ meta_display_process_key_event (MetaDisplay *display,
                       "Processing event for keyboard tabbing\n");
           handled = process_tab_grab (display, window, event, keysym);
           break;
+        case META_GRAB_OP_KEYBOARD_WORKSPACE_UP:
+        case META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN:
+        case META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT:
+        case META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT:
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Processing event for keyboard tabbing workspace\n");
+          handled = process_workspace_tab_grab (display, window, event, keysym);
+          break;
+
         default:
           break;
         }
@@ -1213,6 +1231,7 @@ process_tab_grab (MetaDisplay *display,
                   KeySym       keysym)
 {
   MetaScreen *screen;
+  MetaKeyBindingAction action;
 
   window = NULL; /* be sure we don't use this, it's irrelevant */
 
@@ -1229,7 +1248,7 @@ process_tab_grab (MetaDisplay *display,
       MetaWindow *target_window;
 
       target_xwindow =
-        meta_ui_tab_popup_get_selected (screen->tab_popup);
+        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
       target_window =
         meta_display_lookup_x_window (display, target_xwindow);
 
@@ -1263,10 +1282,12 @@ process_tab_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
-  switch (keysym)
+  action = meta_prefs_get_keybinding_action(keysym);
+
+  switch (action)
     {
-    case XK_ISO_Left_Tab:
-    case XK_Tab:
+    case META_KEYBINDING_ACTION_SWITCH_PANELS:
+    case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
       if (event->xkey.state & ShiftMask)
         meta_ui_tab_popup_backward (screen->tab_popup);
       else
@@ -1339,7 +1360,7 @@ handle_activate_workspace (MetaDisplay    *display,
   MetaWorkspace *workspace;
   
   which = GPOINTER_TO_INT (binding->handler->data);
-
+ 
   workspace = NULL;
   if (which < 0)
     {
@@ -1367,6 +1388,112 @@ handle_activate_workspace (MetaDisplay    *display,
     {
       /* We could offer to create it I suppose */
     }
+}
+
+static gboolean
+process_workspace_tab_grab (MetaDisplay *display,
+                            MetaWindow  *window,
+                            XEvent      *event,
+                            KeySym       keysym)
+{
+  MetaScreen *screen;
+  MetaWorkspace *workspace;
+
+  window = NULL; /* be sure we don't use this, it's irrelevant */
+
+  screen = display->grab_window->screen;
+
+  g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
+  
+  if (event->type == KeyRelease &&
+      keycode_is_primary_modifier (display, event->xkey.keycode,
+                                   display->grab_mask))
+    {
+      /* We're done, move to the new workspace. */
+      MetaWorkspace *target_workspace;
+
+      target_workspace =
+        (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Ending workspace tab operation, primary modifier released\n");
+      if (target_workspace)
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Ending grab early so we can focus the target workspace\n");
+          meta_display_end_grab_op (display, event->xkey.time);
+
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Activating target workspace\n");
+
+          switch_to_workspace (display, target_workspace);
+
+          return TRUE; /* we already ended the grab */
+        }
+      
+      return FALSE; /* end grab */
+    }
+  
+  /* don't care about other releases, but eat them, don't end grab */
+  if (event->type == KeyRelease)
+    return TRUE;
+
+  /* don't end grab on modifier key presses */
+  if (is_modifier (display, event->xkey.keycode))
+    return TRUE;
+
+  /* select the next workspace in the tabpopup */
+  workspace =
+    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+  
+  if (workspace)
+    {
+      MetaWorkspace *target_workspace;
+      MetaKeyBindingAction action;
+
+      action = meta_prefs_get_keybinding_action(keysym);
+
+      switch (action)
+        {
+        case META_KEYBINDING_ACTION_WORKSPACE_UP:
+          target_workspace = meta_workspace_get_neighbor (workspace,
+                                                          META_MOTION_UP);
+          break;
+
+        case META_KEYBINDING_ACTION_WORKSPACE_DOWN:
+          target_workspace = meta_workspace_get_neighbor (workspace,
+                                                          META_MOTION_DOWN);
+          break;
+
+        case META_KEYBINDING_ACTION_WORKSPACE_LEFT:
+          target_workspace = meta_workspace_get_neighbor (workspace,
+                                                          META_MOTION_LEFT);
+          break;
+
+        case META_KEYBINDING_ACTION_WORKSPACE_RIGHT:
+          target_workspace = meta_workspace_get_neighbor (workspace,
+                                                          META_MOTION_RIGHT);
+          break;
+
+        default:
+          target_workspace = NULL;
+          break;
+        }
+
+      if (target_workspace)
+        {
+          meta_ui_tab_popup_select (screen->tab_popup,
+                                    (MetaTabEntryKey) target_workspace);
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Tab key pressed, moving tab focus in popup\n");
+          return TRUE;
+        }
+    }
+
+  /* end grab */
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Ending workspace tabbing, uninteresting key pressed\n");
+  return FALSE;
 }
 
 static void
@@ -1484,12 +1611,55 @@ handle_tab_forward (MetaDisplay    *display,
                                       0, 0))
         {
           meta_ui_tab_popup_select (window->screen->tab_popup,
-                                    window->xwindow);
+                                    (MetaTabEntryKey) window->xwindow);
           /* only after selecting proper window */
           meta_ui_tab_popup_set_showing (window->screen->tab_popup,
                                          TRUE);
         }
     }
+}
+
+static MetaWindow *
+get_previous_focus_window (MetaDisplay *display,
+                           MetaScreen  *screen)
+{
+  MetaWindow *window = NULL;
+
+  /* get previously-focused window, front of list is currently
+   * focused window
+   */
+  if (display->mru_list &&
+      display->mru_list->next)
+    {
+      window = display->mru_list->next->data;
+    }
+
+  if (window &&
+      !meta_window_visible_on_workspace (window,
+                                         screen->active_workspace))
+    {
+      window = NULL;
+    }
+  
+  if (window == NULL)
+    {
+      /* Pick first window in tab order */      
+      window = meta_display_get_tab_next (screen->display,
+                                          META_TAB_LIST_NORMAL,
+                                          screen,					  
+                                          screen->active_workspace,
+                                          NULL,
+                                          TRUE);
+    }
+
+  if (window &&
+      !meta_window_visible_on_workspace (window,
+                                         screen->active_workspace))
+    {
+      window = NULL;
+    }
+
+  return window;
 }
 
 static void
@@ -1510,36 +1680,8 @@ handle_focus_previous (MetaDisplay    *display,
   if (screen == NULL)
     return;
 
-  window = NULL;
+  window = get_previous_focus_window (display, screen);
 
-  /* get previously-focused window, front of list is currently
-   * focused window
-   */
-  if (display->mru_list &&
-      display->mru_list->next)
-    window = display->mru_list->next->data;
-
-  if (window &&
-      !meta_window_visible_on_workspace (window,
-                                         screen->active_workspace))
-    window = NULL;
-  
-  if (window == NULL)
-    {
-      /* Pick first window in tab order */      
-      window = meta_display_get_tab_next (screen->display,
-                                          META_TAB_LIST_NORMAL,
-					  screen,					  
-                                          screen->active_workspace,
-                                          NULL,
-                                          TRUE);
-    }
-
-  if (window &&
-      !meta_window_visible_on_workspace (window,
-                                         screen->active_workspace))
-    window = NULL;
-  
   if (window)
     {
       meta_window_raise (window);
@@ -1750,6 +1892,83 @@ handle_raise_or_lower (MetaDisplay    *display,
 
       /* window is not obscured */
       meta_window_lower (window);
+    }
+}
+
+static MetaGrabOp
+op_from_motion_direction (MetaMotionDirection motion)
+{
+  switch (motion)
+    {
+    case META_MOTION_UP:
+      return META_GRAB_OP_KEYBOARD_WORKSPACE_UP;
+    case META_MOTION_DOWN:
+      return META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN;
+    case META_MOTION_LEFT:
+      return META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT;
+    case META_MOTION_RIGHT:
+      return META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT;
+    }
+
+  g_assert_not_reached ();
+  
+  return 0;
+}
+
+static void
+handle_workspace_forward  (MetaDisplay    *display,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  int motion;
+  MetaScreen *screen;
+   
+  motion = GPOINTER_TO_INT (binding->handler->data);
+
+  g_assert (motion < 0);
+ 
+  screen = meta_display_screen_for_root (display,
+                                         event->xkey.root);
+  if (screen == NULL)
+    return;
+
+  if (display->focus_window != NULL)
+    {
+      window = display->focus_window;
+    }
+  else if (window == NULL)
+    {
+      window = get_previous_focus_window (display, screen);
+    }
+      
+  if (window)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Starting tab between workspaces, showing popup\n");
+
+      if (meta_display_begin_grab_op (display,
+                                      window,
+                                      op_from_motion_direction (motion),
+                                      FALSE,
+                                      0,
+                                      event->xkey.state & ~(display->ignored_modifier_mask),
+                                      event->xkey.time,
+                                      0, 0))
+        {
+          MetaWorkspace *next;
+
+          next = meta_workspace_get_neighbor(window->screen->active_workspace,
+                                             motion);
+          g_assert (next); 
+
+          meta_ui_tab_popup_select (window->screen->tab_popup,
+                                    (MetaTabEntryKey) next);
+
+          /* only after selecting proper window */
+          meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                         TRUE);
+        }
     }
 }
 

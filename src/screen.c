@@ -223,8 +223,7 @@ meta_screen_new (MetaDisplay *display,
         current_wm_sn_owner = None; /* don't wait for it to die later on */
     }
 
-  new_wm_sn_owner = XCreateSimpleWindow (xdisplay, xroot,
-                                         -100, -100, 1, 1, 0, 0, 0);
+  new_wm_sn_owner = meta_create_offscreen_window (xdisplay, xroot);
 
   {
     /* Generate a timestamp */
@@ -441,17 +440,16 @@ meta_screen_new (MetaDisplay *display,
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
   
   if (display->leader_window == None)
-    display->leader_window = XCreateSimpleWindow (display->xdisplay,
-                                                  screen->xroot,
-                                                  -100, -100, 1, 1, 0, 0, 0);
-
+    display->leader_window = meta_create_offscreen_window (display->xdisplay,
+                                                           screen->xroot);
+  
   if (display->no_focus_window == None)
     {
-      display->no_focus_window = XCreateSimpleWindow (display->xdisplay,
-                                                      screen->xroot,
-                                                      -100, -100, 1, 1, 0, 0, 0);
+      display->no_focus_window = meta_create_offscreen_window (display->xdisplay,
+                                                               screen->xroot);
+
       XSelectInput (display->xdisplay, display->no_focus_window,
-                    FocusChangeMask);
+                    FocusChangeMask | KeyPressMask | KeyReleaseMask);
       XMapWindow (display->xdisplay, display->no_focus_window);
     }
   
@@ -857,7 +855,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
   len = g_slist_length (tab_list);
 
   entries = g_new (MetaTabEntry, len + 1);
-  entries[len].xwindow = None;
+  entries[len].key = NULL;
   entries[len].title = NULL;
   entries[len].icon = NULL;
   
@@ -870,7 +868,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       
       window = tmp->data;
       
-      entries[i].xwindow = window->xwindow;
+      entries[i].key = (MetaTabEntryKey) window->xwindow;
       entries[i].title = window->title;
       entries[i].icon = window->icon;
       meta_window_get_outer_rect (window, &r);
@@ -910,7 +908,11 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       tmp = tmp->next;
     }
 
-  screen->tab_popup = meta_ui_tab_popup_new (entries, screen->number);
+  screen->tab_popup = meta_ui_tab_popup_new (entries, 
+                                             screen->number,
+                                             len,
+                                             5, /* FIXME */
+                                             TRUE);
   g_free (entries);
 
   g_slist_free (tab_list);
@@ -1108,4 +1110,27 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
                 screen->rows_of_workspaces,
                 screen->columns_of_workspaces,
                 screen->vertical_workspaces);
+}
+
+Window
+meta_create_offscreen_window (Display *xdisplay,
+                              Window   parent)
+{
+  XSetWindowAttributes attrs;
+
+  /* we want to be override redirect because sometimes we
+   * create a window on a screen we aren't managing.
+   * (but on a display we are managing at least one screen for)
+   */
+  attrs.override_redirect = True;
+  
+  return XCreateWindow (xdisplay,
+                        parent,
+                        -100, -100, 1, 1,
+                        0,
+                        CopyFromParent,
+                        CopyFromParent,
+                        CopyFromParent,
+                        CWOverrideRedirect,
+                        &attrs);
 }

@@ -34,12 +34,12 @@ typedef struct _TabEntry TabEntry;
 
 struct _TabEntry
 {
-  Window      xwindow;
-  char       *title;
-  GdkPixbuf  *icon;
-  GtkWidget  *widget;
-  GdkRectangle rect;
-  GdkRectangle inner_rect;
+  MetaTabEntryKey  key;
+  char            *title;
+  GdkPixbuf       *icon;
+  GtkWidget       *widget;
+  GdkRectangle     rect;
+  GdkRectangle     inner_rect;
 };
 
 struct _MetaTabPopup
@@ -50,6 +50,7 @@ struct _MetaTabPopup
   GList *entries;
   TabEntry *current_selected_entry;
   GtkWidget *outline_window;
+  gboolean outline;
 };
 
 static GtkWidget* selectable_image_new (GdkPixbuf *pixbuf);
@@ -67,7 +68,7 @@ outline_window_expose (GtkWidget      *widget,
   
   popup = data;
 
-  if (popup->current_selected_entry == NULL)
+  if (!popup->outline || popup->current_selected_entry == NULL)
     return FALSE;
 
   te = popup->current_selected_entry;
@@ -86,19 +87,21 @@ outline_window_expose (GtkWidget      *widget,
                       FALSE,
                       te->inner_rect.x - 1, te->inner_rect.y - 1,
                       te->inner_rect.width + 1,
-                      te->inner_rect.height + 1);  
-  
+                      te->inner_rect.height + 1);
+
   return FALSE;
 }
 
 MetaTabPopup*
 meta_ui_tab_popup_new (const MetaTabEntry *entries,
-		       int                 screen_number)
+                       int                 screen_number,
+                       int                 entry_count,
+                       int                 width,
+                       gboolean            outline)
 {
   MetaTabPopup *popup;
   int i, left, right, top, bottom;
   GList *tab_entries;
-  int width;
   int height;
   GtkWidget *table;
   GtkWidget *vbox;
@@ -137,38 +140,39 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->current = NULL;
   popup->entries = NULL;
   popup->current_selected_entry = NULL;
+  popup->outline = outline;
   
   tab_entries = NULL;
-  i = 0;
-  while (entries[i].xwindow != None)
+  for (i = 0; i < entry_count; ++i)
     {
       TabEntry *te;
 
       te = g_new (TabEntry, 1);
-      te->xwindow = entries[i].xwindow;
+      te->key = entries[i].key;
       te->title = g_strdup (entries[i].title);
       te->icon = entries[i].icon;
       g_object_ref (G_OBJECT (te->icon));
       te->widget = NULL;
 
-      te->rect.x = entries[i].x;
-      te->rect.y = entries[i].y;
-      te->rect.width = entries[i].width;
-      te->rect.height = entries[i].height;
+      if (outline)
+        {
+          te->rect.x = entries[i].x;
+          te->rect.y = entries[i].y;
+          te->rect.width = entries[i].width;
+          te->rect.height = entries[i].height;
 
-      te->inner_rect.x = entries[i].inner_x;
-      te->inner_rect.y = entries[i].inner_y;
-      te->inner_rect.width = entries[i].inner_width;
-      te->inner_rect.height = entries[i].inner_height;
-      
+          te->inner_rect.x = entries[i].inner_x;
+          te->inner_rect.y = entries[i].inner_y;
+          te->inner_rect.width = entries[i].inner_width;
+          te->inner_rect.height = entries[i].inner_height;
+        }
+
       tab_entries = g_list_prepend (tab_entries, te);
-      
-      ++i;
     }
 
   popup->entries = g_list_reverse (tab_entries);
 
-  width = 5; /* FIXME */
+  g_assert (width > 0);
   height = i / width;
   if (i % width)
     height += 1;
@@ -316,36 +320,39 @@ display_entry (MetaTabPopup *popup,
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
   select_image (te->widget);
   
-  /* Do stuff behind gtk's back */
-  gdk_window_hide (popup->outline_window->window);
-  meta_core_increment_event_serial (gdk_display);
+  if (popup->outline)
+    {
+      /* Do stuff behind gtk's back */
+      gdk_window_hide (popup->outline_window->window);
+      meta_core_increment_event_serial (gdk_display);
   
-  rect = te->rect;
-  rect.x = 0;
-  rect.y = 0;
+      rect = te->rect;
+      rect.x = 0;
+      rect.y = 0;
 
-  gdk_window_move_resize (popup->outline_window->window,
-                          te->rect.x, te->rect.y,
-                          te->rect.width, te->rect.height);
+      gdk_window_move_resize (popup->outline_window->window,
+                              te->rect.x, te->rect.y,
+                              te->rect.width, te->rect.height);
   
-  gdk_window_set_background (popup->outline_window->window,
-                             &popup->outline_window->style->black);
+      gdk_window_set_background (popup->outline_window->window,
+                                 &popup->outline_window->style->black);
   
-  region = gdk_region_rectangle (&rect);
-  inner_region = gdk_region_rectangle (&te->inner_rect);
-  gdk_region_subtract (region, inner_region);
-  gdk_region_destroy (inner_region);
+      region = gdk_region_rectangle (&rect);
+      inner_region = gdk_region_rectangle (&te->inner_rect);
+      gdk_region_subtract (region, inner_region);
+      gdk_region_destroy (inner_region);
   
-  gdk_window_shape_combine_region (popup->outline_window->window,
-                                   region,
-                                   0, 0);
+      gdk_window_shape_combine_region (popup->outline_window->window,
+                                       region,
+                                       0, 0);
 
-  gdk_region_destroy (region);
+      gdk_region_destroy (region);
   
-  /* This should piss off gtk a bit, but we don't want to raise
-   * above the tab popup
-   */
-  gdk_window_show_unraised (popup->outline_window->window);
+      /* This should piss off gtk a bit, but we don't want to raise
+       * above the tab popup
+       */
+      gdk_window_show_unraised (popup->outline_window->window);
+    }
 
   /* Must be before we handle an expose for the outline window */
   popup->current_selected_entry = te;
@@ -389,7 +396,7 @@ meta_ui_tab_popup_backward (MetaTabPopup *popup)
     }
 }
 
-Window
+MetaTabEntryKey
 meta_ui_tab_popup_get_selected (MetaTabPopup *popup)
 {
   if (popup->current)
@@ -398,7 +405,7 @@ meta_ui_tab_popup_get_selected (MetaTabPopup *popup)
 
       te = popup->current->data;
 
-      return te->xwindow;
+      return te->key;
     }
   else
     return None;
@@ -406,7 +413,7 @@ meta_ui_tab_popup_get_selected (MetaTabPopup *popup)
 
 void
 meta_ui_tab_popup_select (MetaTabPopup *popup,
-                          Window        xwindow)
+                          MetaTabEntryKey key)
 {
   GList *tmp;
 
@@ -417,7 +424,7 @@ meta_ui_tab_popup_select (MetaTabPopup *popup,
 
       te = tmp->data;
 
-      if (te->xwindow == xwindow)
+      if (te->key == key)
         {
           popup->current = tmp;
           

@@ -1031,3 +1031,19 @@ meta_prefs_get_auto_raise_delay ()
 {
   return auto_raise_delay;
 }
+
+MetaKeyBindingAction
+meta_prefs_get_keybinding_action (unsigned int keysym)
+{
+  int i;
+
+  for (i = (int) G_N_ELEMENTS (screen_bindings) - 1; i >= 0; --i)
+    {
+      if (screen_bindings[i].keysym == keysym)
+      {
+        return (MetaKeyBindingAction) i;
+      }
+    }
+  return META_KEYBINDING_ACTION_NONE;
+}
+

@@ -30,26 +30,30 @@
 
 typedef struct _MetaTabEntry MetaTabEntry;
 typedef struct _MetaTabPopup MetaTabPopup;
+typedef void *MetaTabEntryKey;
 
 struct _MetaTabEntry
 {
-  Window        xwindow;
-  const char   *title;
-  GdkPixbuf    *icon;
-  int           x, y, width, height;
-  int           inner_x, inner_y, inner_width, inner_height;
+  MetaTabEntryKey  key;  
+  const char      *title;
+  GdkPixbuf       *icon;
+  int              x, y, width, height;
+  int              inner_x, inner_y, inner_width, inner_height;
 };
 
-MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries,
-					     int                 screen_number);
-void          meta_ui_tab_popup_free        (MetaTabPopup       *popup);
-void          meta_ui_tab_popup_set_showing (MetaTabPopup       *popup,
-                                             gboolean            showing);
-void          meta_ui_tab_popup_forward     (MetaTabPopup       *popup);
-void          meta_ui_tab_popup_backward    (MetaTabPopup       *popup);
-Window        meta_ui_tab_popup_get_selected (MetaTabPopup      *popup);
-void          meta_ui_tab_popup_select      (MetaTabPopup       *popup,
-                                             Window              xwindow);
+MetaTabPopup*   meta_ui_tab_popup_new          (const MetaTabEntry *entries,
+                                                int                 screen_number,
+                                                int                 entry_count,
+                                                int                 width,
+                                                gboolean            outline);
+void            meta_ui_tab_popup_free         (MetaTabPopup       *popup);
+void            meta_ui_tab_popup_set_showing  (MetaTabPopup       *popup,
+                                                gboolean            showing);
+void            meta_ui_tab_popup_forward      (MetaTabPopup       *popup);
+void            meta_ui_tab_popup_backward     (MetaTabPopup       *popup);
+MetaTabEntryKey meta_ui_tab_popup_get_selected (MetaTabPopup      *popup);
+void            meta_ui_tab_popup_select       (MetaTabPopup       *popup,
+                                                MetaTabEntryKey     key);
 
 
 #endif

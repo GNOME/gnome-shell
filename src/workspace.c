@@ -19,6 +19,7 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "workspace.h"
 #include "errors.h"
 #include <X11/Xatom.h>
@@ -512,16 +513,11 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
   *area = workspace->work_area;
 }
 
-MetaWorkspace*
-meta_workspace_get_neighbor (MetaWorkspace      *workspace,
-                             MetaMotionDirection direction)
+static void
+calc_rows_and_cols (MetaScreen *screen, int num_workspaces, int *r, int *c)
 {
-  int i, num_workspaces, grid_area;
-  int rows, cols;
-  
-  i = meta_workspace_index (workspace);
-  num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
-  
+  int cols, rows;
+
   /*
    * 3 rows, 4 columns, horizontal layout:
    *  +--+--+--+--+
@@ -543,8 +539,8 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
    *
    */
      
-  rows = workspace->screen->rows_of_workspaces;
-  cols = workspace->screen->columns_of_workspaces;
+  rows = screen->rows_of_workspaces;
+  cols = screen->columns_of_workspaces;
   if (rows <= 0 && cols <= 0)
     cols = num_workspaces;
 
@@ -558,6 +554,22 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
     rows = 1;
   if (cols < 1)
     cols = 1;
+
+  *r = rows;
+  *c = cols;
+}
+
+MetaWorkspace*
+meta_workspace_get_neighbor (MetaWorkspace      *workspace,
+                             MetaMotionDirection direction)
+{
+  int i, num_workspaces, grid_area;
+  int rows, cols;
+  
+  i = meta_workspace_index (workspace);
+  num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
+  
+  calc_rows_and_cols (workspace->screen, num_workspaces, &rows, &cols);
 
   grid_area = rows * cols;
   
@@ -640,3 +652,86 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   return meta_display_get_workspace_by_index (workspace->screen->display,
                                               i);
 }
+
+void
+meta_workspace_ensure_tab_popup (MetaDisplay *display,
+                                 MetaScreen *screen)
+{
+  MetaTabEntry *entries;
+  GdkPixbuf *icon;
+  int len, rows, cols;
+  int i;
+
+  if (screen->tab_popup)
+    return;
+
+  icon = meta_ui_get_default_window_icon (NULL);
+
+  len = meta_screen_get_n_workspaces (screen);
+
+  entries = g_new (MetaTabEntry, len + 1);
+  entries[len].key = NULL;
+  entries[len].title = NULL;
+  entries[len].icon = NULL;
+  
+  calc_rows_and_cols (screen, len, &rows, &cols);
+  
+  if (screen->vertical_workspaces)
+    {
+      int j, k;
+
+      for (i = 0; i < rows; ++i)
+        {
+          for (j = 0; j < cols; ++j)
+            {
+              MetaWorkspace *workspace;
+              char *title;
+
+              k = i + (j * rows);
+              workspace = meta_display_get_workspace_by_index (display, k);
+
+              g_assert (workspace);
+
+              title = g_strdup_printf (_("Workspace %d"), k + 1);
+
+              entries[i].key = (MetaTabEntryKey) workspace;
+              entries[i].title = title;
+              entries[i].icon = icon;
+            }
+        }
+    }
+  else
+    {
+      for (i = 0; i < len; ++i)
+        {
+          MetaWorkspace *workspace;
+          char *title;
+
+          workspace = meta_display_get_workspace_by_index (display, i);
+
+          g_assert (workspace);
+
+          title = g_strdup_printf (_("Workspace %d"), i + 1);
+
+          entries[i].key = (MetaTabEntryKey) workspace;
+          entries[i].title = title;
+          entries[i].icon = icon;
+        }
+    }
+
+  screen->tab_popup = meta_ui_tab_popup_new (entries, 
+                                             screen->number,
+                                             len,
+                                             cols,
+                                             FALSE);
+      
+  for (i = 0; i < len; ++i)
+    g_free((void *) entries[i].title);
+
+  g_free (entries);
+
+  g_object_unref (G_OBJECT (icon));
+
+  /* don't show tab popup, since proper window isn't selected yet */
+}
+

@@ -1,5 +1,19 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	Apply big patch from blackc@speakeasy.net adding a popup window 
+	to the Ctrl+Alt+arrows shortcuts. #83940
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_new): select key press/release on the
+	display->no_focus_window, another attempted fix for not getting
+	keybindings when no window is focused. Still doesn't seem to work
+	though. I don't get what's going wrong.
+	(meta_create_offscreen_window): new function, used instead of
+	XCreateSimpleWindow so we get override redirect offscreen windows.
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_open): set net_supporting_wm_check 
 	in addition to win_supporting_wm_check, patch from 
 	JeyaSudha for #83365

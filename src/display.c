@@ -766,6 +766,10 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_UP:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT:
       return TRUE;
       break;
 
@@ -2251,6 +2255,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                     META_TAB_LIST_DOCKS);
       break;
       
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_UP:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT:
+    case META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT:
+      meta_workspace_ensure_tab_popup (display, window->screen);
+      break;
+
     default:
       break;
     }
@@ -2268,7 +2279,11 @@ meta_display_end_grab_op (MetaDisplay *display,
     return;
 
   if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
-      display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK)
+      display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_LEFT ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_RIGHT ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_UP ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_DOWN)
     {
       meta_ui_tab_popup_free (display->grab_window->screen->tab_popup);
       display->grab_window->screen->tab_popup = NULL;

@@ -69,6 +69,9 @@ void meta_workspace_get_work_area        (MetaWorkspace *workspace,
 MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                                             MetaMotionDirection direction);
 
+void meta_workspace_ensure_tab_popup (MetaDisplay *display,
+                                      MetaScreen *screen);
+
 #endif
 
 

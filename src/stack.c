@@ -1017,7 +1017,7 @@ meta_stack_get_default_focus_window (MetaStack     *stack,
               if (topmost_dock == NULL &&
                   window->type == META_WINDOW_DOCK)
                 topmost_dock = window;
-              else
+              else if (window->type != META_WINDOW_DOCK)
                 return window;
             }
 

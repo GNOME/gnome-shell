@@ -113,6 +113,31 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 #define META_KEYBINDING_MOVE_WORKSPACE_DOWN  "move_to_workspace_down"
 #define META_KEYBINDING_RAISE_OR_LOWER       "raise_or_lower"
 
+typedef enum _MetaKeyBindingAction
+{
+  META_KEYBINDING_ACTION_NONE = -1,
+  META_KEYBINDING_ACTION_WORKSPACE_1,
+  META_KEYBINDING_ACTION_WORKSPACE_2,
+  META_KEYBINDING_ACTION_WORKSPACE_3,
+  META_KEYBINDING_ACTION_WORKSPACE_4,
+  META_KEYBINDING_ACTION_WORKSPACE_5,
+  META_KEYBINDING_ACTION_WORKSPACE_6,
+  META_KEYBINDING_ACTION_WORKSPACE_7,
+  META_KEYBINDING_ACTION_WORKSPACE_8,
+  META_KEYBINDING_ACTION_WORKSPACE_9,
+  META_KEYBINDING_ACTION_WORKSPACE_10,
+  META_KEYBINDING_ACTION_WORKSPACE_11,
+  META_KEYBINDING_ACTION_WORKSPACE_12,
+  META_KEYBINDING_ACTION_WORKSPACE_LEFT,
+  META_KEYBINDING_ACTION_WORKSPACE_RIGHT,
+  META_KEYBINDING_ACTION_WORKSPACE_UP,
+  META_KEYBINDING_ACTION_WORKSPACE_DOWN,
+  META_KEYBINDING_ACTION_SWITCH_WINDOWS,
+  META_KEYBINDING_ACTION_SWITCH_PANELS,
+  META_KEYBINDING_ACTION_FOCUS_PREVIOUS,
+  META_KEYBINDING_ACTION_SHOW_DESKTOP
+} MetaKeyBindingAction;
+
 typedef struct
 {
   const char   *name;
@@ -124,6 +149,7 @@ void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
                                      int                *n_bindings);
 void meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
                                      int                *n_bindings);
+MetaKeyBindingAction meta_prefs_get_keybinding_action (unsigned int keysym);
 
 #endif
 
