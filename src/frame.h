@@ -39,15 +39,16 @@ struct _MetaFrame
   /* reparent window */
   Window xwindow;
 
-  /* This is trusted info from where we put the
+  /* This rect is trusted info from where we put the
    * frame, not the result of ConfigureNotify
    */
   MetaRectangle rect;
   int child_x;
   int child_y;
-
+  
   gpointer theme_data;
-
+  gulong bg_pixel;
+  
   MetaFrameAction action;
   /* reference point for drags */
   int last_x, last_y;

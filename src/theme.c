@@ -21,14 +21,32 @@
 
 #include "theme.h"
 #include "api.h"
+#include "util.h"
 
-typedef struct _DefaultFrameData DefaultFrameData;
-typedef struct _DefaultScreenData DefaultScreenData;
+typedef struct _DefaultFrameData     DefaultFrameData;
+typedef struct _DefaultScreenData    DefaultScreenData;
+typedef struct _DefaultFrameGeometry DefaultFrameGeometry;
+
+struct _DefaultFrameGeometry
+{
+  /* We recalculate this every time, to save RAM */
+  int left_width;
+  int right_width;
+  int top_height;
+  int bottom_height;
+
+  MetaRectangle close_rect;
+  MetaRectangle max_rect;
+  MetaRectangle min_rect;
+  MetaRectangle spacer_rect;
+  MetaRectangle menu_rect;
+  MetaRectangle title_rect;  
+};
 
 struct _DefaultFrameData
 {
   PangoLayout *layout;
-  int title_height;
+  int layout_height;
 };
 
 struct _DefaultScreenData
@@ -84,13 +102,12 @@ default_acquire_frame (MetaFrameInfo *info)
   
   d = g_new (DefaultFrameData, 1);
 
-  desc = pango_font_description_from_string ("Sans 16");
+  desc = pango_font_description_from_string ("Sans 12");
   d->layout = pango_layout_new (meta_get_pango_context (info->screen,
-                                                        desc,
-                                                        info->frame));
+                                                        desc));
   pango_font_description_free (desc);
   
-  d->title_height = 0;
+  d->layout_height = 0;
   
   return d;
 }
@@ -109,11 +126,140 @@ default_release_frame (MetaFrameInfo *info,
   g_free (d);
 }
 
-#define VERTICAL_TEXT_PAD 3
-#define LEFT_WIDTH 15
-#define RIGHT_WIDTH 15
-#define BOTTOM_HEIGHT 20
+#define VERTICAL_TITLE_PAD 2
+#define HORIZONTAL_TITLE_PAD 3
+#define VERTICAL_TEXT_PAD 2
+#define HORIZONTAL_TEXT_PAD 2
+#define LEFT_WIDTH 2
+#define RIGHT_WIDTH 2
+#define BOTTOM_HEIGHT 5
 #define SPACER_SPACING 3
+#define SPACER_WIDTH 2
+#define SPACER_HEIGHT 10
+#define BUTTON_WIDTH 12
+#define BUTTON_HEIGHT 12
+#define BUTTON_PAD 2
+#define INNER_BUTTON_PAD 1
+static void
+calc_geometry (MetaFrameInfo *info,
+               DefaultFrameData *d,
+               DefaultFrameGeometry *fgeom)
+{
+  int x;
+  int button_y;
+  int title_right_edge;
+  
+  fgeom->top_height = MAX (d->layout_height + VERTICAL_TITLE_PAD * 2 + VERTICAL_TEXT_PAD * 2,
+                           BUTTON_HEIGHT + BUTTON_PAD * 2);
+  
+  fgeom->left_width = LEFT_WIDTH;
+  fgeom->right_width = RIGHT_WIDTH;
+  fgeom->bottom_height = BOTTOM_HEIGHT;
+
+  x = info->width - fgeom->right_width;
+  button_y = (fgeom->top_height - BUTTON_HEIGHT) / 2;
+
+  if (info->flags & META_FRAME_ALLOWS_DELETE)
+    {
+      fgeom->close_rect.x = x - BUTTON_PAD - BUTTON_WIDTH;
+      fgeom->close_rect.y = button_y;
+      fgeom->close_rect.width = BUTTON_WIDTH;
+      fgeom->close_rect.height = BUTTON_HEIGHT;
+
+      x = fgeom->close_rect.x;
+    }
+  else
+    {
+      fgeom->close_rect.x = 0;
+      fgeom->close_rect.y = 0;
+      fgeom->close_rect.width = 0;
+      fgeom->close_rect.height = 0;
+    }
+
+  if (info->flags & META_FRAME_ALLOWS_MAXIMIZE)
+    {
+      fgeom->max_rect.x = x - BUTTON_PAD - BUTTON_WIDTH;
+      fgeom->max_rect.y = button_y;
+      fgeom->max_rect.width = BUTTON_WIDTH;
+      fgeom->max_rect.height = BUTTON_HEIGHT;
+
+      x = fgeom->max_rect.x;
+    }
+  else
+    {
+      fgeom->max_rect.x = 0;
+      fgeom->max_rect.y = 0;
+      fgeom->max_rect.width = 0;
+      fgeom->max_rect.height = 0;
+    }
+  
+  if (info->flags & META_FRAME_ALLOWS_ICONIFY)
+    {
+      fgeom->min_rect.x = x - BUTTON_PAD - BUTTON_WIDTH;
+      fgeom->min_rect.y = button_y;
+      fgeom->min_rect.width = BUTTON_WIDTH;
+      fgeom->min_rect.height = BUTTON_HEIGHT;
+
+      x = fgeom->min_rect.x;
+    }
+  else
+    {
+      fgeom->min_rect.x = 0;
+      fgeom->min_rect.y = 0;
+      fgeom->min_rect.width = 0;
+      fgeom->min_rect.height = 0;
+    }
+
+  if (fgeom->close_rect.width > 0 ||
+      fgeom->max_rect.width > 0 ||
+      fgeom->min_rect.width > 0)
+    {
+      fgeom->spacer_rect.x = x - SPACER_SPACING - SPACER_WIDTH;
+      fgeom->spacer_rect.y = (fgeom->top_height - SPACER_HEIGHT) / 2;
+      fgeom->spacer_rect.width = SPACER_WIDTH;
+      fgeom->spacer_rect.height = SPACER_HEIGHT;
+
+      x = fgeom->spacer_rect.x;
+    }
+  else
+    {
+      fgeom->spacer_rect.x = 0;
+      fgeom->spacer_rect.y = 0;
+      fgeom->spacer_rect.width = 0;
+      fgeom->spacer_rect.height = 0;
+    }
+
+  title_right_edge = x - HORIZONTAL_TITLE_PAD;
+
+  /* Now x changes to be position from the left */
+  x = fgeom->left_width;
+  
+  if (info->flags & META_FRAME_ALLOWS_MENU)
+    {
+      fgeom->menu_rect.x = x + BUTTON_PAD;
+      fgeom->menu_rect.y = button_y;
+      fgeom->menu_rect.width = BUTTON_WIDTH;
+      fgeom->menu_rect.height = BUTTON_HEIGHT;
+
+      x = fgeom->menu_rect.x + fgeom->menu_rect.width;
+    }
+  else
+    {
+      fgeom->menu_rect.x = 0;
+      fgeom->menu_rect.y = 0;
+      fgeom->menu_rect.width = 0;
+      fgeom->menu_rect.height = 0;
+    }
+
+  fgeom->title_rect.x = x + BUTTON_PAD;
+  fgeom->title_rect.y = VERTICAL_TITLE_PAD;
+  fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
+  fgeom->title_rect.height = fgeom->top_height - VERTICAL_TITLE_PAD * 2;
+
+  if (fgeom->title_rect.width < 0)
+    fgeom->title_rect.width = 0;  
+}
+
 static void
 default_fill_frame_geometry (MetaFrameInfo *info,
                              MetaFrameGeometry *geom,
@@ -121,6 +267,7 @@ default_fill_frame_geometry (MetaFrameInfo *info,
 {
   DefaultFrameData *d;
   PangoRectangle rect;
+  DefaultFrameGeometry fgeom;
   
   d = frame_data;
       
@@ -131,13 +278,14 @@ default_fill_frame_geometry (MetaFrameInfo *info,
 
   pango_layout_get_pixel_extents (d->layout, NULL, &rect);
 
-  d->title_height = rect.height + VERTICAL_TEXT_PAD * 2;
-  geom->top_height = d->title_height;
-  
-  geom->left_width = LEFT_WIDTH;
-  geom->right_width = RIGHT_WIDTH;
-  geom->bottom_height = BOTTOM_HEIGHT;
-  
+  d->layout_height = rect.height;
+
+  calc_geometry (info, d, &fgeom);
+  geom->top_height = fgeom.top_height;
+  geom->left_width = fgeom.left_width;
+  geom->right_width = fgeom.right_width;
+  geom->bottom_height = fgeom.bottom_height;
+
   geom->background_pixel = meta_get_x_pixel (info->screen,
                                              &info->colors->bg[META_STATE_NORMAL]);
 }
@@ -151,6 +299,7 @@ draw_vline (MetaFrameInfo *info,
             int            y2,
             int            x)
 {
+  /* From GTK+ */
   int thickness_light;
   int thickness_dark;
   int i;
@@ -177,61 +326,225 @@ draw_vline (MetaFrameInfo *info,
 }
 
 static void
+draw_varrow (MetaFrameInfo *info,
+             Drawable       drawable,
+             GC             gc,
+             gboolean       down,
+	     gint           x,
+	     gint           y,
+	     gint           width,
+	     gint           height)
+{
+  gint steps, extra;
+  gint y_start, y_increment;
+  gint i;
+
+  /* From GTK+ */
+  
+  width = width + width % 2 - 1;	/* Force odd */
+  
+  steps = 1 + width / 2;
+
+  extra = height - steps;
+
+  if (down)
+    {
+      y_start = y;
+      y_increment = 1;
+    }
+  else
+    {
+      y_start = y + height - 1;
+      y_increment = -1;
+    }
+
+  for (i = 0; i < extra; i++)
+    {
+      XDrawLine (info->display, drawable,
+                 gc,
+                 x,              y_start + i * y_increment,
+                 x + width - 1,  y_start + i * y_increment);
+    }
+  for (; i < height; i++)
+    {
+      XDrawLine (info->display, drawable,
+                 gc,
+                 x + (i - extra),              y_start + i * y_increment,
+                 x + width - (i - extra) - 1,  y_start + i * y_increment);
+    }
+}
+
+static void
+set_clip (Display *display, GC gc, MetaRectangle *rect)
+{
+  if (rect)
+    {
+      XRectangle xrect;
+
+      xrect.x = rect->x;
+      xrect.y = rect->y;
+      xrect.width = rect->width;
+      xrect.height = rect->height;
+
+      XSetClipRectangles (display, gc, 0, 0,
+                          &xrect, 1, YXBanded);
+    }
+  else
+    {
+      XSetClipMask (display, gc, None);
+    }
+}
+
+static void
 default_expose_frame (MetaFrameInfo *info,
                       int x, int y,
                       int width, int height,
                       gpointer frame_data)
 {
   DefaultFrameData *d;
-  int close_size;
   XGCValues vals;
+  int xoff, yoff;
+  DefaultFrameGeometry fgeom;
   
   d = frame_data;
+
+  calc_geometry (info, d, &fgeom);
   
-  pango_x_render_layout (info->display,
-                         info->frame,
-                         screen_data->text_gc,
-                         d->layout,
-                         LEFT_WIDTH,
-                         VERTICAL_TEXT_PAD);
+  xoff = info->xoffset;
+  yoff = info->yoffset;
 
-  close_size = d->title_height;
+  if (fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
+    {
+      int layout_y;
+      MetaRectangle clip;
 
-  vals.line_width = 2;
-  XChangeGC (info->display,
-             screen_data->fg_gc,
-             GCLineWidth,
-             &vals);
+      /* center vertically */
+      layout_y = fgeom.title_rect.y +
+        (fgeom.title_rect.height - d->layout_height) / 2;
+
+      clip = fgeom.title_rect;
+      clip.x += xoff;
+      clip.y += yoff;
+      clip.width -= HORIZONTAL_TEXT_PAD;
+      
+      set_clip (info->display, screen_data->text_gc, &clip);
+      if (info->flags & META_FRAME_HAS_FOCUS)
+        {
+          /* FIXME use STATE_SELECTED */
+
+        }
+      
+      pango_x_render_layout (info->display,
+                             info->drawable,
+                             screen_data->text_gc,
+                             d->layout,
+                             xoff + fgeom.title_rect.x + HORIZONTAL_TEXT_PAD,
+                             yoff + layout_y);
+      set_clip (info->display, screen_data->text_gc, NULL);
+    }
+
+  if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
+    {      
+      XDrawLine (info->display,
+                 info->drawable,
+                 screen_data->fg_gc,
+                 xoff + fgeom.close_rect.x + INNER_BUTTON_PAD,
+                 yoff + fgeom.close_rect.y + INNER_BUTTON_PAD,
+                 xoff + fgeom.close_rect.x + fgeom.close_rect.width - INNER_BUTTON_PAD,
+                 yoff + fgeom.close_rect.y + fgeom.close_rect.height - INNER_BUTTON_PAD);
+
+      
+      XDrawLine (info->display,
+                 info->drawable,
+                 screen_data->fg_gc,
+                 xoff + fgeom.close_rect.x + INNER_BUTTON_PAD,
+                 yoff + fgeom.close_rect.y + fgeom.close_rect.height - INNER_BUTTON_PAD,
+                 xoff + fgeom.close_rect.x + fgeom.close_rect.width - INNER_BUTTON_PAD,
+                 yoff + fgeom.close_rect.y + INNER_BUTTON_PAD);
+    }
+
+  if (fgeom.max_rect.width > 0 && fgeom.max_rect.height > 0)
+    {      
+      XDrawRectangle (info->display,
+                      info->drawable,
+                      screen_data->fg_gc,
+                      xoff + fgeom.max_rect.x + INNER_BUTTON_PAD,
+                      yoff + fgeom.max_rect.y + INNER_BUTTON_PAD,
+                      fgeom.max_rect.width - INNER_BUTTON_PAD * 2,
+                      fgeom.max_rect.height - INNER_BUTTON_PAD * 2);
+
+      vals.line_width = 3;
+      XChangeGC (info->display,
+                 screen_data->fg_gc,
+                 GCLineWidth,
+                 &vals);
+      
+      XDrawLine (info->display,
+                 info->drawable,
+                 screen_data->fg_gc,
+                 xoff + fgeom.max_rect.x + INNER_BUTTON_PAD,
+                 yoff + fgeom.max_rect.y + INNER_BUTTON_PAD + vals.line_width / 2,
+                 xoff + fgeom.max_rect.x + fgeom.max_rect.width - INNER_BUTTON_PAD,
+                 yoff + fgeom.max_rect.y + INNER_BUTTON_PAD + vals.line_width / 2);
+      
+      vals.line_width = 0;
+      XChangeGC (info->display,
+                 screen_data->fg_gc,
+                 GCLineWidth,
+                 &vals);      
+    }
+
+  if (fgeom.min_rect.width > 0 && fgeom.min_rect.height > 0)
+    {
+      vals.line_width = 3;
+      XChangeGC (info->display,
+                 screen_data->fg_gc,
+                 GCLineWidth,
+                 &vals);
+      
+      XDrawLine (info->display,
+                 info->drawable,
+                 screen_data->fg_gc,
+                 xoff + fgeom.min_rect.x + INNER_BUTTON_PAD,
+                 yoff + fgeom.min_rect.y + fgeom.min_rect.height - INNER_BUTTON_PAD - vals.line_width / 2,
+                 xoff + fgeom.min_rect.x + fgeom.min_rect.width - INNER_BUTTON_PAD,
+                 yoff + fgeom.min_rect.y + fgeom.min_rect.height - INNER_BUTTON_PAD - vals.line_width / 2);
+
+      vals.line_width = 0;
+      XChangeGC (info->display,
+                 screen_data->fg_gc,
+                 GCLineWidth,
+                 &vals);      
+    }
   
-  XDrawLine (info->display,
-             info->frame,
-             screen_data->fg_gc,
-             info->width - RIGHT_WIDTH - close_size,
-             VERTICAL_TEXT_PAD,
-             info->width - RIGHT_WIDTH,
-             d->title_height - VERTICAL_TEXT_PAD);
+  if (fgeom.spacer_rect.width > 0 && fgeom.spacer_rect.height > 0)
+    {
+      draw_vline (info, info->drawable,
+                  screen_data->light_gc,
+                  screen_data->dark_gc,
+                  yoff + fgeom.spacer_rect.y,
+                  yoff + fgeom.spacer_rect.y + fgeom.spacer_rect.height,
+                  xoff + fgeom.spacer_rect.x);
+    }
 
-  XDrawLine (info->display,
-             info->frame,
-             screen_data->fg_gc,
-             info->width - RIGHT_WIDTH,
-             VERTICAL_TEXT_PAD,
-             info->width - RIGHT_WIDTH - close_size,
-             d->title_height - VERTICAL_TEXT_PAD);
-
-  vals.line_width = 0;
-  XChangeGC (info->display,
-             screen_data->fg_gc,
-             GCLineWidth,
-             &vals);
-  
-  draw_vline (info, info->frame,
-              screen_data->light_gc,
-              screen_data->dark_gc,
-              VERTICAL_TEXT_PAD,
-              d->title_height - VERTICAL_TEXT_PAD,
-              info->width - RIGHT_WIDTH - close_size - SPACER_SPACING);
+  if (fgeom.menu_rect.width > 0 && fgeom.menu_rect.height > 0)
+    {
+      int x, y;
+      x = fgeom.menu_rect.x;
+      y = fgeom.menu_rect.y;
+      x += (fgeom.menu_rect.width - 7) / 2;
+      y += (fgeom.menu_rect.height - 5) / 2;
+      
+      draw_varrow (info, info->drawable, screen_data->fg_gc, TRUE,
+                   xoff + x, yoff + y, 7, 5);
+    }
 }
+
+#define POINT_IN_RECT(xcoord, ycoord, rect) \
+ ((xcoord) >= (rect).x &&                   \
+  (xcoord) <  ((rect).x + (rect).width) &&  \
+  (ycoord) >= (rect).y &&                   \
+  (ycoord) <  ((rect).y + (rect).height))
 
 #define RESIZE_EXTENDS 10
 static MetaFrameControl
@@ -240,20 +553,20 @@ default_get_control (MetaFrameInfo *info,
                      gpointer frame_data)
 {
   DefaultFrameData *d;
-  int close_size;
+  DefaultFrameGeometry fgeom;
   
   d = frame_data;
 
-  close_size = d->title_height;
-  if (y < d->title_height &&
-      x > info->width - RIGHT_WIDTH - close_size)
+  calc_geometry (info, d, &fgeom);
+  
+  if (POINT_IN_RECT (x, y, fgeom.close_rect))
     return META_FRAME_CONTROL_DELETE;
   
-  if (y < d->title_height)
+  if (POINT_IN_RECT (x, y, fgeom.title_rect))
     return META_FRAME_CONTROL_TITLE;
   
-  if (y > (info->height - BOTTOM_HEIGHT - RESIZE_EXTENDS) &&
-      x > (info->width - RIGHT_WIDTH - RESIZE_EXTENDS))
+  if (y > (info->height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+      x > (info->width - fgeom.right_width - RESIZE_EXTENDS))
     return META_FRAME_CONTROL_RESIZE_SE;
   
   return META_FRAME_CONTROL_NONE;

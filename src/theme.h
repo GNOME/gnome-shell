@@ -40,7 +40,8 @@ typedef enum
   META_FRAME_ALLOWS_ICONIFY   = 1 << 2,
   META_FRAME_ALLOWS_MAXIMIZE  = 1 << 3, 
   META_FRAME_ALLOWS_RESIZE    = 1 << 4,
-  META_FRAME_TRANSIENT        = 1 << 5
+  META_FRAME_TRANSIENT        = 1 << 5,
+  META_FRAME_HAS_FOCUS        = 1 << 6
 } MetaFrameFlags;
 
 typedef enum
@@ -65,7 +66,8 @@ struct _MetaFrameInfo
 {
   /* These are read-only to engines */
   MetaFrameFlags flags;
-  Window frame; /* == None in fill_frame_geometry */
+  Window drawable; /* == None except in expose */
+  int xoffset, yoffset; /* add to frame coords to get drawable coords */
   Display *display;
   Screen *screen;
   Visual *visual;
@@ -94,7 +96,7 @@ struct _MetaFrameGeometry
   unsigned long background_pixel;
 
   Pixmap shape_mask;
-  /* FIXME shape region */
+  /* FIXME shape region? */
 };
 
 struct _MetaThemeEngine

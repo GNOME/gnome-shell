@@ -191,6 +191,8 @@ meta_display_close (MetaDisplay *display)
       /* If the next node doesn't contain this window
        * a second time, delete the window.
        */
+      g_assert (tmp->data != NULL);
+      
       if (tmp->next == NULL ||
           (tmp->next && tmp->next->data != tmp->data))
         meta_window_free (tmp->data);

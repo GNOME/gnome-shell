@@ -41,6 +41,11 @@ struct _MetaScreen
 
   XVisualInfo visual_info;
   MetaUIColors colors;
+
+  /* In screen's visual, no guarantees about colors, shouldn't be
+   * left with a clip.
+   */
+  GC scratch_gc;
   
   /*< private >*/
 

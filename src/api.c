@@ -25,8 +25,7 @@
 
 PangoContext*
 meta_get_pango_context (Screen                     *xscreen,
-                        const PangoFontDescription *desc,
-                        Window                      frame)
+                        const PangoFontDescription *desc)
 {
   MetaScreen *screen;
 

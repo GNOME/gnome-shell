@@ -55,8 +55,7 @@ struct _MetaUIColors
 };
 
 PangoContext*       meta_get_pango_context (Screen                     *xscreen,
-                                            const PangoFontDescription *desc,
-                                            Window                      frame);
+                                            const PangoFontDescription *desc);
 gulong              meta_get_x_pixel       (Screen                     *xscreen,
                                             const PangoColor           *color);
 

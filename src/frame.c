@@ -28,8 +28,14 @@ static void
 meta_frame_init_info (MetaFrame     *frame,
                       MetaFrameInfo *info)
 {
-  info->flags = 0;
-  info->frame = frame->xwindow;
+  info->flags =
+    META_FRAME_ALLOWS_DELETE | META_FRAME_ALLOWS_MENU |
+    META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE |
+    META_FRAME_ALLOWS_RESIZE;
+  
+  info->drawable = None;
+  info->xoffset = 0;
+  info->yoffset = 0;
   info->display = frame->window->display->xdisplay;
   info->screen = frame->window->screen->xscreen;
   info->visual = frame->window->xvisual;
@@ -132,11 +138,37 @@ meta_frame_calc_geometry (MetaFrame *frame,
 
   frame->child_x = geom.left_width;
   frame->child_y = geom.top_height;
-
+  
   frame->rect.width = frame->rect.width + geom.left_width + geom.right_width;
   frame->rect.height = frame->rect.height + geom.top_height + geom.bottom_height;
 
+  frame->bg_pixel = geom.background_pixel;
+  
   *geomp = geom;
+}
+
+static void
+set_background_none (MetaFrame *frame)
+{
+  XSetWindowAttributes attrs;
+
+  attrs.background_pixmap = None;
+  XChangeWindowAttributes (frame->window->display->xdisplay,
+                           frame->xwindow,
+                           CWBackPixmap,
+                           &attrs);
+}
+
+static void
+set_background_color (MetaFrame *frame)
+{
+  XSetWindowAttributes attrs;
+
+  attrs.background_pixel = None;
+  XChangeWindowAttributes (frame->window->display->xdisplay,
+                           frame->xwindow,
+                           CWBackPixel,
+                           &attrs);
 }
 
 void
@@ -176,7 +208,7 @@ meta_window_ensure_frame (MetaWindow *window)
                 frame->child_x, frame->child_y,
                 window->size_hints.win_gravity);
   
-  attrs.background_pixel = geom.background_pixel;
+  attrs.background_pixel = frame->bg_pixel;
   attrs.event_mask =
     StructureNotifyMask | SubstructureNotifyMask | ExposureMask |
     ButtonPressMask | ButtonReleaseMask | OwnerGrabButtonMask |
@@ -308,13 +340,15 @@ meta_frame_child_configure_request (MetaFrame *frame)
   meta_frame_calc_initial_pos (frame,
                                frame->window->size_hints.x,
                                frame->window->size_hints.y);
-                               
+
+  set_background_none (frame);
   XMoveResizeWindow (frame->window->display->xdisplay,
                      frame->xwindow,
                      frame->rect.x,
                      frame->rect.y,
                      frame->rect.width,
                      frame->rect.height);
+  set_background_color (frame);
 }
 
 void
@@ -322,7 +356,6 @@ meta_frame_recalc_now (MetaFrame *frame)
 {
   int old_child_x, old_child_y;
   MetaFrameGeometry geom;
-  XSetWindowAttributes attrs;
 
   old_child_x = frame->child_x;
   old_child_y = frame->child_y;
@@ -341,19 +374,15 @@ meta_frame_recalc_now (MetaFrame *frame)
   if (old_child_y != frame->child_y)
     frame->rect.y += (frame->child_y - old_child_y);
 
+  set_background_none (frame);
   XMoveResizeWindow (frame->window->display->xdisplay,
                      frame->xwindow,
                      frame->rect.x,
                      frame->rect.y,
                      frame->rect.width,
                      frame->rect.height);
-
-  attrs.background_pixel = geom.background_pixel;
-  XChangeWindowAttributes (frame->window->display->xdisplay,
-                           frame->xwindow,
-                           CWBackPixel,
-                           &attrs);
-
+  set_background_color (frame);
+  
   meta_verbose ("Frame of %s recalculated to %d,%d %d x %d child %d,%d\n",
                 frame->window->desc, frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
@@ -363,15 +392,73 @@ meta_frame_recalc_now (MetaFrame *frame)
 void
 meta_frame_queue_recalc (MetaFrame *frame)
 {
-  /* FIXME */
+  /* FIXME, actually queue */
   meta_frame_recalc_now (frame);
+}
+
+static void
+meta_frame_draw_now (MetaFrame *frame,
+                     int x, int y, int width, int height)
+{
+  MetaFrameInfo info;
+  Pixmap p;
+  XGCValues vals;
+  
+  if (frame->xwindow == None)
+    return;
+  
+  meta_frame_init_info (frame, &info);
+
+  if (width < 0)
+    width = frame->rect.width;
+
+  if (height < 0)
+    height = frame->rect.height;
+
+  if (width == 0 || height == 0)
+    return;
+  
+  p = XCreatePixmap (frame->window->display->xdisplay,
+                     frame->xwindow,
+                     width, height,
+                     frame->window->screen->visual_info.depth);
+
+  vals.foreground = frame->bg_pixel;
+  XChangeGC (frame->window->display->xdisplay,
+             frame->window->screen->scratch_gc,
+             GCForeground,
+             &vals);
+
+  XFillRectangle (frame->window->display->xdisplay,
+                  p,
+                  frame->window->screen->scratch_gc,
+                  0, 0,
+                  width, height);
+
+  info.drawable = p;
+  info.xoffset = - x;
+  info.yoffset = - y;
+  frame->window->screen->engine->expose_frame (&info,
+                                               0, 0, width, height,
+                                               frame->theme_data);  
+
+
+  XCopyArea (frame->window->display->xdisplay,
+             p, frame->xwindow,
+             frame->window->screen->scratch_gc,
+             0, 0,
+             width, height,
+             x, y);
+
+  XFreePixmap (frame->window->display->xdisplay,
+               p);
 }
 
 void
 meta_frame_queue_draw (MetaFrame *frame)
 {
-  /* FIXME */
-
+  /* FIXME, actually queue */
+  meta_frame_draw_now (frame, 0, 0, -1, -1);
 }
 
 static void
@@ -523,10 +610,12 @@ meta_frame_event (MetaFrame *frame,
           break;
 
         case META_FRAME_ACTION_NONE:
+#if 0
           meta_ui_slave_show_tip (frame->window->screen->uislave,
                                   frame->rect.x,
                                   frame->rect.y,
                                   "Hi this is a tooltip");
+#endif
           break;
         default:
           break;
@@ -543,16 +632,11 @@ meta_frame_event (MetaFrame *frame,
     case KeymapNotify:
       break;
     case Expose:
-      {
-        MetaFrameInfo info;
-        meta_frame_init_info (frame, &info);
-        frame->window->screen->engine->expose_frame (&info,
-                                                     event->xexpose.x,
-                                                     event->xexpose.y,
-                                                     event->xexpose.width,
-                                                     event->xexpose.height,
-                                                     frame->theme_data);
-      }
+      meta_frame_draw_now (frame,
+                           event->xexpose.x,
+                           event->xexpose.y,
+                           event->xexpose.width,
+                           event->xexpose.height);
       break;
     case GraphicsExpose:
       break;

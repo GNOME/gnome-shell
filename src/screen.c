@@ -46,6 +46,7 @@ meta_screen_new (MetaDisplay *display,
   Window xroot;
   Display *xdisplay;
   Cursor cursor;
+  XGCValues vals;
   
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -101,6 +102,11 @@ meta_screen_new (MetaDisplay *display,
 
   meta_screen_init_visual_info (screen);
   meta_screen_init_ui_colors (screen);
+
+  screen->scratch_gc = XCreateGC (screen->display->xdisplay,
+                                  screen->xroot,
+                                  0,
+                                  &vals);
   
   screen->uislave = meta_ui_slave_new (screen->screen_name,
                                        ui_slave_func,
@@ -116,6 +122,10 @@ void
 meta_screen_free (MetaScreen *screen)
 {
   meta_ui_slave_free (screen->uislave);
+
+  XFreeGC (screen->display->xdisplay,
+           screen->scratch_gc);
+  
   if (screen->pango_context)
     g_object_unref (G_OBJECT (screen->pango_context));
   g_free (screen->screen_name);
