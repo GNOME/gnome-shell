@@ -1,3 +1,10 @@
+2003-01-02  Rob Adams  <readams@readams.net>
+
+	* README: Update reference to EWMH.
+
+	* HACKING: Add a reference to COMPLIANCE and to the ICCCM and
+	EWHM.
+
 2003-12-25  Havoc Pennington  <hp@redhat.com>
 
 	* src/compositor.c (process_reparent): handle ReparentNotify, and

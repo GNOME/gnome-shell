@@ -39,9 +39,9 @@ See the HACKING file for some notes on hacking Metacity.
 SHRINKING METACITY
 ===
 
-Not that metacity is huge (<400K binary last I checked), but about
-half of that is in the preferences handling, in static strings that
-aren't essential, and in the theme engine.
+Not that metacity is huge, but a substantial amount of code is in
+preferences handling, in static strings that aren't essential, and in
+the theme engine.
 
 You can strip about 70K from the metacity binary by compiling with 
 options such as:
@@ -187,11 +187,10 @@ METACITY FEATURES
      be respawned. It theoretically restores sizes/positions/workspace
      for session-aware applications.
 
- - Metacity implements much of the new window manager spec from
-   freedesktop.org
-   (http://www.freedesktop.org/standards/wm-spec.html), and much of
-   the ICCCM. But then there are parts of each that it doesn't
-   implement, just because I haven't yet.
+ - Metacity implements much of the EWMH window manager specification
+   from freedesktop.org, as well as the older ICCCM.  Please refer to
+   the COMPLIANCE file for information on metacity compliance with
+   these standards.
 
  - Uses Pango to render text, so has cool i18n capabilities. 
    Supports UTF-8 window titles and such.

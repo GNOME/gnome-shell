@@ -101,4 +101,9 @@ be NULL.
 
 The code could use cleanup in a lot of places, feel free to do so.
 
-
+Metacity is ideally a fully ICCCM and EWMH-compliant window manager.
+Reading these specifications is a useful first step to understanding
+the role of a window manager on an X11 desktop and the standards and
+conventions on which X11 desktops are based.  Please refer to the
+COMPLIANCE file for additional information on these specifications and
+metacity's compliance therewith.
