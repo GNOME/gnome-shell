@@ -141,7 +141,3 @@ void meta_window_set_stack_position (MetaWindow *window,
                                      int         position);
 
 #endif
-
-
-
-

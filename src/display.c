@@ -281,6 +281,7 @@ meta_display_open (const char *name)
     "_NET_WM_ACTION_MINIMIZE",
     "_NET_FRAME_EXTENTS",
     "_NET_REQUEST_FRAME_EXTENTS",
+    "_NET_WM_USER_TIME",
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -427,6 +428,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_action_minimize = atoms[82];
   display->atom_net_frame_extents = atoms[83];
   display->atom_net_request_frame_extents = atoms[84];
+  display->atom_net_wm_user_time = atoms[85];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -1177,7 +1179,7 @@ event_callback (XEvent   *event,
   Window modified;
   gboolean frame_was_receiver;
   gboolean filter_out_event;
-  
+
   display = data;
   
   if (dump_events)
@@ -1326,6 +1328,16 @@ event_callback (XEvent   *event,
         }
     }
 #endif /* HAVE_SHAPE */
+
+  if (window && ((event->type == KeyPress) || (event->type == ButtonPress)))
+    {
+      g_assert (CurrentTime != display->current_time);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Metacity set %s's net_wm_user_time to %d.\n",
+                  window->desc, display->current_time);
+      window->net_wm_user_time_set = TRUE;
+      window->net_wm_user_time = display->current_time;
+    }
   
   switch (event->type)
     {

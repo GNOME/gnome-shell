@@ -175,6 +175,7 @@ struct _MetaDisplay
   Atom atom_net_wm_strut_partial;
   Atom atom_net_frame_extents;
   Atom atom_net_request_frame_extents;
+  Atom atom_net_wm_user_time;
 
   /* This is the actual window from focus events,
    * not the one we last set

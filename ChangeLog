@@ -1,3 +1,45 @@
+2004-06-17  Elijah Newren  <newren@math.utah.edu>
+
+	Add support for _NET_WM_USER_TIME
+	
+	* src/display.c:
+	(meta_display_open): Add _NET_WM_USER_TIME to atom_names[],
+	(event_callback): Manually set _NET_WM_USER_TIME upon KeyPress
+	(doesn't work since keyboard isn't grabbed) and ButtonPress (does
+	work), this is just a fallback for applications that don't update
+	this themselves.
+
+	* src/display.h: (struct _MetaDisplay): Add atom_net_wm_user_time field
+	
+	* src/screen.c: (meta_screen_apply_startup_properties): Check for
+	TIMESTAMP provided from startup sequence as well.
+	
+	* src/stack.c: 
+	s/meta_window_set_stack_position/meta_window_set_stack_position_no_sync/,
+	(meta_window_set_stack_position): New function which calls the
+	meta_window_set_stack_position_no_sync function followed immediately
+	by calling meta_stack_sync_to_server.
+
+	* src/window-props.c: 
+	(init_net_wm_user_time), (reload_net_wm_user_time): new functions,
+	(reload_wm_hints): also load atom_net_wm_user_time
+	
+	* src/window.c:
+	new XSERVER_TIME_IS_LATER macro (accounts for timestamp wraparound),
+	(meta_window_new_with_attrs): add timestamp attributes,
+	(window_takes_focus_on_map): use TIMESTAMP from startup
+	notification and _NET_WM_USER_TIME to decide whether to focus new
+	windows,
+	(meta_window_show): if app doesn't take focus on map, place it
+	just below the focused window in the stack
+	(process_property_notify): check for changes to _NET_WM_USRE_TIME,
+	(meta_window_stack_just_below): new function
+	
+	* src/window.h:
+	(_MetaWindow struct): new fields for initial_timestamp,
+	initial_timestamp_set, net_wm_user_time_set, and net_wm_user_time,
+	(meta_window_stack_just_below): new function
+
 2004-06-21  Anders Carlsson  <andersca@gnome.org>
 
 	* src/common.h:

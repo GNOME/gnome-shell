@@ -2481,6 +2481,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   if (sequence != NULL)
     {
       int space;
+      Time timestamp;
           
       meta_topic (META_DEBUG_STARTUP,
                   "Found startup sequence for window %s ID \"%s\"\n",
@@ -2498,6 +2499,17 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
               window->initial_workspace_set = TRUE;
               window->initial_workspace = space;
             }
+        }
+
+      if (!window->initial_timestamp_set)
+        {
+          timestamp = sn_startup_sequence_get_timestamp (sequence);
+          meta_topic (META_DEBUG_STARTUP,
+                      "Setting initial window timestamp to %lu based on startup info\n",
+                      timestamp);
+              
+          window->initial_timestamp_set = TRUE;
+          window->initial_timestamp = timestamp;
         }
 
       return;

@@ -47,6 +47,8 @@
 #define WINDOW_IN_STACK(w) (w->stack_position >= 0)
 
 static void meta_stack_sync_to_server (MetaStack *stack);
+static void meta_window_set_stack_position_no_sync (MetaWindow *window,
+                                                    int         position);
 
 MetaStack*
 meta_stack_new (MetaScreen *screen)
@@ -122,8 +124,8 @@ meta_stack_remove (MetaStack  *stack,
   /* Set window to top position, so removing it will not leave gaps
    * in the set of positions
    */
-  meta_window_set_stack_position (window,
-                                  stack->n_positions - 1);
+  meta_window_set_stack_position_no_sync (window,
+                                          stack->n_positions - 1);
   window->stack_position = -1;
   stack->n_positions -= 1;  
 
@@ -162,8 +164,8 @@ void
 meta_stack_raise (MetaStack  *stack,
                   MetaWindow *window)
 {  
-  meta_window_set_stack_position (window,
-                                  stack->n_positions - 1);
+  meta_window_set_stack_position_no_sync (window,
+                                          stack->n_positions - 1);
   
   meta_stack_sync_to_server (stack);
 }
@@ -172,7 +174,7 @@ void
 meta_stack_lower (MetaStack  *stack,
                   MetaWindow *window)
 {
-  meta_window_set_stack_position (window, 0);
+  meta_window_set_stack_position_no_sync (window, 0);
   
   meta_stack_sync_to_server (stack);
 }
@@ -669,7 +671,7 @@ ensure_above (MetaWindow *above,
   if (above->stack_position < below->stack_position)
     {
       /* move above to below->stack_position bumping below down the stack */
-      meta_window_set_stack_position (above, below->stack_position);
+      meta_window_set_stack_position_no_sync (above, below->stack_position);
       g_assert (below->stack_position + 1 == above->stack_position);
     }
   meta_topic (META_DEBUG_STACK, "%s above at %d > %s below at %d\n",
@@ -1465,8 +1467,8 @@ meta_stack_windows_cmp  (MetaStack  *stack,
 }
 
 void
-meta_window_set_stack_position (MetaWindow *window,
-                                int         position)
+meta_window_set_stack_position_no_sync (MetaWindow *window,
+                                        int         position)
 {
   int low, high, delta;
   GList *tmp;
@@ -1516,4 +1518,12 @@ meta_window_set_stack_position (MetaWindow *window,
   meta_topic (META_DEBUG_STACK,
               "Window %s had stack_position set to %d\n",
               window->desc, window->stack_position);
+}
+
+void
+meta_window_set_stack_position (MetaWindow *window,
+                                int         position)
+{
+  meta_window_set_stack_position_no_sync (window, position);
+  meta_stack_sync_to_server (window->screen->stack);
 }

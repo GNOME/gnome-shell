@@ -103,6 +103,9 @@ struct _MetaWindow
   /* Initial workspace property */
   int initial_workspace;  
   
+  /* Initial timestamp property */
+  Time initial_timestamp;  
+  
   /* Whether we're maximized */
   guint maximized : 1;
   guint maximize_after_placement : 1;
@@ -138,6 +141,12 @@ struct _MetaWindow
 
   /* whether an initial workspace was explicitly set */
   guint initial_workspace_set : 1;
+  
+  /* whether an initial timestamp was explicitly set */
+  guint initial_timestamp_set : 1;
+  
+  /* whether net_wm_user_time has been set yet */
+  guint net_wm_user_time_set : 1;
   
   /* These are the flags from WM_PROTOCOLS */
   guint take_focus : 1;
@@ -259,6 +268,10 @@ struct _MetaWindow
    * is withdrawing the window.
    */
   int unmaps_pending;
+
+  /* set to the most recent user-interaction event timestamp that we
+     know about for this window */
+  Time net_wm_user_time;
   
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
@@ -501,8 +514,7 @@ void meta_window_recalc_features (MetaWindow *window);
 
 void meta_window_queue_update_icon (MetaWindow *window);
 
+void meta_window_stack_just_below (MetaWindow *window,
+                                   MetaWindow *below_this_one);
+
 #endif
-
-
-
-
