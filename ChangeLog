@@ -1,3 +1,7 @@
+2002-03-08  Laszlo Peter  <laca@ireland.sun.com>
+
+	* configure.in: fix the X linker flags
+
 2002-03-06  Havoc Pennington  <hp@pobox.com>
 
 	* src/core.c (meta_core_get_grab_frame): add some assertions
