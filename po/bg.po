@@ -9,10 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-12-16 09:37+0200\n"
+"POT-Creation-Date: 2005-02-06 11:33+0200\n"
+"PO-Revision-Date: 2005-02-06 11:32+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
-"Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
+"Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -207,11 +207,11 @@ msgstr "_Затваряне"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Поставяне на _всички работни плотове"
+msgid "_Always on Visible Workspace"
+msgstr "_Винаги на видимия работен плот"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+msgid "_Only on This Workspace"
 msgstr "_Само на този работен плот"
 
 #: src/menu.c:68
@@ -230,7 +230,7 @@ msgstr "Преместване в _горния работен плот"
 msgid "Move to Workspace _Down"
 msgstr "Преместване в _долния работен плот"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
@@ -370,7 +370,7 @@ msgstr ""
 "Тези прозорци не поддържат операцията по записване на текущото състояние и "
 "ще трябва да се стартират ръчно при следващото Ви влизане."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -512,13 +512,17 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Ако е включено, metacity ще даде на потребителя по-малко обратна връзка и по-"
-"малко усещане за \"директна манипулация\", като се използват wireframes, "
-"избягват се анимации, или чрез други средства. Това е значимо намаление на "
-"използваемостта за много потребители, но може да позволи на специфични "
-"програми и терминални сървъри да работят, което иначе би билоневъзможно."
+"Ако е включено, metacity ще дава на потребителя по-малко обратна връзка и по-"
+"малко усещане за \"директна манипулация\", като се използват рамки вместо "
+"цели прозорци, избягват се анимации или чрез други средства. Това е значимо "
+"влошаване на използваемостта за много потребители, но може да позволи на "
+"специфични програми и терминални сървъри да работят, което иначе би било "
+"невъзможно. Както и да е, рамките за прозорците са изключени, когато са "
+"включени възможностите за достъпност, за да се избегнат странни повреди на "
+"работния плот."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1201,7 +1205,6 @@ msgstr ""
 "има бърз клавиш."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1933,17 +1936,17 @@ msgstr "Режим на фокусиране на прозорци"
 msgid "Window title font"
 msgstr "Шрифт за заглавията на прозорците"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf ключът \"%s\" е от невалиден тип\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1952,17 +1955,17 @@ msgstr ""
 "\"%s\", който е открит в базата данни с настройките, не е валиден "
 "модификатор на бутон на мишката\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf ключът \"%s\" е с невалидна стойност\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Не успях да анализирам шрифтовото описание \"%s\" от GConf ключа %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1971,7 +1974,7 @@ msgstr ""
 "Стойността %d записана в GConf клавиша %s, е неподходяща за брой на "
 "работните места. Текущият максимум е %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1979,17 +1982,17 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "Стойността %d записана в GConf ключа %s е извън обхвата от 0 до %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка при задаване на броя на работни места да е %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1998,7 +2001,7 @@ msgstr ""
 "Низът \"%s\" открит в базата данни с настройки е невалиден за стойност на "
 "клавишната комбинация \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка при задаване на името на работното място %d да е \"%s\": %s\n"
@@ -3139,7 +3142,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4912
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3155,7 +3158,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5583
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3192,49 +3195,3 @@ msgid ""
 msgstr ""
 "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
 "списъка\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Изберете как да фокусирате прозорците"
-
-#~ msgid "Window Focus"
-#~ msgstr "Фокусиране на прозорци"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Натискане, за фокусиране"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Поведение на фокуса:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Настройки на фокусирането на прозорците"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Посочване, за фокусиране"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Издигане на прозореца при фокусиране"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Не успях да създам връзка към мениджъра на сесии, затова позициите на "
-#~ "прозорците няма да се запомнят: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Само на %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Премести на %s"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Прозорецът \"%s\" не отговаря.\n"
-#~ "Да принудя ли приложението да приключи?\n"
-#~ "(Всички отворени документи ще бъдат загубени.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Убий приложението"
