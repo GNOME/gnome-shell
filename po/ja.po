@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 08:27-0700\n"
-"PO-Revision-Date: 2004-08-06 09:19+0900\n"
+"POT-Creation-Date: 2004-11-04 22:13+0900\n"
+"PO-Revision-Date: 2004-11-04 22:09+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -124,9 +124,8 @@ msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
 
 #: src/keybindings.c:3489
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "コマンド %d は定義されていません。\n"
+msgstr "端末を起動するコマンドが定義されていません。\n"
 
 #: src/main.c:69
 msgid ""
@@ -705,7 +704,7 @@ msgstr "定義されたコマンドを実行"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "端末の起動"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1703,7 +1702,6 @@ msgstr ""
 "す。"
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1711,11 +1709,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"パネルのメインメニューを表示するキーバインドを指定します。フォーマットは "
-"\"&lt;Control&gt;a\" あるいは \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。"
-"パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や "
-"\"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 \"disabled\" をオプ"
-"ションに設定した場合は、この動作のキーバインドはなくなります。"
+"端末を起動するキーバインドを指定します。フォーマットは \"&lt;Control&gt;a\" "
+"あるいは \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全に自由で"
+"大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;\" のよう"
+"な省略もできます。もし特別な文字 \"disabled\" をオプションに設定した場合は、"
+"この動作のキーバインドはなくなります。"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
