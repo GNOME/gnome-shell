@@ -1,3 +1,8 @@
+2002-05-24  Anders Carlsson  <andersca@gnu.org>
+
+	* src/window.c: Redraw the window frame when the icon changes.
+	Fixes #78543, reported by Kang Jeong-Hee.
+	
 2002-05-23  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): also filter out LeaveNotify 

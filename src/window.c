@@ -83,6 +83,7 @@ static void     update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
 static int      update_icon_name          (MetaWindow     *window);
 static int      update_icon               (MetaWindow     *window);
+static void     redraw_icon               (MetaWindow     *window); 
 static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
@@ -3458,6 +3459,7 @@ process_property_notify (MetaWindow     *window,
       
       update_wm_hints (window);
       update_icon (window);
+      redraw_icon (window);
       
       meta_window_queue_move_resize (window);
     }
@@ -3521,11 +3523,11 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == window->display->atom_net_wm_icon)
     {
       meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
-
       meta_icon_cache_property_changed (&window->icon_cache,
                                         window->display,
                                         event->atom);
       update_icon (window);
+      redraw_icon (window);
     }
   else if (event->atom == window->display->atom_kwm_win_icon)
     {
@@ -3535,6 +3537,7 @@ process_property_notify (MetaWindow     *window,
                                         window->display,
                                         event->atom);
       update_icon (window);
+      redraw_icon (window);
     }
   else if (event->atom == window->display->atom_net_wm_strut)
     {
@@ -4567,6 +4570,13 @@ update_icon (MetaWindow *window)
   g_assert (window->mini_icon);
   
   return Success;
+}
+
+static void
+redraw_icon (MetaWindow *window)
+{
+  /* We could probably be smart and just redraw the icon here. */
+  meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 
 static GList*
