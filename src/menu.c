@@ -232,13 +232,16 @@ meta_window_menu_new   (MetaFrames         *frames,
   int i;
   MetaWindowMenu *menu;
 
+  if (n_workspaces < 2)
+    ops &= ~(META_MENU_OP_STICK | META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES);
+  
   menu = g_new (MetaWindowMenu, 1);
   menu->frames = frames;
   menu->client_xwindow = client_xwindow;
   menu->func = func;
   menu->data = data;
   menu->ops = ops;
-  menu->insensitive = insensitive;
+  menu->insensitive = insensitive;  
   
   menu->menu = gtk_menu_new ();
 
@@ -313,72 +316,70 @@ meta_window_menu_new   (MetaFrames         *frames,
 
   if (ops & META_MENU_OP_WORKSPACES)
     {
+
+      GtkWidget *mi;
+      Display *display;
+      Window xroot;
+      GdkScreen *screen;
+
       meta_verbose ("Creating %d-workspace menu current space %d\n",
                     n_workspaces, active_workspace);
-      
-      if (n_workspaces > 1)
+          
+      display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
+          
+      screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
+      xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
+          
+      i = 0;
+      while (i < n_workspaces)
         {
-          GtkWidget *mi;
-          Display *display;
-          Window xroot;
-          GdkScreen *screen;
-            
-          display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
-          
-          screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
-          xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
-          
-          i = 0;
-          while (i < n_workspaces)
-            {
-              char *label, *name;
-              MenuData *md;
-              unsigned int key;
-              MetaVirtualModifier mods;
+          char *label, *name;
+          MenuData *md;
+          unsigned int key;
+          MetaVirtualModifier mods;
               
-              meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
-                                              i + 1,
-                                              &key, &mods);
+          meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
+                                          i + 1,
+                                          &key, &mods);
               
-              name = get_workspace_name_with_accel (display, xroot, i);
-              if (ops & META_MENU_OP_UNSTICK)
-                label = g_strdup_printf (_("Only on %s"), name);
-              else
-                label = g_strdup_printf(_("Move to %s"), name);
-              mi = menu_item_new (label, FALSE, key, mods);
+          name = get_workspace_name_with_accel (display, xroot, i);
+          if (ops & META_MENU_OP_UNSTICK)
+            label = g_strdup_printf (_("Only on %s"), name);
+          else
+            label = g_strdup_printf(_("Move to %s"), name);
+          mi = menu_item_new (label, FALSE, key, mods);
 
-              g_free (name);
-              g_free (label);
+          g_free (name);
+          g_free (label);
 
-              if (!(ops & META_MENU_OP_UNSTICK) &&
-                  (active_workspace == i ||
-                   insensitive & META_MENU_OP_WORKSPACES))
-                gtk_widget_set_sensitive (mi, FALSE);
-	      else if (insensitive & META_MENU_OP_WORKSPACES)
-		gtk_widget_set_sensitive (mi, FALSE);
-              md = g_new (MenuData, 1);
+          if (!(ops & META_MENU_OP_UNSTICK) &&
+              (active_workspace == i ||
+               insensitive & META_MENU_OP_WORKSPACES))
+            gtk_widget_set_sensitive (mi, FALSE);
+          else if (insensitive & META_MENU_OP_WORKSPACES)
+            gtk_widget_set_sensitive (mi, FALSE);
+          md = g_new (MenuData, 1);
 
-              md->menu = menu;
-              md->op = META_MENU_OP_WORKSPACES;
+          md->menu = menu;
+          md->op = META_MENU_OP_WORKSPACES;
 
-              g_object_set_data (G_OBJECT (mi),
-                                 "workspace",
-                                 GINT_TO_POINTER (i));
+          g_object_set_data (G_OBJECT (mi),
+                             "workspace",
+                             GINT_TO_POINTER (i));
           
-              gtk_signal_connect_full (GTK_OBJECT (mi),
-                                       "activate",
-                                       GTK_SIGNAL_FUNC (activate_cb),
-                                       NULL,
-                                       md,
-                                       g_free, FALSE, FALSE);
+          gtk_signal_connect_full (GTK_OBJECT (mi),
+                                   "activate",
+                                   GTK_SIGNAL_FUNC (activate_cb),
+                                   NULL,
+                                   md,
+                                   g_free, FALSE, FALSE);
 
-              gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
-                                     mi);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
+                                 mi);
           
-              gtk_widget_show (mi);
+          gtk_widget_show (mi);
           
-              ++i;
-            }
+          ++i;
         }
     }
   else

@@ -1,3 +1,9 @@
+2003-10-30  Havoc Pennington  <hp@redhat.com>
+
+	* src/menu.c (meta_window_menu_new): patch to avoid creating
+	stick/unstick menu items when only one workspace, bug #116563
+	from Michael Terry
+
 2003-10-25  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_notify_focus): if a window is focused
