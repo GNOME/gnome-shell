@@ -1,3 +1,8 @@
+2004-09-17  Elijah Newren  <newren@math.utah.edu>
+
+	* src/workspace.c (meta_workspace_focus_mru_window): Don't focus a
+	window that is minimized (fixes #147947)
+
 2004-09-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/bell.c: (meta_bell_flash_screen):
