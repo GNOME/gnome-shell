@@ -1,3 +1,7 @@
+2003-03-11  Paul Duffy <dubhthach@zion.nuigalway.ie>
+
+        * configure.in: Added "ga" to ALL_LINGUAS
+
 2003-03-11  Rob Adams <robadams@ucla.edu>
 
 	* src/constraints.c (meta_window_constrain): include left frame
