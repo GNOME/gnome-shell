@@ -1,5 +1,14 @@
 2001-10-14  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (meta_frames_button_press_event): raise/focus
+	windows on left-click, seem to have broken that yesterday
+
+	* src/keybindings.c, src/display.c, src/window.c: add keybinding
+	to show/hide all normal windows (so you can see the desktop). 
+	Currently Ctrl+Alt+D, which I don't like, but yay.
+
+2001-10-14  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_new): take a window mapped at
 	fullscreen size/pos to desire maximization; once I add a
 	fullscreen state, will change to copy kwin and take this mapping

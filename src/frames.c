@@ -1025,6 +1025,15 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
   if (control == META_FRAME_CONTROL_CLIENT_AREA)
     return FALSE; /* not on the frame, just passed through from client */
+
+  if (event->button == 1)
+    {
+      meta_core_user_raise (gdk_display,
+                            frame->xwindow);
+      meta_core_user_focus (gdk_display,
+                            frame->xwindow,
+                            event->time);      
+    }
   
   /* We want to shade even if we have a GrabOp, since we'll have a move grab
    * if we double click the titlebar.

@@ -111,6 +111,8 @@ struct _MetaDisplay
   MetaWindow *prev_focus_window;
   
   GList *workspaces;
+
+  guint showing_desktop : 1;
   
   /*< private-ish >*/
   MetaEventQueue *events;
@@ -196,5 +198,9 @@ void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
 void     meta_display_increment_event_serial (MetaDisplay *display);
 
 void     meta_display_update_active_window_hint (MetaDisplay *display);
+
+/* Show/hide the desktop (temporarily hide all windows) */
+void     meta_display_show_desktop   (MetaDisplay *display);
+void     meta_display_unshow_desktop (MetaDisplay *display);
 
 #endif

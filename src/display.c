@@ -172,6 +172,8 @@ meta_display_open (const char *name)
 
   display->focus_window = NULL;
   display->prev_focus_window = NULL;
+
+  display->showing_desktop = FALSE;
   
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
@@ -1721,4 +1723,46 @@ meta_display_update_active_window_hint (MetaDisplay *display)
 
       tmp = tmp->next;
     }
+}
+
+static void
+queue_windows_showing (MetaDisplay *display)
+{
+  GSList *windows;
+  GSList *tmp;
+
+  windows = meta_display_list_windows (display);
+
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      meta_window_queue_calc_showing (tmp->data);
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (windows);
+}
+
+void
+meta_display_show_desktop (MetaDisplay *display)
+{
+  
+  if (display->showing_desktop)
+    return;
+
+  display->showing_desktop = TRUE;
+
+  queue_windows_showing (display);
+}
+
+void
+meta_display_unshow_desktop (MetaDisplay *display)
+{
+  if (!display->showing_desktop)
+    return;
+
+  display->showing_desktop = FALSE;
+  
+  queue_windows_showing (display);
 }

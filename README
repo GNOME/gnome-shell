@@ -49,6 +49,7 @@ METACITY FEATURES
     Alt-Escape        focus previous window
     Alt-Left Arrow    previous workspace
     Alt-Right Arrow   next workspace
+    Ctrl-Alt-D        minimize/unminimize all, to show desktop
 
  - Window keybindings:
     Alt-space         window menu

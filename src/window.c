@@ -814,6 +814,16 @@ meta_window_calc_showing (MetaWindow  *window)
       on_workspace = TRUE;
       meta_verbose ("Window %s is on all workspaces\n", window->desc);
     }
+
+  if (on_workspace &&
+      window->display->showing_desktop &&
+      window->type != META_WINDOW_DESKTOP &&
+      window->type != META_WINDOW_DOCK)
+    {
+      meta_verbose ("Window %s is on current workspace, but we're showing the desktop\n",
+                    window->desc);
+      on_workspace = FALSE;
+    }
   
   if (window->minimized || !on_workspace)
     {

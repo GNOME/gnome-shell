@@ -61,11 +61,16 @@ static void handle_workspace_left     (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
-static void handle_workspace_right     (MetaDisplay *display,
-                                        MetaWindow  *window,
-                                        XEvent      *event,
-                                        gpointer     data);
+static void handle_workspace_right    (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
+static void handle_toggle_desktop     (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 
+                                      
 static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             MetaWindow  *window,
                                             XEvent      *event,
@@ -110,6 +115,8 @@ static MetaKeyBinding screen_bindings[] = {
   { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
   { XK_Left, Mod1Mask, KeyPress, handle_workspace_left, NULL, 0 },
   { XK_Right, Mod1Mask, KeyPress, handle_workspace_right, NULL, 0 },
+  /* I don't like this binding, but haven't picked the right one yet */
+  { XK_d, Mod1Mask | ControlMask, KeyPress, handle_toggle_desktop, NULL, 0 },  
   { None, 0, 0, NULL, NULL, 0 }
 };
 
@@ -865,6 +872,18 @@ handle_workspace_right (MetaDisplay *display,
     {
       /* We could offer to create it I suppose */
     }
+}
+
+static void
+handle_toggle_desktop (MetaDisplay *display,
+                       MetaWindow  *window,
+                       XEvent      *event,
+                       gpointer     data)
+{
+  if (display->showing_desktop)
+    meta_display_unshow_desktop (display);
+  else
+    meta_display_show_desktop (display);
 }
 
 static void
