@@ -42,6 +42,8 @@ METACITY FEATURES
     Alt-Tab           forward cycle window focus
     Alt-Shift-Tab     backward cycle focus
     Alt-Escape        focus previous window
+    Alt-Left Arrow    previous workspace
+    Alt-Right Arrow   next workspace
 
  - Window keybindings:
     Alt-space         window menu
@@ -194,15 +196,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
  - Windows has a neat way of implementing Alt-Tab for 
    window cycling that I would like to copy. (The little 
    popup window thing.)
-
- - People seem to like shortcuts using arrow keys for moving
-   between workspaces. My only question here is that I'm not sure 
-   what the spatial relationship between workspaces is. 
-   (Are they in a grid, or a horizontal row, or what.)
-   I think we may need a window manager spec extension to 
-   share this information between the WM and the pager.
-   We could add left/right arrow and pretend they're in
-   a row for the short term though.
 
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left

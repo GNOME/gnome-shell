@@ -1287,6 +1287,10 @@ meta_display_get_workspace_by_index (MetaDisplay *display,
                                      int          index)
 {
   GList *tmp;
+
+  /* should be robust, index is maybe from an app */
+  if (index < 0)
+    return NULL;
   
   tmp = g_list_nth (display->workspaces, index);
 
@@ -1304,6 +1308,10 @@ meta_display_get_workspace_by_screen_index (MetaDisplay *display,
   GList *tmp;
   int i;
 
+  /* should be robust, index is maybe from an app */
+  if (index < 0)
+    return NULL;
+  
   i = 0;
   tmp = display->workspaces;
   while (tmp != NULL)

@@ -1,5 +1,13 @@
 2001-08-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c: Add Alt + left/right arrow to 
+	move between workspaces.
+
+	* src/screen.c (set_wm_check_hint): put property pointing back to
+	itself on the _WIN_SUPPORTING_WM_CHECK window.
+
+2001-08-03  Havoc Pennington  <hp@pobox.com>
+	
 	* src/display.c (event_callback): push error trap around configure 
 	of withdrawn window, fixes a crash caused by rapidly
 	creating/destroying a window.

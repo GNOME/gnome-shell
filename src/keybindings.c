@@ -57,6 +57,14 @@ static void handle_focus_previous     (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
+static void handle_workspace_left     (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
+static void handle_workspace_right     (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 
 typedef struct _MetaKeyBinding MetaKeyBinding;
 
@@ -89,6 +97,8 @@ static MetaKeyBinding screen_bindings[] = {
   { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
+  { XK_Left, Mod1Mask, KeyPress, handle_workspace_left, NULL, 0 },
+  { XK_Right, Mod1Mask, KeyPress, handle_workspace_right, NULL, 0 },
   { None, 0, 0, NULL, NULL, 0 }
 };
 
@@ -500,6 +510,47 @@ meta_display_process_key_event (MetaDisplay *display,
 }
 
 static void
+switch_to_workspace (MetaDisplay *display,
+                     MetaWorkspace *workspace)
+{
+  MetaWindow *move_window;
+
+  move_window = NULL;
+  if (display->grab_op == META_GRAB_OP_MOVING)
+    move_window = display->grab_window;
+      
+  if (move_window != NULL)
+    {
+      if (move_window->on_all_workspaces)
+        move_window = NULL; /* don't move it after all */
+
+      /* We put the window on the new workspace, flip spaces,
+       * then remove from old workspace, so the window
+       * never gets unmapped and we maintain the button grab
+       * on it.
+       */
+      if (move_window)
+        {
+          if (!meta_workspace_contains_window (workspace,
+                                               move_window))
+            meta_workspace_add_window (workspace, move_window);
+        }
+    }
+      
+  meta_workspace_activate (workspace);
+
+  if (move_window)
+    {
+      /* Lamely rely on prepend */
+      g_assert (move_window->workspaces->data == workspace);
+                
+      while (move_window->workspaces->next) /* while list size > 1 */
+        meta_workspace_remove_window (move_window->workspaces->next->data,
+                                      move_window);
+    }
+}
+
+static void
 handle_activate_workspace (MetaDisplay *display,
                            MetaWindow  *event_window,
                            XEvent      *event,
@@ -514,41 +565,69 @@ handle_activate_workspace (MetaDisplay *display,
 
   if (workspace)
     {
-      MetaWindow *move_window;
+      switch_to_workspace (display, workspace);
+    }
+  else
+    {
+      /* We could offer to create it I suppose */
+    }
+}
 
-      move_window = NULL;
-      if (display->grab_op == META_GRAB_OP_MOVING)
-        move_window = display->grab_window;
-      
-      if (move_window != NULL)
-        {
-          if (move_window->on_all_workspaces)
-            move_window = NULL; /* don't move it after all */
+static void
+handle_workspace_left (MetaDisplay *display,
+                       MetaWindow  *window,
+                       XEvent      *event,
+                       gpointer     data)
+{
+  MetaWorkspace *workspace;
+  MetaScreen *screen;
+  int i;
+  
+  screen = meta_display_screen_for_root (display,
+                                         event->xkey.root);
 
-          /* We put the window on the new workspace, flip spaces,
-           * then remove from old workspace, so the window
-           * never gets unmapped and we maintain the button grab
-           * on it.
-           */
-          if (move_window)
-            {
-              if (!meta_workspace_contains_window (workspace,
-                                                   move_window))
-                meta_workspace_add_window (workspace, move_window);
-            }
-        }
-      
-      meta_workspace_activate (workspace);
+  if (screen == NULL)
+    return;  
+  
+  i = meta_workspace_index (screen->active_workspace);
+  --i;
 
-      if (move_window)
-        {
-          /* Lamely rely on prepend */
-          g_assert (move_window->workspaces->data == workspace);
-                
-          while (move_window->workspaces->next) /* while list size > 1 */
-            meta_workspace_remove_window (move_window->workspaces->next->data,
-                                          move_window);
-        }
+  workspace = meta_display_get_workspace_by_index (display, i);
+  
+  if (workspace)
+    {
+      switch_to_workspace (display, workspace);
+    }
+  else
+    {
+      /* We could offer to create it I suppose */
+    }
+}
+
+static void
+handle_workspace_right (MetaDisplay *display,
+                        MetaWindow  *window,
+                        XEvent      *event,
+                        gpointer     data)
+{
+  MetaWorkspace *workspace;
+  MetaScreen *screen;
+  int i;
+  
+  screen = meta_display_screen_for_root (display,
+                                         event->xkey.root);
+
+  if (screen == NULL)
+    return;  
+  
+  i = meta_workspace_index (screen->active_workspace);
+  ++i;
+
+  workspace = meta_display_get_workspace_by_index (display, i);
+  
+  if (workspace)
+    {
+      switch_to_workspace (display, workspace);
     }
   else
     {
