@@ -5021,6 +5021,8 @@ window_query_root_pointer (MetaWindow *window,
   int win_x_return, win_y_return;
   unsigned int mask_return;
 
+  meta_error_trap_push (window->display);
+  
   XQueryPointer (window->display->xdisplay,
                  window->xwindow,
                  &root_return,
@@ -5030,6 +5032,8 @@ window_query_root_pointer (MetaWindow *window,
                  &win_x_return,
                  &win_y_return,
                  &mask_return);
+
+  meta_error_trap_pop (window->display);
 
   if (x)
     *x = root_x_return;
