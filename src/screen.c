@@ -217,6 +217,8 @@ meta_screen_new (MetaDisplay *display,
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
 
+  screen->work_area_idle = 0;
+  
   screen->xinerama_infos = NULL;
   screen->n_xinerama_infos = 0;
 
@@ -351,6 +353,9 @@ meta_screen_free (MetaScreen *screen)
   if (meta_error_trap_pop (screen->display) != Success)
     meta_warning (_("Could not release screen %d on display '%s'\n"),
                   screen->number, screen->display->name);
+
+  if (screen->work_area_idle != 0)
+    g_source_remove (screen->work_area_idle);
   
   g_free (screen->screen_name);
   g_free (screen);
@@ -777,4 +782,12 @@ meta_screen_focus_top_window (MetaScreen *screen,
     {
       meta_topic (META_DEBUG_FOCUS, "No top window to focus found\n");
     }
+}
+
+const MetaXineramaScreenInfo*
+meta_screen_get_current_xinerama (MetaScreen *screen)
+{
+  /* FIXME how do we decide which is current? */
+  
+  return &screen->xinerama_infos[0];
 }

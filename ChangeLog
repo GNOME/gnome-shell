@@ -1,3 +1,46 @@
+2002-05-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_unminimize): on unminimize, queue 
+	calc_showing on all transients
+	(meta_window_activate): on activate, unminimize all a window's 
+	ancestors, not just the window itself.
+
+	* src/workspace.c (set_work_area_hint): don't increment "tmp" by
+	16 unsigned long, increment by 4
+
+	* src/window.c (meta_window_free): if a window isn't minimized, 
+	restore its WM_STATE to NormalState instead of IconicState, 
+	since IconicState on initial window map means that the window 
+	should be minimized.
+
+	* src/workspace.c (meta_workspace_invalidate_work_area): queue an
+	idle to recompute the work area hint.
+	(set_work_area_hint): we need 4*num_workspaces ints, not just
+	num_workspaces.
+
+	* src/screen.c (meta_screen_new): add work_area_idle field, 
+	handle it on screen shutdown
+
+	* src/common.h (META_PRIORITY_PREFS_NOTIFY,
+	META_PRIORITY_WORK_AREA_HINT): define some idle priorities
+
+	* src/window.c (meta_window_calc_showing): hide windows if 
+	their parent window is minimized
+	(meta_window_minimize): also queue_calc_showing on all 
+	transients of the window being minimized
+
+	* src/place.c (constrain_placement): function to apply
+	placement-time-only constraints, such as "not off the left of the
+	screen"
+	(meta_window_place): put dialogs down a bit over their parent, 
+	not right at the top.
+	(meta_window_place): when centering a dialog, center it 
+	on the current xinerama screen, rather than the entire 
+	screen.
+
+	* src/screen.c (meta_screen_get_current_xinerama): new function,
+	but not implemented
+	
 2002-05-04  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (meta_frames_paint_to_drawable): chop out the 

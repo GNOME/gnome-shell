@@ -29,6 +29,8 @@
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+typedef void (*MetaWindowForeachFunc) (MetaWindow *window,
+                                       void       *data);
 
 typedef enum
 {
@@ -382,5 +384,11 @@ gboolean meta_window_same_application (MetaWindow *window,
 void meta_window_refresh_resize_popup (MetaWindow *window);
 
 void meta_window_free_delete_dialog (MetaWindow *window);
+
+void meta_window_foreach_transient (MetaWindow            *window,
+                                    MetaWindowForeachFunc  func,
+                                    void                  *data);
+gboolean meta_window_is_ancestor_of_transient (MetaWindow *window,
+                                               MetaWindow *transient);
 
 #endif

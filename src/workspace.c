@@ -27,7 +27,7 @@ void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
 static int set_number_of_spaces_hint  (MetaScreen *screen);
 static int set_active_space_hint      (MetaScreen *screen);
-static int set_workarea_hint          (MetaScreen *screen);
+static int set_work_area_hint         (MetaScreen *screen);
 
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
@@ -315,43 +315,6 @@ set_number_of_spaces_hint (MetaScreen *screen)
 }
 
 static int
-set_workarea_hint (MetaScreen *screen)
-{
-  int num_workspaces;
-  GList *tmp_list;
-  unsigned long *data, *tmp;
-  MetaRectangle area;
-  
-  num_workspaces = g_list_length (screen->display->workspaces);
-  data = g_new (unsigned long, num_workspaces);
-  tmp_list = screen->display->workspaces;
-  tmp = data;
-  
-  while (tmp_list != NULL)
-    {
-      MetaWorkspace *workspace = tmp_list->data;
-
-      meta_workspace_get_work_area (workspace, &area);
-      tmp[0] = area.x;
-      tmp[1] = area.y;
-      tmp[2] = area.width;
-      tmp[3] = area.height;
-      
-      tmp += sizeof (unsigned long) * 4;
-      
-      tmp_list = tmp_list->next;
-    }
-
-  meta_error_trap_push (screen->display);
-  XChangeProperty (screen->display->xdisplay, screen->xroot,
-		   screen->display->atom_net_wm_workarea,
-		   XA_CARDINAL, 32, PropModeReplace,
-		   (guchar*) data, num_workspaces * 4);
-  g_free (data);
-  return meta_error_trap_pop (screen->display);
-}
-
-static int
 set_active_space_hint (MetaScreen *screen)
 {
   unsigned long data[1];
@@ -366,6 +329,63 @@ set_active_space_hint (MetaScreen *screen)
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   return meta_error_trap_pop (screen->display);
+}
+
+static int
+set_work_area_hint (MetaScreen *screen)
+{
+  int num_workspaces;
+  GList *tmp_list;
+  unsigned long *data, *tmp;
+  MetaRectangle area;
+  
+  num_workspaces = meta_screen_get_n_workspaces (screen);
+  data = g_new (unsigned long, num_workspaces * 4);
+  tmp_list = screen->display->workspaces;
+  tmp = data;
+  
+  while (tmp_list != NULL)
+    {
+      MetaWorkspace *workspace = tmp_list->data;
+
+      if (workspace->screen == screen)
+        {
+          meta_workspace_get_work_area (workspace, &area);
+          tmp[0] = area.x;
+          tmp[1] = area.y;
+          tmp[2] = area.width;
+          tmp[3] = area.height;
+        }
+
+      tmp += 4;
+      
+      tmp_list = tmp_list->next;
+    }
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+		   screen->display->atom_net_wm_workarea,
+		   XA_CARDINAL, 32, PropModeReplace,
+		   (guchar*) data, num_workspaces*4);
+  g_free (data);
+  return meta_error_trap_pop (screen->display);
+}
+
+static gboolean
+set_work_area_idle_func (void *data)
+{
+  MetaScreen *screen;
+
+  meta_topic (META_DEBUG_WORKAREA,
+              "Running work area idle function\n");
+  
+  screen = data;
+
+  screen->work_area_idle = 0;
+  
+  set_work_area_hint (screen);
+  
+  return FALSE;
 }
 
 void
@@ -401,6 +421,18 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
     }
 
   g_list_free (windows);
+
+  /* Recompute work area in an idle */
+  if (workspace->screen->work_area_idle == 0)
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Adding work area hint idle function\n");
+      workspace->screen->work_area_idle =
+        g_idle_add_full (META_PRIORITY_WORK_AREA_HINT,
+                         set_work_area_idle_func,
+                         workspace->screen,
+                         NULL);
+    }
 }
 
 void

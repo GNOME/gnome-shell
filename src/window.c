@@ -866,6 +866,18 @@ meta_window_free (MetaWindow  *window)
       set_wm_state (window, WithdrawnState);
       meta_error_trap_pop (window->display);
     }
+  else
+    {
+      /* We need to put WM_STATE so that others will understand it on
+       * restart.
+       */
+      if (!window->minimized)
+        {
+          meta_error_trap_push (window->display);
+          set_wm_state (window, NormalState);
+          meta_error_trap_pop (window->display);
+        }
+    }
   
   if (window->frame)
     meta_window_destroy_frame (window);
@@ -1004,13 +1016,17 @@ meta_window_visible_on_workspace (MetaWindow    *window,
 void
 meta_window_calc_showing (MetaWindow  *window)
 {
-  gboolean on_workspace;
+  gboolean showing, on_workspace;
 
   meta_verbose ("Calc showing for window %s\n", window->desc);
+
+  /* 1. See if we're on the workspace */
   
   on_workspace = meta_window_visible_on_workspace (window, 
                                                    window->screen->active_workspace);
 
+  showing = on_workspace;
+  
   if (!on_workspace)
     meta_verbose ("Window %s is not on workspace %d\n",
                   window->desc,
@@ -1023,17 +1039,55 @@ meta_window_calc_showing (MetaWindow  *window)
   if (window->on_all_workspaces)
     meta_verbose ("Window %s is on all workspaces\n", window->desc);
 
-  if (on_workspace &&
+  /* 2. See if we're minimized */
+  if (window->minimized)
+    showing = FALSE;
+  
+  /* 3. See if we're in "show desktop" mode */
+  
+  if (showing &&
       window->display->showing_desktop &&
       window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
     {
       meta_verbose ("Window %s is on current workspace, but we're showing the desktop\n",
                     window->desc);
-      on_workspace = FALSE;
+      showing = FALSE;
     }
+
+  /* 4. See if an ancestor is minimized (note that
+   *    ancestor's "mapped" field may not be up to date
+   *    since it's being computed in this same idle queue)
+   */
   
-  if (window->minimized || !on_workspace)
+  if (showing)
+    {
+      MetaWindow *w;
+
+      w = window;
+      while (w != NULL)
+        {
+          if (w->minimized)
+            {
+              showing = FALSE;
+              break;
+            }
+          
+          if (w->xtransient_for == None)
+            break;
+          
+          w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+          
+          if (w == window)
+            break; /* Cute, someone thought they'd make a transient_for cycle */
+
+          /* w may be null... */
+        }
+    }
+
+  /* Actually show/hide the window */
+  
+  if (!showing)
     {
       /* Really this effects code should probably
        * be in meta_window_hide so the window->mapped
@@ -1385,6 +1439,13 @@ meta_window_hide (MetaWindow *window)
     }
 }
 
+static void
+queue_calc_showing_func (MetaWindow *window,
+                         void       *data)
+{
+  meta_window_queue_calc_showing (window);
+}
+
 void
 meta_window_minimize (MetaWindow  *window)
 {
@@ -1392,6 +1453,11 @@ meta_window_minimize (MetaWindow  *window)
     {
       window->minimized = TRUE;
       meta_window_queue_calc_showing (window);
+
+      meta_window_foreach_transient (window,
+                                     queue_calc_showing_func,
+                                     NULL);
+      
       if (window->has_focus)
         {
           meta_topic (META_DEBUG_FOCUS,
@@ -1418,6 +1484,10 @@ meta_window_unminimize (MetaWindow  *window)
     {
       window->minimized = FALSE;
       meta_window_queue_calc_showing (window);
+
+      meta_window_foreach_transient (window,
+                                     queue_calc_showing_func,
+                                     NULL);
     }
 }
 
@@ -1590,6 +1660,28 @@ meta_window_unshade (MetaWindow  *window)
     }
 }
 
+static void
+unminimize_window_and_all_transient_parents (MetaWindow *window)
+{
+  MetaWindow *w;
+  
+  w = window;
+  while (w != NULL)
+    {
+      meta_window_unminimize (w);
+      
+      if (w->xtransient_for == None)
+        break;
+      
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      
+      if (w == window)
+        break; /* Cute, someone thought they'd make a transient_for cycle */
+      
+      /* w may be null... */
+    }
+}
+
 void
 meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
@@ -1609,8 +1701,7 @@ meta_window_activate (MetaWindow *window,
   if (window->shaded)
     meta_window_unshade (window);
 
-  if (window->minimized)
-    meta_window_unminimize (window);
+  unminimize_window_and_all_transient_parents (window);
   
   meta_window_raise (window);
   meta_topic (META_DEBUG_FOCUS,
@@ -5577,4 +5668,57 @@ meta_window_refresh_resize_popup (MetaWindow *window)
       meta_ui_resize_popup_set_showing (window->display->grab_resize_popup,
                                         TRUE);
     }
+}
+
+void
+meta_window_foreach_transient (MetaWindow            *window,
+                               MetaWindowForeachFunc  func,
+                               void                  *data)
+{
+  GSList *windows;
+  GSList *tmp;
+
+  windows = meta_display_list_windows (window->display);
+
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *transient = tmp->data;
+      
+      if (meta_window_is_ancestor_of_transient (window, transient))
+        (* func) (transient, data);
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (windows);
+}
+
+gboolean
+meta_window_is_ancestor_of_transient (MetaWindow *window,
+                                      MetaWindow *transient)
+{
+  MetaWindow *w;
+
+  if (window == transient)
+    return FALSE;
+  
+  w = transient;
+  while (w != NULL)
+    {          
+      if (w->xtransient_for == None)
+        return FALSE;
+
+      if (w->xtransient_for == window->xwindow)
+        return TRUE;
+      
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      
+      if (w == transient)
+        return FALSE; /* Cycle */
+      
+      /* w may be null... */
+    }
+
+  return FALSE;
 }

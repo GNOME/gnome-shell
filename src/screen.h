@@ -63,6 +63,8 @@ struct _MetaScreen
   MetaXineramaScreenInfo *xinerama_infos;
   int n_xinerama_infos;
 
+  guint work_area_idle;
+  
   guint keys_grabbed : 1;
 };
 
@@ -87,6 +89,8 @@ void          meta_screen_ensure_tab_popup    (MetaScreen                 *scree
 
 void          meta_screen_focus_top_window    (MetaScreen                 *screen,
                                                MetaWindow                 *not_this_one);
+
+const MetaXineramaScreenInfo* meta_screen_get_current_xinerama (MetaScreen *screen);
 
 #endif
 

@@ -197,13 +197,50 @@ find_first_fit (MetaWindow *window,
   /* FIXME */
 }
 
+static void
+constrain_placement (MetaWindow        *window,
+                     MetaFrameGeometry *fgeom,
+                     int                x,
+                     int                y,
+                     int               *new_x,
+                     int               *new_y)
+{
+  /* The purpose of this function is to apply constraints that are not
+   * covered by window.c:constrain_position(), but should apply
+   * whenever we are _placing_ a window regardless of placement algorithm.
+   */
+  MetaRectangle work_area;  
+  int nw_x, nw_y;
+  
+  meta_window_get_work_area (window, &work_area);  
+
+  nw_x = work_area.x;
+  nw_y = work_area.y;
+  if (window->frame)
+    {
+      nw_x += fgeom->left_width;
+      nw_y += fgeom->top_height;
+    }
+
+  /* Keep window from going off left edge, though we don't have
+   * this constraint once the window has been placed.
+   */
+  if (x < nw_x)
+    x = nw_x;
+  if (y < nw_y)
+    y = nw_y;
+
+  *new_x = x;
+  *new_y = y;
+}                    
+
 void
-meta_window_place (MetaWindow *window,
+meta_window_place (MetaWindow        *window,
                    MetaFrameGeometry *fgeom,
-                   int         x,
-                   int         y,
-                   int        *new_x,
-                   int        *new_y)
+                   int                x,
+                   int                y,
+                   int               *new_x,
+                   int               *new_y)
 {
   GList *windows;
   
@@ -215,10 +252,6 @@ meta_window_place (MetaWindow *window,
    */
   
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);      
-
-  /* FIXME copying Mac, when placing a dialog
-   * put it at 1/5 down and horizontally centered
-   */
   
   if ((window->type == META_WINDOW_DIALOG ||
        window->type == META_WINDOW_MODAL_DIALOG) &&
@@ -244,6 +277,14 @@ meta_window_place (MetaWindow *window,
           /* center of child over center of parent */
           x -= window->rect.width / 2;
 
+          /* put child down 1/5 or so from the top of parent, unless
+           * it makes us have more of parent showing above child than
+           * below
+           */
+          if (window->rect.height <= (parent->rect.height - (parent->rect.height / 5) * 2))
+            y += parent->rect.height / 5;
+
+          /* put top of child's frame, not top of child's client */
           if (fgeom)
             y += fgeom->top_height;
 
@@ -264,16 +305,22 @@ meta_window_place (MetaWindow *window,
     {
       /* Center on screen */
       int w, h;
+      const MetaXineramaScreenInfo *xi;
 
       /* I think whole screen will look nicer than workarea */
-      w = window->screen->width;
-      h = window->screen->height;
+      xi = meta_screen_get_current_xinerama (window->screen);      
+
+      w = xi->width;
+      h = xi->height;
 
       x = (w - window->rect.width) / 2;
       y = (h - window->rect.height) / 2;
 
-      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen\n",
-                  window->desc);
+      x += xi->x_origin;
+      y += xi->y_origin;
+      
+      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen %d xinerama %d\n",
+                  window->desc, window->screen->number, xi->number);
 
       goto done;
     }
@@ -313,6 +360,8 @@ meta_window_place (MetaWindow *window,
   g_list_free (windows);
   
  done:
+  constrain_placement (window, fgeom, x, y, &x, &y);
+  
   *new_x = x;
   *new_y = y;
 }
