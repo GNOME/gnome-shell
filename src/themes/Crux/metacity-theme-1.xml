@@ -142,6 +142,13 @@
     </draw_ops>
   </button>
 
+  <button function="close" state="prelight">
+    <draw_ops>
+      <include name="inactive_button_prelight"/>
+      <image filename="inactive-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+    </draw_ops>
+  </button>
+
   <button function="minimize" state="normal">
     <draw_ops>
       <include name="inactive_button"/>
@@ -315,6 +322,13 @@
   <button function="close" state="pressed">
     <draw_ops>
       <include name="active_button_pressed"/>
+      <image filename="active-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+    </draw_ops>
+  </button>
+
+  <button function="close" state="prelight">
+    <draw_ops>
+      <include name="active_button_prelight"/>
       <image filename="active-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
     </draw_ops>
   </button>
