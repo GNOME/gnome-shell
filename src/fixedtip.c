@@ -43,9 +43,11 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
   if (tip == NULL)
     {
       tip = gtk_window_new (GTK_WINDOW_POPUP);
+#ifdef HAVE_GTK_MULTIHEAD
       gtk_window_set_screen (GTK_WINDOW (tip),
 			     gdk_display_get_screen (gdk_get_default_display (),
 						     screen_number));
+#endif
       gtk_widget_set_app_paintable (tip, TRUE);
       gtk_window_set_policy (GTK_WINDOW (tip), FALSE, FALSE, TRUE);
       gtk_widget_set_name (tip, "gtk-tooltips");

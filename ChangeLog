@@ -1,5 +1,11 @@
 2002-05-08  Anders Carlsson  <andersca@gnu.org>
 
+	* src/fixedtip.c (meta_fixed_tip_show): 
+	#ifdef out call to gtk_window_set_screen, reported by
+	Erwann Chenede.
+	
+2002-05-08  Anders Carlsson  <andersca@gnu.org>
+
 	* configure.in:
 	* src/display.c: (meta_display_open):
 	* src/fixedtip.c: (meta_fixed_tip_show):
