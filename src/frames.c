@@ -1230,8 +1230,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                event->x_root,
                                event->y_root);
     }
-  else if ((control == META_FRAME_CONTROL_TITLE ||
-            control == META_FRAME_CONTROL_NONE) &&
+  else if (control == META_FRAME_CONTROL_TITLE &&
            event->button == 1)
     {
       MetaFrameFlags flags;
@@ -1856,14 +1855,17 @@ get_control (MetaFrames *frames,
   MetaFrameFlags flags;
   gboolean has_vert, has_horiz;
   GdkRectangle client;
+  int bottom_of_titlebar;
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
 
   client.x = fgeom.left_width;
   client.y = fgeom.top_height;
   client.width = fgeom.width - fgeom.left_width - fgeom.right_width;
-  client.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;
+  client.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;  
 
+  bottom_of_titlebar = fgeom.title_rect.y + fgeom.title_rect.height;
+  
   if (POINT_IN_RECT (x, y, client))
     return META_FRAME_CONTROL_CLIENT_AREA;
   
@@ -1875,16 +1877,19 @@ get_control (MetaFrames *frames,
 
   if (POINT_IN_RECT (x, y, fgeom.menu_rect))
     return META_FRAME_CONTROL_MENU;
+
+  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+  
+  has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
+  has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     {
-      if (y <= TOP_RESIZE_HEIGHT)
+      if (has_vert && y <= TOP_RESIZE_HEIGHT)
         return META_FRAME_CONTROL_RESIZE_N;
       else
         return META_FRAME_CONTROL_TITLE;
     }
-  
-  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
   if (POINT_IN_RECT (x, y, fgeom.max_rect))
     {
@@ -1893,83 +1898,78 @@ get_control (MetaFrames *frames,
       else
         return META_FRAME_CONTROL_MAXIMIZE;
     }
-  
-  has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
-  has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
-
-  if (has_vert || has_horiz)
-    {
-      int bottom_of_titlebar;
-
-      bottom_of_titlebar = fgeom.title_rect.y + fgeom.title_rect.height;
       
-      /* South resize always has priority over north resize,
-       * in case of overlap.
-       */
+  /* South resize always has priority over north resize,
+   * in case of overlap.
+   */
 
-      if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-          x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_SE;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_S;
-          else
-            return META_FRAME_CONTROL_RESIZE_E;
-        }
-      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-               x <= (fgeom.left_width + RESIZE_EXTENDS))
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_SW;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_S;
-          else
-            return META_FRAME_CONTROL_RESIZE_W;
-        }
-      else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
-               x < RESIZE_EXTENDS)
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_NW;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_N;
-          else
-            return META_FRAME_CONTROL_RESIZE_W;
-        }
-      else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
-               x >= (fgeom.width - RESIZE_EXTENDS))
-        {
-          if (has_vert && has_horiz)
-            return META_FRAME_CONTROL_RESIZE_NE;
-          else if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_N;
-          else
-            return META_FRAME_CONTROL_RESIZE_E;
-        }
-      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
-        {
-          if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_S;
-        }
-      else if (y <= TOP_RESIZE_HEIGHT)
-        {
-          if (has_vert)
-            return META_FRAME_CONTROL_RESIZE_N;
-        }
-      else if (x <= fgeom.left_width)
-        {
-          if (has_horiz)
-            return META_FRAME_CONTROL_RESIZE_W;
-        }
-      else if (x >= (fgeom.width - fgeom.right_width))
-        {
-          if (has_horiz)
-            return META_FRAME_CONTROL_RESIZE_E;
-        }
+  if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+      x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
+    {
+      if (has_vert && has_horiz)
+        return META_FRAME_CONTROL_RESIZE_SE;
+      else if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_S;
+      else if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_E;
     }
-  
-  return META_FRAME_CONTROL_NONE;
+  else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+           x <= (fgeom.left_width + RESIZE_EXTENDS))
+    {
+      if (has_vert && has_horiz)
+        return META_FRAME_CONTROL_RESIZE_SW;
+      else if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_S;
+      else if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_W;
+    }
+  else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
+           x < RESIZE_EXTENDS)
+    {
+      if (has_vert && has_horiz)
+        return META_FRAME_CONTROL_RESIZE_NW;
+      else if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_N;
+      else if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_W;
+    }
+  else if (y < (fgeom.top_height + RESIZE_EXTENDS) &&
+           x >= (fgeom.width - RESIZE_EXTENDS))
+    {
+      if (has_vert && has_horiz)
+        return META_FRAME_CONTROL_RESIZE_NE;
+      else if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_N;
+      else if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_E;
+    }
+  else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
+    {
+      if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_S;
+    }
+  else if (y <= TOP_RESIZE_HEIGHT)
+    {
+      if (has_vert)
+        return META_FRAME_CONTROL_RESIZE_N;
+      else if (has_horiz)
+        return META_FRAME_CONTROL_TITLE;
+    }
+  else if (x <= fgeom.left_width)
+    {
+      if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_W;
+    }
+  else if (x >= (fgeom.width - fgeom.right_width))
+    {
+      if (has_horiz)
+        return META_FRAME_CONTROL_RESIZE_E;
+    }
+
+  if (y >= bottom_of_titlebar)
+    return META_FRAME_CONTROL_NONE;
+  else
+    return META_FRAME_CONTROL_TITLE;
 }
 
 void

@@ -1,5 +1,16 @@
 2002-12-01  Havoc Pennington  <hp@pobox.com>
 
+	* src/frames.c (get_control): rearrange this function a bit, so
+	that we return CONTROL_TITLE for anything above the bottom of the
+	titlebar, in the fallback case where no other control was found. 
+	Also, don't return RESIZE_N for title rect above the top resize
+	size, unless the window is resizable.
+	(meta_frames_button_press_event): only start a move when clicking 
+	control TITLE, not control NONE. This way you don't start moving 
+	a nonresizable window if you click its edges.
+
+2002-12-01  Havoc Pennington  <hp@pobox.com>
+
 	* src/tools/Makefile.am: conditionalize building the config dialog
 
 	* configure.in (BUILD_CONFIG_DIALOG): add --enable-config-dialog
