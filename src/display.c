@@ -1741,11 +1741,14 @@ key_event_description (Display *xdisplay,
                        XEvent  *event)
 {
   KeySym keysym;
+  const char *str;
   
   keysym = XKeycodeToKeysym (xdisplay, event->xkey.keycode, 0);  
 
+  str = XKeysymToString (keysym);
+  
   return g_strdup_printf ("Key '%s' state 0x%x", 
-                          XKeysymToString (keysym), event->xkey.state);
+                          str ? str : "(null)", event->xkey.state);
 }
 
 static void

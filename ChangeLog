@@ -1,5 +1,16 @@
 2002-06-15  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c (meta_display_process_key_event): don't pass a
+	null string to printf
+
+	* src/display.c (key_event_description): don't pass a null string 
+	to printf
+
+	* src/keybindings.c (meta_set_keybindings_disabled): allow
+	enable/disable keybindings regardless of debug mode.
+
+2002-06-15  Havoc Pennington  <hp@pobox.com>
+
 	* src/draw-workspace.h, src/draw-workspace.c: workspace-drawing
 	code factored out of libwnck, needs wiring up to tabpopup.c
 	(which is kind of annoying since you have to get the list of

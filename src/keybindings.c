@@ -286,6 +286,17 @@ reload_modmap (MetaDisplay *display)
 
           while (j < display->keysyms_per_keycode)
             {
+              if (syms[j] != 0)
+                {
+                  const char *str;
+                  
+                  str = XKeysymToString (syms[j]);
+                  meta_topic (META_DEBUG_KEYBINDINGS,
+                              "Keysym %s bound to modifier 0x%x\n",
+                              str ? str : "(null)",
+                              (1 << ( i / modmap->max_keypermod)));
+                }
+              
               if (syms[j] == XK_Num_Lock)
                 {
                   /* Mod1Mask is 1 << 3 for example, i.e. the
@@ -637,6 +648,10 @@ meta_change_keygrab (MetaDisplay *display,
         {      
           if (result == BadAccess)
             meta_warning (_("Some other program is already using the key %s with modifiers %x as a binding\n"), keysym_name (keysym), modmask | ignored_mask);
+          else
+            meta_topic (META_DEBUG_KEYBINDINGS,
+                        "Failed to grab key %s with modifiers %x\n",
+                        keysym_name (keysym), modmask | ignored_mask);
         }
 
       ++ignored_mask;
@@ -1001,6 +1016,10 @@ process_event (MetaKeyBinding       *bindings,
 {
   int i;
 
+  /* we used to have release-based bindings but no longer. */
+  if (event->type == KeyRelease)
+    return;
+  
   i = 0;
   while (i < n_bindings)
     {
@@ -1021,14 +1040,21 @@ process_event (MetaKeyBinding       *bindings,
 
           if (handler == NULL)
             meta_bug ("Binding %s has no handler\n", bindings[i].name);
+          else
+            meta_topic (META_DEBUG_KEYBINDINGS,
+                        "Running handler for %s\n",
+                        bindings[i].name);
           
           (* handler->func) (display, window, event,
                              &bindings[i]);
-          break;
+          return;
         }
       
       ++i;
     }
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "No handler found for this event in this binding table\n");
 }
                 
 void
@@ -1038,6 +1064,7 @@ meta_display_process_key_event (MetaDisplay *display,
 {
   KeySym keysym;
   gboolean handled;
+  const char *str;
 
   XAllowEvents (display->xdisplay,
                 all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
@@ -1048,11 +1075,13 @@ meta_display_process_key_event (MetaDisplay *display,
   /* window may be NULL */  
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
+
+  str = XKeysymToString (keysym);
   
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Processing key %s event, keysym: %s state: 0x%x window: %s\n",
               event->type == KeyPress ? "press" : "release",
-              XKeysymToString (keysym), event->xkey.state,
+              str ? str : "(null)", event->xkey.state,
               window ? window->desc : "(no window)");
 
   if (window == NULL || !window->all_keys_grabbed)
@@ -1970,15 +1999,7 @@ handle_spew_mark (MetaDisplay    *display,
 void
 meta_set_keybindings_disabled (gboolean setting)
 {
-  if (meta_is_debugging ())
-    {
-      all_bindings_disabled = setting;
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
-    }
-  else
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ignoring keybindings disable message, not in debug mode\n");
-    }
+  all_bindings_disabled = setting;
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
 }
