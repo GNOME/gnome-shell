@@ -1,3 +1,8 @@
+2005-02-16  Elijah Newren  <newren@gmail.com>
+
+	* src/display.c: (event_callback): trivial fix to a log message:
+	change %d to %lu (see debugging log from bug 167358).
+
 2005-02-12  Elijah Newren  <newren@gmail.com>
 
 	Raise the ancestor of a window instead of the window itself.

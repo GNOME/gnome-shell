@@ -1564,7 +1564,7 @@ event_callback (XEvent   *event,
     {
       g_assert (CurrentTime != display->current_time);
       meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Metacity set %s's net_wm_user_time to %d.\n",
+                  "Metacity set %s's net_wm_user_time to %lu.\n",
                   window->desc, display->current_time);
       window->net_wm_user_time_set = TRUE;
       window->net_wm_user_time = display->current_time;
