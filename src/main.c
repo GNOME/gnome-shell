@@ -317,6 +317,8 @@ main (int argc, char **argv)
     g_slist_free (displays);
   }
 
+  meta_session_shutdown ();
+  
   if (meta_restart_after_quit)
     {
       GError *err;

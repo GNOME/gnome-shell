@@ -64,6 +64,8 @@ void meta_session_init (const char *client_id,
                         const char *save_file);
 
 
+void meta_session_shutdown (void);
+
 #endif
 
 

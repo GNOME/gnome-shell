@@ -1,5 +1,15 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/main.c (main): call meta_session_shutdown when exiting
+	cleanly
+
+	* src/session.c (meta_session_shutdown): function to change use to
+	RestartIfRunning
+	(meta_session_init): change normal restart hint to
+	RestartImmediately
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
         Yeah I know maximization is broken, I'm too tired to fix it. 
 	Probably because of the change to update_struts() that was 
 	supposed to fix the 100% CPU bug.
