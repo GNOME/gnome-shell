@@ -74,10 +74,7 @@ struct _MetaUIFrame
 struct _MetaFrames
 {
   GtkWindow parent_instance;
-
-  /* If we did a widget per frame, we wouldn't want to cache this. */
-  MetaFrameLayout *layout;
-
+  
   int text_height;
 
   GHashTable *frames;
@@ -120,11 +117,6 @@ void meta_frames_unflicker_bg (MetaFrames *frames,
 
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);
-
-void meta_frames_get_pixmap_for_control (MetaFrames *frames,
-                                         MetaFrameControl control,
-                                         GdkPixmap   **pixmap,
-                                         GdkBitmap   **mask);
 
 void meta_frames_notify_menu_hide (MetaFrames *frames);
 

@@ -103,6 +103,8 @@ meta_gradient_create_simple (int              width,
     case META_GRADIENT_DIAGONAL:
       return meta_gradient_create_diagonal (width, height,
                                             from, to);
+    case META_GRADIENT_LAST:
+      break;
     }
   g_assert_not_reached ();
   return NULL;
@@ -126,6 +128,9 @@ meta_gradient_create_multi (int              width,
           return meta_gradient_create_multi_vertical (width, height, colors, n_colors);
         case META_GRADIENT_DIAGONAL:
           return meta_gradient_create_multi_diagonal (width, height, colors, n_colors);
+        case META_GRADIENT_LAST:
+          g_assert_not_reached ();
+          break;
         }
     }
   else if (n_colors > 1)

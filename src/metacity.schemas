@@ -23,6 +23,21 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/theme</key>
+      <applyto>/apps/metacity/general/theme</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>Atlanta</default>
+      <locale name="C">
+         <short>Current theme</short>
+         <long>
+          The theme determines the appearance of window borders,
+          titlebar, and so forth.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/titlebar_uses_desktop_font</key>
       <applyto>/apps/metacity/general/titlebar_uses_desktop_font</applyto>      
       <owner>metacity</owner>

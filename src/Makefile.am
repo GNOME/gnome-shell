@@ -1,7 +1,7 @@
 
-SUBDIRS=wm-tester tools
+SUBDIRS=wm-tester tools themes
 
-INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(datadir)/locale\"
+INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(datadir)/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\"
 
 metacity_SOURCES= 				\
 	common.h				\
@@ -44,6 +44,10 @@ metacity_SOURCES= 				\
 	tabpopup.h				\
 	theme.c					\
 	theme.h					\
+	theme-parser.c				\
+	theme-parser.h				\
+	themewidget.c				\
+	themewidget.h				\
 	ui.c					\
 	ui.h					\
 	util.c					\
@@ -60,6 +64,8 @@ metacity_theme_viewer_SOURCES=  \
 	gradient.h		\
 	theme.c			\
 	theme.h			\
+	theme-parser.c		\
+	theme-parser.h		\
 	theme-viewer.c		\
 	util.c			\
 	util.h	

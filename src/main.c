@@ -43,6 +43,9 @@ static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
 static gboolean meta_restart_after_quit = FALSE;
 
+static void prefs_changed_callback (MetaPreference pref,
+                                    gpointer       data);
+
 static void
 log_handler (const gchar   *log_domain,
              GLogLevelFlags log_level,
@@ -175,12 +178,14 @@ main (int argc, char **argv)
 
   /* Load prefs */
   meta_prefs_init ();
+  meta_prefs_add_listener (prefs_changed_callback, NULL);
   
   meta_ui_init (&argc, &argv);  
 
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
 
+#if 0
   g_log_set_handler (NULL,
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
@@ -205,6 +210,22 @@ main (int argc, char **argv)
 
   if (meta_is_debugging ())
     g_log_set_always_fatal (G_LOG_LEVEL_MASK);
+#endif
+  
+  meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
+
+  /* Try some panic stuff, this is lame but we really
+   * don't want users to lose their WM :-/
+   */
+  if (!meta_ui_have_a_theme ())
+    meta_ui_set_current_theme ("Atlanta", FALSE);
+
+  if (!meta_ui_have_a_theme ())
+    meta_ui_set_current_theme ("Crux", FALSE);
+
+  if (!meta_ui_have_a_theme ())
+    meta_fatal (_("Could not find a theme! Be sure %s exits and contains the usual themes."),
+                METACITY_PKGDATADIR"/themes");
   
   /* Connect to SM as late as possible - but before managing display,
    * or we might try to manage a window before we have the session
@@ -279,4 +300,20 @@ meta_restart (void)
 {
   meta_restart_after_quit = TRUE;
   meta_quit (META_EXIT_SUCCESS);
+}
+
+static void
+prefs_changed_callback (MetaPreference pref,
+                        gpointer       data)
+{
+  switch (pref)
+    {
+    case META_PREF_THEME:
+      meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
+      break;
+
+    default:
+      /* handled elsewhere or otherwise */
+      break;
+    }
 }

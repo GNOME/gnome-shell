@@ -29,6 +29,7 @@
  * notify listener and of course in the .schemas file
  */
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
+#define KEY_THEME "/apps/metacity/general/theme"
 #define KEY_USE_DESKTOP_FONT  "/apps/metacity/general/titlebar_uses_desktop_font"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
@@ -43,6 +44,7 @@ static gboolean use_desktop_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
 static int titlebar_font_size = 0;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
+static char* current_theme = NULL;
 static int num_workspaces = 4;
 static gboolean application_based = FALSE;
 
@@ -50,6 +52,7 @@ static gboolean update_use_desktop_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_titlebar_font_size (int         value);
 static gboolean update_focus_mode         (const char *value);
+static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 
@@ -212,6 +215,12 @@ meta_prefs_init (void)
   update_focus_mode (str_val);
   g_free (str_val);  
 
+  str_val = gconf_client_get_string (client, KEY_THEME,
+                                     &err);
+  cleanup_error (&err);
+  update_theme (str_val);
+  g_free (str_val);
+  
   /* If the keys aren't set in the database, we use essentially
    * bogus values instead of any kind of default. This is
    * just lazy. But they keys ought to be set, anyhow.
@@ -278,6 +287,22 @@ change_notify (GConfClient    *client,
 
       if (update_focus_mode (str))
         queue_changed (META_PREF_FOCUS_MODE);
+    }
+  if (strcmp (key, KEY_THEME) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_THEME);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_focus_mode (str))
+        queue_changed (META_PREF_THEME);
     }
   else if (strcmp (key, KEY_TITLEBAR_FONT) == 0)
     {
@@ -394,10 +419,48 @@ update_focus_mode (const char *value)
   return (old_mode != focus_mode);
 }
 
+static gboolean
+update_theme (const char *value)
+{
+  const char *old_theme;
+  gboolean changed;
+  
+  old_theme = current_theme;
+  
+  if (value != NULL && *value)
+    {
+      current_theme = g_strdup (value);
+    }
+
+  changed = TRUE;
+  if ((old_theme && current_theme &&
+       strcmp (old_theme, current_theme) == 0) ||
+      (old_theme == NULL && current_theme == NULL))
+    changed = FALSE;
+
+  if (old_theme != current_theme)
+    g_free (old_theme);
+
+  if (current_theme == NULL)
+    {
+      /* Fallback crackrock */
+      current_theme = g_strdup ("Atlanta");
+      changed = TRUE;
+    }
+  
+  return changed;
+}
+
 MetaFocusMode
 meta_prefs_get_focus_mode (void)
 {
   return focus_mode;
+}
+
+const char*
+meta_prefs_get_theme (void)
+{
+  return current_theme;
 }
 
 static gboolean
@@ -526,6 +589,10 @@ meta_preference_to_string (MetaPreference pref)
     {
     case META_PREF_FOCUS_MODE:
       return "FOCUS_MODE";
+      break;
+
+    case META_PREF_THEME:
+      return "THEME";
       break;
 
     case META_PREF_TITLEBAR_FONT:

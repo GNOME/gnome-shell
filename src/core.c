@@ -60,6 +60,49 @@ meta_core_get_frame_flags (Display *xdisplay,
   return meta_frame_get_flags (window->frame);
 }
 
+MetaFrameType
+meta_core_get_frame_type (Display *xdisplay,
+                          Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  switch (window->type)
+    {
+    case META_WINDOW_NORMAL:
+      return META_FRAME_TYPE_NORMAL;
+      break;
+      
+    case META_WINDOW_DIALOG:
+      return META_FRAME_TYPE_DIALOG;
+      break;
+      
+    case META_WINDOW_MODAL_DIALOG:
+      return META_FRAME_TYPE_MODAL_DIALOG;
+      break;
+      
+    case META_WINDOW_MENU:
+      return META_FRAME_TYPE_MENU;
+      break;
+
+    case META_WINDOW_DESKTOP:
+    case META_WINDOW_DOCK:
+    case META_WINDOW_TOOLBAR:
+      /* No frame */
+      return META_FRAME_TYPE_LAST;
+      break;
+    }
+
+  g_assert_not_reached ();
+  return META_FRAME_TYPE_LAST;
+}
+
 GdkPixbuf*
 meta_core_get_mini_icon (Display *xdisplay,
                          Window   frame_xwindow)
@@ -74,6 +117,22 @@ meta_core_get_mini_icon (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
   
   return window->mini_icon;
+}
+
+GdkPixbuf*
+meta_core_get_icon (Display *xdisplay,
+                    Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+  return window->icon;
 }
 
 void

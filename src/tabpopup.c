@@ -22,8 +22,8 @@
 #include "util.h"
 #include "core.h"
 #include "tabpopup.h"
-#include <math.h>
 #include <gtk/gtk.h>
+#include <math.h>
 
 #define OUTSIDE_SELECT_RECT 2
 #define INSIDE_SELECT_RECT 2

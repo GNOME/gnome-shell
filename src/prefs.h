@@ -29,11 +29,11 @@
 typedef enum
 {
   META_PREF_FOCUS_MODE,
+  META_PREF_THEME,
   META_PREF_TITLEBAR_FONT,
   META_PREF_TITLEBAR_FONT_SIZE,
   META_PREF_NUM_WORKSPACES,
   META_PREF_APPLICATION_BASED
-
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -48,6 +48,7 @@ void meta_prefs_init (void);
 const char* meta_preference_to_string (MetaPreference pref);
 
 MetaFocusMode               meta_prefs_get_focus_mode         (void);
+const char*                 meta_prefs_get_theme              (void);
 /* returns NULL if GTK default should be used */
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 /* returns 0 if default should be used */

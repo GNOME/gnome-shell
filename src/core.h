@@ -33,8 +33,12 @@ void meta_core_get_client_size (Display *xdisplay,
 
 MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
                                           Window   frame_xwindow);
+MetaFrameType  meta_core_get_frame_type   (Display *xdisplay,
+                                           Window   frame_xwindow);
 
 GdkPixbuf* meta_core_get_mini_icon (Display *xdisplay,
+                                    Window   frame_xwindow);
+GdkPixbuf* meta_core_get_icon      (Display *xdisplay,
                                     Window   frame_xwindow);
 
 void meta_core_queue_frame_resize (Display *xdisplay,

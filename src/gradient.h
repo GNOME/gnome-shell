@@ -29,7 +29,8 @@ typedef enum
 {
   META_GRADIENT_VERTICAL,
   META_GRADIENT_HORIZONTAL,
-  META_GRADIENT_DIAGONAL
+  META_GRADIENT_DIAGONAL,
+  META_GRADIENT_LAST
 } MetaGradientType;
 
 GdkPixbuf* meta_gradient_create_simple     (int               width,

@@ -1,8 +1,8 @@
 /* Metacity theme viewer and test app main() */
 
-/* 
+/*
  * Copyright (C) 2002 Havoc Pennington
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -12,7 +12,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -22,29 +22,121 @@
 #include <config.h>
 #include "util.h"
 #include "theme.h"
+#include "theme-parser.h"
+#include "inlinepixbufs.h"
 #include <gtk/gtk.h>
 #include <time.h>
-
-static void run_position_expression_tests (void);
-static void run_position_expression_timings (void);  
+#include <stdlib.h>
 
 static int client_width = 200;
 static int client_height = 200;
 
+static MetaTheme *global_theme = NULL;
+
+static void run_position_expression_tests (void);
+static void run_position_expression_timings (void);
+
+static MetaFrameFlags
+get_flags (GtkWidget *widget)
+{
+  return META_FRAME_ALLOWS_DELETE |
+    META_FRAME_ALLOWS_MENU |
+    META_FRAME_ALLOWS_MINIMIZE |
+    META_FRAME_ALLOWS_MAXIMIZE |
+    META_FRAME_ALLOWS_VERTICAL_RESIZE |
+    META_FRAME_ALLOWS_HORIZONTAL_RESIZE |
+    META_FRAME_HAS_FOCUS |
+    META_FRAME_ALLOWS_SHADE |
+    META_FRAME_ALLOWS_MOVE;
+}
+
+static int
+get_text_height (GtkWidget *widget)
+{
+  return meta_gtk_widget_get_text_height (widget);
+}
+
+static PangoLayout*
+create_title_layout (GtkWidget *widget)
+{
+  PangoLayout *layout;
+
+  layout = gtk_widget_create_pango_layout (widget, "Window Title Goes Here");
+
+  return layout;
+}
+
+
+#ifdef HAVE_GDK_PIXBUF_NEW_FROM_STREAM
+#define gdk_pixbuf_new_from_inline gdk_pixbuf_new_from_stream
+#endif
+
+static GdkPixbuf*
+get_icon (void)
+{
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GdkPixbuf *base;
+
+      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
+                                         FALSE,
+                                         NULL);
+
+      g_assert (base);
+
+      default_icon = gdk_pixbuf_scale_simple (base,
+                                              META_ICON_WIDTH,
+                                              META_ICON_HEIGHT,
+                                              GDK_INTERP_BILINEAR);
+
+      g_object_unref (G_OBJECT (base));
+    }
+  
+  return default_icon;
+}
+
+static GdkPixbuf*
+get_mini_icon (void)
+{
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GdkPixbuf *base;
+
+      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
+                                         FALSE,
+                                         NULL);
+
+      g_assert (base);
+
+      default_icon = gdk_pixbuf_scale_simple (base,
+                                              META_MINI_ICON_WIDTH,
+                                              META_MINI_ICON_HEIGHT,
+                                              GDK_INTERP_BILINEAR);
+
+      g_object_unref (G_OBJECT (base));
+    }
+  
+  return default_icon;
+}
+
+
 static void
-set_widget_to_frame_size (MetaFrameStyle *style,
-                          GtkWidget      *widget)
+set_widget_to_frame_size (GtkWidget *widget)
 {
   int top_height, bottom_height, left_width, right_width;
 
-  meta_frame_layout_get_borders (style->layout,
-                                 widget,
-                                 15, /* FIXME */
-                                 0,  /* FIXME */
-                                 &top_height,
-                                 &bottom_height,
-                                 &left_width,
-                                 &right_width);
+  meta_theme_get_frame_borders (global_theme,
+                                META_FRAME_TYPE_NORMAL,
+                                get_text_height (widget),
+                                get_flags (widget),
+                                &top_height,
+                                &bottom_height,
+                                &left_width,
+                                &right_width);  
 
   gtk_widget_set_size_request (widget,
                                client_width + left_width + right_width,
@@ -56,7 +148,6 @@ expose_handler (GtkWidget *widget,
                 GdkEventExpose *event,
                 gpointer data)
 {
-  MetaFrameStyle *style;
   MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
   {
     META_BUTTON_STATE_NORMAL,
@@ -65,36 +156,42 @@ expose_handler (GtkWidget *widget,
     META_BUTTON_STATE_NORMAL
   };
   int top_height, bottom_height, left_width, right_width;
+  PangoLayout *layout;
 
-  style = meta_frame_style_get_test ();
+  layout = create_title_layout (widget);
   
-  meta_frame_layout_get_borders (style->layout,
-                                 widget,
-                                 15, /* FIXME */
-                                 0,  /* FIXME */
-                                 &top_height,
-                                 &bottom_height,
-                                 &left_width,
-                                 &right_width);
+  meta_theme_get_frame_borders (global_theme,
+                                META_FRAME_TYPE_NORMAL,
+                                get_text_height (widget),
+                                get_flags (widget),
+                                &top_height,
+                                &bottom_height,
+                                &left_width,
+                                &right_width);
 
-  meta_frame_style_draw (style,
+  meta_theme_draw_frame (global_theme,
                          widget,
                          widget->window,
-                         0, 0,
                          &event->area,
-                         0, /* flags */
+                         0, 0,
+                         META_FRAME_TYPE_NORMAL,
+                         get_flags (widget),
                          client_width, client_height,
-                         NULL, /* FIXME */
-                         15,   /* FIXME */
-                         button_states);
+                         layout,
+                         get_text_height (widget),
+                         button_states,
+                         get_mini_icon (),
+                         get_icon ());
 
   /* Draw the "client" */
 
   gdk_draw_rectangle (widget->window,
-                      widget->style->white_gc, 
+                      widget->style->white_gc,
                       TRUE,
                       left_width, top_height,
                       client_width, client_height);
+
+  g_object_unref (G_OBJECT (layout));
   
   return TRUE;
 }
@@ -107,15 +204,42 @@ main (int argc, char **argv)
   GtkWidget *sw;
   GtkWidget *da;
   GdkColor desktop_color;
-  
+  GError *err;
+  clock_t start, end;
+
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
-  
+
   run_position_expression_tests ();
 #if 0
   run_position_expression_timings ();
 #endif
-  
+
   gtk_init (&argc, &argv);
+
+  start = clock ();
+  err = NULL;
+  if (argc == 1)
+    global_theme = meta_theme_load ("Default", &err);
+  else if (argc == 2)
+    global_theme = meta_theme_load (argv[1], &err);
+  else
+    {
+      g_printerr ("Usage: metacity-theme-viewer [THEMENAME]\n");
+      exit (1);
+    }
+  end = clock ();
+
+  if (global_theme == NULL)
+    {
+      g_printerr ("Error loading theme: %s\n",
+                  err->message);
+      g_error_free (err);
+      exit (1);
+    }
+
+  g_print ("Loaded theme \"%s\" in %g seconds\n",
+           global_theme->name,
+           (end - start) / (double) CLOCKS_PER_SEC);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (window), 270, 270);
@@ -129,8 +253,8 @@ main (int argc, char **argv)
 
   layout = gtk_layout_new (NULL, NULL);
 
-  gtk_layout_set_size (GTK_LAYOUT (layout), 500, 500);
-  
+  gtk_layout_set_size (GTK_LAYOUT (layout), 250, 250);
+
   gtk_container_add (GTK_CONTAINER (sw), layout);
 
   g_signal_connect (G_OBJECT (window), "destroy",
@@ -139,12 +263,10 @@ main (int argc, char **argv)
   desktop_color.red = 0x5144;
   desktop_color.green = 0x75D6;
   desktop_color.blue = 0xA699;
-  
+
   gtk_widget_modify_bg (layout, GTK_STATE_NORMAL, &desktop_color);
 
   da = gtk_drawing_area_new ();
-  set_widget_to_frame_size (meta_frame_style_get_test (),
-                            da);
 
   g_signal_connect (G_OBJECT (da), "expose_event",
                     G_CALLBACK (expose_handler), NULL);
@@ -152,11 +274,14 @@ main (int argc, char **argv)
   gtk_layout_put (GTK_LAYOUT (layout),
                   da,
                   5, 5);
+
+  gtk_widget_realize (da);
+  set_widget_to_frame_size (da);
   
   gtk_widget_show_all (window);
-  
+
   gtk_main ();
-  
+
   return 0;
 }
 
@@ -166,7 +291,7 @@ typedef struct
   const char *expr;
   int expected_x;
   int expected_y;
-  MetaPositionExprError expected_error;
+  MetaThemeError expected_error;
 } PositionExpressionTest;
 
 #define NO_ERROR -1
@@ -290,29 +415,29 @@ static const PositionExpressionTest position_expression_tests[] = {
     "(8 + 8) / 2", 18, 28, NO_ERROR },
   /* Errors */
   { { 10, 20, 40, 50 },
-    "2 * foo", 0, 0, META_POSITION_EXPR_ERROR_UNKNOWN_VARIABLE },
+    "2 * foo", 0, 0, META_THEME_ERROR_UNKNOWN_VARIABLE },
   { { 10, 20, 40, 50 },
-    "2 *", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "2 *", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "- width", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "- width", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "5 % 1.0", 0, 0, META_POSITION_EXPR_ERROR_MOD_ON_FLOAT },
+    "5 % 1.0", 0, 0, META_THEME_ERROR_MOD_ON_FLOAT },
   { { 10, 20, 40, 50 },
-    "1.0 % 5", 0, 0, META_POSITION_EXPR_ERROR_MOD_ON_FLOAT },
+    "1.0 % 5", 0, 0, META_THEME_ERROR_MOD_ON_FLOAT },
   { { 10, 20, 40, 50 },
-    "! * 2", 0, 0, META_POSITION_EXPR_ERROR_BAD_CHARACTER },
+    "! * 2", 0, 0, META_THEME_ERROR_BAD_CHARACTER },
   { { 10, 20, 40, 50 },
-    "   ", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "   ", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "() () (( ) ()) ((()))", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "() () (( ) ()) ((()))", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "(*) () ((/) ()) ((()))", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "(*) () ((/) ()) ((()))", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "2 * 5 /", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "2 * 5 /", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "+ 2 * 5", 0, 0, META_POSITION_EXPR_ERROR_FAILED },
+    "+ 2 * 5", 0, 0, META_THEME_ERROR_FAILED },
   { { 10, 20, 40, 50 },
-    "+ 2 * 5", 0, 0, META_POSITION_EXPR_ERROR_FAILED }
+    "+ 2 * 5", 0, 0, META_THEME_ERROR_FAILED }
 };
 
 static void
@@ -320,22 +445,22 @@ run_position_expression_tests (void)
 {
   int i;
   MetaPositionExprEnv env;
-  
+
   i = 0;
-  while (i < G_N_ELEMENTS (position_expression_tests))
+  while (i < (int) G_N_ELEMENTS (position_expression_tests))
     {
       GError *err;
       gboolean retval;
       const PositionExpressionTest *test;
       int x, y;
-      
+
       test = &position_expression_tests[i];
 
       if (g_getenv ("META_PRINT_TESTS") != NULL)
         g_print ("Test expression: \"%s\" expecting x = %d y = %d",
                  test->expr, test->expected_x, test->expected_y);
-      
-      err = NULL;      
+
+      err = NULL;
 
       env.x = test->rect.x;
       env.y = test->rect.y;
@@ -343,7 +468,18 @@ run_position_expression_tests (void)
       env.height = test->rect.height;
       env.object_width = -1;
       env.object_height = -1;
-      
+      env.left_width = 0;
+      env.right_width = 0;
+      env.top_height = 0;
+      env.bottom_height = 0;
+      env.title_width = 5;
+      env.title_height = 5;
+      env.icon_width = 32;
+      env.icon_height = 32;
+      env.mini_icon_width = 16;
+      env.mini_icon_height = 16;
+      env.theme = NULL;
+
       retval = meta_parse_position_expression (test->expr,
                                                &env,
                                                &x, &y,
@@ -353,11 +489,11 @@ run_position_expression_tests (void)
         g_error ("position expression test returned TRUE but set error");
       if (!retval && err == NULL)
         g_error ("position expression test returned FALSE but didn't set error");
-      if (test->expected_error != NO_ERROR)
+      if (((int) test->expected_error) != NO_ERROR)
         {
           if (err == NULL)
             g_error ("Error was expected but none given");
-          if (err->code != test->expected_error)
+          if (err->code != (int) test->expected_error)
             g_error ("Error %d was expected but %d given",
                      test->expected_error, err->code);
         }
@@ -389,18 +525,18 @@ run_position_expression_timings (void)
   clock_t start;
   clock_t end;
   MetaPositionExprEnv env;
-  
+
 #define ITERATIONS 100000
 
   start = clock ();
-  
+
   iters = 0;
   i = 0;
   while (iters < ITERATIONS)
     {
       const PositionExpressionTest *test;
       int x, y;
-      
+
       test = &position_expression_tests[i];
 
       env.x = test->rect.x;
@@ -409,7 +545,18 @@ run_position_expression_timings (void)
       env.height = test->rect.height;
       env.object_width = -1;
       env.object_height = -1;
-      
+      env.left_width = 0;
+      env.right_width = 0;
+      env.top_height = 0;
+      env.bottom_height = 0;
+      env.title_width = 5;
+      env.title_height = 5;
+      env.icon_width = 32;
+      env.icon_height = 32;
+      env.mini_icon_width = 16;
+      env.mini_icon_height = 16;
+      env.theme = NULL;
+
       meta_parse_position_expression (test->expr,
                                       &env,
                                       &x, &y, NULL);
@@ -426,5 +573,5 @@ run_position_expression_timings (void)
            ITERATIONS,
            ((double)end - (double)start) / CLOCKS_PER_SEC,
            ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
-           
+
 }

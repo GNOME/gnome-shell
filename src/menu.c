@@ -24,6 +24,7 @@
 #include "main.h"
 #include "util.h"
 #include "core.h"
+#include "themewidget.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -117,6 +118,41 @@ activate_cb (GtkWidget *menuitem, gpointer data)
   /* menu may now be freed */
 }
 
+static void
+menu_icon_size_func (MetaArea *area,
+                     int      *width,
+                     int      *height,
+                     void     *user_data)
+{
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,
+                        width, height);
+}
+
+static void
+menu_icon_expose_func (MetaArea       *area,
+                       GdkEventExpose *event,
+                       int             x_offset,
+                       int             y_offset,
+                       void           *user_data)
+{
+  int width, height;
+  MetaMenuIconType type;
+  
+  type = GPOINTER_TO_INT (user_data);
+  
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,
+                        &width, &height);
+  
+  meta_theme_draw_menu_icon (meta_theme_get_current (),
+                             GTK_WIDGET (area),
+                             GTK_WIDGET (area)->window,
+                             &event->area,
+                             x_offset, y_offset,
+                             width, height,
+                             type);
+}
+
+
 MetaWindowMenu*
 meta_window_menu_new   (MetaFrames         *frames,
                         MetaMenuOp          ops,
@@ -141,7 +177,7 @@ meta_window_menu_new   (MetaFrames         *frames,
   menu->menu = gtk_menu_new ();
 
   i = 0;
-  while (i < G_N_ELEMENTS (menuitems))
+  while (i < (int) G_N_ELEMENTS (menuitems))
     {
       if (ops & menuitems[i].op || menuitems[i].op == 0)
         {
@@ -155,47 +191,48 @@ meta_window_menu_new   (MetaFrames         *frames,
           else
             {
               GtkWidget *image;
-              GdkPixmap *pix;
-              GdkBitmap *mask;
 
               image = NULL;
-              pix = NULL;
-              mask = NULL;
               
               switch (menuitems[i].op)
                 {
                 case META_MENU_OP_MAXIMIZE:
-                  meta_frames_get_pixmap_for_control (frames,
-                                                      META_FRAME_CONTROL_MAXIMIZE,
-                                                      &pix, &mask);
+                  image = meta_area_new ();
+                  meta_area_setup (META_AREA (image),
+                                   menu_icon_size_func,
+                                   menu_icon_expose_func,
+                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_MAXIMIZE),
+                                   NULL);
                   break;
 
                 case META_MENU_OP_UNMAXIMIZE:
-                  meta_frames_get_pixmap_for_control (frames,
-                                                      META_FRAME_CONTROL_UNMAXIMIZE,
-                                                      &pix, &mask);
+                  image = meta_area_new ();
+                  meta_area_setup (META_AREA (image),
+                                   menu_icon_size_func,
+                                   menu_icon_expose_func,
+                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_UNMAXIMIZE),
+                                   NULL);
                   break;
                   
                 case META_MENU_OP_MINIMIZE:
-                  meta_frames_get_pixmap_for_control (frames,
-                                                      META_FRAME_CONTROL_MINIMIZE,
-                                                      &pix, &mask);
+                  image = meta_area_new ();
+                  meta_area_setup (META_AREA (image),
+                                   menu_icon_size_func,
+                                   menu_icon_expose_func,
+                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_MINIMIZE),
+                                   NULL);
                   break;
 
                 case META_MENU_OP_DELETE:
-                  meta_frames_get_pixmap_for_control (frames,
-                                                      META_FRAME_CONTROL_DELETE,
-                                                      &pix, &mask);
+                  image = meta_area_new ();
+                  meta_area_setup (META_AREA (image),
+                                   menu_icon_size_func,
+                                   menu_icon_expose_func,
+                                   GINT_TO_POINTER (META_MENU_ICON_TYPE_CLOSE),
+                                   NULL);
                   break;
                 default:
                   break;
-                }
-
-              if (pix)
-                {
-                  image = gtk_image_new_from_pixmap (pix, mask);
-                  g_object_unref (G_OBJECT (pix));
-                  g_object_unref (G_OBJECT (mask));
                 }
               
               if (image == NULL && 

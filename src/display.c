@@ -139,9 +139,10 @@ meta_display_open (const char *name)
     "_KWM_WIN_ICON",
     "_NET_WM_MOVERESIZE",
     "_NET_ACTIVE_WINDOW",
-    "_METACITY_RESTART_MESSAGE",
+    "_METACITY_RESTART_MESSAGE",    
     "_NET_WM_STRUT",
-    "_WIN_HINTS"
+    "_WIN_HINTS",
+    "_METACITY_RELOAD_THEME_MESSAGE"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -237,6 +238,7 @@ meta_display_open (const char *name)
   display->atom_metacity_restart_message = atoms[44];
   display->atom_net_wm_strut = atoms[45];
   display->atom_win_hints = atoms[46];
+  display->atom_metacity_reload_theme_message = atoms[47];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -668,7 +670,7 @@ event_callback (XEvent   *event,
   /* mark double click events, kind of a hack, oh well. */
   if (event->type == ButtonPress)
     {
-      if (event->xbutton.button == display->last_button_num &&
+      if (((int)event->xbutton.button) ==  display->last_button_num &&
           event->xbutton.window == display->last_button_xwindow &&
           event->xbutton.time < (display->last_button_time + display->double_click_time))
         {
@@ -716,7 +718,7 @@ event_callback (XEvent   *event,
       break;
     case ButtonPress:
       if ((grab_op_is_mouse (display->grab_op) &&
-           display->grab_button != event->xbutton.button && 
+           display->grab_button != (int) event->xbutton.button && 
            display->grab_window == window) ||
           grab_op_is_keyboard (display->grab_op))
         {
@@ -1103,6 +1105,13 @@ event_callback (XEvent   *event,
                 {
                   meta_verbose ("Received restart request\n");
                   meta_restart ();
+                }
+              else if (event->xclient.message_type ==
+                       display->atom_metacity_reload_theme_message)
+                {
+                  meta_verbose ("Received reload theme request\n");
+                  meta_ui_set_current_theme (meta_prefs_get_theme (),
+                                             TRUE);
                 }
             }
         }
@@ -1567,15 +1576,15 @@ meta_display_unregister_x_window (MetaDisplay *display,
 
 MetaWorkspace*
 meta_display_get_workspace_by_index (MetaDisplay *display,
-                                     int          index)
+                                     int          idx)
 {
   GList *tmp;
 
   /* should be robust, index is maybe from an app */
-  if (index < 0)
+  if (idx < 0)
     return NULL;
   
-  tmp = g_list_nth (display->workspaces, index);
+  tmp = g_list_nth (display->workspaces, idx);
 
   if (tmp == NULL)
     return NULL;
@@ -1586,13 +1595,13 @@ meta_display_get_workspace_by_index (MetaDisplay *display,
 MetaWorkspace*
 meta_display_get_workspace_by_screen_index (MetaDisplay *display,
                                             MetaScreen  *screen,
-                                            int          index)
+                                            int          idx)
 {
   GList *tmp;
   int i;
 
-  /* should be robust, index is maybe from an app */
-  if (index < 0)
+  /* should be robust, idx is maybe from an app */
+  if (idx < 0)
     return NULL;
   
   i = 0;
@@ -1603,7 +1612,7 @@ meta_display_get_workspace_by_screen_index (MetaDisplay *display,
 
       if (w->screen == screen)
         {
-          if (i == index)
+          if (i == idx)
             return w;
           else
             ++i;

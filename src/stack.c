@@ -98,7 +98,8 @@ meta_stack_free (MetaStack *stack)
 
   g_list_free (stack->pending);
 
-  g_array_free (stack->last_root_children_stacked, TRUE);
+  if (stack->last_root_children_stacked)
+    g_array_free (stack->last_root_children_stacked, TRUE);
   
   g_free (stack);
 }
@@ -940,7 +941,7 @@ find_tab_forward (MetaStack     *stack,
   /* start may be -1 to find any tab window at all */
   
   i = start + 1;
-  while (i < stack->windows->len)
+  while (i < (int) stack->windows->len)
     {
       MetaWindow *window;
       
@@ -1045,7 +1046,7 @@ meta_stack_get_tab_next (MetaStack     *stack,
   if (window != NULL)
     {
       i = 0;
-      while (i < stack->windows->len)
+      while (i < (int) stack->windows->len)
         {
           Window w;
           
@@ -1083,7 +1084,7 @@ meta_stack_get_tab_list (MetaStack     *stack,
   list = NULL;
   
   i = 0;
-  while (i < stack->windows->len)
+  while (i < (int) stack->windows->len)
     {
       MetaWindow *window;
       

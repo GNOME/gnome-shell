@@ -1,0 +1,218 @@
+Docs on the theme format
+
+Themes are in a simple XML-subset format.
+
+<?xml version="1.0"?>
+<metacity_theme>
+<!-- Only one info section is allowed -->
+<info>
+  <name>Foo</name>
+  <author>Foo P. Bar</author>
+  <copyright>whoever, 2002</copyright>
+  <date>Jan 31 2005</date>
+  <description>A sentence about the theme.</description>
+</info>
+
+<!-- define a frame geometry to be referenced later -->
+<frame_geometry name="normal">
+  <distance name="left_width" value="6"/>
+  <distance name="right_width" value="6"/>
+  <distance name="bottom_height" value="7"/>
+  <distance name="left_titlebar_edge" value="6"/>
+  <distance name="right_titlebar_edge" value="6"/>
+  <distance name="button_width" value="17"/>
+  <distance name="button_height" value="17"/>
+  <distance name="title_vertical_pad" value="4"/>
+  <border name="title_border" left="3" right="12" top="4" bottom="3"/>
+  <border name="button_border" left="0" right="0" top="1" bottom="1"/>
+</frame_geometry>
+
+<!-- inheritance is allowed; simply overwrites values from parent -->
+<frame_geometry name="borderless" parent="normal">
+  <distance name="left_width" value="0"/>
+  <distance name="right_width" value="0"/>
+  <distance name="bottom_height" value="0"/>
+  <distance name="left_titlebar_edge" value="0"/>
+  <distance name="right_titlebar_edge" value="0"/>
+</frame_geometry>
+
+<!-- define a constant to use in positions/sizes of draw operations;
+     constant names must start with a capital letter.
+  -->
+<constant name="LineOffset" value="3"/>
+
+<!-- define drawing operations to be referenced later; 
+     these draw-op lists can also be placed inline. 
+
+     Positions/lengths are given as expressions.
+     Operators are: +,-,*,/,%,`max`,`min`
+     All operators are infix including `max` and `min`, 
+      i.e. "2 `max` 5"
+     
+     Some variables are predefined, and constants can also 
+     be used. Variables are:
+
+       width - width of target area
+       height - height of target area
+       object_width - natural width of object being drawn
+       object_height - natural height of object being drawn
+       left_width - distance from left of frame to client window
+       right_width - distance from right of frame to client window
+       top_height - distance from top of frame to client window
+       bottom_height - distance from bottom of frame to client window
+       mini_icon_width - width of mini icon for window
+       mini_icon_height - height of mini icon
+       icon_width - width of large icon
+       icon_height - height of large icon
+       title_width - width of title text
+       title_height - height of title text
+
+    All these are always defined, except object_width/object_height 
+    which only exists for <image> right now.
+
+  -->
+
+<draw_ops name="demo_all_ops">
+  <line color="#00FF00" x1="LineOffset" y1="0" x2="0" y2="height"/>
+  <line color="gtk:fg[NORMAL]" 
+        x1="width - 1" y1="0" x2="width - 1" y2="height" 
+        width="3" dash_on_length="2" dash_off_length="3"/>
+  <rectangle color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.7"
+             x="0" y="0" width="width - 1" height="height - 1" filled="true"/>
+  <arc x="0" y="0" width="width - 1" height="height - 1" 
+       filled="false" start_angle="30" extent_angle="180"/>
+  <tint color="orange" alpha="0.5" x1="0" y1="0" x2="0" y2="height"/>
+ <!-- may be vertical, horizontal, diagonal -->
+  <gradient type="diagonal" 
+            x="10" y="30" width="width / 3" height="height / 4">
+    <!-- any number of colors allowed here. A color can be 
+         a color name like "blue" (look at gcolorsel), a hex color
+         as in HTML (#FFBB99), or a color from the gtk theme 
+         given as "gtk:base[NORMAL]", "gtk:fg[ACTIVE]", etc.
+       -->
+    <color value="gtk:fg[SELECTED]"/>
+    <!-- color obtained by a 0.5 alpha composite of the second color onto the first -->
+    <color value="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.5"/>
+  </gradient>
+  <image filename="foo.png" alpha="0.7"
+         x="10" y="30" width="width / 3" height="height / 4"/>
+  <gtk_arrow state="normal" shadow="in" arrow="up"
+             filled="true"
+             x="2" y="2" width="width - 4" height="height - 4"/>
+  <gtk_box state="normal" shadow="out"
+           x="2" y="2" width="width - 4" height="height - 4"/>
+  <gtk_vline state="normal" x="2" y1="0" y2="height"/>
+  <!-- window's icon -->
+  <icon alpha="0.7"
+        x="10" y="30" width="width / 3" height="height / 4"/>
+  <!-- window's title -->
+  <title color="gtk:text[NORMAL]" x="20" y="30"/>
+  <!-- include another draw ops list -->
+  <include name="some_other_draw_ops"/>
+</draw_ops>
+
+<frame_style name="normal" geometry="normal">
+  <!-- How to draw each piece of the frame.
+       For each piece, a draw_ops can be given inline or referenced 
+       by name. If a piece is omitted, then nothing will be drawn 
+       for that piece.
+
+       For each piece, the "width" and "height" variables in 
+       coordinate expressions refers to the dimensions of the piece, 
+       the origin is at the top left of the piece.
+  
+       So <rectangle x="0" y="0" width="width-1" height="height-1"/>
+       will outline a piece.
+    -->
+
+  <piece position="entire_background" draw_ops="demo_all_ops"/>
+  <piece position="left_titlebar_edge">
+    <draw_ops>
+      <line color="#00FF00" x1="0" y1="0" x2="0" y2="height"/>
+    </draw_ops>
+  </piece>
+
+  <!-- The complete list of frame pieces:
+
+       entire_background: whole frame
+       titlebar: entire area above the app's window 
+       titlebar_middle: area of titlebar_background not considered
+                        part of an edge
+       left_titlebar_edge: left side of titlebar background
+       right_titlebar_edge: right side of titlebar background
+       top_titlebar_edge: top side of titlebar background
+       bottom_titlebar_edge: bottom side of titlebar background 
+       title: the title area (doesn't include buttons)
+       left_edge: left edge of the frame
+       right_edge: right edge of the frame
+       bottom_edge: bottom edge of the frame
+       overlay: same area as entire_background, but drawn after 
+                drawing all sub-pieces instead of before
+
+   -->
+
+  <!-- For buttons, drawing methods have to be provided for 
+       each of three states: 
+          normal, pressed, prelight
+       and the button name must be provided:
+          close, maximize, minimize, menu
+       So a working theme needs 3*4 = 12 button declarations
+    -->
+
+  <button function="close" state="normal" draw_ops="previously_named"/>
+  <button function="menu" state="normal">
+    <draw_ops>
+      <icon alpha="0.7"
+            x="0" y="0" width="object_width" height="object_height"/>
+    </draw_ops>
+  </button>
+
+</frame_style>
+
+<!-- styles can inherit from each other with the parent="" attribute. 
+     In a subclass anything can be re-specified to override 
+     the parent style. -->
+<frame_style name="focused" parent="normal">
+  <piece position="title">
+    <draw_ops>
+      <rectangle color="gtk:bg[SELECTED]"
+                 x="0" y="0" width="width-1" height="height-1"/>
+      <title color="gtk:fg[SELECTED]" x="(width - title_width) / 2"
+                                      y="(height - title_height) / 2"/>
+    </draw_ops>
+  </piece>
+</frame_style>
+
+<!-- Maps styles to states of frame. 
+
+     Focus: yes (focused), no (not focused)
+     Window states: normal, maximized, shaded, maximized_and_shaded
+     Window resizability: none, vertical, horizontal, both
+
+     Everything unspecified just does the same as
+     unfocused/normal/both.
+
+     only state="normal" needs a resize="" attribute.
+ -->
+<frame_style_set name="normal">
+<frame focus="yes" state="normal" resize="both" style="focused"/>
+<frame focus="no" state="normal" resize="both" style="normal"/>
+</frame_style_set>
+
+<!-- Each window type needs a style set 
+     Types: normal, dialog, modal_dialog, toolbar, menu, utility
+  -->
+<window type="normal" style_set="normal"/>
+
+
+<!-- For menu icons, drawing methods are needed for the same 
+     four types as the buttons, and GTK states
+     (insensitive,prelight,normal,etc.)
+  -->
+
+<menu_icon function="close" state="normal" draw_ops="previously_named"/>
+
+
+</metacity_theme>
+
+

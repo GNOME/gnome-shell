@@ -277,7 +277,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 {
   Window ignored1, ignored2;
   Window *children;
-  unsigned int n_children;
+  int n_children;
   int i;
 
   /* Must grab server to avoid obvious race condition */

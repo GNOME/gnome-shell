@@ -25,6 +25,7 @@
 #include "util.h"
 #include "menu.h"
 #include "core.h"
+#include "theme.h"
 
 #include "inlinepixbufs.h"
 
@@ -543,4 +544,17 @@ meta_text_property_to_utf8 (Display             *xdisplay,
   g_strfreev (list);
 
   return retval;
+}
+
+void
+meta_ui_set_current_theme (const char *name,
+                           gboolean    force_reload)
+{
+  meta_theme_set_current (name, force_reload);
+}
+
+gboolean
+meta_ui_have_a_theme (void)
+{
+  return meta_theme_get_current () != NULL;
 }

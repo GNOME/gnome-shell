@@ -459,7 +459,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   if (window->initial_workspace_set)
     {
-      if (window->initial_workspace == 0xFFFFFFFF)
+      if (window->initial_workspace == (int) 0xFFFFFFFF)
         {
           meta_workspace_add_window (window->screen->active_workspace, window);
           window->on_all_workspaces = TRUE;
@@ -487,17 +487,17 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
       if (parent)
         {
-          GList *tmp;
+          GList *tmp_list;
           
           if (parent->on_all_workspaces)
             window->on_all_workspaces = TRUE;
           
-          tmp = parent->workspaces;
-          while (tmp != NULL)
+          tmp_list = parent->workspaces;
+          while (tmp_list != NULL)
             {
-              meta_workspace_add_window (tmp->data, window);
+              meta_workspace_add_window (tmp_list->data, window);
               
-              tmp = tmp->next;
+              tmp_list = tmp_list->next;
             }
         }
     }
@@ -2716,7 +2716,7 @@ meta_window_client_message (MetaWindow *window,
             meta_window_unstick (window);
           meta_window_change_workspace (window, workspace);
         }
-      else if (space == 0xFFFFFFFF)
+      else if (space == (int) 0xFFFFFFFF)
         {
           meta_window_stick (window);
         }
@@ -4893,7 +4893,7 @@ recalc_do_not_cover_struts (MetaWindow *window)
 static void
 recalc_window_type (MetaWindow *window)
 {
-  int old_type;
+  MetaWindowType old_type;
 
   old_type = window->type;
   

@@ -1,4 +1,4 @@
 
 SUBDIRS=src 
 
-EXTRA_DIST=HACKING
+EXTRA_DIST=HACKING theme-format.txt
