@@ -80,7 +80,7 @@
 
   <piece position="title">
     <draw_ops>
-      <title color="white" x="IconTitleSpacing" y="0"/>
+      <title color="gtk:fg[SELECTED]" x="IconTitleSpacing" y="0"/>
     </draw_ops>
   </piece>
 
@@ -217,20 +217,44 @@
   </button>
 </frame_style>
 
+<frame_style name="normal_maximized" parent="normal">
+  <button function="maximize" state="normal">
+    <draw_ops>
+      <include name="inactive_button"/>
+      <image filename="inactive-restore-button.png" x="2" y="2" width="width-4" height="height-4"/>
+    </draw_ops>
+  </button>
+
+  <button function="maximize" state="pressed">
+    <draw_ops>
+      <include name="inactive_button_pressed"/>
+      <image filename="inactive-restore-button.png" x="2" y="2" width="width - 4" height="height - 4"/>
+    </draw_ops>
+  </button>
+
+  <button function="maximize" state="prelight">
+    <draw_ops>
+      <include name="inactive_button_prelight"/>
+      <image filename="inactive-restore-button.png" x="2" y="2" width="width-4" height="height-4"/>
+    </draw_ops>
+  </button>
+
+</frame_style>
 
 <!-- Active (focused) shaded style -->
-<frame_style name="normal_shaded" geometry="normal" parent="normal">
-  <piece position="left_titlebar_edge">
-    <draw_ops>
-      <image filename="inactive-left-top-border-shaded.png" x="0" y="3" width="object_width" height="object_height"/>
-    </draw_ops>
-  </piece>
-  <piece position="right_titlebar_edge">
-    <draw_ops>
-      <image filename="inactive-right-top-border-shaded.png" x="width - object_width" y="3" width="object_width" height="object_height"/>
-    </draw_ops>
-  </piece>
-</frame_style>
+	<frame_style name="normal_shaded" geometry="normal" parent="normal">
+	  <piece position="left_titlebar_edge">
+	    <draw_ops>
+	      <image filename="inactive-left-top-border-shaded.png" x="0" y="3" width="object_width" height="object_height"/>
+	    </draw_ops>
+	  </piece>
+	  <piece position="right_titlebar_edge">
+	    <draw_ops>
+	      <image filename="inactive-right-top-border-shaded.png" x="width - object_width" y="3" width="object_width" height="object_height"/>
+	    </draw_ops>
+	  </piece>
+	</frame_style>
+
 
 <!-- Active (focused) style -->
 <frame_style name="focused" geometry="normal">
@@ -248,7 +272,7 @@
 
   <piece position="title">
     <draw_ops>
-      <title color="white" x="IconTitleSpacing" y="((height - title_height) / 2) `max` 0"/>
+      <title color="gtk:fg[SELECTED]" x="IconTitleSpacing" y="((height - title_height) / 2) `max` 0"/>
     </draw_ops>
   </piece>
 
@@ -399,6 +423,30 @@
   </button>
 </frame_style>
 
+<frame_style name="focused_maximized" geometry="normal" parent="focused">
+  <button function="maximize" state="normal">
+    <draw_ops>
+      <include name="active_button"/>
+      <image filename="active-restore-button.png" x="2" y="2" width="width-4" height="height-4"/>
+    </draw_ops>
+  </button>
+  
+  <button function="maximize" state="pressed">
+    <draw_ops>
+      <include name="active_button_pressed"/>
+      <image filename="active-restore-button.png" x="2" y="2" width="width-4" height="height-4"/>
+    </draw_ops>
+  </button>
+
+  <button function="maximize" state="prelight">
+    <draw_ops>
+      <include name="active_button_prelight"/>
+      <image filename="active-restore-button.png" x="2" y="2" width="width-4" height="height-4"/>
+    </draw_ops>
+  </button>
+
+</frame_style>
+
 <!-- Active (focused) shaded style -->
 <frame_style name="focused_shaded" geometry="normal" parent="focused">
   <piece position="left_titlebar_edge">
@@ -469,12 +517,12 @@
 <frame_style_set name="normal">
 <frame focus="yes" state="shaded" style="focused_shaded"/>
 <frame focus="yes" state="normal" resize="both" style="focused"/>
-<frame focus="yes" state="maximized" style="focused"/>
-<frame focus="yes" state="maximized_and_shaded" style="focused_shaded"/>
+<frame focus="yes" state="maximized" style="focused_maximized"/>
+<frame focus="yes" state="maximized_and_shaded" style="focused_maximized"/>
 <frame focus="no" state="normal" resize="both" style="normal"/>
 <frame focus="no" state="shaded" style="normal_shaded"/>
-<frame focus="no" state="maximized" style="normal"/>
-<frame focus="no" state="maximized_and_shaded" style="normal_shaded"/>
+<frame focus="no" state="maximized" style="normal_maximized"/>
+<frame focus="no" state="maximized_and_shaded" style="normal_maximized"/>
 </frame_style_set>
 
 <frame_style_set name="border">

@@ -1,3 +1,11 @@
+2002-11-05  Calum Benson  <calum.benson@sun.com>
+
+	* src/themes/Crux/active-restore-button.png:
+	* src/themes/Crux/inactive-restore-button.png:
+	* src/themes/Crux/metacity-theme-1.xml: add a restore button
+	for maximized windows, and un-hard-code titlebar text colors.
+	Fixes #97759.
+
 2002-11-05  Havoc Pennington  <hp@redhat.com>
 
 	* src/workspace.c (meta_workspace_get_neighbor): apply patch from 
