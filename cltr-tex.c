@@ -1,4 +1,4 @@
-#include "cltr-tex.h"
+#include "cltr-texture.h"
 
 /* 
    IDEAS or less memory
@@ -27,7 +27,11 @@ next_p2 ( int a )
 }
 
 void
-cltr_image_render_to_gl_quad(CltrImage *img, int x1, int y1, int x2, int y2)
+cltr_texture_render_to_gl_quad(CltrTexture *texture, 
+			       int          x1, 
+			       int          y1, 
+			       int          x2, 
+			       int          y2)
 {
   int   qx1, qx2, qy1, qy2;
   int   qwidth, qheight;
@@ -37,27 +41,27 @@ cltr_image_render_to_gl_quad(CltrImage *img, int x1, int y1, int x2, int y2)
   qwidth  = x2-x1;
   qheight = y2-y1;
 
-  for (x=0; x < img->n_x_tiles; x++)
+  for (x=0; x < texture->n_x_tiles; x++)
     {
       lasty = 0;
 
-      for (y=0; y < img->n_y_tiles; y++)
+      for (y=0; y < texture->n_y_tiles; y++)
 	{
 	  int actual_w, actual_h;
 
-	  glBindTexture(GL_TEXTURE_2D, img->tiles[i]);
+	  glBindTexture(GL_TEXTURE_2D, texture->tiles[i]);
 	 
-	  actual_w = img->tile_x_size[x] - img->tile_x_waste[x];
-	  actual_h = img->tile_y_size[y] - img->tile_y_waste[y]; 
+	  actual_w = texture->tile_x_size[x] - texture->tile_x_waste[x];
+	  actual_h = texture->tile_y_size[y] - texture->tile_y_waste[y]; 
 
-	  tx = (float) actual_w / img->tile_x_size[x];
-	  ty = (float) actual_h / img->tile_y_size[y];
+	  tx = (float) actual_w / texture->tile_x_size[x];
+	  ty = (float) actual_h / texture->tile_y_size[y];
 	  
 	  qx1 = x1 + lastx;
-	  qx2 = qx1 + ((qwidth * actual_w ) / img->width );
+	  qx2 = qx1 + ((qwidth * actual_w ) / texture->width );
 	  
 	  qy1 = y1 + lasty;
-	  qy2 = qy1 + ((qheight * actual_h) / img->height );
+	  qy2 = qy1 + ((qheight * actual_h) / texture->height );
 
 	  glBegin (GL_QUADS);
 	  glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
@@ -157,7 +161,7 @@ tile_dimension (int  to_fill,
 }
 
 static void
-init_tiles (CltrImage *texture)
+init_tiles (CltrTexture *texture)
 {
   int x_pot = next_p2 (texture->width);
   int y_pot = next_p2 (texture->height);
@@ -229,56 +233,56 @@ init_tiles (CltrImage *texture)
 
 /* End borrowed luminocity code */
 
-CltrImage*
-cltr_image_new(Pixbuf *pixb)
+CltrTexture*
+cltr_texture_new(Pixbuf *pixb)
 {
-  CltrImage *img;
+  CltrTexture *texture;
   int        x, y, i = 0;
 
   CLTR_MARK();
 
   img = g_malloc0(sizeof(CltrImage));
 
-  img->width  = pixb->width;
-  img->height = pixb->height;
-  img->pixb   = pixb;
+  texture->width  = pixb->width;
+  texture->height = pixb->height;
+  texture->pixb   = pixb;
 
   pixbuf_ref(pixb);
 
   init_tiles (img);
 
-  for (x=0; x < img->n_x_tiles; x++)
-    for (y=0; y < img->n_y_tiles; y++)
+  for (x=0; x < texture->n_x_tiles; x++)
+    for (y=0; y < texture->n_y_tiles; y++)
       {
 	Pixbuf *pixtmp;
 	int src_h, src_w;
 	
-	pixtmp = pixbuf_new(img->tile_x_size[x], img->tile_y_size[y]);
+	pixtmp = pixbuf_new(texture->tile_x_size[x], texture->tile_y_size[y]);
 
-	src_w = img->tile_x_size[x];
-	src_h = img->tile_y_size[y];
+	src_w = texture->tile_x_size[x];
+	src_h = texture->tile_y_size[y];
 
 	/*
 	CLTR_DBG("%i+%i, %ix%i to %ix%i, waste %ix%i",
-		 img->tile_x_position[x],
-		 img->tile_y_position[y],
-		 img->tile_x_size[x], 
-		 img->tile_y_size[y],
-		 img->width,
-		 img->height,
-		 img->tile_x_waste[x], 
-		 img->tile_y_waste[y]);
+		 texture->tile_x_position[x],
+		 texture->tile_y_position[y],
+		 texture->tile_x_size[x], 
+		 texture->tile_y_size[y],
+		 texture->width,
+		 texture->height,
+		 texture->tile_x_waste[x], 
+		 texture->tile_y_waste[y]);
 	*/
 
-	pixbuf_copy(img->pixb, 
+	pixbuf_copy(texture->pixb, 
 		    pixtmp,
-		    img->tile_x_position[x],
-		    img->tile_y_position[y],
-		    img->tile_x_size[x], 
-		    img->tile_y_size[y],
+		    texture->tile_x_position[x],
+		    texture->tile_y_position[y],
+		    texture->tile_x_size[x], 
+		    texture->tile_y_size[y],
 		    0,0);
 
-	glBindTexture(GL_TEXTURE_2D, img->tiles[i]);
+	glBindTexture(GL_TEXTURE_2D, texture->tiles[i]);
 
 	CLTR_GLERR();
 
@@ -288,7 +292,7 @@ cltr_image_new(Pixbuf *pixb)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_DECAL);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
+	glTexImage2D(GL_TEXTURE_2D, 0, /*GL_COMPRESSED_RGBA_ARB*/ GL_RGBA, 
 		     pixtmp->width,
 		     pixtmp->height,
 		     0, GL_RGBA, 

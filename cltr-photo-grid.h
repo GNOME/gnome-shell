@@ -29,11 +29,10 @@ ClutterPhotoGridCellState;
 
 struct ClutterPhotoGridCell
 {
-  Pixbuf *pixb;
-  float   angle;
-  GLuint  texref;
-  CltrImage *img;
-  gint       anim_step;
+  Pixbuf      *pixb;
+  float        angle;
+  CltrTexture *texture;
+  gint         anim_step;
 
   ClutterPhotoGridCellState state;
 };
@@ -68,12 +67,8 @@ struct ClutterPhotoGrid
   /* below needs better naming */
   float          view_min_x, view_max_x, view_min_y, view_max_y; 
 
-  int            tex_w;
-  int            tex_h;
-  int           *tex_data;
-  GLuint        *texs;
-
   ClutterPhotoGridState  state;
+
 };
 
 ClutterPhotoGridCell*

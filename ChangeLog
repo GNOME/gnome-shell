@@ -1,5 +1,16 @@
 2005-03-30  mallum,,,  <mallum@openedhand.com>
 
+	* cltr-photo-grid.c: (cltr_photo_grid_populate),
+	(cltr_photo_grid_redraw), (cltr_photo_grid_new):
+	* cltr-photo-grid.h:
+	* cltr-tex.c: (next_p2), (cltr_texture_render_to_gl_quad),
+	(tile_dimension), (init_tiles), (cltr_texture_new):
+	* cltr-tex.h:
+	* cltr.h:
+	Rename CltrImage -> CltrTexture
+
+2005-03-30  mallum,,,  <mallum@openedhand.com>
+
 	* Makefile:
 	* cltr-photo-grid.c: (cltr_photo_grid_populate),
 	(cltr_photo_grid_redraw):

@@ -3,10 +3,14 @@
 
 #include "cltr.h"
 
-CltrImage*
-cltr_image_new(Pixbuf *pixb);
+CltrTexture*
+cltr_texture_new(Pixbuf *pixb);
 
 void
-cltr_image_render_to_gl_quad(CltrImage *img, int x1, int y1, int x2, int y2);
+cltr_texture_render_to_gl_quad(CltrTexture *texture, 
+			       int          x1, 
+			       int          y1, 
+			       int          x2, 
+			       int          y2);
 
 #endif

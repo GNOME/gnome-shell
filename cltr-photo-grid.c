@@ -245,7 +245,7 @@ cltr_photo_grid_populate(gpointer data)
 
 	  g_mutex_lock(Mutex_GRID);
 
-	  cell->img = cltr_image_new(cell->pixb);
+	  cell->texture = cltr_texture_new(cell->pixb);
 
 	  g_mutex_unlock(Mutex_GRID);
 
@@ -466,11 +466,11 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
 	  g_mutex_lock(Mutex_GRID);
 
-	  cltr_image_render_to_gl_quad(cell->img,
-				       -(thumb_w/2),
-				       -(thumb_h/2),
-				       (thumb_w/2),
-				       (thumb_h/2));
+	  cltr_texture_render_to_gl_quad(cell->texture,
+					 -(thumb_w/2),
+					 -(thumb_h/2),
+					 (thumb_w/2),
+					 (thumb_h/2));
 
 	  g_mutex_unlock(Mutex_GRID);
 
@@ -548,7 +548,7 @@ cltr_photo_grid_new(ClutterWindow *win,
 
   grid->state = CLTR_PHOTO_GRID_STATE_LOADING;
 
-  grid->anim_n_steps = 50; /* value needs to be calced dep on rows */
+  grid->anim_n_steps = 40; /* value needs to be calced dep on rows */
   grid->anim_step    = 0;
 
   /* 

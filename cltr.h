@@ -98,9 +98,9 @@ CltrXEventSource;
 
 /* texture stuff */
 
-typedef struct CltrImage CltrImage;
+typedef struct CltrTexture CltrTexture;
 
-struct CltrImage
+struct CltrTexture
 {
   Pixbuf *pixb;
 
@@ -117,7 +117,7 @@ struct CltrImage
 
 /* ******************* */
 
-#include "cltr-tex.h"
+#include "cltr-texture.h"
 #include "cltr-photo-grid.h"
 
 #endif
