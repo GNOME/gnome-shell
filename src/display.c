@@ -1277,11 +1277,12 @@ event_callback (XEvent   *event,
            display->grab_window == window) ||
           grab_op_is_keyboard (display->grab_op))
         {
-          meta_verbose ("Ending grab op %d on window %s due to button press\n",
-                        display->grab_op,
-                        (display->grab_window ?
-                         display->grab_window->desc : 
-                         "none"));
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Ending grab op %d on window %s due to button press\n",
+                      display->grab_op,
+                      (display->grab_window ?
+                       display->grab_window->desc : 
+                       "none"));
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
         }
@@ -1634,12 +1635,20 @@ event_callback (XEvent   *event,
       /* if frame was receiver it's some malicious send event or something */
       else if (!frame_was_receiver && window)        
         {
+          meta_verbose ("MapRequest on %s mapped = %d minimized = %d\n",
+                        window->desc, window->mapped, window->minimized);
           if (window->minimized)
-            meta_window_unminimize (window);
-	  if (!meta_workspace_contains_window (window->screen->active_workspace,
-					       window))
-	    meta_window_change_workspace (window,
-					  window->screen->active_workspace);
+            {
+              meta_window_unminimize (window);
+              if (!meta_workspace_contains_window (window->screen->active_workspace,
+                                                   window))
+                {
+                  meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
+                                window->mapped, window->minimized);
+                  meta_window_change_workspace (window,
+                                                window->screen->active_workspace);
+                }
+            }
         }
       break;
     case ReparentNotify:
@@ -2312,6 +2321,9 @@ meta_spew_event (MetaDisplay *display,
       break;
     case MapRequest:
       name = "MapRequest";
+      extra = g_strdup_printf ("window: 0x%lx parent: 0x%lx\n",
+                               event->xmaprequest.window,
+                               event->xmaprequest.parent);
       break;
     case ReparentNotify:
       name = "ReparentNotify";
@@ -2684,7 +2696,14 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
         {
           display->grab_have_pointer = TRUE;
           meta_topic (META_DEBUG_WINDOW_OPS,
-                      "XGrabPointer() returned GrabSuccess\n");
+                      "XGrabPointer() returned GrabSuccess time 0x%lu\n",
+                      timestamp);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "XGrabPointer() failed time 0x%lu\n",
+                      timestamp);
         }
       meta_error_trap_pop (display, TRUE);
     }
@@ -2872,7 +2891,9 @@ void
 meta_display_end_grab_op (MetaDisplay *display,
                           Time         timestamp)
 {
-  meta_verbose ("Ending grab op %d at time %ld\n", display->grab_op, timestamp);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Ending grab op %d at time %lu\n", display->grab_op,
+              (unsigned long) timestamp);
   
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
@@ -2903,7 +2924,7 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_have_keyboard)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Ungrabbing all keys\n");
+                  "Ungrabbing all keys timestamp %lu\n", timestamp);
       if (display->grab_window)
         meta_window_ungrab_all_keys (display->grab_window);
       else

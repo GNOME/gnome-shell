@@ -1055,25 +1055,55 @@ meta_window_ungrab_keys (MetaWindow  *window)
     }
 }
 
+#ifdef WITH_VERBOSE_MODE
+static const char*
+grab_status_to_string (int status)
+{
+  switch (status)
+    {
+    case AlreadyGrabbed:
+      return "AlreadyGrabbed";
+    case GrabSuccess:
+      return "GrabSuccess";
+    case GrabNotViewable:
+      return "GrabNotViewable";
+    case GrabFrozen:
+      return "GrabFrozen";
+    case GrabInvalidTime:
+      return "GrabInvalidTime";
+    default:
+      return "(unknown)";
+    }
+}
+#endif /* WITH_VERBOSE_MODE */
+
 static gboolean
 grab_keyboard (MetaDisplay *display,
                Window       xwindow)
 {
   int result;
-
+  int grab_status;
+  Time timestamp;
+  
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
   meta_error_trap_push_with_return (display);
 
-  if (XGrabKeyboard (display->xdisplay,
-                     xwindow, True,
-                     GrabModeAsync, GrabModeAsync,
-                     meta_display_get_current_time (display)) != GrabSuccess)
+  timestamp = meta_display_get_current_time (display);
+  grab_status = XGrabKeyboard (display->xdisplay,
+                               xwindow, True,
+                               GrabModeAsync, GrabModeAsync,
+                               timestamp);
+  
+  if (grab_status != GrabSuccess)
     {
       meta_error_trap_pop_with_return (display, TRUE);
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "XGrabKeyboard() returned failure\n");
+                  "XGrabKeyboard() returned failure status %s time %lu\n",
+                  grab_status_to_string (grab_status),
+                  (unsigned long) timestamp);
+      return FALSE;
     }
   else
     {
@@ -1274,10 +1304,9 @@ is_specific_modifier (MetaDisplay *display,
   return retval;
 }
 
-static gboolean
-keycode_is_primary_modifier (MetaDisplay *display,
-                             unsigned int keycode,
-                             unsigned int entire_binding_mask)
+static unsigned int
+get_primary_modifier (MetaDisplay *display,
+                      unsigned int entire_binding_mask)
 {
   /* The idea here is to see if the "main" modifier
    * for Alt+Tab has been pressed/released. So if the binding
@@ -1290,20 +1319,62 @@ keycode_is_primary_modifier (MetaDisplay *display,
                            ShiftMask, LockMask };
 
   int i;
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Checking whether code 0x%x is the primary modifier of mask 0x%x\n",
-              keycode, entire_binding_mask);
   
   i = 0;
   while (i < (int) G_N_ELEMENTS (masks))
     {
       if (entire_binding_mask & masks[i])
-        return is_specific_modifier (display, keycode, masks[i]);
+        return masks[i];
       ++i;
     }
 
-  return FALSE;
+  return 0;
+}
+
+static gboolean
+keycode_is_primary_modifier (MetaDisplay *display,
+                             unsigned int keycode,
+                             unsigned int entire_binding_mask)
+{
+  unsigned int primary_modifier;
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Checking whether code 0x%x is the primary modifier of mask 0x%x\n",
+              keycode, entire_binding_mask);
+  
+  primary_modifier = get_primary_modifier (display, entire_binding_mask);
+  if (primary_modifier != 0)
+    return is_specific_modifier (display, keycode, primary_modifier);
+  else
+    return FALSE;
+}
+
+static gboolean
+primary_modifier_still_pressed (MetaDisplay *display,
+                                unsigned int entire_binding_mask)
+{
+  unsigned int primary_modifier;
+  int x, y, root_x, root_y;
+  Window root, child;
+  guint mask;
+  
+  primary_modifier = get_primary_modifier (display, entire_binding_mask);
+  
+  XQueryPointer (display->xdisplay,
+                 display->no_focus_window, /* some random window */
+                 &root, &child,
+                 &root_x, &root_y,
+                 &x, &y,
+                 &mask);
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Primary modifier 0x%x full grab mask 0x%x current state 0x%x\n",
+              primary_modifier, entire_binding_mask, mask);
+  
+  if ((mask & primary_modifier) == 0)
+    return FALSE;
+  else
+    return TRUE;
 }
 
 static const MetaKeyHandler*
@@ -2558,15 +2629,30 @@ do_choose_window (MetaDisplay    *display,
                                            binding->mask,
                                            event->xkey.time,
                                            0, 0))
-        {      
-          meta_ui_tab_popup_select (screen->tab_popup,
-                                    (MetaTabEntryKey) initial_selection->xwindow);
-          
-          if (show_popup)
-            meta_ui_tab_popup_set_showing (screen->tab_popup,
-                                           TRUE);
+        {
+          if (!primary_modifier_still_pressed (display,
+                                               binding->mask))
+            {
+              /* This handles a race where modifier might be released
+               * before we establish the grab. must end grab
+               * prior to trying to focus a window.
+               */
+              meta_topic (META_DEBUG_FOCUS, "Ending grab and activating %s due to switch/cycle windows where modifier was released prior to grab\n",
+                          initial_selection->desc);
+              meta_display_end_grab_op (display, event->xkey.time);
+              meta_window_activate (initial_selection, event->xkey.time);
+            }
           else
-            meta_window_raise (initial_selection);
+            {
+              meta_ui_tab_popup_select (screen->tab_popup,
+                                        (MetaTabEntryKey) initial_selection->xwindow);
+              
+              if (show_popup)
+                meta_ui_tab_popup_set_showing (screen->tab_popup,
+                                               TRUE);
+              else
+                meta_window_raise (initial_selection);
+            }
         }
     }
 }
@@ -2882,6 +2968,7 @@ handle_workspace_switch  (MetaDisplay    *display,
                           MetaKeyBinding *binding)
 {
   int motion;
+  unsigned int grab_mask;
      
   motion = GPOINTER_TO_INT (binding->handler->data);
 
@@ -2890,31 +2977,49 @@ handle_workspace_switch  (MetaDisplay    *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Starting tab between workspaces, showing popup\n");
 
+  /* FIXME should we use binding->mask ? */
+  grab_mask = event->xkey.state & ~(display->ignored_modifier_mask);
+  
   if (meta_display_begin_grab_op (display,
                                   screen,
                                   NULL,
                                   META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
                                   FALSE,
                                   0,
-                                  event->xkey.state & ~(display->ignored_modifier_mask),
+                                  grab_mask,
                                   event->xkey.time,
                                   0, 0))
     {
       MetaWorkspace *next;
-
+      gboolean grabbed_before_release;
+      
       next = meta_workspace_get_neighbor (screen->active_workspace, motion);
       g_assert (next); 
 
+      grabbed_before_release = primary_modifier_still_pressed (display, grab_mask);
       
       meta_topic (META_DEBUG_KEYBINDINGS,
 		  "Activating target workspace\n");
+
+      if (!grabbed_before_release)
+        {
+          /* end the grab right away, modifier possibly released
+           * before we could establish the grab and receive the
+           * release event. Must end grab before we can switch
+           * spaces.
+           */
+          meta_display_end_grab_op (display, event->xkey.time);
+        }
       
       switch_to_workspace (display, next);
-      
-      meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
-      
-      /* only after selecting proper space */
-      meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
+
+      if (grabbed_before_release)
+        {
+          meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
+          
+          /* only after selecting proper space */
+          meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
+        }
     }
 }
 

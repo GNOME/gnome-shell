@@ -1,3 +1,22 @@
+2003-01-21  Havoc Pennington  <hp@redhat.com>
+
+	* src/display.c (event_callback): only hop window to the current
+	workspace if the window was previously minimized. Should keep
+	mozilla from popping windows over to your current workspace.
+	
+2003-01-20  Havoc Pennington  <hp@redhat.com>
+
+        Attempt to fix #85916
+	
+	* src/keybindings.c (primary_modifier_still_pressed): new function
+	(handle_workspace_switch): handle modifier release prior to
+	getting the grab
+	(do_choose_window): handle modifier release prior to getting the 
+	grab
+
+	* src/keybindings.c (grab_keyboard): properly return failure
+	if the GrabKeyboard doesn't work
+
 2003-01-19  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in: add note about how this is the unstable branch,
