@@ -1,4 +1,5 @@
 # Czech translation of Metacity
+# Copyright (C) 2003 Miloslav Trmac <mitr@volny.cz>
 # This file is distributed under the same license as the metacity package.
 # Miloslav Trmac <mitr@volny.cz>, 2002, 2003.
 #
@@ -6,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-02 15:22+0100\n"
-"PO-Revision-Date: 2003-12-02 21:51+0100\n"
+"POT-Creation-Date: 2003-12-22 15:43+0100\n"
+"PO-Revision-Date: 2003-12-22 19:35+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +142,7 @@ msgstr ""
 
 #: src/main.c:443
 #, c-format
-msgid "Failed to scan themes directory : %s\n"
+msgid "Failed to scan themes directory: %s\n"
 msgstr "Nemohu prohledat adresář témat: %s\n"
 
 #: src/main.c:459
@@ -156,73 +157,88 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Nemohu se restartovat: %s\n"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "Mi_nimize"
 msgstr "Mi_nimalizovat"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Ma_ximize"
 msgstr "Ma_ximalizovat"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Unma_ximize"
 msgstr "Dema_ximalizovat"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Roll _Up"
 msgstr "Za_rolovat"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "_Unroll"
 msgstr "Vy_rolovat"
 
-#: src/menu.c:57
+#: src/menu.c:58 src/menu.c:59
+msgid "On _Top"
+msgstr "Na_hoře"
+
+#: src/menu.c:60
 msgid "_Move"
 msgstr "_Přesunout"
 
-#: src/menu.c:58
+#: src/menu.c:61
 msgid "_Resize"
 msgstr "Změnit _velikost"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:63
 msgid "_Close"
 msgstr "_Zavřít"
 
 #. separator
-#: src/menu.c:62
+#: src/menu.c:65
 msgid "Put on _All Workspaces"
 msgstr "Na _všechny plochy"
 
-#: src/menu.c:63
+#: src/menu.c:66
 msgid "Only on _This Workspace"
 msgstr "Jen na _tuto plochu"
 
+#: src/menu.c:67
+msgid "Move to Workspace _Left"
+msgstr "Přesunout na plochu v_levo"
+
+#: src/menu.c:68
+msgid "Move to Workspace R_ight"
+msgstr "Přesunout na plochu v_pravo"
+
+#: src/menu.c:69
+msgid "Move to Workspace _Up"
+msgstr "Přesunout na plochu _nahoře"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Down"
+msgstr "Přesunout na plochu _dole"
+
 # Let's hope it is used only in the "Only on %s" and "Move to %s" strings
-#: src/menu.c:152 src/prefs.c:1854
+#: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "plochu %d"
 
 # Let's hope it is used only in the "Only on %s" and "Move to %s" strings
-#.
-#. * Above name is a pointer into the Workspace struct. Here we make
-#. * a copy copy so we can have our wicked way with it.
-#.
-#: src/menu.c:160
+#: src/menu.c:168
+msgid "Workspace 1_0"
+msgstr "plochu 1_0"
+
+# Let's hope it is used only in the "Only on %s" and "Move to %s" strings
+#: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
 msgstr "plochu %s%d"
 
-#: src/menu.c:347
-#, c-format
-msgid "Only on %s"
-msgstr "Jen na %s"
-
-#: src/menu.c:349
-#, c-format
-msgid "Move to %s"
-msgstr "Přesunout na %s"
+#: src/menu.c:365
+msgid "Move to Another _Workspace"
+msgstr "Přesunout na _jinou plochu"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -483,7 +499,12 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr "Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může umožnit fungování starých aplikací a terminálových serverů v situacích, kde by jindy byly nepraktické."
+msgstr ""
+"Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé "
+"manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými "
+"způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může "
+"umožnit fungování starých aplikací a terminálových serverů v situacích, kde "
+"by jindy byly nepraktické."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -509,7 +530,8 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr "Je-li true, dávat přednost menšímu používání prostředků před použitelností"
+msgstr ""
+"Je-li true, dávat přednost menšímu používání prostředků před použitelností"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -2714,7 +2736,9 @@ msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "Nakresleno %d rámů za %g sekund na straně klienta (%g milisekund na rám) a %g sekund reálného času včetně zdrojů X serveru (%g milisekund na rám)\n"
+msgstr ""
+"Nakresleno %d rámů za %g sekund na straně klienta (%g milisekund na rám) a %"
+"g sekund reálného času včetně zdrojů X serveru (%g milisekund na rám)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
@@ -3081,7 +3105,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4670
+#: src/window.c:4689
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3097,7 +3121,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5332
+#: src/window.c:5351
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3132,3 +3156,6 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 pro položku %d seznamu\n"
+
+#~ msgid "Only on %s"
+#~ msgstr "Jen na %s"
