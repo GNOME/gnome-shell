@@ -25,6 +25,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;

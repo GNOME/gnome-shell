@@ -1,5 +1,15 @@
 2001-09-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/menu.c (meta_window_menu_new): icon for unmaximize
+
+	* src/ui.c (meta_ui_init): fix call to XDisplayName
+
+	* src/util.c: add missing header
+
+	* src/frames.c: draw an unmaximize control if already maximized
+
+2001-09-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c: Don't separate user_has_moved/user_has_resized,
 	fixes bug in east-resizing Emacs, among other things
 

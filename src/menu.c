@@ -168,6 +168,12 @@ meta_window_menu_new   (MetaFrames         *frames,
                                                       META_FRAME_CONTROL_MAXIMIZE,
                                                       &pix, &mask);
                   break;
+
+                case META_MENU_OP_UNMAXIMIZE:
+                  meta_frames_get_pixmap_for_control (frames,
+                                                      META_FRAME_CONTROL_UNMAXIMIZE,
+                                                      &pix, &mask);
+                  break;
                   
                 case META_MENU_OP_MINIMIZE:
                   meta_frames_get_pixmap_for_control (frames,

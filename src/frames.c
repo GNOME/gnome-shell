@@ -241,8 +241,8 @@ meta_frames_class_init (MetaFramesClass *class)
   INT_PROPERTY ("right_inset", 6, _("Right inset"), _("Distance of buttons from right edge of frame"));
   INT_PROPERTY ("left_inset", 6, _("Left inset"), _("Distance of menu button from left edge of frame"));
   
-  INT_PROPERTY ("button_width", 15, _("Button width"), _("Width of buttons"));
-  INT_PROPERTY ("button_height", 15, _("Button height"), _("Height of buttons"));
+  INT_PROPERTY ("button_width", 17, _("Button width"), _("Width of buttons"));
+  INT_PROPERTY ("button_height", 17, _("Button height"), _("Height of buttons"));
 
   BORDER_PROPERTY ("button_border", _("Button border"), _("Border around buttons"));
   BORDER_PROPERTY ("inner_button_border", _("Inner button border"), _("Border around the icon inside buttons"));
@@ -381,7 +381,7 @@ meta_frames_style_set  (GtkWidget *widget,
   /* left, right, top, bottom */
   static GtkBorder default_title_border = { 3, 4, 4, 3 };
   static GtkBorder default_text_border = { 2, 2, 2, 2 };
-  static GtkBorder default_button_border = { 1, 1, 1, 1 };
+  static GtkBorder default_button_border = { 0, 0, 1, 1 };
   static GtkBorder default_inner_button_border = {
     DEFAULT_INNER_BUTTON_BORDER,
     DEFAULT_INNER_BUTTON_BORDER,
@@ -887,6 +887,9 @@ show_tip_now (MetaFrames *frames)
     case META_FRAME_CONTROL_MAXIMIZE:
       tiptext = _("Maximize Window");
       break;
+    case META_FRAME_CONTROL_UNMAXIMIZE:
+      tiptext = _("Unmaximize Window");
+      break;
     case META_FRAME_CONTROL_RESIZE_SE:
       break;
     case META_FRAME_CONTROL_RESIZE_S:
@@ -1038,6 +1041,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
   if (event->button == 1 &&
       (control == META_FRAME_CONTROL_MAXIMIZE ||
+       control == META_FRAME_CONTROL_UNMAXIMIZE ||
        control == META_FRAME_CONTROL_MINIMIZE ||
        control == META_FRAME_CONTROL_DELETE ||
        control == META_FRAME_CONTROL_MENU))
@@ -1051,6 +1055,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
           break;
         case META_FRAME_CONTROL_MAXIMIZE:
           op = META_GRAB_OP_CLICKING_MAXIMIZE;
+          break;
+        case META_FRAME_CONTROL_UNMAXIMIZE:
+          op = META_GRAB_OP_CLICKING_UNMAXIMIZE;
           break;
         case META_FRAME_CONTROL_DELETE:
           op = META_GRAB_OP_CLICKING_DELETE;
@@ -1261,18 +1268,24 @@ meta_frames_button_release_event    (GtkWidget           *widget,
           if (point_in_control (frames, frame,
                                 META_FRAME_CONTROL_MAXIMIZE,
                                 event->x, event->y))
-            {
-              if (meta_core_get_frame_flags (gdk_display, frame->xwindow) &
-                  META_FRAME_MAXIMIZED)
-                meta_core_unmaximize (gdk_display, frame->xwindow);
-              else
-                meta_core_maximize (gdk_display, frame->xwindow);
-            }
+            meta_core_maximize (gdk_display, frame->xwindow);
+
           redraw_control (frames, frame,
                           META_FRAME_CONTROL_MAXIMIZE);
           end_grab = TRUE;
           break;
 
+        case META_GRAB_OP_CLICKING_UNMAXIMIZE:
+          if (point_in_control (frames, frame,
+                                META_FRAME_CONTROL_UNMAXIMIZE,
+                                event->x, event->y))
+            meta_core_unmaximize (gdk_display, frame->xwindow);
+
+          redraw_control (frames, frame,
+                          META_FRAME_CONTROL_MAXIMIZE);
+          end_grab = TRUE;
+          break;
+          
         case META_GRAB_OP_CLICKING_DELETE:
           if (point_in_control (frames, frame,
                                 META_FRAME_CONTROL_DELETE,
@@ -1323,6 +1336,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
     case META_GRAB_OP_CLICKING_DELETE:
     case META_GRAB_OP_CLICKING_MINIMIZE:
     case META_GRAB_OP_CLICKING_MAXIMIZE:
+    case META_GRAB_OP_CLICKING_UNMAXIMIZE:
       break;
       
     case META_GRAB_OP_NONE:
@@ -1350,6 +1364,8 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
           case META_FRAME_CONTROL_MINIMIZE:
             break;
           case META_FRAME_CONTROL_MAXIMIZE:
+            break;
+          case META_FRAME_CONTROL_UNMAXIMIZE:
             break;
           case META_FRAME_CONTROL_RESIZE_SE:
             cursor = META_CURSOR_SE_RESIZE;
@@ -1409,75 +1425,112 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   return TRUE;
 }
 
+#define THICK_LINE_WIDTH 3
+static void
+draw_mini_window (MetaFrames  *frames,
+                  GdkDrawable *drawable,
+                  GdkGC       *fg_gc,
+                  GdkGC       *bg_gc,
+                  gboolean     thin_title,
+                  int x, int y, int width, int height)
+{
+  GdkGCValues vals;
+  
+  gdk_draw_rectangle (drawable,
+                      bg_gc,
+                      TRUE, 
+                      x, y, width - 1, height - 1);
+  
+  gdk_draw_rectangle (drawable,
+                      fg_gc,
+                      FALSE,
+                      x, y, width - 1, height - 1);
+  
+  vals.line_width = thin_title ? THICK_LINE_WIDTH - 1 : THICK_LINE_WIDTH;
+  gdk_gc_set_values (fg_gc,
+                     &vals,
+                     GDK_GC_LINE_WIDTH);
+  
+  gdk_draw_line (drawable,
+                 fg_gc,
+                 x, y + 1, x + width, y + 1);
+  
+  vals.line_width = 0;
+  gdk_gc_set_values (fg_gc,
+                     &vals,
+                     GDK_GC_LINE_WIDTH);
+}
+
 static void
 draw_control (MetaFrames  *frames,
               GdkDrawable *drawable,
-              GdkGC       *override,
+              GdkGC       *fg_override,
+              GdkGC       *bg_override,
               MetaFrameControl control,
               int x, int y, int width, int height)
 {
   GtkWidget *widget;
   GdkGCValues vals;
-  GdkGC *gc;
+  GdkGC *fg_gc;
+  GdkGC *bg_gc;
 
   widget = GTK_WIDGET (frames);
 
-#define THICK_LINE_WIDTH 3
-
-  gc = override ? override : widget->style->fg_gc[GTK_STATE_NORMAL];
+  fg_gc = fg_override ? fg_override : widget->style->fg_gc[GTK_STATE_NORMAL];
+  bg_gc = bg_override ? bg_override : widget->style->bg_gc[GTK_STATE_NORMAL];
   
   switch (control)
     {
     case META_FRAME_CONTROL_DELETE:
       {
         gdk_draw_line (drawable,
-                       gc,
+                       fg_gc,
                        x, y, x + width - 1, y + height - 1);
         
         gdk_draw_line (drawable,
-                       gc,
+                       fg_gc,
                        x, y + height - 1, x + width - 1, y);
       }
       break;
 
     case META_FRAME_CONTROL_MAXIMIZE:
       {
-        gdk_draw_rectangle (drawable,
-                            gc,
-                            FALSE,
-                            x, y, width - 1, height - 1);
-        
-        vals.line_width = THICK_LINE_WIDTH;
-        gdk_gc_set_values (gc,
-                           &vals,
-                           GDK_GC_LINE_WIDTH);
-        
-        gdk_draw_line (drawable,
-                       gc,
-                       x, y + 1, x + width, y + 1);
-        
-        vals.line_width = 0;
-        gdk_gc_set_values (gc,
-                           &vals,
-                           GDK_GC_LINE_WIDTH);
+        draw_mini_window (frames, drawable, fg_gc, bg_gc, FALSE,
+                          x, y, width, height);
       }
       break;
 
+    case META_FRAME_CONTROL_UNMAXIMIZE:
+      {
+        int w_delta = width * 0.3;
+        int h_delta = height * 0.3;
+
+        w_delta = MAX (w_delta, 3);
+        h_delta = MAX (h_delta, 3);
+        
+        draw_mini_window (frames, drawable, fg_gc, bg_gc, TRUE,
+                          x, y, width - w_delta, height - h_delta);
+        draw_mini_window (frames, drawable, fg_gc, bg_gc, TRUE,
+                          x + w_delta, y + h_delta,
+                          width - w_delta, height - h_delta);
+      }
+      break;
+      
     case META_FRAME_CONTROL_MINIMIZE:
       {
               
       vals.line_width = THICK_LINE_WIDTH;
-      gdk_gc_set_values (gc,
+      gdk_gc_set_values (fg_gc,
                          &vals,
                          GDK_GC_LINE_WIDTH);
 
       gdk_draw_line (drawable,
-                     gc,
+                     fg_gc,
                      x,         y + height - THICK_LINE_WIDTH + 1,
                      x + width, y + height - THICK_LINE_WIDTH + 1);
       
       vals.line_width = 0;
-      gdk_gc_set_values (gc,
+      gdk_gc_set_values (fg_gc,
                          &vals,
                          GDK_GC_LINE_WIDTH);
       }
@@ -1486,8 +1539,8 @@ draw_control (MetaFrames  *frames,
     default:
       break;
     }
-#undef THICK_LINE_WIDTH
 }
+#undef THICK_LINE_WIDTH
 
 void
 meta_frames_get_pixmap_for_control (MetaFrames      *frames,
@@ -1499,7 +1552,7 @@ meta_frames_get_pixmap_for_control (MetaFrames      *frames,
   GdkPixmap *pix;
   GdkBitmap *mask;
   GtkWidget *widget;
-  GdkGC *mgc;
+  GdkGC *mgc, *mgc_bg;
   GdkColor color;
   
   widget = GTK_WIDGET (frames);
@@ -1519,18 +1572,21 @@ meta_frames_get_pixmap_for_control (MetaFrames      *frames,
   mask = gdk_pixmap_new (NULL, w, h, 1);
 
   mgc = gdk_gc_new (mask);
-
+  mgc_bg = gdk_gc_new (mask);
+  
   color.pixel = 0;
-  gdk_gc_set_foreground (mgc, &color);
-  gdk_draw_rectangle (mask, mgc, TRUE, 0, 0, -1, -1);
-
+  gdk_gc_set_foreground (mgc_bg, &color);
   color.pixel = 1;
   gdk_gc_set_foreground (mgc, &color);
-  draw_control (frames, mask, mgc, control, 0, 0, w, h);
+
+  gdk_draw_rectangle (mask, mgc_bg, TRUE, 0, 0, -1, -1);
+
+  draw_control (frames, mask, mgc, mgc_bg, control, 0, 0, w, h);
 
   gdk_gc_unref (mgc);
+  gdk_gc_unref (mgc_bg);
 
-  draw_control (frames, pix, NULL, control, 0, 0, w, h);
+  draw_control (frames, pix, NULL, NULL, control, 0, 0, w, h);
 
   *pixmapp = pix;
   *maskp = mask;
@@ -1563,7 +1619,10 @@ draw_control_bg (MetaFrames         *frames,
           break;
         case META_GRAB_OP_CLICKING_MAXIMIZE:
           draw = control == META_FRAME_CONTROL_MAXIMIZE;
-          break;      
+          break;
+        case META_GRAB_OP_CLICKING_UNMAXIMIZE:
+          draw = control == META_FRAME_CONTROL_UNMAXIMIZE;
+          break;
         case META_GRAB_OP_CLICKING_MINIMIZE:
           draw = control == META_FRAME_CONTROL_MINIMIZE;
           break;
@@ -1698,7 +1757,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
       draw_control_bg (frames, frame, META_FRAME_CONTROL_DELETE, &fgeom);
 
       draw_control (frames, frame->window,
-                    NULL,
+                    NULL, NULL,
                     META_FRAME_CONTROL_DELETE,
                     fgeom.close_rect.x + inner.left,
                     fgeom.close_rect.y + inner.top,
@@ -1708,11 +1767,18 @@ meta_frames_expose_event            (GtkWidget           *widget,
 
   if (fgeom.max_rect.width > 0 && fgeom.max_rect.height > 0)
     {
-      draw_control_bg (frames, frame, META_FRAME_CONTROL_MAXIMIZE, &fgeom);
+      MetaFrameControl ctrl;
+
+      if (flags & META_FRAME_MAXIMIZED)
+        ctrl = META_FRAME_CONTROL_UNMAXIMIZE;
+      else
+        ctrl = META_FRAME_CONTROL_MAXIMIZE;
+      
+      draw_control_bg (frames, frame, ctrl, &fgeom);
       
       draw_control (frames, frame->window,                    
-                    NULL,
-                    META_FRAME_CONTROL_MAXIMIZE,
+                    NULL, NULL,
+                    ctrl,
                     fgeom.max_rect.x + inner.left,
                     fgeom.max_rect.y + inner.top,
                     fgeom.max_rect.width - inner.left - inner.right,
@@ -1724,7 +1790,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
       draw_control_bg (frames, frame, META_FRAME_CONTROL_MINIMIZE, &fgeom);
 
       draw_control (frames, frame->window,
-                    NULL,
+                    NULL, NULL,
                     META_FRAME_CONTROL_MINIMIZE,
                     fgeom.min_rect.x + inner.left,
                     fgeom.min_rect.y + inner.top,
@@ -1993,6 +2059,7 @@ control_rect (MetaFrameControl control,
       rect = &fgeom->min_rect;
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
+    case META_FRAME_CONTROL_UNMAXIMIZE:
       rect = &fgeom->max_rect;
       break;
     case META_FRAME_CONTROL_RESIZE_SE:
@@ -2051,17 +2118,22 @@ get_control (MetaFrames *frames,
   if (POINT_IN_RECT (x, y, fgeom.min_rect))
     return META_FRAME_CONTROL_MINIMIZE;
 
-  if (POINT_IN_RECT (x, y, fgeom.max_rect))
-    return META_FRAME_CONTROL_MAXIMIZE;
-
   if (POINT_IN_RECT (x, y, fgeom.menu_rect))
     return META_FRAME_CONTROL_MENU;
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     return META_FRAME_CONTROL_TITLE;
-      
+  
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
+  if (POINT_IN_RECT (x, y, fgeom.max_rect))
+    {
+      if (flags & META_FRAME_MAXIMIZED)
+        return META_FRAME_CONTROL_UNMAXIMIZE;
+      else
+        return META_FRAME_CONTROL_MAXIMIZE;
+    }
+  
   has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
   has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
 
