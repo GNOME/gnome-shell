@@ -1,5 +1,16 @@
 2002-02-12  Anders Carlsson  <andersca@gnu.org>
 
+	* src/frames.c (meta_frames_manage_window): Set prelit_control
+	to META_FRAME_CONTROL_NONE.
+	(meta_frames_update_prelit_control): New function for setting
+	the prelit control.
+	(meta_frames_paint_to_drawable): Set prelight state.
+	(meta_frames_enter_notify_event): Update prelit control.
+	(meta_frames_leave_notify_event): Likewise.
+	(meta_frames_motion_notify_event): Likewise.
+
+	* src/frames.h (struct _MetaUIFrame): add prelit_control.
+
 	* src/window.c (update_mwm_hints): and MWM_FUNC_ALL 
 	with hints->functions instead of hints->flags.
 

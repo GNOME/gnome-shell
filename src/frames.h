@@ -71,6 +71,8 @@ struct _MetaUIFrame
   int text_height;
   char *title; /* NULL once we have a layout */
   guint expose_delayed : 1;
+
+  MetaFrameControl prelit_control;
 };
 
 struct _MetaFrames

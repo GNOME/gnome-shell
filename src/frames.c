@@ -408,6 +408,7 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->text_height = -1;
   frame->title = NULL;
   frame->expose_delayed = FALSE;
+  frame->prelit_control = META_FRAME_CONTROL_NONE;
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
   
@@ -1089,6 +1090,32 @@ meta_frames_button_release_event    (GtkWidget           *widget,
   return TRUE;
 }
 
+static void
+meta_frames_update_prelit_control (MetaFrames      *frames,
+				   MetaUIFrame     *frame,
+				   MetaFrameControl control)
+{
+  MetaFrameControl old_control;
+
+  /* Only prelight buttons */
+  if (control != META_FRAME_CONTROL_MENU &&
+      control != META_FRAME_CONTROL_MINIMIZE &&
+      control != META_FRAME_CONTROL_MAXIMIZE &&
+      control != META_FRAME_CONTROL_DELETE)
+    control = META_FRAME_CONTROL_NONE;
+
+  if (control == frame->prelit_control)
+    return;
+
+  /* Save the old control so we can unprelight it */
+  old_control = frame->prelit_control;
+
+  frame->prelit_control = control;
+
+  redraw_control (frames, frame, old_control);
+  redraw_control (frames, frame, control);
+}
+
 static gboolean
 meta_frames_motion_notify_event     (GtkWidget           *widget,
                                      GdkEventMotion      *event)
@@ -1124,7 +1151,10 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
         gdk_window_get_pointer (frame->window, &x, &y, NULL);
 
         control = get_control (frames, frame, x, y);
-        
+
+        /* Update prelit control */
+	meta_frames_update_prelit_control (frames, frame, control);
+	
         cursor = META_CURSOR_DEFAULT;
 
         switch (control)
@@ -1246,13 +1276,30 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   
   widget = GTK_WIDGET (frames);
 
-  /* note, prelight not implemented yet */
   i = 0;
   while (i < META_BUTTON_TYPE_LAST)
     {
       button_states[i] = META_BUTTON_STATE_NORMAL;
       
       ++i;
+    }
+
+  /* Set prelight state */
+  switch (frame->prelit_control)
+    {
+    case META_FRAME_CONTROL_MENU:
+      button_states[META_BUTTON_TYPE_MENU] = META_BUTTON_STATE_PRELIGHT;
+      break;
+    case META_FRAME_CONTROL_MINIMIZE:
+      button_states[META_BUTTON_TYPE_MINIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      break;
+    case META_FRAME_CONTROL_MAXIMIZE:
+      button_states[META_BUTTON_TYPE_MAXIMIZE] = META_BUTTON_STATE_PRELIGHT;
+      break;
+    case META_FRAME_CONTROL_DELETE:
+      button_states[META_BUTTON_TYPE_CLOSE] = META_BUTTON_STATE_PRELIGHT;
+      break;
+    default:
     }
   
   grab_frame = meta_core_get_grab_frame (gdk_display);
@@ -1316,13 +1363,17 @@ meta_frames_enter_notify_event      (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-
+  MetaFrameControl control;
+  
   frames = META_FRAMES (widget);
 
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
 
+  control = get_control (frames, frame, event->x, event->y);
+  meta_frames_update_prelit_control (frames, frame, control);
+  
   return TRUE;
 }
 
@@ -1339,12 +1390,14 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  meta_frames_update_prelit_control (frames, frame, META_FRAME_CONTROL_NONE);
+  
   clear_tip (frames);
 
   meta_core_set_screen_cursor (gdk_display,
                                frame->xwindow,
                                META_CURSOR_DEFAULT);
-  
+
   return TRUE;
 }
 
