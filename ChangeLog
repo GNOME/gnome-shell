@@ -3,8 +3,15 @@
 	Prevent focus inconsistencies by only providing one focus method
 	(fixes #151990)
 
-	* 
+	* src/screen.c (meta_screen_show_desktop): remove call to
+	meta_workspace_focus_top_window (it was merely focusing a window
+	that was going to be hidden anyway, and likely the one that
+	already had focus)
 
+	* src/workspace.[hc]: remove meta_workspace_focus_mru_window and
+	meta_workspace_focus_top_window from workspace.h, make them static
+	functions in workspace.c
+	
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
 	Remove race condition for focus window choice on window close
