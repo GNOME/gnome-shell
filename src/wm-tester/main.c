@@ -161,7 +161,7 @@ evil_timeout (gpointer data)
 static void
 set_up_the_evil (void)
 {
-  g_timeout_add (40, evil_timeout, NULL);
+  g_timeout_add (400, evil_timeout, NULL);
 }
 
 static void

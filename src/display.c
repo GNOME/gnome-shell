@@ -139,6 +139,7 @@ remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
 }
 
 
+#ifdef HAVE_STARTUP_NOTIFICATION
 static void
 sn_error_trap_push (SnDisplay *sn_display,
                     Display   *xdisplay)
@@ -158,6 +159,7 @@ sn_error_trap_pop (SnDisplay *sn_display,
   if (display != NULL)
     meta_error_trap_pop (display, FALSE);
 }
+#endif
 
 gboolean
 meta_display_open (const char *name)
