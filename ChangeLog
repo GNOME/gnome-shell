@@ -1,3 +1,8 @@
+2002-09-18  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (update_net_wm_state): handle fullscreen state
+	here.
+
 2002-09-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (save_state): escape the window title before 

@@ -4385,6 +4385,8 @@ update_net_wm_state (MetaWindow *window)
             window->wm_state_skip_taskbar = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_skip_pager)
             window->wm_state_skip_pager = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_fullscreen)
+            window->fullscreen = TRUE;
       
           ++i;
         }
