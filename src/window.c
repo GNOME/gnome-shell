@@ -2052,8 +2052,6 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       
       window->fullscreen = FALSE;
 
-      meta_window_update_layer (window);
-      
       meta_window_move_resize (window,
                                TRUE,
                                window->saved_rect.x,
@@ -2061,6 +2059,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
                                window->saved_rect.width,
                                window->saved_rect.height);
 
+      meta_window_update_layer (window);
+      
       recalc_window_features (window);
       set_net_wm_state (window);
     }

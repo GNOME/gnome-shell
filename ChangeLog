@@ -1,3 +1,11 @@
+2005-01-31  Elijah Newren  <newren@gmail.com>
+
+	Correct the stacking when return from fullscreen mode.  Fixes
+	#165718.
+	
+	* src/window.c: (meta_window_unmake_fullscreen): Update the layer
+	after resizing the window
+
 2005-01-31  Muktha  <muktha.narayan@wipro.com>
 
 	src/themes/Atlanta/metacity-theme-1.xml:
