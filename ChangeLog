@@ -1,3 +1,7 @@
+2004-01-24  James M. Cape  <jcape@ignore-your.tv>
+
+	* src/themes/Esco/metacity-theme-1.xml: Updated this theme.
+
 2004-01-21  Elijah Newren  <newren@math.utah.edu>
 
 	* src/screen.c (set_supported_hint): Removed some duplicate
