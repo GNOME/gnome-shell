@@ -1343,10 +1343,10 @@ meta_window_show (MetaWindow *window)
                * (using display->focus_window is a bit of a race condition,
                *  but I have no idea how to avoid it)
                */
-              if (display->focus_window == NULL ||
-                  (display->focus_window &&
-                   (display->focus_window->type == META_WINDOW_DOCK ||
-                    display->focus_window->type == META_WINDOW_DESKTOP)))
+              if (window->display->focus_window == NULL ||
+                  (window->display->focus_window &&
+                   (window->display->focus_window->type == META_WINDOW_DOCK ||
+                    window->display->focus_window->type == META_WINDOW_DESKTOP)))
                 meta_window_focus (window,
                                    meta_display_get_current_time (window->display));
               break;
@@ -1356,9 +1356,9 @@ meta_window_show (MetaWindow *window)
               /* (using display->focus_window is a bit of a race condition,
                *  but I have no idea how to avoid it)
                */
-              if (display->focus_window == NULL ||
-                  (display->focus_window &&
-                   meta_window_is_ancestor_of_transient (display->focus_window,
+              if (window->display->focus_window == NULL ||
+                  (window->display->focus_window &&
+                   meta_window_is_ancestor_of_transient (window->display->focus_window,
                                                          window)))
                 meta_window_focus (window,
                                    meta_display_get_current_time (window->display));
