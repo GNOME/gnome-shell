@@ -389,9 +389,9 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                * overlapping the strut rect.
                */
               if (((current.y - info->fgeom.top_height >= rect->y) &&
-                   (current.y - info->fgeom.top_height <= rect->y + rect->height)) ||
+                   (current.y - info->fgeom.top_height < rect->y + rect->height)) ||
                   ((current.y >= rect->y) &&
-                   (current.y <= rect->y + rect->height)))
+                   (current.y < rect->y + rect->height)))
                 {
                   *leftmost_x_p = MAX (*leftmost_x_p, rect->width);
                 }
@@ -420,9 +420,9 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                * overlapping the strut rect.
                */
               if (((current.y - info->fgeom.top_height >= rect->y) &&
-                   (current.y - info->fgeom.top_height <= rect->y + rect->height)) ||
+                   (current.y - info->fgeom.top_height < rect->y + rect->height)) ||
                   ((current.y >= rect->y) &&
-                   (current.y <= rect->y + rect->height)))
+                   (current.y < rect->y + rect->height)))
                 {
                   *rightmost_x_p = MIN (*rightmost_x_p, rect->x);
                 }
@@ -450,8 +450,8 @@ get_outermost_onscreen_positions (MetaWindow           *window,
               /* here the strut matters if the titlebar is overlapping
                * the window horizontally
                */
-              if ((current.x <= rect->x + rect->width) &&
-                  (current.x + current.width >= rect->x))
+              if ((current.x < rect->x + rect->width) &&
+                  (current.x + current.width > rect->x))
                 {
                   *topmost_y_p = MAX (*topmost_y_p, rect->height);
                 }
@@ -479,8 +479,8 @@ get_outermost_onscreen_positions (MetaWindow           *window,
               /* here the strut matters if the titlebar is overlapping
                * the window horizontally
                */
-              if ((current.x <= rect->x + rect->width) &&
-                  (current.x + current.width >= rect->x))
+              if ((current.x < rect->x + rect->width) &&
+                  (current.x + current.width > rect->x))
                 {
                   bottommost_y = MIN (bottommost_y, rect->y);
                 }

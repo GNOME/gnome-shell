@@ -3209,7 +3209,7 @@ meta_window_stick (MetaWindow  *window)
     {
       workspace = (MetaWorkspace *) tmp->data;
       if (!g_list_find (workspace->mru_list, window))
-          g_list_append (workspace->mru_list, window);
+          workspace->mru_list = g_list_append (workspace->mru_list, window);
 
       tmp = tmp->next;
     }
@@ -3238,7 +3238,7 @@ meta_window_unstick (MetaWindow  *window)
     {
       workspace = (MetaWorkspace *) tmp->data;
       if (!meta_workspace_contains_window (workspace, window))
-          g_list_remove (workspace->mru_list, window);
+           workspace->mru_list = g_list_remove (workspace->mru_list, window);
       tmp = tmp->next;
     }
 
@@ -4949,13 +4949,13 @@ meta_window_update_struts (MetaWindow *window)
           new_bottom.y = window->screen->height - 
             new_bottom.height;
           new_left.y = struts[4];
-          new_left.height = struts[5] - new_left.y;
+          new_left.height = struts[5] - new_left.y + 1;
           new_right.y = struts[6];
-          new_right.height = struts[7] - new_right.y;
+          new_right.height = struts[7] - new_right.y + 1;
           new_top.x = struts[8];
-          new_top.width = struts[9] - new_top.x;
+          new_top.width = struts[9] - new_top.x + 1;
           new_bottom.x = struts[10];
-          new_bottom.width = struts[11] - new_bottom.x;
+          new_bottom.width = struts[11] - new_bottom.x + 1;
           
           meta_verbose ("_NET_WM_STRUT_PARTIAL struts %d %d %d %d for window %s\n",
                         new_left.width,

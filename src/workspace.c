@@ -453,14 +453,17 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
               if ((i == 0) && (w->struts->right.width > 0))
                 {
                   workspace->right_struts = g_slist_prepend (workspace->right_struts,
-							     &w->struts->right);
+                                                             &w->struts->right);
                 }
 
               if (meta_screen_rect_intersects_xinerama (w->screen,
                                                         &w->struts->right,
                                                         i))
                 {
-                  right_strut = MAX (right_strut, w->struts->right.width);
+                  right_strut = MAX (right_strut, w->struts->right.width - 
+                                     workspace->screen->width + 
+                                     workspace->screen->xinerama_infos[i].width +
+                                     workspace->screen->xinerama_infos[i].x_origin);
                   all_right_strut = MAX (all_right_strut, w->struts->right.width);
                 }
 
@@ -490,7 +493,10 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                                                         &w->struts->bottom,
                                                         i))
                 {
-                  bottom_strut = MAX (bottom_strut, w->struts->bottom.height);
+                  bottom_strut = MAX (bottom_strut, w->struts->bottom.height - 
+                                     workspace->screen->height + 
+                                     workspace->screen->xinerama_infos[i].height +
+                                     workspace->screen->xinerama_infos[i].y_origin);
                   all_bottom_strut = MAX (all_bottom_strut, w->struts->bottom.height);
                 }
             }

@@ -1,3 +1,24 @@
+2003-09-19  Rob Adams <readams@readams.net>
+
+	Fix a bug with partial-width panel struts caused by incorrect
+	computation of rectangle widths, and another when using different
+	screen resolutions on xineramas.  See #122404.  Also fix a crash
+	bug with the MRU list when sticking and unsticking windows.  See
+	#120809.
+	
+	* src/constraints.c (get_outermost_onscreen_positions): Fix
+	off-by-one error with partial-width struts.
+
+	* src/window.c (meta_window_update_struts): Fix off-by-one error
+	with partial-width struts.
+	(meta_window_stick): assign back to GList after g_list_append
+	(meta_window_unstick): assign back to GList after g_list_append
+	
+	* src/workspace.c (ensure_work_areas_validated): For right and
+	bottom struts, compute strut relative to root window and not to
+	xinerama edge in compliance with EWMH recommendations.
+
+
 2003-09-17  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "ta" (Tamil) to the languages' list.
