@@ -1,5 +1,11 @@
 2002-10-18  Havoc Pennington  <hp@redhat.com>
 
+	* src/metacity.schemas.in: move window-click to Super+click not
+	Alt+click by default. Super should be the Windows key on keyboards
+	that have one and are so configured.  Prepare for the FAQ on this.
+
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (constrain_size): fix min aspect handling, 
 	patch from Martin Garton #94943
 

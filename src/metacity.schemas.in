@@ -8,9 +8,9 @@
       <applyto>/apps/metacity/general/mouse_button_modifier</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;</default>
+      <default>&lt;Super&gt;</default>
       <locale name="C">
-         <short>Modifier to use for modified window click actions (Alt+left/middle/right click)</short>
+         <short>Modifier to use for modified window click actions</short>
          <long>
            Clicking a window while holding down this modifier key 
            will move the window (left click), resize the window 
