@@ -1,3 +1,10 @@
+2002-11-16  Bill Haneman <bill.haneman@sun.com>
+
+	* src/themes/Atlanta/metacity-theme-1.xml:
+	Changed outer bevel and focus line color to 
+	work better with inverse themes (no effect on
+	Default or other existing gtk+ themes).
+	
 2002-11-13  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (get_cmap): fix a multihead safety thing (use proper

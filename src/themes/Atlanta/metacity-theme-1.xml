@@ -145,7 +145,7 @@
 </draw_ops>
 
 <draw_ops name="outer_bevel">
-  <rectangle color="#000000"
+  <rectangle color="gtk:fg[NORMAL]"
              x="0" y="0" width="width-1" height="height-1"/>
   <line color="gtk:light[NORMAL]"
         x1="1" y1="1" x2="1" y2="height-2"/>
@@ -162,7 +162,7 @@
 </draw_ops>
 
 <draw_ops name="focus_outline">
-  <rectangle color="#000000"
+  <rectangle color="gtk:fg[NORMAL]"
              x="left_width-1" y="top_height-1"
              width="width-left_width-right_width+1"
              height="height-top_height-bottom_height+1"/>
