@@ -1,3 +1,20 @@
+2002-08-01  Mark McLoughlin  <mark@skynet.ie>
+
+	Implements support for _NET_WM_ALLOWED_ACTIONS.
+	Fixes #84282.
+
+	* src/display.[ch]: (meta_display_open): add
+	_NET_WM_ALLOWED_ACTIONS atoms.
+
+	* src/screen.c: (set_supported_hint): set them
+	as being supported.
+
+	* src/window.c:
+	(set_allowed_actions_hint): impl setting
+	_NET_WM_ALLOWED_ACTIONS.
+	(recalc_window_features): use it here, but only
+	if things have changed.
+
 2002-08-01  Christophe Fergeau  <teuf@users.sourceforge.net>
 
 	* src/metacity-dialog.c: focus the "Close" button by default on 

@@ -227,7 +227,16 @@ meta_display_open (const char *name)
     "TIMESTAMP",
     "VERSION",
     "ATOM_PAIR",
-    "_NET_DESKTOP_NAMES"
+    "_NET_DESKTOP_NAMES",
+    "_NET_WM_ALLOWED_ACTIONS",
+    "_NET_WM_ACTION_MOVE",
+    "_NET_WM_ACTION_RESIZE",
+    "_NET_WM_ACTION_SHADE",
+    "_NET_WM_ACTION_STICK",
+    "_NET_WM_ACTION_MAXIMIZE_HORZ",
+    "_NET_WM_ACTION_MAXIMIZE_VERT",
+    "_NET_WM_ACTION_CHANGE_DESKTOP",
+    "_NET_WM_ACTION_CLOSE",
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -359,6 +368,15 @@ meta_display_open (const char *name)
   display->atom_version = atoms[63];
   display->atom_atom_pair = atoms[64];
   display->atom_net_desktop_names = atoms[65];
+  display->atom_net_wm_allowed_actions = atoms[66];
+  display->atom_net_wm_action_move = atoms[67];
+  display->atom_net_wm_action_resize = atoms[68];
+  display->atom_net_wm_action_shade = atoms[69];
+  display->atom_net_wm_action_stick = atoms[70];
+  display->atom_net_wm_action_maximize_horz = atoms[71];
+  display->atom_net_wm_action_maximize_vert = atoms[72];
+  display->atom_net_wm_action_change_desktop = atoms[73];
+  display->atom_net_wm_action_close = atoms[74];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

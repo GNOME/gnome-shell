@@ -138,6 +138,15 @@ struct _MetaDisplay
   Atom atom_version;
   Atom atom_atom_pair;
   Atom atom_net_desktop_names;
+  Atom atom_net_wm_allowed_actions;
+  Atom atom_net_wm_action_move;
+  Atom atom_net_wm_action_resize;
+  Atom atom_net_wm_action_shade;
+  Atom atom_net_wm_action_stick;
+  Atom atom_net_wm_action_maximize_horz;
+  Atom atom_net_wm_action_maximize_vert;
+  Atom atom_net_wm_action_change_desktop;
+  Atom atom_net_wm_action_close;
   
   /* This is the actual window from focus events,
    * not the one we last set

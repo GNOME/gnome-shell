@@ -576,7 +576,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   /* for the various on_all_workspaces = TRUE possible above */
   meta_window_set_current_workspace_hint (window);
-  
+
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
@@ -4998,9 +4998,83 @@ recalc_window_type (MetaWindow *window)
     }
 }
 
+static int
+set_allowed_actions_hint (MetaWindow *window)
+{
+#define MAX_N_ACTIONS 8
+  unsigned long data[MAX_N_ACTIONS];
+  int i;
+
+
+
+  i = 0;
+  if (window->has_close_func)
+    {
+      data[i] = window->display->atom_net_wm_action_close;
+      ++i;
+    }
+  if (window->has_minimize_func)
+    {
+      data[i] = window->display->atom_net_wm_action_maximize_horz;
+      ++i;
+      data[i] = window->display->atom_net_wm_action_maximize_vert;
+      ++i;
+    }
+  if (window->has_move_func)
+    {
+      data[i] = window->display->atom_net_wm_action_move;
+      ++i;
+    }
+  if (window->has_resize_func)
+    {
+      data[i] = window->display->atom_net_wm_action_resize;
+      ++i;
+    }
+  if (window->has_shade_func)
+    {
+      data[i] = window->display->atom_net_wm_action_shade;
+      ++i;
+    }
+  if (!window->always_sticky)
+    {
+      data[i] = window->display->atom_net_wm_action_stick;
+      ++i;
+    }
+
+  /* We always allow this */
+  data[i] = window->display->atom_net_wm_action_change_desktop;
+  ++i;
+
+  g_assert (i <= MAX_N_ACTIONS);
+
+  meta_verbose ("Setting _NET_WM_ALLOWED_ACTIONS with %d atoms\n", i);
+  
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom_net_wm_allowed_actions,
+                   XA_ATOM,
+                   32, PropModeReplace, (guchar*) data, i);
+  return meta_error_trap_pop (window->display);
+#undef MAX_N_ACTIONS
+}
+
 static void
 recalc_window_features (MetaWindow *window)
 {
+  gboolean old_has_close_func;
+  gboolean old_has_minimize_func;
+  gboolean old_has_move_func;
+  gboolean old_has_resize_func;
+  gboolean old_has_shade_func;
+  gboolean old_always_sticky;
+
+  old_has_close_func = window->has_close_func;
+  old_has_minimize_func = window->has_minimize_func;
+  old_has_move_func = window->has_move_func;
+  old_has_resize_func = window->has_resize_func;
+  old_has_shade_func = window->has_shade_func;
+  old_always_sticky = window->always_sticky;
+
   /* Use MWM hints initially */
   window->decorated = window->mwm_decorated;
   window->border_only = window->mwm_border_only;
@@ -5107,6 +5181,20 @@ recalc_window_features (MetaWindow *window)
     case META_WINDOW_NORMAL:
       break;
     }
+
+  /* FIXME:
+   * Lame workaround for recalc_window_features
+   * being used overzealously. The fix is to
+   * only recalc_window_features when something
+   * has actually changed.
+   */
+  if (old_has_close_func != window->has_close_func       ||
+      old_has_minimize_func != window->has_minimize_func ||
+      old_has_move_func != window->has_move_func         ||
+      old_has_resize_func != window->has_resize_func     ||
+      old_has_shade_func != window->has_shade_func       ||
+      old_always_sticky != window->always_sticky)
+    set_allowed_actions_hint (window);
     
   /* FIXME perhaps should ensure if we don't have a shade func,
    * we aren't shaded, etc.
