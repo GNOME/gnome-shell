@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the metacity package.
 # Tino Meinen <a.t.meinen@chello.nl>, 2003.
 # Reinout van Schouwen <reinout@cs.vu.nl>, 2003.
-# Uitrollen of afrollen?
+# Unroll -> Uitrollen of afrollen?
+# draw_ops?
+# operand operator?
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "POT-Creation-Date: 2003-01-14 04:05+0100\n"
-"PO-Revision-Date: 2003-01-16 17:07+0100\n"
+"PO-Revision-Date: 2003-01-16 22:41+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +37,7 @@ msgstr "Kon \"%s\" niet verwerken als geheel getal"
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Begreep de laatste tekens \"%s\" niet, in tekenreeks \"%s\""
+msgstr "Niet begrepen: de laatste tekens \"%s\" in tekenreeks \"%s\""
 
 #: src/delete.c:125
 #, c-format
@@ -161,7 +163,7 @@ msgstr "Herstarten mislukt: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr "_Minimaliseren"
+msgstr "Mi_nimaliseren"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
@@ -1935,12 +1937,12 @@ msgstr "Geheel getal %ld is te groot, huidige maximum is %d"
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Kon \"%s niet als 'floating-point'-getal verwerken"
+msgstr "Kon \"%s\" niet als 'floating-point'-getal verwerken"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Boolse waarde moet \"true\" of \"false\" zijn, niet \"%s\""
+msgstr "Boolese waarde moet \"true\" of \"false\" zijn, niet \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
@@ -1951,7 +1953,7 @@ msgstr "Hoek moet liggen tussen 0.0 en 360.0, maar was %g\n"
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"Alpha moet liggen tussen 0.0 (onzichtbaar) an 1.0 (volledig ondoorzichtig), "
+"Alpha moet liggen tussen 0.0 (onzichtbaar) en 1.0 (volledig ondoorzichtig), "
 "maar was %g\n"
 
 #: src/theme-parser.c:684
@@ -1990,13 +1992,12 @@ msgstr "<%s> ouder \"%s\" is niet gedefinieerd"
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> geometrie \"%s\" is niet gedefinieerd"
+msgstr "<%s> afmetingen \"%s\" is niet gedefinieerd"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> moet ofwel een geometrie specificeren, of een ouder met een geometrie"
+msgstr "<%s> moet ofwel afmetingen specificeren, of een ouder met afmetingen"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2006,7 +2007,7 @@ msgstr "Onbekend type \"%s\" op <%s> element"
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Onbekende stijl_set \"%s\" op <%s> element"
+msgstr "Onbekende stijl_verzameling \"%s\" op <%s> element"
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -2031,7 +2032,7 @@ msgstr "Thema heeft reeds een menu-pictogram voor functie %s status %s"
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Geen <draw_ops> met de naam \"%s\" is gedefinieerd"
+msgstr "Er zijn geen <draw_ops> met naam \"%s\" gedefinieerd"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -2172,7 +2173,7 @@ msgstr "Geen \"type\" attribuut op element <%s>"
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Begreep de waarde \"%s\" niet voor type gradiënt"
+msgstr "Niet begrepen: de waarde \"%s\" voor type kleurverloop"
 
 #: src/theme-parser.c:2294
 #, c-format
@@ -2182,7 +2183,7 @@ msgstr "Geen \"bestandsnaam\" attribuut op element <%s>"
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Begreep vul-type \"%s\" voor <%s> element niet "
+msgstr "Niet begrepen: vul-type \"%s\" voor <%s> element"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
@@ -2202,17 +2203,17 @@ msgstr "Geen \"pijl\" attribuut op element <%s>"
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Begreep status \"%s\" voor <%s> element niet"
+msgstr "Niet begrepen: status \"%s\" voor <%s> element"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Begreep schaduw \"%s\" voor <%s> element niet"
+msgstr "Niet begrepen: schaduw \"%s\" voor <%s> element"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Begreep pijl \"%s\" voor <%s> element niet"
+msgstr "Niet begrepen: pijl \"%s\" voor <%s> element"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
@@ -2453,12 +2454,12 @@ msgstr "rechts"
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "kadergeometrie geeft geen \"%s\" dimensie"
+msgstr "kader-afmetingen geeft geen \"%s\" dimensie"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "kadergeometrie geeft geen dimensie \"%s\" voor rand \"%s\""
+msgstr "kader-afmetingen geeft geen dimensie \"%s\" voor rand \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2467,7 +2468,7 @@ msgstr "Knopverhouding %g is onredelijk"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr "Kadergeometrie geeft geen afmeting van knoppen"
+msgstr "Kader-afmetingen geeft geen afmeting van knoppen"
 
 # Gradiënt hier beter?
 #: src/theme.c:849
@@ -2655,15 +2656,15 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<knopfunctie=\"%s\" status=\"%s\" draw_ops=\"iets\"/> moet voor deze "
-"kaderstijl gespecificeerd worden"
+"<knopfunctie=\"%s\" status=\"%s\" draw_ops=\"iets\"/> moet voor deze kader-"
+"stijl gespecificeerd worden"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"Ontbrekende <kaderstatus=\"%s\" grootte_aanpassen=\"%s\" aandacht=\"%s\" "
+"Ontbrekende <kader-status=\"%s\" grootte_aanpassen=\"%s\" aandacht=\"%s\" "
 "stijl=\"iets\"/>"
 
 #: src/theme.c:4445
@@ -2683,7 +2684,7 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Geen kaderstijl ingesteld voor venstertype \"%s\" in thema \"%s\", voeg een "
+"Geen kader-stijl ingesteld voor venstertype \"%s\" in thema \"%s\", voeg een "
 "<venstertype=\"%s\" stijlverzameling=\"iets\"/> element toe"
 
 #: src/theme.c:4651
