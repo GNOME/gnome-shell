@@ -1,3 +1,11 @@
+2002-10-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/metacity.schemas.in: button layout key
+
+	* src/prefs.c: Add button layout gconf key
+	(change_notify): use some "else if" instead of "if" where we
+	should have been
+
 2002-10-11  Havoc Pennington  <hp@redhat.com>
 
 	* src/display.c (event_callback): don't raise window on button 2

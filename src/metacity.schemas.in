@@ -22,6 +22,27 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/button_layout</key>
+      <applyto>/apps/metacity/general/button_layout</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>menu:minimize,maximize,close</default>
+      <locale name="C">
+         <short>Arrangement of buttons on the titlebar</short>
+         <long>
+           Arrangement of buttons on the titlebar. The 
+           value should be a string, such as 
+           "menu:minimize,maximize,close"; the colon separates the 
+           left corner of the window from the right corner, and 
+           the button names are comma-separated. Duplicate buttons
+           are not allowed. Unknown button names are silently ignored
+           so that buttons can be added in future metacity versions 
+           without breaking older versions.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/focus_mode</key>
       <applyto>/apps/metacity/general/focus_mode</applyto>
       <owner>metacity</owner>

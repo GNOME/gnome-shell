@@ -40,6 +40,7 @@
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 #define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
+#define KEY_BUTTON_LAYOUT "/apps/metacity/general/button_layout"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
@@ -59,6 +60,21 @@ static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
+static MetaButtonLayout button_layout = {
+  {
+    META_BUTTON_FUNCTION_MENU,
+    META_BUTTON_FUNCTION_LAST,
+    META_BUTTON_FUNCTION_LAST,
+    META_BUTTON_FUNCTION_LAST
+  },
+  {
+    META_BUTTON_FUNCTION_MINIMIZE,
+    META_BUTTON_FUNCTION_MAXIMIZE,
+    META_BUTTON_FUNCTION_CLOSE,
+    META_BUTTON_FUNCTION_LAST
+  }
+};
+  
 #define NUM_COMMANDS 12
 static char *commands[NUM_COMMANDS] = { NULL, NULL, NULL, NULL, NULL, NULL,
                                         NULL, NULL, NULL, NULL, NULL, NULL };
@@ -73,6 +89,7 @@ static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
 static gboolean update_auto_raise          (gboolean   value);
 static gboolean update_auto_raise_delay    (int        value);
+static gboolean update_button_layout      (const char *value);
 static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
@@ -298,6 +315,12 @@ meta_prefs_init (void)
                                     &err);
   cleanup_error (&err);
   update_disable_workarounds (bool_val);
+
+  str_val = gconf_client_get_string (default_client, KEY_BUTTON_LAYOUT,
+                                     &err);
+  cleanup_error (&err);
+  update_button_layout (str_val);
+  g_free (str_val);
   
   /* Load keybindings prefs */
   init_bindings ();
@@ -362,7 +385,7 @@ change_notify (GConfClient    *client,
       if (update_mouse_button_mods (str))
         queue_changed (META_PREF_MOUSE_BUTTON_MODS);
     }
-  if (strcmp (key, KEY_FOCUS_MODE) == 0)
+  else if (strcmp (key, KEY_FOCUS_MODE) == 0)
     {
       const char *str;
 
@@ -378,7 +401,7 @@ change_notify (GConfClient    *client,
       if (update_focus_mode (str))
         queue_changed (META_PREF_FOCUS_MODE);
     }
-  if (strcmp (key, KEY_THEME) == 0)
+  else if (strcmp (key, KEY_THEME) == 0)
     {
       const char *str;
 
@@ -559,6 +582,22 @@ change_notify (GConfClient    *client,
       if (update_command (key, str))
         queue_changed (META_PREF_COMMANDS);
     }
+  else if (strcmp (key, KEY_BUTTON_LAYOUT) == 0)
+    {
+      const char *str;
+      
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_BUTTON_LAYOUT);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_button_layout (str))
+        queue_changed (META_PREF_BUTTON_LAYOUT);
+    }
   else
     {
       meta_verbose ("Key %s doesn't mean anything to Metacity\n",
@@ -712,6 +751,150 @@ update_titlebar_font (const char *value)
 
       return TRUE;
     }
+}
+
+static gboolean
+button_layout_equal (const MetaButtonLayout *a,
+                     const MetaButtonLayout *b)
+{  
+  int i;
+
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      if (a->left_buttons[i] != b->left_buttons[i])
+        return FALSE;
+      if (a->right_buttons[i] != b->right_buttons[i])
+        return FALSE;
+      ++i;
+    }
+
+  return TRUE;
+}
+
+static MetaButtonFunction
+button_function_from_string (const char *str)
+{
+  if (strcmp (str, "menu") == 0)
+    return META_BUTTON_FUNCTION_MENU;
+  else if (strcmp (str, "minimize") == 0)
+    return META_BUTTON_FUNCTION_MINIMIZE;
+  else if (strcmp (str, "maximize") == 0)
+    return META_BUTTON_FUNCTION_MAXIMIZE;
+  else if (strcmp (str, "close") == 0)
+    return META_BUTTON_FUNCTION_CLOSE;
+  else
+    return META_BUTTON_FUNCTION_LAST;
+}
+
+static gboolean
+update_button_layout (const char *value)
+{
+  MetaButtonLayout new_layout;
+  char **sides;
+  int i;
+  gboolean changed;
+  
+  if (value == NULL)
+    return FALSE;
+  
+  i = 0;
+  while (i < MAX_BUTTONS_PER_CORNER)
+    {
+      new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      ++i;
+    }
+
+  /* We need to ignore unknown button functions, for
+   * compat with future versions
+   */
+  
+  sides = g_strsplit (value, ":", 2);
+
+  if (sides[0] != NULL)
+    {
+      char **buttons;
+      int b;
+      gboolean used[META_BUTTON_FUNCTION_LAST];
+
+      i = 0;
+      while (i < META_BUTTON_FUNCTION_LAST)
+        {
+          used[i] = FALSE;
+          ++i;
+        }
+      
+      buttons = g_strsplit (sides[0], ",", -1);
+      i = 0;
+      b = 0;
+      while (buttons[b] != NULL)
+        {
+          MetaButtonFunction f = button_function_from_string (buttons[b]);
+
+          if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+            {
+              new_layout.left_buttons[i] = f;
+              used[f] = TRUE;
+              ++i;
+            }
+          else
+            {
+              meta_verbose ("Ignoring unknown or already-used button name \"%s\"\n",
+                            buttons[b]);
+            }
+          
+          ++b;
+        }
+
+      g_strfreev (buttons);
+    }
+
+  if (sides[0] != NULL && sides[1] != NULL)
+    {
+      char **buttons;
+      int b;
+      gboolean used[META_BUTTON_FUNCTION_LAST];
+
+      i = 0;
+      while (i < META_BUTTON_FUNCTION_LAST)
+        {
+          used[i] = FALSE;
+          ++i;
+        }
+      
+      buttons = g_strsplit (sides[1], ",", -1);
+      i = 0;
+      b = 0;
+      while (buttons[b] != NULL)
+        {
+          MetaButtonFunction f = button_function_from_string (buttons[b]);
+
+          if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+            {
+              new_layout.right_buttons[i] = f;
+              used[f] = TRUE;
+              ++i;
+            }
+          else
+            {
+              meta_verbose ("Ignoring unknown or already-used button name \"%s\"\n",
+                            buttons[b]);
+            }
+          
+          ++b;
+        }
+
+      g_strfreev (buttons);
+    }
+
+  g_strfreev (sides);
+  
+  changed = !button_layout_equal (&button_layout, &new_layout);
+
+  button_layout = new_layout;
+
+  return changed;
 }
 
 const PangoFontDescription*
@@ -1212,24 +1395,9 @@ meta_prefs_get_gconf_key_for_command (int i)
 }
 
 void
-meta_prefs_get_button_layout (MetaButtonLayout *button_layout)
+meta_prefs_get_button_layout (MetaButtonLayout *button_layout_p)
 {
-  /* FIXME */
-  int i;
-
-  i = 0;
-  while (i < MAX_BUTTONS_PER_CORNER)
-    {
-      button_layout->left_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      button_layout->right_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      ++i;
-    }
-  
-  button_layout->left_buttons[0] = META_BUTTON_FUNCTION_MENU;
-
-  button_layout->right_buttons[0] = META_BUTTON_FUNCTION_MINIMIZE;
-  button_layout->right_buttons[1] = META_BUTTON_FUNCTION_MAXIMIZE;
-  button_layout->right_buttons[2] = META_BUTTON_FUNCTION_CLOSE;
+  *button_layout_p = button_layout;
 }
 
 void
