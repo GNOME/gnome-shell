@@ -386,9 +386,9 @@ meta_window_delete (MetaWindow  *window,
        * I don't know how to avoid that though.
        */
       meta_topic (META_DEBUG_FOCUS,
-                  "Focusing top window because focus window %s was deleted/killed\n",
+                  "Focusing MRU window because focus window %s was deleted/killed\n",
                   window->desc);
-      meta_workspace_focus_top_window (window->screen->active_workspace,
+      meta_workspace_focus_mru_window (window->screen->active_workspace,
                                        window);
     }
   else

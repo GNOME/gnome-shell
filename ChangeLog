@@ -1,3 +1,9 @@
+2003-08-17  Ray Strode  <halfline@hawaii.rr.com>
+
+	* src/delete.c (meta_window_delete): Use MRU list to find focusing 
+	window after a window is deleted instead of using top window. Fix 
+	for #108643.
+
 2003-08-16  Havoc Pennington  <hp@pobox.com>
 
 	Patch from Soeren Sandmann #108926 to improve opaque resize
