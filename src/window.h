@@ -183,6 +183,11 @@ struct _MetaWindow
    * only relevant if !window->placed
    */
   guint calc_placement : 1;
+
+  /* Has nonzero struts */
+  guint has_struts : 1; 
+  /* Struts are from the _WIN_HINTS do not cover deal */
+  guint do_not_cover : 1;
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client
@@ -220,6 +225,12 @@ struct _MetaWindow
   /* x/y/w/h here get filled with ConfigureRequest values */
   XSizeHints size_hints;
 
+  /* struts */
+  int left_strut;
+  int right_strut;
+  int top_strut;
+  int bottom_strut;
+  
   /* Managed by stack.c */
   MetaStackLayer layer;
   MetaStackOp *stack_op;
@@ -341,5 +352,9 @@ void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 
 gboolean meta_window_visible_on_workspace (MetaWindow    *window,
                                            MetaWorkspace *workspace);
+
+/* Get minimum work area for all workspaces we're on */
+void meta_window_get_work_area (MetaWindow    *window,
+                                MetaRectangle *area);
 
 #endif

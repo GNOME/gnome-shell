@@ -139,7 +139,9 @@ meta_display_open (const char *name)
     "_KWM_WIN_ICON",
     "_NET_WM_MOVERESIZE",
     "_NET_ACTIVE_WINDOW",
-    "_METACITY_RESTART_MESSAGE"
+    "_METACITY_RESTART_MESSAGE",
+    "_NET_WM_STRUT",
+    "_WIN_HINTS"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -230,6 +232,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_moveresize = atoms[42];
   display->atom_net_active_window = atoms[43];
   display->atom_metacity_restart_message = atoms[44];
+  display->atom_net_wm_strut = atoms[45];
+  display->atom_win_hints = atoms[46];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

@@ -1,3 +1,15 @@
+2002-01-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c, src/window.h: store strut information, 
+	update it on property changes, etc. etc. so we avoid panel 
+	on maximize.
+
+	* src/workspace.c (meta_workspace_get_work_area): add accessor for
+	work area so we can compute it lazily
+
+	* src/display.h, src/display.c: add _NET_WM_STRUT atom
+	and _WIN_HINTS atom
+
 2002-01-08  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in (ACLOCAL): add code to save ACLOCAL_FLAGS

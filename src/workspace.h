@@ -30,7 +30,8 @@ struct _MetaWorkspace
   
   GList *windows;
 
-  MetaRectangle workarea;
+  MetaRectangle work_area;
+  guint work_area_invalid : 1;
 };
 
 MetaWorkspace* meta_workspace_new           (MetaScreen    *screen);
@@ -47,6 +48,12 @@ gboolean       meta_workspace_contains_window (MetaWorkspace *workspace,
 void           meta_workspace_activate      (MetaWorkspace *workspace);
 int            meta_workspace_index         (MetaWorkspace *workspace);
 int            meta_workspace_screen_index  (MetaWorkspace *workspace);
+GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
+
+void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
+void meta_workspace_get_work_area        (MetaWorkspace *workspace,
+                                          MetaRectangle *area);
+
 
 #endif
 

@@ -40,14 +40,12 @@ meta_workspace_new (MetaScreen *screen)
     g_list_append (workspace->screen->display->workspaces, workspace);
   workspace->windows = NULL;
 
-  /* This may have something to do with the strut hints
-   * eventually
-   */
-  workspace->workarea.x = 0;
-  workspace->workarea.y = 0;
-  workspace->workarea.width = screen->width;
-  workspace->workarea.height = screen->height;
-
+  workspace->work_area.x = 0;
+  workspace->work_area.y = 0;
+  workspace->work_area.width = screen->width;
+  workspace->work_area.height = screen->height;
+  workspace->work_area_invalid = TRUE;
+  
   /* Update hint for current number of workspaces */
   set_number_of_spaces_hint (screen);
   
@@ -105,6 +103,13 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
+  if (window->has_struts)
+    meta_workspace_invalidate_work_area (workspace);
+
+  /* queue a move_resize since changing workspaces may change
+   * the relevant struts
+   */
+  meta_window_queue_move_resize (window);
 }
 
 void
@@ -119,6 +124,14 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
+
+  if (window->has_struts)
+    meta_workspace_invalidate_work_area (workspace);
+
+  /* queue a move_resize since changing workspaces may change
+   * the relevant struts
+   */
+  meta_window_queue_move_resize (window);
 }
 
 void
@@ -242,6 +255,37 @@ meta_workspace_screen_index  (MetaWorkspace *workspace)
   meta_bug ("Workspace does not exist to index!\n");
 }
 
+/* get windows contained on workspace, including workspace->windows
+ * and also sticky windows.
+ */
+GList*
+meta_workspace_list_windows (MetaWorkspace *workspace)
+{
+  GSList *display_windows;
+  GSList *tmp;
+  GList *workspace_windows;
+  
+  display_windows = meta_display_list_windows (workspace->screen->display);
+
+  workspace_windows = NULL;
+  tmp = display_windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (window->on_all_workspaces ||
+          meta_workspace_contains_window (workspace, window))
+        workspace_windows = g_list_prepend (workspace_windows,
+                                            window);
+
+      tmp = tmp->next;
+    }
+
+  g_slist_free (display_windows);
+
+  return workspace_windows;
+}
+
 static int
 set_number_of_spaces_hint (MetaScreen *screen)
 {
@@ -274,4 +318,91 @@ set_active_space_hint (MetaScreen *screen)
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   return meta_error_trap_pop (screen->display);
+}
+
+void
+meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
+{
+  GList *tmp;
+
+  if (workspace->work_area_invalid)
+    return;
+  
+  workspace->work_area_invalid = TRUE;
+
+  /* redo the size/position constraints on all windows */
+  tmp = workspace->windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      meta_window_queue_move_resize (w);
+          
+      tmp = tmp->next;
+    }
+}
+
+void
+meta_workspace_get_work_area (MetaWorkspace *workspace,
+                              MetaRectangle *area)
+{  
+  if (workspace->work_area_invalid)
+    {
+      int left_strut = 0;
+      int right_strut = 0;
+      int top_strut = 0;
+      int bottom_strut = 0;
+      GList *tmp;
+      GList *windows;
+
+      windows = meta_workspace_list_windows (workspace);
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+
+          if (w->has_struts)
+            {
+              left_strut = MAX (left_strut, w->left_strut);
+              right_strut = MAX (right_strut, w->right_strut);
+              top_strut = MAX (top_strut, w->top_strut);
+              bottom_strut = MAX (bottom_strut, w->bottom_strut);
+            }
+          
+          tmp = tmp->next;
+        }
+
+      g_list_free (windows);
+
+      /* Some paranoid robustness */
+#define MIN_SANE_AREA 100
+      
+      if ((left_strut + right_strut) > (workspace->screen->width - MIN_SANE_AREA))
+        {
+          left_strut = (workspace->screen->width - MIN_SANE_AREA) / 2;
+          right_strut = left_strut;
+        }
+
+      if ((top_strut + bottom_strut) > (workspace->screen->height - MIN_SANE_AREA))
+        {
+          top_strut = (workspace->screen->height - MIN_SANE_AREA) / 2;
+          bottom_strut = top_strut;
+        }
+      
+      workspace->work_area.x = left_strut;
+      workspace->work_area.y = top_strut;
+      workspace->work_area.width = workspace->screen->width - left_strut - right_strut;
+      workspace->work_area.height = workspace->screen->height - top_strut - bottom_strut;
+
+      workspace->work_area_invalid = FALSE;
+
+      meta_verbose ("Workspace %d has work area %d,%d %d x %d\n",
+                    meta_workspace_index (workspace),
+                    workspace->work_area.x,
+                    workspace->work_area.y,
+                    workspace->work_area.width,
+                    workspace->work_area.height);
+    }
+
+  *area = workspace->work_area;
 }

@@ -104,6 +104,8 @@ struct _MetaDisplay
   Atom atom_net_wm_moveresize;
   Atom atom_net_active_window;
   Atom atom_metacity_restart_message;
+  Atom atom_net_wm_strut;
+  Atom atom_win_hints;
   
   /* This is the actual window from focus events,
    * not the one we last set

@@ -85,6 +85,7 @@ find_next_cascade (MetaWindow *window,
   GList *sorted;
   int cascade_x, cascade_y;
   int x_threshold, y_threshold;
+  MetaRectangle work_area;  
   
   sorted = g_list_copy (windows);
   sorted = g_list_sort (sorted, northwestcmp);
@@ -99,18 +100,10 @@ find_next_cascade (MetaWindow *window,
    * cascade_x, cascade_y are the target position
    * of NW corner of window frame.
    */
-  cascade_x = 0;
-  cascade_y = 0;
-  tmp = window->workspaces;
-  while (tmp != NULL)
-    {
-      MetaWorkspace *space = tmp->data;
-      
-      cascade_x = MAX (cascade_x, space->workarea.x);
-      cascade_y = MAX (cascade_y, space->workarea.y);
-      
-      tmp = tmp->next;
-    }
+  meta_window_get_work_area (window, &work_area);
+  
+  cascade_x = MAX (0, work_area.x);
+  cascade_y = MAX (0, work_area.y);
 
   /* Find first cascade position that's not used. */
 
@@ -445,6 +438,7 @@ get_vertical_edges (MetaWindow *window,
   int i;
   int n_edges;
   MetaRectangle rect;
+  MetaRectangle work_area;
   
   windows = get_windows_on_same_workspace (window, &n_windows);
 
@@ -453,11 +447,13 @@ get_vertical_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  edges[i] = window->screen->active_workspace->workarea.x;
+  meta_window_get_work_area (window, &work_area);
+
+  edges[i] = work_area.x;
   ++i;
   edges[i] =
-    window->screen->active_workspace->workarea.x +
-    window->screen->active_workspace->workarea.width;
+    work_area.x +
+    work_area.width;
   ++i;
   edges[i] = 0;
   ++i;
@@ -508,6 +504,7 @@ get_horizontal_edges (MetaWindow *window,
   int i;
   int n_edges;
   MetaRectangle rect;
+  MetaRectangle work_area;
   
   windows = get_windows_on_same_workspace (window, &n_windows);
 
@@ -516,11 +513,13 @@ get_horizontal_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  edges[i] = window->screen->active_workspace->workarea.y;
+  meta_window_get_work_area (window, &work_area);
+  
+  edges[i] = work_area.y;
   ++i;
   edges[i] =
-    window->screen->active_workspace->workarea.y +
-    window->screen->active_workspace->workarea.height;
+    work_area.y +
+    work_area.height;
   ++i;
   edges[i] = 0;
   ++i;

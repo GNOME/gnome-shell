@@ -43,6 +43,16 @@ typedef enum
   META_USER_MOVE_RESIZE     = 1 << 2
 } MetaMoveResizeFlags;
 
+typedef enum
+{
+  WIN_HINTS_SKIP_FOCUS      = (1<<0), /* "alt-tab" skips this win */
+  WIN_HINTS_SKIP_WINLIST    = (1<<1), /* not in win list */
+  WIN_HINTS_SKIP_TASKBAR    = (1<<2), /* not on taskbar */
+  WIN_HINTS_GROUP_TRANSIENT = (1<<3), /* ??????? */
+  WIN_HINTS_FOCUS_ON_CLICK  = (1<<4), /* app only accepts focus when clicked */
+  WIN_HINTS_DO_NOT_COVER    = (1<<5)  /* attempt to not cover this window */
+} GnomeWinHints;
+
 static void constrain_size     (MetaWindow        *window,
                                 MetaFrameGeometry *fgeom,
                                 int                width,
@@ -72,8 +82,11 @@ static int      update_icon_name          (MetaWindow     *window);
 static int      update_icon               (MetaWindow     *window,
                                            gboolean        reread_rgb_icon);
 static int      update_kwm_icon           (MetaWindow     *window);
+static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
+static void     recalc_do_not_cover_struts(MetaWindow     *window);
+static void     invalidate_work_areas     (MetaWindow *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
 static int      set_net_wm_state          (MetaWindow     *window);
@@ -82,6 +95,8 @@ static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
+
+static GList*   meta_window_get_workspaces (MetaWindow    *window);
 
 static gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                                MetaRectangle *rect);
@@ -350,6 +365,12 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
 
+  window->has_struts = FALSE;
+  window->left_strut = 0;
+  window->right_strut = 0;
+  window->top_strut = 0;
+  window->bottom_strut = 0;
+  
   window->layer = META_LAYER_NORMAL;
   window->stack_op = NULL;
   window->initial_workspace = 0; /* not used */
@@ -359,6 +380,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_title (window);
   update_protocols (window);
   update_wm_hints (window);
+  update_struts (window);
 
   update_net_wm_state (window);
   /* Initially maximize if window is fullscreen; FIXME
@@ -1193,6 +1215,8 @@ meta_window_maximize (MetaWindow  *window)
 {
   if (!window->maximized)
     {
+      meta_verbose ("Maximizing %s\n", window->desc);
+      
       window->maximized = TRUE;
 
       meta_window_raise (window);
@@ -1218,6 +1242,8 @@ meta_window_unmaximize (MetaWindow  *window)
 {
   if (window->maximized)
     {
+      meta_verbose ("Unmaximizing %s\n", window->desc);
+      
       window->maximized = FALSE;
 
       meta_window_move_resize (window,
@@ -1660,7 +1686,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
       window->frame->right_width = fgeom.right_width;
       window->frame->bottom_height = fgeom.bottom_height;
     }
-
+  
   /* See ICCCM 4.1.5 for when to send ConfigureNotify */
   
   need_configure_notify = FALSE;
@@ -1755,6 +1781,19 @@ meta_window_move_resize_internal (MetaWindow  *window,
   else
     {
       meta_verbose ("Size/position not modified\n");
+    }
+
+  /* Update struts for new window size */
+  if (window->do_not_cover && (need_resize_client || need_move_client))
+    {
+      recalc_do_not_cover_struts (window);
+
+      /* Does a resize on all windows on entire current workspace,
+       * would be an infinite loop except for need_resize_client
+       * above.
+       */
+      
+      invalidate_work_areas (window);
     }
   
   /* Invariants leaving this function are:
@@ -2636,6 +2675,44 @@ meta_window_client_message (MetaWindow *window,
 
       return TRUE;
     }
+  else if (event->xclient.message_type ==
+           display->atom_win_hints)
+    {
+      /* gnome-winhints.c seems to indicate that the hints are
+       * in l[1], though god knows why it's like that
+       */
+      gulong data[1];
+      
+      meta_verbose ("_WIN_HINTS client message, hints: %ld\n",
+                    event->xclient.data.l[1]);
+
+      if (event->xclient.data.l[1] & WIN_HINTS_DO_NOT_COVER)
+        {
+          meta_verbose ("Setting WIN_HINTS_DO_NOT_COVER\n");
+          
+          data[0] = WIN_HINTS_DO_NOT_COVER;
+
+          meta_error_trap_push (window->display);
+          XChangeProperty (window->display->xdisplay,
+                           window->xwindow, window->display->atom_win_hints,
+                           XA_CARDINAL, 32, PropModeReplace,
+                           (unsigned char *)data, 1);
+          meta_error_trap_pop (window->display);
+        }
+      else
+        {
+          meta_verbose ("Unsetting WIN_HINTS_DO_NOT_COVER\n");
+          
+          data[0] = 0;
+
+          meta_error_trap_push (window->display);
+          XDeleteProperty (window->display->xdisplay,
+                           window->xwindow, window->display->atom_win_hints);
+          meta_error_trap_pop (window->display);
+        }
+      
+      return TRUE;
+    }
   
   return FALSE;
 }
@@ -2857,6 +2934,16 @@ process_property_notify (MetaWindow     *window,
       meta_verbose ("Property notify on %s for KWM_WIN_ICON\n", window->desc);
       update_kwm_icon (window);
       update_icon (window, FALSE);
+    }
+  else if (event->atom == window->display->atom_net_wm_strut)
+    {
+      meta_verbose ("Property notify on %s for _NET_WM_STRUT\n", window->desc);
+      update_struts (window);
+    }
+  else if (event->atom == window->display->atom_win_hints)
+    {
+      meta_verbose ("Property notify on %s for _WIN_HINTS\n", window->desc);
+      update_struts (window);
     }
   
   return TRUE;
@@ -4377,6 +4464,166 @@ update_kwm_icon (MetaWindow *window)
   return Success;
 }
 
+static GList*
+meta_window_get_workspaces (MetaWindow *window)
+{
+  if (window->on_all_workspaces)
+    return window->display->workspaces;
+  else
+    return window->workspaces;
+}
+
+static void
+invalidate_work_areas (MetaWindow *window)
+{
+  GList *tmp;
+
+  tmp = meta_window_get_workspaces (window);
+  
+  while (tmp != NULL)
+    {
+      meta_workspace_invalidate_work_area (tmp->data);
+      tmp = tmp->next;
+    }
+}
+
+static void
+update_struts (MetaWindow *window)
+{
+  gulong *struts = NULL;
+  int nitems;
+
+  meta_verbose ("Updating struts for %s\n", window->desc);
+  
+  window->has_struts = FALSE;
+  window->do_not_cover = FALSE;
+  window->left_strut = 0;
+  window->right_strut = 0;
+  window->top_strut = 0;
+  window->bottom_strut = 0;
+  
+  if (meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom_net_wm_strut,
+                                   &struts, &nitems))
+    {
+      if (nitems != 4)
+        {
+          meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
+                        window->desc, nitems);
+          meta_XFree (struts);
+        }
+      
+      window->has_struts = TRUE;
+      window->left_strut = struts[0];
+      window->right_strut = struts[1];
+      window->top_strut = struts[2];
+      window->bottom_strut = struts[3];
+
+      meta_verbose ("Using _NET_WM_STRUT struts %d %d %d %d for window %s\n",
+                    window->left_strut, window->right_strut,
+                    window->top_strut, window->bottom_strut,
+                    window->desc);
+      
+      meta_XFree (struts);
+    }
+  else
+    {
+      meta_verbose ("No _NET_WM_STRUT property for %s\n",
+                    window->desc);
+    }
+  
+  if (!window->has_struts)
+    {
+      /* Try _WIN_HINTS */
+      gulong hints;
+
+      if (meta_prop_get_cardinal (window->display,
+                                  window->xwindow,
+                                  window->display->atom_win_hints,
+                                  &hints))
+        {
+          if (hints & WIN_HINTS_DO_NOT_COVER)
+            {
+              window->has_struts = TRUE;
+              window->do_not_cover = TRUE;
+              recalc_do_not_cover_struts (window);
+
+              meta_verbose ("Using _WIN_HINTS struts %d %d %d %d for window %s\n",
+                            window->left_strut, window->right_strut,
+                            window->top_strut, window->bottom_strut,
+                            window->desc);              
+            }
+          else
+            {
+              meta_verbose ("DO_NOT_COVER hint not set in _WIN_HINTS\n");
+            }
+        }
+      else
+        {
+          meta_verbose ("No _WIN_HINTS property on %s\n",
+                        window->desc);
+        }
+    }
+
+  invalidate_work_areas (window);
+}
+
+static void
+recalc_do_not_cover_struts (MetaWindow *window)
+{
+  if (window->do_not_cover)
+    {
+      /* We only understand windows that are aligned to
+       * a screen edge
+       */
+      gboolean horizontal;
+      gboolean on_left_edge;
+      gboolean on_right_edge;
+      gboolean on_bottom_edge;
+      gboolean on_top_edge;      
+
+      window->left_strut = 0;
+      window->right_strut = 0;
+      window->top_strut = 0;
+      window->bottom_strut = 0;
+      
+      on_left_edge = window->rect.x == 0;
+      on_right_edge = (window->rect.x + window->rect.width) ==
+        window->screen->width;
+      on_top_edge = window->rect.y == 0;
+      on_bottom_edge = (window->rect.y + window->rect.height) ==
+        window->screen->height;
+      
+      /* cheesy heuristic to decide where the strut goes */
+      if (on_left_edge && on_right_edge && on_bottom_edge)
+        horizontal = TRUE;
+      else if (on_left_edge && on_right_edge && on_top_edge)
+        horizontal = TRUE;
+      else if (on_top_edge && on_bottom_edge && on_left_edge)
+        horizontal = FALSE;
+      else if (on_top_edge && on_bottom_edge && on_right_edge)
+        horizontal = FALSE;
+      else
+        horizontal = window->rect.width > window->rect.height;
+      
+      if (horizontal)
+        {
+          if (on_top_edge)
+            window->top_strut = window->rect.height;
+          else if (on_bottom_edge)
+            window->bottom_strut = window->rect.height;
+        }
+      else
+        {
+          if (on_left_edge)
+            window->left_strut = window->rect.width;
+          else if (on_right_edge)
+            window->right_strut = window->rect.width;
+        }
+    }
+}
+
 static void
 recalc_window_type (MetaWindow *window)
 {
@@ -4499,10 +4746,13 @@ constrain_size (MetaWindow *window,
   int delta;
   double min_aspect, max_aspect;
   int minw, minh, maxw, maxh, fullw, fullh;
-
+  MetaRectangle work_area;
+  
   /* frame member variables should NEVER be used in here */
   
 #define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
+
+  meta_window_get_work_area (window, &work_area);
   
   /* Get the allowed size ranges, considering maximized, etc. */
   if (window->type == META_WINDOW_DESKTOP ||
@@ -4513,8 +4763,8 @@ constrain_size (MetaWindow *window,
     }
   else
     {
-      fullw = window->screen->active_workspace->workarea.width;
-      fullh = window->screen->active_workspace->workarea.height;
+      fullw = work_area.width;
+      fullh = work_area.height;
     }
 
   if (window->frame)
@@ -4620,6 +4870,10 @@ constrain_position (MetaWindow *window,
                     int        *new_x,
                     int        *new_y)
 {
+  MetaRectangle work_area;  
+
+  meta_window_get_work_area (window, &work_area);  
+  
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry
    */
@@ -4644,8 +4898,8 @@ constrain_position (MetaWindow *window,
       /* find furthest northwest point the window can occupy,
        * to disallow moving titlebar off the top or left
        */
-      nw_x = window->screen->active_workspace->workarea.x;
-      nw_y = window->screen->active_workspace->workarea.y;
+      nw_x = work_area.x;
+      nw_y = work_area.y;
       if (window->frame)
         {
           nw_x += fgeom->left_width;
@@ -4653,10 +4907,8 @@ constrain_position (MetaWindow *window,
         }
       
       /* find bottom-right corner of workarea */
-      se_x = window->screen->active_workspace->workarea.x +
-        window->screen->active_workspace->workarea.width;
-      se_y = window->screen->active_workspace->workarea.y +
-        window->screen->active_workspace->workarea.height;
+      se_x = work_area.x + work_area.width;
+      se_y = work_area.y + work_area.height;
 
       /* if the window's size exceeds the screen size,
        * we allow it to go off the top/left far enough
@@ -5180,4 +5432,41 @@ meta_window_set_gravity (MetaWindow *window,
                            &attrs);
   
   meta_error_trap_pop (window->display);
+}
+
+void
+meta_window_get_work_area (MetaWindow    *window,
+                           MetaRectangle *area)
+{
+  MetaRectangle space_area;
+  GList *tmp;
+
+  int left_strut = 0;
+  int right_strut = 0;
+  int top_strut = 0;
+  int bottom_strut = 0;  
+
+  tmp = meta_window_get_workspaces (window);
+  
+  while (tmp != NULL)
+    {
+      meta_workspace_get_work_area (tmp->data, &space_area);
+
+      left_strut = MAX (left_strut, space_area.x);
+      right_strut = MAX (right_strut,
+                         (window->screen->width - space_area.x - space_area.width));
+      top_strut = MAX (top_strut, space_area.y);
+      bottom_strut = MAX (bottom_strut,
+                          (window->screen->height - space_area.y - space_area.height));      
+      
+      tmp = tmp->next;
+    }
+
+  area->x = left_strut;
+  area->y = top_strut;
+  area->width = window->screen->width - left_strut - right_strut;
+  area->height = window->screen->height - top_strut - bottom_strut;
+
+  meta_verbose ("Window %s has work area %d,%d %d x %d\n",
+                window->desc, area->x, area->y, area->width, area->height);
 }
