@@ -27,7 +27,6 @@
 
 void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
-static int set_number_of_spaces_hint  (MetaScreen *screen);
 static int set_active_space_hint      (MetaScreen *screen);
 
 MetaWorkspace*
@@ -50,9 +49,6 @@ meta_workspace_new (MetaScreen *screen)
 
   workspace->name = g_strdup_printf (_("Workspace %d"),
                                      meta_workspace_index (workspace) + 1);
-  
-  /* Update hint for current number of workspaces */
-  set_number_of_spaces_hint (screen);
   
   return workspace;
 }
@@ -94,8 +90,6 @@ meta_workspace_free (MetaWorkspace *workspace)
   
   g_free (workspace);
 
-  /* Update hint for current number of workspaces */
-  set_number_of_spaces_hint (screen);
   /* don't bother to reset names, pagers can just ignore
    * extra ones
    */
@@ -306,26 +300,6 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
   g_slist_free (display_windows);
 
   return workspace_windows;
-}
-
-static int
-set_number_of_spaces_hint (MetaScreen *screen)
-{
-  unsigned long data[1];
-
-  if (screen->closing > 0)
-    return 0;
-  
-  data[0] = meta_screen_get_n_workspaces (screen);
-
-  meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %ld\n", data[0]);
-  
-  meta_error_trap_push (screen->display);
-  XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_number_of_desktops,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-  return meta_error_trap_pop (screen->display);
 }
 
 static int

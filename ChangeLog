@@ -1,3 +1,14 @@
+2002-08-14  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/screen.c: (set_number_of_spaces_hint), move from
+	workspace.c.
+	(update_num_workspaces): set the hint here. Fixes #90123.
+
+	* src/workspace.c:
+	(meta_workspace_new), (meta_workspace_free): don't set
+	the hint here.
+	(update_num_workspaces): move to screen.c
+
 2002-08-12  Havoc Pennington  <hp@redhat.com>
 
 	* src/stack.c (compute_layer): window is in fullscreen layer if

@@ -744,6 +744,27 @@ meta_screen_get_n_workspaces (MetaScreen *screen)
   return i;
 }
 
+static int
+set_number_of_spaces_hint (MetaScreen *screen,
+			   int         n_spaces)
+{
+  unsigned long data[1];
+
+  if (screen->closing > 0)
+    return 0;
+
+  data[0] = n_spaces;
+
+  meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %ld\n", data[0]);
+
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_number_of_desktops,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  return meta_error_trap_pop (screen->display);
+}
+
 static void
 update_num_workspaces (MetaScreen *screen)
 {
@@ -818,15 +839,13 @@ update_num_workspaces (MetaScreen *screen)
   
   g_list_free (extras);
   
-  /* Add missing workspaces. FIXME This will keep setting the
-   * number-of-workspaces root window property on each workspace
-   * creation, kind of a lame thing
-   */
   while (i < new_num)
     {
       meta_workspace_new (screen);
       ++i;
     }
+
+  set_number_of_spaces_hint (screen, new_num);
 
   meta_screen_queue_workarea_recalc (screen);
 }
