@@ -491,6 +491,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->wm_state_skip_pager = FALSE;
   window->wm_state_above = FALSE;
   window->wm_state_below = FALSE;
+  window->wm_state_demands_attention = FALSE;
   
   window->res_class = NULL;
   window->res_name = NULL;
@@ -1125,7 +1126,7 @@ static void
 set_net_wm_state (MetaWindow *window)
 {
   int i;
-  unsigned long data[10];
+  unsigned long data[11];
   
   i = 0;
   if (window->shaded)
@@ -1175,7 +1176,12 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_below;
       ++i;
     }
-  
+  if (window->wm_state_demands_attention)
+    {
+      data[i] = window->display->atom_net_wm_state_demands_attention;
+      ++i;
+    }
+
   meta_verbose ("Setting _NET_WM_STATE with %d atoms\n", i);
   
   meta_error_trap_push (window->display);
@@ -1810,12 +1816,14 @@ meta_window_show (MetaWindow *window)
           meta_window_focus (window,
                              meta_display_get_current_time (window->display));
         }
+      else
+        window->wm_state_demands_attention = TRUE;
     }
 
   if (did_show)
     {
       set_net_wm_state (window);
-      
+
       if (window->struts)
         {
           meta_topic (META_DEBUG_WORKAREA,
@@ -3266,7 +3274,7 @@ meta_window_focus (MetaWindow  *window,
                   window->desc);
       return;
     }
-  
+
   /* For output-only or shaded windows, focus the frame.
    * This seems to result in the client window getting key events
    * though, so I don't know if it's icccm-compliant.
@@ -3317,6 +3325,12 @@ meta_window_focus (MetaWindow  *window,
       
       meta_error_trap_pop (window->display, FALSE);
     }
+
+  if (window->wm_state_demands_attention)
+    {
+      window->wm_state_demands_attention = FALSE;
+      set_net_wm_state (window);
+    }  
 }
 
 static void
@@ -3956,6 +3970,16 @@ meta_window_client_message (MetaWindow *window,
           meta_window_update_layer (window);
           set_net_wm_state (window);
         }
+
+      if (first == display->atom_net_wm_state_demands_attention ||
+          second == display->atom_net_wm_state_demands_attention)
+        {
+          window->wm_state_demands_attention = 
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention);
+
+          set_net_wm_state (window);
+        }
       
       return TRUE;
     }
@@ -4100,8 +4124,22 @@ meta_window_client_message (MetaWindow *window,
       meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s', activating",
                     window->desc);
 
-      meta_window_activate (window, meta_display_get_current_time (window->display));
-
+      if (event->xclient.data.l[0] != 0)
+        {
+          /* Client supports newer _NET_ACTIVE_WINDOW with a
+           * convenient timestamp
+           */
+          meta_window_activate (window,
+                                event->xclient.data.l[1]);
+          
+        }
+      else
+        {
+          /* Client using older EWMH _NET_ACTIVE_WINDOW without a
+           * timestamp
+           */
+          meta_window_activate (window, meta_display_get_current_time (window->display));
+        }
       return TRUE;
     }
   
@@ -4568,6 +4606,7 @@ update_net_wm_state (MetaWindow *window)
   window->wm_state_skip_pager = FALSE;
   window->wm_state_above = FALSE;
   window->wm_state_below = FALSE;
+  window->wm_state_demands_attention = FALSE;
   
   if (meta_prop_get_atom_list (window->display, window->xwindow,
                                window->display->atom_net_wm_state,
@@ -4596,6 +4635,8 @@ update_net_wm_state (MetaWindow *window)
             window->wm_state_above = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_below)
             window->wm_state_below = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_demands_attention)
+            window->wm_state_demands_attention = TRUE;
           
           ++i;
         }

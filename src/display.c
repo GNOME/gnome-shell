@@ -282,6 +282,11 @@ meta_display_open (const char *name)
     "_NET_FRAME_EXTENTS",
     "_NET_REQUEST_FRAME_EXTENTS",
     "_NET_WM_USER_TIME",
+    "_NET_WM_STATE_DEMANDS_ATTENTION",
+    "_NET_RESTACK_WINDOW",
+    "_NET_MOVERESIZE_WINDOW",
+    "_NET_DESKTOP_GEOMETRY",
+    "_NET_DESKTOP_VIEWPORT"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -429,6 +434,11 @@ meta_display_open (const char *name)
   display->atom_net_frame_extents = atoms[83];
   display->atom_net_request_frame_extents = atoms[84];
   display->atom_net_wm_user_time = atoms[85];
+  display->atom_net_wm_state_demands_attention = atoms[86];
+  display->atom_net_restack_window = atoms[87];
+  display->atom_net_moveresize_window = atoms[88];
+  display->atom_net_desktop_geometry = atoms[89];
+  display->atom_net_desktop_viewport = atoms[90];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -1170,6 +1180,107 @@ double_click_timeout_for_event (MetaDisplay *display,
   return meta_ui_get_double_click_timeout (screen->ui);
 }                                
 
+#if 0
+static void
+handle_net_moveresize_window (MetaDisplay* display,
+                              XEvent *event)
+{
+  MetaWindow *window;
+  int x, y, width, height;
+  gboolean only_resize;
+  unsigned int gravity;
+  unsigned int mode;
+
+  window = meta_display_lookup_x_window (display,
+                                         event->xclient.window);
+
+  /*
+   * FIXME: The specification seems to have serious endian issues
+   * here.  Does bits 8-11 mean the high-order byte, or the low-order
+   * byte?
+   */
+  gravity = (event->xclient.data.l[0] & ~0xff);
+  mode = (event->xclient.data.l[0] & ~0xff00) >> 8;
+
+  if (window)
+    {
+      meta_window_get_gravity_position (window, &x, &y);
+      width = window->rect.width;
+      height = window->rect.height;
+
+      if (mode & (CWX | CWY))
+        only_resize = FALSE;
+      else
+        only_resize = TRUE;
+
+      if (mode & CWX)
+        x = event->xclient.data.l[1];
+      if (mode & CWY)
+        y = event->xclient.data.l[2];
+      if (mode & CWWidth)
+        width = event->xclient.data.l[3];
+      if (mode & CWHeight)
+        height = event->xclient.data.l[4];
+
+      if (only_resize)
+        {
+          if (gravity)
+	    meta_window_resize_with_gravity (window,
+					     TRUE,
+					     width,
+					     height,
+					     gravity);
+          else
+            meta_window_resize (window,
+				TRUE,
+				width,
+				height);
+        }
+      else
+        {
+          meta_window_move_resize (window,
+                                   TRUE,
+                                   x,
+                                   y,
+                                   width,
+                                   height);
+        }
+    }
+}
+
+static void
+handle_net_restack_window (MetaDisplay* display,
+                           XEvent *event)
+{
+  MetaWindow *window;
+
+  window = meta_display_lookup_x_window (display,
+                                         event->xclient.window);
+
+  if (window)
+    {
+      /*
+       * The EWMH includes a sibling for the restack request, but we
+       * don't currently support these types of raises.
+       *
+       */
+      switch (event->xclient.data.l[2])
+        {
+        case Above:
+          meta_window_raise (window);
+          break;
+        case Below:
+          meta_window_lower (window);
+          break;
+        case TopIf:
+        case BottomIf:
+        case Opposite:
+          break;          
+        }
+    }
+}
+#endif
+
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -1873,10 +1984,18 @@ event_callback (XEvent   *event,
             else if (event->xproperty.atom ==
                      display->atom_net_desktop_names)
               meta_screen_update_workspace_names (screen);
+#if 0
+            else if (event->xproperty.atom ==
+                     display->atom_net_restack_window)
+              handle_net_restack_window (display, event);
+            else if (event->xproperty.atom ==
+                     display->atom_net_moveresize_window)
+              handle_net_moveresize_window (display, event);
+#endif
 
-	    /* we just use this property as a sentinel to avoid
-	     * certain race conditions.  See the comment for the
-	     * sentinel_counter variable declaration in display.h
+            /* we just use this property as a sentinel to avoid
+             * certain race conditions.  See the comment for the
+             * sentinel_counter variable declaration in display.h
 	     */
 	    if (event->xproperty.atom ==
 		display->atom_metacity_sentinel)

@@ -57,6 +57,9 @@ static void set_workspace_names    (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
+static void set_desktop_geometry_hint (MetaScreen *screen);
+static void set_desktop_viewport_hint (MetaScreen *screen);
+
 #ifdef HAVE_STARTUP_NOTIFICATION
 static void meta_screen_sn_event   (SnMonitorEvent *event,
                                     void           *user_data);
@@ -82,7 +85,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 54
+#define N_SUPPORTED 58
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -139,6 +142,12 @@ set_supported_hint (MetaScreen *screen)
   atoms[51] = screen->display->atom_net_wm_action_minimize;
   atoms[52] = screen->display->atom_net_frame_extents;
   atoms[53] = screen->display->atom_net_request_frame_extents;
+  atoms[54] = screen->display->atom_net_wm_user_time;
+  atoms[55] = screen->display->atom_net_wm_state_demands_attention;
+  atoms[56] = screen->display->atom_net_desktop_geometry;
+  atoms[57] = screen->display->atom_net_desktop_viewport;
+  //atoms[58] = screen->display->atom_net_restack_window;
+  //atoms[59] = screen->display->atom_net_moveresize_window;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -575,6 +584,10 @@ meta_screen_new (MetaDisplay *display,
   
   set_wm_check_hint (screen);
 
+  set_desktop_viewport_hint (screen);
+
+  set_desktop_geometry_hint (screen);
+
   meta_screen_update_workspace_layout (screen);
 
   /* Get current workspace */
@@ -962,6 +975,51 @@ set_number_of_spaces_hint (MetaScreen *screen,
                    screen->display->atom_net_number_of_desktops,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (screen->display, FALSE);
+}
+
+static void
+set_desktop_geometry_hint (MetaScreen *screen)
+{
+  unsigned long data[2];
+
+  if (screen->closing > 0)
+    return;
+
+  data[0] = screen->width;
+  data[1] = screen->height;
+
+  meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %ld, %ld\n", data[0], data[1]);
+
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_desktop_geometry,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 2);
+  meta_error_trap_pop (screen->display, FALSE);
+}
+
+static void
+set_desktop_viewport_hint (MetaScreen *screen)
+{
+  unsigned long data[2];
+
+  if (screen->closing > 0)
+    return;
+
+  /*
+   * Metacity does not implement viewports, so this is a fixed 0,0
+   */
+  data[0] = 0;
+  data[1] = 0;
+
+  meta_verbose ("Setting _NET_DESKTOP_VIEWPORT to 0, 0\n");
+
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_desktop_viewport,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (screen->display, FALSE);
 }
 
@@ -2101,6 +2159,7 @@ meta_screen_resize (MetaScreen *screen,
   screen->height = height;
 
   reload_xinerama_infos (screen);
+  set_desktop_geometry_hint (screen);
   
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);

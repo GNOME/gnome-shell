@@ -1,3 +1,39 @@
+2004-07-31  Rob Adams  <readams@readams.net>
+
+	Fix some support for EWMH hints, and fix USER_TIME support to
+	include the DEMANDS_ATTENTION hint.  Also includes some code for
+	implementing _NET_RESTACK_WINDOW and _NET_MOVERESIZE_WINDOW, but
+	this is disabled pending feature thaw.
+	
+	* COMPLIANCE: update with new information
+
+	* src/display.c (meta_display_open): add new hints to list
+
+	* src/display.h (_MetaDisplay): Add new atoms to struct
+
+	* src/screen.c (set_supported_hint): update the list of support
+	hints.
+	(set_desktop_viewport_hint): new function sets the viewport hint
+	to (0,0) as required by the spec for WMs with no viewport support.
+	(set_desktop_geometry_hint): new function to set the desktop size
+	hint to the size of the display, since we don't implement large
+	desktop support, as required by the spec.
+	(meta_screen_resize): update the geometry hint on screen resize
+
+	* src/window.c (meta_window_new_with_attrs): Initialize
+	demands_attention state
+	(set_net_wm_state): Set demands_attention hint in the window state
+	(meta_window_show): If we don't pop up a window because of
+	USER_TIME, set DEMANDS_ATTENTION on the window.
+	(meta_window_focus): When a window receives focus, remove
+	DEMANDS_ATTENTION hint
+	(meta_window_client_message): Allow other apps to set
+	DEMANDS_ATTENTION on a window.  Also, if the _NET_ACTIVE_WINDOW
+	hint includes a timestamp, use it.
+	(update_net_wm_state): Read DEMANDS_ATTENTION state also
+
+	* src/window.h (_MetaWindow): add wm_state_demands_attention bit.
+	
 2004-07-22  Rob Adams  <readams@readams.net>
 
 	* src/metacity.schemas.in: Add trailing quotes to keybinding

@@ -190,6 +190,9 @@ struct _MetaWindow
   /* TRUE if client set these */
   guint wm_state_above : 1;
   guint wm_state_below : 1;
+
+  /* EWHH demands attention flag */
+  guint wm_state_demands_attention : 1;
   
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus
