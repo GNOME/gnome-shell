@@ -1,5 +1,10 @@
 2002-04-13  Havoc Pennington  <hp@pobox.com>
 
+	* src/ui.c (get_cmap): same fix as libwnck, avoid using cmap 
+	with the wrong depth
+
+2002-04-13  Havoc Pennington  <hp@pobox.com>
+
 	* src/delete.c: new file containing all the 
 	wacky mess I just added to a simple "click the close button", 
 	contains all the dealing-with-dead-application cruft.
