@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Metacity faylının Azərbaycan dilinə tərcüməsi.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Mətin Əmirov <metin@karegen.com>, 2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
-"POT-Creation-Date: 2003-07-10 05:08+0200\n"
-"PO-Revision-Date: 2003-07-21 15:07+0200\n"
+"POT-Creation-Date: 2003-08-11 12:39+0200\n"
+"PO-Revision-Date: 2003-08-11 17:50+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
-"Language-Team: Azerbaijani Turkic <linuxaz@azerimail.net>\n"
+"Language-Team: Azerbaijani Turkic <gnome@azitt.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,7 +16,7 @@ msgstr ""
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr "İstifadə: %s\n"
+msgstr "İstifadə Qaydası: %s\n"
 
 #: src/tools/metacity-message.c:174
 #: src/util.c:128
@@ -87,7 +87,7 @@ msgstr "Pəncərəni Bağla"
 
 #: src/frames.c:1001
 msgid "Window Menu"
-msgstr "Pəncərə Menüsü"
+msgstr "Pəncərə Menyusu"
 
 #: src/frames.c:1004
 msgid "Minimize Window"
@@ -300,32 +300,32 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr ""
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "Çixmağa _Məcbur Et"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Başlıq"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Sinif"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
 msgstr ""
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid "There was an error running \"%s\":\n"
 "%s."
@@ -1077,12 +1077,12 @@ msgstr ""
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
-#: src/screen.c:505
+#: src/screen.c:504
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "\"%s\" displeyindəki %d ekranı onsuz da pəncərə idarəçisinə malikdir\n"
 
-#: src/screen.c:675
+#: src/screen.c:674
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr ""
@@ -1111,7 +1111,7 @@ msgstr "'%s' iclas faylı yazma xətası: %s\n"
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "'%s' iclas faylı qapatma xətası: %s\n"
+msgstr "'%s' iclas faylı bağlama xətası: %s\n"
 
 #: src/session.c:1137
 #, c-format
@@ -1140,22 +1140,22 @@ msgstr "yuvalanmış <window> teqi"
 #: src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "<window> elementində naməlum %s atributu"
+msgstr "<window> elementində namə'lum %s atributu"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "<maximized> elementində naməlum %s atributu"
+msgstr "<maximized> elementində namə'lum %s atributu"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "<geometry> elementində naməlum %s atributu"
+msgstr "<geometry> elementində namə'lum %s atributu"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr "Naməlum %s elementi"
+msgstr "Namə'lum %s elementi"
 
 #: src/session.c:1921
 #, c-format
@@ -2045,7 +2045,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
