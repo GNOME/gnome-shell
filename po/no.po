@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
 "POT-Creation-Date: 2002-09-09 23:31-0400\n"
-"PO-Revision-Date: 2002-08-04 22:36+0200\n"
+"PO-Revision-Date: 2002-09-11 14:48+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -398,12 +398,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:33
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Senk vinduet under andre vinduer"
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
 msgid "Maximize a window"
-msgstr "Minimer et vindu"
+msgstr "Maksimer et vindu"
 
 #: src/metacity.schemas.in.h:35
 msgid "Minimize a window"
@@ -497,9 +496,8 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:57
-#, fuzzy
 msgid "Raise window above other windows"
-msgstr "Hever vinduet hvis det er skjult, senker det ellers"
+msgstr "Hev vinduet over andre vinduer"
 
 #: src/metacity.schemas.in.h:58
 msgid "Raise window if obscured, lowers it otherwise"
@@ -1200,9 +1198,8 @@ msgid "Toggle whether the window is on all workspaces"
 msgstr "Endre innstilling for vising av vindu på alle arbeidsområder"
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid "Unmaximize a window"
-msgstr "Gjenopprett vindu"
+msgstr "Gjenopprett et vindu"
 
 #: src/metacity.schemas.in.h:140
 msgid "Use standard system font in window titles"
@@ -1218,19 +1215,19 @@ msgstr "Skrift for vindutittel"
 
 #: src/metacity.schemas.in.h:143
 msgid "click"
-msgstr ""
+msgstr "klikk"
 
 #: src/metacity.schemas.in.h:144
 msgid "disabled"
-msgstr ""
+msgstr "deaktivert"
 
 #: src/metacity.schemas.in.h:145
 msgid "false"
-msgstr ""
+msgstr "usann"
 
 #: src/metacity.schemas.in.h:146
 msgid "true"
-msgstr ""
+msgstr "sann"
 
 #: src/prefs.c:346 src/prefs.c:362 src/prefs.c:378 src/prefs.c:394
 #: src/prefs.c:414 src/prefs.c:430 src/prefs.c:446 src/prefs.c:462
@@ -1296,13 +1293,11 @@ msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
 #: src/screen.c:221
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
-msgstr ""
-"Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
-"flagget --replace for å overstyre aktiv vindushåndterer.\n"
+msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
 #: src/screen.c:262
 #, c-format
@@ -1379,9 +1374,9 @@ msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjent attributt %s på <window>-element"
 
 #: src/session.c:1407
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "Ukjent attributt %s på <window>-element"
+msgstr "Ukjent attributt %s på <maximized>-element"
 
 #: src/session.c:1467
 #, c-format
