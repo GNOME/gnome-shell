@@ -1,5 +1,17 @@
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
+	Patch from Ken Harris in #135786 to focus a new default window
+	when lowering via middle-click on the frame.
+
+	* src/core.[hc], src/frames.c: rename meta_core_user_lower to
+	meta_core_user_lower_and_unfocus
+
+	* src/core.c (meta_core_user_lower_and_unfocus): if in
+	click-to-focus mode then also move the window to the back of the
+	mru list and focus the new default window for the active workspace
+
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
 	Focus the no_focus_window if no suitable window is in the mru list
 	(should fix the almost contrived extra issue found in #147475)
 

@@ -1373,7 +1373,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
     }
   else if (event->button == 2)
     {
-      meta_core_user_lower (gdk_display, frame->xwindow);
+      meta_core_user_lower_and_unfocus (gdk_display, frame->xwindow);
     }
   else if (event->button == 3)
     {

@@ -60,8 +60,8 @@ void meta_core_user_resize  (Display *xdisplay,
 
 void meta_core_user_raise   (Display *xdisplay,
                              Window   frame_xwindow);
-void meta_core_user_lower   (Display *xdisplay,
-                             Window   frame_xwindow);
+void meta_core_user_lower_and_unfocus (Display *xdisplay,
+                                       Window   frame_xwindow);
 
 void meta_core_user_focus   (Display *xdisplay,
                              Window   frame_xwindow,
