@@ -873,7 +873,9 @@ event_callback (XEvent   *event,
               break;
             }
           
-          if (window->type == META_WINDOW_DOCK)
+          if (window->type == META_WINDOW_DOCK &&
+              event->xcrossing.mode != NotifyGrab &&
+              event->xcrossing.mode != NotifyUngrab)
             meta_window_lower (window);
         }
       break;

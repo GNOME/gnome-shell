@@ -1,5 +1,10 @@
 2002-01-04  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (event_callback): don't lower docks when a grab
+	causes them to get LeaveNotify
+
+2002-01-04  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_free): set event mask on root window
 	to 0 so other window managers (such as ourselves restarting) can
 	start up; addresses race condition on restart where the old WM
