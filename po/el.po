@@ -1,119 +1,121 @@
 # Greek translation of metacity.
 # Copyright (C) 2002 Simos Xenitellis.
 # Simos Xenitellis <simos@hellug.gr>, 2002.
-# 
+# Kostas Papadimas <pkst@gmx.net>, 2002.
+# kostas: fimished the translation
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 1.0\n"
-"POT-Creation-Date: 2002-10-29 01:26-0500\n"
-"PO-Revision-Date: 2002-08-17 19:20+0100\n"
-"Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
+"POT-Creation-Date: 2002-11-18 04:40+0100\n"
+"PO-Revision-Date: 2002-11-23 14:53+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:62
+#: src/delete.c:89
+#: src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "������� � ��������� ��� \"%s\" �� �������� �������"
+msgstr "Αδύνατη η μετατροπή του \"%s\" ως ακεραίου αριθμού"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
-#: src/theme-parser.c:476 src/theme-parser.c:530
-#, fuzzy, c-format
+#: src/delete.c:69
+#: src/delete.c:96
+#: src/metacity-dialog.c:53
+#: src/theme-parser.c:476
+#: src/theme-parser.c:530
+#, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "��� ����� ��������� �� `%s' (���������� �������� ����������)"
+msgstr "Δεν έγινε κατανοητή η ακολουθία χαρακτήρων \"%s\" στο αλφαριθμητικό \"%s\""
 
 #: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
+msgstr "Αποτυχία ανάλυσης μηνύματος \"%s\" από την διεργασία διαλόγου\n"
 
 # gconf/gconfd.c:901
 #: src/delete.c:262
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "������ ���� �� ������� ������� ������� ������������: %s"
+msgstr "Σφάλμα κατά την διεργασία προβολής διαλόγου: %s\n"
 
 #: src/delete.c:333
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Σφάλμα εκκίνησης διαλόγου  metacity για ερώτηση για τον βιαίο τερματισμό μιας εφαρμογής: %s\n"
 
 # gconf-editor/gconf-editor.c:69 gconf/gconftool.c:447
 #: src/delete.c:431
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "�������� ������������� GConf: %s\n"
+msgstr "Αποτυχία λήψης  hostname: %s\n"
 
 # gconf/gconf-internals.c:2416
-#: src/display.c:266
-#, fuzzy, c-format
+#: src/display.c:267
+#, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "�������� ���������� ������� ������������� ����������: %s"
+msgstr "Αποτυχία άνοιγματος  οθόνης του συστήματος Παραθύρου Χ '%s'\n"
 
-#: src/errors.c:235
+#: src/errors.c:231
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
+"Η σύνδεση με την προβολή  '%s' χάθηκε\n"
+"πιθανόν να τερματίστηκε ο εξυπηρετητής Χ ή να τερματίσατε/καταστρέψατε\n"
+"τον διαχειριστή παραθύρων.\n"
 
-#: src/errors.c:242
+#: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
+msgstr "Μοιραίο σφάλμα IO %d (%s) ατην οθόνη '%s'.\n"
 
 #: src/frames.c:900
-#, fuzzy
 msgid "Close Window"
-msgstr "_�������� ���������"
+msgstr "Κλείσιμο παραθύρου"
 
 #
 #: src/frames.c:903
-#, fuzzy
 msgid "Window Menu"
-msgstr "��������� ��� ����� ���������"
+msgstr "Μενού παραθύρου"
 
 #: src/frames.c:906
-#, fuzzy
 msgid "Minimize Window"
-msgstr "������������� ���������"
+msgstr "Ελαχιστοποίηση  παραθύρου"
 
 #: src/frames.c:909
 msgid "Maximize Window"
-msgstr "������������� ���������"
+msgstr "Μεγιστοποίηση Παραθύρου"
 
 #: src/frames.c:912
-#, fuzzy
 msgid "Unmaximize Window"
-msgstr "���������������� ���������"
+msgstr "Απόμεγιστοποίηση παραθύρου"
 
-#: src/keybindings.c:852
+#: src/keybindings.c:858
 #, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
+msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgstr "Κάποιο άλλο πρόγραμμα χρησιμοποιεί ήδη το κλειδί %s με μετατροπείς  %x ώς δεσμό\n"
 
-#: src/keybindings.c:2176
+#: src/keybindings.c:2194
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "Σφάλμα εκκίνησης διαλόγου metacity για την εκτύπωση ενός σφάλματος για μια εντολή: %s\n"
 
-#: src/keybindings.c:2207
-#, fuzzy, c-format
+#: src/keybindings.c:2225
+#, c-format
 msgid "No command %d has been defined.\n"
-msgstr "��� �������� ����������"
+msgstr "Δεν έχει ορισθεί εντολή %d.\n"
 
 #: src/main.c:64
-msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
-msgstr ""
+msgid "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"
+msgstr "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -121,67 +123,65 @@ msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Πνευματικά Δικαιώματα (C) 2001-2002 Havoc Pennington, Red Hat, Inc., και άλλοι\n"
+"Αυτό είναι ένα ελεύθερο λογισμικό, βλ. τον πηγαίο κώδικα για όρους αντιγραφής.\n"
+"ΔΕΝ υπάρχει καμμία εγγύηση, ούτε για ΕΜΠΟΡΙΟ ή ΠΡΟΣΑΡΜΟΓΗ ΓΙΑ ΕΙΔΙΚΟΥΣ ΣΚΟΠΟΥΣ.\n"
 
 #: src/main.c:326
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Δεν είναι δυνατή η εύρεση θέματος! Βεβαιωθείτε ότι το %s υπάρχει ακι περιέχει τα συνήθη θέματα."
 
 #: src/main.c:374
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to restart: %s\n"
-msgstr "�������� ������������� ��� �����"
+msgstr "Αποτυχία επανεκκίνησης: %s\n"
 
 #: src/menu.c:52
-#, fuzzy
 msgid "Mi_nimize"
-msgstr "_��������������"
+msgstr "Ελα_χιστοποίηση"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
-msgstr "_�������������"
+msgstr "_Μεγιστοποίηση"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr "�����_�����������"
+msgstr "Απόμε_γιστοποίηση"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr ""
+msgstr "Τύλιγμα _Πάνω"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr ""
+msgstr "_Ξετύλιγμα"
 
 #: src/menu.c:57
-#, fuzzy
 msgid "_Move"
-msgstr "_����������"
+msgstr "_Μετακίνηση"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr "������ ��_������"
+msgstr "Αλλαγή με_γέθους"
 
 #. separator
 #: src/menu.c:60
 msgid "_Close"
-msgstr "_��������"
+msgstr "_Κλείσιμο"
 
 #
 #. separator
 #: src/menu.c:62
-#, fuzzy
 msgid "Put on _All Workspaces"
-msgstr "���������� ���������� ��������"
+msgstr "Τοποθέτηση σε Όλους τους χώρους εργασίας"
 
 #: src/menu.c:63
-#, fuzzy
 msgid "Only on _This Workspace"
-msgstr "������� ������������ ����� ��������"
+msgstr "Μόνο σε αυτό τον χώρο εργασίας"
 
 #.
 #. * If the name is of the form "Workspace x" where x is an unsigned
@@ -189,28 +189,29 @@ msgstr "������� ������������ ����� ��������"
 #. * return it
 #.
 #: src/menu.c:149
-#, fuzzy, c-format
-msgid "Workspace %u"
-msgstr "����� �������� %d"
+#: src/prefs.c:1571
+#, c-format
+msgid "Workspace %d"
+msgstr "Χώρος εργασίας %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:155
-#, fuzzy, c-format
+#: src/menu.c:157
+#, c-format
 msgid "Workspace %s%d"
-msgstr "����� �������� %d"
+msgstr "Χώρος εργασίας %s%d"
 
-#: src/menu.c:346
-#, fuzzy, c-format
+#: src/menu.c:350
+#, c-format
 msgid "Only on %s"
-msgstr "������� ��� %s"
+msgstr "Μόνο σε %s"
 
-#: src/menu.c:348
-#, fuzzy, c-format
+#: src/menu.c:352
+#, c-format
 msgid "Move to %s"
-msgstr "�������� ��� ����������"
+msgstr "Μετακίνηση σε  %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -219,7 +220,7 @@ msgstr "�������� ��� ����������"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -228,7 +229,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -237,7 +238,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -245,9 +246,8 @@ msgstr ""
 #. * this.
 #.
 #: src/metaaccellabel.c:123
-#, fuzzy
 msgid "Meta"
-msgstr "Metacity"
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -256,7 +256,7 @@ msgstr "Metacity"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -265,7 +265,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -274,7 +274,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -283,7 +283,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -292,7 +292,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -301,7 +301,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -310,32 +310,34 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"Το παράθυρο  \"%s\" δεν ανταποκρίνεται.\n"
+"Να υποχρεωθεί η εφαρμογή να τερματίσει?\n"
+"(Οποιαδήποτε ανοικτά αρχεία θα χαθούν.)"
 
 #: src/metacity-dialog.c:94
-#, fuzzy
 msgid "Kill application"
-msgstr "���������� ���������"
+msgstr "Τερματισμός εφαρμογής"
 
 #: src/metacity-dialog.c:188
 msgid "Title"
-msgstr "������"
+msgstr "Τίτλος"
 
 #: src/metacity-dialog.c:200
 msgid "Class"
-msgstr "�����"
+msgstr "Κλάση"
 
 #: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
+msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
+msgstr "Αυτά τα παράθυρα δεν υποστηρίζουν \"αποθήκευση τρέχουσας εγκατάστασης\" και θα πρέπει να επανεκκινηθούν χειρονακτικά στην επόμενη είσοδο σας."
 
 #: src/metacity-dialog.c:276
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There was an error running \"%s\":\n"
 "%s."
-msgstr "���������� ������ ���� ��� ���������� ��� �������:"
+msgstr ""
+"Σφάλμα κατα την εκτέλεση \"%s\":\n"
+"%s. "
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -343,1979 +345,1602 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(Δεν εφαρμόζεται) Η πλοήγηση λειτουργεί με όρους εφαρμογών και όχι παραθύρων"
 
 #: src/metacity.schemas.in.h:2
-msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
-msgstr ""
+msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0, however. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true. By default, titlebar_font is unset, causing Metacity to fall back to the desktop font even if titlebar_uses_desktop_font is false."
+msgstr "Ένα αλφαριθμητικό περιγραφής γραμματοσειράς που περιγράφει την γραμματοσειρά της μπάρας τίτλου παραθύρου. Το μέγεθος από την περιγραφή θα χρησιμοποείται μόνο αν η επιλογή μεγέθους γραμματοσειράς είναι 0. Ακόμα, αυτή η επιλογή απενεργοποιείται αν η επιλογή titlebar_uses_desktop_font είναι true. Εξ ορισμού η γραμματοσειρά μπάρας τιτλου δεν είναιο καθορισμένη, με αποτέλεσμα το  Metacity να χρησιμοποιεί την γραμματοσειρά της επιφάνειας εργασίας ακόμα και αν η επιλογή titlebar_uses_desktop_font είναι false."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Ενέργεια καατά το διπλό κλίκ στην μπάρα τίτλου"
 
 #: src/metacity.schemas.in.h:4
-#, fuzzy
 msgid "Activate window menu"
-msgstr "_�������� ��������� ���"
+msgstr "Ενεργοποίηση μενού παραθύρου"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Διάταξη των κουμπιών στην μπάρα τίτλου"
 
 #: src/metacity.schemas.in.h:6
-msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
-"the window from the right corner, and the button names are comma-separated. "
-"Duplicate buttons are not allowed. Unknown button names are silently ignored "
-"so that buttons can be added in future metacity versions without breaking "
-"older versions."
-msgstr ""
+msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
+msgstr "Διάταξη των κουμπιών στην μπάρα τίτλου. Η τιμή θα πρέπει να είναι αλφαριθμητικό,  όπως \"menu:minimize,maximize,close\", το σημείο χωρίζει την αριστερή γωνία του παραθύρου από την δεξιά γωνία, και το ονόματα κουμπιών χωρίζονται από κόμμα. Δεν επιτρέπονται διπλά κουμπιά. Άγνωστοι τύποι κουμπιών αγνοούνται σιωπηλά έτσι ώστε να μπορούν να προστεθούν σε μέλλουσες εκδόσεις του metacity χωρίς να χαλάνε οι προηγούμενες εκδόσεις."
 
 #: src/metacity.schemas.in.h:7
-#, fuzzy
 msgid "Automatically raises the focused window"
-msgstr "�������� ������������� �������� ���������."
+msgstr "Αυτόματη ανασήκωση του εστιασμένου παράθυρου"
 
 #: src/metacity.schemas.in.h:8
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
-msgstr ""
+msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"<Alt>\" or \"<Super>\" for example."
+msgstr "Κάνοντας κλικ σε ένα παράθυρο ενώ κρατώντας αυτό το πλήκτρο μετατροπής θα μετακινηθεί το παράθυρο (αριστερό κλίκ), θα γίνει αλλαγή μεγέθους (μεσαίο κλικ) ή θα προβληθεί το μενού παραθύρου (δεξί κλικ). Ο μεταροπέας εκφράζεται για παράδειγμα ως \"<Alt>\" ή \"<Super>\""
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close a window"
-msgstr "�������� ���������"
+msgstr "Κλείσιμο ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:10
-#, fuzzy
 msgid "Commands to run in response to keybindings"
-msgstr "������� ���������� ��������"
+msgstr "Εντολές που εκτελούνται σε αντιστοίχιση με  συνδυασμούς πλήκτρων"
 
 #: src/metacity.schemas.in.h:11
-#, fuzzy
 msgid "Current theme"
-msgstr "������ ����"
+msgstr "Τρέχον θέμα"
 
 #: src/metacity.schemas.in.h:12
-#, fuzzy
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "����������� �� ms ���� ��� ��������� ���������."
+msgstr "Καθυστέρηση σε ms πριν την αυτόματη ανασήκωση παραθύρων"
 
 #: src/metacity.schemas.in.h:13
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Απενεργοποίηση κακών λειτουργιών που απαιτούνται από παλιές η χαλασμένες εφαρμογές"
 
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Απόκρυψη όλων των παραθύρων και εστίαση επιφάνεια εργασίας"
 
 #: src/metacity.schemas.in.h:15
-msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
-msgstr ""
+msgid "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay (the delay is specified by the auto_raise_delay key)."
+msgstr "Αν true, και η κατάσταση εστίασης είναι είτε  \"sloppy\" ή \"mouse\" τότε τι εστιασμένο παράθυρο θα ανασηκώνεται αυτόματα μετά από μια καθυστέρηση ( η καθυστέρηση που καθορίζεται από το κλειδί auto_raise_delay)"
 
 #: src/metacity.schemas.in.h:16
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
+msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgstr "Αν true, αγνοείται την επιλογή γραμματοσειράς μπάρας τίτλου, και γίνεται χρήση των καθορισμένων γραμματοσειρών για τους τίτλους παραθύρων"
 
 #: src/metacity.schemas.in.h:17
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr ""
+msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. The existence of this setting is somewhat questionable. But it's better than having settings for all the specific details of application-based vs. window-based, e.g. whether to pass through clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr "Αν true, τότε το  Metacity  δουλεύει με όρους εφαρμογών αντί για παραθύρων. Η ιδέα είναι λίγο αφηρημένη αλλά σε γενικές γραμμές μια εγκατάσταση βασισμένη σε εφαρμογές μοιάζει περισσότερο σε Mac και λιγότερο σε  Windows. Όταν εστιάζετε σε ένα παράθυρο σε λειτουργία βασισμένη σε εφαρμογές, τα κλίκ εστίασης δεν μεταβιβάζονται μέσα από παράθυρα σε άλλες εφαρμογές. Η ύπαρξη αυτής της ρύθμισης είναι βέβαια κάπως συζητήσιμη. Αλλά είναι καλύτερα να υπάρχουν ρυθμίσεις για όλες τις λεπτομέρειες. Ακόμα η λειτουργία βασισμένη σε εφαρμογές δεν έχει εφαρμοστεί ακόμα σε μεγάλο βαθμό. "
 
 #: src/metacity.schemas.in.h:18
-#, fuzzy
 msgid "Lower window below other windows"
-msgstr "��������� ��� ������ ���� ��� �� ���� ��������"
+msgstr "Χαμήλωμα παραθύρου κάτω από τα άλλα παράθυρα"
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid "Maximize a window"
-msgstr "������������� ���������"
+msgstr "Μεγιστοποίηση ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Minimize a window"
-msgstr "������������� ���������"
+msgstr "Ελαχιστοποίηση ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:21
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "Μετατροπέας για χρήση στις τροποποιημένες ενέργειες κλικ παραθύρων"
 
 #: src/metacity.schemas.in.h:22
-#, fuzzy
 msgid "Move a window"
-msgstr "_�������� ��������� ���"
+msgstr "Μετακίνηση ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Move focus backward between panels and the desktop immediately"
-msgstr "��������� ����������� ���������."
+msgstr "Άμεση μετακίνηση εστίασης προς τα πίσω ανάμεσα στα ταμπλώ και στην επιφάνεια εργασίας."
 
 #: src/metacity.schemas.in.h:24
-#, fuzzy
 msgid "Move focus backwards between panels and the desktop using popup display"
-msgstr "��������� ����������� ���������."
+msgstr "Μετακίνηση εστίασης προς τα πίσω ανάμεσα στα ταμπλώ και την επιφάνεια εργασίας με την χρήση αναδυόμενης οθόνης"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move focus backwards between windows immediately"
-msgstr "��������� ����������� ���������."
+msgstr "Άμεση μετακίνηση εστίασης προς τα πίσω ανάμεσα σε παράθυρα"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move focus backwards between windows using popup display"
-msgstr "��������� ����������� ���������."
+msgstr "Μετακίνηση εστίασης προς τα πίσω ανάμεσα στα παράθυρα με την χρήση αναδυόμενης οθόνης"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move focus between panels and the desktop immediately"
-msgstr ""
+msgstr "Άμεση μετακίνηση εστίασης ανάμεσα στα ταμπλώ και στην επιφάνεια εργασίας"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move focus between panels and the desktop using popup display"
-msgstr ""
+msgstr "Μετακίνηση εστίασης ανάμεσα στα ταμπλώ και στην επιφάνεια εργασίας με την χρήση αναδυόμενης οθόνης"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move focus between windows immediately"
-msgstr "��������� ����������� ���������."
+msgstr "Άμεση μετακίνηση εστίασης  ανάμεσα σε παράθυρα"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move focus between windows using popup display"
-msgstr "��������� ����������� ���������."
+msgstr "Μετακίνηση εστίασης ανάμεσα σε παράθυρα με την χρήση αναδυόμενης οθόνης"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move window one workspace down"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας κάτω"
 
 #: src/metacity.schemas.in.h:32
-#, fuzzy
 msgid "Move window one workspace to the left"
-msgstr "���������� ��� ��������� ��� ��� ���� �� ��������."
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας αριστερά."
 
 #: src/metacity.schemas.in.h:33
-#, fuzzy
 msgid "Move window one workspace to the right"
-msgstr "���������� ��� ��������� ��� ��� ���� �� �����."
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας δεξιά."
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
 msgid "Move window one workspace up"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας πάνω"
 
 #: src/metacity.schemas.in.h:35
-#, fuzzy
 msgid "Move window to workspace 1"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 1"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window to workspace 10"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 10"
 
 #: src/metacity.schemas.in.h:37
-#, fuzzy
 msgid "Move window to workspace 11"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 11"
 
 #: src/metacity.schemas.in.h:38
-#, fuzzy
 msgid "Move window to workspace 12"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 12"
 
 #: src/metacity.schemas.in.h:39
-#, fuzzy
 msgid "Move window to workspace 2"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
 
 #: src/metacity.schemas.in.h:40
-#, fuzzy
 msgid "Move window to workspace 3"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
 
 #: src/metacity.schemas.in.h:41
-#, fuzzy
 msgid "Move window to workspace 4"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 4"
 
 #: src/metacity.schemas.in.h:42
-#, fuzzy
 msgid "Move window to workspace 5"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 5."
 
 #: src/metacity.schemas.in.h:43
-#, fuzzy
 msgid "Move window to workspace 6"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 6"
 
 #: src/metacity.schemas.in.h:44
-#, fuzzy
 msgid "Move window to workspace 7"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 7"
 
 #: src/metacity.schemas.in.h:45
-#, fuzzy
 msgid "Move window to workspace 8"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 8"
 
 #: src/metacity.schemas.in.h:46
-#, fuzzy
 msgid "Move window to workspace 9"
-msgstr "���������� ��� ��������� ��� ������� ���� ��������."
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
 
 #: src/metacity.schemas.in.h:47
-#, fuzzy
-msgid "Number of workspaces"
-msgstr "������� ����������"
+msgid "Name of workspace"
+msgstr "'Ονομα χώρου εργασίας"
 
 #: src/metacity.schemas.in.h:48
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
-msgstr ""
+msgid "Number of workspaces"
+msgstr "Αριθμός χώρων εργασίας"
 
 #: src/metacity.schemas.in.h:49
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "��������� ��� ������ ���� ��� �� ���� ��������"
+msgid "Number of workspaces. Must be more than zero, and has a fixed maximum (to prevent accidentally destroying your desktop by asking for 34 million workspaces)."
+msgstr "Αριθμός των χώρων εργασίας. Πρέπει να είναι παραπάνω από μηδέν, και έχει ένα καθορισμένο μέγιστο όριο  (ώστε να αποφευχθεί τυχαία καταστροφή της επιφάνειας εργασίας με καθορισμό 34 εκατομμυρίων χώρων εργασίας)."
 
 #: src/metacity.schemas.in.h:50
-msgid "Raise window if obscured, lowers it otherwise"
-msgstr ""
+msgid "Raise window above other windows"
+msgstr "Ανάδυση παραθύρου πάνω από τα άλλα παράθυρα"
 
 #: src/metacity.schemas.in.h:51
-#, fuzzy
-msgid "Resize a window"
-msgstr "��������� ����������� ���������."
+msgid "Raise window if obscured, lowers it otherwise"
+msgstr "Ανασήκωση παραθύρω αν είναι κρυμμένο, αλλιώς χαμήλωμα του"
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
-msgid "Run a defined command"
-msgstr "�������� ������� ������"
+msgid "Resize a window"
+msgstr "Αλλαγή μεγέθους ενός παραθύρου"
 
 #: src/metacity.schemas.in.h:53
-msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
-msgstr ""
+msgid "Run a defined command"
+msgstr "Εκτέλεση μιας ορισμένης εντολής φλοιού"
 
 #: src/metacity.schemas.in.h:54
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "�������� �� ���� ��������"
+msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
+msgstr "Μερικές εφαρμογές αποκλίνουν από τους ορισμούς με αποτέλεσμα να δημιοργούν προβλήματα στον διαχειριστή παραθύρων. Για παράδειγμα, σε ιδεατό επίπεδο το Metacity θα τοποθετούσε όλους τουα διαλόγους σε συγκεκριμένη θέση σε σχέση με το μητρικό παράθυρο. Αυτό απαιτεί να αγνοούνται οι θέσεις διαλόγων που καθορίζονται από τις εφαρμογές. Αλλά μερικές εκδόσεις της Java/Swing σημειώνουν τα μενού τους ως διαλόγους και έτσι το  Metacity θα πρέπει να απενεργοποιήσει την τοποθεσία διαλόγων για να επιτρέψει να λειτουργήσουν τα μενού στις προβληματικές εφαρμογές Java. Υπάρχουν αρκετά παραδείγματα σαν και αυτά. Αυτή η επιλογή βάζει το Metacity να λειτουργεί σε λειτουργία full-on Correct, που δίνει ένα πιό συμαζεμένο UI αν δεν χρειάζεται να εκτελείτε προβληματικές εφαρμογές. Δυστυχώς οι προσωρινές λύσεις είναι εξ ορισμού ενεργοποιημένες, μιας και ο πραγματικός κόσμος είναι ένας άσχημος κόσμος."
 
 #: src/metacity.schemas.in.h:55
-#, fuzzy
-msgid "Switch to workspace 10"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 1"
+msgstr "Αλλαγή στο χώρο εργασίας 1"
 
 #: src/metacity.schemas.in.h:56
-#, fuzzy
-msgid "Switch to workspace 11"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 10"
+msgstr "Αλλαγή στο χώρο εργασίας 10"
 
 #: src/metacity.schemas.in.h:57
-#, fuzzy
-msgid "Switch to workspace 12"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 11"
+msgstr "Αλλαγή στο χώρο εργασίας 11"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 12"
+msgstr "Αλλαγή στο χώρο εργασίας 12"
 
 #: src/metacity.schemas.in.h:59
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 2"
+msgstr "Αλλαγή στο χώρο εργασίας 2"
 
 #: src/metacity.schemas.in.h:60
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 3"
+msgstr "Αλλαγή στο χώρο εργασίας 3"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
-msgid "Switch to workspace 5"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 4"
+msgstr "Αλλαγή στο χώρο εργασίας 4"
 
 #: src/metacity.schemas.in.h:62
-#, fuzzy
-msgid "Switch to workspace 6"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 5"
+msgstr "Αλλαγή στο χώρο εργασίας 5"
 
 #: src/metacity.schemas.in.h:63
-#, fuzzy
-msgid "Switch to workspace 7"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 6"
+msgstr "Αλλαγή στο χώρο εργασίας 6"
 
 #: src/metacity.schemas.in.h:64
-#, fuzzy
-msgid "Switch to workspace 8"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 7"
+msgstr "Αλλαγή στο χώρο εργασίας 7"
 
 #: src/metacity.schemas.in.h:65
-#, fuzzy
-msgid "Switch to workspace 9"
-msgstr "�������� �� ���� ��������"
+msgid "Switch to workspace 8"
+msgstr "Αλλαγή στο χώρο εργασίας 8"
 
 #: src/metacity.schemas.in.h:66
-#, fuzzy
-msgid "Switch to workspace above the current space"
-msgstr "���������� ���� ����� �������� ���� �� ������ ���� ��������."
+msgid "Switch to workspace 9"
+msgstr "Αλλαγή στο χώρο εργασίας 9"
 
 #: src/metacity.schemas.in.h:67
-#, fuzzy
-msgid "Switch to workspace below the current space"
-msgstr "���������� ���� ����� �������� ���� �� ������ ���� ��������."
+msgid "Switch to workspace above the current space"
+msgstr "Αλλαγή σε χώρο εργασίας πάνω από το τρέχον χώρο εργασίας"
 
 #: src/metacity.schemas.in.h:68
-#, fuzzy
-msgid "Switch to workspace on the left"
-msgstr "���������� ��� ��������� ����� �������� ��� ���� ���� �� ��������."
+msgid "Switch to workspace below the current space"
+msgstr "Αλλαγή σε χώρο εργασίας κάτω από το τρέχον χώρο εργασίας"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
-msgid "Switch to workspace on the right"
-msgstr "���������� ��� ��������� ����� �������� ��� ���� ��� �����."
+msgid "Switch to workspace on the left"
+msgstr "Αλλαγή στο χώρο εργασίας ατα αριστερά"
 
 #: src/metacity.schemas.in.h:70
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
+msgid "Switch to workspace on the right"
+msgstr "Αλλαγή στο χώρο εργασίας ατα δεξιά."
 
 #: src/metacity.schemas.in.h:71
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
-msgstr ""
+msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgstr "Τα κλειδιά /apps/metacity/global_keybindings/run_command_N ορίζουν τους συνδυασμούς πλήκτρων που αντιστοιχούν σε αυτές τις εντολές. Πιέζοντας τον συνδυασμό για run_command_N θα εκτελείται η εντολή_Ν."
 
 #: src/metacity.schemas.in.h:72
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εκτελεί την αντίστοιχη αριθμημένη εντολή στο /apps/metacity/keybinding_commands. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:73
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας πάνω από τον τρέχοντα χώρο εργασίας. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:74
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας κάτω από τον τρέχοντα χώρο εργασίας. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:75
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας στα αριστερά του τρέχοντα χώρου εργασίας. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:76
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας στα δεξιά του τρέχοντα χώρου εργασίας. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:77
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 1. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 1. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:78
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 10. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 10. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:79
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 11. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 11. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:80
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 12. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 12. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:81
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 2. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 2. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:82
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 3. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 3. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:83
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 4. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 4. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:84
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 5. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 5. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:85
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 6. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 6. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:86
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 7. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 7. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:87
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 8. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 8. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:88
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 9. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που εναλλάσει στον χώρο εργασίας 9. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:89
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to activate the window menu. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που ενεργοποιεί το μενού παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:90
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to close a window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για το κλείσιμο παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:91
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να εισάγετε την \"λειτουργία μετακίνησης\" και να ξεκινήσετε την μετακίνηση του παραθύρου με την χρήση του πληκτρολογίου . Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:92
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να εισάγετε την \"λειτουργία αλλαγής μεγέθους\" και να ξεκινήσετε την αλλαγή μεγέθους του παραθύρου με την χρήση του πληκτρολογίου . Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:93
-msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να αποκρύπτονται όλα τα παράθυρα και να γίνετε εστίαση στον παρασκήνιο της επιφάνειας εργασίας . Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:94
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to maximize a window The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μεγιστοποίηση παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:95
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to minimize a window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την ελαχιστοποιήση παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:96
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace down. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός χώρου εργασίας προς τα κάτω. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:97
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the left. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός χώρου εργασίας προς τα αριστερά. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:98
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the right. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός χώρου εργασίας προς τα δεξιά. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:99
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace up. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός χώρου εργασίας προς τα πάνω. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:100
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 1. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 1. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:101
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 10. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 10. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:102
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 11. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 11. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:103
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 12. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 12. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:104
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 2. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 2. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:105
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 3. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 3. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 4. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 4. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 5. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 5. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 6. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 6. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 7. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 7. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 8. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 8. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 9. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου στον χώρο εργασίας 9. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between panels and the desktop, using a popup window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης προς τα πίσω ανάμεσα στα ταμπλώ και τα παράθυρα με την χρήση ενός αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between panels and the desktop, without a popup window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης προς τα πίσω ανάμεσα στα ταμπλώ και τα παράθυρα χωρίς την χρήση ενός αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between windows without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης προς τα πίσω ανάμεσα στα  παράθυρα χωρίς την χρήση ενός αναδυόμενου παραθύρου. Πατώντας συγχρόνως και το  \"shift\" μαζί με αυτό το συνδυασμό η κατεύθυνση αλλάζει και παέι πάλι προς τα μπροστά.  Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus backwards between windows, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης προς τα πίσω ανάμεσα στα  παράθυρα με την χρήση ενός αναδυόμενου παραθύρου. Πατώντας συγχρόνως και το  \"shift\" μαζί με αυτό το συνδυασμό η κατεύθυνση αλλάζει και παέι πάλι προς τα μπροστά.  Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης ανάμεσα στα ταμπλώ και τον χώρο εργασίας με την χρήση ενός αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης ανάμεσα στα ταμπλώ και τον χώρο εργασίας χωρίς την χρήση ενός αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows without a popup window. (Traditionally <Alt>Escape) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr ".Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης ανάμεσα στα παράθυρα χωρίς την χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά <Alt>Escape) . Πατώντας συγχρόνως το  πλήκτρο \"shift\" με τη χρήση αυτού του συνδυασμού αντιστρέφει την κατεύθυνση της κίνησης.  Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally <Alt>Tab) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr ".Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση της εστίασης ανάμεσα στα παράθυρα με την χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά <Alt>Escape) . Πατώντας συγχρόνως το  πλήκτρο \"shift\" με τη χρήση αυτού του συνδυασμού αντιστρέφει την κατεύθυνση της κίνησης.  Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle fullscreen mode. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή πλήρους οθόνης. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle maximization. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή μεγιστοποίησης. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή σκιασμένης/αποσκιασμένης κατάστασης. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή του παραθύρου αν θα είναι σε ένα χώρο εργασίας ή σε όλους. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:124
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
+msgid "The keybinding used to unmaximize a window. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την απομεγιστοποίηση ενός παραθύρου. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:125
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
+msgid "The name of a workspace."
+msgstr "Το όνομα του χώρου εργασίας"
 
 #: src/metacity.schemas.in.h:126
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
+msgid "The theme determines the appearance of window borders, titlebar, and so forth."
+msgstr "Το θέμα καθορίζει την εμφάνιση των περιγραμμάτων παραθύρου, μπάρας τίτλου κτλ"
 
 #: src/metacity.schemas.in.h:127
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgstr "Η χρονική καθυστέρηση πριν την ανάδυση ενός παραθύρου αν το  auto_raise είναι true. Η καθυστέρηση δίνεται σε χιλιοστά του δευτερολέπτου."
 
 #: src/metacity.schemas.in.h:128
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgstr "Η λειτουργία εστίασης παραθύρου ορίζει τον τρόπο που θα ενεργοποιούνται τα παράθυρα. Έχει τρείς πιθανές τιμές: \"click\" σημαίνει οτι πρέπει να γίνεται κλικ στα παράθυρα για να εστιάζονται, \"sloppy\" σημαίνει ότι τα παράθυρα εστιάζονται όταν το ποντίκι μπαίνει στο παράθυρο, και \"mouse\"  σημαίνει ότι τα παράθυρα εστιάζονται όταν το ποντίκι μπαίνει στο παράθυρο και απεστιάζονται όταν φεύγει."
 
 #: src/metacity.schemas.in.h:129
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another window, it raises the window above other windows. If the window is already fully visible, it lowers the window below other windows. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Αυτός ο συνδυασμός πλήκτρων αλλάζει το αν ένα παράθυρο είναι πάνω ή κάτω από άλλα παράθυρα. Αν καλύπτεται από ένα άλλο παράθυρο, ανασηκώνει το παράθυρο πάνω από τα άλλα. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:130
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr ""
+msgid "This keybinding lowers a window below other windows. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Αυτός ο συνδυασμός πλήκτρων χαμηλώνει ένα παράθυρο κάτω από τα άλλα παράθυρα . Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "3DFX Fullscreen ���������"
+msgid "This keybinding raises the window above other windows. The format looks like \"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Αυτός ο συνδυασμός πλήκτρων ανασηκώνει ένα παράθυρο πάνω από άλλα παράθυρα. Η διαμόρφωση μοιάζει με \"<Control>a\" ή \"<Shift><Alt>F1. Ο διαβιβαστής είνα φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"<Ctl>\" και \"<Ctrl>\". Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:132
-msgid "Toggle maximization state"
-msgstr ""
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr "Αυτή η επιλογή καθορίζει τα αποτελέσματα του διπλού κλικ στην μπάρα τίτλου. Οι τρέχουσες έγκυρες επιλογές είναι 'εναλλαγή_σκίαση', που θα σκιάζει/αποσκιάζει το παράθυρο, 'εναλλαγή_μεγιστοποίηση' που θα μεγιστοποιεί/απομεγιστοποεί το παράθυρο."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "_��������� ������������� ����������"
+msgid "Toggle fullscreen mode"
+msgstr "Εναλλαγή κατάστασης πλήρους οθόνης"
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
-msgid "Toggle whether the window is on all workspaces"
-msgstr "������ ��� ����� ��� ��������� �������� ���������."
+msgid "Toggle maximization state"
+msgstr "Εναλλαγή  κατάστασης μεγιστοποίησης"
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
-msgid "Unmaximize a window"
-msgstr "���������������� ���������"
+msgid "Toggle shaded state"
+msgstr "Εναλλαγή σκιασμένης κατάστασης"
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
-msgid "Use standard system font in window titles"
-msgstr "�� ������� ����� ������������ ���� \\w ����� ������� ���������."
+msgid "Toggle whether the window is on all workspaces"
+msgstr "Εναλλαγή αν το παράθυρο θα τοποθετείται σε όλους τους χώρους εργασίας"
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
-msgid "Window focus mode"
-msgstr "����������"
+msgid "Unmaximize a window"
+msgstr "Απομεγιστοποίηση παραθύρου"
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
-msgid "Window title font"
-msgstr "������ ��������� - ask_from"
+msgid "Use standard system font in window titles"
+msgstr "Χρήση κανονικής γραμματοσειράς συστήματος στους τίτλους παραθύρων."
 
-#: src/prefs.c:389 src/prefs.c:405 src/prefs.c:421 src/prefs.c:437
-#: src/prefs.c:453 src/prefs.c:473 src/prefs.c:489 src/prefs.c:505
-#: src/prefs.c:521 src/prefs.c:537 src/prefs.c:553 src/prefs.c:569
-#: src/prefs.c:585 src/prefs.c:602 src/prefs.c:618
+#: src/metacity.schemas.in.h:139
+msgid "Window focus mode"
+msgstr "Λειτουργία εστίασης παραθύρου"
+
+#: src/metacity.schemas.in.h:140
+msgid "Window title font"
+msgstr "Γραμματοσειρά τίτλου παραθύρου"
+
+#: src/prefs.c:400
+#: src/prefs.c:416
+#: src/prefs.c:432
+#: src/prefs.c:448
+#: src/prefs.c:464
+#: src/prefs.c:484
+#: src/prefs.c:500
+#: src/prefs.c:516
+#: src/prefs.c:532
+#: src/prefs.c:548
+#: src/prefs.c:564
+#: src/prefs.c:580
+#: src/prefs.c:596
+#: src/prefs.c:613
+#: src/prefs.c:629
+#: src/prefs.c:645
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "Το GConf key \"%s\" έχει ορισθεί σε ένα μή έγκυρο τύπο\n"
 
-#: src/prefs.c:661
+#: src/prefs.c:688
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "Το \"%s\" που βρέθηκε στην βάση δεδομένων ρυθμίσεων δεν είναι μια έγκυρη τιμή για μετατροπέα κουμπιού ποντικιού\n"
 
-#: src/prefs.c:683 src/prefs.c:1030
+#: src/prefs.c:710
+#: src/prefs.c:1055
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "Το GConf key '%s'  έχει ορισθεί σε μια μή έγκυρη τιμή\n"
 
-#: src/prefs.c:762
+#: src/prefs.c:789
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GConf %s\n"
 
-#: src/prefs.c:945
+#: src/prefs.c:970
 #, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
+msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+msgstr "Το %d που αποθηκεύτηκε στο κλειδί GConf  δεν είναι ένας λογικός αριθμός χώρων εργασίας, το μέγιστο είναι %d\n"
 
-#: src/prefs.c:994
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
+#: src/prefs.c:1019
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "Οι προσωρινές λύσεις για προβληματικές εφαρμογές έχουν απενεργοποιηθεί. Μερικές εφαρμογές μπορεί να μην συμπεριφέρονται σωστά.\n"
 
-#: src/prefs.c:1057
+#: src/prefs.c:1082
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "Το %d που αποθηκεύτηκε στο κλειδί GConf είναι εκτός του εύρους 0 έως %d\n"
 
 # gconf/gconfd.c:1561
-#: src/prefs.c:1141
-#, fuzzy, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "������ ���� ��� ������� ����� ��� `%s': %s"
-
-#: src/prefs.c:1320
+#: src/prefs.c:1166
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Σφάλμα κατά τον ορισμό αριθμού χώρων εργασίας σε  %d: %s\n"
+
+#: src/prefs.c:1372
+#, c-format
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgstr "Το \"%s\" που βρέθηκε στην βάση δεδομένων ρυθμίσεων δεν είναι μια έγκυρη τιμή για συνδυασμό πλήκτρων\"%s\"\n"
+
+# gconf/gconfd.c:1561
+#: src/prefs.c:1625
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Σφάλμα κατά τον ορισμό ονόματος χώρου εργασίας %d σε \"%s\": %s\n"
 
 #
 #: src/resizepopup.c:127
-#, fuzzy, c-format
+#, c-format
 msgid "%d x %d"
-msgstr "%ld ��� %ld"
+msgstr "%d x %d"
 
-#: src/screen.c:389
+#: src/screen.c:390
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "Η οθόνη %d στην προβολή '%s' δεν είναι έγκυρη\n"
 
-#: src/screen.c:405
+#: src/screen.c:406
 #, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
+msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgstr "Η οθόνη %d στην προβολή '%s' έχει ήδη ένα διαχειριστή παραθύρων. Προσπαθήστε να χρησιμοποιήσετε την επιλογή --replace για να αντικαταστήσετε τον τρέχων διαχειρσιτή παραθύρωνr.\n"
 
-#: src/screen.c:446
+#: src/screen.c:447
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Αδυναμία λήψης επιλογής διαχειριστή παραθύρωων στην οθόνη %d προβολή \"%s\"\n"
 
-#: src/screen.c:502
+#: src/screen.c:503
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Η οθόνη  %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων\n"
 
-#: src/screen.c:648
+#: src/screen.c:649
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Αδυναμία απελευθέρωσης οθόνης %d στην προβολή \"%s\"\n"
 
 #: src/session.c:274
 #, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
+msgid "Failed to a open connection to a session manager, so window positions will not be saved: %s\n"
+msgstr "Αδυναμία ανοίγματος σύνδεσης με διαχειριστή συνεδρίας, έτσι δεν θα αποθηκευτούν οι θέσεις των παραθύρων: %s\n"
 
 # gconf/gconf-internals.c:2333
-#: src/session.c:881 src/session.c:888
-#, fuzzy, c-format
+#: src/session.c:881
+#: src/session.c:888
+#, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "������� � ���������� ��������� `%s': %s"
+msgstr "Αδυναμία δημιουργίας καταλόγου '%s': %s\n"
 
 # gconf/gconf-internals.c:789
 #: src/session.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
-"������� �� ������� ������������� ������� ���������� `%s' ��� �������: %s"
+msgstr "Αδύνατο το άνοιγμα  αρχείου συνεδρίας `%s' για εγγραφή: %s\n"
 
 #: src/session.c:1057
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "������ �������� ��� ������ %s"
+msgstr "Σφάλμα εγγραφής αρχείου συνεδρίας '%s': %s\n"
 
 # gconf/gconf-backend.c:243
 #: src/session.c:1062
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "������ ��� ������� ��� ������� `%s': %s\n"
+msgstr "Σφάλμα κλεισίματος αρχείου συνεδρίας '%s': %s\n"
 
 # gconf/gconf-internals.c:2416
 #: src/session.c:1137
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "�������� ���������� ������� ������������� ����������: %s"
+msgstr "Αποτυχία ανάγνωσης αποθηκευμένου αρχείου συνεδρίας %s: %s\n"
 
 # gconf/gconf-internals.c:2416
 #: src/session.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "�������� ���������� ������� ������������� ����������: %s"
+msgstr "Αποτυχία ανάλυσης αποθηκευμένου αρχείου συνεδρίας: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "βρέθηκε γνώρισμα <metacity_session> αλλά ήδη έχουμε την ταυτότητα συνεδρίας "
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "Άγνωστο γνώρισμα %s στο <metacity_session> στοιχείο"
 
 #: src/session.c:1251
-#, fuzzy
 msgid "nested <window> tag"
-msgstr "_�������� ��������� ���"
+msgstr "ενσωματωμένη <window> tag"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1309
+#: src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "Άγνωστο γνώρισμα %s στο <window>στοιχείο"
 
 #: src/session.c:1413
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Άγνωστο γνώρισμα %s σε <μεγιστοποιημένο> στοιχείο"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "Άγνωστο γνώρισμα %s στο <geometry>στοιχείο"
 
 #: src/session.c:1493
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown element %s"
-msgstr "������� ������ ��������������"
+msgstr "Άγνωστο στοιχείο %s "
 
 #: src/session.c:1921
 #, c-format
-msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
-msgstr ""
+msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
+msgstr "Σφάλμα εκκίνησης διαλόγου metacity για την ειδοποίηση για εφαρμογές που δεν υποστηρίζουν διαχείριση συνεδρίας: %s\n"
 
-#: src/theme-parser.c:224 src/theme-parser.c:242
-#, fuzzy, c-format
+#: src/theme-parser.c:224
+#: src/theme-parser.c:242
+#, c-format
 msgid "Line %d character %d: %s"
-msgstr "�� ������� ���������� '%c' ��� iid '%s'"
+msgstr "Γραμμή %d χαρακτήρας %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Το γνώρισμα \"%s\" επαναλήφθηκε δυο φορές στο ίδιο <%s> στοιχείο"
 
-#: src/theme-parser.c:414 src/theme-parser.c:439
+#: src/theme-parser.c:414
+#: src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Το γνώρισμα \"%s\" δεν είναι έγκυρο στο στοιχείο <%s> σε αυτην την περίπτωση"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Ο ακέραιος %ld θα πρέπει να είναι θετικός"
 
 #: src/theme-parser.c:493
-#, fuzzy, c-format
+#, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "� �������� `%s' ����� ���� ���� ������� ���� ���� ������"
+msgstr "Ο ακέραιος  %ld είναι πολύ μεγάλος , μέγιστος δυνατός %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: src/theme-parser.c:521
+#: src/theme-parser.c:602
+#: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Αδυναμία ανάλυσης \"%s\" ώς αριθμό κινητού σημείου"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Οι τιμές Boolean θα πρέπει να είναι είτε  \"true\" ή \"false\" όχι \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Η γωνία θα πρέπει να είναι ανάμεσα σε 0.0 και 360.0, ήταν %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Το Alpha θα πρέπει να είναι ανάμεσα σε 0.0 (αόρατο) και 1.0 (πλήρης ορατό), ήταν %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
+msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr "Μή έγκυρη κλίμακα τίτλου \"%s\" (θα πρέπει να είναι ενα από xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2872
-#: src/theme-parser.c:2961 src/theme-parser.c:2968 src/theme-parser.c:2975
-#, fuzzy, c-format
+#: src/theme-parser.c:729
+#: src/theme-parser.c:737
+#: src/theme-parser.c:2936
+#: src/theme-parser.c:3025
+#: src/theme-parser.c:3032
+#: src/theme-parser.c:3039
+#, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"%s\" στο στοιχείο <%s>"
 
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
-#, fuzzy, c-format
+#: src/theme-parser.c:807
+#: src/theme-parser.c:897
+#: src/theme-parser.c:935
+#: src/theme-parser.c:1012
+#: src/theme-parser.c:1062
+#: src/theme-parser.c:1070
+#: src/theme-parser.c:1126
+#: src/theme-parser.c:1134
+#, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"%s\" στο στοιχείο <%s>"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
+#: src/theme-parser.c:837
+#: src/theme-parser.c:905
+#: src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "Το <%s> όνομα \"%s\" χρησιμοποιήθηκε για δεύτερη φορά"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: src/theme-parser.c:849
+#: src/theme-parser.c:955
+#: src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> μητρικό \"%s\" δεν έχει ορισθεί"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> γεωμετρία \"%s\"  δεν έχει ορισθεί"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> θα πρέπει να καθορίσετε είτε μια γεωμετρία είτε ένα μητρικό που έχει γεωμετρία"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "Άγνωστος τύπος \"%s\" στο στοιχείο <%s> "
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "Άγνωστος ορισμός τύπου \"%s\" στο στοιχείο <%s> "
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Έχει ορισθεί ήδη ένα στυλ για τον τύπο  παραθύρου  \"%s\""
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Άγνωστη λειτουργία \"%s\" για το εικονίδιο μενού"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Άγνωστη κατάσταση \"%s\" για το εικονίδιο μενού"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Το θέμα έχει ήδη ένα εικονίδιο μενού για την λειτουργία %s state %s"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3180 src/theme-parser.c:3259
+#: src/theme-parser.c:1177
+#: src/theme-parser.c:3244
+#: src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "δεν έχουν ορισθεί <λειτουργίες σχεδίασης> με το όνομα  \"%s\""
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3060 src/theme-parser.c:3114 src/theme-parser.c:3274
-#: src/theme-parser.c:3451 src/theme-parser.c:3489 src/theme-parser.c:3527
-#: src/theme-parser.c:3565
+#: src/theme-parser.c:1192
+#: src/theme-parser.c:1256
+#: src/theme-parser.c:1545
+#: src/theme-parser.c:3124
+#: src/theme-parser.c:3178
+#: src/theme-parser.c:3338
+#: src/theme-parser.c:3515
+#: src/theme-parser.c:3553
+#: src/theme-parser.c:3591
+#: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Το στοιχείο <%s> δεν επιτρέπεται κάτω από <%s>"
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
-#, fuzzy, c-format
+#: src/theme-parser.c:1282
+#: src/theme-parser.c:1369
+#: src/theme-parser.c:1439
+#, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"όνομα\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1289 src/theme-parser.c:1376
-#, fuzzy, c-format
+#: src/theme-parser.c:1289
+#: src/theme-parser.c:1376
+#, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "��� ������� �������� \"����\" ��� ��� �����"
+msgstr "Δεν υπάρχει γνώρισμα \"τιμή\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+#: src/theme-parser.c:1320
+#: src/theme-parser.c:1334
+#: src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Δεν είναι δυνατός ο καθορισμός και ύψους/πλάτους κουμπιού και αναλογίας διαστάσεων για κουμπιά"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Η απόσταση \"%s\" είναι άγνωστη"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Η αναλογία διαστάσεων \"%s\" είναι άγνωστη"
 
 #: src/theme-parser.c:1446
-#, fuzzy, c-format
+#, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"κορυφή\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1453
-#, fuzzy, c-format
+#, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"κάτω\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1460
-#, fuzzy, c-format
+#, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"αριστερά\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1467
-#, fuzzy, c-format
+#, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"δεξιά\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1499
-#, fuzzy, c-format
+#, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "������, ������� �����"
+msgstr "Περίγραμμα  \"%s\" είναι άγνωστο"
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2805
-#, fuzzy, c-format
+#: src/theme-parser.c:1655
+#: src/theme-parser.c:1765
+#: src/theme-parser.c:1868
+#: src/theme-parser.c:2055
+#: src/theme-parser.c:2869
+#, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"χρώμα\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1662
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"x1\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1669 src/theme-parser.c:2650
-#, fuzzy, c-format
+#: src/theme-parser.c:1669
+#: src/theme-parser.c:2714
+#, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"y1\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1676
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"x2\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1683 src/theme-parser.c:2657
-#, fuzzy, c-format
+#: src/theme-parser.c:1683
+#: src/theme-parser.c:2721
+#, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"y2\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2263
-#: src/theme-parser.c:2419 src/theme-parser.c:2545 src/theme-parser.c:2643
-#: src/theme-parser.c:2717 src/theme-parser.c:2812
-#, fuzzy, c-format
+#: src/theme-parser.c:1772
+#: src/theme-parser.c:1875
+#: src/theme-parser.c:1981
+#: src/theme-parser.c:2062
+#: src/theme-parser.c:2168
+#: src/theme-parser.c:2266
+#: src/theme-parser.c:2483
+#: src/theme-parser.c:2609
+#: src/theme-parser.c:2707
+#: src/theme-parser.c:2781
+#: src/theme-parser.c:2876
+#, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"x\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2270
-#: src/theme-parser.c:2426 src/theme-parser.c:2552 src/theme-parser.c:2724
-#: src/theme-parser.c:2819
-#, fuzzy, c-format
+#: src/theme-parser.c:1779
+#: src/theme-parser.c:1882
+#: src/theme-parser.c:1988
+#: src/theme-parser.c:2069
+#: src/theme-parser.c:2175
+#: src/theme-parser.c:2273
+#: src/theme-parser.c:2490
+#: src/theme-parser.c:2616
+#: src/theme-parser.c:2788
+#: src/theme-parser.c:2883
+#, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"y\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2277
-#: src/theme-parser.c:2433 src/theme-parser.c:2559 src/theme-parser.c:2731
-#, fuzzy, c-format
+#: src/theme-parser.c:1786
+#: src/theme-parser.c:1889
+#: src/theme-parser.c:1995
+#: src/theme-parser.c:2076
+#: src/theme-parser.c:2182
+#: src/theme-parser.c:2280
+#: src/theme-parser.c:2497
+#: src/theme-parser.c:2623
+#: src/theme-parser.c:2795
+#, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"πλάτος\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2284
-#: src/theme-parser.c:2440 src/theme-parser.c:2566 src/theme-parser.c:2738
-#, fuzzy, c-format
+#: src/theme-parser.c:1793
+#: src/theme-parser.c:1896
+#: src/theme-parser.c:2002
+#: src/theme-parser.c:2083
+#: src/theme-parser.c:2189
+#: src/theme-parser.c:2287
+#: src/theme-parser.c:2504
+#: src/theme-parser.c:2630
+#: src/theme-parser.c:2802
+#, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"ύψος\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1903
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"έναρξη γωνίας\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:1910
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"επέκταση γωνίας\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:2090
-#, fuzzy, c-format
+#, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"alpha\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:2161
-#, fuzzy, c-format
+#, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"type\" για το στοιχείο <%s>"
 
 #: src/theme-parser.c:2209
-#, fuzzy, c-format
+#, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "��� ����� ��������� �� `%s' (���������� ������� ���������)"
+msgstr "Δεν έγινε κατανοητή η τιμή \"%s\" για στοιχείο <%s> )"
 
-#: src/theme-parser.c:2291
-#, fuzzy, c-format
+#: src/theme-parser.c:2294
+#, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"όνομα αρχείου\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:2316 src/theme-parser.c:2763
-#, fuzzy, c-format
+#: src/theme-parser.c:2319
+#: src/theme-parser.c:2827
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "��� ����� ��������� �� `%s' (���������� ������� ���������)"
+msgstr "Δεν έγινε κατανοητός ο τύπος γεμίσματος \"%s\" για <%s> στοιχείο"
 
-#: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
-#, fuzzy, c-format
+#: src/theme-parser.c:2462
+#: src/theme-parser.c:2595
+#: src/theme-parser.c:2700
+#, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"κατάσταση\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:2405 src/theme-parser.c:2538
-#, fuzzy, c-format
+#: src/theme-parser.c:2469
+#: src/theme-parser.c:2602
+#, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"σκιά\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:2412
-#, fuzzy, c-format
+#: src/theme-parser.c:2476
+#, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"βέλος\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:2465 src/theme-parser.c:2587 src/theme-parser.c:2675
-#, fuzzy, c-format
+#: src/theme-parser.c:2529
+#: src/theme-parser.c:2651
+#: src/theme-parser.c:2739
+#, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "��� ����� ��������� �� `%s' (���������� ������� ���������)"
+msgstr "Δεν έγινε κατανοητή η κατάσταση \"%s\" για στοιχείο <%s> )"
 
-#: src/theme-parser.c:2475 src/theme-parser.c:2597
-#, fuzzy, c-format
+#: src/theme-parser.c:2539
+#: src/theme-parser.c:2661
+#, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "��� ����� ��������� �� `%s' (���������� ������� ���������)"
+msgstr "Δεν έγινε κατανοητή η σκίαση \"%s\" για στοιχείο <%s> "
 
-#: src/theme-parser.c:2485
-#, fuzzy, c-format
+#: src/theme-parser.c:2549
+#, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "��� ����� ��������� �� `%s' (���������� ������� ���������)"
+msgstr "Δεν έγινε κατανοητό το βέλος \"%s\" για στοιχείο <%s> "
 
-#: src/theme-parser.c:2898 src/theme-parser.c:3014
+#: src/theme-parser.c:2962
+#: src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Δεν έχουν ορισθεί  <λειτουργίες σχεδίασης> που ονομάζονται \"%s\""
 
-#: src/theme-parser.c:2910 src/theme-parser.c:3026
+#: src/theme-parser.c:2974
+#: src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Αν συμπεριλάβετε εδώ λειτουργίες σχεδίασης \"%s\" θα δημιουργήσετε μια κυκλική αναφορά"
 
-#: src/theme-parser.c:3089
-#, fuzzy, c-format
+#: src/theme-parser.c:3153
+#, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "��� ������� �������� \"����\" ��� ��� �����"
+msgstr "Δεν υπάρχει γνώρισμα \"τιμή\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3146
-#, fuzzy, c-format
+#: src/theme-parser.c:3210
+#, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"θέση\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3155
+#: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Άγνωστη θέση  \"%s\" για το κομμάτι πλαισίου"
 
-#: src/theme-parser.c:3163
+#: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Το στυλ πλαισίου έχει ήδη ένα κομμάτι στην θέση %s"
 
-#: src/theme-parser.c:3208
-#, fuzzy, c-format
+#: src/theme-parser.c:3272
+#, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"λειτουργία\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3216 src/theme-parser.c:3320
-#, fuzzy, c-format
+#: src/theme-parser.c:3280
+#: src/theme-parser.c:3384
+#, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"κατάσταση\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3225
+#: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Άγνωστη λειτουργία  \"%s\" για το κουμπί"
 
 #
-#: src/theme-parser.c:3234
-#, fuzzy, c-format
+#: src/theme-parser.c:3298
+#, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "������� ���������"
+msgstr "Άγνωστη κατάσταση \"%s\" για το κουμπί"
 
-#: src/theme-parser.c:3242
+#: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-
-#: src/theme-parser.c:3312
-#, fuzzy, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
-
-#: src/theme-parser.c:3328
-#, fuzzy, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
-
-#: src/theme-parser.c:3337
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
-
-#: src/theme-parser.c:3346
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
-
-#: src/theme-parser.c:3356
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr ""
-
-#: src/theme-parser.c:3366
-#, fuzzy, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "��� ������� �������� \"�����\" ��� ��� ����� <%s>"
+msgstr "Το στυλ πλαισίου έχει ήδη ένα κουμπί για την λειτουργία  %s κατάσταση %s"
 
 #: src/theme-parser.c:3376
 #, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "Δεν υπάρχει γνώρισμα \"εστίαση\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3386
+#: src/theme-parser.c:3392
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
+msgid "No \"style\" attribute on <%s> element"
+msgstr "Δεν υπάρχει γνώρισμα \"στύλ\" για το στοιχείο <%s>"
 
-#: src/theme-parser.c:3400
+#: src/theme-parser.c:3401
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" δεν είναι έγκυρη τιμή για το γνώρισμα εστίασης"
+
+#: src/theme-parser.c:3410
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" δεν είναι έγκυρη τιμή για το γνώρισμα κατάστασης"
+
+#: src/theme-parser.c:3420
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "Ένα στύλ που ονομάζεται \"%s\"  δεν έχει ορισθεί"
+
+#: src/theme-parser.c:3430
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "Δεν υπάρχει γνώρισμα \"αλλαγή μεγέθους\" για το στοιχείο <%s>"
+
+#: src/theme-parser.c:3440
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" δεν είναι έγκυρη τιμή για το γνώρισμα αλλαγής μεγέθους"
+
+#: src/theme-parser.c:3450
+#, c-format
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "Δεν πρέπει να υπάρχει γνώρισμα \"αλλαγή μεγέθους\" στο στοιχείο <%s> για μεγιστοποιημένες/σκιασμένες καταστάσεις"
+
+#: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Το στύλ έχει ήδη καθορισθεί για κατάσταση %s αλλαγή μεγέθους %s εστίαση %s"
 
-#: src/theme-parser.c:3411 src/theme-parser.c:3422 src/theme-parser.c:3433
+#: src/theme-parser.c:3475
+#: src/theme-parser.c:3486
+#: src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Το στύλ έχει ήδη καθορισθεί για κατάσταση %s εστίαση %s"
 
-#: src/theme-parser.c:3472
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+#: src/theme-parser.c:3536
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <κομμάτι> ( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα ένα στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
 
-#: src/theme-parser.c:3510
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+#: src/theme-parser.c:3574
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <κουμπί> ( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα ένα στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
 
-#: src/theme-parser.c:3548
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+#: src/theme-parser.c:3612
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <εικονίδιο μενού> ( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα ένα στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
 
-#: src/theme-parser.c:3595
+#: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Το εξώτατο στοιχείο στο θέμα θα πρέπει να είναι <metacity_theme> όχι <%s>"
 
-#: src/theme-parser.c:3615
+#: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο όνοματος/συγγραφέα/ημερομηνίας/περιγραφής"
 
-#: src/theme-parser.c:3620
+#: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο <constant>"
 
-#: src/theme-parser.c:3632
+#: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο απόστασης/περιγράμματος/aspect_ratio"
 
-#: src/theme-parser.c:3654
+#: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο λειτουργίας σχεδίασης"
 
-#: src/theme-parser.c:3664 src/theme-parser.c:3694 src/theme-parser.c:3699
+#: src/theme-parser.c:3728
+#: src/theme-parser.c:3758
+#: src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο <%s>"
 
-#: src/theme-parser.c:3920
+#: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Δεν παρέχονται λειτουργίες σχεδίασης για το κομμάτι πλαισίου"
 
-#: src/theme-parser.c:3935
+#: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Δεν παρέχονται λειτουργίες σχεδίασης για το κουμπί"
 
-#: src/theme-parser.c:3950
+#: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Δεν παρέχονται λειτουργίες σχεδίασης για το εικονίδιο μενού"
 
-#: src/theme-parser.c:3990
+#: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Δεν επιτρέπεται κείμενο μέσα στο στοιχείο <%s>"
 
-#: src/theme-parser.c:4045
+#: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<όνομα> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
-#: src/theme-parser.c:4056
+#: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<συγγραφέας> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
-#: src/theme-parser.c:4067
+#: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<Πνευματικά Δικαιώματα> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
-#: src/theme-parser.c:4078
+#: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<ημερομηνία> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
-#: src/theme-parser.c:4089
-#, fuzzy
+#: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr "��� ������� ��������� ��������� ��� �� ���� \"%s\""
+msgstr "<περιγραφή> έχει ορισθεί δύο φορές για αυτό το θέμα"
 
 # gconf/gconf-internals.c:2416
-#: src/theme-parser.c:4283
-#, fuzzy, c-format
+#: src/theme-parser.c:4347
+#, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "������� � ���������� ��� ������� `%s': %s"
+msgstr "Αποτυχία ανάγνωσης θέματος από αρχείο %s: %s\n"
 
-#: src/theme-parser.c:4338
+#: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Το αρχείο θέματος  %s δεν περιέχει ενα στοιχεί διαχειριστή <metacity_theme>"
 
 #: src/theme.c:202
 msgid "top"
-msgstr "�����"
+msgstr "επάνω"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr "����"
+msgstr "κάτω"
 
 #: src/theme.c:206
 msgid "left"
-msgstr "��������"
+msgstr "αριστερά"
 
 #: src/theme.c:208
 msgid "right"
-msgstr "�����"
+msgstr "δεξιά"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση για περίγραμμα \"%s\""
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Η αναλογία διαστάσεων κουμπιού  %g  δεν είναι λογική"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Η γεωμετρία πλαισίου δεν έχει καθορίσει μέγεθος κουμπιών"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Τα διαβαθμισμένα χρώματα θα πρέπει να έχουν δύο τουλάχιστον θέματα"
 
 #: src/theme.c:975
 #, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "Ο καθορισμός χρώματος GTK θα πρέπει να έχει τη κατάσταση σε αγκύλες, π.χ gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία ανάλυσης \"%s\""
 
 #: src/theme.c:989
 #, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "Ο καθορισμός χρώματος GTK θα πρέπει να έχει μια αγκύλη κλεισίματος μετά την κατάσταση. π.χ gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία ανάλυσης \"%s\""
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Δεν έγινε κατανοητή η κατάσταση  \"%s\" στον ορισμό χρώματος"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Δεν έγινε κατανοητό το συστατικό χρώματος  \"%s\" στον ορισμό χρώματος"
 
 #: src/theme.c:1043
 #, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "Ο τύπος ανάμιξης που είναι \"blend/bg_color/fg_color/alpha\", \"%s\" δεν ταιριάζει στην διαμόρφωση"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Αδυναμία ανάλυσης τιμής alpha \"%s\" στο αναμιγμένο χρώμα"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Η τιμή Alpha \"%s\" στο αναμιγμένο χρώμα δεν είναι ανάμεσα σε 0.0 και 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Ο τύπος σκίασης είναι  \"shade/base_color/factor\", το \"%s\" δεν ταιριάζει στον τύπο"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Αδυναμία ανάλυσης "
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Ο παράγοντας σκίασης  \"%s\" στο σκιασμένο χρώμα είναι αρνητικός"
 
 #: src/theme.c:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse color \"%s\""
-msgstr "������� � ���������� �������: %s"
+msgstr "Αδύνατη η ανάλυση χρώματος \"%s\""
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση περιέχει ένα χαρακτήρα '%s που δεν επιτρέπεται"
 
 #: src/theme.c:1450
 #, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgstr "Η συντενταγμένη έκφραση περιέχει αριθμό κινητού σημείου '%s' που δεν μπορεί να αναλυθεί"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση περιέχει έναν ακέραιο  '%s που δεν μπορεί να αναλυθεί"
 
 #: src/theme.c:1531
 #, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgstr "Η συντενταγμένη έκφραση περιείχε έναν άγνωστο χειριστή στην αρχή αυτού του κειμένου: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση ήταν κενή ή δεν έγινε κατανοητή"
 
-#: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
+#: src/theme.c:1727
+#: src/theme.c:1737
+#: src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση έχει σαν αποτέλεσμα διαίρεση με το μηδέν"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Η συντενταγμένη έκφραση  προσπαθεί να χρησιμοποιήσε ιmod operator σε αριθμό κινητού σημείου"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Η συντενταγμένη έκφραση έχει ένα operator \"%s\" ενω αναμενόταν operand "
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση έχει ένα operand  ενω αναμενόταν  operator"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση τέλειωσε με χειριστή αντί για operand"
 
 #: src/theme.c:1863
 #, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "Η συντενταγμένη έκφραση έχει operator \"%c\" ακολουθούμενο operator \"%c\" χωρίς operand μεταξύ τους"
 
 #: src/theme.c:1982
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
+msgid "Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"
+msgstr "Ο αναλυτής συντενταγμένης έκφρασης  overflowed its buffer, αυτό είναι ένα σφάλμα του  Metacity, αλλά είστε σίγουροι ότι χρειάζεστε μια τεράστια πρόταση όπως αυτή? "
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση έχει μια παρένθεση κλεισίματος χωρίς να έχει ανοιχθεί παρένθεση"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση έχει άγνωστη μεταβλητή ή συνεχής \"%s\""
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση έχει μια παρένθεση ανοίγματος χωρίς να έχει κλεισθεί παρένθεση"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Η συντενταγμένη έκφραση δεν φαίνεται να έχει operators ή operands"
 
-#: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
+#: src/theme.c:2386
+#: src/theme.c:2408
+#: src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Το θέμα περιείχε μια έκφραση \"%s\" που είχε σαν αποτέλεσμα σφάλμα: %s\n"
 
-#: src/theme.c:3768
+#: src/theme.c:3912
 #, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να καθοριστεί στο στυλ πλαισίου"
 
-#: src/theme.c:4218 src/theme.c:4250
+#: src/theme.c:4362
+#: src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4301
-#, fuzzy, c-format
+#: src/theme.c:4445
+#, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "�������� ��������� \"%s\": %s."
+msgstr "Αποτυχία φόρτωσης θέματος \"%s\": %s\n"
 
 # gconf/gconftool.c:877
-#: src/theme.c:4447 src/theme.c:4454 src/theme.c:4461 src/theme.c:4468
-#: src/theme.c:4475
-#, fuzzy, c-format
+#: src/theme.c:4591
+#: src/theme.c:4598
+#: src/theme.c:4605
+#: src/theme.c:4612
+#: src/theme.c:4619
+#, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "��� ���� ����� ���� ��� `%s'\n"
+msgstr "Δεν έχει ορισθεί  <%s> για θέμα \"%s\""
 
-#: src/theme.c:4485
+#: src/theme.c:4629
 #, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "Δεν έχει ορισθεί στύλ πλαισίου για τον τύπο παραθύρου \"%s\" στο θέμα \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 
-#: src/theme.c:4507
+#: src/theme.c:4651
 #, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
+msgid "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"
+msgstr "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να καθοριστεί για αυτό το θέμα"
 
-#: src/theme.c:4894 src/theme.c:4956
+#: src/theme.c:5038
+#: src/theme.c:5100
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Οι συνεχείς που ορίζονται από το χρήστη θα πρέπει να ξεκινάνε με κεφαλαίο γράμμα, η \"%s\" δεν έχει"
 
-#: src/theme.c:4902 src/theme.c:4964
-#, fuzzy, c-format
+#: src/theme.c:5046
+#: src/theme.c:5108
+#, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "���� �� ������ ���� ��� ������������."
+msgstr "Constant \"%s\" έχει ήδη καθορισθεί"
 
 #: src/tools/metacity-properties.desktop.in.h:1
-#, fuzzy
 msgid "Select how to give focus to windows"
-msgstr "��������� ����������� ���������."
+msgstr "Επιλέξτε τον τρόπο που θα εστιάζετε σε παράθυρα"
 
 #: src/tools/metacity-properties.desktop.in.h:2
-#, fuzzy
 msgid "Window Focus"
-msgstr "�������������� ��� Windows"
+msgstr "Εστίαση Παραθύρου"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "Κλί_κ για να εστιάσετε"
 
 #: src/tools/metacity-properties.glade.h:2
-#, fuzzy
 msgid "Focus behavior:"
-msgstr "����������� ��������"
+msgstr "Συμπεριφορά εστίασης:"
 
 #: src/tools/metacity-properties.glade.h:3
-#, fuzzy
 msgid "Window Focus Preferences"
-msgstr "��������� GnobotsII"
+msgstr "Προτιμήσεις Εστίασης Παραθύρου"
 
 #: src/tools/metacity-properties.glade.h:4
-#, fuzzy
 msgid "_Point to give focus"
-msgstr "�������� �� ������"
+msgstr "_Σημείο για να εστιάσετε"
 
 #: src/tools/metacity-properties.glade.h:5
-#, fuzzy
 msgid "_Raise window on focus"
-msgstr "��������� ��������� ���� �����������."
+msgstr "_Ανασήκωση παραθύρων κατά την εστίαση"
 
 # gconf/gconftool.c:1639
 #: src/util.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "�������� ���������� `%s': %s\n"
+msgstr "Αποτυχία ανοίγματος καταγραφής εκσφαλμάτωσης: %s\n"
 
 # gconf/gconf-internals.c:2416
 #: src/util.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "������� � ���������� ��� ������� `%s': %s"
+msgstr "Αποτυχία  fdopen() αρχείου καταγραφής %s: %s\n"
 
 #: src/util.c:107
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "���� �������� �� ������ ���������� %s\n"
+msgstr "Έχει ανοιχθεί το αρχείο καταγραφών %s\n"
 
 #: src/util.c:191
 msgid "Window manager: "
-msgstr ""
+msgstr "Διαχειριστής παραθύρων:"
 
-#: src/util.c:313
+#: src/util.c:324
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Σφάλμα στον διαχειριστή παραθύρων:"
 
-#: src/util.c:342
+#: src/util.c:353
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Προειδοποίηση διαχειριστή παραθύρων:"
 
-#: src/util.c:366
+#: src/util.c:377
 msgid "Window manager error: "
-msgstr ""
+msgstr "Σφάλμα διαχειριστή παραθύρων:"
 
-#: src/window.c:461
+#: src/window-props.c:160
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4683
+#: src/window.c:4708
 #, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
+msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgstr "Το παράθυρο %s όρισε SM_CLIENT_ID στον εαυτό του, αντί στο παράθυρο του WM_CLIENT_LEADER όπως καθορίζεται στο ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2324,52 +1949,25 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5322
+#: src/window.c:5304
 #, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-
-#: src/workspace.c:50
-#, c-format
-msgid "Workspace %d"
-msgstr "����� �������� %d"
+msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "Το παράθυρο όρισε μια συμβουλή  MWM ότι δεν είναι δυνατή η αλλαγή μεγέθους, αλλα όρισε ελάχιστο μέγεθος  %d x %d και μέγιστο μέγεθος %d x %d; αυτό είναι ακατανόητο.\n"
 
 #: src/xprops.c:124
 #, c-format
-msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
-msgstr ""
+msgid "Window 0x%lx has property %s that was expected to have type %s format %d and actually has type %s format %d n_items %d\n"
+msgstr "Το παράθυρο 0x%lx έχει ιδιότητα %s η οποία αναμενόταν να έχει τύπο %s μορφή %d ενώ στην πραγματικότητα έχει τύπο %s μορφή %d n_items %d\n"
 
 #: src/xprops.c:369
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μή έγκυρο UTF-8\n"
 
 #: src/xprops.c:449
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μή έγκυρο UTF-8\n"
+" για το αντικείμενο %d στην λίστα\n"
 
-#~ msgid "_Shade"
-#~ msgstr "_������"
-
-#~ msgid "Un_shade"
-#~ msgstr "_���������"
-
-# gconf/gconftool.c:917
-#, fuzzy
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "��� ���� ����� ���� ��� �� ������: `%s'\n"
-
-# gconf/gconftool.c:877
-#, fuzzy
-#~ msgid "No <date> set for theme \"%s\""
-#~ msgstr "��� ���� ����� ���� ��� `%s'\n"
-
-#, fuzzy
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "��� ������� ��������� ��������� ��� �� ���� \"%s\""
