@@ -1,5 +1,18 @@
 2002-08-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_free): be sure window is 
+	mapped if we unmanage it and it's not withdrawn; 
+	bug #90369
+
+	* src/screen.c (meta_screen_new): change string
+	s/override/replace/ bug #89077
+
+	* src/theme.c (scale_and_alpha_pixbuf): dump the
+	sometimes-use-NEAREST-instead-of-BILINEAR optimization, 
+	bug #87489
+
+2002-08-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (menu_callback): raise window when moving to
 	another workspace bug #88896
 

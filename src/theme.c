@@ -2633,19 +2633,9 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
       switch (fill_type)
         {
         case META_IMAGE_FILL_SCALE:
-          if (gdk_pixbuf_get_width (pixbuf) == width ||
-              gdk_pixbuf_get_height (pixbuf) == height)
-            {
-              pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                                width, height,
-                                                GDK_INTERP_NEAREST);
-            }
-          else
-            {
-              pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                                width, height,
-                                                GDK_INTERP_BILINEAR);
-            }
+          pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                            width, height,
+                                            GDK_INTERP_BILINEAR);
           break;
         case META_IMAGE_FILL_TILE:
           pixbuf = pixbuf_tile (pixbuf, width, height);

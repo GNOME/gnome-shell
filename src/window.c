@@ -869,7 +869,10 @@ meta_window_free (MetaWindow  *window)
   meta_stack_remove (window->screen->stack, window);
   
   /* FIXME restore original size if window has maximized */
-
+  
+  if (window->frame)
+    meta_window_destroy_frame (window);
+  
   if (window->withdrawn)
     {
       /* We need to clean off the window's state so it
@@ -897,10 +900,15 @@ meta_window_free (MetaWindow  *window)
           set_wm_state (window, NormalState);
           meta_error_trap_pop (window->display);
         }
+
+      /* And we need to be sure the window is mapped so other WMs
+       * know that it isn't Withdrawn
+       */
+      meta_error_trap_push (window->display);
+      XMapWindow (window->display->xdisplay,
+                  window->xwindow);
+      meta_error_trap_pop (window->display);
     }
-  
-  if (window->frame)
-    meta_window_destroy_frame (window);
 
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);

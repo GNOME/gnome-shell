@@ -218,7 +218,7 @@ meta_screen_new (MetaDisplay *display,
       
       if (!replace_current_wm)
         {
-          meta_warning (_("Screen %d on display \"%s\" already has a window manager; try using the --replace option to override the current window manager.\n"),
+          meta_warning (_("Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"),
                         number, display->name);
 
           return NULL;
