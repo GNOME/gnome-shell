@@ -1,3 +1,8 @@
+2001-08-17  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_get_gravity_position): fix for
+	StaticGravity
+
 2001-08-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_configure_request): Honor USPosition

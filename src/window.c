@@ -1616,7 +1616,9 @@ meta_window_get_gravity_position (MetaWindow  *window,
   w = window->rect.width;
   h = window->rect.height;
 
-  if (window->frame == NULL)
+  if (window->frame == NULL ||
+      /* ignore frame for static gravity */
+      window->size_hints.win_gravity == StaticGravity)
     frame_extents = window->rect;
   else
     frame_extents = window->frame->rect;
@@ -1954,7 +1956,7 @@ meta_window_configure_request (MetaWindow *window,
        * USPosition at map time.
        */
       (window->size_hints.flags & USPosition))
-  {
+    {
       if (event->xconfigurerequest.value_mask & CWX)
         x = event->xconfigurerequest.x;
       
