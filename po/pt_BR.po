@@ -6,13 +6,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-11 01:41-0200\n"
-"PO-Revision-Date: 2002-12-11 01:41-0200\n"
-"Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
-"Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
+"POT-Creation-Date: 2003-01-17 01:57-0200\n"
+"PO-Revision-Date: 2003-01-17 02:00-0200\n"
+"Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
+"Language-Team: GNOME-BR <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Uso: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity foi compilado sem suporte para modo detalhado\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -50,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter o nome da máquina: %s\n"
 
-#: src/display.c:273
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição '%s' do X Window System\n"
@@ -71,27 +80,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro fatal de E/S %d (%s) na exibição '%s'.\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Menu de Janela"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Desfazer Maximizar Janela"
 
-#: src/keybindings.c:870
+#: src/keybindings.c:910
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -100,14 +109,14 @@ msgstr ""
 "Algum outro programa já está usando a chave %s com modificadores %x como uma "
 "vinculação\n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2246
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erro ao exibir caixa de diálogo para imprimir uma mensagem de erro sobre um "
 "comando: %s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2277
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nenhum comando %d foi definido.\n"
@@ -190,7 +199,7 @@ msgstr "Colocar em _Todas as Áreas de Trabalho"
 msgid "Only on _This Workspace"
 msgstr "Somente Nes_ta Área de Trabalho"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1669
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
@@ -1751,7 +1760,7 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para o modificador de botão do mouse\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "A chave GConf '%s' está definida com um valor inválido\n"
@@ -1772,7 +1781,7 @@ msgstr ""
 "%d armazenado na chave GConf %s não é um número razoável de áreas de "
 "trabalho; o máximo atual é %d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1780,17 +1789,17 @@ msgstr ""
 "As alternativas para aplicações quebradas estão desabilitadas. É possível "
 "que algumas aplicações não funcionem de maneira adequada.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d armazenado na chave GConf %s está fora do intervalo de 0 a %d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir o número de áreas de trabalho como %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1460
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1799,7 +1808,7 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para a vinculação de teclas \"%s\"\n"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1750
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2768,23 +2777,19 @@ msgstr "Falha ao executar fdopen() no arquivo de log %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Arquivo de log %s aberto\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity foi compilado sem suporte para modo detalhado\n"
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Gerenciador de janela: "
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr "Bug no gerenciador de janelas: "
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "Aviso do gerenciador de janelas: "
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr "Erro do gerenciador de janelas: "
 
@@ -2794,7 +2799,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "A aplicação definiu um _NET_WM_PID %ld inválido\n"
 
 #. first time through
-#: src/window.c:4859
+#: src/window.c:4897
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2810,7 +2815,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5419
+#: src/window.c:5457
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2820,21 +2825,28 @@ msgstr ""
 "define o tamanho mínimo %d x %d e máximo %d x %d; isso não faz muito "
 "sentido.\n"
 
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"A janela 0x%1$lx tem a propriedade %2$s que deveria ter o formato %4$d do tipo %3$s "
-"e, na verdade, ela tem n_items %6$d do formato %7$d do tipo %5$s\n"
+"A janela 0x%1$lx tem a propriedade %2$s\n"
+"que deveria ter o formato %4$d do tipo %3$s \n"
+"e, na verdade, ela tem n_items %6$d do formato \n"
+"%7$d do tipo %5$s.\n"
+"Isso é bem provavelmente um erro da aplicação, não do gerenciado de janelas.\n"
+"A janela tem title=\"%7$s\" class=\"%8$s\" name=\"%9$s\"\n"
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "A propriedade %s na janela 0x%lx continha UTF-8 inválido\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
