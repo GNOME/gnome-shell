@@ -2837,7 +2837,7 @@ handle_toggle_desktop (MetaDisplay    *display,
                                            event->xkey.time);
     }
   else
-    meta_screen_show_desktop (screen);
+    meta_screen_show_desktop (screen, event->xkey.time);
 }
 
 static void

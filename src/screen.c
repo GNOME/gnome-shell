@@ -2229,14 +2229,36 @@ meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
 }
 
 void
-meta_screen_show_desktop (MetaScreen *screen)
+meta_screen_show_desktop (MetaScreen *screen, 
+                          Time        timestamp)
 {
+  GList *windows;
+
   if (screen->active_workspace->showing_desktop)
     return;
   
   screen->active_workspace->showing_desktop = TRUE;
   
   queue_windows_showing (screen);
+
+  /* Focus the most recently used META_WINDOW_DESKTOP window, if there is one;
+   * see bug 159257.
+   */
+  windows = screen->active_workspace->mru_list;
+  while (windows != NULL)
+    {
+      MetaWindow *w = windows->data;
+      
+      if (w->screen == screen  && 
+          w->type == META_WINDOW_DESKTOP)
+        {
+          meta_window_focus (w, timestamp);
+          break;
+        }
+      
+      windows = windows->next;
+    }
+
   
   meta_screen_update_showing_desktop_hint (screen);
 }

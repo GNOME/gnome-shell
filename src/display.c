@@ -2152,7 +2152,7 @@ event_callback (XEvent   *event,
 		  meta_verbose ("Request to %s desktop\n", showing_desktop ? "show" : "hide");
                   
 		  if (showing_desktop)
-		    meta_screen_show_desktop (screen);
+		    meta_screen_show_desktop (screen, meta_display_get_current_time_roundtrip (display));
 		  else
 		    {
 		      meta_screen_unshow_desktop (screen);

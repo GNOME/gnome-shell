@@ -1,5 +1,22 @@
 2004-12-19  Elijah Newren  <newren@gmail.com>
 
+	Focus the desktop when showing it.  Fixes #159257.
+
+	* src/display.c (event_callback): obtain a timestamp to pass to
+	meta_screen_show_desktop
+
+	* src/keybindings.c (handle_toggle_desktop): obtain a timestamp to
+	pass to meta_screen_show_desktop
+
+	* src/screen.c (meta_screen_show_desktop): add a timestamp
+	parameter, get the most recently used window of type DESKTOP (if
+	there is one) and focus it
+
+	* src/screen.h (meta_screen_show_desktop): add a timestamp
+	parameter
+
+2004-12-19  Elijah Newren  <newren@gmail.com>
+
 	Thanks to ash@contact.bg for this fix.
 	
 	* po/POTFILES.in: Remove reference to metacity-properties.* files
