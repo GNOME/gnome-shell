@@ -80,7 +80,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-ALL_LINGUAS="da es gl lv ms no pt ru sk sv tr uk"
+ALL_LINGUAS="da es gl lv ms no pl pt ru sk sv tr uk"
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use

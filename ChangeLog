@@ -1,3 +1,7 @@
+2002-03-22  Zbigniew Chyla  <cyba@gnome.pl>
+
+	* configure.in (ALL_LINGUAS): Added pl (Polish).
+
 2002-03-21  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Bright/metacity-theme-1.xml: Added "Bright" theme
