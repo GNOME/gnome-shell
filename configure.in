@@ -53,8 +53,8 @@ case "$METACITY_LIBS" in
     ;;
  *)
   AC_CHECK_LIB(SM, SmcSaveYourselfDone, 
-               AC_CHECK_HEADERS(X11/SM/SMlib.h,
-                                METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=true),
+               [AC_CHECK_HEADERS(X11/SM/SMlib.h,
+                                METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=true)],
                , $METACITY_LIBS)
     ;;
 esac

@@ -1,3 +1,8 @@
+Tue Nov 20 18:49:16 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (found_sm): Add some additional quoting to
+	make it work with autoconf-2.5x.
+
 2001-11-02  Laszlo Peter  <laca@ireland.sun.com>
 
 	* src/window.c (update_sm_hints): protect meta_verbose from
