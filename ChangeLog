@@ -13,7 +13,9 @@
 	window->cached_group
 	(meta_window_compute_group): new function computes window->group.
 	Designed to be called once from meta_window_new
-	(remove_window_from_group): change cached_group to group	
+	(remove_window_from_group): change cached_group to group
+	(meta_window_group_leader_changed): call meta_window_compute_group
+	instead of meta_window_get_group
 
 2003-05-29  Rob Adams  <robadams@ucla.edu>
 

@@ -26,6 +26,7 @@
 
 /* note, can return NULL */
 MetaGroup* meta_window_get_group       (MetaWindow *window);
+void       meta_window_compute_group   (MetaWindow* window);
 void       meta_window_shutdown_group  (MetaWindow *window);
 
 void       meta_window_group_leader_changed (MetaWindow *window);

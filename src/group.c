@@ -105,67 +105,72 @@ meta_window_get_group (MetaWindow *window)
 {
   if (window->unmanaging)
     return NULL;
+
+  if (window->group == NULL)
+    meta_window_compute_group (window);
   
-  if (window->cached_group == NULL)
+  return window->group;
+}
+
+void
+meta_window_compute_group (MetaWindow* window)
+{
+  MetaGroup *group;
+
+  /* use window->xwindow if no window->xgroup_leader */
+      
+  group = NULL;
+      
+  if (window->display->groups_by_leader)
     {
-      MetaGroup *group;
-
-      /* use window->xwindow if no window->xgroup_leader */
-      
-      group = NULL;
-      
-      if (window->display->groups_by_leader)
-        {
-          if (window->xgroup_leader != None)
-            group = g_hash_table_lookup (window->display->groups_by_leader,
-                                         &window->xgroup_leader);
-          else
-            group = g_hash_table_lookup (window->display->groups_by_leader,
-                                         &window->xwindow);
-        }
-      
-      if (group != NULL)
-        {
-          window->cached_group = group;
-          group->refcount += 1;
-        }
+      if (window->xgroup_leader != None)
+        group = g_hash_table_lookup (window->display->groups_by_leader,
+                                     &window->xgroup_leader);
       else
-        {
-          if (window->xgroup_leader != None)
-            group = meta_group_new (window->display,
-                                    window->xgroup_leader);
-          else
-            group = meta_group_new (window->display,
-                                    window->xwindow);
+        group = g_hash_table_lookup (window->display->groups_by_leader,
+                                     &window->xwindow);
+    }
+      
+  if (group != NULL)
+    {
+      window->group = group;
+      group->refcount += 1;
+    }
+  else
+    {
+      if (window->xgroup_leader != None)
+        group = meta_group_new (window->display,
+                                window->xgroup_leader);
+      else
+        group = meta_group_new (window->display,
+                                window->xwindow);
           
-          window->cached_group = group;
-        }
-
-      window->cached_group->windows = g_slist_prepend (window->cached_group->windows,
-                                                       window);
-
-      meta_topic (META_DEBUG_GROUPS,
-                  "Adding %s to group with leader 0x%lx\n",
-                  window->desc, group->group_leader);
+      window->group = group;
     }
 
-  return window->cached_group;
+  window->group->windows = g_slist_prepend (window->group->windows,
+                                                   window);
+
+  meta_topic (META_DEBUG_GROUPS,
+              "Adding %s to group with leader 0x%lx\n",
+              window->desc, group->group_leader);
+
 }
 
 static void
 remove_window_from_group (MetaWindow *window)
 {
-  if (window->cached_group != NULL)
+  if (window->group != NULL)
     {
       meta_topic (META_DEBUG_GROUPS,
                   "Removing %s from group with leader 0x%lx\n",
-                  window->desc, window->cached_group->group_leader);
+                  window->desc, window->group->group_leader);
       
-      window->cached_group->windows =
-        g_slist_remove (window->cached_group->windows,
+      window->group->windows =
+        g_slist_remove (window->group->windows,
                         window);
-      meta_group_unref (window->cached_group);
-      window->cached_group = NULL;
+      meta_group_unref (window->group);
+      window->group = NULL;
     }
 }
 
@@ -173,7 +178,7 @@ void
 meta_window_group_leader_changed (MetaWindow *window)
 {
   remove_window_from_group (window);
-  meta_window_get_group (window);
+  meta_window_compute_group (window);
 }
 
 void
@@ -255,4 +260,5 @@ meta_group_property_notify (MetaGroup  *group,
                               event->xproperty.atom);
 
   return TRUE;
+
 }

@@ -347,6 +347,10 @@ meta_window_new (MetaDisplay *display,
   window->display = display;
   window->workspaces = NULL;
 
+  /* assign the window to its group, or create a new group if needed
+   */
+  meta_window_compute_group (window);
+  
 #ifdef HAVE_XSYNC
   window->update_counter = None;
 #endif
@@ -490,7 +494,7 @@ meta_window_new (MetaDisplay *display,
   window->top_strut = 0;
   window->bottom_strut = 0;
 
-  window->cached_group = NULL;
+  window->group = NULL;
 
   window->using_net_wm_name = FALSE;
   window->using_net_wm_icon_name = FALSE;
@@ -536,7 +540,7 @@ meta_window_new (MetaDisplay *display,
   update_role (window);
   update_net_wm_type (window);
   meta_window_update_icon_now (window);
-  
+
   if (window->initially_iconic)
     {
       /* WM_HINTS said minimized */
