@@ -5347,6 +5347,10 @@ constrain_position (MetaWindow        *window,
       /* find furthest northwest point the window can occupy */
       nw_x = work_area.x;
       nw_y = work_area.y;
+
+      /* FIXME note this means framed windows can go off the left
+       * but not unframed windows.
+       */
       if (window->frame)
         {
           /* Must keep TITLEBAR_LENGTH_ONSCREEN onscreen when moving left */

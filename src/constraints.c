@@ -24,13 +24,13 @@
 /* The way this code works was suggested by Owen Taylor.
  *
  * For any move_resize, we determine which variables are "free
- * variables" - stated another way, which edges of the window are
- * moving. During the move resize, we only want to modify those
- * variables; otherwise the constraint process can have peculiar side
- * effects when the size and position constraints interact. For
- * example, resizing a window from the top might go wrong when
- * position constraints apply to the top edge, and result in the
- * bottom edge moving downward while the top stays fixed.
+ * variables" and apply constraints in terms of those. During the move
+ * resize, we only want to modify those variables; otherwise the
+ * constraint process can have peculiar side effects when the size and
+ * position constraints interact. For example, resizing a window from
+ * the top might go wrong when position constraints apply to the top
+ * edge, and result in the bottom edge moving downward while the top
+ * stays fixed.
  *
  * After selecting the variables we plan to vary, we define
  * each constraint on the window in terms of those variables.
@@ -96,16 +96,25 @@
  * This method applies to any ConfigureRequest that does a simultaneous
  * move/resize.
  *
+ * We use the same method to e.g. maximize a window; if the window is
+ * maximized, we want to MOVE_VERTICAL/MOVE_HORIZONTAL to the top
+ * center of the screen, then RESIZE_BOTTOM and
+ * RESIZE_HORIZONTAL_CENTER. i.e. essentially NorthGravity.
+ * 
  */
 
+/* Clamps the delta to nearest permitted.
+ * delta is the "free variable" in any given operation.
+ */
 typedef void (* MetaConstraintFunc) (MetaWindow          *window,
                                      MetaFrameGeometry   *fgeom,
                                      const MetaRectangle *orig,
-                                     MetaRectangle       *new);
+                                     int                 *x_delta,
+                                     int                 *y_delta);
 
 
-/* Things we can move, constraints apply
- * in the context of these dimensions
+/* This enum marks what x_delta and y_delta mean, i.e. it
+ * identifies the current free variables.
  */
 enum
 {
@@ -116,8 +125,10 @@ enum
   RESIZE_VERTICAL_CENTER,
   RESIZE_HORIZONTAL_CENTER,
   MOVE_VERTICAL,
-  MOVE_HORIZONTAL
-};
+  MOVE_HORIZONTAL,
+  LAST_MOVE_CONTEXT
+} MoveContext;
+
 
 /* Maximization constraint:
  *
@@ -180,10 +191,31 @@ enum
  *
  * RESIZE_VERTICAL_CENTER:
  *
- *    
+ * RESIZE_HORIZONTAL_CENTER is like vertical
+ * 
+ *
+ * MOVE_VERTICAL:
+ *  new_height = orig_height
+ *  new_y = orig_y + dy
+ *
+ *  new_y >= nw_y + top_height
+ *
+ *  Min negative dy (nw_y + top_height - orig_y) just as with RESIZE_TOP
+ *  Max positive dy has to be computed from se_y and given less priority than the
+ *  min negative:
+ *
+ *   new_y < se_y
+ *   orig_y + dy = se_y
+ *   so max dy is (se_y - orig_y)
+ * 
+ *
+ * MOVE_HORIZONTAL:
+ *  works out same as vertical in the other direction
  *       
  *   
  */
+
+
 
 void
 meta_window_constrain (MetaWindow          *window,
