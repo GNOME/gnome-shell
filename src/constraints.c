@@ -1371,9 +1371,9 @@ meta_window_constrain (MetaWindow          *window,
 
       current = *new;
 
-      constrain_resize_hcenter (window, &info, &current,
-                                (info.xinerama->width - OUTER_WIDTH (current)) / 2,
-                                new);
+      constrain_resize_right (window, &info, &current,
+                              info.xinerama->width - OUTER_WIDTH (current),
+                              new);
       current = *new;
 
       constrain_move (window, &info, &current,
@@ -1389,9 +1389,9 @@ meta_window_constrain (MetaWindow          *window,
 
       current = *new;
 
-      constrain_resize_hcenter (window, &info, &current,
-                                (info.work_area_xinerama.width - OUTER_WIDTH (current)) / 2,
-                                new);
+      constrain_resize_right (window, &info, &current,
+                              info.work_area_xinerama.width - OUTER_WIDTH (current),
+                              new);
       current = *new;
 
       constrain_move (window, &info, &current,
