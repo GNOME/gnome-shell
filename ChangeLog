@@ -1,3 +1,7 @@
+2004-08-16  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Added nb to ALL_LINGUAS.
+
 2004-08-15  Rob Adams  <readams@readams.net>
 
 	* configure.in: Bump version to 2.8.4
