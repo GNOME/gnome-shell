@@ -1,5 +1,22 @@
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (set_supported_hint): add _NET_WM_STATE_HIDDEN 
+	to _NET_SUPPORTED
+
+	* src/keybindings.c (meta_set_keybindings_disabled): put in header
+	file, to fix warning.
+
+	* src/display.c (meta_display_open): add _NET_WM_STATE_HIDDEN atom
+
+	* src/window.c (set_net_wm_state): set _NET_WM_STATE_HIDDEN for
+	shaded and minimized windows
+	(meta_window_show): call set_net_wm_state() if we map the window
+	or frame
+	(meta_window_hide): call set_net_wm_state() if we unmap the window
+	or frame
+	
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (set_net_wm_state): only set skip pager/tasklist if
 	the app set it, don't set it again based on semantic type.
 	

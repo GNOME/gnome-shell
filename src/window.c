@@ -845,7 +845,12 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_maximized_vert;
       ++i;
     }
-
+  if (window->shaded || window->minimized)
+    {
+      data[i] = window->display->atom_net_wm_state_hidden;
+      ++i;
+    }
+  
   meta_verbose ("Setting _NET_WM_STATE with %d atoms\n", i);
   
   meta_error_trap_push (window->display);
@@ -1106,6 +1111,7 @@ meta_window_show (MetaWindow *window)
                   "Frame actually needs map\n");
       window->frame->mapped = TRUE;
       meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
+      did_show = TRUE;
     }
 
   if (window->shaded)
@@ -1150,7 +1156,6 @@ meta_window_show (MetaWindow *window)
         }
     }
 
-
   if (did_placement)
     {
       if (window->xtransient_for != None)
@@ -1179,6 +1184,8 @@ meta_window_show (MetaWindow *window)
 
   if (did_show)
     {
+      set_net_wm_state (window);
+      
       if (window->has_struts)
         {
           meta_topic (META_DEBUG_WORKAREA,
@@ -1227,9 +1234,11 @@ meta_window_hide (MetaWindow *window)
       window->iconic = TRUE;
       set_wm_state (window, IconicState);
     }
-
+  
   if (did_hide)
     {
+      set_net_wm_state (window);
+      
       if (window->has_struts)
         {
           meta_topic (META_DEBUG_WORKAREA,

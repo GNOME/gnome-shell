@@ -143,7 +143,8 @@ meta_display_open (const char *name)
     "_NET_WM_STRUT",
     "_WIN_HINTS",
     "_METACITY_RELOAD_THEME_MESSAGE",
-    "_METACITY_SET_KEYBINDINGS_MESSAGE"
+    "_METACITY_SET_KEYBINDINGS_MESSAGE",
+    "_NET_WM_STATE_HIDDEN"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -241,6 +242,7 @@ meta_display_open (const char *name)
   display->atom_win_hints = atoms[46];
   display->atom_metacity_reload_theme_message = atoms[47];
   display->atom_metacity_set_keybindings_message = atoms[48];
+  display->atom_net_wm_state_hidden = atoms[49];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
