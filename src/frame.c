@@ -29,7 +29,7 @@ meta_frame_init_info (MetaFrame     *frame,
                       MetaFrameInfo *info)
 {
   info->flags =
-    META_FRAME_ALLOWS_DELETE | META_FRAME_ALLOWS_MENU |
+    META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_DELETE |
     META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE |
     META_FRAME_ALLOWS_RESIZE;
 
@@ -198,9 +198,6 @@ meta_window_ensure_frame (MetaWindow *window)
   
   if (window->frame)
     return;
-
-  /* Need to fix Pango, it grabs the server */
-  g_return_if_fail (window->display->server_grab_count == 0);
   
   frame = g_new (MetaFrame, 1);
 
@@ -262,6 +259,9 @@ meta_window_ensure_frame (MetaWindow *window)
   meta_display_grab (window->display);
 
   meta_error_trap_push (window->display);
+  window->mapped = FALSE; /* the reparent will unmap the window,
+                           * we don't want to take that as a withdraw
+                           */
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
@@ -274,8 +274,9 @@ meta_window_ensure_frame (MetaWindow *window)
   window->rect.y = frame->child_y;
   
   /* stick frame to the window */
-  window->frame = frame;  
+  window->frame = frame;
 
+  /* Put our state back where it should be */
   if (window->iconic)
     meta_window_hide (window);
   else
@@ -306,6 +307,10 @@ meta_window_destroy_frame (MetaWindow *window)
    * thus the error trap.
    */
   meta_error_trap_push (window->display);
+  window->mapped = FALSE; /* Keep track of unmapping it, so we
+                           * can identify a withdraw initiated
+                           * by the client.
+                           */
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    window->screen->xroot,
@@ -323,6 +328,12 @@ meta_window_destroy_frame (MetaWindow *window)
   XDestroyWindow (window->display->xdisplay, frame->xwindow);
   
   g_free (frame);
+  
+  /* Put our state back where it should be */
+  if (window->iconic)
+    meta_window_hide (window);
+  else
+    meta_window_show (window);
 }
 
 void

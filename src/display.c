@@ -68,7 +68,15 @@ meta_display_open (const char *name)
   GSList *screens;
   GSList *tmp;
   int i;
-  char *atom_names[] = { "_NET_WM_NAME", "WM_PROTOCOLS", "WM_TAKE_FOCUS", "WM_DELETE_WINDOW" };
+  /* Remember to edit code that assigns each atom to display struct
+   * when adding an atom name here.
+   */
+  char *atom_names[] = {
+    "_NET_WM_NAME",
+    "WM_PROTOCOLS",
+    "WM_TAKE_FOCUS",
+    "WM_DELETE_WINDOW"
+  };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
   meta_verbose ("Opening display '%s'\n", XDisplayName (name));
@@ -136,6 +144,9 @@ meta_display_open (const char *name)
   XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   display->atom_net_wm_name = atoms[0];
+  display->atom_wm_protocols = atoms[1];
+  display->atom_wm_take_focus = atoms[2];
+  display->atom_wm_delete_window = atoms[3];
   
   /* Now manage all existing windows */
   tmp = display->screens;
@@ -184,6 +195,8 @@ meta_display_close (MetaDisplay *display)
 
   winlist = g_slist_sort (winlist, ptrcmp);
 
+  /* Unmanage all windows */
+  meta_display_grab (display);
   tmp = winlist;
   while (tmp != NULL)
     {      
@@ -194,6 +207,7 @@ meta_display_close (MetaDisplay *display)
       tmp = tmp->next;
     }
   g_slist_free (winlist);
+  meta_display_ungrab (display);
 
   /* Must be after all calls to meta_window_free() since they
    * unregister windows
@@ -397,10 +411,16 @@ event_queue_callback (MetaEventQueue *queue,
         meta_window_free (window); /* Unmanage destroyed window */
       break;
     case UnmapNotify:
-      if (window)
-        meta_window_free (window); /* Unmanage withdrawn window */
+      if (window && window->mapped)
+        {
+          meta_verbose ("Window %s withdrawn\n",
+                        window->desc);
+          meta_window_free (window); /* Unmanage withdrawn window */
+        }
       break;
     case MapNotify:
+      if (window)
+        window->mapped = TRUE;
       break;
     case MapRequest:
       if (window == NULL)
@@ -414,6 +434,8 @@ event_queue_callback (MetaEventQueue *queue,
           /* Unmanage it, override_redirect was toggled on?
            * Can this happen?
            */
+          meta_verbose ("Window %s toggled on override redirect\n",
+                        window->desc);
           meta_window_free (window);
         }
       break;

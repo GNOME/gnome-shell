@@ -37,8 +37,25 @@ struct _MetaWindow
   Visual *xvisual;
   char *desc; /* used in debug spew */
   char *title;
-  
+
+  /* Mapped is what we think the mapped state should be;
+   * so if we get UnmapNotify and mapped == TRUE then
+   * it's a withdraw, if mapped == FALSE the UnmapNotify
+   * is caused by us.
+   */
+  guint mapped : 1;
+  /* Minimize is the state controlled by the minimize button */
+  guint minimized : 1;
+  /* Iconic is the state in WM_STATE; happens for workspaces/shading
+   * in addition to minimize
+   */
   guint iconic : 1;
+  /* initially_iconic is the WM_HINTS setting when we first manage
+   * the window.
+   */
+  guint initially_iconic : 1;
+  
+  /* These are the two flags from WM_PROTOCOLS */
   guint take_focus : 1;
   guint delete_window : 1;
   /* Globally active / No input */
@@ -58,11 +75,13 @@ struct _MetaWindow
   XSizeHints size_hints;
 };
 
-MetaWindow* meta_window_new       (MetaDisplay *display,
-                                   Window       xwindow);
-void        meta_window_free      (MetaWindow  *window);
-void        meta_window_show      (MetaWindow  *window);
-void        meta_window_hide      (MetaWindow  *window);
+MetaWindow* meta_window_new        (MetaDisplay *display,
+                                    Window       xwindow);
+void        meta_window_free       (MetaWindow  *window);
+void        meta_window_show       (MetaWindow  *window);
+void        meta_window_hide       (MetaWindow  *window);
+void        meta_window_minimize   (MetaWindow  *window);
+void        meta_window_unminimize (MetaWindow  *window);
 void        meta_window_resize    (MetaWindow  *window,
                                    int          w,
                                    int          h);

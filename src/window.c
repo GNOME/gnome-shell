@@ -121,12 +121,16 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->xvisual = attrs.visual;
 
   window->title = NULL;
-  window->iconic = FALSE;
 
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
   window->frame = NULL;
   window->has_focus = FALSE;
+
+  window->initially_iconic = FALSE;
+  window->minimized = FALSE;
+  window->iconic = FALSE;
+  window->mapped = FALSE;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
@@ -134,10 +138,24 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   update_title (window);
   update_protocols (window);  
   update_wm_hints (window);
+
+  if (window->initially_iconic)
+    {
+      /* WM_HINTS said iconic */
+      window->iconic = TRUE;
+    }
   
   meta_window_resize (window, window->size_hints.width, window->size_hints.height);
   
   meta_window_ensure_frame (window);
+
+  /* Put our state where it should be (ensure_frame also did this
+   * for decorated windows, but should be harmless to do twice)
+   */
+  if (window->iconic)
+    meta_window_hide (window);
+  else
+    meta_window_show (window);
   
   return window;
 }
@@ -150,6 +168,15 @@ meta_window_free (MetaWindow  *window)
   meta_display_unregister_x_window (window->display, window->xwindow);
 
   meta_window_destroy_frame (window);
+
+  /* Put back anything we messed up */
+  meta_error_trap_push (window->display);
+  if (window->border_width != 0)
+    XSetWindowBorderWidth (window->display->xdisplay,
+                           window->xwindow,
+                           window->border_width);
+  
+  meta_error_trap_pop (window->display);
   
   g_free (window->title);
   g_free (window->desc);
@@ -163,7 +190,15 @@ meta_window_show (MetaWindow *window)
     XMapWindow (window->display->xdisplay, window->frame->xwindow);
   XMapWindow (window->display->xdisplay, window->xwindow);
 
+  /* These flags aren't always in sync, iconic
+   * is set only here in show/hide, mapped
+   * can be set in a couple other places where
+   * we map/unmap
+   */
+  window->mapped = TRUE;
   window->iconic = FALSE;
+
+  /* FIXME update WM_STATE */
 }
 
 void
@@ -173,7 +208,30 @@ meta_window_hide (MetaWindow *window)
     XUnmapWindow (window->display->xdisplay, window->frame->xwindow);
   XUnmapWindow (window->display->xdisplay, window->xwindow);
 
+  window->mapped = FALSE;
   window->iconic = TRUE;
+
+  /* FIXME update WM_STATE */
+}
+
+void
+meta_window_minimize (MetaWindow  *window)
+{
+  if (!window->minimized)
+    {
+      window->minimized = TRUE;
+      meta_window_hide (window);
+    }
+}
+
+void
+meta_window_unminimize (MetaWindow  *window)
+{
+  if (window->minimized)
+    {
+      window->minimized = FALSE;
+      meta_window_show (window);
+    }
 }
 
 void
@@ -206,9 +264,20 @@ meta_window_delete (MetaWindow  *window,
                     Time         timestamp)
 {
   meta_error_trap_push (window->display);
-  meta_window_send_icccm_message (window,
-                                  window->display->atom_wm_delete_window,
-                                  timestamp);
+  if (window->delete_window)
+    {
+      meta_verbose ("Deleting %s with delete_window request\n",
+                    window->desc);
+      meta_window_send_icccm_message (window,
+                                      window->display->atom_wm_delete_window,
+                                      timestamp);
+    }
+  else
+    {
+      meta_verbose ("Deleting %s with explicit kill\n",
+                    window->desc);
+      XKillClient (window->display->xdisplay, window->xwindow);
+    }
   meta_error_trap_pop (window->display);
 }
 
@@ -318,6 +387,13 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom == window->display->atom_wm_protocols)
     {
       update_protocols (window);
+
+      if (window->frame)
+        meta_frame_queue_recalc (window->frame);
+    }
+  else if (event->atom == XA_WM_HINTS)
+    {
+      update_wm_hints (window);
 
       if (window->frame)
         meta_frame_queue_recalc (window->frame);
@@ -698,7 +774,7 @@ update_protocols (MetaWindow *window)
   if (XGetWMProtocols (window->display->xdisplay,
                        window->xwindow,
                        &protocols,
-                       &n_protocols) == Success)
+                       &n_protocols))
     {
       i = 0;
       while (i < n_protocols)
@@ -727,6 +803,7 @@ update_wm_hints (MetaWindow *window)
 
   /* Fill in defaults */
   window->input = FALSE;
+  window->initially_iconic = FALSE;
   
   meta_error_trap_push (window->display);
   
@@ -735,9 +812,14 @@ update_wm_hints (MetaWindow *window)
   if (hints)
     {
       window->input = (hints->flags & InputHint) != 0;
+
+      window->initially_iconic = (hints->initial_state == IconicState);
       
       /* FIXME there are a few others there. */
 
+      meta_verbose ("Read WM_HINTS input: %d iconic: %d\n",
+                    window->input, window->initially_iconic);
+      
       XFree (hints);
     }
   
