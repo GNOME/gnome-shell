@@ -29,6 +29,7 @@
 #include "workspace.h"
 #include "keybindings.h"
 #include "stack.h"
+#include "xprops.h"
 
 #ifdef HAVE_XINERAMA
 #include <X11/extensions/Xinerama.h>
@@ -82,7 +83,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 31
+#define N_SUPPORTED 32
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -117,6 +118,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[28] = screen->display->atom_net_active_window;
   atoms[29] = screen->display->atom_net_wm_workarea;
   atoms[30] = screen->display->atom_net_show_desktop;
+  atoms[31] = screen->display->atom_net_desktop_layout;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -226,6 +228,10 @@ meta_screen_new (MetaDisplay *display,
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
 
   screen->work_area_idle = 0;
+
+  screen->rows_of_workspaces = 1;
+  screen->columns_of_workspaces = -1;
+  screen->vertical_workspaces = FALSE;
   
   screen->xinerama_infos = NULL;
   screen->n_xinerama_infos = 0;
@@ -320,6 +326,8 @@ meta_screen_new (MetaDisplay *display,
   set_supported_hint (screen);
   
   set_wm_check_hint (screen);
+
+  meta_screen_update_workspace_layout (screen);
   
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
@@ -798,4 +806,73 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
   /* FIXME how do we decide which is current? */
   
   return &screen->xinerama_infos[0];
+}
+
+#define _NET_WM_ORIENTATION_HORZ 0
+#define _NET_WM_ORIENTATION_VERT 1
+
+void
+meta_screen_update_workspace_layout (MetaScreen *screen)
+{
+  gulong *list;
+  int n_items;
+  
+  list = NULL;
+  n_items = 0;
+
+  if (meta_prop_get_cardinal_list (screen->display,
+                                   screen->xroot,
+                                   screen->display->atom_net_desktop_layout,
+                                   &list, &n_items))
+    {
+      if (n_items == 3)
+        {
+          int cols, rows;
+          
+          switch (list[0])
+            {
+            case _NET_WM_ORIENTATION_HORZ:
+              screen->vertical_workspaces = FALSE;
+              break;
+            case _NET_WM_ORIENTATION_VERT:
+              screen->vertical_workspaces = TRUE;
+              break;
+            default:
+              meta_warning ("Someone set a weird orientation in _NET_DESKTOP_LAYOUT\n");
+              break;
+            }
+
+          rows = list[1];
+          cols = list[2];
+
+          if (rows <= 0 && cols <= 0)
+            {
+              meta_warning ("Columns = %d rows = %d in _NET_DESKTOP_LAYOUT makes no sense\n", rows, cols);
+            }
+          else
+            {
+              if (rows > 0)
+                screen->rows_of_workspaces = rows;
+              else
+                screen->rows_of_workspaces = -1;
+              
+              if (cols > 0)
+                screen->columns_of_workspaces = cols;
+              else
+                screen->columns_of_workspaces = -1;
+            }
+        }
+      else
+        {
+          meta_warning ("Someone set _NET_DESKTOP_LAYOUT to %d integers instead of 3\n",
+                        n_items);
+        }
+
+      meta_XFree (list);
+    }
+
+  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d\n",
+                screen->rows_of_workspaces,
+                screen->columns_of_workspaces,
+                screen->vertical_workspaces);
 }

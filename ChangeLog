@@ -1,3 +1,14 @@
+2002-05-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_get_neighbor): use the layout
+	information to figure out up/down neighbors
+
+	* src/display.c (event_callback): catch propertynotify on 
+	_NET_DESKTOP_LAYOUT
+
+	* src/screen.c (meta_screen_update_workspace_layout): keep track
+	of the layout of workspaces as set by the pager
+
 2002-05-15  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Minor tweak to minimize

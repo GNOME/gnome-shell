@@ -130,6 +130,7 @@ struct _MetaDisplay
   Atom atom_net_wm_state_fullscreen;
   Atom atom_net_wm_workarea;
   Atom atom_net_show_desktop;
+  Atom atom_net_desktop_layout;
   
   /* This is the actual window from focus events,
    * not the one we last set

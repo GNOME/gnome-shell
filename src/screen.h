@@ -64,6 +64,10 @@ struct _MetaScreen
   int n_xinerama_infos;
 
   guint work_area_idle;
+
+  int rows_of_workspaces;
+  int columns_of_workspaces;
+  guint vertical_workspaces : 1;
   
   guint keys_grabbed : 1;
 };
@@ -91,6 +95,8 @@ void          meta_screen_focus_top_window    (MetaScreen                 *scree
                                                MetaWindow                 *not_this_one);
 
 const MetaXineramaScreenInfo* meta_screen_get_current_xinerama (MetaScreen *screen);
+
+void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 
 #endif
 

@@ -206,7 +206,8 @@ meta_display_open (const char *name)
     "_NET_WM_PID",
     "WM_CLIENT_MACHINE",
     "_NET_WM_WORKAREA",
-    "_NET_SHOW_DESKTOP"
+    "_NET_SHOW_DESKTOP",
+    "_NET_DESKTOP_LAYOUT"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -315,6 +316,7 @@ meta_display_open (const char *name)
   display->atom_wm_client_machine = atoms[55];
   display->atom_net_wm_workarea = atoms[56];
   display->atom_net_show_desktop = atoms[57];
+  display->atom_net_desktop_layout = atoms[58];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1241,6 +1243,20 @@ event_callback (XEvent   *event,
     case PropertyNotify:
       if (window && !frame_was_receiver)
         meta_window_property_notify (window, event);
+      else
+        {
+          MetaScreen *screen;
+
+          screen = meta_display_screen_for_root (display,
+                                                 event->xproperty.window);
+
+          if (screen)
+            {
+              if (event->xproperty.atom ==
+                  display->atom_net_desktop_layout)
+                meta_screen_update_workspace_layout (screen);
+            }
+        }
       break;
     case SelectionClear:
       break;

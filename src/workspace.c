@@ -516,33 +516,123 @@ MetaWorkspace*
 meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                              MetaMotionDirection direction)
 {
-  /* FIXME this isn't using any sane layout, just assuming
-   * the spaces are in a big row
-   */
-  int i, num_workspaces;
+  int i, num_workspaces, grid_area;
+  int rows, cols;
   
   i = meta_workspace_index (workspace);
+  num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
+  
+  /*
+   * 3 rows, 4 columns, horizontal layout:
+   *  +--+--+--+--+
+   *  | 1| 2| 3| 4|
+   *  +--+--+--+--+
+   *  | 5| 6| 7| 8|
+   *  +--+--+--+--+
+   *  | 9|10|11|12|
+   *  +--+--+--+--+
+   *
+   * vertical layout:
+   *  +--+--+--+--+
+   *  | 1| 4| 7|10|
+   *  +--+--+--+--+
+   *  | 2| 5| 8|11|
+   *  +--+--+--+--+
+   *  | 3| 6| 9|12|
+   *  +--+--+--+--+
+   *
+   */
+     
+  rows = workspace->screen->rows_of_workspaces;
+  cols = workspace->screen->columns_of_workspaces;
+  if (rows <= 0 && cols <= 0)
+    cols = num_workspaces;
 
-  /* Wrap from the last workspace to the first one, and vice-versa */
-  num_workspaces = g_list_length (workspace->screen->display->workspaces);
+  if (rows <= 0)
+    rows = num_workspaces / cols + ((num_workspaces % cols) > 0 ? 1 : 0);
+  if (cols <= 0)
+    cols = num_workspaces / rows + ((num_workspaces % rows) > 0 ? 1 : 0);
 
-  switch (direction)
+  /* paranoia */
+  if (rows < 1)
+    rows = 1;
+  if (cols < 1)
+    cols = 1;
+
+  grid_area = rows * cols;
+  
+  meta_verbose ("Getting neighbor rows = %d cols = %d vert = %d "
+                "current = %d num_spaces = %d neighbor = %d\n",
+                rows, cols, workspace->screen->vertical_workspaces,
+                i, num_workspaces, direction);
+
+  if (workspace->screen->vertical_workspaces)
     {
-    case META_MOTION_LEFT:
-      --i;
-      if (i == -1)
-        i = num_workspaces - 1;
-      break;
-    case META_MOTION_RIGHT:
-      ++i;
-      if (i == num_workspaces)
-        i = 0;
-      break;
-    case META_MOTION_UP:
-    case META_MOTION_DOWN:
-      return NULL;
+      switch (direction)
+        {
+        case META_MOTION_LEFT:
+          if (i < rows)
+            {
+              i = grid_area - (i % rows) - 1;
+              while (i >= num_workspaces)
+                i -= rows;
+            }
+          else
+            i -= rows;
+          break;
+        case META_MOTION_RIGHT:
+          if ((i + rows) >= num_workspaces)
+            i = i + rows - num_workspaces;
+          else
+            i += rows;
+          break;
+        case META_MOTION_UP:
+          --i;
+          if (i == -1)
+            i = num_workspaces - 1;
+          break;
+        case META_MOTION_DOWN:
+          ++i;
+          if (i == num_workspaces)
+            i = 0;
+          break;
+        }
     }
+  else
+    {
+      switch (direction)
+        {
+        case META_MOTION_LEFT:
+          --i;
+          if (i == -1)
+            i = num_workspaces - 1;
+          break;
+        case META_MOTION_RIGHT:
+          ++i;
+          if (i == num_workspaces)
+            i = 0;
+          break;
+        case META_MOTION_UP:
+          if (i < cols)
+            {
+              i = grid_area - (i % cols) - 1;
+              while (i >= num_workspaces)
+                i -= cols;
+            }
+          else
+            i -= cols;
+          break;
+        case META_MOTION_DOWN:
+          if ((i + cols) >= num_workspaces)
+            i = i + cols - num_workspaces;
+          else
+            i += cols;
+          break;
+        }        
+    }     
 
+  meta_verbose ("Neighbor space is %d\n", i);
+  
   return meta_display_get_workspace_by_index (workspace->screen->display,
                                               i);
 }
