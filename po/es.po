@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
-"POT-Creation-Date: 2002-08-23 04:40+0200\n"
+"POT-Creation-Date: 2002-08-24 04:40+0200\n"
 "PO-Revision-Date: 2002-08-21 14:51GMT-03:00\n"
 "Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -351,7 +351,7 @@ msgstr "Colocar ventana debajo de otras ventanas"
 
 #: src/metacity.schemas.in.h:15
 msgid "Maximize a window"
-msgstr "Maximiza una ventana"
+msgstr "Maximizar una ventana"
 
 #: src/metacity.schemas.in.h:16
 msgid "Minimize a window"
