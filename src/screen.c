@@ -1224,9 +1224,9 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   /* don't show tab popup, since proper space isn't selected yet */
 }
 
-void
-meta_screen_focus_mouse_window (MetaScreen  *screen,
-                                MetaWindow  *not_this_one)
+MetaWindow*
+meta_screen_get_mouse_window (MetaScreen  *screen,
+                              MetaWindow  *not_this_one)
 {
   MetaWindow *window;
   Window root_return, child_return;
@@ -1256,22 +1256,7 @@ meta_screen_focus_mouse_window (MetaScreen  *screen,
                                                          root_x_return,
                                                          root_y_return);
 
-  /* FIXME I'm a loser on the CurrentTime front */
-  if (window)
-    {
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing mouse window %s\n", window->desc);
-
-      meta_window_focus (window, meta_display_get_current_time (screen->display));
-
-      /* Also raise the window if in click-to-focus */
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        meta_window_raise (window);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_FOCUS, "No mouse window to focus found\n");
-    }
+  return window;
 }
 
 const MetaXineramaScreenInfo*

@@ -1,5 +1,31 @@
 2004-06-24  Elijah Newren  <newren@math.utah.edu>
 
+	Make choice of focus window be consistent for each focus mode.
+	Fixes #135810.
+
+	* src/delete.c: (meta_window_delete): In some #if 0'ed code,
+	replace meta_workspace_focus_mru_window with
+	meta_workspace_focus_default_window (just in case the code becomes
+	un-#if 0'ed out).
+
+	* src/screen.c, src/screen.h: Change
+	meta_screen_focus_mouse_window to meta_screen_get_mouse_window,
+	and don't focus the window when found but rather return it.
+
+	* src/window.c: (meta_window_free, meta_window_minimize): replace
+	meta_workspace_focus_mru_window with
+	meta_workspace_focus_default_window.
+
+	* src/workspace.c: (meta_workspace_focus_default_window): Focus
+	appropriately for the given focus method:
+	   click-to-focus: focus MRU window (== toplevel window)
+	   sloppy focus:   focus the window under the pointer if there is
+	                   such a window, otherwise focus the mru window
+	   mouse focus:    focus the window under the pointer if there is
+	                   such a window, otherwise don't focus anything
+
+2004-06-24  Elijah Newren  <newren@math.utah.edu>
+
 	* src/window.c: Avoid a race condition on the choice of window to
 	focus after the previously focused window gets closed or
 	minimized.  Fixes #131582.

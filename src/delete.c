@@ -396,10 +396,10 @@ meta_window_delete (MetaWindow  *window,
        * I don't know how to avoid that though.
        */
       meta_topic (META_DEBUG_FOCUS,
-                  "Focusing MRU window because focus window %s was deleted/killed\n",
+                  "Focusing default window because focus window %s was deleted/killed\n",
                   window->desc);
-      meta_workspace_focus_mru_window (window->screen->active_workspace,
-                                       window);
+      meta_workspace_focus_default_window (window->screen->active_workspace,
+                                           window);
 #else
       meta_topic (META_DEBUG_FOCUS,
                   "Not unfocusing %s on delete/kill\n",

@@ -784,7 +784,21 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
   if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
     meta_workspace_focus_mru_window (workspace, not_this_one);
   else
-    meta_screen_focus_mouse_window (workspace->screen, not_this_one);
+    {
+      MetaWindow * window;
+      window = meta_screen_get_mouse_window (workspace->screen, not_this_one);
+      if (window)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focusing mouse window %s\n", window->desc);
+
+          meta_window_focus (window, meta_display_get_current_time (workspace->screen->display));
+        }
+      else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_SLOPPY)
+        meta_workspace_focus_mru_window (workspace, not_this_one);
+      else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_MOUSE)
+        meta_topic (META_DEBUG_FOCUS, "No mouse window to focus found\n");
+    }
 }
 
 /* Focus MRU window (or top window if failed) on active workspace */

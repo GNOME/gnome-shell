@@ -925,17 +925,17 @@ meta_window_free (MetaWindow  *window)
   if (window->has_focus)
     {
       meta_topic (META_DEBUG_FOCUS,
-                  "Focusing top window since we're unmanaging %s\n",
+                  "Focusing default window since we're unmanaging %s\n",
                   window->desc);
-      meta_workspace_focus_mru_window (window->screen->active_workspace, window);
+      meta_workspace_focus_default_window (window->screen->active_workspace, window);
     }
   else if (window->display->expected_focus_window == window)
     {
       meta_topic (META_DEBUG_FOCUS,
-                  "Focusing top window since expected focus window freed %s\n",
+                  "Focusing default window since expected focus window freed %s\n",
                   window->desc);
       window->display->expected_focus_window = NULL;
-      meta_workspace_focus_mru_window (window->screen->active_workspace, window);
+      meta_workspace_focus_default_window (window->screen->active_workspace, window);
     }
   else
     {
@@ -1380,7 +1380,7 @@ idle_calc_showing (gpointer data)
   GSList *should_hide;
   GSList *unplaced;
   GSList *displays;
-  
+
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Clearing the calc_showing queue\n");
 
@@ -1902,9 +1902,9 @@ meta_window_minimize (MetaWindow  *window)
       if (window->has_focus)
         {
           meta_topic (META_DEBUG_FOCUS,
-                      "Focusing top window due to minimization of focus window %s\n",
+                      "Focusing default window due to minimization of focus window %s\n",
                       window->desc);
-          meta_workspace_focus_mru_window (window->screen->active_workspace, window);
+          meta_workspace_focus_default_window (window->screen->active_workspace, window);
         }
       else
         {
