@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+src/tools/metacity-message.c
 src/delete.c
 src/display.c
 src/errors.c

@@ -6,13 +6,23 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-11-12 20:40+0100\n"
+"POT-Creation-Date: 2002-12-11 18:06+0100\n"
+"PO-Revision-Date: 2002-12-11 18:06+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Verwendung: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr ""
+"Metacity wurde ohne Unterstützung für den redseligen Modus kompiliert\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -51,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 
-#: src/display.c:270
+#: src/display.c:273
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
@@ -193,7 +203,7 @@ msgstr "Auf _alle Arbeitsflächen legen"
 msgid "Only on _This Workspace"
 msgstr "Nur auf _dieser Arbeitsfläche"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1680
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
@@ -498,14 +508,12 @@ msgid "Maximize a window"
 msgstr "Ein Fenster maximieren"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "Ein Fenster maximieren"
+msgstr "Fenster horizontal maximieren"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "Ein Fenster maximieren"
+msgstr "Fenster vertikal maximieren"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
@@ -520,41 +528,35 @@ msgid "Move a window"
 msgstr "Ein Fenster verschieben"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Fokus sofort zwischen den Panels und dem Desktop durchreichen"
+msgstr ""
+"Fokus sofort rückwärts zwischen den Panels und dem Desktop durchreichen"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
-"Fokus zwischen den Panels und dem Desktop unter Verwendung der Fensterliste "
-"durchreichen"
+"Fokus rückwärts zwischen den Panels und dem Desktop unter Verwendung der "
+"Fensterliste durchreichen"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "Fokus sofort zwischen den Fenstern durchreichen"
+msgstr "Fokus sofort rückwärts zwischen den Fenstern durchreichen"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
 msgstr "Fokus sofort zwischen den Panels und dem Desktop durchreichen"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
 msgstr ""
 "Fokus zwischen den Panels und dem Desktop unter Verwendung der Fensterliste "
 "durchreichen"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between windows immediately"
 msgstr "Fokus sofort zwischen den Fenstern durchreichen"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between windows with popup"
 msgstr ""
 "Fokus zwischen den Fenstern unter Verwendung der Fensterliste durchreichen"
@@ -647,7 +649,6 @@ msgstr ""
 "versehentliche Anfordern von zig-Millionen Arbeitsflächen zerstört wird)"
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
 msgstr "Fenster anheben, falls im Hintergrund, andernfalls absenken"
 
@@ -745,12 +746,10 @@ msgid "Switch to workspace 9"
 msgstr "Zur Arbeitsfläche 9 wechseln"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
 msgstr "Zur Arbeitsfläche oberhalb der Aktuellen wechseln"
 
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
 msgstr "Zur Arbeitsfläche unterhalb der Aktuellen wechseln"
 
@@ -1690,7 +1689,6 @@ msgstr ""
 "Aktion keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1699,15 +1697,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Diese Tastenkombination hebt ein Fenster vor die anderen Fenster an. Das "
-"Format ist »&lt;Control&gt;a« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
-"sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese "
-"diese Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese "
-"Aktion keine Tastenkombination festgelegt."
+"Diese Tastenkombination vergrößert ein Fenster, sodass dieses den gesamten "
+"verfügbaren horizontalen Platz ausfüllt. Das Format ist »&lt;Control&gt;"
+"a« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht "
+"liberal und erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. "
+"»&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die "
+"Zeichenkette »disabled« gesetzt ist, wird für diese Aktion keine "
+"Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1716,24 +1714,24 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Diese Tastenkombination hebt ein Fenster vor die anderen Fenster an. Das "
-"Format ist »&lt;Control&gt;a« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
-"sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese "
-"diese Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese "
-"Aktion keine Tastenkombination festgelegt."
+"Diese Tastenkombination vergrößert ein Fenster, sodass dieses den gesamten "
+"verfügbaren vertikalen Platz ausfüllt. Das Format ist »&lt;Control&gt;"
+"a« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht "
+"liberal und erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. "
+"»&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die "
+"Zeichenkette »disabled« gesetzt ist, wird für diese Aktion keine "
+"Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
-"Dieser Schlüssel legt fest, was bei einem Doppelklick auf die Titelleiste "
-"passieren soll. Folgende Werte sind zur Zeit gültig: »toggle_shade« hat zur "
-"Folge, dass das Fenster ein- oder ausgerollt wird, »toggle_maximize« "
-"bewirkt, dass das Fenster maximiert bzw. wiederhergestellt wird."
+"Was soll bei einem Doppelklick auf die Titelleiste passieren? Folgende Werte "
+"sind zur Zeit gültig: »toggle_shaded« hat zur Folge, dass das Fenster ein- "
+"oder ausgerollt wird und »toggle_maximized« bewirkt, dass das Fenster "
+"maximiert bzw. wiederhergestellt wird."
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
@@ -1748,9 +1746,8 @@ msgid "Toggle shaded state"
 msgstr "Fenster ein- und wieder ausrollen"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "Ob das Fenster auf allen Arbeitsflächen sichtbar ist."
+msgstr "Soll das Fenster auf allen Arbeitsflächen sichtbar sein?"
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
@@ -1768,15 +1765,16 @@ msgstr "Modus des Fensterfokus"
 msgid "Window title font"
 msgstr "Schrift für Fenstertitel"
 
-#: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
-#: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
-#: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
-#: src/prefs.c:618 src/prefs.c:635 src/prefs.c:651 src/prefs.c:667
+#: src/prefs.c:430 src/prefs.c:446 src/prefs.c:462 src/prefs.c:478
+#: src/prefs.c:494 src/prefs.c:514 src/prefs.c:530 src/prefs.c:546
+#: src/prefs.c:562 src/prefs.c:578 src/prefs.c:594 src/prefs.c:610
+#: src/prefs.c:625 src/prefs.c:641 src/prefs.c:658 src/prefs.c:674
+#: src/prefs.c:690
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-Schlüssel »%s« hat einen ungültigen Typ\n"
 
-#: src/prefs.c:712
+#: src/prefs.c:735
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1785,19 +1783,19 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein gültiger Wert für "
 "den Mausknopf-Umschalter\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:759 src/prefs.c:1131
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-Schlüssel »%s« hat einen ungültigen Wert\n"
 
-#: src/prefs.c:820
+#: src/prefs.c:843
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Schriftbeschreibung »%s« aus GConf-Schlüssel %s konnte nicht interpretiert "
 "werden\n"
 
-#: src/prefs.c:1005
+#: src/prefs.c:1028
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1806,7 +1804,7 @@ msgstr ""
 "%d, gespeichert in GConf-Schlüssel %s ist keine sinnvolle Anzahl der "
 "Arbeitsflächen; das aktuelle Maximum ist %d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1093
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1814,18 +1812,18 @@ msgstr ""
 "Provisorien (Workarounds) für defekte Anwendungen abgeschaltet. "
 "Möglicherweise funktionieren manche Anwendungen nicht richtig.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1158
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d, gespeichert in GConf-Schlüssel %s, liegt außerhalb des Bereichs 0-%d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1253
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fehler beim Festlegen der Anzahl der Arbeitsflächen auf %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1471
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1834,7 +1832,7 @@ msgstr ""
 "In der Konfigurationsdatenbank gefundenes »%s« ist kein gültiger Wert für "
 "die Tastenkombination »%s«\n"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1756
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fehler beim Festlegen des Namens der Arbeitsflächen %d auf »%s«: %s\n"
@@ -2807,23 +2805,19 @@ msgstr "Protokolldatei %s konnte nicht mit fdopen() geöffnet werden: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Protokolldatei %s geöffnet\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Fenstermanager:"
 
-#: src/util.c:343
+#: src/util.c:345
 msgid "Bug in window manager: "
 msgstr "Fehler in Fenstermanager:"
 
-#: src/util.c:372
+#: src/util.c:374
 msgid "Window manager warning: "
 msgstr "Fenstermanager-Warnung:"
 
-#: src/util.c:396
+#: src/util.c:398
 msgid "Window manager error: "
 msgstr "Fenstermanager-Fehler:"
 
@@ -2833,7 +2827,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4859
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2855,7 +2849,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5419
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
