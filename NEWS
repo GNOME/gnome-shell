@@ -1,3 +1,15 @@
+2.7.1
+===
+
+Thanks to Rob Adams for fixes in this release.
+
+ - bug #122016 - fix a focus race
+ - Change move_to_workspace_left/right/up/down keybindings to
+   <Control><Alt><Shift> arrow to avoid conflicting with new
+   keybindings in spacial nautilus.
+ - fix dialog stacking order issues so e.g. panel properties 
+   dialog is above the panel
+
 2.7.0
 ===
 
