@@ -238,12 +238,6 @@ meta_session_init (const char *previous_client_id,
   
   mask = SmcSaveYourselfProcMask | SmcDieProcMask |
     SmcSaveCompleteProcMask | SmcShutdownCancelledProcMask;
-
-#if 0
-  /* note this isn't in the mask above */
-  callbacks.interact.callback = interact_callback;
-  callbacks.interact.client_data = NULL;
-#endif
   
   callbacks.save_yourself.callback = save_yourself_callback;
   callbacks.save_yourself.client_data = NULL;
@@ -496,13 +490,13 @@ static void
 save_complete_callback (SmcConn smc_conn, SmPointer client_data)
 {
   /* nothing */
-  meta_topic (META_DEBUG_SM, "SaveComplete received");
+  meta_topic (META_DEBUG_SM, "SaveComplete received\n");
 }
 
 static void
 shutdown_cancelled_callback (SmcConn smc_conn, SmPointer client_data)
 {
-  meta_topic (META_DEBUG_SM, "Shutdown cancelled received");
+  meta_topic (META_DEBUG_SM, "Shutdown cancelled received\n");
   
   if (session_connection != NULL &&
       (current_state != STATE_IDLE && current_state != STATE_FROZEN))
@@ -518,7 +512,7 @@ interact_callback (SmcConn smc_conn, SmPointer client_data)
   /* nothing */
   gboolean shutdown;
 
-  meta_topic (META_DEBUG_SM, "Interaction permission received");
+  meta_topic (META_DEBUG_SM, "Interaction permission received\n");
   
   shutdown = GPOINTER_TO_INT (client_data);
 

@@ -1,5 +1,12 @@
 2002-06-01  Havoc Pennington  <hp@pobox.com>
 
+	* src/session.c: add some missing \n
+	(meta_session_init): remove the #if 0 interact callback from our
+	initial SmcOpenConnection call, this arg to SmcOpenConnection
+	doesn't exist.
+
+2002-06-01  Havoc Pennington  <hp@pobox.com>
+
 	* src/session.c: put in more debug spew about the session
 
 2002-05-30  Havoc Pennington  <hp@pobox.com>
