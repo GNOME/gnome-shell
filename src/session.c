@@ -246,10 +246,11 @@ meta_session_init (const char *previous_id)
     current_state = STATE_REGISTERING;
   
   {
-    SmProp prop1, prop2, prop3, prop4, prop5, *props[5];
-    SmPropValue prop1val, prop2val, prop3val, prop4val, prop5val;
+    SmProp prop1, prop2, prop3, prop4, prop5, prop6, *props[6];
+    SmPropValue prop1val, prop2val, prop3val, prop4val, prop5val, prop6val;
     char pid[32];
     char hint = SmRestartIfRunning;
+    char priority = 20; /* low to run before other apps */
     
     prop1.name = SmProgram;
     prop1.type = SmARRAY8;
@@ -290,14 +291,22 @@ meta_session_init (const char *previous_id)
     prop5.vals = &prop5val;
     prop5val.value = g_get_home_dir ();
     prop5val.length = strlen (prop5val.value);
+
+    prop6.name = "_GSM_Priority";
+    prop6.type = SmCARD8
+    prop6.num_vals = 1;
+    prop6.vals = &prop6val;
+    prop6val.value = &priority;
+    prop6val.length = 1;
     
     props[0] = &prop1;
     props[1] = &prop2;
     props[2] = &prop3;
     props[3] = &prop4;
     props[4] = &prop5;
+    props[5] = &prop6;
     
-    SmcSetProperties (session_connection, 5, props);
+    SmcSetProperties (session_connection, 6, props);
   }
 
   set_clone_restart_commands ();

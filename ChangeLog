@@ -1,3 +1,8 @@
+2001-10-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (meta_session_init): set the session manager
+	priority so we start up before other apps.
+
 2001-10-12  Mikael Hallendal  <micke@codefactory.se>
 
 	* src/ui.c (meta_ui_get_default_window_icon): use
