@@ -42,9 +42,7 @@
 #define ALPHA_TO_UCHAR(d) ((unsigned char) ((d) * 255))
 
 #define DEBUG_FILL_STRUCT(s) memset ((s), 0xef, sizeof (*(s)))
-#define INTENSITY(r, g, b) (r * 0.30 + g * 0.59 + b * 0.11)
 #define CLAMP_UCHAR(v) ((guchar) (CLAMP (((int)v), (int)0, (int)255)))
-
 #define INTENSITY(r, g, b) ((r) * 0.30 + (g) * 0.59 + (b) * 0.11)
 
 /* Converts from HSV to RGB */

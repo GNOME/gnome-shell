@@ -1,5 +1,9 @@
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (INTENSITY): don't define the macro twice
+
+2002-02-07  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (colorize_pixbuf): get algorithm right (use HSV/RGB
 	conversion) at cost of making it a lot slower. It doesn't matter
 	anyhow with the cache, though.
