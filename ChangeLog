@@ -1,3 +1,7 @@
+2001-11-27  Jesus Bravo Alvarez  <jba@pobox.com>
+
+	* configure.in: Added gl (Galician) to ALL_LINGUAS.
+
 Tue Nov 20 18:49:16 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (found_sm): Add some additional quoting to
