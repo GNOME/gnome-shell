@@ -1,3 +1,4 @@
+lib_LTLIBRARIES = libmetacity-private.la
 
 SUBDIRS=wm-tester tools themes
 
@@ -80,7 +81,7 @@ metacity_SOURCES= 				\
 	xprops.h				\
 	$(EGGFILES)
 
-metacity_theme_viewer_SOURCES=  \
+libmetacity_private_la_SOURCES=	\
 	gradient.c		\
 	gradient.h		\
 	preview-widget.c	\
@@ -89,9 +90,20 @@ metacity_theme_viewer_SOURCES=  \
 	theme.h			\
 	theme-parser.c		\
 	theme-parser.h		\
-	theme-viewer.c		\
 	util.c			\
 	util.h	
+
+libmetacityincludedir = $(includedir)/metacity-1/metacity-private
+
+libmetacityinclude_HEADERS =	\
+	gradient.h		\
+	preview-widget.h	\
+	theme.h			\
+	theme-parser.h		\
+	util.h
+
+metacity_theme_viewer_SOURCES=  \
+	theme-viewer.c
 
 metacity_dialog_SOURCES= 	\
 	metacity-dialog.c
@@ -100,7 +112,7 @@ bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
 metacity_LDADD= @METACITY_LIBS@
-metacity_theme_viewer_LDADD= @METACITY_LIBS@
+metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
 testgradient_SOURCES=gradient.h gradient.c testgradient.c
@@ -137,7 +149,17 @@ CLEANFILES = inlinepixbufs.h
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
-EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA) update-from-egg.sh $(desktopfiles_in_files) $(schema_in_files)
+pkgconfigdir = $(libdir)/pkgconfig
+
+pkgconfig_DATA = libmetacity-private.pc
+
+EXTRA_DIST=$(desktopfiles_DATA) 	\
+	$(IMAGES) $(schema_DATA) 	\
+	update-from-egg.sh		\
+	$(desktopfiles_in_files)	\
+	$(schema_in_files)		\
+	libmetacity-private.pc.in
+
 
 EGGDIR=$(srcdir)/../../libegg/libegg
 

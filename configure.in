@@ -242,6 +242,7 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/wm-tester/Makefile
+src/libmetacity-private.pc
 src/tools/Makefile
 src/themes/Makefile
 po/Makefile.in
