@@ -22,6 +22,9 @@
 #include "frames.h"
 #include "util.h"
 #include "core.h"
+#include "menu.h"
+
+#define DEFAULT_INNER_BUTTON_BORDER 3
 
 struct _MetaFrameProperties
 {
@@ -297,6 +300,9 @@ meta_frames_destroy (GtkObject *object)
   MetaFrames *frames;
   
   frames = META_FRAMES (object);
+
+  if (frames->menu)
+    gtk_widget_destroy (frames->menu);
   
   winlist = NULL;
   g_hash_table_foreach (frames->frames,
@@ -364,7 +370,12 @@ meta_frames_style_set  (GtkWidget *widget,
   static GtkBorder default_title_border = { 3, 4, 4, 3 };
   static GtkBorder default_text_border = { 2, 2, 2, 2 };
   static GtkBorder default_button_border = { 1, 1, 1, 1 };
-  static GtkBorder default_inner_button_border = { 3, 3, 3, 3 };
+  static GtkBorder default_inner_button_border = {
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER
+  };
   GtkBorder *title_border;
   GtkBorder *text_border;
   GtkBorder *button_border;
@@ -832,6 +843,12 @@ meta_frames_end_grab (MetaFrames *frames,
 {
   if (frames->grab_frame)
     {
+      if (frames->grab_status == META_FRAME_STATUS_CLICKING_MENU)
+        {
+          if (frames->menu)
+            gtk_widget_destroy (frames->menu);
+        }
+      
       frames->grab_frame = NULL;
       frames->grab_status = META_FRAME_STATUS_NORMAL;
       gdk_pointer_ungrab (timestamp);
@@ -978,6 +995,15 @@ meta_frames_button_press_event (GtkWidget      *widget,
                               event->time);
 
       redraw_control (frames, frame, control);
+
+      if (status == META_FRAME_STATUS_CLICKING_MENU)
+        {
+          meta_window_menu_show (frames, frame,
+                                 event->x_root,
+                                 event->y_root,
+                                 event->button,
+                                 event->time);
+        }
     }
   else if (control == META_FRAME_CONTROL_RESIZE_SE &&
       event->button == 1)
@@ -1017,6 +1043,17 @@ meta_frames_button_press_event (GtkWidget      *widget,
     }
   
   return TRUE;
+}
+
+void
+meta_frames_notify_menu_hide (MetaFrames *frames)
+{
+  if (frames->grab_status == META_FRAME_STATUS_CLICKING_MENU)
+    {
+      redraw_control (frames, frames->grab_frame,
+                      META_FRAME_CONTROL_MENU);
+      meta_frames_end_grab (frames, GDK_CURRENT_TIME);
+    }
 }
 
 gboolean
@@ -1086,11 +1123,6 @@ meta_frames_button_release_event    (GtkWidget           *widget,
           break;
           
         case META_FRAME_STATUS_CLICKING_MENU:
-          if (point_in_control (frames, frame,
-                                META_FRAME_CONTROL_MENU,
-                                event->x, event->y))
-            /* FIXME */ ;
-          
           redraw_control (frames, frame,
                           META_FRAME_CONTROL_MENU);
           break;
@@ -1164,6 +1196,133 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 }
 
 static void
+draw_control (MetaFrames  *frames,
+              GdkDrawable *drawable,
+              GdkGC       *override,
+              MetaFrameControl control,
+              int x, int y, int width, int height)
+{
+  GtkWidget *widget;
+  GdkGCValues vals;
+  GdkGC *gc;
+
+  widget = GTK_WIDGET (frames);
+
+#define THICK_LINE_WIDTH 3
+
+  gc = override ? override : widget->style->fg_gc[GTK_STATE_NORMAL];
+  
+  switch (control)
+    {
+    case META_FRAME_CONTROL_DELETE:
+      {
+        gdk_draw_line (drawable,
+                       gc,
+                       x, y, x + width - 1, y + height - 1);
+        
+        gdk_draw_line (drawable,
+                       gc,
+                       x, y + height - 1, x + width - 1, y);
+      }
+      break;
+
+    case META_FRAME_CONTROL_MAXIMIZE:
+      {
+        gdk_draw_rectangle (drawable,
+                            gc,
+                            FALSE,
+                            x, y, width - 1, height - 1);
+        
+        vals.line_width = THICK_LINE_WIDTH;
+        gdk_gc_set_values (gc,
+                           &vals,
+                           GDK_GC_LINE_WIDTH);
+        
+        gdk_draw_line (drawable,
+                       gc,
+                       x, y + 1, x + width, y + 1);
+        
+        vals.line_width = 0;
+        gdk_gc_set_values (gc,
+                           &vals,
+                           GDK_GC_LINE_WIDTH);
+      }
+      break;
+
+    case META_FRAME_CONTROL_MINIMIZE:
+      {
+              
+      vals.line_width = THICK_LINE_WIDTH;
+      gdk_gc_set_values (gc,
+                         &vals,
+                         GDK_GC_LINE_WIDTH);
+
+      gdk_draw_line (drawable,
+                     gc,
+                     x,         y + height - THICK_LINE_WIDTH + 1,
+                     x + width, y + height - THICK_LINE_WIDTH + 1);
+      
+      vals.line_width = 0;
+      gdk_gc_set_values (gc,
+                         &vals,
+                         GDK_GC_LINE_WIDTH);
+      }
+      break;
+      
+    default:
+      break;
+    }
+#undef THICK_LINE_WIDTH
+}
+
+void
+meta_frames_get_pixmap_for_control (MetaFrames      *frames,
+                                    MetaFrameControl control,
+                                    GdkPixmap      **pixmapp,
+                                    GdkBitmap      **maskp)
+{
+  int w, h;
+  GdkPixmap *pix;
+  GdkBitmap *mask;
+  GtkWidget *widget;
+  GdkGC *mgc;
+  GdkColor color;
+  
+  widget = GTK_WIDGET (frames);
+  
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &w, &h);
+
+  w -= DEFAULT_INNER_BUTTON_BORDER * 2;
+  h -= DEFAULT_INNER_BUTTON_BORDER * 2;
+
+  /* avoid crashing on bizarre icon sizes */
+  if (w < 1)
+    w = 1;
+  if (h < 1)
+    h = 1;
+  
+  pix = gdk_pixmap_new (NULL, w, h, gtk_widget_get_visual (widget)->depth);
+  mask = gdk_pixmap_new (NULL, w, h, 1);
+
+  mgc = gdk_gc_new (mask);
+
+  color.pixel = 0;
+  gdk_gc_set_foreground (mgc, &color);
+  gdk_draw_rectangle (mask, mgc, TRUE, 0, 0, -1, -1);
+
+  color.pixel = 1;
+  gdk_gc_set_foreground (mgc, &color);
+  draw_control (frames, mask, mgc, control, 0, 0, w, h);
+
+  gdk_gc_unref (mgc);
+
+  draw_control (frames, pix, NULL, control, 0, 0, w, h);
+
+  *pixmapp = pix;
+  *maskp = mask;
+}
+
+static void
 draw_control_bg (MetaFrames         *frames,
                  MetaUIFrame        *frame,
                  MetaFrameControl    control,
@@ -1171,28 +1330,43 @@ draw_control_bg (MetaFrames         *frames,
 {
   GdkRectangle *rect;
   GtkWidget *widget;
-
-  widget = GTK_WIDGET (frames);
+  gboolean draw = FALSE;
   
-  rect = control_rect (control, fgeom);
+  widget = GTK_WIDGET (frames);
 
-  if (rect == NULL)
-    return;  
-
-  switch (frames->grab_status)
+  if (frame == frames->grab_frame)
     {
-    case META_FRAME_STATUS_CLICKING_MENU:
-    case META_FRAME_STATUS_CLICKING_DELETE:
-    case META_FRAME_STATUS_CLICKING_MAXIMIZE:
-    case META_FRAME_STATUS_CLICKING_MINIMIZE:
+      switch (frames->grab_status)
+        {
+        case META_FRAME_STATUS_CLICKING_MENU:
+          draw = control == META_FRAME_CONTROL_MENU;
+          break;
+        case META_FRAME_STATUS_CLICKING_DELETE:
+          draw = control == META_FRAME_CONTROL_DELETE;
+          break;
+        case META_FRAME_STATUS_CLICKING_MAXIMIZE:
+          draw = control == META_FRAME_CONTROL_MAXIMIZE;
+          break;      
+        case META_FRAME_STATUS_CLICKING_MINIMIZE:
+          draw = control == META_FRAME_CONTROL_MINIMIZE;
+          break;
+        default:
+          break;
+        }
+    }
+
+  if (draw)
+    {        
+      rect = control_rect (control, fgeom);
+      
+      if (rect == NULL)
+        return;
+      
       gtk_paint_box (widget->style, frame->window,
                      GTK_STATE_ACTIVE,
                      GTK_SHADOW_IN, NULL,
                      widget, "button",
                      rect->x, rect->y, rect->width, rect->height);
-      break;
-    default:
-      break;
     }
 }
 
@@ -1206,7 +1380,6 @@ meta_frames_expose_event            (GtkWidget           *widget,
   MetaFrameFlags flags;
   int width, height;
   GtkBorder inner;
-  GdkGCValues vals;
   
   frames = META_FRAMES (widget);
   
@@ -1299,75 +1472,41 @@ meta_frames_expose_event            (GtkWidget           *widget,
   if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
     {
       draw_control_bg (frames, frame, META_FRAME_CONTROL_DELETE, &fgeom);
-      
-      gdk_draw_line (frame->window,
-                     widget->style->fg_gc[GTK_STATE_NORMAL],
-                     fgeom.close_rect.x + inner.left,
-                     fgeom.close_rect.y + inner.top,
-                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right - 1,
-                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom - 1);
 
-      gdk_draw_line (frame->window,
-                     widget->style->fg_gc[GTK_STATE_NORMAL],
-                     fgeom.close_rect.x + inner.left,
-                     fgeom.close_rect.y + fgeom.close_rect.height - inner.bottom - 1,
-                     fgeom.close_rect.x + fgeom.close_rect.width - inner.right - 1,
-                     fgeom.close_rect.y + inner.top);
+      draw_control (frames, frame->window,
+                    NULL,
+                    META_FRAME_CONTROL_DELETE,
+                    fgeom.close_rect.x + inner.left,
+                    fgeom.close_rect.y + inner.top,
+                    fgeom.close_rect.width - inner.right - inner.left,
+                    fgeom.close_rect.height - inner.bottom - inner.top);
     }
 
-#define THICK_LINE_WIDTH 3
   if (fgeom.max_rect.width > 0 && fgeom.max_rect.height > 0)
     {
       draw_control_bg (frames, frame, META_FRAME_CONTROL_MAXIMIZE, &fgeom);
       
-      gdk_draw_rectangle (frame->window,
-                          widget->style->fg_gc[GTK_STATE_NORMAL],
-                          FALSE,
-                          fgeom.max_rect.x + inner.left,
-                          fgeom.max_rect.y + inner.top,
-                          fgeom.max_rect.width - inner.left - inner.right - 1,
-                          fgeom.max_rect.height - inner.top - inner.bottom - 1);
-      
-      vals.line_width = THICK_LINE_WIDTH;
-      gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
-                         &vals,
-                         GDK_GC_LINE_WIDTH);
-
-      gdk_draw_line (frame->window,
-                     widget->style->fg_gc[GTK_STATE_NORMAL],
-                     fgeom.max_rect.x + inner.left,
-                     fgeom.max_rect.y + inner.top + 1,
-                     fgeom.max_rect.x + fgeom.max_rect.width - inner.right,
-                     fgeom.max_rect.y + inner.top + 1);
-      
-      vals.line_width = 0;
-      gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
-                         &vals,
-                         GDK_GC_LINE_WIDTH); 
+      draw_control (frames, frame->window,                    
+                    NULL,
+                    META_FRAME_CONTROL_MAXIMIZE,
+                    fgeom.max_rect.x + inner.left,
+                    fgeom.max_rect.y + inner.top,
+                    fgeom.max_rect.width - inner.left - inner.right,
+                    fgeom.max_rect.height - inner.top - inner.bottom);
     }
 
   if (fgeom.min_rect.width > 0 && fgeom.min_rect.height > 0)
     {
       draw_control_bg (frames, frame, META_FRAME_CONTROL_MINIMIZE, &fgeom);
-      
-      vals.line_width = THICK_LINE_WIDTH;
-      gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
-                         &vals,
-                         GDK_GC_LINE_WIDTH);
 
-      gdk_draw_line (frame->window,
-                     widget->style->fg_gc[GTK_STATE_NORMAL],
-                     fgeom.min_rect.x + inner.left,
-                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH + 1,
-                     fgeom.min_rect.x + fgeom.min_rect.width - inner.right,
-                     fgeom.min_rect.y + fgeom.min_rect.height - inner.bottom - THICK_LINE_WIDTH + 1);
-      
-      vals.line_width = 0;
-      gdk_gc_set_values (widget->style->fg_gc[GTK_STATE_NORMAL],
-                         &vals,
-                         GDK_GC_LINE_WIDTH);
+      draw_control (frames, frame->window,
+                    NULL,
+                    META_FRAME_CONTROL_MINIMIZE,
+                    fgeom.min_rect.x + inner.left,
+                    fgeom.min_rect.y + inner.top,
+                    fgeom.min_rect.width - inner.left - inner.right,
+                    fgeom.min_rect.height - inner.top - inner.bottom);
     }
-#undef THICK_LINE_WIDTH
   
   if (fgeom.spacer_rect.width > 0 && fgeom.spacer_rect.height > 0)
     {

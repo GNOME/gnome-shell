@@ -1105,6 +1105,10 @@ meta_window_change_workspace (MetaWindow    *window,
    */
   meta_workspace_add_window (workspace, window);
 
+  /* unstick if stuck */
+  if (window->on_all_workspaces)
+    window->on_all_workspaces = FALSE;
+  
   /* Lamely rely on prepend */
   g_assert (window->workspaces->data == workspace);  
   
@@ -1154,6 +1158,16 @@ meta_window_unstick (MetaWindow  *window)
   meta_window_queue_calc_showing (window);
 }
 
+unsigned long
+meta_window_get_net_wm_desktop (MetaWindow *window)
+{
+  if (window->on_all_workspaces ||
+      g_list_length (window->workspaces) > 1)
+    return 0xFFFFFFFF;
+  else
+    return meta_workspace_screen_index (window->workspaces->data);
+}
+
 int
 meta_window_set_current_workspace_hint (MetaWindow *window)
 {
@@ -1165,11 +1179,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   if (window->workspaces == NULL)
     return Success; /* this happens when destroying windows */
   
-  if (window->on_all_workspaces ||
-      g_list_length (window->workspaces) > 1)
-    data[0] = 0xFFFFFFFF;
-  else
-    data[0] = meta_workspace_screen_index (window->workspaces->data);
+  data[0] = meta_window_get_net_wm_desktop (window);
 
   meta_verbose ("Setting _NET_WM_DESKTOP of %s to %ld\n",
                 window->desc, data[0]);
