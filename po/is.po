@@ -1184,7 +1184,7 @@ msgstr "Heiltalan %ld er of stór. Núverandi hámark er %d"
 #: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Ekki tókst að greina \"s\" sem floating point tölu"
+msgstr "Ekki tókst að greina \"%s\" sem floating point tölu"
 
 #: src/theme-parser.c:552
 #, c-format
