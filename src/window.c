@@ -3760,6 +3760,7 @@ update_protocols (MetaWindow *window)
 
   window->take_focus = FALSE;
   window->delete_window = FALSE;
+  window->net_wm_ping = FALSE;
   
   meta_error_trap_push (window->display);  
   
@@ -3775,14 +3776,17 @@ update_protocols (MetaWindow *window)
             window->take_focus = TRUE;
           else if (protocols[i] == window->display->atom_wm_delete_window)
             window->delete_window = TRUE;
+          else if (protocols[i] == window->display->atom_net_wm_ping)
+            window->net_wm_ping = TRUE;
           ++i;
         }
 
       meta_XFree (protocols);
     }
 
-  meta_verbose ("Window %s has take_focus = %d delete_window = %d\n",
-                window->desc, window->take_focus, window->delete_window);
+  meta_verbose ("Window %s has take_focus = %d delete_window = %d net_wm_ping = %d\n",
+                window->desc, window->take_focus, window->delete_window,
+                window->net_wm_ping);
   
   return meta_error_trap_pop (window->display);
 }

@@ -1,3 +1,11 @@
+2002-04-15  Havoc Pennington  <hp@redhat.com>
+
+	* src/display.c (meta_display_ping_window): reply immediately for 
+	windows that don't support _NET_WM_PING
+
+	* src/window.c (update_protocols): check whether windows 
+	support _NET_WM_PING
+
 2002-04-13  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (get_cmap): same fix as libwnck, avoid using cmap 

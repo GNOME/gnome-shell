@@ -119,9 +119,10 @@ struct _MetaWindow
   /* whether an initial workspace was explicitly set */
   guint initial_workspace_set : 1;
   
-  /* These are the two flags from WM_PROTOCOLS */
+  /* These are the flags from WM_PROTOCOLS */
   guint take_focus : 1;
   guint delete_window : 1;
+  guint net_wm_ping : 1;
   /* Globally active / No input */
   guint input : 1;
   

@@ -2450,6 +2450,14 @@ meta_display_ping_window (MetaDisplay       *display,
       meta_warning ("Tried to ping a window with CurrentTime! Not allowed.\n");
       return;
     }
+
+  if (!window->net_wm_ping)
+    {
+      if (ping_reply_func)
+        (* ping_reply_func) (display, window->xwindow, user_data);
+
+      return;
+    }
   
   ping_data = g_new (MetaPingData, 1);
   ping_data->display = display;
