@@ -1,5 +1,12 @@
 2003-11-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/iconcache.c (meta_icon_cache_init): init prev_mask field
+
+	* src/window.c (meta_window_new_with_attrs): init xgroup_leader
+	prior to use
+
+2003-11-24  Havoc Pennington  <hp@redhat.com>
+
 	* src/display.c (meta_display_begin_grab_op): add an event_serial
 	argument and use it when the pointer is already grabbed
 	automatically on the button press. May fix bug #126871

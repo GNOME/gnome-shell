@@ -520,6 +520,7 @@ meta_icon_cache_init (MetaIconCache *icon_cache)
 
   icon_cache->origin = USING_NO_ICON;
   icon_cache->prev_pixmap = None;
+  icon_cache->prev_mask = None;
 #if 0
   icon_cache->icon = NULL;
   icon_cache->mini_icon = NULL;

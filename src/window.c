@@ -377,11 +377,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 
-  /* assign the window to its group, or create a new group if needed
-   */
-  window->group = NULL;
-  meta_window_compute_group (window);
-
   /* avoid tons of stack updates */
   meta_stack_freeze (window->screen->stack);
 
@@ -491,7 +486,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->net_wm_pid = -1;
   
   window->xtransient_for = None;
-  window->xgroup_leader = None;
   window->xclient_leader = None;
   window->transient_parent_is_root_window = FALSE;
   
@@ -509,7 +503,15 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
+  
   meta_display_register_x_window (display, &window->xwindow, window);
+
+
+  /* assign the window to its group, or create a new group if needed
+   */
+  window->group = NULL;
+  window->xgroup_leader = None;
+  meta_window_compute_group (window);
   
   /* Fill these in the order we want them to be gotten.
    * we want to get window name and class first
