@@ -1,4 +1,4 @@
-/* msm utils */
+/* msm session */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,30 +19,24 @@
  * 02111-1307, USA.
  */
 
-#ifndef MSM_UTIL_H
-#define MSM_UTIL_H
+#ifndef MSM_SESSION_H
+#define MSM_SESSION_H
 
-#include <glib.h>
+#include "client.h"
 
-/* FIXME */
-#include <config.h>
-#define _(x) x
-#define N_(x) x
+typedef struct _MsmSession MsmSession;
 
-void msm_warning    (const char *format,
-                     ...) G_GNUC_PRINTF (1, 2);
-void msm_fatal      (const char *format,
-                     ...) G_GNUC_PRINTF (1, 2);
+MsmSession* msm_session_get           (const char  *name);
+MsmSession* msm_session_get_failsafe  (void);
+void        msm_session_save          (MsmSession  *session);
+void        msm_session_update_client (MsmSession  *session,
+                                       MsmClient   *client);
+void        msm_session_remove_client (MsmSession  *session,
+                                       MsmClient   *client);
+void        msm_session_launch        (MsmSession  *session);
+gboolean    msm_session_client_id_known (MsmSession *session,
+                                         const char *previous_id);
 
-void msm_quit       (void);
-
-const char* msm_get_work_directory (void);
-
-char* msm_non_glib_strdup (const char *src);
-void* msm_non_glib_malloc (int bytes);
-
-gboolean msm_create_dir_and_parents (const char *dir,
-                                     int         mode,
-                                     GError    **error);
 
 #endif
+

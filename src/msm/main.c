@@ -60,7 +60,8 @@ main (int argc, char **argv)
   gboolean failsafe;
   struct sigaction act;
   sigset_t empty_mask;
-
+  MsmServer *server;
+  
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
   act.sa_mask    = empty_mask;
@@ -118,7 +119,14 @@ main (int argc, char **argv)
       
       ++i;
     }
-    
+
+  if (failsafe)
+    server = msm_server_new_failsafe ();
+  else
+    server = msm_server_new (session_name);
+
+  msm_server_launch_session (server);
+  
   main_loop = g_main_loop_new (NULL, FALSE);
   
   g_main_run (main_loop);

@@ -1,5 +1,5 @@
 
-INCLUDES=@MSM_CFLAGS@ -DMSM_PKGDATADIR=\"$(datadir)/msm\" 
+INCLUDES=@MSM_CFLAGS@ -DMSM_PKGDATADIR=\"$(datadir)/msm\"
 
 msm_SOURCES= 					\
 	client.c				\

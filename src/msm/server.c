@@ -42,6 +42,7 @@
  */
 
 #include "server.h"
+#include "session.h"
 
 /* FIXME we need to time out anytime we're waiting for a client
  * response, such as InteractDone, SaveYourselfDone, ConnectionClosed
@@ -50,13 +51,15 @@
 
 struct _MsmServer
 {
+  MsmSession *session;
   GList *clients;
   IceAuthDataEntry *auth_entries;
   int n_auth_entries;
   MsmClient *currently_interacting;
   GList     *interact_pending;
-  
-  guint in_shutdown : 1;
+
+  guint in_global_save : 1; 
+  guint in_shutdown : 1; /* TRUE only if in_global_save */
   guint save_allows_interaction : 1;
 };
 
@@ -112,19 +115,21 @@ static gboolean create_auth_entries (MsmServer       *server,
                                      int              n_listen_objs);
 static void free_auth_entries       (IceAuthDataEntry *entries);
 
-MsmServer*
-msm_server_new (void)
+static void
+msm_server_new_with_session (MsmSession *session)
 {
   char errbuf[256];
   MsmServer *server;
 
   server = g_new (MsmServer, 1);
 
+  server->session = session;
   server->clients = NULL;
   server->auth_entries = NULL;
   server->n_auth_entries = 0;
   server->currently_interacting = NULL;
   server->interact_pending = NULL;
+  server->in_global_save = FALSE;
   server->in_shutdown = FALSE;
   server->save_allows_interaction = FALSE;
   
@@ -138,6 +143,22 @@ msm_server_new (void)
   ice_init (server);
 
   return server;
+}
+
+MsmServer*
+msm_server_new (const char *session_name)
+{
+  MsmSession *session;
+
+  session = msm_session_new (session_name);
+
+  return msm_server_new_with_session (session);
+}
+
+MsmServer*
+msm_server_new_failsafe (void)
+{
+  return msm_server_new_with_session (msm_session_get_failsafe ());
 }
 
 void
@@ -225,12 +246,22 @@ register_client_callback              (SmsConn         cnxn,
     }
   else
     {
-      /* FIXME check for pending/known client IDs and register the client,
-       * return TRUE if we know about this previous_id
+      /* check for pending/known client IDs and register the client,
+       * return TRUE if we know about this previous_id, return FALSE
+       * if we do not know about it or it's already being used.   
        */
-
-      free (previous_id);
-      return FALSE;
+      if (msm_server_client_id_in_use (server, previous_id) ||
+          !msm_session_client_id_known (server->session, previous_id))
+        {
+          free (previous_id);
+          return FALSE;
+        }
+      else
+        {
+          msm_client_register (client, previous_id);
+          free (previous_id);
+          return TRUE;
+        }
     }
 }
 
@@ -389,9 +420,10 @@ set_properties_callback (SmsConn     cnxn,
   i = 0;
   while (i < numProps)
     {
-      msm_client_set_property (client, props[i]);
+      msm_client_set_property_taking_ownership (client, props[i]);
 
-      SmFreeProperty (props[i]);
+      /* Client owns it, so don't do this. */
+      /* SmFreeProperty (props[i]);  */ 
 
       ++i;
     }
@@ -452,10 +484,8 @@ new_client_callback                   (SmsConn         cnxn,
    */
   if (server->in_shutdown)
     {
-      /* have to use malloc() */
-      *failure_reason_ret = malloc (256);
-      g_strncpy (*failure_reason_ret, _("Refusing new client connection because the session is currently being shut down\n"), 255);
-      (*failure_reason_ret)[255] = '\0'; /* paranoia */
+      *failure_reason_ret =
+        msm_non_glib_strdup (_("Refusing new client connection because the session is currently being shut down\n"));
       return FALSE;
     }
   
@@ -536,6 +566,8 @@ msm_server_save_all (MsmServer *server,
 {
   GList *tmp;
 
+  server->in_global_save = TRUE;
+  
   if (shut_down) /* never cancel a shutdown here */
     server->in_shutdown = TRUE;
 
@@ -567,7 +599,8 @@ msm_server_cancel_shutdown (MsmServer *server)
   
   if (!server->in_shutdown)
     return;
-  
+
+  server->in_global_save = FALSE;
   server->in_shutdown = FALSE;
 
   /* Cancel any interactions in progress */
@@ -581,16 +614,26 @@ msm_server_cancel_shutdown (MsmServer *server)
       MsmClient *client;
 
       client = tmp->data;
-      
-      if (msm_client_get_state (client) == MSM_CLIENT_STATE_SAVING)
-        msm_client_shutdown_cancelled (client);
+
+      switch (msm_client_get_state (client))
+        {
+        case MSM_CLIENT_STATE_SAVING:
+        case MSM_CLIENT_STATE_PHASE2_REQUESTED:
+        case MSM_CLIENT_STATE_SAVING_PHASE2:
+        case MSM_CLIENT_STATE_SAVE_DONE:
+        case MSM_CLIENT_STATE_SAVE_FAILED:
+          msm_client_shutdown_cancelled (client);
+          break;
+        default:
+          break;
+        }
       
       tmp = tmp->next;
     }
 }
 
 /* Think about whether to move to phase 2, return to idle state,
- * or shut down
+ * save session to disk, or shut down
  */
 void
 msm_server_consider_phase_change (MsmServer *server)
@@ -658,6 +701,37 @@ msm_server_consider_phase_change (MsmServer *server)
       return;
     }
 
+  if (server->in_global_save)
+    {
+      GList *tmp;
+      
+      tmp = server->clients;
+      while (tmp != NULL)
+        {
+          MsmClient *client = tmp->data;
+
+          switch (msm_client_get_state (client))
+            {
+            case MSM_CLIENT_STATE_SAVE_DONE:
+              /* Update it in the session, since it saved successfully. */
+              msm_session_update_client (server->session, client);
+              break;
+            default:
+              break;
+            }
+          
+          tmp = tmp->next;
+        }
+
+      /* Write to disk. */
+      msm_session_save (server->session);
+    }
+
+  /* msm_session_save() may have cancelled any shutdown that was in progress,
+   * so don't assume here that we are still in_global_save or in_shutdown.
+   * Also, client states may have changed.
+   */
+  
   if (server->in_shutdown)
     {
       /* We are shutting down, and all clients are in the idle state.
@@ -678,10 +752,12 @@ msm_server_consider_phase_change (MsmServer *server)
               tmp = tmp->next;
             }
         }
+
+      /* We don't leave the in_shutdown/in_global_save states in this case */
     }
-  else
+  else if (server->in_global_save)
     {
-      /* Send SaveComplete to all clients that are finished saving */
+      /* send SaveComplete to all clients that are finished saving */
       GList *tmp;
       
       tmp = server->clients;
@@ -701,6 +777,9 @@ msm_server_consider_phase_change (MsmServer *server)
           
           tmp = tmp->next;
         }
+
+      /* Leave in_global_save state */
+      server->in_global_save = FALSE;
     }
 }
 
@@ -721,6 +800,40 @@ msm_server_foreach_client (MsmServer *server,
     }
 }
 
+gboolean
+msm_server_client_id_in_use (MsmServer  *server,
+                             const char *id)
+{
+  GList *tmp;
+  
+  tmp = server->clients;
+  while (tmp != NULL)
+    {
+      MsmClient *client = tmp->data;
+      const char *cid;
+
+      cid = msm_client_get_id (client);
+      
+      if (cid && strcmp (cid, id) == 0)
+        return TRUE;
+
+      tmp = tmp->next;
+    }
+
+  return FALSE;
+}
+
+void
+msm_server_launch_session (MsmServer *server)
+{
+  msm_session_launch (server->session);
+}
+
+gboolean
+msm_server_in_shutdown (MsmServer *server)
+{
+  return server->in_shutdown;
+}
 
 /*
  * ICE utility code, cut-and-pasted from Metacity, and in turn
@@ -1000,13 +1113,7 @@ create_auth_entries (MsmServer       *server,
   
   original_umask = umask (0077); /* disallow non-owner access */
 
-  path = g_getenv ("SM_SAVE_DIR");
-  if (!path)
-    {
-      path = g_get_home_dir ();
-      if (!path)
-        path = ".";
-    }
+  path = msm_get_work_directory ();
 
   err = NULL;
   tmpl = g_strconcat (path, "/msm-add-commands-XXXXXX", NULL);
@@ -1138,4 +1245,3 @@ free_auth_entries (IceAuthDataEntry *entries,
   add_file = NULL;
   remove_file = NULL;
 }
-

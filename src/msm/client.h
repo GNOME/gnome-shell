@@ -66,9 +66,12 @@ SmsConn        msm_client_get_connection  (MsmClient *client);
 const char*    msm_client_get_description (MsmClient *client);
 MsmClientState msm_client_get_state       (MsmClient *client);
 MsmServer*     msm_client_get_server      (MsmClient *client);
+/* can return NULL */
+const char*    msm_client_get_id          (MsmClient *client);
+int            msm_client_get_restart_style (MsmClient *client);
 
-void    msm_client_set_property   (MsmClient   *client,
-                                   SmProp      *prop);
+void    msm_client_set_property_taking_ownership (MsmClient   *client,
+                                                  SmProp      *prop);
 void    msm_client_unset_property (MsmClient   *client,
                                    const char  *name);
 void    msm_client_send_properties (MsmClient  *client);

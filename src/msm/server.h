@@ -31,8 +31,9 @@ typedef struct _MsmServer MsmServer;
 
 typedef void (* MsmClientFunc) (MsmClient* client);
 
-MsmServer* msm_server_new (void);
-void       msm_server_free (MsmServer *server);
+MsmServer* msm_server_new          (const char *session_name);
+MsmServer* msm_server_new_failsafe (void);
+void       msm_server_free         (MsmServer  *server);
 
 void       msm_server_queue_interaction (MsmServer *server,
                                          MsmClient *client);
@@ -51,5 +52,12 @@ void       msm_server_drop_client       (MsmServer *server,
                                          MsmClient *client);
 
 void       msm_server_next_pending_interaction (MsmServer *server);
+
+gboolean   msm_server_client_id_in_use         (MsmServer  *server,
+                                                const char *id);
+
+void       msm_server_launch_session (MsmServer *server);
+
+gboolean   msm_server_in_shutdown    (MsmServer *server);
 
 #endif
