@@ -1,5 +1,13 @@
 2002-08-04  Havoc Pennington  <hp@redhat.com>
 
+	* src/frames.c (meta_frames_paint_to_drawable): init button 
+	states for the button backgrounds
+
+	* src/themes/Atlanta/metacity-theme-1.xml: adapt to work correctly
+	with button repositioning
+
+2002-08-04  Havoc Pennington  <hp@redhat.com>
+
 	* src/frames.c (meta_frames_button_press_event): raise/focus 
 	on click, even if the click was on the client area 
 	(this makes Alt+button1 raise windows again, yay)
