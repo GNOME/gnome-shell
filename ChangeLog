@@ -1,5 +1,10 @@
 2003-09-29  Havoc Pennington  <hp@redhat.com>
 
+	* src/delete.c (meta_window_delete): don't move the focus after
+	you click the close button on a window. bug #108706
+
+2003-09-29  Havoc Pennington  <hp@redhat.com>
+
 	* src/main.c (find_accessibility_module): fix warnings (one was a
 	real bug)
 	

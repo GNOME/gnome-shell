@@ -387,6 +387,10 @@ meta_window_delete (MetaWindow  *window,
   
   if (window->has_focus)
     {
+      /* FIXME Clean this up someday 
+       * http://bugzilla.gnome.org/show_bug.cgi?id=108706
+       */
+#if 0
       /* This is unfortunately going to result in weirdness
        * if the window doesn't respond to the delete event.
        * I don't know how to avoid that though.
@@ -396,6 +400,11 @@ meta_window_delete (MetaWindow  *window,
                   window->desc);
       meta_workspace_focus_mru_window (window->screen->active_workspace,
                                        window);
+#else
+      meta_topic (META_DEBUG_FOCUS,
+                  "Not unfocusing %s on delete/kill\n",
+                  window->desc);
+#endif
     }
   else
     {
