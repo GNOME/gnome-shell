@@ -4734,9 +4734,6 @@ update_net_wm_type (MetaWindow *window)
                            window->display->atom_net_wm_window_type,
                            &atoms, &n_atoms);
 
-  /* Fall back to a normal window */
-  window->type_atom = window->display->atom_net_wm_window_type_normal;
-  
   i = 0;
   while (i < n_atoms)
     {
