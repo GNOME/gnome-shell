@@ -24,6 +24,7 @@
 #include "errors.h"
 #include "ui.h"
 #include "frame.h"
+#include "place.h"
 
 #include <X11/keysym.h>
 
@@ -401,47 +402,84 @@ meta_display_process_key_event (MetaDisplay *display,
       int x, y;
       int incr;
       gboolean smart_snap;
+      int edge;
+      
+      if (event->type == KeyRelease)
+        return; /* don't care about releases */
       
       if (window == NULL)
         meta_bug ("NULL window while META_GRAB_OP_MOVING\n");
 
       meta_window_get_position (window, &x, &y);
 
-      smart_snap =
-        (event->xkey.state & ControlMask) != 0 &&
-        (event->xkey.state & ShiftMask) != 0;
+      smart_snap = (event->xkey.state & ShiftMask) != 0;
 
-      /* FIXME replace LARGE_INCREMENT with intelligent snapping */
 #define SMALL_INCREMENT 1
 #define NORMAL_INCREMENT 10
-#define LARGE_INCREMENT 100
 
       if (smart_snap)
-        incr = LARGE_INCREMENT;
+        incr = 0;
       else if (event->xkey.state & ControlMask)
         incr = SMALL_INCREMENT;
       else
         incr = NORMAL_INCREMENT;
+
+      /* When moving by increments, we still snap to edges if the move
+       * to the edge is smaller than the increment. This is because
+       * Shift + arrow to snap is sort of a hidden feature. This way
+       * people using just arrows shouldn't get too frustrated.
+       */
       
       switch (keysym)
         {
         case XK_Up:
+        case XK_KP_Up:
+          edge = meta_window_find_next_horizontal_edge (window, FALSE);
           y -= incr;
+          
+          if (smart_snap || ((edge > y) && ABS (edge - y) < incr))
+            y = edge;
+          
           handled = TRUE;
           break;
         case XK_Down:
+        case XK_KP_Down:
+          edge = meta_window_find_next_horizontal_edge (window, TRUE);
           y += incr;
+
+          if (smart_snap || ((edge < y) && ABS (edge - y) < incr))
+            y = edge;
+          
           handled = TRUE;
           break;
         case XK_Left:
+        case XK_KP_Left:
+          edge = meta_window_find_next_vertical_edge (window, FALSE);
           x -= incr;
+          
+          if (smart_snap || ((edge > x) && ABS (edge - x) < incr))
+            x = edge;
+
           handled = TRUE;
           break;
         case XK_Right:
+        case XK_KP_Right:
+          edge = meta_window_find_next_vertical_edge (window, TRUE);
           x += incr;
+          if (smart_snap || ((edge < x) && ABS (edge - x) < incr))
+            x = edge;
           handled = TRUE;
           break;
 
+        case XK_Escape:
+          /* End move and restore to original position */
+          meta_window_move_resize (display->grab_window,
+                                   display->grab_initial_window_pos.x,
+                                   display->grab_initial_window_pos.y,
+                                   display->grab_initial_window_pos.width,
+                                   display->grab_initial_window_pos.height);
+          break;
+          
         default:
           break;
         }

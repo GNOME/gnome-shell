@@ -23,6 +23,7 @@
 #include "workspace.h"
 #include <gdk/gdkregion.h>
 #include <math.h>
+#include <stdlib.h>
 
 static gint
 northwestcmp (gconstpointer a, gconstpointer b)
@@ -303,4 +304,352 @@ meta_window_place (MetaWindow *window,
  done:
   *new_x = x;
   *new_y = y;
+}
+
+
+/* These are used while moving or resizing to "snap" to useful
+ * places; the return value is the x/y position of the window to
+ * be snapped to the given edge.
+ *
+ * They only use edges on the current workspace, since things
+ * would be weird otherwise.
+ */
+static GSList*
+get_windows_on_same_workspace (MetaWindow *window,
+                               int        *n_windows)
+{
+  GSList *windows;
+  GSList *all_windows;
+  GSList *tmp;
+  int i;
+  
+  windows = NULL;
+
+  i = 0;
+  all_windows = meta_display_list_windows (window->display);
+  
+  tmp = all_windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      
+      if (!w->minimized &&
+          w != window && 
+          meta_workspace_contains_window (window->screen->active_workspace,
+                                            w))
+        {            
+          windows = g_slist_prepend (windows, w);
+          ++i;
+        }
+      
+      tmp = tmp->next;
+    }
+
+  if (n_windows)
+    *n_windows = i;
+  
+  return windows;
+}
+
+static void
+window_get_edges (MetaWindow *w,
+                  int        *left,
+                  int        *right,
+                  int        *top,
+                  int        *bottom)
+{
+  int left_edge;
+  int right_edge;
+  int top_edge;
+  int bottom_edge;
+  MetaRectangle rect;
+
+  meta_window_get_outer_rect (w, &rect);
+  
+  left_edge = rect.x;
+  right_edge = rect.x + rect.width;
+  top_edge = rect.y;
+  bottom_edge = rect.y + rect.height;
+  
+  if (left)
+    *left = left_edge;
+  if (right)
+    *right = right_edge;
+  if (top)
+    *top = top_edge;
+  if (bottom)
+    *bottom = bottom_edge;
+}
+
+static int
+intcmp (const void* a, const void* b)
+{
+  const int *ai = a;
+  const int *bi = b;
+
+  if (*ai < *bi)
+    return -1;
+  else if (*ai > *bi)
+    return 1;
+  else
+    return 0;
+}
+
+static gboolean
+rects_overlap_vertically (const MetaRectangle *a,
+                          const MetaRectangle *b)
+{
+  /* if they don't overlap, then either a is above b
+   * or b is above a
+   */
+  if ((a->y + a->height) < b->y)
+    return FALSE;
+  else if ((b->y + b->height) < a->y)
+    return FALSE;
+  else
+    return TRUE;
+}
+
+static gboolean
+rects_overlap_horizontally (const MetaRectangle *a,
+                            const MetaRectangle *b)
+{
+  if ((a->x + a->width) < b->x)
+    return FALSE;
+  else if ((b->x + b->width) < a->x)
+    return FALSE;
+  else
+    return TRUE;
+}
+
+int
+meta_window_find_next_vertical_edge (MetaWindow *window,
+                                     gboolean    right)
+{
+  GSList *windows;
+  GSList *tmp;
+  int left_edge, right_edge;
+  int n_windows;
+  int *edges;
+  int i;
+  int n_edges;
+  int retval;
+  MetaRectangle rect;
+  
+  windows = get_windows_on_same_workspace (window, &n_windows);
+
+  i = 0;
+  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
+  edges = g_new (int, n_edges);
+
+  /* workspace/screen edges */
+  edges[i] = window->screen->active_workspace->workarea.x;
+  ++i;
+  edges[i] =
+    window->screen->active_workspace->workarea.x +
+    window->screen->active_workspace->workarea.width;
+  ++i;
+  edges[i] = 0;
+  ++i;
+  edges[i] = window->screen->width;
+  ++i;
+
+  g_assert (i == 4);
+
+  meta_window_get_outer_rect (window, &rect);
+  
+  /* get window edges */
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle w_rect;
+
+      meta_window_get_outer_rect (w, &w_rect);
+      
+      if (rects_overlap_vertically (&rect, &w_rect))
+        {
+          window_get_edges (w, &edges[i], &edges[i+1], NULL, NULL);
+          i += 2;
+        }
+
+      tmp = tmp->next;
+    }
+  n_edges = i;
+  
+  g_slist_free (windows);
+
+  /* Sort */
+  qsort (edges, n_edges, sizeof (int), intcmp);
+
+  /* Find next */
+  meta_window_get_position (window, &retval, NULL);
+
+  window_get_edges (window, &left_edge, &right_edge, NULL, NULL);
+  
+  if (right)
+    {
+      i = 0;
+      while (i < n_edges)
+        {
+          if (edges[i] > right_edge)
+            {
+              /* This is the one we want, snap right
+               * edge of window to edges[i]
+               */
+              retval = edges[i];
+              if (window->frame)
+                {
+                  retval -= window->frame->rect.width;
+                  retval += window->frame->child_x;
+                }
+              else
+                {
+                  retval -= window->rect.width;
+                }
+              break;
+            }
+          
+          ++i;
+        }
+    }
+  else
+    {
+      i = n_edges;
+      do
+        {
+          --i;
+          
+          if (edges[i] < left_edge)
+            {
+              /* This is the one we want */
+              retval = edges[i];
+              if (window->frame)
+                retval += window->frame->child_x;
+
+              break;
+            }
+        }
+      while (i > 0);
+    }
+
+  g_free (edges);
+  
+  return retval;
+}
+
+int
+meta_window_find_next_horizontal_edge (MetaWindow *window,
+                                       gboolean    down)
+{
+  GSList *windows;
+  GSList *tmp;
+  int top_edge, bottom_edge;
+  int n_windows;
+  int *edges;
+  int i;
+  int n_edges;
+  int retval;
+  MetaRectangle rect;
+  
+  windows = get_windows_on_same_workspace (window, &n_windows);
+
+  i = 0;
+  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
+  edges = g_new (int, n_edges);
+
+  /* workspace/screen edges */
+  edges[i] = window->screen->active_workspace->workarea.y;
+  ++i;
+  edges[i] =
+    window->screen->active_workspace->workarea.y +
+    window->screen->active_workspace->workarea.height;
+  ++i;
+  edges[i] = 0;
+  ++i;
+  edges[i] = window->screen->height;
+  ++i;
+
+  g_assert (i == 4);
+
+  meta_window_get_outer_rect (window, &rect);
+  
+  /* get window edges */
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle w_rect;
+
+      meta_window_get_outer_rect (w, &w_rect);
+      
+      if (rects_overlap_horizontally (&rect, &w_rect))
+        {
+          window_get_edges (w, NULL, NULL, &edges[i], &edges[i+1]);
+          i += 2;
+        }
+
+      tmp = tmp->next;
+    }
+  n_edges = i;
+  
+  g_slist_free (windows);
+
+  /* Sort */
+  qsort (edges, n_edges, sizeof (int), intcmp);
+
+  /* Find next */
+  meta_window_get_position (window, NULL, &retval);
+
+  window_get_edges (window, NULL, NULL, &top_edge, &bottom_edge);
+  
+  if (down)
+    {
+      i = 0;
+      while (i < n_edges)
+        {
+          if (edges[i] > bottom_edge)
+            {
+              /* This is the one we want, snap right
+               * edge of window to edges[i]
+               */
+              retval = edges[i];
+              if (window->frame)
+                {
+                  retval -= window->frame->rect.height;
+                  retval += window->frame->child_y;
+                }
+              else
+                {
+                  retval -= window->rect.height;
+                }
+              break;
+            }
+          
+          ++i;
+        }
+    }
+  else
+    {
+      i = n_edges;
+      do
+        {
+          --i;
+          
+          if (edges[i] < top_edge)
+            {
+              /* This is the one we want */
+              retval = edges[i];
+              if (window->frame)
+                retval += window->frame->child_y;
+
+              break;
+            }
+        }
+      while (i > 0);
+    }
+
+  g_free (edges);
+  
+  return retval;
 }

@@ -1290,7 +1290,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_button = button;
   display->grab_root_x = root_x;
   display->grab_root_y = root_y;
-
+  display->grab_initial_window_pos = window->rect;
+  meta_window_get_position (display->grab_window,
+                            &display->grab_initial_window_pos.x,
+                            &display->grab_initial_window_pos.y);
+  
   meta_verbose ("Grab op %d on window %s successful\n",
                 display->grab_op, display->grab_window->desc);
 

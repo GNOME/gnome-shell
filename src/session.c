@@ -54,6 +54,10 @@ process_ice_messages (GIOChannel *channel,
   IceConn connection = (IceConn) client_data;
   IceProcessMessagesStatus status;
 
+  /* This blocks infinitely sometimes. I don't know what
+   * to do about it. Checking "condition" just breaks
+   * session management.
+   */
   status = IceProcessMessages (connection, NULL, NULL);
 
   if (status == IceProcessMessagesIOError)

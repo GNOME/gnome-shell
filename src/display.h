@@ -129,6 +129,7 @@ struct _MetaDisplay
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
+  MetaRectangle grab_initial_window_pos;
 };
 
 gboolean      meta_display_open                (const char  *name);

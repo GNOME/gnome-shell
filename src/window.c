@@ -1408,13 +1408,17 @@ meta_window_get_position (MetaWindow  *window,
 {
   if (window->frame)
     {
-      *x = window->frame->rect.x + window->frame->child_x;
-      *y = window->frame->rect.y + window->frame->child_y;
+      if (x)
+        *x = window->frame->rect.x + window->frame->child_x;
+      if (y)
+        *y = window->frame->rect.y + window->frame->child_y;
     }
   else
     {
-      *x = window->rect.x;
-      *y = window->rect.y;
+      if (x)
+        *x = window->rect.x;
+      if (y)
+        *y = window->rect.y;
     }
 }
 
@@ -1487,6 +1491,16 @@ meta_window_get_gravity_position (MetaWindow  *window,
     *root_x = x;
   if (root_y)
     *root_y = y;
+}
+
+void
+meta_window_get_outer_rect (MetaWindow    *window,
+                            MetaRectangle *rect)
+{
+  if (window->frame)
+    *rect = window->frame->rect;
+  else
+    *rect = window->rect;
 }
 
 void

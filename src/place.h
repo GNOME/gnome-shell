@@ -32,6 +32,11 @@ void meta_window_place (MetaWindow *window,
                         int        *new_x,
                         int        *new_y);
 
+int meta_window_find_next_vertical_edge   (MetaWindow *window,
+                                           gboolean    right);
+int meta_window_find_next_horizontal_edge (MetaWindow *window,
+                                           gboolean    down);
+
 #endif
 
 
