@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-26 01:03+0000\n"
-"PO-Revision-Date: 2005-01-26 01:05+0000\n"
+"POT-Creation-Date: 2005-02-18 00:40+0000\n"
+"PO-Revision-Date: 2005-02-18 00:45+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter nome de máquina: %s\n"
 
-#: src/display.c:312
+#: src/display.c:313
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
@@ -206,12 +206,12 @@ msgstr "_Fechar"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Colocar em _Todas as Áreas de Trabalho"
+msgid "_Always on Visible Workspace"
+msgstr "_Sempre na Área de Trabalho Visível"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Apenas Nesta Área de _Trabalho"
+msgid "_Only on This Workspace"
+msgstr "_Apenas nesta Área de Trabalho"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -229,7 +229,7 @@ msgstr "Mover para Área de Trabalho _Acima"
 msgid "Move to Workspace _Down"
 msgstr "Mover para Área de Trabalho A_baixo"
 
-#: src/menu.c:162 src/prefs.c:1947
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
@@ -368,7 +368,7 @@ msgstr ""
 "Estas janelas não suportam \"gravar configuração actual\" e terão de ser "
 "reiniciadas manualmente da próxima vez que iniciar sessão."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -509,14 +509,17 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Se verdadeiro, o metacity dará ao utilizador menos feedback e menor sensação "
-"de \"manipulação directa\", utilizando molduras de linhas, evitando "
+"Se verdadeiro, o metacity transmitirá ao utilizador menos resposta e menor "
+"sensação de \"manipulação directa\", utilizando molduras de linhas, evitando "
 "animações ou outros meios. Isto representa para muitos utilizadores uma "
 "redução significativa na usabilidade, mas poderá permitir que aplicações "
 "antigas e servidores de consola funcionem quando de outra forma tal seria "
-"impraticável."
+"impraticável. No entanto, a funcionalidade de molduras de linhas estará "
+"inactiva quando a acessibilidade estiver activa para evitar estranhos "
+"problemas no ambiente de trabalho."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1746,9 +1749,9 @@ msgstr ""
 "O atalho de teclado que apresenta uma consola. O formato assemelha-se a "
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O parseador é "
 "razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
-"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se "
-"definir a opção para a expressão especial \"disabled\", não existirão "
-"quaisquer atalhos de teclado para esta acção."
+"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se definir "
+"a opção para a expressão especial \"disabled\", não existirão quaisquer "
+"atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1983,17 +1986,17 @@ msgstr "Modo de foco de janela"
 msgid "Window title font"
 msgstr "Fonte de título de janela"
 
-#: src/prefs.c:481 src/prefs.c:497 src/prefs.c:513 src/prefs.c:529
-#: src/prefs.c:545 src/prefs.c:565 src/prefs.c:581 src/prefs.c:597
-#: src/prefs.c:613 src/prefs.c:629 src/prefs.c:645 src/prefs.c:661
-#: src/prefs.c:677 src/prefs.c:694 src/prefs.c:710 src/prefs.c:726
-#: src/prefs.c:742 src/prefs.c:758 src/prefs.c:773 src/prefs.c:788
-#: src/prefs.c:803
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Chave GConf \"%s\" está definida para um tipo inválido\n"
 
-#: src/prefs.c:848
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2002,17 +2005,17 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o modificador de botão de rato\n"
 
-#: src/prefs.c:872 src/prefs.c:1282
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Chave GConf '%s' está definida com um valor inválido\n"
 
-#: src/prefs.c:999
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Incapaz de parsear descrição de fonte \"%s\" da chave GConf %s\n"
 
-#: src/prefs.c:1184
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2021,7 +2024,7 @@ msgstr ""
 "%d armazenado na chave GConf %s não é um número razoável de ambientes de "
 "trabalho, o número máximo actual é %d\n"
 
-#: src/prefs.c:1244
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2029,17 +2032,17 @@ msgstr ""
 "Recursos para aplicações problemáticas inactivos. Algumas aplicações poderão "
 "não funcionar correctamente.\n"
 
-#: src/prefs.c:1309
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d armazenado na chave GConf %s está fora do intervalo de 0 a %d\n"
 
-#: src/prefs.c:1430
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir número de ambientes de trabalho para %d: %s\n"
 
-#: src/prefs.c:1674
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2048,7 +2051,7 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o atalho de teclado \"%s\"\n"
 
-#: src/prefs.c:2028
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir nome da área de trabalho %d para \"%s\": %s\n"
@@ -3190,7 +3193,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID %ld fictício\n"
 
 #. first time through
-#: src/window.c:4882
+#: src/window.c:5036
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3206,7 +3209,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5553
+#: src/window.c:5707
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3244,6 +3247,9 @@ msgid ""
 msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para item %d na "
 "lista\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Colocar em _Todas as Áreas de Trabalho"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Seleccione como dar foco a uma janela"
