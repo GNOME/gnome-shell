@@ -373,8 +373,11 @@ run_speed_comparison (Display *xdisplay,
   struct timeval start, end;
   int n_left;
   
-  /* We just use atom values 0 to n_props, many are probably BadAtom,
-   * that's fine.
+  /* We just use atom values (0 to n_props) % 200, many are probably
+   * BadAtom, that's fine, but the %200 keeps most of them valid. The
+   * async case is about twice as advantageous when using valid atoms
+   * (or the issue may be that it's more advantageous when the
+   * properties are present and data is transmitted).
    */
   n_props = 4000;
   printf ("Timing with %d property requests\n", n_props);
@@ -385,7 +388,7 @@ run_speed_comparison (Display *xdisplay,
   while (i < n_props)
     {
       if (ag_task_create (xdisplay,
-                          window, (Atom) i,
+                          window, (Atom) i % 200,
                           0, 0xffffffff,
                           False,
                           AnyPropertyType) == NULL)
@@ -467,7 +470,7 @@ run_speed_comparison (Display *xdisplay,
       
       data = NULL;
       if (XGetWindowProperty (xdisplay, window,
-                              (Atom) i,
+                              (Atom) i % 200,
                               0, 0xffffffff,
                               False,
                               AnyPropertyType,
