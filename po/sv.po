@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-05-17 18:07-0400\n"
-"PO-Revision-Date: 2002-02-08 19:32+0100\n"
+"POT-Creation-Date: 2002-05-27 10:51+0200\n"
+"PO-Revision-Date: 2002-05-27 10:50+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,27 +28,29 @@ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Förstod inte eftersläpande tecknen \"%s\" i strängen \"%s\""
 
 #: src/delete.c:127
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
+msgstr "Misslyckades med att tolka meddelandet \"%s\" från dialogprocess\n"
 
 #: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Fel vid läsande från dialogvisningsprocess: %s\n"
 
 #: src/delete.c:333
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
+"Fel vid start av metacity-dialog för att fråga om dödandet av ett program: %"
+"s\n"
 
 #: src/delete.c:431
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Misslyckades med att starta om: %s\n"
+msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: src/display.c:224
+#: src/display.c:231
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -69,27 +71,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:698
+#: src/frames.c:706
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:701
+#: src/frames.c:709
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:704
+#: src/frames.c:712
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:707
+#: src/frames.c:715
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:710
+#: src/frames.c:718
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:630
+#: src/keybindings.c:626
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -123,18 +125,16 @@ msgid "Ma_ximize"
 msgstr "Ma_ximera"
 
 #: src/menu.c:52
-#, fuzzy
 msgid "Unma_ximize"
-msgstr "_Avmaximera"
+msgstr "Avma_ximera"
 
 #: src/menu.c:53
 msgid "_Shade"
 msgstr "_Skugga"
 
 #: src/menu.c:54
-#, fuzzy
 msgid "Un_shade"
-msgstr "A_vskugga"
+msgstr "Av_skugga"
 
 #: src/menu.c:55
 msgid "Mo_ve"
@@ -170,34 +170,33 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"Fönstret \"%s\" svarar inte.\n"
+"Tvinga detta program att avsluta?\n"
+"(Alla öppna dokument kommer att gå\n"
+"förlorade)."
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr ""
+msgstr "Döda program"
 
-#: src/prefs.c:326 src/prefs.c:342 src/prefs.c:358 src/prefs.c:374
-#: src/prefs.c:390 src/prefs.c:410 src/prefs.c:426 src/prefs.c:442
-#: src/prefs.c:458 src/prefs.c:474
+#: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
+#: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
+#: src/prefs.c:467 src/prefs.c:483 src/prefs.c:499
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: src/prefs.c:508
+#: src/prefs.c:533
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf-nyckeln \"%s\" är satt till ogiltigt värde"
 
-#: src/prefs.c:580
+#: src/prefs.c:605
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: src/prefs.c:617
-#, c-format
-msgid "%d stored in GConf key %s is not a valid font size\n"
-msgstr "%d lagrad i GConf-nyckeln %s är inte en giltig typsnittsstorlek\n"
-
-#: src/prefs.c:643
+#: src/prefs.c:644
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -206,28 +205,37 @@ msgstr ""
 "%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt "
 "maxvärde är %d\n"
 
-#: src/prefs.c:692
+#: src/prefs.c:693
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Fixar för trasiga program är inaktiverade. En del program fungerar kanske "
+"inte korrekt.\n"
 
-#: src/prefs.c:762
+#: src/prefs.c:725
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
+
+#: src/prefs.c:796
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: src/prefs.c:890
+#: src/prefs.c:925
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\""
 msgstr ""
+"\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
+"tangentbindningen \"%s\""
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: src/screen.c:191
 #, c-format
@@ -276,12 +284,12 @@ msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
 
 #: src/session.c:1077
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session>-attribut hittat men vi har redan sessions-ID"
 
 #: src/session.c:1090
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Okänt attribut %s på <geometry>-element"
+msgstr "Okänt attribut %s på <metacity_session>-element"
 
 #: src/session.c:1107
 msgid "nested <window> tag"
@@ -494,9 +502,9 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
 #: src/theme.c:3977
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Misslyckades med att läsa in temat \"%s\": %s"
+msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
 #: src/theme.c:4123
 #, c-format
@@ -606,6 +614,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Ogiltig titelskala \"%s\" (måste vara ett av xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
 #: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
@@ -616,9 +626,9 @@ msgstr "Inget \"%s\"-attribut på element <%s>"
 #: src/theme-parser.c:735 src/theme-parser.c:799 src/theme-parser.c:837
 #: src/theme-parser.c:914 src/theme-parser.c:964 src/theme-parser.c:972
 #: src/theme-parser.c:1028 src/theme-parser.c:1036
-#, fuzzy, c-format
+#, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Inget \"state\"-attribut på <%s>-element"
+msgstr "Inget \"%s\"-attribut på <%s>-element"
 
 #: src/theme-parser.c:751 src/theme-parser.c:807 src/theme-parser.c:845
 #: src/theme-parser.c:922
@@ -1056,24 +1066,24 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafilen %s innehöll inte ett <metacity_theme>-rotelement"
 
 #: src/util.c:59
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Misslyckades med att tolka sparad sessionsfil: %s\n"
+msgstr "Misslyckades med att öppna felsökningslogg: %s\n"
 
 #: src/util.c:69
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Misslyckades med att läsa tema från filen %s: %s\n"
+msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 
 #: src/util.c:75
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Öppnade loggfilen %s\n"
 
-#: src/window.c:426
+#: src/window.c:427
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #: src/xprops.c:53
 #, c-format
