@@ -2761,6 +2761,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
       
       meta_error_trap_push (window->display);
 
+#ifdef HAVE_XSYNC
       if (window->sync_request_counter != None &&
 	  window->display->grab_sync_request_alarm != None &&
 	  window->sync_request_time.tv_usec == 0 &&
@@ -2768,6 +2769,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
 	{
 	  send_sync_request (window);
 	}
+#endif
 
       XConfigureWindow (window->display->xdisplay,
                         window->xwindow,
