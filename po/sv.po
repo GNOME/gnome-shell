@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-09-23 18:08+0200\n"
-"PO-Revision-Date: 2002-09-23 18:11+0200\n"
+"POT-Creation-Date: 2002-09-24 23:25+0200\n"
+"PO-Revision-Date: 2002-09-24 23:28+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -116,12 +116,27 @@ msgstr "Inget kommando %d har definierats.\n"
 #: src/main.c:63
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace]\n"
+"replace] [--version]\n"
 msgstr ""
 "metacity [--disable-sm] [--sm-save-file=FILNAMN] [--display=DISPLAY] [--"
-"replace]\n"
+"replace] [--version]\n"
 
-#: src/main.c:299
+#: src/main.c:70
+#, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"metacity %s\n"
+"Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., coh andra\n"
+"Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
+"Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT "
+"SPECIELLT ÄNDAMÅL.\n"
+
+#: src/main.c:312
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -129,13 +144,13 @@ msgstr ""
 "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller "
 "vanliga teman."
 
-#: src/main.c:347
+#: src/main.c:360
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
 
 #: src/menu.c:51
-msgid "_Minimize"
+msgid "Mi_nimize"
 msgstr "_Minimera"
 
 #: src/menu.c:52
@@ -147,15 +162,15 @@ msgid "Unma_ximize"
 msgstr "Avma_ximera"
 
 #: src/menu.c:54
-msgid "_Shade"
-msgstr "Sk_ugga"
+msgid "Roll _Up"
+msgstr "_Rulla upp"
 
 #: src/menu.c:55
-msgid "Un_shade"
-msgstr "Avsk_ugga"
+msgid "_Unroll"
+msgstr "_Rulla ned"
 
 #: src/menu.c:56
-msgid "Mo_ve"
+msgid "_Move"
 msgstr "_Flytta"
 
 #: src/menu.c:57
@@ -2391,30 +2406,11 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: src/theme.c:4232
-#, c-format
-msgid "No <name> set for theme \"%s\""
-msgstr "Inget <name> angivet för temat \"%s\""
-
-#: src/theme.c:4239
-#, c-format
-msgid "No <author> set for theme \"%s\""
-msgstr "Inget <author> angivet för temat \"%s\""
-
-#: src/theme.c:4246
-#, c-format
-msgid "No <date> set for theme \"%s\""
-msgstr "Inget <date> angivet för temat \"%s\""
-
-#: src/theme.c:4253
-#, c-format
-msgid "No <description> set for theme \"%s\""
-msgstr "Inget <description> angivet för temat \"%s\""
-
+#: src/theme.c:4232 src/theme.c:4239 src/theme.c:4246 src/theme.c:4253
 #: src/theme.c:4260
 #, c-format
-msgid "No <copyright> set for theme \"%s\""
-msgstr "Inget <copyright> angivet för temat \"%s\""
+msgid "No <%s> set for theme \"%s\""
+msgstr "Inget <%s> angivet för temat \"%s\""
 
 #: src/theme.c:4270
 #, c-format
@@ -2512,7 +2508,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4664
+#: src/window.c:4656
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2528,7 +2524,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5342
+#: src/window.c:5334
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2563,6 +2559,27 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "_Shade"
+#~ msgstr "Sk_ugga"
+
+#~ msgid "Un_shade"
+#~ msgstr "Avsk_ugga"
+
+#~ msgid "No <name> set for theme \"%s\""
+#~ msgstr "Inget <name> angivet för temat \"%s\""
+
+#~ msgid "No <author> set for theme \"%s\""
+#~ msgstr "Inget <author> angivet för temat \"%s\""
+
+#~ msgid "No <date> set for theme \"%s\""
+#~ msgstr "Inget <date> angivet för temat \"%s\""
+
+#~ msgid "No <description> set for theme \"%s\""
+#~ msgstr "Inget <description> angivet för temat \"%s\""
+
+#~ msgid "No <copyright> set for theme \"%s\""
+#~ msgstr "Inget <copyright> angivet för temat \"%s\""
 
 #~ msgid "Change how focus is moved from one window to another"
 #~ msgstr "Ändra hur fokus flyttas från ett fönster till ett annat"
@@ -2692,9 +2709,6 @@ msgstr ""
 
 #~ msgid "Element <%s> is not allowed inside a <window> element"
 #~ msgstr "Elementet <%s> är inte tillåtet inuti ett <window>-element"
-
-#~ msgid "No <%s> set for theme \"%s\""
-#~ msgstr "Inget <%s> angivet för temat \"%s\""
 
 #~ msgid ""
 #~ "Window %s sets max width %d less than min width %d, disabling resize\n"
