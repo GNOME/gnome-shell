@@ -212,15 +212,15 @@ msgstr "Mută fereastra către ecranul din _stânga"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Mută·fereastra·către·ecranul·din·_dreapta"
+msgstr "Mută fereastra către ecranul din _dreapta"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Mută·fereastra·către·ecranul·de s_us"
+msgstr "Mută fereastra către ecranul de s_us"
 
 #: src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Mută·fereastra·către·ecranul·de _jos"
+msgstr "Mută fereastra către ecranul de _jos"
 
 #: src/menu.c:160 src/prefs.c:1854
 #, c-format
