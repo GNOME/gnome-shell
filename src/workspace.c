@@ -112,10 +112,32 @@ meta_workspace_add_window (MetaWorkspace *workspace,
 {
   g_return_if_fail (!meta_workspace_contains_window (workspace, window));
   
+  /* If the window is on all workspaces, we want to add it to all mru
+   * lists, otherwise just add it to this workspaces mru list
+   */
+  if (window->on_all_workspaces) 
+    {
+      if (window->workspaces == NULL)
+        {
+          GList* tmp = window->screen->workspaces;
+          while (tmp)
+            {
+              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+              if (!g_list_find (work->mru_list, window))
+                work->mru_list = g_list_append (work->mru_list, window);
+
+              tmp = tmp->next;
+            }
+        }
+    }
+  else
+    {
+      g_assert (g_list_find (workspace->mru_list, window) == NULL);
+      workspace->mru_list = g_list_append (workspace->mru_list, window);
+    }
+
   workspace->windows = g_list_prepend (workspace->windows, window);
   window->workspaces = g_list_prepend (window->workspaces, workspace);
-
-  workspace->mru_list = g_list_append (workspace->mru_list, window);
 
   meta_window_set_current_workspace_hint (window);
   
@@ -142,7 +164,30 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
 
   workspace->windows = g_list_remove (workspace->windows, window);
   window->workspaces = g_list_remove (window->workspaces, workspace);
-  workspace->mru_list = g_list_remove (workspace->mru_list, window);
+
+  /* If the window is on all workspaces, we don't want to remove it
+   * from the MRU list unless this causes it to be removed from all 
+   * workspaces
+   */
+  if (window->on_all_workspaces) 
+    {
+      if (window->workspaces == NULL)
+        {
+          GList* tmp = window->screen->workspaces;
+          while (tmp)
+            {
+              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+              work->mru_list = g_list_remove (work->mru_list, window);
+
+              tmp = tmp->next;
+            }
+        }
+    }
+  else
+    {
+      workspace->mru_list = g_list_remove (workspace->mru_list, window);
+      g_assert (g_list_find (workspace->mru_list, window) == NULL);
+    }
 
   meta_window_set_current_workspace_hint (window);
   

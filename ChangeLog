@@ -1,3 +1,15 @@
+2003-12-13  Rob Adams  <readams@readams.net>
+
+	* src/window.c (meta_window_new_with_attrs): set on_all_workspaces
+	in all cases _before_ adding to the workspaces, so that windows
+	initially on all workspaces are added correctly to the MRU lists.
+	Fix for #120907.
+
+	* src/workspace.c (meta_workspace_add_window): handle sticky
+	windows so that we add to add mru lists if needed
+	(meta_workspace_remove_window): handle sticky windows so that they
+	are removed from all mru lists if needed.
+
 2003-12-12  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_free): unstick window to get it out of

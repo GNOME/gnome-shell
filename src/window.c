@@ -581,6 +581,17 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_window_grab_keys (window);
   meta_display_grab_window_buttons (window->display, window->xwindow);
   meta_display_grab_focus_window_button (window->display, window);
+
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK)
+    {
+      /* Change the default, but don't enforce this if the user
+       * focuses the dock/desktop and unsticks it using key shortcuts.
+       * Need to set this before adding to the workspaces so the MRU
+       * lists will be updated.
+       */
+      window->on_all_workspaces = TRUE;
+    }
   
   /* For the workspace, first honor hints,
    * if that fails put transients with parents,
@@ -595,8 +606,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                       "Window %s is initially on all spaces\n",
                       window->desc);
           
-          meta_workspace_add_window (window->screen->active_workspace, window);
+	  /* need to set on_all_workspaces first so that it will be
+	   * added to all the MRU lists
+	   */
           window->on_all_workspaces = TRUE;
+          meta_workspace_add_window (window->screen->active_workspace, window);
         }
       else
         {
@@ -636,6 +650,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
           tmp_list = parent->workspaces;
           while (tmp_list != NULL)
             {
+	      /* this will implicitly add to the appropriate MRU lists
+	       */
               meta_workspace_add_window (tmp_list->data, window);
               
               tmp_list = tmp_list->next;
@@ -654,16 +670,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       meta_workspace_add_window (space, window);
     }
   
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
-    {
-      /* Change the default, but don't enforce this if
-       * the user focuses the dock/desktop and unsticks it
-       * using key shortcuts
-       */
-      window->on_all_workspaces = TRUE;
-    }
-
   /* for the various on_all_workspaces = TRUE possible above */
   meta_window_set_current_workspace_hint (window);
   
@@ -944,12 +950,6 @@ meta_window_free (MetaWindow  *window)
   meta_window_unqueue_move_resize (window);
   meta_window_unqueue_update_icon (window);
   meta_window_free_delete_dialog (window);
-
-  /* We need to unstick to remove the window from
-   * any workspace->mru_list for workspaces not
-   * in window->workspaces
-   */
-  meta_window_unstick (window);
   
   tmp = window->workspaces;
   while (tmp != NULL)
