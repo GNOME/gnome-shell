@@ -1,3 +1,8 @@
+Thu Dec  5 13:56:52 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
+
+	* src/display.c (event_callback): move a window to the current
+	space on the MapRequest when it's not on the space yet. #100390
+
 2002-12-01  Havoc Pennington  <hp@pobox.com>
 
 	* src/frames.c (get_control): rearrange this function a bit, so

@@ -1458,6 +1458,10 @@ event_callback (XEvent   *event,
         {
           if (window->minimized)
             meta_window_unminimize (window);
+	  if (!meta_workspace_contains_window (window->screen->active_workspace,
+					       window))
+	    meta_window_change_workspace (window,
+					  window->screen->active_workspace);
         }
       break;
     case ReparentNotify:
