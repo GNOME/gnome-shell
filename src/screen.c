@@ -1727,6 +1727,7 @@ meta_create_offscreen_window (Display *xdisplay,
    * (but on a display we are managing at least one screen for)
    */
   attrs.override_redirect = True;
+  attrs.event_mask = PropertyChangeMask;
   
   return XCreateWindow (xdisplay,
                         parent,
@@ -1735,7 +1736,7 @@ meta_create_offscreen_window (Display *xdisplay,
                         CopyFromParent,
                         CopyFromParent,
                         CopyFromParent,
-                        CWOverrideRedirect,
+                        CWOverrideRedirect | CWEventMask,
                         &attrs);
 }
 
