@@ -1,5 +1,11 @@
 2002-06-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_new): don't automatically fullscreen
+	things opened fullscreen, because there's no GUI to un-fullscreen
+	them.
+
+2002-06-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme-parser.c (parse_aspect_ratio): fix error message about
 	bad aspect ratio name.
 

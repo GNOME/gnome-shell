@@ -443,11 +443,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_struts (window);
 
   update_net_wm_state (window);
-
-  if (attrs.x == 0 && attrs.y == 0 &&
-      attrs.width == window->screen->width &&
-      attrs.height == window->screen->height)
-    window->fullscreen = TRUE;
   
   update_mwm_hints (window);
   update_wm_class (window);
