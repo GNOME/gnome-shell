@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2003-09-13 14:04+0200\n"
-"PO-Revision-Date: 2003-09-20 23:35+0200\n"
+"PO-Revision-Date: 2003-09-21 17:19+0200\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norsk nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr ""
 #: src/delete.c:431
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Kunne ikkje henta vertsnamn: %s\n"
+msgstr "Klarte ikkje å finna vertsnamn: %s\n"
 
 # TRN: "X Window System"?
 #: src/display.c:286
@@ -68,6 +68,7 @@ msgstr "Kunne ikkje opna X Window System-skjermen «%s»\n"
 
 #: src/errors.c:231
 #, c-format
+#, fuzzy
 msgid ""
 "Lost connection to the display '%s';\n"
 "most likely the X server was shut down or you killed/destroyed\n"
@@ -78,6 +79,7 @@ msgstr ""
 
 #: src/errors.c:238
 #, c-format
+#, fuzzy
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
 
@@ -914,7 +916,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som byter til arbeidsområdet 1. Formatet er på forma «&lt;"
+"Snøggtasten som byter til arbeidsområde 1. Formatet er på forma «&lt;"
 "Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
 "romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
 "og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
@@ -929,7 +931,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som byter til arbeidsområdet 10. Formatet er på forma «&lt;"
+"Snøggtasten som byter til arbeidsområde 10. Formatet er på forma «&lt;"
 "Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
 "romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
 "og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
@@ -944,7 +946,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som byter til arbeidsområdet 11. Formatet er på forma «&lt;"
+"Snøggtasten som byter til arbeidsområde 11. Formatet er på forma «&lt;"
 "Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
 "romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
 "og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
@@ -1094,7 +1096,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som aktiverer vindaugemenyen.Formatet er på forma «&lt;"
+"Snøggtasten som aktiverer vindaugemenyen. Formatet er på forma «&lt;"
 "Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske "
 "romsleg, og tillet små og store bokstavar og forkortingar som «&lt;Ctl&gt;» "
 "og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle strengen "
@@ -1109,7 +1111,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som lukkar eit vindauge.Formatet er på forma «&lt;Control&gt;a» "
+"Snøggtasten som lukkar eit vindauge. "
+"Formatet er på forma «&lt;Control&gt;a» "
 "eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske romsleg, og tillet "
 "små og store bokstavar og forkortingar som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». "
 "Dersom du set dette valet til den spesielle strengen «disabled», så har "
@@ -1125,7 +1128,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Snøggtasten som går inn i «flyttemodus», som let deg flytta eit vindauge med tastaturet."
+"Snøggtasten som går inn i «flyttemodus», som let deg flytta eit vindauge med tastaturet. "
 "Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
 "som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
@@ -1447,7 +1450,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som flyttar fokus baklangs mellom panela og skrivebordet, med ein dialogboks."
+"Snøggtasten som flyttar fokus baklengs mellom panela og skrivebordet, med ein dialogboks."
 "Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
 "som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
@@ -1618,7 +1621,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som maksimerer og gjenopprettar vindauget."
+"Snøggtasten som maksimerer og gjenoppretter vindauget."
 "Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
 "som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
@@ -1656,6 +1659,7 @@ msgstr ""
 "spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:137
+#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1663,13 +1667,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Snøggtasten som gjenopprettar eit vindauge."
+"Snøggtasten som gjenoppretter eit vindauge."
 "Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
 "som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
 "spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:138
+#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1685,6 +1690,7 @@ msgstr ""
 "spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:139
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1693,8 +1699,15 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
+"Snøggtasten som køyrer panelet sitt skjermbileteverktøy for å ta eit bilete "
+"av eit vindauge."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:140
+#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1703,8 +1716,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"Snøggtasten som køyrer panelet sitt skjermbileteverktøy."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:141
+#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1712,14 +1731,20 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"Snøggtasten som køyrer panelet sitt skjermbileteverktøy for å ta eit bilete "
+"av eit vindauge."
+"Formatet er på forma «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». "
+"Tolkaren er ganske romsleg, og tillet små og store bokstavar og forkortingar "
+"som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den "
+"spesielle strengen «disabled», så har denne handlinga ingen snøggtast."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
-msgstr ""
+msgstr "Namnet på eit arbeidsområde."
 
 #: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
-msgstr ""
+msgstr "Skjermbiletekommandoen"
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1732,6 +1757,8 @@ msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
+"Tidsforseinking før eit vindauge vert heva dersom «auto_raise» er satt. Forseinkinga "
+"er gitt i millisekund."
 
 #: src/metacity.schemas.in.h:146
 msgid ""
@@ -1741,6 +1768,11 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
+"Fokuseringsmåte avgjer korleis vindauga får fokus. Det er tre moglege verdiar: "
+"«click» tyder at det må klikkast i vindauget for at dei skal fokuserast på, "
+"«sloppy» tyder at vindauga får fokus når muspeikaren går inn i dei, og "
+"«mouse» tyder at vindauga får fokus når muspeikaren går inn i vindauget, "
+"og mistar fokus når muspeikaren går ut av det."
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
@@ -1761,8 +1793,8 @@ msgstr ""
 "Denne snøggtasten endrar om eit vindauge er over eller under andre vindauge. "
 "Dersom vindauget er dekt av eit anna vindauge, vert det løfta over dei andre "
 "vindauga. Dersom vindauget allereie er fullstendig synleg, senkar det vindauget "
-"under dei andre vindauga. Formatet ser slik ut: «&lt;Control&gt;a» eller "
-"«&lt;Shift&gt;&lt;Alt&gt;F1». "
+"under dei andre vindauga. "
+"SNØGGTASTFORMAT"
 
 #: src/metacity.schemas.in.h:149
 #, fuzzy
@@ -1772,18 +1804,24 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Denne snøggtasten senkar eit vindauge under andre vindauge. SNØGGTASTFORMAT"
+msgstr ""
+"Denne snøggtasten senkar eit vindauge under andre vindauge. "
+"SNØGGTASTFORMAT"
 
 #: src/metacity.schemas.in.h:150
+#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Denne snøggtastbindinga løftar eit vindauge over dei andre vindauga. SNØGGTASTFORMAT"
+msgstr ""
+"Denne snøggtastbindinga løftar eit vindauge over dei andre vindauga. "
+"SNØGGTASTFORMAT"
 
 #: src/metacity.schemas.in.h:151
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1793,9 +1831,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Denne snøggtasten endrar storleiken på eit vindauge slik at det brukar "
-"all den tilgjengelege vassrette plassen. SNØGGTASTFORMAT"
+"all den tilgjengelege vassrette plassen. "
+"SNØGGTASTFORMAT"
 
 #: src/metacity.schemas.in.h:152
+#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1805,11 +1845,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Denne snøggtasten endrar storleiken på eit vindauge slik at det brukar "
-"all den tilgjengelege loddrette plassen. SNØGGTASTFORMAT"
+"all den tilgjengelege loddrette plassen. "
+"SNØGGTASTFORMAT"
 
 #: src/metacity.schemas.in.h:153
 # TRN: "toggle_shade", "toggle_maximize"
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1829,11 +1869,11 @@ msgstr "Slå av/på fullskjermmodus"
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Endra tilstand for maksimering"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Endra tilstand for skuggeleggjing"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
@@ -1913,6 +1953,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Triks for å unngå problem med defekte applikasjonar er slått av. Somme "
+"applikasjonar vil kanskje ikkje oppføra seg som venta.\n"
 
 #: src/prefs.c:1232
 #, c-format
@@ -1945,8 +1987,10 @@ msgstr "%d x %d"
 
 #: src/screen.c:392
 #, c-format
+#, fuzzy
+# TRN: "skjerm", "display"?
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
 #: src/screen.c:408
 #, c-format
@@ -1975,70 +2019,71 @@ msgstr ""
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
-msgstr ""
+msgstr "Kunne ikkje kopla til økthandsamaren. Vindaugsposisjonar vil ikkje verta lagra: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "Kunne ikkje laga katalogen «%s»: %s\n"
 
 #: src/session.c:898
 #, c-format
+# TRN: Ikkje bra, men det får vel duga.
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "Kunne ikkje opna øktfila «%s» for skriving: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "Kunne ikkje skriva til øktfila «%s»: %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "Feil under lukking av øktfil «%s»: %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Feil under lesing av lagra øktfil %s: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Kunne ikkje tolka lagra øktfil: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session> attributt sett, men me har allereie funne økt-ID"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "Ukjend attributt %s på <metacity_session>-element"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr ""
+msgstr "<window> tag med fleire nivå"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "Ukjend attributt %s på <window>-element"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "Ukjend attributt %s på <maximized>-element"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "Ukjend attributt %s på <geometry>-element"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Ukjent element %s"
 
 #: src/session.c:1921
 #, c-format
@@ -2046,51 +2091,53 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
+"Feil under oppstart av metacity-dialog for å åtvara om applikasjonar som "
+"ikkje støttar økthandsaming: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Linje %d teikn %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Attributt «%s» gjentatt to gongar på same <%s>-element"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Attributt «%s» er ugyldig på <%s>-element i denne konteksten"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Heiltal %ld må vera positivt"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Heiltal %ld er for stort, største moglege verdi er %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Kunne ikkje tolka «%s» som eit flyttal"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Boolske verdiar må vera «true» eller «false», ikkje «%s»"
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Vinkelen må vera mellom 0.0 og 360.0, var %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "Alfa må vera mellom 0.0 (usynleg) 1.0 (heilt ugjennomsiktig), var %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2098,75 +2145,77 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Ugyldig tittelskalering «%s» (må vera ein av «xx-small», «x-small», «small», "
+"«medium», «large», «x-large», «xx-large»)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "Ikkje nokon atributt «%s» på elementet <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen atributt «%s» på <%s>-element"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> namnet «%s» brukt for andre gong"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> opphav «%s» er ikkje definert"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> geometri «%s» er ikkje definert"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> må spesifisere anten ein geometri eller eit opphav som har geometri"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "Ukjend type «%s» på <%s>-element"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "Ukjend style_set «%s» på <%s>-element"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Vindaugetype «%s» er allereie tildelt eit stilsett"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Ukjend funksjon for «%s» for menyikon"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Ukjend tilstand «%s» for menyikon"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Temaet har allereie eit menyikon for funksjon %s tilstand %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Det er ikkje definert nokon <draw_ops> med namn «%s» "
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -2174,82 +2223,82 @@ msgstr ""
 #: src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Element <%s> er ikkje tillate under <%s>"
 
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «name»-attributt <%s>-element"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «value»-attributt på elementet <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+msgstr "Kan ikkje oppgje både button_width/button_height og forholdstal for knappar"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Avstanden «%s» er ukjent"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Forholdstalet «%s» er ukjent"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «top»-attributt på element <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «bottom»-attributt på element <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «left»-attributt på element <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «right»-attributt på element <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Bord «%s» er ukjent"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «color»-attributt på element <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «x1»-attributt på <%s>-element"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «y1»-attributt på element <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «x2»-attributt på element <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «y2»-attributt på element <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -2257,7 +2306,7 @@ msgstr ""
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «x»-attributt på element <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -2265,176 +2314,176 @@ msgstr ""
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «y»-attributt på element <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «width»-attributt på element <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «height»-attributt på element <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «start_angle»-attributt på element <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «extent_angle»-attributt <%s>-element"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «alpha»-attributt på element <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «type»-attributt på element <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Forsto ikkje verdien «%s» for gradienttype"
 
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «filename»-attributt på element <%s>"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
+msgstr "Forstod ikkje fyll-type «%s» for <%s>-element"
 
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «state»-attributt på element <%s>"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «shadow»-attributt på element <%s>"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
+msgstr "Ingen «arrow»-attributt på element <%s>"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Forstod ikkje tilstand «%s» for element <%s>"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Forstod ikkje skugge «%s» for element <%s>"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Forstod ikkje pil «%s» for element <%s>"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Det er ikkje definert nokon <draw_ops> kalla «%s» "
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Å ta med draw_ops «%s» her vil laga ein sirkulær referanse"
 
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «value»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «position»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Ukjend posisjon «%s» for rammedel"
 
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Rammestilen har allereie ein del i posisjon %s"
 
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «function»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «state»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Ukjent funksjon «%s» for knapp"
 
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Ukjent tilstand «%s» for knapp"
 
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Rammestilen har allereie en knapp for funksjon %s tilstand %s"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «focus»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «style»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "«%s» er ikke en gyldig verdi for fokusattributt"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "«%s» er ikkje en gyldig verdi for tilstandsattributt"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "En stil med namn «%s» er ikkje definert"
 
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
+msgstr "Ingen «resize»-attributt på <%s>-element"
 
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "«%s» er ikkje ein gyldig verdi for attributt for endring av storleik"
 
 #: src/theme-parser.c:3450
 #, c-format
@@ -2442,150 +2491,168 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"Det skal ikkje vera nokon «resize»-attributt på elemetet <%s> for "
+"maksimerte/skuggelagte tilstandar"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Stilen er alt spesifisert for tilstand %s, storleiksendring %s, fokus %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Stilen er alt spesifisert for tilstand %s, fokus %s"
 
 #: src/theme-parser.c:3536
+#, fuzzy
+# TRN: Tema?
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan ikkje ha to draw_ops for eit <piece>-element (temaet spesifiserte ein "
+"draw_ops-attributt og også eit <draw_ops>-element, eller to element)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan ikkje ha to draw_ops for eit <button>-element (temaet spesifiserte ein "
+"draw_ops-attributt og også eit <draw_ops>-element, eller to element)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"Kan ikkje ha to draw_ops for eit <menu_icon>-element (temaet spesifiserte ein "
+"draw_ops-attributt og også eit <draw_ops>-element, eller to element)"
 
 #: src/theme-parser.c:3659
 #, c-format
+#, fuzzy
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Det ytste elementet i temaet må vera <metacity_theme>, ikkje <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgstr "Elementet <%s> er ikkje tillate inni eit name/author/date/description-element"
 
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Elementet <%s> er ikkje tillate inne i eit <constant>-element"
 
 #: src/theme-parser.c:3696
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgstr "Elementet <%s> er ikkje tillate inni eit distance/border/aspect_ratio-element"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Elementet <%s> er ikkje tillate inni eit draw operation-element"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Elementet %s er ikkje tillate inni eit <%s>-element"
 
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Ingen draw_ops tilgjengelege for rammedelen"
 
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Ingen draw_ops tilgjengelege for knappen"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Ingen draw_ops tilgjengelege for menyikonet"
 
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Tekst er ikkje tillate inni elementet <%s>"
 
 #: src/theme-parser.c:4109
+#, fuzzy
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> spesifisert to gongar i dette temaet"
 
 #: src/theme-parser.c:4120
+#, fuzzy
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> spesifisert to gongar i dette temaet"
 
 #: src/theme-parser.c:4131
+#, fuzzy
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> spesifisert to gongar i dette temaet"
 
 #: src/theme-parser.c:4142
+#, fuzzy
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> spesifisert to gongar i dette temaet"
 
 #: src/theme-parser.c:4153
+#, fuzzy
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> spesifisert to gongar i dette temaet"
 
 #: src/theme-parser.c:4348
 #, c-format
+#, fuzzy
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Kunne ikkje lesa tema frå fila %s: %s\n"
 
 #: src/theme-parser.c:4403
 #, c-format
+#, fuzzy
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Temafila %s inneheldt ikkje rotelementet <metacity_theme>"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "topp"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "botn"
 
 #: src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "venstre"
 
 #: src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "høgre"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "rammegeometrien spesifiserer ikkje «%s»-dimensjonen"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "rammegeometri spesifiserer ikkje dimensjonen «%s» for kanten «%s»"
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Aspektrate %g for knapp gir ikkje meining"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Rammegeometrien spesifiserer ikkje storleik på knappar"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Gradientar må ha minst to fargar"
 
 #: src/theme.c:975
 #, c-format
@@ -2593,6 +2660,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK-fargespesifikasjon må ha tilstand i klammer, t.d. gtk:fs[NORMAL], der NORMAL "
+"er tilstanden: Kunne ikkje tolka «%s»"
 
 #: src/theme.c:989
 #, c-format
@@ -2600,16 +2669,19 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK-fargespesifikasjon må ha ei avsluttande klamme etter tilstanden, "
+"t.d. gtk:fs[NORMAL], der NORMAL "
+"er tilstanden: Kunne ikkje tolka «%s»"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Forstod ikkje tilstanden «%s» i fargespesifikasjonen"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Forstord ikkje fargekomponenten «%s» i fargespesifikasjonen"
 
 #: src/theme.c:1043
 #, c-format
@@ -2617,53 +2689,55 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"Blandingsformatet er «blend/bg_color/fg_color/alpha», «%s» passar ikkje "
+"i formatet"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Kunne ikkje lesa alfa-verdien «%s» i blanda farge"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alfaverdien «%s» i blanda farge er ikkje mellom 0.0 og 1.0."
 
 #: src/theme.c:1111
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgstr "Skuggeformatet er «shade/base_color/factor», «%s» passar ikkje inn i formatet"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Kunne ikkje tolka skuggefaktor «%s» i skuggelagt farge"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Skuggefaktor «%s» i skuggelagt farge er negativ"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "Kunne ikkje tolka fargen «%s»"
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Koordinatuttrykk inneheld teiknet «%s», som ikkje er tillate"
 
 #: src/theme.c:1450
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
+msgstr "Koordinatuttrykket inneheld flyttalet «%s» som ikkje kunne tolkast"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Koordinatuttrykket inneheld heiltalet «%s» som ikkje kunne tolkast"
 
 #: src/theme.c:1531
 #, c-format
@@ -2671,23 +2745,25 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Koordinatuttrykket inneheld ein ukjent operator i byrjinga av denne teksten: "
+"«%s»"
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Koordinatuttrykket var tomt eller vart ikkje forstått"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Koordinatuttrykket fører til deling på null"
 
 #: src/theme.c:1779
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "Koordinatuttrykket prøver å bruka mod-operatoren på eit flyttal"
 
 #: src/theme.c:1836
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgstr "Koordinatuttrykket har ein operator «%s» der ein operand var venta"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
