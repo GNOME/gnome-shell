@@ -16,8 +16,8 @@ $Id$
 This document details metacity compliance with the relevent standards.
 The format of this document is as follows:
 
-[-/+*?] Hint Name/Feature Name (Version number)
-        Errata/Comments
+[-/+?] Hint Name/Feature Name (Version number)
+       Errata/Comments
 
 The first character indicates the level of compliance as follows:
     -   none
@@ -36,7 +36,7 @@ incompatible changes have been made in the specification.
 The EWMH, or Extended Window Manager Hints is a freedesktop.org-
 developed standard to support a number of conventions for
 communication between the window manager and clients.  It builds on
-and extends the ICCCM (See Section 2).  A copy of the current EWMH
+and extends the ICCCM (See Section 3).  A copy of the current EWMH
 standard is available at http://freedesktop.org/Standards/wm-spec/
 
   a. Root Window Properties
