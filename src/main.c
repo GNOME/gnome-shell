@@ -158,7 +158,7 @@ main (int argc, char **argv)
   /* gtk_init() below overrides this, so it can be removed */
   meta_errors_init ();
   
-  g_type_init (0); /* grumble */
+  g_type_init ();
 
   if (!disable_sm)
     meta_session_init (client_id); /* client_id == NULL is fine */
