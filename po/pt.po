@@ -1,14 +1,14 @@
 # metacity's Portuguese Translation
-# Copyright © 2001, 2002, 2003, 2004 metacity
+# Copyright © 2001, 2002, 2003, 2004, 2005 metacity
 # Distributed under the same licence as the metacity package
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.8\n"
+"Project-Id-Version: 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-08-02 20:50+0000\n"
+"POT-Creation-Date: 2005-01-26 01:03+0000\n"
+"PO-Revision-Date: 2005-01-26 01:05+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -122,9 +122,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Não foi definido nenhum comando %d.\n"
+msgstr "Não foi definido nenhum comando de consola.\n"
 
 #: src/main.c:69
 msgid ""
@@ -230,7 +229,7 @@ msgstr "Mover para Área de Trabalho _Acima"
 msgid "Move to Workspace _Down"
 msgstr "Mover para Área de Trabalho A_baixo"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1947
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
@@ -705,7 +704,7 @@ msgstr "Executar um comando definido"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Executar uma consola"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1210,7 +1209,6 @@ msgstr ""
 "atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1738,7 +1736,6 @@ msgstr ""
 "não existirão quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1746,11 +1743,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"O atalho de teclado que apresenta o menu principal do painel. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
-"parseador é razoavelmente liberal e permite capitalização maiúscula ou "
-"minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se definir a opção para a expressão especial \"disabled\", não existirão "
+"O atalho de teclado que apresenta uma consola. O formato assemelha-se a "
+"\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O parseador é "
+"razoavelmente liberal e permite capitalização maiúscula ou minúscula e "
+"também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se "
+"definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:143
@@ -1986,17 +1983,17 @@ msgstr "Modo de foco de janela"
 msgid "Window title font"
 msgstr "Fonte de título de janela"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:481 src/prefs.c:497 src/prefs.c:513 src/prefs.c:529
+#: src/prefs.c:545 src/prefs.c:565 src/prefs.c:581 src/prefs.c:597
+#: src/prefs.c:613 src/prefs.c:629 src/prefs.c:645 src/prefs.c:661
+#: src/prefs.c:677 src/prefs.c:694 src/prefs.c:710 src/prefs.c:726
+#: src/prefs.c:742 src/prefs.c:758 src/prefs.c:773 src/prefs.c:788
+#: src/prefs.c:803
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Chave GConf \"%s\" está definida para um tipo inválido\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:848
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2005,17 +2002,17 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o modificador de botão de rato\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:872 src/prefs.c:1282
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Chave GConf '%s' está definida com um valor inválido\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:999
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Incapaz de parsear descrição de fonte \"%s\" da chave GConf %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1184
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2024,7 +2021,7 @@ msgstr ""
 "%d armazenado na chave GConf %s não é um número razoável de ambientes de "
 "trabalho, o número máximo actual é %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1244
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2032,17 +2029,17 @@ msgstr ""
 "Recursos para aplicações problemáticas inactivos. Algumas aplicações poderão "
 "não funcionar correctamente.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1309
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d armazenado na chave GConf %s está fora do intervalo de 0 a %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1430
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro ao definir número de ambientes de trabalho para %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1674
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2051,7 +2048,7 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o atalho de teclado \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2028
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir nome da área de trabalho %d para \"%s\": %s\n"
@@ -3193,7 +3190,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID %ld fictício\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4882
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3209,7 +3206,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5553
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
