@@ -1,3 +1,11 @@
+2003-11-16  Rob Adams  <readams@readams.net>
+
+	* src/window.c (meta_window_notify_focus): add paranoia check to
+	make sure a window is really on a workspace before inserting it at
+	the beginning of the MRU list.  Maybe there's a race condition
+	with focusing and workspace switching.  Hopefully a fix for
+	#122016.
+
 2003-11-15  Havoc Pennington  <hp@redhat.com>
 
 	* src/main.c (main): fix warning
