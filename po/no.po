@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-01-29 00:37+0100\n"
-"PO-Revision-Date: 2002-01-29 00:38+0100\n"
+"POT-Creation-Date: 2002-02-02 01:29+0100\n"
+"PO-Revision-Date: 2002-02-02 01:34+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -345,65 +345,65 @@ msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
 
 #: src/theme.c:524
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Koordinatuttrykket var tomt eller ble ikke forstått"
 
 #: src/theme.c:663 src/theme.c:673 src/theme.c:698
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Koordinatuttrykket resulterer i divisjon med null"
 
 #: src/theme.c:706
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "Koordinatuttrykket prøver å bruke mod-operator på et flyttall"
 
 #: src/theme.c:754
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%c\" where an operand was expected"
-msgstr ""
+msgstr "Koordinatuttrykket har en operator «%c» hvor en operand var ventet"
 
 #: src/theme.c:763
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Koordinatuttrykket hadde en operand hvor en operator var ventet"
 
 #: src/theme.c:771
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Koordinatuttrykket sluttet med en operator i stedet for en operand"
 
 #: src/theme.c:781
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
+msgstr "Koordinatuttrykket har en operator «%c» etter en operator «%c» og ingen operand mellom dem."
 
 #: src/theme.c:883
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
+msgstr "Koordinatuttrykkets tolkeprosess overfløt bufferen sin. Dette er virkelig en Metacity feil, men er du sikker på at du trenger så store uttrykk?"
 
 #: src/theme.c:912
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Koordinatuttrykket hadde en parantes slutt uten parantes start"
 
 #: src/theme.c:927
 #, c-format
 msgid "Coordinate expression had unknown variable \"%s\""
-msgstr ""
+msgstr "Koordinatuttrykket haddeen ukjent variabel «%s»"
 
 #: src/theme.c:984
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Koordinatuttrykket hadde en åpen parantes uten en avsluttende parantes"
 
 #: src/theme.c:995
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Koordinatuttrykket ser ikke ut til å ha noen operatorer eller operander"
 
 #: src/theme.c:1163 src/theme.c:1187 src/theme.c:1209
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
 
 #. someone is on crack
 #: src/window.c:3411
