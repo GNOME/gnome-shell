@@ -1,5 +1,9 @@
 2001-10-29  Havoc Pennington  <hp@pobox.com>
 
+	* configure.in: bump version
+
+2001-10-29  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (idle_calc_showing): handle queue/unqueue of 
 	calc showings as we are iterating over the pending list
 	(meta_window_show): focus placed transients in here instead

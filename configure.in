@@ -2,7 +2,7 @@ AC_INIT(src/display.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(metacity, 2.3.21)
+AM_INIT_AUTOMAKE(metacity, 2.3.34)
 
 GETTEXT_PACKAGE=metacity
 AC_SUBST(GETTEXT_PACKAGE)
@@ -41,8 +41,8 @@ ALL_LINGUAS="es ru sv uk"
 dnl AM_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.9)
-PKG_CHECK_MODULES(METACITY_RESTART, gtk+-2.0 >= 1.3.9)
+PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.10)
+PKG_CHECK_MODULES(METACITY_RESTART, gtk+-2.0 >= 1.3.10)
 
 CFLAGS="$METACITY_CFLAGS $CFLAGS"
 
