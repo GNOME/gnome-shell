@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-31 06:04+0100\n"
-"PO-Revision-Date: 2005-01-31 10:56+0100\n"
+"POT-Creation-Date: 2005-02-02 14:09+0100\n"
+"PO-Revision-Date: 2005-02-02 21:34+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -200,8 +200,8 @@ msgstr "_Zavřít"
 
 #. separator
 #: src/menu.c:66
-msgid "_Always on Current Workspace"
-msgstr "_Vždy na aktuální ploše"
+msgid "_Always on Visible Workspace"
+msgstr "_Vždy na viditelné ploše"
 
 #: src/menu.c:67
 msgid "_Only on This Workspace"
