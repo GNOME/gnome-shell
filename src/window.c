@@ -604,6 +604,8 @@ void
 meta_window_calc_showing (MetaWindow  *window)
 {
   gboolean on_workspace;
+
+  meta_verbose ("Calc showing for window %s\n", window->desc);
   
   on_workspace = g_list_find (window->workspaces,
                               window->screen->active_workspace) != NULL;
@@ -655,6 +657,8 @@ idle_calc_showing (gpointer data)
 {
   GSList *tmp;
 
+  meta_verbose ("Clearing the calc_showing queue\n");
+  
   /* sort them from bottom to top, so we map the
    * bottom windows first, so that placement (e.g. cascading)
    * works properly
@@ -1485,7 +1489,7 @@ meta_window_change_workspace (MetaWindow    *window,
   /* See if we're already on this space */
   if (g_list_find (window->workspaces, workspace) != NULL)
     {
-      meta_verbose ("Already on this workspace\n");
+      meta_verbose ("%s already on this workspace\n", window->desc);
       return;
     }
 

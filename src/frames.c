@@ -709,28 +709,42 @@ meta_frames_manage_window (MetaFrames *frames,
   
   gdk_window_set_user_data (frame->window, frames);
 
-#if 0
-  /* Add events in frame.c */
-  gdk_window_set_events (frame->window,
-                         GDK_EXPOSURE_MASK |
-                         GDK_POINTER_MOTION_MASK |
-                         GDK_POINTER_MOTION_HINT_MASK |
-                         GDK_BUTTON_PRESS_MASK |
-                         GDK_BUTTON_RELEASE_MASK |
-                         GDK_STRUCTURE_MASK);
+  /* Don't set event mask here, it's in frame.c */
   
-  /* This shouldn't be required if we don't select for button
-   * press in frame.c?
+  /* Grab Alt + button1 and Alt + button2 for moving window,
+   * and Alt + button3 for popping up window menu.
    */
-  XGrabButton (gdk_display, AnyButton, AnyModifier,
-               xwindow, False,
-               ButtonPressMask | ButtonReleaseMask |    
-               PointerMotionMask | PointerMotionHintMask,
-               GrabModeAsync, GrabModeAsync,
-               False, None);
+  {
+    int i = 1;
+    while (i < 4)
+      {
+        if (XGrabButton (gdk_display, i, Mod1Mask,
+                         xwindow, False,
+                         ButtonPressMask | ButtonReleaseMask |    
+                         PointerMotionMask | PointerMotionHintMask,
+                         GrabModeAsync, GrabModeAsync,
+                         False, None) != Success)
+          meta_warning ("Failed to grab button %d with Mod1Mask for frame 0x%lx\n",
+                        i, xwindow);
 
-  XFlush (gdk_display);
+#if 0
+        /* This is just for debugging, since I end up moving
+         * the Xnest otherwise ;-)
+         */
+        if (XGrabButton (gdk_display, i, ControlMask,
+                         xwindow, False,
+                         ButtonPressMask | ButtonReleaseMask |    
+                         PointerMotionMask | PointerMotionHintMask,
+                         GrabModeAsync, GrabModeAsync,
+                         False, None) != Success)
+          meta_warning ("Failed to grab button %d with ControlMask for frame 0x%lx\n",
+                        i, xwindow);
+
 #endif
+        
+        ++i;
+      }
+  }
   
   frame->xwindow = xwindow;
   frame->layout = NULL;
@@ -1362,14 +1376,12 @@ meta_frames_button_press_event (GtkWidget      *widget,
           break;
         }
 
-      g_assert (status != META_FRAME_STATUS_NORMAL);
-
       meta_frames_begin_grab (frames, frame,
                               status,
                               event->button,
                               0, 0, 0, 0, 0, 0, /* not needed */
                               event->time);
-
+      
       redraw_control (frames, frame, control);
 
       if (status == META_FRAME_STATUS_CLICKING_MENU)
@@ -1486,6 +1498,15 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                   x, y, w, h,
                                   event->time);
         }
+    }
+  else if (event->button == 3)
+    {
+      meta_core_show_window_menu (gdk_display,
+                                  frame->xwindow,
+                                  event->x_root,
+                                  event->y_root,
+                                  event->button,
+                                  event->time);      
     }
   
   return TRUE;
@@ -2410,4 +2431,14 @@ get_control (MetaFrames *frames,
     }
   
   return META_FRAME_CONTROL_NONE;
+}
+
+Window
+meta_frames_get_moving_frame (MetaFrames *frames)
+{
+  if (frames->grab_frame &&
+      frames->grab_status == META_FRAME_STATUS_MOVING)
+    return frames->grab_frame->xwindow;
+  else
+    return None;
 }

@@ -286,7 +286,47 @@ handle_activate_workspace (MetaDisplay *display,
 
   if (workspace)
     {
+      Window move_frame;
+      MetaWindow *move_window;
+
+      move_window = NULL;
+      move_frame = meta_ui_get_moving_frame (workspace->screen->ui);
+      
+      if (move_frame != None)
+        {
+          move_window = meta_display_lookup_x_window (display, move_frame);
+          
+          if (move_window == NULL ||
+              move_window->frame == NULL)
+            meta_bug ("No move_frame window 0x%lx!\n", move_frame);  
+
+          if (move_window->on_all_workspaces)
+            move_window = NULL; /* don't move it after all */
+
+          /* We put the window on the new workspace, flip spaces,
+           * then remove from old workspace, so the window
+           * never gets unmapped and we maintain the button grab
+           * on it.
+           */
+          if (move_window)
+            {
+              if (!meta_workspace_contains_window (workspace,
+                                                   move_window))
+                meta_workspace_add_window (workspace, move_window);
+            }
+        }
+      
       meta_workspace_activate (workspace);
+
+      if (move_window)
+        {
+          /* Lamely rely on prepend */
+          g_assert (move_window->workspaces->data == workspace);
+                
+          while (move_window->workspaces->next) /* while list size > 1 */
+            meta_workspace_remove_window (move_window->workspaces->next->data,
+                                          move_window);
+        }
     }
   else
     {

@@ -255,7 +255,7 @@ meta_window_place (MetaWindow *window,
       /* Center on screen */
       int w, h;
 
-          /* I think whole screen will look nicer than workarea */
+      /* I think whole screen will look nicer than workarea */
       w = WidthOfScreen (window->screen->xscreen);
       h = HeightOfScreen (window->screen->xscreen);
 

@@ -157,4 +157,6 @@ void meta_frames_get_pixmap_for_control (MetaFrames *frames,
 
 void meta_frames_notify_menu_hide (MetaFrames *frames);
 
+Window meta_frames_get_moving_frame (MetaFrames *frames);
+
 #endif

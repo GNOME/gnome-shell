@@ -55,6 +55,9 @@ void meta_ui_add_frame    (MetaUI *ui,
 void meta_ui_remove_frame (MetaUI *ui,
                            Window  xwindow);
 
+Window meta_ui_get_moving_frame (MetaUI *ui);
+                               
+
 /* GDK insists on tracking map/unmap */
 void meta_ui_map_frame   (MetaUI *ui,
                           Window  xwindow);
