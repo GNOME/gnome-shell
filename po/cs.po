@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-22 15:43+0100\n"
-"PO-Revision-Date: 2003-12-22 19:35+0100\n"
+"POT-Creation-Date: 2004-01-24 04:56+0100\n"
+"PO-Revision-Date: 2004-01-27 16:53+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr "Chyba při spouštění metacity-dialog pro dotaz o zabití aplikace: %s
 msgid "Failed to get hostname: %s\n"
 msgstr "Nemohu získat jméno počítače: %s\n"
 
-#: src/display.c:291
+#: src/display.c:296
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nemohu otevřít displej X Window System '%s'\n"
@@ -134,10 +134,9 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc. a další\n"
+"Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc. a další\n"
 "Toto je volné programové vybavení; podmínky pro kopírování a rozšiřování\n"
-"naleznete ve zdrojových textech. Toto programové vybavení je zcela BEZ "
-"ZÁRUKY,\n"
+"naleznete ve zdrojových textech. Toto programové vybavení je zcela BEZ ZÁRUKY,\n"
 "a to i bez záruky PRODEJNOSTI nebo VHODNOSTI PRO NĚJAKÝ KONKRÉTNÍ ÚČEL.\n"
 
 #: src/main.c:443
@@ -219,22 +218,19 @@ msgstr "Přesunout na plochu _nahoře"
 msgid "Move to Workspace _Down"
 msgstr "Přesunout na plochu _dole"
 
-# Let's hope it is used only in the "Only on %s" and "Move to %s" strings
 #: src/menu.c:159 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
-msgstr "plochu %d"
+msgstr "Plocha %d"
 
-# Let's hope it is used only in the "Only on %s" and "Move to %s" strings
 #: src/menu.c:168
 msgid "Workspace 1_0"
-msgstr "plochu 1_0"
+msgstr "Plocha 1_0"
 
-# Let's hope it is used only in the "Only on %s" and "Move to %s" strings
 #: src/menu.c:170
 #, c-format
 msgid "Workspace %s%d"
-msgstr "plochu %s%d"
+msgstr "Plocha %s%d"
 
 #: src/menu.c:365
 msgid "Move to Another _Workspace"
@@ -1955,12 +1951,12 @@ msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:413
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' je neplatná\n"
 
-#: src/screen.c:429
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1969,18 +1965,18 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" již má manažera oken; zkuste nahradit "
 "aktuálního manažera oken pomocí volby --replace.\n"
 
-#: src/screen.c:453
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nemohu získat výběr manažera oken na obrazovce %d displeje \"%s\"\n"
 
-#: src/screen.c:511
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má manažera oken\n"
 
-#: src/screen.c:702
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nemohu uvolnit obrazovku %d na displeji \"%s\"\n"
@@ -3087,15 +3083,15 @@ msgstr "Otevřen soubor záznamu %s\n"
 msgid "Window manager: "
 msgstr "Manažer oken: "
 
-#: src/util.c:347
+#: src/util.c:349
 msgid "Bug in window manager: "
 msgstr "Chyba v manažeru oken: "
 
-#: src/util.c:376
+#: src/util.c:378
 msgid "Window manager warning: "
 msgstr "Varování manažera oken: "
 
-#: src/util.c:400
+#: src/util.c:402
 msgid "Window manager error: "
 msgstr "Chyba manažera oken: "
 
@@ -3105,7 +3101,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4689
+#: src/window.c:4730
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3121,7 +3117,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5351
+#: src/window.c:5392
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
