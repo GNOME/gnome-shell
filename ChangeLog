@@ -1,3 +1,12 @@
+2004-01-12  Rob Adams  <readams@readams.net>
+
+	* src/constraints.c (meta_window_constrain): if we maximize after
+	placement, and the window is too big to fix in the work area,
+	define a sane saved_rect approximately with dimensions
+	three-quarters approximately three quarters the size of the work
+	area.  This avoids the problem where large windows would
+	unmaximize and actually get bigger.  See #93590.
+
 2004-01-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	Add _NET_FRAME_EXTENTS and _NET_REQUEST_FRAME_EXTENTS.

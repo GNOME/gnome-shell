@@ -1319,6 +1319,19 @@ meta_window_constrain (MetaWindow          *window,
       (window->placed || did_placement))
     {
       window->maximize_after_placement = FALSE;
+
+      if (OUTER_WIDTH (*new) >= info.work_area_xinerama.width &&
+	  OUTER_HEIGHT (*new) >= info.work_area_xinerama.height)
+	{
+	  /* define a sane saved_rect so that the user can unmaximize
+	   * to something reasonable.
+	   */
+	  new->width = .75 * info.work_area_xinerama.width;
+	  new->height = .75 * info.work_area_xinerama.height;
+	  new->x = info.work_area_xinerama.x + .125 * info.work_area_xinerama.width;
+	  new->y = info.work_area_xinerama.y + .083 * info.work_area_xinerama.height;
+	}
+
       meta_window_maximize_internal (window, new);
 
       /* maximization may have changed frame geometry */
