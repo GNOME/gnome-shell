@@ -6,13 +6,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-08-26 12:00+0400\n"
+"POT-Creation-Date: 2003-01-09 17:04+0300\n"
+"PO-Revision-Date: 2003-01-20 27:17+0300\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Использование: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "\"Метасити\" был собран без поддержки режима подробных собщений"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -29,29 +38,29 @@ msgstr "Не удалось распознать замыкающие симво
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Сбой при разборе сообщения \"%s\" из диалогового процесса\n"
+msgstr "Произошёл сбой при разборе сообщения \"%s\" из диалогового процесса\n"
 
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Ошибка чтения из процесса отображения диалога: %s\n"
+msgstr "Произошла ошибка чтения из процесса отображения диалога: %s\n"
 
 #: src/delete.c:331
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Ошибка загрузки диалога Metacity для запроса на уничтожение приложения: %s\n"
+"Произошла ошибка загрузки диалога \"Метасити\" для запроса на уничтожение приложения: %s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Сбой при получении имени узла: %s\n"
+msgstr "Произошёл сбой при получении имени узла: %s\n"
 
-#: src/display.c:270
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Сбой при открытии системного окна \"%s\" среды X Window\n"
+msgstr "Произошёл сбой при открытии системного окна \"%s\" среды X Window\n"
 
 #: src/errors.c:231
 #, c-format
@@ -67,25 +76,25 @@ msgstr ""
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
+msgstr "Возникла неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Закрыть окно"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Меню окна"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Свернуть окно"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
-msgstr "Развернуть окно во весь экран"
+msgstr "Развернуть окно на весь экран"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Восстановить прежний размер окна"
 
@@ -101,7 +110,7 @@ msgstr ""
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Ошибка загрузки диалога Metacity для вывода сообщения об ошибке команды: %s\n"
+"Произошла ошибка загрузки диалога \"Метасити\" для вывода сообщения об ошибке команды: %s\n"
 
 #: src/keybindings.c:2237
 #, c-format
@@ -109,13 +118,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Команда %d не была определена.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
 "replace] [--version]\n"
 msgstr ""
 "metacity [--disable-sm] [--sm-save-file=ИМЯФАЙЛА] [--display=ДИСПЛЕЙ] [--"
-"replace]\n"
+"replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -137,7 +145,7 @@ msgstr ""
 #: src/main.c:374
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Сбой при перезапуске: %s\n"
+msgstr "Произошёл сбой при перезапуске: %s\n"
 
 #: src/menu.c:52
 #, fuzzy
@@ -183,7 +191,7 @@ msgstr "Поместить на вс_е рабочие места"
 msgid "Only on _This Workspace"
 msgstr "Только на э_том рабочем месте"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
 msgstr "Рабочее место %d"
@@ -1748,7 +1756,7 @@ msgstr ""
 "\"%s\" из базы данных конфигурации является недопустимым значением для "
 "комбинации клавиш \"%s\""
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, fuzzy, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Для ключа GConf \"%s\" выбрано недопустимое значение"
@@ -1767,7 +1775,7 @@ msgstr ""
 "%d из ключа GConf %s является недопустимым количеством рабочих областей, "
 "текущим максимумом является %d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1775,17 +1783,17 @@ msgstr ""
 "Устранение недоделок для нестандартных приложений отключено. Некоторые "
 "приложения могут работать неверно.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d из ключа GConf %s не входит в диапазон от 0 до %d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Ошибка установки количества рабочих мест равным %d: %s\n"
+msgstr "Произошла ошибка установки количества рабочих мест равным %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, fuzzy, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1794,10 +1802,10 @@ msgstr ""
 "\"%s\" из базы данных конфигурации является недопустимым значением для "
 "комбинации клавиш \"%s\""
 
-#: src/prefs.c:1720
+#: src/prefs.c:1730
 #, fuzzy, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Ошибка установки количества рабочих мест равным %d: %s\n"
+msgstr "Произошла ошибка установки количества рабочих мест равным %d: %s\n"
 
 #: src/resizepopup.c:127
 #, c-format
@@ -1840,7 +1848,7 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
-"Сбой при открытии соединения с диспетчером сеанса, позиция окна не будет "
+"Произошёл сбой при открытии соединения с диспетчером сеанса, позиция окна не будет "
 "сохранена: %s\n"
 
 #: src/session.c:881 src/session.c:888
@@ -1856,22 +1864,22 @@ msgstr "Не удалось открыть для записи файл сеан
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Ошибка записи файла сеанса \"%s\": %s\n"
+msgstr "Произошла ошибка записи файла сеанса \"%s\": %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Ошибка закрытия файла сеанса \"%s\": %s\n"
+msgstr "Произошла ошибка закрытия файла сеанса \"%s\": %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Сбой при чтении сохранённого файла сеанса \"%s\": %s\n"
+msgstr "Произошёл сбой при чтении сохранённого файла сеанса \"%s\": %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Сбой при выполнении разбора сохранённого файла сеанса: %s\n"
+msgstr "Произошёл сбой при выполнении разбора сохранённого файла сеанса: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -1912,7 +1920,7 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Ошибка загрузки диалога Metacity для предупреждения о приложениях, которые "
+"Произошла ошибка загрузки диалога Metacity для предупреждения о приложениях, которые "
 "не поддерживают диспетчер сеанса: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
@@ -2432,7 +2440,7 @@ msgstr "параметр <description> указан для этой темы д�
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Ошибка при чтении темы из файла %s: %s\n"
+msgstr "Произошла ошибка при чтении темы из файла %s: %s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
@@ -2677,7 +2685,7 @@ msgstr ""
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Сбой при загрузке темы \"%s\": %s\n"
+msgstr "Произошёл сбой при загрузке темы \"%s\": %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
@@ -2748,38 +2756,34 @@ msgstr "_Распологать поверх всех окон при актив
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Сбой при открытии файла отладочной информации: %s\n"
+msgstr "Произошёл сбой при открытии файла отладочной информации: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr ""
-"Сбой при применении функции fdopen() к файлу отладочной информации %s: %s\n"
+"Произошёл сбой при применении функции fdopen() к файлу отладочной информации %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Открыт файл отладочной информации %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Диспетчер окон: "
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
-msgstr "Ошибка в диспетчере окон: "
+msgstr "Произошла ошибка в диспетчере окон: "
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "Предупреждение диспетчера окон: "
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
-msgstr "Ошибка диспетчера окон: "
+msgstr "Произошла ошибка диспетчера окон: "
 
 #: src/window-props.c:161
 #, c-format
@@ -2788,7 +2792,7 @@ msgstr ""
 "Приложение установило неправильное значение параметра _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2804,7 +2808,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2814,21 +2818,24 @@ msgstr ""
 "установило минимальный размер %d x %d и максимальный размер %d x %d; что не  "
 "имеет смысла.\n"
 
-#: src/xprops.c:124
-#, c-format
+#: src/xprops.c:153
+#, fuzzy, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 "У окна 0x%lx есть свойство %s, у которого должен быть тип %s формат %d, а в "
 "действительности используется тип %s формат %d n_items %d\n"
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Свойство %s для окна 0x%lx содержало недопустимые данные UTF-8\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
