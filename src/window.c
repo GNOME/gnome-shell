@@ -347,11 +347,6 @@ meta_window_new (MetaDisplay *display,
   window->display = display;
   window->workspaces = NULL;
 
-  /* assign the window to its group, or create a new group if needed
-   */
-  window->group = NULL;
-  meta_window_compute_group (window);
-
 #ifdef HAVE_XSYNC
   window->update_counter = None;
 #endif
@@ -374,7 +369,12 @@ meta_window_new (MetaDisplay *display,
   g_assert (window->screen);
 
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
-  
+
+  /* assign the window to its group, or create a new group if needed
+   */
+  window->group = NULL;
+  meta_window_compute_group (window);
+
   /* avoid tons of stack updates */
   meta_stack_freeze (window->screen->stack);
 

@@ -1,3 +1,9 @@
+2003-06-07  Rob Adams  <robadams@ucla.edu>
+
+	* src/window.c (meta_window_new): call meta_group_compute_group
+	after setting window->desc to avoid SIGSEGV when verbose mode is
+	enabled.
+
 2003-06-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_notify_focus): drop the mouse button
