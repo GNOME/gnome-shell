@@ -1662,6 +1662,9 @@ handle_move_to_workspace  (MetaDisplay    *display,
   
   which = GPOINTER_TO_INT (binding->handler->data);
 
+  if (window == NULL || window->always_sticky)
+    return;
+  
   workspace = NULL;
   if (which < 0)
     {

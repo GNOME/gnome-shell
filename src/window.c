@@ -2718,7 +2718,7 @@ meta_window_focus (MetaWindow  *window,
 void
 meta_window_change_workspace (MetaWindow    *window,
                               MetaWorkspace *workspace)
-{
+{  
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
   
@@ -4844,10 +4844,16 @@ recalc_window_features (MetaWindow *window)
 
   window->has_shade_func = TRUE;
   window->has_fullscreen_func = TRUE;
+
+  window->always_sticky = FALSE;
   
   /* Semantic category overrides the MWM hints */
   if (window->type == META_WINDOW_TOOLBAR)
     window->decorated = FALSE;
+
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK)
+    window->always_sticky = TRUE;
   
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
@@ -5360,6 +5366,9 @@ meta_window_show_menu (MetaWindow *window,
 
   if (!window->has_resize_func)
     insensitive |= META_MENU_OP_RESIZE;
+
+   if (window->always_sticky)
+     insensitive |= META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES;
   
   menu =
     meta_ui_window_menu_new (window->screen->ui,

@@ -1,3 +1,19 @@
+2002-05-26  Havoc Pennington  <hp@pobox.com>
+
+        Patch from Gaute Lindkvist so you can't move the panel or desktop
+	to only one workspace.
+	
+	* src/keybindings.c (handle_move_to_workspace): don't allow moving
+	window to another space if the window is always_sticky
+
+	* src/window.c (recalc_window_features): set the always_sticky
+	field for desktop/dock windows.
+	(meta_window_show_menu): disable unsticking always sticky windows
+	via the menus
+
+	* src/menu.c (meta_window_menu_new): disable workspace items 
+	if requested
+
 2002-05-26  Matthias Warkus  <mawarkus@gnome.org>
 
 	* po/de.po: Added.

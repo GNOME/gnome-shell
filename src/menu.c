@@ -312,7 +312,8 @@ meta_window_menu_new   (MetaFrames         *frames,
                   (active_workspace == i ||
                    insensitive & META_MENU_OP_WORKSPACES))
                 gtk_widget_set_sensitive (mi, FALSE);
-
+	      else if (insensitive & META_MENU_OP_WORKSPACES)
+		gtk_widget_set_sensitive (mi, FALSE);
               md = g_new (MenuData, 1);
 
               md->menu = menu;
