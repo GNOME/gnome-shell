@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-29 23:19-0600\n"
-"PO-Revision-Date: 2004-03-13 14:37+0700\n"
+"POT-Creation-Date: 2004-09-12 21:47-0500\n"
+"PO-Revision-Date: 2004-09-12 22:37-0500\n"
 "Last-Translator: Paisa Seeluangsawat <paisa@users.sf.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -437,7 +437,6 @@ msgstr ""
 "\"&lt;Alt&gt;\" or \"&lt;Super&gt;\""
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
 msgstr "ปิดหน้าต่าง"
 
@@ -533,7 +532,6 @@ msgid "Lower window below other windows"
 msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "ขยายหน้าต่างเต็มจอ"
 
@@ -546,7 +544,6 @@ msgid "Maximize window vertically"
 msgstr "ขยายหน้าต่างเต็มด้านสูง"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
 msgstr "ย่อหน้าต่างหาย"
 
@@ -587,7 +584,6 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างผ่านป๊อบอัพ"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
 msgstr "ย้ายหน้าต่าง"
 
@@ -686,7 +682,6 @@ msgid "Raise window above other windows"
 msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "ปรับขนาดหน้าต่าง"
 
@@ -700,9 +695,8 @@ msgstr "แสดงเมนูพาเนล"
 
 # Can omit the word panel without losing the core meaning.
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
-msgstr "เปิดกล่องเรียกโปรแกรมของพาเนล"
+msgstr "เปิดกล่องเรียกใช้โปรแกรม"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -847,7 +841,6 @@ msgstr ""
 "run_command_window_screenshot"
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -855,14 +848,9 @@ msgid ""
 "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเรียกคำสั่งใน /apps/metacity/keybinding_commands  รูปแบบคือ \"&lt;"
-"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเรียกคำสั่งใน /apps/metacity/keybinding_commands  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -870,14 +858,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านบนพื้นที่ทำงานปัจจุบัน รูปแบบคือ \"&lt;Control&gt;a"
-"\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านบนพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -885,15 +868,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านล่างพื้นที่ทำงานปัจจุบัน·รูปแบบคือ \"&lt;Control&gt;"
-"a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1·การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านล่างพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -901,15 +878,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านซ้ายของพื้นที่ทำงานปัจจุบัน·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านซ้ายของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -917,211 +888,135 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านขวาของพื้นที่ทำงานปัจจุบัน·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านขวาของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 1·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;"
-"Shift&gt;&lt;Alt&gt;F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ "
-"เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·10 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 10  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·11 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 11  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·12 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 12  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·2 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 2  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·3 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 3  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·4 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 4  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·5 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 5  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·6 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 6  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·7 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 7  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·8 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 8  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน·9 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 9  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเรียกเมนูหน้าต่าง รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1  การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·"
-"\"&lt;Ctl&gt;\"·และ·\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled"
-"\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเรียกเมนูหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับปิดหน้าต่าง รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1  การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;"
-"Ctl&gt;\"·และ·\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled"
-"\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับปิดหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1129,14 +1024,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเข้าสู่ \"โหมดเคลื่อนย้าย\" และเริ่มการเคลื่อนย้ายหน้าต่างด้วยแป้นพิมพ์ รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับ \"โหมดเคลื่อนย้าย\" ซึ่งยอมให้คุณใช้แป้นพิมพ์เคลื่อนย้ายหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1144,15 +1034,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเข้าสู่·\"โหมดปรับขนาด\"·และเริ่มการปรับขนาดต่างด้วยแป้นพิมพ์·รูปแบบคือ "
-"\"&lt;Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับ \"โหมดปรับขนาด\" ซึ่งยอมให้คุณใช้แป้นพิมพ์ปรับขนาดหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1160,43 +1044,27 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับซ่อนหน้าต่างทั้งหมดและโฟกัสไปที่พื้นโต๊ะ·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·"
-"\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับซ่อนหน้าต่างทั้งหมดและโฟกัสไปที่พื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับขยายหน้าต่างให้เต็มพื้นโต๊ะ·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;"
-"Shift&gt;&lt;Alt&gt;F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ "
-"เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับขยายหน้าต่างให้เต็มจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย่อหน้าต่างหาย รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1  การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·"
-"\"&lt;Ctl&gt;\"·และ·\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled"
-"\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย่อหน้าต่างหาย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1204,14 +1072,9 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างลงไปยังพื้นที่ทำงานที่อยู่ถัดลงไปด้านล่างหนึ่งช่อง รูปแบบคือ \"&lt;"
-"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างลงไปยังพื้นที่ทำงานถัดลงไปด้านล่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1219,15 +1082,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานที่อยู่ถัดไปด้านซ้ายหนึ่งช่อง·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านซ้าย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1235,197 +1092,126 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานที่อยู่ถัดไปด้านขวาหนึ่งช่อง รูปแบบคือ \"&lt;"
-"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านขวา  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างขึ้นไปยังพื้นที่ทำงานที่อยู่ถัดขึ้นไปด้านบนหนึ่งช่อง·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างขึ้นไปยังพื้นที่ทำงานถัดขึ้นไปด้านบน  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 1·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;"
-"Shift&gt;&lt;Alt&gt;F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ "
-"เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·10 รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 10  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·11 รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 11  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·12 รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 12  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·2 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 2  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·3 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 3  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·4 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 4  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·5 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 5  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·6 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 6  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·7 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 7  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·8 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 8  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน·9 รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 9  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1433,14 +1219,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลทั้งหลายและพื้นโต๊ะในทิศย้อนกลับโดยใช้หน้าต่างป๊อปอัพช่วย "
-"รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1448,15 +1229,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลทั้งหลายและพื้นโต๊ะในทิศย้อนกลับโดยไม่ใช้หน้าต่างป๊อปอัพช่วย·รูปแบบคือ "
-"\"&lt;Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1465,16 +1240,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังหน้าต่างทั้งหลายในทิศย้อนกลับโดยไม่ใช้หน้าต่างป๊อปอัพช่วย·การกด "
-"\"shift\" พร้อมกับปุ่มลัดนี้จะกลับทิศทางการวนให้ไปข้างหน้า รูปแบบคือ \"&lt;Control&gt;a"
-"\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆในทิศย้อนกลับ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1483,16 +1251,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังหน้าต่างทั้งหลายในทิศย้อนกลับโดยใช้หน้าต่างป๊อปอัพช่วย·การกด·"
-"\"shift\"·พร้อมกับปุ่มลัดนี้จะกลับทิศทางการวนให้ไปข้างหน้า·รูปแบบคือ \"&lt;Control&gt;a"
-"\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆในทิศย้อนกลับ โดยใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1500,14 +1261,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลทั้งหลายและพื้นโต๊ะโดยใช้หน้าต่างป๊อปอัพช่วย รูปแบบคือ \"&lt;"
-"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1515,15 +1271,9 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลทั้งหลายและพื้นโต๊ะโดยไม่ใช้หน้าต่างป๊อปอัพช่วย·รูปแบบคือ "
-"\"&lt;Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1532,16 +1282,9 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังหน้าต่างทั้งหลายโดยไม่ใช้หน้าต่างป๊อปอัพช่วย·(ปุ่มที่ใช้กันโดยทั่วไปคือ "
-"&lt;Alt&gt;Escape) การกด·\"shift\"·พร้อมกับปุ่มลัดนี้จะกลับทิศทางการวน·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย (ทั่วไปแล้วใช้ &lt;Alt&gt;Escape)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1550,15 +1293,9 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับวนโฟกัสไปยังหน้าต่างทั้งหลายโดยใช้หน้าต่างป๊อปอัพช่วย "
-"(ปุ่มที่ใช้กันโดยทั่วไปคือ·&lt;Alt&gt;Tab)·การกด \"shift\" พร้อมกับปุ่มลัดนี้จะกลับทิศทางการวน "
-"รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆ โดยใช้หน้าต่างป๊อปอัพช่วย (ทั่วไปแล้วใช้ &lt;Alt&gt;Tab)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1566,57 +1303,36 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับการค้างอยู่บนสุด หน้าต่างที่ค้างอยู่บนสุดจะปรากฏอยู่หน้าหน้าต่างอื่นๆ "
-"เสมอรูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับการค้างอยู่บนสุด  หน้าต่างที่ค้างอยู่บนสุดจะปรากฏอยู่หน้าหน้าต่างอื่นๆเสมอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับโหมดเต็มหน้าจอ รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับโหมดเต็มหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับสถานะขยายเต็ม รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับสถานะขยายเต็ม  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับสถานะม้วนเก็บ/คลี่ออกของหน้าต่าง·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·"
-"\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับสถานะม้วนเก็บ/คลี่ออก  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1624,30 +1340,18 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับสลับสถานะการแสดงหน้าต่างระหว่างบนทุกพื้นที่ทำงานกับบนพื้นที่ทำงานเดียว "
-"·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับสลับ ว่าจะแสดงหน้าต่างบนทุกพื้นที่ทำงาน หรือบนพื้นที่ทำงานเดียว  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับยกเลิกการขยายหน้าต่างเต็มพื้นโต๊ะ·รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·"
-"\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับยกเลิกการขยายหน้าต่างเต็มพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1655,15 +1359,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเปิดกล่องโต้ตอบ \"เรียกโปรแกรม\" ของพาเนล ·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเปิดกล่องโต้ตอบ \"เรียกโปรแกรม\" ของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1671,15 +1369,9 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเรียกโปรแกรมจับภาพของพาเนลเพื่อจับภาพหน้าต่างที่ต้องการ ·รูปแบบคือ \"&lt;"
-"Control&gt;a\"·หรือ·\"&lt;Shift&gt;&lt;Alt&gt;"
-"F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ เช่น \"&lt;Ctl&gt;\" "
-"และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพของพาเนล เพื่อจับภาพหน้าต่างที่ต้องการ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1687,25 +1379,16 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเรียกโปรแกรมจับภาพหน้าจอของพาเนล· รูปแบบคือ \"&lt;Control&gt;a\" "
-"หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพหน้าจอของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"การตั้งปุ่มลัดสำหรับเปิดเมนูหลักของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดสำหรับเปิดเมนูหลักของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
@@ -1746,7 +1429,6 @@ msgid "The window screenshot command"
 msgstr "คำสั่งจับภาพหน้าต่าง"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1756,43 +1438,27 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr ""
-"ปุ่มลัดนี้จะเปลี่ยนสถานะของหน้าต่างระหว่างการอยู่บนสุดกับล่างสุด ถ้าหน้าต่างนั้นถูกหน้าต่างอื่นบังอยู่ "
-"ก็จะยกหน้าต่างขึ้นมาไว้บนสุด แต่ถ้าหน้าต่างนั้นไม่ถูกบังอยู่แล้ว ก็จะถอยหน้าต่างลงไปอยู่ใต้หน้าต่างอื่นๆ "
-"ทั้งหมด รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดนี้ใช้ปรับว่าหน้าต่างจะอยู่ข้างบนหรือล่างหน้าต่างอื่น  ถ้าหน้าต่างนั้นถูกหน้าต่างอื่นบังอยู่ มันจะถูกยกขึ้นมาไว้บนสุด  แต่ถ้าหน้าต่างนั้นไม่ถูกบังอยู่ มันจะถูกเอาไปไว้หลังสุด  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"ปุ่มลัดนี้ถอยหน้าต่างลงไปอยู่หลังหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดนี้เอาหน้าต่างลงไปอยู่หลังหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"ปุ่มลัดนี้ยกหน้าต่างขึ้นมาอยู่หน้าหน้าต่างอื่นๆ··รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;"
-"Shift&gt;&lt;Alt&gt;F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ "
-"เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดนี้ยกหน้าต่างขึ้นมาอยู่หน้าหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1800,14 +1466,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"ปุ่มลัดนี้จะขยายหน้าต่างเต็มความกว้างของพื้นโต๊ะ··รูปแบบคือ \"&lt;Control&gt;a\"·หรือ·\"&lt;"
-"Shift&gt;&lt;Alt&gt;F1··การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ "
-"เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\" ถ้าคุณตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดนี้ใช้ขยายหน้าต่างเต็มความกว้างของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1815,11 +1476,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"ปุ่มลัดนี้จะขยายหน้าต่างเต็มความสูงของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1  "
-"การอ่านค่าคีย์ค่อนข้างยืดหยุ่นต่อการใช้ตัวพิมพ์ใหญ่หรือพิมพ์เล็กและตัวย่อ·เช่น·\"&lt;Ctl&gt;\"·และ·"
-"\"&lt;Ctrl&gt;\"·ถ้าคุณตั้งค่าตัวเลือกเป็น·\"disabled\"·ก็หมายความว่าจะไม่มีปุ่มจากการตั้งค่านี้"
+msgstr "ปุ่มลัดนี้ใช้ขยายหน้าต่างเต็มความสูงของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: src/metacity.schemas.in.h:155
 msgid ""
@@ -1861,7 +1518,6 @@ msgstr ""
 "ซึ่งจะมีประโยชน์สำหรับผู้ที่มีปัญหาเรื่องการฟัง หรือใช้ในสภาวะที่จอแจ หรือเมื่อ 'ระฆังเสียง' ปิดอยู่"
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 

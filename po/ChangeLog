@@ -1,3 +1,7 @@
+2004-09-12  Paisa Seeluangsawat  <paisa@users.sf.net>
+
+	* th.po: Updated Thai translation.
+
 2004-09-12  Dafydd Harries  <daf@muse.19inch.net>
 
 	* cy.po: Updated Welsh translation.
@@ -166,9 +170,9 @@
 	* de.po: Updated German translation.
 
 2004-07-25  David Lodge  <dave@cirt.net>
-                                                                                
-        * en_GB.po: Added British translation.
-                                                                                
+
+	* en_GB.po: Added British translation.
+
 2004-07-24  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 
 	* es.po: Updated Spanish translation. 
