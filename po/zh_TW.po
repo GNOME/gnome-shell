@@ -1,17 +1,26 @@
 # Traditional Chinese translation of metacity.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Abel Cheung <maddog@linux.org.hk>, 2002.
+# Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+# Abel Cheung <maddog@linux.org.hk>, 2002-2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.3.987\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-06-25 01:07+0800\n"
+"Project-Id-Version: metacity 2.4.8\n"
+"POT-Creation-Date: 2003-01-09 02:50+0800\n"
+"PO-Revision-Date: 2003-01-09 04:39+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: traditioanl Chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "用法：%s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "當編譯 metacity 時沒有使用詳細偵錯模式\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -23,7 +32,7 @@ msgstr "無法以整數的方式分析“%s”"
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "無法理解字串“%2$s”中的結束字元“%1$s”"
 
 #: src/delete.c:125
 #, c-format
@@ -46,10 +55,10 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "無法獲取主機名稱：%s\n"
 
-#: src/display.c:270
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "無法開啟 X Window 系統畫面‘%s’\n"
+msgstr "無法開啟 X Window 畫面‘%s’\n"
 
 #: src/errors.c:231
 #, c-format
@@ -64,25 +73,25 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr ""
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "關閉視窗"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "視窗選單"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "視窗最小化"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "視窗最大化"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "視窗還原最大化"
 
 #: src/keybindings.c:870
 #, c-format
@@ -97,18 +106,20 @@ msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
 #: src/keybindings.c:2237
-#, fuzzy, c-format
+#, c-format
 msgid "No command %d has been defined.\n"
-msgstr "已定義了“%s”常數"
+msgstr "並未定義任何指令 %d。\n"
 
 #: src/main.c:64
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
 "replace] [--version]\n"
 msgstr ""
+"metacity [--disable-sm] [--sm-save-file=檔案名稱] [--display=DISPLAY] [--"
+"replace] [--version]\n"
 
 #: src/main.c:71
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -116,12 +127,15 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"版權所有 (C) 2001-2002 Havoc Pennington，Red Hat, Inc.，及其它開發者\n"
 
 #: src/main.c:326
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
+"找不到任何佈景主題！請確定 %s 已經存在而且其中存放了平常使用的佈景主題。"
 
 #: src/main.c:374
 #, c-format
@@ -129,9 +143,8 @@ msgid "Failed to restart: %s\n"
 msgstr "無法重新啟動：%s\n"
 
 #: src/menu.c:52
-#, fuzzy
 msgid "Mi_nimize"
-msgstr "最小化(_M)"
+msgstr "最小化(_N)"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
@@ -139,24 +152,23 @@ msgstr "最大化(_X)"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr ""
+msgstr "還原最大化(_X)"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr ""
+msgstr "捲起(_U)"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr ""
+msgstr "放下(_U)"
 
 #: src/menu.c:57
-#, fuzzy
 msgid "_Move"
-msgstr "移動(_V)"
+msgstr "移動(_M)"
 
 #: src/menu.c:58
 msgid "_Resize"
-msgstr "重定尺寸(_R)"
+msgstr "調整尺寸(_R)"
 
 #. separator
 #: src/menu.c:60
@@ -166,25 +178,25 @@ msgstr "關閉(_C)"
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "放在所有工作區中(_A)"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "只在本工作區顯示(_T)"
 
-#: src/menu.c:152 src/prefs.c:1644
-#, fuzzy, c-format
+#: src/menu.c:152 src/prefs.c:1649
+#, c-format
 msgid "Workspace %d"
-msgstr "工作區 %d\n"
+msgstr "工作區 %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
 #: src/menu.c:160
-#, fuzzy, c-format
+#, c-format
 msgid "Workspace %s%d"
-msgstr "工作區 %d\n"
+msgstr "工作區 %s%d"
 
 #: src/menu.c:353
 #, c-format
@@ -192,9 +204,9 @@ msgid "Only on %s"
 msgstr ""
 
 #: src/menu.c:355
-#, fuzzy, c-format
+#, c-format
 msgid "Move to %s"
-msgstr "移動至工作區 %s%d"
+msgstr "移動至 %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -203,7 +215,7 @@ msgstr "移動至工作區 %s%d"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -212,7 +224,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -221,7 +233,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -229,9 +241,8 @@ msgstr ""
 #. * this.
 #.
 #: src/metaaccellabel.c:123
-#, fuzzy
 msgid "Meta"
-msgstr "Metacity"
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -240,7 +251,7 @@ msgstr "Metacity"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -249,7 +260,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -258,7 +269,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -267,7 +278,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -276,7 +287,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -285,7 +296,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -294,10 +305,13 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"視窗“%s”未有回應。\n"
+"是否強制程式中止？\n"
+"(會失去所有已修改的資料。)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr "強行中止應用程式"
+msgstr "強行中止程式"
 
 #: src/metacity-dialog.c:188
 msgid "Title"
@@ -319,6 +333,8 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"執行“%s”時發生錯誤：\n"
+"%s。"
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -340,7 +356,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "在標題列上 double-click 所進行的操作"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
@@ -348,7 +364,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "標題列上的按鈕排列"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -359,6 +375,10 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"標題列上的按鈕排列。設定值必須為字串，例如“menu:minimize,maximize,close”；"
+"冒號表示將視窗左上角及右上角分開，而按鈕名稱則以逗號分開。不會接受重複的按鈕"
+"名稱。不明的按鈕會忽略不理，使得在日後的 metacity 版本增加新的按鈕時也不會令"
+"舊版本無法使用。"
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -390,11 +410,11 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:13
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "關閉舊式或不合規格的程式所需的功能"
 
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "隱藏所有視窗及顯示桌面"
 
 #: src/metacity.schemas.in.h:15
 msgid ""
@@ -408,6 +428,7 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
+"如果是 true，則忽略 titlebar_font 選項，並在視窗標題中使用標準的程式字型。"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -427,19 +448,16 @@ msgid "Lower window below other windows"
 msgstr ""
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid "Maximize a window"
-msgstr "將視窗最小化"
+msgstr "將視窗最大化"
 
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "將視窗最小化"
+msgstr "將視窗橫向最大化"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "將視窗最小化"
+msgstr "將視窗縱向最大化"
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
@@ -550,9 +568,8 @@ msgid "Move window to workspace 9"
 msgstr "將視窗移動至第 9 個工作區"
 
 #: src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Name of workspace"
-msgstr "工作區數目"
+msgstr "工作區名稱"
 
 #: src/metacity.schemas.in.h:50
 msgid "Number of workspaces"
@@ -564,6 +581,7 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
+"工作區數。必須大於 0，並有固定的最大值 (防止因工作區數目過多至破壞桌面)。"
 
 #: src/metacity.schemas.in.h:52
 msgid "Raise obscured window, otherwise lower"
@@ -574,13 +592,12 @@ msgid "Raise window above other windows"
 msgstr ""
 
 #: src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Resize a window"
-msgstr "關閉視窗"
+msgstr "調整視窗尺寸"
 
 #: src/metacity.schemas.in.h:55
 msgid "Run a defined command"
-msgstr ""
+msgstr "執行已定義的指令"
 
 #: src/metacity.schemas.in.h:56
 msgid ""
@@ -647,12 +664,10 @@ msgid "Switch to workspace 9"
 msgstr "切換至第 9 個工作區"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
 msgstr "切換至上方的工作區"
 
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
 msgstr "切換至下方的工作區"
 
@@ -670,9 +685,10 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_N 設定鍵中定義了相應指令所使用"
+"的按鍵組合。按下 run_command_N 的按鍵組合會執行 command_N。"
 
 #: src/metacity.schemas.in.h:74
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -681,10 +697,11 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
+"本按鍵組合可以執行在 /apps/metacity/keybinding_commands 中加上相應數字的指令\n"
+"。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵\n"
+"組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及\n"
+"“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操\n"
+"作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:75
 msgid ""
@@ -695,8 +712,8 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至目前工作區上方的工作區。格式可以像“&lt;Control\n"
-"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"本按鍵組合可以將畫面切換至目前工作區上方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，\n"
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -709,8 +726,8 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至目前工作區下方的工作區。格式可以像“&lt;Control\n"
-"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"本按鍵組合可以將畫面切換至目前工作區下方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，\n"
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -723,8 +740,8 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至目前工作區左方的工作區。格式可以像“&lt;Control\n"
-"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"本按鍵組合可以將畫面切換至目前工作區左方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，\n"
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -737,8 +754,8 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至目前工作區右方的工作區。格式可以像“&lt;Control\n"
-"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，\n"
+"本按鍵組合可以將畫面切換至目前工作區右方的工作區。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，\n"
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -750,8 +767,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 1 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 1 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -763,8 +780,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 10 個工作區。格式可以像“&lt;Control&gt;a”或\n"
-"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"本按鍵組合可以將畫面切換至第 10 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -776,8 +793,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 11 個工作區。格式可以像“&lt;Control&gt;a”或\n"
-"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"本按鍵組合可以將畫面切換至第 11 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -789,8 +806,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 12 個工作區。格式可以像“&lt;Control&gt;a”或\n"
-"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用\n"
+"本按鍵組合可以將畫面切換至第 12 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -802,8 +819,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 2 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 2 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -815,8 +832,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 3 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 3 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -828,8 +845,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 4 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 4 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -841,8 +858,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 5 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 5 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -854,8 +871,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 6 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 6 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -867,8 +884,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 7 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 7 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -880,8 +897,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 8 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 8 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -893,8 +910,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以將畫面切換至第 9 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
-"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大\n"
+"本按鍵組合可以將畫面切換至第 9 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -915,8 +932,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"本按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許\n"
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -929,9 +946,9 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以進入「移動模式」，這時可以使用鍵盤來移動視窗。格式可以像\n"
+"本按鍵組合可以進入「移動模式」，這時可以使用鍵盤來移動視窗。格式可以像\n"
 "“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時\n"
-"是比較自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl\n"
+"是比較寬鬆的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl\n"
 "&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任\n"
 "何按鍵組合。"
 
@@ -944,9 +961,9 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以進入「重定尺寸模式」，這時可以使用鍵盤來改變視窗尺寸。格式可\n"
+"本按鍵組合可以進入「調整尺寸模式」，這時可以使用鍵盤來調整視窗尺寸。格式可\n"
 "以像“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字\n"
-"串時是比較自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;\n"
+"串時是比較寬鬆的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;\n"
 "Ctrl&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安\n"
 "排任何按鍵組合。"
 
@@ -959,14 +976,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"此按鍵組合會隱藏所有普通的視窗並將輸入焦點移至桌面背景。格式可以像“&lt;\n"
-"Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較\n"
-"自由的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等\n"
-"的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合\n"
-"。"
+"本按鍵組合會隱藏所有普通的視窗並將輸入焦點移至桌面。格式可以像“&lt;Control\n"
+"&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，\n"
+"允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
+"如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -974,8 +989,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合會令視窗最小化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"本按鍵組合會令視窗最大化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許\n"
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -987,8 +1002,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合會令視窗最小化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"本按鍵組合會令視窗最小化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也允許\n"
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
@@ -1001,6 +1016,10 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"本按鍵組合會將某視窗移動至下方的工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:99
 msgid ""
@@ -1011,6 +1030,10 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"本按鍵組合會將某視窗移動至左方的工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:100
 msgid ""
@@ -1021,6 +1044,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
+"本按鍵組合會將某視窗移動至右方的工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
+
 
 #: src/metacity.schemas.in.h:101
 msgid ""
@@ -1030,6 +1058,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至上方的工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:102
 msgid ""
@@ -1039,6 +1071,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 1 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:103
 msgid ""
@@ -1048,6 +1084,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 10 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:104
 msgid ""
@@ -1057,6 +1097,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 11 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:105
 msgid ""
@@ -1066,6 +1110,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 12 個工作區。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用\n"
+"大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:106
 msgid ""
@@ -1075,6 +1123,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 2 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:107
 msgid ""
@@ -1084,6 +1136,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 3 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:108
 msgid ""
@@ -1093,6 +1149,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 4 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:109
 msgid ""
@@ -1102,6 +1162,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 5 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1111,6 +1175,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 6 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1120,6 +1188,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 7 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:112
 msgid ""
@@ -1129,6 +1201,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 8 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:113
 msgid ""
@@ -1138,9 +1214,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合會將某視窗移動至第 9 個工作區。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
+"選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1149,13 +1228,8 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1164,13 +1238,8 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1180,13 +1249,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1196,13 +1260,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1211,13 +1270,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1226,13 +1280,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1242,13 +1291,8 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1258,10 +1302,6 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:122
 msgid ""
@@ -1271,6 +1311,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合可以切換全螢幕模式。格式可以像“&lt;Control&gt;a”或是“&lt;Shift\n"
+"&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫，也\n"
+"允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
+"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:123
 msgid ""
@@ -1280,6 +1324,10 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合可以切換視窗是否在最大化的狀態。格式可以像“&lt;Control&gt;a”或是\n"
+"“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫\n"
+"或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項\n"
+"設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:124
 msgid ""
@@ -1289,6 +1337,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
+"本按鍵組合可以將視窗狀態切換為捲起/放下。格式可以像“&lt;Control&gt;a”或\n"
+"是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大\n"
+"寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
+"項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1299,9 +1351,12 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"本按鍵組合可以切換視窗在所有工作區顯示，還是只在一個工作區顯示。格式可以像\n"
+"“&lt;Control&gt;a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時\n"
+"是比較寬鬆的，允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”\n"
+"等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1309,21 +1364,20 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合會令視窗最小化。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
+"本按鍵組合會令視窗從最大化狀態還原。格式可以像“&lt;Control&gt;a”或是“&lt;\n"
+"Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許使用大寫或小寫\n"
+"，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字\n"
+"串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid "The name of a workspace."
-msgstr "工作區數目"
+msgstr "工作區的名稱。"
 
 #: src/metacity.schemas.in.h:128
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "佈景主題可指定視窗邊框、標題列等等的外觀。"
 
 #: src/metacity.schemas.in.h:129
 msgid ""
@@ -1353,7 +1407,6 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1361,13 +1414,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1375,13 +1423,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1390,13 +1433,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
+"本按鍵組合可以將視窗尺寸調整至填滿所有水平空間。格式可以像“&lt;Control&gt;\n"
+"a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許\n"
+"使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果\n"
+"將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1405,10 +1447,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
-"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
-"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
-"“disabled”，則不會為該項操作安排任何按鍵組合。"
+"本按鍵組合可以將視窗尺寸調整至填滿所有垂直空間。格式可以像“&lt;Control&gt;\n"
+"a”或是“&lt;Shift&gt;&lt;Alt&gt;F1”。分析按鍵組合字串時是比較寬鬆的，允許\n"
+"使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果\n"
+"將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1416,32 +1458,33 @@ msgid ""
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
+"本選項決定在標題列上 double-click 的效果。目前有效的選項為：\n"
+"‘toggle_shaded’會捲起/放下視窗，及\n"
+"‘toggle_maximized’會切換視窗是否最大化。"
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "切換全螢幕模式"
 
 #: src/metacity.schemas.in.h:138
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "切換最大化狀態"
 
 #: src/metacity.schemas.in.h:139
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "切換視窗捲起/放下狀態"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "將視窗移動至上方的工作區"
+msgstr "切換視窗是否在所有工作區顯示"
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid "Unmaximize a window"
-msgstr "將視窗最小化"
+msgstr "將視窗從最大化還原"
 
 #: src/metacity.schemas.in.h:142
 msgid "Use standard system font in window titles"
-msgstr ""
+msgstr "在視窗標題中使用標準系統字型"
 
 #: src/metacity.schemas.in.h:143
 msgid "Window focus mode"
@@ -1466,15 +1509,15 @@ msgid ""
 "modifier\n"
 msgstr ""
 
-#: src/prefs.c:736 src/prefs.c:1098
-#, fuzzy, c-format
+#: src/prefs.c:736 src/prefs.c:1103
+#, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf 設定鍵‘%s’的設定值類型無效"
+msgstr "GConf 設定鍵‘%s’的設定值無效\n"
 
 #: src/prefs.c:820
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "無法從 GConf 設定鍵 %2$s 分析字型描述文字“%1$s”\n"
 
 #: src/prefs.c:1005
 #, c-format
@@ -1482,34 +1525,36 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"GConf 設定鍵 %2$s 的值 %1$d 不是一個合理的工作區數目，目前的最大值為 %3$d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr ""
+msgstr "關閉了對不合規格的程式的支援。某些程式可能無法正常運作。\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "GConf 設定鍵 %2$s 的值 %1$d 超出可接受的範圍 (0 至 %3$d)\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "將工作區數目設定為 %d 個時出現錯誤：%s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"組態資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
 
-#: src/prefs.c:1720
-#, fuzzy, c-format
+#: src/prefs.c:1730
+#, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "將工作區數目設定為 %d 個時出現錯誤：%s\n"
+msgstr "將第 %d 個工作區的名稱設定為“%s”時出現錯誤：%s\n"
 
 #: src/resizepopup.c:127
 #, c-format
@@ -1549,7 +1594,7 @@ msgstr ""
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
-msgstr ""
+msgstr "無法連上作業階段管理程式，因此無法記錄視窗的位置：%s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
@@ -1559,7 +1604,7 @@ msgstr "無法建立目錄‘%s’：%s\n"
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "無法開啟作業階段檔案‘%s’以供寫入：%s\n"
+msgstr "無法開啟作業階段檔案‘%s’以供寫入資料：%s\n"
 
 #: src/session.c:1057
 #, c-format
@@ -1583,7 +1628,7 @@ msgstr "無法分析已儲存的作業階段檔案：%s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "出現了 <metacity_session> 的屬性，但作業階段代碼已經存在"
 
 #: src/session.c:1234
 #, c-format
@@ -1600,9 +1645,9 @@ msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 元素中出現不明的屬性 %s"
 
 #: src/session.c:1413
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "<window> 元素中出現不明的屬性 %s"
+msgstr "<maximized> 元素中出現不明的屬性 %s"
 
 #: src/session.c:1473
 #, c-format
@@ -1672,6 +1717,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"無效的標題大小“%s”(必須為 xx-small、x-small、small、medium、large、\n"
+"x-large、xx-large 其中一個)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -1730,7 +1777,7 @@ msgstr ""
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "選單圖示中出現不明的狀態“%s”"
 
 #: src/theme-parser.c:1160
 #, c-format
@@ -1740,7 +1787,7 @@ msgstr ""
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
@@ -1879,7 +1926,7 @@ msgstr "<%s> 元素中沒有任何“type”屬性"
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "無法將“%s”理解為漸層的樣式"
 
 #: src/theme-parser.c:2294
 #, c-format
@@ -1909,22 +1956,22 @@ msgstr "<%s> 元素中沒有任何“arrow”屬性"
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "無法將“%s”理解為 <%s> 元素的狀態"
 
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "無法將“%s”理解為 <%s> 元素的陰影"
 
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "無法將“%s”理解為 <%s> 元素的箭頭"
 
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
 
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
@@ -1999,7 +2046,7 @@ msgstr "“%s”不是 state 屬性的有效設定值"
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "沒有定義任何稱為“%s”的款式"
 
 #: src/theme-parser.c:3430
 #, c-format
@@ -2055,7 +2102,7 @@ msgstr "佈景主題中最外層的元素必須為 <metacity_theme> 而不是 <%
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgstr "元素 <%s> 不許在名稱/作者/日期/描述元素內出現"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2118,7 +2165,7 @@ msgstr "此佈景主題指定了兩次 <description>"
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "無法從檔案 %s 讀入佈景主題：%s\n"
 
 #: src/theme-parser.c:4402
 #, c-format
@@ -2154,7 +2201,7 @@ msgstr ""
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "按鈕的長寬比 %g 不合理"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
@@ -2162,7 +2209,7 @@ msgstr ""
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr "漸層應該最少有兩種顏色"
+msgstr "漸層至少應該有兩種顏色"
 
 #: src/theme.c:975
 #, c-format
@@ -2170,6 +2217,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表示"
+"狀態；無法分析“%s”"
 
 #: src/theme.c:989
 #, c-format
@@ -2177,16 +2226,18 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表"
+"示狀態；無法分析“%s”"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "無法將“%s”理解為色彩規格中的狀態"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "無法將“%s”理解為色彩規格中的色彩部份"
 
 #: src/theme.c:1043
 #, c-format
@@ -2256,12 +2307,12 @@ msgstr "座標表達式是空白的或是無法分析"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr "座標表達式出現被 0 整除的錯誤"
+msgstr "座標表達式中出現被 0 整除的錯誤"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr "座標表達式中出現將浮點數使用於餘數運算符 (mod) 的錯誤"
 
 #: src/theme.c:1836
 #, c-format
@@ -2335,9 +2386,9 @@ msgstr "無法載入佈景主題“%s”：%s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
-#, fuzzy, c-format
+#, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <name>"
+msgstr "佈景主題“%s”未指定 <%s>"
 
 #: src/theme.c:4629
 #, c-format
@@ -2352,12 +2403,14 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"本佈景主題必須指定 <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"\n"
+"whatever\"/>"
 
 #: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "使用者定義的常數必須以大寫字母開始；但“%s”不是"
+msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 
 #: src/theme.c:5046 src/theme.c:5108
 #, c-format
@@ -2374,7 +2427,7 @@ msgstr "視窗焦點"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "按滑鼠按鈕方可獲得輸入焦點(_K)"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
@@ -2386,7 +2439,7 @@ msgstr "視窗焦點偏好設定"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "輸入焦點跟隨鼠標移動(_P)"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
@@ -2407,33 +2460,29 @@ msgstr "無法 fdopen() 紀錄檔 %s：%s\n"
 msgid "Opened log file %s\n"
 msgstr "已開啟紀錄檔 %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "視窗管理員："
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr ""
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "視窗管理員警告："
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "視窗管理員錯誤："
 
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "程式設定了多餘的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2447,49 +2496,31 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Workspace %u"
-#~ msgstr "工作區 %d\n"
-
-#~ msgid "_Shade"
-#~ msgstr "捲起(_S)"
-
-#~ msgid "Un_shade"
-#~ msgstr "放下(_S)"
-
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "佈景主題“%s”未指定 <author>"
-
-#~ msgid "No <date> set for theme \"%s\""
-#~ msgstr "佈景主題“%s”未指定 <date>"
-
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "佈景主題“%s”未指定 <description>"
-
-#~ msgid "No <copyright> set for theme \"%s\""
-#~ msgstr "佈景主題“%s”未指定 <copyright>"
