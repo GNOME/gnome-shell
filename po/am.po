@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2003-01-06 06:04+0100\n"
-"PO-Revision-Date: 2003-01-07 10:33+EDT\n"
+"PO-Revision-Date: 2003-01-14 11:02+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +141,7 @@ msgstr ""
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr "ምሳንስ (_N)"
+msgstr "መሳንስ (_N)"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
@@ -149,7 +149,7 @@ msgstr "መተልቅ (_X)"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
-msgstr "ምታስተልቅ (_X)"
+msgstr "መታስተልቅ (_X)"
 
 #: src/menu.c:55
 msgid "Roll _Up"
@@ -1257,7 +1257,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "የሙሉ እስክሪን ዘዴን ቀያይሩ"
 
 #: src/metacity.schemas.in.h:138
 msgid "Toggle maximization state"
