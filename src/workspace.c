@@ -31,8 +31,6 @@ void meta_workspace_queue_calc_showing      (MetaWorkspace *workspace);
 static void set_active_space_hint           (MetaScreen *screen);
 static void meta_workspace_focus_mru_window (MetaWorkspace *workspace,
                                              MetaWindow    *not_this_one);
-static void meta_workspace_focus_top_window (MetaWorkspace *workspace,
-                                             MetaWindow    *not_this_one);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
@@ -867,41 +865,10 @@ meta_workspace_focus_mru_window (MetaWorkspace *workspace,
     }
   else
     {
-      meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found\n");
-      meta_workspace_focus_top_window (workspace, not_this_one);
-    }
-}
-
-/* Focus top window on workspace */
-void
-meta_workspace_focus_top_window (MetaWorkspace *workspace,
-                                 MetaWindow    *not_this_one)
-{
-  MetaWindow *window;
-
-  if (not_this_one)
-    meta_topic (META_DEBUG_FOCUS,
-                "Focusing top window excluding %s\n", not_this_one->desc);
-  
-  window = meta_stack_get_default_focus_window (workspace->screen->stack,
-                                                workspace,
-                                                not_this_one);
-
-  /* FIXME I'm a loser on the CurrentTime front */
-  if (window)
-    {
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing top window %s\n", window->desc);
-
-      meta_window_focus (window, 
-	                 meta_display_get_current_time (workspace->screen->display));
-
-      /* Also raise the window if in click-to-focus */
-      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        meta_window_raise (window);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_FOCUS, "No top window to focus found\n");
+      meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found; focusing no_focus_window.\n");
+      XSetInputFocus (workspace->screen->display->xdisplay,
+                      workspace->screen->display->no_focus_window,
+                      RevertToPointerRoot,
+                      meta_display_get_current_time (workspace->screen->display));
     }
 }

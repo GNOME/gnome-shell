@@ -1,5 +1,19 @@
 2004-09-15  Elijah Newren  <newren@math.utah.edu>
 
+	Focus the no_focus_window if no suitable window is in the mru list
+	(should fix the almost contrived extra issue found in #147475)
+
+	* doc/how-to-get-focus-right.txt: We no longer need to lie about
+	only focusing panels upon explicit request.
+
+	* src/workspace.c: (meta_workspace_focus_top_window): removed this
+	function--it was more code than needed and was unreliable anyway,
+	(meta_workspace_focus_mru_window): if a suitable window isn't in
+	the mru list, focus the no_focus_window instead of calling
+	focus_top_window.
+
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
 	Prevent focus inconsistencies by only providing one focus method
 	(fixes #151990)
 
