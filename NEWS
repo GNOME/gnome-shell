@@ -1,3 +1,15 @@
+2.10.0
+==
+
+This is a stable release to coincide with the release of Gnome 2.10.0.
+The only difference between this version and 2.9.34 is some
+translation updates.
+
+Translations
+  Vladimir Petkov (bg), Gabor Kelemen (hu), ´ygimantas Berucka (lt),
+  Reinout van Schouwen (nl), Mugurel Tudor (ro), Danilo ¦egan (sr),
+  Woodman Tuen (zh_TW)
+
 2.9.34
 ==
 
