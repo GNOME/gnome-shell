@@ -1,3 +1,18 @@
+2002-02-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme-viewer.c: use the preview widget here
+
+	* src/preview-widget.h, src/preview-widget.c: make the theme 
+	preview into a nice widget
+
+	* src/frames.c (meta_frames_ensure_layout): replace frame layout
+	if the frame style changes, this only ends up mattering if you
+	e.g. changed the font size for windows in a different state such
+	as maximized, which is crack, but the code may as well be correct
+
+	* src/theme.c (meta_theme_get_frame_style): new function so we can 
+	detect an invalid cache of the PangoLayout in a frame
+
 2002-02-14  Anders Carlsson  <andersca@gnu.org>
 
 	* src/themes/Crux/metacity-theme-1.xml: Fix some bugs with

@@ -23,7 +23,7 @@
 #include "util.h"
 #include "theme.h"
 #include "theme-parser.h"
-#include "inlinepixbufs.h"
+#include "preview-widget.h"
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdlib.h>
@@ -38,174 +38,14 @@ static void run_position_expression_timings (void);
 static void run_theme_benchmark (int client_width,
                                  int client_height);
 
-static MetaFrameFlags
-get_flags (GtkWidget *widget)
-{
-  return META_FRAME_ALLOWS_DELETE |
-    META_FRAME_ALLOWS_MENU |
-    META_FRAME_ALLOWS_MINIMIZE |
-    META_FRAME_ALLOWS_MAXIMIZE |
-    META_FRAME_ALLOWS_VERTICAL_RESIZE |
-    META_FRAME_ALLOWS_HORIZONTAL_RESIZE |
-    META_FRAME_HAS_FOCUS |
-    META_FRAME_ALLOWS_SHADE |
-    META_FRAME_ALLOWS_MOVE;
-}
-
-static int
-get_text_height (GtkWidget *widget)
-{
-  return meta_pango_font_desc_get_text_height (widget->style->font_desc,
-                                               gtk_widget_get_pango_context (widget));
-}
-
-static PangoLayout*
-create_title_layout (GtkWidget *widget)
-{
-  PangoLayout *layout;
-
-  layout = gtk_widget_create_pango_layout (widget, "Window Title Goes Here");
-
-  return layout;
-}
-
-
-#ifdef HAVE_GDK_PIXBUF_NEW_FROM_STREAM
-#define gdk_pixbuf_new_from_inline gdk_pixbuf_new_from_stream
-#endif
-
-static GdkPixbuf*
-get_icon (void)
-{
-  static GdkPixbuf *default_icon = NULL;
-
-  if (default_icon == NULL)
-    {
-      GdkPixbuf *base;
-
-      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
-                                         FALSE,
-                                         NULL);
-
-      g_assert (base);
-
-      default_icon = gdk_pixbuf_scale_simple (base,
-                                              META_ICON_WIDTH,
-                                              META_ICON_HEIGHT,
-                                              GDK_INTERP_BILINEAR);
-
-      g_object_unref (G_OBJECT (base));
-    }
-  
-  return default_icon;
-}
-
-static GdkPixbuf*
-get_mini_icon (void)
-{
-  static GdkPixbuf *default_icon = NULL;
-
-  if (default_icon == NULL)
-    {
-      GdkPixbuf *base;
-
-      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
-                                         FALSE,
-                                         NULL);
-
-      g_assert (base);
-
-      default_icon = gdk_pixbuf_scale_simple (base,
-                                              META_MINI_ICON_WIDTH,
-                                              META_MINI_ICON_HEIGHT,
-                                              GDK_INTERP_BILINEAR);
-
-      g_object_unref (G_OBJECT (base));
-    }
-  
-  return default_icon;
-}
-
-
-static void
-set_widget_to_frame_size (GtkWidget *widget)
-{
-  int top_height, bottom_height, left_width, right_width;
-
-  meta_theme_get_frame_borders (global_theme,
-                                META_FRAME_TYPE_NORMAL,
-                                get_text_height (widget),
-                                get_flags (widget),
-                                &top_height,
-                                &bottom_height,
-                                &left_width,
-                                &right_width);  
-
-  gtk_widget_set_size_request (widget,
-                               CLIENT_WIDTH + left_width + right_width,
-                               CLIENT_HEIGHT + top_height + bottom_height);
-}
-
-static gboolean
-expose_handler (GtkWidget *widget,
-                GdkEventExpose *event,
-                gpointer data)
-{
-  MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
-  {
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL,
-    META_BUTTON_STATE_NORMAL
-  };
-  int top_height, bottom_height, left_width, right_width;
-  PangoLayout *layout;
-
-  layout = create_title_layout (widget);
-  
-  meta_theme_get_frame_borders (global_theme,
-                                META_FRAME_TYPE_NORMAL,
-                                get_text_height (widget),
-                                get_flags (widget),
-                                &top_height,
-                                &bottom_height,
-                                &left_width,
-                                &right_width);
-
-  meta_theme_draw_frame (global_theme,
-                         widget,
-                         widget->window,
-                         &event->area,
-                         0, 0,
-                         META_FRAME_TYPE_NORMAL,
-                         get_flags (widget),
-                         CLIENT_WIDTH, CLIENT_HEIGHT,
-                         layout,
-                         get_text_height (widget),
-                         button_states,
-                         get_mini_icon (),
-                         get_icon ());
-
-  /* Draw the "client" */
-
-  gdk_draw_rectangle (widget->window,
-                      widget->style->white_gc,
-                      TRUE,
-                      left_width, top_height,
-                      CLIENT_WIDTH, CLIENT_HEIGHT);
-
-  g_object_unref (G_OBJECT (layout));
-  
-  return TRUE;
-}
-
 int
 main (int argc, char **argv)
 {
   GtkWidget *window;
   GtkWidget *layout;
   GtkWidget *sw;
-  GtkWidget *da;
+  GtkWidget *preview;
+  GtkWidget *contents;
   GdkColor desktop_color;
   GError *err;
   clock_t start, end;
@@ -271,23 +111,56 @@ main (int argc, char **argv)
 
   gtk_widget_modify_bg (layout, GTK_STATE_NORMAL, &desktop_color);
 
-  da = gtk_drawing_area_new ();
+  preview = meta_preview_new ();
+  meta_preview_set_theme (META_PREVIEW (preview), global_theme);
 
-  g_signal_connect (G_OBJECT (da), "expose_event",
-                    G_CALLBACK (expose_handler), NULL);
+  contents = gtk_button_new_with_label ("Application window contents\n"
+                                        "go in here");
 
+  gtk_container_add (GTK_CONTAINER (preview), contents);
+  
   gtk_layout_put (GTK_LAYOUT (layout),
-                  da,
+                  preview,
                   5, 5);
 
-  gtk_widget_realize (da);
-  set_widget_to_frame_size (da);
-  
+  gtk_widget_realize (preview); /* http://bugzilla.gnome.org/show_bug.cgi?id=71343 */
   gtk_widget_show_all (window);
 
   gtk_main ();
 
   return 0;
+}
+
+
+static MetaFrameFlags
+get_flags (GtkWidget *widget)
+{
+  return META_FRAME_ALLOWS_DELETE |
+    META_FRAME_ALLOWS_MENU |
+    META_FRAME_ALLOWS_MINIMIZE |
+    META_FRAME_ALLOWS_MAXIMIZE |
+    META_FRAME_ALLOWS_VERTICAL_RESIZE |
+    META_FRAME_ALLOWS_HORIZONTAL_RESIZE |
+    META_FRAME_HAS_FOCUS |
+    META_FRAME_ALLOWS_SHADE |
+    META_FRAME_ALLOWS_MOVE;
+}
+
+static int
+get_text_height (GtkWidget *widget)
+{
+  return meta_pango_font_desc_get_text_height (widget->style->font_desc,
+                                               gtk_widget_get_pango_context (widget));
+}
+
+static PangoLayout*
+create_title_layout (GtkWidget *widget)
+{
+  PangoLayout *layout;
+
+  layout = gtk_widget_create_pango_layout (widget, "Window Title Goes Here");
+
+  return layout;
 }
 
 static void
@@ -345,8 +218,8 @@ run_theme_benchmark (int client_width,
                              layout,
                              get_text_height (widget),
                              button_states,
-                             get_mini_icon (),
-                             get_icon ());
+                             meta_preview_get_mini_icon (),
+                             meta_preview_get_icon ());
       ++i;
     }
 

@@ -281,29 +281,49 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                            MetaUIFrame *frame)
 {
   GtkWidget *widget;
+  MetaFrameFlags flags;
+  MetaFrameType type;
+  MetaFrameStyle *style;
   
   g_return_if_fail (GTK_WIDGET_REALIZED (frames));
 
   widget = GTK_WIDGET (frames);
+      
+  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+  type = meta_core_get_frame_type (gdk_display, frame->xwindow);
+
+  style = meta_theme_get_frame_style (meta_theme_get_current (),
+                                      type, flags);
+
+  if (style != frame->cache_style)
+    {
+      if (frame->layout)
+        {
+          /* save title to recreate layout */
+          g_free (frame->title);
+          
+          frame->title = g_strdup (pango_layout_get_text (frame->layout));
+
+          g_object_unref (G_OBJECT (frame->layout));
+          frame->layout = NULL;
+        }
+    }
+
+  frame->cache_style = style;
   
   if (frame->layout == NULL)
     {
       gpointer key, value;
       PangoFontDescription *font_desc;
-      MetaFrameFlags flags;
-      MetaFrameType type;
       double scale;
       int size;
-      
-      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-      type = meta_core_get_frame_type (gdk_display, frame->xwindow);
       
       scale = meta_theme_get_title_scale (meta_theme_get_current (),
                                           type,
                                           flags);
       
       frame->layout = gtk_widget_create_pango_layout (widget, frame->title);
-
+      
       font_desc = meta_gtk_widget_get_font_desc (widget, scale);
 
       size = pango_font_description_get_size (font_desc);
@@ -346,6 +366,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
       
       pango_font_description_free (font_desc);
 
+      /* Save some RAM */
       g_free (frame->title);
       frame->title = NULL;
     }
@@ -404,6 +425,7 @@ meta_frames_manage_window (MetaFrames *frames,
   /* Don't set event mask here, it's in frame.c */
   
   frame->xwindow = xwindow;
+  frame->cache_style = NULL;
   frame->layout = NULL;
   frame->text_height = -1;
   frame->title = NULL;

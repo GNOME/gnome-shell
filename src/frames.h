@@ -67,11 +67,13 @@ struct _MetaUIFrame
 {
   Window xwindow;
   GdkWindow *window;
+  MetaFrameStyle *cache_style;
   PangoLayout *layout;
   int text_height;
   char *title; /* NULL once we have a layout */
   guint expose_delayed : 1;
 
+  /* FIXME get rid of this, it can just be in the MetaFrames struct */
   MetaFrameControl prelit_control;
 };
 

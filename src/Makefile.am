@@ -64,6 +64,8 @@ metacity_SOURCES= 				\
 metacity_theme_viewer_SOURCES=  \
 	gradient.c		\
 	gradient.h		\
+	preview-widget.c	\
+	preview-widget.h	\
 	theme.c			\
 	theme.h			\
 	theme-parser.c		\

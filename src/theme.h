@@ -649,6 +649,10 @@ GdkPixbuf* meta_theme_load_image (MetaTheme  *theme,
                                   const char *filename,
                                   GError    **error);
 
+MetaFrameStyle* meta_theme_get_frame_style (MetaTheme     *theme,
+                                            MetaFrameType  type,
+                                            MetaFrameFlags flags);
+
 double meta_theme_get_title_scale (MetaTheme     *theme,
                                    MetaFrameType  type,
                                    MetaFrameFlags flags);
