@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include "common.h"
+#include "theme.h"
 
 typedef enum
 {
@@ -61,7 +62,6 @@ typedef struct _MetaFrames        MetaFrames;
 typedef struct _MetaFramesClass   MetaFramesClass;
 
 typedef struct _MetaUIFrame         MetaUIFrame;
-typedef struct _MetaFrameProperties MetaFrameProperties;
 
 struct _MetaUIFrame
 {
@@ -76,7 +76,7 @@ struct _MetaFrames
   GtkWindow parent_instance;
 
   /* If we did a widget per frame, we wouldn't want to cache this. */
-  MetaFrameProperties *props;
+  MetaFrameLayout *layout;
 
   int text_height;
 

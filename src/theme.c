@@ -22,8 +22,250 @@
 #include "theme.h"
 #include "util.h"
 #include "gradient.h"
+#include <gtk/gtkwidget.h>
 #include <string.h>
 
+MetaFrameLayout*
+meta_frame_layout_new  (void)
+{
+  MetaFrameLayout *layout;
+
+  layout = g_new0 (MetaFrameLayout, 1);
+
+  return layout;
+}
+
+void
+meta_frame_layout_free (MetaFrameLayout *layout)
+{
+  g_return_if_fail (layout != NULL);
+  
+  g_free (layout);
+}
+
+void
+meta_frame_layout_get_borders (const MetaFrameLayout *layout,
+                               GtkWidget             *widget,
+                               int                    text_height,
+                               MetaFrameFlags         flags,
+                               int                   *top_height,
+                               int                   *bottom_height,
+                               int                   *left_width,
+                               int                   *right_width)
+{
+  int buttons_height, title_height, spacer_height;
+
+  g_return_if_fail (top_height != NULL);
+  g_return_if_fail (bottom_height != NULL);
+  g_return_if_fail (left_width != NULL);
+  g_return_if_fail (right_width != NULL);
+  
+  buttons_height = layout->button_height +
+    layout->button_border.top + layout->button_border.bottom;
+  title_height = text_height +
+    layout->text_border.top + layout->text_border.bottom +
+    layout->title_border.top + layout->title_border.bottom;
+  spacer_height = layout->spacer_height;
+
+  if (top_height)
+    {
+      *top_height = MAX (buttons_height, title_height);
+      *top_height = MAX (*top_height, spacer_height);
+    }
+
+  if (left_width)
+    *left_width = layout->left_width;
+  if (right_width)
+    *right_width = layout->right_width;
+
+  if (bottom_height)
+    {
+      if (flags & META_FRAME_SHADED)
+        *bottom_height = 0;
+      else
+        *bottom_height = layout->bottom_height;
+    }
+}
+
+void
+meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
+                                 GtkWidget             *widget,
+                                 int                    text_height,
+                                 MetaFrameFlags         flags,
+                                 int                    client_width,
+                                 int                    client_height,
+                                 MetaFrameGeometry     *fgeom)
+{
+  int x;
+  int button_y;
+  int title_right_edge;
+  int width, height;
+
+  meta_frame_layout_get_borders (layout, widget, text_height,
+                                 flags,
+                                 &fgeom->top_height,
+                                 &fgeom->bottom_height,
+                                 &fgeom->left_width,
+                                 &fgeom->right_width);
+  
+  width = client_width + fgeom->left_width + fgeom->right_width;
+  height = client_height + fgeom->top_height + fgeom->bottom_height;
+  
+  fgeom->width = width;
+  fgeom->height = height;
+
+  x = width - layout->right_inset;
+
+  /* center buttons */
+  button_y = (fgeom->top_height -
+              (layout->button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top;
+
+  if ((flags & META_FRAME_ALLOWS_DELETE) &&
+      x >= 0)
+    {
+      fgeom->close_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->close_rect.y = button_y;
+      fgeom->close_rect.width = layout->button_width;
+      fgeom->close_rect.height = layout->button_height;
+
+      x = fgeom->close_rect.x - layout->button_border.left;
+    }
+  else
+    {
+      fgeom->close_rect.x = 0;
+      fgeom->close_rect.y = 0;
+      fgeom->close_rect.width = 0;
+      fgeom->close_rect.height = 0;
+    }
+
+  if ((flags & META_FRAME_ALLOWS_MAXIMIZE) &&
+      x >= 0)
+    {
+      fgeom->max_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->max_rect.y = button_y;
+      fgeom->max_rect.width = layout->button_width;
+      fgeom->max_rect.height = layout->button_height;
+
+      x = fgeom->max_rect.x - layout->button_border.left;
+    }
+  else
+    {
+      fgeom->max_rect.x = 0;
+      fgeom->max_rect.y = 0;
+      fgeom->max_rect.width = 0;
+      fgeom->max_rect.height = 0;
+    }
+  
+  if ((flags & META_FRAME_ALLOWS_MINIMIZE) &&
+      x >= 0)
+    {
+      fgeom->min_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->min_rect.y = button_y;
+      fgeom->min_rect.width = layout->button_width;
+      fgeom->min_rect.height = layout->button_height;
+
+      x = fgeom->min_rect.x - layout->button_border.left;
+    }
+  else
+    {
+      fgeom->min_rect.x = 0;
+      fgeom->min_rect.y = 0;
+      fgeom->min_rect.width = 0;
+      fgeom->min_rect.height = 0;
+    }
+
+  if ((fgeom->close_rect.width > 0 ||
+       fgeom->max_rect.width > 0 ||
+       fgeom->min_rect.width > 0) &&
+      x >= 0)
+    {
+      fgeom->spacer_rect.x = x - layout->spacer_padding - layout->spacer_width;
+      fgeom->spacer_rect.y = (fgeom->top_height - layout->spacer_height) / 2;
+      fgeom->spacer_rect.width = layout->spacer_width;
+      fgeom->spacer_rect.height = layout->spacer_height;
+
+      x = fgeom->spacer_rect.x - layout->spacer_padding;
+    }
+  else
+    {
+      fgeom->spacer_rect.x = 0;
+      fgeom->spacer_rect.y = 0;
+      fgeom->spacer_rect.width = 0;
+      fgeom->spacer_rect.height = 0;
+    }
+
+  title_right_edge = x - layout->title_border.right;
+  
+  /* Now x changes to be position from the left */
+  x = layout->left_inset;
+  
+  if (flags & META_FRAME_ALLOWS_MENU)
+    {
+      fgeom->menu_rect.x = x + layout->button_border.left;
+      fgeom->menu_rect.y = button_y;
+      fgeom->menu_rect.width = layout->button_width;
+      fgeom->menu_rect.height = layout->button_height;
+
+      x = fgeom->menu_rect.x + fgeom->menu_rect.width + layout->button_border.right;
+    }
+  else
+    {
+      fgeom->menu_rect.x = 0;
+      fgeom->menu_rect.y = 0;
+      fgeom->menu_rect.width = 0;
+      fgeom->menu_rect.height = 0;
+    }
+
+  /* If menu overlaps close button, then the menu wins since it
+   * lets you perform any operation including close
+   */
+  if (fgeom->close_rect.width > 0 &&
+      fgeom->close_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->close_rect.width = 0;
+      fgeom->close_rect.height = 0;
+    }
+
+  /* Check for maximize overlap */
+  if (fgeom->max_rect.width > 0 &&
+      fgeom->max_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->max_rect.width = 0;
+      fgeom->max_rect.height = 0;
+    }
+  
+  /* Check for minimize overlap */
+  if (fgeom->min_rect.width > 0 &&
+      fgeom->min_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->min_rect.width = 0;
+      fgeom->min_rect.height = 0;
+    }
+
+  /* Check for spacer overlap */
+  if (fgeom->spacer_rect.width > 0 &&
+      fgeom->spacer_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->spacer_rect.width = 0;
+      fgeom->spacer_rect.height = 0;
+    }
+  
+  /* We always fill as much vertical space as possible with title rect,
+   * rather than centering it like the buttons and spacer
+   */
+  fgeom->title_rect.x = x + layout->title_border.left;
+  fgeom->title_rect.y = layout->title_border.top;
+  fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
+  fgeom->title_rect.height = fgeom->top_height - layout->title_border.top - layout->title_border.bottom;
+
+  /* Nuke title if it won't fit */
+  if (fgeom->title_rect.width < 0 ||
+      fgeom->title_rect.height < 0)
+    {
+      fgeom->title_rect.width = 0;
+      fgeom->title_rect.height = 0;
+    }
+}
 
 MetaGradientSpec*
 meta_gradient_spec_new (MetaGradientType type)

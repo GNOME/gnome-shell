@@ -29,63 +29,6 @@
 
 #define DEFAULT_INNER_BUTTON_BORDER 3
 
-struct _MetaFrameProperties
-{
-  /* Size of left/right/bottom sides */
-  int left_width;
-  int right_width;
-  int bottom_height;
-  
-  /* Border of blue title region */
-  GtkBorder title_border;
-
-  /* Border inside title region, around title */
-  GtkBorder text_border;  
- 
-  /* padding on either side of spacer */
-  int spacer_padding;
-
-  /* Size of spacer */
-  int spacer_width;
-  int spacer_height;
-
-  /* indent of buttons from edges of frame */
-  int right_inset;
-  int left_inset;
-  
-  /* Size of buttons */
-  int button_width;
-  int button_height;
-
-  /* Space around buttons */
-  GtkBorder button_border;
-
-  /* Space inside button which is clickable but doesn't draw the
-   * button icon
-   */
-  GtkBorder inner_button_border;
-};
-
-typedef struct _MetaFrameGeometry MetaFrameGeometry;
-
-struct _MetaFrameGeometry
-{
-  int left_width;
-  int right_width;
-  int top_height;
-  int bottom_height;
-
-  int width;
-  int height;
-  
-  GdkRectangle close_rect;
-  GdkRectangle max_rect;
-  GdkRectangle min_rect;
-  GdkRectangle spacer_rect;
-  GdkRectangle menu_rect;
-  GdkRectangle title_rect;
-};
-
 static void meta_frames_class_init (MetaFramesClass *klass);
 static void meta_frames_init       (MetaFrames      *frames);
 static void meta_frames_destroy    (GtkObject       *object);
@@ -276,7 +219,7 @@ meta_frames_init (MetaFrames *frames)
 {
   GTK_WINDOW (frames)->type = GTK_WINDOW_POPUP;
 
-  frames->props = g_new0 (MetaFrameProperties, 1);
+  frames->layout = meta_frame_layout_new ();
 
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
@@ -337,7 +280,7 @@ meta_frames_finalize (GObject *object)
   g_assert (g_hash_table_size (frames->frames) == 0);
   g_hash_table_destroy (frames->frames);
   
-  g_free (frames->props);
+  meta_frame_layout_free (frames->layout);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -395,35 +338,35 @@ meta_frames_style_set  (GtkWidget *widget,
   GtkBorder *text_border;
   GtkBorder *button_border;
   GtkBorder *inner_button_border;
-  MetaFrameProperties props;
+  MetaFrameLayout layout;
 
   frames = META_FRAMES (widget);
   
   gtk_widget_style_get (widget,
                         "left_width",
-                        &props.left_width,
+                        &layout.left_width,
                         "right_width",
-                        &props.right_width,
+                        &layout.right_width,
                         "bottom_height",
-                        &props.bottom_height,
+                        &layout.bottom_height,
                         "title_border",
                         &title_border,
                         "text_border",
                         &text_border,
                         "spacer_padding",
-                        &props.spacer_padding,
+                        &layout.spacer_padding,
                         "spacer_width",
-                        &props.spacer_width,
+                        &layout.spacer_width,
                         "spacer_height",
-                        &props.spacer_height,
+                        &layout.spacer_height,
                         "right_inset",
-                        &props.right_inset,
+                        &layout.right_inset,
                         "left_inset",
-                        &props.left_inset,
+                        &layout.left_inset,
                         "button_width",
-                        &props.button_width,
+                        &layout.button_width,
                         "button_height",
-                        &props.button_height,
+                        &layout.button_height,
                         "button_border",
                         &button_border,
                         "inner_button_border",
@@ -431,34 +374,34 @@ meta_frames_style_set  (GtkWidget *widget,
                         NULL);
   
   if (title_border)
-    props.title_border = *title_border;
+    layout.title_border = *title_border;
   else
-    props.title_border = default_title_border;
+    layout.title_border = default_title_border;
 
   g_free (title_border);
   
   if (text_border)
-    props.text_border = *text_border;
+    layout.text_border = *text_border;
   else
-    props.text_border = default_text_border;
+    layout.text_border = default_text_border;
 
   g_free (text_border);
 
   if (button_border)
-    props.button_border = *button_border;
+    layout.button_border = *button_border;
   else
-    props.button_border = default_button_border;
+    layout.button_border = default_button_border;
 
   g_free (button_border);
 
   if (inner_button_border)
-    props.inner_button_border = *inner_button_border;
+    layout.inner_button_border = *inner_button_border;
   else
-    props.inner_button_border = default_inner_button_border;
+    layout.inner_button_border = default_inner_button_border;
 
   g_free (inner_button_border);
 
-  *(frames->props) = props;
+  *(frames->layout) = layout;
 
   {
     PangoFontMetrics *metrics;
@@ -486,202 +429,23 @@ meta_frames_style_set  (GtkWidget *widget,
 
 static void
 meta_frames_calc_geometry (MetaFrames        *frames,
-                           MetaUIFrame         *frame,
+                           MetaUIFrame       *frame,
                            MetaFrameGeometry *fgeom)
 {
-  int x;
-  int button_y;
-  int title_right_edge;
-  MetaFrameProperties props;
-  int buttons_height, title_height, spacer_height;
   int width, height;
   MetaFrameFlags flags;
   
-  props = *(frames->props);
-
-  /* FIXME this is totally broken - the w/h here are the size of the
-   * frame xwindow, which is computed from the size the frame wants to
-   * be, which we are currently computing - stuff just happens to work
-   * now because we always go through this codepath twice, or don't
-   * really use these values, or something.
-   */
-  meta_core_get_frame_size (gdk_display, frame->xwindow,
-                            &width, &height);
+  meta_core_get_client_size (gdk_display, frame->xwindow,
+                             &width, &height);
   
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
-  fgeom->width = width;
-  fgeom->height = height;
-  
-  buttons_height = props.button_height +
-    props.button_border.top + props.button_border.bottom;
-  title_height = frames->text_height +
-    props.text_border.top + props.text_border.bottom +
-    props.title_border.top + props.title_border.bottom;
-  spacer_height = props.spacer_height;
-  
-  fgeom->top_height = MAX (buttons_height, title_height);
-  fgeom->top_height = MAX (fgeom->top_height, spacer_height);
-
-  fgeom->left_width = props.left_width;
-  fgeom->right_width = props.right_width;
-
-  if (flags & META_FRAME_SHADED)
-    fgeom->bottom_height = 0;
-  else
-    fgeom->bottom_height = props.bottom_height;
-
-  x = width - props.right_inset;
-
-  /* center buttons */
-  button_y = (fgeom->top_height -
-              (props.button_height + props.button_border.top + props.button_border.bottom)) / 2 + props.button_border.top;
-
-  if ((flags & META_FRAME_ALLOWS_DELETE) &&
-      x >= 0)
-    {
-      fgeom->close_rect.x = x - props.button_border.right - props.button_width;
-      fgeom->close_rect.y = button_y;
-      fgeom->close_rect.width = props.button_width;
-      fgeom->close_rect.height = props.button_height;
-
-      x = fgeom->close_rect.x - props.button_border.left;
-    }
-  else
-    {
-      fgeom->close_rect.x = 0;
-      fgeom->close_rect.y = 0;
-      fgeom->close_rect.width = 0;
-      fgeom->close_rect.height = 0;
-    }
-
-  if ((flags & META_FRAME_ALLOWS_MAXIMIZE) &&
-      x >= 0)
-    {
-      fgeom->max_rect.x = x - props.button_border.right - props.button_width;
-      fgeom->max_rect.y = button_y;
-      fgeom->max_rect.width = props.button_width;
-      fgeom->max_rect.height = props.button_height;
-
-      x = fgeom->max_rect.x - props.button_border.left;
-    }
-  else
-    {
-      fgeom->max_rect.x = 0;
-      fgeom->max_rect.y = 0;
-      fgeom->max_rect.width = 0;
-      fgeom->max_rect.height = 0;
-    }
-  
-  if ((flags & META_FRAME_ALLOWS_MINIMIZE) &&
-      x >= 0)
-    {
-      fgeom->min_rect.x = x - props.button_border.right - props.button_width;
-      fgeom->min_rect.y = button_y;
-      fgeom->min_rect.width = props.button_width;
-      fgeom->min_rect.height = props.button_height;
-
-      x = fgeom->min_rect.x - props.button_border.left;
-    }
-  else
-    {
-      fgeom->min_rect.x = 0;
-      fgeom->min_rect.y = 0;
-      fgeom->min_rect.width = 0;
-      fgeom->min_rect.height = 0;
-    }
-
-  if ((fgeom->close_rect.width > 0 ||
-       fgeom->max_rect.width > 0 ||
-       fgeom->min_rect.width > 0) &&
-      x >= 0)
-    {
-      fgeom->spacer_rect.x = x - props.spacer_padding - props.spacer_width;
-      fgeom->spacer_rect.y = (fgeom->top_height - props.spacer_height) / 2;
-      fgeom->spacer_rect.width = props.spacer_width;
-      fgeom->spacer_rect.height = props.spacer_height;
-
-      x = fgeom->spacer_rect.x - props.spacer_padding;
-    }
-  else
-    {
-      fgeom->spacer_rect.x = 0;
-      fgeom->spacer_rect.y = 0;
-      fgeom->spacer_rect.width = 0;
-      fgeom->spacer_rect.height = 0;
-    }
-
-  title_right_edge = x - props.title_border.right;
-  
-  /* Now x changes to be position from the left */
-  x = props.left_inset;
-  
-  if (flags & META_FRAME_ALLOWS_MENU)
-    {
-      fgeom->menu_rect.x = x + props.button_border.left;
-      fgeom->menu_rect.y = button_y;
-      fgeom->menu_rect.width = props.button_width;
-      fgeom->menu_rect.height = props.button_height;
-
-      x = fgeom->menu_rect.x + fgeom->menu_rect.width + props.button_border.right;
-    }
-  else
-    {
-      fgeom->menu_rect.x = 0;
-      fgeom->menu_rect.y = 0;
-      fgeom->menu_rect.width = 0;
-      fgeom->menu_rect.height = 0;
-    }
-
-  /* If menu overlaps close button, then the menu wins since it
-   * lets you perform any operation including close
-   */
-  if (fgeom->close_rect.width > 0 &&
-      fgeom->close_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->close_rect.width = 0;
-      fgeom->close_rect.height = 0;
-    }
-
-  /* Check for maximize overlap */
-  if (fgeom->max_rect.width > 0 &&
-      fgeom->max_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->max_rect.width = 0;
-      fgeom->max_rect.height = 0;
-    }
-  
-  /* Check for minimize overlap */
-  if (fgeom->min_rect.width > 0 &&
-      fgeom->min_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->min_rect.width = 0;
-      fgeom->min_rect.height = 0;
-    }
-
-  /* Check for spacer overlap */
-  if (fgeom->spacer_rect.width > 0 &&
-      fgeom->spacer_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
-    {
-      fgeom->spacer_rect.width = 0;
-      fgeom->spacer_rect.height = 0;
-    }
-  
-  /* We always fill as much vertical space as possible with title rect,
-   * rather than centering it like the buttons and spacer
-   */
-  fgeom->title_rect.x = x + props.title_border.left;
-  fgeom->title_rect.y = props.title_border.top;
-  fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
-  fgeom->title_rect.height = fgeom->top_height - props.title_border.top - props.title_border.bottom;
-
-  /* Nuke title if it won't fit */
-  if (fgeom->title_rect.width < 0 ||
-      fgeom->title_rect.height < 0)
-    {
-      fgeom->title_rect.width = 0;
-      fgeom->title_rect.height = 0;
-    }
+  meta_frame_layout_calc_geometry (frames->layout,
+                                   GTK_WIDGET (frames),
+                                   frames->text_height,
+                                   flags,
+                                   width, height,
+                                   fgeom);
 }
 
 MetaFrames*
@@ -789,25 +553,27 @@ meta_frames_get_geometry (MetaFrames *frames,
                           int *top_height, int *bottom_height,
                           int *left_width, int *right_width)
 {
-  MetaFrameGeometry fgeom;
-
+  MetaFrameFlags flags;  
   MetaUIFrame *frame;
 
   frame = meta_frames_lookup_window (frames, xwindow);
 
   if (frame == NULL)
     meta_bug ("No such frame 0x%lx\n", xwindow);
+  
+  flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
-  meta_frames_calc_geometry (frames, frame, &fgeom);
-
-  if (top_height)
-    *top_height = fgeom.top_height;
-  if (bottom_height)
-    *bottom_height = fgeom.bottom_height;
-  if (left_width)
-    *left_width = fgeom.left_width;
-  if (right_width)
-    *right_width = fgeom.right_width;
+  /* We can't get the full geometry, because that depends on
+   * the client window size and probably we're being called
+   * by the core move/resize code to decide on the client
+   * window size
+   */
+  meta_frame_layout_get_borders (frames->layout,
+                                 GTK_WIDGET (frames),
+                                 frames->text_height,
+                                 flags,
+                                 top_height, bottom_height,
+                                 left_width, right_width);
 }
 
 void
@@ -1704,7 +1470,8 @@ meta_frames_expose_event            (GtkWidget           *widget,
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-  meta_core_get_frame_size (gdk_display, frame->xwindow, &width, &height);
+  width = fgeom.width;
+  height = fgeom.height;
   
   /* Black line around outside to give definition */
   gdk_draw_rectangle (frame->window,
@@ -1751,9 +1518,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
       GdkGC *layout_gc;
       
       clip = fgeom.title_rect;
-      clip.x += frames->props->text_border.left;
-      clip.width -= frames->props->text_border.left +
-        frames->props->text_border.right;
+      clip.x += frames->layout->text_border.left;
+      clip.width -= frames->layout->text_border.left +
+        frames->layout->text_border.right;
 
       layout_gc = widget->style->fg_gc[GTK_STATE_NORMAL];
       if (flags & META_FRAME_HAS_FOCUS)
@@ -1826,16 +1593,16 @@ meta_frames_expose_event            (GtkWidget           *widget,
                                           &layout_rect);
 
           /* corner of whole title area */
-          x = fgeom.title_rect.x + frames->props->text_border.left;
-          y = fgeom.title_rect.y + frames->props->text_border.top;
+          x = fgeom.title_rect.x + frames->layout->text_border.left;
+          y = fgeom.title_rect.y + frames->layout->text_border.top;
 
           area_w = fgeom.title_rect.width -
-            frames->props->text_border.left -
-            frames->props->text_border.right;
+            frames->layout->text_border.left -
+            frames->layout->text_border.right;
 
           area_h = fgeom.title_rect.height -
-            frames->props->text_border.top -
-            frames->props->text_border.bottom;
+            frames->layout->text_border.top -
+            frames->layout->text_border.bottom;
           
           /* center icon vertically */
           icon_y = y + MAX ((area_h - icon_h) / 2, 0);  
@@ -1884,7 +1651,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
         }
     }
 
-  inner = frames->props->inner_button_border;
+  inner = frames->layout->inner_button_border;
   
   if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
     {

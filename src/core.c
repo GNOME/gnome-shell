@@ -24,10 +24,10 @@
 #include "workspace.h"
 
 void
-meta_core_get_frame_size (Display *xdisplay,
-                          Window   frame_xwindow,
-                          int     *width,
-                          int     *height)
+meta_core_get_client_size (Display *xdisplay,
+                           Window   frame_xwindow,
+                           int     *width,
+                           int     *height)
 {
   MetaDisplay *display;
   MetaWindow *window;
@@ -39,9 +39,9 @@ meta_core_get_frame_size (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
   
   if (width)
-    *width = window->frame->rect.width;
+    *width = window->rect.width;
   if (height)
-    *height = window->frame->rect.height;
+    *height = window->rect.height;
 }
 
 MetaFrameFlags

@@ -53,6 +53,8 @@ typedef enum
   WIN_HINTS_DO_NOT_COVER    = (1<<5)  /* attempt to not cover this window */
 } GnomeWinHints;
 
+static int destroying_windows_disallowed = 0;
+
 static void constrain_size     (MetaWindow        *window,
                                 MetaFrameGeometry *fgeom,
                                 int                width,
@@ -126,6 +128,9 @@ static char*    get_text_property (MetaDisplay *display,
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
 void meta_window_flush_calc_showing   (MetaWindow *window);
+
+void meta_window_unqueue_move_resize  (MetaWindow *window);
+void meta_window_flush_move_resize    (MetaWindow *window);
 
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
@@ -316,6 +321,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
                   xwindow);
   window->unmanaging = FALSE;
   window->calc_showing_queued = FALSE;
+  window->move_resize_queued = FALSE;
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
   window->all_keys_grabbed = FALSE;
@@ -677,6 +683,10 @@ meta_window_free (MetaWindow  *window)
   
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
+  if (destroying_windows_disallowed > 0)
+    meta_bug ("Tried to destroy window %s while destruction was not allowed\n",
+              window->desc);
+  
   window->unmanaging = TRUE;
   
   /* If we have the focus, focus some other window.
@@ -713,6 +723,7 @@ meta_window_free (MetaWindow  *window)
     window->display->prev_focus_window = NULL;
   
   meta_window_unqueue_calc_showing (window);
+  meta_window_unqueue_move_resize (window);
   
   tmp = window->workspaces;
   while (tmp != NULL)
@@ -969,6 +980,8 @@ idle_calc_showing (gpointer data)
   g_slist_free (calc_showing_pending);
   calc_showing_pending = NULL;
   calc_showing_idle = 0;
+
+  destroying_windows_disallowed += 1;
   
   /* sort them from bottom to top, so we map the
    * bottom windows first, so that placement (e.g. cascading)
@@ -984,12 +997,20 @@ idle_calc_showing (gpointer data)
       window = tmp->data;
       
       meta_window_calc_showing (window);
+
+      /* important to set this here for reentrancy -
+       * if we queue a window again while it's in "copy",
+       * then queue_calc_showing will just return since
+       * calc_showing_queued = TRUE still
+       */
       window->calc_showing_queued = FALSE;
       
       tmp = tmp->next;
     }
 
   g_slist_free (copy);
+
+  destroying_windows_disallowed -= 1;
   
   return FALSE;
 }
@@ -1003,6 +1024,9 @@ meta_window_unqueue_calc_showing (MetaWindow *window)
   meta_verbose ("Removing %s from the calc_showing queue\n",
                 window->desc);
 
+  /* Note that window may not actually be in move_resize_pending
+   * because it may have been in "copy" inside the idle handler
+   */  
   calc_showing_pending = g_slist_remove (calc_showing_pending, window);
   window->calc_showing_queued = FALSE;
   
@@ -1520,6 +1544,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
+
+  /* We don't need it in the idle queue anymore. */
+  meta_window_unqueue_move_resize (window);
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
@@ -1801,7 +1828,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
     {
       meta_verbose ("Size/position not modified\n");
     }
-
+  
   /* Update struts for new window size */
   if (window->do_not_cover && (need_resize_client || need_move_client))
     {
@@ -1809,7 +1836,8 @@ meta_window_move_resize_internal (MetaWindow  *window,
 
       /* Does a resize on all windows on entire current workspace,
        * would be an infinite loop except for need_resize_client
-       * above.
+       * above. We rely on reaching an equilibrium state, which
+       * is somewhat fragile, though.
        */
       
       invalidate_work_areas (window);
@@ -1901,11 +1929,125 @@ meta_window_move_resize_now (MetaWindow  *window)
                            window->user_rect.height : window->rect.height);
 }
 
+
+static guint move_resize_idle = 0;
+static GSList *move_resize_pending = NULL;
+
+/* We want to put windows whose size/pos affects other
+ * windows earlier in the queue, for efficiency.
+ */
+static int
+move_resize_cmp (gconstpointer a, gconstpointer b)
+{
+  MetaWindow *aw = (gpointer) a;
+  MetaWindow *bw = (gpointer) b;
+
+  if (aw->do_not_cover && !bw->do_not_cover)
+    return -1; /* aw before bw */
+  else if (!aw->do_not_cover && bw->do_not_cover)
+    return 1;
+  else
+    return 0;
+}
+
+static gboolean
+idle_move_resize (gpointer data)
+{
+  GSList *tmp;
+  GSList *copy;
+
+  meta_verbose ("Clearing the move_resize queue\n");
+
+  /* Work with a copy, for reentrancy. The allowed reentrancy isn't
+   * complete; destroying a window while we're in here would result in
+   * badness. But it's OK to queue/unqueue move_resizes.
+   */
+  copy = g_slist_copy (move_resize_pending);
+  g_slist_free (move_resize_pending);
+  move_resize_pending = NULL;
+  move_resize_idle = 0;
+
+  destroying_windows_disallowed += 1;
+
+  copy = g_slist_sort (copy, move_resize_cmp);
+  
+  tmp = copy;
+  while (tmp != NULL)
+    {
+      MetaWindow *window;
+
+      window = tmp->data;
+
+      /* As a side effect, sets window->move_resize_queued = FALSE */
+      meta_window_move_resize_now (window); 
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (copy);
+
+  destroying_windows_disallowed -= 1;
+  
+  return FALSE;
+}
+
+void
+meta_window_unqueue_move_resize (MetaWindow *window)
+{
+  if (!window->move_resize_queued)
+    return;
+
+  meta_verbose ("Removing %s from the move_resize queue\n",
+                window->desc);
+
+  /* Note that window may not actually be in move_resize_pending
+   * because it may have been in "copy" inside the idle handler
+   */
+  move_resize_pending = g_slist_remove (move_resize_pending, window);
+  window->move_resize_queued = FALSE;
+  
+  if (move_resize_pending == NULL &&
+      move_resize_idle != 0)
+    {
+      g_source_remove (move_resize_idle);
+      move_resize_idle = 0;
+    }
+}
+
+void
+meta_window_flush_move_resize (MetaWindow *window)
+{
+  if (window->move_resize_queued)
+    {
+      meta_window_unqueue_move_resize (window);
+      meta_window_move_resize_now (window);
+    }
+}
+
+/* The move/resize queue is only used when we need to
+ * recheck the constraints on the window, e.g. when
+ * maximizing or when changing struts. Configure requests
+ * and such always have to be handled synchronously,
+ * they can't be done via a queue.
+ */
 void
 meta_window_queue_move_resize (MetaWindow  *window)
 {
-  /* FIXME actually queue, don't do it immediately */
-  meta_window_move_resize_now (window);
+  if (window->unmanaging)
+    return;
+
+  if (window->move_resize_queued)
+    return;
+
+  meta_verbose ("Putting %s in the move_resize queue\n",
+                window->desc);
+  
+  window->move_resize_queued = TRUE;
+  
+  if (move_resize_idle == 0)
+    move_resize_idle = g_idle_add (idle_move_resize, NULL);
+  
+  move_resize_pending = g_slist_prepend (move_resize_pending, window);
 }
 
 void
@@ -5014,16 +5156,20 @@ constrain_position (MetaWindow *window,
           se_y = tmp;
         }
       
-      /* Clamp window to the given positions */
-      if (x < nw_x)
-        x = nw_x;
-      if (y < nw_y)
-        y = nw_y;
-      
+      /* Clamp window to the given positions.
+       * Do the SE clamp first, so that the NW clamp has precedence
+       * and we don't tend to lose the titlebar for too-large
+       * windows.
+       */
       if (x > se_x)
         x = se_x;
       if (y > se_y)
         y = se_y;
+      
+      if (x < nw_x)
+        x = nw_x;
+      if (y < nw_y)
+        y = nw_y;
 
       /* If maximized, force the exact position */
       if (window->maximized)

@@ -169,6 +169,9 @@ struct _MetaWindow
   /* Are we in the calc_showing queue? */
   guint calc_showing_queued : 1;
 
+  /* Are we in the move_resize queue? */
+  guint move_resize_queued : 1;
+  
   /* Used by keybindings.c */
   guint keys_grabbed : 1;     /* normal keybindings grabbed */
   guint grab_on_frame : 1;    /* grabs are on the frame */

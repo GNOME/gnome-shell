@@ -1,3 +1,26 @@
+2002-01-18  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (constrain_position): give priority to keeping NW
+	corner onscreen rather than SE, if we need to shift the window 
+	to fit inside constraints
+
+	* src/frames.c (meta_frames_get_geometry): don't depend on the 
+	current window size
+
+	* src/theme.c: move geometry stuff in here, to be calculated as 
+	part of the theme
+
+	* src/core.c (meta_core_get_client_size): new function to replace
+	meta_core_get_frame_size() so we don't have weird cycles 
+	in the geometry calculation
+
+2002-01-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_queue_move_resize): make this actually
+	queue, rather than being synchronous as it was before.  We'll see
+	what breaks. Should be more efficient and reduce flickery stuff a
+	bit in some cases.
+
 2002-01-15  Havoc Pennington  <hp@redhat.com>
 
 	* src/keybindings.c (handle_tab_backward): fix crash 

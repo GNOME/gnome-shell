@@ -23,15 +23,13 @@
 #define META_CORE_H
 
 /* Don't include core headers here */
-#include <gtk/gtk.h>
 #include <gdk/gdkx.h>
-#include "frames.h"
 #include "common.h"
 
-void meta_core_get_frame_size (Display *xdisplay,
-                               Window   frame_xwindow,
-                               int     *width,
-                               int     *height);
+void meta_core_get_client_size (Display *xdisplay,
+                                Window   frame_xwindow,
+                                int     *width,
+                                int     *height);
 
 MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
                                           Window   frame_xwindow);

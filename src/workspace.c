@@ -327,6 +327,9 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   if (workspace->work_area_invalid)
     return;
+
+  meta_verbose ("Invalidating work area for workspace %d\n",
+                meta_workspace_index (workspace));
   
   workspace->work_area_invalid = TRUE;
 

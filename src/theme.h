@@ -22,8 +22,8 @@
 #ifndef META_THEME_H
 #define META_THEME_H
 
-#include "frames.h"
 #include "gradient.h"
+#include "common.h"
 #include <gtk/gtkrc.h>
 
 typedef struct _MetaFrameStyle MetaFrameStyle;
@@ -31,6 +31,67 @@ typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
 typedef struct _MetaTextureSpec MetaTextureSpec;
 typedef struct _MetaGradientSpec MetaGradientSpec;
 typedef struct _MetaColorSpec MetaColorSpec;
+typedef struct _MetaFrameLayout MetaFrameLayout;
+typedef struct _MetaFrameGeometry MetaFrameGeometry;
+
+/* Parameters used to calculate the geometry of the frame */
+struct _MetaFrameLayout
+{
+  /* Size of left/right/bottom sides */
+  int left_width;
+  int right_width;
+  int bottom_height;
+  
+  /* Border of blue title region */
+  GtkBorder title_border;
+
+  /* Border inside title region, around title */
+  GtkBorder text_border;  
+ 
+  /* padding on either side of spacer */
+  int spacer_padding;
+
+  /* Size of spacer */
+  int spacer_width;
+  int spacer_height;
+
+  /* indent of buttons from edges of frame */
+  int right_inset;
+  int left_inset;
+  
+  /* Size of buttons */
+  int button_width;
+  int button_height;
+
+  /* Space around buttons */
+  GtkBorder button_border;
+
+  /* Space inside button which is clickable but doesn't draw the
+   * button icon
+   */
+  GtkBorder inner_button_border;
+};
+
+
+/* Calculated actual geometry of the frame */
+struct _MetaFrameGeometry
+{
+  int left_width;
+  int right_width;
+  int top_height;
+  int bottom_height;
+
+  int width;
+  int height;
+  
+  GdkRectangle close_rect;
+  GdkRectangle max_rect;
+  GdkRectangle min_rect;
+  GdkRectangle spacer_rect;
+  GdkRectangle menu_rect;
+  GdkRectangle title_rect;
+};
+
 
 typedef enum
 {
@@ -184,7 +245,8 @@ struct _MetaFrameStyle
 {
   MetaTextureSpec *button_icons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaTextureSpec *button_backgrounds[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
-  MetaTextureSpec *pieces[META_FRAME_PIECE_LAST];  
+  MetaTextureSpec *pieces[META_FRAME_PIECE_LAST];
+  MetaFrameLayout *layout;
 };
 
 typedef enum
@@ -194,6 +256,16 @@ typedef enum
   META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
   META_TEXTURE_DRAW_SCALED_BOTH
 } MetaTextureDrawMode;
+
+MetaFrameLayout* meta_frame_layout_new           (void);
+void             meta_frame_layout_free          (MetaFrameLayout       *layout);
+void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
+                                                  GtkWidget             *widget,
+                                                  int                    text_height,
+                                                  MetaFrameFlags         flags,
+                                                  int                    client_width,
+                                                  int                    client_height,
+                                                  MetaFrameGeometry     *fgeom);
 
 MetaColorSpec* meta_color_spec_new    (MetaColorSpecType  type);
 void           meta_color_spec_free   (MetaColorSpec     *spec);
