@@ -1170,9 +1170,8 @@ set_net_wm_state (MetaWindow *window)
   meta_error_trap_pop (window->display, FALSE);
 }
 
-/* FIXME rename this, it makes it sound like map state is relevant */
 gboolean
-meta_window_visible_on_workspace (MetaWindow    *window,
+meta_window_located_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)
 {
   return (window->on_all_workspaces && window->screen == workspace->screen) ||
@@ -1274,7 +1273,7 @@ meta_window_should_be_showing (MetaWindow  *window)
   meta_verbose ("Should be showing for window %s\n", window->desc);
 
   /* See if we're on the workspace */
-  on_workspace = meta_window_visible_on_workspace (window, 
+  on_workspace = meta_window_located_on_workspace (window, 
                                                    window->screen->active_workspace);
 
   if (!on_workspace)
@@ -1304,7 +1303,7 @@ implement_showing (MetaWindow *window,
     {
       gboolean on_workspace;
 
-      on_workspace = meta_window_visible_on_workspace (window, 
+      on_workspace = meta_window_located_on_workspace (window, 
                                                        window->screen->active_workspace);
   
       /* Really this effects code should probably
@@ -2166,7 +2165,7 @@ meta_window_activate (MetaWindow *window,
   maybe_leave_show_desktop_mode (window);
  
   /* Get window on current workspace */
-  if (!meta_window_visible_on_workspace (window,
+  if (!meta_window_located_on_workspace (window,
                                          window->screen->active_workspace))
     meta_window_change_workspace (window,
                                   window->screen->active_workspace);
@@ -4240,7 +4239,7 @@ meta_window_notify_focus (MetaWindow *window,
            * workspace.
            */
           if (window->screen->active_workspace &&
-              meta_window_visible_on_workspace (window, 
+              meta_window_located_on_workspace (window, 
                                                 window->screen->active_workspace))
             {
               GList* link;

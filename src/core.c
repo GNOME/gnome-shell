@@ -258,7 +258,7 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
        * (Borrowed from window.c.)
        */
       if (window->screen->active_workspace &&
-          meta_window_visible_on_workspace (window, 
+          meta_window_located_on_workspace (window, 
                                             window->screen->active_workspace))
         {
           GList* link;

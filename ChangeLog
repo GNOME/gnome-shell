@@ -1,5 +1,21 @@
 2004-12-22  Elijah Newren  <newren@gmail.com>
 
+	* src/core.c (meta_core_user_lower_and_unfocus):
+	* src/display.c (meta_display_get_current_tab):
+	* src/stack.c (get_default_focus_window, meta_stack_list_windows):
+	* src/window.c (set_net_wm_state, meta_window_should_be_showing,
+	implement_showing, meta_window_activate,
+	meta_window_notify_focus):
+	* src/window.h:
+	* src/workspace.c (meta_workspace_list_windows):
+
+	Rename meta_window_visible_on_workspace to
+	meta_window_located_on_workspace (whether or not the window was
+	showing wasn't taken into account, which made "visible"
+	confusing).
+
+2004-12-22  Elijah Newren  <newren@gmail.com>
+
 	Partially resolve the conflicting requirements of windows on
 	multiple workspaces and hidden being a global quantity for windows
 	(fixes bug 156182; the remainder of the work is bug 87531 and is a

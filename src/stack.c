@@ -1344,7 +1344,7 @@ get_default_focus_window (MetaStack     *stack,
           !window->minimized &&
           (window->input || window->take_focus) &&
           (workspace == NULL ||
-           meta_window_visible_on_workspace (window, workspace)))
+           meta_window_located_on_workspace (window, workspace)))
         {
           if (topmost_dock == NULL &&
               window->type == META_WINDOW_DOCK)
@@ -1431,7 +1431,7 @@ meta_stack_list_windows (MetaStack     *stack,
       MetaWindow *window = link->data;
       
       if (window &&
-          (workspace == NULL || meta_window_visible_on_workspace (window, workspace)))
+          (workspace == NULL || meta_window_located_on_workspace (window, workspace)))
         {
           workspace_windows = g_list_prepend (workspace_windows,
                                               window);

@@ -4119,7 +4119,7 @@ meta_display_get_tab_current (MetaDisplay   *display,
       window->screen == screen &&
       IN_TAB_CHAIN (window, type) &&
       (workspace == NULL ||
-       meta_window_visible_on_workspace (window, workspace)))
+       meta_window_located_on_workspace (window, workspace)))
     return window;
   else
     return NULL;
