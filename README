@@ -6,7 +6,7 @@ on UNIX keyboards.
 The first release of Metacity was version 2.3. Metacity has no need for
 your petty hangups about version numbers.
 
-The stable releases so far are 2.4.x
+The stable releases so far are 2.4.x, 2.6.x
 
 Unstable branches are 2.3.x, 2.5.x
 
@@ -372,7 +372,10 @@ A: This one is also in rationales.txt. Because "ouija board" UI, where
 
 Q: Why no wireframe move/resize?
 
-A: Also in rationales.txt. Because it has low usability, and is a pain
+A: It's implemented in a patch that will be merged for GNOME 2.6
+   and is already in some vendor packages.
+
+   But: Because it has low usability, and is a pain
    to implement, and there's no reason opaque move/resize should be a
    problem on any setup that can run a modern desktop worth a darn to
    begin with.
@@ -380,6 +383,9 @@ A: Also in rationales.txt. Because it has low usability, and is a pain
    Read these and the bugzilla stuff before asking/commenting:
      http://pobox.com/~hp/free-software-ui.html
      http://pobox.com/~hp/features.html   
+
+   The reason we had to add wireframe anyway was broken 
+   proprietary apps that can't handle lots of resize events.
 
 Q: Why no XYZ?
 

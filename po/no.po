@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2003-09-05 23:12+0200\n"
+"POT-Creation-Date: 2003-09-04 12:47-0400\n"
 "PO-Revision-Date: 2003-09-05 23:16+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
@@ -1507,7 +1507,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Tastebindingen som brukes til å holde vinduet øverst. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Tastebindingen som brukes til å holde vinduet øverst. Formatet ser slik ut: "
+"«&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske "
+"liberal og tillater små og store bokstaver, i tillegg til forkortelser som "
+"«&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den "
+"spesielle strengen «disabled», vil det ikke være en tastebinding for denne "
+"handlingen."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1593,7 +1599,13 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "Tastebindingen som brukes til å vise panelets «Kjør applikasjon»-dialog. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Tastebindingen som brukes til å vise panelets «Kjør applikasjon»-dialog. "
+"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;"
+"F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i "
+"tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
+"alternativet til den spesielle strengen «disabled», vil det ikke være en "
+"tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:139
 msgid ""
@@ -1603,7 +1615,13 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "Tastebindingen som brukes til å kjøre panelets skjermdumpverktøy for å ta et skjermdump av et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Tastebindingen som brukes til å kjøre panelets skjermdumpverktøy for å ta et "
+"skjermdump av et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;"
+"Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og "
+"store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;"
+"Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen "
+"«disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:140
 msgid ""
@@ -1613,7 +1631,13 @@ msgid ""
 "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "Tastebindingen som brukes til å kjøre panelets skjermdumpverktøy. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Tastebindingen som brukes til å kjøre panelets skjermdumpverktøy. Formatet "
+"ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». "
+"Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til "
+"forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter "
+"alternativet til den spesielle strengen «disabled», vil det ikke være en "
+"tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:141
 msgid ""
@@ -1622,7 +1646,13 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Tastebindingen som viser panelets hovedmeny. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr ""
+"Tastebindingen som viser panelets hovedmeny. Formatet ser slik ut: «&lt;"
+"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1.». Tolkeren er ganske "
+"liberal og tillater små og store bokstaver, i tillegg til forkortelser som "
+"«&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den "
+"spesielle strengen «disabled», vil det ikke være en tastebinding for denne "
+"handlingen."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -2724,13 +2754,13 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Klarte ikke å laste tema «%s»: %s\n"
 
-#: src/theme.c:4593 src/theme.c:4600 src/theme.c:4607 src/theme.c:4614
-#: src/theme.c:4621
+#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> er ikke satt for tema «%s»"
 
-#: src/theme.c:4631
+#: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2739,7 +2769,7 @@ msgstr ""
 "Ingen rammestil satt for vindutype «%s» i tema «%s», legg til et <window "
 "type=«%s» style_set=«ett-eller-annet»/>-element"
 
-#: src/theme.c:4653
+#: src/theme.c:4651
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2748,14 +2778,14 @@ msgstr ""
 "<menu_icon function=«%s» state=«%s» draw_ops=«ett-eller-annet»/> må være "
 "spesifisert for dette temaet"
 
-#: src/theme.c:5042 src/theme.c:5104
+#: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Brukerdefinerte konstanter må begynne med stor bokstav; «%s» gjør ikke det"
 
-#: src/theme.c:5050 src/theme.c:5112
+#: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstant «%s» er allerede definert"
