@@ -1,3 +1,25 @@
+2003-02-24  Mark McLoughlin  <mark@skynet.ie>
+
+	Take control of the panel's global keybindings. The
+	screenshot utility is hooked up using a special case
+	run_command and the menu and run dialog bindings are
+	done using the _GNOME_PANEL_ACTION ClientMessage
+	protocol.
+
+	* src/display.[ch]: (meta_display_open): add some atoms.
+
+	* src/keybindings.c:
+	(handle_panel_keybinding): impl to handle a keybinding
+	by sending an action message to the panel.
+
+	* src/metacity.schemas.in: add schemas for the panel and
+	screenshot keybindings and the screenshot commands.
+
+	* src/prefs.[ch]: (update_command),
+	(meta_prefs_get_gconf_key_for_command): impl special case
+	handling for the screenshot commands. They are stored at
+	the the end of the commands array but have named keys.
+
 2003-02-23  Havoc Pennington  <hp@pobox.com>
 
 	Patch from Rob Adams addresses #95014 (placement issues), 

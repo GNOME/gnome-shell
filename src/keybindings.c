@@ -79,6 +79,11 @@ static void handle_toggle_desktop     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_panel_keybinding   (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_toggle_maximize    (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -265,6 +270,10 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
   { META_KEYBINDING_SHOW_DESKTOP, handle_toggle_desktop,
     NULL },
+  { META_KEYBINDING_PANEL_MAIN_MENU, handle_panel_keybinding,
+    GINT_TO_POINTER (META_KEYBINDING_ACTION_PANEL_MAIN_MENU) },
+  { META_KEYBINDING_PANEL_RUN_DIALOG, handle_panel_keybinding,
+    GINT_TO_POINTER (META_KEYBINDING_ACTION_PANEL_RUN_DIALOG) },
   { META_KEYBINDING_COMMAND_1, handle_run_command,
     GINT_TO_POINTER (0) },
   { META_KEYBINDING_COMMAND_2, handle_run_command,
@@ -329,6 +338,10 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (30) },
   { META_KEYBINDING_COMMAND_32, handle_run_command,
     GINT_TO_POINTER (31) },
+  { META_KEYBINDING_COMMAND_SCREENSHOT, handle_run_command,
+    GINT_TO_POINTER (32) },
+  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, handle_run_command,
+    GINT_TO_POINTER (33) },
   { NULL, NULL, NULL }
 };
   
@@ -2569,6 +2582,48 @@ handle_toggle_desktop (MetaDisplay    *display,
     meta_screen_unshow_desktop (screen);
   else
     meta_screen_show_desktop (screen);
+}
+
+static void
+handle_panel_keybinding (MetaDisplay    *display,
+                         MetaScreen     *screen,
+                         MetaWindow     *window,
+                         XEvent         *event,
+                         MetaKeyBinding *binding)
+{
+  MetaKeyBindingAction action;
+  Atom action_atom;
+  XClientMessageEvent ev;
+  
+  action = GPOINTER_TO_INT (binding->handler->data);
+
+  action_atom = None;
+  switch (action)
+    {
+    case META_KEYBINDING_ACTION_PANEL_MAIN_MENU:
+      action_atom = display->atom_gnome_panel_action_main_menu;
+      break;
+    case META_KEYBINDING_ACTION_PANEL_RUN_DIALOG:
+      action_atom = display->atom_gnome_panel_action_run_dialog;
+      break;
+    default:
+      return;
+    }
+   
+  ev.type = ClientMessage;
+  ev.window = screen->xroot;
+  ev.message_type = display->atom_gnome_panel_action;
+  ev.format = 32;
+  ev.data.l[0] = action_atom;
+  ev.data.l[1] = event->xkey.time;
+
+  meta_error_trap_push (display);
+  XSendEvent (display->xdisplay,
+	      screen->xroot,
+	      False,
+	      StructureNotifyMask,
+	      (XEvent*) &ev);
+  meta_error_trap_pop (display, FALSE);
 }
 
 static void

@@ -169,6 +169,9 @@ struct _MetaDisplay
   Atom atom_metacity_toggle_verbose;
   Atom atom_metacity_update_counter;
   Atom atom_sync_counter;
+  Atom atom_gnome_panel_action;
+  Atom atom_gnome_panel_action_main_menu;
+  Atom atom_gnome_panel_action_run_dialog;
   
   /* This is the actual window from focus events,
    * not the one we last set

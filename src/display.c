@@ -266,7 +266,10 @@ meta_display_open (const char *name)
     "_NET_STARTUP_ID",
     "_METACITY_TOGGLE_VERBOSE",
     "_METACITY_UPDATE_COUNTER",
-    "SYNC_COUNTER"
+    "SYNC_COUNTER",
+    "_GNOME_PANEL_ACTION",
+    "_GNOME_PANEL_ACTION_MAIN_MENU",
+    "_GNOME_PANEL_ACTION_RUN_DIALOG"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -406,6 +409,9 @@ meta_display_open (const char *name)
   display->atom_metacity_toggle_verbose = atoms[78];
   display->atom_metacity_update_counter = atoms[79];
   display->atom_sync_counter = atoms[80];
+  display->atom_gnome_panel_action = atoms[81];
+  display->atom_gnome_panel_action_main_menu = atoms[82];
+  display->atom_gnome_panel_action_run_dialog = atoms[83];
   
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);

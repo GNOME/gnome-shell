@@ -30,7 +30,11 @@
 #include <stdlib.h>
 
 #define MAX_REASONABLE_WORKSPACES 36
-#define MAX_COMMANDS 32
+
+#define MAX_COMMANDS (32 + NUM_EXTRA_COMMANDS)
+#define NUM_EXTRA_COMMANDS 2
+#define SCREENSHOT_COMMAND_IDX (MAX_COMMANDS - 2)
+#define WIN_SCREENSHOT_COMMAND_IDX (MAX_COMMANDS - 1)
 
 /* If you add a key, it needs updating in init() and in the gconf
  * notify listener and of course in the .schemas file
@@ -95,6 +99,7 @@ static MetaButtonLayout button_layout = {
   }
 };
 
+/* The screenshot commands are at the end */
 static char *commands[MAX_COMMANDS] = { NULL, };
 
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
@@ -1363,6 +1368,8 @@ static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_CYCLE_PANELS, 0, 0, TRUE },
   { META_KEYBINDING_CYCLE_PANELS_BACKWARD, 0, 0, TRUE },
   { META_KEYBINDING_SHOW_DESKTOP, 0, 0, FALSE },
+  { META_KEYBINDING_PANEL_MAIN_MENU, 0, 0, FALSE },
+  { META_KEYBINDING_PANEL_RUN_DIALOG, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_1, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_2, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_3, 0, 0, FALSE },
@@ -1395,6 +1402,8 @@ static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_COMMAND_30, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_31, 0, 0, FALSE },
   { META_KEYBINDING_COMMAND_32, 0, 0, FALSE },
+  { META_KEYBINDING_COMMAND_SCREENSHOT, 0, 0, FALSE },
+  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, 0, 0, FALSE },
   { NULL, 0, 0, FALSE}
 };
 
@@ -1663,15 +1672,31 @@ update_command (const char  *name,
   
   ++p;
 
-  if (!g_ascii_isdigit (*p))
+  if (g_ascii_isdigit (*p))
     {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Command %s doesn't end in number?\n", name);
-      return FALSE;
+      i = atoi (p);
+      i -= 1; /* count from 0 not 1 */
     }
-  
-  i = atoi (p);
-  i -= 1; /* count from 0 not 1 */
+  else
+    {
+      p = strrchr (name, '/');
+      ++p;
+
+      if (strcmp (p, "command_screenshot") == 0)
+        {
+          i = SCREENSHOT_COMMAND_IDX;
+        }
+      else if (strcmp (p, "command_window_screenshot") == 0)
+        {
+          i = WIN_SCREENSHOT_COMMAND_IDX;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Command %s doesn't end in number?\n", name);
+          return FALSE;
+        }
+    }
   
   if (i >= MAX_COMMANDS)
     {
@@ -1711,8 +1736,19 @@ char*
 meta_prefs_get_gconf_key_for_command (int i)
 {
   char *key;
-  
-  key = g_strdup_printf (KEY_COMMAND_PREFIX"%d", i + 1);
+
+  switch (i)
+    {
+    case SCREENSHOT_COMMAND_IDX:
+      key = g_strdup (KEY_COMMAND_PREFIX "screenshot");
+      break;
+    case WIN_SCREENSHOT_COMMAND_IDX:
+      key = g_strdup (KEY_COMMAND_PREFIX "window_screenshot");
+      break;
+    default:
+      key = g_strdup_printf (KEY_COMMAND_PREFIX"%d", i + 1);
+      break;
+    }
   
   return key;
 }

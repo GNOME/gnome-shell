@@ -109,6 +109,8 @@ void        meta_prefs_change_workspace_name (int         i,
 #define META_KEYBINDING_CYCLE_PANELS             "cycle_panels"
 #define META_KEYBINDING_CYCLE_PANELS_BACKWARD    "cycle_panels_backward"
 #define META_KEYBINDING_SHOW_DESKTOP             "show_desktop"
+#define META_KEYBINDING_PANEL_MAIN_MENU          "panel_main_menu"
+#define META_KEYBINDING_PANEL_RUN_DIALOG         "panel_run_dialog"
 #define META_KEYBINDING_COMMAND_1                "run_command_1"
 #define META_KEYBINDING_COMMAND_2                "run_command_2"
 #define META_KEYBINDING_COMMAND_3                "run_command_3"
@@ -141,6 +143,8 @@ void        meta_prefs_change_workspace_name (int         i,
 #define META_KEYBINDING_COMMAND_30               "run_command_30"
 #define META_KEYBINDING_COMMAND_31               "run_command_31"
 #define META_KEYBINDING_COMMAND_32               "run_command_32"
+#define META_KEYBINDING_COMMAND_SCREENSHOT       "run_command_screenshot"
+#define META_KEYBINDING_COMMAND_WIN_SCREENSHOT   "run_command_window_screenshot"
 
 /* Window bindings */
 #define META_KEYBINDING_WINDOW_MENU              "activate_window_menu"
@@ -204,6 +208,8 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_CYCLE_PANELS,
   META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD,
   META_KEYBINDING_ACTION_SHOW_DESKTOP,
+  META_KEYBINDING_ACTION_PANEL_MAIN_MENU,
+  META_KEYBINDING_ACTION_PANEL_RUN_DIALOG,
   META_KEYBINDING_ACTION_COMMAND_1,
   META_KEYBINDING_ACTION_COMMAND_2,
   META_KEYBINDING_ACTION_COMMAND_3,

@@ -1600,6 +1600,100 @@ you set
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/global_keybindings/panel_main_menu</key>
+      <applyto>/apps/metacity/global_keybindings/panel_main_menu</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;F1</default>
+      <locale name="C">
+         <short>Show the panel menu</short>
+         <long>
+          The keybinding which shows the panel's main menu.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/panel_run_dialog</key>
+      <applyto>/apps/metacity/global_keybindings/panel_run_dialog</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;F2</default>
+      <locale name="C">
+         <short>Show the panel run dialog</short>
+         <long>
+          The keybinding which display's the panel's "Run Program" dialog
+          box.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/run_command_screenshot</key>
+      <applyto>/apps/metacity/global_keybindings/run_command_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>Print</default>
+      <locale name="C">
+         <short>Take a screenshot</short>
+         <long>
+          The keybinding which invokes the panel's screenshot utility.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/run_command_window_screenshot</key>
+      <applyto>/apps/metacity/global_keybindings/run_command_window_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Print</default>
+      <locale name="C">
+         <short>Take a screenshot of a window</short>
+         <long>
+          The keybinding which invokes the panel's screenshot utility
+          to take a screenshot of a window.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/global_keybindings/run_command</key>
       <applyto>/apps/metacity/global_keybindings/run_command_1</applyto>
       <applyto>/apps/metacity/global_keybindings/run_command_2</applyto>
@@ -1635,6 +1729,38 @@ you set
     </schema>
 
     <!-- commands to run with the run_command keybindings -->
+
+    <schema>
+      <key>/schemas/apps/metacity/keybinding_commands/command_screenshot</key>
+      <applyto>/apps/metacity/keybinding_commands/command_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>gnome-panel-screenshot</default>
+      <locale name="C">
+         <short>The screenshot command</short>
+         <long>
+         The /apps/metacity/global_keybindings/run_command_screenshot
+         key defines a keybinding which causes the command specified
+         by this setting to be invoked.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/keybinding_commands/command_window_screenshot</key>
+      <applyto>/apps/metacity/keybinding_commands/command_window_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>gnome-panel-screenshot --window</default>
+      <locale name="C">
+         <short>The window screenshot command</short>
+         <long>
+         The /apps/metacity/global_keybindings/run_command_window_screenshot
+         key defines a keybinding which causes the command specified
+         by this setting to be invoked.
+         </long>
+      </locale>
+    </schema>
 
     <schema>
       <key>/schemas/apps/metacity/keybinding_commands/command</key>
