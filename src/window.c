@@ -2969,9 +2969,10 @@ meta_window_client_message (MetaWindow *window,
       y_root = event->xclient.data.l[1];
       action = event->xclient.data.l[2];
 
-      meta_verbose ("Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d\n",
-                    window->desc,
-                    x_root, y_root, action);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d\n",
+                  window->desc,
+                  x_root, y_root, action);
       
       op = META_GRAB_OP_NONE;
       switch (action)
@@ -3040,7 +3041,8 @@ meta_window_client_message (MetaWindow *window,
 
           if (button != 0)
             {
-              meta_verbose ("Beginning move/resize with button = %d\n", button);
+              meta_topic (META_DEBUG_WINDOW_OPS,
+                          "Beginning move/resize with button = %d\n", button);
               meta_display_begin_grab_op (window->display,
                                           window,
                                           op,

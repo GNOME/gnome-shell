@@ -26,11 +26,6 @@
 #include <stdlib.h>
 #include <gdk/gdk.h>
 
-static int (* saved_gdk_error_handler)    (Display     *display,
-                                           XErrorEvent *error);
-
-static int (* saved_gdk_io_error_handler)    (Display  *display);     
-
 static int x_error_handler    (Display     *display,
                                XErrorEvent *error);
 static int x_io_error_handler (Display     *display);
@@ -38,23 +33,66 @@ static int x_io_error_handler (Display     *display);
 void
 meta_errors_init (void)
 {
-  saved_gdk_error_handler = XSetErrorHandler (x_error_handler);
-  saved_gdk_io_error_handler = XSetIOErrorHandler (x_io_error_handler);
+  XSetErrorHandler (x_error_handler);
+  XSetIOErrorHandler (x_io_error_handler);
 }
 
 void
 meta_error_trap_push (MetaDisplay *display)
 {
+  /* GDK resets the error handler on each push */
+  int (* old_error_handler) (Display     *,
+                             XErrorEvent *);
+
   gdk_error_trap_push ();
+
+  /* old_error_handler will just be equal to x_error_handler
+   * for nested traps
+   */
+  old_error_handler = XSetErrorHandler (x_error_handler);
+  
+  /* Replace GDK handler, but save it so we can chain up */
+  if (display->error_trap_handler == NULL)
+    {
+      g_assert (display->error_traps == 0);
+      display->error_trap_handler = old_error_handler;
+      g_assert (display->error_trap_handler != x_error_handler);
+    }
+
+  display->error_traps += 1;
 }
 
 int
 meta_error_trap_pop (MetaDisplay *display)
 {
+  int result;
+
+  g_assert (display->error_traps > 0);
+  
   /* just use GDK trap, but we do the sync since GDK doesn't */
   XSync (display->xdisplay, False);
 
-  return gdk_error_trap_pop ();
+  result = gdk_error_trap_pop ();
+
+  display->error_traps -= 1;
+  
+  if (display->error_traps == 0)
+    {
+      /* check that GDK put our handler back; this
+       * assumes that there are no pending GDK traps from GDK itself
+       */
+      
+      int (* restored_error_handler) (Display     *,
+                                      XErrorEvent *);
+
+      restored_error_handler = XSetErrorHandler (x_error_handler);
+      g_assert (restored_error_handler == x_error_handler);
+
+      /* remove this */
+      display->error_trap_handler = NULL;
+    }
+
+  return result;
 }
 
 static int
@@ -63,17 +101,40 @@ x_error_handler (Display     *xdisplay,
 {
   int retval;
   gchar buf[64];
+  MetaDisplay *display;
   
-  XGetErrorText (xdisplay, error->error_code, buf, 63);
+  XGetErrorText (xdisplay, error->error_code, buf, 63);  
+
+  display = meta_display_for_x_display (xdisplay);
   
-  meta_verbose ("X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
+  if (display->error_traps > 0)
+    {
+      /* we're in an error trap, chain to the trap handler
+       * saved from GDK
+       */
+      meta_verbose ("X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
+                    buf,
+                    error->serial, 
+                    error->error_code, 
+                    error->request_code,
+                    error->minor_code);
+
+      g_assert (display->error_trap_handler != NULL);
+      g_assert (display->error_trap_handler != x_error_handler);
+      
+      retval = (* display->error_trap_handler) (xdisplay, error);
+    }
+  else
+    {
+      meta_bug ("Unexpected X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
                 buf,
                 error->serial, 
                 error->error_code, 
                 error->request_code,
                 error->minor_code);
-  
-  retval = saved_gdk_error_handler (xdisplay, error);
+
+      retval = 1; /* compiler warning */
+    }
 
   return retval;
 }
@@ -107,3 +168,5 @@ x_io_error_handler (Display *xdisplay)
   
   return 0;
 }
+
+

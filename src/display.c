@@ -177,7 +177,8 @@ meta_display_open (const char *name)
    */
   display->name = g_strdup (XDisplayName (name));
   display->xdisplay = xdisplay;
-  display->error_traps = NULL;
+  display->error_traps = 0;
+  display->error_trap_handler = NULL;
   display->server_grab_count = 0;
   display->workspaces = NULL;
 
@@ -430,7 +431,7 @@ meta_display_close (MetaDisplay *display)
   GSList *winlist;
   GSList *tmp;
   
-  if (display->error_traps)
+  if (display->error_traps > 0)
     meta_bug ("Display closed with error traps pending\n");
 
   winlist = meta_display_list_windows (display);
@@ -685,7 +686,9 @@ event_callback (XEvent   *event,
           event->xbutton.time < (display->last_button_time + display->double_click_time))
         {
           display->is_double_click = TRUE;
-          meta_verbose ("This was the second click of a double click\n");
+          meta_topic (META_DEBUG_EVENTS,
+                      "This was the second click of a double click\n");
+
         }
       else
         {
@@ -1381,6 +1384,10 @@ meta_spew_event (MetaDisplay *display,
       break;
     case MotionNotify:
       name = "MotionNotify";
+      extra = g_strdup_printf ("win: 0x%lx x: %d y: %d",
+                               event->xmotion.window,
+                               event->xmotion.x,
+                               event->xmotion.y);
       break;
     case EnterNotify:
       name = "EnterNotify";
@@ -1695,7 +1702,7 @@ xcursor_for_op (MetaDisplay *display,
 {
   MetaCursor cursor = META_CURSOR_DEFAULT;
   
-  switch (display->grab_op)
+  switch (op)
     {
     case META_GRAB_OP_RESIZING_SE:
       cursor = META_CURSOR_SE_RESIZE;
@@ -1743,8 +1750,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
   Window grabwindow;
   Cursor cursor;
   
-  meta_verbose ("Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
-                op, window->desc, button, pointer_already_grabbed);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
+              op, window->desc, button, pointer_already_grabbed);
   
   grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
   
@@ -1757,35 +1765,41 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
-
-  /* We XGrabPointer even if we already have an autograb,
-   * just to set the cursor and event mask
-   */
       
   cursor = xcursor_for_op (display, op);
-      
+
+#define GRAB_MASK (PointerMotionMask | PointerMotionHintMask |  \
+                   ButtonPressMask | ButtonReleaseMask)
+
   meta_error_trap_push (display);
   if (XGrabPointer (display->xdisplay,
                     grabwindow,
                     False,
-                    PointerMotionMask | PointerMotionHintMask |
-                    ButtonPressMask | ButtonReleaseMask |
-                    KeyPressMask | KeyReleaseMask,
+                    GRAB_MASK,
                     GrabModeAsync, GrabModeAsync,
                     None,
                     cursor,
                     timestamp) == GrabSuccess)
     {
       display->grab_have_pointer = TRUE;
-      meta_debug_spew ("Successful XGrabPointer()\n");
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "XGrabPointer() returned GrabSuccess\n");
     }
-  meta_error_trap_pop (display);
+  if (meta_error_trap_pop (display) != Success)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Error trapped from XGrabPointer()\n");
+      if (display->grab_have_pointer)
+        display->grab_have_pointer = FALSE;
+    }
+#undef GRAB_MASK
   
   XFreeCursor (display->xdisplay, cursor);
 
   if (!display->grab_have_pointer)
     {
-      meta_verbose ("XGrabPointer() failed\n");
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "XGrabPointer() failed\n");
       return FALSE;
     }
 
@@ -1796,7 +1810,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
       
       if (!display->grab_have_keyboard)
         {
-          meta_verbose ("grabbing all keys failed\n");
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "grabbing all keys failed\n");
           return FALSE;
         }
     }
@@ -1811,8 +1826,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             &display->grab_initial_window_pos.x,
                             &display->grab_initial_window_pos.y);
   
-  meta_verbose ("Grab op %d on window %s successful\n",
-                display->grab_op, display->grab_window->desc);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Grab op %d on window %s successful\n",
+              display->grab_op, display->grab_window->desc);
 
   g_assert (display->grab_window != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);

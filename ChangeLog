@@ -1,3 +1,22 @@
+2002-02-24  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (xcursor_for_op): switch on the op passed in, not
+	the active op. Gives us the right cursor during resizing, etc.
+
+	* src/errors.c: rearrange all the error stuff to adapt to the GDK
+	change a while back, so now we print our X errors again
+	
+	* src/display.c (meta_display_begin_grab_op): remove KeyPressMask
+	and KeyReleaseMask from the XGrabPointer(), this caused BadValue
+	and kept the grab from ever succeeding. Fixes the problem with the 
+	GTK resize grip - this is why you shouldn't break your X error 
+	spew. ;-)
+
+	* src/display.c: debug spew tweaks
+
+	* src/window.c (meta_window_client_message): do some
+	s/verbose/topic/ stuff
+
 2002-02-23  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_ui_init): fix the

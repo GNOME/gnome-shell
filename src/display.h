@@ -130,7 +130,9 @@ struct _MetaDisplay
   MetaEventQueue *events;
   GSList *screens;
   GHashTable *window_ids;
-  GSList *error_traps;
+  int error_traps;
+  int (* error_trap_handler) (Display     *display,
+                              XErrorEvent *error);  
   int server_grab_count;
 
   /* This window holds the focus when we don't want to focus

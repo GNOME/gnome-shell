@@ -267,11 +267,12 @@ meta_frame_sync_to_window (MetaFrame *frame,
   if (!(need_move || need_resize))
     return;
   
-  meta_verbose ("Syncing frame geometry %d,%d %dx%d (SE: %d,%d)\n",
-                frame->rect.x, frame->rect.y,
-                frame->rect.width, frame->rect.height,
-                frame->rect.x + frame->rect.width,
-                frame->rect.y + frame->rect.height);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Syncing frame geometry %d,%d %dx%d (SE: %d,%d)\n",
+              frame->rect.x, frame->rect.y,
+              frame->rect.width, frame->rect.height,
+              frame->rect.x + frame->rect.width,
+              frame->rect.y + frame->rect.height);
 
   /* set bg to none to avoid flicker */
   if (need_resize)
