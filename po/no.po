@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-02-16 16:15+0100\n"
-"PO-Revision-Date: 2002-02-16 20:13+0100\n"
+"POT-Creation-Date: 2002-02-22 17:31+0100\n"
+"PO-Revision-Date: 2002-02-22 17:35+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -273,7 +273,8 @@ msgstr "Vinkelen må være mellom 0.0 og 360.0, var %g\n"
 #: src/theme-parser.c:591
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n"
+msgstr ""
+"Alpha må være mellom 0.0 (usynlig) og 1.0 (helt ugjennomsiktig), var %g\n"
 
 #: src/theme-parser.c:624
 #, c-format
@@ -525,7 +526,7 @@ msgstr "Ingen <draw_ops> kalt «%s» er definert"
 #: src/theme-parser.c:2679 src/theme-parser.c:2795
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Hvis du tar med draw_ops «%s» her vil dette lage en sirkulær referanse"
 
 #: src/theme-parser.c:2858
 #, c-format
@@ -612,17 +613,19 @@ msgstr "«%s» er ikke en gyldig verdi for attributt for endring av størrelse"
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr "Skal ikke være noen «resize»-attributt på <%s>-element for maksimert/skyggelagt tilstand"
+msgstr ""
+"Skal ikke være noen «resize»-attributt på <%s>-element for maksimert/"
+"skyggelagt tilstand"
 
 #: src/theme-parser.c:3169
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Stil er allerede spesifisert for tilstand %s størrelsesendring %s fokus %s"
 
 #: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Stil er allerede spesifisert for tilstand %s fokus %s"
 
 #: src/theme-parser.c:3241
 msgid ""
@@ -645,13 +648,13 @@ msgstr ""
 #: src/theme-parser.c:3364
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Ytterste element i temaet må være <metacity_theme> ikke <%s>"
 
 #: src/theme-parser.c:3384
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgstr "Element <%s> er ikke tillatt inne i et name/author/date/description element"
 
 #: src/theme-parser.c:3389
 #, c-format
@@ -675,15 +678,15 @@ msgstr "Element <%s> er ikke tillatt inne i et <%s>-element"
 
 #: src/theme-parser.c:3684
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Ingen draw_ops tilbys for rammedelen"
 
 #: src/theme-parser.c:3699
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Ingen draw_ops tilbys for knappen"
 
 #: src/theme-parser.c:3714
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Ingen draw_ops tilbys for menyikonet"
 
 #: src/theme-parser.c:3754
 #, c-format
@@ -739,12 +742,12 @@ msgstr "høyre"
 #: src/theme.c:371
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "rammegeometrien spesifiserer ikke «%s»-dimensjon"
 
 #: src/theme.c:390
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "rammegeometri spesifiserer ikke dimensjon «%s» for kant «%s»"
 
 #: src/theme.c:744
 msgid "Gradients should have at least two colors"
@@ -767,12 +770,12 @@ msgstr ""
 #: src/theme.c:859
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Forsto ikke tilstand «%s» i fargespesifikasjonen"
 
 #: src/theme.c:872
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Forsto ikke fargekomponent «%s» i fargespesifikasjonen"
 
 #: src/theme.c:902
 #, c-format
