@@ -781,7 +781,8 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
         {
           windows[i].icon = window->icon;
           windows[i].mini_icon = window->mini_icon;
-          windows[i].is_active = window->has_focus;
+          windows[i].is_active = 
+            (window == window->display->expected_focus_window);
 
           if (window->frame)
             {

@@ -1,3 +1,13 @@
+2005-01-11  Elijah Newren  <newren@gmail.com>
+
+	Correct highlighting of windows in workspace switcher popup.
+	Fixes #163450.
+
+	* src/tabpopup.c (meta_select_workspace_expose_event): Remove race
+	between FocusIn/FocusOut events and the expose event by replacing
+	window->has_focus with
+	window==window->display->expected_focus_window.
+
 2005-01-09  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.9.5
