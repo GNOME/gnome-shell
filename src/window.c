@@ -1871,11 +1871,13 @@ meta_window_move_resize_internal (MetaWindow  *window,
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
 
+#if 0
   xinerama = meta_screen_get_xinerama_for_window (window->screen,
                                                   window);
 
-  /* Try to guess if a client meant to be fullscreen and use
-   * the real fullscreen state
+  /* Try to guess if a client meant to be fullscreen (or not) and
+   * toggle the real fullscreen state in response. This is
+   * probably a bit dubious.
    */
   if (is_configure_request &&
       !window->decorated &&
@@ -1893,6 +1895,19 @@ meta_window_move_resize_internal (MetaWindow  *window,
                   window->desc);
       meta_window_make_fullscreen (window);
     }
+  else if (is_configure_request &&
+           window->fullscreen &&
+           (w != xinerama->width ||
+            h != xinerama->height ||
+            root_x_nw != xinerama->x_origin ||
+            root_y_nw != xinerama->y_origin))
+    {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Guessing that window %s no longer wants to be fullscreen\n",
+                  window->desc);
+      meta_window_unmake_fullscreen (window);
+    }
+#endif
   
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);  

@@ -1,5 +1,11 @@
 2002-05-29  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_move_resize_internal): add code to
+	also guess that client wants to come out of fullscreen, then 
+	#if 0 the whole deal, I'm not sure it's such a good idea.
+
+2002-05-29  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_move_resize_internal): guess if a
 	window meant to be fullscreen, and if so put it in that state.
 
