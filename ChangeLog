@@ -1,3 +1,8 @@
+2002-02-07  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* configure.in: add da to ALL_LINGUAS
+	* po/da.po: add Danish translation
+
 2002-02-02  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme-viewer.c: test % operator

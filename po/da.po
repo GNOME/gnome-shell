@@ -1,0 +1,426 @@
+# Danish translation of metacity.
+# Copyright (C) 2002 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the metacity package.
+# Kenneth Christiansen <kenneth@gnu.org>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Metacity CVS\n"
+"POT-Creation-Date: 2002-02-04 07:44-0500\n"
+"PO-Revision-Date: 2002-02-05 01:13+0100\n"
+"Last-Translator: Kenneth Christiansen <kenneth@gnu.org>\n"
+"Language-Team: Danish <dansk@klid.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:158
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Det mislykkedes at åbne X-vinduesskærmen '%s\\n"
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+
+#: src/errors.c:100
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Fatal IO-fejl %d (%s) på skærmen '%s'.\n"
+
+#: src/frames.c:178
+msgid "Left edge"
+msgstr "Venstre kant"
+
+#: src/frames.c:178
+msgid "Left window edge width"
+msgstr "Venstre vindues kantbredde"
+
+#: src/frames.c:179
+msgid "Right edge"
+msgstr "Højre kant"
+
+#: src/frames.c:179
+msgid "Right window edge width"
+msgstr "Højre vindues kantbredde"
+
+#: src/frames.c:180
+msgid "Bottom edge"
+msgstr "Nederste kant"
+
+#: src/frames.c:180
+msgid "Bottom window edge height"
+msgstr "Nederste vindues kanthøjde"
+
+#: src/frames.c:182
+msgid "Title border"
+msgstr "Titelkant"
+
+#: src/frames.c:182
+msgid "Border around title area"
+msgstr "Kant rundt om titelområdet"
+
+#: src/frames.c:183
+msgid "Text border"
+msgstr "Tekstkant"
+
+#: src/frames.c:183
+msgid "Border around window title text"
+msgstr ""
+
+#: src/frames.c:185
+msgid "Spacer padding"
+msgstr ""
+
+#: src/frames.c:185
+msgid "Padding on either side of spacer"
+msgstr ""
+
+#: src/frames.c:186
+msgid "Spacer width"
+msgstr ""
+
+#: src/frames.c:186
+msgid "Width of spacer"
+msgstr ""
+
+#: src/frames.c:187
+msgid "Spacer height"
+msgstr ""
+
+#: src/frames.c:187
+msgid "Height of spacer"
+msgstr ""
+
+#. same as right_width left_width by default
+#: src/frames.c:190
+msgid "Right inset"
+msgstr ""
+
+#: src/frames.c:190
+msgid "Distance of buttons from right edge of frame"
+msgstr ""
+
+#: src/frames.c:191
+msgid "Left inset"
+msgstr ""
+
+#: src/frames.c:191
+msgid "Distance of menu button from left edge of frame"
+msgstr ""
+
+#: src/frames.c:193
+msgid "Button width"
+msgstr ""
+
+#: src/frames.c:193
+msgid "Width of buttons"
+msgstr ""
+
+#: src/frames.c:194
+msgid "Button height"
+msgstr ""
+
+#: src/frames.c:194
+msgid "Height of buttons"
+msgstr ""
+
+#: src/frames.c:196
+msgid "Button border"
+msgstr ""
+
+#: src/frames.c:196
+msgid "Border around buttons"
+msgstr ""
+
+#: src/frames.c:197
+msgid "Inner button border"
+msgstr ""
+
+#: src/frames.c:197
+msgid "Border around the icon inside buttons"
+msgstr ""
+
+#: src/frames.c:699
+msgid "Close Window"
+msgstr "Luk vindue"
+
+#: src/frames.c:702
+msgid "Window Menu"
+msgstr "Vinduemenu"
+
+#: src/frames.c:705
+msgid "Minimize Window"
+msgstr "Minimér vindue"
+
+#: src/frames.c:708
+msgid "Maximize Window"
+msgstr "Maksimér vindue"
+
+# Gendan bruges bl.a. i Windows
+#: src/frames.c:711
+msgid "Unmaximize Window"
+msgstr "Gendan vindue"
+
+#: src/keybindings.c:228
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+
+#: src/main.c:252
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Genstart mislykkedes: %s\n"
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr "_Luk"
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr "_Minimér"
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr "Ma_ksimér"
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr "_Gendan"
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr "Rul _op"
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr "Rul _ned"
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr "Fl_yt"
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr "Ændr større_lse"
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr "Put på _alle arbejdsområder"
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr "Kun på _dette arbejdsområde"
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "Kun på arbejdsområdet %s%d"
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "Flyt til arbejdsområdet %s%d"
+
+#: src/prefs.c:272 src/prefs.c:288 src/prefs.c:304 src/prefs.c:320
+#: src/prefs.c:340 src/prefs.c:356
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "Conf-nøglen '%s' er sat til en ugyldig type\n"
+
+#: src/prefs.c:390
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "GConf-nøglen '%s' er sat til en ugyldig værdi"
+
+#: src/prefs.c:424
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Kunne ikke parse skrifttypebeskrivelsen '%s' fra GConf-nøglen %s\n"
+
+#: src/prefs.c:461
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr ""
+
+#: src/prefs.c:487
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+
+#: src/screen.c:174
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: src/screen.c:190
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr ""
+
+#: src/screen.c:268
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "Kunne ikke løslade skærm %d på skærmen '%s'\n"
+
+#: src/session.c:760 src/session.c:767
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Kunne ikke oprette kataloget '%s': %s\n"
+
+#: src/session.c:777
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Kunne ikke åbne sessionsfilen '%s' for skrivning: %s\n"
+
+#: src/session.c:909
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Fejl under skrivning af sessionsfilen '%s': %s\n"
+
+#: src/session.c:914
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Fejl under lukning af sessionsfilen '%s': %s\n"
+
+#: src/session.c:988
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Fejl under læsning af gemt sessionsfil: %s\n"
+
+#: src/session.c:1022
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Fejl under parsing af gemt sessionsfil: %s\n"
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr "indlejret <window>-mærke"
+
+#: src/session.c:1110 src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Ukendt attribut %s hos <window>-elementet"
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Ukendt attribut %s hos <geometry>-elementet"
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr "Ukendt element %s"
+
+#: src/theme.c:584
+#, c-format
+msgid "Coordinate expression contains character '%c' which is not allowed"
+msgstr ""
+
+#: src/theme.c:611
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+
+#: src/theme.c:625
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr ""
+
+#: src/theme.c:731
+msgid "Coordinate expression was empty or not understood"
+msgstr ""
+
+#: src/theme.c:870 src/theme.c:880 src/theme.c:905
+msgid "Coordinate expression results in division by zero"
+msgstr ""
+
+#: src/theme.c:913
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+
+#: src/theme.c:961
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%c\" where an operand was expected"
+msgstr ""
+
+#: src/theme.c:970
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+
+#: src/theme.c:978
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+
+#: src/theme.c:988
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+
+#: src/theme.c:1089
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+
+#: src/theme.c:1118
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+
+#: src/theme.c:1139
+#, c-format
+msgid "Coordinate expression had unknown variable \"%s\""
+msgstr ""
+
+#: src/theme.c:1196
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+
+#: src/theme.c:1207
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+
+#: src/theme.c:1364 src/theme.c:1386 src/theme.c:1407
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr ""
+
+#. someone is on crack
+#: src/window.c:3411
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+
+#. another cracksmoker
+#: src/window.c:3421
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Egenskab %s på vindue 0x%lx indeholder ugyldig UTF-8\n"
