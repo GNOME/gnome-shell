@@ -1,3 +1,7 @@
+2005-04-05  Pawan Chitrakar  <pawan@nplinux.org>
+
+	* configure.in: Added ne in ALL_LINGUAS
+
 2005-03-31  Steve Murphy  <murf@e-tools.com>
 
         * configure.in: Added "rw" to ALL_LINGUAS.

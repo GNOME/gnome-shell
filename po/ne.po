@@ -1,0 +1,2653 @@
+# translation of metacity.HEAD.po to Nepali
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Jyotsna Shrestha <jyoshrestha@hotmail.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-21 06:18+0100\n"
+"PO-Revision-Date: 2005-04-04 11:54+0000\n"
+"Last-Translator: Jyotsna Shrestha <jyoshrestha@hotmail.com>\n"
+"Language-Team: Nepali <info@mpp.org.np>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "प्रयोग: %s\n"
+
+#: src/tools/metacity-message.c:176 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "भर्बोज शैलीलाई सहयोग बिनानै मेटासिटि संग्रह गरियो\n"
+
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
+#: src/theme-parser.c:467
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\" लाई इन्टिजरको रूपमा व्याख्या गर्न सकेन"
+
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
+#: src/theme-parser.c:476 src/theme-parser.c:530
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "स्वन \"%s\" लाई स्ट्रिङ \"%s\" मा लतारिएको बुझ्नुभएन"
+
+#: src/delete.c:128
+#, c-format
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "संवाद प्रक्रियाबाट संदेश \"%s\" व्याख्या गर्न असफल \n"
+
+#: src/delete.c:263
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "संवाद देखाउने प्रक्रियाबाट पढ्नमा त्रुटि: %s\n"
+
+#: src/delete.c:344
+#, c-format
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "अनुरोधपत्र समाप्त गर्ने बारेमा सोध्न त्रुटि हटाउने मेटासिटि संवाद: %s\n"
+
+#: src/delete.c:452
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "होस्टनाम पाउँन असफल: %s\n"
+
+#: src/display.c:316
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "'%s' देखाउन एक्स विण्डो प्रणाली खोल्न असफल\n"
+
+#: src/errors.c:231
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"'%s' देखाउन सम्बन्ध बिच्छेदन भयो;\n"
+"एक्स सर्भर हुन्छ वा तपाईले विन्डो प्रबन्धकलाई\n"
+"मार्नु/बिगार्नु भयो।\n"
+
+#: src/errors.c:238
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "घातक आईओ त्रुटि %d (%s) '%s' देखाउदा.\n"
+
+#: src/frames.c:1020
+msgid "Close Window"
+msgstr "विन्डो बन्द गर्नुहोला।"
+
+#: src/frames.c:1023
+msgid "Window Menu"
+msgstr "विण्डो मेनू॒"
+
+#: src/frames.c:1026
+msgid "Minimize Window"
+msgstr "विण्डो न्यून गर्नुहोला।"
+
+#: src/frames.c:1029
+msgid "Maximize Window"
+msgstr "विण्डो ठूलो बनाउनुहोला।"
+
+#: src/frames.c:1032
+msgid "Unmaximize Window"
+msgstr "विण्डो ठूलो नबनाउनुहोला।"
+
+#: src/keybindings.c:994
+#, fuzzy, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr "केहि अरू कार्यक्रमले बन्धकको रूपमा सुधारकहरू %x संग कुन्ज %s पहिलेनै प्रयोग गरिरहेको छ\n"
+
+#: src/keybindings.c:2561
+#, c-format
+msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgstr "आदेशको बारेमा त्रुटि छाप्न त्रुटि हटाउने मेटासिटि संवाद: %s\n"
+
+#: src/keybindings.c:2666
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "आदेश %d वर्णन गरिएको छैन।\n"
+
+#: src/keybindings.c:3511
+msgid "No terminal command has been defined.\n"
+msgstr "टर्मिनल आदेश वर्णन गरिएको छैन।\n"
+
+#: src/main.c:69
+msgid ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
+msgstr ""
+"मेटासिटि [--sm-असक्षम] [--sm-ग्राहक-आईडि=आईडि] [--sm-फाईल-भण्डार=फाईलनाम] [--"
+"देखाउनु=देखाउनु] [--बदलनुहोला] [--संस्करण]\n"
+
+#: src/main.c:76
+#, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"मेटासिटि %s\n"
+"अधिकार (C) २००१-२००१ Havoc Pennington, Red Hat, Inc., र अन्य\n"
+"यो एउटा स्वतन्त्र सफ्टवेयर हो; नक्कल गर्नेको अवस्थाको लागी स्रोत हेर्नुहोला.\n"
+"यसमा कुनै वारेन्टि हुंदैन; न त निश्चित उद्देश्यको लागी बजार मूलक र योग्यताको लागी नै हुन्छ।\n"
+
+#: src/main.c:443
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "विषयहरूको शब्दकोश: %s नियाल गर्न असफल\n"
+
+#: src/main.c:459
+#, c-format
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "विषय पाउँन सक्नु भएन! पक्का गर्नुहोला %s छ र साधारण विषय राख्दछ।"
+
+#: src/main.c:521
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "शुरू गर्न असफल: %s\n"
+
+#: src/menu.c:54
+msgid "Mi_nimize"
+msgstr "सानो बनाउनुहोला।"
+
+#: src/menu.c:55
+msgid "Ma_ximize"
+msgstr "ठूलो बनाउनुहोला"
+
+#: src/menu.c:56
+msgid "Unma_ximize"
+msgstr "ठूलो नबनाउनुहोला"
+
+#: src/menu.c:57
+msgid "Roll _Up"
+msgstr "माथि जानुहोला"
+
+#: src/menu.c:58
+msgid "_Unroll"
+msgstr "नबेरनुहोला"
+
+#: src/menu.c:59 src/menu.c:60
+msgid "On _Top"
+msgstr "माथि॒"
+
+#: src/menu.c:61
+msgid "_Move"
+msgstr "_सार्नुहोला"
+
+#: src/menu.c:62
+msgid "_Resize"
+msgstr "पुन: आकार"
+
+#. separator
+#: src/menu.c:64
+msgid "_Close"
+msgstr "_बन्द गर्नुहोला"
+
+#. separator
+#: src/menu.c:66
+msgid "_Always on Visible Workspace"
+msgstr "जहिलेपनि दृश्यात्मक कार्यक्षेत्रमा"
+
+#: src/menu.c:67
+msgid "_Only on This Workspace"
+msgstr "यो कार्यक्षेत्रमा मात्र"
+
+#: src/menu.c:68
+msgid "Move to Workspace _Left"
+msgstr "कार्यक्षेत्र देब्रे सार्नुहोला"
+
+#: src/menu.c:69
+msgid "Move to Workspace R_ight"
+msgstr "कार्यक्षेत्र दाहिने सार्नुहोला"
+
+#: src/menu.c:70
+msgid "Move to Workspace _Up"
+msgstr "कार्यक्षेत्र माथि सार्नुहोला"
+
+#: src/menu.c:71
+msgid "Move to Workspace _Down"
+msgstr "कार्यक्षेत्र तल सार्नुहोला"
+
+#: src/menu.c:162 src/prefs.c:1996
+#, c-format
+msgid "Workspace %d"
+msgstr "%d कार्यक्षेत्र॒"
+
+#: src/menu.c:171
+msgid "Workspace 1_0"
+msgstr "कार्यक्षेत्र १_०"
+
+#: src/menu.c:173
+#, c-format
+msgid "Workspace %s%d"
+msgstr "%s%d कार्यक्षेत्र॒"
+
+#: src/menu.c:368
+msgid "Move to Another _Workspace"
+msgstr "अरु कार्यक्षेत्रमा लैजाउनुहोला"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:105
+msgid "Shift"
+msgstr "बदल्नुहोला"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:111
+msgid "Ctrl"
+msgstr "कन्ट्रोल॒"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:117
+msgid "Alt"
+msgstr "अल्टर(विकल्प)"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:123
+msgid "Meta"
+msgstr "पारि॒"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:129
+msgid "Super"
+msgstr "अति"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:135
+msgid "Hyper"
+msgstr "अति॒"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:141
+msgid "Mod2"
+msgstr "मोड२"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:147
+msgid "Mod3"
+msgstr "मोड३"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:153
+msgid "Mod4"
+msgstr "मोड४"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: src/metaaccellabel.c:159
+msgid "Mod5"
+msgstr "मोड५"
+
+#: src/metacity-dialog.c:110
+#, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "विन्डो \"%s\" ले जवाफ दिईराखेको छैन।"
+
+#: src/metacity-dialog.c:118
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "यो अनुप्रयोग अन्त्य गर्न बल गर्नु भएको कारणले तपाईले भण्डार नगर्नुभएको परिवर्तनहरू हराउन सक्छ।"
+
+#: src/metacity-dialog.c:128
+msgid "_Force Quit"
+msgstr "बाहिर जान बल "
+
+#: src/metacity-dialog.c:225
+msgid "Title"
+msgstr "शीर्षक॒"
+
+#: src/metacity-dialog.c:237
+msgid "Class"
+msgstr "कक्षा"
+
+#: src/metacity-dialog.c:262
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr "यस्ता विन्डोले \"चालु सेटअप भण्डार\" लाई आधार दिदैन र अर्को पटक तपाई लगईन हुदा हातैले पुन:शुरू गर्नुपर्छ।"
+
+#: src/metacity-dialog.c:325
+#, c-format
+msgid ""
+"There was an error running \"%s\":\n"
+"%s."
+msgstr ""
+"\"%s\" मा त्रुटि चालु भइराखेको छ:\n"
+"%s."
+
+#: src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "मेटासिटि"
+
+#: src/metacity.schemas.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr "(पूर्ण नगरिएको) दिशा पत्ता लागाउनेले अनुरोधपत्रको विषयमा कार्य गर्छ विन्डोमा होईन"
+
+#: src/metacity.schemas.in.h:2
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0, however. Also, this option is disabled if the "
+"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
+"is unset, causing Metacity to fall back to the desktop font even if "
+"titlebar_uses_desktop_font is false."
+msgstr "विन्डो शीर्षक बारको लागी वर्णको विस्तृत स्ट्रिङले वर्णको वर्णन गर्दछ। विवरणबाट आकार तब मात्र प्रयोग हुन्छ जब शीर्षकबार वर्ण आकार विकल्प ० मा मिलाउनु पर्ने हुन्छ। यो विकाल्प तब पनि निष्क्रिय पारिन्छ जब शीर्षकबारले डेक्सटप विकाल्प सत्यमा मिलाउन प्रयोग गर्दछ। पूर्वनिर्धारितद्वारा शीर्षकबार वर्ण मिलाईएको हुँदैन, जसले गरेको डेक्सटप वर्ण असत्य भएपनि।"
+
+#: src/metacity.schemas.in.h:3
+msgid "Action on title bar double-click"
+msgstr "शीर्षक बार दुईपटक क्लिकमा कार्य गर्नुहोला"
+
+#: src/metacity.schemas.in.h:4
+msgid "Activate window menu"
+msgstr "विन्डो मेनु सक्रिय बनाऊनुहोला।"
+
+#: src/metacity.schemas.in.h:5
+msgid "Arrangement of buttons on the titlebar"
+msgstr "शिर्षकबारमा बटनहरूको तयारी"
+
+#: src/metacity.schemas.in.h:6
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
+"the window from the right corner, and the button names are comma-separated. "
+"Duplicate buttons are not allowed. Unknown button names are silently ignored "
+"so that buttons can be added in future metacity versions without breaking "
+"older versions."
+msgstr "शिर्षकबारमा बटनहरूको तयारी। मान स्ट्रिङ हुनुपर्छ, जस्तै \"मेनु:सानो,ठूलो,बन्द\"; कोलनले दाँया कुनाबाट विन्डोको बाँया कुना छुट्याउछ र बटन नाम कमा छुट्याउनु हो। नक्कली बटनलाई अनुमती छैन। अज्ञात बटनको नामलाई चूपचापसंग वेवास्ता गरिन्छ, ताकि बटनलाई बिना पूरानो संस्करणलाई टुक्रायाई भविष्यमा मेटासिटि संस्करणमा जोड्न सकिन्छ।"
+
+#: src/metacity.schemas.in.h:7
+msgid "Automatically raises the focused window"
+msgstr "तोकिएको विन्डो स्वत उठ्यो"
+
+#: src/metacity.schemas.in.h:8
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
+"for example."
+msgstr "विन्डोमा क्लिक गर्दा जब यो सुधारक कुुन्जलाईतल झारिएको हुन्छ, तब विन्डो चल्दछ (देब्रे क्लिक) विन्डोलाई पुन:आकार दिन्छ (मध्य क्लिक) वा विन्डो मेनु देखिन्छ (दाहिने क्लिक), अनि सुधारकलाई उदाहरणको लागी जस्तै \"&lt;बदलामाt&gt;\" वा \"&lt;अति&gt;\" को रूपमा विस्तारित गरिन्छ। "
+
+#: src/metacity.schemas.in.h:9
+msgid "Close window"
+msgstr "विन्डो बन्द गर्नुहोला।"
+
+#: src/metacity.schemas.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "किबाइन्डिङको प्रतिक्रिया चालु गर्न को लागी आदेशहरू"
+
+#: src/metacity.schemas.in.h:11
+msgid "Current theme"
+msgstr "चालु बिषय"
+
+#: src/metacity.schemas.in.h:12
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "स्वत उठ्ने विकल्पको लागी मिलिसेकेन्ड ढिलाई"
+
+#: src/metacity.schemas.in.h:13
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr "निश्चित गर्नुकि अनुरोधपत्र वा प्रणालीले सुनिने बिप उत्पादन गर्न सक्छ, यो चुपचाप बिपलाई अनुमती दिन दृष्य घण्टि संग जोड्नमा प्रयोग गर्न पनि सकिन्छ।"
+
+#: src/metacity.schemas.in.h:14
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr "पूरानो र टुक्रिएको अनुरोधपत्रलाई चाहिएको मिसफिचर्स लाई निष्क्रिय पार्नुहोला"
+
+#: src/metacity.schemas.in.h:15
+msgid "Enable Visual Bell"
+msgstr "दृष्य घण्टि सक्षम पार्नुहोला।"
+
+#: src/metacity.schemas.in.h:16
+msgid "Hide all windows and focus desktop"
+msgstr "सबै विन्डो लुकाउनुहोला र डेक्सटपमा फोकस गर्नुहोला।"
+
+#: src/metacity.schemas.in.h:17
+msgid ""
+"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+"focused window will be automatically raised after a delay (the delay is "
+"specified by the auto_raise_delay key)."
+msgstr "यदि ठिक अए र तोक्ने शैली \"स्लोपि\" वा \"माउस\" भए तोकिएको विन्डो ढिलाई पछि स्वत उठ्दछ (यो ढिलाई स्वत: उठ्ने ढिलाई कुन्जले वर्णन गरेको हुन्छ)"
+
+#: src/metacity.schemas.in.h:18
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr "यदि ठिक भए, शीर्षकबार वर्ण विकल्पलाई वेवास्ता गर्नुहोला र विन्डो शीर्षकको लागी उच्चस्तरिय अनुरोधपत्र वर्ण प्रयोग गर्नुहोला।"
+
+#: src/metacity.schemas.in.h:19
+msgid ""
+"If true, metacity will give the user less feedback and less sense of "
+"\"direct manipulation\", by using wireframes, avoiding animations, or other "
+"means. This is a significant reduction in usability for many users, but may "
+"allow legacy applications and terminal servers to function when they would "
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
+msgstr "यदि सत्य भए, मेटासिटिले प्रयोगकर्तालाई वायरफ्रेम प्रयोग गरेर, एनिमेशन वा अरू साधन हटाएर थोरै प्रतिक्रिया र थोरै \"सिधै हस्तव्यापार\" को चेतना दिन्छ। यो एउटा प्रभावशाली घटाउ हो र यो धेरै प्रयोगकर्ताको लागी उपयोगी हुन्छ, तर अनुरोधपत्रहरू र अन्त्यको सेवादायकलाई कार्यहरूमा अनुमती दिन्छ, जब यिनिहरू अव्यावहारिक हुन्छन्, जब प्रवेश विलक्षण डेक्सटप टुट हटाउनको लागी"
+
+#: src/metacity.schemas.in.h:20
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. The existence of this setting is somewhat "
+"questionable. But it's better than having settings for all the specific "
+"details of application-based vs. window-based, e.g. whether to pass through "
+"clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr "यदि सत्य भए, मेटासिटिले विन्डोको सट्टा अनुरोधपत्रको रूपमा कार्य गर्दछ। सोचाई अलि अव्यावहारिक छ, तर साधारणतया अनुरोधपत्रमा आधारित सेटअप धेरै म्याक जस्तो र थोरै विन्डो जस्तो हुन्छ। जब तपाईले अनुरोधपत्रमा आधारित शैली विन्डोलाई जोड दिनुहुन्छ, तब अनुरोधपत्रमा आधारित शैलीमा फोकस क्लिक विन्डोको माध्यमबाट अन्य अनुरोधपत्रमा पठाईदैन। यो सेटिङको आस्तित्त्वलाई केहि सन्देह गर्न सकिन्छ। तर यो अनुरोधपत्रमा "
+
+#: src/metacity.schemas.in.h:21
+msgid "If true, trade off usability for less resource usage"
+msgstr "यदि सत्य भए, कम स्रोतहरू प्रयोगको लागी सम्झदारीसंग प्रयोग गर्ने क्षमता हुन्छ।"
+
+#: src/metacity.schemas.in.h:22
+msgid "Lower window below other windows"
+msgstr "अर्को विन्डोको तल तल्लो विन्डो"
+
+#: src/metacity.schemas.in.h:23
+msgid "Maximize window"
+msgstr "विन्डो ठूलो बनाउनुहोला"
+
+#: src/metacity.schemas.in.h:24
+msgid "Maximize window horizontally"
+msgstr "तेर्सो तरिकाले विन्डो ठूलो बनाउनुहोला"
+
+#: src/metacity.schemas.in.h:25
+msgid "Maximize window vertically"
+msgstr "ठाडो तरिकाले विन्डो ठूलो बनाउनुहोला"
+
+#: src/metacity.schemas.in.h:26
+msgid "Minimize window"
+msgstr "विन्डो सानो बनाऊनुहोला"
+
+#: src/metacity.schemas.in.h:27
+msgid "Modifier to use for modified window click actions"
+msgstr "विन्डो क्लिक कार्य विकसित गर्नको लागी सुधारकको प्रयोग"
+
+#: src/metacity.schemas.in.h:28
+msgid "Move backward between panels and the desktop immediately"
+msgstr "प्यानलहरू र डेक्सटपको बिचमा पछाडि पट्टि तुरून्त सार्नुहोला"
+
+#: src/metacity.schemas.in.h:29
+msgid "Move backwards between panels and the desktop with popup"
+msgstr "पपअपसंगै प्यानलहरू र डेक्सटपको बिचमा पछाडि पट्टि सार्नुहोला"
+
+#: src/metacity.schemas.in.h:30
+msgid "Move backwards between windows immediately"
+msgstr "विन्डोको बिचमा पछाडि पट्टि तुरून्त सार्नुहोला"
+
+#: src/metacity.schemas.in.h:31
+msgid "Move between panels and the desktop immediately"
+msgstr "प्यानलहरू र डेक्सटपको बिचमा तुरून्त सार्नुहोला"
+
+#: src/metacity.schemas.in.h:32
+msgid "Move between panels and the desktop with popup"
+msgstr "पपअपसंगै प्यानलहरू र डेक्सटपको बिचमा सार्नुहोला।"
+
+#: src/metacity.schemas.in.h:33
+msgid "Move between windows immediately"
+msgstr "विन्डोहरूको बिचमा तुरून्त सार्नुहोला"
+
+#: src/metacity.schemas.in.h:34
+msgid "Move between windows with popup"
+msgstr "पपअपसंगै विन्डोहरूको बिचमा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:35
+msgid "Move focus backwards between windows using popup display"
+msgstr "फोकसलाई पपअप प्रदर्शन प्रयोग गरेर विन्डोको बिचमा पछाडि पठाउनुहोला।"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "विन्डो सार्नुहोला"
+
+#: src/metacity.schemas.in.h:37
+msgid "Move window one workspace down"
+msgstr "विन्डोलाई एक कार्यक्षेत्र तल सार्नुहोला"
+
+#: src/metacity.schemas.in.h:38
+msgid "Move window one workspace to the left"
+msgstr "विन्डोलाई एक कार्यक्षेत्र बायाँ पट्टि सार्नुहोला"
+
+#: src/metacity.schemas.in.h:39
+msgid "Move window one workspace to the right"
+msgstr "विन्डोलाई एक कार्यक्षेत्र दायाँ पट्टि सार्नुहोला"
+
+#: src/metacity.schemas.in.h:40
+msgid "Move window one workspace up"
+msgstr "विन्डोलाई एक कार्यक्षेत्र माथी सार्नुहोला"
+
+#: src/metacity.schemas.in.h:41
+msgid "Move window to workspace 1"
+msgstr "विन्डोलाई कार्यक्षेत्र १ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:42
+msgid "Move window to workspace 10"
+msgstr "विन्डोलाई कार्यक्षेत्र १० मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:43
+msgid "Move window to workspace 11"
+msgstr "विन्डोलाई कार्यक्षेत्र ११ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:44
+msgid "Move window to workspace 12"
+msgstr "विन्डोलाई कार्यक्षेत्र १२ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:45
+msgid "Move window to workspace 2"
+msgstr "विन्डोलाई कार्यक्षेत्र २ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:46
+msgid "Move window to workspace 3"
+msgstr "विन्डोलाई कार्यक्षेत्र ३ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:47
+msgid "Move window to workspace 4"
+msgstr "विन्डोलाई कार्यक्षेत्र ४ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:48
+msgid "Move window to workspace 5"
+msgstr "विन्डोलाई कार्यक्षेत्र ५ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:49
+msgid "Move window to workspace 6"
+msgstr "विन्डोलाई कार्यक्षेत्र ६ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:50
+msgid "Move window to workspace 7"
+msgstr "विन्डोलाई कार्यक्षेत्र ७ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:51
+msgid "Move window to workspace 8"
+msgstr "विन्डोलाई कार्यक्षेत्र ८ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:52
+msgid "Move window to workspace 9"
+msgstr "विन्डोलाई कार्यक्षेत्र ९ मा सार्नुहोला"
+
+#: src/metacity.schemas.in.h:53
+msgid "Name of workspace"
+msgstr "कार्यक्षेत्रको नाम"
+
+#: src/metacity.schemas.in.h:54
+msgid "Number of workspaces"
+msgstr "असंख्य कार्यक्षेत्रहरू"
+
+#: src/metacity.schemas.in.h:55
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
+"prevent accidentally destroying your desktop by asking for 34 million "
+"workspaces)."
+msgstr "असंख्य कार्यक्षेत्र शुन्य भन्दा बढी हुनुपर्छ र निश्चित परिमाणको हुन्छ (३४ अरब कार्यक्षेत्र सोधेर तपाँईको डेक्सटपलाई अकस्मात बिग्रनुबाट बचाउँछ)।"
+
+#: src/metacity.schemas.in.h:56
+msgid "Raise obscured window, otherwise lower"
+msgstr "अमिल्दो विन्डोलाई माथी उठाउनुहोला, वा तल झार्नुहोला।"
+
+#: src/metacity.schemas.in.h:57
+msgid "Raise window above other windows"
+msgstr "अर्को विन्डोको माथी विन्डो उठाउनुहोला"
+
+#: src/metacity.schemas.in.h:58
+msgid "Resize window"
+msgstr "विन्डोलाई पुन:आकार"
+
+#: src/metacity.schemas.in.h:59
+msgid "Run a defined command"
+msgstr "वर्णन आदेश सञ्चालन गर्नुहोला"
+
+#: src/metacity.schemas.in.h:60
+msgid "Run a terminal"
+msgstr "टर्मिनल सञ्चालन गर्नुहोला"
+
+#: src/metacity.schemas.in.h:61
+msgid "Show the panel menu"
+msgstr "प्यानल मेनु देखाउनुहोला"
+
+#: src/metacity.schemas.in.h:62
+msgid "Show the panel run application dialog"
+msgstr "प्यालन चालु गर्ने अनुप्रयोग संवाद देखाउनुहोला"
+
+#: src/metacity.schemas.in.h:63
+msgid ""
+"Some applications break specifications in ways that result in window manager "
+"misfeatures. For example, ideally Metacity would place all dialogs in a "
+"consistent position with respect to their parent window. This requires "
+"ignoring application-specified positions for dialogs. But some versions of "
+"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
+"dialog positioning to allow menus to work in broken Java applications. There "
+"are several other examples like this. This option puts Metacity in full-on "
+"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
+"run any broken apps. Sadly, workarounds must be enabled by default; the real "
+"world is an ugly place. Some of the workarounds are workarounds for "
+"limitations in the specifications themselves, so sometimes a bug in no-"
+"workarounds mode won't be fixable without amending a spec."
+msgstr "केहि अनुरोधपत्रले यसरी विशेष वर्णनलाई टुक्रयाउछ जसको परिणाम विन्डो प्रबन्धक मिसफिचर्स हुन्छ। उदाहरणको लागी आदर्शरूपले मेटासिटि ले संवादलाई प्यारेन्ट विन्डोको अनुसार मिल्ने पदमा राख्दछ। यसको लागी वेवास्ता गरिएको अनुरोधपत्र निश्चित पद सम्बन्धको लागी चाहिन्छ। तर जाभा/स्विङ को केहि संस्करणले आफ्नो पपअप मेनुलाई संवादको रूप चिन्ह लगाउछ, त्यसैले मेटासिटिले मेनुलाई टुक्रिएको जाभा अनुरोधपत्रमा काम गर्न अनुमती दिनको लागी संबाद पदलाई निष्क्रिय पार्नुपर्छ। यसतै अरू पनि केहि उदाहरणहरू हुन्छन्। यो विकल्पले मेटासिटिलाई पूर्णरूपले सहि शैलिमा राख्दछ, जसले सायद आंशिक रूपमा राम्रो युआई दिन्छ यदि तपाँईले टुक्रिएको अनुरोधपत्र चालु गर्नुहुन्न। दुखत कामवरिपरि पूर्वनिर्धारितद्वारा सक्रिय हुनुपर्छ, सत्य संसार नै एउटा नराम्रो ठाउँ हो, केहि कार्यवरिपरि विशेष आफैको निश्चितताको लागी कार्यवरिपरि हो। त्यसैले कहिले काँहि कार्यवरिपरि नभएको बेला बग गर्नु spec लाई नसच्याई निश्चित हुंदैन।"
+
+#: src/metacity.schemas.in.h:64
+msgid "Switch to workspace 1"
+msgstr "कार्यक्षेत्र १ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:65
+msgid "Switch to workspace 10"
+msgstr "कार्यक्षेत्र १० बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:66
+msgid "Switch to workspace 11"
+msgstr "कार्यक्षेत्र ११ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:67
+msgid "Switch to workspace 12"
+msgstr "कार्यक्षेत्र १२ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:68
+msgid "Switch to workspace 2"
+msgstr "कार्यक्षेत्र २ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:69
+msgid "Switch to workspace 3"
+msgstr "कार्यक्षेत्र ३ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:70
+msgid "Switch to workspace 4"
+msgstr "कार्यक्षेत्र ४ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:71
+msgid "Switch to workspace 5"
+msgstr "कार्यक्षेत्र ५ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:72
+msgid "Switch to workspace 6"
+msgstr "कार्यक्षेत्र ६ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:73
+msgid "Switch to workspace 7"
+msgstr "कार्यक्षेत्र ७ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:74
+msgid "Switch to workspace 8"
+msgstr "कार्यक्षेत्र ८ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:75
+msgid "Switch to workspace 9"
+msgstr "कार्यक्षेत्र ९ बटन दबाऊनुहोला"
+
+#: src/metacity.schemas.in.h:76
+msgid "Switch to workspace above this one"
+msgstr "यो भन्दा माथी कार्यक्षेत्रमा वटन दबाऊनुहोला।"
+
+#: src/metacity.schemas.in.h:77
+msgid "Switch to workspace below this one"
+msgstr "यसको मुनि कार्यक्षेत्रमा रोक लगाउनुहोला।"
+
+#: src/metacity.schemas.in.h:78
+msgid "Switch to workspace on the left"
+msgstr "देब्रे पट्टि कार्यक्षेत्रमा बटन दबाऊनुहोला।"
+
+#: src/metacity.schemas.in.h:79
+msgid "Switch to workspace on the right"
+msgstr "दाहिने पट्टि कार्यक्षेत्रमा बटन दबाऊनुहोला।"
+
+#: src/metacity.schemas.in.h:80
+msgid "System Bell is Audible"
+msgstr "प्रणाली घण्टि सुन्न सकिन्छ"
+
+#: src/metacity.schemas.in.h:81
+msgid "Take a screenshot"
+msgstr "स्क्रिनसट लिनुहोला॒"
+
+#: src/metacity.schemas.in.h:82
+msgid "Take a screenshot of a window"
+msgstr "विन्डोको स्क्रिनसट लिनुहोला॒"
+
+#: src/metacity.schemas.in.h:83
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr "मेटासिटिलाई आसाधारण निर्देशक जुन प्रणाली घण्टी वा निर्देशकले बजाएको अरू अनुरोधपत्र घण्टीलाई कसरी पुरा गर्ने भनेर भन्दछ। हाल यहाँ दुईवटा मान्य मानहरू छन्। \"पुरापर्दा\", जसले सेतो-कालो चमक पुरापर्दाको निम्ति गर्दछ र \"खाका चमक\", जसले अनुरोधपत्रको शीर्षकबार जसले घण्टी चिन्हलाई चमकमा पठाउँछ। यदि अनुरोधपत्र, जसले घण्टी पठाउँछ, अज्ञात छ (जस्तै साधआरण पूर्वनिर्देशन \"प्रणाली बिप\" को केस) भने चालु तोकिएको विन्डोको शीर्षकबार खुल्दछ।"
+
+#: src/metacity.schemas.in.h:84
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr "अनुरोधपत्र /मेटासिटि/ संसारिक कुन्जजोड/चालु आदेश एन कुन्जले कुन्जजोडलाई परिभाषित गर्दछ, जुन यी आदेशहरूसंग मिलदछ। आदेश एनलाई चालु गर्न कुन्जजोडलाई दवाव दिएर आदेश एन कार्यान्वयन हुन्छ।"
+
+#: src/metacity.schemas.in.h:85
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr "अनुरोधपत्र /मेटासिटि/ संसारिक कुन्जजोड/चालु आदेश स्क्रिनसट कुन्जले कुन्जजोडलाई परिभाषित गर्दछ, जसले गर्दा यो सेटिङले निश्चित गरिएको आदेश मागिन्छ।"
+
+#: src/metacity.schemas.in.h:86
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr "अनुरोधपत्र /मेटासिटि/ संसारिक कुन्जजोड/चालु आदेश विन्डो स्क्रिनसट कुन्जले कुन्जजोडलाई परिभाषित गर्दछ, जसले गर्दा यो सेटिङले निश्चित गरिएको आदेश मागिन्छ।"
+
+#: src/metacity.schemas.in.h:87
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr "कुन्जजोड जसले मिल्दोजुल्दो रूपमा संख्या दिईएको आदेशलाई /अनुरोधपत्र /मेटासिटि/कुन्जजोड आदेशमा चालु गर्दछ। इ&lt; नियन्त्रण&gt; or&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt; and or and&lt;&gt; and&lt; कन्ट्रोल&gt; नाई.यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:88
+msgid ""
+"The keybinding that switches to the workspace above the current workspace. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "कुन्जजोड जुन हालको कार्यक्षेत्र माथीको कार्यक्षेत्रमा रोक लगाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:89
+msgid ""
+"The keybinding that switches to the workspace below the current workspace. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "कुन्जजोड जुन हालको कार्यक्षेत्र तलको कार्यक्षेत्रमा रोक लगाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:90
+msgid ""
+"The keybinding that switches to the workspace on the left of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr "कुन्जजोड जुन हालको कार्यक्षेत्रको देब्रेपट्टि कार्यक्षेत्रमा रोक लगाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:91
+msgid ""
+"The keybinding that switches to the workspace on the right of the current "
+"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr "कुन्जजोड जुन हालको कार्यक्षेत्रको दाहिनेपट्टि कार्यक्षेत्रमा रोक लगाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:92
+msgid ""
+"The keybinding that switches to workspace 1. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र १ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:93
+msgid ""
+"The keybinding that switches to workspace 10. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र १० मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\"मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:94
+msgid ""
+"The keybinding that switches to workspace 11. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ११ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:95
+msgid ""
+"The keybinding that switches to workspace 12. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र १२ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:96
+msgid ""
+"The keybinding that switches to workspace 2. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र २ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:97
+msgid ""
+"The keybinding that switches to workspace 3. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ३ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:98
+msgid ""
+"The keybinding that switches to workspace 4. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ४ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:99
+msgid ""
+"The keybinding that switches to workspace 5. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ५ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:100
+msgid ""
+"The keybinding that switches to workspace 6. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ६ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:101
+msgid ""
+"The keybinding that switches to workspace 7. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ७ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:102
+msgid ""
+"The keybinding that switches to workspace 8. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ८ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:103
+msgid ""
+"The keybinding that switches to workspace 9. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ जुन कार्यक्षेत्र ९ मा स्विच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:104
+msgid ""
+"The keybinding used to activate the window menu. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डो मेनु सक्रिय पार्न प्रयोग गरिन्छविच हुन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:105
+msgid ""
+"The keybinding used to close a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डो बन्द गर्नको लागी प्रयोग गरिन्छ।यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:106
+msgid ""
+"The keybinding used to enter \"move mode\" and begin moving a window using "
+"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "कुन्जजोड \"सार्नु शैली\" मा छिर्न प्रयोग गरिन्छ र कुन्जिपाटि प्रयोग गरेर विन्डोलाई सार्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:107
+msgid ""
+"The keybinding used to enter \"resize mode\" and begin resizing a window "
+"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr "कुन्जजोड \"पुन:आकार शैली\" मा छिर्न प्रयोग गरिन्छ र कुन्जिपाटि प्रयोग गरेर विन्डोलाई पुन:आकार दिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:108
+msgid ""
+"The keybinding used to hide all normal windows and set the focus to the "
+"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr "कुन्जजोड साधारण विन्डोहरू लुकाउन प्रयोग गरिन्छ र डेक्सटपको पृष्ठभूमिमा फोकस गर्न मिलाईन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:109
+msgid ""
+"The keybinding used to maximize a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डो ठूलो बनाऊन प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:110
+msgid ""
+"The keybinding used to minimize a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डो सानो बनाऊन प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:111
+msgid ""
+"The keybinding used to move a window one workspace down. The format looks "
+"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
+"fairly liberal and allows lower or upper case, and also abbreviations such "
+"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr "किबाइन्डिङ विन्डोलाई एक कार्यक्षेत्र तल सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:112
+msgid ""
+"The keybinding used to move a window one workspace to the left. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "किबाइन्डिङ विन्डोलाई एक कार्यक्षेत्र देब्रे पट्टि सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:113
+msgid ""
+"The keybinding used to move a window one workspace to the right. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "किबाइन्डिङ विन्डोलाई एक कार्यक्षेत्र दाहिने पट्टि सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:114
+msgid ""
+"The keybinding used to move a window one workspace up. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई एक कार्यक्षेत्र माथी सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:115
+msgid ""
+"The keybinding used to move a window to workspace 1. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र १ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:116
+msgid ""
+"The keybinding used to move a window to workspace 10. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र १० मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:117
+msgid ""
+"The keybinding used to move a window to workspace 11. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ११ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:118
+msgid ""
+"The keybinding used to move a window to workspace 12. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र १२ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:119
+msgid ""
+"The keybinding used to move a window to workspace 2. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र २ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:120
+msgid ""
+"The keybinding used to move a window to workspace 3. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ३ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:121
+msgid ""
+"The keybinding used to move a window to workspace 4. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ४ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:122
+msgid ""
+"The keybinding used to move a window to workspace 5. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ५ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:123
+msgid ""
+"The keybinding used to move a window to workspace 6. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ६ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:124
+msgid ""
+"The keybinding used to move a window to workspace 7. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ७ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:125
+msgid ""
+"The keybinding used to move a window to workspace 8. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ८ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:126
+msgid ""
+"The keybinding used to move a window to workspace 9. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ विन्डोलाई कार्यक्षेत्र ९ मा सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:127
+msgid ""
+"The keybinding used to move focus backwards between panels and the desktop, "
+"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग गरि प्यानलहरू र डेक्सटपको बिचमा पछाडिपट्टि फोकस गरि सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:128
+msgid ""
+"The keybinding used to move focus backwards between panels and the desktop, "
+"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग नगरि प्यानलहरू र डेक्सटपको बिचमा पछाडिपट्टि फोकस गरि सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:129
+msgid ""
+"The keybinding used to move focus backwards between windows without a popup "
+"window. Holding \"shift\" together with this binding makes the direction go "
+"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग नगरि प्यानलहरू र डेक्सटपको पछाडिपट्टि बिचमा फोकस गरि सार्न प्रयोग गरिन्छ। \"बदल्नुस\" लाई यो जोडसंग समात्दा दिशा फेरि अगाडि बढ्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:130
+msgid ""
+"The keybinding used to move focus backwards between windows, using a popup "
+"window. Holding \"shift\" together with this binding makes the direction go "
+"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग गरि प्यानलहरू र डेक्सटपको पछाडिपट्टि बिचमा फोकस गरी सार्न प्रयोग गरिन्छ। \"बदल्नुस\" लाई यो जोडसंग समात्दा दिशा फेरि अगाडि बढ्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:131
+msgid ""
+"The keybinding used to move focus between panels and the desktop, using a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग गरि प्यानलहरू र डेक्सटपको बिचमा फोकस गरी सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:132
+msgid ""
+"The keybinding used to move focus between panels and the desktop, without a "
+"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग नगरि प्यानलहरू र डेक्सटपको बिचमा पछाडिपट्टि फोकस गरि सार्न प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:133
+msgid ""
+"The keybinding used to move focus between windows without a popup window. "
+"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
+"binding reverses the direction of movement. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग नगरि विन्डोहरूको बिचमा फोकस गरी सार्न प्रयोग गरिन्छ। (परम्परागत रूपले &lt;अल्टर&gt;हटाउनु) \"बदल्नु\" कुन्जलाई यो जोड प्रयोग भइरहेको बेला समात्दा चालको दिशा उल्टो हुन्छ।छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:134
+msgid ""
+"The keybinding used to move focus between windows, using a popup window. "
+"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
+"binding reverses the direction of movement. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड पपअप विन्डो प्रयोग गरि विन्डोहरूको बिचमा फोकस गरी सार्न प्रयोग गरिन्छ। (परम्परागत रूपले &lt;अल्टर&gt;हटाउनु) \"बदल्नु\" कुन्जलाई यो जोड प्रयोग भइरहेको बेला समात्दा चालको दिशा उल्टो हुन्छ।छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:135
+msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड पाटोलाई जहिले पनि माथि राख्न प्रयोग गरिन्छ। विन्डो जुन जहिले पनि माथि रहन्छ, अरू खप्टिनेे विन्डोको माथि जहिले पनि देखिन्छ । यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:136
+msgid ""
+"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड पाटो पुरापर्दा शैलीमा देखाउन प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:137
+msgid ""
+"The keybinding used to toggle maximization. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ पाटो ठुलो गर्नको लागी प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:138
+msgid ""
+"The keybinding used to toggle shaded/unshaded state. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "किबाइन्डिङ पाटो छाँया पारेको/छाँया नपरेको अवस्था देखाउन को लागी प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:139
+msgid ""
+"The keybinding used to toggle whether the window is on all workspaces or "
+"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+"set the option to the special string \"disabled\", then there will be no "
+"keybinding for this action."
+msgstr "सबै कार्यक्षेत्रहरूमा वा कुनै एउटामा विन्डो छ वा छैन  कुन्जजोडले पाटो प्रयोग गर्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी किबाईन्डिङ हुदैन।"
+
+#: src/metacity.schemas.in.h:140
+msgid ""
+"The keybinding used to unmaximize a window. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड विन्डो ठुलो नबनाऊनको लागी प्रयोग गरिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन। "
+
+#: src/metacity.schemas.in.h:141
+msgid ""
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "कुन्जजोड जसले प्यानलको \"अनुरोधपत्र संचालन गर्नु\" संवाद बाकस देखाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:142
+msgid ""
+"The keybinding which invokes a terminal. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड जसले टर्मिनललाई आवाहन गर्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:143
+msgid ""
+"The keybinding which invokes the panel's screenshot utility to take a "
+"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr "कुन्जजोडले विन्डोको स्क्रिनसट लिनको लागी प्यानलको स्क्रिनसट उपयोगितालाई आवाहान गर्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:144
+msgid ""
+"The keybinding which invokes the panel's screenshot utility. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "कुन्जजोडले विन्डोको स्क्रिनसट लिनको लागी प्यानलको स्क्रिनसट उपयोगितालाई आवाहान गर्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"।पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:145
+msgid ""
+"The keybinding which shows the panel's main menu. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "कुन्जजोड जसले प्यानलको मुख्य मेनु देखाउँछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"।यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:146
+msgid "The name of a workspace."
+msgstr "कार्यक्षेत्रको नाम।"
+
+#: src/metacity.schemas.in.h:147
+msgid "The screenshot command"
+msgstr "स्क्रिनसट आदेश"
+
+#: src/metacity.schemas.in.h:148
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr "विषयले विन्डोको किनारा, शीर्षकबार र बाहिरि ढाँचालाई निधो गर्दछ।"
+
+#: src/metacity.schemas.in.h:149
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr "यदि सत्यको लागी स्वत उठ्ने मिलाईएको छ भने विन्डोलाई उठाउनु अघि भएको समयमा ढिलाई। ढिलाई हजारौ सेकेन्डमा दिईएको छ।"
+
+#: src/metacity.schemas.in.h:150
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr "विन्डो फोकस बिधिले विन्डो कसरी संचालन गर्ने भनेर संकेत गर्दछ।यसमा तीन संभावित मोल हुन्छ, \"क्लिक\" भनेको यसलाई फोकस गर्न विन्डोमा क्लिक गर्नुपर्छ, \"स्लोपि\" भनेको जब माउस विन्डोमा जान्छ विन्डो फोकस हुन्छ र \"माउस\" भनेको विन्डोमा माउस जान्छ विन्डो फोकस हुन्छ र जब माउसले विन्डो छोड्छ तब फोकस हुंदैन।"
+
+#: src/metacity.schemas.in.h:151
+msgid "The window screenshot command"
+msgstr "विन्डो स्क्रिनसट आदेश"
+
+#: src/metacity.schemas.in.h:152
+msgid ""
+"This keybinding changes whether a window is above or below other windows. If "
+"the window is covered by another window, it raises the window above other "
+"windows. If the window is already fully visible, it lowers the window below "
+"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
+"If you set the option to the special string \"disabled\", then there will be "
+"no keybinding for this action."
+msgstr "एउटा विन्डो अर्को विन्डोको माथि वा तल भएपनि कुन्जजोड परिवर्तित हुन्छ। यदि विन्डोलाई अर्को विन्डोले छिप्यो भने विन्डो लाई अर्को विन्डोको माथि उचाल्दछ। तदि विन्डो पुरै देखिने भए यसले विन्डोलाई अर्को विन्डोको तल झार्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"। यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:153
+msgid ""
+"This keybinding lowers a window below other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "यो कुन्जजोडले अरु विन्डोको मुनि बिन्डोलाई तल झार्दछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"। यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:154
+msgid ""
+"This keybinding raises the window above other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr "यो कुन्जजोडले अरु विन्डोको माथी बिन्डोलाई उठाउँदछ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"। यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन"
+
+#: src/metacity.schemas.in.h:155
+msgid ""
+"This keybinding resizes a window to fill available horizontal space. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "यो कुन्जजोडले उपलब्ध तेर्सो खाली ठाउँ भर्नको लागी विन्डोलाई पुन:आकार दिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र\"&lt;कन्ट्रोल&gt\"। यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:156
+msgid ""
+"This keybinding resizes a window to fill available vertical space. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr "यो कुन्जजोडले उपलब्ध ठाडो खाली ठाउँ भर्नको लागी विन्डोलाई पुन:आकार दिन्छ। यसको ढाँचा यस्तो हुन्छ &lt; नियन्त्रण&gt;a\" वा \"&lt; बदल्नुस्&gt;&lt; अल्टर(विकल्प)&gt;F1\"। पारसर पूर्णरूपले उदार हुन्छ र माथिल्लो र तल्लो अवस्थालाई अनुमती दिन्छ र साथै एबब्रेभिएसन जस्तै \"&lt;कन्ट्रोल&gt;\" र \"&lt;कन्ट्रोल&gt\"। यदि तपाईले मुख्य स्ट्रिङ \"असमर्थ\" मा विकल्प सेट गर्नुभयो भने त्यहाँ यो कार्यकोलागी कुन्जजोड हुदैन।"
+
+#: src/metacity.schemas.in.h:157
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr ""
+"यो विकल्पले शीर्षकबारमा दुईपटक क्लिकको असरलाई निश्चित गर्दछ। "
+"चालु मान्य विकल्पहरू पाटो_छाँया, जसले विन्डोलाई छाँया पार्ने/नपार्ने गर्दछ र पाटो_ठुलो जसले विन्डोलाई ठुलो/ठुलो नबनाऊने गर्दछ।"
+
+#: src/metacity.schemas.in.h:158
+msgid "Toggle always on top state"
+msgstr "पाटो जहिले पनि माथिल्लो अवस्थामा हुन्छ"
+
+#: src/metacity.schemas.in.h:159
+msgid "Toggle fullscreen mode"
+msgstr "पाटो पुरै पर्दा शैलि"
+
+#: src/metacity.schemas.in.h:160
+msgid "Toggle maximization state"
+msgstr "पाटो ठुलो अवस्थामा"
+
+#: src/metacity.schemas.in.h:161
+msgid "Toggle shaded state"
+msgstr "पाटो छाँया अवस्थामा"
+
+#: src/metacity.schemas.in.h:162
+msgid "Toggle window on all workspaces"
+msgstr "पाटो विन्डो सबै कार्यक्षेत्रहरूमा"
+
+#: src/metacity.schemas.in.h:163
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments, or when 'audible bell' is off."
+msgstr "दृष्य सुचनालाई बाटो दिन्छ जब एउटा अनुरोधपत्र वा प्रणालीले घण्टी वा बिप प्रवाह गर्दछ, सुन्न गाह्रो हुँदा प्रयोग गर्न सकिन्छ र हल्ला भएको वातावरणमा प्रयोग हुन्छ वा श्रव्य घण्टी वन्द हुन्छ।"
+
+#: src/metacity.schemas.in.h:164
+msgid "Unmaximize window"
+msgstr "ठुलो नभएको विन्डो"
+
+#: src/metacity.schemas.in.h:165
+msgid "Use standard system font in window titles"
+msgstr "विन्डो शीर्षकहरूमा उच्चस्तरिय प्रणाली वर्ण प्रयोग गर्नुहोला"
+
+#: src/metacity.schemas.in.h:166
+msgid "Visual Bell Type"
+msgstr "दृष्य घण्टि प्रकार"
+
+#: src/metacity.schemas.in.h:167
+msgid "Window focus mode"
+msgstr "विण्डो फोकस शैली"
+
+#: src/metacity.schemas.in.h:168
+msgid "Window title font"
+msgstr "विण्डो शीर्षक वर्ण"
+
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "जि कन्फ कुन्ज \"%s\" अमान्य प्रकारले मिलाएको छ\n"
+
+#: src/prefs.c:884
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr "माउस वटन सुधारकको लागी कन्फिगरेशन डाटाबेसमा भेटिएको  \"%s\" मान्य मान होईन\n"
+
+#: src/prefs.c:908 src/prefs.c:1318
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "जि कन्फ कुन्ज \"%s\" अमान्य मानमा मिलाएको छ\n"
+
+#: src/prefs.c:1035
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "जि कन्फ कुन्ज %s बाट वर्ण वर्णन \"%s\" को व्याख्या हुनसकेन\n"
+
+#: src/prefs.c:1220
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr "%d जिकोन्फ कुन्ज %s मा भण्डार गरिन्छ जुन उचित असंख्य कार्यक्षेत्र होइन, चालु ठुलो %d छ\n"
+
+#: src/prefs.c:1280
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr "टुक्रिएको अनुरोधपत्रको लागी कार्यवरिपरि असक्षम गर्नु, केहि अनुरोधपत्रले राम्रो व्यावहार नगर्न पनि सक्छ।\n"
+
+#: src/prefs.c:1345
+#fuzzy, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "जिकन्फ कुन्ज %s मा भन्डार गरिएको %d ० देखि %d क्षेत्र भन्दा बाहिर छ\n"
+
+#: src/prefs.c:1479
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "%d मा असंख्य कार्यक्षेत्रहरू मिलाउनुमा त्रुटि: %s\n"
+
+#: src/prefs.c:1723
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr "कन्फिगरेशन डाटाबेसमा भेटिएको \"%s\" कुन्जजोड \"%s\" को लागी मान्य मान होइन\n"
+
+#: src/prefs.c:2077
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "कार्यक्षेत्र %d देखि \"%s\" को लागी नाम मिलाउनुमा त्रुटि: %s\n"
+
+#: src/resizepopup.c:126
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: src/screen.c:408
+#,fuzzy, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "'%s' प्रदर्शनमा पर्दा %d मान्य छैन\n"
+
+#: src/screen.c:424
+#,fuzzy, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr "\"%s\" प्रदर्शनमा पर्दा %d संग पहिले नै विन्डो प्रबन्धक छ; चालु विन्डो प्रबन्धक बदल्नको लागी --बदल्नुस विकल्प प्रयोग गर्ने कोशिश गर्नुहोला।\n"
+
+#: src/screen.c:448
+#, c-format
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "पर्दा %d मा \"%s\" प्रदर्शन गर्दा विन्डो प्रबन्धक छनौट पाउन सक्नु भएन\n"
+
+#: src/screen.c:506
+#,fuzzy, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "\"%s\" प्रदर्शनमा पर्दा %d संग पहिले नै विन्डो प्रबन्धक छ\n"
+
+#: src/screen.c:699
+#, fuzzy, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "\"%s\" प्रदर्शनमा पर्दा %d निष्काशन भएन\n"
+
+#: src/session.c:884 src/session.c:891
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "निर्देशिका '%s' निर्माण हुनसकेन: %s\n"
+
+#: src/session.c:901
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "लेखनको लागी सत्र फाईल '%s' खुल्न सकेन: %s\n"
+
+#: src/session.c:1053
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "सत्र फाईल '%s' लेखाईमा त्रुटि: %s\n"
+
+#: src/session.c:1058
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "सत्र फाईल '%s' बन्द गर्नुमा त्रुटि: %s\n"
+
+#: src/session.c:1133
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "भण्डार गरिएको सत्र फाईल %s पढ्न असफल: %s\n"
+
+#: src/session.c:1168
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "भण्डार गरिएको सत्र फाईल व्याख्या गर्न असफल: %s\n"
+
+#: src/session.c:1217
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "<metacity_session> प्रारूप देखियो तर हामीले पहिले नै सत्र आइडि लिईसकेका छौ"
+
+#: src/session.c:1230
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr "<metacity_session> तत्त्वमा अज्ञात प्रारूप %s"
+
+#: src/session.c:1247
+msgid "nested <window> tag"
+msgstr "जगेर्ना <window> ट्याग"
+
+#: src/session.c:1305 src/session.c:1337
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "<window> तत्त्वमा अज्ञात प्रारूप %s"
+
+#: src/session.c:1409
+#, c-format
+msgid "Unknown attribute %s on <maximized> element"
+msgstr "<maximized> तत्त्वमा अज्ञात प्रारूप %s"
+
+#: src/session.c:1469
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "<geometry> तत्त्वमा अज्ञात प्रारूप %s"
+
+#: src/session.c:1489
+#, c-format
+msgid "Unknown element %s"
+msgstr "अज्ञात तत्त्व %s"
+
+#: src/session.c:1961
+#, c-format
+msgid ""
+"Error launching metacity-dialog to warn about apps that don't support "
+"session management: %s\n"
+msgstr "सत्र व्यवस्थापनलाई आधार नदिने अनुरोधपत्रको चेतावनी दिने त्रुटि उटाउने मेटासिटि संवाद: %s\n"
+
+#: src/theme-parser.c:224 src/theme-parser.c:242
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "रेखा %d वर्ण %d: %s"
+
+#: src/theme-parser.c:396
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "प्रारुप \"%s\" उस्तै <%s>तत्वमा दुइ पटक दोहोरियो"
+
+#: src/theme-parser.c:414 src/theme-parser.c:439
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "यो स्थितिमा <%s> तत्वमा \"%s\"गुण अमान्य छ"
+
+#: src/theme-parser.c:485
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "इनटिजर %ld सकरात्मक हुनुपर्छ।"
+
+#: src/theme-parser.c:493
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "इनटिजर %ld निकै ठूलो भयो, चालु ठूलो %d छ।"
+
+#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "\"%s\" फ्लोटिङ विन्दु संख्या जस्तै व्याख्या गर्न सकेन"
+
+#: src/theme-parser.c:552
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "बुलेन मान \"ठिक\" वा \"बेठिक\" हुनुपर्छ \"%s\" होईन"
+
+#: src/theme-parser.c:572
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "कोण ०॰० र ३६०॰० को बिचमा हुनुपर्दछ, %g थियो\n"
+
+#: src/theme-parser.c:638
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr "कोण ०॰० (अदृष्य) र १॰० (पुरै अपारदर्शक) को बिचमा हुनुपर्दछ, %g थियो\n"
+
+#: src/theme-parser.c:684
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"अमान्य शीर्षक माप \"%s\" (यी मध्ये एक एक्सएक्स-सानो,एक्स-सानो,सानो,मध्यम,"
+"ठूलो,एक्स-ठूलो,एक्सएक्स-ठूलो)\n"
+
+#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
+#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "<%s>तत्वमा \"%s\" गुण छैन"
+
+#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
+#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
+#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr "<%s>तत्वमा \"%s\" गुण छैन"
+
+#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
+#: src/theme-parser.c:1020
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "<%s> नाम \"%s\" दोस्रो पटक प्रयोग गर्नु।"
+
+#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "<%s> प्रमुल \"%s\" वर्णन गरिएको छैन"
+
+#: src/theme-parser.c:968
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "<%s> रेखागणीत \"%s\" वर्णन गरिएको छैन"
+
+#: src/theme-parser.c:981
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> ले रेखागणित वा रेखागणितमा भएको प्रमुललाई उल्लेख गर्नुपर्छ।"
+
+#: src/theme-parser.c:1080
+#,fuzzy, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "<%s> तत्त्वमा प्रकार \"%s\" अज्ञात"
+
+#: src/theme-parser.c:1091
+#, fuzzy,c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "<%s> तत्त्वमा \"%s\" अज्ञात शैली सेट"
+
+#: src/theme-parser.c:1099
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "विन्डो प्रकार \"%s\" मा शैली समूह पहिले निधो गरिसकेको छ।"
+
+#: src/theme-parser.c:1143
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr "मेनु छविचित्रको लागी \"%s\" अज्ञात कार्य"
+
+#: src/theme-parser.c:1152
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr "मेनु छविचित्रको ह लागी \"%s\" अज्ञात स्थिति"
+
+#: src/theme-parser.c:1160
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr "कार्य %s अवस्था %s को लागी विषयसंग पहिले नै मेनु छविचित्र छ।"
+
+#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "\"%s\" नामसंग <draw_ops> वर्णन गरिएको छैन।"
+
+#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
+#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
+#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
+#: src/theme-parser.c:3629
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "<%s>को तल <%s> तत्वलाइ अनुमति छैन॒"
+
+#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा प्रारूप \"नाम\" छैन"
+
+#: src/theme-parser.c:1289 src/theme-parser.c:1376
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"मान\" गुण छैन"
+
+#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "वटनहरूको लागी दुवै वटनको चौडाई/वटनको ऊचाई र आकार अनुपात उल्लेख हुनसकेन।"
+
+#: src/theme-parser.c:1343
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "दुरि \"%s\" अज्ञात छ"
+
+#: src/theme-parser.c:1402
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "आकार अनुपात \"%s\" अज्ञात छ।"
+
+#: src/theme-parser.c:1446
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"माथी\" गुण छैन"
+
+#: src/theme-parser.c:1453
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"तल\" गुण छैन"
+
+#: src/theme-parser.c:1460
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"देब्रे\" गुण छैन"
+
+#: src/theme-parser.c:1467
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"दाहिने\" गुण छैन"
+
+#: src/theme-parser.c:1499
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "किनारा \"%s\" अज्ञात छ"
+
+#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
+#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"रंग\" गुण छैन"
+
+#: src/theme-parser.c:1662
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"एक्स१\" गुण छैन"
+
+#: src/theme-parser.c:1669 src/theme-parser.c:2714
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"वाई१\" गुण छैन"
+
+#: src/theme-parser.c:1676
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"एक्स२\" गुण छैन"
+
+#: src/theme-parser.c:1683 src/theme-parser.c:2721
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"वाई२\" गुण छैन"
+
+#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
+#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
+#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
+#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"एक्स\" गुण छैन"
+
+#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
+#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
+#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
+#: src/theme-parser.c:2883
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"वाई\" गुण छैन"
+
+#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
+#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
+#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"चौडाई\" गुण छैन"
+
+#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
+#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
+#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"उचाई\" गुण छैन"
+
+#: src/theme-parser.c:1903
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"शूरूको कोण\" गुण छैन"
+
+#: src/theme-parser.c:1910
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"विस्तार_कोण\" गुण छैन"
+
+#: src/theme-parser.c:2090
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"अल्फा\" गुण छैन"
+
+#: src/theme-parser.c:2161
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"प्रकार\" गुण छैन"
+
+#: src/theme-parser.c:2209
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "ग्रेडियन्टको किसिमको लागी मान \"%s\" बुझिएन"
+
+#: src/theme-parser.c:2294
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"फाईलनाम\" गुण छैन"
+
+#: src/theme-parser.c:2319 src/theme-parser.c:2827
+#,fuzzy, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr "तपाईले <%s> तत्त्वको लागी भर्ने प्रकार \"%s\" बुझिएन"
+
+#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"अवस्था\" गुण छैन"
+
+#: src/theme-parser.c:2469 src/theme-parser.c:2602
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"छाँया\" गुण छैन"
+
+#: src/theme-parser.c:2476
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr "<%s> तत्त्वमा \"तिर\" गुण छैन"
+
+#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "<%s> तत्त्वको लागी अवस्था \"%s\" बुझिएन"
+
+#: src/theme-parser.c:2539 src/theme-parser.c:2661
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "<%s> तत्त्वको लागी छायाँ \"%s\" बुझिएन"
+
+#: src/theme-parser.c:2549
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "<%s> तत्त्वको लागी तीर \"%s\" बुझिएन"
+
+#: src/theme-parser.c:2962 src/theme-parser.c:3078
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "\"%s\" भनिने <draw_ops> वर्णन गरिएको छैन"
+
+#: src/theme-parser.c:2974 src/theme-parser.c:3090
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "रेखाङ्कन_अप्स \"%s\" यहाँ समावेश गरेर बाटुलो सन्दर्भ सृजना गर्दछ।"
+
+#: src/theme-parser.c:3153
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"मान\" गुण छैन"
+
+#: src/theme-parser.c:3210
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"पद\" गुण छैन"
+
+#: src/theme-parser.c:3219
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "खाका टुक्राको लागी पद \"%s\" अज्ञात"
+
+#: src/theme-parser.c:3227
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "खाका शैलीसंग पद %s मा खण्ड पहिले नै छ।"
+
+#: src/theme-parser.c:3272
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"कार्य\" गुण छैन"
+
+#: src/theme-parser.c:3280 src/theme-parser.c:3384
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"अवस्था\" गुण छैन"
+
+#: src/theme-parser.c:3289
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "वटनको लागी कार्य \"%s\" अज्ञात"
+
+#: src/theme-parser.c:3298
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "वटनको लागी स्थिति \"%s\" अज्ञात"
+
+#: src/theme-parser.c:3306
+#,fuzzy, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "कार्य %s अवस््सथा %को लागी खाका शैलीमा वटन पहिले नै छ।s "
+
+#: src/theme-parser.c:3376
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"तोकिएको\" गुण छैन"
+
+#: src/theme-parser.c:3392
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"शैली\" गुण छैन"
+
+#: src/theme-parser.c:3401
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "तोकिएको प्रारूपको लागी \"%s\" मान्य मान होइन"
+
+#: src/theme-parser.c:3410
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "अवस्था  प्रारूपको लागी \"%s\" मान्य मान होइन"
+
+#: src/theme-parser.c:3420
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "\"%s\" भनिने शैली बर्णन गरिएको छैन।"
+
+#: src/theme-parser.c:3430
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "<%s> तत्त्वमा \"पुन:आकार\" गुण छैन"
+
+#: src/theme-parser.c:3440
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "पुन:आकार प्रारूपको लागी \"%s\" मान्य मान होइन"
+
+#: src/theme-parser.c:3450
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr "अवस्था ठुलो/छाँया दिनको लागी <%s> तत्त्वमा \"पुन:आकार\" गुण छैन।"
+
+#: src/theme-parser.c:3464
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "अवस्था %s पुन:आकार %s फोकस %s को लागी शैली पहिलनै उल्लेख भईसक्यो।"
+
+#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "अवस्था %s फोकस %s को लागी शैली पहिलनै उल्लेख भईसक्यो।"
+
+#: src/theme-parser.c:3536
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<piece> तत्त्वको लागी दुईटा रेखाङकन अप्स पाउन सकेन (उल्लेखित विवरण एउटा रेखाङकन अप्स प्रारूप र साथै <draw_ops> तत्त्व वा उल्लेखित दुई तत्त्वहरू)"
+
+#: src/theme-parser.c:3574
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<button> तत्त्वको लागी दुईटा रेखाङकन अप्स पाउन सकेन (उल्लेखित विवरण एउटा रेखाङकन अप्स प्रारूप र साथै <draw_ops> तत्त्व वा उल्लेखित दुई तत्त्वहरू)"
+
+#: src/theme-parser.c:3612
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<menu_icon> तत्त्वको लागी दुईटा रेखाङकन अप्स पाउन सकेन (उल्लेखित विवरण एउटा रेखाङकन अप्स प्रारूप र साथै <draw_ops> तत्त्व वा उल्लेखित दुई तत्त्वहरू)"
+
+#: src/theme-parser.c:3659
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "विषयमा सबभन्दा बाहिरको तत्त्व <metacity_theme> हुनुपर्छ <%s> होईन।"
+
+#: src/theme-parser.c:3679
+#, c-format
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "नाम/लेखक/गते/वर्णन तत्त्व भित्र <%s> तत्त्वलाई अनुमती छैन"
+
+#: src/theme-parser.c:3684
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "<constant> तत्त्वको भित्र <%s> तत्त्वलाई अनुमती छैन"
+
+#: src/theme-parser.c:3696
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "दुरी/किनारा/आकार अनुपात वर्णन तत्त्व भित्र <%s> तत्त्वलाई अनुमती छैन।"
+
+#: src/theme-parser.c:3718
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "तत्त्व <%s> लाई रेखाङ्कन परिचालन तत्त्व भित्र अनुमती छैन"
+
+#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "<%s>तत्वभित्र <%s>तत्वलाइ जाने अनुमति छैन॒"
+
+#: src/theme-parser.c:3984
+msgid "No draw_ops provided for frame piece"
+msgstr "खाका टुक्राको लागी कुनै पनि रेखाङ्कन अप्स उपलब्ध छैन"
+
+#: src/theme-parser.c:3999
+msgid "No draw_ops provided for button"
+msgstr "वटनको लागी कुनै पनि रेखाङ्कन गर्ने अप्स उपलब्ध छैन"
+
+#: src/theme-parser.c:4014
+msgid "No draw_ops provided for menu icon"
+msgstr "मेनु छविचित्रको लागी कुनै पनि रेखाङ्कन अप्स उपलब्ध छैन"
+
+#: src/theme-parser.c:4054
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "<%s>तत्वभित्र कुनै पाठलाइ अनुमति छैन॒"
+
+#: src/theme-parser.c:4109
+msgid "<name> specified twice for this theme"
+msgstr "यो विषयको लागी <name> दुईपटक उल्लेख गरिएको छ"
+
+#: src/theme-parser.c:4120
+msgid "<author> specified twice for this theme"
+msgstr "यो विषयको लागी <author> दुईपटक उल्लेख गरिएको छ"
+
+#: src/theme-parser.c:4131
+msgid "<copyright> specified twice for this theme"
+msgstr "यो विषयको लागी <copyright> दुईपटक उल्लेख गरिएको छ"
+
+#: src/theme-parser.c:4142
+msgid "<date> specified twice for this theme"
+msgstr "यो विषयको लागी <date> दुईपटक उल्लेख गरिएको छ"
+
+#: src/theme-parser.c:4153
+msgid "<description> specified twice for this theme"
+msgstr "यो विषयको लागी <description> दुईपटक उल्लेख गरिएको छ"
+
+#: src/theme-parser.c:4348
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr "%s फाईलबाट विषय पढ्न असफल: %s\n"
+
+#: src/theme-parser.c:4403
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "विषय फाइल %s मा रूट <metacity_theme> तत्त्व राखिएको छैन।"
+
+#: src/theme-viewer.c:70
+msgid "/_Windows"
+msgstr "/_द्वारहरु"
+
+#: src/theme-viewer.c:71
+msgid "/Windows/tearoff"
+msgstr "/विन्डोहरू/च्यात्नु"
+
+#: src/theme-viewer.c:72
+msgid "/Windows/_Dialog"
+msgstr "/द्वारहरु/_संवाद"
+
+#: src/theme-viewer.c:73
+msgid "/Windows/_Modal dialog"
+msgstr "/विन्डोहरू/_नमुना संवाद"
+
+#: src/theme-viewer.c:74
+msgid "/Windows/_Utility"
+msgstr "/द्वारहरु/_उपयोगिता"
+
+#: src/theme-viewer.c:75
+msgid "/Windows/_Splashscreen"
+msgstr "/विन्डो/_स्प्लासपर्दा"
+
+#: src/theme-viewer.c:76
+msgid "/Windows/_Top dock"
+msgstr "/विन्डोहरू/_माथिल्लो जिर्णोद्वार कारखानाहरू"
+
+#: src/theme-viewer.c:77
+msgid "/Windows/_Bottom dock"
+msgstr "/विन्डोहरू/_तल्लो जिर्णोद्वार कारखानाहरू"
+
+#: src/theme-viewer.c:78
+msgid "/Windows/_Left dock"
+msgstr "/विन्डो/_देब्रे जिर्णोद्वार कारखानाहरू"
+
+#: src/theme-viewer.c:79
+msgid "/Windows/_Right dock"
+msgstr "/विन्डोहरू/_दाहिने जिर्णोद्वार कारखानाहरू"
+
+#: src/theme-viewer.c:80
+msgid "/Windows/_All docks"
+msgstr "/विन्डोहरू/_सबै जिर्णोद्वार कारखानाहरू"
+
+#: src/theme-viewer.c:81
+msgid "/Windows/Des_ktop"
+msgstr "/विन्डो/डेक्सटप"
+
+#: src/theme-viewer.c:131
+msgid "Open another one of these windows"
+msgstr "यि मध्ये अर्को एउटा विन्डो खोल्नुहोला।"
+
+#: src/theme-viewer.c:138
+msgid "This is a demo button with an 'open' icon"
+msgstr "यो 'खोल' छविचित्रसंग डेमो वटन हो।"
+
+#: src/theme-viewer.c:145
+msgid "This is a demo button with a 'quit' icon"
+msgstr "यो 'अन्त्य' छविचित्रसंग डेमो वटन हो।"
+
+#: src/theme-viewer.c:241
+msgid "This is a sample message in a sample dialog"
+msgstr "यो नमुना संवादमा नमुना संन्देश हो।"
+
+#: src/theme-viewer.c:324
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "नक्कली मेनु चिज %d\n"
+
+#: src/theme-viewer.c:358
+msgid "Border-only window"
+msgstr "किनारा मात्र विन्डो"
+
+#: src/theme-viewer.c:360
+msgid "Bar"
+msgstr "बार"
+
+#: src/theme-viewer.c:377
+msgid "Normal Application Window"
+msgstr "साधारण अनुरोधपत्र विण्डो॒"
+
+#: src/theme-viewer.c:382
+msgid "Dialog Box"
+msgstr "संवाद बाकस"
+
+#: src/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "नमुना संवाद बाकस"
+
+#: src/theme-viewer.c:392
+msgid "Utility Palette"
+msgstr "उपयोगि रंगदानी"
+
+#: src/theme-viewer.c:397
+msgid "Torn-off Menu"
+msgstr "मेनु च्यातियो"
+
+#: src/theme-viewer.c:402
+msgid "Border"
+msgstr "किनारा"
+
+#: src/theme-viewer.c:731
+#, c-format
+msgid "Button layout test %d"
+msgstr "वटन ढाँचा पाठ %d"
+
+#: src/theme-viewer.c:760
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "एउटा विन्डो खाका रेखाङ्कन गर्न %g  मिलिसेकेन्ड लाग्यो।"
+
+#: src/theme-viewer.c:803
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "प्रयोग: मेटासिटि-विषय-दर्शक [विषयनाम]\n"
+
+#: src/theme-viewer.c:810
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "विषय लोडमा त्रुटि: %s\n"
+
+#: src/theme-viewer.c:816
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "विषय \"%s\" %g सेकेन्डमा लोड भयो\n"
+
+#: src/theme-viewer.c:839
+msgid "Normal Title Font"
+msgstr "साधारण शीर्षक वर्ण॒"
+
+#: src/theme-viewer.c:845
+msgid "Small Title Font"
+msgstr "सानो शीर्षक वर्ण॒"
+
+#: src/theme-viewer.c:851
+msgid "Large Title Font"
+msgstr "ठूलो शीर्षक वर्ण॒"
+
+#: src/theme-viewer.c:856
+msgid "Button Layouts"
+msgstr "वटन संस्थापनहरु"
+
+#: src/theme-viewer.c:861
+msgid "Benchmark"
+msgstr "बेन्चमार्क"
+
+#: src/theme-viewer.c:908
+msgid "Window Title Goes Here"
+msgstr "विण्डो शीर्षक यहाँ जान्छ।"
+
+#: src/theme-viewer.c:1012
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr "%d खाका %g ग्राहक-तर्फ सेकेण्ड (प्रति खाका %g मिलिसेकेण्ड) र  %g सेकेण्ड भित्ते घडि समय एक्स सेवादायक स्रोतहरू सहित (प्रति खाका %g मिलिसेकेण्ड) रेखाङ्कन गर्नुहोला।\n"
+
+#: src/theme-viewer.c:1227
+msgid "position expression test returned TRUE but set error"
+msgstr "पद अभिव्यक्ति पाठ ठिक भनि फिर्ता भयो तर त्रुटि मिलायो"
+
+#: src/theme-viewer.c:1229
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "पद अभिव्यक्ति पाठ गलत भनि फिर्ता भयो तर त्रुटि मिलाएन"
+
+#: src/theme-viewer.c:1233
+msgid "Error was expected but none given"
+msgstr "त्रुटि आशा गरिएको छ तर केहि पनि दिईएको छैन"
+
+#: src/theme-viewer.c:1235
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "त्रुटि %d आशा गरिएको छ तर %d दिईएको छ"
+
+#: src/theme-viewer.c:1241
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "त्रुटि आशा गरिएको छैन तर एउटा फिर्ता भयो: %s"
+
+#: src/theme-viewer.c:1245
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "एक्सको मान %d हो, %d आशा गरिएको छ।"
+
+#: src/theme-viewer.c:1248
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "वाईको मान %d हो, %d आशा गरिएको छ।"
+
+#: src/theme-viewer.c:1310
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d संयोजन अभिव्यक्ति %g सेकेन्डमा व्याख्या गरियो (%g औसत सेकेन्ड)\n"
+
+#: src/theme.c:202
+msgid "top"
+msgstr "माथी"
+
+#: src/theme.c:204
+msgid "bottom"
+msgstr "तल"
+
+#: src/theme.c:206
+msgid "left"
+msgstr "बाँया॒"
+
+#: src/theme.c:208
+msgid "right"
+msgstr "दाँया॒"
+
+#: src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "खाका रेखागणितले आयाम \"%s\" उल्लेख गरेको छैन।"
+
+#: src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "खाका रेखागणितले किनारा \"%s\" को लागी आयाम \"%s\" उल्लेख गरेको छैन।"
+
+#: src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "वटन आकार अनुपात %g उचित छैन"
+
+#: src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr "खाका रेखागणितले वटनको साईज उल्लेख गरेको छैन।"
+
+#: src/theme.c:849
+msgid "Gradients should have at least two colors"
+msgstr "ग्रेडियन्टसंग कम्तीमा पनि दुई रंग हुनुपर्छ।"
+
+#: src/theme.c:975
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr "खास उल्लेख गरिएको जिटिके रंग कोष्ठ अवस्थामा हुनुपर्छ, उदाहरण जिटिके:एफजि[साधारण] जहाँ साधारण अवस्था हो, \"%s\" व्याख्या गर्न सकिंदैन।"
+
+#: src/theme.c:989
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "खास उल्लेख गरिएको जिटिके रंगमा अवस्था पछि बन्द कोष्ठ हुनुपर्छ,उदाहरण जिटिके:एफजि[साधारण] जहाँ साधारण अवस्था हो, \"%s\" व्याख्या गर्न सकिंदैन।"
+
+#: src/theme.c:1000
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "खास उल्लेख गरिएको रंगमा अवस्था \"%s\" बुझ्नसकिएन?"
+
+#: src/theme.c:1013
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "खास उल्लेख गरिएको रंगमा रंगको भाग \"%s\" बुझ्नसकिएन?"
+
+#: src/theme.c:1043
+#, fuzzy,c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr "मिसिएको ढाँचा \"मिसिएकोु/बिजि_रंगएफजिgरंगrअल्फाa\" हो, \"%s\" ढाँचा अनुसार छैन।t"
+
+#: src/theme.c:1054
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "अल्फा मान \"%s\" मिसिएको रंगमा व्याख्या गर्न सकिएन।"
+
+#: src/theme.c:1064
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "मिसिएको रंगमा भएको अल्फा मान \"%s\" ०॰० र १॰० को बिचमा छैन।"
+
+#: src/theme.c:1111
+#, c-format
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "छाँया ढाँचा \"छाँया/आधार_रंग/प्रतिनिधि\" हो, \"%s\" ढाँचा अनुसार छैन।"
+
+#: src/theme.c:1122
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "छाँया रंगमा छाँया प्रतिनिधि \"%s\" व्याख्या गर्न सकेन"
+
+#: src/theme.c:1132
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "छाँया प्रतिनिधि \"%s\" जुन छाँया रंगमा छ नकरात्मक छ"
+
+#: src/theme.c:1161
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "\"%s\" रंग व्याख्या गर्न सकिएन।"
+
+#: src/theme.c:1423
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "संयोजन अभिव्यक्तिमा '%s' क्यारेक्टर राखेको छ जुन अनुमती छैन।"
+
+#: src/theme.c:1450
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "संयोजन अभिव्यक्तिमा बदलिरहनेहने बिन्दु '%s' हुन्छ जसलाई व्याख्या गर्न सकिंदैन।"
+
+#: src/theme.c:1464
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "संयोजन अभिव्यक्तिमा इन्टिजर '%s' समावेस छ जसलाई व्याख्या गर्न सकिंदैन।"
+
+#: src/theme.c:1531
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr "संयोजन अभिव्यक्तिले यो पाठको शुरूमा अज्ञात संचालक राखेको छ: \"%s\""
+
+#: src/theme.c:1588
+msgid "Coordinate expression was empty or not understood"
+msgstr "संयोजन अभिव्यक्ति खाली वा नबुझिने थियो"
+
+#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
+msgid "Coordinate expression results in division by zero"
+msgstr "संयोजन अभिव्यक्ति शुन्य भागमा परिणत हुन्छ।"
+
+#: src/theme.c:1783
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "संयोजन अभिव्यक्तिले फ्लोटिङ-विन्दु संख्यामा मोड संचालक प्रयोग गर्न कोशिश गर्दछ।"
+
+#: src/theme.c:1840
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "संयोजन अभिव्यक्तिसंग संचालनकर्ता \"%s\" छ र जहाँ ओपेरन्डको आशा गरिएको थियो।"
+
+#: src/theme.c:1849
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "संयोजन अभिव्यक्तिसंग ओपरन्ड छ र जहाँ संचालनकर्ताको आशा गरिएको थियो।"
+
+#: src/theme.c:1857
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "संयोजन अभिव्यक्ति ओपरन्डको सट्टा संचालनकर्तासंगै समाप्त हुन्छ।"
+
+#: src/theme.c:1867
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr "संयोजन अभिव्यक्तिसंग बिचमा कुनै पनि अपरन्ड नभएको संचालनकर्ता \"%c\" मा अनुश्रित संचालनकर्ता \"%c\" छ।"
+
+#: src/theme.c:1986
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr "संयोजन अभिव्यक्ति व्याख्या गर्नेले अस्थाई स्मृतिलाई छच्लकाउँछ, यो एउटा साँच्चै नै मेटासिटि बग हो तर के तपाई पक्का हुनुहुन्छ कि तपाईलाई यस्तो ठूलो विवरणको आवश्यकता छ?"
+
+#: src/theme.c:2015
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "संयोजन अभिव्यक्तिसंग बन्द कोष्ठकसंगै खुल्ला नभएको कोष्ठक छ।"
+
+#: src/theme.c:2078
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "संयोजन अभिव्यक्तिसंग अज्ञात चल वा अचल \"%s\" छ।"
+
+#: src/theme.c:2135
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "संयोजन अभिव्यक्तिसंग खुल्ला कोष्ठकसंगै बन्द नभएको कोष्ठक छ।"
+
+#: src/theme.c:2146
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "संयोजन अभिव्यक्ति मा कुनै पनि ओपरेन्ड वा संचालकहरू देखिदैन।"
+
+#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "विषयले \"%s\" को आशा राख्दछ जसले त्रुटिपूर्ण फल दिन्छ: %s\n"
+
+#: src/theme.c:3919
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> यो खाका शैलीको लागी उल्लेख भएको हुनुपर्छ।"
+
+#: src/theme.c:4369 src/theme.c:4401
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "हराईराखेको <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+
+#: src/theme.c:4452
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "\"%s\": %s विषय लोड गर्न असफल\n"
+
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
+#: src/theme.c:4626
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "\"%s\" विषयको लागी <%s> सेट भएन"
+
+#: src/theme.c:4636
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "विन्डो प्रकार \"%s\" को लागी विषय \"%s\" मा खाका शैली सेट भएको छैन, <windowtype=\"%s\"style_set=\"whatever\"/> तत्त्व थप्नुहोला"
+
+#: src/theme.c:4658
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> यो विषयको लागी उल्लेख गरिएको हुनुपर्छ।"
+
+#: src/theme.c:5047 src/theme.c:5109
+#, c-format
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "प्रयोगकर्ताको वर्णन स्थिरता ठूलो अक्षरबाट शुरू हुनुपर्छ, \"%s\" होइन"
+
+#: src/theme.c:5055 src/theme.c:5117
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "स्थिर \"%s\" पहिले नै वर्णन गरिसकेको छ"
+
+#: src/util.c:93
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "डिबग लग: %s खोल्न असफल\n"
+
+#: src/util.c:103
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "%s () लग फाईल खोल्न असफल : %s\n"
+
+#: src/util.c:109
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "%s लग फाईल खोलियो\n"
+
+#: src/util.c:203
+msgid "Window manager: "
+msgstr "विण्डो प्रबन्धक: "
+
+#: src/util.c:349
+msgid "Bug in window manager: "
+msgstr "विन्डो प्रबन्धकमा बग: "
+
+#: src/util.c:378
+msgid "Window manager warning: "
+msgstr "विण्डो प्रबन्धकको चेतावनी: "
+
+#: src/util.c:402
+msgid "Window manager error: "
+msgstr "विण्डो प्रबन्धक त्रुटि: "
+
+#: src/window-props.c:162
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr "अनुरोधपत्रले नक्कली _नेट_डब्लुएम_पिआईडि %ld मिलायो\n"
+
+#. first time through
+#: src/window.c:5070
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr "विन्डो %s ले आईसिसिसिएम मा तोकिएको जस्तै आफैमा डब्लुएम_ग्राहक_लिडरको सट्टा एसएम_ग्राहक_आईडि मिलाउँदछ।\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: src/window.c:5741
+#,fuzzy, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "विन्डो %s ले यो पुन:आकार हुदैन भनेर संकेत गरि एमडब्लिएम हिन्ट मिलाउँदछ तर न्युनतम आकार %d x %d र अधिकतम आकार मिलाउँदछ; यसले कुनै पनि अर्थ दिदैन।\n "
+
+#: src/xprops.c:153
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"विन्डो ०एक्स%lx मा गुण %s छ\n"
+"जसले प्रकार %s ढाँचा%d आशा गरेको छ\n"
+"र यथार्थमा प्रकार %s ढाँचा %d n_items %d.\n"
+"यो एउटा धेरै मनपराएको अनुरोधपत्र हो, विन्डो प्रबन्धक बग होईन।\n"
+"विन्डोमा शीर्षक=\"%s\" कक्षा=\"%s\" नाम=\"%s\" छ\n"
+
+#: src/xprops.c:399
+#,fuzzy, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "विन्डो ०एक्स%lx मा रहेको गुण %s मा अमान्य युटिएफ-८ छ\n"
+
+#: src/xprops.c:482
+#, fuzzy,c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "विन्डो ०एक्स%lx मा भएको गुण %s मा सुचिमा भएको विषय %d को लागी अबैधानिक युटिएफ-८ रहेको छ।\n"
+
