@@ -2110,6 +2110,13 @@ get_control (MetaFrames *frames,
 void
 meta_frames_push_delay_exposes (MetaFrames *frames)
 {
+  if (frames->expose_delay_count == 0)
+    {
+      /* Make sure we've repainted things */
+      gdk_window_process_all_updates ();
+      XFlush (gdk_display);
+    }
+  
   frames->expose_delay_count += 1;
 }
 

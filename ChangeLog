@@ -1,3 +1,56 @@
+2003-10-12  Havoc Pennington  <hp@redhat.com>
+
+        Merge reduced_resources mode patch from the branch. Offers
+	wireframe and no-animations.
+	
+	* src/window.c (implement_showing): no animation if we are 
+	in reduced resources mode
+
+	* src/prefs.c: add REDUCED_RESOURCES pref
+
+	* src/window.c (meta_window_update_keyboard_resize): fix to 
+	modify grab_anchor_window_pos to grab_wireframe_rect if 
+	appropriate instead of window->rect
+
+	* src/display.h (struct _MetaDisplay): add grab_start_serial used
+	to avoid responding to events that occurred prior to the grab
+	initialization.
+
+	Still broken in various ways, specifically EnterNotify that
+	occurred prior to XGrabPointer is processed as if it occurred
+	after.
+	
+	* src/window.c (meta_window_update_keyboard_move): add this
+	instead of meta_window_warp_pointer() crack
+
+	* src/effects.c (meta_effects_update_wireframe): draw a kind of
+	grid for the wireframe, instead of just a rectangle, like twm
+
+	* src/screen.c (meta_screen_new): line width of 3 for the XOR gc
+
+        "Reduced resources" mode based on wireframe patch from
+	Erwann Chenede. Still pretty buggy.
+	
+	* src/keybindings.c (process_keyboard_move_grab)
+	(process_keyboard_resize_grab): add gruesome wireframe hacks
+
+	* src/display.c (meta_display_end_grab_op): end wireframe
+	(meta_display_begin_grab_op): begin wireframe
+
+	* src/effects.c (meta_effects_end_wireframe) 
+	(meta_effects_update_wireframe, meta_effects_begin_wireframe): 
+	routines to draw the wireframe stuff
+
+	* src/window.c (window_should_be_showing): hide window when 
+	doing wireframe, commented out as it breaks grab
+	* src/window.c (meta_window_refresh_resize_popup): handle wireframe
+
+	* src/screen.c (meta_screen_new): create a screen->root_xor_gc 
+	for use in drawing wireframes
+	
+	* src/frames.c (meta_frames_push_delay_exposes): repaint
+	everything before we delay
+
 2003-10-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_begin_grab_op): initialize

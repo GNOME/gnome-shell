@@ -370,12 +370,11 @@ A: This one is also in rationales.txt. Because "ouija board" UI, where
      http://pobox.com/~hp/free-software-ui.html
      http://pobox.com/~hp/features.html   
 
-Q: Why no wireframe move/resize?
+Q: Why does wireframe move/resize suck?
 
-A: It's implemented in a patch that will be merged for GNOME 2.6
-   and is already in some vendor packages.
+A: You can turn it on with the reduced_resources setting.
 
-   But: Because it has low usability, and is a pain
+   But: it has low usability, and is a pain
    to implement, and there's no reason opaque move/resize should be a
    problem on any setup that can run a modern desktop worth a darn to
    begin with.

@@ -1,11 +1,11 @@
 #! /bin/bash
 
 if test -z "$XNEST_DISPLAY"; then
-  XNEST_DISPLAY=:1
+  XNEST_DISPLAY=:8
 fi
 
 if test -z "$CLIENT_DISPLAY"; then
-  CLIENT_DISPLAY=:1
+  CLIENT_DISPLAY=:8
 fi
 
 if test -z "$METACITY_DISPLAY"; then

@@ -469,15 +469,13 @@ void     meta_window_foreach_ancestor         (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,
                                                void                  *data);
 
-gboolean meta_window_warp_pointer (MetaWindow *window,
-                                   MetaGrabOp  grab_op);
-
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
                                 Time        timestamp);
 
-void meta_window_update_resize_grab_op (MetaWindow *window,
-                                        gboolean    update_cursor);
+void meta_window_update_keyboard_resize (MetaWindow *window,
+                                         gboolean    update_cursor);
+void meta_window_update_keyboard_move   (MetaWindow *window);
 
 void meta_window_update_layer (MetaWindow *window);
 

@@ -51,6 +51,7 @@
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 #define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
 #define KEY_BUTTON_LAYOUT "/apps/metacity/general/button_layout"
+#define KEY_REDUCED_RESOURCES "/apps/metacity/general/reduced_resources"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
@@ -83,6 +84,8 @@ static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
 static gboolean provide_visual_bell = TRUE;
 static gboolean bell_is_audible = TRUE;
+static gboolean reduced_resources = FALSE;
+
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_INVALID;
 static MetaButtonLayout button_layout = {
   {
@@ -129,6 +132,7 @@ static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
+static gboolean update_reduced_resources  (gboolean     value);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -372,7 +376,6 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_button_layout (str_val);
   g_free (str_val);
-#endif /* HAVE_GCONF */
   
   bool_val = gconf_client_get_bool (default_client, KEY_VISUAL_BELL,
                                     &err);
@@ -388,6 +391,12 @@ meta_prefs_init (void)
   update_visual_bell_type (str_val);
   g_free (str_val);
 
+  bool_val = gconf_client_get_bool (default_client, KEY_REDUCED_RESOURCES,
+				    &err);
+  cleanup_error (&err);
+  update_reduced_resources (bool_val);
+#endif /* HAVE_GCONF */
+  
   /* Load keybindings prefs */
   init_bindings ();
 
@@ -732,6 +741,22 @@ change_notify (GConfClient    *client,
       str = value ? gconf_value_get_string (value) : NULL;
       if (update_visual_bell_type (str))
 	queue_changed (META_PREF_VISUAL_BELL_TYPE);
+    }
+  else if (strcmp (key, KEY_REDUCED_RESOURCES) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_REDUCED_RESOURCES);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : reduced_resources;
+
+      if (update_reduced_resources (b))
+        queue_changed (META_PREF_REDUCED_RESOURCES);
     }
   else
     {
@@ -1239,6 +1264,16 @@ update_auto_raise_delay (int value)
 
   return old != auto_raise_delay;
 }
+
+static gboolean
+update_reduced_resources (gboolean value)
+{
+  gboolean old = reduced_resources;
+
+  reduced_resources = value;
+
+  return old != reduced_resources;
+}
 #endif /* HAVE_GCONF */
 
 #ifdef WITH_VERBOSE_MODE
@@ -1304,6 +1339,10 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_VISUAL_BELL_TYPE:
       return "VISUAL_BELL_TYPE";
+      break;
+
+    case META_PREF_REDUCED_RESOURCES:
+      return "REDUCED_RESOURCES";
       break;
     }
 
@@ -1972,6 +2011,12 @@ int
 meta_prefs_get_auto_raise_delay ()
 {
   return auto_raise_delay;
+}
+
+gboolean
+meta_prefs_get_reduced_resources ()
+{
+  return reduced_resources;
 }
 
 MetaKeyBindingAction

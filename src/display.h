@@ -225,19 +225,24 @@ struct _MetaDisplay
   MetaScreen *grab_screen;
   MetaWindow *grab_window;
   Window      grab_xwindow;
+  gulong      grab_start_serial;
   int         grab_button;
-  int         grab_initial_root_x;
-  int         grab_initial_root_y;
+  int         grab_anchor_root_x;
+  int         grab_anchor_root_y;
+  MetaRectangle grab_anchor_window_pos;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
+  guint       grab_wireframe_active : 1;
+  guint       grab_was_cancelled : 1;
+  MetaRectangle grab_wireframe_rect;
   MetaRectangle grab_initial_window_pos;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
-
+  
   /* we use property updates as sentinels for certain window focus events
    * to avoid some race conditions on EnterNotify events
    */

@@ -409,5 +409,108 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
   XFlush (context->screen->display->xdisplay);  
 }
 
+void
+meta_effects_begin_wireframe (MetaScreen          *screen,
+                              const MetaRectangle *rect)
+{
+  /* Grab the X server to avoid screen dirt */
+  meta_display_grab (screen->display);
+  meta_ui_push_delay_exposes (screen->ui);  
 
+  meta_effects_update_wireframe (screen, NULL, rect);
+}
+
+static void
+draw_xor_rect (MetaScreen          *screen,
+               const MetaRectangle *rect)
+{
+  /* The lines in the center can't overlap the rectangle or each
+   * other, or the XOR gets reversed. So we have to draw things
+   * a bit oddly.
+   */
+  XSegment segments[8];
+  int i;
+  
+#define LINE_WIDTH META_WIREFRAME_XOR_LINE_WIDTH
+  
+  XDrawRectangle (screen->display->xdisplay,
+                  screen->xroot,
+                  screen->root_xor_gc,
+                  rect->x, rect->y,
+                  rect->width, rect->height);
+
+  /* Don't put lines inside small rectangles where they won't fit */
+  if (rect->width < (LINE_WIDTH * 4) ||
+      rect->height < (LINE_WIDTH * 4))
+    return;
+  
+  /* Two vertical lines at 1/3 and 2/3 */
+  segments[0].x1 = rect->x + rect->width / 3;
+  segments[0].y1 = rect->y + LINE_WIDTH / 2 + LINE_WIDTH % 2;
+  segments[0].x2 = segments[0].x1;
+  segments[0].y2 = rect->y + rect->height - LINE_WIDTH / 2;  
+
+  segments[1] = segments[0];
+  segments[1].x1 = rect->x + (rect->width / 3) * 2;
+  segments[1].x2 = segments[1].x1;
+
+  /* Now make two horizontal lines at 1/3 and 2/3, but not
+   * overlapping the verticals
+   */
+
+  segments[2].x1 = rect->x + LINE_WIDTH / 2 + LINE_WIDTH % 2;
+  segments[2].x2 = segments[0].x1 - LINE_WIDTH / 2;
+  segments[2].y1 = rect->y + rect->height / 3;
+  segments[2].y2 = segments[2].y1;
+
+  segments[3] = segments[2];
+  segments[3].x1 = segments[2].x2 + LINE_WIDTH;
+  segments[3].x2 = segments[1].x1 - LINE_WIDTH / 2;
+  
+  segments[4] = segments[3];
+  segments[4].x1 = segments[3].x2 + LINE_WIDTH;
+  segments[4].x2 = rect->x + rect->width - LINE_WIDTH / 2;
+
+  /* Second horizontal line is just like the first, but
+   * shifted down
+   */
+  i = 5;
+  while (i < 8)
+    {
+      segments[i] = segments[i - 3];
+      segments[i].y1 = rect->y + (rect->height / 3) * 2;
+      segments[i].y2 = segments[i].y1;
+      ++i;
+    }
+  
+  XDrawSegments (screen->display->xdisplay,
+                 screen->xroot,
+                 screen->root_xor_gc,
+                 segments,
+                 G_N_ELEMENTS (segments));
+}
+
+void
+meta_effects_update_wireframe (MetaScreen          *screen,
+                               const MetaRectangle *old_rect,
+                               const MetaRectangle *new_rect)
+{
+  if (old_rect)
+    draw_xor_rect (screen, old_rect);
+    
+  if (new_rect)
+    draw_xor_rect (screen, new_rect);
+    
+  XFlush (screen->display->xdisplay);
+}
+
+void
+meta_effects_end_wireframe (MetaScreen          *screen,
+                            const MetaRectangle *old_rect)
+{
+  meta_effects_update_wireframe (screen, old_rect, NULL);
+  
+  meta_display_ungrab (screen->display);
+  meta_ui_pop_delay_exposes (screen->ui);
+}
 
