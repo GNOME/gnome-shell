@@ -121,13 +121,14 @@ validate_or_free_results (GetPropertyResults *results,
   prop_name = XGetAtomName (results->display->xdisplay, results->xatom);
   meta_error_trap_pop (results->display, TRUE);
 
-  meta_warning (_("Window 0x%lx has property %s that was expected to have type %s format %d and actually has type %s format %d n_items %d\n"),
+  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug.\nUse \"xprop -id 0x%lx\" to print all properties on the problematic window.\nThe _NET_WM_NAME or WM_NAME or WM_CLASS properties should identify the application.\n"),
                 results->xwindow,
                 prop_name ? prop_name : "(bad atom)",
                 expected_name ? expected_name : "(bad atom)",
                 expected_format,
                 type_name ? type_name : "(bad atom)",
-                results->format, (int) results->n_items);
+                results->format, (int) results->n_items,
+                results->xwindow);
 
   if (type_name)
     XFree (type_name);

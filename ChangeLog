@@ -1,5 +1,11 @@
 2002-12-15  Havoc Pennington  <hp@pobox.com>
 
+	* src/xprops.c (validate_or_free_results): make the warning about
+	strange property contents blame the application and explain how to 
+	use xprop to diagnose which app is causing the problem.
+
+2002-12-15  Havoc Pennington  <hp@pobox.com>
+
 	* src/prefs.c (meta_prefs_change_workspace_name): don't pass NULL
 	string to gconf_client_set_string #101237
 
