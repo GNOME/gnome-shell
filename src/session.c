@@ -79,7 +79,7 @@ static char*       load_state         (const char *previous_save_file);
 static void        regenerate_save_file (void);
 static const char* full_save_file       (void);
 static const char* base_save_file       (void);
-static void        warn_about_lame_clients (void);
+static void        warn_about_lame_clients_and_finish_interact (gboolean shutdown);
 
 /* This is called when data is available on an ICE connection.  */
 static gboolean
@@ -549,11 +549,7 @@ interact_callback (SmcConn smc_conn, SmPointer client_data)
 
   current_state = STATE_DONE_WITH_INTERACT;
 
-  warn_about_lame_clients ();
-
-  SmcInteractDone (session_connection, False /* don't cancel logout */);
-  
-  save_yourself_possibly_done (shutdown, TRUE);
+  warn_about_lame_clients_and_finish_interact (shutdown);
 }
 
 static void
@@ -1690,8 +1686,51 @@ windows_cmp_by_title (MetaWindow *a,
   return g_utf8_collate (a->title, b->title);
 }
 
+typedef struct
+{
+  int child_pid;
+  int child_pipe;
+  gboolean shutdown;
+} LameClientsDialogData;
+
 static void
-warn_about_lame_clients (void)
+finish_interact (gboolean shutdown)
+{
+  if (current_state == STATE_DONE_WITH_INTERACT) /* paranoia */
+    {
+      SmcInteractDone (session_connection, False /* don't cancel logout */);
+      
+      save_yourself_possibly_done (shutdown, TRUE);
+    }
+}
+
+static gboolean  
+io_from_warning_dialog (GIOChannel   *channel,
+                        GIOCondition  condition,
+                        gpointer      data)
+{
+  LameClientsDialogData *d;
+
+  d = data;
+  
+  meta_topic (META_DEBUG_PING,
+              "IO handler from lame clients dialog, condition = %x\n",
+              condition);
+  
+  if (condition & (G_IO_HUP | G_IO_NVAL | G_IO_ERR))
+    {
+      finish_interact (d->shutdown);
+
+      /* Remove the callback, freeing data */
+      return FALSE; 
+    }
+
+  /* Keep callback installed */
+  return TRUE;
+}
+
+static void
+warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 {
   GSList *displays;
   GSList *display_iter;  
@@ -1701,7 +1740,10 @@ warn_about_lame_clients (void)
   GSList *tmp;
   int len;
   int child_pid;
+  int child_pipe;
   GError *err;
+  GIOChannel *channel;
+  LameClientsDialogData *d;
   
   lame = NULL;
   displays = meta_displays_list ();
@@ -1763,7 +1805,9 @@ warn_about_lame_clients (void)
 
       tmp = tmp->next;
     }
-  
+
+  child_pipe = -1;
+  child_pid = -1;
   err = NULL;
   if (!g_spawn_async_with_pipes ("/",
                                  argv,
@@ -1772,7 +1816,7 @@ warn_about_lame_clients (void)
                                  NULL, NULL,
                                  &child_pid,
                                  NULL,
-                                 NULL,
+                                 &child_pipe,
                                  NULL,
                                  &err))
     {
@@ -1784,9 +1828,17 @@ warn_about_lame_clients (void)
   g_free (argv);
   g_slist_free (lame);
 
-  /* FIXME we need to keep a pipe to the child open to detect when it exits, and
-   * only send InteractDone when the child has exited.
-   */
+  d = g_new0 (LameClientsDialogData, 1);
+  d->child_pipe = child_pipe;
+  d->child_pid = child_pid;
+  d->shutdown = shutdown;
+  
+  channel = g_io_channel_unix_new (d->child_pipe);
+  g_io_add_watch_full (channel, G_PRIORITY_DEFAULT,
+                       G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
+                       io_from_warning_dialog,
+                       d, g_free);
+  g_io_channel_unref (channel);
 }
 
 #endif /* HAVE_SM */

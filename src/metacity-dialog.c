@@ -251,8 +251,8 @@ warn_about_no_sm_support (char **lame_apps)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                       sw,
                       TRUE, TRUE, 0);
-      
-  gtk_widget_show_all (dialog);  
+  
+  gtk_widget_show_all (dialog);
 
   gtk_main ();
   
