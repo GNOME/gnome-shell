@@ -24,8 +24,8 @@
 
 static GtkWidget *tip = NULL;
 static GtkWidget *label = NULL;
-static int screen_width = 0;
-static int screen_height = 0;
+static int screen_right_edge = 0;
+static int screen_bottom_edge = 0;
 
 static gint
 expose_handler (GtkTooltips *tooltips)
@@ -50,13 +50,17 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       tip = gtk_window_new (GTK_WINDOW_POPUP);
       {
         GdkScreen *gdk_screen;
+	GdkRectangle monitor;
+	gint mon_num;
 
         gdk_screen = gdk_display_get_screen (gdk_display_get_default (),
                                              screen_number);
         gtk_window_set_screen (GTK_WINDOW (tip),
                                gdk_screen);
-        screen_width = gdk_screen_get_width (gdk_screen);
-        screen_height = gdk_screen_get_height (gdk_screen);
+	mon_num = gdk_screen_get_monitor_at_point (gdk_screen, root_x, root_y);
+	gdk_screen_get_monitor_geometry (gdk_screen, mon_num, &monitor);
+	screen_right_edge = monitor.x + monitor.width;
+	screen_bottom_edge = monitor.y + monitor.height;
       }
       
       gtk_widget_set_app_paintable (tip, TRUE);
@@ -80,12 +84,9 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
 
   gtk_label_set_markup (GTK_LABEL (label), markup_text);
   
-  /* FIXME should also handle Xinerama here, just to be
-   * really cool
-   */
   gtk_window_get_size (GTK_WINDOW (tip), &w, &h);
-  if ((root_x + w) > screen_width)
-    root_x -= (root_x + w) - screen_width;
+  if ((root_x + w) > screen_right_edge)
+    root_x -= (root_x + w) - screen_right_edge;
   
   gtk_window_move (GTK_WINDOW (tip), root_x, root_y);
 

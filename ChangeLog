@@ -1,3 +1,13 @@
+2005-01-26  Elijah Newren  <newren@gmail.com>
+
+	Patch from John Paul Wallington to keep tooltip on screen
+	horizontally for xinerama.  Fixes #165261.
+
+	* src/fixedtip.c: (meta_fixed_tip_show): rename screen_width and
+	screen_height to screen_right_edge and screen_bottom_edge, set
+	them using xinerama info instead of just screen geometry, and use
+	them to determine where to place the tooltip window.
+
 2005-01-26  Arvind Samptur  <arvind.samptur@wipro.com>
 
 	Don't wireframe when accessibility is on, it apparently
