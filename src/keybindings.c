@@ -1743,7 +1743,8 @@ handle_close_window       (MetaDisplay    *display,
                            MetaKeyBinding *binding)
 {
   if (window)
-    meta_window_delete (window, event->xkey.time);
+     if (window->has_close_func)
+       meta_window_delete (window, event->xkey.time);
 }
 
 static void
@@ -1753,7 +1754,8 @@ handle_minimize_window (MetaDisplay    *display,
                         MetaKeyBinding *binding)
 {
   if (window)
-    meta_window_minimize (window);
+     if (window->has_minimize_func)
+       meta_window_minimize (window);
 }
 
 static void
