@@ -1,5 +1,10 @@
 2002-08-07  Craig Black  <blackc@speakeasy.net>
 
+	* src/core.c: (meta_core_show_window_menu): focus window
+  on right click for menu, #87299.
+
+2002-08-07  Craig Black  <blackc@speakeasy.net>
+
 	* src/display.c: (meta_display_open): clear expected focus window 
   on open
 

@@ -503,6 +503,9 @@ meta_core_show_window_menu (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
+  meta_window_raise (window);
+  meta_window_focus (window, timestamp);
+
   meta_window_show_menu (window, root_x, root_y, button, timestamp);
 }
 
