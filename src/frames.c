@@ -919,7 +919,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
   frame->shape_applied = TRUE;
   
   XDestroyRegion (window_xregion);
-#endif
+#endif /* HAVE_SHAPE */
 }
 
 void

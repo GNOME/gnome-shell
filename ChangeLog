@@ -1,3 +1,7 @@
+2003-01-11  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in: add ability to --disable-shape
+
 2003-01-11  Akira TAGOH  <tagoh@gnome.gr.jp>
 
 	* configure.in: fix the behavior of --enable-*.
