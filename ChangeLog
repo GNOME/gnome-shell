@@ -1,3 +1,7 @@
+2003-07-02  Jordi Mallach  <jordi@sindominio.net>
+
+	* src/metacity.desktop.in: Add X-GNOME-Bugzilla entries.
+
 2003-07-01  Padraig O'Briain  <padraig.obriain@sun.com>
 
 	* src/keybindings.c (process_tab_grab): Activate window before ending

@@ -7,6 +7,9 @@ X-GNOME-WMSettingsModule=metacity
 X-GNOME-WMName=Metacity
 # back compat only 
 X-GnomeWMSettingsLibrary=metacity
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=metacity
+X-GNOME-Bugzilla-Component=general
 
 [Window Manager]
 SessionManaged=true
