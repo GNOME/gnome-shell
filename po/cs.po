@@ -5,13 +5,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.0\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-12-09 15:27+0100\n"
+"POT-Creation-Date: 2002-12-16 05:16+0100\n"
+"PO-Revision-Date: 2002-12-16 20:29+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Použití: %s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity byl přeložen bez podpory pro podrobný režim\n"
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -46,7 +55,7 @@ msgstr "Chyba při spouštění metacity-dialog pro dotaz o zabití aplikace: %s
 msgid "Failed to get hostname: %s\n"
 msgstr "Nemohu získat jméno počítače: %s\n"
 
-#: src/display.c:270
+#: src/display.c:273
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nemohu otevřít displej X Window System '%s'\n"
@@ -1724,7 +1733,7 @@ msgstr ""
 "\"%s\" nalezené v konfigurační databázi není platná hodnota pro klávesovou "
 "zkratku \"%s\"\n"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1725
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
@@ -2666,23 +2675,19 @@ msgstr "Nemohu fdopen () soubor záznamu %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Otevřen soubor záznamu %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity byl přeložen bez podpory pro podrobný režim\n"
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "Manažer oken: "
 
-#: src/util.c:343
+#: src/util.c:345
 msgid "Bug in window manager: "
 msgstr "Chyba v manažeru oken: "
 
-#: src/util.c:372
+#: src/util.c:374
 msgid "Window manager warning: "
 msgstr "Varování manažera oken: "
 
-#: src/util.c:396
+#: src/util.c:398
 msgid "Window manager error: "
 msgstr "Chyba manažera oken: "
 
@@ -2692,7 +2697,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4862
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2708,7 +2713,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5422
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2717,21 +2722,27 @@ msgstr ""
 "Okno %s nastavuje hint MWM, že se nedá měnit jeho velikost, ale nastavuje "
 "min. velikost %d × %d a max. velikost %d × %d; to nedává smysl.\n"
 
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Okno 0x%lx má vlastnost %s, která má mít typ %s formátu %d a ve skutečnosti "
-"má typ %s formátu %d n_items %d\n"
+"Okno 0x%lx má vlastnost %s\n"
+"která má mít typ %s formátu %d\n"
+"a ve skutečnosti má typ %s formátu %d n_items %d.\n"
+"To je pravděpodobně chyba aplikace, ne manažera oken.\n"
+"Okno má nadpis=\"%s\" třída=\"%s\" jméno=\"%s\"\n"
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
