@@ -1,17 +1,17 @@
 # metacity yn Gymraeg.
 # Copyright (C) 2003 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
-# Dafydd Harries <daf@parnassus.ath.cx>, 2003
-# Keith Willoughby <keith@flat222.org>, 2003
+# Dafydd Harries <daf@parnassus.ath.cx>, 2003.
+# Keith Willoughby <keith@flat222.org>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-08-19 02:58+0100\n"
-"PO-Revision-Date: 2003-08-15 19:35+0100\n"
+"PO-Revision-Date: 2003-08-29 17:17+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
-"Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
+"Language-Team: Cymraeg <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -142,7 +142,7 @@ msgstr ""
 "metacity %s\n"
 "Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
 "Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
-"Does DIM gwarant; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD AR "
+"Does DIM gwarant; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD AR\n"
 "GYFER PWRPAS PENODOL.\n"
 
 #: src/main.c:348
@@ -461,7 +461,7 @@ msgstr "Galluogi Cloch Gweladwy"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "Cuddio pob ffenest a ffocysu cefndir y bwrdd gwaith"
+msgstr "Cuddio pob ffenest a ffocysu'r penbwrdd"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -533,11 +533,11 @@ msgstr "Symud ffenest"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Symud yn ôl rhwng y paneli a chefndir y bwrdd gwaith ar unwaith"
+msgstr "Symud yn ôl rhwng y paneli a'r penbwrdd ar unwaith"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Symud yn ôl rhwng y paneli a chefndir y bwrdd geaith gyda bryslen"
+msgstr "Symud yn ôl rhwng y paneli a'r penbwrd gyda bryslen"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
@@ -545,11 +545,11 @@ msgstr "Symud yn ôl rhwng ffenestri ar unwaith"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
-msgstr "Symud rhwng paneli a chefndir y bwrdd gwaith ar unwaith"
+msgstr "Symud rhwng y paneli a'r penbwrdd ar unwaith"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
-msgstr "Symud rhwng paneli a chefndir y bwrth gwaith gyda bryslen"
+msgstr "Symud rhwng y paneli a'r penbwrdd gyda bryslen"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
@@ -642,7 +642,7 @@ msgid ""
 "workspaces)."
 msgstr ""
 "Nifer y gweithfannau. Rhaid ei fod yn fwy na sero, a mae uchafswm gosodedig "
-"(er mwyn rhwystro dinistrio eich bwrdd gwaith yn ddamweiniol gan ofyn am 34 "
+"(er mwyn rhwystro dinistrio eich penbwrdd yn ddamweiniol gan ofyn am 34 "
 "miliwn o fyrddau gwaith)."
 
 #: src/metacity.schemas.in.h:54
@@ -1893,7 +1893,7 @@ msgstr "Dadehangu ffenestr"
 
 #: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
-msgstr "Defnyddiwch ffont cysawd safonol am teitlau ffenestr"
+msgstr "Defnyddiwch ffont system safonol yn nheitlau ffenestri"
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
@@ -1922,8 +1922,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei darganfod yn y cronfa ddata ffurfweddol yn werth "
-"ddilys ar gyfer addasydd botwm llygodyn\n"
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth "
+"ddilys ar gyfer addasydd botwm llygoden\n"
 
 #: src/prefs.c:795 src/prefs.c:1205
 #, c-format
@@ -1970,8 +1970,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei darganfod yn y cronfa ddata ffurfweddol yn werth "
-"ddilys ar gyfer y rhwymiad bysyll \"%s\"\n"
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth "
+"ddilys ar gyfer y rhwymiad bysell \"%s\"\n"
 
 #: src/prefs.c:1896
 #, c-format
@@ -2920,7 +2920,7 @@ msgstr "_Codi'r ffenest wrth ffocysu"
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Methu agor cofnod dadchwilennu: %s\n"
+msgstr "Methu agor cofnod datnamu: %s\n"
 
 #: src/util.c:103
 #, c-format
