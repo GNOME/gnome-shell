@@ -55,7 +55,8 @@ get_flags (GtkWidget *widget)
 static int
 get_text_height (GtkWidget *widget)
 {
-  return meta_gtk_widget_get_text_height (widget);
+  return meta_pango_font_desc_get_text_height (widget->style->font_desc,
+                                               gtk_widget_get_pango_context (widget));
 }
 
 static PangoLayout*

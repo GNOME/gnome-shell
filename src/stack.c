@@ -715,7 +715,7 @@ meta_stack_sync_to_server (MetaStack *stack)
                   changes.stack_mode = Below;
 
                   meta_topic (META_DEBUG_STACK, "Placing window 0x%lx below 0x%lx\n",
-                                *newp, last_window);
+                              *newp, last_window);
                   
                   XConfigureWindow (stack->screen->display->xdisplay,
                                     *newp,

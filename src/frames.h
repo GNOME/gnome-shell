@@ -68,6 +68,8 @@ struct _MetaUIFrame
   Window xwindow;
   GdkWindow *window;
   PangoLayout *layout;
+  int text_height;
+  char *title; /* NULL once we have a layout */
   guint expose_delayed : 1;
 };
 
@@ -75,7 +77,7 @@ struct _MetaFrames
 {
   GtkWindow parent_instance;
   
-  int text_height;
+  GHashTable *text_heights;
 
   GHashTable *frames;
 

@@ -14,7 +14,12 @@ Themes are in a simple XML-subset format.
 </info>
 
 <!-- define a frame geometry to be referenced later -->
-<frame_geometry name="normal">
+<!-- frame_geometry has an optional has_title attribute which 
+     determines whether the title text height is included in the 
+     height calculation. if not specified, defaults to true.
+     It also has an optional text_size="medium" attribute
+     (same sizes as with Pango markup, xx-small thru medium thru xx-large) -->
+<frame_geometry name="normal" has_title="true" title_size="medium">
   <distance name="left_width" value="6"/>
   <distance name="right_width" value="6"/>
   <distance name="bottom_height" value="7"/>
@@ -94,6 +99,8 @@ Themes are in a simple XML-subset format.
     <!-- color obtained by a 0.5 alpha composite of the second color onto the first -->
     <color value="blend/gtk:bg[SELECTED]/gtk:fg[SELECTED]/0.5"/>
   </gradient>
+  <!-- image has an optional colorize="#color" attribute to give the
+       image a certain color -->
   <image filename="foo.png" alpha="0.7"
          x="10" y="30" width="width / 3" height="height / 4"/>
   <gtk_arrow state="normal" shadow="in" arrow="up"

@@ -534,6 +534,28 @@ parse_double (const char          *str,
 }
 
 static gboolean
+parse_boolean (const char          *str,
+               gboolean            *val,
+               GMarkupParseContext *context,
+               GError             **error)
+{
+  if (strcmp ("true", str) == 0)
+    *val = TRUE;
+  else if (strcmp ("false", str) == 0)
+    *val = FALSE;
+  else
+    {
+      set_error (error, context, G_MARKUP_ERROR,
+                 G_MARKUP_ERROR_PARSE,
+                 _("Boolean values must be \"true\" or \"false\" not \"%s\""),
+                 str);
+      return FALSE;
+    }
+  
+  return TRUE;
+}
+
+static gboolean
 parse_angle (const char          *str,
              double              *val,
              GMarkupParseContext *context,
@@ -573,6 +595,41 @@ parse_alpha (const char          *str,
   return TRUE;
 }
 
+static gboolean
+parse_title_scale (const char          *str,
+                   double              *val,
+                   GMarkupParseContext *context,
+                   GError             **error)
+{
+  double factor;
+  
+  if (strcmp (str, "xx-small") == 0)
+    factor = PANGO_SCALE_XX_SMALL;
+  else if (strcmp (str, "x-small") == 0)
+    factor = PANGO_SCALE_X_SMALL;
+  else if (strcmp (str, "small") == 0)
+    factor = PANGO_SCALE_SMALL;
+  else if (strcmp (str, "medium") == 0)
+    factor = PANGO_SCALE_MEDIUM;
+  else if (strcmp (str, "large") == 0)
+    factor = PANGO_SCALE_LARGE;
+  else if (strcmp (str, "x-large") == 0)
+    factor = PANGO_SCALE_X_LARGE;
+  else if (strcmp (str, "xx-large") == 0)
+    factor = PANGO_SCALE_XX_LARGE;
+  else
+    {
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"),
+                 str);
+      return FALSE;
+    }
+
+  *val = factor;
+  
+  return TRUE;
+}
+
 static void
 parse_toplevel_element (GMarkupParseContext  *context,
                         const gchar          *element_name,
@@ -608,14 +665,16 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on element <%s>"), element_name);
+                     _("No \"%s\" attribute on element <%s>"),
+                     "name", element_name);
           return;
         }
-
+      
       if (value == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"value\" attribute on element <%s>"), element_name);
+                     _("No \"%s\" attribute on element <%s>"),
+                     "value", element_name);
           return;
         }
 
@@ -657,26 +716,32 @@ parse_toplevel_element (GMarkupParseContext  *context,
       const char *name = NULL;
       const char *parent = NULL;
       const char *has_title = NULL;
+      const char *title_scale = NULL;
       gboolean has_title_val;
+      double title_scale_val;
       MetaFrameLayout *parent_layout;
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
                               "name", &name, "parent", &parent,
-                              "has_title", &has_title,
+                              "has_title", &has_title, "title_scale", &title_scale,
                               NULL))
         return;
 
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "name", element_name);
           return;
         }
 
       has_title_val = TRUE;
       if (has_title && !parse_boolean (has_title, &has_title_val, context, error))
+        return;
+
+      title_scale_val = 1.0;
+      if (title_scale && !parse_title_scale (title_scale, &title_scale_val, context, error))
         return;
       
       if (meta_theme_lookup_layout (info->theme, name))
@@ -709,6 +774,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (has_title) /* only if explicit, otherwise inherit */
         info->layout->has_title = has_title_val;
+
+      if (title_scale)
+        info->layout->title_scale = title_scale_val;
       
       meta_theme_insert_layout (info->theme, name, info->layout);
 
@@ -727,8 +795,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "name", element_name);
           return;
         }
 
@@ -765,8 +833,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "name", element_name);
           return;
         }
 
@@ -842,8 +910,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "name", element_name);
           return;
         }
 
@@ -892,16 +960,16 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (type_name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"type\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "type", element_name);
           return;
         }
 
       if (style_set_name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"style_set\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "style_set", element_name);
           return;
         }
 
@@ -956,16 +1024,16 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (function == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"function\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "function", element_name);
           return;
         }
 
       if (state == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on <%s> element"),
-                     element_name);
+                     _("No \"%s\" attribute on <%s> element"),
+                     "state", element_name);
           return;
         }
       
@@ -1022,8 +1090,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <metacity_theme>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "metacity_theme");
     }
 }
 
@@ -1086,8 +1154,8 @@ parse_info_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <info>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "info");
     }
 }
 
@@ -1284,8 +1352,8 @@ parse_geometry_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <frame_geometry>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "frame_geometry");
     }
 }
 
@@ -1352,28 +1420,6 @@ optimize_expression (MetaTheme  *theme,
    * did check_expression
    */
   return meta_theme_replace_constants (theme, expr, NULL);
-}
-
-static gboolean
-parse_boolean (const char          *str,
-               gboolean            *val,
-               GMarkupParseContext *context,
-               GError             **error)
-{
-  if (strcmp ("true", str) == 0)
-    *val = TRUE;
-  else if (strcmp ("false", str) == 0)
-    *val = FALSE;
-  else
-    {
-      set_error (error, context, G_MARKUP_ERROR,
-                 G_MARKUP_ERROR_PARSE,
-                 _("Boolean values must be \"true\" or \"false\" not \"%s\""),
-                 str);
-      return FALSE;
-    }
-  
-  return TRUE;
 }
 
 static void
@@ -2655,8 +2701,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <draw_ops>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "draw_ops");
     }
 }
 
@@ -2709,8 +2755,8 @@ parse_gradient_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <gradient>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "gradient");
     }
 }
 
@@ -2869,8 +2915,8 @@ parse_style_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <frame_style>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "frame_style");
     }
 }
 
@@ -3046,8 +3092,8 @@ parse_style_set_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <frame_style_set>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "frame_style_set");
     }
 }
 
@@ -3084,8 +3130,8 @@ parse_piece_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <piece>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "piece");
     }
 }
 
@@ -3122,8 +3168,8 @@ parse_button_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <piece>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "button");
     }
 }
 
@@ -3160,8 +3206,8 @@ parse_menu_icon_element (GMarkupParseContext  *context,
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed below <piece>"),
-                 element_name);
+                 _("Element <%s> is not allowed below <%s>"),
+                 element_name, "menu_icon");
     }
 }
 
@@ -3257,8 +3303,8 @@ start_element_handler (GMarkupParseContext *context,
       break;
     case STATE_COLOR:
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed inside a <color> element"),
-                 element_name);
+                 _("Element <%s> is not allowed inside a <%s> element"),
+                 element_name, "color");
       break;
     case STATE_FRAME_STYLE:
       parse_style_element (context, element_name,
@@ -3287,13 +3333,13 @@ start_element_handler (GMarkupParseContext *context,
       break;
     case STATE_FRAME:
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed inside a <frame> element"),
-                 element_name);
+                 _("Element <%s> is not allowed inside a <%s> element"),
+                 element_name, "frame");
       break;
     case STATE_WINDOW:
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed inside a <window> element"),
-                 element_name);
+                 _("Element <%s> is not allowed inside a <%s> element"),
+                 element_name, "window");
       break;
     }
 }

@@ -79,6 +79,9 @@ struct _MetaFrameLayout
   /* Space around buttons */
   GtkBorder button_border;
 
+  /* scale factor for title text */
+  double title_scale;
+  
   /* Whether title text will be displayed */
   guint has_title : 1;
 };
@@ -632,6 +635,10 @@ GdkPixbuf* meta_theme_load_image (MetaTheme  *theme,
                                   const char *filename,
                                   GError    **error);
 
+double meta_theme_get_title_scale (MetaTheme     *theme,
+                                   MetaFrameType  type,
+                                   MetaFrameFlags flags);
+
 void meta_theme_draw_frame (MetaTheme          *theme,
                             GtkWidget          *widget,
                             GdkDrawable        *drawable,
@@ -716,7 +723,11 @@ char*    meta_theme_replace_constants     (MetaTheme   *theme,
 
 /* random stuff */
 
-int meta_gtk_widget_get_text_height (GtkWidget *widget);
+PangoFontDescription* meta_gtk_widget_get_font_desc        (GtkWidget            *widget,
+                                                            double                scale);
+int                   meta_pango_font_desc_get_text_height (PangoFontDescription *font_desc,
+                                                            PangoContext         *context);
+
 
 /* Enum converters */
 MetaGtkColorComponent meta_color_component_from_string (const char            *str);

@@ -1,5 +1,31 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme-parser.c: try to make more error message strings the
+	same, easier for translators
+
+	* src/theme.c (meta_draw_op_free): free color spec for line op
+	(meta_theme_free): free the integer_constants hash
+
+	* src/theme-parser.c (parse_boolean): move above first use
+
+	* src/theme-viewer.c: fixes for theme.h changes
+
+	* src/frames.c (queue_recalc_func): don't recreate layout
+	immediately, just save title text. should speed things up.
+	(meta_frames_set_title): just remove the layout here also,
+	and save title text.
+
+	* src/theme-parser.c (parse_toplevel_element): parse title_scale
+	attribute on frame_geometry
+
+	* src/theme.c: support setting the text size
+
+	* src/frames.c: support setting the text size
+
+	* theme-format.txt: updates
+
+2002-02-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/themes/Atlanta/metacity-theme-1.xml: put in some kind of
 	distinctive frame for UTILITY, though it's ugly. Also put in the 
 	borderless look for maximized windows.

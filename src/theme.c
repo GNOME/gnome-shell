@@ -2302,6 +2302,8 @@ meta_draw_op_free (MetaDrawOp *op)
   switch (op->type)
     {
     case META_DRAW_LINE:
+      if (op->data.line.color_spec)
+        meta_color_spec_free (op->data.line.color_spec);
       g_free (op->data.line.x1);
       g_free (op->data.line.y1);
       g_free (op->data.line.x2);
@@ -3973,6 +3975,7 @@ meta_theme_free (MetaTheme *theme)
   g_free (theme->author);
   g_free (theme->copyright);
 
+  g_hash_table_destroy (theme->integer_constants);
   g_hash_table_destroy (theme->images_by_filename);
   g_hash_table_destroy (theme->layouts_by_name);
   g_hash_table_destroy (theme->draw_op_lists_by_name);
@@ -4206,6 +4209,24 @@ theme_get_style (MetaTheme     *theme,
   style = get_style (style_set, state, resize, focus);
 
   return style;
+}
+
+double
+meta_theme_get_title_scale (MetaTheme     *theme,
+                            MetaFrameType  type,
+                            MetaFrameFlags flags)
+{
+  MetaFrameStyle *style;
+
+  g_return_val_if_fail (type < META_FRAME_TYPE_LAST, 1.0);
+  
+  style = theme_get_style (theme, type, flags);
+  
+  /* Parser is not supposed to allow this currently */
+  if (style == NULL)
+    return 1.0;
+
+  return style->layout->title_scale;
 }
 
 void
@@ -4542,19 +4563,33 @@ meta_theme_lookup_float_constant (MetaTheme   *theme,
     }
 }
 
+PangoFontDescription*
+meta_gtk_widget_get_font_desc (GtkWidget *widget,
+                               double     scale)
+{
+  PangoFontDescription *font_desc;
+  
+  g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), 0);
+
+  font_desc = pango_font_description_copy (widget->style->font_desc);
+
+  pango_font_description_set_size (font_desc,
+                                   MAX (pango_font_description_get_size (font_desc) * scale, 1));
+
+  return font_desc;
+}
+
 int
-meta_gtk_widget_get_text_height (GtkWidget *widget)
+meta_pango_font_desc_get_text_height (PangoFontDescription *font_desc,
+                                      PangoContext         *context)
 {
   PangoFontMetrics *metrics;
   PangoFont *font;
   PangoLanguage *lang;
   int retval;
-
-  g_return_val_if_fail (GTK_WIDGET_REALIZED (widget), 0);
   
-  font = pango_context_load_font (gtk_widget_get_pango_context (widget),
-                                  widget->style->font_desc);
-  lang = pango_context_get_language (gtk_widget_get_pango_context (widget));
+  font = pango_context_load_font (context, font_desc);
+  lang = pango_context_get_language (context);
   metrics = pango_font_get_metrics (font, lang);
   
   g_object_unref (G_OBJECT (font));
@@ -4563,7 +4598,7 @@ meta_gtk_widget_get_text_height (GtkWidget *widget)
                          pango_font_metrics_get_descent (metrics));
   
   pango_font_metrics_unref (metrics);
-
+  
   return retval;
 }
 

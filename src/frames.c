@@ -62,6 +62,9 @@ static void meta_frames_calc_geometry (MetaFrames        *frames,
                                        MetaUIFrame         *frame,
                                        MetaFrameGeometry *fgeom);
 
+static void meta_frames_ensure_layout (MetaFrames      *frames,
+                                       MetaUIFrame     *frame);
+
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
                                                Window      xwindow);
 
@@ -156,6 +159,8 @@ meta_frames_init (MetaFrames *frames)
 {
   GTK_WINDOW (frames)->type = GTK_WINDOW_POPUP;
 
+  frames->text_heights = g_hash_table_new (g_int_hash, g_int_equal);
+  
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
   frames->tooltip_timeout = 0;
@@ -212,6 +217,8 @@ meta_frames_finalize (GObject *object)
   
   frames = META_FRAMES (object);
 
+  g_hash_table_destroy (frames->text_heights);
+  
   g_assert (g_hash_table_size (frames->frames) == 0);
   g_hash_table_destroy (frames->frames);
 
@@ -238,17 +245,13 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
                                 frame->xwindow);
   if (frame->layout)
     {
-      /* recreate layout */
-      char *text;
+      /* save title to recreate layout */
+      g_free (frame->title);
       
-      text = g_strdup (pango_layout_get_text (frame->layout));
+      frame->title = g_strdup (pango_layout_get_text (frame->layout));
 
       g_object_unref (G_OBJECT (frame->layout));
-      
-      frame->layout = gtk_widget_create_pango_layout (GTK_WIDGET (frames),
-                                                      text);
-
-      g_free (text);
+      frame->layout = NULL;
     }
 }
 
@@ -260,13 +263,10 @@ meta_frames_style_set  (GtkWidget *widget,
 
   frames = META_FRAMES (widget);
 
-  if (GTK_WIDGET_REALIZED (widget))
+  if (g_hash_table_size (frames->text_heights) > 0)
     {
-      frames->text_height = meta_gtk_widget_get_text_height (widget);
-    }
-  else
-    {
-      frames->text_height = 0;
+      g_hash_table_destroy (frames->text_heights);
+      frames->text_heights = g_hash_table_new (g_int_hash, g_int_equal);
     }
   
   /* Queue a draw/resize on all frames */
@@ -274,6 +274,81 @@ meta_frames_style_set  (GtkWidget *widget,
                         queue_recalc_func, frames);
 
   GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+}
+
+static void
+meta_frames_ensure_layout (MetaFrames  *frames,
+                           MetaUIFrame *frame)
+{
+  GtkWidget *widget;
+  
+  g_return_if_fail (GTK_WIDGET_REALIZED (frames));
+
+  widget = GTK_WIDGET (frames);
+  
+  if (frame->layout == NULL)
+    {
+      gpointer key, value;
+      PangoFontDescription *font_desc;
+      MetaFrameFlags flags;
+      MetaFrameType type;
+      double scale;
+      int size;
+      
+      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+      type = meta_core_get_frame_type (gdk_display, frame->xwindow);
+      
+      scale = meta_theme_get_title_scale (meta_theme_get_current (),
+                                          type,
+                                          flags);
+      
+      frame->layout = gtk_widget_create_pango_layout (widget, frame->title);
+
+      font_desc = meta_gtk_widget_get_font_desc (widget, scale);
+
+      size = pango_font_description_get_size (font_desc);
+      
+      if (g_hash_table_lookup_extended (frames->text_heights,
+                                        &size,
+                                        &key, &value))
+        {
+          frame->text_height = GPOINTER_TO_INT (value);
+        }
+      else
+        {
+          frame->text_height =
+            meta_pango_font_desc_get_text_height (font_desc,
+                                                  gtk_widget_get_pango_context (widget));
+
+          g_hash_table_insert (frames->text_heights,
+                               &size,
+                               GINT_TO_POINTER (frame->text_height));
+        }
+
+      if (pango_font_description_get_size (font_desc) !=
+          pango_font_description_get_size (widget->style->font_desc))
+        {
+          PangoAttrList *attrs;
+          PangoAttribute *attr;
+          
+          attrs = pango_attr_list_new ();
+          
+          attr = pango_attr_size_new (pango_font_description_get_size (font_desc));
+          attr->start_index = 0;
+          attr->end_index = G_MAXINT;
+
+          pango_attr_list_insert (attrs, attr);
+
+          pango_layout_set_attributes (frame->layout, attrs);
+
+          pango_attr_list_unref (attrs);
+        }
+      
+      pango_font_description_free (font_desc);
+
+      g_free (frame->title);
+      frame->title = NULL;
+    }
 }
 
 static void
@@ -290,10 +365,12 @@ meta_frames_calc_geometry (MetaFrames        *frames,
   
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
   type = meta_core_get_frame_type (gdk_display, frame->xwindow);
+
+  meta_frames_ensure_layout (frames, frame);
   
   meta_theme_calc_geometry (meta_theme_get_current (),
                             type,
-                            frames->text_height,
+                            frame->text_height,
                             flags,
                             width, height,
                             fgeom);
@@ -328,6 +405,8 @@ meta_frames_manage_window (MetaFrames *frames,
   
   frame->xwindow = xwindow;
   frame->layout = NULL;
+  frame->text_height = -1;
+  frame->title = NULL;
   frame->expose_delayed = FALSE;
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
@@ -358,6 +437,9 @@ meta_frames_unmanage_window (MetaFrames *frames,
 
       if (frame->layout)
         g_object_unref (G_OBJECT (frame->layout));
+
+      if (frame->title)
+        g_free (frame->title);
       
       g_free (frame);
     }
@@ -374,8 +456,6 @@ meta_frames_realize (GtkWidget *widget)
   
   if (GTK_WIDGET_CLASS (parent_class)->realize)
     GTK_WIDGET_CLASS (parent_class)->realize (widget);
-
-  frames->text_height = meta_gtk_widget_get_text_height (widget);
 }
 
 static void
@@ -387,8 +467,6 @@ meta_frames_unrealize (GtkWidget *widget)
   
   if (GTK_WIDGET_CLASS (parent_class)->unrealize)
     GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
-
-  frames->text_height = 0;
 }
 
 static MetaUIFrame*
@@ -421,6 +499,8 @@ meta_frames_get_geometry (MetaFrames *frames,
   type = meta_core_get_frame_type (gdk_display, frame->xwindow);
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
+
+  meta_frames_ensure_layout (frames, frame);
   
   /* We can't get the full geometry, because that depends on
    * the client window size and probably we're being called
@@ -429,7 +509,7 @@ meta_frames_get_geometry (MetaFrames *frames,
    */
   meta_theme_get_frame_borders (meta_theme_get_current (),
                                 type,
-                                frames->text_height,
+                                frame->text_height,
                                 flags,
                                 top_height, bottom_height,
                                 left_width, right_width);
@@ -512,12 +592,15 @@ meta_frames_set_title (MetaFrames *frames,
   widget = GTK_WIDGET (frames);
 
   frame = meta_frames_lookup_window (frames, xwindow);
+
+  g_free (frame->title);
+  frame->title = g_strdup (title);
   
-  if (frame->layout == NULL)
-    frame->layout = gtk_widget_create_pango_layout (widget,
-                                                    title);
-  else
-    pango_layout_set_text (frame->layout, title, -1);
+  if (frame->layout)
+    {
+      g_object_unref (frame->layout);
+      frame->layout = NULL;
+    }
   
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
@@ -1210,6 +1293,8 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   meta_core_get_client_size (gdk_display, frame->xwindow,
                              &w, &h);
+
+  meta_frames_ensure_layout (frames, frame);
   
   meta_theme_draw_frame (meta_theme_get_current (),
                          widget,
@@ -1220,7 +1305,7 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                          flags,
                          w, h,
                          frame->layout,
-                         frames->text_height,
+                         frame->text_height,
                          button_states,
                          mini_icon, icon);
 }
