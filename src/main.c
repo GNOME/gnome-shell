@@ -127,7 +127,9 @@ main (int argc, char **argv)
           strcmp (arg, "-?") == 0)
         usage ();
       else if (strcmp (arg, "--sm-disable") == 0)
-        disable_sm = TRUE; 
+        disable_sm = TRUE;
+      else if (strcmp (arg, "--replace") == 0)
+        meta_set_replace_current_wm (TRUE);
       else if (strstr (arg, "--display=") == arg)
         {
           const char *disp;

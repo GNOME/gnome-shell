@@ -71,7 +71,10 @@ static guint32 event_get_time           (MetaDisplay    *display,
                                          XEvent         *event);
 static void    process_pong_message     (MetaDisplay    *display,
                                          XEvent         *event);
-
+static void    process_selection_request (MetaDisplay   *display,
+                                          XEvent        *event);
+static void    process_selection_clear   (MetaDisplay   *display,
+                                          XEvent        *event);
 
 static gint
 unsigned_long_equal (gconstpointer v1,
@@ -217,7 +220,13 @@ meta_display_open (const char *name)
     "WM_CLIENT_MACHINE",
     "_NET_WM_WORKAREA",
     "_NET_SHOW_DESKTOP",
-    "_NET_DESKTOP_LAYOUT"
+    "_NET_DESKTOP_LAYOUT",
+    "MANAGER",
+    "TARGETS",
+    "MULTIPLE",
+    "TIMESTAMP",
+    "VERSION",
+    "ATOM_PAIR"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -340,6 +349,12 @@ meta_display_open (const char *name)
   display->atom_net_wm_workarea = atoms[56];
   display->atom_net_show_desktop = atoms[57];
   display->atom_net_desktop_layout = atoms[58];
+  display->atom_manager = atoms[59];
+  display->atom_targets = atoms[60];
+  display->atom_multiple = atoms[61];
+  display->atom_timestamp = atoms[62];
+  display->atom_version = atoms[63];
+  display->atom_atom_pair = atoms[64];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -529,25 +544,10 @@ meta_display_list_windows (MetaDisplay *display)
 void
 meta_display_close (MetaDisplay *display)
 {
-  GSList *winlist;
   GSList *tmp;
   
   if (display->error_traps > 0)
     meta_bug ("Display closed with error traps pending\n");
-
-  winlist = meta_display_list_windows (display);
-  
-  /* Unmanage all windows */
-  meta_display_grab (display);
-  tmp = winlist;
-  while (tmp != NULL)
-    {      
-      meta_window_free (tmp->data);
-      
-      tmp = tmp->next;
-    }
-  g_slist_free (winlist);
-  meta_display_ungrab (display);
 
   if (display->autoraise_timeout_id != 0)
     {
@@ -1373,8 +1373,18 @@ event_callback (XEvent   *event,
         }
       break;
     case SelectionClear:
+      /* do this here instead of at end of function
+       * so we can return
+       */
+      display->current_time = CurrentTime;
+      process_selection_clear (display, event);
+      /* Note that processing that may have resulted in
+       * closing the display... so return right away.
+       */
+      return FALSE;
       break;
     case SelectionRequest:
+      process_selection_request (display, event);
       break;
     case SelectionNotify:
       break;
@@ -1899,7 +1909,7 @@ meta_spew_event (MetaDisplay *display,
         extra = g_strdup_printf ("atom: %s state: %s",
                                  str ? str : "(unknown atom)",
                                  state);
-        XFree (str);
+        meta_XFree (str);
       }
       break;
     case SelectionClear:
@@ -1925,7 +1935,7 @@ meta_spew_event (MetaDisplay *display,
         extra = g_strdup_printf ("type: %s format: %d\n",
                                  str ? str : "(unknown atom)",
                                  event->xclient.format);
-        XFree (str);
+        meta_XFree (str);
       }
       break;
     case MappingNotify:
@@ -2989,3 +2999,249 @@ meta_rectangle_intersect (MetaRectangle *src1,
   return return_val;
 }
 
+static MetaScreen*
+find_screen_for_selection (MetaDisplay *display,
+                           Window       owner,
+                           Atom         selection)
+{  
+  GSList *tmp;  
+  
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+      
+      if (screen->wm_sn_selection_window == owner &&
+          screen->wm_sn_atom == selection)
+        return screen;
+  
+      tmp = tmp->next;
+    }
+
+  return NULL;
+}
+
+/* from fvwm2, Copyright Dominik Vogt I assume, but it
+ * was unmarked.
+ */
+static gboolean
+convert_property (MetaDisplay *display,
+                  MetaScreen  *screen,
+                  Window       w,
+                  Atom         target,
+                  Atom         property)
+{
+#define N_TARGETS 4
+  Atom conversion_targets[N_TARGETS];
+  long icccm_version[] = { 2, 0 };
+
+  conversion_targets[0] = display->atom_targets;
+  conversion_targets[1] = display->atom_multiple;
+  conversion_targets[2] = display->atom_timestamp;
+  conversion_targets[3] = display->atom_version;
+
+  meta_error_trap_push (display);
+  if (target == display->atom_targets)
+    XChangeProperty (display->xdisplay, w, property,
+		     XA_ATOM, 32, PropModeReplace,
+		     (unsigned char *)conversion_targets, N_TARGETS);
+  else if (target == display->atom_timestamp)
+    XChangeProperty (display->xdisplay, w, property,
+		     XA_INTEGER, 32, PropModeReplace,
+		     (unsigned char *)&screen->wm_sn_timestamp, 1);
+  else if (target == display->atom_version)
+    XChangeProperty (display->xdisplay, w, property,
+		     XA_INTEGER, 32, PropModeReplace,
+		     (unsigned char *)icccm_version, 2);
+  else
+    {
+      meta_error_trap_pop (display);
+      return FALSE;
+    }
+  
+  if (meta_error_trap_pop (display) != Success)
+    return FALSE;
+
+  /* Be sure the PropertyNotify has arrived so we
+   * can send SelectionNotify
+   */
+  XSync (display->xdisplay, False);
+
+  return TRUE;
+}
+
+/* from fvwm2, Copyright Dominik Vogt I assume, but it
+ * was unmarked.
+ */
+static void
+process_selection_request (MetaDisplay   *display,
+                           XEvent        *event)
+{
+  XSelectionEvent reply;
+  MetaScreen *screen;
+
+  screen = find_screen_for_selection (display,
+                                      event->xselectionrequest.owner,
+                                      event->xselectionrequest.selection);
+
+  if (screen == NULL)
+    {
+      char *str;
+      
+      meta_error_trap_push (display);
+      str = XGetAtomName (display->xdisplay,
+                          event->xselectionrequest.selection);
+      meta_error_trap_pop (display);
+      
+      meta_verbose ("Selection request with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
+                    str ? str : "(bad atom)", event->xselectionrequest.owner);
+      
+      meta_XFree (str);
+
+      return;
+    }
+  
+  reply.type = SelectionNotify;
+  reply.display = display->xdisplay;
+  reply.requestor = event->xselectionrequest.requestor;
+  reply.selection = event->xselectionrequest.selection;
+  reply.target = event->xselectionrequest.target;
+  reply.property = None;
+  reply.time = event->xselectionrequest.time;
+
+  if (event->xselectionrequest.target == display->atom_multiple)
+    {
+      if (event->xselectionrequest.property != None)
+        {
+          Atom type, *adata;
+          int i, format;
+          unsigned long num, rest;
+          unsigned char *data;
+
+          meta_error_trap_push (display);
+          XGetWindowProperty (display->xdisplay,
+                              event->xselectionrequest.requestor,
+                              event->xselectionrequest.property, 0, 256, False,
+                              display->atom_atom_pair,
+                              &type, &format, &num, &rest, &data);
+          if (meta_error_trap_pop (display) == Success)
+            {              
+              /* FIXME: to be 100% correct, should deal with rest > 0,
+               * but since we have 4 possible targets, we will hardly ever
+               * meet multiple requests with a length > 8
+               */
+              adata = (Atom*)data;
+              i = 0;
+              while (i < (int) num)
+                {
+                  if (!convert_property (display, screen,
+                                         event->xselectionrequest.requestor,
+                                         adata[i], adata[i+1]))
+                    adata[i+1] = None;
+                  i += 2;
+                }
+
+              meta_error_trap_push (display);
+              XChangeProperty (display->xdisplay,
+                               event->xselectionrequest.requestor,
+                               event->xselectionrequest.property,
+                               display->atom_atom_pair,
+                               32, PropModeReplace, data, num);
+              meta_error_trap_pop (display);
+              meta_XFree (data);
+            }
+        }
+    }
+  else
+    {
+      if (event->xselectionrequest.property == None)
+        event->xselectionrequest.property = event->xselectionrequest.target;
+      
+      if (convert_property (display, screen,
+                            event->xselectionrequest.requestor,
+                            event->xselectionrequest.target,
+                            event->xselectionrequest.property))
+        reply.property = event->xselectionrequest.property;
+    }
+
+  XSendEvent (display->xdisplay,
+              event->xselectionrequest.requestor,
+              False, 0L, (XEvent*)&reply);
+
+  meta_verbose ("Handled selection request\n");
+}
+
+static void
+process_selection_clear (MetaDisplay   *display,
+                         XEvent        *event)
+{
+  /* We need to unmanage the screen on which we lost the selection */
+  MetaScreen *screen;
+
+  screen = find_screen_for_selection (display,
+                                      event->xselectionclear.window,
+                                      event->xselectionclear.selection);
+  
+
+  if (screen != NULL)
+    {
+      meta_verbose ("Got selection clear for screen %d on display %s\n",
+                    screen->number, display->name);
+      
+      meta_display_unmanage_screen (display, screen);
+
+      /* display and screen may both be invalid memory... */
+      
+      return;
+    }
+
+  {
+    char *str;
+            
+    meta_error_trap_push (display);
+    str = XGetAtomName (display->xdisplay,
+                        event->xselectionclear.selection);
+    meta_error_trap_pop (display);
+
+    meta_verbose ("Selection clear with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
+                  str ? str : "(bad atom)", event->xselectionclear.window);
+
+    meta_XFree (str);
+  }
+}
+
+void
+meta_display_unmanage_screen (MetaDisplay *display,
+                              MetaScreen  *screen)
+{
+  meta_verbose ("Unmanaging screen %d on display %s\n",
+                screen->number, display->name);
+  
+  g_return_if_fail (g_slist_find (display->screens, screen) != NULL);
+  
+  meta_screen_free (screen);
+  display->screens = g_slist_remove (display->screens, screen);
+
+  if (display->screens == NULL)
+    meta_display_close (display);
+}
+
+void
+meta_display_unmanage_windows_for_screen (MetaDisplay *display,
+                                          MetaScreen  *screen)
+{
+  GSList *tmp;
+  GSList *winlist;
+
+  winlist = meta_display_list_windows (display);
+
+  /* Unmanage all windows */
+  tmp = winlist;
+  while (tmp != NULL)
+    {      
+      meta_window_free (tmp->data);
+      
+      tmp = tmp->next;
+    }
+  g_slist_free (winlist);
+}

@@ -1,5 +1,29 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/xprops.c (meta_prop_get_utf8_string): don't die on bad atom
+	name
+
+	* src/display.c (meta_display_close): don't unmanage windows here,
+	do it in screen_free and then closing the display unmanages
+	windows as a side effect of unmanaging the screen
+	(meta_display_unmanage_screen): new function
+	(process_selection_clear, process_selection_request): handle
+	selection stuff
+	(meta_spew_event): don't crash on client message containing
+	invalid atom
+	(meta_spew_event): don't crash on property notify with invalid
+	atom
+
+	* src/main.c (main): add --replace option to replace existing
+	window manager.
+
+	* src/screen.c: implement holding manager selection.
+
+	* src/display.c (meta_display_open): add new selection-related
+	atoms.
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_new): select keypress/keyrelease
 	events on root window, this may fix the bug where keybindings
 	didn't work if you didn't have a focused window.

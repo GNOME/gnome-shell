@@ -280,7 +280,7 @@ meta_prop_get_utf8_string (MetaDisplay   *display,
       name = XGetAtomName (display->xdisplay, xatom);
       meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8\n"),
                     name, xwindow);
-      XFree (name);
+      meta_XFree (name);
       XFree (str);
 
       return FALSE;

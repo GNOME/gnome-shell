@@ -1,7 +1,10 @@
 /* Metacity X screen handler */
 
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2001, 2002 Havoc Pennington
+ * Copyright (C) 2002 Red Hat Inc.
+ * Some ICCCM manager selection code derived from fvwm2,
+ * Copyright (C) 2001 Dominik Vogt and fvwm2 team
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,6 +41,7 @@
 #include <X11/Xatom.h>
 #include <locale.h>
 #include <string.h>
+#include <stdio.h>
 
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
@@ -168,6 +172,14 @@ meta_screen_new (MetaDisplay *display,
   Window xroot;
   Display *xdisplay;
   XWindowAttributes attr;
+  Window new_wm_sn_owner;
+  Window current_wm_sn_owner;
+  gboolean replace_current_wm;
+  Atom wm_sn_atom;
+  char buf[128];
+  Time manager_timestamp;
+  
+  replace_current_wm = meta_get_replace_current_wm ();
   
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -191,7 +203,98 @@ meta_screen_new (MetaDisplay *display,
       return NULL;
     }
 
-  /* Select our root window events */
+  sprintf (buf, "WM_S%d", number);
+  wm_sn_atom = XInternAtom (xdisplay, buf, False);  
+  
+  current_wm_sn_owner = XGetSelectionOwner (xdisplay, wm_sn_atom);
+
+  if (current_wm_sn_owner != None)
+    {
+      XSetWindowAttributes attrs;
+      
+      if (!replace_current_wm)
+        {
+          meta_warning (_("Screen %d on display \"%s\" already has a window manager; try using the --replace option to override the current window manager.\n"),
+                        number, display->name);
+
+          return NULL;
+        }
+
+      /* We want to find out when the current selection owner dies */
+      meta_error_trap_push (display);
+      attrs.event_mask = StructureNotifyMask;
+      XChangeWindowAttributes (xdisplay,
+                               current_wm_sn_owner, CWEventMask, &attrs);
+      if (meta_error_trap_pop (display) != Success)
+        current_wm_sn_owner = None; /* don't wait for it to die later on */
+    }
+
+  new_wm_sn_owner = XCreateSimpleWindow (xdisplay, xroot,
+                                         -100, -100, 1, 1, 0, 0, 0);
+
+  {
+    /* Generate a timestamp */
+    XSetWindowAttributes attrs;
+    XEvent event;
+
+    attrs.event_mask = PropertyChangeMask;
+    XChangeWindowAttributes (xdisplay, new_wm_sn_owner, CWEventMask, &attrs);
+    
+    XChangeProperty (xdisplay,
+                     new_wm_sn_owner, XA_WM_CLASS, XA_STRING, 8,
+                     PropModeAppend, NULL, 0);
+    XWindowEvent (xdisplay, new_wm_sn_owner, PropertyChangeMask, &event);
+    attrs.event_mask = NoEventMask;
+    XChangeWindowAttributes (display->xdisplay,
+                             new_wm_sn_owner, CWEventMask, &attrs);
+
+    manager_timestamp = event.xproperty.time;
+  }
+  
+  XSetSelectionOwner (xdisplay, wm_sn_atom, new_wm_sn_owner,
+                      manager_timestamp);
+
+  if (XGetSelectionOwner (xdisplay, wm_sn_atom) != new_wm_sn_owner)
+    {
+      meta_warning (_("Could not acquire window manager selection on screen %d display \"%s\"\n"),
+                    number, display->name);
+
+      XDestroyWindow (xdisplay, new_wm_sn_owner);
+      
+      return NULL;
+    }
+  
+  {
+    /* Send client message indicating that we are now the WM */
+    XClientMessageEvent ev;
+    
+    ev.type = ClientMessage;
+    ev.window = xroot;
+    ev.message_type = display->atom_manager;
+    ev.format = 32;
+    ev.data.l[0] = manager_timestamp;
+    ev.data.l[1] = wm_sn_atom;
+
+    XSendEvent (xdisplay, xroot, False, StructureNotifyMask, (XEvent*)&ev);
+  }
+
+  /* Wait for old window manager to go away */
+  if (current_wm_sn_owner != None)
+    {
+      XEvent event;
+
+      /* We sort of block infinitely here which is probably lame. */
+      
+      meta_verbose ("Waiting for old window manager to exit\n");
+      do
+        {
+          XWindowEvent (xdisplay, current_wm_sn_owner,
+                        StructureNotifyMask, &event);
+        }
+      while (event.type != DestroyNotify);
+    }
+  
+  /* select our root window events */
   meta_error_trap_push (display);
 
   /* We need to or with the existing event mask since
@@ -208,13 +311,16 @@ meta_screen_new (MetaDisplay *display,
                 FocusChangeMask | attr.your_event_mask);
   if (meta_error_trap_pop (display) != Success)
     {
-      meta_warning (_("Screen %d on display '%s' already has a window manager\n"),
+      meta_warning (_("Screen %d on display \"%s\" already has a window manager\n"),
                     number, display->name);
+
+      XDestroyWindow (xdisplay, new_wm_sn_owner);
+      
       return NULL;
     }
   
   screen = g_new (MetaScreen, 1);
-
+  
   screen->display = display;
   screen->number = number;
   screen->screen_name = get_screen_name (display, number);
@@ -226,6 +332,10 @@ meta_screen_new (MetaDisplay *display,
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
 
+  screen->wm_sn_selection_window = new_wm_sn_owner;
+  screen->wm_sn_atom = wm_sn_atom;
+  screen->wm_sn_timestamp = manager_timestamp;
+  
   screen->work_area_idle = 0;
 
   screen->rows_of_workspaces = 1;
@@ -385,7 +495,15 @@ meta_screen_new (MetaDisplay *display,
 
 void
 meta_screen_free (MetaScreen *screen)
-{  
+{
+  MetaDisplay *display;
+
+  display = screen->display;
+  
+  meta_display_grab (display);
+
+  meta_display_unmanage_windows_for_screen (display, screen);
+  
   meta_prefs_remove_listener (prefs_changed_callback, screen);
   
   meta_screen_ungrab_keys (screen);
@@ -397,14 +515,19 @@ meta_screen_free (MetaScreen *screen)
   meta_error_trap_push (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
   if (meta_error_trap_pop (screen->display) != Success)
-    meta_warning (_("Could not release screen %d on display '%s'\n"),
+    meta_warning (_("Could not release screen %d on display \"%s\"\n"),
                   screen->number, screen->display->name);
 
+  XDestroyWindow (screen->display->xdisplay,
+                  screen->wm_sn_selection_window);
+  
   if (screen->work_area_idle != 0)
     g_source_remove (screen->work_area_idle);
   
   g_free (screen->screen_name);
   g_free (screen);
+
+  meta_display_ungrab (display);
 }
 
 void

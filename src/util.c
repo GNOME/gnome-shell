@@ -31,6 +31,7 @@
 
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
+static gboolean replace_current = FALSE;
 static int no_prefix = 0;
 static FILE* logfile = NULL;
 
@@ -107,6 +108,18 @@ meta_set_debugging (gboolean setting)
     ensure_logfile ();
   
   is_debugging = setting;
+}
+
+gboolean
+meta_get_replace_current_wm (void)
+{
+  return replace_current;
+}
+
+void
+meta_set_replace_current_wm (gboolean setting)
+{
+  replace_current = setting;
 }
 
 void

@@ -131,6 +131,12 @@ struct _MetaDisplay
   Atom atom_net_wm_workarea;
   Atom atom_net_show_desktop;
   Atom atom_net_desktop_layout;
+  Atom atom_manager;
+  Atom atom_targets;
+  Atom atom_multiple;
+  Atom atom_timestamp;
+  Atom atom_version;
+  Atom atom_atom_pair;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -224,6 +230,12 @@ MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 gboolean      meta_display_is_double_click     (MetaDisplay *display);
+
+void          meta_display_unmanage_screen     (MetaDisplay *display,
+                                                MetaScreen  *screen);
+
+void          meta_display_unmanage_windows_for_screen (MetaDisplay *display,
+                                                        MetaScreen  *screen);
 
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.
