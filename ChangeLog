@@ -1,5 +1,9 @@
 2002-06-09  Havoc Pennington  <hp@pobox.com>
 
+	* configure.in: 2.3.987
+
+2002-06-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/delete.c (delete_ping_timeout_func): add G_IO_NVAL to watch
 	condition, patch from Gustavo Giraldez, avoids another 100% CPU
 	thingy
