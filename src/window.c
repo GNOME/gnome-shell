@@ -1594,6 +1594,9 @@ meta_window_maximize (MetaWindow  *window)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Maximizing %s\n", window->desc);
+
+      if (window->shaded)
+        meta_window_unshade (window);
       
       window->maximized = TRUE;
 
@@ -1645,6 +1648,9 @@ meta_window_make_fullscreen (MetaWindow  *window)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Fullscreening %s\n", window->desc);
+
+      if (window->shaded)
+        meta_window_unshade (window);
       
       window->fullscreen = TRUE;
 
