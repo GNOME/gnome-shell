@@ -102,6 +102,14 @@ static void handle_raise_or_lower     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_raise              (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_lower              (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_run_command        (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -264,6 +272,8 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_MOVE_WORKSPACE_DOWN, handle_move_to_workspace,
     GINT_TO_POINTER (META_MOTION_DOWN) },
   { META_KEYBINDING_RAISE_OR_LOWER, handle_raise_or_lower, NULL},
+  { META_KEYBINDING_RAISE, handle_raise, NULL},
+  { META_KEYBINDING_LOWER, handle_lower, NULL},
   { NULL, NULL, NULL }
 };
 
@@ -2415,7 +2425,7 @@ handle_toggle_fullscreen  (MetaDisplay    *display,
     {
       if (window->fullscreen)
         meta_window_unmake_fullscreen (window);
-      else if (window->has_resize_func)
+      else if (window->has_fullscreen_func)
         meta_window_make_fullscreen (window);
     }
 }
@@ -2570,6 +2580,9 @@ handle_raise_or_lower (MetaDisplay    *display,
 
   MetaScreen *screen;
 
+  /* FIXME I'm really not sure why we get the screen here
+   * instead of using window->screen
+   */
   screen = meta_display_screen_for_root (display, event->xbutton.root);
   if (screen == NULL)
     return;
@@ -2607,6 +2620,30 @@ handle_raise_or_lower (MetaDisplay    *display,
 	}
 
       /* window is not obscured */
+      meta_window_lower (window);
+    }
+}
+
+static void
+handle_raise (MetaDisplay    *display,
+              MetaWindow     *window,
+              XEvent         *event,
+              MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      meta_window_raise (window);
+    }
+}
+
+static void
+handle_lower (MetaDisplay    *display,
+              MetaWindow     *window,
+              XEvent         *event,
+              MetaKeyBinding *binding)
+{
+  if (window)
+    {
       meta_window_lower (window);
     }
 }

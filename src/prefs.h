@@ -130,6 +130,8 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 #define META_KEYBINDING_MOVE_WORKSPACE_UP    "move_to_workspace_up"
 #define META_KEYBINDING_MOVE_WORKSPACE_DOWN  "move_to_workspace_down"
 #define META_KEYBINDING_RAISE_OR_LOWER       "raise_or_lower"
+#define META_KEYBINDING_RAISE                "raise"
+#define META_KEYBINDING_LOWER                "lower"
 
 typedef enum _MetaKeyBindingAction
 {

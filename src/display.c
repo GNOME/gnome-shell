@@ -2275,6 +2275,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
     }
   else
     {
+      g_assert (screen != NULL);
+      
       if (XGrabPointer (display->xdisplay,
                         grab_xwindow,
                         False,

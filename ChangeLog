@@ -1,3 +1,26 @@
+2002-08-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (recalc_window_features): leave has_fullscreen_func
+	set to TRUE if the window is screen sized and undecorated, even if
+	the window isn't resizable. idea from Christian - Manny Calavera -
+	Neumair
+
+	* src/keybindings.c (handle_toggle_fullscreen) 
+	(handle_toggle_maximize): these disabled fullscreen/maximize if
+	the window wasn't resizable, should have used has_fullscreen_func
+	has_maximize_func instead.
+
+2002-08-15  Havoc Pennington  <hp@pobox.com>
+	
+	* src/keybindings.c: implement raise/lower
+
+	* src/metacity.schemas.in: add raise/lower
+
+	* src/prefs.c: add "raise" and "lower" prefs to keybindings
+
+	* src/display.c (meta_display_set_grab_op_cursor): assert that 
+	the screen arg is non-NULL in appropriate cases
+
 2002-08-14  Jayaraj Rajappan <jayaraj.rajappan@wipro.com>
 
 	* src/display.c (meta_display_set_grab_op_cursor):

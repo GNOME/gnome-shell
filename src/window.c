@@ -5284,11 +5284,20 @@ recalc_window_features (MetaWindow *window)
       window->size_hints.min_height == window->size_hints.max_height)
     window->has_resize_func = FALSE;
   
-  /* don't allow fullscreen if we can't resize */
+  /* don't allow fullscreen if we can't resize, unless the size
+   * is entire screen size (kind of broken, because we
+   * actually fullscreen to xinerama head size not screen size)
+   */
   if (!window->has_resize_func)
     {
       window->has_maximize_func = FALSE;
-      window->has_fullscreen_func = FALSE;
+
+      if (window->size_hints.min_width == window->screen->width &&
+          window->size_hints.min_height == window->screen->height &&
+          !window->decorated)
+        ; /* leave fullscreen available */
+      else
+        window->has_fullscreen_func = FALSE;
     }
 
   /* no shading if not decorated */
