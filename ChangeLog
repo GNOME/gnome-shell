@@ -1,5 +1,11 @@
 2002-10-17  Havoc Pennington  <hp@redhat.com>
 
+	* src/stack.c (apply_constraints): fix memory leak of
+	group_windows, and don't use the variable name "tmp" twice. Shadow
+	variables bad.
+
+2002-10-17  Havoc Pennington  <hp@redhat.com>
+
 	* src/tools/metacity-window-demo.c (dialog_cb): add code to create
 	big stacks of dialogs transient for each other, for testing.
 

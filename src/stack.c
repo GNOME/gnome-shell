@@ -436,7 +436,7 @@ apply_constraints (GList *list)
            w->type == META_WINDOW_UTILITY))
         {
           GSList *group_windows;
-          GSList *tmp;
+          GSList *tmp2;
           MetaGroup *group;
 
           group = meta_window_get_group (w);
@@ -446,11 +446,11 @@ apply_constraints (GList *list)
           else
             group_windows = NULL;
           
-          tmp = group_windows;
+          tmp2 = group_windows;
           
-          while (tmp != NULL)
+          while (tmp2 != NULL)
             {
-              MetaWindow *group_window = tmp->data;
+              MetaWindow *group_window = tmp2->data;
               
               if (!(meta_window_is_ancestor_of_transient (w, group_window)))
                 {
@@ -459,8 +459,10 @@ apply_constraints (GList *list)
                   ensure_above (w, group_window);
                 }
               
-              tmp = tmp->next;
+              tmp2 = tmp2->next;
             }
+
+          g_slist_free (group_windows);
         }
       else if (w->xtransient_for != None &&
                !w->transient_parent_is_root_window)
