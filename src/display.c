@@ -2684,6 +2684,8 @@ meta_display_show_desktop (MetaDisplay *display)
 void
 meta_display_unshow_desktop (MetaDisplay *display)
 {
+  GSList *tmp;
+
   if (!display->showing_desktop)
     return;
 
@@ -2692,6 +2694,14 @@ meta_display_unshow_desktop (MetaDisplay *display)
   queue_windows_showing (display);
 
   meta_display_update_show_desktop_hint (display);
+
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+      meta_screen_focus_top_window (screen, NULL);
+      tmp = tmp->next;
+    }
 }
 
 void
