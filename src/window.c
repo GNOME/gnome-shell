@@ -3167,6 +3167,8 @@ meta_window_property_notify (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT   6
 #define _NET_WM_MOVERESIZE_SIZE_LEFT         7
 #define _NET_WM_MOVERESIZE_MOVE              8
+#define _NET_WM_MOVERESIZE_SIZE_KEYBOARD     9
+#define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
 
 gboolean
 meta_window_client_message (MetaWindow *window,
@@ -3347,15 +3349,17 @@ meta_window_client_message (MetaWindow *window,
       int y_root;
       int action;
       MetaGrabOp op;
+      int button;
       
       x_root = event->xclient.data.l[0];
       y_root = event->xclient.data.l[1];
       action = event->xclient.data.l[2];
+      button = event->xclient.data.l[3];
 
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d\n",
+                  "Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d, button %d\n",
                   window->desc,
-                  x_root, y_root, action);
+                  x_root, y_root, action, button);
       
       op = META_GRAB_OP_NONE;
       switch (action)
@@ -3387,40 +3391,66 @@ meta_window_client_message (MetaWindow *window,
         case _NET_WM_MOVERESIZE_MOVE:
           op = META_GRAB_OP_MOVING;
           break;
+        case _NET_WM_MOVERESIZE_SIZE_KEYBOARD:
+          op = META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN;
+          break;
+        case _NET_WM_MOVERESIZE_MOVE_KEYBOARD:
+          op = META_GRAB_OP_KEYBOARD_MOVING;
+          break;
         default:
           break;
         }
 
       if (op != META_GRAB_OP_NONE &&
-          ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
-           (window->has_resize_func && op != META_GRAB_OP_MOVING)))
+          ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
+           (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {
-          int x, y, query_root_x, query_root_y;
-          Window root, child;
-          guint mask;
-          int button;
-
-          /* The race conditions in this _NET_WM_MOVERESIZE thing
-           * are mind-boggling
+          meta_window_raise (window);
+          meta_display_begin_grab_op (window->display,
+                                      window->screen,
+                                      window,
+                                      op,
+                                      FALSE, 0, 0,
+                                      meta_display_get_current_time (window->display),
+                                      0, 0);
+        }
+      else if (op != META_GRAB_OP_NONE &&
+               ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
+               (window->has_resize_func && 
+                (op != META_GRAB_OP_MOVING && 
+                 op != META_GRAB_OP_KEYBOARD_MOVING))))
+        {
+          /*
+           * the button SHOULD already be included in the message
            */
-          mask = 0;
-          meta_error_trap_push (window->display);
-          XQueryPointer (window->display->xdisplay,
-                         window->xwindow,
-                         &root, &child,
-                         &query_root_x, &query_root_y,
-                         &x, &y,
-                         &mask);
-          meta_error_trap_pop (window->display);
+          if (button == 0)
+            {
+              int x, y, query_root_x, query_root_y;
+              Window root, child;
+              guint mask;
 
-          if (mask & Button1Mask)
-            button = 1;
-          else if (mask & Button2Mask)
-            button = 2;
-          else if (mask & Button3Mask)
-            button = 3;
-          else
-            button = 0;
+              /* The race conditions in this _NET_WM_MOVERESIZE thing
+               * are mind-boggling
+               */
+              mask = 0;
+              meta_error_trap_push (window->display);
+              XQueryPointer (window->display->xdisplay,
+                             window->xwindow,
+                             &root, &child,
+                             &query_root_x, &query_root_y,
+                             &x, &y,
+                             &mask);
+              meta_error_trap_pop (window->display);
+
+              if (mask & Button1Mask)
+                button = 1;
+              else if (mask & Button2Mask)
+                button = 2;
+              else if (mask & Button3Mask)
+                button = 3;
+              else
+                button = 0;
+            }
 
           if (button != 0)
             {
