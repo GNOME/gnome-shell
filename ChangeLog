@@ -1,3 +1,7 @@
+2003-11-29  Havoc Pennington  <hp@redhat.com>
+
+	* fix up compositing manager to somewhat work
+
 2003-11-26  Rob Adams  <readams@readams.net>
 
 	* COMPLIANCE: fix a couple of minor typos.

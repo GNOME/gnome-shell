@@ -1738,26 +1738,33 @@ event_callback (XEvent   *event,
       break;
     case MapNotify:
       {
-        /* If a window becomes viewable, then we need to
-         * add it to the compositor
+        /* If a window becomes viewable and is a child of the root,
+         * then we need to add it to the compositor. If the window
+         * has a frame we definitely don't want to add it, it's
+         * just being mapped inside the frame.
          */
-        XWindowAttributes attrs;
-  
-        meta_error_trap_push_with_return (display);
-        
-        XGetWindowAttributes (display->xdisplay,
-                              modified, &attrs);
-        
-        if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+        if (window == NULL ||
+            (window && window->frame == NULL) ||
+            frame_was_receiver)
           {
-            meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                          modified);
-          }
-        else
-          {
-            if (attrs.map_state == IsViewable)
-              meta_compositor_add_window (display->compositor,
-                                          modified, &attrs);
+            XWindowAttributes attrs;
+            
+            meta_error_trap_push_with_return (display);
+            
+            XGetWindowAttributes (display->xdisplay,
+                                  modified, &attrs);
+            
+            if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+              {
+                meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                              modified);
+              }
+            else
+              {
+                if (attrs.map_state == IsViewable)
+                  meta_compositor_add_window (display->compositor,
+                                              modified, &attrs);
+              }
           }
       }
       break;
@@ -3078,7 +3085,15 @@ meta_display_begin_grab_op (MetaDisplay *display,
     }
 
   if (display->grab_window)
-    meta_window_refresh_resize_popup (display->grab_window);
+    {
+      meta_window_refresh_resize_popup (display->grab_window);
+
+      /* repaint window in case we draw it differently
+       * when grabbed
+       */
+      meta_compositor_damage_window (display->compositor,
+                                     display->grab_window);
+    }
   
   return TRUE;
 }
@@ -3152,6 +3167,13 @@ meta_display_end_grab_op (MetaDisplay *display,
                                  display->grab_wireframe_rect.height);
       meta_window_calc_showing (display->grab_window);
     }
+
+  /* repaint window in case the grab op drew it in a
+   * nonstandard way such as transparent or wireframe
+   */
+  if (display->grab_window != NULL)
+    meta_compositor_damage_window (display->compositor,
+                                   display->grab_window);
   
   display->grab_window = NULL;
   display->grab_screen = NULL;

@@ -41,6 +41,8 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
+void meta_compositor_damage_window   (MetaCompositor *compositor,
+                                      MetaWindow     *window);
 
 #endif /* META_COMPOSITOR_H */
 

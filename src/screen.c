@@ -502,6 +502,9 @@ meta_screen_new (MetaDisplay *display,
                 LeaveWindowMask | EnterWindowMask |
                 KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | StructureNotifyMask |
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+                ExposureMask |
+#endif
 		attr.your_event_mask);
   if (meta_error_trap_pop_with_return (display, FALSE) != Success)
     {
@@ -546,6 +549,8 @@ meta_screen_new (MetaDisplay *display,
   screen->compositor_windows = NULL;
   screen->damage_region = None;
   screen->root_picture = None;
+  screen->trans_pixmap = None;
+  screen->trans_picture = None;
   
   {
     XGCValues gc_values;

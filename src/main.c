@@ -378,7 +378,11 @@ main (int argc, char **argv)
 #else
   meta_verbose ("Compiled without startup notification\n");
 #endif
-
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  meta_verbose ("Compiled with composite extensions\n");
+#else
+  meta_verbose ("Compiled without composite extensions\n");
+#endif
   
   /* Load prefs */
   meta_prefs_init ();

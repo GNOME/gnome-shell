@@ -118,6 +118,8 @@ struct _MetaScreen
   GList *compositor_windows;
   XID root_picture;
   XID damage_region;
+  XID trans_pixmap;
+  XID trans_picture;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
