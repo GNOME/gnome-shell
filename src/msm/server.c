@@ -41,8 +41,22 @@
  * authorization from The Open Group.
  */
 
+#include <config.h>
+
+#include <X11/ICE/ICEutil.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+
 #include "server.h"
 #include "session.h"
+#include "util.h"
+
+#define MAGIC_COOKIE_LEN 16
 
 /* FIXME we need to time out anytime we're waiting for a client
  * response, such as InteractDone, SaveYourselfDone, ConnectionClosed
@@ -102,8 +116,8 @@ static void get_properties_callback    (SmsConn     cnxn,
 
 static Status new_client_callback                   (SmsConn         cnxn,
                                                      SmPointer       manager_data,
-                                                     unsigned long  *maskRet,
-                                                     SmsCallbacks   *callbacksRet,
+                                                     unsigned long  *mask_ret,
+                                                     SmsCallbacks   *callbacks_ret,
                                                      char          **failure_reason_ret);
 static Bool   host_auth_callback                    (char           *hostname);
 
@@ -111,11 +125,12 @@ static Bool   host_auth_callback                    (char           *hostname);
 static void ice_init (MsmServer *server);
 
 static gboolean create_auth_entries (MsmServer       *server,
-                                     IceListenObject *listen_objs,
+                                     IceListenObj    *listen_objs,
                                      int              n_listen_objs);
-static void free_auth_entries       (IceAuthDataEntry *entries);
+static void free_auth_entries       (IceAuthDataEntry *entries,
+                                     int               n_entries);
 
-static void
+static MsmServer*
 msm_server_new_with_session (MsmSession *session)
 {
   char errbuf[256];
@@ -150,7 +165,7 @@ msm_server_new (const char *session_name)
 {
   MsmSession *session;
 
-  session = msm_session_new (session_name);
+  session = msm_session_get (session_name);
 
   return msm_server_new_with_session (session);
 }
@@ -223,10 +238,11 @@ register_client_callback              (SmsConn         cnxn,
    *  Whenever previous_id is non-NULL we need to free() it.
    *  (What an incredibly broken interface...)
    */
-
   MsmClient *client;
+  MsmServer *server;
 
   client = manager_data;
+  server = msm_client_get_server (client);
 
   if (previous_id == NULL)
     {
@@ -446,7 +462,7 @@ delete_properties_callback (SmsConn     cnxn,
   i = 0;
   while (i < numProps)
     {
-      msm_client_unset_property (propNames[i]);
+      msm_client_unset_property (client, propNames[i]);
 
       ++i;
     }
@@ -468,8 +484,8 @@ get_properties_callback (SmsConn     cnxn,
 static Status
 new_client_callback                   (SmsConn         cnxn,
                                        SmPointer       manager_data,
-                                       unsigned long  *maskRet,
-                                       SmsCallbacks   *callbacksRet,
+                                       unsigned long  *mask_ret,
+                                       SmsCallbacks   *callbacks_ret,
                                        char          **failure_reason_ret)
 {
   MsmClient *client;
@@ -491,47 +507,47 @@ new_client_callback                   (SmsConn         cnxn,
   client = msm_client_new (server, cnxn);
   server->clients = g_list_prepend (server->clients, client);
   
-  *maskRet = 0;
+  *mask_ret = 0;
   
-  *maskRet |= SmsRegisterClientProcMask;
-  callbacksRet->register_client.callback = register_client_callback;
-  callbacksRet->register_client.manager_data  = client;
+  *mask_ret |= SmsRegisterClientProcMask;
+  callbacks_ret->register_client.callback = register_client_callback;
+  callbacks_ret->register_client.manager_data  = client;
 
-  *maskRet |= SmsInteractRequestProcMask;
-  callbacksRet->interact_request.callback = interact_request_callback;
-  callbacksRet->interact_request.manager_data = client;
+  *mask_ret |= SmsInteractRequestProcMask;
+  callbacks_ret->interact_request.callback = interact_request_callback;
+  callbacks_ret->interact_request.manager_data = client;
 
-  *maskRet |= SmsInteractDoneProcMask;
-  callbacksRet->interact_done.callback = interact_done_callback;
-  callbacksRet->interact_done.manager_data = client;
+  *mask_ret |= SmsInteractDoneProcMask;
+  callbacks_ret->interact_done.callback = interact_done_callback;
+  callbacks_ret->interact_done.manager_data = client;
 
-  *maskRet |= SmsSaveYourselfRequestProcMask;
-  callbacksRet->save_yourself_request.callback = save_yourself_request_callback;
-  callbacksRet->save_yourself_request.manager_data = client;
+  *mask_ret |= SmsSaveYourselfRequestProcMask;
+  callbacks_ret->save_yourself_request.callback = save_yourself_request_callback;
+  callbacks_ret->save_yourself_request.manager_data = client;
 
-  *maskRet |= SmsSaveYourselfP2RequestProcMask;
-  callbacksRet->save_yourself_phase2_request.callback = save_yourself_phase2_request_callback;
-  callbacksRet->save_yourself_phase2_request.manager_data = client;
+  *mask_ret |= SmsSaveYourselfP2RequestProcMask;
+  callbacks_ret->save_yourself_phase2_request.callback = save_yourself_phase2_request_callback;
+  callbacks_ret->save_yourself_phase2_request.manager_data = client;
 
-  *maskRet |= SmsSaveYourselfDoneProcMask;
-  callbacksRet->save_yourself_done.callback = save_yourself_done_callback;
-  callbacksRet->save_yourself_done.manager_data = client;
+  *mask_ret |= SmsSaveYourselfDoneProcMask;
+  callbacks_ret->save_yourself_done.callback = save_yourself_done_callback;
+  callbacks_ret->save_yourself_done.manager_data = client;
 
-  *maskRet |= SmsCloseConnectionProcMask;
-  callbacksRet->close_connection.callback = close_connection_callback;
-  callbacksRet->close_connection.manager_data  = client;
+  *mask_ret |= SmsCloseConnectionProcMask;
+  callbacks_ret->close_connection.callback = close_connection_callback;
+  callbacks_ret->close_connection.manager_data  = client;
 
-  *maskRet |= SmsSetPropertiesProcMask;
-  callbacksRet->set_properties.callback = set_properties_callback;
-  callbacksRet->set_properties.manager_data = client;
+  *mask_ret |= SmsSetPropertiesProcMask;
+  callbacks_ret->set_properties.callback = set_properties_callback;
+  callbacks_ret->set_properties.manager_data = client;
 
-  *maskRet |= SmsDeletePropertiesProcMask;
-  callbacksRet->delete_properties.callback = delete_properties_callback;
-  callbacksRet->delete_properties.manager_data   = client;
+  *mask_ret |= SmsDeletePropertiesProcMask;
+  callbacks_ret->delete_properties.callback = delete_properties_callback;
+  callbacks_ret->delete_properties.manager_data   = client;
 
-  *maskRet |= SmsGetPropertiesProcMask;
-  callbacksRet->get_properties.callback	= get_properties_callback;
-  callbacksRet->get_properties.manager_data   = client;
+  *mask_ret |= SmsGetPropertiesProcMask;
+  callbacks_ret->get_properties.callback	= get_properties_callback;
+  callbacks_ret->get_properties.manager_data   = client;
 
   return TRUE;
 }
@@ -723,7 +739,7 @@ msm_server_consider_phase_change (MsmServer *server)
         }
 
       /* Write to disk. */
-      msm_session_save (server->session);
+      msm_session_save (server->session, server);
     }
 
   /* msm_session_save() may have cancelled any shutdown that was in progress,
@@ -845,10 +861,6 @@ static void ice_io_error_handler (IceConn connection);
 static void new_ice_connection (IceConn connection, IcePointer client_data, 
 				Bool opening, IcePointer *watch_data);
 
-static void setup_authentication (MsmServer *server,
-                                  IceListenObject *listen_objs,
-                                  int              n_listen_objs);
-
 /* This is called when data is available on an ICE connection.  */
 static gboolean
 process_ice_messages (GIOChannel *channel,
@@ -920,7 +932,7 @@ accept_connection (GIOChannel *channel,
                    GIOCondition condition,
                    gpointer client_data)
 {
-  IceListenObject *listen_obj;
+  IceListenObj listen_obj;
   IceAcceptStatus status;
   IceConnectStatus cstatus;
   IceConn cnxn;
@@ -1026,7 +1038,7 @@ ice_init (MsmServer *server)
           
           g_io_add_watch (channel, G_IO_IN,
                           accept_connection,
-                          &listen_objs[i]);
+                          listen_objs[i]);
 
           g_io_channel_unref (channel);
           
@@ -1035,7 +1047,7 @@ ice_init (MsmServer *server)
 
       if (!create_auth_entries (server, listen_objs, n_listen_objs))
         {
-          meta_fatal (_("Could not set up authentication"));
+          msm_fatal (_("Could not set up authentication"));
           return;
         }
       
@@ -1068,9 +1080,9 @@ run_iceauth_script (const char *filename)
   GError *err;
   int status;
 
-  argv[0] = "iceauth";
-  argv[1] = "source";
-  argv[2] = filename;
+  argv[0] = (char*) "iceauth";
+  argv[1] = (char*) "source";
+  argv[2] = (char*) filename;
   argv[3] = NULL;
   
   err = NULL;
@@ -1095,9 +1107,37 @@ run_iceauth_script (const char *filename)
   return TRUE;
 }
 
+static void
+printhex (FILE *fp, const char *data, int len)
+{
+  int i;
+
+  for (i = 0; i < len; i++)
+    fprintf (fp, "%02x", data[i]);
+}
+
+static void
+write_iceauth (FILE *addfp, FILE *removefp, IceAuthDataEntry *entry)
+{
+    fprintf (addfp,
+             "add %s \"\" %s %s ",
+             entry->protocol_name,
+             entry->network_id,
+             entry->auth_name);
+
+    printhex (addfp, entry->auth_data, entry->auth_data_length);
+    fprintf (addfp, "\n");
+
+    fprintf (removefp,
+             "remove protoname=%s protodata=\"\" netid=%s authname=%s\n",
+             entry->protocol_name,
+             entry->network_id,
+             entry->auth_name);
+}
+
 static gboolean
 create_auth_entries (MsmServer       *server,
-                     IceListenObject *listen_objs,
+                     IceListenObj    *listen_objs,
                      int              n_listen_objs)
 {
   FILE *addfp = NULL;
@@ -1122,7 +1162,7 @@ create_auth_entries (MsmServer       *server,
       msm_fatal (_("Could not create ICE authentication script: %s\n"),
                  err->message);
       g_assert_not_reached ();
-      return;
+      return FALSE;
     }
   
   addfp = fdopen (fd, "w");
@@ -1141,7 +1181,7 @@ create_auth_entries (MsmServer       *server,
       msm_fatal (_("Could not create ICE authentication script: %s\n"),
                  err->message);
       g_assert_not_reached ();
-      return;
+      return FALSE;
     }
   
   removefp = fdopen (fd, "w");
@@ -1206,15 +1246,15 @@ create_auth_entries (MsmServer       *server,
   if (removefp)
     fclose (removefp);
 
-  if (addAuthFile)
+  if (add_file)
     {
-      unlink (addAuthFile);
-      free (addAuthFile);
+      unlink (add_file);
+      free (add_file);
     }
-  if (remAuthFile)
+  if (remove_file)
     {
-      unlink (remAuthFile);
-      free (remAuthFile);
+      unlink (remove_file);
+      free (remove_file);
     }
 
   return FALSE;  

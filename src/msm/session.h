@@ -28,7 +28,9 @@ typedef struct _MsmSession MsmSession;
 
 MsmSession* msm_session_get           (const char  *name);
 MsmSession* msm_session_get_failsafe  (void);
-void        msm_session_save          (MsmSession  *session);
+void        msm_session_save          (MsmSession  *session,
+                                       MsmServer   *server);
+void        msm_session_clear         (MsmSession  *session);
 void        msm_session_update_client (MsmSession  *session,
                                        MsmClient   *client);
 void        msm_session_remove_client (MsmSession  *session,

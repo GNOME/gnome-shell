@@ -24,6 +24,7 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "server.h"
 #include "util.h"

@@ -21,6 +21,13 @@
 
 #include "util.h"
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 
 void
 msm_fatal (const char *format, ...)
@@ -130,7 +137,7 @@ msm_create_dir_and_parents (const char *dir,
 const char*
 msm_get_work_directory (void)
 {
-  static char *dir = NULL;
+  static const char *dir = NULL;
 
   if (dir == NULL)
     {

@@ -8,8 +8,12 @@ msm_SOURCES= 					\
 	gui.h					\
 	main.c					\
 	main.h					\
+	props.c					\
+	props.h					\
 	server.c				\
 	server.h				\
+	session.c				\
+	session.h				\
 	util.c					\
 	util.h
 

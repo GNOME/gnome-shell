@@ -20,6 +20,11 @@
  */
 
 #include "client.h"
+#include "props.h"
+#include "util.h"
+
+#include <stdlib.h>
+#include <string.h>
 
 struct _MsmClient
 {
@@ -32,35 +37,6 @@ struct _MsmClient
   int restart_style;
   GList *properties;
 };
-
-static GList* find_property_link_by_name (MsmClient *client,
-                                          const char *name);
-
-static SmProp* find_property_by_name (MsmClient *client,
-                                      const char *name);
-
-static gboolean find_card8_property (MsmClient *client,
-                                     const char *name,
-                                     int *result)
-     
-static gboolean find_string_property (MsmClient *client,
-                                      const char *name,
-                                      char **result);
-
-static gboolean find_vector_property (MsmClient *client,
-                                      const char *name,
-                                      int *argcp,
-                                      char ***argvp);
-
-static gboolean get_card8_value  (SmProp   *prop,
-                                  int      *result);
-static gboolean get_string_value (SmProp   *prop,
-                                  char    **result);
-static gboolean get_vector_value (SmProp   *prop,
-                                  int      *argcp,
-                                  char   ***argvp);
-
-static SmProp* copy_property (SmProp *prop);
 
 #define DEFAULT_RESTART_STYLE SmRestartIfRunning
 
@@ -168,7 +144,7 @@ msm_client_register (MsmClient  *client,
 
   SmsRegisterClientReply (client->cnxn, client->id);
 
-  p = SmsClientHostName (smsConn);
+  p = SmsClientHostName (client->cnxn);
   client->hostname = g_strdup (p);
   free (p);
 }
@@ -190,9 +166,7 @@ msm_client_interact_request (MsmClient *client)
 
 void
 msm_client_begin_interact (MsmClient *client)
-{
-  g_return_if_fail (client->interact_requested);
-  
+{  
   SmsInteract (client->cnxn);
 }
 
@@ -234,7 +208,7 @@ msm_client_initial_save (MsmClient  *client)
   /* This is the save on client registration in the spec under
    * RegisterClientReply
    */
-  internal_save (client, SmSaveLocal, allow_interaction, shut_down);
+  internal_save (client, SmSaveLocal, FALSE, FALSE);
 }
 
 void
@@ -322,7 +296,7 @@ msm_client_set_property_taking_ownership (MsmClient *client,
       return;
     }
   
-  list = find_property_link_by_name (prop->name);
+  list = proplist_find_link_by_name (client->properties, prop->name);
   if (list)
     {
       SmFreeProperty (list->data);
@@ -338,7 +312,7 @@ msm_client_set_property_taking_ownership (MsmClient *client,
   if (strcmp (prop->name, "SmRestartStyleHint") == 0)
     {
       int hint;
-      if (get_card8_value (prop, &hint))
+      if (smprop_get_card8 (prop, &hint))
         client->restart_style = hint;
       else
         client->restart_style = DEFAULT_RESTART_STYLE;
@@ -351,7 +325,7 @@ msm_client_unset_property (MsmClient *client,
 {
   GList *list;
 
-  list = find_property_link_by_name (prop->name);
+  list = proplist_find_link_by_name (client->properties, name);
   if (list)
     {
       SmFreeProperty (list->data);
@@ -375,7 +349,7 @@ msm_client_send_properties (MsmClient *client)
   int i;
   
   n_props = g_list_length (client->properties);
-  props = g_new (SmProp, n_props);
+  props = g_new (SmProp*, n_props);
 
   i = 0;
   tmp = client->properties;
@@ -390,187 +364,4 @@ msm_client_send_properties (MsmClient *client)
   SmsReturnProperties (client->cnxn, n_props, props);
 
   g_free (props);
-}
-
-/* Property functions stolen from gnome-session */
-
-static GList*
-find_property_link_by_name (MsmClient *client,
-                            const char *name)
-{
-  GList *list;
-
-  for (list = client->properties; list; list = list->next)
-    {
-      SmProp *prop = (SmProp *) list->data;
-      if (strcmp (prop->name, name) == 0)
-	return list;
-    }
-
-  return NULL;
-}
-
-
-SmProp*
-find_property_by_name (MsmClient *client, const char *name)
-{
-  GList *list;
-
-  list = find_property_link_by_name (client, name);
-
-  return list ? list->data : NULL;
-}
-
-gboolean
-find_card8_property (MsmClient *client, const char *name,
-		     int *result)
-{
-  SmProp *prop;
-
-  g_return_val_if_fail (result != NULL, FALSE);
-
-  prop = find_property_by_name (client, name);
-  if (prop == NULL)
-    return FALSE;
-  else
-    return get_card8_value (prop, result);
-}
-
-gboolean
-find_string_property (MsmClient *client, const char *name,
-		      char **result)
-{
-  SmProp *prop;
-
-  g_return_val_if_fail (result != NULL, FALSE);
-
-  prop = find_property_by_name (client, name);
-  if (prop == NULL)
-    return FALSE;
-  else
-    return get_string_value (prop, result);
-}
-
-gboolean
-find_vector_property (MsmClient *client, const char *name,
-		      int *argcp, char ***argvp)
-{
-  SmProp *prop;
-
-  g_return_val_if_fail (argcp != NULL, FALSE);
-  g_return_val_if_fail (argvp != NULL, FALSE);
-
-  prop = find_property_by_name (client, name);
-  if (prop == NULL)
-    return FALSE;
-  else
-    return get_vector_value (prop, argcp, argvp);
-}
-
-static gboolean
-get_card8_value  (SmProp   *prop,
-                  int      *result)
-{
-  g_return_val_if_fail (result != NULL, FALSE);
-
-  if (strcmp (prop->type, SmCARD8) == 0)
-    {
-      char *p;
-      p = prop->vals[0].value;
-      *result = *p;
-      return TRUE;
-    }
-  else
-    return FALSE
-}
-
-static gboolean
-get_string_value (SmProp   *prop,
-                  char    **result)
-{
-  g_return_val_if_fail (result != NULL, FALSE);
-
-  if (strcmp (prop->type, SmARRAY8) == 0)
-    {
-      *result = g_malloc (prop->vals[0].length + 1);
-      memcpy (*result, prop->vals[0].value, prop->vals[0].length);
-      (*result)[prop->vals[0].length] = '\0';
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static gboolean
-get_vector_value (SmProp   *prop,
-                  int      *argcp,
-                  char   ***argvp)
-{
-  g_return_val_if_fail (argcp != NULL, FALSE);
-  g_return_val_if_fail (argvp != NULL, FALSE);
-
-  if (strcmp (prop->type, SmLISTofARRAY8) == 0)
-    {
-      int i;
-      
-      *argcp = prop->num_vals;
-      *argvp = g_new0 (char *, *argcp + 1);
-      for (i = 0; i < *argcp; ++i)
-        {
-          (*argvp)[i] = g_malloc (prop->vals[i].length + 1);
-          memcpy ((*argvp)[i], prop->vals[i].value, prop->vals[i].length);
-          (*argvp)[i][prop->vals[i].length] = '\0';
-        }
-
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-static SmProp*
-copy_property (SmProp *prop)
-{
-  int i;
-  SmProp *copy;
-
-  /* This all uses malloc so we can use SmFreeProperty() */
-  
-  copy = msm_non_glib_malloc (sizeof (SmProp));
-
-  if (prop->name)
-    copy->name = msm_non_glib_strdup (prop->name);
-  else
-    copy->name = NULL;
-
-  if (prop->type)
-    copy->type = msm_non_glib_strdup (prop->type);
-  else
-    copy->type = NULL;
-
-  copy->num_vals = prop->num_vals;
-  copy->vals = NULL;
-
-  if (copy->num_vals > 0 && prop->vals)
-    {
-      copy->vals = msm_non_glib_malloc (sizeof (SmPropValue) * copy->num_vals);
-      
-      for (i = 0; i < copy->num_vals; i++)
-        {
-          if (prop->vals[i].value)
-            {
-              copy->vals[i].length = prop->vals[i].length;
-              copy->vals[i].value = msm_non_glib_malloc (copy->vals[i].length);
-              memcpy (copy->vals[i].value, prop->vals[i].value,
-                      copy->vals[i].length);
-            }
-          else
-            {
-              copy->vals[i].length = 0;
-              copy->vals[i].value = NULL;
-            }
-        }
-    }
-
-  return copy;
 }

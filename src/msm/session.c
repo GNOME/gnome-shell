@@ -20,12 +20,24 @@
  */
 
 #include "session.h"
+#include "util.h"
+#include "props.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+
+#include <gtk/gtk.h>
 
 typedef struct _MsmSavedClient MsmSavedClient;
 
 struct _MsmSavedClient
 {
-  char **restart_command;
+  char *id;
 
 };
 
@@ -48,12 +60,23 @@ typedef enum
 
 static GHashTable *sessions = NULL;
 
+MsmSavedClient *saved_new  (void);
+void            saved_free (MsmSavedClient *saved);
+
+
 static MsmSession* recover_failed_session (MsmSession              *session,
                                            MsmSessionFailureReason  reason,
                                            const char              *details);
 
 static gboolean    parse_session_file     (MsmSession *session,
                                            GError    **error);
+
+void
+msm_session_clear (MsmSession  *session)
+{
+
+
+}
 
 void
 msm_session_update_client (MsmSession  *session,
@@ -77,6 +100,7 @@ msm_session_client_id_known (MsmSession *session,
 {
   
 
+  return FALSE;
 }
 
 void
@@ -84,6 +108,26 @@ msm_session_launch (MsmSession  *session)
 {
 
 
+}
+
+MsmSavedClient*
+saved_new (void)
+{
+  MsmSavedClient *saved;
+
+  saved = g_new (MsmSavedClient, 1);
+
+  saved->id = NULL;
+
+  return saved;
+}
+
+void
+saved_free (MsmSavedClient *saved)
+{
+  g_free (saved->id);
+  
+  g_free (saved);
 }
 
 static const char*
@@ -109,14 +153,14 @@ set_close_on_exec (int fd)
   val = fcntl (fd, F_GETFD, 0);
   if (val < 0)
     {
-      gconf_log (GCL_DEBUG, "couldn't F_GETFD: %s\n", g_strerror (errno));
+      msm_warning ("couldn't F_GETFD: %s\n", g_strerror (errno));
       return;
     }
 
   val |= FD_CLOEXEC;
 
   if (fcntl (fd, F_SETFD, val) < 0)
-    gconf_log (GCL_DEBUG, "couldn't F_SETFD: %s\n", g_strerror (errno));
+    msm_warning ("couldn't F_SETFD: %s\n", g_strerror (errno));
 }
 
 /* Your basic Stevens cut-and-paste */
@@ -146,7 +190,6 @@ msm_session_get_for_filename (const char *name,
   int fd = -1;
   GError *dir_error = NULL;
   GError *err;
-  gboolean use_global_file;
   
   session = g_hash_table_lookup (sessions, filename);
   if (session)
@@ -160,7 +203,7 @@ msm_session_get_for_filename (const char *name,
   session->lock_fd = -1;
 
   dir_error = NULL;
-  msm_create_dir_and_parents (session_dir (), &dir_error);
+  msm_create_dir_and_parents (session_dir (), 0700, &dir_error);
   /* We save dir_error for later; if creating the file fails,
    * we give dir_error in the reason.
    */
@@ -309,13 +352,59 @@ msm_session_save (MsmSession  *session,
 
 }
 
-static void
+static MsmSession*
 recover_failed_session (MsmSession             *session,
                         MsmSessionFailureReason reason,
                         const char             *details)
 {
+  /* FIXME, actually give option to recover, don't just complain */
+  GtkWidget *dialog;
+  char *message;
 
+  message = NULL;
+  
+  switch (reason)
+    {
+    case MSM_SESSION_FAILURE_OPENING_FILE:
+      message = g_strdup_printf (_("Could not open the session \"%s.\""),
+                                 session->name);
+      break;
+      
+    case MSM_SESSION_FAILURE_LOCKING:
+      message = g_strdup_printf (_("You are already logged in elsewhere, using the session \"%s.\" You can only use a session from one location at a time."),
+                                 session->name);
+      break;
+      
+    case MSM_SESSION_FAILURE_BAD_FILE:
+      message = g_strdup_printf (_("The session file for session \"%s\" appears to be invalid or corrupted."),
+                                 session->name);
+      break;
+      
+    case MSM_SESSION_FAILURE_EMPTY:
+      message = g_strdup_printf (_("The session \"%s\" contains no applications."),
+                                 session->name);
+      break;
+    }
+  
+  dialog = gtk_message_dialog_new (NULL,
+                                   GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_ERROR,
+                                   GTK_BUTTONS_CLOSE,
+                                   message);
 
+  g_free (message);
+  
+  gtk_dialog_run (GTK_DIALOG (dialog));
+
+  gtk_widget_destroy (dialog);
+
+  exit (1);
+
+  /* FIXME instead of exiting, always recover by coming up with some sort
+   * of session. Also, offer nice recovery options specific to each of the above
+   * failure modes.
+   */
+  return NULL;
 }
 
 static gboolean
