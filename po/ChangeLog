@@ -1,3 +1,8 @@
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
+	* da.po: fix a missing newline that made build fail once po was
+	added to subdirs
+
 2002-02-02  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Updated Norwegian (bokmål) translation.

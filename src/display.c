@@ -735,24 +735,21 @@ event_callback (XEvent   *event,
         {
           gboolean begin_move = FALSE;
           guint grab_mask;
+          gboolean unmodified;
 
           grab_mask = Mod1Mask;
           if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
             grab_mask |= ControlMask;
+
+          /* Two possible sources of an unmodified event; one is a
+           * client that's letting button presses pass through to the
+           * frame, the other is our focus_window_grab on unmodified
+           * button 1.  So for all such events we focus the window.
+           */
+          unmodified = (event->xbutton.state & grab_mask) == 0;
           
-          if ((event->xbutton.state & grab_mask) == 0 &&
-              event->xbutton.button != 1)
-            {
-              /* Two possible sources of an unmodified event;
-               * one is a client that's letting button presses
-               * pass through to the frame, the other is
-               * our focus_window_grab on unmodified button 1.
-               * In this case, we are not button 1, so we just
-               * ignore the whole thing.
-               */
-              ;
-            }
-          else if (event->xbutton.button == 1)
+          if (unmodified ||
+              event->xbutton.button == 1)
             {
               /* We always raise in click-to-focus, and
                * raise only if Alt is down for sloppy/mouse 
@@ -760,16 +757,15 @@ event_callback (XEvent   *event,
                * I'm not sure I have a rationale for this.
                */
               if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
-                  ((event->xbutton.state & grab_mask) != 0))
+                  !unmodified)
                 meta_window_raise (window);
 
               meta_topic (META_DEBUG_FOCUS,
-                          "Focusing %s due to button 1 press (display.c)\n",
-                          window->desc);
+                          "Focusing %s due to unmodified button %d press (display.c)\n",
+                          window->desc, event->xbutton.button);
               meta_window_focus (window, event->xbutton.time);
 
-              if (!frame_was_receiver && 
-                  (event->xbutton.state & grab_mask) == 0)
+              if (!frame_was_receiver && unmodified)
                 {
                   /* This is from our synchronous grab since
                    * it has no modifiers and was on the client window
@@ -799,7 +795,7 @@ event_callback (XEvent   *event,
               /* you can move on alt-click but not on
                * the click-to-focus
                */
-              if ((event->xbutton.state & grab_mask) != 0)
+              if (!unmodified)
                 begin_move = TRUE;
             }
           else if (event->xbutton.button == 2)
@@ -1958,6 +1954,7 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
 }
 
 /* Grab buttons we only grab while unfocused in click-to-focus mode */
+#define MAX_FOCUS_BUTTON 4
 void
 meta_display_grab_focus_window_button (MetaDisplay *display,
                                        Window       xwindow)
@@ -1972,7 +1969,7 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
   
   {
     int i = 1;
-    while (i < 2)
+    while (i < MAX_FOCUS_BUTTON)
       {
         meta_change_button_grab (display,
                                  xwindow,
@@ -1991,7 +1988,7 @@ meta_display_ungrab_focus_window_button (MetaDisplay *display,
 
   {
     int i = 1;
-    while (i < 2)
+    while (i < MAX_FOCUS_BUTTON)
       {
         meta_change_button_grab (display, xwindow,
                                  FALSE, TRUE, i, 0);

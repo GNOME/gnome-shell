@@ -1418,6 +1418,9 @@ meta_window_activate (MetaWindow *window,
                                          window->screen->active_workspace))
     meta_window_change_workspace (window,
                                   window->screen->active_workspace);
+  
+  if (window->shaded)
+    meta_window_unshade (window);
 
   if (window->minimized)
     meta_window_unminimize (window);

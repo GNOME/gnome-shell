@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-01-30 16:19+0100\n"
+"POT-Creation-Date: 2002-02-08 01:59-0500\n"
 "PO-Revision-Date: 2002-01-30 16:23CET\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
-#: src/display.c:158
+#: src/display.c:160
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
@@ -34,136 +34,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: src/frames.c:178
-msgid "Left edge"
-msgstr "Ľavý okraj"
-
-#: src/frames.c:178
-msgid "Left window edge width"
-msgstr "Šírka ľavého okraja okna"
-
-#: src/frames.c:179
-msgid "Right edge"
-msgstr "Pravý okraj"
-
-#: src/frames.c:179
-msgid "Right window edge width"
-msgstr "Šírka oravého okraja okna"
-
-#: src/frames.c:180
-msgid "Bottom edge"
-msgstr "Dolný okraj"
-
-#: src/frames.c:180
-msgid "Bottom window edge height"
-msgstr "Šírka oolného okraja okna"
-
-#: src/frames.c:182
-msgid "Title border"
-msgstr "Okraj okolo titulku"
-
-#: src/frames.c:182
-msgid "Border around title area"
-msgstr "Okraj okolo oblasti titulku"
-
-#: src/frames.c:183
-msgid "Text border"
-msgstr "Okraj okolo textu"
-
-#: src/frames.c:183
-msgid "Border around window title text"
-msgstr "Okraj okolo textu titulku okna"
-
-#: src/frames.c:185
-msgid "Spacer padding"
-msgstr "Medzera oddeľovača"
-
-#: src/frames.c:185
-msgid "Padding on either side of spacer"
-msgstr "Medzery na každej strane oddeľovača"
-
-#: src/frames.c:186
-msgid "Spacer width"
-msgstr "Šírka oddeľovača"
-
-#: src/frames.c:186
-msgid "Width of spacer"
-msgstr "Šírka oddeľovača"
-
-#: src/frames.c:187
-msgid "Spacer height"
-msgstr "Výška oddeľovača"
-
-#: src/frames.c:187
-msgid "Height of spacer"
-msgstr "Výška oddeľovača"
-
-#. same as right_width left_width by default
-#: src/frames.c:190
-msgid "Right inset"
-msgstr "Pravá vzdialenosť"
-
-#: src/frames.c:190
-msgid "Distance of buttons from right edge of frame"
-msgstr "Vzdialenosť tlačidiel od pravého okraja rámu"
-
-#: src/frames.c:191
-msgid "Left inset"
-msgstr "Ľavá vzdialenosť"
-
-#: src/frames.c:191
-msgid "Distance of menu button from left edge of frame"
-msgstr "Vzdialenosť tlačidiel od ľavého okraja rámu"
-
-#: src/frames.c:193
-msgid "Button width"
-msgstr "Šírka tlačidiel"
-
-#: src/frames.c:193
-msgid "Width of buttons"
-msgstr "Šírka tlačidiel"
-
-#: src/frames.c:194
-msgid "Button height"
-msgstr "Výška tlačidiel"
-
-#: src/frames.c:194
-msgid "Height of buttons"
-msgstr "Výška tlačidiel"
-
-#: src/frames.c:196
-msgid "Button border"
-msgstr "Okraj tlačidiel"
-
-#: src/frames.c:196
-msgid "Border around buttons"
-msgstr "Okraj okolo tlačidiel"
-
-#: src/frames.c:197
-msgid "Inner button border"
-msgstr "Vnútorný okraj tlačidiel"
-
-#: src/frames.c:197
-msgid "Border around the icon inside buttons"
-msgstr "Okraj okolo ikony na tlačidlách"
-
-#: src/frames.c:699
+#: src/frames.c:555
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: src/frames.c:702
+#: src/frames.c:558
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:705
+#: src/frames.c:561
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: src/frames.c:708
+#: src/frames.c:564
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: src/frames.c:711
+#: src/frames.c:567
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
@@ -172,86 +59,92 @@ msgstr "Odmaximalizovať okno"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr ""
+"Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
-#: src/main.c:252
+#: src/main.c:227
+#, c-format
+msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
+msgstr ""
+
+#: src/main.c:273
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepodarilo znovu spustiť: %s\n"
 
-#: src/menu.c:48
+#: src/menu.c:49
 msgid "_Close"
 msgstr "_Zavrieť"
 
-#: src/menu.c:49
+#: src/menu.c:50
 msgid "_Minimize"
 msgstr "_Minimalizovať"
 
-#: src/menu.c:50
+#: src/menu.c:51
 msgid "Ma_ximize"
 msgstr "Ma_ximalizovať"
 
-#: src/menu.c:51
+#: src/menu.c:52
 msgid "_Unmaximize"
 msgstr "_Odmaximalizovať"
 
-#: src/menu.c:52
+#: src/menu.c:53
 msgid "_Shade"
 msgstr "Za_baliť"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "U_nshade"
 msgstr "_Rozbaliť"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Mo_ve"
 msgstr "_Presunúť"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "_Resize"
 msgstr "Zmeniť _veľkosť"
 
 #. separator
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "Put on _All Workspaces"
 msgstr "Na _všetky plochy"
 
-#: src/menu.c:58
+#: src/menu.c:59
 msgid "Only on _This Workspace"
 msgstr "Len na _tejto ploche"
 
-#: src/menu.c:261
+#: src/menu.c:298
 #, c-format
 msgid "Only on workspace %s%d"
 msgstr "Len na ploche %s%d"
 
-#: src/menu.c:264
+#: src/menu.c:301
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Presunúť na plochu %s%d"
 
-#: src/prefs.c:272 src/prefs.c:288 src/prefs.c:304 src/prefs.c:320
-#: src/prefs.c:340 src/prefs.c:356
+#: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
+#: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf kľúč \"%s\" má nastavený neplatný typ\n"
 
-#: src/prefs.c:390
+#: src/prefs.c:415
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf kľúč \"%s\" má nastavený neplatnú hodnotu"
 
-#: src/prefs.c:424
+#: src/prefs.c:487
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepodarilo sa spracovať popis písma \"%s\" z GConf kľúča %s\n"
 
-#: src/prefs.c:461
+#: src/prefs.c:524
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d uložená v GConf kľúči %s nie je platná veľkosť písma\n"
 
-#: src/prefs.c:487
+#: src/prefs.c:550
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -324,49 +217,136 @@ msgstr "Neznámy atribúť %s v elemente <geometry>"
 msgid "Unknown element %s"
 msgstr "Neznámy element %s"
 
-#: src/theme.c:378
+#: src/theme.c:348
+msgid "top"
+msgstr ""
+
+#: src/theme.c:350
+msgid "bottom"
+msgstr ""
+
+#: src/theme.c:352
+msgid "left"
+msgstr ""
+
+#: src/theme.c:354
+msgid "right"
+msgstr ""
+
+#: src/theme.c:368
 #, c-format
-msgid "Coordinate expression contains character '%c' which is not allowed"
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr ""
+
+#: src/theme.c:387
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr ""
+
+#: src/theme.c:738
+msgid "Gradients should have at least two colors"
+msgstr ""
+
+#: src/theme.c:828
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:842
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+
+#: src/theme.c:853
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:866
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr ""
+
+#: src/theme.c:896
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+
+#: src/theme.c:907
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr ""
+
+#: src/theme.c:917
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+
+#: src/theme.c:956
+#, fuzzy, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Nepodarilo sa vytvoriť priečinok '%s': %s\n"
+
+#: src/theme.c:1206
+#, fuzzy, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Výraz umiestnenia obsahuje znak '%c', ktorý nie je povolený"
 
-#: src/theme.c:405
+#: src/theme.c:1233
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
+msgstr ""
+"Výraz umiestnenia obsahuje reálne číslo '%s', ktoré nie je možné spracovať."
 
-#: src/theme.c:419
+#: src/theme.c:1247
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
+msgstr ""
+"Výraz umiestnenia obsahuje celé čísl '%s', ktoré nie je možné spracovať."
 
-#: src/theme.c:524
+#: src/theme.c:1314
+#, fuzzy, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr "Výraz umiestnenie obsahuje neznámu premennú \"%s\""
+
+#: src/theme.c:1371
 msgid "Coordinate expression was empty or not understood"
 msgstr "Výraz umiestnenia je prázdny alebo nerozpoznaný"
 
-#: src/theme.c:663 src/theme.c:673 src/theme.c:698
+#: src/theme.c:1510 src/theme.c:1520 src/theme.c:1554
 msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
-#: src/theme.c:706
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+#: src/theme.c:1562
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa snaží použiť operátor modulo na reálne číslo"
 
-#: src/theme.c:754
-#, c-format
-msgid "Coordinate expression has an operator \"%c\" where an operand was expected"
+#: src/theme.c:1619
+#, fuzzy, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenie obsahuje operátor \"%c\" tam, kde sa očakáva operand"
 
-#: src/theme.c:763
+#: src/theme.c:1628
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Výraz umiestnenie obsahuje operand tam, kde sa očakáva operátor"
 
-#: src/theme.c:771
+#: src/theme.c:1636
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Výraz umiestnenie skončil operátorom namiesto operandom"
 
-#: src/theme.c:781
+#: src/theme.c:1646
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -375,51 +355,103 @@ msgstr ""
 "Výraz umiestnenie obsahuje operátor \"%c\" za operátorom \"%c\" bez "
 "operandov medzi nimi."
 
-#: src/theme.c:883
+#: src/theme.c:1765
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Pri spracovaní výrazu umiestnenia bola pretečená pamäť. Toto je "
-"chyba Metacity, ale naozaj potrebujete taký veľký výraz?"
+"Pri spracovaní výrazu umiestnenia bola pretečená pamäť. Toto je chyba "
+"Metacity, ale naozaj potrebujete taký veľký výraz?"
 
-#: src/theme.c:912
+#: src/theme.c:1794
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Výraz umiestnenie obsahuje zatváraciu zátvorku bez otváracej zátvorky"
 
-#: src/theme.c:927
-#, c-format
-msgid "Coordinate expression had unknown variable \"%s\""
+#: src/theme.c:1857
+#, fuzzy, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Výraz umiestnenie obsahuje neznámu premennú \"%s\""
 
-#: src/theme.c:984
+#: src/theme.c:1914
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Výraz umiestnenie má otváraciu zátvorku bez zatváracej zátvorky"
 
-#: src/theme.c:995
+#: src/theme.c:1925
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Výraz umiestnenie asi neobsahuje žiadne operátory ani operandy"
 
-#: src/theme.c:1163 src/theme.c:1187 src/theme.c:1209
+#: src/theme.c:2169 src/theme.c:2191 src/theme.c:2212
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Téma obsahuje výraz \"%s\", ktorý vrátil chybu: %s\n"
 
-#. someone is on crack
-#: src/window.c:3411
+#: src/theme.c:3376
 #, c-format
-msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
 msgstr ""
-"Okno %s nastavuje maximálnu šírku %d menšiu ako je minimálna šírka %d, "
-"vypínam zmenu veľkosťi\n"
 
-#. another cracksmoker
-#: src/window.c:3421
+#: src/theme.c:3785 src/theme.c:3817
 #, c-format
-msgid "Window %s sets max height %d less than min height %d, disabling resize\n"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
-"vypínam zmenu veľkosťi\n"
+
+#: src/theme.c:3868
+#, fuzzy, c-format
+msgid "Failed to load theme \"%s\": %s"
+msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
+
+#: src/theme.c:4013
+#, c-format
+msgid "No <name> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4020
+#, c-format
+msgid "No <author> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4027
+#, c-format
+msgid "No <date> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4034
+#, c-format
+msgid "No <description> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4041
+#, c-format
+msgid "No <copyright> set for theme \"%s\""
+msgstr ""
+
+#: src/theme.c:4051
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+
+#: src/theme.c:4073
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+
+#: src/theme.c:4424 src/theme.c:4484
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+
+#: src/theme.c:4432 src/theme.c:4492
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr ""
 
 #: src/xprops.c:53
 #, c-format
@@ -435,3 +467,98 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 
+#~ msgid "Left edge"
+#~ msgstr "Ľavý okraj"
+
+#~ msgid "Left window edge width"
+#~ msgstr "Šírka ľavého okraja okna"
+
+#~ msgid "Right edge"
+#~ msgstr "Pravý okraj"
+
+#~ msgid "Right window edge width"
+#~ msgstr "Šírka oravého okraja okna"
+
+#~ msgid "Bottom edge"
+#~ msgstr "Dolný okraj"
+
+#~ msgid "Bottom window edge height"
+#~ msgstr "Šírka oolného okraja okna"
+
+#~ msgid "Title border"
+#~ msgstr "Okraj okolo titulku"
+
+#~ msgid "Border around title area"
+#~ msgstr "Okraj okolo oblasti titulku"
+
+#~ msgid "Text border"
+#~ msgstr "Okraj okolo textu"
+
+#~ msgid "Border around window title text"
+#~ msgstr "Okraj okolo textu titulku okna"
+
+#~ msgid "Spacer padding"
+#~ msgstr "Medzera oddeľovača"
+
+#~ msgid "Padding on either side of spacer"
+#~ msgstr "Medzery na každej strane oddeľovača"
+
+#~ msgid "Spacer width"
+#~ msgstr "Šírka oddeľovača"
+
+#~ msgid "Width of spacer"
+#~ msgstr "Šírka oddeľovača"
+
+#~ msgid "Spacer height"
+#~ msgstr "Výška oddeľovača"
+
+#~ msgid "Height of spacer"
+#~ msgstr "Výška oddeľovača"
+
+#~ msgid "Right inset"
+#~ msgstr "Pravá vzdialenosť"
+
+#~ msgid "Distance of buttons from right edge of frame"
+#~ msgstr "Vzdialenosť tlačidiel od pravého okraja rámu"
+
+#~ msgid "Left inset"
+#~ msgstr "Ľavá vzdialenosť"
+
+#~ msgid "Distance of menu button from left edge of frame"
+#~ msgstr "Vzdialenosť tlačidiel od ľavého okraja rámu"
+
+#~ msgid "Button width"
+#~ msgstr "Šírka tlačidiel"
+
+#~ msgid "Width of buttons"
+#~ msgstr "Šírka tlačidiel"
+
+#~ msgid "Button height"
+#~ msgstr "Výška tlačidiel"
+
+#~ msgid "Height of buttons"
+#~ msgstr "Výška tlačidiel"
+
+#~ msgid "Button border"
+#~ msgstr "Okraj tlačidiel"
+
+#~ msgid "Border around buttons"
+#~ msgstr "Okraj okolo tlačidiel"
+
+#~ msgid "Inner button border"
+#~ msgstr "Vnútorný okraj tlačidiel"
+
+#~ msgid "Border around the icon inside buttons"
+#~ msgstr "Okraj okolo ikony na tlačidlách"
+
+#~ msgid ""
+#~ "Window %s sets max width %d less than min width %d, disabling resize\n"
+#~ msgstr ""
+#~ "Okno %s nastavuje maximálnu šírku %d menšiu ako je minimálna šírka %d, "
+#~ "vypínam zmenu veľkosťi\n"
+
+#~ msgid ""
+#~ "Window %s sets max height %d less than min height %d, disabling resize\n"
+#~ msgstr ""
+#~ "Okno %s nastavuje maximálnu výšku %d menšiu ako je minimálna výška %d, "
+#~ "vypínam zmenu veľkosťi\n"

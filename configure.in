@@ -140,4 +140,5 @@ src/Makefile
 src/wm-tester/Makefile
 src/tools/Makefile
 src/themes/Makefile
+po/Makefile.in
 ])

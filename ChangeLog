@@ -1,5 +1,24 @@
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_grab_focus_window_button): grab
+	buttons 2 and 3 also, so you can focus a window with those, 
+	#70840
+	(event_callback): fix this to let you focus a window with any 
+	unmodified click, and also with Alt+button1
+
+	* configure.in (AC_OUTPUT): add po/Makefile.in
+
+	* autogen.sh: port to glib-gettextize, remove stupid
+	auto-find-subdirs crap
+
+	* Makefile.am (SUBDIRS): add po to subdirs, #70615
+
+	* src/window.c (meta_window_activate): unshaded window if shaded, 
+	I thought this was in bugzilla but I don't see it. anyway thanks
+	whoever mentioned it to me.	
+
+2002-02-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/tools/metacity-window-demo.c (menu_items): add modal dialog test
 
 2002-02-08  Havoc Pennington  <hp@pobox.com>
