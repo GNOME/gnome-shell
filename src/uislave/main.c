@@ -20,12 +20,56 @@
  */
 
 #include "messages.h"
+#include "messagequeue.h"
+#include "fixedtip.h"
+#include "main.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 #include <gtk/gtk.h>
+
+static void message_callback (MetaMessageQueue *mq,
+                              MetaMessage      *message,
+                              gpointer          data);
+
+int
+main (int argc, char **argv)
+{
+  MetaMessageQueue *mq;
+  
+  /* report our nature to the window manager */
+  meta_message_send_check ();
+  
+  gtk_init (&argc, &argv);
+
+  mq = meta_message_queue_new (0, message_callback, NULL);
+  
+  gtk_main ();
+  
+  return 0;
+}
+
+static void
+message_callback (MetaMessageQueue *mq,
+                  MetaMessage      *message,
+                  gpointer          data)
+{
+  switch (message->header.message_code)
+    {
+    case MetaMessageShowTipCode:
+      meta_fixed_tip_show (message->show_tip.root_x,
+                           message->show_tip.root_y,
+                           message->show_tip.markup);
+      break;
+      
+    default:
+      meta_ui_warning ("Unhandled message code %d\n",
+                       message->header.message_code);
+      break;
+    }
+}
 
 void
 meta_ui_warning (const char *format, ...)
@@ -44,22 +88,16 @@ meta_ui_warning (const char *format, ...)
   g_free (str);
 }
 
-int
-main (int argc, char **argv)
+  
+#if 0
 {
   int i;
-
-  /* report our nature to the window manager */
-  meta_message_send_check ();
-  write (1, "abcdefghijklmnopqrstuvwxyz", 27);
-  
-#if 1
   /* Try breaking message queue system. */
   i = 0;
   while (i < 1500)
     {
       meta_message_send_check ();
-      write (1, "abcdefghijklmnopqrstuvwxyz", 27);
+
       if (g_random_boolean ())
         {
           int j;
@@ -79,18 +117,6 @@ main (int argc, char **argv)
       
       ++i;
     }
-#endif
-  
-  gtk_init (&argc, &argv);
-  
-  gtk_main ();
-  
-  return 0;
 }
-
-
-
-
-
-
+#endif
 

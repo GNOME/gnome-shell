@@ -1,4 +1,4 @@
-/* Metacity IPC message source for main loop */
+/* Metacity fixed tooltip routine */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -19,26 +19,14 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_MESSAGE_QUEUE_H
-#define META_MESSAGE_QUEUE_H
+#ifndef META_FIXED_TIP_H
+#define META_FIXED_TIP_H
 
-#include <glib.h>
+#include <gtk/gtk.h>
 
-#ifdef METACITY_COMPILE
-#include "uislave/messages.h"
-#else
-#include "messages.h"
-#endif
+void meta_fixed_tip_show (int root_x, int root_y,
+                          const char *markup_text);
+void meta_fixed_tip_hide (void);
 
-typedef struct _MetaMessageQueue MetaMessageQueue;
-
-typedef void (* MetaMessageQueueFunc) (MetaMessageQueue *mq,
-                                       MetaMessage      *message,
-                                       gpointer          data);
-
-MetaMessageQueue* meta_message_queue_new  (int                   fd,
-                                           MetaMessageQueueFunc  func,
-                                           gpointer              data);
-void              meta_message_queue_free (MetaMessageQueue     *mq);
 
 #endif

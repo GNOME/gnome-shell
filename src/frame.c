@@ -21,6 +21,7 @@
 
 #include "frame.h"
 #include "errors.h"
+#include "uislave.h"
 
 static void
 meta_frame_init_info (MetaFrame     *frame,
@@ -517,7 +518,13 @@ meta_frame_event (MetaFrame *frame,
         case META_FRAME_ACTION_RESIZING_SE:
           update_resize_se (frame);
           break;
-          
+
+        case META_FRAME_ACTION_NONE:
+          meta_ui_slave_show_tip (frame->window->screen->uislave,
+                                  frame->rect.x,
+                                  frame->rect.y,
+                                  "Hi this is a tooltip");
+          break;
         default:
           break;
         }

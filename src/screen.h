@@ -34,6 +34,8 @@ struct _MetaScreen
   Window xroot;
 
   MetaThemeEngine *engine;
+
+  MetaUISlave *uislave;
   
   /*< private >*/
 
@@ -41,8 +43,6 @@ struct _MetaScreen
    * root window)
    */
   PangoContext *pango_context;
-
-  MetaUISlave *uislave;
 };
 
 MetaScreen*   meta_screen_new                (MetaDisplay                *display,

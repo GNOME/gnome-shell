@@ -24,6 +24,7 @@
 
 #include "util.h"
 #include "uislave/messages.h"
+#include "messagequeue.h"
 #include "display.h"
 
 typedef void (* MetaUISlaveFunc) (MetaUISlave *uislave,
@@ -32,20 +33,19 @@ typedef void (* MetaUISlaveFunc) (MetaUISlave *uislave,
 
 struct _MetaUISlave
 {
-  GSource source;
-  
   char *display_name;
   int child_pid;
   int in_pipe;
+  int out_pipe;
   int err_pipe;
-  GPollFD out_poll;
   GIOChannel *err_channel;
   unsigned int errwatch;
-  GQueue *queue;
-  GString *buf;
-  GString *current_message;
-  int current_required_len;
-  int last_serial;
+
+  MetaMessageQueue *mq;
+
+  MetaUISlaveFunc func;
+  gpointer data;
+  
   /* if we determine that our available slave is hosed,
    * set this bit.
    */
@@ -58,5 +58,9 @@ MetaUISlave* meta_ui_slave_new     (const char      *display_name,
 void         meta_ui_slave_free    (MetaUISlave     *uislave);
 void         meta_ui_slave_disable (MetaUISlave     *uislave);
 
+void         meta_ui_slave_show_tip (MetaUISlave    *uislave,
+                                     int             root_x,
+                                     int             root_y,
+                                     const char     *markup_text);
 
 #endif

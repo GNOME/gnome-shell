@@ -356,7 +356,7 @@ event_queue_callback (MetaEventQueue *queue,
     case ReparentNotify:
       break;
     case ConfigureNotify:
-      if (event->xconfigure.override_redirect)
+      if (window && event->xconfigure.override_redirect)
         {
           /* Unmanage it, override_redirect was toggled on?
            * Can this happen?

@@ -51,12 +51,14 @@
 /* This is totally useless of course. Playing around. */
 #define META_MESSAGE_CHECKSUM(msg) ((msg)->header.length | (msg)->header.serial << 16) 
 #define META_MESSAGE_FOOTER(msg) ((MetaMessageFooter*) (((char*)(msg)) + ((msg)->header.length - sizeof (MetaMessageFooter))));
+#define META_MESSAGE_LENGTH(real_type) \
+   (G_STRUCT_OFFSET (real_type, footer) + sizeof (MetaMessageFooter))
 
 #define META_MESSAGE_MAX_SIZE (sizeof(MetaMessage));
 
 #define META_MESSAGE_MAX_VERSION_LEN 15
 #define META_MESSAGE_MAX_HOST_ALIAS_LEN 50
-#define META_MESSAGE_MAX_TIP_TEXT 128
+#define META_MESSAGE_MAX_TIP_LEN 128
 
 typedef union  _MetaMessage         MetaMessage;
 typedef struct _MetaMessageHeader   MetaMessageHeader;
@@ -111,7 +113,7 @@ struct _MetaMessageShowTip
   MetaMessageHeader header;
   int root_x;
   int root_y;
-  char markup[META_MESSAGE_MAX_TIP_TEXT];
+  char markup[META_MESSAGE_MAX_TIP_LEN + 1];
   MetaMessageFooter footer;
 };
 

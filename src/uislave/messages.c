@@ -42,9 +42,6 @@ static ReadResult read_data       (GString       *str,
 
 static void send_message (MetaMessage *message);
 
-#define META_MESSAGE_LENGTH(real_type) \
-   (G_STRUCT_OFFSET (real_type, footer) + sizeof (MetaMessageFooter))
-
 void
 meta_message_send_check (void)
 {
@@ -53,10 +50,13 @@ meta_message_send_check (void)
   memset (&check, 0, META_MESSAGE_LENGTH (MetaMessageCheck));
   check.header.message_code = MetaMessageCheckCode;
   check.header.length = META_MESSAGE_LENGTH (MetaMessageCheck);
-  strcpy (check.metacity_version, VERSION);
-  strcpy (check.host_alias, HOST_ALIAS);
+
+  strncpy (check.metacity_version, VERSION, META_MESSAGE_MAX_VERSION_LEN);
   check.metacity_version[META_MESSAGE_MAX_VERSION_LEN] = '\0';
+
+  strncpy (check.host_alias, HOST_ALIAS, META_MESSAGE_MAX_HOST_ALIAS_LEN);
   check.host_alias[META_MESSAGE_MAX_HOST_ALIAS_LEN] = '\0';
+
   check.messages_version = META_MESSAGES_VERSION;
 
   send_message ((MetaMessage*)&check);
