@@ -1,3 +1,8 @@
+2002-11-04 Erwann Chenede - <erwann.chenede@sun.com>
+	
+	* src/xprops.c (meta_prop_get_values): changed __FUNCTION__
+	to G_GNUC_FUNCTION as __FUNCTION__ is not portable.
+
 2002-11-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_grab): remove XSync calls from here
