@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-10-31 05:39+0100\n"
-"PO-Revision-Date: 2002-12-22 22:39+EDT\n"
+"PO-Revision-Date: 2002-12-29 19:37+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr " አጠቃቀም፦ %s\n"
 
 #: src/tools/metacity-message.c:174 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
@@ -93,7 +93,7 @@ msgstr "መስኮቱን አስተልቅ"
 
 #: src/frames.c:912
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "መስኮቱን አታስተልቅ"
 
 #: src/keybindings.c:870
 #, c-format
@@ -161,7 +161,7 @@ msgstr "ማውረድ (_U)"
 
 #: src/menu.c:57
 msgid "_Move"
-msgstr "ምንቀሳቅስ (_M)"
+msgstr "መምንቀሳቅስ (_M)"
 
 #: src/menu.c:58
 msgid "_Resize"
@@ -179,7 +179,7 @@ msgstr "ሁሉም መሥሪያ ቦታዎች ላይ አድርግ (_A)"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr "በዚህ የመሥሪያ ቦታ ላይ ብቻ (_U)"
+msgstr "በዚህ መሥሪያ ቦታ ላይ ብቻ (_U)"
 
 #: src/menu.c:152 src/prefs.c:1644
 #, c-format
@@ -1273,7 +1273,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
-msgstr ""
+msgstr "መስኮቱን አታስተልቅ"
 
 #: src/metacity.schemas.in.h:142
 msgid "Use standard system font in window titles"
@@ -2302,13 +2302,13 @@ msgid ""
 msgstr ""
 
 msgid "Mo_ve"
-msgstr "ምንቀሳቅስ (_V)"
+msgstr "መንቀሳቅስ (_V)"
 
 msgid "_Shade"
 msgstr "ማውጣት (_S)"
 
 msgid "Ma_ximize"
-msgstr "ምተልቅ (_X)"
+msgstr "መተልቅ (_X)"
 
 msgid "_Minimize"
-msgstr "ምሳንስ (_M)"
+msgstr "መሳንስ (_M)"
