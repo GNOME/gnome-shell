@@ -209,7 +209,7 @@ struct _MetaKeyBinding
   const char *name;
   KeySym keysym;
   unsigned int mask;
-  int keycode;
+  unsigned int keycode;
   MetaVirtualModifier modifiers;
   const MetaKeyHandler *handler;
 };
@@ -429,7 +429,7 @@ reload_modmap (MetaDisplay *display)
       /* get the key code at this point in the map,
        * see if its keysym is one we're interested in
        */
-      int keycode = modmap->modifiermap[i];
+      unsigned int keycode = modmap->modifiermap[i];
       
       if (keycode >= display->min_keycode &&
           keycode <= display->max_keycode)
@@ -512,7 +512,7 @@ reload_keycodes (MetaDisplay *display)
       int i;
       
       i = 0;
-      while (display->screen_bindings[i].keysym != None)
+      while (i < display->n_screen_bindings)
         {
           display->screen_bindings[i].keycode = XKeysymToKeycode (display->xdisplay,
                                                                   display->screen_bindings[i].keysym);
@@ -526,7 +526,7 @@ reload_keycodes (MetaDisplay *display)
       int i;
       
       i = 0;
-      while (display->window_bindings[i].keysym != None)
+      while (i < display->n_window_bindings)
         {
           display->window_bindings[i].keycode = XKeysymToKeycode (display->xdisplay,
                                                                   display->window_bindings[i].keysym);
@@ -547,11 +547,17 @@ reload_modifiers (MetaDisplay *display)
       int i;
       
       i = 0;
-      while (display->screen_bindings[i].keysym != None)
+      while (i < display->n_screen_bindings)
         {
           meta_display_devirtualize_modifiers (display,
                                                display->screen_bindings[i].modifiers,
                                                &display->screen_bindings[i].mask);
+
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      " Devirtualized mods 0x%x -> 0x%x (%s)\n",
+                      display->screen_bindings[i].modifiers,
+                      display->screen_bindings[i].mask,
+                      display->screen_bindings[i].name);          
           
           ++i;
         }
@@ -562,93 +568,137 @@ reload_modifiers (MetaDisplay *display)
       int i;
       
       i = 0;
-      while (display->window_bindings[i].keysym != None)
+      while (i < display->n_window_bindings)
         {
           meta_display_devirtualize_modifiers (display,
                                                display->window_bindings[i].modifiers,
                                                &display->window_bindings[i].mask);
+
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      " Devirtualized mods 0x%x -> 0x%x (%s)\n",
+                      display->window_bindings[i].modifiers,
+                      display->window_bindings[i].mask,
+                      display->window_bindings[i].name);
           
           ++i;
         }
     }
 }
 
-static void
-rebuild_screen_binding_table (MetaDisplay *display)
+static int
+count_bindings (const MetaKeyPref *prefs,
+                int                n_prefs)
 {
-  const MetaKeyPref *prefs;
+  int i;
+  int count;
+
+  count = 0;
+  i = 0;
+  while (i < n_prefs)
+    {
+      if (prefs[i].keysym != None)
+        {
+          count += 1;
+
+          if (prefs[i].add_shift &&
+              (prefs[i].modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
+            count += 1;
+        }
+      
+      ++i;
+    }
+
+  return count;
+}
+
+static void
+rebuild_binding_table (MetaDisplay        *display,
+                       MetaKeyBinding    **bindings_p,
+                       int                *n_bindings_p,
+                       const MetaKeyPref  *prefs,
+                       int                 n_prefs)
+{
   int n_bindings;
   int src, dest;
   
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Rebuilding screen binding table from preferences\n");
-  
-  meta_prefs_get_screen_bindings (&prefs, &n_bindings);
-  g_free (display->screen_bindings);
-  display->screen_bindings = g_new0 (MetaKeyBinding, n_bindings);
+  n_bindings = count_bindings (prefs, n_prefs);
+  g_free (*bindings_p);
+  *bindings_p = g_new0 (MetaKeyBinding, n_bindings);
 
   src = 0;
   dest = 0;
-  while (src < n_bindings)
+  while (src < n_prefs)
     {
       if (prefs[src].keysym != None)
         {
-          display->screen_bindings[dest].name = prefs[src].name;
-          display->screen_bindings[dest].keysym = prefs[src].keysym;
-          display->screen_bindings[dest].modifiers = prefs[src].modifiers;
-          display->screen_bindings[dest].mask = 0;
-          display->screen_bindings[dest].keycode = 0;          
+          (*bindings_p)[dest].name = prefs[src].name;
+          (*bindings_p)[dest].keysym = prefs[src].keysym;
+          (*bindings_p)[dest].modifiers = prefs[src].modifiers;
+          (*bindings_p)[dest].mask = 0;
+          (*bindings_p)[dest].keycode = 0;          
           
           ++dest;
+
+          if (prefs[src].add_shift &&
+              (prefs[src].modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
+            {
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Binding %s also needs Shift grabbed\n",
+                          prefs[src].name);
+              
+              (*bindings_p)[dest].name = prefs[src].name;
+              (*bindings_p)[dest].keysym = prefs[src].keysym;
+              (*bindings_p)[dest].modifiers = prefs[src].modifiers |
+                META_VIRTUAL_SHIFT_MASK;
+              (*bindings_p)[dest].mask = 0;
+              (*bindings_p)[dest].keycode = 0;          
+              
+              ++dest;
+            }
         }
       
       ++src;
     }
 
-  display->n_screen_bindings = dest;
+  g_assert (dest == n_bindings);
+  
+  *n_bindings_p = dest;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "%d screen bindings in table\n",
-              display->n_screen_bindings);
+              " %d bindings in table\n",
+              *n_bindings_p);
+}
+
+static void
+rebuild_screen_binding_table (MetaDisplay *display)
+{
+  const MetaKeyPref *prefs;
+  int n_prefs;
+  
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Rebuilding screen binding table from preferences\n");
+  
+  meta_prefs_get_screen_bindings (&prefs, &n_prefs);
+  rebuild_binding_table (display,
+                         &display->screen_bindings,
+                         &display->n_screen_bindings,
+                         prefs, n_prefs);
 }
 
 static void
 rebuild_window_binding_table (MetaDisplay *display)
 {
   const MetaKeyPref *prefs;
-  int n_bindings;
-  int src, dest;
+  int n_prefs;
   
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Rebuilding window binding table from preferences\n");
   
-  meta_prefs_get_window_bindings (&prefs, &n_bindings);
-  g_free (display->window_bindings);
-  display->window_bindings = g_new0 (MetaKeyBinding, n_bindings);
-
-  src = 0;
-  dest = 0;
-  while (src < n_bindings)
-    {
-      if (prefs[src].keysym != None)
-        {
-          display->window_bindings[dest].name = prefs[src].name;
-          display->window_bindings[dest].keysym = prefs[src].keysym;
-          display->window_bindings[dest].modifiers = prefs[src].modifiers;
-          display->window_bindings[dest].mask = 0;
-          display->window_bindings[dest].keycode = 0;
-          
-          ++dest;
-        }
-      
-      ++src;
-    }
-
-  display->n_window_bindings = dest;
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "%d window bindings in table\n",
-              display->n_window_bindings);
+  meta_prefs_get_window_bindings (&prefs, &n_prefs);
+  rebuild_binding_table (display,
+                         &display->window_bindings,
+                         &display->n_window_bindings,
+                         prefs, n_prefs);
 }
 
 static void
@@ -854,7 +904,7 @@ meta_change_keygrab (MetaDisplay *display,
                      Window       xwindow,
                      gboolean     grab,
                      int          keysym,
-                     int          keycode,
+                     unsigned int keycode,
                      int          modmask)
 {
   int ignored_mask;
@@ -925,7 +975,7 @@ static void
 meta_grab_key (MetaDisplay *display,
                Window       xwindow,
                int          keysym,
-               int          keycode,
+               unsigned int keycode,
                int          modmask)
 {
   meta_change_keygrab (display, xwindow, TRUE, keysym, keycode, modmask);
@@ -1422,6 +1472,11 @@ process_event (MetaKeyBinding       *bindings,
         {
           const MetaKeyHandler *handler;
 
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Binding keycode 0x%x mask 0x%x matches event 0x%x state 0x%x\n",
+                      bindings[i].keycode, bindings[i].mask,
+                      event->xkey.keycode, event->xkey.state);
+          
           if (bindings[i].handler)
             handler = bindings[i].handler;
           else

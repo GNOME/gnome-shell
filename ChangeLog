@@ -1,3 +1,21 @@
+2003-02-22  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_get_tab_next): when tabbing
+	backward, we are still tabbing *from* the most recently used
+	window, not from the least recently used window.
+
+	* src/keybindings.c (struct _MetaKeyBinding): make keycode
+	unsigned to match XEvent
+
+	Patch for #84999 based on patch from Mark McLoughlin
+	
+	* src/prefs.c: add an add_shift field to MetaKeyPref to 
+	add shift when grabbing the given keybinding.
+
+	* src/keybindings.c (rebuild_screen_binding_table)
+	(rebuild_window_binding_table): refactor to share code, 
+	and honor add_shift field in MetaKeyPref
+
 2003-02-20  Havoc Pennington  <hp@redhat.com>
 
 	* src/stack.c (create_constraints): don't create constraints

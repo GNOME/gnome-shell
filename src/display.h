@@ -259,8 +259,8 @@ struct _MetaDisplay
   int             n_screen_bindings;
   MetaKeyBinding *window_bindings;
   int             n_window_bindings;
-  int min_keycode;
-  int max_keycode;
+  unsigned int min_keycode;
+  unsigned int max_keycode;
   KeySym *keymap;
   int keysyms_per_keycode;
   XModifierKeymap *modmap;

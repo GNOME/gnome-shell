@@ -223,6 +223,8 @@ typedef struct
   const char   *name;
   unsigned int  keysym;
   MetaVirtualModifier modifiers;
+  /* for keybindings that can have shift or not like Alt+Tab */
+  gboolean      add_shift;
 } MetaKeyPref;
 
 void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,

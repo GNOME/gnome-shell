@@ -3541,7 +3541,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
   
   if (backward)
     return find_tab_backward (display, type, screen, workspace,
-                              g_list_last (display->mru_list));
+                              display->mru_list);
   else
     return find_tab_forward (display, type, screen, workspace,
                              display->mru_list);
