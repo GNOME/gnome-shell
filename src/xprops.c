@@ -657,7 +657,7 @@ meta_prop_get_text_property (MetaDisplay   *display,
 
 /* From Xmd.h */
 #ifndef cvtINT32toInt
-#if defined(WORD64) && defined(UNSIGNEDBITFIELDS)
+#if SIZEOF_VOID_P == 8
 #define cvtINT8toInt(val)   (((val) & 0x00000080) ? ((val) | 0xffffffffffffff00) : (val))
 #define cvtINT16toInt(val)  (((val) & 0x00008000) ? ((val) | 0xffffffffffff0000) : (val))
 #define cvtINT32toInt(val)  (((val) & 0x80000000) ? ((val) | 0xffffffff00000000) : (val))
@@ -677,7 +677,7 @@ meta_prop_get_text_property (MetaDisplay   *display,
 #define cvtINT8toLong(val) (val)
 #define cvtINT16toLong(val) (val)
 #define cvtINT32toLong(val) (val)
-#endif /* WORD64 and UNSIGNEDBITFIELDS */
+#endif /* SIZEOF_VOID_P == 8 */
 #endif /* cvtINT32toInt() */
 
 static gboolean

@@ -23,6 +23,18 @@ AC_HEADER_STDC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
+#### Integer sizes 
+
+AC_CHECK_SIZEOF(char)
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(void *)
+AC_CHECK_SIZEOF(long long)
+AC_CHECK_SIZEOF(__int64)
+
+#### Warnings
+
 changequote(,)dnl
 if test "x$GCC" = "xyes"; then
   case " $CFLAGS " in

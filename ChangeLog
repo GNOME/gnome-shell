@@ -1,5 +1,12 @@
 2003-09-29  Havoc Pennington  <hp@redhat.com>
 
+	* src/xprops.c (cvtINT16toInt): fix the 64-bit check not to use 
+	macros from the X tree that don't get set
+
+	* configure.in: check for sizes of various types
+
+2003-09-29  Havoc Pennington  <hp@redhat.com>
+
 	* src/delete.c (meta_window_delete): don't move the focus after
 	you click the close button on a window. bug #108706
 
