@@ -1,3 +1,4 @@
+# translation of es.po to Spanish
 # translation of metacity.HEAD.po to Spanish
 # Metacity's Spanish translation.
 # Copyright © 2001,2002,2003 Free Software Foundation, Inc.
@@ -5,19 +6,21 @@
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@arrakis.es>, 2003.
+# Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
+"Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-12-24 02:54+0100\n"
-"PO-Revision-Date: 2003-12-24 02:54+0100\n"
-"Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
+"PO-Revision-Date: 2004-03-09 01:04+0100\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3.1\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -38,13 +41,12 @@ msgstr "No se ha podido analizar «%s» como un entero"
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "No se comprenden los carácteres sobrantes «%s» en la cadena «%s»"
+msgstr "No se comprenden los caracteres sobrantes «%s» en la cadena «%s»"
 
 #: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
-"Ocurrió un error al analizar el mensaje «%s» desde el proceso de diálogo\n"
+msgstr "Ocurrió un error al analizar el mensaje «%s» desde el proceso de diálogo\n"
 
 #: src/delete.c:262
 #, c-format
@@ -53,8 +55,7 @@ msgstr "Ocurrió un error leyendo desde el proceso de diálogo de pantalla: %s\n
 
 #: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Ocurrió un error al lanzar metacity-dialog para preguntar acerca de matar "
 "una aplicación: %s\n"
@@ -147,7 +148,7 @@ msgstr ""
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
 "Este programa es software libre ; vea el código fuente para obtener las "
 "condiciones de copia. NO se proporciona ninguna garantía ; ni de "
-"MERCANTIBILIDAD O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
+"MERCANTILIDAD O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: src/main.c:443
 #, c-format
@@ -156,8 +157,7 @@ msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
 "los temas usuales."
@@ -343,8 +343,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "La ventana «%s» no está respondiendo."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Al forzar esta aplicación a terminar perderá cualquier cambio que no haya "
 "guardado."
@@ -427,7 +426,7 @@ msgid ""
 "older versions."
 msgstr ""
 "Distribución de botones en la barra de títulos. El valor debe ser una "
-"cadena, como »menu:minimize,maximize,close» ; la coma separa la esquina "
+"cadena, como «menu:minimize,maximize,close» ; la coma separa la esquina "
 "izquierda de la ventana de la esquina derecha, y los nombres de los botones "
 "están separados por comas. No se permiten botones duplicados. Los nombres "
 "desconocidos de botones son ignorados sin aviso de este modo esos botones "
@@ -478,7 +477,7 @@ msgstr ""
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
-"Deshabilitar carácterísticas antiguas que son requeridas por aplicaciones "
+"Deshabilitar características antiguas que son requeridas por aplicaciones "
 "antiguas o rotas"
 
 #: src/metacity.schemas.in.h:15
@@ -516,10 +515,10 @@ msgid ""
 "otherwise be impractical."
 msgstr ""
 "Si es «true», metacity dará al usuario menos información y menos sensación "
-"de \"manipulación directa\", usando «wireframes», evitando animaciones, u "
+"de «manipulación directa», usando «wireframes», evitando animaciones, u "
 "otros medios. Esto es una reducción significante en usabilidad para muchos "
-"usuarios, pero puede permitir a las aplicaciones heredadas y servidores de "
-"terminal funcionar cuando de otra forma sería impracticable."
+"usuarios, pero puede permitir funcionar a las aplicaciones heredadas y servidores de "
+"terminal cuando de otra forma sería impracticable."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -572,8 +571,7 @@ msgstr "Minimizar una ventana"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr ""
-"Modificador a usar para las acciones de pulsación modificadas de ventana"
+msgstr "Modificador a usar para las acciones de pulsación modificadas de ventana"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move a window"
@@ -585,8 +583,7 @@ msgstr "Moverse hacia atrás entre paneles y el escritorio inmediatamente"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
-"Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
+msgstr "Moverse hacia atrás entre paneles y el escritorio con una ventana emergente"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move backwards between windows immediately"
@@ -610,8 +607,7 @@ msgstr "Moverse entre ventanas con una ventana emergente"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
+msgstr "Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -745,7 +741,7 @@ msgstr ""
 "interfaz de usuarios moderadamente linda si usted no necesita ejecutar "
 "ninguna aplicación rota. Lamentablemente los arreglos deben estar "
 "habilitados por omisión; el mundo real es un lugar rudo. Algunos de los "
-"arreglos sonpara limitaciones en las especificaciones mismas, así que "
+"arreglos son para limitaciones en las especificaciones mismas, así que "
 "algunas veces un error en el modo «no-workarounds» no podrá arreglarse sin "
 "fastidiar una especificación."
 
@@ -901,7 +897,7 @@ msgstr ""
 "La combinación de teclas que cambia al espacio de trabajo por encima del "
 "actual. El formato se ve como »&lt;Control&gt;a» o »&lt;Shift&gt;&lt;Alt&gt;"
 "F1». El analizador es bastante liberal y permite tanto mayúsculas como "
-"minúsculas además de abreviacturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
+"minúsculas además de abreviaturas como por ejemplo »&lt;Ctl&gt;» y »&lt;"
 "Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 "entonces no habrá combinación de teclas para esta acción."
 
@@ -1814,9 +1810,9 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 "El modo de foco de la ventana indica cómo son activadas las ventanas. Tiene "
-"tres valores posibles; »clic» significa que la ventana debe ser seleccionada "
-"para obtener el foco, luego »sloppy» significa que ventanas obtienen el foco "
-"cuando el ratón entra en la ventana y »ratón» significa que la ventanas "
+"tres valores posibles; «clic» significa que la ventana debe ser seleccionada "
+"para obtener el foco, «sloppy» significa que ventanas obtienen el foco "
+"cuando el ratón entra en la ventana y «mouse» significa que la ventanas "
 "obtienen el foco cuando el ratón entra en la ventana y lo pierden cuando el "
 "ratón deja la ventana."
 
@@ -2060,12 +2056,11 @@ msgid ""
 "replace option to replace the current window manager.\n"
 msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
-"usar la opción »--replace» para reemplazar el gestor de ventanas activo.\n"
+"usar la opción «--replace» para reemplazar el gestor de ventanas activo.\n"
 
 #: src/screen.c:453
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
 "en la pantalla «%s»\n"
@@ -2215,9 +2210,7 @@ msgstr ""
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
-msgstr ""
-"Escala de título inválida «%s» (debe ser una de xx-small,x-small,small, "
-"medium, large,x-large,xx-large)\n"
+msgstr "Escala de título inválida «%s» (debe ser una de xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -2251,8 +2244,7 @@ msgstr "La <%s> geometría «%s» no ha sido definida"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> debe especificar o una geometría o un padre para tenga una geometría"
+msgstr "<%s> debe especificar o una geometría o un padre para tenga una geometría"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2262,7 +2254,7 @@ msgstr "Tipo desconocido «%s» en el elemento <%s>"
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "style_set desconocido «%s» en el elemento <%s>"
+msgstr "style_set «%s» desconocido en el elemento <%s>"
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -2308,8 +2300,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "No hay atributo «value» en el elemento <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "No se puede especificar ambos «button_width/button_height» y «aspect ratio» "
 "para los botones"
@@ -2572,8 +2563,7 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
+msgstr "El estilo ya ha sido especificado para estado %s redimensionado %s foco %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2614,8 +2604,7 @@ msgstr "El elemento mas externo en un tema debe ser <metacity_theme> no <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento name/author/date/"
 "description"
@@ -2627,8 +2616,7 @@ msgstr "El elemento <%s> no esta permitido dentro de un elemento <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "El elemento <%s> no esta permitido dentro de un elemento distance/border/"
 "aspect_ratio"
@@ -2854,22 +2842,20 @@ msgstr ""
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
-"prueba de expresión de la posición devolvió TRUE pero estableció un error"
+msgstr "prueba de expresión de la posición devolvió TRUE pero estableció un error"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"prueba de expresión de la posición devolvió FASE pero no estableció un error"
+msgstr "prueba de expresión de la posición devolvió FASE pero no estableció un error"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr "Se esperaba un error, pero no se dió ninguno"
+msgstr "Se esperaba un error, pero no se dio ninguno"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr "Se esperaba el error %d pero se dió el %d"
+msgstr "Se esperaba el error %d pero se dio el %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
@@ -2890,7 +2876,7 @@ msgstr "el valor y era %d, se esperaba %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
-"%d espresiones de coordenadas interpretadas en %g segundos (%g segundos de "
+"%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
 
 #: src/theme.c:202
@@ -2917,8 +2903,7 @@ msgstr "La geometría del marco no especifica la dimensión «%s»"
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-"La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
+msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
 
 #: src/theme.c:278
 #, c-format
@@ -2961,8 +2946,7 @@ msgstr "No se entiende el estado «%s» en la especificación del color"
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
-"No se entiende el componente de color «%s» en la especificación del color"
+msgstr "No se entiende el componente de color «%s» en la especificación del color"
 
 #: src/theme.c:1043
 #, c-format
@@ -2985,8 +2969,7 @@ msgstr "El valor alfa «%s» en el color mezclado no está entre 0.0 y 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "El formato de sombreado es «shade/base_color/factor», «%s» no coincide con "
 "el formato"
@@ -3013,7 +2996,7 @@ msgstr "No se ha podido analizar el color «%s»"
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "La expresión de coordenadas contenía un carácter «%s» en cual no "
-"estaápermitido"
+"está permitido"
 
 #: src/theme.c:1450
 #, c-format
@@ -3027,8 +3010,7 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
+msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
 #: src/theme.c:1531
 #, c-format
@@ -3048,29 +3030,25 @@ msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar un operador mod con un número de "
 "coma flotante"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operador «%s» donde se esperaba un "
 "operando"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"La expresión de coordenadas tiene un operando donde se esperaba un operador"
+msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"La expresión de coordenadas termina con una operador en vez de un operando"
+msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
 
 #: src/theme.c:1863
 #, c-format
@@ -3099,8 +3077,7 @@ msgstr ""
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
-"La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
+msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -3128,8 +3105,7 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Falta <frame state=«%s» resize=«%s» focus=«%s» style=»whatever»/>"
 
 #: src/theme.c:4445
@@ -3163,8 +3139,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
@@ -3287,8 +3262,7 @@ msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido para el elemento "
 "%d de la lista\n"
@@ -3413,3 +3387,4 @@ msgstr ""
 #~ msgstr ""
 #~ "La ventana %s pone su altura máxima %d menor que la mínima %d, "
 #~ "deshabilitando el redimensionado\n"
+
