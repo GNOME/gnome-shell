@@ -48,6 +48,8 @@ if test -n "$XINERAMA"; then
   XINERAMA_FLAGS='+xinerama'
 fi
 
+export EF_ALLOW_MALLOC_0=1
+
 if test -z "$ONLY_WM"; then
   echo "Launching Xnest"
   Xnest -ac $XNEST_DISPLAY -scrns $SCREENS -geometry 640x480 -bw 15 $XINERAMA_FLAGS &

@@ -3140,15 +3140,13 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
                                          op->data.icon.alpha_spec,
                                          op->data.icon.fill_type,
                                          width, height,
-                                         op->data.image.vertical_stripes,
-                                         op->data.image.horizontal_stripes);
+                                         FALSE, FALSE);
       else if (info->icon)
         pixbuf = scale_and_alpha_pixbuf (info->icon,
                                          op->data.icon.alpha_spec,
                                          op->data.icon.fill_type,
                                          width, height,
-                                         op->data.image.vertical_stripes,
-                                         op->data.image.horizontal_stripes);
+                                         FALSE, FALSE);
       break;
 
     case META_DRAW_TITLE:

@@ -112,7 +112,8 @@ metacity_dialog_SOURCES= 	\
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
-metacity_LDADD= @METACITY_LIBS@
+EFENCE=
+metacity_LDADD= $(EFENCE) @METACITY_LIBS@ $(EFENCE)
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 

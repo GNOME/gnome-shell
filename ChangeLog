@@ -1,3 +1,8 @@
+2002-11-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (draw_op_as_pixbuf): don't read from op->data.image 
+	when the op is an icon
+
 2002-11-12  Havoc Pennington  <hp@redhat.com>
 
 	* src/stack.c (meta_stack_get_default_focus_window): never use a
