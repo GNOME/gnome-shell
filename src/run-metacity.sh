@@ -14,6 +14,10 @@ if test -z "$CLIENTS"; then
   CLIENTS=0
 fi
 
+if test -z "$SM_CLIENTS"; then
+  SM_CLIENTS=0
+fi
+
 if test -z "$ONLY_WM"; then
   Xnest -ac :1 -scrns $SCREENS -geometry 640x480 -bw 15 &
   usleep 500000
@@ -21,6 +25,12 @@ if test -z "$ONLY_WM"; then
   if test $CLIENTS != 0; then
     for I in `seq 1 $CLIENTS`; do
       DISPLAY=:1 xterm -geometry 25x15 &
+    done
+  fi
+
+  if test $SM_CLIENTS != 0; then
+    for I in `seq 1 $SM_CLIENTS`; do
+      DISPLAY=:1 gnome-terminal --geometry 25x15 &
     done
   fi
  

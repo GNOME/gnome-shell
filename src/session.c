@@ -533,6 +533,58 @@ set_clone_restart_commands (void)
  * session manager.
  */
 
+static const char*
+window_type_to_string (MetaWindowType type)
+{
+  switch (type)
+    {
+    case META_WINDOW_NORMAL:
+      return "normal";
+      break;
+    case META_WINDOW_DESKTOP:
+      return "desktop";
+      break;
+    case META_WINDOW_DOCK:
+      return "dock";
+      break;
+    case META_WINDOW_DIALOG:
+      return "dialog";
+      break;
+    case META_WINDOW_MODAL_DIALOG:
+      return "modal_dialog";
+      break;
+    case META_WINDOW_TOOLBAR:
+      return "toolbar";
+      break;
+    case META_WINDOW_MENU:
+      return "menu";
+      break;
+    }
+
+  return "";
+} 
+
+static MetaWindowType
+window_type_from_string (const char *str)
+{
+  if (strcmp (str, "normal") == 0)
+    return META_WINDOW_NORMAL;
+  else if (strcmp (str, "desktop") == 0)
+    return META_WINDOW_DESKTOP;
+  else if (strcmp (str, "dock") == 0)
+    return META_WINDOW_DOCK;
+  else if (strcmp (str, "dialog") == 0)
+    return META_WINDOW_DIALOG;
+  else if (strcmp (str, "modal_dialog") == 0)
+    return META_WINDOW_MODAL_DIALOG;
+  else if (strcmp (str, "toolbar") == 0)
+    return META_WINDOW_TOOLBAR;
+  else if (strcmp (str, "menu") == 0)
+    return META_WINDOW_MENU;
+  else
+    return META_WINDOW_NORMAL;
+}
+
 static void
 save_state (void)
 {
@@ -586,16 +638,23 @@ save_state (void)
 
   /* The file format is:
    * <metacity_session id="foo">
-   *   <window id="bar" class="XTerm" name="xterm" title="/foo/bar" role="blah">
-   *     <workspace>2</workspace>
-   *     <workspace>4</workspace>
+   *   <window id="bar" class="XTerm" name="xterm" title="/foo/bar" role="blah" type="normal">
+   *     <workspace index="2"/>
+   *     <workspace index="4"/>
    *     <sticky/>
    *     <geometry x="100" y="100" width="200" height="200" gravity="northwest"/>
    *   </window>
    * </metacity_session>
+   *
+   * Note that attributes on <window> are the match info we use to
+   * see if the saved state applies to a restored window, and
+   * child elements are the saved state to be applied.
+   * 
    */
 
   /* FIXME we are putting non-UTF-8 in here. */
+
+  meta_warning ("FIXME Saving session ID, class, name, etc. pretending that they are valid UTF-8, but no such thing is necessarily true");
   
   fprintf (outfile, "<metacity_session id=\"%s\">\n",
            client_id);
@@ -621,12 +680,13 @@ save_state (void)
                             window->desc, window->sm_client_id);
 
               fprintf (outfile,
-                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\">\n",
+                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\">\n",
                        window->sm_client_id,
                        window->res_class ? window->res_class : "",
                        window->res_name ? window->res_name : "",
                        window->title ? window->title : "",
-                       window->role ? window->role : "");
+                       window->role ? window->role : "",
+                       window_type_to_string (window->type));
 
               /* Sticky */
               if (window->on_all_workspaces)
@@ -634,14 +694,14 @@ save_state (void)
 
               /* Workspaces we're on */
               {
-                GSList *w;
+                GList *w;
                 w = window->workspaces;
                 while (w != NULL)
                   {
                     int n;
                     n = meta_workspace_screen_index (w->data);
                     fprintf (outfile,
-                             "<workspace>%d</workspace>\n", n);
+                             "<workspace index=\"%d\"/>\n", n);
 
                     w = w->next;
                   }
@@ -682,19 +742,442 @@ save_state (void)
   g_free (session_file);
 }
 
+typedef enum
+{
+  WINDOW_TAG_NONE,
+  WINDOW_TAG_DESKTOP,
+  WINDOW_TAG_STICKY,
+  WINDOW_TAG_GEOMETRY
+} WindowTag;
+
+typedef struct
+{
+  MetaWindowSessionInfo *info;
+  
+} ParseData;
+
+static void                   session_info_free (MetaWindowSessionInfo *info);
+static MetaWindowSessionInfo* session_info_new  (void);
+
+static void start_element_handler (GMarkupParseContext  *context,
+                                   const gchar          *element_name,
+                                   const gchar         **attribute_names,
+                                   const gchar         **attribute_values,
+                                   gpointer              user_data,
+                                   GError              **error);
+static void end_element_handler   (GMarkupParseContext  *context,
+                                   const gchar          *element_name,
+                                   gpointer              user_data,
+                                   GError              **error);
+static void text_handler          (GMarkupParseContext  *context,
+                                   const gchar          *text,
+                                   gsize                 text_len,
+                                   gpointer              user_data,
+                                   GError              **error);
+
+static GMarkupParser metacity_session_parser = {
+  start_element_handler,
+  end_element_handler,
+  text_handler,
+  NULL,
+  NULL
+};
+
+static GSList *window_info_list = NULL;
+
 static void
 load_state (const char *previous_id)
 {
+  GMarkupParseContext *context;
+  GError *error;
+  ParseData parse_data;
+  char *text;
+  int length;
+  char *session_file;
+
+  session_file = g_strconcat (g_get_home_dir (),
+                              ".metacity/sessions/",
+                              client_id,
+                              NULL);
+
+  error = NULL;
+  if (!g_file_get_contents (session_file,
+                            &text,
+                            &length,
+                            &error))
+    {
+      meta_warning (_("Failed to read saved session file %s: %s\n"),
+                    session_file, error->message);
+      g_error_free (error);
+      g_free (session_file);
+      return;
+    }
+
+  parse_data.info = NULL;
+  
+  context = g_markup_parse_context_new (&metacity_session_parser,
+                                        0, &parse_data, NULL);
+
+  error = NULL;
+  if (!g_markup_parse_context_parse (context,
+                                     text,
+                                     length,
+                                     &error))
+    goto error;
+  
+  
+  error = NULL;
+  if (!g_markup_parse_context_end_parse (context, &error))
+    goto error;
+
+  g_markup_parse_context_free (context);
+
+  goto out;
+
+ error:
+
+  meta_warning (_("Failed to parse saved session file: %s\n"),
+                error->message);
+  g_error_free (error);
+
+ out:
+
+  g_free (text);
+}
 
 
+static void
+start_element_handler  (GMarkupParseContext *context,
+                        const gchar         *element_name,
+                        const gchar        **attribute_names,
+                        const gchar        **attribute_values,
+                        gpointer             user_data,
+                        GError             **error)
+{
+  ParseData *pd;
+
+  pd = user_data;
+
+  if (strcmp (element_name, "window") == 0)
+    {
+      int i;
+      
+      if (pd->info)
+        {
+          g_set_error (error,
+                       G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_PARSE,
+                       _("nested <window> tag"));
+          return;
+        }
+      
+      pd->info = session_info_new ();
+
+      i = 0;
+      while (attribute_names[i])
+        {
+          const char *name;
+          const char *val;
+          
+          name = attribute_names[i];
+          val = attribute_values[i];
+          
+          if (strcmp (name, "id") == 0)
+            {
+              if (*val)
+                pd->info->id = g_strdup (val);
+            }
+          else if (strcmp (name, "class") == 0)
+            {
+              if (*val)
+                pd->info->res_class = g_strdup (val);
+            }
+          else if (strcmp (name, "name") == 0)
+            {
+              if (*val)
+                pd->info->res_name = g_strdup (val);
+            }
+          else if (strcmp (name, "title") == 0)
+            {
+              if (*val)
+                pd->info->title = g_strdup (val);
+            }
+          else if (strcmp (name, "role") == 0)
+            {
+              if (*val)
+                pd->info->role = g_strdup (val);
+            }
+          else if (strcmp (name, "type") == 0)
+            {
+              if (*val)
+                pd->info->type = window_type_from_string (val);
+            }
+          else
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+                           _("Unknown attribute %s on <window> element"),
+                           name);
+              session_info_free (pd->info);
+              pd->info = NULL;
+              return;
+            }
+          
+          ++i;
+        }
+    }
+  else if (strcmp (element_name, "workspace") == 0)
+    {
+      int i;
+
+      i = 0;
+      while (attribute_names[i])
+        {
+          const char *name;
+
+          name = attribute_names[i];
+          
+          if (strcmp (name, "index") == 0)
+            {
+              pd->info->workspace_indices =
+                g_slist_prepend (pd->info->workspace_indices,
+                                 GINT_TO_POINTER (atoi (attribute_values[i])));
+            }
+          else
+            {
+              g_set_error (error,
+                           G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+                           _("Unknown attribute %s on <window> element"),
+                           name);
+              session_info_free (pd->info);
+              pd->info = NULL;
+              return;
+            }
+          
+          ++i;
+        }
+    }
+  else if (strcmp (element_name, "sticky") == 0)
+    {
+      pd->info->on_all_workspaces = TRUE;
+      pd->info->on_all_workspaces_set = TRUE;
+    }
+  else if (strcmp (element_name, "geometry") == 0)
+    {
+
+
+    }
+  else
+    {
+      g_set_error (error,
+                   G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                   _("Unknown element %s"),
+                   element_name);
+      return;
+    }
+}
+
+static void
+end_element_handler    (GMarkupParseContext *context,
+                        const gchar         *element_name,
+                        gpointer             user_data,
+                        GError             **error)
+{
+  ParseData *pd;
+
+  pd = user_data;
+
+  if (strcmp (element_name, "window") == 0)
+    {
+      g_assert (pd->info);
+
+      window_info_list = g_slist_prepend (window_info_list,
+                                          pd->info);
+      
+      meta_verbose ("Loaded window info from session with class: %s name: %s role: %s\n",
+                    pd->info->res_class ? pd->info->res_class : "(none)",
+                    pd->info->res_name ? pd->info->res_name : "(none)",
+                    pd->info->role ? pd->info->role : "(none)");
+      
+      pd->info = NULL;
+    }
+}
+
+static void
+text_handler           (GMarkupParseContext *context,
+                        const gchar         *text,
+                        gsize                text_len,
+                        gpointer             user_data,
+                        GError             **error)
+{
+  ParseData *pd;
+
+  pd = user_data;
+  
+  /* Right now we don't have any elements where we care about their
+   * content
+   */
+}
+
+
+static gboolean
+both_null_or_matching (const char *a,
+                       const char *b)
+{
+  if (a == NULL && b == NULL)
+    return TRUE;
+  else if (a && b && strcmp (a, b) == 0)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+static GSList*
+get_possible_matches (MetaWindow *window)
+{
+  /* Get all windows with this client ID */
+  GSList *retval;
+  GSList *tmp;
+  
+  retval = NULL;
+
+  tmp = window_info_list;
+  while (tmp != NULL)
+    {
+      MetaWindowSessionInfo *info;
+
+      info = tmp->data;
+      
+      if (both_null_or_matching (info->id,
+                                 window->sm_client_id) && 
+          both_null_or_matching (info->res_class, window->res_class) &&
+          both_null_or_matching (info->res_name, window->res_name) &&
+          both_null_or_matching (info->role, window->role))
+        {
+          meta_verbose ("Window %s may match saved window with class: %s name: %s role: %s\n",
+                        window->desc,
+                        info->res_class ? info->res_class : "(none)",
+                        info->res_name ? info->res_name : "(none)",
+                        info->role ? info->role : "(none)");
+
+          retval = g_slist_prepend (retval, info);
+        }
+        
+      tmp = tmp->next;
+    }
+
+  return retval;
+}
+
+const MetaWindowSessionInfo*
+find_best_match (GSList     *infos,
+                 MetaWindow *window)
+{
+  GSList *tmp;
+  const MetaWindowSessionInfo *matching_title;
+  const MetaWindowSessionInfo *matching_type;
+  
+  matching_title = NULL;
+  matching_type = NULL;
+  
+  tmp = infos;
+  while (tmp != NULL)
+    {
+      MetaWindowSessionInfo *info;
+
+      info = tmp->data;
+
+      if (matching_title == NULL &&
+          both_null_or_matching (info->title, window->title))
+        matching_title = info;
+
+      if (matching_type == NULL &&
+          info->type == window->type)
+        matching_type = info;
+      
+      tmp = tmp->next;
+    }
+
+  /* Prefer same title, then same type of window, then
+   * just pick something. Eventually we could enhance this
+   * to e.g. break ties by geometry hint similarity,
+   * or other window features.
+   */
+  
+  if (matching_title)
+    return matching_title;
+  else if (matching_type)
+    return matching_type;
+  else
+    return infos->data;
+  
+  return NULL;
+}
+
+const MetaWindowSessionInfo*
+meta_window_lookup_saved_state (MetaWindow *window)
+{
+  GSList *possibles;
+  const MetaWindowSessionInfo *info;
+  
+  /* Window is not session managed.
+   * I haven't yet figured out how to deal with these
+   * in a way that doesn't cause broken side effects in
+   * situations other than on session restore.
+   */
+  if (window->sm_client_id == NULL)
+    return NULL;
+
+  possibles = get_possible_matches (window);
+
+  if (possibles == NULL)
+    return NULL;
+
+  info = find_best_match (possibles, window);  
+  
+  g_slist_free (possibles);
+  
+  return info;
 }
 
 void
-meta_window_lookup_saved_state (MetaWindow *window,
-                                MetaWindowSessionInfo *info)
+meta_window_release_saved_state (const MetaWindowSessionInfo *info)
 {
-  
+  /* We don't want to use the same saved state again for another
+   * window.
+   */
+  window_info_list = g_slist_remove (window_info_list, info);
 
+  session_info_free ((MetaWindowSessionInfo*) info);
+}
+
+static void
+session_info_free (MetaWindowSessionInfo *info)
+{
+  g_free (info->id);
+  g_free (info->res_class);
+  g_free (info->res_name);
+  g_free (info->title);
+  g_free (info->role);
+
+  g_slist_free (info->workspace_indices);
+  
+  g_free (info);
+}
+
+static MetaWindowSessionInfo*
+session_info_new (void)
+{
+  MetaWindowSessionInfo *info;
+
+  info = g_new0 (MetaWindowSessionInfo, 1);
+
+  info->type = META_WINDOW_NORMAL;
+  
+  return info;
 }
 
 #endif /* HAVE_SM */
