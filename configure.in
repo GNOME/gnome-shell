@@ -160,7 +160,16 @@ if test "$found_shape" = "true"; then
    AC_DEFINE(HAVE_SHAPE)
 fi
 
-CPPFLAGS="$save_CPPFLAGS"
+RANDR_LIBS=
+found_randr=false
+AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
+               [AC_CHECK_HEADERS(X11/extensions/Xrandr.h,
+                                 RANDR_LIBS=-lXrandr found_randr=true)],
+               , -lXrender $ALL_X_LIBS)
+
+if test "$found_randr" = "true"; then
+   AC_DEFINE(HAVE_RANDR)
+fi
 
 METACITY_LIBS="$SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_LIBS"
 METACITY_MESSAGE_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS $METACITY_MESSAGE_LIBS"

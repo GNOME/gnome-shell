@@ -1395,13 +1395,25 @@ event_callback (XEvent   *event,
       /* Handle screen resize */
       {
 	MetaScreen *screen;
-
+        
         screen = meta_display_screen_for_root (display,
                                                event->xconfigure.window);
+
 	if (screen != NULL)
-	  meta_screen_resize (screen, 
-			      event->xconfigure.width,
-			      event->xconfigure.height);
+          {
+#ifdef HAVE_RANDR
+            /* do the resize the official way */
+            XRRUpdateConfiguration (event);
+#else
+            /* poke around in Xlib */
+            screen->xscreen->width   = event->xconfigure.width;
+            screen->xscreen->height  = event->xconfigure.height;
+#endif
+            
+            meta_screen_resize (screen, 
+                                event->xconfigure.width,
+                                event->xconfigure.height);
+          }
       }
       break;
     case ConfigureRequest:
