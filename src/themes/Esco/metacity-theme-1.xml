@@ -776,9 +776,9 @@
 		y="(height / 2) - (title_height / 2)"/>
 	<icon
 		x="width - title_width - height - (IconTitleSpacing * 2)"
-		y="0"
-		width="height"
-		height="height"/>
+		y="1"
+		width="height - 2"
+		height="height - 2"/>
 </draw_ops>
 
 <draw_ops name="title_text_with_icon">
@@ -798,9 +798,9 @@
 		y="(height / 2) - (title_height / 2)"/>
 	<icon alpha="0.33"
 		x="width - title_width - height - (IconTitleSpacing * 2)"
-		y="0"
-		width="height"
-		height="height"/>
+		y="1"
+		width="height - 2"
+		height="height - 2"/>
 </draw_ops>
 
 <draw_ops name="title_normal">
@@ -972,8 +972,8 @@
 </frame_style_set>
 
 <window type="normal" style_set="normal"/>
-<window type="dialog" style_set="normal"/>
-<window type="modal_dialog" style_set="normal"/>
+<window type="dialog" style_set="utility"/>
+<window type="modal_dialog" style_set="utility"/>
 <window type="menu" style_set="utility"/>
 <window type="utility" style_set="utility"/>
 <window type="border" style_set="border"/>
