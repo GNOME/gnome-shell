@@ -2202,15 +2202,15 @@ process_tab_grab (MetaDisplay *display,
       if (target_window)
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Ending grab early so we can focus the target window\n");
-          meta_display_end_grab_op (display, event->xkey.time);
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target window\n");
 
           meta_topic (META_DEBUG_FOCUS, "Activating %s due to tab popup selection\n",
                       target_window->desc);
           meta_window_activate (target_window, event->xkey.time);
+
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Ending grab early so we can focus the target window\n");
+          meta_display_end_grab_op (display, event->xkey.time);
 
           return TRUE; /* we already ended the grab */
         }
