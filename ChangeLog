@@ -1,5 +1,12 @@
 2001-10-13  Havoc Pennington  <hp@redhat.com>
 
+	* configure.in: add bad hack to work with GTK 1.3.9.90 RPMs from
+	gnomehide for now
+
+	* src/ui.c: another piece of bad hack in here
+
+2001-10-13  Havoc Pennington  <hp@redhat.com>
+
 	* configure.in: bump version
 
 2001-10-13  Havoc Pennington  <hp@pobox.com>

@@ -9,24 +9,24 @@ your petty hangups about version numbers.
 COMPILING METACITY
 ===
 
-You need GTK+ 1.3.x (to become 2.0), at least version 1.3.7.  At the
+You need GTK+ 1.3.x (to become 2.0), at least version 1.3.9.  At the
 moment CVS HEAD works, but that can change. Metacity is a fairly
 trivial 6000-line C program, so once you get GTK+ built it should be
 no problem to build Metacity.
 
-There are SRPMs on the ftp site (there were also binaries for a bit,
-but I am taking them down because they only worked with Rawhide, so it
-was sort of pointless). Just "rpm --rebuild metacity-whatever.src.rpm"
-after installing the GTK packages from ftp.gtk.org.
+There are SRPMs and sometimes RPMs on the ftp site, but you'd be
+pretty lucky to get them to work for now, since they are often out of
+sync with GTK. You might try with the GTK from ftp.gtk.org, and also
+the GTK from http://people.redhat.com/hp/gnomehide/.
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
 
-Report new bugs to hp@redhat.com for now. Will switch to Bugzilla
-sometime probably.
+Report new bugs on http://bugzilla.gnome.org.
 
 Feel free to send patches too; Metacity is really small and simple, so
 if you find a bug or want to add a feature it should be pretty easy.
+Send me mail, or put the patch in bugzilla.
 
 See the HACKING file for some notes on hacking Metacity.
 
@@ -151,6 +151,8 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    clicking the minimize button is sort of a bad idea.
    (If you had a WM-spec-compliant tasklist, it would work
    for unminimization.)
+   (Update: you can use "test-wnck" from the libwnck CVS module to 
+   unminimize, but it's not much of a UI ;-)
 
  - Metacity uses the new window manager spec, but only random bits of
    the old GNOME spec. It correctly advertises exactly which parts of
@@ -170,14 +172,7 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    instead of Alt as the main keybinding shortcut, if super/hyper 
    exist, and then keyboards with a windows key can use that for 
    WM functions and Alt for application shortcuts.
-   We'd fall back to Alt if no other suitable modifier existed.
-   
- - Cycling windows with Alt-Tab is flickery, AFAIK because
-   Metacity passes the entire window stack to XRestackWindows() 
-   every time you restack. Instead it should probably only restack 
-   windows that have changed their stacking with respect to one 
-   another. (But sometimes I don't see the flicker, so 
-   I'm not sure.)
+   We'd fall back to Alt if no other suitable modifier existed.   
 
  - I haven't even read the ICCCM section about colormaps. So if you 
    have an 8-bit display you are basically screwed.
