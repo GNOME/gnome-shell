@@ -279,7 +279,7 @@ you set
       <type>string</type>
       <default>disabled</default>
       <locale name="C">
-         <short>Move a window</short>
+         <short>Resize a window</short>
          <long>
           The keybinding used to enter "resize mode" and begin resizing a
         window using the keyboard.

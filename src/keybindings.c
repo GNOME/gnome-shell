@@ -2253,7 +2253,17 @@ handle_begin_resize       (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  /* FIXME */
+  if (window)
+    {
+      meta_window_raise (window);
+      meta_display_begin_grab_op (window->display,
+                                  window->screen,
+                                  window,
+                                  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                  FALSE, 0, 0,
+                                  event->xkey.time,
+                                  0, 0);
+    }
 }
 
 static void

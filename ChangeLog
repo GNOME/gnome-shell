@@ -1,5 +1,13 @@
 2002-07-09  Havoc Pennington  <hp@pobox.com>
 
+	* src/metacity.schemas.in: fix short description for 
+	begin_resize, patch from Jayaraj, #87654
+
+	* src/keybindings.c (handle_begin_resize): apply patch from
+	Jayaraj to actually handle the begin resize keybinding.
+
+2002-07-09  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (constrain_position): don't center vertically for 
 	maximized windows that don't fill the screen, just leave them at
 	the top.
