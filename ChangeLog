@@ -1,3 +1,10 @@
+2004-02-14  Rob Adams  <readams@readams.net>
+
+	* configure.in: Add configure option to not even try using
+	xinerama, to make metacity buildable on systems with no shared
+	library version of the xinerama libraries.  Patch for #134203 from
+	Julio M. Merino Vidal.
+
 2004-02-01  Rob Adams  <readams@readams.net>
 
 	* COMPLIANCE: Bring up to date with current draft EWHM.
