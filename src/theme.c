@@ -666,3 +666,108 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
       break;
     }  
 }
+
+MetaFrameStyle*
+meta_frame_style_new (void)
+{
+  MetaFrameStyle *style;
+
+  style = g_new0 (MetaFrameStyle, 1);
+
+  style->refcount = 1;
+  
+  return style;
+}
+
+void
+meta_frame_style_ref (MetaFrameStyle *style)
+{
+  g_return_if_fail (style != NULL);
+  
+  style->refcount += 1;
+}
+
+static void
+free_button_textures (MetaTextureSpec *textures[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST])
+{
+  int i, j;
+  
+  i = 0;
+  while (i < META_BUTTON_TYPE_LAST)
+    {
+      j = 0;
+      while (j < META_BUTTON_STATE_LAST)
+        {
+          if (textures[i][j])
+            meta_texture_spec_free (textures[i][j]);
+          
+          ++j;
+        }
+      
+      ++i;
+    }
+}
+
+void
+meta_frame_style_unref (MetaFrameStyle *style)
+{
+  g_return_if_fail (style != NULL);
+  g_return_if_fail (style->refcount > 0);
+  
+  style->refcount -= 1;
+
+  if (style->refcount == 0)
+    {
+      int i;
+      
+      free_button_textures (style->button_icons);
+      free_button_textures (style->button_backgrounds);
+
+      i = 0;
+      while (i < META_FRAME_PIECE_LAST)
+        {
+          if (style->pieces[i])
+            meta_texture_spec_free (style->pieces[i]);
+          
+          ++i;
+        }
+
+      if (style->layout)
+        meta_frame_layout_free (style->layout);
+      
+      g_free (style);
+    }
+}
+
+MetaFrameStyleSet*
+meta_frame_style_set_new (void)
+{
+  MetaFrameStyleSet *style_set;
+
+  style_set = g_new0 (MetaFrameStyleSet, 1);
+
+  return style_set;
+}
+
+void
+meta_frame_style_set_free (MetaFrameStyleSet *style_set)
+{
+  int i, j;
+
+  i = 0;
+  while (i < META_WINDOW_TYPE_LAST)
+    {
+      j = 0;
+      while (j < META_WINDOW_STATE_LAST)
+        {
+          if (style_set->styles[i][j])
+            meta_frame_style_unref (style_set->styles[i][j]);
+          
+          ++j;
+        }
+
+      ++i;
+    }
+
+  g_free (style_set);
+}

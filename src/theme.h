@@ -133,6 +133,14 @@ typedef enum
   META_TEXTURE_IMAGE
 } MetaTextureType;
 
+typedef enum
+{
+  META_TEXTURE_DRAW_UNSCALED,
+  META_TEXTURE_DRAW_SCALED_VERTICALLY,
+  META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
+  META_TEXTURE_DRAW_SCALED_BOTH
+} MetaTextureDrawMode;
+
 struct _MetaTextureSpec
 {
   MetaTextureType type;
@@ -243,22 +251,60 @@ typedef enum
 
 struct _MetaFrameStyle
 {
+  int refcount;
   MetaTextureSpec *button_icons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaTextureSpec *button_backgrounds[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaTextureSpec *pieces[META_FRAME_PIECE_LAST];
   MetaFrameLayout *layout;
 };
 
+
 typedef enum
 {
-  META_TEXTURE_DRAW_UNSCALED,
-  META_TEXTURE_DRAW_SCALED_VERTICALLY,
-  META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
-  META_TEXTURE_DRAW_SCALED_BOTH
-} MetaTextureDrawMode;
+  /* FIXME dammit, these are not mutually exclusive; how to handle
+   * the mess...
+   *
+   *  normal ->   noresize / vert only / horz only / both
+                  focused / unfocused
+   *  max    ->   focused / unfocused
+   *  shaded ->   focused / unfocused
+   *  max/shaded -> focused / unfocused
+   *
+   *  so 4 states with 8 sub-states in one, 2 sub-states in the other 3,
+   *  meaning 14 total
+   *
+   * 14 window states times 7 or 8 window types.
+   * 
+   *
+   * MetaFrameStyleSet needs rearranging to think of it this way.
+   * 
+   */
+  META_WINDOW_STATE_MAXIMIZED,
+  META_WINDOW_STATE_SHADED,
+  META_WINDOW_STATE_MAXIMIZED_AND_SHADED,
+  META_WINDOW_STATE_RESIZE_VERTICAL,
+  META_WINDOW_STATE_RESIZE_HORIZONTAL,
+  META_WINDOW_STATE_RESIZE_BOTH,
+  META_WINDOW_STATE_UNFOCUSED,
+  META_WINDOW_STATE_FOCUSED,
+  META_WINDOW_STATE_LAST
+} MetaWindowState;
+
+struct _MetaFrameStyleSet
+{
+  MetaFrameStyle *styles[META_WINDOW_TYPE_LAST][META_WINDOW_STATE_LAST];
+};
 
 MetaFrameLayout* meta_frame_layout_new           (void);
 void             meta_frame_layout_free          (MetaFrameLayout       *layout);
+void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
+                                                  GtkWidget             *widget,
+                                                  int                    text_height,
+                                                  MetaFrameFlags         flags,
+                                                  int                   *top_height,
+                                                  int                   *bottom_height,
+                                                  int                   *left_width,
+                                                  int                   *right_width);
 void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
                                                   GtkWidget             *widget,
                                                   int                    text_height,
@@ -266,6 +312,7 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
                                                   int                    client_width,
                                                   int                    client_height,
                                                   MetaFrameGeometry     *fgeom);
+
 
 MetaColorSpec* meta_color_spec_new    (MetaColorSpecType  type);
 void           meta_color_spec_free   (MetaColorSpec     *spec);
@@ -295,5 +342,12 @@ void             meta_texture_spec_draw   (const MetaTextureSpec *desc,
                                            int                    y,
                                            int                    width,
                                            int                    height);
+
+MetaFrameStyle* meta_frame_style_new   (void);
+void            meta_frame_style_ref   (MetaFrameStyle *style);
+void            meta_frame_style_unref (MetaFrameStyle *style);
+
+MetaFrameStyleSet* meta_frame_style_set_new  (void);
+void               meta_frame_style_set_free (MetaFrameStyleSet *style_set);
 
 #endif

@@ -2042,8 +2042,28 @@ get_control (MetaFrames *frames,
 
   if (has_vert || has_horiz)
     {
-      if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
-          x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
+      if (y < fgeom.top_height && x < RESIZE_EXTENDS)
+        {
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_NW;
+          else if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_N;
+          else
+            return META_FRAME_CONTROL_RESIZE_W;
+
+        }
+      else if (y < fgeom.top_height && x >= (fgeom.width - RESIZE_EXTENDS))
+        {
+          if (has_vert && has_horiz)
+            return META_FRAME_CONTROL_RESIZE_NE;
+          else if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_N;
+          else
+            return META_FRAME_CONTROL_RESIZE_E;
+
+        }
+      else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS) &&
+               x >= (fgeom.width - fgeom.right_width - RESIZE_EXTENDS))
         {
           if (has_vert && has_horiz)
             return META_FRAME_CONTROL_RESIZE_SE;
@@ -2061,6 +2081,11 @@ get_control (MetaFrames *frames,
             return META_FRAME_CONTROL_RESIZE_S;
           else
             return META_FRAME_CONTROL_RESIZE_W;
+        }
+      else if (y < fgeom.top_height)
+        {
+          if (has_vert)
+            return META_FRAME_CONTROL_RESIZE_N;
         }
       else if (y >= (fgeom.height - fgeom.bottom_height - RESIZE_EXTENDS))
         {

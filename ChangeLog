@@ -1,3 +1,29 @@
+2002-01-19  Havoc Pennington  <hp@pobox.com>
+
+	* src/wm-tester/test-resizing.c: cheesy client with static 
+	bit gravity, used to test the below change.
+
+	* src/window.c (meta_window_move_resize_internal): implement 
+	Owen's proposal for window resizing. 
+	http://mail.gnome.org/archives/wm-spec-list/1999-November/msg00088.html
+
+	Currently you have to do METACITY_USE_STATIC_GRAVITY=1 in order to 
+	use it, because some GDK bug is screwing up exposes on my frames
+	when it's enabled.
+
+	* src/display.c (meta_display_create_x_cursor): fix glyph for
+	NE/NW cursors
+
+	* src/frames.c (get_control): add ability to resize from top
+
+	* src/frame.c (meta_frame_get_flags): can't resize shaded windows
+	(meta_frame_sync_to_window): add gravity arg 
+
+	* src/common.h (MetaWindowType): move here from window.h so 
+	it can be used in themes stuff.
+	(MetaFrameFlags): remove META_FRAME_TRANSIENT since it 
+	overlaps with window type and was unused.
+
 2002-01-18  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (constrain_position): give priority to keeping NW

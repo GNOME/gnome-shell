@@ -210,7 +210,8 @@ meta_frame_get_flags (MetaFrame *frame)
     flags |= META_FRAME_ALLOWS_MOVE;
 
   if (frame->window->has_resize_func &&
-      !frame->window->maximized)
+      !frame->window->maximized &&
+      !frame->window->shaded)
     {
       if (frame->window->size_hints.min_width <
           frame->window->size_hints.max_width)
@@ -256,7 +257,8 @@ meta_frame_calc_geometry (MetaFrame         *frame,
 }
 
 static void
-set_background_none (MetaFrame *frame)
+set_background_none (MetaFrame *frame,
+                     int        resize_gravity)
 {
   XSetWindowAttributes attrs;
 
@@ -269,6 +271,7 @@ set_background_none (MetaFrame *frame)
 
 void
 meta_frame_sync_to_window (MetaFrame *frame,
+                           int        resize_gravity,
                            gboolean   need_move,
                            gboolean   need_resize)
 {
@@ -283,7 +286,7 @@ meta_frame_sync_to_window (MetaFrame *frame,
 
   /* set bg to none to avoid flicker */
   if (need_resize)
-    set_background_none (frame);
+    set_background_none (frame, resize_gravity);
 
   if (need_move && need_resize)
     XMoveResizeWindow (frame->window->display->xdisplay,

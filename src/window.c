@@ -1518,6 +1518,12 @@ adjust_for_gravity (MetaWindow        *window,
     }
 }
 
+static gboolean
+static_gravity_works (MetaDisplay *display)
+{
+  return display->static_gravity_works;
+}
+
 static void
 meta_window_move_resize_internal (MetaWindow  *window,
                                   MetaMoveResizeFlags flags,
@@ -1537,14 +1543,19 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean need_resize_frame = FALSE;
   int size_dx;
   int size_dy;
-  int pos_dx;
-  int pos_dy;
   int frame_size_dx;
   int frame_size_dy;
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
-
+  gboolean configure_frame_first;
+  gboolean use_static_gravity;
+  /* used for the configure request, but may not be final
+   * destination due to StaticGravity etc.
+   */
+  int client_move_x;
+  int client_move_y;
+  
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);
   
@@ -1590,12 +1601,10 @@ meta_window_move_resize_internal (MetaWindow  *window,
       else
         new_h = window->rect.height + fgeom.top_height + fgeom.bottom_height;
 
-      if (new_w != window->frame->rect.width ||
-          new_h != window->frame->rect.height)
-        need_resize_frame = TRUE;
-
       frame_size_dx = new_w - window->frame->rect.width;
       frame_size_dy = new_h - window->frame->rect.height;
+
+      need_resize_frame = (frame_size_dx != 0 || frame_size_dy != 0);
       
       window->frame->rect.width = new_w;
       window->frame->rect.height = new_h;
@@ -1675,6 +1684,21 @@ meta_window_move_resize_internal (MetaWindow  *window,
     default:
       break;
     }  
+
+  /* For nice effect, when growing the window we want to move/resize
+   * the frame first, when shrinking the window we want to move/resize
+   * the client first. If we grow one way and shrink the other,
+   * see which way we're moving "more"
+   *
+   * Mail from Owen subject "Suggestion: Gravity and resizing from the left"
+   * http://mail.gnome.org/archives/wm-spec-list/1999-November/msg00088.html
+   *
+   * An annoying fact you need to know in this code is that StaticGravity
+   * does nothing if you _only_ resize or _only_ move the frame;
+   * it must move _and_ resize, otherwise you get NorthWestGravity
+   * behavior. The move and resize must actually occur, it is not
+   * enough to set CWX | CWWidth but pass in the current size/pos.
+   */
   
   constrain_position (window,
                       window->frame ? &fgeom : NULL,
@@ -1687,41 +1711,100 @@ meta_window_move_resize_internal (MetaWindow  *window,
   if (window->frame)
     {
       int new_x, new_y;
+      int frame_pos_dx, frame_pos_dy;
       
+      /* Compute new frame coords */
       new_x = root_x_nw - fgeom.left_width;
       new_y = root_y_nw - fgeom.top_height;
 
-      if (new_x != window->frame->rect.x ||
-          new_y != window->frame->rect.y)
-        need_move_frame = TRUE;
+      frame_pos_dx = new_x - window->frame->rect.x;
+      frame_pos_dy = new_y - window->frame->rect.y;
 
-      if (window->rect.x != fgeom.left_width ||
-          window->rect.y != fgeom.top_height)
-        need_move_client = TRUE;
+      need_move_frame = (frame_pos_dx != 0 || frame_pos_dy != 0);
       
       window->frame->rect.x = new_x;
-      window->frame->rect.y = new_y;
-      
+      window->frame->rect.y = new_y;      
+
+      /* If frame will both move and resize, then StaticGravity
+       * on the child window will kick in and implicitly move
+       * the child with respect to the frame. The implicit
+       * move will keep the child in the same place with
+       * respect to the root window. If frame only moves
+       * or only resizes, then the child will just move along
+       * with the frame.
+       */
+
       /* window->rect.x, window->rect.y are relative to frame,
        * remember they are the server coords
        */
-      pos_dx = fgeom.left_width - window->rect.x;
-      pos_dy = fgeom.top_height - window->rect.y;
-      
-      window->rect.x = fgeom.left_width;
-      window->rect.y = fgeom.top_height;
+          
+      new_x = fgeom.left_width;
+      new_y = fgeom.top_height;
+
+      if (need_resize_frame && need_move_frame &&
+          static_gravity_works (window->display))
+        {
+          /* static gravity kicks in because frame
+           * is both moved and resized
+           */
+          /* when we move the frame by frame_pos_dx, frame_pos_dy the
+           * client will implicitly move relative to frame by the
+           * inverse delta.
+           * 
+           * When moving client then frame, we move the client by the
+           * frame delta, to be canceled out by the implicit move by
+           * the inverse frame delta, resulting in a client at new_x,
+           * new_y.
+           *
+           * When moving frame then client, we move the client
+           * by the same delta as the frame, because the client
+           * was "left behind" by the frame - resulting in a client
+           * at new_x, new_y.
+           *
+           * In both cases we need to move the client window
+           * in all cases where we had to move the frame window.
+           */
+          
+          client_move_x = new_x + frame_pos_dx;
+          client_move_y = new_y + frame_pos_dy;
+
+          if (need_move_frame)
+            need_move_client = TRUE;
+
+          use_static_gravity = TRUE;
+        }
+      else
+        {
+          client_move_x = new_x;
+          client_move_y = new_y;
+
+          if (client_move_x != window->rect.x ||
+              client_move_y != window->rect.y)
+            need_move_client = TRUE;
+
+          use_static_gravity = FALSE;
+        }
+
+      /* This is the final target position, but not necessarily what
+       * we pass to XConfigureWindow, due to StaticGravity implicit
+       * movement.
+       */      
+      window->rect.x = new_x;
+      window->rect.y = new_y;
     }
   else
     {
       if (root_x_nw != window->rect.x ||
           root_y_nw != window->rect.y)
         need_move_client = TRUE;
-
-      pos_dx = root_x_nw - window->rect.x;
-      pos_dy = root_y_nw - window->rect.y;
       
       window->rect.x = root_x_nw;
       window->rect.y = root_y_nw;
+
+      client_move_x = window->rect.x;
+      client_move_y = window->rect.y;
+
+      use_static_gravity = FALSE;
     }
 
   /* Fill in other frame member variables */
@@ -1736,7 +1819,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   /* See ICCCM 4.1.5 for when to send ConfigureNotify */
   
   need_configure_notify = FALSE;
-
+  
   /* If this is a configure request and we change nothing, then we
    * must send configure notify.
    */
@@ -1756,10 +1839,30 @@ meta_window_move_resize_internal (MetaWindow  *window,
   /* The rest of this function syncs our new size/pos with X as
    * efficiently as possible
    */
+  if (use_static_gravity)
+    {
+      if ((size_dx + size_dy) >= 0)
+        configure_frame_first = FALSE;
+      else
+        configure_frame_first = TRUE;
+    }
+  else
+    {
+      configure_frame_first = FALSE;
+    }
+
+
+  if (use_static_gravity)
+    meta_window_set_gravity (window, StaticGravity);  
   
+  if (configure_frame_first && window->frame)
+    meta_frame_sync_to_window (window->frame,
+                               resize_gravity,
+                               need_move_frame, need_resize_frame);
+
   values.border_width = 0;
-  values.x = window->rect.x;
-  values.y = window->rect.y;
+  values.x = client_move_x;
+  values.y = client_move_y;
   values.width = window->rect.width;
   values.height = window->rect.height;
   
@@ -1792,12 +1895,14 @@ meta_window_move_resize_internal (MetaWindow  *window,
       meta_error_trap_pop (window->display);
     }
 
-  /* Now do the frame */
-  if (window->frame)
-    {
-      meta_frame_sync_to_window (window->frame, need_move_frame, need_resize_frame);
-    }
+  if (!configure_frame_first && window->frame)
+    meta_frame_sync_to_window (window->frame,
+                               resize_gravity,
+                               need_move_frame, need_resize_frame);  
 
+  /* Put gravity back to be nice to lesser window managers */
+  if (use_static_gravity)
+    meta_window_set_gravity (window, NorthWestGravity);  
   
   if (need_configure_notify)
     send_configure_notify (window);

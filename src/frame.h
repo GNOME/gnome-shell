@@ -67,6 +67,7 @@ MetaFrameFlags meta_frame_get_flags (MetaFrame *frame);
 void meta_frame_calc_geometry      (MetaFrame         *frame,
                                     MetaFrameGeometry *geomp);
 void meta_frame_sync_to_window     (MetaFrame         *frame,
+                                    int                gravity,
                                     gboolean           need_move,
                                     gboolean           need_resize);
 

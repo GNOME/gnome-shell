@@ -34,13 +34,12 @@ typedef enum
   META_FRAME_ALLOWS_MAXIMIZE          = 1 << 3,
   META_FRAME_ALLOWS_VERTICAL_RESIZE   = 1 << 4,
   META_FRAME_ALLOWS_HORIZONTAL_RESIZE = 1 << 5,
-  META_FRAME_TRANSIENT                = 1 << 6,
-  META_FRAME_HAS_FOCUS                = 1 << 7,
-  META_FRAME_SHADED                   = 1 << 8,
-  META_FRAME_STUCK                    = 1 << 9,
-  META_FRAME_MAXIMIZED                = 1 << 10,
-  META_FRAME_ALLOWS_SHADE             = 1 << 11,
-  META_FRAME_ALLOWS_MOVE              = 1 << 12
+  META_FRAME_HAS_FOCUS                = 1 << 6,
+  META_FRAME_SHADED                   = 1 << 7,
+  META_FRAME_STUCK                    = 1 << 8,
+  META_FRAME_MAXIMIZED                = 1 << 9,
+  META_FRAME_ALLOWS_SHADE             = 1 << 10,
+  META_FRAME_ALLOWS_MOVE              = 1 << 11
 } MetaFrameFlags;
 
 typedef enum
@@ -129,6 +128,19 @@ typedef enum
   META_FOCUS_MODE_SLOPPY,
   META_FOCUS_MODE_MOUSE
 } MetaFocusMode;
+
+typedef enum
+{
+  META_WINDOW_NORMAL,
+  META_WINDOW_DESKTOP,
+  META_WINDOW_DOCK,
+  META_WINDOW_DIALOG,
+  META_WINDOW_MODAL_DIALOG,
+  META_WINDOW_TOOLBAR,
+  META_WINDOW_MENU,
+  META_WINDOW_TYPE_LAST
+} MetaWindowType;
+
 
 /* should investigate changing these to whatever most apps use */
 #define META_ICON_WIDTH 32

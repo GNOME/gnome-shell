@@ -28,17 +28,6 @@
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-typedef enum
-{
-  META_WINDOW_NORMAL,
-  META_WINDOW_DESKTOP,
-  META_WINDOW_DOCK,
-  META_WINDOW_DIALOG,
-  META_WINDOW_MODAL_DIALOG,
-  META_WINDOW_TOOLBAR,
-  META_WINDOW_MENU
-} MetaWindowType;
-
 struct _MetaWindow
 {
   MetaDisplay *display;

@@ -118,6 +118,7 @@ struct _MetaDisplay
   GList *workspaces;
 
   guint showing_desktop : 1;
+  guint static_gravity_works : 1;
   
   /*< private-ish >*/
   MetaEventQueue *events;

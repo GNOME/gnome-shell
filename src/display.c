@@ -179,6 +179,9 @@ meta_display_open (const char *name)
   display->prev_focus_window = NULL;
 
   display->showing_desktop = FALSE;
+
+  /* FIXME copy the checks from GDK probably */
+  display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
   
   /* we have to go ahead and do this so error handlers work */
   all_displays = g_slist_prepend (all_displays, display);
@@ -1638,10 +1641,10 @@ meta_display_create_x_cursor (MetaDisplay *display,
       glyph = XC_bottom_left_corner;
       break;
     case META_CURSOR_NE_RESIZE:
-      glyph = XC_top_left_corner;
+      glyph = XC_top_right_corner;
       break;
     case META_CURSOR_NW_RESIZE:
-      glyph = XC_top_right_corner;
+      glyph = XC_top_left_corner;
       break;
 
     default:
