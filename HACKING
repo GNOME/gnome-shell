@@ -1,4 +1,8 @@
 
+Don't commit substantive code in here without asking me,
+hp@redhat.com.  Adding translations, no-brainer typo fixes, etc.  is
+fine.
+
 The script src/run-metacity.sh is useful to hack on the window manager. 
 It runs metacity in an Xnest. e.g.:
  CLIENTS=3 ./run-metacity.sh

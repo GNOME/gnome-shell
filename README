@@ -252,6 +252,11 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    setting the new non-legacy type hint, but a panel with that 
    patch hasn't been released yet.
 
+ - The minimize/shade animation leaves "dirt" on Metacity's own frames, 
+   because Metacity handles exposes on its own frames during the 
+   animation. We could fix this with a horrible GDK hack of some kind.
+   I'm not sure of the best way yet.
+
 FAQ
 ===
 
@@ -273,6 +278,8 @@ A: If it makes sense to turn on unconditionally,
    probably constitute crackrock, they confuse most users
    and really are not that useful if you have a decent tasklist and 
    so on. But I am too used to them to turn them off.
+   Or alternatively iconification/tasklist is crack, and workspaces/pager
+   are good. But having both is certainly a bit wrong.
    Sloppy focus is probably crackrock too. Oh, and my Alt-1 thru Alt-6
    keybindings are definitely on crack.
 

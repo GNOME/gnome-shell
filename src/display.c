@@ -68,15 +68,15 @@ unsigned_long_hash (gconstpointer v)
 }
 
 static int
-set_string_hint (MetaDisplay *display,
-                 Window xwindow,
-                 Atom atom,
-                 const char *val)
+set_utf8_string_hint (MetaDisplay *display,
+                      Window xwindow,
+                      Atom atom,
+                      const char *val)
 {
   meta_error_trap_push (display);
   XChangeProperty (display->xdisplay, 
                    xwindow, atom,
-                   XA_STRING,
+                   display->atom_utf8_string, 
                    8, PropModeReplace, (guchar*) val, strlen (val) + 1);
   return meta_error_trap_pop (display);
 }
@@ -131,7 +131,8 @@ meta_display_open (const char *name)
     "_WIN_SUPPORTING_WM_CHECK",
     "_NET_WM_ICON_NAME",
     "_NET_WM_ICON",
-    "_NET_WM_ICON_GEOMETRY"
+    "_NET_WM_ICON_GEOMETRY",
+    "UTF8_STRING"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -214,6 +215,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_icon_name = atoms[36];
   display->atom_net_wm_icon = atoms[37];
   display->atom_net_wm_icon_geometry = atoms[38];
+  display->atom_utf8_string = atoms[39];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -283,10 +285,10 @@ meta_display_open (const char *name)
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
   
-  set_string_hint (display,
-                   display->leader_window,
-                   display->atom_net_wm_name,
-                   "Metacity");
+  set_utf8_string_hint (display,
+                        display->leader_window,
+                        display->atom_net_wm_name,
+                        "Metacity");
 
   {
     /* The legacy GNOME hint is to set a cardinal which is the window
