@@ -1,3 +1,8 @@
+2002-05-03  Laszlo Peter  <laca@sun.com>
+
+	* configure.in: add the X libs to METACITY_MESSAGE_LIBS and
+	METACITY_WINDOW_DEMO_LIBS
+
 2002-05-02  Havoc Pennington  <hp@redhat.com>
 
 	* README: updates
