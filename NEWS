@@ -1,3 +1,24 @@
+2.9.34
+==
+
+This is an unstable release to coincide with the release of Gnome
+2.10.0 release candidate 1 (2.9.92).
+
+Thanks to Aidan Delaney, Elijah Newren, and Joe Marcus Clarke for
+fixes in this release.
+
+ - Fix crash that occurs when stupid apps claim that a window is its
+   own parent (Elijah, Joe) [#168207]
+ - Prevent the visual bell from changing the focus window (Elijah)
+   [#123366]
+ - Make sure that icons in the alt-tab popup are dimmed for all hidden
+   windows, not just minimized ones (Aidan) [#168455]
+
+Translations
+  Elnaz Sarbar (fa), Ankit Patel (gu), Luca Ferretti (it),
+  Reinout van Schouwen (nl), Gnome PL Team (pl),
+  Alexandre Folle de Menezes (pt_BR)
+
 2.9.21
 ==
 
