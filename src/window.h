@@ -388,6 +388,9 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
 void        meta_window_fill_horizontal     (MetaWindow  *window);
 void        meta_window_fill_vertical       (MetaWindow  *window);
 
+/* Return whether the window would be showing if we were on its workspace */
+gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
+
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 

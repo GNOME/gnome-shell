@@ -94,8 +94,6 @@ static void     ensure_mru_position_after (MetaWindow *window,
 
 void meta_window_move_resize_now (MetaWindow  *window);
 
-static gboolean window_showing_on_its_workspace (MetaWindow *window);
-
 /* FIXME we need an abstraction that covers all these queues. */   
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
@@ -1131,7 +1129,7 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_fullscreen;
       ++i;
     }
-  if (!window_showing_on_its_workspace (window) || window->shaded)
+  if (!meta_window_showing_on_its_workspace (window) || window->shaded)
     {
       data[i] = window->display->atom_net_wm_state_hidden;
       ++i;
@@ -1195,8 +1193,8 @@ ancestor_is_minimized (MetaWindow *window)
   return is_minimized;
 }
 
-static gboolean
-window_showing_on_its_workspace (MetaWindow *window)
+gboolean
+meta_window_showing_on_its_workspace (MetaWindow *window)
 {
   gboolean showing;
   gboolean is_desktop_or_dock;
@@ -1280,7 +1278,7 @@ meta_window_should_be_showing (MetaWindow  *window)
   if (window->on_all_workspaces)
     meta_verbose ("Window %s is on all workspaces\n", window->desc);
 
-  return on_workspace && window_showing_on_its_workspace (window);
+  return on_workspace && meta_window_showing_on_its_workspace (window);
 }
 
 static void

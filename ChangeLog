@@ -1,3 +1,15 @@
+2005-01-28  Elijah Newren  <newren@gmail.com>
+
+	Take into account the appropriate list of windows when placing a
+	new one.  Fixes #165381.
+
+	* src/place.c: (meta_window_place): use
+	meta_window_showing_on_its_workspace(w) instead of !w->minimzed,
+	also take into account sticky windows
+
+	* src/window.[ch]: rename window_showing_on_its_workspace to
+	meta_window_showing_on_its_workspace and export it
+
 2005-01-27  Elijah Newren  <newren@gmail.com>
 
 	Plug a pair of leaks.  Fixes #165378

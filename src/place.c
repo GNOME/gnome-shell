@@ -748,9 +748,10 @@ meta_window_place (MetaWindow        *window,
       {
         MetaWindow *w = tmp->data;
 
-        if (!w->minimized &&
+        if (meta_window_showing_on_its_workspace (w) &&
             w != window && 
-            window->workspace == w->workspace)
+            (window->workspace == w->workspace ||
+             window->on_all_workspaces || w->on_all_workspaces))
           windows = g_list_prepend (windows, w);
 
         tmp = tmp->next;
