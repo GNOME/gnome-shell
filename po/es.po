@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
-"POT-Creation-Date: 2002-06-10 12:41+0200\n"
+"POT-Creation-Date: 2002-06-17 00:39+0200\n"
 "PO-Revision-Date: 2002-06-10 11:53GMT-03:00\n"
 "Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -91,7 +91,7 @@ msgstr "Maximizar la ventana"
 msgid "Unmaximize Window"
 msgstr "Restaurar la ventana"
 
-#: src/keybindings.c:639
+#: src/keybindings.c:650
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -102,9 +102,9 @@ msgstr ""
 
 #: src/main.c:290
 #, c-format
-msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"¡No se ha podido encontrar un tema!. Asegúrese que %s existe y contiene los "
+"¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene los "
 "temas usuales."
 
 #: src/main.c:338
@@ -162,6 +162,41 @@ msgstr "Sólo en el área de trabajo %s%d"
 #, c-format
 msgid "Move to workspace %s%d"
 msgstr "Mover al área de trabajo %s%d"
+
+#: src/metacity-dialog.c:86
+#, c-format
+msgid ""
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
+msgstr ""
+"La ventana «%s» no esta respondiendo.\n"
+"¿Forzar esta aplicación a terminar?\n"
+"(Cualquier documento abierto se perderá.)"
+
+#: src/metacity-dialog.c:94
+msgid "Kill application"
+msgstr "Matar aplicación"
+
+#: src/metacity-dialog.c:188
+msgid "Title"
+msgstr "Título"
+
+#: src/metacity-dialog.c:200
+msgid "Class"
+msgstr "Clase"
+
+#: src/metacity-dialog.c:224
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
+"ser restauradas manualmente la próxima vez que inicie una sesión."
+
+#: src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -1225,37 +1260,6 @@ msgstr "Modo de foco de la ventana"
 msgid "Window title font"
 msgstr "Tipografía del título de la ventana"
 
-#: src/metacity-dialog.c:86
-#, c-format
-msgid ""
-"The window \"%s\" is not responding.\n"
-"Force this application to exit?\n"
-"(Any open documents will be lost.)"
-msgstr ""
-"La ventana «%s» no esta respondiendo.\n"
-"¿Forzar esta aplicación a terminar?\n"
-"(Cualquier documento abierto se perderá.)"
-
-#: src/metacity-dialog.c:94
-msgid "Kill application"
-msgstr "Matar aplicación"
-
-#: src/metacity-dialog.c:188
-msgid "Title"
-msgstr "Título"
-
-#: src/metacity-dialog.c:200
-msgid "Class"
-msgstr "Clase"
-
-#: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
-"ser restauradas manualmente la próxima vez que inicie una sesión."
-
 #: src/prefs.c:335 src/prefs.c:351 src/prefs.c:367 src/prefs.c:383
 #: src/prefs.c:403 src/prefs.c:419 src/prefs.c:435 src/prefs.c:451
 #: src/prefs.c:467 src/prefs.c:483 src/prefs.c:499
@@ -1424,292 +1428,6 @@ msgid ""
 msgstr ""
 "Ocurrió un error al ejecutar metacity-dialog para advertir acerca de las "
 "aplicaciones que no soportan manejo de sesión: %s\n"
-
-#: src/theme.c:202
-msgid "top"
-msgstr "arriba"
-
-#: src/theme.c:204
-msgid "bottom"
-msgstr "abajo"
-
-#: src/theme.c:206
-msgid "left"
-msgstr "izquierda"
-
-#: src/theme.c:208
-msgid "right"
-msgstr "derecha"
-
-#: src/theme.c:222
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "La geometría del marco no especifica la dimensión «%s»"
-
-#: src/theme.c:241
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
-
-#: src/theme.c:278
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "El tamaño del aspecto del botón %g no es razonable"
-
-#: src/theme.c:290
-msgid "Frame geometry does not specify size of buttons"
-msgstr "La geometría del marco no especifica el tamaño de los botones"
-
-#: src/theme.c:654
-msgid "Gradients should have at least two colors"
-msgstr "Los degradados debe tener al menos dos colores"
-
-#: src/theme.c:780
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"La especificación de color GTK debe tener el estado entre llave, ejemplo. "
-"gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido analizar «%s»"
-
-#: src/theme.c:794
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"La especificación de color GTK debe tener una llave cerrada luego del "
-"estado, ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido "
-"analizar «%s»"
-
-#: src/theme.c:805
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "No se entiende el estado «%s» en la especificación del color"
-
-#: src/theme.c:818
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "No se entiende el componente de color «%s» en la especificación del color"
-
-#: src/theme.c:848
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"El formato Blend es «blend/bg_color/fg_color/alpha», «%s» no entre en este "
-"formato"
-
-#: src/theme.c:859
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "No se ha podido analizar el valor alpha «%s» en el color blended"
-
-#: src/theme.c:869
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "El valor alpha «%s» en el color blended no esta entre 0.0 y 1.0"
-
-#: src/theme.c:916
-#, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"El formato Shade es «shade/base_color/factor», «%s» no coincide con el "
-"formato"
-
-#: src/theme.c:927
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "No se ha podido analizar el valor shade «%s» en el color del sombreado"
-
-#: src/theme.c:937
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "El factor Shade «%s» en el color del sombreado es negativo"
-
-#: src/theme.c:966
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "No se ha podido analizar el color «%s»"
-
-#: src/theme.c:1228
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
-"La expresión de coordenadas contenía un caracter «%s» en cual no esta "
-"permitido"
-
-#: src/theme.c:1255
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-"La expresión de coordenadas contenía un número de coma flotante «%s» en cual "
-"no pudo ser analizado"
-
-#: src/theme.c:1269
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
-
-#: src/theme.c:1336
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"La expresión de coordenadas contenía un operador inválido al inicio de su "
-"texto: «%s»"
-
-#: src/theme.c:1393
-msgid "Coordinate expression was empty or not understood"
-msgstr "La expresión de coordenadas estuvo vacía o no fué entendida"
-
-#: src/theme.c:1532 src/theme.c:1542 src/theme.c:1576
-msgid "Coordinate expression results in division by zero"
-msgstr "La expresión de coordenadas resultó en un error de división por cero"
-
-#: src/theme.c:1584
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"La expresión de coordenadas intentó usar una operador mod con un número de "
-"punto flotante"
-
-#: src/theme.c:1641
-#, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"La expresión de coordenadas tiene un operador  ««%s» donde se esperaba un "
-"operando"
-
-#: src/theme.c:1650
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
-
-#: src/theme.c:1658
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
-
-#: src/theme.c:1668
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"La expresión de coordenadas tiene el operador «%c» seguido del operador «%c» "
-"sin un operando entre ellos"
-
-#: src/theme.c:1787
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"El analizador de expresión de coordenadas ha sobrepasado su buffer. Esto "
-"realmente es un error de Metacity pero ¿está seguro que necesita una "
-"expresión tan grande como esa?"
-
-#: src/theme.c:1816
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"La expresión de coordenadas tiene un parentesis cerrado sin un parentesis "
-"abierto"
-
-#: src/theme.c:1879
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
-
-#: src/theme.c:1936
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-"La expresión de coordenadas tiene un parentesis abierto sin un parentesis "
-"cerrado"
-
-#: src/theme.c:1947
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
-
-#: src/theme.c:2191 src/theme.c:2213 src/theme.c:2234
-#, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "El tema contenía una expresión «%s» que ha resultado en un error: %s\n"
-
-#: src/theme.c:3564
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
-"especificado para este estilo de marco"
-
-#: src/theme.c:3973 src/theme.c:4005
-#, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-
-#: src/theme.c:4056
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
-
-#: src/theme.c:4202
-#, c-format
-msgid "No <name> set for theme \"%s\""
-msgstr "No se configuró <name> en el tema «%s»"
-
-#: src/theme.c:4209
-#, c-format
-msgid "No <author> set for theme \"%s\""
-msgstr "No se configuró <author> en el tema «%s»"
-
-#: src/theme.c:4216
-#, c-format
-msgid "No <date> set for theme \"%s\""
-msgstr "No se configuró <date> en el tema «%s»"
-
-#: src/theme.c:4223
-#, c-format
-msgid "No <description> set for theme \"%s\""
-msgstr "No se configuró <description> en el tema «%s»"
-
-#: src/theme.c:4230
-#, c-format
-msgid "No <copyright> set for theme \"%s\""
-msgstr "No se configuró <copyright> en el tema «%s»"
-
-#: src/theme.c:4240
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», "
-"agregue un elemento <window type=\"%s\" style_set=\"whatever\"/>"
-
-#: src/theme.c:4262
-#, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
-"especificado para este tema"
-
-#: src/theme.c:4645 src/theme.c:4705
-#, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Las constantes definidas por el usuario deben comenzar con una letra "
-"mayúscula; «%s» no lo hace"
-
-#: src/theme.c:4653 src/theme.c:4713
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "La constante «%s» ya ha sido definida"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2235,43 +1953,291 @@ msgstr "Ocurrió un error al leer el tema desde el archivo %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "El archivo de tema %s no contiene un elemento raíz <metacity_theme>"
 
-#: src/util.c:60
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
+#: src/theme.c:202
+msgid "top"
+msgstr "arriba"
 
-#: src/util.c:70
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
+#: src/theme.c:204
+msgid "bottom"
+msgstr "abajo"
 
-#: src/util.c:76
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Archivo de registro %s abierto\n"
+#: src/theme.c:206
+msgid "left"
+msgstr "izquierda"
 
-#: src/window.c:430
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "La aplicación configuro un _NET_WM_PID %ld erróneo\n"
+#: src/theme.c:208
+msgid "right"
+msgstr "derecha"
 
-#: src/xprops.c:53
+#: src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "La geometría del marco no especifica la dimensión «%s»"
+
+#: src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "La geometría del marco no especifica la dimensión «%s» para el borde «%s»"
+
+#: src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "El tamaño del aspecto del botón %g no es razonable"
+
+#: src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr "La geometría del marco no especifica el tamaño de los botones"
+
+#: src/theme.c:656
+msgid "Gradients should have at least two colors"
+msgstr "Los degradados debe tener al menos dos colores"
+
+#: src/theme.c:782
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"La ventana 0x%lx tiene la propiedad %s que se esperaba tuviese el tipo %s "
-"formato %d y actualmente tiene un tipo %s formato %d n_items %d\n"
+"La especificación de color GTK debe tener el estado entre llave, ejemplo. "
+"gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido analizar «%s»"
 
-#: src/xprops.c:281
+#: src/theme.c:796
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"La especificación de color GTK debe tener una llave cerrada luego del "
+"estado, ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido "
+"analizar «%s»"
 
-#: src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: src/theme.c:807
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "No se entiende el estado «%s» en la especificación del color"
+
+#: src/theme.c:820
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "No se entiende el componente de color «%s» en la especificación del color"
+
+#: src/theme.c:850
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"El formato Blend es «blend/bg_color/fg_color/alpha», «%s» no entre en este "
+"formato"
+
+#: src/theme.c:861
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "No se ha podido analizar el valor alpha «%s» en el color blended"
+
+#: src/theme.c:871
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "El valor alpha «%s» en el color blended no esta entre 0.0 y 1.0"
+
+#: src/theme.c:918
+#, c-format
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"El formato Shade es «shade/base_color/factor», «%s» no coincide con el "
+"formato"
+
+#: src/theme.c:929
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "No se ha podido analizar el valor shade «%s» en el color del sombreado"
+
+#: src/theme.c:939
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "El factor Shade «%s» en el color del sombreado es negativo"
+
+#: src/theme.c:968
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "No se ha podido analizar el color «%s»"
+
+#: src/theme.c:1230
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr ""
+"La expresión de coordenadas contenía un caracter «%s» en cual no esta "
+"permitido"
+
+#: src/theme.c:1257
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"La expresión de coordenadas contenía un número de coma flotante «%s» en cual "
+"no pudo ser analizado"
+
+#: src/theme.c:1271
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
+
+#: src/theme.c:1338
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"La expresión de coordenadas contenía un operador inválido al inicio de su "
+"texto: «%s»"
+
+#: src/theme.c:1395
+msgid "Coordinate expression was empty or not understood"
+msgstr "La expresión de coordenadas estuvo vacía o no fué entendida"
+
+#: src/theme.c:1534 src/theme.c:1544 src/theme.c:1578
+msgid "Coordinate expression results in division by zero"
+msgstr "La expresión de coordenadas resultó en un error de división por cero"
+
+#: src/theme.c:1586
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"La expresión de coordenadas intentó usar una operador mod con un número de "
+"punto flotante"
+
+#: src/theme.c:1643
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"La expresión de coordenadas tiene un operador  ««%s» donde se esperaba un "
+"operando"
+
+#: src/theme.c:1652
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
+
+#: src/theme.c:1660
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
+
+#: src/theme.c:1670
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"La expresión de coordenadas tiene el operador «%c» seguido del operador «%c» "
+"sin un operando entre ellos"
+
+#: src/theme.c:1789
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+"El analizador de expresión de coordenadas ha sobrepasado su buffer. Esto "
+"realmente es un error de Metacity pero ¿está seguro que necesita una "
+"expresión tan grande como esa?"
+
+#: src/theme.c:1818
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"La expresión de coordenadas tiene un parentesis cerrado sin un parentesis "
+"abierto"
+
+#: src/theme.c:1881
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "La expresión de coordenadas tiene una variable o constante desconocida  «%s»"
+
+#: src/theme.c:1938
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"La expresión de coordenadas tiene un parentesis abierto sin un parentesis "
+"cerrado"
+
+#: src/theme.c:1949
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
+
+#: src/theme.c:2193 src/theme.c:2215 src/theme.c:2236
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "El tema contenía una expresión «%s» que ha resultado en un error: %s\n"
+
+#: src/theme.c:3566
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
+"especificado para este estilo de marco"
+
+#: src/theme.c:3976 src/theme.c:4008
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+
+#: src/theme.c:4059
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
+
+#: src/theme.c:4205
+#, c-format
+msgid "No <name> set for theme \"%s\""
+msgstr "No se configuró <name> en el tema «%s»"
+
+#: src/theme.c:4212
+#, c-format
+msgid "No <author> set for theme \"%s\""
+msgstr "No se configuró <author> en el tema «%s»"
+
+#: src/theme.c:4219
+#, c-format
+msgid "No <date> set for theme \"%s\""
+msgstr "No se configuró <date> en el tema «%s»"
+
+#: src/theme.c:4226
+#, c-format
+msgid "No <description> set for theme \"%s\""
+msgstr "No se configuró <description> en el tema «%s»"
+
+#: src/theme.c:4233
+#, c-format
+msgid "No <copyright> set for theme \"%s\""
+msgstr "No se configuró <copyright> en el tema «%s»"
+
+#: src/theme.c:4243
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», "
+"agregue un elemento <window type=\"%s\" style_set=\"whatever\"/>"
+
+#: src/theme.c:4265
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
+"especificado para este tema"
+
+#: src/theme.c:4648 src/theme.c:4708
+#, c-format
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Las constantes definidas por el usuario deben comenzar con una letra "
+"mayúscula; «%s» no lo hace"
+
+#: src/theme.c:4656 src/theme.c:4716
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "La constante «%s» ya ha sido definida"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Change how focus is moved from one window to another"
@@ -2300,6 +2266,45 @@ msgstr "_Punto para dar el foco"
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
 msgstr "_Desplegar ventana al obtener el foco"
+
+#: src/util.c:60
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
+
+#: src/util.c:70
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
+
+#: src/util.c:76
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "Archivo de registro %s abierto\n"
+
+#: src/window.c:430
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr "La aplicación configuro un _NET_WM_PID %ld erróneo\n"
+
+#: src/workspace.c:708 src/workspace.c:727
+#, c-format
+msgid "Workspace %d"
+msgstr "Área de trabajo %d"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"La ventana 0x%lx tiene la propiedad %s que se esperaba tuviese el tipo %s "
+"formato %d y actualmente tiene un tipo %s formato %d n_items %d\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "La propiedad %s en la ventana 0x%lx contiene UTF-8 inválido\n"
 
 #~ msgid "Left edge"
 #~ msgstr "Borde izquierdo"
