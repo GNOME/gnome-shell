@@ -26,6 +26,17 @@
 #include <X11/Xutil.h>
 #include "ui.h"
 
+typedef struct _MetaXineramaScreenInfo MetaXineramaScreenInfo;
+
+struct _MetaXineramaScreenInfo
+{
+  int number;
+  int x_origin;
+  int y_origin;
+  int width;
+  int height;
+};
+
 typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
                                        gpointer user_data);
 
@@ -48,6 +59,9 @@ struct _MetaScreen
   MetaStack *stack;
 
   MetaCursor current_cursor;
+
+  MetaXineramaScreenInfo *xinerama_infos;
+  int n_xinerama_infos;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

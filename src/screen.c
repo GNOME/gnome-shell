@@ -30,6 +30,10 @@
 #include "keybindings.h"
 #include "stack.h"
 
+#ifdef HAVE_XINERAMA
+#include <X11/extensions/Xinerama.h>
+#endif
+
 #include <X11/Xatom.h>
 #include <locale.h>
 #include <string.h>
@@ -210,6 +214,75 @@ meta_screen_new (MetaDisplay *display,
   screen->current_cursor = -1; /* invalid/unset */
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
+
+  screen->xinerama_infos = NULL;
+  screen->n_xinerama_infos = 0;
+
+#ifdef HAVE_XINERAMA
+  if (XineramaQueryExtension (display->xdisplay, NULL, NULL))
+    {
+      XineramaScreenInfo *infos;
+      int n_infos;
+      int i;
+      
+      n_infos = 0;
+      infos = XineramaQueryScreens (display->xdisplay, &n_infos);
+
+      meta_topic (META_DEBUG_XINERAMA,
+                  "Found %d Xinerama screens on display %s\n",
+                  n_infos, display->name);
+
+      if (n_infos > 0)
+        {
+          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, n_infos);
+          screen->n_xinerama_infos = n_infos;
+          
+          i = 0;
+          while (i < n_infos)
+            {
+              screen->xinerama_infos[i].number = infos[i].screen_number;
+              screen->xinerama_infos[i].x_origin = infos[i].x_org;
+              screen->xinerama_infos[i].y_origin = infos[i].y_org;
+              screen->xinerama_infos[i].width = infos[i].width;
+              screen->xinerama_infos[i].height = infos[i].height;
+              
+              ++i;
+            }
+        }
+      
+      meta_XFree (infos);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_XINERAMA,
+                  "No Xinerama extension on display %s\n",
+                  display->name);
+    }
+#else
+  meta_topic (META_DEBUG_XINERAMA,
+              "Metacity compiled without Xinerama support\n");
+#endif
+
+  /* If no Xinerama, fill in the single screen info so
+   * we can use the field unconditionally
+   */
+  if (screen->n_xinerama_infos == 0)
+    {
+      meta_topic (META_DEBUG_XINERAMA,
+                  "No Xinerama screens, using default screen info\n");
+      
+      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
+      screen->n_xinerama_infos = 1;
+      
+      screen->xinerama_infos[0].number = 0;
+      screen->xinerama_infos[0].x_origin = 0;
+      screen->xinerama_infos[0].y_origin = 0;
+      screen->xinerama_infos[0].width = screen->width;
+      screen->xinerama_infos[0].height = screen->height;
+    }
+
+  g_assert (screen->n_xinerama_infos > 0);
+  g_assert (screen->xinerama_infos != NULL);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
   

@@ -1,3 +1,10 @@
+2002-04-17  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_new): query Xinerama screen
+	information if HAVE_XINERAMA
+
+	* configure.in (found_xinerama): check for Xinerama
+
 2002-04-17  Changwoo Ryu  <cwryu@debian.org>
 
 	* configure.in (ALL_LINGUAS): Added ko (Korean).

@@ -190,6 +190,8 @@ topic_name (MetaDebugTopic topic)
       return "GEOMETRY";
     case META_DEBUG_PING:
       return "PING";
+    case META_DEBUG_XINERAMA:
+      return "XINERAMA";
     }
 
   return "Window manager";

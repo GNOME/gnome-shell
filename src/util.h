@@ -55,7 +55,8 @@ typedef enum
   META_DEBUG_WINDOW_OPS   = 1 << 7,
   META_DEBUG_GEOMETRY     = 1 << 8,
   META_DEBUG_PLACEMENT    = 1 << 9,
-  META_DEBUG_PING         = 1 << 10
+  META_DEBUG_PING         = 1 << 10,
+  META_DEBUG_XINERAMA     = 1 << 11
 
 } MetaDebugTopic;
 
