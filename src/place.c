@@ -576,7 +576,11 @@ constrain_placement (MetaWindow        *window,
    */
   MetaRectangle work_area;  
   int nw_x, nw_y;
-
+  int offscreen_w, offscreen_h;
+  MetaRectangle outer_rect;
+  
+  meta_window_get_outer_rect (window, &outer_rect);
+  
   /* FIXME this is bogus because we get the current xinerama
    * for the window based on its position, but we haven't
    * placed it yet.
@@ -591,7 +595,17 @@ constrain_placement (MetaWindow        *window,
       nw_y += fgeom->top_height;
     }
 
-  /* Keep window from going off left edge, though we don't have
+  /* Keep window from going off the bottom right, though we don't have
+   * this constraint once the window has been placed
+   */
+  offscreen_w = (outer_rect.x + outer_rect.width) - (work_area.x + work_area.width);
+  if (offscreen_w > 0)
+    nw_x -= offscreen_w;
+  offscreen_h = (outer_rect.y + outer_rect.height) - (work_area.y + work_area.height);
+  if (offscreen_h > 0)
+    nw_y -= offscreen_h;
+  
+  /* Keep window from going off left edge, though again we don't have
    * this constraint once the window has been placed.
    */
   if (x < nw_x)

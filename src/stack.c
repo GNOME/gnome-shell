@@ -258,67 +258,130 @@ meta_stack_thaw (MetaStack *stack)
   meta_stack_sync_to_server (stack);
 }
 
-static gboolean
-group_member_is_fullscreen (MetaWindow *window)
+/* Get layer ignoring any transient or group relationships */
+static MetaStackLayer
+get_standalone_layer (MetaWindow *window)
 {
-  GSList *members;
-  MetaGroup *group;
-  GSList *tmp;
-  gboolean retval;
-
-  if (window->fullscreen)
-    return TRUE;
+  MetaStackLayer layer;
   
-  group = meta_window_get_group (window);
-  if (group == NULL)
-    return FALSE;
-
-  retval = FALSE;
-  members = meta_group_list_windows (group);
-  tmp = members;
-  while (tmp != NULL)
-    {
-      MetaWindow *w = tmp->data;
-
-      if (w->fullscreen)
-        {
-          retval = TRUE;
-          break;
-        }
-
-      tmp = tmp->next;
-    }
-
-  return retval;
-}
-
-static void
-compute_layer (MetaWindow *window)
-{
   switch (window->type)
     {
     case META_WINDOW_DESKTOP:
-      window->layer = META_LAYER_DESKTOP;
+      layer = META_LAYER_DESKTOP;
       break;
 
     case META_WINDOW_DOCK:
       /* still experimenting here */
-      window->layer = META_LAYER_DOCK;
+      layer = META_LAYER_DOCK;
       break;
 
     case META_WINDOW_SPLASHSCREEN:
-      window->layer = META_LAYER_SPLASH;
+      layer = META_LAYER_SPLASH;
       break;
       
     default:
       if (window->has_focus &&
           meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
-        window->layer = META_LAYER_FOCUSED_WINDOW;
-      else if (group_member_is_fullscreen (window))
-        window->layer = META_LAYER_FULLSCREEN;
+        layer = META_LAYER_FOCUSED_WINDOW;
+      else if (window->fullscreen)
+        layer = META_LAYER_FULLSCREEN;
       else
-        window->layer = META_LAYER_NORMAL;
+        layer = META_LAYER_NORMAL;
       break;
+    }
+
+  return layer;
+}
+
+static MetaStackLayer
+get_maximum_layer_of_ancestor (MetaWindow *window)
+{
+  MetaWindow *w;
+  MetaStackLayer max;
+  MetaStackLayer layer;
+  
+  max = get_standalone_layer (window);
+  
+  w = window;
+  while (w != NULL)
+    {
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
+        break;
+      
+      w = meta_display_lookup_x_window (w->display, w->xtransient_for);
+      
+      if (w == window)
+        break; /* Cute, someone thought they'd make a transient_for cycle */
+      
+      /* w may be null... */
+      if (w != NULL)
+        {
+          layer = get_standalone_layer (w);
+          if (layer > max)
+            max = layer;
+        }
+    }
+
+  return max;
+}
+
+/* Note that this function can never use window->layer only
+ * get_standalone_layer, or we'd have issues.
+ */
+static MetaStackLayer
+get_maximum_layer_in_group_or_ancestor (MetaWindow *window)
+{
+  GSList *members;
+  MetaGroup *group;
+  GSList *tmp;
+  MetaStackLayer max;
+  MetaStackLayer layer;
+  
+  max = META_LAYER_DESKTOP;
+  
+  group = meta_window_get_group (window);
+
+  if (group != NULL)
+    members = meta_group_list_windows (group);
+  else
+    members = NULL;
+  
+  tmp = members;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      layer = get_standalone_layer (w);
+      if (layer > max)
+        max = layer;
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (members);
+  
+  layer = get_maximum_layer_of_ancestor (window);
+  if (layer > max)
+    max = layer;
+  
+  return max;
+}
+
+static void
+compute_layer (MetaWindow *window)
+{
+  MetaStackLayer group_max;
+
+  window->layer = get_standalone_layer (window);
+  group_max = get_maximum_layer_in_group_or_ancestor (window); 
+
+  if (group_max > window->layer)
+    {
+      meta_topic (META_DEBUG_STACK,
+                  "Promoting window %s from layer %d to %d due to group or transiency\n",
+                  window->desc, window->layer, group_max);
+      window->layer = group_max;
     }
   
   meta_topic (META_DEBUG_STACK, "Window %s on layer %d type = %d has_focus = %d\n",
@@ -689,6 +752,15 @@ meta_stack_sync_to_server (MetaStack *stack)
           
           if (op->update_layer)
             {
+              /* FIXME when we move > 1 window into a new layer
+               * within a single stack freeze/thaw bracket,
+               * perhaps due to moving a whole window group,
+               * the ordering of the newly-added windows in the
+               * layer is not defined. So if you raise a whole group
+               * from the normal layer to the fullscreen layer, the
+               * windows in that group may get randomly reordered.
+               */
+              
               compute_layer (op->window);
 
               if (op->window->layer != old_layer)
@@ -715,7 +787,7 @@ meta_stack_sync_to_server (MetaStack *stack)
           /* We assume that ordering between changing layers
            * and raise/lower is irrelevant; if you raise, then
            * the layer turns out to be different, you still
-           * raise inside the new layer
+           * raise inside the new layer.
            */
           if (op->raised)
             {

@@ -1,3 +1,14 @@
+2002-09-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/place.c (constrain_placement): constrain placement to try to
+	keep windows from going offscreen to the right/bottom
+
+	* src/stack.c (compute_layer): rearrange the logic here to say
+	that a window must always be in at least as high a layer as any of
+	its transient parents or group members, rather than special-casing
+	fullscreen. Also, group_member_is_fullscreen was leaking the list
+	of group members every time, a fairly major memory leak.
+	
 2002-09-27  Havoc Pennington  <hp@redhat.com>
 
 	* src/themes/Makefile.am (THEMES): use AgingGorilla not Gorilla
