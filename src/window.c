@@ -5568,7 +5568,10 @@ recalc_window_features (MetaWindow *window)
 
     case META_WINDOW_DIALOG:
     case META_WINDOW_MODAL_DIALOG:
-      window->skip_taskbar = TRUE;
+      /* only skip taskbar if we have a real transient parent */
+      if (window->xtransient_for != None &&
+          window->xtransient_for != window->screen->xroot)
+        window->skip_taskbar = TRUE;
       break;
       
     case META_WINDOW_NORMAL:

@@ -1,5 +1,12 @@
 2003-01-09  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (recalc_window_features): argh, we were making all
+	dialogs skip taskbar; when did that get added.  Fix to match
+	libwnck, only skip taskbar when the dialog is transient for some
+	other app window.
+
+2003-01-09  Havoc Pennington  <hp@redhat.com>
+
 	* src/metacity.schemas.in: change Windows+click back to Alt+click,
 	Windows+click just surprised everybody and didn't work half the
 	time. Maya users can configure it, and GTK DND can change its
