@@ -1,3 +1,7 @@
+2002-05-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/themes/Makefile.am (THEMES): add Esco theme from James Cape
+
 2002-05-12  Havoc Pennington  <hp@pobox.com>
 
 	* src/place.c (meta_window_place): move pposition/usposition
