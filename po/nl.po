@@ -10,7 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-21 12:59+0200\n"
 "PO-Revision-Date: 2003-01-16 22:41+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -62,7 +63,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:286
+#: src/display.c:280
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -149,7 +150,7 @@ msgstr ""
 "Er is GEEN garantie; zelfs niet voor VERKOOPBAARHEID of GESCHIKTHEID VOOR "
 "EEN BEPAALD DOEL.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -157,7 +158,7 @@ msgstr ""
 "Kon geen thema vinden! Zorg ervoor dat %s bestaat en de gebruikelijke "
 "thema's bevat."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Herstarten mislukt: %s\n"
@@ -193,7 +194,7 @@ msgstr "Afmetingen _wijzigen"
 #. separator
 #: src/menu.c:60
 msgid "_Close"
-msgstr "_Sluiten"
+msgstr "Sl_uiten"
 
 #. separator
 #: src/menu.c:62
@@ -348,7 +349,7 @@ msgstr ""
 "Deze vensters ondersteunen niet \"huidige instellingen opslaan\" en zullen "
 "bij een volgende sessie opnieuw moeten worden opgestart."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1941,12 +1942,12 @@ msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: src/screen.c:423
+#: src/screen.c:405
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1955,19 +1956,19 @@ msgstr ""
 "Scherm %d op display \"%s\" heeft al een windowmanager; probeer de optie: --"
 "replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
-#: src/screen.c:464
+#: src/screen.c:446
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon windowmanager-selectie niet verkrijgen op scherm %d display \"%s\"\n"
 
-#: src/screen.c:520
+#: src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 
-#: src/screen.c:690
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
@@ -2919,7 +2920,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4509
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2935,7 +2936,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5071
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2973,15 +2974,3 @@ msgid ""
 msgstr ""
 "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
 "lijst\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Het venster \"%s\" reageert niet.\n"
-#~ "Deze toepassing dwingen af te sluiten?\n"
-#~ "(geopende documenten zullen verloren gaan)"
-
-#~ msgid "Kill application"
-#~ msgstr "Toepassing vernietigen"
