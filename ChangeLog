@@ -1,3 +1,9 @@
+2003-08-15  Rob Adams  <robadams@ucla.edu>
+
+	* src/constraints.c (meta_window_constrain): move to upper left
+	corner since we're resizing/moving instead of moving/resizing.
+	Fix for #119988.
+	
 2003-08-15  Ray Strode  <halfline@hawaii.rr.com>
 
 	Changed MRU list to be per workspace instead of per display, so
