@@ -776,7 +776,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (has_title) /* only if explicit, otherwise inherit */
         info->layout->has_title = has_title_val;
 
-      info->layout->title_scale = title_scale_val;
+      if (title_scale)
+	info->layout->title_scale = title_scale_val;
       
       meta_theme_insert_layout (info->theme, name, info->layout);
 

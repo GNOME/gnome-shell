@@ -334,6 +334,7 @@ meta_frame_layout_new  (void)
   layout->button_height = -1;
 
   layout->has_title = TRUE;
+  layout->title_scale = 1.0;
   
   init_border (&layout->button_border);
 
