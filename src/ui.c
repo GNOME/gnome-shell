@@ -273,23 +273,25 @@ meta_ui_window_menu_free (MetaWindowMenu *menu)
 struct _MetaImageWindow
 {
   GtkWidget *window;
-  GtkWidget *image;
+  GdkPixmap *pixmap;
 };
 
 MetaImageWindow*
-meta_image_window_new (void)
+meta_image_window_new (int max_width,
+                       int max_height)
 {
   MetaImageWindow *iw;
 
   iw = g_new (MetaImageWindow, 1);
   iw->window = gtk_window_new (GTK_WINDOW_POPUP);
-  iw->image = g_object_new (GTK_TYPE_IMAGE, NULL);
-
-  gtk_container_add (GTK_CONTAINER (iw->window), iw->image);
-
-  /* Ensure we auto-shrink to fit image */
-  gtk_window_set_resizable (GTK_WINDOW (iw->window),
-                            FALSE);
+  gtk_widget_realize (iw->window);
+  iw->pixmap = gdk_pixmap_new (iw->window->window,
+                               max_width, max_height,
+                               -1);
+  
+  gtk_widget_set_size_request (iw->window, 1, 1);
+  gtk_widget_set_double_buffered (iw->window, FALSE);
+  gtk_widget_set_app_paintable (iw->window, TRUE);
   
   return iw;
 }
@@ -298,6 +300,7 @@ void
 meta_image_window_free (MetaImageWindow *iw)
 {
   gtk_widget_destroy (iw->window);
+  g_object_unref (G_OBJECT (iw->pixmap));
   g_free (iw);
 }
 
@@ -315,28 +318,36 @@ meta_image_window_set_showing  (MetaImageWindow *iw,
 }
 
 void
-meta_image_window_set_image (MetaImageWindow *iw,
-                             GdkPixbuf       *pixbuf)
+meta_image_window_set (MetaImageWindow *iw,
+                       GdkPixbuf       *pixbuf,
+                       int              x,
+                       int              y)
 {
-  gtk_image_set_from_pixbuf (GTK_IMAGE (iw->image), pixbuf);
-}
-
-void
-meta_image_window_set_position (MetaImageWindow *iw,
-                                int              x,
-                                int              y)
-{
-  /* We want to do move/resize at the same time to avoid ugliness.
-   * Lame hack.
+  /* We use a back pixmap to avoid having to handle exposes, because
+   * it's really too slow for large clients being minimized, etc.
+   * and this way flicker is genuinely zero.
    */
-  GtkRequisition req;
 
-  g_return_if_fail (GTK_WIDGET_REALIZED (iw->window));
+  gdk_pixbuf_render_to_drawable (pixbuf,
+                                 iw->pixmap,
+                                 iw->window->style->black_gc,
+                                 0, 0,
+                                 0, 0,
+                                 gdk_pixbuf_get_width (pixbuf),
+                                 gdk_pixbuf_get_height (pixbuf),
+                                 GDK_RGB_DITHER_NORMAL,
+                                 0, 0);
   
-  gtk_widget_size_request (iw->window, &req);
+  gdk_window_set_back_pixmap (iw->window->window,
+                              iw->pixmap,
+                              FALSE);
   
-  gdk_window_move_resize (GTK_WIDGET (iw->window)->window,
-                          x, y, req.width, req.height);
+  gdk_window_move_resize (iw->window->window,
+                          x, y,
+                          gdk_pixbuf_get_width (pixbuf),
+                          gdk_pixbuf_get_height (pixbuf));
+
+  gdk_window_clear (iw->window->window);
 }
 
 static GdkColormap*

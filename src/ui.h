@@ -96,13 +96,13 @@ void            meta_ui_window_menu_popup (MetaWindowMenu     *menu,
 void            meta_ui_window_menu_free  (MetaWindowMenu     *menu);
 
 
-MetaImageWindow* meta_image_window_new          (void);
+MetaImageWindow* meta_image_window_new          (int              max_width,
+                                                 int              max_height);
 void             meta_image_window_free         (MetaImageWindow *iw);
 void             meta_image_window_set_showing  (MetaImageWindow *iw,
                                                  gboolean         showing);
-void             meta_image_window_set_image    (MetaImageWindow *iw,
-                                                 GdkPixbuf       *pixbuf);
-void             meta_image_window_set_position (MetaImageWindow *iw,
+void             meta_image_window_set          (MetaImageWindow *iw,
+                                                 GdkPixbuf       *pixbuf,
                                                  int              x,
                                                  int              y);
 

@@ -1,3 +1,14 @@
+2002-03-05  Havoc Pennington  <hp@pobox.com>
+
+        Work on opaque animations more, still suck too much 
+	to turn on. Not sure how to make them good.
+	
+	* src/effects.c (meta_effects_draw_box_animation): 
+	add a slide-up mode for shading
+
+	* src/ui.c (meta_image_window_set): change image window to work by
+	setting back pixmap on the GtkWindow, instead of using GtkImage.
+
 2002-03-04  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c (main): try ignoring SIGXFSZ, though I'm not 

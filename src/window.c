@@ -952,7 +952,8 @@ meta_window_calc_showing (MetaWindow  *window)
           meta_effects_draw_box_animation (window->screen,
                                            &window_rect,
                                            &icon_rect,
-                                           META_MINIMIZE_ANIMATION_LENGTH);
+                                           META_MINIMIZE_ANIMATION_LENGTH,
+                                           META_BOX_ANIM_SCALE);
 	}
 
       meta_window_hide (window);
@@ -1429,7 +1430,8 @@ meta_window_shade (MetaWindow  *window)
           meta_effects_draw_box_animation (window->screen,
                                            &starting_size,
                                            &titlebar_size,
-                                           META_SHADE_ANIMATION_LENGTH);
+                                           META_SHADE_ANIMATION_LENGTH,
+                                           META_BOX_ANIM_SLIDE_UP);
         }
 
       window->shaded = TRUE;

@@ -49,6 +49,8 @@ typedef struct
   /* For opaque */
   MetaImageWindow *image_window;
   GdkPixbuf       *orig_pixbuf;
+
+  MetaBoxAnimType anim_type;
   
 } BoxAnimationContext;
 
@@ -119,7 +121,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   draw_rect.y += (context->end_rect.y - context->start_rect.y) * fraction;
   draw_rect.width += (context->end_rect.width - context->start_rect.width) * fraction;
   draw_rect.height += (context->end_rect.height - context->start_rect.height) * fraction;
-
+  
   /* don't confuse X or gdk-pixbuf with bogus rectangles */
   if (draw_rect.width < 1)
     draw_rect.width = 1;
@@ -132,15 +134,45 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
     {
       GdkPixbuf *scaled;
 
-      scaled = gdk_pixbuf_scale_simple (context->orig_pixbuf,
-                                        draw_rect.width,
-                                        draw_rect.height,
-                                        GDK_INTERP_BILINEAR);
-      meta_image_window_set_image (context->image_window,
-                                   scaled);
-      meta_image_window_set_position (context->image_window,
-                                      draw_rect.x, draw_rect.y);
-      g_object_unref (G_OBJECT (scaled));
+      scaled = NULL;
+      switch (context->anim_type)
+        {
+        case META_BOX_ANIM_SCALE:
+          scaled = gdk_pixbuf_scale_simple (context->orig_pixbuf,
+                                            draw_rect.width,
+                                            draw_rect.height,
+                                            GDK_INTERP_BILINEAR);
+          break;
+        case META_BOX_ANIM_SLIDE_UP:
+          {
+            int x, y;
+
+            x = context->start_rect.width - draw_rect.width;
+            y = context->start_rect.height - draw_rect.height;
+
+            /* paranoia */
+            if (x < 0)
+              x = 0;
+            if (y < 0)
+              y = 0;
+            
+            scaled = gdk_pixbuf_new_subpixbuf (context->orig_pixbuf,
+                                               x, y,
+                                               draw_rect.width,
+                                               draw_rect.height);
+          }
+          break;
+        }
+
+      /* handle out-of-memory */
+      if (scaled != NULL)
+        {
+          meta_image_window_set (context->image_window,
+                                 scaled,
+                                 draw_rect.x, draw_rect.y);
+          
+          g_object_unref (G_OBJECT (scaled));
+        }
     }
   else
     {
@@ -159,20 +191,21 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
 }
 
 
-/* I really don't want this to be a configuration option,
- * but I think the wireframe is sucky from a UI standpoint
- * (more confusing than opaque), but the opaque is maybe
- * too slow on some systems; so perhaps we could autodetect
- * system beefiness or someting, or have some global
- * "my system is slow" config option.
+/* I really don't want this to be a configuration option, but I think
+ * the wireframe is sucky from a UI standpoint (more confusing than
+ * opaque), but the opaque is definitely still too slow on some
+ * systems, and also doesn't look quite right due to the mapping
+ * and unmapping of windows that's going on.
  */
+ 
 static gboolean use_opaque_animations = FALSE;
 
 void
-meta_effects_draw_box_animation (MetaScreen *screen,
-                                 MetaRectangle *initial_rect,
-                                 MetaRectangle *destination_rect,
-                                 double         seconds_duration)
+meta_effects_draw_box_animation (MetaScreen     *screen,
+                                 MetaRectangle  *initial_rect,
+                                 MetaRectangle  *destination_rect,
+                                 double          seconds_duration,
+                                 MetaBoxAnimType anim_type)
 {
   BoxAnimationContext *context;
 
@@ -190,13 +223,14 @@ meta_effects_draw_box_animation (MetaScreen *screen,
   context->first_time = TRUE;
   context->start_rect = *initial_rect;
   context->end_rect = *destination_rect;
+  context->anim_type = anim_type;
 
   context->use_opaque = use_opaque_animations;
 
   if (context->use_opaque)
     {
       GdkPixbuf *pix;
-
+      
       pix = meta_gdk_pixbuf_get_from_window (NULL,
                                              screen->xroot,
                                              initial_rect->x,
@@ -212,11 +246,13 @@ meta_effects_draw_box_animation (MetaScreen *screen,
         }
       else
         {
-          context->image_window = meta_image_window_new ();
+          context->image_window = meta_image_window_new (initial_rect->width,
+                                                         initial_rect->height);
           context->orig_pixbuf = pix;
-          meta_image_window_set_position (context->image_window,
-                                          initial_rect->x,
-                                          initial_rect->y);
+          meta_image_window_set (context->image_window,
+                                 context->orig_pixbuf,
+                                 initial_rect->x,
+                                 initial_rect->y);
           meta_image_window_set_showing (context->image_window, TRUE);
         }
     }

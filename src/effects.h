@@ -28,9 +28,17 @@
 #define META_MINIMIZE_ANIMATION_LENGTH 0.5
 #define META_SHADE_ANIMATION_LENGTH 0.2
 
-void meta_effects_draw_box_animation (MetaScreen    *screen,
-                                      MetaRectangle *initial_rect,
-                                      MetaRectangle *destination_rect,
-                                      double         seconds_duration);
+typedef enum
+{
+  META_BOX_ANIM_SCALE,
+  META_BOX_ANIM_SLIDE_UP
+
+} MetaBoxAnimType;
+
+void meta_effects_draw_box_animation (MetaScreen     *screen,
+                                      MetaRectangle  *initial_rect,
+                                      MetaRectangle  *destination_rect,
+                                      double          seconds_duration,
+                                      MetaBoxAnimType anim_type);
 
 #endif /* META_EFFECTS_H */
