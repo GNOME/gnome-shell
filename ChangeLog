@@ -1,5 +1,12 @@
 2004-02-27  Rob Adams  <readams@readams.net>
 
+	* src/metacity.schemas.in: Change
+	move_to_workspace_left/right/up/down keybindings to
+	<Control><Alt><Shift> arrow to avoid conflicting with new
+	keybindings in spacial nautilus.
+
+2004-02-27  Rob Adams  <readams@readams.net>
+
 	Handle layer promotion of transient descendants of layer-promoted
 	windows to also be layer promoted, using a simple iterative
 	algorithm.
