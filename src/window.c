@@ -2272,6 +2272,8 @@ meta_window_move_resize_internal (MetaWindow  *window,
   gboolean need_resize_frame = FALSE;
   int frame_size_dx;
   int frame_size_dy;
+  int size_dx;
+  int size_dy;
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
@@ -2529,21 +2531,13 @@ meta_window_move_resize_internal (MetaWindow  *window,
   /* The rest of this function syncs our new size/pos with X as
    * efficiently as possible
    */
-  if (use_static_gravity)
-    {
-      int size_dx = w - window->rect.width;
-      int size_dy = h - window->rect.height;
-      
-      if ((size_dx + size_dy) >= 0)
-        configure_frame_first = FALSE;
-      else
-        configure_frame_first = TRUE;
-    }
-  else
-    {
-      configure_frame_first = FALSE;
-    }
 
+  /* configure frame first if we grow more than we shrink
+   */
+  size_dx = w - window->rect.width;
+  size_dy = h - window->rect.height;
+
+  configure_frame_first = (size_dx + size_dy >= 0);
 
   if (use_static_gravity)
     meta_window_set_gravity (window, StaticGravity);  

@@ -1,3 +1,9 @@
+2003-11-08  Rob Adams  <readams@readams.net>
+
+	* src/window.c (meta_window_move_resize_internal): configure frame
+	first if we grow more than we shrink combined in both dimensions.
+	Patch from Soren Sandmann for #108925.
+
 2003-11-07  Rob Adams  <readams@readams.net>
 
 	* src/place.c (meta_window_place): use maximize_after_placement to
