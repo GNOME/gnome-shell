@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.3.x\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-08-08 01:13+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai (Bahasa Melayu) <gabai-penyumbang@lists."
@@ -19,33 +19,33 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Penggunaan: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Tak dapat menghantar \"%s\" sebagai integer"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Tidak memahami aksara berikut \"%s\" pada rentetan \"%s\""
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Gagal menghantar mesej \"%s\" dari proses dialog\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Ralat membaca dari proses paparan dialog: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -53,7 +53,7 @@ msgstr ""
 "Ralat melancarkan dialog-metacity untuk tanya tentang pembunuhan satu "
 "aplikasi: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Gagal mendapatkan namahos:: %s\n"
@@ -100,7 +100,7 @@ msgid "Unmaximize Window"
 msgstr "Nyah Maksimum Tetingkap"
 
 # modifier=? binding=?
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,18 +109,18 @@ msgstr ""
 "Terdapat program lain yang sudah menggunakan kekukci %s dengan modifier %x "
 "sebagai binding\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ralat melancarkan dialog-metacity untuk mencetak ralat tentang arahan: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Tiada arahan %d ditakrifkan.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
@@ -128,7 +128,7 @@ msgstr ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NAMAFAIL] [--"
 "display=PAPARAN] [--replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -138,14 +138,14 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Tak dapat menjumpai tema! pastikan %s wujud dan mengandungi tema biasa."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Gagal mengulanghidupkan: %s\n"
@@ -1622,7 +1622,7 @@ msgstr "Atirbut tidak dikenali %s pada unsur <geometry>"
 msgid "Unknown element %s"
 msgstr "Unsur yang tidak dikenali %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2454,7 +2454,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2468,7 +2468,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

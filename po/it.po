@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-07-12 14:58+0200\n"
 "Last-Translator: Lapo Calamandrei <lapo.calamandrei@virgilio.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -20,34 +20,34 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Utilizzo: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "Metacity è stato compilato escludendo il supporto per la modalità prolissa\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Impossibile analizzare «%s» come un intero"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "I caratteri «%s» nella stringa «%s» risultano incomprensibili"
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Errore nell'analisi del messaggio «%s» dal processo dialogo\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Errore di lettura dal processo della mappa delle aree di lavoro: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -55,7 +55,7 @@ msgstr ""
 "Errore nell'esecuzione di metacity-dialog per richiedere se terminare un "
 "applicazione: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Errore nell'acquisizione del nome host: %s\n"
@@ -101,7 +101,7 @@ msgstr "Massimizza la finestra"
 msgid "Unmaximize Window"
 msgstr "Demassimizza la finestra"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -110,19 +110,19 @@ msgstr ""
 "Qualche altro programma sta usando come associazione il tasto %s con "
 "modificatore %x\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Errore nell'esecuzione di metacity-dialog per la notifica di un errore "
 "relativo a un comando: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Il comando %d non è stato definito.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 #, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
@@ -131,7 +131,7 @@ msgstr ""
 "metacity [--disable-sm] [--sm-save-file=NOMEFILE] [--display=DISPLAY] [--"
 "replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -146,7 +146,7 @@ msgstr ""
 "NON è fornita alcuna garanzia; neanche di COMMERCIABILITÀ o APPLICABILITÀ "
 "PER UNO SCOPO PARTICOLARE.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -154,7 +154,7 @@ msgstr ""
 "Non è stato trovato alcun tema! Assicurarsi che %s esista e contenga i temi "
 "standard."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Riavvio fallito: %s\n"
@@ -2067,7 +2067,7 @@ msgstr "Attributo %s sconosciuto nell'elemento <geometry>"
 msgid "Unknown element %s"
 msgstr "Elemento %s sconosciuto"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2937,7 +2937,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'applicazione ha impostato un _NET_WM_PID errato %ld\n"
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2953,7 +2953,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.mn\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-01-21 07:43+0100\n"
 "Last-Translator: Ochirbat Batzaya <buuvei@yahoo.com>\n"
 "Language-Team: Mongolian <mn@li.org>\n"
@@ -22,40 +22,40 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Хэрэглээ: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity нь нэмэлт үгсийн дэмжлэггүйгээр хөрвүүлэгдсэн байна\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "»%s« бүхэл тоо мэт боловсруулагдаагүй"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "»%s« мөрөн дэх цоожлогч тэмдэгт »%s« -ийг ойлгосонгүй"
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Диалог-процессийн »%s« мэдээллийг боловсруулж чадсангүй\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Диалог-Үзүүлэх процессд алдаа гарлаа: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Х-Программыг алахад асуугддаг Metacity-Диалог үйлдэлд алдаа гарлаа: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Хостын нэрийг олж чадсангүй: %s\n"
@@ -100,7 +100,7 @@ msgstr "Цонх томсгох"
 msgid "Unmaximize Window"
 msgstr "Цонх хаах"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,19 +109,19 @@ msgstr ""
 "Өөр нэг программ %s товчийг %x modifier-ын хамтаар товчлуурын комбинац "
 "хэлбэрээр хэрэглэж бйна \n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа "
 "гарлаа: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 #, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
@@ -131,7 +131,7 @@ msgstr ""
 "солих] [--хувилбар]\n"
 
 # CHECK
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -146,7 +146,7 @@ msgstr ""
 "Ямар нэгэн ХУДАЛДААНЫ болон тодорхой зорилгод тохируулахад ямар ч баталгаа "
 "олгохгүй.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -154,7 +154,7 @@ msgstr ""
 "Сэдэв олдсонгүй! Энд %s оршихоос гадна энгийн сэдвийг дотроо агуулсан "
 "эсэхийг шалгана уу."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Шинэ эхлэл амжилтүй боллоо: %s\n"
@@ -2043,7 +2043,7 @@ msgstr "<geometry> элементэд үл таних аттрибут %s бай
 msgid "Unknown element %s"
 msgstr "Үл таних элемент %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2912,7 +2912,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2934,7 +2934,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

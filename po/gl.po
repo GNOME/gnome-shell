@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity 2.3.34\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2001-12-19 21:25+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -18,39 +18,39 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr ""
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, fuzzy, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Non se puido crear o directorio '%s': %s\n"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, fuzzy, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Fallo ao interpretar o ficheiro de sesión gardada: %s\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr ""
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, fuzzy, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Fallo ao interpretar o ficheiro de sesión gardada: %s\n"
@@ -96,7 +96,7 @@ msgstr "Maximizar Fiestra"
 msgid "Unmaximize Window"
 msgstr "Restaurar Fiestra"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -105,23 +105,23 @@ msgstr ""
 "Algún outro programa está usando xa a tecla %s cos modificadores %x como "
 "asignación (binding)\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -131,13 +131,13 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
-#: src/main.c:396
+#: src/main.c:499
 #, fuzzy, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Fallo ao interpretar o ficheiro de sesión gardada: %s\n"
@@ -1626,7 +1626,7 @@ msgstr "Atributo %s descoñecido no elemento <geometry>"
 msgid "Unknown element %s"
 msgstr "Elemento %s descoñecido"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2439,7 +2439,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2453,7 +2453,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ro\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-09-02 14:26+0300\n"
 "Last-Translator: Mugurel Tudor <mugurelu@go.ro>\n"
 "Language-Team:  <@li.org>\n"
@@ -22,40 +22,40 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Folosire: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity a fost compilat fără suport pentru modul vorbăreţ\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nu am putut parsa \"%s\" ca un întreg"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nu am putut înţelege caracterele \"%s\" din şirul \"%s\""
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Eşuare la parsarea mesajului \"%s\" din dialogul procesului\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Eroare la citire din dialogul de afişare a proceselor: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Eroare la lansarea metacity-dialog pentru omorârea unei aplicaţii: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nu am putut încărca numele gazdei: %s\n"
@@ -101,7 +101,7 @@ msgstr "Maximizează fereastra"
 msgid "Unmaximize Window"
 msgstr "Restaurează fereastra"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -109,19 +109,19 @@ msgid ""
 msgstr ""
 "Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Eroare la lansarea metacity-dialog pentru a afişa o eroare despre o comandă: "
 "%s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nici o comandă %d nu a fost definită.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
@@ -129,7 +129,7 @@ msgstr ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NUME_FIŞIER] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -144,14 +144,14 @@ msgstr ""
 "Nu există NICI O garanţie; nici măcar pentru COMERCIALIZARE sau pentru "
 "POTRIVIREA CU UN SCOP ANUME.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Nu am putut găsi o temă ! Asiguraţi-vă că %s există şi conţine temele uzuale."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Eşuare la restartare: %s\n"
@@ -2073,7 +2073,7 @@ msgstr "atribut necunoscut %s în elementul <geometry>"
 msgid "Unknown element %s"
 msgstr "Element necunoscut %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2938,7 +2938,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicaţia a setat un _NET_WM_PID fals %ld\n"
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2954,7 +2954,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

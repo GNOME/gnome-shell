@@ -1,3 +1,39 @@
+2.6.2
+===
+
+Thanks to Yukihiro Nakai, Rached Ben Mustapha, Gwenole Beauchesne,
+Padraig O'Briain, Laurent Vivier, Rob Adams for contributions to this
+release.
+
+ - fix to repaint after resize always, so on maximize 
+   and theme changes we get things drawn properly
+ - fix a compile issue on HPUX
+ - fix translations of metacity-message output
+ - fix to update window icons when they change
+ - put a limit on number of characters displayed in 
+   window titles during Alt+tab
+ - fix configure check for Xrandr
+ - fix 64-bit bug in property reading that broke 
+   things badly on 64-bit
+ - don't move focus when clicking close button on a window
+ - fix a crash in getting pixmap icons
+ - spawn dialogs and child processes on the proper 
+   screen in multihead situations
+ - if the focus gets set to None, set it back to 
+   something sane
+ - load accessibility modules and set accessibility roles
+ - fix hang after displaying warning dialogs
+ - fix a memory corruption when sticking/unsticking windows
+   that lead to a frequent crash and windows appearing 
+   in Alt+tab improperly
+ - fix some handling of partial-width panel struts
+ - more translations
+
+2.6.1
+===
+
+ - rebuild with fixed glib-gettext.m4
+
 2.6.0
 ===
 

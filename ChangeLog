@@ -1,3 +1,9 @@
+2003-10-01  Havoc Pennington  <hp@redhat.com>
+
+	* NEWS: update
+
+	* configure.in: 2.6.2
+
 2003-09-30  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_queue_move_resize): add the moveresize

@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.sk\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-09-24 04:51+0200\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-09-24 08:54+0200\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.2\n"
 
 #: src/tools/metacity-message.c:150
@@ -24,38 +24,39 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Pou¾itie: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity bol skompilovaný bez podpory zobrazovania informácií\n"
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nepodarilo sa spracova» \"%s\" ako celé èíslo"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nerozpoznané znaky na konci \"%s\" v re»azci \"%s\""
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nepodarilo sa spracova» správu \"%s\" z dialógového procesu\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Chyba pri èítaní z procesu pre zobrazenie dialógu: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zabitie aplikácie: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepodarilo sa získa» meno hostiteµa: %s\n"
@@ -100,24 +101,25 @@ msgstr "Maximalizova» okno"
 msgid "Unmaximize Window"
 msgstr "Odmaximalizova» okno"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Iný program u¾ pou¾íva kláves %s s modifikátormi %x ako klávesovú skratku.\n"
+msgstr ""
+"Iný program u¾ pou¾íva kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zobrazenie chyby príkazu: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
@@ -125,7 +127,7 @@ msgstr ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=SÚBOR] [--"
 "display=DISPLEJ] [--replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -140,12 +142,14 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Nepodarilo sa nájs» tému. Overte, ¾e %s existuje a obrazuje obvyklé témy."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Nepodarilo sa nájs» tému. Overte, ¾e %s existuje a obrazuje obvyklé témy."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepodarilo znovu spusti»: %s\n"
@@ -312,7 +316,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "Okno \"%s\" neodpovedá."
 
 #: src/metacity-dialog.c:93
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Vynútené ukonèenie tejto aplikácie spôsobí stratu neulo¾ených zmien."
 
 #: src/metacity-dialog.c:103
@@ -1522,11 +1527,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Táto klávesová skratka mení, èi je okno v¾dy nad ostatnými oknami. Formát je \"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Spracovanie je dos» liberálne a umo¾òuje malé aj veµké písmená a "
-"skratky ako je \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". Ak nastavíte túto mo¾nos» "
-"na ¹peciálnu hodnotu \"disabled\", pre túto akciu nebude definovaná ¾iadna "
-"klávesová skratka."
+"Táto klávesová skratka mení, èi je okno v¾dy nad ostatnými oknami. Formát je "
+"\"&lt;Control&gt;a\" alebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Spracovanie je dos» "
+"liberálne a umo¾òuje malé aj veµké písmená a skratky ako je \"&lt;Ctl&gt;\" "
+"a \"&lt;Ctrl&gt;\". Ak nastavíte túto mo¾nos» na ¹peciálnu hodnotu \"disabled"
+"\", pre túto akciu nebude definovaná ¾iadna klávesová skratka."
 
 #: src/metacity.schemas.in.h:133
 msgid ""
@@ -1928,7 +1933,8 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nepodarilo sa získa» výber správcu okien pre obrazovku %d na displeji \"%s"
 "\".\n"
@@ -2015,7 +2021,7 @@ msgstr "Neznámy atribú» %s v elemente <geometry>"
 msgid "Unknown element %s"
 msgstr "Neznámy element %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2067,7 +2073,8 @@ msgstr "Uhol musí by» medzi 0.0 a 360.0, a je %g\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfa musí by» medzi 0.0 (neviditeµné) a 1.0 (úplne nakreslené), a je %g\n"
+msgstr ""
+"Alfa musí by» medzi 0.0 (neviditeµné) a 1.0 (úplne nakreslené), a je %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2166,8 +2173,10 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Chýbajúci atribút \"value\" v elemente <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr "Nie je mo¾né zada» aj button_width/button_height a aj pomer strán tlaèidiel"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr ""
+"Nie je mo¾né zada» aj button_width/button_height a aj pomer strán tlaèidiel"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2465,7 +2474,8 @@ msgstr "Najvy¹¹ím elementovm témy musí by» <metacity_theme>, nie <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Element <%s> nie je povolený v elemente name/author/date/description"
 
 #: src/theme-parser.c:3684
@@ -2475,8 +2485,10 @@ msgstr "Element <%s> nie je povolený v elemente <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Element <%s> nie je povolený v elemente vzdialenosti/okrajov/pomeru strán"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Element <%s> nie je povolený v elemente vzdialenosti/okrajov/pomeru strán"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2607,7 +2619,8 @@ msgstr "V ¹pecifikácii farby nerozpoznaný komponent \"%s\""
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr "Formát mie¹ania he \"blend/bg_color/fg_color/alpha\", \"%s\" tomu neodpovedá"
+msgstr ""
+"Formát mie¹ania he \"blend/bg_color/fg_color/alpha\", \"%s\" tomu neodpovedá"
 
 #: src/theme.c:1054
 #, c-format
@@ -2621,7 +2634,8 @@ msgstr "Hodnota alfa \"%s\" v mie¹anej farbe nie je medzi 0.0 a 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Formát tieòa je \"shade/base_color/factor\", \"%s\" tomu neodpovedá"
 
 #: src/theme.c:1122
@@ -2649,19 +2663,22 @@ msgstr "Výraz umiestnenia obsahuje znak '%s', ktorý nie je povolený"
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Výraz umiestnenia obsahuje reálne èíslo '%s', ktoré nie je mo¾né spracova»."
+msgstr ""
+"Výraz umiestnenia obsahuje reálne èíslo '%s', ktoré nie je mo¾né spracova»."
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Výraz umiestnenia obsahuje celé èísl '%s', ktoré nie je mo¾né spracova»."
+msgstr ""
+"Výraz umiestnenia obsahuje celé èísl '%s', ktoré nie je mo¾né spracova»."
 
 #: src/theme.c:1531
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Výraz umiestnenia obsahuje neznámy operátor na zaèiatku tohto textu: \"%s\""
+msgstr ""
+"Výraz umiestnenia obsahuje neznámy operátor na zaèiatku tohto textu: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2672,12 +2689,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Výraz umiestnenia sa sna¾í pou¾i» operátor modulo na reálne èíslo"
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenia obsahuje operátor \"%s\" tam, kde sa oèakáva operand"
 
 #: src/theme.c:1845
@@ -2738,8 +2757,10 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Chýbajúce <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -2772,7 +2793,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Pou¾ívateµské kon¹tanty musia zaèíta» veµkým písmenom, \"%s\" nezaèína"
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -2845,7 +2867,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2861,7 +2883,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2893,8 +2915,8 @@ msgstr "Vlastnos» %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnos» %s pre okno 0x%lx obsahuje neplatné UTF-8 pre polo¾ku %d v "
 "zozname\n"
-

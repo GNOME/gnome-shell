@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
-"POT-Creation-Date: 2003-09-10 15:41-0400\n"
+"POT-Creation-Date: 2003-10-01 17:18-0400\n"
 "PO-Revision-Date: 2003-01-03 15:58+0200\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -20,39 +20,39 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "שימוש: %s\n"
 
-#: src/tools/metacity-message.c:174 src/util.c:128
+#: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 
-#: src/delete.c:61 src/delete.c:88 src/metacity-dialog.c:46
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "לא ניתן להעביר את \"%s\" כמספר שלם"
 
-#: src/delete.c:68 src/delete.c:95 src/metacity-dialog.c:53
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "לא ניתן להבין את התוים \"%s\" במחרוזת \"%s\""
 
-#: src/delete.c:126
+#: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "נכשל בהעברת ההודעה \"%s\" מתהליך תיבת דו-השיח\n"
 
-#: src/delete.c:261
+#: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "שגיאה בקריאה מתהליך הצגת תיבת דו-שיח: %s\n"
 
-#: src/delete.c:332
+#: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי השואלת אם להרוג יישום: %s\n"
 
-#: src/delete.c:431
+#: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "נכשל בקבלת שם המארח: %s\n"
@@ -98,24 +98,24 @@ msgstr "הגדל חלון"
 msgid "Unmaximize Window"
 msgstr "שחזר חלון"
 
-#: src/keybindings.c:984
+#: src/keybindings.c:986
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
-#: src/keybindings.c:2413
+#: src/keybindings.c:2421
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי כדי להדפיס שגיאה על הפקודה: %s\n"
 
-#: src/keybindings.c:2444
+#: src/keybindings.c:2494
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "אף פקודה %d לא הוגדרה.\n"
 
-#: src/main.c:64
+#: src/main.c:69
 #, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
@@ -124,7 +124,7 @@ msgstr ""
 "metacity [--disable-sm] [--sm-save-file=שם קובץ] [--display=תצוגה] [--"
 "replace] [--version]\n"
 
-#: src/main.c:71
+#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -138,13 +138,13 @@ msgstr ""
 "זוהי תוכנה חופשית; ראה קוד מקור לתנאי ההעתקה.\n"
 "אין אחראיות; אפילו לא לאפשרויות מסחר או התאמה למטרה מסויימת.\n"
 
-#: src/main.c:348
+#: src/main.c:437
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "לא ניתן למצוא ערכת נושא! ודא כי %s קיים ומכיל את ערכות הנושא הרגילות."
 
-#: src/main.c:396
+#: src/main.c:499
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "נכשל בהפעלה מחדש: %s\n"
@@ -1593,7 +1593,7 @@ msgstr ""
 msgid "Unknown element %s"
 msgstr "תג לא ידוע %s"
 
-#: src/session.c:1921
+#: src/session.c:1935
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2412,7 +2412,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4565
+#: src/window.c:4566
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2426,7 +2426,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5226
+#: src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
