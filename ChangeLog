@@ -1,5 +1,10 @@
 2002-11-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (meta_frame_layout_calc_geometry): fix from Garrett
+	LeSage for which button backgrounds we draw when
+
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
 	* src/workspace.c (meta_workspace_get_name): new function, 
 	and remove workspace->name field, instead just get the 
 	name from prefs each time
