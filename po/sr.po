@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-04-09 12:52+0100\n"
+"POT-Creation-Date: 2003-08-08 04:41+0200\n"
+"PO-Revision-Date: 2003-08-08 04:41+0200\n"
 "Last-Translator: Goran Rakić <gox@devbase.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -101,37 +101,37 @@ msgstr "Увећај прозор"
 msgid "Unmaximize Window"
 msgstr "Поништи увећавање прозора"
 
-#: src/keybindings.c:978
-#, fuzzy, c-format
+#: src/keybindings.c:984
+#, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Неки други програм већ користи тастер %s са измењивачима %x као закачкама\n"
+"Неки други програм већ користи тастер %s са измењивачима %x за неку "
+"функцију\n"
 
-#: src/keybindings.c:2407
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка приликом покретања metacity-dialog програма због штампања грешке о "
 "команди: %s\n"
 
-#: src/keybindings.c:2438
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Није дефинисана команда %d.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=ИМЕ ДАТОТЕКЕ] [--display=БРОЈ "
-"ЕКРАНА] [--replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ИД] [--sm-save-file=ИМЕ-ДАТОТЕКЕ] [--"
+"display=ЕКРАН] [--replace] [--version]\n"
 
 #: src/main.c:71
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -140,12 +140,12 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "метасити %s\n"
-"Сва права (C) 2001-2002 Havoc Pennington, Red Hat, Inc., и остали\n"
+"Сва права задржана (C) 2001–2002 Havoc Pennington, Red Hat, Inc., и остали\n"
 "Ово је слободан програм; погледајте изворни код за услове коришћења.\n"
-"Никаква гаранција НЕ постоји; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"Никаква гаранција НЕ постоји; чак ни гаранција о подобности за одређену "
+"намену.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -153,7 +153,7 @@ msgstr ""
 "Нисам могао да пронђем тему! Проверите се да %s постоји и да садржи "
 "уобичајне теме."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Нисам успео да се поново покренем: %s\n"
@@ -200,7 +200,7 @@ msgstr "Постави на све радне површине"
 msgid "Only on _This Workspace"
 msgstr "Само на овој радној површини"
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Радна површина %d"
@@ -276,7 +276,7 @@ msgstr "Супер"
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Хипер"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -285,7 +285,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Мод2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -294,7 +294,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Мод3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -303,7 +303,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Мод4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -312,21 +312,21 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Мод5"
 
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Прозор „%s“ не одговара."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
+msgstr "Приморавањем програма на излаз ћете изгубити све несачуване измене."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Приморај излаз"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -344,7 +344,7 @@ msgstr ""
 "Ови прозори не подржавају могућност „сними тренутна подешавања“ па ћете "
 "морати да их ручно поново покренете када се следећи пут пријавите."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -440,6 +440,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Одређује да ли програми или систем могу да пусте звучне сигнале; може се "
+"користити уз „визуелне звуке“ ради дозвољавања тихих звукова."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -447,7 +449,7 @@ msgstr "Искључи лоше могућности које су обавез�
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Омогући визуелне звуке"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -653,11 +655,11 @@ msgstr "Покрени дефинисану команду"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Прикажи мени панела"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Прикажи прозорче за покретање програма"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -754,15 +756,15 @@ msgstr "Пребаци се на радни простор на десно"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Системско звонце се чује"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Узми снимак екрана"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Узми снимак прозора"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -774,6 +776,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Наређује Метаситију да прикаже нешто када зазвони системско звонце или неки "
+"други програм зазвони. Тренутно су могуће две вредности, „fullscreen“ којим "
+"цео екран трепери црно-бело, и „frame_flash“ када трепери само насловна "
+"линија прозора који је зазвонио. Уколико није познат програм који је "
+"зазвонио (као што је то обично случај са „системским звонцетом“), трепереће "
+"насловна линија прозора који је тренутно у жижи."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -786,25 +794,21 @@ msgstr ""
 "ће извршити команду_Н."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Кључ /apps/metacity/global_keybindings/run_command_N дефинише тастере који "
-"одговарају овим командама. Притиском комбинације тастера за покрени_комаду_Н "
-"ће извршити команду_Н."
+"Кључ /apps/metacity/global_keybindings/run_command_N дефинише функцију "
+"тастера којим се покреће наредба наведена помоћу њега."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Кључ /apps/metacity/global_keybindings/run_command_N дефинише тастере који "
-"одговарају овим командама. Притиском комбинације тастера за покрени_комаду_Н "
-"ће извршити команду_Н."
+"Кључ /apps/metacity/global_keybindings/run_command_window_screenshot "
+"дефинише функцију тастера којим се покреће наредба наведена помоћу њега."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1561,6 +1565,23 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:132
 msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Комбинација тастера која укључује или искључује опцију да прозор буде увек "
+"на врху. Прозор који је увек на врху ће се видети преко других преклапајућих "
+"прозора. Формат записа изгледа као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;"
+"Alt&gt;F1“. Програм за обраду је доста слободан и дозвољава велика или мала "
+"слова, као и скраћенице попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите "
+"опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
+"ниједна комбинација тастера за ову акцију."
+
+#: src/metacity.schemas.in.h:133
+msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
@@ -1574,7 +1595,7 @@ msgstr ""
 "опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1589,7 +1610,7 @@ msgstr ""
 "опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1604,7 +1625,7 @@ msgstr ""
 "опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1620,7 +1641,7 @@ msgstr ""
 "Ctrl&gt;“. Ако подесите опцију на специјални низ карактера „disabled“, онда "
 "неће бити коришћена ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1635,8 +1656,7 @@ msgstr ""
 "карактера „disabled“, онда неће бити коришћена ниједна комбинација тастера "
 "за ову акцију."
 
-#: src/metacity.schemas.in.h:137
-#, fuzzy
+#: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1645,15 +1665,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Комбинација тастера која затвара прозор.Формат записа изгледа као „&lt;"
-"Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“.Програм за обраду је доста "
-"слободан и дозвољава велика или мала слова, такође и скраћенице попут „&lt;"
-"Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите опцију на специјални низ карактера "
-"„disabled“, онда неће бити коришћена ниједна комбинација тастера за ову "
-"акцију."
+"Комбинација тастера која приказује прозорче панела „Покрени програм“. Формат "
+"записа изгледа као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. "
+"Програм за обраду је доста слободан и дозвољава велика или мала слова, "
+"такође и скраћенице попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите "
+"опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
+"ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:138
-#, fuzzy
+#: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1662,15 +1681,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Комбинација тастера која затвара прозор.Формат записа изгледа као „&lt;"
-"Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“.Програм за обраду је доста "
-"слободан и дозвољава велика или мала слова, такође и скраћенице попут „&lt;"
-"Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите опцију на специјални низ карактера "
-"„disabled“, онда неће бити коришћена ниједна комбинација тастера за ову "
-"акцију."
+"Комбинација тастера која покреће алат панела за снимак прозора. Формат "
+"записа изгледа као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. "
+"Програм за обраду је доста слободан и дозвољава велика или мала слова, "
+"такође и скраћенице попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите "
+"опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
+"ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:139
-#, fuzzy
+#: src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1679,15 +1697,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Комбинација тастера која пребацује на радни простор број девет. Формат "
-"записа изгледа као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“."
-"Програм за обраду је доста слободан и дозвољава велика или мала слова, "
-"такође и скраћенице попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите "
-"опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
-"ниједна комбинација тастера за ову акцију."
+"Комбинација тастера која покреће алат панела за снимак екрана. Формат записа "
+"изгледа као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. Програм за "
+"обраду је доста слободан и дозвољава велика или мала слова, такође и "
+"скраћенице попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите опцију на "
+"специјални низ карактера „disabled“, онда неће бити коришћена ниједна "
+"комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:140
-#, fuzzy
+#: src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1695,29 +1712,29 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Комбинација тастера која активира мени прозора. Формат записа изгледа као "
-"„&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“.Програм за обраду је "
-"доста слободан и дозвољава велика или мала слова, такође и скраћенице попут "
-"„&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите опцију на специјални низ "
+"Комбинација тастера која активира главни мени панела. Формат записа изгледа "
+"као „&lt;Control&gt;a“ или „&lt;Shift&gt;&lt;Alt&gt;F1“. Програм за обраду "
+"је доста слободан и дозвољава велика или мала слова, такође и скраћенице "
+"попут „&lt;Ctl&gt;“ и „&lt; Ctrl&gt;“. Ако подесите опцију на специјални низ "
 "карактера „disabled“, онда неће бити коришћена ниједна комбинација тастера "
 "за ову акцију."
 
-#: src/metacity.schemas.in.h:141
-msgid "The name of a workspace."
-msgstr "Име радне површине"
-
 #: src/metacity.schemas.in.h:142
-msgid "The screenshot command"
-msgstr ""
+msgid "The name of a workspace."
+msgstr "Име радне површине."
 
 #: src/metacity.schemas.in.h:143
+msgid "The screenshot command"
+msgstr "Наредба за снимак екрана"
+
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 "Тема утврђује изглед ивица прозора, насловне линије и свега осталог сличног."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1725,7 +1742,7 @@ msgstr ""
 "Временски период пре подизања прозора ако је опција auto_raise постављена на "
 "„true“. Период се изражава у хиљадитим деловима секунде."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1739,11 +1756,11 @@ msgstr ""
 "„mouse“ штп значи да ће прозор бити фокуситан када показивачка стрелица миша "
 "уђе у прозор и бити дефокусиран када стрелица изађе из прозора."
 
-#: src/metacity.schemas.in.h:146
-msgid "The window screenshot command"
-msgstr ""
-
 #: src/metacity.schemas.in.h:147
+msgid "The window screenshot command"
+msgstr "Наредба за узимање снимка прозора"
+
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1763,7 +1780,7 @@ msgstr ""
 "подесите опцију на специјални низ карактера „disabled“, онда неће бити "
 "коришћена ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1778,7 +1795,7 @@ msgstr ""
 "опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1793,7 +1810,7 @@ msgstr ""
 "опцију на специјални низ карактера „disabled“, онда неће бити коришћена "
 "ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1809,7 +1826,7 @@ msgstr ""
 "Ctrl&gt;“. Ако подесите опцију на специјални низ карактера „disabled“, онда "
 "неће бити коришћена ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1825,57 +1842,62 @@ msgstr ""
 "подесите опцију на специјални низ карактера „disabled“, онда неће бити "
 "коришћена ниједна комбинација тастера за ову акцију."
 
-#: src/metacity.schemas.in.h:152
-#, fuzzy
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"Ова опција утврђује ефекат дуплог клика на насловну линију прозора. Тренутно "
-"исправне опције су „toggle_shaded“, што ће засенчити/или одсенчити прозор, и "
-"„toggle_maximizeд“ што ће увећати или поништити увећање прозора."
+"Ова опција одређује ефекат дуплог клика на насловну линију прозора. Тренутно "
+"исправне опције су „toggle_shade“, што ће замотати/одмотати прозор, и "
+"„toggle_maximize“ што ће увећати или поништити увећање прозора."
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:154
+msgid "Toggle always on top state"
+msgstr "Измени да ли је увек на врху"
+
+#: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
 msgstr "Искључи/укључи приказ преко целог екрана"
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 msgid "Toggle maximization state"
 msgstr "Промени стање увећања"
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
 msgstr "Промени стање засенчености"
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
 msgstr "Промени све прозоре на свим радним површинама"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Укључује визуелни приказ када програм или систем „зазвони“; корисно у бучним "
+"условима, или када је звучно звонце искључено."
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr "Поништи увећање прозора"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr "Користи стандардни системски фонт за наслов прозора"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Врста визелног звонцета"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Начин фокуса прозора"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Фонт наслова прозора"
 
@@ -1935,14 +1957,14 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка приликом постављања броја радних површина на %d: %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "“%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка приликом постављања имена за радну површину %d у „%s“: %s\n"
@@ -1952,12 +1974,12 @@ msgstr "Грешка приликом постављања имена за ра�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Приказ %d на екрану „%s“ није исправан\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1966,19 +1988,19 @@ msgstr ""
 "Приказ %d на екрану „%s“ већ има покренут менаџер прозора; покушајте да "
 "користите --replace опцију како бисте заменили тренутни менаџер прозора.\n"
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Нисам могао да добијем избор менаџера прозора на приказу %d еркана „%s“\n"
 
-#: src/screen.c:520
+#: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има менаџер прозора\n"
 
-#: src/screen.c:690
+#: src/screen.c:675
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Нисам могао да испустим приказ %d на екрану „%s“\n"
@@ -2481,7 +2503,6 @@ msgid "Style has already been specified for state %s focus %s"
 msgstr "Стил је већ наведен за стање %s фокус %s"
 
 #: src/theme-parser.c:3536
-#, fuzzy
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2908,7 +2929,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4534
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2924,7 +2945,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2954,7 +2975,7 @@ msgstr ""
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Особина %s прозора 0x%lx садржи неисправан UTF-8\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
