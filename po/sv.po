@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-06-16 19:31+0200\n"
-"PO-Revision-Date: 2002-06-16 19:31+0200\n"
+"POT-Creation-Date: 2002-06-23 00:29+0200\n"
+"PO-Revision-Date: 2002-06-23 00:29+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "Maximera fönster"
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:650
+#: src/keybindings.c:655
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -1312,12 +1312,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:195
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:211
+#: src/screen.c:212
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1326,18 +1326,18 @@ msgstr ""
 "Skärm %d på display \"%s\" har redan en fönsterhanterare; försök med flaggan "
 "--replace för att åsidosätta den aktuella fönsterhanteraren.\n"
 
-#: src/screen.c:252
+#: src/screen.c:253
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kunde inte få tag i fönsterhanterarval på skärm %d display \"%s\"\n"
 
-#: src/screen.c:307
+#: src/screen.c:308
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/screen.c:510
+#: src/screen.c:515
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
@@ -2260,17 +2260,17 @@ msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Öppnade loggfilen %s\n"
 
-#: src/window.c:430
+#: src/window.c:431
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %ld\n"
 
-#: src/workspace.c:708 src/workspace.c:727
+#: src/workspace.c:52
 #, c-format
-msgid "Workspace %d"
-msgstr "Arbetsyta %d"
+msgid "Workspace %d\n"
+msgstr "Arbetsyta %d\n"
 
-#: src/xprops.c:53
+#: src/xprops.c:54
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
@@ -2279,10 +2279,20 @@ msgstr ""
 "Fönster 0x%lx har egenskap %s som förväntades ha typen %s format %d och har "
 "i verkligheten typ %s format %d n_items %d\n"
 
-#: src/xprops.c:281
+#: src/xprops.c:282
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8\n"
+
+#: src/xprops.c:367
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid "Workspace %d"
+#~ msgstr "Arbetsyta %d"
 
 #~ msgid "No \"name\" attribute on <%s> element"
 #~ msgstr "Inget \"name\"-attribut på <%s>-element"
