@@ -1,3 +1,12 @@
+2005-01-25  Elijah Newren  <newren@gmail.com>
+
+	Refuse to focus a window with a modal transient, and focus the
+	transient instead.  Fixes #164716.
+
+	* src/window.c: (get_modal_transient): new function,
+	(meta_window_focus): if the window has a modal transient, make
+	sure it is on the current workspace and then focus it instead.
+
 2005-01-24  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.9.13

@@ -3245,10 +3245,50 @@ meta_window_get_startup_id (MetaWindow *window)
   return window->startup_id;
 }
 
+static MetaWindow*
+get_modal_transient (MetaWindow *window)
+{
+  GSList *windows;
+  GSList *tmp;
+  MetaWindow *modal_transient;
+
+  /* A window can't be the transient of itself, but this is just for
+   * convenience in the loop below; we manually fix things up at the
+   * end if no real modal transient was found.
+   */
+  modal_transient = window;
+
+  windows = meta_display_list_windows (window->display);
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *transient = tmp->data;
+      
+      if (transient->xtransient_for == modal_transient->xwindow &&
+          transient->wm_state_modal)
+        {
+          modal_transient = transient;
+          tmp = windows;
+          continue;
+        }
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (windows);
+
+  if (window == modal_transient)
+    modal_transient = NULL;
+
+  return modal_transient;
+}
+
 void
 meta_window_focus (MetaWindow  *window,
                    Time         timestamp)
 {  
+  MetaWindow *modal_transient;
+
   meta_topic (META_DEBUG_FOCUS,
               "Setting input focus to window %s, input: %d take_focus: %d\n",
               window->desc, window->input, window->take_focus);
@@ -3260,6 +3300,19 @@ meta_window_focus (MetaWindow  *window,
                   "Current focus window %s has global keygrab, not focusing window %s after all\n",
                   window->display->grab_window->desc, window->desc);
       return;
+    }
+
+  modal_transient = get_modal_transient (window);
+  if (modal_transient != NULL)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "%s has %s as a modal transient, so focusing it instead.\n",
+                  window->desc, modal_transient->desc);
+      if (!modal_transient->on_all_workspaces &&
+          modal_transient->workspace != window->screen->active_workspace)
+        meta_window_change_workspace (modal_transient, 
+                                      window->screen->active_workspace);
+      window = modal_transient;
     }
 
   meta_window_flush_calc_showing (window);
