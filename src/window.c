@@ -4777,6 +4777,9 @@ constrain_position (MetaWindow *window,
         nw_x -= offscreen_w;
       if (offscreen_h > 0)
         nw_y -= offscreen_h;
+
+#if 0
+      /* This is the old don't-allow-off-screen-at-all constraint */
       
       /* Convert se_x, se_y to the most bottom-right position
        * the window can occupy - don't allow offscreen
@@ -4796,14 +4799,29 @@ constrain_position (MetaWindow *window,
         se_x += offscreen_w;
       if (offscreen_h > 0)
         se_y += offscreen_h;
+#endif
       
-#if 0
-      /* this is the old allow-offscreen-to-se constraint */
+#if 1
+      /* Require the top-left corner of the frame to be onscreen,
+       * so people can't lose the menu control. (FIXME
+       * instead of TITLEBAR_LENGTH_ONSCREEN, get the actual size
+       * of the menu control?).
+       *
+       * Remember, we're constraining StaticGravity position.
+       */
       if (window->frame)
         {
-#define TITLEBAR_LENGTH_ONSCREEN 10
-          se_x -= (fgeom->left_width + TITLEBAR_LENGTH_ONSCREEN);
-          se_y -= fgeom->top_height;
+#define TITLEBAR_LENGTH_ONSCREEN 15
+          se_x -= TITLEBAR_LENGTH_ONSCREEN;
+          se_y -= 0;
+        }
+      else
+        {
+          /* for frameless windows, just require an arbitrary little
+           * chunk to be onscreen
+           */
+          se_x -= TITLEBAR_LENGTH_ONSCREEN;
+          se_y -= TITLEBAR_LENGTH_ONSCREEN;
         }
 #endif
       
