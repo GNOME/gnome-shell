@@ -390,8 +390,37 @@ sort_window_list (GList *list)
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
+      
+      if ((w->xtransient_for == None ||
+           w->transient_parent_is_root_window) &&
+          (w->type == META_WINDOW_DIALOG ||
+	   w->type == META_WINDOW_MODAL_DIALOG))
+        {
+          GSList *group_windows;
+          GSList *tmp;
+          MetaGroup *group;
 
-      if (w->xtransient_for != None)
+          group = meta_window_get_group (w);
+
+          if (group != NULL)
+            group_windows = meta_group_list_windows (group);
+          else
+            group_windows = NULL;
+          
+          tmp = group_windows;
+          
+          while (tmp != NULL)
+            {
+              MetaWindow *group_window = tmp->data;
+              
+              if (!(meta_window_is_ancestor_of_transient (w, group_window)))
+                list = ensure_before (list, w, group_window);
+              
+              tmp = tmp->next;
+            }
+        }
+      else if (w->xtransient_for != None &&
+               !w->transient_parent_is_root_window)
         {
           MetaWindow *parent;
           

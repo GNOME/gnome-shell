@@ -1,3 +1,14 @@
+2002-09-27  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (update_transient_for): keep a flag 
+	transient_parent_is_root_window for whether the
+	root-window-as-parent convention was used.
+
+2002-09-25  Arvind Samptur <arvind.samptur@wipro.com>
+
+ 	* src/stack.c (sort_window_list): Keep dialogs without 
+ 	transient parent above entire app. Fixes #88926
+ 
 2002-09-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/menu.c (meta_window_menu_new): use MetaAccelLabel to display

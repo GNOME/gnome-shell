@@ -401,6 +401,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->xtransient_for = None;
   window->xgroup_leader = None;
   window->xclient_leader = None;
+  window->transient_parent_is_root_window = FALSE;
   
   window->type = META_WINDOW_NORMAL;
   window->type_atom = None;
@@ -1142,7 +1143,8 @@ meta_window_calc_showing (MetaWindow  *window)
               break;
             }
           
-          if (w->xtransient_for == None)
+          if (w->xtransient_for == None ||
+              w->transient_parent_is_root_window)
             break;
           
           w = meta_display_lookup_x_window (w->display, w->xtransient_for);
@@ -1822,7 +1824,8 @@ unminimize_window_and_all_transient_parents (MetaWindow *window)
     {
       meta_window_unminimize (w);
       
-      if (w->xtransient_for == None)
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
         break;
       
       w = meta_display_lookup_x_window (w->display, w->xtransient_for);
@@ -4618,7 +4621,8 @@ update_sm_hints (MetaWindow *window)
       if (leader != None)
         break;
       
-      if (w->xtransient_for == None)
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
         break;
 
       w = meta_display_lookup_x_window (w->display, w->xtransient_for);
@@ -4705,12 +4709,15 @@ update_transient_for (MetaWindow *window)
                         &w);
   window->xtransient_for = w;
 
+  window->transient_parent_is_root_window =
+    window->xtransient_for == window->screen->xroot;
+  
   if (window->xtransient_for != None)
-    meta_verbose ("Window %s transient for 0x%lx\n", window->desc,
-                  window->xtransient_for);
+    meta_verbose ("Window %s transient for 0x%lx (root = %d)\n", window->desc,
+                  window->xtransient_for, window->transient_parent_is_root_window);
   else
     meta_verbose ("Window %s is not transient\n", window->desc);
-
+  
   /* may now be a dialog */
   recalc_window_type (window);
 
@@ -6478,7 +6485,8 @@ meta_window_is_ancestor_of_transient (MetaWindow *window,
   w = transient;
   while (w != NULL)
     {          
-      if (w->xtransient_for == None)
+      if (w->xtransient_for == None ||
+          w->transient_parent_is_root_window)
         return FALSE;
 
       if (w->xtransient_for == window->xwindow)
