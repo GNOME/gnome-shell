@@ -1,3 +1,8 @@
+2002-02-07  Anders Carlsson  <andersca@gnu.org>
+
+	* src/themes/Crux/metacity-theme-1.xml: Add maximized and
+	shaded_and_maximized frame styles.
+
 2002-02-06  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c (prefs_changed_callback): redo window

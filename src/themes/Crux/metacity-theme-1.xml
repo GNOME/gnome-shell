@@ -396,8 +396,12 @@
 <frame_style_set name="normal">
 <frame focus="yes" state="shaded" style="focused_shaded"/>
 <frame focus="yes" state="normal" resize="both" style="focused"/>
+<frame focus="yes" state="maximized" style="focused"/>
+<frame focus="yes" state="maximized_and_shaded" style="focused_shaded"/>
 <frame focus="no" state="normal" resize="both" style="normal"/>
 <frame focus="no" state="shaded" style="normal_shaded"/>
+<frame focus="no" state="maximized" style="normal"/>
+<frame focus="no" state="maximized_and_shaded" style="normal_shaded"/>
 </frame_style_set>
 
 <window type="normal" style_set="normal"/>
