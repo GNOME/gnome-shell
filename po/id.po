@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
+"POT-Creation-Date: 2004-04-04 17:03+0700\n"
 "PO-Revision-Date: 2003-06-26 22:41+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
@@ -144,9 +144,9 @@ msgstr ""
 "PARTICULAR PURPOSE.\n"
 
 #: src/main.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Gagal membuka tema \"%s\": %s\n"
+msgstr "Gagal memeriksa direktori tema: %s\n" 
 
 #: src/main.c:459
 #, c-format
@@ -181,7 +181,7 @@ msgstr "B_uka"
 
 #: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr ""
+msgstr "Selalu di a_tas"
 
 #: src/menu.c:61
 msgid "_Move"
@@ -199,51 +199,45 @@ msgstr "_Tutup"
 #. separator
 #: src/menu.c:66
 msgid "Put on _All Workspaces"
-msgstr "Letakkan p_ada semua workspace"
+msgstr "Letakkan p_ada semua area kerja"
 
 #: src/menu.c:67
 msgid "Only on _This Workspace"
-msgstr "Le_takkan di workspace ini saja"
+msgstr "Le_takkan di area kerja ini saja"
 
 #: src/menu.c:68
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "Pindahkan window ke workspace 9"
+msgstr "Pindahkan jendela ini ke area kerja sebelah kiri"
 
 #: src/menu.c:69
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "Pindahkan window ke workspace 1"
+msgstr "Pindahkan jendela ini ke area kerja sebelah kanan"
 
 #: src/menu.c:70
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "Pindahkan window ke workspace 1"
+msgstr "Pindahkan jendela ini ke area kerja atas" 
 
 #: src/menu.c:71
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "Pindahkan window ke workspace bawah"
+msgstr "Pindahkan jendela ini ke area kerja bawah" 
 
 #: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
-msgstr "Workspace %d"
+msgstr "Area kerja %d"
 
 #: src/menu.c:169
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "Workspace %d"
+msgstr "Area kerja 1_0"
 
 #: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Workspace %s%d"
+msgstr "Area Kerja %s%d"
 
 #: src/menu.c:366
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "Pindahkan window ke workspace atas"
+msgstr "Pindahkan jendela ini ke area kerja _lain" 
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -509,6 +503,10 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"Pilih jika ingin metacity memberi reaksi yang lebih sedikit dan "
+"melakukan manipulasi langsung dengan menggunakan bingkai kawat, tidak "
+"menjalankan animasi, dan sebagainya. Ini berarti akan kurang berdaya guna "
+"menurut sebagian pemakai, tapi cukup baik pada kondisi-kondisi tertentu."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -523,52 +521,52 @@ msgid ""
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
 "Bila bernilai true, Metacity akan menjalankan tugas berdasarkan aplikasi, "
-"bukan berdasarkan window. Konsepnya agak sedikit abstrak, tapi secara umum, "
+"bukan berdasarkan jendela. Konsepnya agak sedikit abstrak, tapi secara umum, "
 "konsepnya lebih mirip ke Mac ketimbang ke Windows. Saat Anda memberi fokus "
-"pada window pada modus aplikasi, semua window pada aplikasi akan dinaikkan. "
-"Juga klik yang berasal dari klik tidak akan diberikan pada window milik "
+"pada window pada modus aplikasi, semua jendela pada aplikasi akan dinaikkan. "
+"Juga klik yang berasal dari klik tidak akan diberikan pada jendla milik "
 "aplikasi lain. Keberadaan setting ini patut dipertanyakan. Namun ini lebih "
 "baik ketimbang membuatkan setting untuk semua detil spesifik pada modus "
-"aplikasi vs modus window, misalnya menentukan apakah harus membagi fokus via "
+"aplikasi vs modus jendela, misalnya menentukan apakah harus membagi fokus via "
 "klik. Lagipula mode aplikasi belum selesai diimplementasikan secara penuh "
 "pada saat ini."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Pilih jika Anda mementingkan penggunaan memori yang lebih kecil dari pada daya guna"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr "Turunkan window di bawah window lain"
+msgstr "Turunkan jendela di bawah jendela lain"
 
 #: src/metacity.schemas.in.h:23
 msgid "Maximize a window"
-msgstr "Maksimalkan ukuran window"
+msgstr "Maksimalkan ukuran jendela"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
-msgstr "Maksimalkan ukuran window secara horisontal"
+msgstr "Maksimalkan ukuran jendela secara horisontal"
 
 #: src/metacity.schemas.in.h:25
 msgid "Maximize window vertically"
-msgstr "Maksimalkan ukuran window secara vertikal"
+msgstr "Maksimalkan ukuran jendela secara vertikal"
 
 #: src/metacity.schemas.in.h:26
 msgid "Minimize a window"
-msgstr "Kecilkan window"
+msgstr "Kecilkan jendela"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr ""
-"Tombol yang digunakan untuk menjalankan suatu perintah apabila window diklik"
+"Tombol yang digunakan untuk menjalankan suatu perintah apabila jendela diklik"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move a window"
-msgstr "Pindahkan window"
+msgstr "Pindahkan jendela"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Pindahkan ke belakang langsung antara panel dan desktop"
+msgstr "Pindahkan langsung ke belakang antara panel dan desktop"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
@@ -576,11 +574,11 @@ msgstr "Pindahkan ke belakang antara  panel dan desktop dengan popup"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move backwards between windows immediately"
-msgstr "Pindahkan ke belakang antara window secara langsung"
+msgstr "Pindahkan langsung ke belakang antara window"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop immediately"
-msgstr "Pindahkan antara panel dan desktop secara langsung"
+msgstr "Pindahkan langsung antara panel dan desktop"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
@@ -588,87 +586,87 @@ msgstr "Pindahkan antara panel dan desktop dengan popup"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
-msgstr "Pindahkan antara window secara langsung"
+msgstr "Pindahkan langsung antara jendela-jendela" 
 
 #: src/metacity.schemas.in.h:35
 msgid "Move between windows with popup"
-msgstr "Pindahkan antara window dengan popup"
+msgstr "Pindahkan antara jendela dengan popup"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
-msgstr "Pindahkan fokus ke belakang antara window dengan menampilkan popup"
+msgstr "Pindahkan fokus ke belakang antara jendela dengan menampilkan popup"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr "Pindahkan window ke workspace bawah"
+msgstr "Pindahkan jendela ke area kerja bawah"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr "Pindahkan window ke workspace kiri"
+msgstr "Pindahkan jendela ke area kerja kiri"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr "Pindahkan window ke workspace kanan"
+msgstr "Pindahkan jendela ke area kerja kanan"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr "Pindahkan window ke workspace atas"
+msgstr "Pindahkan jendela ke area kerja atas"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
-msgstr "Pindahkan window ke workspace 1"
+msgstr "Pindahkan jendela ke area kerja 1"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
-msgstr "Pindahkan window ke workspace 10"
+msgstr "Pindahkan jendela ke area kerja 10"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
-msgstr "Pindahkan window ke workspace 11"
+msgstr "Pindahkan jendela ke area kerja 11"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
-msgstr "Pindahkan window ke workspace 12"
+msgstr "Pindahkan jendela ke area kerja 12"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
-msgstr "Pindahkan window ke workspace 2"
+msgstr "Pindahkan jendela ke area kerja 2"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
-msgstr "Pindahkan window ke workspace 3"
+msgstr "Pindahkan jendela ke area kerja 3"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
-msgstr "Pindahkan window ke workspace 4"
+msgstr "Pindahkan jendela ke area kerja 4"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
-msgstr "Pindahkan window ke workspace 5"
+msgstr "Pindahkan jendela ke area kerja 5"
 
 #: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
-msgstr "Pindahkan window ke workspace 6"
+msgstr "Pindahkan jendela ke area kerja 6"
 
 #: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
-msgstr "Pindahkan window ke workspace 7"
+msgstr "Pindahkan jendela ke area kerja 7"
 
 #: src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
-msgstr "Pindahkan window ke workspace 8"
+msgstr "Pindahkan jendela ke area kerja 8"
 
 #: src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
-msgstr "Pindahkan window ke workspace 9"
+msgstr "Pindahkan jendela ke area kerja 9"
 
 #: src/metacity.schemas.in.h:53
 msgid "Name of workspace"
-msgstr "Nama workspace"
+msgstr "Nama area kerja"
 
 #: src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
-msgstr "Jumlah workspace"
+msgstr "Jumlah area kerja"
 
 #: src/metacity.schemas.in.h:55
 msgid ""
@@ -676,21 +674,21 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Jumlah workspace. Harus bernilai lebih dari nol dan memiliki batas maksimum "
+"Jumlah kerja. Harus bernilai lebih dari nol dan memiliki batas maksimum "
 "(untuk mencegah kerusakan pada desktop, misalnya karena minta membuat 34 "
 "juta workspace)"
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr "Naikan window tertentu dan turunkan yang lain"
+msgstr "Naikan jendela tertentu dan turunkan yang lain"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
-msgstr "Naikan window di atas window-window lain"
+msgstr "Naikan jendela ini di atas jendela-jendela lain"
 
 #: src/metacity.schemas.in.h:58
 msgid "Resize a window"
-msgstr "Rubah ukuran window"
+msgstr "Rubah ukuran jendela"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -722,7 +720,7 @@ msgstr ""
 "Ada aplikasi yang melanggar aturan spesifikasi sehingga membuat manajer "
 "window berlaku aneh. Misalnya, pada kondisi normal seharusnya Metacity akan "
 "meletakkan semua kotak dialog pada posisi yang konsisten sesuai dengan "
-"window bapaknya. Hal ini dikerjakan dengan mengabaikan posisi yang "
+"jendela bapaknya. Hal ini dikerjakan dengan mengabaikan posisi yang "
 "ditentukan aplikasi tersebut. Namun pada beberapa aplikasi Java/Swing, ada "
 "yang memberi tanda khusus pada menu popup seolah-olah merupakan kotak "
 "dialog, alhasil Metacity akan menonaktifkan poletakan posisi agar menu dapat "
@@ -736,67 +734,67 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
-msgstr "Ganti ke workspace 1"
+msgstr "Ganti ke area kerja 1"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 10"
-msgstr "Ganti ke workspace 10"
+msgstr "Ganti ke area kerja 10"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 11"
-msgstr "Ganti ke workspace 11"
+msgstr "Ganti ke area kerja 11"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 12"
-msgstr "Ganti ke workspace 12"
+msgstr "Ganti ke area kerja 12"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 2"
-msgstr "Ganti ke workspace 2"
+msgstr "Ganti ke area kerja 2"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 3"
-msgstr "Ganti ke workspace 3"
+msgstr "Ganti ke area kerja 3"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 4"
-msgstr "Ganti ke workspace 4"
+msgstr "Ganti ke area kerja 4"
 
 #: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 5"
-msgstr "Ganti ke workspace 5"
+msgstr "Ganti ke area kerja 5"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 6"
-msgstr "Ganti ke workspace 6"
+msgstr "Ganti ke area kerja 6"
 
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 7"
-msgstr "Ganti ke workspace 7"
+msgstr "Ganti ke area kerja 7"
 
 #: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 8"
-msgstr "Ganti ke workspace 8"
+msgstr "Ganti ke area kerja 8"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 9"
-msgstr "Ganti ke workspace 9"
+msgstr "Ganti ke area kerja 9"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace above this one"
-msgstr "Ganti ke workspace yang lebih tinggi"
+msgstr "Ganti ke area kerja yang lebih tinggi"
 
 #: src/metacity.schemas.in.h:76
 msgid "Switch to workspace below this one"
-msgstr "Ganti ke workspace yang lebih rendah"
+msgstr "Ganti ke area kerja yang lebih rendah"
 
 #: src/metacity.schemas.in.h:77
 msgid "Switch to workspace on the left"
-msgstr "Ganti ke workspace sebelah kiri"
+msgstr "Ganti ke area kerja sebelah kiri"
 
 #: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the right"
-msgstr "Ganti ke workspace sbelah kanan"
+msgstr "Ganti ke area kerja sbelah kanan"
 
 #: src/metacity.schemas.in.h:79
 msgid "System Bell is Audible"
@@ -808,7 +806,7 @@ msgstr "Ambil screenshot"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
-msgstr "Ambil screenshot khusus window tertentu"
+msgstr "Ambil screenshot khusus jendela tertentu"
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -821,7 +819,7 @@ msgid ""
 "currently focused window's titlebar is flashed."
 msgstr ""
 "Menentukan cara Metacity menyajikan indikasi visual saat bel sistem "
-"atauaplikasi sedang dibunyikan. Ada dua cara yang digunakan, yaitu "
+"atau aplikasi sedang dibunyikan. Ada dua cara yang digunakan, yaitu "
 "\"fullscreen\"yang akan menampilkan kilatan hitam putih di seluruh area "
 "layar, dan \"frame_flash\"yang akan menampikan kilatan pada kotak judul "
 "window aplikasi yang membunyikan bel.Jika tidak diketahui aplikasi mana yang "
@@ -1658,7 +1656,6 @@ msgstr ""
 "tombol."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1667,11 +1664,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk togel apakah window diletakkan pada semua workspace "
+"Kombinasi tombol untuk togel apakah jendela diletakkan selalu di atas "
 "atau tidak. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat "
 "fleksibel dan memperbolehkan digunakannya huruf besar dan huruf kecil, juga "
-"memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;"
+"memperbolehkan digunakannya singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;"
 "Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka perintah ini "
 "tidak memiliki kombinasi tombol."
 
@@ -1963,9 +1960,8 @@ msgstr ""
 "'toggle_maximize' yang akan memaksimalkan dan mengecilkan window."
 
 #: src/metacity.schemas.in.h:156
-#, fuzzy
 msgid "Toggle always on top state"
-msgstr "Togel kondisi maksimum"
+msgstr "Togel kondisi apakah jendela selalu ada di atas"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
@@ -2725,158 +2721,153 @@ msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "File tema %s tidak berisi akar elemen <metacity_theme>"
 
 #: src/theme-viewer.c:70
-#, fuzzy
 msgid "/_Windows"
-msgstr "Fokus window"
+msgstr "/_Jendela"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Jendela/tearoff"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Jendela/_Dialog"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Jendela/Dialog _Modal"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Jendela/_Perkakas"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/Jendela/Layar _pembua"
 
 #: src/theme-viewer.c:76
-#, fuzzy
 msgid "/Windows/_Top dock"
-msgstr "Fokus window"
+msgstr "/Jendela/Dok a_tas"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/Jendela/Dok _Bawah"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/Jendela/Dok k_iri"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/Jendela/Dok kana_n"
 
 #: src/theme-viewer.c:80
-#, fuzzy
 msgid "/Windows/_All docks"
-msgstr "Fokus window"
+msgstr "/Jendela/Semu_a dok"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/Jendela/Des_ktop"
 
 #: src/theme-viewer.c:131
-#, fuzzy
 msgid "Open another one of these windows"
-msgstr "Naikan window di atas window-window lain"
+msgstr "Buka lagi jendela semacam ini"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "Ini contoh tombol dengan ikon 'open'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "Ini contoh tombol dengan ikon 'quit'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "Ini contoh pesan pada suatu dialog"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Item menu %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "Jendela dengan garis pembatas"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "Kotak"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Jendela Aplikasi Normal"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "Kotak Dialog"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Kotak Dialog Modal"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
-msgstr ""
+msgstr "Kotak Perkakas"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "Menu Dapat Dilepas"
 
 #: src/theme-viewer.c:402
 msgid "Border"
-msgstr ""
+msgstr "Batas"
 
 #: src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "Tes komposisi tombol %d"
 
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "lama waktu menggambar satu bingkai jendela %g milidetik"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "Cara pakai: metacity-theme-viewer [NAMA TEMA]\n"
 
 #: src/theme-viewer.c:810
-#, fuzzy, c-format
+#, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Ada error saat menutup file sesi '%s': %s\n"
+msgstr "Ada error saat membaca tema: %s\n" 
 
 #: src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "Tema \"%s\" dibuka dalam %g detik\n"
 
 #: src/theme-viewer.c:839
 msgid "Normal Title Font"
-msgstr ""
+msgstr "Judul dengan huruf normal"
 
 #: src/theme-viewer.c:845
 msgid "Small Title Font"
-msgstr ""
+msgstr "Judul dengan huruf ukuran kecil"
 
 #: src/theme-viewer.c:851
 msgid "Large Title Font"
-msgstr ""
+msgstr "Judul Raksasa"
 
 #: src/theme-viewer.c:856
 msgid "Button Layouts"
-msgstr ""
+msgstr "Komposisi Tombol"
 
 #: src/theme-viewer.c:861
 msgid "Benchmark"
-msgstr ""
+msgstr "Pengukuran"
 
 #: src/theme-viewer.c:908
-#, fuzzy
 msgid "Window Title Goes Here"
-msgstr "Jenis huruf yang dipakai pada judul window"
+msgstr "Ini tempat judul jendela"
 
 #: src/theme-viewer.c:1012
 #, c-format
@@ -2885,43 +2876,45 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"%d frame dibuat dalam %g detik dalam waktu klien (%g milidetik per frame) dan "
+"%g detik dalam waktu sebenarnya (%g milidetik per frame)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "tes ekspresi posisi berakhir TRUE tapi justru ada error"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "tes ekspresi posisi berakhir FALSE tapi tidak ada error"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "Seharusnya ada error, tapi ini kok tidak ada"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "Seharunya ada error %d, tapi yang terjadi %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "Seharusnya tidak ada error, tapi ini tiba-tiba ada error: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr ""
+msgstr "nilai x sebelumnya %d, padahal seharusnya %d"
 
 #: src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr ""
+msgstr "nilai y sebelumnya %d, padahal seharusnya %d"
 
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "ekspresi koordinat %d diambil dalam %g detik (rata-rata %g detik)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -3230,19 +3223,19 @@ msgstr "Log file yang dibuka %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr "Manajer window: "
+msgstr "Manajer jendela: "
 
 #: src/util.c:349
 msgid "Bug in window manager: "
-msgstr "Bug pada manajer window: "
+msgstr "Bug pada manajer jendela: "
 
 #: src/util.c:378
 msgid "Window manager warning: "
-msgstr "Peringatan manajer window: "
+msgstr "Peringatan manajer jendela: "
 
 #: src/util.c:402
 msgid "Window manager error: "
-msgstr "Eror manajer window: "
+msgstr "Eror manajer jendela: "
 
 #: src/window-props.c:162
 #, c-format
@@ -3272,7 +3265,7 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Window %s menyetel hint MWM yang menandakan bahwa ia tidak dapat dirubah "
+"Jendela %s menyetel hint MWM yang menandakan bahwa ia tidak dapat dirubah "
 "ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x %d "
 "yang tidak masuk di akal.\n"
 
@@ -3285,7 +3278,7 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Window 0x%lx memiliki properti %s\n"
+"Jendela 0x%lx memiliki properti %s\n"
 "yang seharusnya memiliki tipe %s format %d.\n"
 "Sekarang dia memiliki tipe %s format %d n_items %d.\n"
 "Sepertinya ini adalah bug aplikasinya, bukan bug manajer window.\n"
@@ -3294,29 +3287,13 @@ msgstr ""
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Properti %s pada window 0x%lx berisi karakter UTF-8 yang salah\n"
+msgstr "Properti %s pada jendela 0x%lx berisi karakter UTF-8 yang salah\n"
 
 #: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Properti %s pada window 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
+"Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
 
-#~ msgid "Only on %s"
-#~ msgstr "Hanya pada %s"
 
-#~ msgid "Move to %s"
-#~ msgstr "Pindahkan ke %s"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Window \"%s\" tidak ada tanda-tanda kehidupan.\n"
-#~ "Matikan saja aplikasi ini?\n"
-#~ "(Semua dokumen yang terbuka akan hilang.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Matikan aplikasi"
