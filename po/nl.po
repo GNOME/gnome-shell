@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the metacity package.
 # Tino Meinen <a.t.meinen@chello.nl>, 2003.
 # Reinout van Schouwen <reinout@cs.vu.nl>, 2003.
+# Uitrollen of afrollen?
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
-"POT-Creation-Date: 2003-01-03 06:02+0100\n"
-"PO-Revision-Date: 2003-01-05 20:57+0100\n"
+"POT-Creation-Date: 2003-01-07 06:08+0100\n"
+"PO-Revision-Date: 2003-01-08 23:51+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -57,9 +58,9 @@ msgstr ""
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Verkrijgen hostname mislukt: %s\n"
+msgstr "Ophalen hostname mislukt: %s\n"
 
-#: src/display.c:273
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display, mislukt: '%s'\n"
@@ -80,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatale IO-fout %d (%s) op display '%s'.\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Venster sluiten"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Venster-menu"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Venster minimaliseren"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Venster maximaliseren"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Venster herstellen"
 
@@ -156,7 +157,7 @@ msgstr ""
 #: src/main.c:374
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Herstarten: %s mislukt\n"
+msgstr "Herstarten mislukt: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
@@ -200,7 +201,7 @@ msgstr "Op _alle werkbladen tonen"
 msgid "Only on _This Workspace"
 msgstr "Alleen op dit _werkblad"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
@@ -458,7 +459,7 @@ msgid ""
 msgstr ""
 "Indien waar, en de aandachtsmodus is ofwel \"slap\" of \"muis\", zal het "
 "aandachtsvenster na een bepaalde tijd automatisch worden verhoogd (de "
-"vertraging wordt gespecificieerd met de auto_raise_deley-toets)."
+"vertraging wordt gespecificieerd met de auto_raise_delay-toets)."
 
 #: src/metacity.schemas.in.h:16
 msgid ""
@@ -524,16 +525,16 @@ msgstr "Een venster verplaatsen"
 # mij ongestraft weggelaten worden
 #: src/metacity.schemas.in.h:25
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Achterwaards bewegen tussen panelen en het bureaublad"
+msgstr "Achterwaarts bewegen tussen panelen en het bureaublad"
 
 #: src/metacity.schemas.in.h:26
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
-"Achterwaards bewegen tussen vensters en het bureaublad middels een popup"
+"Achterwaarts bewegen tussen vensters en het bureaublad middels een popup"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move backwards between windows immediately"
-msgstr "Achterwaards bewegen tussen vensters"
+msgstr "Achterwaarts bewegen tussen vensters"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move between panels and the desktop immediately"
@@ -554,7 +555,7 @@ msgstr "Bewegen tussen vensters middels een popup"
 #: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
-"Achterwaards de aandacht verplaatsen tussen vensters middels een popup-"
+"Achterwaarts de aandacht verplaatsen tussen vensters middels een popup-"
 "venster"
 
 #: src/metacity.schemas.in.h:33
@@ -639,7 +640,6 @@ msgstr ""
 "te voorkomen dat u per ongeluk uw bureablad vernietigt, door te vragen om 34 "
 "miljoen werkbladen)."
 
-#. 'Raise' zou ook vertaald kunnen worden als 'naar voren halen' 
 #: src/metacity.schemas.in.h:52
 msgid "Raise obscured window, otherwise lower"
 msgstr "Bedekt venster verhogen, anders verlagen"
@@ -656,7 +656,6 @@ msgstr "Venstergrootte veranderen"
 msgid "Run a defined command"
 msgstr "Voorgedefineerde opdracht uitvoeren"
 
-#. 'Workaround' vertaald als '(omzeil)truc'
 #: src/metacity.schemas.in.h:56
 msgid ""
 "Some applications break specifications in ways that result in window manager "
@@ -1380,8 +1379,6 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#. 'move backwards' vertaald als 'terugverplaatsen', misschien is
-#. 'achterwaarts verplaatsen' duidelijker?
 #: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
@@ -1584,8 +1581,6 @@ msgstr ""
 "De wachttijd alvorens een venster te verhogen als auto_raise op 'true' "
 "staat. De wachttijd is gegeven in duizendsten van seconden."
 
-#. 'sloppy' (focus) vertaald als 'slap' (denk aan "aandacht verslapt")
-#. Letterlijker zou het ook 'slordig', 'slonzig' of 'achteloos' kunnen zijn
 #: src/metacity.schemas.in.h:130
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
@@ -1693,7 +1688,6 @@ msgstr ""
 "afrollen, en 'toggle_maximized' welke het venster zal maximaliseren/"
 "herstellen."
 
-#. ''Fullscreen' vertaald als Volledig scherm', 'Schermvullend' kan evt ook
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
 msgstr "Volledig scherm-modus omschakelen"
@@ -1718,7 +1712,6 @@ msgstr "Vensterformaat herstellen"
 msgid "Use standard system font in window titles"
 msgstr "Standaard systeemlettertype gebruiken in venstertitels"
 
-#. 'focus' vertaald als 'aandacht', overeenkomstig sawfish
 #: src/metacity.schemas.in.h:143
 msgid "Window focus mode"
 msgstr "Vensteraandacht-modus"
@@ -1744,7 +1737,7 @@ msgstr ""
 "\"%s\", gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
@@ -1753,6 +1746,7 @@ msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
+"Kon lettertypebeschrijving \"%s\" niet verwerken van Gconf-sleutel %s\n"
 
 #: src/prefs.c:1005
 #, c-format
@@ -1760,44 +1754,50 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
+"huidige maximum is %d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
+"zullen niet naar behoren functioneren.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
+"\"%s\"\n"
 
-#: src/prefs.c:1725
+#: src/prefs.c:1730
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "Scherm %d op display '%s' is ongeldig\n"
 
 #: src/screen.c:408
 #, c-format
@@ -1805,22 +1805,25 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"Scherm %d op display \"%s\" heeft al een windowmanager; probeer de optie: --"
+"replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
 #: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
+"Kon windowmanager-selectie niet verkrijgen op scherm %d display \"%s\"\n"
 
 #: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 
 #: src/screen.c:673
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
 
 #: src/session.c:274
 #, c-format
@@ -1828,69 +1831,72 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
+"Kon geen verbinding maken met een sessiemanager, dus vensterposities zullen "
+"niet worden opgeslagen: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr ""
+msgstr "Kon map '%s' niet aanmaken: %s\n"
 
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
+msgstr "Kon sessiebestand '%s' niet openen voor schrijven: %s\n"
 
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr ""
+msgstr "Fout bij schrijven sessiebestand '%s': %s\n"
 
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr ""
+msgstr "Fout bij sluiten sessiebestand '%s': %s\n"
 
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
+msgstr "Lezen van opgeslagen sessiebestand %s mislukt: %s\n"
 
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr ""
+msgstr "Verwerken van opgeslagen sessiebestand mislukt: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
+"<metacity_session> attribuut opgemerkt maar we hebben reeds de sessie-ID"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
+msgstr "Onbekend attribuut %s op <metacity_session> element"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr ""
+msgstr "ingebedde <window> markering"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr ""
+msgstr "Onbekend attribuut %s op <window> element"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
+msgstr "Onbekend attribuut %s op <maximized> element"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
+msgstr "Onbekend attribuut %s op <geometry> element"
 
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
-msgstr ""
+msgstr "Onbekend element %s"
 
 #: src/session.c:1921
 #, c-format
@@ -1902,47 +1908,49 @@ msgstr ""
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Regel %d teken %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Attribuut \"%s\" twee keer herhaald op hetzelfde <%s> element"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Attribuut \"%s\" is ongeldig op een <%s> element in deze context"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Geheel getal %ld moet positief zijn"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Geheel getal %ld is te groot, huidige maximum is %d"
 
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Kon \"%s niet als 'floating-point'-getal verwerken"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Boolse waarde moet \"true\" of \"false\" zijn, niet \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Hoek moet liggen tussen 0.0 en 360.0, maar was %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
+"Alpha moet liggen tussen 0.0 (onzichtbaar) an 1.0 (volledig ondoorzichtig), "
+"maar was %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1950,70 +1958,73 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"Ongeldige titel-schaal \"%s\" (u kunt kiezen uit: xx-small, x-small, small, "
+"medium, large, x-large, xx-large)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "Geen \"%s\" attribuut op element <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgstr "Geen \"%s\" attribuut op <%s> element"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> naam \"%s\" een tweede keer gebruikt"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> ouder \"%s\" is niet gedefinieerd"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> geometrie \"%s\" is niet gedefinieerd"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
+"<%s> moet ofwel een geometrie specificeren, of een ouder met een geometrie"
 
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "Onbekend type \"%s\" op <%s> element"
 
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
+msgstr "Onbekende stijl_set \"%s\" op <%s> element"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Venstertype \"%s\" heeft reeds een stijlset toegewezen gekregen"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Onbekende functie \"%s\" voor menu-pictogram"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Onbekende toestand \"%s\" voor menu-pictogram"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Thema heeft reeds een menu-pictogram voor functie %s status %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
@@ -2686,15 +2697,15 @@ msgstr ""
 msgid "Window manager: "
 msgstr ""
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr ""
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr ""
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr ""
 
@@ -2704,7 +2715,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4863
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2718,7 +2729,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5423
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
