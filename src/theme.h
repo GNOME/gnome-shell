@@ -192,7 +192,9 @@ typedef enum
   /* App's window title */
   META_DRAW_TITLE,
   /* a draw op list */
-  META_DRAW_OP_LIST
+  META_DRAW_OP_LIST,
+  /* tiled draw op list */
+  META_DRAW_TILE
 } MetaDrawType;
 
 struct _MetaDrawOp
@@ -318,6 +320,18 @@ struct _MetaDrawOp
       char *width;
       char *height;
     } op_list;
+
+    struct {
+      MetaDrawOpList *op_list;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+      char *tile_xoffset;
+      char *tile_yoffset;
+      char *tile_width;
+      char *tile_height;
+    } tile;
     
   } data;
 };

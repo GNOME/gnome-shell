@@ -1,4 +1,11 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
+	
+	* src/theme.c (meta_draw_op_draw_with_env): implement wacky "tile"
+	draw op to lose some of the PNG files in Gorilla theme
+
+	* src/theme-parser.c: parse the tile primitive
+	
+2002-02-09  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (update_icon): port to icon cache
 

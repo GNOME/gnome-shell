@@ -114,8 +114,11 @@ Themes are in a simple XML-subset format.
         x="10" y="30" width="width / 3" height="height / 4"/>
   <!-- window's title -->
   <title color="gtk:text[NORMAL]" x="20" y="30"/>
-  <!-- include another draw ops list -->
+  <!-- include another draw ops list; has optional x/y/width/height attrs -->
   <include name="some_other_draw_ops"/>
+  <!-- tile another draw ops list; has optional
+       x/y/width/height/tile_xoffset/tile_yoffset -->
+  <tile name="some_other_draw_ops" tile_width="10" tile_height="10"/>
 </draw_ops>
 
 <frame_style name="normal" geometry="normal">

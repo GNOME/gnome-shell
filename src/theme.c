@@ -2285,6 +2285,9 @@ meta_draw_op_new (MetaDrawType type)
     case META_DRAW_OP_LIST:
       size += sizeof (dummy.data.op_list);
       break;
+    case META_DRAW_TILE:
+      size += sizeof (dummy.data.tile);
+      break;
     }
 
   op = g_malloc0 (size);
@@ -2400,6 +2403,7 @@ meta_draw_op_free (MetaDrawOp *op)
       g_free (op->data.title.x);
       g_free (op->data.title.y);
       break;
+
     case META_DRAW_OP_LIST:
       if (op->data.op_list.op_list)
         meta_draw_op_list_unref (op->data.op_list.op_list);
@@ -2407,6 +2411,19 @@ meta_draw_op_free (MetaDrawOp *op)
       g_free (op->data.op_list.y);
       g_free (op->data.op_list.width);
       g_free (op->data.op_list.height);
+      break;
+
+    case META_DRAW_TILE:
+      if (op->data.tile.op_list)
+        meta_draw_op_list_unref (op->data.tile.op_list);
+      g_free (op->data.tile.x);
+      g_free (op->data.tile.y);
+      g_free (op->data.tile.width);
+      g_free (op->data.tile.height);
+      g_free (op->data.tile.tile_xoffset);
+      g_free (op->data.tile.tile_yoffset);
+      g_free (op->data.tile.tile_width);
+      g_free (op->data.tile.tile_height);
       break;
     }
 
@@ -2720,7 +2737,10 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
       break;
 
     case META_DRAW_OP_LIST:
-      break;      
+      break;
+
+    case META_DRAW_TILE:
+      break;
     }
 
   return pixbuf;
@@ -3052,6 +3072,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           g_object_unref (G_OBJECT (gc));
         }
       break;
+
     case META_DRAW_OP_LIST:
       {
         int rx, ry, rwidth, rheight;
@@ -3064,6 +3085,55 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         meta_draw_op_list_draw (op->data.op_list.op_list,
                                 widget, drawable, clip, info,
                                 rx, ry, rwidth, rheight);
+      }
+      break;
+
+    case META_DRAW_TILE:
+      {
+        int rx, ry, rwidth, rheight;
+        int tile_xoffset, tile_yoffset, tile_width, tile_height;
+        GdkRectangle new_clip;
+        int tile_x, tile_y;
+        
+        rx = parse_x_position_unchecked (op->data.tile.x, env);
+        ry = parse_y_position_unchecked (op->data.tile.y, env);
+        rwidth = parse_size_unchecked (op->data.tile.width, env);
+        rheight = parse_size_unchecked (op->data.tile.height, env);
+
+        new_clip.x = rx;
+        new_clip.y = ry;
+        new_clip.width = rwidth;
+        new_clip.height = rheight;
+
+        if (clip == NULL || gdk_rectangle_intersect ((GdkRectangle*)clip, &new_clip,
+                                                     &new_clip))
+          {
+            tile_xoffset = parse_x_position_unchecked (op->data.tile.tile_xoffset, env);
+            tile_yoffset = parse_y_position_unchecked (op->data.tile.tile_yoffset, env);
+            /* tile offset should not include x/y */
+            tile_xoffset -= x;
+            tile_yoffset -= y;
+            
+            tile_width = parse_size_unchecked (op->data.tile.tile_width, env);
+            tile_height = parse_size_unchecked (op->data.tile.tile_height, env);
+
+            tile_x = rx - tile_xoffset;
+        
+            while (tile_x < (rx + rwidth))
+              {
+                tile_y = ry - tile_yoffset;
+                while (tile_y < (ry + rheight))
+                  {
+                    meta_draw_op_list_draw (op->data.tile.op_list,
+                                            widget, drawable, &new_clip, info,
+                                            tile_x, tile_y, tile_width, tile_height);     
+
+                    tile_y += tile_height;
+                  }
+
+                tile_x += tile_width;
+              }
+          }
       }
       break;
     }
@@ -3257,6 +3327,15 @@ meta_draw_op_list_contains (MetaDrawOpList    *op_list,
             return TRUE;
           
           if (meta_draw_op_list_contains (op_list->ops[i]->data.op_list.op_list,
+                                          child))
+            return TRUE;
+        }
+      else if (op_list->ops[i]->type == META_DRAW_TILE)
+        {
+          if (op_list->ops[i]->data.tile.op_list == child)
+            return TRUE;
+          
+          if (meta_draw_op_list_contains (op_list->ops[i]->data.tile.op_list,
                                           child))
             return TRUE;
         }

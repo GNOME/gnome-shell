@@ -57,6 +57,7 @@ typedef enum
   STATE_ICON,
   STATE_TITLE,
   STATE_INCLUDE, /* include another draw op list */
+  STATE_TILE,    /* tile another draw op list */
   /* sub-parts of gradient */
   STATE_COLOR,
   /* frame style */
@@ -2637,7 +2638,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"name\" attribute on element <%s>"), element_name);
+                     _("No \"%s\" attribute on element <%s>"), "name", element_name);
           return;
         }
 
@@ -2696,6 +2697,130 @@ parse_draw_op_element (GMarkupParseContext  *context,
       meta_draw_op_list_append (info->op_list, op);
 
       push_state (info, STATE_INCLUDE);
+    }
+  else if (ELEMENT_IS ("tile"))
+    {
+      MetaDrawOp *op;
+      const char *name;
+      const char *x;
+      const char *y;
+      const char *width;
+      const char *height;
+      const char *tile_xoffset;
+      const char *tile_yoffset;
+      const char *tile_width;
+      const char *tile_height;
+      MetaDrawOpList *op_list;
+      
+      if (!locate_attributes (context, element_name, attribute_names, attribute_values,
+                              error,
+                              "x", &x, "y", &y,
+                              "width", &width, "height", &height,
+                              "name", &name,
+                              "tile_xoffset", &tile_xoffset,
+                              "tile_yoffset", &tile_yoffset,
+                              "tile_width", &tile_width,
+                              "tile_height", &tile_height,
+                              NULL))
+        return;
+
+      if (name == NULL)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("No \"%s\" attribute on element <%s>"), "name", element_name);
+          return;
+        }
+
+      if (tile_width == NULL)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("No \"%s\" attribute on element <%s>"), "tile_width", element_name);
+          return;
+        }
+
+      if (tile_height == NULL)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("No \"%s\" attribute on element <%s>"), "tile_height", element_name);
+          return;
+        }
+
+      /* These default to 0 */
+      if (tile_xoffset && !check_expression (tile_xoffset, FALSE, info->theme, context, error))
+        return;
+
+      if (tile_yoffset && !check_expression (tile_xoffset, FALSE, info->theme, context, error))
+        return;
+      
+      /* x/y/width/height default to 0,0,width,height - should
+       * probably do this for all the draw ops
+       */
+      
+      if (x && !check_expression (x, FALSE, info->theme, context, error))
+        return;
+
+      if (y && !check_expression (y, FALSE, info->theme, context, error))
+        return;
+
+      if (width && !check_expression (width, FALSE, info->theme, context, error))
+        return;
+      
+      if (height && !check_expression (height, FALSE, info->theme, context, error))
+        return;
+
+      if (!check_expression (tile_width, FALSE, info->theme, context, error))
+        return;
+
+      if (!check_expression (tile_height, FALSE, info->theme, context, error))
+        return;
+      
+      op_list = meta_theme_lookup_draw_op_list (info->theme,
+                                                name);
+      if (op_list == NULL)
+        {
+          set_error (error, context, G_MARKUP_ERROR,
+                     G_MARKUP_ERROR_PARSE,
+                     _("No <draw_ops> called \"%s\" has been defined"),
+                     name);
+          return;
+        }
+
+      g_assert (info->op_list);
+      
+      if (op_list == info->op_list ||
+          meta_draw_op_list_contains (op_list, info->op_list))
+        {
+          set_error (error, context, G_MARKUP_ERROR,
+                     G_MARKUP_ERROR_PARSE,
+                     _("Including draw_ops \"%s\" here would create a circular reference"),
+                     name);
+          return;
+        }
+      
+      op = meta_draw_op_new (META_DRAW_TILE);
+
+      meta_draw_op_list_ref (op_list);
+      op->data.tile.op_list = op_list;      
+      op->data.tile.x = x ? optimize_expression (info->theme, x) :
+        g_strdup ("0");
+      op->data.tile.y = y ? optimize_expression (info->theme, y) :
+        g_strdup ("0");
+      op->data.tile.width = width ? optimize_expression (info->theme, width) :
+        g_strdup ("width");
+      op->data.tile.height = height ?  optimize_expression (info->theme, height) :
+        g_strdup ("height");
+      op->data.tile.tile_xoffset = tile_xoffset ?
+        optimize_expression (info->theme, tile_xoffset) :
+        g_strdup ("0");
+      op->data.tile.tile_yoffset = tile_yoffset ?
+        optimize_expression (info->theme, tile_yoffset) :
+        g_strdup ("0");
+      op->data.tile.tile_width = optimize_expression (info->theme, tile_width);
+      op->data.tile.tile_height = optimize_expression (info->theme, tile_height);
+      
+      meta_draw_op_list_append (info->op_list, op);
+
+      push_state (info, STATE_TILE);
     }
   else
     {
@@ -3292,6 +3417,7 @@ start_element_handler (GMarkupParseContext *context,
     case STATE_ICON:
     case STATE_TITLE:
     case STATE_INCLUDE:
+    case STATE_TILE:
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                  _("Element <%s> is not allowed inside a draw operation element"),
                  element_name);
@@ -3522,6 +3648,10 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (peek_state (info) == STATE_DRAW_OPS);
       break;
     case STATE_INCLUDE:
+      pop_state (info);
+      g_assert (peek_state (info) == STATE_DRAW_OPS);
+      break;
+    case STATE_TILE:
       pop_state (info);
       g_assert (peek_state (info) == STATE_DRAW_OPS);
       break;
@@ -3779,6 +3909,9 @@ text_handler (GMarkupParseContext *context,
       break;
     case STATE_INCLUDE:
       NO_TEXT ("include");
+      break;
+    case STATE_TILE:
+      NO_TEXT ("tile");
       break;
     case STATE_COLOR:
       NO_TEXT ("color");
