@@ -1,3 +1,9 @@
+2002-05-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_focus): if window is not mapped after
+	the calc_showing, don't focus it, it's probably on another
+	workspace or something.
+
 2002-05-09  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (show_tip_now): DefaultScreen() returns the screen

@@ -2663,6 +2663,14 @@ meta_window_focus (MetaWindow  *window,
     }
 
   meta_window_flush_calc_showing (window);
+
+  if (!window->mapped && !window->shaded)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Window %s is not showing, not focusing after all\n",
+                  window->desc);
+      return;
+    }
   
   /* For output-only or shaded windows, focus the frame.
    * This seems to result in the client window getting key events
