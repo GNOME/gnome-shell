@@ -192,9 +192,17 @@ struct _MetaDisplay
   */
   MetaWindow *previously_focused_window;
 
-  /* window we are expecting a FocusIn event for
+  /* window we are expecting a FocusIn event for or the current focus
+   * window if we are not expecting any FocusIn/FocusOut events; not
+   * perfect because applications can call XSetInputFocus directly.
+   * (It could also be messed up if a timestamp later than current
+   * time is sent to meta_display_set_input_focus_window, though that
+   * would be a programming error).  See bug 154598 for more info.
    */
   MetaWindow *expected_focus_window;
+
+  /* last timestamp that a window was focused */
+  Time last_focus_time;
 
   guint static_gravity_works : 1;
   
@@ -350,6 +358,18 @@ struct _MetaDisplay
 #endif
 };
 
+/* Xserver time can wraparound, thus comparing two timestamps needs to take
+ * this into account.  Here's a little macro to help out.  If no wraparound
+ * has occurred, this is equivalent to
+ *   time1 < time2
+ * Of course, the rest of the ugliness of this macro comes from accounting
+ * for the fact that wraparound can occur.
+ */
+#define XSERVER_TIME_IS_BEFORE(time1, time2)                       \
+  ( (( time1 < time2 ) && ( time2 - time1 < ((guint32)-1)/2 )) ||  \
+    (( time1 > time2 ) && ( time1 - time2 > ((guint32)-1)/2 ))     \
+  )
+
 gboolean      meta_display_open                (const char  *name);
 void          meta_display_close               (MetaDisplay *display);
 MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
@@ -486,8 +506,25 @@ void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);
 gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
 
+/* meta_display_set_input_focus_window is like XSetInputFocus, except
+ * that (a) it can't detect timestamps later than the current time,
+ * since Metacity isn't part of the XServer, and thus gives erroneous
+ * behavior in this circumstance (so don't do it), and (b) it uses
+ * display->last_focus_time and display->expected_focus_window since
+ * we don't have access to the true Xserver ones.
+ */
+void meta_display_set_input_focus_window   (MetaDisplay *display, 
+                                            MetaWindow  *window,
+                                            gboolean     focus_frame,
+                                            Time         timestamp);
+
+/* meta_display_focus_the_no_focus_window is called when the
+ * designated no_focus_window should be focused, but is otherwise the
+ * same as meta_display_set_input_focus_window
+ */
 void meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                              Time         timestamp);
+
 void meta_display_queue_autoraise_callback  (MetaDisplay *display,
                                              MetaWindow  *window);
 void meta_display_remove_autoraise_callback (MetaDisplay *display);

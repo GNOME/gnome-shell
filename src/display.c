@@ -632,6 +632,7 @@ meta_display_open (const char *name)
     timestamp = event.xproperty.time;
   }
 
+  display->last_focus_time = timestamp;
   display->compositor = meta_compositor_new (display);
   
   screens = NULL;
@@ -676,20 +677,28 @@ meta_display_open (const char *name)
     /* kinda bogus because GetInputFocus has no possible errors */
     meta_error_trap_push (display);
 
+    /* FIXME: This is totally broken; see comment 9 of bug 88194 about this */
     focus = None;
     ret_to = RevertToPointerRoot;
     XGetInputFocus (display->xdisplay, &focus, &ret_to);
 
     /* Force a new FocusIn (does this work?) */
-    if (focus == None || focus == PointerRoot)
-      focus = display->no_focus_window;
 
     /* Use the same timestamp that was passed to meta_screen_new(),
      * as it is the most recent timestamp.
      */
-    XSetInputFocus (display->xdisplay, focus, RevertToPointerRoot,
-                    timestamp);
-    
+    if (focus == None || focus == PointerRoot)
+      meta_display_focus_the_no_focus_window (display, timestamp);
+    else
+      {
+        MetaWindow * window;
+        window  = meta_display_lookup_x_window (display, focus);
+        if (window)
+          meta_display_set_input_focus_window (display, window, FALSE, timestamp);
+        else
+          meta_display_focus_the_no_focus_window (display, timestamp);
+      }
+
     meta_error_trap_pop (display, FALSE);
   }
   
@@ -4597,14 +4606,39 @@ meta_display_focus_sentinel_clear (MetaDisplay *display)
 }
 
 void
+meta_display_set_input_focus_window (MetaDisplay *display, 
+                                     MetaWindow  *window,
+                                     gboolean     focus_frame,
+                                     Time         timestamp)
+{
+  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+    return;
+
+  XSetInputFocus (display->xdisplay,
+                  focus_frame ? window->frame->xwindow : window->xwindow,
+                  RevertToPointerRoot,
+                  timestamp);
+  display->expected_focus_window = window;
+  display->last_focus_time = timestamp;
+
+  if (window != display->autoraise_window)
+    meta_display_remove_autoraise_callback (window->display);
+}
+
+void
 meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                         Time         timestamp)
 {
+  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+    return;
+
   XSetInputFocus (display->xdisplay,
                   display->no_focus_window,
                   RevertToPointerRoot,
                   timestamp);
   display->expected_focus_window = NULL;
+  display->last_focus_time = timestamp;
+
   meta_display_remove_autoraise_callback (display);
 }
 

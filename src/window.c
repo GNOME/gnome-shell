@@ -47,14 +47,6 @@
 #include <X11/extensions/shape.h>
 #endif
 
-/* Xserver time can wraparound, thus comparing two timestamps needs to take
- * this into account.  Here's a little macro to help out.
- */
-#define XSERVER_TIME_IS_LATER(time1, time2)                    \
-  ( ((time1 >= time2) && (time1 - time2 < G_MAXULONG / 2)) ||  \
-    ((time1 <  time2) && (time2 - time1 > G_MAXULONG / 2))     \
-  )
-
 typedef enum
 {
   META_IS_CONFIGURE_REQUEST = 1 << 0,
@@ -1633,7 +1625,7 @@ window_takes_focus_on_map (MetaWindow *window)
       compare = window->net_wm_user_time_set  ? window->net_wm_user_time  : compare;
 
       if ((window->display->focus_window == NULL) ||
-          (XSERVER_TIME_IS_LATER (compare, window->display->focus_window->net_wm_user_time)))
+          XSERVER_TIME_IS_BEFORE (window->display->focus_window->net_wm_user_time, compare))
         {
           meta_topic (META_DEBUG_STARTUP,
                       "new window %s with no intervening events\n",
@@ -3284,11 +3276,10 @@ meta_window_focus (MetaWindow  *window,
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing frame of %s\n", window->desc);
-          XSetInputFocus (window->display->xdisplay,
-                          window->frame->xwindow,
-                          RevertToPointerRoot,
-                          timestamp);
-          window->display->expected_focus_window = window;
+          meta_display_set_input_focus_window (window->display,
+                                               window,
+                                               TRUE,
+                                               timestamp);
         }
     }
   else
@@ -3298,13 +3289,12 @@ meta_window_focus (MetaWindow  *window,
       if (window->input)
         {
           meta_topic (META_DEBUG_FOCUS,
-                      "Calling XSetInputFocus() on client window %s since input = true\n",
+                      "Setting input focus on %s since input = true\n",
                       window->desc);
-          XSetInputFocus (window->display->xdisplay,
-                          window->xwindow,
-                          RevertToPointerRoot,
-                          timestamp);
-          window->display->expected_focus_window = window;
+          meta_display_set_input_focus_window (window->display,
+                                               window,
+                                               FALSE,
+                                               timestamp);
         }
       
       if (window->take_focus)
@@ -3326,10 +3316,6 @@ meta_window_focus (MetaWindow  *window,
       window->wm_state_demands_attention = FALSE;
       set_net_wm_state (window);
     }  
-
-  /* Check if there's an autoraise timeout for a different window */
-  if (window != window->display->autoraise_window)
-    meta_display_remove_autoraise_callback (window->display);
 }
 
 static void

@@ -1,5 +1,31 @@
 2004-12-22  Elijah Newren  <newren@gmail.com>
 
+	Wrap XSetInputFocus, making display->expected_focus_window a
+	little more reliable (see #154598)
+
+	* src/display.h: (struct _MetaDisplay): add a large comment about
+	the expected_focus_window, add a last_focus_time field,
+	(XSERVER_TIME_IS_BEFORE): new macro moved from window.c but fixed
+	for 64-bit systems, (meta_display_set_input_focus_window): new
+	function
+
+	* src/display.c (meta_display_open): initialize last_focus_time,
+	add a comment about brokenness of trying to set intial focus
+	window, (meta_display_set_input_focus_window): new function that
+	wraps XSetInputFocus,
+	(meta_display_focus_the_no_focus_window): make this function
+	closer to a wrapping of XSetInputFocus for the no_focus_window.
+
+	* src/window.c (XSERVER_TIME_IS_LATER): remove this macro in favor
+	of the improved one added to display.h
+
+	* src/display.c (meta_display_open):
+	* src/window.c (meta_window_focus):
+	use meta_display_focus_the_no_focus_window and
+	meta_display_set_input_focus instead of XSetInputFocus
+
+2004-12-22  Elijah Newren  <newren@gmail.com>
+
 	* src/core.c (meta_core_user_lower_and_unfocus):
 	* src/display.c (meta_display_get_current_tab):
 	* src/stack.c (get_default_focus_window, meta_stack_list_windows):
