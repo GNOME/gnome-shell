@@ -613,7 +613,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
    * area (bit of a hack here). Assume undecorated windows
    * probably don't intend to be maximized.
    */
-  if (window->has_maximize_func && window->decorated)
+  if (window->has_maximize_func && window->decorated &&
+      !window->fullscreen)
     {
       MetaRectangle workarea;
       MetaRectangle outer;
@@ -5073,7 +5074,7 @@ recalc_window_features (MetaWindow *window)
     }
 
   /* no shading if not decorated */
-  if (!window->decorated)
+  if (!window->decorated || window->border_only)
     window->has_shade_func = FALSE;
 
   window->skip_taskbar = FALSE;

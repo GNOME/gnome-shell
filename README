@@ -16,9 +16,9 @@ REPORTING BUGS AND SUBMITTING PATCHES
 
 Report new bugs on http://bugzilla.gnome.org.
 
-Feel free to send patches too; Metacity is really small and simple, so
-if you find a bug or want to add a feature it should be pretty easy.
-Send me mail, or put the patch in bugzilla.
+Feel free to send patches too; Metacity is relatively small and
+simple, so if you find a bug or want to add a feature it should be
+pretty easy.  Send me mail, or put the patch in bugzilla.
 
 See the HACKING file for some notes on hacking Metacity.
 
@@ -57,7 +57,7 @@ METACITY FEATURES
     Alt-Shift-Tab          backward cycle focus
     Alt-Ctrl-Tab           forward cycle focus among panels
     Alt-Ctrl-Shift-Tab     backward cycle focus among panels
-    Alt-Escape             focus previous window
+    Alt-Escape             cycle window focus without a popup thingy
     Ctrl-Alt-Left Arrow    previous workspace
     Ctrl-Alt-Right Arrow   next workspace
     Ctrl-Alt-D             minimize/unminimize all, to show desktop
@@ -156,55 +156,12 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
 
  - There are probably other ICCCM-compliance issues.
 
- - Window placement is always cascade for now; I want to implement 
-   "first fit, falling back to cascade if no fit." 
-   (Configurable placement algorithms are stupid though, don't 
-   send me patches for any bogus ones. Let's just pick a good one.)
+ - The first-fit algorithm for placement isn't very clever.
 
  - Should Metacity support flipping in right-to-left locales?
    I don't know what window managers look like in a right-to-left
    locale. I assume the window titles should be right-justified;
    should the window controls also be flipped?
-
- - Resize menu item doesn't do anything. It's intended to enter
-   resize-with-the-keyboard mode, similar to Move menu item.
-
- - In GNOME 1.x, if you switch from sawfish to metacity without
-   restarting X, the panel often ends up buried behind the Nautilus
-   desktop window.
-
-   What happens is that the panel detects Sawfish has gone away, and
-   turns on override redirect mode because no GNOME-aware WM is
-   running (i.e. it goes into "ignore the window manager" mode). But
-   the panel doesn't notice that Metacity has appeared and is
-   (partially) GNOME-compliant. So Metacity doesn't see the override
-   redirect panel, and leaves it behind the Nautilus desktop. I'm not
-   sure whether Metacity or the panel is to blame for this.
-
-   (To debug - use "xwininfo" on the panel, if override redirect is
-    "Yes" then Metacity won't have any awareness of a window and can't
-    properly stack it above the desktop. If override redirect is "No"
-    then Metacity can see the panel and handle it properly. Look at
-    xstuff.c:xstuff_is_compliant_wm() in the panel to get started on
-    how the panel deals with this.)
-
- - In GNOME 1.x, If you have "put panel below other windows" turned on
-   in panel Global Preferences, Miscellaneous tab, you need to change
-   this to "Put panel on top of other windows." That's because
-   Metacity uses semantic categories, not the legacy layer system in
-   the GNOME spec. It treats things in the legacy "dock" layer as
-   semantic type dock, but if you have the panel set to be in another
-   layer, Metacity will think it's a normal window.
-
-   You can diagnose this problem because Metacity will put panels in 
-   the wrong place, and Alt+rightclick will let you perform operations
-   like minimize/maximize, and Alt+leftclick will let you move the panel.
-   If Metacity has detected that the panel is a panel, then none of 
-   this will be enabled.
-
-   I put a patch in the CVS version of the panel to fix this by 
-   setting the new non-legacy type hint, but a panel with that 
-   patch hasn't been released yet.
 
 FAQ
 ===
@@ -229,8 +186,7 @@ A: If it makes sense to turn on unconditionally,
    so on. But I am too used to them to turn them off.
    Or alternatively iconification/tasklist is crack, and workspaces/pager
    are good. But having both is certainly a bit wrong.
-   Sloppy focus is probably crackrock too. Oh, and my Alt-1 thru Alt-6
-   keybindings are definitely on crack.
+   Sloppy focus is probably crackrock too.
 
    But don't think unlimited crack is OK just because I slipped up a
    little. No slippery slope here.   
@@ -317,7 +273,6 @@ A: I could conceivably be convinced to use viewports _instead_ of
 Q: Did you spend a lot of time on this?
 
 A: Originally the answer was no. Sadly the answer is now yes.
-   Still, it's only 12,000 lines of code.
 
 Q: How can you claim that you are anti-crack, while still 
    writing a window manager?

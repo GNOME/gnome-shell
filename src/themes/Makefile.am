@@ -3,7 +3,8 @@ THEMES=			\
 	Bright		\
 	Crux		\
 	Esco		\
-	Gorilla
+	Gorilla		\
+	Metabox
 
 THEME_DIR=$(datadir)/themes
 THEME_SUBDIR=metacity-1
