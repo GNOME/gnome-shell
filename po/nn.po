@@ -3,20 +3,21 @@
 # translation of nn.po to Norwegian (nynorsk)
 # This file is distributed under the same license as the Metacity package.
 # Copyright (C) 2003 Åsmund Skjæveland.
-# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003.
+# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-07 11:13-0500\n"
-"PO-Revision-Date: 2003-12-28 20:04+0100\n"
+"POT-Creation-Date: 2004-07-12 21:29+0200\n"
+"PO-Revision-Date: 2004-07-12 21:32+0200\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3.1\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -52,8 +53,7 @@ msgstr "Feil under lesing frå dialogvisingsprosess: %s\n"
 
 #: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Kunne ikkje starta metacity-dialogen som spør om å drepa ein applikasjon: %"
 "s\n"
@@ -64,7 +64,7 @@ msgid "Failed to get hostname: %s\n"
 msgstr "Klarte ikkje å finna vertsnamn: %s\n"
 
 # TRN: "X Window System"?
-#: src/display.c:297
+#: src/display.c:298
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikkje opna X Window System-display «%s»\n"
@@ -116,8 +116,7 @@ msgstr ""
 #: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
-"Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
+msgstr "Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
 
 #: src/keybindings.c:2591
 #, c-format
@@ -155,8 +154,7 @@ msgstr "Klarte ikkje å søka gjennom draktmappa: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Kunne ikkje finna ei drakt! Kontroller at %s finst og inneheld dei vanlege "
 "draktene."
@@ -228,21 +226,21 @@ msgstr "Flytt eitt arbeidsområde _opp"
 msgid "Move to Workspace _Down"
 msgstr "Flytt eitt arbeidsområde ne_d"
 
-#: src/menu.c:160 src/prefs.c:1854
+#: src/menu.c:162 src/prefs.c:1868
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: src/menu.c:169
+#: src/menu.c:171
 msgid "Workspace 1_0"
 msgstr "Arbeidsområde 1_0"
 
-#: src/menu.c:171
+#: src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: src/menu.c:366
+#: src/menu.c:368
 msgid "Move to Another _Workspace"
 msgstr "Flytt til eit anna _arbeidsområde"
 
@@ -342,8 +340,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "Vindauget «%s» svarar ikkje."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Dersom du tvingar denne applikasjonen til å avslutta, vil alle ulagra "
 "endringar gå tapt."
@@ -368,7 +365,7 @@ msgstr ""
 "Desse vindauga støttar ikkje lagring av gjeldande oppsett, og må startast "
 "manuelt neste gong du loggar inn."
 
-#: src/metacity-dialog.c:288
+#: src/metacity-dialog.c:290
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -450,8 +447,8 @@ msgstr ""
 "eller «&lt;Super&gt;»."
 
 #: src/metacity.schemas.in.h:9
-msgid "Close a window"
-msgstr "Lukk eit vindauge"
+msgid "Close window"
+msgstr "Lukk vindauget"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -475,8 +472,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Slå av uønskte funksjonar som krevst av gamle eller øydelagte applikasjonar"
+msgstr "Slå av uønskte funksjonar som krevst av gamle eller øydelagte applikasjonar"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -551,8 +547,8 @@ msgid "Lower window below other windows"
 msgstr "Senk vindauget under andre vindauge"
 
 #: src/metacity.schemas.in.h:23
-msgid "Maximize a window"
-msgstr "Maksimer eit vindauge"
+msgid "Maximize window"
+msgstr "Maksimer vindauget"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -563,8 +559,8 @@ msgid "Maximize window vertically"
 msgstr "Maksimer vindauget loddrett"
 
 #: src/metacity.schemas.in.h:26
-msgid "Minimize a window"
-msgstr "Minimer eit vindauge"
+msgid "Minimize window"
+msgstr "Minimer vindauget"
 
 # TRN: Kva går den andre "modified" på her? Klikket eller handlinga det fører til?
 #: src/metacity.schemas.in.h:27
@@ -572,40 +568,40 @@ msgid "Modifier to use for modified window click actions"
 msgstr "Modifikatortast som skal brukast ved modifiserte klikk i vindauget"
 
 #: src/metacity.schemas.in.h:28
-msgid "Move a window"
-msgstr "Flytt eit vindauge"
-
-#: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Flytt bakover mellom panela og skrivebordet med ein gong"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Flytt bakover mellom panela og skrivebordet med dialog på skjermen"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
 msgstr "Flytt bakover mellom vindauge med ein gong"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Flytt mellom panela og skrivebordet med ein gong"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Flytt mellom panela og skrivebordet med dialog på skjermen"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Flytt mellom vindauge med ein gong"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Flytt mellom vindauge med dialog på skjermen"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "Flytt fokus baklengs mellom vindauge med dialog på skjermen"
+
+#: src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "Flytt vindauget"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -698,8 +694,8 @@ msgid "Raise window above other windows"
 msgstr "Hev vindauge over andre vindauge"
 
 #: src/metacity.schemas.in.h:58
-msgid "Resize a window"
-msgstr "Endra storleik på eit windauge"
+msgid "Resize window"
+msgstr "Endra storleik på vindauget"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -710,8 +706,8 @@ msgid "Show the panel menu"
 msgstr "Vis panelmenyen"
 
 #: src/metacity.schemas.in.h:61
-msgid "Show the panel run dialog"
-msgstr "Vis køyr-dialogen til panelet"
+msgid "Show the panel run application dialog"
+msgstr "Vis «køyr»-dialogen til panelet"
 
 # TRN: Workaround?
 #: src/metacity.schemas.in.h:62
@@ -1669,14 +1665,14 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:140
 msgid ""
-"The keybinding which display's the panel's \"Run Program\" dialog box. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
-"parser is fairly liberal and allows lower or upper case, and also "
+"The keybinding which display's the panel's \"Run Application\" dialog box. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Snøggtasten som viser panelet sin «Køyr applikasjon»-dialogboks.Formatet er "
+"Snøggtasten som viser panelet sin «Køyr program»-dialogboks.Formatet er "
 "på forma «&lt;Control&gt;a» og «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er "
 "ganske romsleg og tillet små og store bokstavar, og forkortingar slik som "
 "«&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle "
@@ -1740,8 +1736,7 @@ msgstr "Skjermbiletekommandoen"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
-"Drakta avgjer korleis vindaugekantar, tittellinjer og så vidare ser ut."
+msgstr "Drakta avgjer korleis vindaugekantar, tittellinjer og så vidare ser ut."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1892,8 +1887,8 @@ msgstr ""
 "omgjevnader, eller når den høyrlege bjølla er slått av."
 
 #: src/metacity.schemas.in.h:162
-msgid "Unmaximize a window"
-msgstr "Gjenopprett eit vindauge"
+msgid "Unmaximize window"
+msgstr "De-maksimer vindauget"
 
 #: src/metacity.schemas.in.h:163
 msgid "Use standard system font in window titles"
@@ -1915,12 +1910,12 @@ msgstr "Skrifttype for vindaugetitlar"
 #: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
 #: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
 #: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:736 src/prefs.c:751
+#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til ein ugyldig type\n"
 
-#: src/prefs.c:796
+#: src/prefs.c:810
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1929,17 +1924,17 @@ msgstr ""
 "«%s» funne i oppsettdatabasen er ikkje ein gyldig verdi for modifikator for "
 "musknapp\n"
 
-#: src/prefs.c:820 src/prefs.c:1230
+#: src/prefs.c:834 src/prefs.c:1244
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til ein ugyldig verdi\n"
 
-#: src/prefs.c:947
+#: src/prefs.c:961
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikkje tolka fontskildringa «%s» frå GConf-nøkkelen %s\n"
 
-#: src/prefs.c:1132
+#: src/prefs.c:1146
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1948,7 +1943,7 @@ msgstr ""
 "%d lagra i GConf-nøkkelen %s er ikkje eit rimeleg tal på arbeidsområder, "
 "noverande maksimum er %d\n"
 
-#: src/prefs.c:1192
+#: src/prefs.c:1206
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1956,17 +1951,17 @@ msgstr ""
 "Triks for å unngå problem med defekte applikasjonar er slått av. Somme "
 "applikasjonar vil kanskje ikkje oppføra seg som venta.\n"
 
-#: src/prefs.c:1257
+#: src/prefs.c:1271
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagra i GConf-nøkkel %s er utanfor området 0 til %d\n"
 
-#: src/prefs.c:1375
+#: src/prefs.c:1389
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ein feil oppstod: Kan ikkje setja talet på arbeidsområder til %d: %s\n"
 
-#: src/prefs.c:1618
+#: src/prefs.c:1632
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1975,7 +1970,7 @@ msgstr ""
 "«%s» funnen i oppsettdatabasen er ikkje ein gyldig verdi for snøggtasten «%"
 "s»\n"
 
-#: src/prefs.c:1935
+#: src/prefs.c:1949
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ein feil oppstod: Kunne ikkje gje arbeidsområde %d namnet «%s»: %s\n"
@@ -2002,10 +1997,8 @@ msgstr ""
 
 #: src/screen.c:439
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Kunne ikkje henta utvalet frå vindaugehandsamaren på skjerm %d display «%s»\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Kunne ikkje henta utvalet frå vindaugehandsamaren på skjerm %d display «%s»\n"
 
 #: src/screen.c:497
 #, c-format
@@ -2017,80 +2010,71 @@ msgstr "Skjerm %d på display «%s» har allereie ein vindaugehandsamar\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikkje frigjera skjerm %d på display «%s»\n"
 
-#: src/session.c:274
-#, c-format
-msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
-msgstr ""
-"Kunne ikkje kopla til økthandsamaren. Vindaugeposisjonar vil ikkje verta "
-"lagra: %s\n"
-
-#: src/session.c:881 src/session.c:888
+#: src/session.c:883 src/session.c:890
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikkje laga katalogen «%s»: %s\n"
 
 # TRN: Ikkje bra, men det får vel duga.
-#: src/session.c:898
+#: src/session.c:900
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikkje opna øktfila «%s» for skriving: %s\n"
 
-#: src/session.c:1057
+#: src/session.c:1059
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Kunne ikkje skriva til øktfila «%s»: %s\n"
 
-#: src/session.c:1062
+#: src/session.c:1064
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av øktfil «%s»: %s\n"
 
-#: src/session.c:1137
+#: src/session.c:1139
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagra øktfil %s: %s\n"
 
-#: src/session.c:1172
+#: src/session.c:1174
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Kunne ikkje tolka lagra øktfil: %s\n"
 
-#: src/session.c:1221
+#: src/session.c:1223
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> attributt sett, men me har allereie funne økt-ID"
 
-#: src/session.c:1234
+#: src/session.c:1236
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Ukjend attributt %s på <metacity_session>-element"
 
-#: src/session.c:1251
+#: src/session.c:1253
 msgid "nested <window> tag"
 msgstr "<window> tag med fleire nivå"
 
-#: src/session.c:1309 src/session.c:1341
+#: src/session.c:1311 src/session.c:1343
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjend attributt %s på <window>-element"
 
-#: src/session.c:1413
+#: src/session.c:1415
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Ukjend attributt %s på <maximized>-element"
 
-#: src/session.c:1473
+#: src/session.c:1475
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukjend attributt %s på <geometry>-element"
 
-#: src/session.c:1493
+#: src/session.c:1495
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
-#: src/session.c:1935
+#: src/session.c:1937
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2185,8 +2169,7 @@ msgstr "<%s> geometri «%s» er ikkje definert"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> må spesifisere anten ein geometri eller eit opphav som har geometri"
+msgstr "<%s> må spesifisere anten ein geometri eller eit opphav som har geometri"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2242,10 +2225,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Ingen «value»-attributt på elementet <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-"Kan ikkje oppgje både button_width/button_height og forholdstal for knappar"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Kan ikkje oppgje både button_width/button_height og forholdstal for knappar"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2505,8 +2486,7 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"Stilen er alt spesifisert for tilstand %s, storleiksendring %s, fokus %s"
+msgstr "Stilen er alt spesifisert for tilstand %s, storleiksendring %s, fokus %s"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2545,10 +2525,8 @@ msgstr "Det ytste elementet i drakta må vera <metacity_theme>, ikkje <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Elementet <%s> er ikkje tillate inni eit name/author/date/description-element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Elementet <%s> er ikkje tillate inni eit name/author/date/description-element"
 
 #: src/theme-parser.c:3684
 #, c-format
@@ -2557,10 +2535,8 @@ msgstr "Elementet <%s> er ikkje tillate inne i eit <constant>-element"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"Elementet <%s> er ikkje tillate inni eit distance/border/aspect_ratio-element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Elementet <%s> er ikkje tillate inni eit distance/border/aspect_ratio-element"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2814,8 +2790,7 @@ msgstr "y-verdien var %d, venta %d"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d koordinatuttrykk tolka på %g sekund (%g sekund per uttrykk i snitt)\n"
+msgstr "%d koordinatuttrykk tolka på %g sekund (%g sekund per uttrykk i snitt)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2905,10 +2880,8 @@ msgstr "Alfaverdien «%s» i blanda farge er ikkje mellom 0.0 og 1.0."
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Skuggeformatet er «shade/base_color/factor», «%s» passar ikkje inn i formatet"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Skuggeformatet er «shade/base_color/factor», «%s» passar ikkje inn i formatet"
 
 #: src/theme.c:1122
 #, c-format
@@ -2960,14 +2933,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrykket fører til deling på null"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrykket prøver å bruka mod-operatoren på eit flyttal"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrykket har ein operator «%s» der ein operand var venta"
 
 #: src/theme.c:1845
@@ -3010,8 +2981,7 @@ msgstr "Koordinatuttrykket hadde ein opneparentes men ingen sluttparantes"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"Koordinatuttrykket ser ikkje ut til å ha nokon operatorar eller operandar"
+msgstr "Koordinatuttrykket ser ikkje ut til å ha nokon operatorar eller operandar"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
@@ -3029,10 +2999,8 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Manglande <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Manglande <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
@@ -3065,10 +3033,8 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Brukardefinerte konstantar må byrja med stor bokstav; «%s» gjer det ikkje"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Brukardefinerte konstantar må byrja med stor bokstav; «%s» gjer det ikkje"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
@@ -3140,7 +3106,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte ein ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4743
+#: src/window.c:4881
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3156,7 +3122,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5405
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3188,14 +3154,8 @@ msgstr "Eigenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8 for oppføring %d i "
 "lista\n"
 
-#~ msgid "Only on %s"
-#~ msgstr "Berre på %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Flytt til %s"
