@@ -26,6 +26,7 @@
 
 #define OUTSIDE_SELECT_RECT 2
 #define INSIDE_SELECT_RECT 2
+#define OUTLINE_WIDTH 3
 
 typedef struct _TabEntry TabEntry;
 
@@ -44,13 +45,52 @@ struct _MetaTabPopup
   GtkWidget *label;
   GList *current;
   GList *entries;
-  GtkWidget *current_selected_widget;
+  TabEntry *current_selected_entry;
   GtkWidget *outline_window;
 };
 
 static GtkWidget* selectable_image_new (GdkPixbuf *pixbuf);
 static void       select_image         (GtkWidget *widget);
 static void       unselect_image       (GtkWidget *widget);
+
+static gboolean
+outline_window_expose (GtkWidget      *widget,
+                       GdkEventExpose *event,
+                       gpointer        data)
+{
+  MetaTabPopup *popup;
+  int w, h;
+  int icon_x, icon_y;
+  
+  popup = data;
+
+  if (popup->current_selected_entry == NULL)
+    return FALSE;
+  
+  gdk_window_get_size (widget->window, &w, &h);
+
+  gdk_draw_rectangle (widget->window,
+                      widget->style->white_gc,
+                      TRUE,
+                      OUTLINE_WIDTH, OUTLINE_WIDTH,
+                      w - OUTLINE_WIDTH * 2,
+                      h - OUTLINE_WIDTH * 2);
+
+  icon_x = (w - gdk_pixbuf_get_width (popup->current_selected_entry->icon)) / 2;
+  icon_y = (h - gdk_pixbuf_get_height (popup->current_selected_entry->icon)) / 2;
+
+  gdk_pixbuf_render_to_drawable_alpha (popup->current_selected_entry->icon,
+                                       widget->window,
+                                       0, 0, icon_x, icon_y,
+                                       gdk_pixbuf_get_width (popup->current_selected_entry->icon),
+                                       gdk_pixbuf_get_height (popup->current_selected_entry->icon),
+                                       GDK_PIXBUF_ALPHA_FULL,
+                                       128,
+                                       GDK_RGB_DITHER_NORMAL,
+                                       0, 0);
+
+  return FALSE;
+}
 
 MetaTabPopup*
 meta_ui_tab_popup_new (const MetaTabEntry *entries)
@@ -70,6 +110,8 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_widget_set_app_paintable (popup->outline_window, TRUE);
   gtk_widget_realize (popup->outline_window);
+  g_signal_connect (G_OBJECT (popup->outline_window), "expose_event",
+                    G_CALLBACK (outline_window_expose), popup);
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_position (GTK_WINDOW (popup->window),
@@ -79,7 +121,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
                             TRUE);
   popup->current = NULL;
   popup->entries = NULL;
-  popup->current_selected_widget = NULL;
+  popup->current_selected_entry = NULL;
   
   tab_entries = NULL;
   i = 0;
@@ -233,16 +275,14 @@ display_entry (MetaTabPopup *popup,
   GdkRectangle inner;
   GdkRectangle rect;
   
-  if (popup->current_selected_widget)
-    unselect_image (popup->current_selected_widget);
+  if (popup->current_selected_entry)
+    unselect_image (popup->current_selected_entry->widget);
   
   gtk_label_set_text (GTK_LABEL (popup->label), te->title);
   select_image (te->widget);
-
+  
   /* Do stuff behind gtk's back */
   gdk_window_hide (popup->outline_window->window);
-
-#define OUTLINE_WIDTH 3
 
   rect = te->rect;
   rect.x = 0;
@@ -265,6 +305,7 @@ display_entry (MetaTabPopup *popup,
       gdk_window_set_background (popup->outline_window->window,
                                  &popup->outline_window->style->black);
       
+#if 0
       region = gdk_region_rectangle (&rect);
       inner_region = gdk_region_rectangle (&inner);
       gdk_region_subtract (region, inner_region);
@@ -273,14 +314,16 @@ display_entry (MetaTabPopup *popup,
       gdk_window_shape_combine_region (popup->outline_window->window,
                                        region,
                                        0, 0);
-
+#endif
+      
       /* This should piss off gtk a bit, but we don't want to raise
        * above the tab popup
        */
       gdk_window_show_unraised (popup->outline_window->window);
     }
 
-  popup->current_selected_widget = te->widget;
+  /* Must be before we handle an expose for the outline window */
+  popup->current_selected_entry = te;
 }
 
 void

@@ -1,5 +1,10 @@
 2001-08-29  Havoc Pennington  <hp@pobox.com>
 
+	* src/tabpopup.c: experiment with window-cover-with-icon
+	instead of just the outline; can't decide.
+
+2001-08-29  Havoc Pennington  <hp@pobox.com>
+
 	* src/tabpopup.c: add crackrock window-outlining feature
 
 	* src/session.c (window_type_to_string): handle fullscreen
