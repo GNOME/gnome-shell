@@ -1,3 +1,17 @@
+2005-02-12  Elijah Newren  <newren@gmail.com>
+
+	Don't unconditionally place splashscreens (and other
+	not-to-befocused windows) below the focus window.  Fixes #167042.
+
+	* src/window.c: (intervening_user_event_occurred): new function
+	taken from the timestamp comparison portion of the old
+	window_takes_focus_on_map function, (window_state_on_map): new
+	function with remainder of old window_takes_focus_on_map function
+	that determines both whether the window will take focus and
+	whether it should be placed on top, (meta_window_show): use
+	place_on_top_on_map to determine window stacking instead of trying
+	to infer it from takes_focus_on_map
+
 2005-02-11  Elijah Newren  <newren@gmail.com>
 
 	Avoid new windows being obscured by the focus window (and thus

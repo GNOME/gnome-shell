@@ -1542,104 +1542,134 @@ meta_window_queue_calc_showing (MetaWindow  *window)
 }
 
 static gboolean
-window_takes_focus_on_map (MetaWindow *window)
+intervening_user_event_occurred (MetaWindow *window)
 {
   Time compare;
+  MetaWindow *focus_window;
+
+  focus_window = window->display->focus_window;
+
+  meta_topic (META_DEBUG_STARTUP,
+              "COMPARISON:\n"
+              "  net_wm_user_time_set : %d\n"
+              "  net_wm_user_time     : %lu\n"
+              "  initial_timestamp_set: %d\n"
+              "  initial_timestamp    : %lu\n",
+              window->net_wm_user_time_set,
+              window->net_wm_user_time,
+              window->initial_timestamp_set,
+              window->initial_timestamp);
+  if (focus_window != NULL)
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "COMPARISON (continued):\n"
+                  "  focus_window         : %s\n"
+                  "  fw->net_wm_user_time : %lu\n",
+                  focus_window->desc,
+                  focus_window->net_wm_user_time);
+    }
+
+  /* We expect the most common case for not focusing a new window
+   * to be when a hint to not focus it has been set.  Since we can
+   * deal with that case rapidly, we use special case it--this is
+   * merely a preliminary optimization.  :)
+   */
+  if ( ((window->net_wm_user_time_set == TRUE) &&
+       (window->net_wm_user_time == 0))
+      ||
+       ((window->initial_timestamp_set == TRUE) &&
+       (window->initial_timestamp == 0)))
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "window %s explicitly requested no focus\n",
+                  window->desc);
+      return TRUE;
+    }
+
+  if (!(window->net_wm_user_time_set) && !(window->initial_timestamp_set))
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "no information about window %s found\n",
+                  window->desc);
+      return FALSE;
+    }
+
+  /* To determine the "launch" time of an application,
+   * startup-notification can set the TIMESTAMP and the
+   * application (usually via its toolkit such as gtk or qt) can
+   * set the _NET_WM_USER_TIME.  If both are set, then it means
+   * the user has interacted with the application since it
+   * launched, and _NET_WM_USER_TIME is the value that should be
+   * used in the comparison.
+   */
+  compare = window->initial_timestamp_set ? window->initial_timestamp : 0;
+  compare = window->net_wm_user_time_set  ? window->net_wm_user_time  : compare;
+
+  if ((focus_window != NULL) &&
+      XSERVER_TIME_IS_BEFORE (compare, focus_window->net_wm_user_time))
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "window %s focus prevented by other activity; %lu < %lu\n",
+                  window->desc, compare, 
+                  focus_window->net_wm_user_time);
+      return TRUE;
+    }
+  else
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "new window %s with no intervening events\n",
+                  window->desc);
+      return FALSE;
+    }
+}
+
+/* This function determines what state the window should have assuming that it
+ * and the focus_window have no relation
+ */
+static void
+window_state_on_map (MetaWindow *window, 
+                     gboolean *takes_focus,
+                     gboolean *places_on_top)
+{
+  gboolean intervening_events;
+
+  intervening_events = intervening_user_event_occurred (window);
+
+  *takes_focus = !intervening_events;
+  *places_on_top = *takes_focus;
 
   /* don't initially focus windows that are intended to not accept
    * focus
    */
   if (!(window->input || window->take_focus))
-    return FALSE;
+    {
+      *takes_focus = FALSE;
+      return;
+    }
 
   switch (window->type)
     {
+    case META_WINDOW_UTILITY:
+    case META_WINDOW_TOOLBAR:
+      *takes_focus = FALSE;
+      *places_on_top = FALSE;
+      break;
     case META_WINDOW_DOCK:
     case META_WINDOW_DESKTOP:
-    case META_WINDOW_UTILITY:
     case META_WINDOW_SPLASHSCREEN:
-    case META_WINDOW_TOOLBAR:
     case META_WINDOW_MENU:
-      /* don't focus these */
+      /* don't focus any of these; places_on_top may be irrelevant for some of
+       * these (e.g. dock)--but you never know--the focus window might also be
+       * of the same type in some weird situation...
+       */
+      *takes_focus = FALSE;
       break;
     case META_WINDOW_NORMAL:
     case META_WINDOW_DIALOG:
     case META_WINDOW_MODAL_DIALOG:
-      meta_topic (META_DEBUG_STARTUP,
-                  "COMPARISON:\n"
-                  "  net_wm_user_time_set : %d\n"
-                  "  net_wm_user_time     : %lu\n"
-                  "  initial_timestamp_set: %d\n"
-                  "  initial_timestamp    : %lu\n",
-                  window->net_wm_user_time_set,
-                  window->net_wm_user_time,
-                  window->initial_timestamp_set,
-                  window->initial_timestamp);
-      if (window->display->focus_window != NULL) {
-        meta_topic (META_DEBUG_STARTUP,
-                    "COMPARISON (continued):\n"
-                    "  focus_window         : %s\n"
-                    "  fw->net_wm_user_time : %lu\n",
-                    window->display->focus_window->desc,
-                    window->display->focus_window->net_wm_user_time);
-      }
-
-      /* We expect the most common case for not focusing a new window
-       * to be when a hint to not focus it has been set.  Since we can
-       * deal with that case rapidly, we use special case it--this is
-       * merely a preliminary optimization.  :)
-       */
-      if ( ((window->net_wm_user_time_set == TRUE) &&
-	   (window->net_wm_user_time == 0))
-          ||
-           ((window->initial_timestamp_set == TRUE) &&
-	   (window->initial_timestamp == 0)))
-        {
-          meta_topic (META_DEBUG_STARTUP,
-                      "window %s explicitly requested no focus\n",
-                      window->desc);
-          return FALSE;
-        }
-
-      if (!(window->net_wm_user_time_set) && !(window->initial_timestamp_set))
-        {
-          meta_topic (META_DEBUG_STARTUP,
-                      "no information about window %s found\n",
-                      window->desc);
-          return TRUE;
-        }
-
-      /* To determine the "launch" time of an application,
-       * startup-notification can set the TIMESTAMP and the
-       * application (usually via its toolkit such as gtk or qt) can
-       * set the _NET_WM_USER_TIME.  If both are set, then it means
-       * the user has interacted with the application since it
-       * launched, and _NET_WM_USER_TIME is the value that should be
-       * used in the comparison.
-       */
-      compare = window->initial_timestamp_set ? window->initial_timestamp : 0;
-      compare = window->net_wm_user_time_set  ? window->net_wm_user_time  : compare;
-
-      if ((window->display->focus_window != NULL) &&
-          XSERVER_TIME_IS_BEFORE (compare, window->display->focus_window->net_wm_user_time))
-        {
-          meta_topic (META_DEBUG_STARTUP,
-                      "window %s focus prevented by other activity; %lu is before %lu\n",
-                      window->desc, compare, window->display->focus_window->net_wm_user_time);
-          return FALSE;
-        }
-      else
-        {
-          meta_topic (META_DEBUG_STARTUP,
-                      "new window %s with no intervening events\n",
-                      window->desc);
-          return TRUE;
-        }
-
+      /* The default is correct for these */
       break;
     }
-
-  return FALSE;
 }
 
 void
@@ -1648,6 +1678,7 @@ meta_window_show (MetaWindow *window)
   gboolean did_placement;
   gboolean did_show;
   gboolean takes_focus_on_map;
+  gboolean place_on_top_on_map;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
@@ -1655,11 +1686,18 @@ meta_window_show (MetaWindow *window)
 
   did_show = FALSE;
   did_placement = FALSE;
-  takes_focus_on_map = window_takes_focus_on_map (window);
+  window_state_on_map (window, &takes_focus_on_map, &place_on_top_on_map);
 
-  if ( (!takes_focus_on_map) && (window->display->focus_window != NULL) )
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Window %s %s focus on map, and %s place on top on map.\n",
+              window->desc,
+              takes_focus_on_map ? "does" : "does not",
+              place_on_top_on_map ? "does" : "does not");
+
+  if ( !takes_focus_on_map &&
+       window->display->focus_window != NULL &&
+       !place_on_top_on_map )
     {
-
       if (meta_window_is_ancestor_of_transient (window->display->focus_window,
                                                 window))
         {
@@ -1778,7 +1816,11 @@ meta_window_show (MetaWindow *window)
         }
       else
         {
-          window->wm_state_demands_attention = TRUE;
+          /* Only set the demands attention hint if the window doesn't
+           * take focus on map and it isn't placed on top on map.
+           */
+          if (!place_on_top_on_map)
+            window->wm_state_demands_attention = TRUE;
 
           /* Prevent EnterNotify events in sloppy/mouse focus from
            * erroneously focusing the window that had been denied
