@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-06-02 23:01-0400\n"
-"PO-Revision-Date: 2002-05-31 01:19+0200\n"
+"POT-Creation-Date: 2002-06-03 21:53+0200\n"
+"PO-Revision-Date: 2002-06-03 22:04+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -1589,9 +1589,9 @@ msgid "No \"filename\" attribute on element <%s>"
 msgstr "Ingen «filname»-attributt på element <%s>"
 
 #: src/theme-parser.c:2224 src/theme-parser.c:2671
-#, fuzzy, c-format
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Forsto ikke tilstand «%s» for element <%s>"
+msgstr "Forsto ikke fyll-type «%s» for <%s>-element"
 
 #: src/theme-parser.c:2306 src/theme-parser.c:2439 src/theme-parser.c:2544
 #, c-format
@@ -1877,6 +1877,14 @@ msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8\n"
 msgid "Metacity"
 msgstr "Metacity"
 
+#: src/tools/metacity-properties.desktop.in.h:1
+msgid "Change how focus is moved from one window to another"
+msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
+
+#: src/tools/metacity-properties.desktop.in.h:2
+msgid "Window Focus"
+msgstr "Vindusfokus"
+
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
 msgstr "Kli_kk for å gi fokus"
@@ -1896,9 +1904,3 @@ msgstr "_Pek for å gi fokus"
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
 msgstr "Hev vindue_r når de får fokus"
-
-#~ msgid "Change how focus is moved from one window to another"
-#~ msgstr "Endre hvordan fokus flyttes fra et vindu til et annet"
-
-#~ msgid "Window Focus"
-#~ msgstr "Vindusfokus"
