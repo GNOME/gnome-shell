@@ -26,7 +26,7 @@
 
 #define OUTSIDE_SELECT_RECT 2
 #define INSIDE_SELECT_RECT 2
-#define OUTLINE_WIDTH 3
+#define OUTLINE_WIDTH 5
 
 typedef struct _TabEntry TabEntry;
 
@@ -110,8 +110,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_widget_set_app_paintable (popup->outline_window, TRUE);
   gtk_widget_realize (popup->outline_window);
+#if 0
   g_signal_connect (G_OBJECT (popup->outline_window), "expose_event",
                     G_CALLBACK (outline_window_expose), popup);
+#endif
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_window_set_position (GTK_WINDOW (popup->window),
@@ -305,7 +307,6 @@ display_entry (MetaTabPopup *popup,
       gdk_window_set_background (popup->outline_window->window,
                                  &popup->outline_window->style->black);
       
-#if 0
       region = gdk_region_rectangle (&rect);
       inner_region = gdk_region_rectangle (&inner);
       gdk_region_subtract (region, inner_region);
@@ -314,7 +315,6 @@ display_entry (MetaTabPopup *popup,
       gdk_window_shape_combine_region (popup->outline_window->window,
                                        region,
                                        0, 0);
-#endif
       
       /* This should piss off gtk a bit, but we don't want to raise
        * above the tab popup
