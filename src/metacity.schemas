@@ -23,6 +23,37 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/auto_raise</key>
+      <applyto>/apps/metacity/general/auto_raise</applyto>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+         <short>Automatically raises the focused window</short>
+         <long>
+          If true, and the focus mode is either "sloppy" or "mouse"
+	  then the focused window will be automatically raised after a 
+	  delay (the delay is specified by the auto_raise_delay key).
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/general/auto_raise_delay</key>
+      <applyto>/apps/metacity/general/auto_raise_delay</applyto>
+      <owner>metacity</owner>
+      <type>int</type>
+      <default>500</default>
+      <locale name="C">
+         <short>Delay in milliseconds for the auto raise option</short>
+         <long>
+	 The time delay before raising a window if auto_raise is 
+	set to true. The delay is given in thousandths of a second.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/theme</key>
       <applyto>/apps/metacity/general/theme</applyto>
       <owner>metacity</owner>

@@ -30,6 +30,8 @@
  * notify listener and of course in the .schemas file
  */
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
+#define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
+#define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
 #define KEY_USE_DESKTOP_FONT  "/apps/metacity/general/titlebar_uses_desktop_font"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
@@ -53,6 +55,8 @@ static char* current_theme = NULL;
 static int num_workspaces = 4;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
+static gboolean auto_raise = FALSE;
+static gboolean auto_raise_delay = 500;
 
 static gboolean update_use_desktop_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
@@ -62,6 +66,8 @@ static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
+static gboolean update_auto_raise          (gboolean   value);
+static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
@@ -230,6 +236,17 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_focus_mode (str_val);
   g_free (str_val);  
+
+  bool_val = gconf_client_get_bool (default_client, KEY_AUTO_RAISE,
+				    &err);
+  cleanup_error (&err);
+  update_auto_raise (bool_val);
+
+  int_val = gconf_client_get_int (default_client, KEY_AUTO_RAISE_DELAY,
+				  &err);
+  cleanup_error (&err);
+  update_auto_raise_delay (int_val);
+  
 
   str_val = gconf_client_get_string (default_client, KEY_THEME,
                                      &err);
@@ -481,6 +498,38 @@ change_notify (GConfClient    *client,
       if (update_screen_binding (key, str))
         queue_changed (META_PREF_SCREEN_KEYBINDINGS);
     }
+  else if (strcmp (key, KEY_AUTO_RAISE) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_AUTO_RAISE);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : auto_raise;
+
+      if (update_auto_raise (b))
+        queue_changed (META_PREF_AUTO_RAISE);
+    }
+  else if (strcmp (key, KEY_AUTO_RAISE_DELAY) == 0)
+    {
+      int d;
+
+      if (value && value->type != GCONF_VALUE_INT)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_AUTO_RAISE_DELAY);
+          goto out;
+        }        
+      
+      d = value ? gconf_value_get_int (value) : 0;
+
+      if (update_auto_raise_delay (d))
+        queue_changed (META_PREF_AUTO_RAISE_DELAY);
+    }
   else
     {
       meta_verbose ("Key %s doesn't mean anything to Metacity\n",
@@ -702,6 +751,36 @@ meta_prefs_get_disable_workarounds (void)
   return disable_workarounds;
 }
 
+static gboolean
+update_auto_raise (gboolean value)
+{
+  gboolean old = auto_raise;
+
+  auto_raise = value;
+
+  return old != auto_raise;
+}
+
+#define MAX_REASONABLE_AUTO_RAISE_DELAY 10000
+  
+static gboolean
+update_auto_raise_delay (int value)
+{
+  int old = auto_raise_delay;
+
+  if (value < 0 || value > MAX_REASONABLE_AUTO_RAISE_DELAY)
+    {
+      meta_warning (_("%d stored in GConf key %s is out of range 0 to %d\n"),
+                    value, KEY_AUTO_RAISE_DELAY, 
+		    MAX_REASONABLE_AUTO_RAISE_DELAY);
+      value = 0;
+    }
+  
+  auto_raise_delay = value;
+
+  return old != auto_raise_delay;
+}
+
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
@@ -733,6 +812,12 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_DISABLE_WORKAROUNDS:
       return "DISABLE_WORKAROUNDS";
+
+    case META_PREF_AUTO_RAISE:
+      return "AUTO_RAISE";
+      
+    case META_PREF_AUTO_RAISE_DELAY:
+      return "AUTO_RAISE_DELAY";
     }
 
   return "(unknown)";
@@ -984,3 +1069,14 @@ meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
   *n_bindings = (int) G_N_ELEMENTS (window_bindings) - 1;
 }
 
+gboolean
+meta_prefs_get_auto_raise ()
+{
+  return auto_raise;
+}
+
+int
+meta_prefs_get_auto_raise_delay ()
+{
+  return auto_raise_delay;
+}

@@ -179,6 +179,9 @@ struct _MetaDisplay
 
   /* Pings which we're waiting for a reply from */
   GSList     *pending_pings;
+
+  /* Pending autoraise */
+  guint       autoraise_timeout_id;
   
   /* current window operation */
   MetaGrabOp  grab_op;

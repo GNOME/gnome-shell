@@ -37,7 +37,8 @@
 
 #define USE_GDK_DISPLAY
 
-typedef struct {
+typedef struct 
+{
   MetaDisplay *display;
   Window xwindow;
   Time timestamp;
@@ -46,6 +47,12 @@ typedef struct {
   void *user_data;
   guint ping_timeout_id;
 } MetaPingData;
+
+typedef struct 
+{
+  MetaDisplay *display;
+  Window xwindow;
+} MetaAutoRaiseData;
 
 static GSList *all_displays = NULL;
 
@@ -243,6 +250,7 @@ meta_display_open (const char *name)
   display->workspaces = NULL;
 
   display->pending_pings = NULL;
+  display->autoraise_timeout_id = 0;
   display->focus_window = NULL;
   display->mru_list = NULL;
 
@@ -524,6 +532,12 @@ meta_display_close (MetaDisplay *display)
   g_slist_free (winlist);
   meta_display_ungrab (display);
 
+  if (display->autoraise_timeout_id != 0)
+    {
+      g_source_remove (display->autoraise_timeout_id);
+      display->autoraise_timeout_id = 0;
+    }
+
 #ifdef USE_GDK_DISPLAY
   /* Stop caring about events */
   meta_ui_remove_event_func (display->xdisplay,
@@ -796,6 +810,61 @@ reset_ignores (MetaDisplay *display)
   display->ungrab_should_not_cause_focus_window = None;
 }
 
+#define POINT_IN_RECT(xcoord, ycoord, rect) \
+ ((xcoord) >= (rect).x &&                   \
+  (xcoord) <  ((rect).x + (rect).width) &&  \
+  (ycoord) >= (rect).y &&                   \
+  (ycoord) <  ((rect).y + (rect).height))
+
+static gboolean 
+window_raise_with_delay_callback (void *data)
+{
+  MetaWindow *window;
+  MetaAutoRaiseData *auto_raise;
+
+  auto_raise = data;
+
+  meta_topic (META_DEBUG_FOCUS, 
+	      "In autoraise callback for window 0x%lx\n", 
+	      auto_raise->xwindow);
+
+  auto_raise->display->autoraise_timeout_id = 0;
+
+  window  = meta_display_lookup_x_window (auto_raise->display, 
+					  auto_raise->xwindow);
+  
+  if (window == NULL) 
+    return FALSE;
+
+  /* If we aren't already on top, check whether the pointer is inside
+   * the window and raise the window if so.
+   */      
+  if (meta_stack_get_top (window->screen->stack) != window) 
+    {
+      int x, y, root_x, root_y;
+      Window root, child;
+      unsigned int mask;
+      gboolean same_screen;
+
+      meta_error_trap_push (window->display);
+      same_screen = XQueryPointer (window->display->xdisplay,
+				   window->xwindow,
+				   &root, &child,
+				   &root_x, &root_y, &x, &y, &mask);
+      meta_error_trap_pop (window->display);
+
+      if ((window->frame && POINT_IN_RECT (root_x, root_y, window->frame->rect)) ||
+	  (window->frame == NULL && POINT_IN_RECT (root_x, root_y, window->rect)))
+	meta_window_raise (window);
+      else
+	meta_topic (META_DEBUG_FOCUS, 
+		    "Pointer not inside window, not raising %s\n", 
+		    window->desc);
+    }
+
+  return FALSE;
+}
+
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -1033,10 +1102,40 @@ event_callback (XEvent   *event,
                   meta_topic (META_DEBUG_FOCUS,
                               "Focusing %s due to enter notify with serial %lu\n",
                               window->desc, event->xany.serial);
-                  meta_window_focus (window, event->xcrossing.time);
 
-                  /* stop ignoring stuff */
-                  reset_ignores (display);
+		  meta_window_focus (window, event->xcrossing.time);
+
+		  /* stop ignoring stuff */
+		  reset_ignores (display);
+		  
+		  if (meta_prefs_get_auto_raise ()) 
+		    {
+		      MetaAutoRaiseData *auto_raise_data;
+
+		      meta_topic (META_DEBUG_FOCUS, 
+				  "Queuing an autoraise timeout for %s with delay %d\n", 
+				  window->desc, 
+				  meta_prefs_get_auto_raise_delay ());
+		      
+		      auto_raise_data = g_new (MetaAutoRaiseData, 1);
+		      auto_raise_data->display = window->display;
+		      auto_raise_data->xwindow = window->xwindow;
+		      
+		      if (display->autoraise_timeout_id != 0)
+			g_source_remove (display->autoraise_timeout_id);
+
+		      display->autoraise_timeout_id = 
+			g_timeout_add_full (G_PRIORITY_DEFAULT,
+					    meta_prefs_get_auto_raise_delay (),
+					    window_raise_with_delay_callback,
+					    auto_raise_data,
+					    g_free);
+		    }
+		  else
+		    {
+		      meta_topic (META_DEBUG_FOCUS,
+				  "Auto raise is disabled\n");		      
+		    }
                 }
               break;
             case META_FOCUS_MODE_CLICK:
@@ -2823,3 +2922,4 @@ meta_resize_gravity_from_grab_op (MetaGrabOp op)
 
   return gravity;
 }
+

@@ -29,6 +29,8 @@
 typedef enum
 {
   META_PREF_FOCUS_MODE,
+  META_PREF_AUTO_RAISE,
+  META_PREF_AUTO_RAISE_DELAY,
   META_PREF_THEME,
   META_PREF_TITLEBAR_FONT,
   META_PREF_TITLEBAR_FONT_SIZE,
@@ -59,6 +61,8 @@ int                         meta_prefs_get_titlebar_font_size (void);
 int                         meta_prefs_get_num_workspaces     (void);
 gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
+gboolean                    meta_prefs_get_auto_raise         (void);
+int                         meta_prefs_get_auto_raise_delay   (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 
