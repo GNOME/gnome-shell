@@ -100,6 +100,7 @@ struct _MetaDisplay
   Atom atom_wm_icon_size;
   Atom atom_kwm_win_icon;
   Atom atom_net_wm_moveresize;
+  Atom atom_net_active_window;
   
   /* This is the actual window from focus events,
    * not the one we last set
@@ -193,5 +194,7 @@ void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
 
 /* make a request to ensure the event serial has changed */
 void     meta_display_increment_event_serial (MetaDisplay *display);
+
+void     meta_display_update_active_window_hint (MetaDisplay *display);
 
 #endif

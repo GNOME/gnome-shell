@@ -1,5 +1,13 @@
 2001-10-07  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (meta_display_update_active_window_hint): 
+	set _NET_ACTIVE_WINDOW hint
+	
+	* src/window.c (meta_window_client_message): support
+	_NET_ACTIVE_WINDOW client message
+
+2001-10-07  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_client_message): don't allow
 	shade/maximize/minimize for windows that don't support those
 	operations. (minimizing the panel = bad)

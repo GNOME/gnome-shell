@@ -2449,6 +2449,25 @@ meta_window_client_message (MetaWindow *window,
 
       return TRUE;
     }
+  else if (event->xclient.message_type ==
+           display->atom_net_active_window)
+    {
+      meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s'", window->desc);
+
+      /* Switch to window's workspace - alternatively we could move
+       * window back to this workspace. I don't know which is right.
+       */
+      if (!meta_workspace_contains_window (window->screen->active_workspace,
+                                           window) &&
+          /* this check shouldn't actually be required, I don't think it is */
+          window->workspaces)
+        meta_workspace_activate (window->workspaces->data); 
+      
+      meta_window_raise (window);
+      meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
+
+      return TRUE;
+    }
   
   return FALSE;
 }
@@ -2523,6 +2542,9 @@ meta_window_notify_focus (MetaWindow *window,
         meta_frame_queue_draw (window->frame);
     }
 
+  /* Now set _NET_ACTIVE_WINDOW hint */
+  meta_display_update_active_window_hint (window->display);
+  
   return FALSE;
 }
 

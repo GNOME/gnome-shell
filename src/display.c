@@ -135,7 +135,8 @@ meta_display_open (const char *name)
     "UTF8_STRING",
     "WM_ICON_SIZE",
     "_KWM_WIN_ICON",
-    "_NET_WM_MOVERESIZE"
+    "_NET_WM_MOVERESIZE",
+    "_NET_ACTIVE_WINDOW"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -222,6 +223,7 @@ meta_display_open (const char *name)
   display->atom_wm_icon_size = atoms[40];
   display->atom_kwm_win_icon = atoms[41];
   display->atom_net_wm_moveresize = atoms[42];
+  display->atom_net_active_window = atoms[43];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -905,27 +907,29 @@ event_callback (XEvent   *event,
           screen = meta_display_screen_for_root (display,
                                                  event->xclient.window);
           
-          if (screen &&
-              event->xclient.message_type ==
-              display->atom_net_current_desktop)
+          if (screen)
             {
-              int space;
-              MetaWorkspace *workspace;
+              if (event->xclient.message_type ==
+                  display->atom_net_current_desktop)
+                {
+                  int space;
+                  MetaWorkspace *workspace;
               
-              space = event->xclient.data.l[0];
+                  space = event->xclient.data.l[0];
               
-              meta_verbose ("Request to change current workspace to %d\n",
-                            space);
+                  meta_verbose ("Request to change current workspace to %d\n",
+                                space);
               
-              workspace =
-                meta_display_get_workspace_by_screen_index (display,
-                                                            screen,
-                                                            space);
+                  workspace =
+                    meta_display_get_workspace_by_screen_index (display,
+                                                                screen,
+                                                                space);
 
-              if (workspace)
-                meta_workspace_activate (workspace);
-              else
-                meta_verbose ("Don't know about workspace %d\n", space);
+                  if (workspace)
+                    meta_workspace_activate (workspace);
+                  else
+                    meta_verbose ("Don't know about workspace %d\n", space);
+                }
             }
         }
       break;
@@ -1673,4 +1677,33 @@ meta_display_increment_event_serial (MetaDisplay *display)
   /* We just make some random X request */
   XDeleteProperty (display->xdisplay, display->leader_window,
                    display->atom_motif_wm_hints);
+}
+
+void
+meta_display_update_active_window_hint (MetaDisplay *display)
+{
+  GSList *tmp;
+  
+  unsigned long data[2];
+
+  if (display->focus_window)
+    data[0] = display->focus_window->xwindow;
+  else
+    data[0] = None;
+  data[1] = None;
+  
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+      
+      meta_error_trap_push (display);
+      XChangeProperty (display->xdisplay, screen->xroot,
+                       display->atom_net_active_window,
+                       XA_WINDOW,
+                       32, PropModeReplace, (guchar*) data, 2);
+      meta_error_trap_pop (display);
+
+      tmp = tmp->next;
+    }
 }
