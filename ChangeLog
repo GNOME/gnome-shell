@@ -1,5 +1,9 @@
 2004-10-11  Rob Adams  <readams@readams.net>
 
+	* configure.in: bump version to 2.9.0.  Add UNSTABLE warning.
+
+2004-10-11  Rob Adams  <readams@readams.net>
+
 	* NEWS, README: Metacity 2.8.6 (stable release)
 
 2004-10-08  Elijah Newren  <newren@math.utah.edu>
