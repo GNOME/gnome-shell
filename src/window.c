@@ -6289,7 +6289,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 
       meta_display_end_grab_op (window->display, event->xbutton.time);
       break;
-      
+    
+    case EnterNotify:
+    case LeaveNotify:
     case MotionNotify:
       switch (window->display->grab_op)
         {

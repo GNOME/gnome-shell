@@ -1252,6 +1252,12 @@ event_callback (XEvent   *event,
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
+      if (grab_op_is_mouse (display->grab_op) &&
+	  display->grab_window == window)
+	{
+	  meta_window_handle_mouse_grab_op_event (window, event);
+	  break;
+	}
       /* do this even if window->has_focus to avoid races */
       if (window && !serial_is_ignored (display, event->xany.serial) &&
 	  event->xcrossing.detail != NotifyInferior)
@@ -1311,6 +1317,12 @@ event_callback (XEvent   *event,
         }
       break;
     case LeaveNotify:
+      if (grab_op_is_mouse (display->grab_op) &&
+	  display->grab_window == window)
+	{
+	  meta_window_handle_mouse_grab_op_event (window, event);
+	  break;
+	}
       if (window)
         {
           switch (meta_prefs_get_focus_mode ())
@@ -2374,7 +2386,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
   cursor = xcursor_for_op (display, op);
 
 #define GRAB_MASK (PointerMotionMask | PointerMotionHintMask |  \
-                   ButtonPressMask | ButtonReleaseMask)
+                   ButtonPressMask | ButtonReleaseMask	     |	\
+		   EnterWindowMask | LeaveWindowMask)
 
   if (change_pointer)
     {

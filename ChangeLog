@@ -1,3 +1,8 @@
+Mon Dec  9 22:09:56 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* src/display.c, src/window.c: Handle crossing events during
+	resizing. (#93384).
+
 2002-12-09  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: 2.4.8
