@@ -24,11 +24,13 @@
 
 <!-- strip borders off the normal geometry -->
 <frame_geometry name="normal_small_borders" parent="normal">
-	<distance name="left_width" value="4"/>
-	<distance name="right_width" value="4"/>
-	<distance name="bottom_height" value="5"/>
-	<distance name="left_titlebar_edge" value="4"/>
-	<distance name="right_titlebar_edge" value="4"/>
+	<distance name="left_width" value="0"/>
+	<distance name="right_width" value="0"/>
+	<distance name="bottom_height" value="0"/>
+	<distance name="left_titlebar_edge" value="0"/>
+	<distance name="right_titlebar_edge" value="0"/>
+	<border name="title_border" left="3" right="3" top="2" bottom="3"/>
+	<border name="button_border" left="0" right="0" top="0" bottom="0"/>
 </frame_geometry>
 
 <frame_geometry name="utility" title_scale="xx-small">
@@ -49,9 +51,7 @@
 <constant name="ArrowHeight" value="5"/>
 <constant name="ButtonIPad" value="3"/>
 <constant name="ThickLineWidth" value="3"/>
-<constant name="IconTitleSpacing" value="2"/>
-<constant name="SpacerWidth" value="8"/>
-<constant name="SpacerHeight" value="11"/>
+<constant name="IconTitleSpacing" value="8"/>
 
 <!-- Button Outlines -->
 <draw_ops name="button_normal_bg">
@@ -321,25 +321,25 @@
 		width="width - 4"
 		height="height - 4"/>
 	<rectangle color="#ffffff" filled="true"
-		x="width - title_width - (IconTitleSpacing * 2) - 2"
+		x="width - title_width - IconTitleSpacing + (height / 2)"
 		y="2"
-		width="title_width + (IconTitleSpacing * 2)"
+		width="title_width + IconTitleSpacing"
 		height="height - 4"/>
 	<line color="#ffffff" width="32"
-		x1="width - title_width - (IconTitleSpacing * 2) + 36 - 2"
-		y1="0 - 16"
-		x2="width - title_width - (IconTitleSpacing * 2) - 2 - 14"
-		y2="height + 16"/>
+		x1="width - title_width - (IconTitleSpacing * 1.5) + height + (IconTitleSpacing * 2) + (height / 3)"
+		y1="0 - height"
+		x2="width - title_width - (IconTitleSpacing * 1.5) - height + (height / 8)"
+		y2="height + height"/>
 </draw_ops>
 
 <draw_ops name="title_text_focused_with_icon">
 	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="#000000"
-		x="width - title_width - IconTitleSpacing - 3"
+		x="width - title_width - IconTitleSpacing"
 		y="((height - title_height) / 2) `max` 0"/>
 	<icon
-		x="width - title_width - mini_icon_width - 8"
-		y="(height-mini_icon_height) / 2"
+		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5)"
+		y="(height - mini_icon_height) / 2"
 		width="mini_icon_width"
 		height="mini_icon_height"/>
 </draw_ops>
@@ -354,11 +354,11 @@
 <draw_ops name="title_text_with_icon">
 	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="gtk:fg[INSENSITIVE]"
-		x="width - title_width - IconTitleSpacing - 3"
+		x="width - title_width - IconTitleSpacing"
 		y="((height - title_height) / 2) `max` 0"/>
 	<icon alpha="0.25"
-		x="width - title_width - mini_icon_width - 8"
-		y="(height-mini_icon_height) / 2"
+		x="width - title_width - mini_icon_width - (IconTitleSpacing * 1.5)"
+		y="(height - mini_icon_height) / 2"
 		width="mini_icon_width"
 		height="mini_icon_height"/>
 </draw_ops>
@@ -366,7 +366,7 @@
 <draw_ops name="title_text_no_icon">
 	<clip x="2" y="2" width="width - 4" height="height - 4"/>
 	<title color="gtk:fg[INSENSITIVE]"
-		x="width - title_width - IconTitleSpacing - 3"
+		x="width - title_width - IconTitleSpacing"
 		y="((height - title_height) / 2) `max` 0"/>
 </draw_ops>
 

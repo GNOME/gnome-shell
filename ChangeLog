@@ -1,3 +1,10 @@
+2002-05-26  James M. Cape  <jcape@ignore-your.tv>
+
+	* src/themes/Esco/metacity-theme-1.xml: Remove borders from
+	Esco theme as well (didn't know you could), apparently fixed
+	the problem where the spacing between the icon & the title
+	got larger as the fontsize went up.
+
 2002-05-26  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Atlanta/metacity-theme-1.xml: totally drop the
