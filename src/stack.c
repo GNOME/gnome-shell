@@ -23,6 +23,7 @@
 #include "window.h"
 #include "errors.h"
 #include "frame.h"
+#include "workspace.h"
 
 #include <X11/Xatom.h>
 
@@ -761,6 +762,101 @@ meta_stack_get_below (MetaStack      *stack,
     return find_prev_below_layer (stack, window->layer);
 }
 
+#define IN_TAB_CHAIN(w) ((w)->layer != META_LAYER_DOCK && (w)->layer != META_LAYER_DESKTOP)
+#define GET_XWINDOW(stack, i) (g_array_index ((stack)->windows,    \
+                                              Window, (i)))
+
+static MetaWindow*
+find_tab_forward (MetaStack     *stack,
+                  MetaWorkspace *workspace,
+                  int            start)
+{
+  int i;
+
+  /* start may be -1 to find any tab window at all */
+  
+  i = start + 1;
+  while (i < stack->windows->len)
+    {
+      MetaWindow *window;
+      
+      window = meta_display_lookup_x_window (stack->screen->display,
+                                             GET_XWINDOW (stack, i));
+
+      if (window && IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_workspace_contains_window (workspace, window)))
+        return window;
+
+      ++i;
+    }
+
+  i = 0;
+  while (i < start)
+    {
+      MetaWindow *window;
+      
+      window = meta_display_lookup_x_window (stack->screen->display,
+                                             GET_XWINDOW (stack, i));
+
+      if (window && IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_workspace_contains_window (workspace, window)))
+        return window;
+
+      ++i;
+    }
+
+  /* no window other than the start window is in the tab chain */
+  return NULL;
+}
+
+static MetaWindow*
+find_tab_backward (MetaStack     *stack,
+                   MetaWorkspace *workspace,
+                   int            start)
+{
+  int i;
+
+  /* start may be stack->windows->len to find any tab window at all */
+  
+  i = start - 1;
+  while (i >= 0)
+    {
+      MetaWindow *window;
+      
+      window = meta_display_lookup_x_window (stack->screen->display,
+                                             GET_XWINDOW (stack, i));
+
+      if (window && IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_workspace_contains_window (workspace, window)))
+        return window;
+
+      --i;
+    }
+
+  i = stack->windows->len - 1;
+  while (i > start)
+    {
+      MetaWindow *window;
+      
+      window = meta_display_lookup_x_window (stack->screen->display,
+                                             GET_XWINDOW (stack, i));
+
+      if (window && IN_TAB_CHAIN (window) &&
+          (workspace == NULL ||
+           meta_workspace_contains_window (workspace, window)))
+        return window;
+
+      --i;
+    }
+
+  /* no window other than the start window is in the tab chain */
+  return NULL;
+}
+
+/* This ignores the dock/desktop layers */
 MetaWindow*
 meta_stack_get_tab_next (MetaStack  *stack,
                          MetaWindow *window,
@@ -782,41 +878,27 @@ meta_stack_get_tab_next (MetaStack  *stack,
 
           if (w == window->xwindow)
             {
-              if (backward && i == 0)
-                goto out;
-              else if (!backward && i == (stack->windows->len - 1))
-                goto out;
-              else
-                {
-                  if (backward)
-                    --i;
-                  else
-                    ++i;
+              MetaWorkspace *workspace;
+
+              workspace = window->screen->active_workspace;
               
-                  return meta_display_lookup_x_window (stack->screen->display,
-                                                       g_array_index (stack->windows,
-                                                                      Window,
-                                                                      i));
-                }
+              if (backward)
+                return find_tab_backward (stack, workspace, i);
+              else
+                return find_tab_forward (stack, workspace, i);
             }
 
           ++i;
-        }     
+        }
     }
-
- out:
   
   /* window may be NULL, or maybe the origin window was already the last/first
    * window and we need to wrap around
    */
   if (backward)
-    return meta_display_lookup_x_window (stack->screen->display,
-                                         g_array_index (stack->windows,
-                                                        Window,
-                                                        stack->windows->len - 1));
+    return find_tab_backward (stack, NULL, 
+                              stack->windows->len);
   else
-    return meta_display_lookup_x_window (stack->screen->display,
-                                         g_array_index (stack->windows,
-                                                        Window,
-                                                        0));
+    return find_tab_forward (stack, NULL, -1);
 }
+

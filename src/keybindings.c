@@ -84,6 +84,10 @@ static MetaKeyBinding screen_bindings[] = {
   { XK_4, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
   { XK_5, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
   { XK_6, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
+  { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, NULL, 0 },
+  { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
   { None, 0, 0, NULL, NULL, 0 }
 };
 

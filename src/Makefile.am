@@ -20,6 +20,8 @@ metacity_SOURCES= 				\
 	main.h					\
 	menu.c					\
 	menu.h					\
+	place.c					\
+	place.h					\
 	screen.c				\
 	screen.h				\
 	session.c				\

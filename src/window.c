@@ -27,6 +27,7 @@
 #include "stack.h"
 #include "keybindings.h"
 #include "ui.h"
+#include "place.h"
 
 #include <X11/Xatom.h>
 
@@ -97,6 +98,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   XWindowAttributes attrs;
   GSList *tmp;
   MetaWorkspace *space;
+  gulong existing_wm_state;
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
@@ -123,6 +125,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       return NULL;
     }
 
+  existing_wm_state = WithdrawnState;
   if (must_be_viewable && attrs.map_state != IsViewable)
     {
       /* Only manage if WM_STATE is IconicState or NormalState */
@@ -138,7 +141,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
           return NULL;
         }
 
-      /* FIXME should honor WM_STATE probably */
+      existing_wm_state = state;
     }
   
   meta_error_trap_push (display);
@@ -237,6 +240,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
   window->withdrawn = FALSE;
+  window->initial_workspace_set = FALSE;
   
   window->unmaps_pending = 0;
 
@@ -277,8 +281,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   window->layer = META_LAYER_NORMAL;
   window->stack_op = NULL;
-  window->initial_workspace = 
-    meta_workspace_screen_index (window->screen->active_workspace);
+  window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
 
   update_size_hints (window);
@@ -302,6 +305,19 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       window->minimized = TRUE;
       meta_verbose ("Window %s asked to start out minimized\n", window->desc);
     }
+
+  if (existing_wm_state == IconicState)
+    {
+      /* WM_STATE said minimized */
+      window->minimized = TRUE;
+      meta_verbose ("Window %s had preexisting WM_STATE = IconicState, minimizing\n",
+                    window->desc);
+
+      /* Assume window was previously placed, though perhaps it's
+       * been iconic its whole life, we have no way of knowing.
+       */
+      window->placed = TRUE;
+    }
   
   /* FIXME we have a tendency to set this then immediately
    * change it again.
@@ -314,14 +330,54 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   meta_window_grab_keys (window);
 
-  space =
-    meta_display_get_workspace_by_screen_index (window->display,
-                                                window->screen,
-                                                window->initial_workspace);
-  if (space == NULL)
-    space = window->screen->active_workspace;
+  /* For the workspace, first honor hints,
+   * if that fails put transients with parents,
+   * otherwise put window on active space
+   */
   
-  meta_workspace_add_window (space, window);
+  if (window->initial_workspace_set)
+    {
+      space =
+        meta_display_get_workspace_by_screen_index (window->display,
+                                                    window->screen,
+                                                    window->initial_workspace);
+
+      if (space)
+        meta_workspace_add_window (space, window);
+    }
+  
+  if (window->workspaces == NULL && 
+      window->xtransient_for != None)
+    {
+      /* Try putting dialog on parent's workspace */
+      MetaWindow *parent;
+
+      parent = meta_display_lookup_x_window (window->display,
+                                             window->xtransient_for);
+
+      if (parent)
+        {
+          GList *tmp;
+          
+          if (parent->on_all_workspaces)
+            window->on_all_workspaces = TRUE;
+          
+          tmp = parent->workspaces;
+          while (tmp != NULL)
+            {
+              meta_workspace_add_window (tmp->data, window);
+              
+              tmp = tmp->next;
+            }
+        }
+    }
+  
+  if (window->workspaces == NULL)
+    {
+      space = window->screen->active_workspace;
+
+      meta_workspace_add_window (space, window);
+    }
 
   /* Only accept USPosition on normal windows because the app is full
    * of shit claiming the user set -geometry for a dialog or dock
@@ -334,16 +390,23 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       meta_verbose ("Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
     }
 
-  if (window->type != META_WINDOW_NORMAL)
+  /* Assume the app knows best how to place these. */
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK ||
+      window->type == META_WINDOW_TOOLBAR ||
+      window->type == META_WINDOW_MENU)
     {
       window->placed = TRUE;
-      meta_verbose ("Not placing non-normal-type window\n");
+      meta_verbose ("Not placing non-normal non-dialog window\n");
     }
 
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
-      /* Change the default */
+      /* Change the default, but don't enforce this if
+       * the user focuses the dock/desktop and unsticks it
+       * using key shortcuts
+       */
       window->on_all_workspaces = TRUE;
     }
   
@@ -625,7 +688,10 @@ meta_window_show (MetaWindow *window)
   meta_verbose ("Showing window %s, shaded: %d iconic: %d\n",
                 window->desc, window->shaded, window->iconic);
 
-  /* don't ever do the initial position constraint thing again */
+  /* don't ever do the initial position constraint thing again.
+   * This is toggled here so that initially-iconified windows
+   * still get placed when they are ultimately shown.
+   */
   window->placed = TRUE;
   
   /* Shaded means the frame is mapped but the window is not */
@@ -2708,6 +2774,8 @@ update_initial_workspace (MetaWindow *window)
 {
   gulong val = 0;
 
+  window->initial_workspace_set = FALSE;
+  
   /* Fall back to old WM spec hint if net_wm_desktop is missing, this
    * is just to be nice when restarting from old Sawfish basically,
    * should nuke it eventually
@@ -2716,12 +2784,18 @@ update_initial_workspace (MetaWindow *window)
                     window->xwindow,
                     window->display->atom_net_wm_desktop,
                     &val))
-    window->initial_workspace = val;
+    {
+      window->initial_workspace_set = TRUE;
+      window->initial_workspace = val;
+    }
   else if (get_cardinal (window->display,
                          window->xwindow,
                          window->display->atom_win_workspace,
                          &val))
-    window->initial_workspace = val;
+    {
+      window->initial_workspace_set = TRUE;
+      window->initial_workspace = val;
+    }
 
   return Success;
 }
@@ -3048,64 +3122,7 @@ constrain_position (MetaWindow *window,
    */
 
   if (!window->placed)
-    {
-      gboolean found_transient = FALSE;
-
-      meta_verbose ("Placing window %s\n", window->desc);
-      
-      /* "Origin" placement algorithm */
-      x = 0;
-      y = 0;
-      
-      if (window->xtransient_for != None)
-        {
-          /* Center horizontally, at top of parent vertically */
-
-          MetaWindow *parent;
-          
-          parent =
-            meta_display_lookup_x_window (window->display,
-                                          window->xtransient_for);
-
-          if (parent)
-            {
-              int w;
-
-              meta_window_get_position (parent, &x, &y);
-              w = parent->rect.width;
-
-              /* center of parent */
-              x = x + w / 2;
-              /* center of child over center of parent */
-              x -= window->rect.width / 2;
-
-              y += fgeom->top_height;
-              
-              found_transient = TRUE;
-
-              meta_verbose ("Centered window %s over transient parent\n",
-                            window->desc);
-            }
-        }
-
-      if (!found_transient &&
-          (window->type == META_WINDOW_DIALOG ||
-           window->type == META_WINDOW_MODAL_DIALOG))
-        {
-          /* Center on screen */
-          int w, h;
-
-          /* I think whole screen will look nicer than workarea */
-          w = WidthOfScreen (window->screen->xscreen);
-          h = HeightOfScreen (window->screen->xscreen);
-
-          x = (w - window->rect.width) / 2;
-          y = (y - window->rect.height) / 2;
-
-          meta_verbose ("Centered window %s on screen\n",
-                        window->desc);
-        }
-    }
+    meta_window_place (window, fgeom, x, y, &x, &y);
   
   if (window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)

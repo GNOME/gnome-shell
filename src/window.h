@@ -104,6 +104,9 @@ struct _MetaWindow
    * the window. It's taken to mean initially minimized.
    */
   guint initially_iconic : 1;
+
+  /* whether an initial workspace was explicitly set */
+  guint initial_workspace_set : 1;
   
   /* These are the two flags from WM_PROTOCOLS */
   guint take_focus : 1;
