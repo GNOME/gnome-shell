@@ -110,6 +110,9 @@ struct _MetaWindow
   guint has_minimize_func : 1;
   guint has_maximize_func : 1;
 
+  /* similar hints */
+  guint has_shade_func : 1;
+  
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
   /* If these are TRUE, it just means a client explicitly
