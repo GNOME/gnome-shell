@@ -1,9 +1,15 @@
 2004-08-07  Elijah Newren  <newren@math.utah.edu>
 
-	* window.c, window.h: Revert Rob's 2004-07-31 patch that ignored
-	net_wm_user_time when unminimizing a window
+	* src/display.c (event_callback): activating the current workspace
+	should be a no-op.  This prevents a race condition in focus window
+	choice when activating a window via the taskbar.  Fix for #149589.
 
-	* window.c (meta_window_activate): If a nonzero timestamp is
+2004-08-07  Elijah Newren  <newren@math.utah.edu>
+
+	* src/window.c, src/window.h: Revert Rob's 2004-07-31 patch that
+	ignored net_wm_user_time when unminimizing a window
+
+	* src/window.c (meta_window_activate): If a nonzero timestamp is
 	passed, update the window's net_wm_user_time accordingly.  (see
 	comments 102-108 of bug 118372)
 
