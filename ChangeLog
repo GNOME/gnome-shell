@@ -1,5 +1,38 @@
 2002-08-08  Craig Black  <blackc@speakeasy.net>
 
+	Patch to provide extra cues when using the window menu 
+	move and resize items, #85724.
+
+	* src/common.h: add new cursors
+
+	* src/display.c: (grab_op_is_mouse)
+	(meta_display_create_x_cursor), (xcursor_for_op),
+	(meta_display_set_grab_op_cursor), 
+	(meta_display_begin_grab_op):
+	The keyboard move and resize grab ops now also use the mouse. 
+	Allow the grab cursor to be changed during the grab op.
+	Hold onto the initial grab position in case of reset.
+
+	* src/display.h: save the initial grab position
+
+	* src/keybindings.c: (process_keyboard_move_grab),
+	(process_keyboard_resize_grab), (handle_begin_move),
+	(handle_begin_resize):
+	The keyboard move and resize grab ops now also use the mouse. 
+
+	* src/window.c: (meta_window_client_message), (menu_callback),
+	(update_move), (update_resize),
+	(meta_window_handle_mouse_grab_op_event), (warp_pointer),
+	(meta_window_warp_pointer), (meta_window_begin_grab_op),
+	(meta_window_update_resize_grab_op):
+	When moving or resizing a window use the last grab position
+	in computing change increment.
+	Provide support for warping the mouse pointer.
+
+	* src/window.h: new warp pointer and grab op helper functions
+
+2002-08-08  Craig Black  <blackc@speakeasy.net>
+
 	* src/display.h: update comment
 	* src/window.c: (meta_window_focus): also set expected
 	focus window when setting input focus. 

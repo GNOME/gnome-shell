@@ -1472,7 +1472,10 @@ process_keyboard_move_grab (MetaDisplay *display,
     }
 
   if (handled)
-    meta_window_move (window, TRUE, x, y);
+    {
+      meta_window_move (window, TRUE, x, y);
+      meta_window_warp_pointer (window, display->grab_op);
+    }
 
   return handled;
 }
@@ -1513,7 +1516,7 @@ process_keyboard_resize_grab (MetaDisplay *display,
                                display->grab_initial_window_pos.width,
                                display->grab_initial_window_pos.height);
 
-      return TRUE;
+      return FALSE;
     }
   
   switch (display->grab_op)
@@ -1620,7 +1623,10 @@ process_keyboard_resize_grab (MetaDisplay *display,
     }
 
   if (handled)
-    return TRUE;  
+    {
+      meta_window_update_resize_grab_op (window, TRUE);
+      return TRUE; 
+    } 
 
   meta_window_get_position (window, &orig_x, &orig_y);
   x = orig_x;
@@ -1848,7 +1854,10 @@ process_keyboard_resize_grab (MetaDisplay *display,
     width = 1;
   
   if (handled)
-    meta_window_move_resize (window, TRUE, x, y, width, height);
+    {
+      meta_window_move_resize (window, TRUE, x, y, width, height);
+      meta_window_update_resize_grab_op (window, FALSE);
+    }
 
   return handled;
 }
@@ -2465,14 +2474,9 @@ handle_begin_move         (MetaDisplay    *display,
 {
   if (window)
     {
-      meta_window_raise (window);
-      meta_display_begin_grab_op (window->display,
-                                  window->screen,
-                                  window,
-                                  META_GRAB_OP_KEYBOARD_MOVING,
-                                  FALSE, 0, 0,
-                                  event->xkey.time,
-                                  0, 0);
+      meta_window_begin_grab_op (window,
+                                 META_GRAB_OP_KEYBOARD_MOVING,
+                                 event->xkey.time);
     }
 }
 
@@ -2484,14 +2488,9 @@ handle_begin_resize       (MetaDisplay    *display,
 {
   if (window)
     {
-      meta_window_raise (window);
-      meta_display_begin_grab_op (window->display,
-                                  window->screen,
-                                  window,
-                                  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
-                                  FALSE, 0, 0,
-                                  event->xkey.time,
-                                  0, 0);
+      meta_window_begin_grab_op (window,
+                                 META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                 event->xkey.time);
     }
 }
 

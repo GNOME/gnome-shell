@@ -209,12 +209,15 @@ struct _MetaDisplay
   MetaWindow *grab_window;
   Window      grab_xwindow;
   int         grab_button;
-  int         grab_root_x;
-  int         grab_root_y;
+  int         grab_initial_root_x;
+  int         grab_initial_root_y;
+  int         grab_current_root_x;
+  int         grab_current_root_y;
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   MetaRectangle grab_initial_window_pos;
+  MetaRectangle grab_current_window_pos;
   MetaResizePopup *grab_resize_popup;
 
 
@@ -284,6 +287,12 @@ MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *displa
 
 Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);
+
+void     meta_display_set_grab_op_cursor (MetaDisplay *display,
+                                          MetaGrabOp   op,
+                                          gboolean     change_pointer,
+                                          Window       grab_xwindow,
+                                          Time         timestamp);
 
 gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      MetaScreen  *screen,

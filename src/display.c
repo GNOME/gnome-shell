@@ -803,6 +803,16 @@ grab_op_is_mouse (MetaGrabOp op)
     case META_GRAB_OP_RESIZING_NW:
     case META_GRAB_OP_RESIZING_W:
     case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+    case META_GRAB_OP_KEYBOARD_MOVING:
       return TRUE;
       break;
 
@@ -2180,6 +2190,12 @@ meta_display_create_x_cursor (MetaDisplay *display,
     case META_CURSOR_NW_RESIZE:
       glyph = XC_top_left_corner;
       break;
+    case META_CURSOR_MOVE_WINDOW:
+      glyph = XC_plus;
+      break;
+    case META_CURSOR_RESIZE_WINDOW:
+      glyph = XC_fleur;
+      break;
 
     default:
       g_assert_not_reached ();
@@ -2201,28 +2217,42 @@ xcursor_for_op (MetaDisplay *display,
   switch (op)
     {
     case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
       cursor = META_CURSOR_SE_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
       cursor = META_CURSOR_SOUTH_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
       cursor = META_CURSOR_SW_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
       cursor = META_CURSOR_NORTH_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
       cursor = META_CURSOR_NE_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
       cursor = META_CURSOR_NW_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
       cursor = META_CURSOR_WEST_RESIZE;
       break;
     case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
       cursor = META_CURSOR_EAST_RESIZE;
+      break;
+    case META_GRAB_OP_KEYBOARD_MOVING:
+      cursor = META_CURSOR_MOVE_WINDOW;
+      break;
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+      cursor = META_CURSOR_RESIZE_WINDOW;
       break;
       
     default:
@@ -2230,6 +2260,61 @@ xcursor_for_op (MetaDisplay *display,
     }
 
   return meta_display_create_x_cursor (display, cursor);
+}
+
+void
+meta_display_set_grab_op_cursor (MetaDisplay *display,
+                                 MetaGrabOp   op,
+                                 gboolean     change_pointer,
+                                 Window       grab_xwindow,
+                                 Time         timestamp)
+{
+  Cursor cursor;
+
+  cursor = xcursor_for_op (display, op);
+
+#define GRAB_MASK (PointerMotionMask | PointerMotionHintMask |  \
+                   ButtonPressMask | ButtonReleaseMask)
+
+  meta_error_trap_push (display);
+
+  if (change_pointer)
+    {
+      XChangeActivePointerGrab (display->xdisplay,
+                                GRAB_MASK,
+                                cursor,
+                                timestamp);
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Changed pointer with XChangeActivePointerGrab()\n");
+    }
+  else
+    {
+      if (XGrabPointer (display->xdisplay,
+                        grab_xwindow,
+                        False,
+                        GRAB_MASK,
+                        GrabModeAsync, GrabModeAsync,
+                        None,
+                        cursor,
+                        timestamp) == GrabSuccess)
+        {
+          display->grab_have_pointer = TRUE;
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "XGrabPointer() returned GrabSuccess\n");
+        }
+    }  
+
+  if (meta_error_trap_pop (display) != Success)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Error trapped from XGrabPointer()\n");
+      if (display->grab_have_pointer)
+        display->grab_have_pointer = FALSE;
+    }
+#undef GRAB_MASK
+  
+  XFreeCursor (display->xdisplay, cursor);
 }
 
 gboolean
@@ -2245,7 +2330,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          root_y)
 {
   Window grab_xwindow;
-  Cursor cursor;
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
@@ -2273,35 +2357,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
       
-  cursor = xcursor_for_op (display, op);
-
-#define GRAB_MASK (PointerMotionMask | PointerMotionHintMask |  \
-                   ButtonPressMask | ButtonReleaseMask)
-
-  meta_error_trap_push (display);
-  if (XGrabPointer (display->xdisplay,
-                    grab_xwindow,
-                    False,
-                    GRAB_MASK,
-                    GrabModeAsync, GrabModeAsync,
-                    None,
-                    cursor,
-                    timestamp) == GrabSuccess)
-    {
-      display->grab_have_pointer = TRUE;
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "XGrabPointer() returned GrabSuccess\n");
-    }
-  if (meta_error_trap_pop (display) != Success)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Error trapped from XGrabPointer()\n");
-      if (display->grab_have_pointer)
-        display->grab_have_pointer = FALSE;
-    }
-#undef GRAB_MASK
-  
-  XFreeCursor (display->xdisplay, cursor);
+  meta_display_set_grab_op_cursor (display, op, FALSE, grab_xwindow, timestamp);
 
   if (!display->grab_have_pointer)
     {
@@ -2336,14 +2392,17 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_mask = modmask;
-  display->grab_root_x = root_x;
-  display->grab_root_y = root_y;
+  display->grab_initial_root_x = root_x;
+  display->grab_initial_root_y = root_y;
+  display->grab_current_root_x = root_x;
+  display->grab_current_root_y = root_y;
   if (display->grab_window)
     {
       display->grab_initial_window_pos = display->grab_window->rect;
       meta_window_get_position (display->grab_window,
                                 &display->grab_initial_window_pos.x,
                                 &display->grab_initial_window_pos.y);
+      display->grab_current_window_pos = display->grab_initial_window_pos;
     }
   
   meta_topic (META_DEBUG_WINDOW_OPS,

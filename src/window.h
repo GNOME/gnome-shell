@@ -406,4 +406,14 @@ void meta_window_foreach_transient (MetaWindow            *window,
 gboolean meta_window_is_ancestor_of_transient (MetaWindow *window,
                                                MetaWindow *transient);
 
+gboolean meta_window_warp_pointer (MetaWindow *window,
+                                   MetaGrabOp  grab_op);
+
+void meta_window_begin_grab_op (MetaWindow *window,
+                                MetaGrabOp  op,
+                                Time        timestamp);
+
+void meta_window_update_resize_grab_op (MetaWindow *window,
+                                        gboolean    update_cursor);
+
 #endif

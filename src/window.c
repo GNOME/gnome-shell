@@ -3418,14 +3418,10 @@ meta_window_client_message (MetaWindow *window,
           ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
            (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {
-          meta_window_raise (window);
-          meta_display_begin_grab_op (window->display,
-                                      window->screen,
-                                      window,
-                                      op,
-                                      FALSE, 0, 0,
-                                      meta_display_get_current_time (window->display),
-                                      0, 0);
+
+          meta_window_begin_grab_op (window,
+                                     op,
+                                     meta_display_get_current_time (window->display));
         }
       else if (op != META_GRAB_OP_NONE &&
                ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
@@ -5679,25 +5675,15 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_MOVE:
-          meta_window_raise (window);
-          meta_display_begin_grab_op (window->display,
-                                      window->screen,
-                                      window,
-                                      META_GRAB_OP_KEYBOARD_MOVING,
-                                      FALSE, 0, 0,
-                                      meta_display_get_current_time (window->display),
-                                      0, 0);
+          meta_window_begin_grab_op (window,
+                                     META_GRAB_OP_KEYBOARD_MOVING,
+                                     meta_display_get_current_time (window->display));
           break;
 
         case META_MENU_OP_RESIZE:
-          meta_window_raise (window);
-          meta_display_begin_grab_op (window->display,
-                                      window->screen,
-                                      window,
-                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
-                                      FALSE, 0, 0,
-                                      meta_display_get_current_time (window->display),
-                                      0, 0);
+          meta_window_begin_grab_op (window,
+                                     META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                     meta_display_get_current_time (window->display));
           break;
           
         case 0:
@@ -5821,11 +5807,11 @@ update_move (MetaWindow  *window,
   int dx, dy;
   int new_x, new_y;
   
-  dx = x - window->display->grab_root_x;
-  dy = y - window->display->grab_root_y;
+  dx = x - window->display->grab_current_root_x;
+  dy = y - window->display->grab_current_root_y;
 
-  new_x = window->display->grab_initial_window_pos.x + dx;
-  new_y = window->display->grab_initial_window_pos.y + dy;
+  new_x = window->display->grab_current_window_pos.x + dx;
+  new_y = window->display->grab_current_window_pos.y + dy;
 
   if (mask & ShiftMask)
     {
@@ -5845,23 +5831,29 @@ update_resize (MetaWindow *window,
   int new_w, new_h;
   int gravity;
   
-  dx = x - window->display->grab_root_x;
-  dy = y - window->display->grab_root_y;
+  dx = x - window->display->grab_current_root_x;
+  dy = y - window->display->grab_current_root_y;
 
-  new_w = window->display->grab_initial_window_pos.width;
-  new_h = window->display->grab_initial_window_pos.height;
+  new_w = window->display->grab_current_window_pos.width;
+  new_h = window->display->grab_current_window_pos.height;
 
   switch (window->display->grab_op)
     {
     case META_GRAB_OP_RESIZING_SE:
     case META_GRAB_OP_RESIZING_NE:
     case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
       new_w += dx;
       break;
 
     case META_GRAB_OP_RESIZING_NW:
     case META_GRAB_OP_RESIZING_SW:
     case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
       new_w -= dx;
       break;
       
@@ -5874,12 +5866,18 @@ update_resize (MetaWindow *window,
     case META_GRAB_OP_RESIZING_SE:
     case META_GRAB_OP_RESIZING_S:
     case META_GRAB_OP_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
       new_h += dy;
       break;
       
     case META_GRAB_OP_RESIZING_N:
     case META_GRAB_OP_RESIZING_NE:
     case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
       new_h -= dy;
       break;
     default:
@@ -5903,6 +5901,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
       switch (window->display->grab_op)
         {
         case META_GRAB_OP_MOVING:
+        case META_GRAB_OP_KEYBOARD_MOVING:
           update_move (window, event->xbutton.state,
                        event->xbutton.x_root, event->xbutton.y_root);
           break;
@@ -5915,6 +5914,14 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_RESIZING_SW:
         case META_GRAB_OP_RESIZING_NE:
         case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_S:
+        case META_GRAB_OP_KEYBOARD_RESIZING_N:
+        case META_GRAB_OP_KEYBOARD_RESIZING_W:
+        case META_GRAB_OP_KEYBOARD_RESIZING_E:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
           update_resize (window, event->xbutton.x_root, event->xbutton.y_root);
           break;
 
@@ -5929,6 +5936,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
       switch (window->display->grab_op)
         {
         case META_GRAB_OP_MOVING:
+        case META_GRAB_OP_KEYBOARD_MOVING:
           {
             int x, y;
             window_query_root_pointer (window, &x, &y);
@@ -5937,7 +5945,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                          x, y);
           }
           break;
-          
+
         case META_GRAB_OP_RESIZING_E:
         case META_GRAB_OP_RESIZING_W:
         case META_GRAB_OP_RESIZING_S:
@@ -5946,6 +5954,14 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_RESIZING_SW:
         case META_GRAB_OP_RESIZING_NE:
         case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_S:
+        case META_GRAB_OP_KEYBOARD_RESIZING_N:
+        case META_GRAB_OP_KEYBOARD_RESIZING_W:
+        case META_GRAB_OP_KEYBOARD_RESIZING_E:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
           {
             int x, y;
             window_query_root_pointer (window, &x, &y);
@@ -6208,3 +6224,139 @@ meta_window_is_ancestor_of_transient (MetaWindow *window,
 
   return FALSE;
 }
+
+static gboolean
+warp_pointer (MetaWindow *window,
+              MetaGrabOp  grab_op,
+              int        *x,
+              int        *y)
+{
+  switch (grab_op)
+    {
+      case META_GRAB_OP_KEYBOARD_MOVING:
+      case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+        *x = window->rect.width / 2;
+        *y = window->rect.height / 2;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_S:
+        *x = window->rect.width / 2;
+        *y = window->rect.height;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_N:
+        *x = window->rect.width / 2;
+        *y = 0;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_W:
+        *x = 0;
+        *y = window->rect.height / 2;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_E:
+        *x = window->rect.width;
+        *y = window->rect.height / 2;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+        *x = window->rect.width;
+        *y = window->rect.height;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+        *x = window->rect.width;
+        *y = 0;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+        *x = 0;
+        *y = window->rect.height;
+        break;
+
+      case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+        *x = 0;
+        *y = 0;
+        break;
+
+      default:
+        return FALSE;
+    }
+
+  meta_error_trap_push (window->display);
+  
+  XWarpPointer (window->display->xdisplay,
+                None,
+                window->xwindow,
+                0, 0, 0, 0, 
+                *x,
+                *y);
+
+  if (meta_error_trap_pop (window->display))
+    {
+      meta_verbose ("Failed to warp pointer for window %s\n", window->desc);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_window_warp_pointer (MetaWindow *window,
+                          MetaGrabOp  grab_op)
+{
+  int x, y;
+ 
+  return warp_pointer (window, grab_op, &x, &y); 
+}
+
+void
+meta_window_begin_grab_op (MetaWindow *window,
+                           MetaGrabOp  op,
+                           Time        timestamp)
+{
+  int x, y, x_offset, y_offset;
+
+  meta_window_get_position (window, &x, &y);
+
+  meta_window_raise (window);
+
+  warp_pointer (window, op, &x_offset, &y_offset);
+
+  meta_display_begin_grab_op (window->display,
+                              window->screen,
+                              window,
+                              op,
+                              FALSE, 0, 0,
+                              timestamp,
+                              x + x_offset, 
+                              y + y_offset);
+}
+
+void meta_window_update_resize_grab_op (MetaWindow *window,
+                                        gboolean    update_cursor)
+{
+  int x, y, x_offset, y_offset;
+
+  meta_window_get_position (window, &x, &y);
+
+  warp_pointer (window, window->display->grab_op, &x_offset, &y_offset);
+
+  window->display->grab_current_root_x = x + x_offset;
+  window->display->grab_current_root_y = y + y_offset;
+
+  if (window->display->grab_window)
+    {
+      window->display->grab_current_window_pos = window->rect;
+    }
+
+  if (update_cursor)
+    {
+      meta_display_set_grab_op_cursor (window->display,
+                                       window->display->grab_op,
+                                       TRUE,
+                                       window->display->grab_xwindow,
+                                       meta_display_get_current_time (window->display));
+    }
+}
+
