@@ -118,7 +118,9 @@ meta_display_open (const char *name)
     "_NET_WM_WINDOW_TYPE_NORMAL",
     "_NET_WM_STATE_MODAL",
     "_NET_CLIENT_LIST",
-    "_NET_CLIENT_LIST_STACKING"
+    "_NET_CLIENT_LIST_STACKING",
+    "_NET_WM_STATE_SKIP_TASKBAR",
+    "_NET_WM_STATE_SKIP_PAGER"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -185,6 +187,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_modal = atoms[27];
   display->atom_net_client_list = atoms[28];
   display->atom_net_client_list_stacking = atoms[29];
+  display->atom_net_wm_state_skip_taskbar = atoms[30];
+  display->atom_net_wm_state_skip_pager = atoms[31];
 
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -557,7 +561,7 @@ event_queue_callback (MetaEventQueue *queue,
       break;
     case MapRequest:
       if (window == NULL)
-        window = meta_window_new (display, event->xmaprequest.window);
+        window = meta_window_new (display, event->xmaprequest.window, FALSE);
       break;
     case ReparentNotify:
       break;
