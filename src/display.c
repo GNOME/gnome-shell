@@ -592,7 +592,12 @@ meta_display_open (const char *name)
     XGetInputFocus (display->xdisplay, &focus, &ret_to);
 
     /* Force a new FocusIn (does this work?) */
-    XSetInputFocus (display->xdisplay, focus, ret_to, CurrentTime);
+    if (focus == None || focus == PointerRoot)
+      focus = display->no_focus_window;
+
+    /* FIXME CurrentTime evil */
+    XSetInputFocus (display->xdisplay, focus, RevertToPointerRoot,
+                    CurrentTime);
     
     meta_error_trap_pop (display, FALSE);
   }
@@ -1563,7 +1568,7 @@ event_callback (XEvent   *event,
                       "???",
                       event->xany.window,
                       meta_event_mode_to_string (event->xfocus.mode),
-                      meta_event_detail_to_string (event->xfocus.mode));
+                      meta_event_detail_to_string (event->xfocus.detail));
         }
       else if (meta_display_screen_for_root (display,
                                              event->xany.window) != NULL)
@@ -1576,7 +1581,20 @@ event_callback (XEvent   *event,
                       "???",
                       event->xany.window,
                       meta_event_mode_to_string (event->xfocus.mode),
-                      meta_event_detail_to_string (event->xfocus.mode));
+                      meta_event_detail_to_string (event->xfocus.detail));
+          
+          if (event->type == FocusIn &&
+              event->xfocus.detail == NotifyDetailNone)
+            {
+              /* FIXME _() gettextify on HEAD */
+              meta_warning ("Working around an application which called XSetInputFocus (None) or with RevertToNone instead of RevertToPointerRoot, this is a minor bug in some application. If you can figure out which application causes this please report it as a bug against that application.\n");
+              
+              /* Fix the problem */
+              XSetInputFocus (display->xdisplay,
+                              display->no_focus_window,
+                              RevertToPointerRoot,
+                              CurrentTime); /* CurrentTime FIXME */
+            }
         }
       break;
     case KeymapNotify:

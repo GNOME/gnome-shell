@@ -1,3 +1,14 @@
+2003-09-26  Havoc Pennington  <hp@redhat.com>
+
+	* src/display.c (event_callback): when focus on root window
+	becomes None, set it to something other than None so keybindings
+	keep working and print a warning about how some application sucks.
+	#84564
+	(event_callback): Fix debug spew to print focus event details
+	properly
+	(meta_display_open): when setting initial focus, always use
+	RevertToPointerRoot and fix the focus if it's None or PointerRoot
+
 2003-09-26  Padraig O'Briain  <padraig.obriain@sun.com>
 
 	* src/Makefile.am: Add -DMETACITY_LIBDIR to support loading of modules
