@@ -446,6 +446,10 @@ meta_ui_tab_popup_select (MetaTabPopup *popup,
 {
   GList *tmp;
 
+  /* Note, "key" may not be in the list of entries; other code assumes
+   * it's OK to pass in a key that isn't.
+   */
+  
   tmp = popup->entries;
   while (tmp != NULL)
     {

@@ -2333,77 +2333,68 @@ do_choose_window (MetaDisplay    *display,
                   MetaKeyBinding *binding,
                   gboolean        show_popup)
 {
-  MetaWindow *window;
+  MetaScreen *screen;
   MetaTabList type;
   gboolean backward;
+  MetaWindow *initial_selection;
   
   type = GPOINTER_TO_INT (binding->handler->data);
   
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Tab list = %d show_popup = %d\n", type, show_popup);
+      
+  screen = meta_display_screen_for_root (display,
+                                         event->xkey.root);
+
+  if (screen == NULL)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "No screen for root 0x%lx, not doing choose_window\n",
+                  event->xkey.root);
+      return;
+    }
 
   /* backward if shift is down, this isn't configurable */
   backward = (event->xkey.state & ShiftMask) != 0;
+
+  initial_selection = meta_display_get_tab_next (display,
+                                                 type,
+                                                 screen,
+                                                 screen->active_workspace,
+                                                 NULL,
+                                                 backward);
+
+  /* Note that focus_window may not be in the tab chain, but it's OK */
+  if (initial_selection == NULL)
+    initial_selection = meta_display_get_tab_current (display,
+                                                      type, screen,
+                                                      screen->active_workspace);
   
-  window = NULL;
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Initially selecting window %s\n",
+              initial_selection ? initial_selection->desc : "(none)");  
   
-  if (display->focus_window != NULL)
-    {
-      window = meta_display_get_tab_next (display,
-                                          type,
-                                          display->focus_window->screen,
-                                          display->focus_window->screen->active_workspace,
-                                          display->focus_window,
-                                          backward);
-    }
+  if (initial_selection != NULL &&
+      meta_display_begin_grab_op (display,
+                                  screen,
+                                  NULL,
+                                  show_popup ?
+                                  tab_op_from_tab_type (type) :
+                                  cycle_op_from_tab_type (type),
+                                  FALSE,
+                                  0,
+                                  event->xkey.state & ~(display->ignored_modifier_mask),
+                                  event->xkey.time,
+                                  0, 0))
+    {      
+      meta_ui_tab_popup_select (screen->tab_popup,
+                                (MetaTabEntryKey) initial_selection->xwindow);
 
-  if (window == NULL)
-    {
-      MetaScreen *screen;
-      
-      screen = meta_display_screen_for_root (display,
-                                             event->xkey.root);
-
-      /* We get the screen because event_window may be NULL,
-       * in which case we can't use event_window->screen
-       */
-      if (screen)
-        {
-          window = meta_display_get_tab_next (screen->display,
-                                              type,
-                                              screen,
-                                              screen->active_workspace,
-                                              NULL,
-                                              backward);
-        }
-    }
-
-  if (window)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Starting tab/cycle between windows\n");
-      
-      if (meta_display_begin_grab_op (window->display,
-                                      window->screen,
-                                      NULL,
-                                      show_popup ?
-                                      tab_op_from_tab_type (type) :
-                                      cycle_op_from_tab_type (type),
-                                      FALSE,
-                                      0,
-                                      event->xkey.state & ~(display->ignored_modifier_mask),
-                                      event->xkey.time,
-                                      0, 0))
-        {
-          meta_ui_tab_popup_select (window->screen->tab_popup,
-                                    (MetaTabEntryKey) window->xwindow);
-
-          if (show_popup)
-            meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                           TRUE);
-          else
-            meta_window_raise (window);
-        }
+      if (show_popup)
+        meta_ui_tab_popup_set_showing (screen->tab_popup,
+                                       TRUE);
+      else
+        meta_window_raise (initial_selection);
     }
 }
 

@@ -1,3 +1,11 @@
+2002-09-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_get_tab_current): new function
+
+	* src/keybindings.c (do_choose_window): apply modified patch from
+	JeyaSudha to still display tab popup if only one window is on the
+	desktop.
+
 2002-06-25 JeyaSudha <jeyasudha.duraipandy@wipro.com>
  
  	* src/session.c, src/window.c: Session saves the unmaximized

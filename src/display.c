@@ -3119,6 +3119,26 @@ meta_display_get_tab_next (MetaDisplay   *display,
                              display->mru_list);
 }
 
+MetaWindow*
+meta_display_get_tab_current (MetaDisplay   *display,
+                              MetaTabList    type,
+                              MetaScreen    *screen,
+                              MetaWorkspace *workspace)
+{
+  MetaWindow *window;
+
+  window = display->focus_window;
+  
+  if (window != NULL &&
+      window->screen == screen &&
+      IN_TAB_CHAIN (window, type) &&
+      (workspace == NULL ||
+       meta_window_visible_on_workspace (window, workspace)))
+    return window;
+  else
+    return NULL;
+}
+
 int
 meta_resize_gravity_from_grab_op (MetaGrabOp op)
 {

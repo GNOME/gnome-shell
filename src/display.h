@@ -369,6 +369,11 @@ MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
                                        MetaWindow    *window,
                                        gboolean       backward);
 
+MetaWindow* meta_display_get_tab_current (MetaDisplay   *display,
+                                          MetaTabList    type,
+                                          MetaScreen    *screen,
+                                          MetaWorkspace *workspace);
+
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 gboolean meta_rectangle_intersect (MetaRectangle *src1,
