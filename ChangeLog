@@ -1,5 +1,18 @@
 2005-01-31  Elijah Newren  <newren@gmail.com>
 
+	Try 2 to correct misleading and inaccurate wording.  Hopefully,
+	really fixes #165380.
+
+	* src/menu.c: Change wording of menu to "Always on Current
+	Workspace" from "Put on All Workspaces", remove a quick-key
+	conflict between "On _Top" and "Only on _This Workspace" by
+	switching the latter to "_Only on This Workspace"
+
+	* src/window.c: Remove a comment that is no longer necessary
+	(since bug 87531 has been fixed)
+
+2005-01-31  Elijah Newren  <newren@gmail.com>
+
 	Correct the stacking when return from fullscreen mode.  Fixes
 	#165718.
 	
