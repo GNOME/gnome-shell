@@ -280,10 +280,17 @@ get_standalone_layer (MetaWindow *window)
       break;
       
     default:
+#if 0
+      /* FIXME this is disabled due to the FIXME below
+       * about how moving multiple windows between layers randomly
+       * rearranges their Z-order
+       */
+       
       if (window->has_focus &&
           meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
         layer = META_LAYER_FOCUSED_WINDOW;
-      else if (window->fullscreen)
+#endif
+      if (window->fullscreen)
         layer = META_LAYER_FULLSCREEN;
       else
         layer = META_LAYER_NORMAL;

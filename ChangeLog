@@ -1,5 +1,12 @@
 2002-09-27  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (get_standalone_layer): Temporarily disable use of
+	the FOCUSED_WINDOW layer, because given the fact that moving
+	multiple windows into the same layer changes the Z-order of those
+	windows, it was breaking click-to-focus.
+
+2002-09-27  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_focus_top_window): raise the focused
 	window, since it may not be the window on top, given the below
 	change.
