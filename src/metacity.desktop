@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Metacity
+Name[no]=Metacity
 Exec=metacity
 
 [Window Manager]

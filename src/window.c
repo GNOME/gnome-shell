@@ -282,7 +282,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   tmp = display->screens;
   while (tmp != NULL)
     {
-      if (((MetaScreen *)tmp->data)->xscreen == attrs.screen)
+      MetaScreen *scr = tmp->data;
+
+      if (scr->xroot == attrs.root)
         {
           window->screen = tmp->data;
           break;

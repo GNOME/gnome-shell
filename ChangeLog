@@ -1,3 +1,9 @@
+2002-05-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_new): search for the window's screen 
+	by root window instead of Screen*, maybe it will help with 
+	bug #82664
+
 2002-05-27  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* autogen.sh: Hook up intltoolize here.
