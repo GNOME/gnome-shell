@@ -22,14 +22,13 @@
 
 #include "errors.h"
 #include <errno.h>
+#include <stdlib.h>
 #include <gdk/gdk.h>
 
-typedef struct _ErrorTrap  ErrorTrap;
+static int (* saved_gdk_error_handler)    (Display     *display,
+                                           XErrorEvent *error);
 
-struct _ErrorTrap
-{
-  int error_code;
-};
+static int (* saved_gdk_io_error_handler)    (Display  *display);     
 
 static int x_error_handler    (Display     *display,
                                XErrorEvent *error);
@@ -38,104 +37,44 @@ static int x_io_error_handler (Display     *display);
 void
 meta_errors_init (void)
 {
-  XSetErrorHandler (x_error_handler);
-  XSetIOErrorHandler (x_io_error_handler);
+  saved_gdk_error_handler = XSetErrorHandler (x_error_handler);
+  saved_gdk_io_error_handler = XSetIOErrorHandler (x_io_error_handler);
 }
 
 void
 meta_error_trap_push (MetaDisplay *display)
 {
-  ErrorTrap *et;
-
   gdk_error_trap_push ();
-  return;
-
-  /* below here is old method */
-  et = g_new (ErrorTrap, 1);
-
-  et->error_code = Success;
-  display->error_traps = g_slist_prepend (display->error_traps, et);  
 }
 
 int
 meta_error_trap_pop (MetaDisplay *display)
 {
-  int result;
-  ErrorTrap *et;
-  GSList *next;
-
+  /* just use GDK trap */
   XSync (display->xdisplay, False);
+
   return gdk_error_trap_pop ();
-  /* below here is old method */
-  
-  if (display->error_traps == NULL)
-    meta_bug ("No error trap to pop\n");
-
-  XSync (display->xdisplay, False);
-  
-  et = display->error_traps->data;
-
-  result = et->error_code;
-
-  next = display->error_traps->next;
-  g_slist_free_1 (display->error_traps);
-  display->error_traps = next;
-
-  g_free (et);
-  
-  if (result != Success)
-    {
-      gchar buf[64];
-                
-      XGetErrorText (display->xdisplay, result, buf, 63);
-
-      meta_verbose ("Popping error code %d (%s)\n",
-                    result, buf);
-    }
-  
-  return result;
 }
-
 
 static int
 x_error_handler (Display     *xdisplay,
                  XErrorEvent *error)
 {
-  if (error->error_code)
-    {
-      MetaDisplay *display;
-
-      display = meta_display_for_x_display (xdisplay);
-
-      if (display == NULL)
-        meta_bug ("Error received for unknown display?\n");
-      
-      if (display->error_traps == NULL)
-        {
-          gchar buf[64];
-
-	  XGetErrorText (xdisplay, error->error_code, buf, 63);
-          
-          meta_bug ("Received an X Window System error without handling it.\n"
-                    "The error was '%s'.\n"
-                    "  (Details: serial %ld error_code %d request_code %d minor_code %d)\n",
-                    buf,
-                    error->serial, 
-                    error->error_code, 
-                    error->request_code,
-                    error->minor_code);
-	}
-      else
-        {
-          ErrorTrap *et;
-
-          et = display->error_traps->data;
-
-          et->error_code = error->error_code;
-        }
-    }
+  int retval;
+  gchar buf[64];
   
-  return 0;
+  XGetErrorText (xdisplay, error->error_code, buf, 63);
+  
+  meta_verbose ("X error: %s serial %ld error_code %d request_code %d minor_code %d)\n",
+                buf,
+                error->serial, 
+                error->error_code, 
+                error->request_code,
+                error->minor_code);
+  
+  retval = saved_gdk_error_handler (xdisplay, error);
+
+  return retval;
 }
 
 static int
@@ -162,11 +101,8 @@ x_io_error_handler (Display *xdisplay)
                     display->name);
     }
 
-  meta_display_close (display);
+  /* Xlib would force an exit anyhow */
+  exit (1);
   
-  /* I believe Xlib will force an exit after we return, which
-   * seems sort of broken to me, but if true we should probably just
-   * exit for ourselves. But for now I'm not doing it.
-   */
   return 0;
 }

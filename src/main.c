@@ -153,10 +153,7 @@ main (int argc, char **argv)
     {
       putenv (display_name);
       /* DO NOT FREE display_name, putenv() sucks */
-    }
-  
-  /* gtk_init() below overrides this, so it can be removed */
-  meta_errors_init ();
+    }  
   
   g_type_init ();
 
@@ -164,6 +161,9 @@ main (int argc, char **argv)
     meta_session_init (client_id); /* client_id == NULL is fine */
   
   meta_ui_init (&argc, &argv);  
+
+  /* must be after UI init so we can override GDK handlers */
+  meta_errors_init ();
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);

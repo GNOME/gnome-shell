@@ -1,3 +1,8 @@
+2001-09-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/errors.c: clean up the code, and replace GDK X error handler
+	with one that chains up to GDK but first logs the error to logfile.
+
 2001-08-31  Havoc Pennington  <hp@pobox.com>
 
 	* src/tabpopup.c (meta_ui_tab_popup_new): fix args to
