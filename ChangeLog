@@ -1,3 +1,18 @@
+2004-08-07  Rob Adams  <readams@readams.net>
+
+	Remove some extraneous items that could sometimes appear in the
+	window menu.  Fix for #144493.
+	
+	* src/menu.c (menuitems): Change the second separator to key on
+	whether there are any workspaces.
+	(meta_window_menu_new): use NULL label instead of 0 op to identify
+	separator
+
+	* src/window.c (meta_window_show_menu): Change the conditions on
+	the directions to take into account "holes" in the workspace
+	layout and also only set META_MENU_OP_WORKSPACES when there's more
+	than one workspace.
+	
 2004-08-07  Havoc Pennington  <hp@redhat.com>
 
 	* src/screen.c (meta_screen_set_cursor): add XFlush() after

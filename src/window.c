@@ -5898,6 +5898,7 @@ meta_window_show_menu (MetaWindow *window,
   MetaMenuOp insensitive;
   MetaWindowMenu *menu;
   MetaWorkspaceLayout layout;
+  int n_workspaces;
   
   if (window->display->window_menu)
     {
@@ -5909,22 +5910,30 @@ meta_window_show_menu (MetaWindow *window,
   ops = 0;
   insensitive = 0;
 
-  ops |= (META_MENU_OP_DELETE | META_MENU_OP_WORKSPACES | META_MENU_OP_MINIMIZE | META_MENU_OP_MOVE | META_MENU_OP_RESIZE);
+  ops |= (META_MENU_OP_DELETE | META_MENU_OP_MINIMIZE | META_MENU_OP_MOVE | META_MENU_OP_RESIZE);
+
+  n_workspaces = meta_screen_get_n_workspaces (window->screen);
+
+  if (n_workspaces > 1)
+    ops |= META_MENU_OP_WORKSPACES;
 
   meta_screen_calc_workspace_layout (window->screen,
-                                     meta_screen_get_n_workspaces (window->screen),
+                                     n_workspaces,
                                      meta_workspace_index ( window->screen->active_workspace),
                                      &layout);
 
   if (!window->on_all_workspaces)
     {
+
       if (layout.current_col > 0)
         ops |= META_MENU_OP_MOVE_LEFT;
-      if (layout.current_col < layout.cols - 1)
+      if ((layout.current_col < layout.cols - 1) &&
+          (layout.current_row * layout.cols + (layout.current_col + 1) < n_workspaces))
         ops |= META_MENU_OP_MOVE_RIGHT;
       if (layout.current_row > 0)
         ops |= META_MENU_OP_MOVE_UP;
-      if (layout.current_row < layout.rows - 1)
+      if ((layout.current_row < layout.rows - 1) &&
+          ((layout.current_row + 1) * layout.cols + layout.current_col < n_workspaces))
         ops |= META_MENU_OP_MOVE_DOWN;
     }
 

@@ -62,7 +62,7 @@ static MenuItem menuitems[] = {
   { META_MENU_OP_RESIZE, NULL, FALSE, N_("_Resize") },
   { 0, NULL, FALSE, NULL }, /* separator */
   { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
-  { 0, NULL, FALSE, NULL }, /* separator */
+  { META_MENU_OP_WORKSPACES, NULL, FALSE, NULL }, /* separator */
   { META_MENU_OP_STICK, NULL, FALSE, N_("Put on _All Workspaces") },
   { META_MENU_OP_UNSTICK, NULL, FALSE,  N_("Only on _This Workspace") },
   { META_MENU_OP_MOVE_LEFT, NULL, FALSE, N_("Move to Workspace _Left") },
@@ -289,7 +289,7 @@ meta_window_menu_new   (MetaFrames         *frames,
           unsigned int key;
           MetaVirtualModifier mods;
           
-          if (menuitems[i].op == 0)
+          if (menuitems[i].label == NULL)
             {
               mi = gtk_separator_menu_item_new ();
             }
