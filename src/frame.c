@@ -256,19 +256,6 @@ meta_frame_calc_geometry (MetaFrame         *frame,
   *geomp = geom;
 }
 
-static void
-set_background_none (MetaFrame *frame,
-                     int        resize_gravity)
-{
-  XSetWindowAttributes attrs;
-
-  attrs.background_pixmap = None;
-  XChangeWindowAttributes (frame->window->display->xdisplay,
-                           frame->xwindow,
-                           CWBackPixmap,
-                           &attrs);
-}
-
 void
 meta_frame_sync_to_window (MetaFrame *frame,
                            int        resize_gravity,
@@ -286,7 +273,10 @@ meta_frame_sync_to_window (MetaFrame *frame,
 
   /* set bg to none to avoid flicker */
   if (need_resize)
-    set_background_none (frame, resize_gravity);
+    meta_ui_unflicker_frame_bg (frame->window->screen->ui,
+                                frame->xwindow,
+                                frame->rect.width,
+                                frame->rect.height);
 
   if (need_move && need_resize)
     XMoveResizeWindow (frame->window->display->xdisplay,

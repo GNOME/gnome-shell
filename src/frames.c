@@ -73,7 +73,10 @@ static gboolean meta_frames_client_event          (GtkWidget           *widget,
 static gboolean meta_frames_window_state_event    (GtkWidget           *widget,
                                                    GdkEventWindowState *event);
 
-
+static void meta_frames_paint_to_drawable (MetaFrames   *frames,
+                                           MetaUIFrame  *frame,
+                                           GdkDrawable  *drawable,
+                                           GdkRectangle *area);
 
 static void meta_frames_calc_geometry (MetaFrames        *frames,
                                        MetaUIFrame         *frame,
@@ -588,6 +591,44 @@ meta_frames_reset_bg (MetaFrames *frames,
   frame = meta_frames_lookup_window (frames, xwindow);
   
   gtk_style_set_background (widget->style, frame->window, GTK_STATE_NORMAL);
+}
+
+static void
+set_background_none (Display *xdisplay,
+                     Window   xwindow)
+{
+  XSetWindowAttributes attrs;
+
+  attrs.background_pixmap = None;
+  XChangeWindowAttributes (xdisplay, xwindow,
+                           CWBackPixmap, &attrs);
+}
+
+void
+meta_frames_unflicker_bg (MetaFrames *frames,
+                          Window      xwindow,
+                          int         target_width,
+                          int         target_height)
+{
+  GtkWidget *widget;
+  MetaUIFrame *frame;
+  
+  widget = GTK_WIDGET (frames);
+
+  frame = meta_frames_lookup_window (frames, xwindow);
+  g_return_if_fail (frame != NULL);
+
+#if 0
+  pixmap = gdk_pixmap_new (frame->window,
+                           width, height,
+                           -1);
+
+  /* Oops, no way to get the background here */
+  
+  meta_frames_paint_to_drawable (frames, frame, pixmap);
+#endif
+
+  set_background_none (gdk_display, frame->xwindow);
 }
 
 void
@@ -1393,6 +1434,7 @@ meta_frames_get_pixmap_for_control (MetaFrames      *frames,
 static void
 draw_control_bg (MetaFrames         *frames,
                  MetaUIFrame        *frame,
+                 GdkDrawable        *drawable,
                  MetaFrameControl    control,
                  MetaFrameGeometry  *fgeom)
 {
@@ -1436,7 +1478,7 @@ draw_control_bg (MetaFrames         *frames,
       if (rect == NULL)
         return;
       
-      gtk_paint_box (widget->style, frame->window,
+      gtk_paint_box (widget->style, drawable,
                      GTK_STATE_ACTIVE,
                      GTK_SHADOW_IN, NULL,
                      widget, "button",
@@ -1445,18 +1487,14 @@ draw_control_bg (MetaFrames         *frames,
 }
 
 static gboolean
-meta_frames_expose_event            (GtkWidget           *widget,
-                                     GdkEventExpose      *event)
+meta_frames_expose_event (GtkWidget           *widget,
+                          GdkEventExpose      *event)
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-  MetaFrameGeometry fgeom;
-  MetaFrameFlags flags;
-  int width, height;
-  GtkBorder inner;
-  
+
   frames = META_FRAMES (widget);
-  
+    
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
@@ -1467,6 +1505,25 @@ meta_frames_expose_event            (GtkWidget           *widget,
       frame->expose_delayed = TRUE;
       return TRUE;
     }
+
+  meta_frames_paint_to_drawable (frames, frame, frame->window, &event->area);
+
+  return TRUE;
+}
+
+static void
+meta_frames_paint_to_drawable (MetaFrames   *frames,
+                               MetaUIFrame  *frame,
+                               GdkDrawable  *drawable,
+                               GdkRectangle *area)
+{
+  GtkWidget *widget;
+  MetaFrameGeometry fgeom;
+  MetaFrameFlags flags;
+  int width, height;
+  GtkBorder inner;
+
+  widget = GTK_WIDGET (frames);
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
@@ -1474,26 +1531,26 @@ meta_frames_expose_event            (GtkWidget           *widget,
   height = fgeom.height;
   
   /* Black line around outside to give definition */
-  gdk_draw_rectangle (frame->window,
+  gdk_draw_rectangle (drawable,
                       widget->style->black_gc,
                       FALSE,
                       0, 0, width - 1, height - 1);
 
   /* Light GC on top/left edges */
-  gdk_draw_line (frame->window,
+  gdk_draw_line (drawable,
                  widget->style->light_gc[GTK_STATE_NORMAL],
                  1, 1,
                  1, height - 2);
-  gdk_draw_line (frame->window,
+  gdk_draw_line (drawable,
                  widget->style->light_gc[GTK_STATE_NORMAL],
                  1, 1,
                  width - 2, 1);
   /* Dark on bottom/right */
-  gdk_draw_line (frame->window,
+  gdk_draw_line (drawable,
                  widget->style->dark_gc[GTK_STATE_NORMAL],
                  width - 2, 1,
                  width - 2, height - 2);
-  gdk_draw_line (frame->window,
+  gdk_draw_line (drawable,
                  widget->style->dark_gc[GTK_STATE_NORMAL],
                  1, height - 2,
                  width - 2, height - 2);
@@ -1502,7 +1559,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
     {
       /* Black line around inside while we have focus */
 
-      gdk_draw_rectangle (frame->window,
+      gdk_draw_rectangle (drawable,
                           widget->style->black_gc,
                           FALSE,
                           fgeom.left_width - 1,
@@ -1511,7 +1568,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
                           height - fgeom.bottom_height - fgeom.top_height + 1);
     }
 
-  if (event->area.y < fgeom.top_height &&
+  if (area->y < fgeom.top_height &&
       fgeom.title_rect.width > 0 && fgeom.title_rect.height > 0)
     {
       GdkRectangle clip;
@@ -1547,7 +1604,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
           if (gradient != NULL)
             {            
               gdk_pixbuf_render_to_drawable (gradient,
-                                             frame->window,
+                                             drawable,
                                              widget->style->bg_gc[GTK_STATE_SELECTED],
                                              0, 0,
                                              fgeom.title_rect.x,
@@ -1562,7 +1619,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
           else
             {
               /* Fallback to plain selection color */
-              gdk_draw_rectangle (frame->window,
+              gdk_draw_rectangle (drawable,
                                   widget->style->bg_gc[GTK_STATE_SELECTED],
                                   TRUE,
                                   fgeom.title_rect.x,
@@ -1630,7 +1687,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
             if (gdk_rectangle_intersect (&clip, &pixbuf_rect, &draw_rect))
               {
                 gdk_pixbuf_render_to_drawable_alpha (icon,
-                                                     frame->window,
+                                                     drawable,
                                                      draw_rect.x - pixbuf_rect.x,
                                                      draw_rect.y - pixbuf_rect.y,
                                                      draw_rect.x, draw_rect.y,
@@ -1643,7 +1700,7 @@ meta_frames_expose_event            (GtkWidget           *widget,
               }
           }
           
-          gdk_draw_layout (frame->window,
+          gdk_draw_layout (drawable,
                            layout_gc,
                            x, y,
                            frame->layout);
@@ -1655,9 +1712,10 @@ meta_frames_expose_event            (GtkWidget           *widget,
   
   if (fgeom.close_rect.width > 0 && fgeom.close_rect.height > 0)
     {
-      draw_control_bg (frames, frame, META_FRAME_CONTROL_DELETE, &fgeom);
+      draw_control_bg (frames, frame, drawable,
+                       META_FRAME_CONTROL_DELETE, &fgeom);
 
-      draw_control (frames, frame->window,
+      draw_control (frames, drawable,
                     NULL, NULL,
                     META_FRAME_CONTROL_DELETE,
                     fgeom.close_rect.x + inner.left,
@@ -1675,9 +1733,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
       else
         ctrl = META_FRAME_CONTROL_MAXIMIZE;
       
-      draw_control_bg (frames, frame, ctrl, &fgeom);
+      draw_control_bg (frames, frame, drawable, ctrl, &fgeom);
       
-      draw_control (frames, frame->window,                    
+      draw_control (frames, drawable,                    
                     NULL, NULL,
                     ctrl,
                     fgeom.max_rect.x + inner.left,
@@ -1688,9 +1746,10 @@ meta_frames_expose_event            (GtkWidget           *widget,
 
   if (fgeom.min_rect.width > 0 && fgeom.min_rect.height > 0)
     {
-      draw_control_bg (frames, frame, META_FRAME_CONTROL_MINIMIZE, &fgeom);
+      draw_control_bg (frames, frame, drawable,
+                       META_FRAME_CONTROL_MINIMIZE, &fgeom);
 
-      draw_control (frames, frame->window,
+      draw_control (frames, drawable,
                     NULL, NULL,
                     META_FRAME_CONTROL_MINIMIZE,
                     fgeom.min_rect.x + inner.left,
@@ -1702,9 +1761,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
   if (fgeom.spacer_rect.width > 0 && fgeom.spacer_rect.height > 0)
     {
       gtk_paint_vline (widget->style,
-                       frame->window,
+                       drawable,
                        GTK_STATE_NORMAL,
-                       &event->area,
+                       area,
                        widget,
                        "metacity_frame_spacer",
                        fgeom.spacer_rect.y,
@@ -1718,7 +1777,9 @@ meta_frames_expose_event            (GtkWidget           *widget,
 #define ARROW_WIDTH 7
 #define ARROW_HEIGHT 5
       
-      draw_control_bg (frames, frame, META_FRAME_CONTROL_MENU, &fgeom);
+      draw_control_bg (frames, frame,
+                       drawable,
+                       META_FRAME_CONTROL_MENU, &fgeom);
       
       x = fgeom.menu_rect.x;
       y = fgeom.menu_rect.y;
@@ -1726,18 +1787,16 @@ meta_frames_expose_event            (GtkWidget           *widget,
       y += (fgeom.menu_rect.height - ARROW_HEIGHT) / 2;
 
       gtk_paint_arrow (widget->style,
-                       frame->window,
+                       drawable,
                        GTK_STATE_NORMAL,
                        GTK_SHADOW_OUT,
-                       &event->area,
+                       area,
                        widget,
                        "metacity_menu_button",
                        GTK_ARROW_DOWN,
                        TRUE,
                        x, y, ARROW_WIDTH, ARROW_HEIGHT);
     }
-  
-  return TRUE;
 }
 
 static gboolean

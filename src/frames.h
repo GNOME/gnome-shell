@@ -111,8 +111,12 @@ void meta_frames_get_geometry (MetaFrames *frames,
                                int *top_height, int *bottom_height,
                                int *left_width, int *right_width);
 
-void meta_frames_reset_bg (MetaFrames *frames,
-                           Window      xwindow);
+void meta_frames_reset_bg     (MetaFrames *frames,
+                               Window      xwindow);
+void meta_frames_unflicker_bg (MetaFrames *frames,
+                               Window      xwindow,
+                               int         target_width,
+                               int         target_height);
 
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);

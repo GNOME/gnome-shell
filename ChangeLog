@@ -1,3 +1,9 @@
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/frames.c: separate code to draw frame from the 
+	expose_event handler, so in principle we can draw the 
+	frame to a pixmap, but this isn't used yet.
+
 2002-01-22  Hasbullah Bin Pit <sebol@ikhlas.com>
 
 	* configure.in: Added Malay (ms)to ALL_LINGUAS.
