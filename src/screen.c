@@ -470,6 +470,7 @@ meta_screen_new (MetaDisplay *display,
   screen->active_workspace = meta_workspace_new (screen);
   update_num_workspaces (screen);
 
+  screen->all_keys_grabbed = FALSE;
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
 

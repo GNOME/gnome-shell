@@ -1,3 +1,22 @@
+2002-07-01  Mark McLoughlin  <mark@skynet.ie>
+
+	Fix broken workspace switching from my previous commit.
+
+	* src/display.c: (meta_display_begin_grab_op): don't
+	leak a pointer grab if we fail to grab the keyboard.
+
+	* src/keybindings.c: (meta_screen_grab_keys): check
+	screen->all_keys_grabbed.
+	(meta_screen_grab_all_keys): regrab our standard
+	bindings if we fail.
+	(handle_workspace_switch): revert to our previous
+	behaviour of using the last focused window to do
+	the grab upon. Only use the RootWindow if there
+	isn't anything else to use.
+
+	* src/screen.c: (meta_screen_new): initialise
+	all_keys_grabbed.
+
 2002-06-26  Mark McLoughlin  <mark@skynet.ie>
 
 	Fixes not being able to tab out of a 

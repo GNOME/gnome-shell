@@ -718,6 +718,9 @@ ungrab_all_keys (MetaDisplay *display,
 void
 meta_screen_grab_keys (MetaScreen *screen)
 {
+  if (screen->all_keys_grabbed)
+    return;
+
   if (screen->keys_grabbed)
     return;
 
@@ -859,10 +862,9 @@ meta_screen_grab_all_keys (MetaScreen *screen)
   retval = grab_all_keys_and_keyboard (screen->display,
                                        screen->xroot);
   if (retval)
-    {
-      screen->keys_grabbed = FALSE;
-      screen->all_keys_grabbed = TRUE;
-    }
+    screen->all_keys_grabbed = TRUE;
+  else
+    meta_screen_grab_keys (screen);
 
   return retval;
 }
@@ -2334,12 +2336,26 @@ handle_workspace_switch  (MetaDisplay    *display,
   if (screen == NULL)
     return;
 
+  /* FIXME this is all broken, that you need a window to grab on.
+   * There's no reason we need a window here, in fact it's broken
+   * that you have to have one.
+   */
+  
+  if (display->focus_window != NULL)
+    {
+      window = display->focus_window;
+    }
+  else if (window == NULL)
+    {
+      window = get_previous_focus_window (display, screen);
+    }
+      
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Starting tab between workspaces, showing popup\n");
 
   if (meta_display_begin_grab_op (display,
                                   screen,
-                                  NULL,
+                                  window,
                                   META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
                                   FALSE,
                                   0,
@@ -2348,16 +2364,17 @@ handle_workspace_switch  (MetaDisplay    *display,
                                   0, 0))
     {
       MetaWorkspace *next;
-          
-      next = meta_workspace_get_neighbor (screen->active_workspace,
+      
+      next = meta_workspace_get_neighbor (window->screen->active_workspace,
                                           motion);
       g_assert (next); 
-          
-      meta_ui_tab_popup_select (screen->tab_popup,
+      
+      meta_ui_tab_popup_select (window->screen->tab_popup,
                                 (MetaTabEntryKey) next);
-          
+      
       /* only after selecting proper window */
-      meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
+      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                     TRUE);
     }
 }
 

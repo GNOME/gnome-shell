@@ -2199,6 +2199,12 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
+  /* FIXME:
+   *   If we have no MetaWindow we do our best
+   *   and try to do the grab on the RootWindow.
+   *   This will fail if anyone else has any
+   *   key grab on the RootWindow.
+   */
   if (window)
     grab_xwindow = window->frame ? window->frame->xwindow : window->xwindow;
   else
@@ -2250,13 +2256,16 @@ meta_display_begin_grab_op (MetaDisplay *display,
         display->grab_have_keyboard =
                      meta_window_grab_all_keys (window);
 
-      else if (meta_screen_grab_all_keys (screen))
-        display->grab_have_keyboard = TRUE;
+      else
+        display->grab_have_keyboard =
+                     meta_screen_grab_all_keys (screen);
       
       if (!display->grab_have_keyboard)
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
-                      "grabbing all keys failed\n");
+                      "grabbing all keys failed, ungrabbing pointer\n");
+          XUngrabPointer (display->xdisplay, CurrentTime);
+	  display->grab_have_pointer = FALSE;
           return FALSE;
         }
     }
