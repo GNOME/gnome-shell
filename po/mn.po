@@ -1,3 +1,4 @@
+# translation of metacity.gnome-2-4.po to Mongolian
 # translation of metacity.gnome-2-4.mn.po to Mongolian
 # translation of metacity.HEAD.mn.po to Mongolian
 # translation of metacity.HEAD.po to mongolian
@@ -6,14 +7,15 @@
 # Ochirbat Batzaya <buuvei@yahoo.com>, 2003.
 # Sanlig Badral <badral@chinggis.com>, 2003.
 # Sanlig Badral <badral@users.sf.net>, 2003.
+# Sanlig Badral <badral@openmn.org>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.gnome-2-4.mn\n"
+"Project-Id-Version: metacity.gnome-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-03 02:56+0100\n"
-"PO-Revision-Date: 2003-11-11 02:36+0100\n"
-"Last-Translator: Sanlig Badral <badral@users.sf.net>\n"
+"POT-Creation-Date: 2003-12-26 02:55+0100\n"
+"PO-Revision-Date: 2003-12-27 02:16+0100\n"
+"Last-Translator: Sanlig Badral <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +29,7 @@ msgstr "Хэрэглээ: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity нь нэмэлт үгсийн дэмжлэггүйгээр хөрвүүлэгдсэн байна\n"
+msgstr "Метасити нь нэмэлт үгсийн дэмжлэггүйгээр хөрвүүлэгдсэн байна\n"
 
 #: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -53,10 +55,8 @@ msgstr "Диалог-Үзүүлэх процессд алдаа гарлаа: %s
 
 #: src/delete.c:338
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
-"Х-Программыг алахад асуугддаг Metacity-Диалог үйлдэлд алдаа гарлаа: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Х-Программыг алахад асуугддаг Метасити-Диалог үйлдэлд алдаа гарлаа: %s\n"
 
 #: src/delete.c:446
 #, c-format
@@ -116,7 +116,7 @@ msgstr ""
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа "
+"Нэгэн командад гарсан алдааг заах ёстой  Метасити-диалогийг эхлэхэд алдаа "
 "гарлаа: %s\n"
 
 #: src/keybindings.c:2494
@@ -142,7 +142,7 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
+"метасити %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., ба бусад\n"
 "Энэ бол үнэгүй программ; хуулбарлах нөхцлийг эх кодоос хар \n"
 "Ямар нэгэн ХУДАЛДААНЫ болон тодорхой зорилгод тохируулахад ямар ч баталгаа "
@@ -150,8 +150,7 @@ msgstr ""
 
 #: src/main.c:437
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Сэдэв олдсонгүй! Энд %s оршихоос гадна энгийн сэдвийг дотроо агуулсан "
 "эсэхийг шалгана уу."
@@ -323,10 +322,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" цонхноос хариу алга."
 
 #: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
-"Энэ х.програмаас хүчээр гарахыг хүсэж байвал хадгалаагүй өөрчилөлтүүд устана."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "Энэ х.програмаас хүчээр гарахыг хүсэж байвал хадгалаагүй өөрчилөлтүүд устана."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -359,7 +356,7 @@ msgstr ""
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr "Metacity"
+msgstr "Метасити"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -380,7 +377,7 @@ msgstr ""
 "хэмжээ нь зөвхөн »titlebar_font_size« 0 дээр тохируулсан үед хэрэглэгдэнэ. "
 "Үүнээс гадна энэ функц нь »titlebar_uses_desktop_font« »ҮНЭН« үед "
 "ажиллахгүй. Стандарт тохиргоонд бол нэрийн шрифтийг тохируулагүй байдаг тул "
-"titlebar_uses_desktop_font »ХУДАЛ« байсан ч Metacity өөрийн эрхгүй "
+"titlebar_uses_desktop_font »ХУДАЛ« байсан ч Метасити өөрийн эрхгүй "
 "desktop_font-ыг ашиглахад хүргэдэг."
 
 #: src/metacity.schemas.in.h:3
@@ -407,7 +404,7 @@ msgstr ""
 "Товчлууруудыг нэрийн мөрөн дээр байрлуулах. Утга нь мөр байх ёстой. Ж-нь: "
 "\"цэс:агшаах,томсгох,хаах\";хоёр цэг зүүн буланг баруун булангаас ялгаж өгөх "
 "ба товчлууруудын нэрс таслалаар тусгаарлагдсан. Товчлуур давтагдаж болохгүй."
-"Цаашид шинээр зохиогдох metacity-ийн хувилбарууд өмнөхтэйгөө зөрчилдөхөөс "
+"Цаашид шинээр зохиогдох метасити-ийн хувилбарууд өмнөхтэйгөө зөрчилдөхөөс "
 "сэргийлж үл таних товчлуурын нэр ямар нэгэн мэдэгдэлгүйгээр үгүйсгэгдэнэ "
 
 #: src/metacity.schemas.in.h:7
@@ -470,7 +467,7 @@ msgid ""
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"Хэрэв үнэн болоод фокус-горим \"sloppy\" эсвэл \"mouse\"бол хараалагдсан "
+"Хэрэв true болоод фокус-горим \"sloppy\" эсвэл \"mouse\"бол хараалагдсан "
 "цонх нь хойшлогдсон хугацааны дараа өөрөө ажиллана(хойшлогдох хугацаа нь "
 "автоматаар эхлэхэд зориулсан үйлдлийн товчлуураар тодорхойлогдоно)"
 
@@ -479,7 +476,7 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Хэрэв үнэн бол гарчгийн_шрифт сонголтыг үгүйсгэн цонхны нэрийн үсгэнд "
+"Хэрэв true бол гарчгийн_шрифт сонголтыг үгүйсгэн цонхны нэрийн үсгэнд "
 "стандарт  программын шрифтийг ашигла."
 
 #: src/metacity.schemas.in.h:19
@@ -494,7 +491,7 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Хэрэв үнэн бол Metacity нь цонхоор биш х.программ дээр тулгуурлаж "
+"Хэрэв true бол Метасити нь цонхоор биш х.программ дээр тулгуурлаж "
 "ажилланаЭнэ зарчим нь бага зэрэг хийсвэр ч ерөнхийд нь үзэхэд хэрэглээнд  "
 "чиглэсэн тохируулга нь Windows-ийг бодвол Mac-тай ихэд төстэй. Хэрэв та "
 "хэрэглээний зориулалттай горимд цонхыг хараалах(focus) бол ашиглалтанд "
@@ -649,8 +646,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
-"Цонх хэт доор шигдсэн бол нааш нь товойлгож эсрэг тохиолдолд цонхыг шигтгэх"
+msgstr "Цонх хэт доор шигдсэн бол нааш нь товойлгож эсрэг тохиолдолд цонхыг шигтгэх"
 
 #: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
@@ -688,16 +684,16 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 "Зарим нэгэн х. программууд зориулалтаа зөрчсөнөөс цонхны менежерт алдаа "
-"гарах тохиолдол байдаг. Ж-нь: Metacity-ийн тохируулгаар бол бүх диалогийн "
+"гарах тохиолдол байдаг. Ж-нь: Метасити-ийн тохируулгаар бол бүх диалогийн "
 "байршил нь өөрийн харьяалагдах (эх) цонхтой зохицсон байршилтай гарч ирэх "
 "учиртай. Энэ нь цаанаа х.программаасаа өгөгдсөн диалогийн байршлыг үгүйсгэж "
 "байна гэсэн үг. Гэвч үүний хажуугаар Java/Swing-ийн зарим хувилбарууд цонхны "
 "цэсээ диалог хэлбэрээр илэрхийлж Metaciy-ийг диалог байршуулах зарчмаа "
 "өөрчилж цэсийг Java-ийн алдаатай х. программуудын орчинд ажиллахад хүргэдэг. "
-"Үүний адил бас бс жишээнүүд тохиолдоно. Энэ хэлбэр нь Metacity-ийг ямар ч "
+"Үүний адил бас бс жишээнүүд тохиолдоно. Энэ хэлбэр нь Метасити-ийг ямар ч "
 "алдагүй ажиллагааны горимд шилжүүлж магадгүй та согоггүй х. программ "
 "ажиллуулахгүй тохиолдолд танд харинилүү таатай UI олгож болох. Харамсалтай "
-"нь дутагдлыг ямар ч гэсэн зайлшгүй засварах болдог. Амьдралын үнэн гашуун "
+"нь дутагдлыг ямар ч гэсэн зайлшгүй засварах болдог. Амьдралын true гашуун "
 "үү. Зарим дутагдлууд нь хэрэглээний зорилгоос хамаарсан байдаг учраас "
 "программын өөрийн төрөлд гөр хүрэлгүйгээр алдааг засварлах боломж байдаггүй."
 
@@ -787,7 +783,7 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Metacity яаж системийн дохио эсвэл өөр хэрэглээний програмын 'чимээ' өгөхийг "
+"Метасити яаж системийн дохио эсвэл өөр хэрэглээний програмын 'чимээ' өгөхийг "
 "заах оптик шинж тэмдэг хэрэгжүүлэхийг хэлнэ. Одоогоор хар цагаан бүтэн "
 "дэлгэц заах \"Дэлгэц дүүрэн\", хэрэглээний програмын толгой самбарыг заах "
 "\"жааз_нүүр\" хоёр хүчинтэй утга байна. Хэрэв програм мэдэгдэхгүй чимээ "
@@ -800,7 +796,7 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
+"»/apps/метасити/global_keybindings/run_command_N«-код нь энэ командыг "
 "гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
 "хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
 
@@ -809,7 +805,7 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_screenshot«-түлхүүр энэ "
+"»/apps/метасити/global_keybindings/run_command_screenshot«-түлхүүр энэ "
 "командыг гүйцэтгэх товчлуурын хослолыг тодорхойлно. Товчлуурын хувилбарыг "
 "оруулснаар command_screenshot гүйцэтгэгдэнэ."
 
@@ -819,7 +815,7 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_window_screenshot«-код нь энэ "
+"»/apps/метасити/global_keybindings/run_command_window_screenshot«-код нь энэ "
 "командыг гүйцэтгэх товчлуурын хослолыг тодорхойлно. Товчлуурын хувилбарыг "
 "оруулснаар command_window_screenshot гүйцэтгэгдэнэ."
 
@@ -832,7 +828,7 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
-"Харгалзсан дугаартай /apps/metacity/keybinding_commands командыг гүйцэтгэх "
+"Харгалзсан дугаартай /apps/метасити/keybinding_commands командыг гүйцэтгэх "
 "товчлуурын комбинаци. Бичих хэлбэр нь »&lt;Control&gt;« эсвэл »&lt;Shift&gt;"
 "&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
 "бичих болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
@@ -1921,8 +1917,7 @@ msgstr ""
 #: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-"%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
+msgstr "%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
 
 #: src/prefs.c:1336
 #, c-format
@@ -1934,8 +1929,7 @@ msgstr "%d дээрхи ажлын талбарын тоог оруулахад 
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
-"Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
+msgstr "Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
 
 #: src/prefs.c:1896
 #, c-format
@@ -1964,8 +1958,7 @@ msgstr ""
 
 #: src/screen.c:449
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "дэлгэц %d-ийн (Display »%s« дээрх ) цонхны менежерийн тэмдэглэл хүлээж "
 "авахад алдаа гарлаа\n"
@@ -2021,12 +2014,12 @@ msgstr "Session файлыг боловсруулж хөрвүүлж болсо�
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "Session ID идэвхтэй байгаа ч <metacity_session> аттрибут гарч ирлээ"
+msgstr "Session ID идэвхтэй байгаа ч <метасити_session> аттрибут гарч ирлээ"
 
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "<metacity_session> элементэд үл таних аттрибут %s байна"
+msgstr "<метасити_session> элементэд үл таних аттрибут %s байна"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
@@ -2058,7 +2051,7 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Session management-тэй ажилладаггүй программыг таньж анхааруулах Metacity "
+"Session management-тэй ажилладаггүй программыг таньж анхааруулах Метасити "
 "диалог эхлэхэд алдаа гарлаа: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
@@ -2149,8 +2142,7 @@ msgstr "Элемент <%s>-ийн геометр харьцаа »%s« өгөг
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> ямар нэгэн геометрийн харьцаа эсвэл түүнийг агуулсан эхийг оруулна уу"
+msgstr "<%s> ямар нэгэн геометрийн харьцаа эсвэл түүнийг агуулсан эхийг оруулна уу"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2208,8 +2200,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> элементэд ямар ч »value« аттрибут алга"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "button_width/button_height болон товчлууруудын талуудын харьцааг тодорхойлж "
 "чадахгүй байна"
@@ -2438,17 +2429,17 @@ msgstr "<%s>элементэд ямар ч »style« аттрибут алга"
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "»%s« бол үнэн фокус-аттрибут утга биш"
+msgstr "»%s« бол хүчинтэй фокус-аттрибут утга биш"
 
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "»%s« бол үнэн аттрибут утга биш"
+msgstr "»%s« бол хүчинтэй аттрибут утга биш"
 
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "ямар ч »%s« нэр бүхий стиль тодорхойлогдоогүй байна"
+msgstr "ямар ч »%s« нэр бүхий хэлбэр тодорхойлогдоогүй байна"
 
 #: src/theme-parser.c:3430
 #, c-format
@@ -2472,8 +2463,7 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"Нөхцөл %s, фокус, хэмжээ %s, %s-д зориулсан стиль хэдийнэ өгөгдсөн байна"
+msgstr "Нөхцөл %s, фокус, хэмжээ %s, %s-д зориулсан стиль хэдийнэ өгөгдсөн байна"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2509,12 +2499,11 @@ msgstr ""
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr ""
 "Элементийн хамгийн гадна хүрээний сэдэв нь <%s> дотор бус харин "
-"<metacity_theme> дотор л орших ёстой"
+"<метасити_theme> дотор л орших ёстой"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Элемент <%s> нь name/author/date/description элемент дотор орших ёсгүй"
 
 #: src/theme-parser.c:3684
@@ -2524,8 +2513,7 @@ msgstr "Элемент <%s> нь <constant> элемент дотор орших
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Элемент <%s> нь distance/border/aspect_ratio-element дотор орших ёсгүй"
 
 #: src/theme-parser.c:3718
@@ -2583,7 +2571,7 @@ msgstr "Сэдвийг %s файлаас уншиж чадсангүй: %s\n"
 #: src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Сэдэв файл %s ямар ч үндсэн <metacity_theme> элемент агуулаагүй байна"
+msgstr "Сэдэв файл %s ямар ч үндсэн <метасити_theme> элемент агуулаагүй байна"
 
 #: src/theme.c:202
 msgid "top"
@@ -2673,8 +2661,7 @@ msgstr "Хосолсон өнгөний альфа тоо »%s« 0.0-1.0 тоо�
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Өнгө холих формат нь »холих/үндсэн өнгө/фактор«; »%s« энэ форматанд "
 "тохирохгүй"
@@ -2682,8 +2669,7 @@ msgstr ""
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
-"Өнгө хослуулах фактор »%s« нь хосолсон өнгө дотор боловсруулагдаж чадсангүй"
+msgstr "Өнгө хослуулах фактор »%s« нь хосолсон өнгө дотор боловсруулагдаж чадсангүй"
 
 #: src/theme.c:1132
 #, c-format
@@ -2712,8 +2698,7 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Координатын илэрхийлэл боловсруулах бололцоогүй »%s« бүхэл тоо агуулж байна"
+msgstr "Координатын илэрхийлэл боловсруулах бололцоогүй »%s« бүхэл тоо агуулж байна"
 
 #: src/theme.c:1531
 #, c-format
@@ -2733,18 +2718,15 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Координатын илэрхийллийн хариуны хуваарь нь  \"тэг\" тоо байна"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Координатын илэрхийлэл хөвөгч таслалтай тоонд модулийн операторыг хэрэглэж "
 "үзэж байна."
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Координатын илэрхийлэл дотор операнд байх ёстой байранд опеоатор »%s« байна"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Координатын илэрхийлэл дотор операнд байх ёстой байранд опеоатор »%s« байна"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -2752,8 +2734,7 @@ msgstr "Координатын илэрхийлэл дотор оператор�
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"Координатын илэрхийллийн төгсгөлд операнд байх ёстой атал Оператор байна"
+msgstr "Координатын илэрхийллийн төгсгөлд операнд байх ёстой атал Оператор байна"
 
 #: src/theme.c:1863
 #, c-format
@@ -2770,7 +2751,7 @@ msgid ""
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
 "Координатын илэрхийллийн хөрвүүлэгчийн buffer хязгаартаа тулсан байна., Энэ "
-"бол Metacity-ийн алдаа байна; Танд үнэхээр ийм том хэмжээний илэрхийлэл "
+"бол Метасити-ийн алдаа байна; Танд үнэхээр ийм том хэмжээний илэрхийлэл "
 "хэрэгтэй гэж үү?"
 
 #: src/theme.c:2011
@@ -2810,8 +2791,7 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"юу ч хамаагүй\"/> "
 "дутаж байна"
@@ -2847,8 +2827,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Хэрэглэгчийн оруулсан тогтмол нь том үсгээр эхлэх ёстой; »%s« хийхгүй"
 
 #: src/theme.c:5048 src/theme.c:5110
@@ -2921,7 +2900,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4638
+#: src/window.c:4657
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2943,7 +2922,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5296
+#: src/window.c:5315
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2975,10 +2954,8 @@ msgstr "Онцлог %s. 0x%lx цонхон дээр буруу UTF-8 агуул
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
@@ -2991,3 +2968,4 @@ msgstr ""
 
 #~ msgid "Kill application"
 #~ msgstr "Х.программыг алах"
+
