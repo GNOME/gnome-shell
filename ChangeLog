@@ -1,3 +1,8 @@
+2002-02-08  Anders Carlsson  <andersca@gnu.org>
+
+	* src/theme.c (scale_and_alpha_pixbuf): If we're only
+	scaling horizontally or vertically, use GDK_INTERP_NEAREST.
+
 2002-02-08  Havoc Pennington  <hp@pobox.com>
 
 	* autogen.sh: unbreak

@@ -2555,9 +2555,19 @@ scale_and_alpha_pixbuf (GdkPixbuf     *src,
     }
   else
     {
-      pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-                                        width, height,
-                                        GDK_INTERP_BILINEAR);
+      if (gdk_pixbuf_get_width (pixbuf) == width ||
+	  gdk_pixbuf_get_height (pixbuf) == height)
+	{
+	  pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+					    width, height,
+					    GDK_INTERP_NEAREST);
+	}
+      else
+	{
+	  pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+					    width, height,
+					    GDK_INTERP_BILINEAR);
+	}
     }
 
   if (pixbuf)
