@@ -82,7 +82,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 30
+#define N_SUPPORTED 31
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -116,6 +116,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[27] = screen->display->atom_net_wm_ping;
   atoms[28] = screen->display->atom_net_active_window;
   atoms[29] = screen->display->atom_net_wm_workarea;
+  atoms[30] = screen->display->atom_net_wm_show_desktop;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,

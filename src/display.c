@@ -93,7 +93,7 @@ set_utf8_string_hint (MetaDisplay *display,
   XChangeProperty (display->xdisplay, 
                    xwindow, atom,
                    display->atom_utf8_string, 
-                   8, PropModeReplace, (guchar*) val, strlen (val) + 1);
+                   8, PropModeReplace, (guchar*) val, strlen (val));
   return meta_error_trap_pop (display);
 }
 
@@ -205,7 +205,8 @@ meta_display_open (const char *name)
     "_NET_WM_PING",
     "_NET_WM_PID",
     "WM_CLIENT_MACHINE",
-    "_NET_WM_WORKAREA"
+    "_NET_WM_WORKAREA",
+    "_NET_WM_SHOW_DESKTOP"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -313,6 +314,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_pid = atoms[54];
   display->atom_wm_client_machine = atoms[55];
   display->atom_net_wm_workarea = atoms[56];
+  display->atom_net_wm_show_desktop = atoms[57];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
@@ -1264,6 +1266,19 @@ event_callback (XEvent   *event,
 
                   meta_prefs_set_num_workspaces (num_spaces);
                 }
+	      else if (event->xclient.message_type ==
+		       display->atom_net_wm_show_desktop)
+		{
+		  gboolean show_desktop;
+
+		  show_desktop = event->xclient.data.l[0] != 0;
+		  meta_verbose ("Request to %s desktop\n", show_desktop ? "show" : "hide");
+
+		  if (show_desktop)
+		    meta_display_show_desktop (display);
+		  else
+		    meta_display_unshow_desktop (display);
+		}
               else if (event->xclient.message_type ==
                        display->atom_metacity_restart_message)
                 {
@@ -2268,6 +2283,31 @@ meta_display_increment_event_serial (MetaDisplay *display)
                    display->atom_motif_wm_hints);
 }
 
+static void
+meta_display_update_show_desktop_hint (MetaDisplay *display)
+{
+  GSList *tmp;
+  
+  unsigned long data[1];
+
+  data[0] = display->showing_desktop ? 1 : 0;
+  
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+      
+      meta_error_trap_push (display);
+      XChangeProperty (display->xdisplay, screen->xroot,
+                       display->atom_net_wm_show_desktop,
+                       XA_CARDINAL,
+                       32, PropModeReplace, (guchar*) data, 1);
+      meta_error_trap_pop (display);
+
+      tmp = tmp->next;
+    }
+}
+
 void
 meta_display_update_active_window_hint (MetaDisplay *display)
 {
@@ -2326,6 +2366,8 @@ meta_display_show_desktop (MetaDisplay *display)
   display->showing_desktop = TRUE;
 
   queue_windows_showing (display);
+
+  meta_display_update_show_desktop_hint (display);
 }
 
 void
@@ -2337,6 +2379,8 @@ meta_display_unshow_desktop (MetaDisplay *display)
   display->showing_desktop = FALSE;
   
   queue_windows_showing (display);
+
+  meta_display_update_show_desktop_hint (display);
 }
 
 void

@@ -1,3 +1,16 @@
+2002-05-06  Anders Carlsson  <andersca@gnu.org>
+
+	* src/display.c: (set_utf8_string_hint):
+	Fix an off-by-one error.
+
+	(meta_display_open),
+	(event_callback), (meta_display_update_show_desktop_hint),
+	(meta_display_show_desktop), (meta_display_unshow_desktop):
+	* src/display.h:
+	* src/screen.c: (set_supported_hint):
+	Add support for _NET_WM_SHOW desktop, both as a message and
+	as a root window property.
+	
 2002-05-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_unminimize): on unminimize, queue 
