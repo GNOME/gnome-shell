@@ -24,6 +24,7 @@
 #include "display.h"
 #include "errors.h"
 #include "ui.h"
+#include "session.h"
 
 #include <glib-object.h>
 
@@ -37,13 +38,24 @@
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
 
+static void
+usage (void)
+{
+  g_print ("metacity [--disable-sm] [--sm-client-id=ID] [--display=DISPLAY]\n");
+  exit (0);
+}
+
 int
 main (int argc, char **argv)
 {
   struct sigaction act;
   sigset_t empty_mask;
   char *display_name;
-
+  int i;
+  const char *client_id;
+  gboolean disable_sm;
+  const char *prev_arg;
+  
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
   act.sa_mask    = empty_mask;
@@ -52,34 +64,125 @@ main (int argc, char **argv)
   
   g_set_prgname (PACKAGE);
   
-  meta_main_loop = g_main_loop_new (NULL, FALSE);
-  
   meta_set_verbose (TRUE);
   meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
 
-  if (g_getenv ("METACITY_DISPLAY"))
+  /* Parse options lamely */
+
+  display_name = NULL;
+  client_id = NULL;
+  disable_sm = FALSE;
+  prev_arg = NULL;
+  i = 1;
+  while (i < argc)
+    {
+      const char *arg = argv[i];
+      
+      if (strcmp (arg, "--help") == 0 ||
+          strcmp (arg, "-h") == 0 ||
+          strcmp (arg, "-?") == 0)
+        usage ();
+      else if (strcmp (arg, "--sm-disable") == 0)
+        disable_sm = TRUE; 
+      else if (strstr (arg, "--display=") == arg)
+        {
+          const char *disp;
+
+          if (display_name != NULL)
+            meta_fatal ("Can't specify display twice\n");
+          
+          disp = strchr (arg, '=');
+          ++disp;
+          
+          display_name =
+            g_strconcat ("DISPLAY=", disp, NULL);
+        }
+      else if (prev_arg &&
+               strcmp (prev_arg, "--display") == 0)
+        {
+          if (display_name != NULL)
+            meta_fatal ("Can't specify display twice\n");
+
+          display_name = g_strconcat ("DISPLAY=", arg, NULL);
+        }
+      else if (strcmp (arg, "--display") == 0)
+        ; /* wait for next arg */
+      else if (strstr (arg, "--sm-client-id=") == arg)
+        {
+          const char *id;
+
+          if (client_id)
+            meta_fatal ("Can't specify client ID twice\n");
+          
+          id = strchr (arg, '=');
+          ++id;
+
+          client_id = g_strdup (id);
+        }
+      else if (prev_arg &&
+               strcmp (prev_arg, "--sm-client-id") == 0)
+        {
+          if (client_id)
+            meta_fatal ("Can't specify client ID twice\n");
+
+          client_id = g_strdup (arg);
+        }
+      else if (strcmp (arg, "--sm-client-id") == 0)
+        ; /* wait for next arg */
+      else
+        usage ();
+      
+      prev_arg = arg;
+      
+      ++i;
+    }
+    
+  meta_main_loop = g_main_loop_new (NULL, FALSE);
+  
+  if (display_name == NULL &&
+      g_getenv ("METACITY_DISPLAY"))
     {
       meta_verbose ("Using METACITY_DISPLAY %s\n",
                     g_getenv ("METACITY_DISPLAY"));
       display_name =
         g_strconcat ("DISPLAY=", g_getenv ("METACITY_DISPLAY"), NULL);
+    }
+
+  if (display_name)
+    {
       putenv (display_name);
       /* DO NOT FREE display_name, putenv() sucks */
     }
-
-
+  
   /* gtk_init() below overrides this, so it can be removed */
   meta_errors_init ();
   
   g_type_init (0); /* grumble */
-  meta_ui_init (&argc, &argv);
+
+  if (!disable_sm)
+    meta_session_init (client_id); /* client_id == NULL is fine */
+  
+  meta_ui_init (&argc, &argv);  
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
   
   g_main_run (meta_main_loop);
 
+  {
+    GSList *displays;
+    GSList *tmp;
+    
+    displays = meta_displays_list ();
+    tmp = displays;
+    while (tmp != NULL)
+      {
+        meta_display_close (tmp->data);
+        tmp = tmp->next;
+      }
+  }
+  
   return meta_exit_code;
 }
 
@@ -93,8 +196,9 @@ void
 meta_quit (MetaExitCode code)
 {
   meta_exit_code = code;
-  
-  g_main_quit (meta_main_loop);
+
+  if (g_main_is_running (meta_main_loop))
+    g_main_quit (meta_main_loop);
 }
 
 void

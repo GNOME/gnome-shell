@@ -43,6 +43,25 @@ AM_GNU_GETTEXT
 ## here we get the flags we'll actually use
 PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.6)
 
+CFLAGS="$METACITY_CFLAGS $CFLAGS"
+
+found_sm=false
+case "$METACITY_LIBS" in
+ *-lSM*)
+    found_sm=true
+    ;;
+ *)
+  AC_CHECK_LIB(SM, SmcSaveYourselfDone, 
+               AC_CHECK_HEADERS(X11/SM/SMlib.h,
+                                METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=true),
+               , $METACITY_LIBS)
+    ;;
+esac
+
+if test "$found_sm" = "true"; then
+   AC_DEFINE(HAVE_SM)
+fi
+
 # Check for shaped window extension
 AC_CHECK_LIB(Xext, XShapeCombineMask, AC_DEFINE(HAVE_SHAPE_EXT),,$METACITY_LIBS)
 
