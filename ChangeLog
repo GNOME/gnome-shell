@@ -1,5 +1,14 @@
 2005-03-23  mallum,,,  <mallum@openedhand.com>
 
+	* cltr.c: (ctrl_photo_grid_get_trans_coords),
+	Fix grid co-ords -> translation vals converter
+	(cltr_photo_grid_navigate), (cltr_photo_grid_redraw),
+	(cltr_photo_grid_new), (idle_cb):
+	Fix moving between pictures when zoomed
+
+
+2005-03-23  mallum,,,  <mallum@openedhand.com>
+
 	* cltr.c: (cltr_dispatch_x_event), (cltr_window_new),
 	(cltr_main_loop), (cltr_photo_grid_navigate),
 	(cltr_photo_grid_activate_cell), (cltr_photo_grid_populate),

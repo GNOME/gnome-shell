@@ -324,9 +324,35 @@ ctrl_photo_grid_get_trans_coords(ClutterPhotoGrid *grid,
 
   /* XXX figure out what magic 2.0 value comes from */
 
+  /*
   *tx = (float)( (max_x-x) - 1.0 ) * 2.0;
   *ty = (float)( y - 1.0 ) * 2.0;
+  */
 
+  /* 
+   3x3 0,0 -> 2,-2
+
+   5x5 0,0 ->
+  *tx = 4.0;
+  *ty = -4.0;
+
+  4x4 0,0 -> 3.0, -3.0
+  */
+
+  /*
+  float trange = ((float)(grid->n_cols - 1.0) * 2.0);
+  float xrange = (float)grid->n_cols - 1.0;
+  */
+
+  /*
+  *tx = ((max_x-x) * (trange/xrange)) - (trange/2);
+  *ty = (y * (trange/xrange)) - (trange/2);
+  */
+
+  /* assumes rows = cols */
+
+  *tx = ((max_x-x) * 2.0) - (grid->n_cols - 1.0);
+  *ty = (y * 2.0) - (grid->n_cols - 1.0);
 }
 
 void
@@ -362,10 +388,9 @@ cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
       if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED)
 	{
 	  grid->state      = CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE;
-
-	  grid->view_min_x =  grid->view_max_x; 
-	  grid->view_min_y =  grid->view_max_y ;
-
+	  grid->view_min_x = grid->view_max_x; 
+	  grid->view_min_y = grid->view_max_y ;
+	  grid->anim_step  = 0;
 	}
 	  
       ctrl_photo_grid_cell_to_coords(grid, grid->cell_active, &x, &y);
@@ -576,8 +601,9 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	    {
 	      float f = (float)grid->anim_step/grid->anim_n_steps;
 
-	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
-	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+	      trans_x = grid->view_min_x + ((grid->view_max_x - grid->view_min_x) * f);
+	      trans_y = grid->view_min_y + ((grid->view_max_y - grid->view_min_y) * f);
+
 	    }
 	}
 
@@ -688,7 +714,7 @@ cltr_photo_grid_new(ClutterWindow *win,
 
   grid->state = CLTR_PHOTO_GRID_STATE_BROWSE;
 
-  grid->anim_n_steps = 40; /* value needs to be calced dep on rows */
+  grid->anim_n_steps = 50; /* value needs to be calced dep on rows */
   grid->anim_step    = 0;
 
   /* 
@@ -732,6 +758,10 @@ idle_cb(gpointer data)
 {
   ClutterPhotoGrid *grid = (ClutterPhotoGrid *)data;
 
+  /*
+  if (grid->state != CLTR_PHOTO_GRID_STATE_BROWSE
+      && grid->state != CLTR_PHOTO_GRID_STATE_ZOOMED)
+  */
   cltr_photo_grid_redraw(grid);
 
   return TRUE;
