@@ -1,3 +1,7 @@
+2001-10-13  Havoc Pennington  <hp@pobox.com>
+
+	* src/session.c (meta_session_init): hmm, fix build
+
 2001-10-12  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (meta_session_init): set the session manager

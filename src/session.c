@@ -293,7 +293,7 @@ meta_session_init (const char *previous_id)
     prop5val.length = strlen (prop5val.value);
 
     prop6.name = "_GSM_Priority";
-    prop6.type = SmCARD8
+    prop6.type = SmCARD8;
     prop6.num_vals = 1;
     prop6.vals = &prop6val;
     prop6val.value = &priority;
