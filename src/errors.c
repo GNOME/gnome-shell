@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <gdk/gdk.h>
 
+static int sync_count = 0;
+
 static int x_error_handler    (Display     *display,
                                XErrorEvent *error);
 static int x_io_error_handler (Display     *display);
@@ -37,13 +39,20 @@ meta_errors_init (void)
   XSetIOErrorHandler (x_io_error_handler);
 }
 
-void
-meta_error_trap_push (MetaDisplay *display)
+static void
+meta_error_trap_push_internal (MetaDisplay *display,
+                               gboolean     need_sync)
 {
   /* GDK resets the error handler on each push */
   int (* old_error_handler) (Display     *,
                              XErrorEvent *);
 
+  if (need_sync)
+    {
+      XSync (display->xdisplay, False);
+      ++sync_count;
+    }
+  
   gdk_error_trap_push ();
 
   /* old_error_handler will just be equal to x_error_handler
@@ -60,17 +69,23 @@ meta_error_trap_push (MetaDisplay *display)
     }
 
   display->error_traps += 1;
+
+  meta_topic (META_DEBUG_ERRORS, "%d traps remain\n", display->error_traps);
 }
 
-int
-meta_error_trap_pop (MetaDisplay *display)
+static int
+meta_error_trap_pop_internal  (MetaDisplay *display,
+                               gboolean     need_sync)
 {
   int result;
 
   g_assert (display->error_traps > 0);
-  
-  /* just use GDK trap, but we do the sync since GDK doesn't */
-  XSync (display->xdisplay, False);
+
+  if (need_sync)
+    {
+      XSync (display->xdisplay, False);
+      ++sync_count;
+    }
 
   result = gdk_error_trap_pop ();
 
@@ -92,7 +107,73 @@ meta_error_trap_pop (MetaDisplay *display)
       display->error_trap_handler = NULL;
     }
 
+  meta_topic (META_DEBUG_ERRORS, "%d traps\n", display->error_traps);
+  
   return result;
+}
+
+void
+meta_error_trap_push (MetaDisplay *display)
+{
+  meta_error_trap_push_internal (display, FALSE);
+}
+
+void
+meta_error_trap_pop (MetaDisplay *display,
+                     gboolean     last_request_was_roundtrip)
+{
+  gboolean need_sync;
+
+  /* we only have to sync when popping the outermost trap */
+  need_sync = (display->error_traps == 1 && !last_request_was_roundtrip);
+
+  if (need_sync)
+    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_pop, traps = %d, roundtrip = %d\n",
+                sync_count, display->error_traps, last_request_was_roundtrip);
+
+  display->error_trap_synced_at_last_pop = need_sync || last_request_was_roundtrip;
+  
+  meta_error_trap_pop_internal (display, need_sync);
+}
+
+void
+meta_error_trap_push_with_return (MetaDisplay *display)
+{
+  gboolean need_sync;
+
+  /* We don't sync on push_with_return if there are no traps
+   * currently, because we assume that any errors were either covered
+   * by a previous pop, or were fatal.
+   *
+   * More generally, we don't sync if we were synchronized last time
+   * we popped. This is known to be the case if there are no traps,
+   * but we also keep a flag so we know whether it's the case otherwise.
+   */
+
+  if (!display->error_trap_synced_at_last_pop)
+    need_sync = TRUE;
+  else
+    need_sync = FALSE;
+
+  if (need_sync)
+    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_push_with_return, traps = %d\n",
+                sync_count, display->error_traps);
+  
+  meta_error_trap_push_internal (display, FALSE);
+}
+
+int
+meta_error_trap_pop_with_return  (MetaDisplay *display,
+                                  gboolean     last_request_was_roundtrip)
+{
+  if (!last_request_was_roundtrip)
+    meta_topic (META_DEBUG_SYNC, "%d: Syncing on error_trap_pop_with_return, traps = %d, roundtrip = %d\n",
+                sync_count, display->error_traps, last_request_was_roundtrip);
+
+  display->error_trap_synced_at_last_pop = TRUE;
+  
+  return meta_error_trap_pop_internal (display,
+                                       !last_request_was_roundtrip);
 }
 
 static int

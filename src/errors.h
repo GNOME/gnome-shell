@@ -25,9 +25,15 @@
 #include "util.h"
 #include "display.h"
 
-void     meta_errors_init     (void);
-void     meta_error_trap_push (MetaDisplay *display);
+void      meta_errors_init     (void);
+void      meta_error_trap_push (MetaDisplay *display);
+void      meta_error_trap_pop  (MetaDisplay *display,
+                                gboolean     last_request_was_roundtrip);
+
+void      meta_error_trap_push_with_return (MetaDisplay *display);
 /* returns X error code, or 0 for no error */
-int      meta_error_trap_pop  (MetaDisplay *display);
+int       meta_error_trap_pop_with_return  (MetaDisplay *display,
+                                            gboolean     last_request_was_roundtrip);
+
 
 #endif

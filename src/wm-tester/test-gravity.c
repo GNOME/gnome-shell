@@ -24,7 +24,8 @@ double screen_y_fraction[3] = { 0, 0.5, 1.0 };
 int screen_width;
 int screen_height;
 
-void calculate_position (int i, int *x, int *y)
+static void
+calculate_position (int i, int *x, int *y)
 {
   if (i == 9)
     {

@@ -799,7 +799,6 @@ meta_change_keygrab (MetaDisplay *display,
                      int          keycode,
                      int          modmask)
 {
-  int result;
   int ignored_mask;
 
   /* Grab keycode/modmask, together with
@@ -812,6 +811,9 @@ meta_change_keygrab (MetaDisplay *display,
               grab ? "Grabbing" : "Ungrabbing",
               keysym_name (keysym),
               modmask, xwindow);
+
+  /* efficiency, avoid so many XSync() */
+  meta_error_trap_push (display);
   
   ignored_mask = 0;
   while (ignored_mask < (int) display->ignored_modifier_mask)
@@ -824,8 +826,9 @@ meta_change_keygrab (MetaDisplay *display,
           ++ignored_mask;
           continue;
         }
-      
-      meta_error_trap_push (display);
+
+      if (meta_is_debugging ())
+        meta_error_trap_push_with_return (display);
       if (grab)
         XGrabKey (display->xdisplay, keycode,
                   modmask | ignored_mask,
@@ -836,21 +839,28 @@ meta_change_keygrab (MetaDisplay *display,
         XUngrabKey (display->xdisplay, keycode,
                     modmask | ignored_mask,
                     xwindow);
-      
-      result = meta_error_trap_pop (display);
 
-      if (grab && result != Success)
-        {      
-          if (result == BadAccess)
-            meta_warning (_("Some other program is already using the key %s with modifiers %x as a binding\n"), keysym_name (keysym), modmask | ignored_mask);
-          else
-            meta_topic (META_DEBUG_KEYBINDINGS,
-                        "Failed to grab key %s with modifiers %x\n",
-                        keysym_name (keysym), modmask | ignored_mask);
+      if (meta_is_debugging ())
+        {
+          int result;
+          
+          result = meta_error_trap_pop_with_return (display, FALSE);
+          
+          if (grab && result != Success)
+            {      
+              if (result == BadAccess)
+                meta_warning (_("Some other program is already using the key %s with modifiers %x as a binding\n"), keysym_name (keysym), modmask | ignored_mask);
+              else
+                meta_topic (META_DEBUG_KEYBINDINGS,
+                            "Failed to grab key %s with modifiers %x\n",
+                            keysym_name (keysym), modmask | ignored_mask);
+            }
         }
 
       ++ignored_mask;
     }
+
+  meta_error_trap_pop (display, FALSE);
 }
 
 static void
@@ -894,12 +904,12 @@ ungrab_all_keys (MetaDisplay *display,
 {
   int result;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
 
   XUngrabKey (display->xdisplay, AnyKey, AnyModifier,
               xwindow);
       
-  result = meta_error_trap_pop (display);
+  result = meta_error_trap_pop_with_return (display, FALSE);
   
   if (result != Success)    
     meta_topic (META_DEBUG_KEYBINDINGS,
@@ -984,19 +994,26 @@ grab_keyboard (MetaDisplay *display,
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
 
-  XGrabKeyboard (display->xdisplay,
-                 xwindow, True,
-                 GrabModeAsync, GrabModeAsync,
-                 meta_display_get_current_time (display));
-       
-  result = meta_error_trap_pop (display);
-  if (result != Success)
+  if (XGrabKeyboard (display->xdisplay,
+                     xwindow, True,
+                     GrabModeAsync, GrabModeAsync,
+                     meta_display_get_current_time (display)) != GrabSuccess)
     {
+      meta_error_trap_pop_with_return (display, TRUE);
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "XGrabKeyboard() failed\n");
-      return FALSE;
+                  "XGrabKeyboard() returned failure\n");
+    }
+  else
+    {
+      result = meta_error_trap_pop_with_return (display, TRUE);
+      if (result != Success)
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "XGrabKeyboard() resulted in an error\n");
+          return FALSE;
+        }
     }
        
   meta_topic (META_DEBUG_KEYBINDINGS, "Grabbed all keys\n");
@@ -1017,7 +1034,7 @@ ungrab_keyboard (MetaDisplay *display)
               "Ungrabbing keyboard with timestamp %lu\n",
               timestamp);
   XUngrabKeyboard (display->xdisplay, timestamp);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display, FALSE);
 }
 
 gboolean

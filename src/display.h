@@ -167,6 +167,7 @@ struct _MetaDisplay
   guint static_gravity_works : 1;
   
   /*< private-ish >*/
+  guint error_trap_synced_at_last_pop : 1;
   MetaEventQueue *events;
   GSList *screens;
   GHashTable *window_ids;

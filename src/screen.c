@@ -404,11 +404,11 @@ meta_screen_new (MetaDisplay *display,
         }
 
       /* We want to find out when the current selection owner dies */
-      meta_error_trap_push (display);
+      meta_error_trap_push_with_return (display);
       attrs.event_mask = StructureNotifyMask;
       XChangeWindowAttributes (xdisplay,
                                current_wm_sn_owner, CWEventMask, &attrs);
-      if (meta_error_trap_pop (display) != Success)
+      if (meta_error_trap_pop_with_return (display, FALSE) != Success)
         current_wm_sn_owner = None; /* don't wait for it to die later on */
     }
 
@@ -477,7 +477,7 @@ meta_screen_new (MetaDisplay *display,
     }
   
   /* select our root window events */
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
 
   /* We need to or with the existing event mask since
    * gtk+ may be interested in other events.
@@ -492,7 +492,7 @@ meta_screen_new (MetaDisplay *display,
                 KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | StructureNotifyMask |
 		attr.your_event_mask);
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
     {
       meta_warning (_("Screen %d on display \"%s\" already has a window manager\n"),
                     number, display->name);
@@ -608,9 +608,9 @@ meta_screen_free (MetaScreen *screen)
 
   meta_stack_free (screen->stack);
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push_with_return (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
-  if (meta_error_trap_pop (screen->display) != Success)
+  if (meta_error_trap_pop_with_return (screen->display, FALSE) != Success)
     meta_warning (_("Could not release screen %d on display \"%s\"\n"),
                   screen->number, screen->display->name);
 
@@ -638,13 +638,13 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   /* Must grab server to avoid obvious race condition */
   meta_display_grab (screen->display);
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push_with_return (screen->display);
   
   XQueryTree (screen->display->xdisplay,
               screen->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
-  if (meta_error_trap_pop (screen->display))
+  if (meta_error_trap_pop_with_return (screen->display, TRUE) != Success)
     {
       meta_display_ungrab (screen->display);
       return;
@@ -844,14 +844,14 @@ meta_screen_get_workspace_by_index (MetaScreen  *screen,
   return NULL;
 }
 
-static int
+static void
 set_number_of_spaces_hint (MetaScreen *screen,
 			   int         n_spaces)
 {
   unsigned long data[1];
 
   if (screen->closing > 0)
-    return 0;
+    return;
 
   data[0] = n_spaces;
 
@@ -862,7 +862,7 @@ set_number_of_spaces_hint (MetaScreen *screen,
                    screen->display->atom_net_number_of_desktops,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  return meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (screen->display, FALSE);
 }
 
 static void
@@ -1411,7 +1411,7 @@ meta_create_offscreen_window (Display *xdisplay,
                         &attrs);
 }
 
-static int
+static void
 set_work_area_hint (MetaScreen *screen)
 {
   int num_workspaces;
@@ -1448,7 +1448,7 @@ set_work_area_hint (MetaScreen *screen)
 		   XA_CARDINAL, 32, PropModeReplace,
 		   (guchar*) data, num_workspaces*4);
   g_free (data);
-  return meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (screen->display, FALSE);
 }
 
 static gboolean
@@ -1564,7 +1564,7 @@ update_showing_desktop_hint (MetaScreen *screen)
                    screen->display->atom_net_showing_desktop,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (screen->display, FALSE);
 }
 
 static void

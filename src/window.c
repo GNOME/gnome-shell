@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington, Anders Carlsson
+ * Copyright (C) 2002 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -70,29 +71,29 @@ static void constrain_position (MetaWindow        *window,
                                 int               *new_x,
                                 int               *new_y);
 
-static int      update_size_hints         (MetaWindow     *window);
-static int      update_title              (MetaWindow     *window);
-static int      update_protocols          (MetaWindow     *window);
-static int      update_wm_hints           (MetaWindow     *window);
+static void     update_size_hints         (MetaWindow     *window);
+static void     update_title              (MetaWindow     *window);
+static void     update_protocols          (MetaWindow     *window);
+static void     update_wm_hints           (MetaWindow     *window);
 static void     update_net_wm_state       (MetaWindow     *window);
 static void     update_mwm_hints          (MetaWindow     *window);
-static int      update_wm_class           (MetaWindow     *window);
-static int      update_transient_for      (MetaWindow     *window);
+static void     update_wm_class           (MetaWindow     *window);
+static void     update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
-static int      update_initial_workspace  (MetaWindow     *window);
-static int      update_icon_name          (MetaWindow     *window);
-static int      update_icon               (MetaWindow     *window);
+static void     update_initial_workspace  (MetaWindow     *window);
+static void     update_icon_name          (MetaWindow     *window);
+static void     update_icon               (MetaWindow     *window);
 static void     redraw_icon               (MetaWindow     *window); 
 static void     update_struts             (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static void     recalc_do_not_cover_struts(MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow *window);
-static int      set_wm_state              (MetaWindow     *window,
+static void     set_wm_state              (MetaWindow     *window,
                                            int             state);
-static int      set_net_wm_state          (MetaWindow     *window);
+static void     set_net_wm_state          (MetaWindow     *window);
 static void     send_configure_notify     (MetaWindow     *window);
 static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
@@ -177,16 +178,20 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   /* Grab server */
   meta_display_grab (display);
+  meta_error_trap_push (display); /* Push a trap over all of window
+                                   * creation, to reduce XSync() calls
+                                   */
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   
   XGetWindowAttributes (display->xdisplay,
                         xwindow, &attrs);
 
-  if (meta_error_trap_pop (display))
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     {
       meta_verbose ("Failed to get attributes for window 0x%lx\n",
                     xwindow);
+      meta_error_trap_pop (display, TRUE);
       meta_display_ungrab (display);
       return NULL;
     }
@@ -194,6 +199,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   if (attrs.override_redirect)
     {
       meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
+      meta_error_trap_pop (display, TRUE);
       meta_display_ungrab (display);
       return NULL;
     }
@@ -223,6 +229,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
             (state == IconicState || state == NormalState)))
         {
           meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
+          meta_error_trap_pop (display, TRUE);
           meta_display_ungrab (display);
           return NULL;
         }
@@ -232,7 +239,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
                     wm_state_to_string (existing_wm_state));
     }
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   
   XAddToSaveSet (display->xdisplay, xwindow);
 
@@ -258,10 +265,11 @@ meta_window_new (MetaDisplay *display, Window xwindow,
                                &set_attrs);
     }
   
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
     {
       meta_verbose ("Window 0x%lx disappeared just as we tried to manage it\n",
                     xwindow);
+      meta_error_trap_pop (display, FALSE);
       meta_display_ungrab (display);
       return NULL;
     }
@@ -645,7 +653,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
     meta_screen_unshow_desktop (window->screen);
   
   meta_window_queue_calc_showing (window);
-  
+
+  meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
   meta_display_ungrab (display);
   
   return window;
@@ -908,7 +917,7 @@ meta_window_free (MetaWindow  *window)
                        window->xwindow,
                        window->display->atom_net_wm_state);
       set_wm_state (window, WithdrawnState);
-      meta_error_trap_pop (window->display);
+      meta_error_trap_pop (window->display, FALSE);
     }
   else
     {
@@ -919,7 +928,7 @@ meta_window_free (MetaWindow  *window)
         {
           meta_error_trap_push (window->display);
           set_wm_state (window, NormalState);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
         }
 
       /* And we need to be sure the window is mapped so other WMs
@@ -928,7 +937,7 @@ meta_window_free (MetaWindow  *window)
       meta_error_trap_push (window->display);
       XMapWindow (window->display->xdisplay,
                   window->xwindow);
-      meta_error_trap_pop (window->display);
+      meta_error_trap_pop (window->display, FALSE);
     }
 
   meta_window_ungrab_keys (window);
@@ -955,7 +964,7 @@ meta_window_free (MetaWindow  *window)
                 window->xwindow,
                 NoEventMask);
   
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 
   if (window->icon)
     g_object_unref (G_OBJECT (window->icon));
@@ -978,7 +987,7 @@ meta_window_free (MetaWindow  *window)
   g_free (window);
 }
 
-static int
+static void
 set_wm_state (MetaWindow *window,
               int         state)
 {
@@ -998,10 +1007,10 @@ set_wm_state (MetaWindow *window,
                    window->display->atom_wm_state,
                    window->display->atom_wm_state,
                    32, PropModeReplace, (guchar*) data, 2);
-  return meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
-static int
+static void
 set_net_wm_state (MetaWindow *window)
 {
   int i;
@@ -1063,7 +1072,7 @@ set_net_wm_state (MetaWindow *window)
                    window->display->atom_net_wm_state,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
-  return meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
 /* FIXME rename this, it makes it sound like map state is relevant */
@@ -1441,7 +1450,7 @@ meta_window_show (MetaWindow *window)
           window->unmaps_pending += 1;
           meta_error_trap_push (window->display);
           XUnmapWindow (window->display->xdisplay, window->xwindow);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
         }
 
       if (!window->iconic)
@@ -1459,7 +1468,7 @@ meta_window_show (MetaWindow *window)
           window->mapped = TRUE;
           meta_error_trap_push (window->display);
           XMapWindow (window->display->xdisplay, window->xwindow);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
           did_show = TRUE;
         }      
       
@@ -1545,7 +1554,7 @@ meta_window_hide (MetaWindow *window)
       window->unmaps_pending += 1;
       meta_error_trap_push (window->display);      
       XUnmapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display);
+      meta_error_trap_pop (window->display, FALSE);
       did_hide = TRUE;
     }
 
@@ -2370,7 +2379,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
                         window->xwindow,
                         mask,
                         &values);
-      meta_error_trap_pop (window->display);
+      meta_error_trap_pop (window->display, FALSE);
     }
 
   if (!configure_frame_first && window->frame)
@@ -2866,7 +2875,7 @@ meta_window_focus (MetaWindow  *window,
           window->display->expected_focus_window = window;
         }
       
-      meta_error_trap_pop (window->display);
+      meta_error_trap_pop (window->display, FALSE);
     }
 }
 
@@ -2958,7 +2967,7 @@ meta_window_get_net_wm_desktop (MetaWindow *window)
     return meta_workspace_index (window->workspaces->data);
 }
 
-int
+void
 meta_window_set_current_workspace_hint (MetaWindow *window)
 {
   /* FIXME if on more than one workspace, we claim to be "sticky",
@@ -2969,7 +2978,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   if (window->workspaces == NULL)
     {
       /* this happens when unmanaging windows */      
-      return Success;
+      return;
     }
   
   data[0] = meta_window_get_net_wm_desktop (window);
@@ -2982,7 +2991,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
                    window->display->atom_net_wm_desktop,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  return meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
 void
@@ -3036,7 +3045,7 @@ meta_window_send_icccm_message (MetaWindow *window,
     meta_error_trap_push (window->display);
     XSendEvent (window->display->xdisplay,
                 window->xwindow, False, 0, (XEvent*) &ev);
-    meta_error_trap_pop (window->display);
+    meta_error_trap_pop (window->display, FALSE);
 }
 
 gboolean
@@ -3308,14 +3317,14 @@ meta_window_client_message (MetaWindow *window,
           char *str1;
           char *str2;
 
-          meta_error_trap_push (display);
+          meta_error_trap_push_with_return (display);
           str1 = XGetAtomName (display->xdisplay, first);
-          if (meta_error_trap_pop (display))
+          if (meta_error_trap_pop_with_return (display, TRUE) != Success)
             str1 = NULL;
 
-          meta_error_trap_push (display);
+          meta_error_trap_push_with_return (display);
           str2 = XGetAtomName (display->xdisplay, second); 
-          if (meta_error_trap_pop (display))
+          if (meta_error_trap_pop_with_return (display, TRUE) != Success)
             str2 = NULL;
           
           meta_verbose ("Request to change _NET_WM_STATE action %ld atom1: %s atom2: %s\n",
@@ -3528,7 +3537,7 @@ meta_window_client_message (MetaWindow *window,
                              &query_root_x, &query_root_y,
                              &x, &y,
                              &mask);
-              meta_error_trap_pop (window->display);
+              meta_error_trap_pop (window->display, TRUE);
 
               if (mask & Button1Mask)
                 button = 1;
@@ -3591,7 +3600,7 @@ meta_window_client_message (MetaWindow *window,
                            window->xwindow, window->display->atom_win_hints,
                            XA_CARDINAL, 32, PropModeReplace,
                            (unsigned char *)data, 1);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
         }
       else
         {
@@ -3603,7 +3612,7 @@ meta_window_client_message (MetaWindow *window,
           meta_error_trap_push (window->display);
           XDeleteProperty (window->display->xdisplay,
                            window->xwindow, window->display->atom_win_hints);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
         }
       
       return TRUE;
@@ -3705,7 +3714,7 @@ meta_window_notify_focus (MetaWindow *window,
           meta_error_trap_push (window->display);
           XInstallColormap (window->display->xdisplay,
                             window->colormap);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
 
           /* move into FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
@@ -3741,7 +3750,7 @@ meta_window_notify_focus (MetaWindow *window,
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
                               window->colormap);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, FALSE);
 
           /* move out of FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
@@ -3922,7 +3931,7 @@ send_configure_notify (MetaWindow *window)
   XSendEvent (window->display->xdisplay,
               window->xwindow,
               False, StructureNotifyMask, &event);
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
 #define FLAG_TOGGLED_ON(old,new,flag) \
@@ -3985,7 +3994,7 @@ spew_size_hints_differences (const XSizeHints *old,
                 old->win_gravity, new->win_gravity);  
 }
 
-static int
+static void
 update_size_hints (MetaWindow *window)
 {
   int x, y, w, h;
@@ -4013,7 +4022,8 @@ update_size_hints (MetaWindow *window)
                      window->xwindow,
                      &window->size_hints,
                      &supplied);
-
+  meta_error_trap_pop (window->display, TRUE);
+  
   /* as far as I can tell, "supplied" is just
    * to check whether we had old-style normal hints
    * without gravity, base size as returned by
@@ -4165,16 +4175,12 @@ update_size_hints (MetaWindow *window)
   recalc_window_features (window);
 
   spew_size_hints_differences (&old_hints, &window->size_hints);
-  
-  return meta_error_trap_pop (window->display);
 }
 
-static int
+static void
 update_title (MetaWindow *window)
 {
   char *str;
-  
-  meta_error_trap_push (window->display);
   
   if (window->title)
     {
@@ -4222,11 +4228,9 @@ update_title (MetaWindow *window)
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
                              window->title);
-  
-  return meta_error_trap_pop (window->display);
 }
 
-static int
+static void
 update_protocols (MetaWindow *window)
 {
   Atom *protocols = NULL;
@@ -4263,10 +4267,10 @@ update_protocols (MetaWindow *window)
                 window->desc, window->take_focus, window->delete_window,
                 window->net_wm_ping);
   
-  return meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, TRUE);
 }
 
-static int
+static void
 update_wm_hints (MetaWindow *window)
 {
   XWMHints *hints;
@@ -4285,6 +4289,9 @@ update_wm_hints (MetaWindow *window)
   
   hints = XGetWMHints (window->display->xdisplay,
                        window->xwindow);
+
+  meta_error_trap_pop (window->display, TRUE);
+  
   if (hints)
     {
       if (hints->flags & InputHint)
@@ -4324,8 +4331,6 @@ update_wm_hints (MetaWindow *window)
       /* ensure this window is listed in the group for this group leader */
       meta_window_get_group (window);
     }
-  
-  return meta_error_trap_pop (window->display);
 }
 
 static void
@@ -4530,7 +4535,7 @@ meta_window_get_icon_geometry (MetaWindow    *window,
   return FALSE;
 }
 
-static int
+static void
 update_wm_class (MetaWindow *window)
 {
   XClassHint ch;
@@ -4543,14 +4548,14 @@ update_wm_class (MetaWindow *window)
   window->res_class = NULL;
   window->res_name = NULL;
 
-  meta_error_trap_push (window->display);
-
   ch.res_name = NULL;
   ch.res_class = NULL;
 
+  meta_error_trap_push (window->display);
   XGetClassHint (window->display->xdisplay,
                  window->xwindow,
                  &ch);
+  meta_error_trap_pop (window->display, TRUE);
 
   if (ch.res_name)
     {
@@ -4568,8 +4573,6 @@ update_wm_class (MetaWindow *window)
                 window->desc,
                 window->res_class ? window->res_class : "(null)",
                 window->res_name ? window->res_name : "(null)");
-  
-  return meta_error_trap_pop (window->display);
 }
 
 static Window
@@ -4683,7 +4686,7 @@ update_role (MetaWindow *window)
                 window->desc, window->role ? window->role : "null");
 }
 
-static int
+static void
 update_transient_for (MetaWindow *window)
 {
   Window w;
@@ -4693,6 +4696,7 @@ update_transient_for (MetaWindow *window)
   XGetTransientForHint (window->display->xdisplay,
                         window->xwindow,
                         &w);
+  meta_error_trap_pop (window->display, TRUE);
   window->xtransient_for = w;
 
   window->transient_parent_is_root_window =
@@ -4709,8 +4713,6 @@ update_transient_for (MetaWindow *window)
 
   /* update stacking constraints */
   meta_stack_update_transient (window->screen->stack, window);
-  
-  return meta_error_trap_pop (window->display);
 }
 
 static char*
@@ -4740,7 +4742,7 @@ get_text_property (MetaDisplay *display,
       meta_verbose ("XGetTextProperty() failed\n");
     }
   
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display, TRUE);
 
   return retval;
 }
@@ -4836,7 +4838,7 @@ update_net_wm_type (MetaWindow *window)
         {
           meta_error_trap_push (window->display);
           str = XGetAtomName (window->display->xdisplay, window->type_atom);
-          meta_error_trap_pop (window->display);
+          meta_error_trap_pop (window->display, TRUE);
         }
 
       meta_verbose ("Window %s type atom %s\n", window->desc,
@@ -4849,7 +4851,7 @@ update_net_wm_type (MetaWindow *window)
   recalc_window_type (window);
 }
 
-static int
+static void
 update_initial_workspace (MetaWindow *window)
 {
   gulong val = 0;
@@ -4883,16 +4885,12 @@ update_initial_workspace (MetaWindow *window)
                   "Read legacy GNOME workspace prop %d for %s\n",
                   window->initial_workspace, window->desc);
     }
-
-  return Success;
 }
 
-static int
+static void
 update_icon_name (MetaWindow *window)
 {
   char *str;
-  
-  meta_error_trap_push (window->display);
   
   if (window->icon_name)
     {
@@ -4929,11 +4927,9 @@ update_icon_name (MetaWindow *window)
   
   if (window->icon_name == NULL)
     window->icon_name = g_strdup ("");
-  
-  return meta_error_trap_pop (window->display);
 }
 
-static int
+static void
 update_icon (MetaWindow *window)
 {
   GdkPixbuf *icon;
@@ -4965,8 +4961,6 @@ update_icon (MetaWindow *window)
   
   g_assert (window->icon);
   g_assert (window->mini_icon);
-  
-  return Success;
 }
 
 static void
@@ -5228,14 +5222,12 @@ recalc_window_type (MetaWindow *window)
     }
 }
 
-static int
+static void
 set_allowed_actions_hint (MetaWindow *window)
 {
 #define MAX_N_ACTIONS 8
   unsigned long data[MAX_N_ACTIONS];
   int i;
-
-
 
   i = 0;
   if (window->has_close_func)
@@ -5284,7 +5276,7 @@ set_allowed_actions_hint (MetaWindow *window)
                    window->display->atom_net_wm_allowed_actions,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
-  return meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 #undef MAX_N_ACTIONS
 }
 
@@ -6000,7 +5992,7 @@ window_query_root_pointer (MetaWindow *window,
                  &win_y_return,
                  &mask_return);
 
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, TRUE);
 
   if (x)
     *x = root_x_return;
@@ -6284,7 +6276,7 @@ meta_window_set_gravity (MetaWindow *window,
                            CWWinGravity,
                            &attrs);
   
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
 void
@@ -6553,7 +6545,7 @@ warp_pointer (MetaWindow *window,
         return FALSE;
     }
 
-  meta_error_trap_push (window->display);
+  meta_error_trap_push_with_return (window->display);
   
   XWarpPointer (window->display->xdisplay,
                 None,
@@ -6562,7 +6554,7 @@ warp_pointer (MetaWindow *window,
                 *x,
                 *y);
 
-  if (meta_error_trap_pop (window->display))
+  if (meta_error_trap_pop_with_return (window->display, FALSE) != Success)
     {
       meta_verbose ("Failed to warp pointer for window %s\n", window->desc);
       return FALSE;

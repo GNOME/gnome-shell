@@ -124,7 +124,7 @@ meta_window_ensure_frame (MetaWindow *window)
                    window->rect.x,
                    window->rect.y);
   /* FIXME handle this error */
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
   
   /* stick frame to the window */
   window->frame = frame;
@@ -180,7 +180,7 @@ meta_window_destroy_frame (MetaWindow *window)
                    /* FIXME where to put it back depends on the gravity */
                    window->frame->rect.x,
                    window->frame->rect.y);
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display, FALSE);
 
   meta_display_unregister_x_window (window->display,
                                     frame->xwindow);

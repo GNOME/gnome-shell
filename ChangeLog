@@ -1,3 +1,28 @@
+2002-10-21  Havoc Pennington  <hp@redhat.com>
+
+	Optimizations for managing new windows (do not all take effect if
+	METACITY_DEBUG=1). Bug #96404
+	
+	* src/keybindings.c (meta_change_keygrab): use error trap nesting
+	and conditionalize on meta_is_verbose() to avoid a ton of XSync
+
+	* src/display.c (meta_change_button_grab): ditto
+	
+	Throughout: move to new error trap setup to save on XSync calls, 
+	new setup is:
+	
+	* src/errors.c (meta_error_trap_push_with_return): new function, 
+	an error trap that needs to care about return value and thus 
+	sync even if an outer trap still exists
+	(meta_error_trap_pop_with_return): new function
+	(meta_error_trap_pop): add "last_request_was_roundtrip" 
+	argument allowing us to avoid XSync() if we just did 
+	a GetProperty or whatever.
+
+	* src/util.c (meta_warning): flush the warning file descriptor
+	
+	* src/Makefile.am (INCLUDES): define G_LOG_DOMAIN
+	
 2002-10-20  Havoc Pennington  <hp@pobox.com>
 
 	* src/ui.c (meta_image_window_new): put multihead stuff in 

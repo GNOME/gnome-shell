@@ -372,7 +372,7 @@ gboolean meta_window_client_message    (MetaWindow *window,
 gboolean meta_window_notify_focus      (MetaWindow *window,
                                         XEvent     *event);
 
-int      meta_window_set_current_workspace_hint (MetaWindow *window);
+void     meta_window_set_current_workspace_hint (MetaWindow *window);
 
 unsigned long meta_window_get_net_wm_desktop (MetaWindow *window);
 

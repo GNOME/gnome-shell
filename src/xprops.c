@@ -49,7 +49,7 @@ check_type_and_format (MetaDisplay *display,
   type_name = XGetAtomName (display->xdisplay, type);
   expected_name = XGetAtomName (display->xdisplay, expected_type);
   prop_name = XGetAtomName (display->xdisplay, xatom);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display, TRUE);
 
   meta_warning (_("Window 0x%lx has property %s that was expected to have type %s format %d and actually has type %s format %d n_items %d\n"),
                 xwindow,
@@ -85,18 +85,18 @@ meta_prop_get_atom_list (MetaDisplay *display,
   *atoms_p = NULL;
   *n_atoms_p = 0;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, XA_ATOM, &type, &format, &n_atoms,
                           &bytes_after, (guchar **)&atoms) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
     
   if (!check_type_and_format (display, xwindow, xatom, 32, XA_ATOM,
@@ -128,18 +128,18 @@ meta_prop_get_cardinal_list (MetaDisplay *display,
   *cardinals_p = NULL;
   *n_cardinals_p = 0;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, XA_CARDINAL, &type, &format, &n_cardinals,
                           &bytes_after, (guchar **)&cardinals) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 32, XA_CARDINAL,
@@ -174,18 +174,18 @@ meta_prop_get_motif_hints (MetaDisplay   *display,
 
   hints = NULL;
   n_items = 0;
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, MAX_ITEMS,
                           False, AnyPropertyType, &type, &format, &n_items,
                           &bytes_after, (guchar **)&hints) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
   
   if (type == None || n_items <= 0)
@@ -225,18 +225,18 @@ meta_prop_get_latin1_string (MetaDisplay   *display,
   
   *str_p = NULL;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, XA_STRING, &type, &format, &n_items,
                           &bytes_after, (guchar **)&str) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 8, XA_STRING,
@@ -265,7 +265,7 @@ meta_prop_get_utf8_string (MetaDisplay   *display,
   
   *str_p = NULL;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, display->atom_utf8_string,
@@ -273,11 +273,11 @@ meta_prop_get_utf8_string (MetaDisplay   *display,
                           &bytes_after, (guchar **)&str) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 8,
@@ -326,7 +326,7 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
   *str_p = NULL;
   *n_str_p = 0;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, display->atom_utf8_string,
@@ -334,11 +334,11 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
                           &bytes_after, (guchar **)&val) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 8,
@@ -377,7 +377,7 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
 
           meta_error_trap_push (display);
           name = XGetAtomName (display->xdisplay, xatom);
-          meta_error_trap_pop (display);
+          meta_error_trap_pop (display, TRUE);
           meta_warning (_("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"),
                         name, xwindow, i);
           meta_XFree (name);
@@ -415,18 +415,18 @@ meta_prop_get_window (MetaDisplay   *display,
 
   *window_p = None;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, XA_WINDOW, &type, &format, &n_items,
                           &bytes_after, (guchar **)&window) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 32, XA_WINDOW,
@@ -469,18 +469,18 @@ meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
 
   *cardinal_p = 0;
   
-  meta_error_trap_push (display);
+  meta_error_trap_push_with_return (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
                           False, prop_type, &type, &format, &n_items,
                           &bytes_after, (guchar **)&cardinal) != Success ||
       type == None)
     {
-      meta_error_trap_pop (display);
+      meta_error_trap_pop_with_return (display, TRUE);
       return FALSE;
     }
 
-  if (meta_error_trap_pop (display) != Success)
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
     return FALSE;
 
   if (!check_type_and_format (display, xwindow, xatom, 32, prop_type,

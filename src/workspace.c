@@ -27,7 +27,7 @@
 
 void meta_workspace_queue_calc_showing  (MetaWorkspace *workspace);
 
-static int set_active_space_hint      (MetaScreen *screen);
+static void set_active_space_hint      (MetaScreen *screen);
 
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
@@ -279,7 +279,7 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
   return workspace_windows;
 }
 
-static int
+static void
 set_active_space_hint (MetaScreen *screen)
 {
   unsigned long data[1];
@@ -293,7 +293,7 @@ set_active_space_hint (MetaScreen *screen)
                    screen->display->atom_net_current_desktop,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  return meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (screen->display, FALSE);
 }
 
 void

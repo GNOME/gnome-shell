@@ -254,6 +254,10 @@ topic_name (MetaDebugTopic topic)
       return "XINERAMA";
     case META_DEBUG_KEYBINDINGS:
       return "KEYBINDINGS";
+    case META_DEBUG_SYNC:
+      return "SYNC";
+    case META_DEBUG_ERRORS:
+      return "ERRORS";
     }
 
   return "Window manager";
@@ -335,6 +339,8 @@ meta_warning (const char *format, ...)
   if (no_prefix == 0)
     utf8_fputs (_("Window manager warning: "), out);
   utf8_fputs (str, out);
+
+  fflush (out);
   
   g_free (str);
 }

@@ -284,6 +284,9 @@ main (int argc, char **argv)
   g_log_set_handler (NULL,
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
+  g_log_set_handler (G_LOG_DOMAIN,
+                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                     log_handler, NULL);
   g_log_set_handler ("Gtk",
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
