@@ -2262,7 +2262,7 @@ msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
 #: src/theme.c:4619
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "테마 \"%2$s\"의 <%s>(이)가 설정되지 않았습니다"
+msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
 
 #: src/theme.c:4629
 #, c-format

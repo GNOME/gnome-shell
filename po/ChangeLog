@@ -1,5 +1,10 @@
 2003-02-05  Abel Cheung  <maddog@linux.org.hk>
 
+	* en_GB.po: Fix header.
+	* ko.po, pt_BR.po: Fix positional parameters.
+
+2003-02-05  Abel Cheung  <maddog@linux.org.hk>
+
 	* zh_TW.po: Updated traditional Chinese translation.
 
 2003-02-03  Daniel Yacob  <locales@geez.org>

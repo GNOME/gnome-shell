@@ -2839,7 +2839,7 @@ msgstr ""
 "e, na verdade, ela tem n_items %6$d do formato \n"
 "%7$d do tipo %5$s.\n"
 "Isso é bem provavelmente um erro da aplicação, não do gerenciado de janelas.\n"
-"A janela tem title=\"%7$s\" class=\"%8$s\" name=\"%9$s\"\n"
+"A janela tem title=\"%8$s\" class=\"%9$s\" name=\"%10$s\"\n"
 
 #: src/xprops.c:399
 #, c-format

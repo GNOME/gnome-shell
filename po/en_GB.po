@@ -3,10 +3,9 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Robert Brady <rwb197@ecs.soton.ac.uk>, Bastien Nocera <hadess@hadess.net>, 2002.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-10-16 00:19+0100\n"
 "PO-Revision-Date: 2002-10-15 23:19+0000\n"
 "Last-Translator: Robert Brady <rwb197@zepler.org>, Bastien Nocera "
