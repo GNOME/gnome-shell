@@ -2252,7 +2252,13 @@ process_workspace_switch_grab (MetaDisplay *display,
                                     (MetaTabEntryKey) target_workspace);
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Tab key pressed, moving tab focus in popup\n");
-          return TRUE;
+
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Activating target workspace\n");
+
+          switch_to_workspace (display, target_workspace);
+
+          return TRUE; /* we already ended the grab */
         }
     }
 
@@ -2683,7 +2689,7 @@ handle_workspace_switch  (MetaDisplay    *display,
 {
   int motion;
   MetaScreen *screen;
-   
+     
   motion = GPOINTER_TO_INT (binding->handler->data);
 
   g_assert (motion < 0);
@@ -2707,9 +2713,15 @@ handle_workspace_switch  (MetaDisplay    *display,
                                   0, 0))
     {
       MetaWorkspace *next;
-      
+
       next = meta_workspace_get_neighbor (screen->active_workspace, motion);
       g_assert (next); 
+
+      
+      meta_topic (META_DEBUG_KEYBINDINGS,
+		  "Activating target workspace\n");
+      
+      switch_to_workspace (display, next);
       
       meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
       

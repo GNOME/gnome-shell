@@ -1,3 +1,9 @@
+2002-09-09  Christian Neumair  <chris@gnome-de.org>
+
+	* src/keybindings.c: Make virtual desktops apply
+	instantly and still show the pager popup by
+	Benjamin Kahn <xkahn@zoned.net>, fixes #86590.
+
 2002-09-06  Frederic Crozat  <fred@crozat.net>
 
 	* src/themes/Crux/metacity-theme-1.xml: Fix titlebar 
