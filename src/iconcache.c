@@ -644,6 +644,27 @@ scaled_from_pixdata (guchar *pixdata,
   if (src == NULL)
     return NULL;
 
+  if (w != h)
+    {
+      GdkPixbuf *tmp;
+      int size;
+
+      size = MAX (w, h);
+      
+      tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
+
+      if (tmp)
+	{
+	  gdk_pixbuf_fill (tmp, 0);
+	  gdk_pixbuf_copy_area (src, 0, 0, w, h,
+				tmp,
+				(size - w) / 2, (size - h) / 2);
+	  
+	  g_object_unref (src);
+	  src = tmp;
+	}
+    }
+  
   if (w != new_w || h != new_h)
     {
       dest = gdk_pixbuf_scale_simple (src, new_w, new_h, GDK_INTERP_BILINEAR);

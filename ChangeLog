@@ -1,3 +1,8 @@
+2002-04-21  Anders Carlsson  <andersca@gnu.org>
+
+	* src/iconcache.c (scaled_from_pixdata): Add padding if
+	icon width and height differ.
+
 2002-04-17  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (meta_screen_new): query Xinerama screen
