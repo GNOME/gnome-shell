@@ -1158,6 +1158,7 @@ static gboolean
 window_should_be_showing (MetaWindow  *window)
 {
   gboolean showing, on_workspace;
+  gboolean is_desktop_or_dock;
 
   meta_verbose ("Should be showing for window %s\n", window->desc);
 
@@ -1185,11 +1186,16 @@ window_should_be_showing (MetaWindow  *window)
     showing = FALSE;
   
   /* 3. See if we're in "show desktop" mode */
-  
+  is_desktop_or_dock = FALSE;
+  is_desktop_or_dock_foreach (window,
+                              &is_desktop_or_dock);
+
+  meta_window_foreach_ancestor (window, is_desktop_or_dock_foreach,
+                                &is_desktop_or_dock);
+
   if (showing &&      
       window->screen->showing_desktop &&
-      window->type != META_WINDOW_DESKTOP &&
-      window->type != META_WINDOW_DOCK)
+      !is_desktop_or_dock)
     {
       meta_verbose ("Window %s is on current workspace, but we're showing the desktop\n",
                     window->desc);

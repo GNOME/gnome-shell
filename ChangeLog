@@ -1,5 +1,11 @@
 2003-11-07  Rob Adams  <readams@readams.net>
 
+	* src/window.c (window_should_be_showing): show the window if it's
+	a transient of a dock or desktop, since otherwise such windows are
+	invisible in show desktop mode.  Fix for #124648.
+
+2003-11-07  Rob Adams  <readams@readams.net>
+
 	* src/main.c (main): Try harder to find a theme in the event that
 	the theme in the preference cannot be found.  Patch from Marcin
 	Krzyzanowski.  See #125815.
