@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-01-12 00:59+0100\n"
-"PO-Revision-Date: 2002-01-12 01:12+0100\n"
+"POT-Creation-Date: 2002-01-29 00:34+0100\n"
+"PO-Revision-Date: 2002-01-29 00:35+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -34,145 +34,147 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
 
-#: src/frames.c:232
+#: src/frames.c:178
 msgid "Left edge"
 msgstr "Venstre kant"
 
-#: src/frames.c:232
+#: src/frames.c:178
 msgid "Left window edge width"
 msgstr "Bredde på venstre vinduskant"
 
-#: src/frames.c:233
+#: src/frames.c:179
 msgid "Right edge"
 msgstr "Høyre kant"
 
-#: src/frames.c:233
+#: src/frames.c:179
 msgid "Right window edge width"
 msgstr "Bredde på høyde vinduskant"
 
-#: src/frames.c:234
+#: src/frames.c:180
 msgid "Bottom edge"
 msgstr "Nedre kant"
 
-#: src/frames.c:234
+#: src/frames.c:180
 msgid "Bottom window edge height"
 msgstr "Høyde på nedre vinduskant"
 
-#: src/frames.c:236
+#: src/frames.c:182
 msgid "Title border"
 msgstr "Tittelkant"
 
-#: src/frames.c:236
+#: src/frames.c:182
 msgid "Border around title area"
 msgstr "Kant rundt tittelområdet"
 
-#: src/frames.c:237
+#: src/frames.c:183
 msgid "Text border"
 msgstr "Tekstkant"
 
-#: src/frames.c:237
+#: src/frames.c:183
 msgid "Border around window title text"
 msgstr "Kant rundt teksten i vindustittelen"
 
-#: src/frames.c:239
+#: src/frames.c:185
 msgid "Spacer padding"
 msgstr "Mellomromsfyll"
 
-#: src/frames.c:239
+#: src/frames.c:185
 msgid "Padding on either side of spacer"
 msgstr "Fyll på hver side av «spacer»"
 
-#: src/frames.c:240
+#: src/frames.c:186
 msgid "Spacer width"
-msgstr ""
+msgstr "Bredde på mellomrom"
 
-#: src/frames.c:240
+#: src/frames.c:186
 msgid "Width of spacer"
-msgstr ""
+msgstr "Bredde for mellomrom"
 
-#: src/frames.c:241
+#: src/frames.c:187
 msgid "Spacer height"
-msgstr ""
+msgstr "Høyde på mellomrom"
 
-#: src/frames.c:241
+#: src/frames.c:187
 msgid "Height of spacer"
-msgstr ""
+msgstr "Høyde på mellomrom"
 
 #. same as right_width left_width by default
-#: src/frames.c:244
+#: src/frames.c:190
 msgid "Right inset"
 msgstr "Høyre innrykk"
 
-#: src/frames.c:244
+#: src/frames.c:190
 msgid "Distance of buttons from right edge of frame"
 msgstr "Avstand fra knapper til høyre kant av rammen"
 
-#: src/frames.c:245
+#: src/frames.c:191
 msgid "Left inset"
 msgstr "Venstre innrykk"
 
-#: src/frames.c:245
+#: src/frames.c:191
 msgid "Distance of menu button from left edge of frame"
 msgstr "Avstand fra menyknapper til venstre kant av rammen"
 
-#: src/frames.c:247
+#: src/frames.c:193
 msgid "Button width"
 msgstr "Knappbredde"
 
-#: src/frames.c:247
+#: src/frames.c:193
 msgid "Width of buttons"
 msgstr "Bredde på knapper"
 
-#: src/frames.c:248
+#: src/frames.c:194
 msgid "Button height"
 msgstr "Knapphøyde"
 
-#: src/frames.c:248
+#: src/frames.c:194
 msgid "Height of buttons"
 msgstr "Høyde på knapper"
 
-#: src/frames.c:250
+#: src/frames.c:196
 msgid "Button border"
 msgstr "Knappekant"
 
-#: src/frames.c:250
+#: src/frames.c:196
 msgid "Border around buttons"
 msgstr "Kant rundt knappene"
 
-#: src/frames.c:251
+#: src/frames.c:197
 msgid "Inner button border"
-msgstr ""
+msgstr "Indre ramme rundt knapp"
 
-#: src/frames.c:251
+#: src/frames.c:197
 msgid "Border around the icon inside buttons"
 msgstr "Kant rundt ikonet inne i knapper"
 
-#: src/frames.c:892
+#: src/frames.c:699
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: src/frames.c:895
+#: src/frames.c:702
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: src/frames.c:898
+#: src/frames.c:705
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: src/frames.c:901
+#: src/frames.c:708
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: src/frames.c:904
+#: src/frames.c:711
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
 #: src/keybindings.c:228
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "Et eller flere andre programmer bruker allerede nøkkelen %s med endrere %x som binding\n"
+msgstr ""
+"Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
+"binding\n"
 
 #: src/main.c:252
 #, c-format
@@ -230,48 +232,50 @@ msgstr "Kun på arbeidsområde %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Flytt til arbeidsområde %s%d"
 
-#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
-#: src/prefs.c:332
+#: src/prefs.c:272 src/prefs.c:288 src/prefs.c:304 src/prefs.c:320
+#: src/prefs.c:340 src/prefs.c:356
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: src/prefs.c:365
+#: src/prefs.c:390
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi"
 
-#: src/prefs.c:399
+#: src/prefs.c:424
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: src/prefs.c:436
+#: src/prefs.c:461
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d lagret i GConf-nøkkel %s er ikke en gyldig skriftstørrelse\n"
 
-#: src/prefs.c:462
+#: src/prefs.c:487
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
-msgstr "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt maksimum er %d\n"
+msgstr ""
+"%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
+"maksimum er %d\n"
 
 #: src/screen.c:174
-#, c-format, fuzzy
+#, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Skjerm %d på skjerm «%s» er ugyldig\n"
+msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
 #: src/screen.c:190
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr "Skjerm %d på skjerm «%s» har allerede en vindushåndterer\n"
+msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
 
 #: src/screen.c:268
-#, c-format, fuzzy
+#, c-format
 msgid "Could not release screen %d on display '%s'\n"
-msgstr "Kunne ikke slippe skerm %d på display «%s»\n"
+msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
 #: src/session.c:760 src/session.c:767
 #, c-format
@@ -323,24 +327,30 @@ msgid "Unknown element %s"
 msgstr "Ukjent element %s"
 
 #. someone is on crack
-#: src/window.c:3164
+#: src/window.c:3411
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
-msgstr "Vindu %s setter maks bredde %d mindre enn minimum bredde %d, deaktiverer endring av størrelse\n"
+msgstr ""
+"Vindu %s setter maks bredde %d mindre enn minimum bredde %d, deaktiverer "
+"endring av størrelse\n"
 
 #. another cracksmoker
-#: src/window.c:3174
+#: src/window.c:3421
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
-msgstr "Vindu %s setter maks høyde %d mindre enn minimum høyde %d, deaktiverer endring av størrelse\n"
+msgstr ""
+"Vindu %s setter maks høyde %d mindre enn minimum høyde %d, deaktiverer "
+"endring av størrelse\n"
 
 #: src/xprops.c:53
 #, c-format
 msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"
-msgstr "Vindu 0x%lx har egenskap %s. Forventet type %s format %d. Faktisk type %s format %d n_items %d\n"
+msgstr ""
+"Vindu 0x%lx har egenskap %s. Forventet type %s format %d. Faktisk type %s "
+"format %d n_items %d\n"
 
 #: src/xprops.c:281
 #, c-format
