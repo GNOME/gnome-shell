@@ -355,9 +355,9 @@ set_work_area_hint (MetaScreen *screen)
           tmp[1] = area.y;
           tmp[2] = area.width;
           tmp[3] = area.height;
-        }
 
-      tmp += 4;
+	  tmp += 4;
+        }
       
       tmp_list = tmp_list->next;
     }

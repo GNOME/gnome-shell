@@ -1,5 +1,9 @@
 2002-05-07  Anders Carlsson  <andersca@gnu.org>
 
+	* src/workspace.c (set_work_area_hint): Doh, only update
+	the tmp pointer when the screen matches. Fixes a segfault
+	when running with multiple screens.
+
 	* src/display.c: (meta_display_open), (event_callback),
 	(meta_display_update_show_desktop_hint):
 	* src/display.h:
