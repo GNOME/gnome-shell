@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-13 12:49+0100\n"
-"PO-Revision-Date: 2004-03-13 12:47+0100\n"
+"POT-Creation-Date: 2004-03-14 12:01+0100\n"
+"PO-Revision-Date: 2004-03-14 11:48+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -494,7 +494,7 @@ msgstr "Activer la sonnerie visuelle"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "Masque toutes les fenêtres et active le bureau"
+msgstr "Cacher toutes les fenêtres et activer le bureau"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -608,9 +608,7 @@ msgstr "Se déplacer entre les tableaux de bord et le bureau immédiatement"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
-msgstr ""
-"Se déplacer entre les tableaux de bord et le bureau en utilisant une boîte "
-"de dialogue"
+msgstr "Se déplacer entre les tableaux de bord et le bureau via un menu"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
@@ -618,7 +616,7 @@ msgstr "Se déplacer entre les fenêtres directement"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move between windows with popup"
-msgstr "Se déplacer entre les fenêtres en utilisant une boîte de dialogue"
+msgstr "Se déplacer entre les fenêtres via un menu"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
@@ -709,9 +707,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
-"Mettre la fenêtre grisée au premier plan, autrement la mettre à l'arrière-"
-"plan"
+msgstr "Mettre la fenêtre grisée au premier plan, sinon en arrière-plan"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
@@ -727,12 +723,11 @@ msgstr "Executer la commande définie"
 
 #: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
-msgstr "Affiche le menu du tableau de bord"
+msgstr "Afficher le menu du tableau de bord"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel run dialog"
-msgstr ""
-"Affiche la boîte de dialogue de lancement d'applications du tableau de bord"
+msgstr "Afficher la boîte de dialogue « Lancer une application »"
 
 #: src/metacity.schemas.in.h:62
 msgid ""
@@ -2018,15 +2013,15 @@ msgstr "Basculer en mode plein écran"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
-msgstr "Basculer l'agrandissement"
+msgstr "Basculer l'état d'agrandissement"
 
 #: src/metacity.schemas.in.h:159
 msgid "Toggle shaded state"
-msgstr "Réduire à la barre de titre/restaurer la fenêtre à sa taille normale"
+msgstr "Basculer l'état de réduction"
 
 #: src/metacity.schemas.in.h:160
 msgid "Toggle window on all workspaces"
-msgstr "Basculer l'affichage de la fenêtre sur tous les espaces de travail"
+msgstr "Basculer la fenêtre sur tous les espaces de travail"
 
 #: src/metacity.schemas.in.h:161
 msgid ""
