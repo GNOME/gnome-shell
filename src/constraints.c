@@ -351,15 +351,16 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                                   const MetaRectangle  *orig,
                                   int                  delta_x,
                                   int                  delta_y,
-                                  int                  *leftmost_x,
-                                  int                  *rightmost_x,
-                                  int                  *topmost_y,
-                                  int                  *bottommost_y)
+                                  int                  *leftmost_x_p,
+                                  int                  *rightmost_x_p,
+                                  int                  *topmost_y_p,
+                                  int                  *bottommost_y_p)
 {
   GList *workspaces;
   GList *tmp;
   GSList *stmp;
   MetaRectangle current;
+  int bottommost_y;
 
   /* to handle struts, we get the list of workspaces for the window
    * and traverse all the struts in each of the cached strut lists for
@@ -375,9 +376,9 @@ get_outermost_onscreen_positions (MetaWindow           *window,
   workspaces = meta_window_get_workspaces (window);
   tmp = workspaces;
 
-  if (leftmost_x)
+  if (leftmost_x_p)
     {
-      *leftmost_x = info->nw_x;
+      *leftmost_x_p = info->nw_x;
       while (tmp)
         {
           stmp = ((MetaWorkspace*) tmp->data)->left_struts;
@@ -392,7 +393,7 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                   ((current.y >= rect->y) &&
                    (current.y <= rect->y + rect->height)))
                 {
-                  *leftmost_x = MAX (*leftmost_x, rect->width);
+                  *leftmost_x_p = MAX (*leftmost_x_p, rect->width);
                 }
               
               stmp = stmp->next;
@@ -401,14 +402,14 @@ get_outermost_onscreen_positions (MetaWindow           *window,
           tmp = tmp->next;
         }
       
-      *leftmost_x = *leftmost_x - current.width + 
+      *leftmost_x_p = *leftmost_x_p - current.width + 
         MIN (TITLEBAR_LENGTH_ONSCREEN, current.width);
     }
   
   tmp = workspaces;
-  if (rightmost_x)
+  if (rightmost_x_p)
     {
-      *rightmost_x = info->se_x;
+      *rightmost_x_p = info->se_x;
       while (tmp)
         {
           stmp = ((MetaWorkspace*) tmp->data)->right_struts;
@@ -423,7 +424,7 @@ get_outermost_onscreen_positions (MetaWindow           *window,
                   ((current.y >= rect->y) &&
                    (current.y <= rect->y + rect->height)))
                 {
-                  *rightmost_x = MIN (*rightmost_x, rect->x);
+                  *rightmost_x_p = MIN (*rightmost_x_p, rect->x);
                 }
               
               stmp = stmp->next;
@@ -432,14 +433,14 @@ get_outermost_onscreen_positions (MetaWindow           *window,
           tmp = tmp->next;
         }
       
-      *rightmost_x = *rightmost_x - 
+      *rightmost_x_p = *rightmost_x_p - 
         MIN (TITLEBAR_LENGTH_ONSCREEN, current.width);
     }
 
   tmp = workspaces;
-  if (topmost_y)
+  if (topmost_y_p)
     {
-      *topmost_y = info->nw_y;
+      *topmost_y_p = info->nw_y;
       while (tmp)
         {
           stmp = ((MetaWorkspace*) tmp->data)->top_struts;
@@ -449,10 +450,10 @@ get_outermost_onscreen_positions (MetaWindow           *window,
               /* here the strut matters if the titlebar is overlapping
                * the window horizontally
                */
-	      if ((current.x <= rect->x + rect->width) &&
-		  (current.x + current.width >= rect->x))
+              if ((current.x <= rect->x + rect->width) &&
+                  (current.x + current.width >= rect->x))
                 {
-                  *topmost_y = MAX (*topmost_y, rect->height);
+                  *topmost_y_p = MAX (*topmost_y_p, rect->height);
                 }
               
               stmp = stmp->next;
@@ -461,13 +462,14 @@ get_outermost_onscreen_positions (MetaWindow           *window,
           tmp = tmp->next;
         }
       
-      *topmost_y = *topmost_y + info->fgeom.top_height;
+      *topmost_y_p = *topmost_y_p + info->fgeom.top_height;
     }
 
   tmp = workspaces;
-  if (bottommost_y)
+  bottommost_y = G_MAXUSHORT;
+  if (bottommost_y_p || topmost_y_p)
     {
-      *bottommost_y = info->se_y;
+      bottommost_y = info->se_y;
       while (tmp)
         {
           stmp = ((MetaWorkspace*) tmp->data)->bottom_struts;
@@ -477,10 +479,10 @@ get_outermost_onscreen_positions (MetaWindow           *window,
               /* here the strut matters if the titlebar is overlapping
                * the window horizontally
                */
-	      if ((current.x <= rect->x + rect->width) &&
-		  (current.x + current.width >= rect->x))
+              if ((current.x <= rect->x + rect->width) &&
+                  (current.x + current.width >= rect->x))
                 {
-                  *bottommost_y = MIN (*bottommost_y, rect->y);
+                  bottommost_y = MIN (bottommost_y, rect->y);
                 }
               
               stmp = stmp->next;
@@ -488,13 +490,48 @@ get_outermost_onscreen_positions (MetaWindow           *window,
           
           tmp = tmp->next;
         }
-      
+    }
+
+  if (bottommost_y_p)
+    {
+      *bottommost_y_p = bottommost_y;
+
       /* If no frame, keep random TITLEBAR_LENGTH_ONSCREEN pixels on the
        * screen.
        */
       if (!window->frame)
-        *bottommost_y = *bottommost_y -
+        *bottommost_y_p = *bottommost_y_p -
           MIN (TITLEBAR_LENGTH_ONSCREEN, current.height);
+    }
+
+  /* if the window has a minimum size too big for the "effective" work
+   * area let it "cheat" a little by allowing a user to move it up so
+   * that you can see the bottom of the window.
+   */
+  if (topmost_y_p)
+    {
+      int minheight;
+      
+      if (window->frame)
+        {
+          /* this is the "normal" case of, e.g. a dialog that's
+           * just too big for the work area
+           */
+          minheight = window->frame->bottom_height +
+            window->size_hints.min_height;
+        }
+      else
+        {
+          /* let frameless windows move offscreen is too large for the
+           * effective work area.  This may include windows that try
+           * to make themselves full screen by removing the
+           * decorations and repositioning themselves.
+           */
+          minheight = orig->height;
+        }
+      
+      if (minheight > (bottommost_y - *topmost_y_p))
+          *topmost_y_p = bottommost_y - minheight;
     }
 }
 
@@ -1261,7 +1298,6 @@ meta_window_constrain (MetaWindow          *window,
   info.window = window;
   info.xinerama = meta_screen_get_xinerama_for_window (window->screen,
                                                        window);
-
   /* Init info->nw_x etc. */
   update_position_limits (window, &info);
 
@@ -1314,8 +1350,8 @@ meta_window_constrain (MetaWindow          *window,
       meta_window_maximize_internal (window, new);
     }
 
-  /* Maximization, fullscreen, etc. are defined as a move followed by
-   * a resize, as explained in one of the big comments at the top of
+  /* Maximization, fullscreen, etc. are defined as a resize followed by
+   * a move, as explained in one of the big comments at the top of
    * this file.
    */
   if (window->fullscreen)
@@ -1324,13 +1360,6 @@ meta_window_constrain (MetaWindow          *window,
 
       center_x = info.xinerama->x_origin + (info.xinerama->width / 2);
       center_x -= OUTER_WIDTH (current) / 2;
-
-      constrain_move (window, &info, &current,
-                      center_x - current.x + info.fgeom.left_width,
-                      info.xinerama->y_origin - current.y + info.fgeom.top_height,
-                      new);
-
-      current = *new;
 
       constrain_resize_bottom (window, &info, &current,
                                (info.xinerama->height - OUTER_HEIGHT (current)),
@@ -1342,6 +1371,13 @@ meta_window_constrain (MetaWindow          *window,
                                 (info.xinerama->width - OUTER_WIDTH (current)) / 2,
                                 new);
       current = *new;
+
+      constrain_move (window, &info, &current,
+                      center_x - current.x + info.fgeom.left_width,
+                      info.xinerama->y_origin - current.y + info.fgeom.top_height,
+                      new);
+
+      current = *new;
     }
   else if (window->maximized)
     {
@@ -1349,13 +1385,6 @@ meta_window_constrain (MetaWindow          *window,
 
       center_x = info.work_area_xinerama.x + (info.work_area_xinerama.width / 2);
       center_x -= OUTER_WIDTH (current) / 2;
-
-      constrain_move (window, &info, &current,
-                      center_x - current.x + info.fgeom.left_width,
-                      info.work_area_xinerama.y - current.y + info.fgeom.top_height,
-                      new);
-
-      current = *new;
 
       constrain_resize_bottom (window, &info, &current,
                                (info.work_area_xinerama.height - OUTER_HEIGHT (current)),
@@ -1367,15 +1396,16 @@ meta_window_constrain (MetaWindow          *window,
                                 (info.work_area_xinerama.width - OUTER_WIDTH (current)) / 2,
                                 new);
       current = *new;
-    }
-  else
-    {
+
       constrain_move (window, &info, &current,
-                      x_move_delta, y_move_delta,
+                      center_x - current.x + info.fgeom.left_width,
+                      info.work_area_xinerama.y - current.y + info.fgeom.top_height,
                       new);
 
       current = *new;
-
+    }
+  else
+    {
       switch (x_direction)
         {
         case META_RESIZE_LEFT_OR_TOP:
@@ -1407,6 +1437,12 @@ meta_window_constrain (MetaWindow          *window,
                                    y_delta, new);
           break;
         }
+
+      current = *new;
+
+      constrain_move (window, &info, &current,
+                      x_move_delta, y_move_delta,
+                      new);
 
       current = *new;
     }

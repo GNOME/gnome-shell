@@ -1,3 +1,18 @@
+2003-08-14  Rob Adams  <robadams@ucla.edu>
+
+	Allow windows that are too tall for the workarea to break the
+	onscreen constraints just enough so that their bottom edges can be
+	made visible.  Fix for #106740.  Also, changes constraints to
+	constrain the resize and then the move to avoid complexities in
+	the code for the above fix.
+
+	* src/constraints.c (get_outermost_onscreen_positions)
+	Compute the "effective" height of the work area and the minimum
+	size for the window to compute a value by which a window is
+	allowed to violate the top constraint.
+	(meta_window_constrain): convert to a resize then a move instead
+	of a move then resize.
+	
 2003-08-13  Rob Adams  <robadams@ucla.edu>
 
 	* configure.in: remove metacity.spec from AC_OUTPUT
