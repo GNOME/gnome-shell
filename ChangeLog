@@ -1,5 +1,9 @@
 2004-08-15  Rob Adams  <readams@readams.net>
 
+	* configure.in: Bump version to 2.8.4
+
+2004-08-15  Rob Adams  <readams@readams.net>
+
 	* NEWS: 2.8.3 release
 
 2004-08-15  Rob Adams  <readams@readams.net>
