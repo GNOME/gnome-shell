@@ -476,7 +476,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
       meta_workspace_add_window (space, window);
     }
-
+  
   /* Only accept USPosition on normal windows because the app is full
    * of shit claiming the user set -geometry for a dialog or dock
    */
@@ -510,6 +510,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
        */
       window->on_all_workspaces = TRUE;
     }
+
+  /* for the various on_all_workspaces = TRUE possible above */
+  meta_window_set_current_workspace_hint (window);
   
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
