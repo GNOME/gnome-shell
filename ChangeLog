@@ -1,7 +1,7 @@
 2005-01-02  Elijah Newren  <newren@gmail.com>
 
 	Provide more documentation to make it easier for people to
-	contribute to Metacity
+	contribute to Metacity.  (#162646)
 
 	* HACKING: Add lots of information to extend this document: more
 	on relevant standards and X properties, lots of information on
@@ -9,7 +9,7 @@
 	things to read; also move some information to
 	src/code-overview.txt and organize this file into sections.
 	
-	* src/code-overview.txt: New file including some small parts from
+	* doc/code-overview.txt: New file including some small parts from
 	the old HACKING file and lots of new stuff.  This file gives a
 	brief overview of some of the bigger structures and files, with
 	guides for a variety of task categories providing places to start
