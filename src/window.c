@@ -1338,11 +1338,16 @@ meta_window_focus (MetaWindow  *window,
   meta_verbose ("Setting input focus to window %s, input: %d take_focus: %d\n",
                 window->desc, window->input, window->take_focus);
 
-  if (window->shaded && window->frame)
+  /* For output-only or shaded windows, focus the frame.
+   * This seems to result in the client window getting key events
+   * though, so I don't know if it's icccm-compliant.
+   *
+   * Still, we have to do this or keynav breaks for these windows.
+   */
+  if (window->frame &&
+      (window->shaded ||
+       !(window->input || window->take_focus)))
     {
-      /* This is so we can still use keyboard shortcuts
-       * and still draw the window as focused.
-       */
       if (window->frame)
         {
           meta_verbose ("Focusing frame of %s\n", window->desc);
