@@ -204,6 +204,7 @@ meta_screen_new (MetaDisplay *display,
                 ColormapChangeMask | PropertyChangeMask |
                 LeaveWindowMask | EnterWindowMask |
                 ButtonPressMask | ButtonReleaseMask |
+                KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | attr.your_event_mask);
   if (meta_error_trap_pop (display) != Success)
     {

@@ -1,5 +1,11 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (meta_screen_new): select keypress/keyrelease
+	events on root window, this may fix the bug where keybindings
+	didn't work if you didn't have a focused window.
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/main.c (main): call meta_session_shutdown when exiting
 	cleanly
 
