@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity HEAD\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
+"POT-Creation-Date: 2003-05-30 19:48+0100\n"
 "PO-Revision-Date: 2003-02-11 15:05 GMT\n"
 "Last-Translator: Paul Duffy <dubhthach@zion.nuigalway.ie>\n"
 "Language-Team: Irish\n"
@@ -80,7 +80,7 @@ msgstr "Dún an Fhuinneog"
 
 #: src/frames.c:1001
 msgid "Window Menu"
-msgstr ""
+msgstr "Roghchlár an Fhuinneog"
 
 #: src/frames.c:1004
 msgid "Minimize Window"
@@ -127,13 +127,13 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr ""
@@ -174,11 +174,11 @@ msgstr "_Dún"
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "Chuir ar G_ach Deascanna"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "Ar an Deas _Seo amhain"
 
 #: src/menu.c:152 src/prefs.c:1814
 #, c-format
@@ -197,12 +197,12 @@ msgstr "Deasc %s%d"
 #: src/menu.c:345
 #, c-format
 msgid "Only on %s"
-msgstr ""
+msgstr "Ar %s amhain"
 
 #: src/menu.c:347
 #, c-format
 msgid "Move to %s"
-msgstr ""
+msgstr "Bog go %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -2319,7 +2319,7 @@ msgstr ""
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Fócas an Fhuinneog"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
@@ -2354,7 +2354,7 @@ msgstr ""
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Oscail comhad log %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
