@@ -1598,30 +1598,30 @@ event_callback (XEvent   *event,
           if (unmodified ||
               event->xbutton.button == 1)
             {
+              /* don't focus if frame received, will be lowered in
+               * frames.c or special-cased if the click was on a
+               * minimize/close button.
+               */
               if (!frame_was_receiver)
                 {
-                  /* don't focus if frame received, will be lowered in
-                   * frames.c or special-cased if the click was on a
-                   * minimize/close button.
-                   */
-
                   /* Raise on clicking the client area always or only
                    * in click to focus mode? The debate rages.
                    * Feel free to change TRUE to FALSE or vice versa
                    */
                   if (TRUE /* meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK */) 
+                    meta_window_raise (window);
+                  else
+                    meta_topic (META_DEBUG_FOCUS,
+                                "Not raising window on click due to mouse/sloppy focus mode\n");
+
+                  /* Don't focus panels--they must explicitly request focus.
+                   * See bug 160470
+                   */
+		  if (window->type != META_WINDOW_DOCK)
                     {
-                      meta_window_raise (window);
-                      
                       meta_topic (META_DEBUG_FOCUS,
                                   "Focusing %s due to unmodified button %d press (display.c)\n",
                                   window->desc, event->xbutton.button);
-                      meta_window_focus (window, event->xbutton.time);
-                    }
-                  else
-                    {
-                      meta_topic (META_DEBUG_FOCUS,
-                                  "Not raising window on click due to mouse/sloppy focus mode\n");
                       meta_window_focus (window, event->xbutton.time);
                     }
                 }

@@ -76,9 +76,13 @@ and LeaveNotify events should be ignored (they can be generated
 without using the mouse, for example, by grabs).
 
 Finally, windows of type WM_DOCK or WM_DESKTOP (e.g. the desktop and
-the panel) present a special case.  For all focus modes, we only focus
-these windows if the user clicks on them or uses Ctrl-Alt-Tab to
-navigate to them.
+the panel) present a special case, at least partially due to the lack
+of decorations.  For WM_DESKTOP windows, we only focus them if the
+user explicitly requests it (e.g. clicks on the window, uses
+Ctrl-Alt-Tab to navigate to it, uses a keybinding to show the desktop,
+etc.).  For WM_DOCK windows, we do not focus unless we receive a very
+explicit request (e.g. Ctrl-Alt-Tab or a _NET_ACTIVE_WINDOW message;
+not normal clicks).
 
 
 
@@ -94,7 +98,8 @@ To read more about the bugs that inspired these choices:
   - Ignoring EnterNotify and LeaveNotify events during keynav
     http://bugzilla.gnome.org/show_bug.cgi?id=101190
   - Not focusing panels
-    http://bugzilla.gnome.org/show_bug.cgi?id=120100 (maybe a different bug?)
+    http://bugzilla.gnome.org/show_bug.cgi?id=160470
+    http://bugzilla.gnome.org/show_bug.cgi?id=120100
 
 There were many bugs which had to be fixed to get all the above
 working; they helped form these policies and/or show the difficulties
