@@ -952,7 +952,37 @@ event_callback (XEvent   *event,
             }
           else if (event->xbutton.button == 2)
             {
-              begin_move = TRUE;
+              if (window->has_resize_func)
+                {
+                  gboolean north;
+                  gboolean west;
+                  int root_x, root_y;
+                  MetaGrabOp op;
+
+                  meta_window_get_position (window, &root_x, &root_y);
+
+                  west = event->xbutton.x_root < (root_x + window->rect.width / 2);
+                  north = event->xbutton.y_root < (root_y + window->rect.height / 2);
+
+                  if (west && north)
+                    op = META_GRAB_OP_RESIZING_NW;
+                  else if (west)
+                    op = META_GRAB_OP_RESIZING_SW;
+                  else if (north)
+                    op = META_GRAB_OP_RESIZING_NE;
+                  else
+                    op = META_GRAB_OP_RESIZING_SE;
+                  
+                  meta_display_begin_grab_op (display,
+                                              window,
+                                              op,
+                                              TRUE,
+                                              event->xbutton.button,
+                                              0,
+                                              event->xbutton.time,
+                                              event->xbutton.x_root,
+                                              event->xbutton.y_root);
+                }
             }
           else if (event->xbutton.button == 3)
             {
