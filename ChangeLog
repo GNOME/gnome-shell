@@ -1,3 +1,42 @@
+2002-06-26  Mark McLoughlin  <mark@skynet.ie>
+
+	Fixes not being able to tab out of a 
+	workspace which contains no windows.
+
+	* src/core.c: (meta_core_begin_grab_op): upd
+	for meta_display_begin_grab_op change.
+	(meta_core_get_grab_frame): allow for
+	grab_window == NULL.
+
+	* src/display.[ch]:
+	(meta_display_screen_for_xwindow): implement.
+	(meta_display_begin_grab_op): grab on the root window
+	if window == NULL.
+	(meta_display_end_grab_op): use grab_screen instead of
+	grab_window.
+
+	* src/keybindings.c:
+	(grab_all_keys_and_keyboard): split out from
+	meta_window_grab_all_keys.
+	(ungrab_all_keys_and_keyboard): split out from
+	meta_window_ungrab_all_keys.
+	(meta_screen_grab_all_keys), (meta_screen_ungrab_all_keys):
+	implement grabbing and ungrabbing on the root window.
+	(meta_display_process_key_event): if window == NULL,
+	check the event is from the same screen and process. Only
+	happens with workspace switching.
+	(process_workspace_switch_grab): kill window param and
+	don't use grab_window.
+	(handle_tab_forward), (handle_begin_move): upd for
+	meta_display_begin_grab_op change.
+	(handle_workspace_switch): remove brokeness. Always do
+	the grab op on the root window.
+
+	* src/keybindings.h: add meta_screen_{un}grab_all_keys.
+
+	* src/window.c: (meta_window_client_message), (menu_callback):
+	update for meta_display_begin_grab_op change.
+
 2002-06-25  Mark McLoughlin  <mark@skynet.ie>
 
 	* src/fixedtip.c: (meta_fixed_tip_show):

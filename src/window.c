@@ -3339,6 +3339,7 @@ meta_window_client_message (MetaWindow *window,
               meta_topic (META_DEBUG_WINDOW_OPS,
                           "Beginning move/resize with button = %d\n", button);
               meta_display_begin_grab_op (window->display,
+                                          window->screen,
                                           window,
                                           op,
                                           FALSE,
@@ -5419,6 +5420,7 @@ menu_callback (MetaWindowMenu *menu,
         case META_MENU_OP_MOVE:
           meta_window_raise (window);
           meta_display_begin_grab_op (window->display,
+                                      window->screen,
                                       window,
                                       META_GRAB_OP_KEYBOARD_MOVING,
                                       FALSE, 0, 0,
@@ -5429,6 +5431,7 @@ menu_callback (MetaWindowMenu *menu,
         case META_MENU_OP_RESIZE:
           meta_window_raise (window);
           meta_display_begin_grab_op (window->display,
+                                      window->screen,
                                       window,
                                       META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
                                       FALSE, 0, 0,

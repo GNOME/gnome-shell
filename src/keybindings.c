@@ -125,7 +125,6 @@ static gboolean process_tab_grab           (MetaDisplay *display,
                                             KeySym       keysym);
 
 static gboolean process_workspace_switch_grab (MetaDisplay *display,
-                                               MetaWindow  *window,
                                                XEvent      *event,
                                                KeySym       keysym);
 
@@ -782,11 +781,113 @@ meta_window_ungrab_keys (MetaWindow  *window)
     }
 }
 
+static gboolean
+grab_all_keys_and_keyboard (MetaDisplay *display,
+                            Window       xwindow)
+{
+  int result;
+
+  meta_error_trap_push (display);
+  XGrabKey (display->xdisplay, AnyKey, AnyModifier,
+            xwindow, True,
+            GrabModeAsync, GrabModeAsync);
+  
+  result = meta_error_trap_pop (display);
+  if (result != Success)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Global key grab failed\n");
+      return FALSE;
+    }
+
+  /* Also grab the keyboard, so we get key releases and all key
+   * presses
+   */
+  meta_error_trap_push (display);
+
+  XGrabKeyboard (display->xdisplay,
+                 xwindow, True,
+                 GrabModeAsync, GrabModeAsync,
+                 meta_display_get_current_time (display));
+       
+  result = meta_error_trap_pop (display);
+  if (result != Success)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "XGrabKeyboard() failed\n");
+      return FALSE;
+    }
+       
+  meta_topic (META_DEBUG_KEYBINDINGS, "Grabbed all keys\n");
+       
+  return TRUE;
+}
+
+static void
+ungrab_all_keys_and_keyboard (MetaDisplay *display,
+                              Window       xwindow)
+{
+  Time timestamp;
+
+  timestamp = meta_display_get_current_time (display);
+      
+  meta_error_trap_push (display);
+  XUngrabKey (display->xdisplay,
+              AnyKey, AnyModifier,
+              xwindow);
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Ungrabbing keyboard with timestamp %lu\n",
+              timestamp);
+  XUngrabKeyboard (display->xdisplay, timestamp);
+  meta_error_trap_pop (display);
+}
+
+gboolean
+meta_screen_grab_all_keys (MetaScreen *screen)
+{
+  gboolean retval;
+
+  if (screen->all_keys_grabbed)
+    return FALSE;
+  
+  if (screen->keys_grabbed)
+    meta_screen_ungrab_keys (screen);
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Grabbing all keys on RootWindow\n");
+  retval = grab_all_keys_and_keyboard (screen->display,
+                                       screen->xroot);
+  if (retval)
+    {
+      screen->keys_grabbed = FALSE;
+      screen->all_keys_grabbed = TRUE;
+    }
+
+  return retval;
+}
+
+void
+meta_screen_ungrab_all_keys (MetaScreen *screen)
+{
+  if (screen->all_keys_grabbed)
+    {
+      ungrab_all_keys_and_keyboard (screen->display,
+                                    screen->xroot);
+
+      screen->all_keys_grabbed = FALSE;
+      screen->keys_grabbed = FALSE;
+
+      /* Re-establish our standard bindings */
+      meta_screen_grab_keys (screen);
+    }
+}
+
 gboolean
 meta_window_grab_all_keys (MetaWindow  *window)
 {
-  int result;
   Window grabwindow;
+  gboolean retval;
   
   if (window->all_keys_grabbed)
     return FALSE;
@@ -804,48 +905,18 @@ meta_window_grab_all_keys (MetaWindow  *window)
                      meta_display_get_current_time (window->display));
   
   grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
-  
-  meta_error_trap_push (window->display);
-  XGrabKey (window->display->xdisplay, AnyKey, AnyModifier,
-            grabwindow, True,
-            GrabModeAsync, GrabModeAsync);
-  
-  result = meta_error_trap_pop (window->display);
-  if (result != Success)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Global key grab failed for window %s\n", window->desc);
-      return FALSE;
-    }
-  else
-    {
-      /* Also grab the keyboard, so we get key releases and all key
-       * presses
-       */
-       meta_error_trap_push (window->display);
 
-       XGrabKeyboard (window->display->xdisplay,
-                      grabwindow, True,
-                      GrabModeAsync, GrabModeAsync,
-                      meta_display_get_current_time (window->display));
-       
-       result = meta_error_trap_pop (window->display);
-       if (result != Success)
-         {
-           meta_topic (META_DEBUG_KEYBINDINGS,
-                       "XGrabKeyboard() failed for window %s\n",
-                       window->desc);
-           return FALSE;
-         }
-       
-       meta_topic (META_DEBUG_KEYBINDINGS,
-                   "Grabbed all keys on window %s\n", window->desc);
-       
-       window->keys_grabbed = FALSE;
-       window->all_keys_grabbed = TRUE;
-       window->grab_on_frame = window->frame != NULL;
-       return TRUE;
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Grabbing all keys on window %s\n", window->desc);
+  retval = grab_all_keys_and_keyboard (window->display, grabwindow);
+  if (retval)
+    {
+      window->keys_grabbed = FALSE;
+      window->all_keys_grabbed = TRUE;
+      window->grab_on_frame = window->frame != NULL;
     }
+
+  return retval;
 }
 
 void
@@ -854,24 +925,12 @@ meta_window_ungrab_all_keys (MetaWindow  *window)
   if (window->all_keys_grabbed)
     {
       Window grabwindow;
-      Time timestamp;
 
       grabwindow = (window->frame && window->grab_on_frame) ?
         window->frame->xwindow : window->xwindow;
 
-      timestamp = meta_display_get_current_time (window->display);
-      
-      meta_error_trap_push (window->display);
-      XUngrabKey (window->display->xdisplay,
-                  AnyKey, AnyModifier,
-                  grabwindow);
+      ungrab_all_keys_and_keyboard (window->display, grabwindow);
 
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ungrabbing keyboard with timestamp %lu\n",
-                  timestamp);
-      XUngrabKeyboard (window->display->xdisplay, timestamp);
-      meta_error_trap_pop (window->display);
-      
       window->grab_on_frame = FALSE;
       window->all_keys_grabbed = FALSE;
       window->keys_grabbed = FALSE;
@@ -1061,7 +1120,7 @@ process_event (MetaKeyBinding       *bindings,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "No handler found for this event in this binding table\n");
 }
-                
+
 void
 meta_display_process_key_event (MetaDisplay *display,
                                 MetaWindow  *window,
@@ -1069,14 +1128,19 @@ meta_display_process_key_event (MetaDisplay *display,
 {
   KeySym keysym;
   gboolean handled;
+  gboolean all_keys_grabbed;
   const char *str;
+  MetaScreen *screen;
 
   XAllowEvents (display->xdisplay,
                 all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
                 event->xkey.time);
   if (all_bindings_disabled)
     return;
-  
+
+  screen = meta_display_screen_for_xwindow (display,
+                                            event->xany.window);
+
   /* window may be NULL */  
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
@@ -1089,7 +1153,8 @@ meta_display_process_key_event (MetaDisplay *display,
               str ? str : "(null)", event->xkey.state,
               window ? window->desc : "(no window)");
 
-  if (window == NULL || !window->all_keys_grabbed)
+  all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
+  if (!all_keys_grabbed)
     {
       /* Do the normal keybindings */
       process_event (display->screen_bindings,
@@ -1116,13 +1181,15 @@ meta_display_process_key_event (MetaDisplay *display,
   
   handled = FALSE;
 
-  if (window == display->grab_window)
+  if (window ? (window == display->grab_window) :
+               (screen == display->grab_screen))
     {
       switch (display->grab_op)
         {
         case META_GRAB_OP_KEYBOARD_MOVING:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard move\n");
+          g_assert (window != NULL);
           handled = process_keyboard_move_grab (display, window, event, keysym);
           break;
 
@@ -1137,6 +1204,7 @@ meta_display_process_key_event (MetaDisplay *display,
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:          
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard resize\n");
+          g_assert (window != NULL);
           handled = process_keyboard_resize_grab (display, window, event, keysym);
           break;
 
@@ -1144,12 +1212,13 @@ meta_display_process_key_event (MetaDisplay *display,
         case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard tabbing\n");
+          g_assert (window != NULL);
           handled = process_tab_grab (display, window, event, keysym);
           break;
         case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard workspace switching\n");
-          handled = process_workspace_switch_grab (display, window, event, keysym);
+          handled = process_workspace_switch_grab (display, event, keysym);
           break;
 
         default:
@@ -1742,16 +1811,13 @@ handle_activate_workspace (MetaDisplay    *display,
 
 static gboolean
 process_workspace_switch_grab (MetaDisplay *display,
-                               MetaWindow  *window,
                                XEvent      *event,
                                KeySym       keysym)
 {
   MetaScreen *screen;
   MetaWorkspace *workspace;
 
-  window = NULL; /* be sure we don't use this, it's irrelevant */
-
-  screen = display->grab_window->screen;
+  screen = display->grab_screen;
 
   g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
   
@@ -1952,6 +2018,7 @@ handle_tab_forward (MetaDisplay    *display,
                   "Starting tab between windows, showing popup\n");
       
       if (meta_display_begin_grab_op (window->display,
+                                      window->screen,
                                       display->focus_window ?
                                       display->focus_window : window,
                                       op_from_tab_type (type),
@@ -2120,6 +2187,7 @@ handle_begin_move         (MetaDisplay    *display,
     {
       meta_window_raise (window);
       meta_display_begin_grab_op (window->display,
+                                  window->screen,
                                   window,
                                   META_GRAB_OP_KEYBOARD_MOVING,
                                   FALSE, 0, 0,
@@ -2266,47 +2334,30 @@ handle_workspace_switch  (MetaDisplay    *display,
   if (screen == NULL)
     return;
 
-  /* FIXME this is all broken, that you need a window to grab on.
-   * There's no reason we need a window here, in fact it's broken
-   * that you have to have one.
-   */
-  
-  if (display->focus_window != NULL)
-    {
-      window = display->focus_window;
-    }
-  else if (window == NULL)
-    {
-      window = get_previous_focus_window (display, screen);
-    }
-      
-  if (window)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Starting tab between workspaces, showing popup\n");
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Starting tab between workspaces, showing popup\n");
 
-      if (meta_display_begin_grab_op (display,
-                                      window,
-                                      META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
-                                      FALSE,
-                                      0,
-                                      event->xkey.state & ~(display->ignored_modifier_mask),
-                                      event->xkey.time,
-                                      0, 0))
-        {
-          MetaWorkspace *next;
+  if (meta_display_begin_grab_op (display,
+                                  screen,
+                                  NULL,
+                                  META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
+                                  FALSE,
+                                  0,
+                                  event->xkey.state & ~(display->ignored_modifier_mask),
+                                  event->xkey.time,
+                                  0, 0))
+    {
+      MetaWorkspace *next;
           
-          next = meta_workspace_get_neighbor (window->screen->active_workspace,
-                                              motion);
-          g_assert (next); 
+      next = meta_workspace_get_neighbor (screen->active_workspace,
+                                          motion);
+      g_assert (next); 
           
-          meta_ui_tab_popup_select (window->screen->tab_popup,
-                                    (MetaTabEntryKey) next);
+      meta_ui_tab_popup_select (screen->tab_popup,
+                                (MetaTabEntryKey) next);
           
-          /* only after selecting proper window */
-          meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                         TRUE);
-        }
+      /* only after selecting proper window */
+      meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
     }
 }
 

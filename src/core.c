@@ -519,14 +519,16 @@ meta_core_begin_grab_op (Display    *xdisplay,
 {
   MetaDisplay *display;
   MetaWindow *window;
+  MetaScreen *screen;
   
   display = meta_display_for_x_display (xdisplay);
+  screen = meta_display_screen_for_xwindow (display, frame_xwindow);
   window = meta_display_lookup_x_window (display, frame_xwindow);
 
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  return meta_display_begin_grab_op (display, window,
+  return meta_display_begin_grab_op (display, screen, window,
                                      op, pointer_already_grabbed,
                                      button, modmask,
                                      timestamp, root_x, root_y);
@@ -562,11 +564,12 @@ meta_core_get_grab_frame (Display *xdisplay)
 
   g_assert (display != NULL);
   g_assert (display->grab_op == META_GRAB_OP_NONE || 
-            display->grab_window != NULL);
+            display->grab_screen != NULL);
   g_assert (display->grab_op == META_GRAB_OP_NONE ||
-            display->grab_window->display->xdisplay == xdisplay);
+            display->grab_screen->display->xdisplay == xdisplay);
   
   if (display->grab_op != META_GRAB_OP_NONE &&
+      display->grab_window &&
       display->grab_window->frame)
     return display->grab_window->frame->xwindow;
   else

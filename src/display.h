@@ -192,6 +192,7 @@ struct _MetaDisplay
   
   /* current window operation */
   MetaGrabOp  grab_op;
+  MetaScreen *grab_screen;
   MetaWindow *grab_window;
   Window      grab_xwindow;
   int         grab_button;
@@ -231,6 +232,8 @@ MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
                                                 Window       xroot);
 MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
                                                 Screen      *screen);
+MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,
+                                                Window       xindow);
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 gboolean      meta_display_is_double_click     (MetaDisplay *display);
@@ -267,6 +270,7 @@ Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);
 
 gboolean meta_display_begin_grab_op (MetaDisplay *display,
+                                     MetaScreen  *screen,
                                      MetaWindow  *window,
                                      MetaGrabOp   op,
                                      gboolean     pointer_already_grabbed,

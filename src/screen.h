@@ -77,6 +77,7 @@ struct _MetaScreen
   guint vertical_workspaces : 1;
   
   guint keys_grabbed : 1;
+  guint all_keys_grabbed : 1;
 
   int closing;
 };

@@ -440,6 +440,7 @@ meta_display_open (const char *name)
   
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
+  display->grab_screen = NULL;
   display->grab_resize_popup = NULL;
   
   set_utf8_string_hint (display,
@@ -630,6 +631,17 @@ meta_display_screen_for_root (MetaDisplay *display,
     }
 
   return NULL;
+}
+
+MetaScreen*
+meta_display_screen_for_xwindow (MetaDisplay *display,
+                                 Window       xwindow)
+{
+  XWindowAttributes attr;
+
+  XGetWindowAttributes (display->xdisplay, xwindow, &attr);
+
+  return meta_display_screen_for_x_screen (display, attr.screen);
 }
 
 MetaScreen*
@@ -1076,6 +1088,7 @@ event_callback (XEvent   *event,
                     op = META_GRAB_OP_RESIZING_SE;
                   
                   meta_display_begin_grab_op (display,
+                                              window->screen,
                                               window,
                                               op,
                                               TRUE,
@@ -1098,6 +1111,7 @@ event_callback (XEvent   *event,
           if (begin_move && window->has_move_func)
             {
               meta_display_begin_grab_op (display,
+                                          window->screen,
                                           window,
                                           META_GRAB_OP_MOVING,
                                           TRUE,
@@ -2160,6 +2174,7 @@ xcursor_for_op (MetaDisplay *display,
 
 gboolean
 meta_display_begin_grab_op (MetaDisplay *display,
+			    MetaScreen  *screen,
                             MetaWindow  *window,
                             MetaGrabOp   op,
                             gboolean     pointer_already_grabbed,
@@ -2174,16 +2189,20 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %d on window %s button %d pointer already grabbed: %d\n",
-              op, window->desc, button, pointer_already_grabbed);
+              op, window ? window->desc : "(null)", button, pointer_already_grabbed);
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
       meta_warning ("Attempt to perform window operation %d on window %s when operation %d on %s already in effect\n",
-                    op, window->desc, display->grab_op, display->grab_window->desc);
+                    op, window ? window->desc : "(null)", display->grab_op,
+                    display->grab_window ? display->grab_window->desc : "(null)");
       return FALSE;
     }
 
-  grab_xwindow  = window->frame ? window->frame->xwindow : window->xwindow;
+  if (window)
+    grab_xwindow = window->frame ? window->frame->xwindow : window->xwindow;
+  else
+    grab_xwindow = screen->xroot;
   
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
@@ -2227,7 +2246,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   if (grab_op_is_keyboard (op))
     {
-      if (meta_window_grab_all_keys (window))
+      if (window)
+        display->grab_have_keyboard =
+                     meta_window_grab_all_keys (window);
+
+      else if (meta_screen_grab_all_keys (screen))
         display->grab_have_keyboard = TRUE;
       
       if (!display->grab_have_keyboard)
@@ -2240,45 +2263,50 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   display->grab_op = op;
   display->grab_window = window;
+  display->grab_screen = screen;
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
   display->grab_mask = modmask;
   display->grab_root_x = root_x;
   display->grab_root_y = root_y;
-  display->grab_initial_window_pos = display->grab_window->rect;
-  meta_window_get_position (display->grab_window,
-                            &display->grab_initial_window_pos.x,
-                            &display->grab_initial_window_pos.y);
+  if (display->grab_window)
+    {
+      display->grab_initial_window_pos = display->grab_window->rect;
+      meta_window_get_position (display->grab_window,
+                                &display->grab_initial_window_pos.x,
+                                &display->grab_initial_window_pos.y);
+    }
   
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Grab op %d on window %s successful\n",
-              display->grab_op, display->grab_window->desc);
+              display->grab_op, window ? window->desc : "(null)");
 
-  g_assert (display->grab_window != NULL);
+  g_assert (display->grab_window != NULL || display->grab_screen != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
   /* Do this last, after everything is set up. */
   switch (op)
     {
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
-      meta_screen_ensure_tab_popup (window->screen,
+      meta_screen_ensure_tab_popup (screen,
                                     META_TAB_LIST_NORMAL);
       break;
 
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
-      meta_screen_ensure_tab_popup (window->screen,
+      meta_screen_ensure_tab_popup (screen,
                                     META_TAB_LIST_DOCKS);
       break;
       
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
-      meta_screen_ensure_workspace_popup (window->screen);
+      meta_screen_ensure_workspace_popup (screen);
       break;
 
     default:
       break;
     }
 
-  meta_window_refresh_resize_popup (display->grab_window);
+  if (display->grab_window)
+    meta_window_refresh_resize_popup (display->grab_window);
   
   return TRUE;
 }
@@ -2294,8 +2322,8 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK ||
       display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING)
     {
-      meta_ui_tab_popup_free (display->grab_window->screen->tab_popup);
-      display->grab_window->screen->tab_popup = NULL;
+      meta_ui_tab_popup_free (display->grab_screen->tab_popup);
+      display->grab_screen->tab_popup = NULL;
 
       /* If the ungrab here causes an EnterNotify, ignore it for
        * sloppy focus
@@ -2315,10 +2343,14 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Ungrabbing all keys\n");
-      meta_window_ungrab_all_keys (display->grab_window);
+      if (display->grab_window)
+        meta_window_ungrab_all_keys (display->grab_window);
+      else
+        meta_screen_ungrab_all_keys (display->grab_screen);
     }
   
   display->grab_window = NULL;
+  display->grab_screen = NULL;
   display->grab_xwindow = None;
   display->grab_op = META_GRAB_OP_NONE;
 
