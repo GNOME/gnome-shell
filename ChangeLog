@@ -1,3 +1,14 @@
+2004-03-01  Rob Adams  <readams@readams.net>
+
+	* src/stack.c (compute_layer): don't promote due to transiency; we
+	handle that elsewhere now.
+	(ensure_above): perform layer promotion here as well as stack
+	position promotion.  Note that this means that we need to do stack
+	constraints now on layer change now.
+	(get_maximum_layer_of_ancestor): remove function
+	(max_layer_func): remove function
+	(MaxLayerData): remove struct
+
 2004-02-28  Rob Adams  <readams@readams.net>
 
 	Revert 2/27 patch for layer promotion.
