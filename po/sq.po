@@ -5,16 +5,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.sq\n"
+"Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-02 14:32+0100\n"
-"PO-Revision-Date: 2004-02-02 14:31+0100\n"
+"POT-Creation-Date: 2004-02-23 13:46+0100\n"
+"PO-Revision-Date: 2004-02-23 12:24+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -37,32 +36,32 @@ msgstr "Analizimi i \"%s\" si i plotë është e pamundur"
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Gërmat \"%s\" tek stringa \"%s\" janë të pakuptueshme"
+msgstr "Simbolet \"%s\" tek stringa \"%s\" janë të pakuptueshëm"
 
 #: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Analiza e mesazhit \"%s\" nga procesi i dialogut dështoi\n"
+msgstr "Analiza e mesazhit \"%s\" nga proçesi i dialogut dështoi\n"
 
 #: src/delete.c:262
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Gabim gjatë leximit të dialogut të procesit: %s\n"
+msgstr "Gabim gjatë leximit të dialogut të proçesit: %s\n"
 
 #: src/delete.c:338
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Gabim gjatë lëshimit të dialogut-metacity për të pyetur nëse dëshiron të "
-"përfundosh një aplikativ: %s\n"
+"Gabim gjatë lëshimit të dritares së dialogut metacity për të pyetur nëse "
+"dëshiron të përfundosh një program: %s\n"
 
 #: src/delete.c:446
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Gabim gjatë marrjes së emrit të host: %s\n"
 
-#: src/display.c:296
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gabim gjatë hapjes së display '%s' të X Window System\n"
@@ -76,7 +75,7 @@ msgid ""
 msgstr ""
 "Humbi lidhja me display '%s';\n"
 "ka mundësi të jetë ndaluar server-i X ose keni përfunduar ose\n"
-"vrarë window manager.\n"
+"vrarë organizuesin e dritareve.\n"
 
 #: src/errors.c:238
 #, c-format
@@ -89,7 +88,7 @@ msgstr "Mbylle dritaren"
 
 #: src/frames.c:1019
 msgid "Window Menu"
-msgstr "Menu e dritares"
+msgstr "Menuja e dritares"
 
 #: src/frames.c:1022
 msgid "Minimize Window"
@@ -101,9 +100,9 @@ msgstr "Dritarja në maksimum"
 
 #: src/frames.c:1028
 msgid "Unmaximize Window"
-msgstr "Demaksimizo dritaren"
+msgstr "Zvogëlo dritaren"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -112,14 +111,14 @@ msgstr ""
 "Ndonjë program tjetër është duke përdorur kombinimin e pulsantit %s me "
 "ndryshuesin %x\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
-"Gabim gjatë ekzekutimit të metacity-dialog për të lajmëruar një gabim në "
-"lidhje me një komandë: %s\n"
+"Gabim gjatë lëshimit të dritares së dialogut të metacity për të lajmëruar "
+"një gabim në lidhje me një komandë: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komanda %d nuk është përcaktuar.\n"
@@ -129,7 +128,7 @@ msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=EMRIFILE] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:76
@@ -164,83 +163,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Rinisja dështoi: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "Mi_nimizo"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Ma_ksimizo"
 
-#: src/menu.c:55
-msgid "Unma_ximize"
-msgstr "Dema_ksimizo"
-
 #: src/menu.c:56
+msgid "Unma_ximize"
+msgstr "Zvo_gëlo"
+
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "_Mbështille"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "_Ç'mbështille"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
-msgstr "Në _Majë"
+msgstr "Në _Krye"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_Lëvize"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "_Ridimensiono"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Mbylle"
 
 #. separator
-#: src/menu.c:65
-msgid "Put on _All Workspaces"
-msgstr "Vendose në të _Gjitha Hapësirat e punës"
-
 #: src/menu.c:66
-msgid "Only on _This Workspace"
-msgstr "Vetëm në _Këtë Hapësirë pune"
+msgid "Put on _All Workspaces"
+msgstr "Vendose në të _Gjitha Hapësirat e Punës"
 
 #: src/menu.c:67
+msgid "Only on _This Workspace"
+msgstr "Vetëm në _Këtë Hapësirë Pune"
+
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "Lëvize tek hapësira e punës _Majtas"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "Lëvize tek hapësira e punës D_jathtas"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Lëvize tek hapësira e punës _Sipër"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "Lëvize tek hapësira e punës _Poshtë"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Hapësira e punës %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "Hapësira e punës 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Hapësira e punës %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "Lëvize tek një tjetër hapësirë pune"
 
@@ -343,7 +342,7 @@ msgstr "Dritarja \"%s\" nuk përgjigjet."
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Duke detyruar me forcë përfundimin e këtij aplikativi mund të humbisni çdo "
+"Duke detyruar me forcë përfundimin e këtij programi mund të humbisni çdo "
 "ndryshim të paruajtur."
 
 #: src/metacity-dialog.c:103
@@ -363,8 +362,8 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Këto dritare nuk suportojnë \"save current setup\" dhe duhet të rinisen nga "
-"ju kur të futeni përsëri."
+"Këto dritare nuk suportojnë \"ruaj rregullimet aktuale\" dhe duhet të "
+"rinisen nga ju kur të futeni përsëri."
 
 #: src/metacity-dialog.c:288
 #, c-format
@@ -382,8 +381,7 @@ msgstr "Metacity"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(E pakompletuar) Lundrimi funksionon në nivel aplikacioni, jo në nivel "
-"dritareje"
+"(E pakompletuar) Lundrimi funksionon në nivel programi, jo në nivel dritareje"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -394,11 +392,11 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"Një stringë përshkruese e fonts specifikon gërmat për panelin e titullit të "
-"dritares. Sidoqoftë, madhësia e përcaktuar do të përdoret vetëm nëqoftëse "
+"Një stringë përshkruese e gërmave specifikon gërmat për panelin e titullit "
+"të dritares. Sidoqoftë, madhësia e përcaktuar do të përdoret vetëm nëqoftëse "
 "opcioni titlebar_font_size është rregulluar në 0. Gjithashtu, ky opcion "
-"është i disaktivuar nëqoftëse titlebar_uses_desktop_font është vedosur si "
-"\"e vërtetë\".Në default opcioni titlebar_font nuk është i vendosur e për "
+"është i ç'aktivuar nëqoftëse titlebar_uses_desktop_font është vedosur si \"e "
+"vërtetë\".Si i prezgjedhur opcioni titlebar_font nuk është i vendosur e për "
 "këtë arsye Metacity do të përdorë gërmat e desktop edhe nëqoftëse "
 "titlebar_uses_desktop_font është \"jo e vërtetë\"."
 
@@ -408,7 +406,7 @@ msgstr "Veprimi për klik dopjo tek shtylla e titullit"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Aktivo menu-në e dritares"
+msgstr "Aktivo menunë e dritares"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -428,7 +426,7 @@ msgstr ""
 "majtë të dritares nga i djathti, emrat e pulsantëve duhet të ndahen me "
 "presje.Nuk pranohen emrat e duplikuar. Emrat e panjohur do të shpërfillen në "
 "menyrë që pulsantët e rinj të mund të shtohen në versionet e ardhshëm të "
-"metacity, pa prishur kompatibilitetin me versionet më të vjetër."
+"metacity, pa prishur përputhshmërinë me versionet më të vjetër."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -443,9 +441,8 @@ msgid ""
 msgstr ""
 "Duke klikuar një dritare ndërkohë që ky pulsant modifikues është i shtypur "
 "ka si rezultat lëvizjen e dritares (klik i majtë), ridimensionimin e "
-"dritares (tasti qëndror) ose shfaqjen e menu-së së dritares (klik i "
-"djathtë). Ndryshuesi është përcaktuar si \"&lt;Alt&gt;\" ose \"&lt;Super&gt;"
-"\"."
+"dritares (tasti qëndror) ose shfaqjen e menusë së dritares (klik i djathtë). "
+"Ndryshuesi është përcaktuar si \"&lt;Alt&gt;\" ose \"&lt;Super&gt;\"."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -461,7 +458,7 @@ msgstr "Tema aktuale"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Vonesa në millisekonda për opcionin e \"auto raise\""
+msgstr "Vonesa në milisekonda për opcionin e \"auto raise\""
 
 #: src/metacity.schemas.in.h:13
 msgid ""
@@ -475,7 +472,7 @@ msgstr ""
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
-"Disaktivo funksionet e kërkuara nga aplikativët e vjetër ose jo funksionues"
+"Disaktivo funksionet e kërkuara nga programet e vjetër ose jo funksionues"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -483,7 +480,7 @@ msgstr "Aktivo 'Visual Bell'"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "Fshih të gjitha dritaret dhe fokuso desktop-in"
+msgstr "Fshih të gjitha dritaret dhe fokuso desktopin"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -493,15 +490,15 @@ msgid ""
 msgstr ""
 "Nëse e vërtetë dhe modaliteti i fokus është \"sloppy\" ose \"mouse\" atëhere "
 "dritarja me fokus automatikisht do të sillet në plan të parë mbas një vonese "
-"të caktuar (të përcaktuar nga çelësi auto_raise_delay)."
+"të caktuar (të përcaktuar nga kyçi auto_raise_delay)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Nëse e vërtetë injoron opcionin titlebar_font dhe përdor gërmat e "
-"aplikativit për titujt e dritareve."
+"Nëse e vërtetë injoron opcionin titlebar_font dhe përdor gërmat e programit "
+"për titujt e dritareve."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -515,7 +512,7 @@ msgstr ""
 "ndjenjë më të vogël të \"ndërhyrjes direkte\", me anë të përdorimit të "
 "frames kapërcyese, animacione evituese, e gjëra të tjera të ngjashme. Ky "
 "është një zvogëlim i ndjeshëm i përdoshmërisë për shumë nga përdoruest por, "
-"nga ana tjetër, mund t'u japë mundësinë aplikativëve dhe server-ve të "
+"nga ana tjetër, mund t'u japë mundësinë programeve dhe server-ve të "
 "funksionojnë në rastet kur përndryshe mund të ishin të pashfrytzueshëm. "
 
 #: src/metacity.schemas.in.h:20
@@ -530,16 +527,16 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Nëse e vërtetë Metacity funksionon në terme aplikativësh në vend të "
-"dritaresh. Koncepti është pak abstrakt, por në përgjithësi një konfigurim në "
-"bazë të aplikativëve është më i ngjashëm me Mac dhe më pak i ngjashëm me "
-"Windows.Kur një dritare merr fokus-in, në modalitenin në bazë të "
-"aplikativëve, të gjitha dritaret \"ngrihen\". Gjithashtu, në këtë modalitet, "
-"klik-imet për dhënien e fokus nuk i përcillen nga dritarja aplikativit. "
-"Ekzistenca e këtij opcioni është e diskutueshme, por është më mirë të kesh "
-"rregullime për të gjithë detajet specifikë të modaliteteve në bazë të "
-"aplikacioneve dhe në bazë të dritareve. Modaliteti në bazë të aplikativëve "
-"është gati krejtësisht i pa plotësuar aktualisht."
+"Nëse e vërtetë Metacity funksionon në terme programesh në vend të dritaresh. "
+"Koncepti është pak abstrakt, por në përgjithësi një konfigurim në bazë të "
+"programeve është më i ngjashëm me Mac dhe më pak i ngjashëm me Windows. Kur "
+"një dritare merr fokus-in, në modalitenin në bazë të programeve, të gjitha "
+"dritaret \"ngrihen\". Gjithashtu, në këtë modalitet, klik-imet për dhënien e "
+"fokus nuk i përcillen nga dritarja programit. Ekzistenca e këtij opcioni "
+"është e diskutueshme, por është më mirë të kesh rregullime për të gjithë "
+"detajet specifikë të modaliteteve në bazë të programeve dhe në bazë të "
+"dritareve. Modaliteti në bazë të programeve është gati krejtësisht i pa "
+"plotësuar aktualisht."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
@@ -577,12 +574,12 @@ msgstr "Lëvize dritaren"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Lëvize, në drejtim të kundërt, fokusi midis paneleve dhe desktop-it"
+msgstr "Lëvize, në drejtim të kundërt, fokusi midis panelëve dhe desktop-it"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
-"Lëvize, në drejtim të kundërt, fokusi midis paneleve dhe desktop-it me "
+"Lëvize, në drejtim të kundërt, fokusi midis panelëve dhe desktop-it me "
 "dialog popup"
 
 #: src/metacity.schemas.in.h:31
@@ -591,11 +588,11 @@ msgstr "Lëvize, në drejtim të kundërt, fokusi midis dritareve"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop immediately"
-msgstr "Lëviz fokusin midis paneleve dhe desktop-it"
+msgstr "Lëviz fokusin midis panelëve dhe desktop-it"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
-msgstr "Lëviz fokusin midis paneleve dhe desktop-it me dialogun popup"
+msgstr "Lëviz fokusin midis panelëve dhe desktop-it me dialogun popup"
 
 #: src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
@@ -703,7 +700,7 @@ msgstr "Sill dritaren në plan të parë"
 
 #: src/metacity.schemas.in.h:58
 msgid "Resize a window"
-msgstr "Ridimensiono dritaren"
+msgstr "Ndrysho madhësinë e dritares"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -711,7 +708,7 @@ msgstr "Zbato një komandë të përcaktuar"
 
 #: src/metacity.schemas.in.h:60
 msgid "Show the panel menu"
-msgstr "Shfaq menu e panelit"
+msgstr "Shfaq menunë e panelit"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel run dialog"
@@ -732,15 +729,15 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"Disa nga aplikativët nuk respektojnë specifikimet dhe si rezultat manazhuesi "
-"i dritareve sillet jo korrektësisht. Metacity, idealisht, do ti vendoste të "
-"gjithë dialogët në menyrëkonsistuese me pozicionin e dritares të aplikativit "
-"që i krijon. Kjo sjell si rezultat që pozicioni i kërkuar nga aplikativi për "
+"Disa nga programet nuk respektojnë specifikimet dhe si rezultat organizuesi "
+"i dritareve sillet jo korrektësisht. Metacity, idealisht, do t'i vendoste të "
+"gjithë dialogët në menyrë konsistuese me pozicionin e dritares të programit "
+"që i krijon. Kjo sjell si rezultat që pozicioni i kërkuar nga programi për "
 "këta dialogë të mos përfillet. Por, disa versione të Java/Swing i shënojnë "
-"menu-të e tyre fizarmonikë si dialogë, prandaj Metacity duhettë disaktivojë "
+"menutë e tyre fizarmonikë si dialogë, prandaj Metacity duhet të ç'aktivojë "
 "pozicionimin e tyre në menyrë që të funksionojnë me korrektësi. Duke "
-"disaktivuar këtë opcion bëjmë që Metacity të funksionojë në menyrë korrkte "
-"që të mundëson të kesh një interfaqe shumë më të mirë po të mos jetë e "
+"ç'aktivuar këtë opcion bëjmë që Metacity të funksionojë në menyrë korrkte që "
+"të mundëson të kesh një interfaqe shumë më të mirë po të mos jetë e "
 "nevojshme zbatimi i programeve të difektuar. Për fat të keq bota reale nuk "
 "është një vend ideal  prandaj në default ky opcion aktivohet. Disa nga këto "
 "funksione të aktivuara shërbejnë për të kapërcyer kufizimet e vetë "
@@ -833,13 +830,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"I thotë Metacity se si të dërgojë senjalin viziv kur sistemi apo ndonjë "
-"aplikativ lëshon një paralajmërim. Aktualisht mund të përdoren dy vlera të "
+"I thotë Metacity se si të dërgojë sinjalin viziv kur sistemi apo ndonjë "
+"program lëshon një paralajmërim. Aktualisht mund të përdoren dy vlera të "
 "vlefshme, \"fullscreen\", që do të shkaktojë një flash bardhë e zi në të "
 "gjithë ekranin, dhe \"frame_flash\" që do të shkaktojë flash-imin e panelit "
-"të aplikativit që dërgoi paralajmërimin. Nëse aplikativi është i panjohur "
-"(si është rasti i \"system beep\" të default), do të flash-ohet dritarja që "
-"në atë moment do të jetë në plan të parë."
+"të programit që dërgoi paralajmërimin. Nëse programi është i panjohur (si "
+"është rasti i \"system beep\" të default), do të flash-ohet dritarja që në "
+"atë moment do të jetë në plan të parë."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -847,9 +844,9 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"Çelsi /apps/metacity/global_keybindings/run_command_N përcakton "
+"Kyçi /apps/metacity/global_keybindings/run_command_N përcakton "
 "rrugëshkurtimin nga tastiera që korrispondon me këto komanda. Duke shtypur "
-"pulsantët e rrugëshkurtimit korrispondues me çelsin run_command_N, do të "
+"pulsantët e rrugëshkurtimit korrispondues me kyçit run_command_N, do të "
 "ekzekutohet komanda command_N."
 
 #: src/metacity.schemas.in.h:84
@@ -857,7 +854,7 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Çelsi /apps/metacity/global_keybindings/run_command_screenshot përcakton një "
+"Kyçi /apps/metacity/global_keybindings/run_command_screenshot përcakton një "
 "rrugë të shkurtër që ka si rezultat thërritjen e komandës së specifikuar nga "
 "ky rregullim."
 
@@ -867,7 +864,7 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Çelsi /apps/metacity/global_keybindings/run_command_window_screenshot "
+"Kyçi /apps/metacity/global_keybindings/run_command_window_screenshot "
 "përcakton një rrugë të shkurtër që ka si rezultat thërritjen e komandës së "
 "specifikuar nga ky rregullim."
 
@@ -895,7 +892,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës sipër në krahasim me "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës sipër në krahasim me "
 "aktualen. Forma është \"&lt;Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1"
 "\". Lejohet përdorimi i gërmave të mëdha, të vogla si dhe shkurtimet si p."
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
@@ -910,7 +907,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës më poshtë në krahasim me "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës më poshtë në krahasim me "
 "aktualen. Forma është \"&lt;Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1"
 "\". Lejohet përdorimi i gërmave të mëdha, të vogla si dhe shkurtimet si p."
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
@@ -925,7 +922,7 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës majtas në krahasim me "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës majtas në krahasim me "
 "aktualen. Forma është \"&lt;Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1"
 "\". Lejohet përdorimi i gërmave të mëdha, të vogla si dhe shkurtimet si p."
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
@@ -940,7 +937,7 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës djathtas në krahasim me "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës djathtas në krahasim me "
 "aktualen. Forma është \"&lt;Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1"
 "\". Lejohet përdorimi i gërmave të mëdha, të vogla si dhe shkurtimet si p."
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
@@ -954,7 +951,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 1. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 1. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -968,7 +965,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 10. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 10. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -982,7 +979,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 11. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 11. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -996,7 +993,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 12. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 12. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1010,7 +1007,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 2. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 2. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1024,7 +1021,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 3. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 3. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1038,7 +1035,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 4. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 4. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1052,7 +1049,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 5. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 5. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1066,7 +1063,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 6. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 6. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1080,7 +1077,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 7. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 7. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1094,7 +1091,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 8. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 8. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1108,7 +1105,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për tu spostuar në hapësirën e punës 9. Forma është \"&lt; "
+"Rrugëshkurtimi për të lëvizur në hapësirën e punës 9. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1122,7 +1119,7 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për të aktivuar menu-në e dritares. Forma është \"&lt; Control"
+"Rrugëshkurtimi për të aktivuar menunë e dritares. Forma është \"&lt; Control"
 "$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i gërmave të "
 "mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;"
 "\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
@@ -1151,7 +1148,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi i përdorur për tu futur në modalitetin \"lëvizje\" dhe të "
+"Rrugëshkurtimi i përdorur për t'u futur në modalitetin \"lëvizje\" dhe të "
 "fillosh të lëvizësh dritaren duke përdorur tastierën. Forma është \"&lt; "
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
@@ -1167,7 +1164,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi i përdorur për tu futur në modalitetin \"ndrysho madhësinë\" "
+"Rrugëshkurtimi i përdorur për t'u futur në modalitetin \"ndrysho madhësinë\" "
 "dhe të fillosh të ndryshosh madhësinë e dritares duke përdorur tastierën. "
 "Forma është \"&lt; Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt; F1\". "
 "Lejohet përdorimi i gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. "
@@ -1723,7 +1720,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Rrugëshkurtimi për të shfaqur menu-në kryesore të panelit. Forma është \"&lt;"
+"Rrugëshkurtimi për të shfaqur menunë kryesore të panelit. Forma është \"&lt;"
 "Control$gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt;F1\". Lejohet përdorimi i "
 "gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
@@ -1915,7 +1912,7 @@ msgstr "Gërmat e titullit të dritares"
 #: src/prefs.c:736 src/prefs.c:751
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "Çelsi GConf \"%s\" është vendosur në një lloj të pavlefshëm\n"
+msgstr "Kyçi GConf \"%s\" është vendosur në një lloj të pavlefshëm\n"
 
 #: src/prefs.c:796
 #, c-format
@@ -1929,12 +1926,12 @@ msgstr ""
 #: src/prefs.c:820 src/prefs.c:1230
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "Çelsi GConf \"%s\" është vendosur në një vlerë të pavlefshme\n"
+msgstr "Kyçi GConf \"%s\" është vendosur në një vlerë të pavlefshme\n"
 
 #: src/prefs.c:947
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "E pamundur analiza e përshkrimit të gërmës \"%s\" nga çelsi GConf %s\n"
+msgstr "E pamundur analiza e përshkrimit të gërmës \"%s\" nga kyçi GConf %s\n"
 
 #: src/prefs.c:1132
 #, c-format
@@ -1942,7 +1939,7 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"Vlera %d e memorizuar në çelsin GConf %s nuk është një numër i arsyeshëm për "
+"Vlera %d e memorizuar në kyçit GConf %s nuk është një numër i arsyeshëm për "
 "hapësirat e punës, maksimumi aktual është %d\n"
 
 #: src/prefs.c:1192
@@ -1950,15 +1947,14 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Veprimtari mirëmbajtje për manazhimin e aplikativëve difektozë të "
-"ç'aktivuar. Disa aplikativë mund të sillen në mënyrë të gabuar.\n"
+"Veprimtari mirëmbajtje për manazhimin e programeve difektozë të ç'aktivuar. "
+"Disa programe mund të sillen në mënyrë të gabuar.\n"
 
 #: src/prefs.c:1257
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
-"Vlera %d e memorizuar tek çelsi GConf %s është jashtë intervalit nga 0 në %"
-"d\n"
+"Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
 
 #: src/prefs.c:1375
 #, c-format
@@ -1996,21 +1992,22 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Screen %d tek display \"%s\" ka një manazhues dritaresh; provo të "
-"zevëndësosh manazhuesin aktual të dritareve duke përdorur --replace.\n"
+"Screen %d tek display \"%s\" ka një organizues dritaresh; provo të "
+"zevëndësosh organizuesin aktual të dritareve duke përdorur --replace.\n"
 
 #: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"E pamundur marrja e zgjedhjes së manazhuesit të dritares për screen %d tek "
+"E pamundur marrja e zgjedhjes së organizuesit të dritares për screen %d tek "
 "display \"%s\"\n"
 
 #: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Screen %d tek display \"%s\" aktualisht e ka një manazhues dritareje\n"
+msgstr ""
+"Screen %d tek display \"%s\" aktualisht e ka një organizues dritareje\n"
 
 #: src/screen.c:688
 #, c-format
@@ -2023,7 +2020,7 @@ msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
 msgstr ""
-"Gabim gjatë hapjes së lidhjes me manazhuesin e seancave, prandaj pozicionet "
+"Gabim gjatë hapjes së lidhjes me organizuesin e seancave, prandaj pozicionet "
 "e dritares nuk do të ruhen: %s\n"
 
 #: src/session.c:881 src/session.c:888
@@ -2059,7 +2056,8 @@ msgstr "Gabim gjatë analizimit të file të ruajtur të seancës: %s\n"
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
-"U gjet një atribut në <metacity_session> por ekziston një ID për seancën"
+"U gjet një karakteristikë në <metacity_session> por ekziston një ID për "
+"seancën"
 
 #: src/session.c:1234
 #, c-format
@@ -2097,7 +2095,7 @@ msgid ""
 "session management: %s\n"
 msgstr ""
 "Gabim gjatë lëshimit të dritares së dialogut të metacity për të "
-"paralajmëruar që aplikativi nuk suporton manazhimin e seancës: %s\n"
+"paralajmëruar që programi nuk suporton manazhimin e seancës: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2159,14 +2157,14 @@ msgstr ""
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Asnjë atribut \"%s\" tek elementi <%s>"
+msgstr "Asnjë karakteristikë \"%s\" tek elementi <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Asnjë atribut \"%s\" tek elementi <%s>"
+msgstr "Asnjë karakteristikë \"%s\" tek elementi <%s>"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
@@ -2208,17 +2206,17 @@ msgstr "Llojit të dritares \"%s\" i është dhënë një stil"
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Funksion \"%s\" i panjohur për ikonën e menu-së"
+msgstr "Funksion \"%s\" i panjohur për ikonën e menusë"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Gjendje \"%s\" e panjohur për ikonën e menu-së"
+msgstr "Gjendje \"%s\" e panjohur për ikonën e menusë"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Tema ka një ikonë menu-je për funksionin %s dhe gjëndjen %s"
+msgstr "Tema ka një ikonë menuje për funksionin %s dhe gjëndjen %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
@@ -2236,12 +2234,12 @@ msgstr "Elementi <%s> nuk lejohet nën <%s>"
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "Asnjë atribut \"name\" tek elementi <%s>"
+msgstr "Asnjë karakteristikë \"name\" tek elementi <%s>"
 
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "Asnjë atribut \"value\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"value\" në elementin <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
@@ -2263,22 +2261,22 @@ msgstr "Proporcionet \"%s\" janë të panjohura"
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "Asnjë atribut \"top\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"top\" në elementin <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Asnjë atribut \"bottom\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"bottom\" në elementin <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "Asnjë atribut \"left\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"left\" në elementin <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "Asnjë atribut \"right\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"right\" në elementin <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
@@ -2289,27 +2287,27 @@ msgstr "Korniza \"%s\" është e panjohur"
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "Asnjë atribut \"color\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"color\" në elementin <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "Asnjë atribut \"x1\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"x1\" në elementin <%s>"
 
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "Asnjë atribut \"y1\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"y1\" në elementin <%s>"
 
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "Asnjë atribut \"x2\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"x2\" në elementin <%s>"
 
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "Asnjë atribut \"y2\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"y2\" në elementin <%s>"
 
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
@@ -2317,7 +2315,7 @@ msgstr "Asnjë atribut \"y2\" në elementin <%s>"
 #: src/theme-parser.c:2781 src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "Asnjë atribut \"x\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"x\" në elementin <%s>"
 
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
@@ -2325,41 +2323,41 @@ msgstr "Asnjë atribut \"x\" në elementin <%s>"
 #: src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "Asnjë atribut \"y\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"y\" në elementin <%s>"
 
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "Asnjë atribut \"width\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"width\" në elementin <%s>"
 
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr "Asnjë atribut \"height\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"height\" në elementin <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Asnjë atribut \"start_angle\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"start_angle\" në elementin <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Asnjë atribut \"extent_angle\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"extent_angle\" në elementin <%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Asnjë atribut \"alpha\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"alpha\" në elementin <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "Asnjë atribut \"type\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"type\" në elementin <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
@@ -2369,7 +2367,7 @@ msgstr "Vlerë \"%s\" e pakuptueshme për llojin e shkallëzimit"
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr "Asnjë atribut \"filename\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"filename\" në elementin <%s>"
 
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
@@ -2379,17 +2377,17 @@ msgstr "Lloj mbushje (ngjyrosje) \"%s\" e pakuptueshme për elementin <%s>"
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr "Asnjë atribut \"state\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"state\" në elementin <%s>"
 
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Asnjë atribut \"shadow\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"shadow\" në elementin <%s>"
 
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Asnjë atribut \"arrow\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"arrow\" në elementin <%s>"
 
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
@@ -2420,12 +2418,12 @@ msgstr ""
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "Asnjë atribut \"value\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"value\" në elementin <%s>"
 
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "Asnjë atribut \"position\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"position\" në elementin <%s>"
 
 #: src/theme-parser.c:3219
 #, c-format
@@ -2440,12 +2438,12 @@ msgstr "Stili i frame ka një pjesë në pozicionin %s"
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "Asnjë atribut \"function\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"function\" në elementin <%s>"
 
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "Asnjë atribut \"state\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"state\" në elementin <%s>"
 
 #: src/theme-parser.c:3289
 #, c-format
@@ -2465,12 +2463,12 @@ msgstr "Stili i framë ka një pulsant për funksionin %s gjëndja %s"
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "Asnjë atribut \"focus\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"focus\" në elementin <%s>"
 
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "Asnjë atribut \"style\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"style\" në elementin <%s>"
 
 #: src/theme-parser.c:3401
 #, c-format
@@ -2490,7 +2488,7 @@ msgstr "Një stil i quajtur \"%s\" nuk vshtë përcaktuar"
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "Asnjë atribut \"resize\" në elementin <%s>"
+msgstr "Asnjë karakteristikë \"resize\" në elementin <%s>"
 
 #: src/theme-parser.c:3440
 #, c-format
@@ -2522,8 +2520,8 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Nuk ka mundësi të ketë dy due draw_ops për një element <piece> (tema ka "
-"specifikuar një atribut draw_ops si dhe një element <draw_ops>, ose ka "
-"specifikuar dy elementë)"
+"specifikuar një karakteristikë draw_ops si dhe një element <draw_ops>, ose "
+"ka specifikuar dy elementë)"
 
 #: src/theme-parser.c:3574
 msgid ""
@@ -2531,8 +2529,8 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Nuk ka mundësi të ketë dy due draw_ops për një element <button> (tema ka "
-"specifikuar një atribut draw_ops si dhe një element <draw_ops>, ose ka "
-"specifikuar dy elementë)"
+"specifikuar një karakteristikë draw_ops si dhe një element <draw_ops>, ose "
+"ka specifikuar dy elementë)"
 
 #: src/theme-parser.c:3612
 msgid ""
@@ -2540,8 +2538,8 @@ msgid ""
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Nuk ka mundësi të ketë dy due draw_ops për një element <menu_icon> (tema ka "
-"specifikuar një atribut draw_ops si dhe një element <draw_ops>, ose ka "
-"specifikuar dy elementë)"
+"specifikuar një karakteristikë draw_ops si dhe një element <draw_ops>, ose "
+"ka specifikuar dy elementë)"
 
 #: src/theme-parser.c:3659
 #, c-format
@@ -2591,7 +2589,7 @@ msgstr "Asnjë draw_ops është dhënë për pulsantin"
 
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr "Asnjë draw_ops është dhënë për ikonën e menu-së"
+msgstr "Asnjë draw_ops është dhënë për ikonën e menusë"
 
 #: src/theme-parser.c:4054
 #, c-format
@@ -2707,7 +2705,7 @@ msgstr "Bar"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr "Dritare e një aplikativi normal"
+msgstr "Dritare e një programi normal"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
@@ -2723,7 +2721,7 @@ msgstr "Kutiza e veglave"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr "Hiqe menu-në"
+msgstr "Hiqe menunë"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2932,7 +2930,7 @@ msgstr "I pamundur analizimi i faktorit të hijes \"%s\" në ngjyrën me hije"
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Faktori i hije \"%s\" në ngjyrën me hije është negativ"
+msgstr "Faktori hije \"%s\" në ngjyrën me hije është negativ"
 
 #: src/theme.c:1161
 #, c-format
@@ -3141,15 +3139,15 @@ msgstr "Manazhuesi i dritares: "
 
 #: src/util.c:349
 msgid "Bug in window manager: "
-msgstr "Bug në manazhuesin e dritares: "
+msgstr "Bug në organizuesin e dritares: "
 
 #: src/util.c:378
 msgid "Window manager warning: "
-msgstr "Paralajmërim i manazhuesit të dritares:"
+msgstr "Paralajmërim i organizuesit të dritares:"
 
 #: src/util.c:402
 msgid "Window manager error: "
-msgstr "Gabim i manazhuesit të dritares: "
+msgstr "Gabim i organizuesit të dritares: "
 
 #: src/window-props.c:162
 #, c-format
@@ -3157,13 +3155,13 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikativi ka vendosur një _NET_WM_PID të gabuar %ld\n"
 
 #. first time through
-#: src/window.c:4730
+#: src/window.c:4737
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Dritarja %s ja ka dhënë SM_CLIENT_ID vetvetes, në vend që ta vendoste tek "
+"Dritarja %s ja ka dhënë SM_CLIENT_ID vetvetes, në vend që t'a vendoste tek "
 "dritarja WM_CLIENT_LEADER sikurse specifikuar në ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -3173,7 +3171,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5392
+#: src/window.c:5399
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3195,7 +3193,7 @@ msgstr ""
 "Dritarja 0x%lx ka një pronësi %s\n"
 "që duhet të jetë e llojit %s dhe formatit %d\n"
 "dhe aktualisht është e llojit %s dhe formatit %d e n_items %d.\n"
-"Ka shumë mundësi që të jetë një difekt i aplikativit, jo i manazhuesit të "
+"Ka shumë mundësi që të jetë një difekt i programit, jo i organizuesit të "
 "dritareve.\n"
 "Karakteristikat e dritares janë titulli=\"%s\" klasa=\"%s\" emri=\"%s\"\n"
 
