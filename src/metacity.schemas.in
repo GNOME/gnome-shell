@@ -213,7 +213,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/close</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Alt&gt;F4</default>
       <locale name="C">
          <short>Close a window</short>
          <long>

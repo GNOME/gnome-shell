@@ -1,3 +1,8 @@
+2002-06-17  Frederic Crozat  <fcrozat@mandrakesoft.com>
+
+	* src/metacity.schemas.in: associate close_window keybinding to 
+	Alt-F4
+
 2002-06-16  Havoc Pennington  <hp@pobox.com>
 
 	* src/main.c (main): fix spelling error, #85452
