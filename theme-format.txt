@@ -18,7 +18,14 @@ Themes are in a simple XML-subset format.
      determines whether the title text height is included in the 
      height calculation. if not specified, defaults to true.
      It also has an optional text_size="medium" attribute
-     (same sizes as with Pango markup, xx-small thru medium thru xx-large) -->
+     (same sizes as with Pango markup, xx-small thru medium thru
+     xx-large) 
+
+     Finally it has optional args rounded_top_left=true, 
+     rounded_top_right=true, rounded_bottom_left=true,
+     rounded_bottom_right=true.
+
+     -->
 <frame_geometry name="normal" has_title="true" title_size="medium">
   <distance name="left_width" value="6"/>
   <distance name="right_width" value="6"/>
