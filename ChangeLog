@@ -1,3 +1,24 @@
+2002-04-28  Havoc Pennington  <hp@pobox.com>
+
+	* README: remove caveats about keybindings
+
+	* src/metacity.schemas: add schemas for all the keybindings.
+	
+	* src/window.c (meta_window_activate): if in "show desktop" mode 
+	when a window is activated, leave show desktop mode. So e.g. 
+	when you click on a task in the task list, show desktop mode 
+	will be turned off.
+
+	* src/workspace.c (meta_workspace_get_neighbor): new function
+	that doesn't quite work yet (needs support for getting 
+	workspace layout from the pager)
+
+	* src/prefs.c: keybindings stuff
+
+	* src/keybindings.c: make keybindings configurable
+
+	* src/ui.c (meta_ui_parse_accelerator): new function
+
 2002-04-25  Havoc Pennington  <hp@redhat.com>
 
 	* metacity.spec: fix to install gconf schemas

@@ -31,6 +31,8 @@
 
 #include <pango/pangox.h>
 
+#include <string.h>
+
 struct _MetaUI
 {
   Display *xdisplay;
@@ -591,4 +593,48 @@ gboolean
 meta_ui_have_a_theme (void)
 {
   return meta_theme_get_current () != NULL;
+}
+
+gboolean
+meta_ui_parse_accelerator (const char    *accel,
+                           unsigned int  *keysym,
+                           unsigned long *mask)
+{
+  GdkModifierType gdk_mask = 0;
+  guint gdk_sym = 0;
+  
+  *keysym = 0;
+  *mask = 0;
+
+  if (strcmp (accel, "disabled") == 0)
+    return TRUE;
+  
+  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
+
+  if (gdk_sym == None)
+    return FALSE;
+  
+  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
+    return FALSE;
+  
+  *keysym = gdk_sym;
+
+  if (gdk_mask & GDK_SHIFT_MASK)
+    *mask |= ShiftMask;
+  if (gdk_mask & GDK_LOCK_MASK)
+    *mask |= LockMask;
+  if (gdk_mask & GDK_CONTROL_MASK)
+    *mask |= ControlMask;
+  if (gdk_mask & GDK_MOD1_MASK)
+    *mask |= Mod1Mask;
+  if (gdk_mask & GDK_MOD2_MASK)
+    *mask |= Mod2Mask;
+  if (gdk_mask & GDK_MOD3_MASK)
+    *mask |= Mod3Mask;
+  if (gdk_mask & GDK_MOD4_MASK)
+    *mask |= Mod4Mask;
+  if (gdk_mask & GDK_MOD5_MASK)
+    *mask |= Mod5Mask;
+
+  return TRUE;
 }

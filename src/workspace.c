@@ -441,3 +441,31 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
 
   *area = workspace->work_area;
 }
+
+MetaWorkspace*
+meta_workspace_get_neighbor (MetaWorkspace      *workspace,
+                             MetaMotionDirection direction)
+{
+  /* FIXME this isn't using any sane layout, just assuming
+   * the spaces are in a big row
+   */
+  int i;
+  
+  i = meta_workspace_index (workspace);
+
+  switch (direction)
+    {
+    case META_MOTION_LEFT:
+      --i;
+      break;
+    case META_MOTION_RIGHT:
+      ++i;
+      break;
+    case META_MOTION_UP:
+    case META_MOTION_DOWN:
+      return NULL;
+    }
+
+  return meta_display_get_workspace_by_index (workspace->screen->display,
+                                              i);
+}

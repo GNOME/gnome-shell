@@ -107,11 +107,11 @@
       </locale>
     </schema>
 
-    <!-- Keybindings -->
+    <!-- Window Keybindings -->
 
     <schema>
-      <key>/schemas/apps/metacity/keybindings/activate_window_menu</key>
-      <applyto>/apps/metacity/keybindings/activate_window_menu</applyto>
+      <key>/schemas/apps/metacity/window_keybindings/activate_window_menu</key>
+      <applyto>/apps/metacity/window_keybindings/activate_window_menu</applyto>
       <owner>metacity</owner>
       <type>string</type>
       <default>&lt;Alt&gt;space</default>
@@ -119,17 +119,1033 @@
          <short>Activate window menu</short>
          <long>
           The keybinding used to activate the window menu.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1" or
-          "&lt;Release&gt;z" (the last one is for key release). The parser is
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
           fairly liberal and allows lower or upper case, and also
-          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". This option can be 
-          set to a single string, or a list of strings; if a list, 
-          all of the given keybindings will be present. If you set 
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
           the option to the special string "disabled", then there 
           will be no keybinding for this action.
          </long>
       </locale>
     </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/toggle_fullscreen</key>
+      <applyto>/apps/metacity/window_keybindings/toggle_fullscreen</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Toggle fullscreen mode</short>
+         <long>
+          The keybinding used to toggle fullscreen mode.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/toggle_maximized</key>
+      <applyto>/apps/metacity/window_keybindings/toggle_maximized</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Toggle maximization state</short>
+         <long>
+          The keybinding used to toggle maximization.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/toggle_shaded</key>
+      <applyto>/apps/metacity/window_keybindings/toggle_shaded</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Toggle shaded state</short>
+         <long>
+          The keybinding used to toggle shaded/unshaded state.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/close</key>
+      <applyto>/apps/metacity/window_keybindings/close</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Close a window</short>
+         <long>
+          The keybinding used to close a window.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/begin_move</key>
+      <applyto>/apps/metacity/window_keybindings/begin_move</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move a window</short>
+         <long>
+          The keybinding used to enter "move mode" and begin moving a
+        window using the keyboard.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/begin_resize</key>
+      <applyto>/apps/metacity/window_keybindings/begin_resize</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move a window</short>
+         <long>
+          The keybinding used to enter "resize mode" and begin resizing a
+        window using the keyboard.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/toggle_on_all_workspaces</key>
+      <applyto>/apps/metacity/window_keybindings/toggle_on_all_workspaces</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Toggle whether the window is on all workspaces</short>
+         <long>
+          The keybinding used to toggle whether the window is on all 
+          workspaces or just one.
+          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1.
+          The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
+you set
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_1</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_1</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 1</short>
+         <long>
+          The keybinding used to move a window to workspace 1.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_2</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_2</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 2</short>
+         <long>
+          The keybinding used to move a window to workspace 2.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_3</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_3</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 3</short>
+         <long>
+          The keybinding used to move a window to workspace 3.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_4</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_4</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 4</short>
+         <long>
+          The keybinding used to move a window to workspace 4.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_5</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_5</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 5</short>
+         <long>
+          The keybinding used to move a window to workspace 5.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_6</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_6</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 6</short>
+         <long>
+          The keybinding used to move a window to workspace 6.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_7</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_7</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 7</short>
+         <long>
+          The keybinding used to move a window to workspace 7.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_8</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_8</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 8</short>
+         <long>
+          The keybinding used to move a window to workspace 8.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_9</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_9</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 9</short>
+         <long>
+          The keybinding used to move a window to workspace 9.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_10</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_10</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 10</short>
+         <long>
+          The keybinding used to move a window to workspace 10.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_11</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_11</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 11</short>
+         <long>
+          The keybinding used to move a window to workspace 11.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_12</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_12</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window to workspace 6</short>
+         <long>
+          The keybinding used to move a window to workspace 6.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_left</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_left</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window one workspace to the left</short>
+         <long>
+          The keybinding used to move a window one workspace to the left.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_right</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_right</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window one workspace to the right</short>
+         <long>
+          The keybinding used to move a window one workspace to the right.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_up</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_up</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window one workspace up</short>
+         <long>
+          The keybinding used to move a window one workspace up.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_workspace_down</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_workspace_down</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move window one workspace down</short>
+         <long>
+          The keybinding used to move a window one workspace down.  
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <!-- Global Keybindings -->
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_windows</key>
+      <applyto>/apps/metacity/global_keybindings/switch_windows</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Tab</default>
+      <locale name="C">
+         <short>Move focus between windows</short>
+         <long>
+          The keybinding used to move focus between windows.
+          (Traditionally &lt;Alt&gt;Tab)
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+        
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_panels</key>
+      <applyto>/apps/metacity/global_keybindings/switch_panels</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Control&gt;&lt;Alt&gt;Tab</default>
+      <locale name="C">
+         <short>Move focus between panels and the desktop</short>
+         <long>
+          The keybinding used to move focus between panels and 
+          the desktop.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/focus_previous_window</key>
+      <applyto>/apps/metacity/global_keybindings/focus_previous_window</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Escape</default>
+      <locale name="C">
+         <short>Move focus to the previously-focused window</short>
+         <long>
+          The keybinding used to move focus back to the window which last 
+          had the focus.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/show_desktop</key>
+      <applyto>/apps/metacity/global_keybindings/show_desktop</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Control&gt;&lt;Alt&gt;d</default>
+      <locale name="C">
+         <short>Hide all windows and focus desktop</short>
+         <long>
+          The keybinding used to hide all normal windows and set the 
+          focus to the desktop background.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_1</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_1</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 1</short>
+         <long>
+          The keybinding that switches to workspace 1.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_2</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_2</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 2</short>
+         <long>
+          The keybinding that switches to workspace 2.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_3</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_3</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 3</short>
+         <long>
+          The keybinding that switches to workspace 3.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_4</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_4</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 4</short>
+         <long>
+          The keybinding that switches to workspace 4.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_5</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_5</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 5</short>
+         <long>
+          The keybinding that switches to workspace 5.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_6</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_6</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 6</short>
+         <long>
+          The keybinding that switches to workspace 6.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_7</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_7</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 7</short>
+         <long>
+          The keybinding that switches to workspace 7.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_8</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_8</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 8</short>
+         <long>
+          The keybinding that switches to workspace 8.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_9</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_9</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 9</short>
+         <long>
+          The keybinding that switches to workspace 9.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_10</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_10</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 10</short>
+         <long>
+          The keybinding that switches to workspace 10.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_11</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_11</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 11</short>
+         <long>
+          The keybinding that switches to workspace 11.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_12</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_12</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Switch to workspace 12</short>
+         <long>
+          The keybinding that switches to workspace 12.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_left</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_left</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Left</default>
+      <locale name="C">
+         <short>Switch to workspace on the left</short>
+         <long>
+          The keybinding that switches to the workspace on the left 
+          of the current workspace.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_right</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_right</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Right</default>
+      <locale name="C">
+         <short>Switch to workspace on the right</short>
+         <long>
+          The keybinding that switches to the workspace on the right 
+          of the current workspace.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_up</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_up</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Up</default>
+      <locale name="C">
+         <short>Switch to workspace above the current space</short>
+         <long>
+          The keybinding that switches to the workspace above
+          the current workspace.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_to_workspace_down</key>
+      <applyto>/apps/metacity/global_keybindings/switch_to_workspace_down</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;Down</default>
+      <locale name="C">
+         <short>Switch to workspace below the current space</short>
+         <long>
+          The keybinding that switches to the workspace below
+          the current workspace.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+
+    <!-- Not used and/or crackrock -->
 
     <schema>
       <key>/schemas/apps/metacity/general/application_based</key>
@@ -138,7 +1154,7 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-         <short>Navigation works in terms of applications not windows</short>
+         <short>(Not implemented) Navigation works in terms of applications not windows</short>
          <long> 
          If true, then Metacity works in terms of applications rather 
          than windows. The concept is a bit abstract, but 

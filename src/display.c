@@ -552,6 +552,8 @@ meta_display_close (MetaDisplay *display)
 
   all_displays = g_slist_remove (all_displays, display);
 
+  meta_display_shutdown_keys (display);
+  
   g_free (display);
 
   if (all_displays == NULL)
@@ -1308,6 +1310,10 @@ event_callback (XEvent   *event,
         }
       break;
     case MappingNotify:
+      /* Let XLib know that there is a new keyboard mapping.
+       */
+      XRefreshKeyboardMapping (&event->xmapping);
+      meta_display_process_mapping_event (display, event);
       break;
     default:
       break;
@@ -2027,6 +2033,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_window = window;
   display->grab_xwindow = grab_xwindow;
   display->grab_button = button;
+  display->grab_mask = modmask;
   display->grab_root_x = root_x;
   display->grab_root_y = root_y;
   display->grab_initial_window_pos = display->grab_window->rect;
@@ -2108,9 +2115,6 @@ meta_display_end_grab_op (MetaDisplay *display,
     }
 }
 
-#define IGNORED_MODIFIERS (LockMask | Mod2Mask | Mod3Mask | Mod4Mask | Mod5Mask)
-#define INTERESTING_MODIFIERS (~IGNORED_MODIFIERS)
-
 static void
 meta_change_button_grab (MetaDisplay *display,
                          Window       xwindow,
@@ -2119,22 +2123,16 @@ meta_change_button_grab (MetaDisplay *display,
                          int          button,
                          int          modmask)
 {
-  /* Instead of this hacky mess copied from fvwm, WindowMaker just
-   * grabs with all numlock/scrolllock combinations and doesn't grab
-   * for other weird bits.
-   */
   int ignored_mask;
 
-  g_return_if_fail ((modmask & INTERESTING_MODIFIERS) == modmask);
-
   ignored_mask = 0;
-  while (ignored_mask < IGNORED_MODIFIERS)
+  while (ignored_mask < (int) display->ignored_modifier_mask)
     {
       int result;
       
-      if (ignored_mask & INTERESTING_MODIFIERS)
+      if (ignored_mask & ~(display->ignored_modifier_mask))
         {
-          /* Not a combination of IGNORED_MODIFIERS
+          /* Not a combination of ignored modifiers
            * (it contains some non-ignored modifiers)
            */
           ++ignored_mask;

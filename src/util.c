@@ -192,6 +192,8 @@ topic_name (MetaDebugTopic topic)
       return "PING";
     case META_DEBUG_XINERAMA:
       return "XINERAMA";
+    case META_DEBUG_KEYBINDINGS:
+      return "KEYBINDINGS";
     }
 
   return "Window manager";

@@ -24,6 +24,17 @@
 
 #include "window.h"
 
+/* Negative to avoid conflicting with real workspace
+ * numbers
+ */
+typedef enum
+{
+  META_MOTION_UP = -1,
+  META_MOTION_DOWN = -2,
+  META_MOTION_LEFT = -3,
+  META_MOTION_RIGHT = -4
+} MetaMotionDirection;
+
 struct _MetaWorkspace
 {
   MetaScreen *screen;
@@ -54,6 +65,9 @@ void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 void meta_workspace_get_work_area        (MetaWorkspace *workspace,
                                           MetaRectangle *area);
 
+
+MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
+                                            MetaMotionDirection direction);
 
 #endif
 

@@ -62,6 +62,8 @@ struct _MetaScreen
 
   MetaXineramaScreenInfo *xinerama_infos;
   int n_xinerama_infos;
+
+  guint keys_grabbed : 1;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

@@ -21,6 +21,7 @@
 
 #include <config.h>
 #include "prefs.h"
+#include "ui.h"
 #include "util.h"
 #include <gconf/gconf-client.h>
 #include <string.h>
@@ -35,6 +36,9 @@
 #define KEY_TITLEBAR_FONT_SIZE "/apps/metacity/general/titlebar_font_size"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
+
+#define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
+#define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 
 static GConfClient *default_client = NULL;
 static GList *listeners = NULL;
@@ -55,6 +59,13 @@ static gboolean update_focus_mode         (const char *value);
 static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
+static gboolean update_window_binding     (const char *name,
+                                           const char *value);
+static gboolean update_screen_binding     (const char *name,
+                                           const char *value);
+static void     init_bindings             (void);
+static gboolean update_binding            (MetaKeyPref *binding,
+                                           const char  *value);
 
 static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
@@ -173,9 +184,11 @@ queue_changed (MetaPreference pref)
   else
     meta_verbose ("Change of pref %s was already pending\n",
                   meta_preference_to_string (pref));
-  
+
+  /* add idle at priority below the gconf notify idle */
   if (changed_idle == 0)
-    changed_idle = g_idle_add (changed_idle_handler, NULL);
+    changed_idle = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE + 10,
+                                    changed_idle_handler, NULL, NULL);
 }
 
 static void
@@ -251,6 +264,9 @@ meta_prefs_init (void)
                                     &err);
   cleanup_error (&err);
   update_application_based (bool_val);
+
+  /* Load keybindings prefs */
+  init_bindings ();
   
   gconf_client_notify_add (default_client, "/apps/metacity",
                            change_notify,
@@ -258,6 +274,27 @@ meta_prefs_init (void)
                            NULL,
                            &err);
   cleanup_error (&err);  
+}
+
+/* from eel */
+static gboolean
+str_has_prefix (const char *haystack, const char *needle)
+{
+  const char *h, *n;
+  
+  /* Eat one character at a time. */
+  h = haystack == NULL ? "" : haystack;
+  n = needle == NULL ? "" : needle;
+  do
+    {
+      if (*n == '\0') 
+        return TRUE;
+      if (*h == '\0')
+        return FALSE;
+    }
+  while (*h++ == *n++);
+
+  return FALSE;
 }
 
 static void
@@ -387,6 +424,38 @@ change_notify (GConfClient    *client,
 
       if (update_application_based (b))
         queue_changed (META_PREF_APPLICATION_BASED);
+    }
+  else if (str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_window_binding (key, str))
+        queue_changed (META_PREF_WINDOW_KEYBINDINGS);
+    }
+  else if (str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_screen_binding (key, str))
+        queue_changed (META_PREF_SCREEN_KEYBINDINGS);
     }
   else
     {
@@ -589,27 +658,27 @@ meta_preference_to_string (MetaPreference pref)
     {
     case META_PREF_FOCUS_MODE:
       return "FOCUS_MODE";
-      break;
 
     case META_PREF_THEME:
       return "THEME";
-      break;
 
     case META_PREF_TITLEBAR_FONT:
       return "TITLEBAR_FONT";
-      break;
 
     case META_PREF_TITLEBAR_FONT_SIZE:
       return "TITLEBAR_FONT_SIZE";
-      break;
 
     case META_PREF_NUM_WORKSPACES:
       return "NUM_WORKSPACES";
-      break;
 
     case META_PREF_APPLICATION_BASED:
       return "APPLICATION_BASED";
-      break;
+
+    case META_PREF_SCREEN_KEYBINDINGS:
+      return "SCREEN_KEYBINDINGS";
+
+    case META_PREF_WINDOW_KEYBINDINGS:
+      return "WINDOW_KEYBINDINGS";
     }
 
   return "(unknown)";
@@ -642,3 +711,222 @@ meta_prefs_set_num_workspaces (int n_workspaces)
       g_error_free (err);
     }
 }
+
+static MetaKeyPref screen_bindings[] = {
+  { META_KEYBINDING_WORKSPACE_1, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_2, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_3, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_4, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_5, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_6, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_7, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_8, 0, 0 }, 
+  { META_KEYBINDING_WORKSPACE_9, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_10, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_11, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_12, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_LEFT, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_RIGHT, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_UP, 0, 0 },
+  { META_KEYBINDING_WORKSPACE_DOWN, 0, 0 },
+  { META_KEYBINDING_SWITCH_WINDOWS, 0, 0 },
+  { META_KEYBINDING_SWITCH_PANELS, 0, 0 },
+  { META_KEYBINDING_FOCUS_PREVIOUS, 0, 0 },
+  { META_KEYBINDING_SHOW_DESKTOP, 0, 0 },
+  { NULL, 0, 0 }
+};
+
+static MetaKeyPref window_bindings[] = {
+  { META_KEYBINDING_WINDOW_MENU, 0, 0 },
+  { META_KEYBINDING_TOGGLE_FULLSCREEN, 0, 0 },
+  { META_KEYBINDING_TOGGLE_MAXIMIZE, 0, 0 },
+  { META_KEYBINDING_TOGGLE_SHADE, 0, 0 },
+  { META_KEYBINDING_CLOSE, 0, 0 },
+  { META_KEYBINDING_BEGIN_MOVE, 0, 0 },
+  { META_KEYBINDING_BEGIN_RESIZE, 0, 0 },
+  { META_KEYBINDING_TOGGLE_STICKY, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_1, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_2, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_3, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_4, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_5, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_6, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_7, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_8, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_9, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_10, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_11, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_12, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_UP, 0, 0 },
+  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, 0, 0 },
+  { NULL, 0, 0 }
+};
+
+static void
+init_bindings (void)
+{
+  int i;
+  GError *err;
+  
+  i = 0;
+  while (window_bindings[i].name)
+    {
+      char *str_val;
+      char *key;
+
+      key = g_strconcat (KEY_WINDOW_BINDINGS_PREFIX, "/",
+                         window_bindings[i].name, NULL);
+
+      err = NULL;
+      str_val = gconf_client_get_string (default_client, key, &err);
+      cleanup_error (&err);
+
+      update_binding (&window_bindings[i], str_val);
+
+      g_free (str_val);      
+      g_free (key);
+
+      ++i;
+    }
+
+  i = 0;
+  while (screen_bindings[i].name)
+    {
+      char *str_val;
+      char *key;
+
+      key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
+                         screen_bindings[i].name, NULL);
+
+      err = NULL;
+      str_val = gconf_client_get_string (default_client, key, &err);
+      cleanup_error (&err);
+
+      update_binding (&screen_bindings[i], str_val);
+
+      g_free (str_val);      
+      g_free (key);
+
+      ++i;
+    }
+}
+
+static gboolean
+update_binding (MetaKeyPref *binding,
+                const char  *value)
+{
+  unsigned int keysym;
+  unsigned long mask;
+  gboolean changed;
+  
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Binding \"%s\" has new gconf value \"%s\"\n",
+              binding->name, value ? value : "none");
+  
+  keysym = 0;
+  mask = 0;
+  if (value)
+    {
+      if (!meta_ui_parse_accelerator (value, &keysym, &mask))
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Failed to parse new gconf value\n");
+          meta_warning (_("\"%s\" found in configuration database is not a valid value for keybinding \"%s\""),
+                        value, binding->name);
+        }
+    }
+  
+  changed = FALSE;
+  if (keysym != binding->keysym ||
+      mask != binding->mask)
+    {
+      changed = TRUE;
+      
+      binding->keysym = keysym;
+      binding->mask = mask;
+      
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "New keybinding for \"%s\" is keysym = 0x%x mask = 0x%lx\n",
+                  binding->name, binding->keysym, binding->mask);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Keybinding for \"%s\" is unchanged\n", binding->name);
+    }
+  
+  return changed;
+}
+
+static const gchar*
+relative_key (const gchar* key)
+{
+  const gchar* end;
+  
+  end = strrchr (key, '/');
+
+  ++end;
+
+  return end;
+}
+
+/* Return value is TRUE if a preference changed and we need to
+ * notify
+ */
+static gboolean
+find_and_update_binding (MetaKeyPref *bindings, 
+                         const char  *name,
+                         const char  *value)
+{
+  const char *key;
+  int i;
+  
+  if (*name == '/')
+    key = relative_key (name);
+  else
+    key = name;
+
+  i = 0;
+  while (bindings[i].name &&
+         strcmp (key, bindings[i].name) != 0)
+    ++i;
+
+  if (bindings[i].name)
+    return update_binding (&bindings[i], value);
+  else
+    return FALSE;
+}
+
+static gboolean
+update_window_binding (const char *name,
+                       const char *value)
+{
+  return find_and_update_binding (window_bindings, name, value);
+}
+
+static gboolean
+update_screen_binding (const char *name,
+                       const char *value)
+{
+  return find_and_update_binding (screen_bindings, name, value);
+}
+
+void
+meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
+                                int                *n_bindings)
+{
+  
+  *bindings = screen_bindings;
+  *n_bindings = (int) G_N_ELEMENTS (screen_bindings) - 1;
+}
+
+void
+meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
+                                int                *n_bindings)
+{
+  *bindings = window_bindings;
+  *n_bindings = (int) G_N_ELEMENTS (window_bindings) - 1;
+}
+

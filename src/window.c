@@ -1569,6 +1569,12 @@ void
 meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
 {
+  /* disable show desktop mode unless we're a desktop component */
+  if (window->display->showing_desktop &&
+      window->type != META_WINDOW_DESKTOP &&
+      window->type != META_WINDOW_DOCK)
+    meta_display_unshow_desktop (window->display);
+  
   /* Get window on current workspace */
   if (!meta_window_visible_on_workspace (window,
                                          window->screen->active_workspace))
@@ -5104,6 +5110,7 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_RESIZE:
+          /* FIXME */
           break;
           
         case 0:

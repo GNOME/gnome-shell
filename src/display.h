@@ -40,13 +40,14 @@ struct _MetaRectangle
   int height;
 };
 
-typedef struct _MetaDisplay   MetaDisplay;
-typedef struct _MetaFrame     MetaFrame;
-typedef struct _MetaScreen    MetaScreen;
-typedef struct _MetaStack     MetaStack;
-typedef struct _MetaUISlave   MetaUISlave;
-typedef struct _MetaWindow    MetaWindow;
-typedef struct _MetaWorkspace MetaWorkspace;
+typedef struct _MetaDisplay    MetaDisplay;
+typedef struct _MetaFrame      MetaFrame;
+typedef struct _MetaKeyBinding MetaKeyBinding;
+typedef struct _MetaScreen     MetaScreen;
+typedef struct _MetaStack      MetaStack;
+typedef struct _MetaUISlave    MetaUISlave;
+typedef struct _MetaWindow     MetaWindow;
+typedef struct _MetaWorkspace  MetaWorkspace;
 
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
@@ -188,6 +189,22 @@ struct _MetaDisplay
   guint       grab_have_keyboard : 1;
   MetaRectangle grab_initial_window_pos;
   MetaResizePopup *grab_resize_popup;
+
+
+  /* Keybindings stuff */
+  MetaKeyBinding *screen_bindings;
+  int             n_screen_bindings;
+  MetaKeyBinding *window_bindings;
+  int             n_window_bindings;
+  int min_keycode;
+  int max_keycode;
+  KeySym *keymap;
+  int keysyms_per_keycode;
+  XModifierKeymap *modmap;
+  unsigned int ignored_modifier_mask;
+  unsigned int num_lock_mask;
+  unsigned int scroll_lock_mask;
+  unsigned int mode_switch_mask;
 };
 
 gboolean      meta_display_open                (const char  *name);

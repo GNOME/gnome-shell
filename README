@@ -51,19 +51,25 @@ METACITY FEATURES
      gconftool-2 --type=string --set /apps/metacity/general/focus_mode sloppy
      gconftool-2 --type=string --set /apps/metacity/general/focus_mode click
 
- - Global keybindings:
-    Alt-F1 to Alt-F6       switch workspaces
-    Alt-1  to Alt-6        switch workspaces
+ - Global keybinding defaults:   
+
     Alt-Tab                forward cycle window focus
     Alt-Shift-Tab          backward cycle focus
     Alt-Ctrl-Tab           forward cycle focus among panels
     Alt-Ctrl-Shift-Tab     backward cycle focus among panels
     Alt-Escape             focus previous window
-    Ctrl-Alt-Left Arrow    previous workspace
-    Ctrl-Alt-Right Arrow   next workspace
+    Alt-Left Arrow         previous workspace
+    Alt-Right Arrow        next workspace
     Ctrl-Alt-D             minimize/unminimize all, to show desktop
 
+   Change keybindings for example:
+
+     unst gconftool-2 --type=string --set /apps/metacity/global_keybindings/switch_to_workspace_1 '<Alt>F1'
+   
+   See metacity.schemas for available bindings.
+
  - Window keybindings:
+
     Alt-space         window menu
 
     Mnemonics work in the menu. That is, Alt-space then underlined
@@ -76,6 +82,9 @@ METACITY FEATURES
 
     Choose Resize from menu, and nothing happens yet, but 
       eventually I might implement something.
+
+    Keybindings for things like maximize window, etc. can be bound, 
+    but don't exist by default. See metacity.schemas.
 
  - Window mouse bindings:
 
@@ -130,22 +139,9 @@ METACITY FEATURES
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
- - If you want keybindings which are not the ones mentioned above
-   as features, you have to edit keybindings.c and recompile.
-
- - Some of the default keybindings (notable Alt+number) are total
-   crackrock. This is just because I like those keybindings and 
-   things aren't configurable yet. Once bindings are configurable
-   the dumb defaults will go away.
-
  - You need an EWMH-spec compliant pager/tasklist to be able 
    to navigate graphically; this does NOT include GNOME 1.x, 
    but should include GNOME 2 and KDE 3.
-
- - Metacity turns off its keybindings for Emacs, because I use 
-   Alt-space in Emacs, and getting a window menu annoys me.
-   This is a broken feature that will go away when keybindings are 
-   configurable.
 
  - I haven't even read the ICCCM section about colormaps. So if you 
    have an 8-bit display you are probably screwed.
