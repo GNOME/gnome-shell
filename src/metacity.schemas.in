@@ -814,7 +814,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;Tab</default>
       <locale name="C">
-         <short>Move focus between windows</short>
+         <short>Move focus between windows using popup display</short>
          <long>
           The keybinding used to move focus between windows, using 
           a popup window.
@@ -839,7 +839,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Tab</default>
       <locale name="C">
-         <short>Move focus between panels and the desktop</short>
+         <short>Move focus between panels and the desktop using popup display</short>
          <long>
           The keybinding used to move focus between panels and 
           the desktop, using a popup window.
@@ -863,7 +863,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus between windows</short>
+         <short>Move focus between windows immediately</short>
          <long>
           The keybinding used to move focus between windows without 
           a popup window.
@@ -888,7 +888,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus between panels and the desktop</short>
+         <short>Move focus between panels and the desktop immediately</short>
          <long>
           The keybinding used to move focus between panels and 
           the desktop, without a popup window.
