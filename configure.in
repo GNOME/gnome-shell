@@ -37,7 +37,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-ALL_LINGUAS="ru sv"
+ALL_LINGUAS="es ru sv"
 dnl AM_GNU_GETTEXT
 
 ## here we get the flags we'll actually use

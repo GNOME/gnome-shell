@@ -1,3 +1,7 @@
+2001-10-14  Héctor García Álvarez <hector@scouts-es.org>
+
+	* configure.in: Added "es" to ALL_LINGUAS for Spanish translation.
+
 2001-10-14  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (event_callback): only handle events here if 

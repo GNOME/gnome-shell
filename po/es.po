@@ -1,0 +1,296 @@
+# metacity's Spanish translation.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Héctor García Álvarez <hector@scouts-es.org>, 2001.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: evolution 0.13\n"
+"POT-Creation-Date: 2001-10-13 23:35+0200\n"
+"PO-Revision-Date: 2001-10-13 22:43+0200\n"
+"Last-Translator: Héctor García Álvarez <hector@scouts-es.org>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:153
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Error al abrir el display del Sistema de Ventanas X '%s'\n"
+
+#: src/errors.c:92
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+
+#: src/errors.c:99
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr ""
+
+#: src/frames.c:229
+msgid "Left edge"
+msgstr "Borde izquierdo"
+
+#: src/frames.c:229
+msgid "Left window edge width"
+msgstr "Ancho del borde izquierdo de la ventana"
+
+#: src/frames.c:230
+msgid "Right edge"
+msgstr ""
+
+#: src/frames.c:230
+msgid "Right window edge width"
+msgstr ""
+
+#: src/frames.c:231
+msgid "Bottom edge"
+msgstr ""
+
+#: src/frames.c:231
+msgid "Bottom window edge height"
+msgstr ""
+
+#: src/frames.c:233
+msgid "Title border"
+msgstr ""
+
+#: src/frames.c:233
+msgid "Border around title area"
+msgstr ""
+
+#: src/frames.c:234
+msgid "Text border"
+msgstr ""
+
+#: src/frames.c:234
+msgid "Border around window title text"
+msgstr ""
+
+#: src/frames.c:236
+msgid "Spacer padding"
+msgstr ""
+
+#: src/frames.c:236
+msgid "Padding on either side of spacer"
+msgstr ""
+
+#: src/frames.c:237
+msgid "Spacer width"
+msgstr ""
+
+#: src/frames.c:237
+msgid "Width of spacer"
+msgstr ""
+
+#: src/frames.c:238
+msgid "Spacer height"
+msgstr ""
+
+#: src/frames.c:238
+msgid "Height of spacer"
+msgstr ""
+
+#. same as right_width left_width by default
+#: src/frames.c:241
+msgid "Right inset"
+msgstr ""
+
+#: src/frames.c:241
+msgid "Distance of buttons from right edge of frame"
+msgstr ""
+
+#: src/frames.c:242
+msgid "Left inset"
+msgstr ""
+
+#: src/frames.c:242
+msgid "Distance of menu button from left edge of frame"
+msgstr ""
+
+#: src/frames.c:244
+msgid "Button width"
+msgstr ""
+
+#: src/frames.c:244
+msgid "Width of buttons"
+msgstr ""
+
+#: src/frames.c:245
+msgid "Button height"
+msgstr ""
+
+#: src/frames.c:245
+msgid "Height of buttons"
+msgstr ""
+
+#: src/frames.c:247
+msgid "Button border"
+msgstr ""
+
+#: src/frames.c:247
+msgid "Border around buttons"
+msgstr ""
+
+#: src/frames.c:248
+msgid "Inner button border"
+msgstr ""
+
+#: src/frames.c:248
+msgid "Border around the icon inside buttons"
+msgstr ""
+
+#: src/frames.c:883
+msgid "Close Window"
+msgstr ""
+
+#: src/frames.c:886
+msgid "Window Menu"
+msgstr ""
+
+#: src/frames.c:889
+msgid "Minimize Window"
+msgstr ""
+
+#: src/frames.c:892
+msgid "Maximize Window"
+msgstr ""
+
+#: src/frames.c:895
+msgid "Unmaximize Window"
+msgstr ""
+
+#: src/keybindings.c:203
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+
+#: src/menu.c:47
+msgid "_Close"
+msgstr ""
+
+#: src/menu.c:48
+msgid "_Minimize"
+msgstr ""
+
+#: src/menu.c:49
+msgid "Ma_ximize"
+msgstr ""
+
+#: src/menu.c:50
+msgid "_Unmaximize"
+msgstr ""
+
+#: src/menu.c:51
+msgid "_Shade"
+msgstr ""
+
+#: src/menu.c:52
+msgid "U_nshade"
+msgstr ""
+
+#: src/menu.c:53
+msgid "Mo_ve"
+msgstr ""
+
+#: src/menu.c:54
+msgid "_Resize"
+msgstr ""
+
+#. separator
+#: src/menu.c:56
+msgid "Put on _All Workspaces"
+msgstr ""
+
+#: src/menu.c:57
+msgid "Only on _This Workspace"
+msgstr ""
+
+#: src/menu.c:260
+#, c-format
+msgid "Only on workspace _%d"
+msgstr ""
+
+#: src/menu.c:263
+#, c-format
+msgid "Move to workspace _%d"
+msgstr ""
+
+#: src/screen.c:168
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: src/screen.c:183
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr ""
+
+#: src/session.c:751 src/session.c:758
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr ""
+
+#: src/session.c:768
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr ""
+
+#: src/session.c:900
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:905
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr ""
+
+#: src/session.c:979
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr ""
+
+#: src/session.c:1013
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr ""
+
+#: src/session.c:1051
+msgid "nested <window> tag"
+msgstr ""
+
+#: src/session.c:1101 src/session.c:1133
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr ""
+
+#: src/session.c:1193
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr ""
+
+#: src/session.c:1213
+#, c-format
+msgid "Unknown element %s"
+msgstr ""
+
+#. someone is on crack
+#: src/window.c:2852
+#, c-format
+msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
+msgstr ""
+
+#. another cracksmoker
+#: src/window.c:2862
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+msgstr ""
