@@ -66,7 +66,7 @@
       <applyto>/apps/metacity/general/action_double_click_titlebar</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>toggle_shade</default>
+      <default>toggle_maximize</default>
       <locale name="C">
          <short>Action on title bar double-click</short>
          <long>

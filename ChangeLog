@@ -1,4 +1,10 @@
-2004-01-12  Rob Adams  <readams@readams.net>
+2004-01-10  Rob Adams  <readams@readams.net>
+
+	* src/metacity.schemas.in: update default
+	action_double_click_titlebar to be toggle_maximize instead of
+	toggle_shade.  See #131126.
+	
+2004-01-10  Rob Adams  <readams@readams.net>
 
 	* src/constraints.c (meta_window_constrain): if we maximize after
 	placement, and the window is too big to fix in the work area,
