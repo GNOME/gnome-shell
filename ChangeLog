@@ -2,7 +2,7 @@ Thu Dec  5 18:41:02 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* src/window.h (META_WINDOW_IN_NORMAL_TAB_CHAIN,
 	META_WINDOW_IN_DOCK_TAB_CHAIN) : never use a window with input =
-	FALSE take_focus = FALSE in the	normal and doc tab chains #90409
+	FALSE take_focus = FALSE in the	normal and dock tab chains. #90409
 
 Thu Dec  5 13:56:52 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
