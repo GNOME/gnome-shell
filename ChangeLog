@@ -1,3 +1,13 @@
+2004-10-13  Elijah Newren  <newren@math.utah.edu>
+
+	Code cleanup
+
+	* src/window.c (is_in_dock_group, docks_at_end_cmp,
+	shuffle_docks_to_end): removed functions,
+	(meta_window_notify_focus): no need to call is_in_dock_group or
+	shuffle_docks_to_end because of the patch from #120100 that was
+	committed.
+
 2004-10-13  Vincent Untz  <vincent@vuntz.net>
 
 	Add a keybinding to launch a terminal

@@ -4164,72 +4164,6 @@ meta_window_client_message (MetaWindow *window,
   return FALSE;
 }
 
-static gboolean
-is_in_dock_group (MetaWindow *window)
-{
-  MetaGroup *group;
-  GSList *list;
-  GSList *tmp;
-  
-  if (META_WINDOW_IN_DOCK_TAB_CHAIN (window))
-    return TRUE;
-
-  if (window->type == META_WINDOW_NORMAL)
-    return FALSE;
-
-  /* If a transient-type window is in dock group,
-   * return TRUE
-   */
-  group = meta_window_get_group (window);
-  list = meta_group_list_windows (group);
-  tmp = list;
-  while (tmp != NULL)
-    {
-      MetaWindow *gw = tmp->data;
-
-      if (META_WINDOW_IN_DOCK_TAB_CHAIN (gw))
-        {
-          g_slist_free (list);
-          return TRUE;
-        }
-      
-      tmp = tmp->next;
-    }
-
-  g_slist_free (list);
-  return FALSE;
-}
-
-static int
-docks_at_end_cmp (const void *a,
-                  const void *b)
-{
-  MetaWindow *window_a = (MetaWindow*) a;
-  MetaWindow *window_b = (MetaWindow*) b;
-
-  if (META_WINDOW_IN_DOCK_TAB_CHAIN (window_a))
-    {
-      if (META_WINDOW_IN_DOCK_TAB_CHAIN (window_b))
-        return 0;
-      else
-        return 1; /* a > b since a is a dock */
-    }
-  else
-    {
-      if (META_WINDOW_IN_DOCK_TAB_CHAIN (window_b))
-        return -1; /* b > a since b is a dock */
-      else
-        return 0;
-    }
-}
-
-static void
-shuffle_docks_to_end (GList **mru_list_p)
-{
-  *mru_list_p = g_list_sort (*mru_list_p,
-                             docks_at_end_cmp);
-}
-
 gboolean
 meta_window_notify_focus (MetaWindow *window,
                           XEvent     *event)
@@ -4335,8 +4269,6 @@ meta_window_notify_focus (MetaWindow *window,
               window->screen->active_workspace->mru_list = 
                 g_list_prepend (window->screen->active_workspace->mru_list, 
                                 window);
-              if (!is_in_dock_group (window))
-                shuffle_docks_to_end (&window->screen->active_workspace->mru_list);
             }
 
           if (window->frame)
