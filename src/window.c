@@ -436,11 +436,14 @@ meta_window_new (MetaDisplay *display,
   window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
   
-  /* Fill these in the order we want them to be gotten */
+  /* Fill these in the order we want them to be gotten.
+   * we want to get window name and class first
+   * so we can use them in error messages and such.
+   */
   i = 0;
+  initial_props[i++] = display->atom_net_wm_name;
   initial_props[i++] = display->atom_wm_client_machine;
   initial_props[i++] = display->atom_net_wm_pid;
-  initial_props[i++] = display->atom_net_wm_name;
   initial_props[i++] = XA_WM_NAME;
   initial_props[i++] = display->atom_net_wm_icon_name;
   initial_props[i++] = XA_WM_ICON_NAME;

@@ -87,6 +87,7 @@ from The Open Group.
 #include "metacity-Xatomtype.h"
 #include <X11/Xatom.h>
 #include <string.h>
+#include "window.h"
 
 typedef struct
 {
@@ -109,7 +110,11 @@ validate_or_free_results (GetPropertyResults *results,
   char *type_name;
   char *expected_name;
   char *prop_name;
-
+  const char *title;
+  const char *res_class;
+  const char *res_name;
+  MetaWindow *w;
+  
   if (expected_format == results->format &&
       expected_type == results->type &&
       (!must_have_items || results->n_items > 0))
@@ -121,14 +126,38 @@ validate_or_free_results (GetPropertyResults *results,
   prop_name = XGetAtomName (results->display->xdisplay, results->xatom);
   meta_error_trap_pop (results->display, TRUE);
 
-  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug.\nUse \"xprop -id 0x%lx\" to print all properties on the problematic window.\nThe _NET_WM_NAME or WM_NAME or WM_CLASS properties should identify the application.\n"),
+  w = meta_display_lookup_x_window (results->display, results->xwindow);
+
+  if (w != NULL)
+    {
+      title = w->title;
+      res_class = w->res_class;
+      res_name = w->res_name;
+    }
+  else
+    {
+      title = NULL;
+      res_class = NULL;
+      res_name = NULL;
+    }
+  
+  if (title == NULL)
+    title = "unknown";
+
+  if (res_class == NULL)
+    res_class = "unknown";
+
+  if (res_name == NULL)
+    res_name = "unknown";
+  
+  meta_warning (_("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n"),
                 results->xwindow,
                 prop_name ? prop_name : "(bad atom)",
                 expected_name ? expected_name : "(bad atom)",
                 expected_format,
                 type_name ? type_name : "(bad atom)",
                 results->format, (int) results->n_items,
-                results->xwindow);
+                title, res_class, res_name);
 
   if (type_name)
     XFree (type_name);
