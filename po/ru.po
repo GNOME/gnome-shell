@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-08 15:29+0100\n"
-"PO-Revision-Date: 2005-02-08 17:07+0200\n"
+"PO-Revision-Date: 2005-02-21 15:38+0200\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Применение: %s\n"
 
 #: src/tools/metacity-message.c:176 src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity был собран без поддержки режима подробных собщений\n"
+msgstr "Metacity был собран без поддержки режима подробных сообщений\n"
 
 #: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
