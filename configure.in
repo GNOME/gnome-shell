@@ -6,7 +6,7 @@ AM_CONFIG_HEADER(config.h)
 # we'll hold the 2.8.x versioning for GNOME 2.8, it was also used
 # for GNOME 2.6, then after GNOME 2.8 we'll have the numbers synced
 # with GNOME
-AM_INIT_AUTOMAKE(metacity, 2.8.5)
+AM_INIT_AUTOMAKE(metacity, 2.8.6)
 
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"

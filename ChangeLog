@@ -1,5 +1,9 @@
 2004-09-13  Rob Adams  <readams@readams.net>
 
+	* configure.in: post-release increment
+
+2004-09-13  Rob Adams  <readams@readams.net>
+
 	* configure.in: bump version number
 
 	* NEWS: 2.8.5 release
