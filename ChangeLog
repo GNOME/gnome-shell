@@ -1,3 +1,8 @@
+2003-04-05  Rob Adams  <robadams@ucla.edu>
+
+	* src/place.c (center_tile_rect_in_area):  Fix a minor off-by-one
+	error.  See #110079.
+
 2003-03-30  Rob Adams  <robadams@ucla.edu>
 
 	* src/window.c (meta_window_move_resize_internal): When passing

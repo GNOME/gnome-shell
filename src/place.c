@@ -376,10 +376,10 @@ center_tile_rect_in_area (MetaRectangle *rect,
    * of windows tiled this way would center the windows
    * as a group)
    */
-  
-  fluff = (work_area->width % rect->width) / 2;
+
+  fluff = (work_area->width % (rect->width+1)) / 2;
   rect->x = work_area->x + fluff;
-  fluff = (work_area->height % rect->height) / 3;
+  fluff = (work_area->height % (rect->height+1)) / 3;
   rect->y = work_area->y + fluff;
 }
 
