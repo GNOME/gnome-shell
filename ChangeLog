@@ -1,3 +1,9 @@
+2003-06-07  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_notify_focus): drop the mouse button
+	grabs for the focused window; we'll see if this breaks anything. 
+	It should fix #102209
+
 Fri Jun  6 19:27:53 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* src/metacity.schemas.in: fix the location of the schemas file.

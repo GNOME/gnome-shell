@@ -4030,6 +4030,9 @@ meta_window_notify_focus (MetaWindow *window,
 
           /* move into FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
+
+          /* Ungrab click to focus button */
+          meta_display_ungrab_focus_window_button (window->display, window->xwindow);
         }
     }
   else if (event->type == FocusOut ||
@@ -4066,6 +4069,9 @@ meta_window_notify_focus (MetaWindow *window,
 
           /* move out of FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
+
+          /* Re-grab for click to focus */
+          meta_display_grab_focus_window_button (window->display, window->xwindow);
         }
     }
 
