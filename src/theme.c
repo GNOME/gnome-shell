@@ -19,11 +19,13 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "theme.h"
 #include "util.h"
 #include "gradient.h"
 #include <gtk/gtkwidget.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define GDK_COLOR_RGBA(color)                                   \
                          (0xff                         |        \
@@ -290,6 +292,975 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
     {
       fgeom->title_rect.width = 0;
       fgeom->title_rect.height = 0;
+    }
+}
+
+typedef enum
+{
+  POS_TOKEN_INT,
+  POS_TOKEN_DOUBLE,
+  POS_TOKEN_OPERATOR,
+  POS_TOKEN_VARIABLE,
+  POS_TOKEN_OPEN_PAREN,
+  POS_TOKEN_CLOSE_PAREN
+} PosTokenType;
+
+typedef struct
+{
+  PosTokenType type;
+
+  union
+  {
+    struct {
+      int val;
+    } i;
+
+    struct {
+      double val;
+    } d;
+
+    struct {
+      char op;
+    } o;
+
+    struct {
+      char *name;
+    } v;
+    
+  } d;
+
+} PosToken;
+
+
+static void
+free_tokens (PosToken *tokens,
+             int       n_tokens)
+{
+  int i;
+
+  /* n_tokens can be 0 since tokens may have been allocated more than
+   * it was initialized
+   */
+  
+  i = 0;
+  while (i < n_tokens)
+    {
+      if (tokens[i].type == POS_TOKEN_VARIABLE)
+        g_free (tokens[i].d.v.name);
+      ++i;
+    }
+  g_free (tokens);
+}
+
+static gboolean
+parse_number (const char  *p,
+              const char **end_return,
+              PosToken    *next,
+              GError     **err)
+{
+  const char *start = p;
+  char *end;
+  gboolean is_float;
+  char *num_str;
+              
+  while (*p && (*p == '.' || g_ascii_isdigit (*p)))
+    ++p;
+              
+  if (p == start)
+    {
+      g_set_error (err, META_POSITION_EXPR_ERROR,
+                   META_POSITION_EXPR_ERROR_BAD_CHARACTER,
+                   _("Coordinate expression contains character '%c' which is not allowed"),
+                   *p);
+      return FALSE;
+    }
+
+  *end_return = p;
+  
+  /* we need this to exclude floats like "1e6" */
+  num_str = g_strndup (start, p - start);
+  start = num_str;
+  is_float = FALSE;
+  while (*start)
+    {
+      if (*start == '.')
+        is_float = TRUE;
+      ++start;
+    }
+              
+  if (is_float)
+    {
+      next->type = POS_TOKEN_DOUBLE;
+      next->d.d.val = g_ascii_strtod (num_str, &end);
+
+      if (end == num_str)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression contains floating point number '%s' which could not be parsed"),
+                       num_str);
+          g_free (num_str);
+          return FALSE;
+        }
+    }
+  else
+    {
+      next->type = POS_TOKEN_INT;
+      next->d.i.val = strtol (num_str, &end, 10);
+      if (end == num_str)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression contains integer '%s' which could not be parsed"),
+                       num_str);
+          g_free (num_str);
+          return FALSE;
+        }
+    }
+
+  g_free (num_str);
+
+  g_assert (next->type == POS_TOKEN_INT || next->type == POS_TOKEN_DOUBLE);
+  
+  return TRUE;
+}
+
+static gboolean
+pos_tokenize (const char  *expr,
+              PosToken   **tokens_p,
+              int         *n_tokens_p,
+              GError     **err)
+{
+  PosToken *tokens;
+  int n_tokens;
+  int allocated;
+  const char *p;
+  
+  *tokens_p = NULL;
+  *n_tokens_p = 0;
+
+  allocated = 3;
+  n_tokens = 0;
+  tokens = g_new (PosToken, allocated);
+
+  p = expr;
+  while (*p)
+    {
+      PosToken *next;
+      
+      if (n_tokens == allocated)
+        {
+          allocated *= 2;
+          tokens = g_renew (PosToken, tokens, allocated);
+        }
+
+      next = &tokens[n_tokens];
+      
+      switch (*p)
+        {
+        case '*':
+        case '/':
+        case '+':
+        case '-': /* negative numbers aren't allowed so this is easy */
+          next->type = POS_TOKEN_OPERATOR;
+          next->d.o.op = *p;
+          ++n_tokens;
+          break;
+          
+        case '(':
+          next->type = POS_TOKEN_OPEN_PAREN;
+          ++n_tokens;
+          break;
+
+        case ')':
+          next->type = POS_TOKEN_CLOSE_PAREN;
+          ++n_tokens;
+          break;
+
+        case ' ':
+        case '\t':
+          break;
+
+        default:
+          if (g_ascii_isalpha (*p))
+            {
+              /* Assume variable */
+              const char *start = p;
+              while (*p && g_ascii_isalpha (*p))
+                ++p;
+              g_assert (p != start);
+              next->type = POS_TOKEN_VARIABLE;
+              next->d.v.name = g_strndup (start, p - start);
+              ++n_tokens;
+              --p; /* since we ++p again at the end of while loop */
+            }
+          else
+            {
+              /* Assume number */
+              const char *end;
+
+              if (!parse_number (p, &end, next, err))
+                goto error;
+              
+              ++n_tokens;
+              p = end - 1; /* -1 since we ++p again at the end of while loop */
+            }
+          
+          break;
+        }
+
+      ++p;
+    }
+
+  if (n_tokens == 0)
+    {
+      g_set_error (err, META_POSITION_EXPR_ERROR,
+                   META_POSITION_EXPR_ERROR_FAILED,
+                   _("Coordinate expression was empty or not understood"));
+                   
+      goto error;
+    }
+
+  *tokens_p = tokens;
+  *n_tokens_p = n_tokens;
+  
+  return TRUE;
+
+ error:
+  g_assert (err == NULL || *err != NULL);
+
+  free_tokens (tokens, n_tokens);
+  return FALSE;
+}
+
+static void
+debug_print_tokens (PosToken *tokens,
+                    int       n_tokens)
+{
+  int i;
+
+  i = 0;
+  while (i < n_tokens)
+    {
+      PosToken *t = &tokens[i];
+
+      g_print (" ");
+      
+      switch (t->type)
+        {
+        case POS_TOKEN_INT:
+          g_print ("\"%d\"", t->d.i.val);
+          break;
+        case POS_TOKEN_DOUBLE:
+          g_print ("\"%g\"", t->d.d.val);
+          break;
+        case POS_TOKEN_OPEN_PAREN:
+          g_print ("\"(\"");
+          break;
+        case POS_TOKEN_CLOSE_PAREN:
+          g_print ("\")\"");
+          break;
+        case POS_TOKEN_VARIABLE:
+          g_print ("\"%s\"", t->d.v.name);
+          break;
+        case POS_TOKEN_OPERATOR:
+          g_print ("\"%c\"", t->d.o.op);
+          break;
+        }
+
+      ++i;
+    }
+
+  g_print ("\n");
+}
+
+typedef enum
+{ 
+  POS_EXPR_INT,
+  POS_EXPR_DOUBLE,
+  POS_EXPR_OPERATOR
+} PosExprType;
+
+typedef struct
+{
+  PosExprType type;
+  union
+  {
+    double double_val;
+    int int_val;
+    char operator;
+  } d;
+} PosExpr;
+
+static void
+debug_print_exprs (PosExpr *exprs,
+                   int      n_exprs)
+{
+  int i;
+
+  i = 0;
+  while (i < n_exprs)
+    {
+      switch (exprs[i].type)
+        {
+        case POS_EXPR_INT:
+          g_print (" %d", exprs[i].d.int_val);
+          break;
+        case POS_EXPR_DOUBLE:
+          g_print (" %g", exprs[i].d.double_val);
+          break;
+        case POS_EXPR_OPERATOR:
+          g_print (" %c", exprs[i].d.operator);
+          break;
+        }
+      
+      ++i;
+    }
+  g_print ("\n");
+}
+
+static gboolean
+do_operation (PosExpr *a,
+              PosExpr *b,
+              char     op,
+              GError **err)
+{
+  /* Promote types to double if required */
+  if (a->type == POS_EXPR_DOUBLE ||
+      b->type == POS_EXPR_DOUBLE)
+    {
+      if (a->type != POS_EXPR_DOUBLE)
+        {
+          a->type = POS_EXPR_DOUBLE;
+          a->d.double_val = a->d.int_val;
+        }
+      if (b->type != POS_EXPR_DOUBLE)
+        {
+          b->type = POS_EXPR_DOUBLE;
+          b->d.double_val = b->d.int_val;
+        }
+    }
+
+  g_assert (a->type == b->type);
+  
+  if (a->type == POS_EXPR_INT)
+    {
+      switch (op)
+        {
+        case '*':
+          a->d.int_val = a->d.int_val * b->d.int_val;
+          break;
+        case '/':
+          if (b->d.int_val == 0)
+            {
+              g_set_error (err, META_POSITION_EXPR_ERROR,
+                           META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
+                           _("Coordinate expression results in division by zero"));
+              return FALSE;
+            }
+          a->d.int_val = a->d.int_val / b->d.int_val;
+          break;
+        case '%':
+          if (b->d.int_val == 0)
+            {
+              g_set_error (err, META_POSITION_EXPR_ERROR,
+                           META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
+                           _("Coordinate expression results in division by zero"));
+              return FALSE;
+            }
+          a->d.int_val = a->d.int_val % b->d.int_val;
+          break;
+        case '+':
+          a->d.int_val = a->d.int_val + b->d.int_val;
+          break;
+        case '-':
+          a->d.int_val = a->d.int_val - b->d.int_val;
+          break;
+        }
+    }
+  else if (a->type == POS_EXPR_DOUBLE)
+    {
+      switch (op)
+        {
+        case '*':
+          a->d.double_val = a->d.double_val * b->d.double_val;
+          break;
+        case '/':
+          if (b->d.double_val == 0.0)
+            {
+              g_set_error (err, META_POSITION_EXPR_ERROR,
+                           META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
+                           _("Coordinate expression results in division by zero"));
+              return FALSE;
+            }
+          a->d.double_val = a->d.double_val / b->d.double_val;
+          break;
+        case '%':
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_MOD_ON_FLOAT,
+                       _("Coordinate expression tries to use mod operator on a floating-point number"));
+          return FALSE;
+          break;
+        case '+':
+          a->d.double_val = a->d.double_val + b->d.double_val;
+          break;
+        case '-':
+          a->d.double_val = a->d.double_val - b->d.double_val;
+          break;
+        }
+    }
+  else
+    g_assert_not_reached ();
+
+  return TRUE;
+}
+
+static gboolean
+do_operations (PosExpr *exprs,
+               int     *n_exprs,
+               int      precedence,
+               GError **err)
+{
+  int i;
+
+#if 0
+  g_print ("Doing prec %d ops on %d exprs\n", precedence, *n_exprs);
+  debug_print_exprs (exprs, *n_exprs);
+#endif
+  
+  i = 1;
+  while (i < *n_exprs)
+    {
+      gboolean compress;
+
+      /* exprs[i-1] first operand 
+       * exprs[i]   operator
+       * exprs[i+1] second operand
+       *
+       * we replace first operand with result of mul/div/mod,
+       * or skip over operator and second operand if we have
+       * an add/subtract
+       */
+
+      if (exprs[i-1].type == POS_EXPR_OPERATOR)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression has an operator \"%c\" where an operand was expected"),
+                       exprs[i-1].d.operator);
+          return FALSE;
+        }
+      
+      if (exprs[i].type != POS_EXPR_OPERATOR)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression had an operand where an operator was expected"));
+          return FALSE;
+        }
+
+      if (i == (*n_exprs - 1))
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression ended with an operator instead of an operand"));
+          return FALSE;
+        }
+
+      g_assert ((i+1) < *n_exprs);
+      
+      if (exprs[i+1].type == POS_EXPR_OPERATOR)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"),
+                       exprs[i+1].d.operator,
+                       exprs[i].d.operator);
+          return FALSE;
+        }
+
+      compress = FALSE;
+      
+      if (precedence == 1)
+        {
+          switch (exprs[i].d.operator)
+            {
+            case '*':
+            case '/':
+            case '%':
+              compress = TRUE;
+              if (!do_operation (&exprs[i-1], &exprs[i+1],
+                                 exprs[i].d.operator,
+                                 err))
+                return FALSE;
+              break;
+            }
+        }
+      else if (precedence == 0)
+        {
+          switch (exprs[i].d.operator)
+            {
+            case '-':
+            case '+':
+              compress = TRUE;
+              if (!do_operation (&exprs[i-1], &exprs[i+1],
+                                 exprs[i].d.operator,
+                                 err))
+                return FALSE;
+              break;
+            }
+        }
+
+      if (compress)
+        {
+          /* exprs[i-1] first operand (now result)
+           * exprs[i]   operator
+           * exprs[i+1] second operand
+           * exprs[i+2] new operator
+           *
+           * we move new operator just after first operand
+           */
+          if ((i+2) < *n_exprs)
+            {
+              g_memmove (&exprs[i], &exprs[i+2],
+                         sizeof (PosExpr) * (*n_exprs - i - 2));
+            }
+          
+          *n_exprs -= 2;
+        }
+      else
+        {
+          /* Skip operator and next operand */
+          i += 2;
+        }
+    }
+
+  return TRUE;
+}
+
+static gboolean
+pos_eval_helper (PosToken *tokens,
+                 int       n_tokens,
+                 int       width,
+                 int       height,
+                 PosExpr  *result,
+                 GError  **err)
+{
+  /* lazy-ass hardcoded limit on expression size */
+#define MAX_EXPRS 32
+  int paren_level;
+  int first_paren;
+  int i;
+  PosExpr exprs[MAX_EXPRS];
+  int n_exprs;
+
+  g_print ("Pos eval helper on %d tokens:\n", n_tokens);
+  debug_print_tokens (tokens, n_tokens);
+  
+  /* Our first goal is to get a list of PosExpr, essentially
+   * substituting variables and handling parentheses.
+   */
+  
+  first_paren = 0;
+  paren_level = 0;
+  n_exprs = 0;
+  i = 0;
+  while (i < n_tokens)
+    {
+      PosToken *t = &tokens[i];
+
+      if (n_exprs >= MAX_EXPRS)
+        {
+          g_set_error (err, META_POSITION_EXPR_ERROR,
+                       META_POSITION_EXPR_ERROR_FAILED,
+                       _("Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"));
+          return FALSE;
+        }
+
+      if (paren_level == 0)
+        {
+          switch (t->type)
+            {
+            case POS_TOKEN_INT:
+              exprs[n_exprs].type = POS_EXPR_INT;
+              exprs[n_exprs].d.int_val = t->d.i.val;
+              ++n_exprs;
+              break;
+
+            case POS_TOKEN_DOUBLE:
+              exprs[n_exprs].type = POS_EXPR_DOUBLE;
+              exprs[n_exprs].d.double_val = t->d.d.val;
+              ++n_exprs;
+              break;
+
+            case POS_TOKEN_OPEN_PAREN:
+              ++paren_level;
+              if (paren_level == 1)
+                first_paren = i;
+              break;
+
+            case POS_TOKEN_CLOSE_PAREN:
+              g_set_error (err, META_POSITION_EXPR_ERROR,
+                           META_POSITION_EXPR_ERROR_BAD_PARENS,
+                           _("Coordinate expression had a close parenthesis with no open parenthesis"));
+              return FALSE;
+              break;
+          
+            case POS_TOKEN_VARIABLE:
+              exprs[n_exprs].type = POS_EXPR_INT;
+              
+              if (strcmp (t->d.v.name, "width") == 0)
+                exprs[n_exprs].d.int_val = width;
+              else if (strcmp (t->d.v.name, "height") == 0)
+                exprs[n_exprs].d.int_val = height;
+              else
+                {
+                  g_set_error (err, META_POSITION_EXPR_ERROR,
+                               META_POSITION_EXPR_ERROR_UNKNOWN_VARIABLE,
+                               _("Coordinate expression had unknown variable \"%s\""),
+                               t->d.v.name);
+                  return FALSE;
+                }
+              ++n_exprs;
+              break;
+
+            case POS_TOKEN_OPERATOR:
+              exprs[n_exprs].type = POS_EXPR_OPERATOR;
+              exprs[n_exprs].d.operator = t->d.o.op;
+              ++n_exprs;
+              break;  
+            }
+        }
+      else
+        {
+          g_assert (paren_level > 0);
+          
+          switch (t->type)
+            {
+            case POS_TOKEN_INT:
+            case POS_TOKEN_DOUBLE:
+            case POS_TOKEN_VARIABLE:
+            case POS_TOKEN_OPERATOR:
+              break;
+              
+            case POS_TOKEN_OPEN_PAREN:
+              ++paren_level;
+              break;
+
+            case POS_TOKEN_CLOSE_PAREN:
+              if (paren_level == 1)
+                {
+                  /* We closed a toplevel paren group, so recurse */
+                  if (!pos_eval_helper (&tokens[first_paren+1],
+                                        i - first_paren - 1,
+                                        width, height,
+                                        &exprs[n_exprs],
+                                        err))
+                    return FALSE;
+                  
+                  ++n_exprs;
+                }
+          
+              --paren_level;
+              break;
+          
+            }
+        }
+
+      ++i;
+    }
+
+  if (paren_level > 0)
+    {
+      g_set_error (err, META_POSITION_EXPR_ERROR,
+                   META_POSITION_EXPR_ERROR_BAD_PARENS,
+                   _("Coordinate expression had an open parenthesis with no close parenthesis"));
+      return FALSE;      
+    }
+
+  /* Now we have no parens and no vars; so we just do all the multiplies
+   * and divides, then all the add and subtract.
+   */
+  if (n_exprs == 0)
+    {
+      g_set_error (err, META_POSITION_EXPR_ERROR,
+                   META_POSITION_EXPR_ERROR_FAILED,
+                   _("Coordinate expression doesn't seem to have any operators or operands"));
+      return FALSE;
+    }
+
+  /* precedence 1 ops */
+  if (!do_operations (exprs, &n_exprs, 1, err))
+    return FALSE;
+
+  /* precedence 0 ops */
+  if (!do_operations (exprs, &n_exprs, 0, err))
+    return FALSE;
+
+  g_assert (n_exprs == 1);
+
+  *result = *exprs;
+
+  return TRUE;
+}
+
+/*
+ *   expr = int | double | expr * expr | expr / expr |
+ *          expr + expr | expr - expr | (expr)
+ *
+ *   so very not worth fooling with bison, yet so very painful by hand.
+ */
+static gboolean
+pos_eval (PosToken *tokens,
+          int       n_tokens,
+          int       width,
+          int       height,
+          int      *val_p,
+          GError  **err)
+{
+  PosExpr expr;
+  
+  *val_p = 0;
+
+  if (pos_eval_helper (tokens, n_tokens, width, height, &expr, err))
+    {
+      switch (expr.type)
+        {
+        case POS_EXPR_INT:
+          *val_p = expr.d.int_val;
+          break;
+        case POS_EXPR_DOUBLE:
+          *val_p = expr.d.double_val;
+          break;
+        case POS_EXPR_OPERATOR:
+          g_assert_not_reached ();
+          break;
+        }
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
+/* We always return both X and Y, but only one will be meaningful in
+ * most contexts.
+ */
+#define FILL_RETURN(number) do {                \
+          if (x_return)                         \
+            *x_return = x + (number);           \
+          if (y_return)                         \
+            *y_return = y + (number);           \
+          } while (0)
+            
+gboolean
+meta_parse_position_expression (const char *expr,
+                                int x, int y, int width, int height,
+                                int *x_return, int *y_return,
+                                GError **err)
+{
+  /* All positions are in a coordinate system with x, y at the origin.
+   * The expression can have -, +, *, / as operators, floating
+   * point or integer constants, and the two variables "width"
+   * and "height". Negative numbers aren't allowed.
+   */
+  PosToken *tokens;
+  int n_tokens;
+  int val;
+  
+  if (!pos_tokenize (expr, &tokens, &n_tokens, err))
+    {
+      g_assert (err == NULL || *err != NULL);
+      return FALSE;
+    }
+
+#if 0
+  g_print ("Tokenized \"%s\" to --->\n", expr);
+  debug_print_tokens (tokens, n_tokens);
+#endif
+  
+  /* Optimization for "just a number" */
+  if (n_tokens == 1)
+    {
+      switch (tokens[0].type)
+        {
+        case POS_TOKEN_INT:
+          FILL_RETURN (tokens[0].d.i.val);
+          free_tokens (tokens, n_tokens);
+          return TRUE;
+          break;
+
+        case POS_TOKEN_DOUBLE:
+          FILL_RETURN (tokens[0].d.d.val);
+          free_tokens (tokens, n_tokens);
+          return TRUE;
+          break;
+
+        default:
+          /* handle normally */
+          break;
+        }
+    }
+
+  if (pos_eval (tokens, n_tokens, width, height, &val, err))
+    {
+      FILL_RETURN (val);
+      free_tokens (tokens, n_tokens);
+      return TRUE;
+    }
+  else
+    {
+      g_assert (err == NULL || *err != NULL);
+      free_tokens (tokens, n_tokens);
+      return FALSE;
+    }
+}
+
+MetaShapeSpec*
+meta_shape_spec_new (MetaShapeType type)
+{
+  MetaShapeSpec *spec;
+  MetaShapeSpec dummy;
+  int size;
+
+  size = G_STRUCT_OFFSET (MetaShapeSpec, data);
+  
+  switch (type)
+    {
+    case META_SHAPE_LINE:
+      size += sizeof (dummy.data.line);
+      break;
+
+    case META_SHAPE_RECTANGLE:
+      size += sizeof (dummy.data.rectangle);
+      break;
+
+    case META_SHAPE_ARC:
+      size += sizeof (dummy.data.arc);
+      break;
+
+    case META_SHAPE_TEXTURE:
+      size += sizeof (dummy.data.texture);
+      break;
+
+    case META_SHAPE_GTK_ARROW:
+      size += sizeof (dummy.data.gtk_arrow);
+      break;
+
+    case META_SHAPE_GTK_BOX:
+      size += sizeof (dummy.data.gtk_box);
+      break;
+
+    case META_SHAPE_GTK_VLINE:
+      size += sizeof (dummy.data.gtk_vline);
+      break;
+    }
+  
+  spec = g_malloc0 (size);
+
+  spec->type = type;  
+  
+  return spec;
+}
+
+void
+meta_shape_spec_free (MetaShapeSpec *spec)
+{
+  g_return_if_fail (spec != NULL);
+  
+  switch (spec->type)
+    {
+    case META_SHAPE_LINE:
+      g_free (spec->data.line.x1);
+      g_free (spec->data.line.y1);
+      g_free (spec->data.line.x2);
+      g_free (spec->data.line.y2);
+      break;
+
+    case META_SHAPE_RECTANGLE:
+      if (spec->data.rectangle.color_spec)
+        g_free (spec->data.rectangle.color_spec);
+      g_free (spec->data.rectangle.x);
+      g_free (spec->data.rectangle.y);
+      g_free (spec->data.rectangle.width);
+      g_free (spec->data.rectangle.height);
+      break;
+
+    case META_SHAPE_ARC:
+      if (spec->data.arc.color_spec)
+        g_free (spec->data.arc.color_spec);
+      g_free (spec->data.arc.x);
+      g_free (spec->data.arc.y);
+      g_free (spec->data.arc.width);
+      g_free (spec->data.arc.height);
+      break;
+
+    case META_SHAPE_TEXTURE:
+      if (spec->data.texture.texture_spec)
+        meta_texture_spec_free (spec->data.texture.texture_spec);
+      g_free (spec->data.texture.x);
+      g_free (spec->data.texture.y);
+      g_free (spec->data.texture.width);
+      g_free (spec->data.texture.height);
+      break;
+
+    case META_SHAPE_GTK_ARROW:
+      g_free (spec->data.gtk_arrow.x);
+      g_free (spec->data.gtk_arrow.y);
+      g_free (spec->data.gtk_arrow.width);
+      g_free (spec->data.gtk_arrow.height);
+      break;
+
+    case META_SHAPE_GTK_BOX:
+      g_free (spec->data.gtk_box.x);
+      g_free (spec->data.gtk_box.y);
+      g_free (spec->data.gtk_box.width);
+      g_free (spec->data.gtk_box.height);
+      break;
+
+    case META_SHAPE_GTK_VLINE:
+      g_free (spec->data.gtk_vline.x);
+      g_free (spec->data.gtk_vline.y1);
+      g_free (spec->data.gtk_vline.y2);
+      break;
+    }
+
+  g_free (spec);
+}
+
+void
+meta_shape_spec_draw (const MetaShapeSpec *spec,
+                      GtkWidget           *widget,
+                      GdkDrawable         *drawable,
+                      const GdkRectangle  *clip,
+                      int                  x,
+                      int                  y,
+                      int                  width,
+                      int                  height)
+{  
+  switch (spec->type)
+    {
+    case META_SHAPE_LINE:
+      break;
+
+    case META_SHAPE_RECTANGLE:
+      break;
+
+    case META_SHAPE_ARC:
+      break;
+
+    case META_SHAPE_TEXTURE:
+      break;
+
+    case META_SHAPE_GTK_ARROW:
+      break;
+
+    case META_SHAPE_GTK_BOX:
+      break;
+
+    case META_SHAPE_GTK_VLINE:
+      break;
     }
 }
 
@@ -1186,13 +2157,17 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
 }
 
 MetaFrameStyle*
-meta_frame_style_new (void)
+meta_frame_style_new (MetaFrameStyle *parent)
 {
   MetaFrameStyle *style;
 
   style = g_new0 (MetaFrameStyle, 1);
 
   style->refcount = 1;
+
+  style->parent = parent;
+  if (parent)
+    meta_frame_style_ref (parent);
   
   return style;
 }
@@ -1252,28 +2227,36 @@ meta_frame_style_unref (MetaFrameStyle *style)
 
       if (style->layout)
         meta_frame_layout_free (style->layout);
+
+      /* we hold a reference to any parent style */
+      if (style->parent)
+        meta_frame_style_unref (style->parent);
       
       g_free (style);
     }
 }
 
 MetaFrameStyleSet*
-meta_frame_style_set_new (void)
+meta_frame_style_set_new (MetaFrameStyleSet *parent)
 {
   MetaFrameStyleSet *style_set;
 
   style_set = g_new0 (MetaFrameStyleSet, 1);
 
+  style_set->parent = parent;
+  if (parent)
+    meta_frame_style_set_ref (parent);
+  
   return style_set;
 }
 
 static void
-free_focus_styles (MetaFrameStyle *focus_styles[META_WINDOW_FOCUS_LAST])
+free_focus_styles (MetaFrameStyle *focus_styles[META_FRAME_FOCUS_LAST])
 {
   int i;
 
   i = 0;
-  while (i < META_WINDOW_FOCUS_LAST)
+  while (i < META_FRAME_FOCUS_LAST)
     {
       if (focus_styles[i])
         meta_frame_style_unref (focus_styles[i]);
@@ -1283,21 +2266,85 @@ free_focus_styles (MetaFrameStyle *focus_styles[META_WINDOW_FOCUS_LAST])
 }
 
 void
-meta_frame_style_set_free (MetaFrameStyleSet *style_set)
+meta_frame_style_set_ref (MetaFrameStyleSet *style_set)
+{
+  g_return_if_fail (style_set != NULL);
+  
+  style_set->refcount += 1;
+}
+
+void
+meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
+{
+  g_return_if_fail (style_set != NULL);
+  g_return_if_fail (style_set->refcount > 0);
+
+  style_set->refcount -= 1;
+
+  if (style_set->refcount == 0)
+    {
+      int i;
+
+      i = 0;
+      while (i < META_FRAME_RESIZE_LAST)
+        {
+          free_focus_styles (style_set->normal_styles[i]);
+          
+          ++i;
+        }
+      
+      free_focus_styles (style_set->maximized_styles);
+      free_focus_styles (style_set->shaded_styles);
+      free_focus_styles (style_set->maximized_and_shaded_styles);
+
+      if (style_set->parent)
+        meta_frame_style_set_unref (style_set->parent);
+      
+      g_free (style_set);
+    }
+}
+
+MetaTheme*
+meta_theme_new (void)
+{
+  MetaTheme *theme;
+
+  theme = g_new0 (MetaTheme, 1);
+
+  theme->styles_by_name = g_hash_table_new_full (g_str_hash,
+                                                 g_str_equal,
+                                                 g_free,
+                                                 (GDestroyNotify) meta_frame_style_unref);
+
+  theme->style_sets_by_name = g_hash_table_new_full (g_str_hash,
+                                                     g_str_equal,
+                                                     g_free,
+                                                     (GDestroyNotify) meta_frame_style_set_unref);
+
+  
+  return theme;
+}
+
+void
+meta_theme_free (MetaTheme *theme)
 {
   int i;
+  
+  g_return_if_fail (theme != NULL);
+
+  g_free (theme->name);
+  g_free (theme->filename);
+
+  g_hash_table_destroy (theme->styles_by_name);
+  g_hash_table_destroy (theme->style_sets_by_name);
 
   i = 0;
-  while (i < META_WINDOW_RESIZE_LAST)
+  while (i < META_FRAME_TYPE_LAST)
     {
-      free_focus_styles (style_set->normal_styles[i]);
-
+      if (theme->style_sets_by_type[i])
+        meta_frame_style_set_unref (theme->style_sets_by_type[i]);
       ++i;
     }
-
-  free_focus_styles (style_set->maximized_styles);
-  free_focus_styles (style_set->shaded_styles);
-  free_focus_styles (style_set->maximized_and_shaded_styles);
   
-  g_free (style_set);
+  g_free (theme);
 }

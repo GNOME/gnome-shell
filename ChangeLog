@@ -1,3 +1,16 @@
+2002-01-27  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_set_syncing): move in here so util.c doesn't
+	require display.[hc]
+
+	* src/theme.h, src/theme.c: implement coordinate expression 
+	parser, write MetaShapeSpec declaration
+	
+	* src/util.c (meta_exit): move in here so we can link 
+	to util.c with a different main()
+
+	* src/theme.h: rename the MetaWindow* enums to MetaFrame*
+	
 2002-01-27  Peteris Krisjanis <peteris.krisjanis@ttc.lv>
 
 	* configure.in - Added lv to ALL_LINGUAS

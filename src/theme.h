@@ -31,9 +31,18 @@ typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
 typedef struct _MetaTextureSpec MetaTextureSpec;
 typedef struct _MetaGradientSpec MetaGradientSpec;
 typedef struct _MetaColorSpec MetaColorSpec;
+typedef struct _MetaShapeSpec MetaShapeSpec;
 typedef struct _MetaFrameLayout MetaFrameLayout;
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
 typedef struct _MetaTheme MetaTheme;
+
+typedef enum
+{
+  META_TEXTURE_DRAW_UNSCALED,
+  META_TEXTURE_DRAW_SCALED_VERTICALLY,
+  META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
+  META_TEXTURE_DRAW_SCALED_BOTH
+} MetaTextureDrawMode;
 
 /* Parameters used to calculate the geometry of the frame */
 struct _MetaFrameLayout
@@ -121,6 +130,100 @@ struct _MetaColorSpec
   } data;
 };
 
+typedef enum
+{
+  /* Basic drawing */
+  META_SHAPE_LINE,
+  META_SHAPE_RECTANGLE,
+  META_SHAPE_ARC,
+
+  /* Texture in a specific rectangle */
+  META_SHAPE_TEXTURE,
+  
+  /* GTK theme engine stuff */
+  META_SHAPE_GTK_ARROW,
+  META_SHAPE_GTK_BOX,
+  META_SHAPE_GTK_VLINE
+} MetaShapeType;
+
+struct _MetaShapeSpec
+{
+  MetaShapeType type;
+
+  /* Positions are strings because they can be expressions */
+  union
+  {
+    struct {
+      MetaColorSpec *color_spec;
+      int dash_on_length;
+      int dash_off_length;
+      int width;
+      char *x1;
+      char *y1;
+      char *x2;
+      char *y2;
+    } line;
+
+    struct {
+      MetaColorSpec *color_spec;
+      gboolean filled;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } rectangle;
+
+    struct {
+      MetaColorSpec *color_spec;
+      gboolean filled;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+      double start_angle;
+      double extent_angle;
+    } arc;
+
+    struct {
+      MetaTextureSpec *texture_spec;
+      MetaTextureDrawMode mode;
+      double xalign;
+      double yalign;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } texture;
+
+    struct {
+      GtkStateType state;
+      GtkShadowType shadow;
+      GtkArrowType arrow;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } gtk_arrow;
+
+    struct {
+      GtkStateType state;
+      GtkShadowType shadow;
+      char *x;
+      char *y;
+      char *width;
+      char *height;
+    } gtk_box;
+
+    struct {
+      GtkStateType state;
+      char *x;
+      char *y1;
+      char *y2;  
+    } gtk_vline;
+    
+  } data;
+};
+
 struct _MetaGradientSpec
 {
   MetaGradientType type;
@@ -134,14 +237,6 @@ typedef enum
   META_TEXTURE_IMAGE,
   META_TEXTURE_COMPOSITE
 } MetaTextureType;
-
-typedef enum
-{
-  META_TEXTURE_DRAW_UNSCALED,
-  META_TEXTURE_DRAW_SCALED_VERTICALLY,
-  META_TEXTURE_DRAW_SCALED_HORIZONTALLY,
-  META_TEXTURE_DRAW_SCALED_BOTH
-} MetaTextureDrawMode;
 
 struct _MetaTextureSpec
 {
@@ -252,6 +347,8 @@ typedef enum
   META_FRAME_PIECE_LEFT_END_OF_BOTTOM_EDGE,
   /* place on right end of bottom edge of the frame, unscaled */
   META_FRAME_PIECE_RIGHT_END_OF_BOTTOM_EDGE,
+  /* place over entire frame, after drawing everything else */
+  META_FRAME_PIECE_OVERLAY,
   /* Used to get size of the enum */
   META_FRAME_PIECE_LAST
 } MetaFramePiece;
@@ -259,16 +356,15 @@ typedef enum
 struct _MetaFrameStyle
 {
   int refcount;
+  MetaFrameStyle *parent;
   MetaTextureSpec *button_icons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaTextureSpec *button_backgrounds[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaTextureSpec *pieces[META_FRAME_PIECE_LAST];
   MetaFrameLayout *layout;
 };
 
-
-/* FIXME dammit, these are not mutually exclusive; how to handle
- * the mess...
- *
+/* Kinds of frame...
+ * 
  *  normal ->   noresize / vert only / horz only / both
  *              focused / unfocused
  *  max    ->   focused / unfocused
@@ -284,43 +380,48 @@ struct _MetaFrameStyle
  */
 typedef enum
 {
-  META_WINDOW_STATE_NORMAL,
-  META_WINDOW_STATE_MAXIMIZED,
-  META_WINDOW_STATE_SHADED,
-  META_WINDOW_STATE_MAXIMIZED_AND_SHADED,
-  META_WINDOW_STATE_LAST
-} MetaWindowState;
+  META_FRAME_STATE_NORMAL,
+  META_FRAME_STATE_MAXIMIZED,
+  META_FRAME_STATE_SHADED,
+  META_FRAME_STATE_MAXIMIZED_AND_SHADED,
+  META_FRAME_STATE_LAST
+} MetaFrameState;
 
 typedef enum
 {
-  META_WINDOW_RESIZE_NONE,
-  META_WINDOW_RESIZE_VERTICAL,
-  META_WINDOW_RESIZE_HORIZONTAL,
-  META_WINDOW_RESIZE_BOTH,
-  META_WINDOW_RESIZE_LAST
-} MetaWindowResize;
+  META_FRAME_RESIZE_NONE,
+  META_FRAME_RESIZE_VERTICAL,
+  META_FRAME_RESIZE_HORIZONTAL,
+  META_FRAME_RESIZE_BOTH,
+  META_FRAME_RESIZE_LAST
+} MetaFrameResize;
 
 typedef enum
 {
-  META_WINDOW_FOCUS_NO,
-  META_WINDOW_FOCUS_YES,
-  META_WINDOW_FOCUS_LAST
-} MetaWindowFocus;
+  META_FRAME_FOCUS_NO,
+  META_FRAME_FOCUS_YES,
+  META_FRAME_FOCUS_LAST
+} MetaFrameFocus;
 
 /* One StyleSet per window type (for window types that get a frame) */
 struct _MetaFrameStyleSet
 {
-  MetaFrameStyle *normal_styles[META_WINDOW_RESIZE_LAST][META_WINDOW_FOCUS_LAST];
-  MetaFrameStyle *maximized_styles[META_WINDOW_FOCUS_LAST];
-  MetaFrameStyle *shaded_styles[META_WINDOW_FOCUS_LAST];
-  MetaFrameStyle *maximized_and_shaded_styles[META_WINDOW_FOCUS_LAST];
+  int refcount;
+  MetaFrameStyleSet *parent;
+  MetaFrameStyle *normal_styles[META_FRAME_RESIZE_LAST][META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *maximized_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *shaded_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *maximized_and_shaded_styles[META_FRAME_FOCUS_LAST];
 };
 
 struct _MetaTheme
 {
   char *name;
   char *filename;
-  MetaFrameStyleSet *style_sets[META_FRAME_TYPE_LAST];
+
+  GHashTable *styles_by_name;
+  GHashTable *style_sets_by_name;
+  MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
 };
 
 MetaFrameLayout* meta_frame_layout_new           (void);
@@ -341,12 +442,44 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
                                                   int                    client_height,
                                                   MetaFrameGeometry     *fgeom);
 
+#define META_POSITION_EXPR_ERROR (g_quark_from_static_string ("meta-position-expr-error"))
+typedef enum
+{
+  META_POSITION_EXPR_ERROR_BAD_CHARACTER,
+  META_POSITION_EXPR_ERROR_BAD_PARENS,
+  META_POSITION_EXPR_ERROR_UNKNOWN_VARIABLE,
+  META_POSITION_EXPR_ERROR_DIVIDE_BY_ZERO,
+  META_POSITION_EXPR_ERROR_MOD_ON_FLOAT,
+  META_POSITION_EXPR_ERROR_FAILED
+} MetaPositionExprError;
+
+gboolean meta_parse_position_expression (const char *expr,
+                                         int x, int y, int width, int height,
+                                         int *x_return, int *y_return,
+                                         GError **err);
 
 MetaColorSpec* meta_color_spec_new    (MetaColorSpecType  type);
 void           meta_color_spec_free   (MetaColorSpec     *spec);
 void           meta_color_spec_render (MetaColorSpec     *spec,
                                        GtkWidget         *widget,
                                        GdkColor          *color);
+
+MetaShapeSpec* meta_shape_spec_new  (MetaShapeType        type);
+void           meta_shape_spec_free (MetaShapeSpec       *spec);
+void           meta_shape_spec_draw (const MetaShapeSpec *spec,
+                                     GtkWidget           *widget,
+                                     GdkDrawable         *drawable,
+                                     const GdkRectangle  *clip,
+                                     /* logical region being drawn,
+                                      * shape coords are offset by
+                                      * x,y and w/h variables are
+                                      * available in shape coord
+                                      * expressions.
+                                      */
+                                     int                  x,
+                                     int                  y,
+                                     int                  width,
+                                     int                  height);
 
 MetaGradientSpec* meta_gradient_spec_new    (MetaGradientType        type);
 void              meta_gradient_spec_free   (MetaGradientSpec       *desc);
@@ -376,11 +509,15 @@ void             meta_texture_spec_draw   (const MetaTextureSpec *desc,
                                            int                    width,
                                            int                    height);
 
-MetaFrameStyle* meta_frame_style_new   (void);
+MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
 void            meta_frame_style_ref   (MetaFrameStyle *style);
 void            meta_frame_style_unref (MetaFrameStyle *style);
 
-MetaFrameStyleSet* meta_frame_style_set_new  (void);
-void               meta_frame_style_set_free (MetaFrameStyleSet *style_set);
+MetaFrameStyleSet* meta_frame_style_set_new   (MetaFrameStyleSet *parent);
+void               meta_frame_style_set_ref   (MetaFrameStyleSet *style_set);
+void               meta_frame_style_set_unref (MetaFrameStyleSet *style_set);
+
+MetaTheme* meta_theme_new  (void);
+void       meta_theme_free (MetaTheme *theme);
 
 #endif

@@ -2057,3 +2057,30 @@ meta_display_unshow_desktop (MetaDisplay *display)
   
   queue_windows_showing (display);
 }
+
+static gboolean is_syncing = FALSE;
+
+gboolean
+meta_is_syncing (void)
+{
+  return is_syncing;
+}
+
+void
+meta_set_syncing (gboolean setting)
+{
+  if (setting != is_syncing)
+    {
+      GSList *tmp;
+      
+      is_syncing = setting;
+
+      tmp = meta_displays_list ();
+      while (tmp != NULL)
+        {
+          MetaDisplay *display = tmp->data;
+          XSynchronize (display->xdisplay, is_syncing);
+          tmp = tmp->next;
+        }
+    }
+}

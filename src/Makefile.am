@@ -55,9 +55,19 @@ metacity_SOURCES= 				\
 	xprops.c				\
 	xprops.h
 
-bin_PROGRAMS=metacity
+metacity_theme_viewer_SOURCES=  \
+	gradient.c		\
+	gradient.h		\
+	theme.c			\
+	theme.h			\
+	theme-viewer.c		\
+	util.c			\
+	util.h	
+
+bin_PROGRAMS=metacity metacity-theme-viewer
 
 metacity_LDADD= @METACITY_LIBS@
+metacity_theme_viewer_LDADD= @METACITY_LIBS@
 
 testgradient_SOURCES=gradient.h gradient.c testgradient.c
 

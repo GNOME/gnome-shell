@@ -275,13 +275,6 @@ meta_quit (MetaExitCode code)
 }
 
 void
-meta_exit (MetaExitCode code)
-{
-  
-  exit (code);
-}
-
-void
 meta_restart (void)
 {
   meta_restart_after_quit = TRUE;

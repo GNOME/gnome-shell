@@ -21,7 +21,6 @@
 
 #include "util.h"
 #include "main.h"
-#include "display.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +28,6 @@
 
 static gboolean is_verbose = FALSE;
 static gboolean is_debugging = FALSE;
-static gboolean is_syncing = FALSE;
 static int no_prefix = 0;
 static FILE* logfile = NULL;
 
@@ -86,31 +84,6 @@ meta_set_debugging (gboolean setting)
     ensure_logfile ();
   
   is_debugging = setting;
-}
-
-gboolean
-meta_is_syncing (void)
-{
-  return is_syncing;
-}
-
-void
-meta_set_syncing (gboolean setting)
-{
-  if (setting != is_syncing)
-    {
-      GSList *tmp;
-      
-      is_syncing = setting;
-
-      tmp = meta_displays_list ();
-      while (tmp != NULL)
-        {
-          MetaDisplay *display = tmp->data;
-          XSynchronize (display->xdisplay, is_syncing);
-          tmp = tmp->next;
-        }
-    }
 }
 
 void
@@ -299,4 +272,11 @@ meta_pop_no_msg_prefix (void)
   g_return_if_fail (no_prefix > 0);
 
   --no_prefix;
+}
+
+void
+meta_exit (MetaExitCode code)
+{
+  
+  exit (code);
 }
