@@ -33,6 +33,9 @@ AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 AC_CHECK_SIZEOF(__int64)
 
+## byte order
+AC_C_BIGENDIAN
+
 #### Warnings
 
 changequote(,)dnl

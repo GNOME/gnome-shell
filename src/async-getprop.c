@@ -347,8 +347,9 @@ async_get_property_handler (Display *dpy,
           break;
 
         case 32:
-          nbytes = reply->nItems * sizeof (CARD32);
-          netbytes = reply->nItems << 2;
+          /* NOTE buffer is in longs to match XGetWindowProperty() */
+          nbytes = reply->nItems * sizeof (long);
+          netbytes = reply->nItems << 2; /* wire size is always 32 bits though */
           if (nbytes + 1 > 0 &&
               (task->data = (unsigned char *) Xmalloc ((unsigned)nbytes + 1)))
             {
@@ -356,10 +357,41 @@ async_get_property_handler (Display *dpy,
               printf ("%s: already read %d bytes using %ld more, eating %ld more\n",
                       __FUNCTION__, bytes_read, nbytes, netbytes);
 #endif
-              /* _XRead32 (dpy, (long *) task->data, netbytes); */
-              _XGetAsyncData (dpy, task->data, buf, len,
-                              bytes_read, nbytes,
-                              netbytes);
+
+              /* We have to copy the XGetWindowProperty() crackrock
+               * and get format 32 as long even on 64-bit platforms.
+               */
+              if (sizeof (long) == 8)
+                {
+                  unsigned char *netdata;
+                  unsigned char *lptr;
+                  unsigned char *end_lptr;
+                  
+                  /* Store the 32-bit values in the end of the array */
+                  netdata = task->data + nbytes / 2;
+
+                  _XGetAsyncData (dpy, netdata, buf, len,
+                                  bytes_read, netbytes,
+                                  netbytes);
+
+                  /* Now move the 32-bit values to the front */
+                  
+                  lptr = task->data;
+                  end_lptr = task->data + nbytes;
+                  while (lptr != end_lptr)
+                    {
+                      *(long*) lptr = *(CARD32*) netdata;
+                      lptr += sizeof (long);
+                      netdata += sizeof (CARD32);
+                    }
+                }
+              else
+                {
+                  /* Here the wire format matches our actual format */
+                  _XGetAsyncData (dpy, task->data, buf, len,
+                                  bytes_read, netbytes,
+                                  netbytes);
+                }
             }
           break;
 
