@@ -16,7 +16,7 @@ fi
 
 if test -z "$ONLY_WM"; then
   Xnest -ac :1 -scrns $SCREENS -geometry 640x400 -bw 15 &
-  usleep 100000
+  usleep 500000
 
   if test $CLIENTS != 0; then
     for I in `seq 1 $CLIENTS`; do

@@ -3300,8 +3300,11 @@ constrain_position (MetaWindow *window,
     {
       int nw_x, nw_y;
       int se_x, se_y;
-
-      /* find furthest northwest corner */
+      int offscreen_w, offscreen_h;
+      
+      /* find furthest northwest point the window can occupy,
+       * to disallow moving titlebar off the top or left
+       */
       nw_x = window->screen->active_workspace->workarea.x;
       nw_y = window->screen->active_workspace->workarea.y;
       if (window->frame)
@@ -3310,18 +3313,36 @@ constrain_position (MetaWindow *window,
           nw_y += fgeom->top_height;
         }
       
-      /* don't allow moving titlebar off the top or left */
-      if (x < nw_x)
-        x = nw_x;
-      if (y < nw_y)
-        y = nw_y;
-      
-      /* keep titlebar on bottom right as well (but not entire window) */
+      /* find bottom-right corner of workarea */
       se_x = window->screen->active_workspace->workarea.x +
         window->screen->active_workspace->workarea.width;
       se_y = window->screen->active_workspace->workarea.y +
         window->screen->active_workspace->workarea.height;
 
+      /* if the window's size exceeds the screen size,
+       * we allow it to go off the top/left far enough
+       * to get the right/bottom edges onscreen.
+       */
+      offscreen_w = nw_x + window->rect.width;
+      offscreen_h = nw_y + window->rect.height;
+      if (window->frame)
+        {
+          offscreen_w += fgeom->right_width;
+          offscreen_h += fgeom->bottom_height;
+        }
+
+      offscreen_w = offscreen_w - se_x;
+      offscreen_h = offscreen_h - se_y;
+
+      /* Now change NW limit to reflect amount offscreen in SE direction */
+      if (offscreen_w > 0)
+        nw_x -= offscreen_w;
+      if (offscreen_h > 0)
+        nw_y -= offscreen_h;
+      
+      /* Convert se_x, se_y to the most bottom-right position
+       * the window can occupy
+       */
       if (window->frame)
         {
 #define TITLEBAR_LENGTH_ONSCREEN 10
@@ -3329,11 +3350,35 @@ constrain_position (MetaWindow *window,
           se_y -= fgeom->top_height;
         }
 
+      /* If we have a micro-screen or huge frames maybe nw/se got
+       * swapped
+       */
+      if (nw_x > se_x)
+        {
+          int tmp = nw_x;
+          nw_x = se_x;
+          se_x = tmp;
+        }
+
+      if (nw_y > se_y)
+        {
+          int tmp = nw_y;
+          nw_y = se_y;
+          se_y = tmp;
+        }
+      
+      /* Clamp window to the given positions */
+      if (x < nw_x)
+        x = nw_x;
+      if (y < nw_y)
+        y = nw_y;
+      
       if (x > se_x)
         x = se_x;
       if (y > se_y)
         y = se_y;
-      
+
+      /* If maximized, force the exact position */
       if (window->maximized)
         {
           if (x != nw_x)

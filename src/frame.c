@@ -182,7 +182,8 @@ meta_frame_get_flags (MetaFrame *frame)
   if (frame->window->has_move_func)
     flags |= META_FRAME_ALLOWS_MOVE;
 
-  if (frame->window->has_resize_func)
+  if (frame->window->has_resize_func &&
+      !frame->window->maximized)
     {
       if (frame->window->size_hints.min_width <
           frame->window->size_hints.max_width)
