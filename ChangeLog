@@ -1,3 +1,10 @@
+2003-02-13  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: require GTK+ 2.2.0
+
+	* src/ui.c (meta_ui_init): remove hackaround for Pango X core
+	fonts backend
+
 2003-02-05  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in: Added "en_GB" and "nl" to ALL_LINGUAS.

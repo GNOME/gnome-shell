@@ -51,28 +51,6 @@ meta_ui_init (int *argc, char ***argv)
   if (!gtk_init_check (argc, argv))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 
-  {
-    /* FIXME hackaround for Pango opening a separate display
-     * connection and doing a server grab while we have a grab
-     * on the primary display connection. This forces Pango to
-     * go ahead and do its font cache before we try to grab
-     * the server.
-     */  
-    PangoFontMetrics *metrics;
-    PangoLanguage *lang;
-    PangoContext *context;
-    PangoFontDescription *font_desc;
-
-    context = gdk_pango_context_get ();
-    lang = gtk_get_default_language ();
-    font_desc = pango_font_description_from_string ("Sans 12");
-    metrics = pango_context_get_metrics (context, font_desc, lang);    
-    
-    pango_font_metrics_unref (metrics);
-    pango_font_description_free (font_desc);
-    g_object_unref (G_OBJECT (context));
-  }
-
   meta_stock_icons_init ();
 }
 
