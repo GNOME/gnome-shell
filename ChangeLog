@@ -1,3 +1,18 @@
+2004-11-10  James Henstridge  <james@jamesh.id.au>
+
+	* Makefile.am (DISTCLEANFILES): remove intltool stuff on distclean.
+
+	* src/themes/Makefile.am (uninstall-local): add uninstall rule.
+
+	* src/Makefile.am (libmetacity_private_la_CFLAGS): set this
+	variable so that the files shared with metacity get compiled with
+	different names.
+
+	* configure.in: use more modern macros in some places, and make
+	sure that $ACLOCAL_AMFLAGS is set so that rebuilds work better.
+
+	* autogen.sh (conf_flags): use newer automake.
+
 2004-11-06  Vincent Untz  <vincent@vuntz.net>
 
 	* src/metacity.schemas.in: gnome-panel-screenshot was renamed to

@@ -90,6 +90,9 @@ metacity_SOURCES= 				\
 	xprops.h				\
 	$(EGGFILES)
 
+# by setting libmetacity_private_la_CFLAGS, the files shared with
+# metacity proper will be compiled with different names.
+libmetacity_private_la_CFLAGS =
 libmetacity_private_la_SOURCES=	\
 	gradient.c		\
 	gradient.h		\
@@ -164,7 +167,7 @@ VARIABLES=default_icon_data $(srcdir)/default_icon.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h
+CLEANFILES = inlinepixbufs.h metacity.desktop metacity.schemas
 
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h

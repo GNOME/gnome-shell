@@ -1,18 +1,19 @@
 AC_PREREQ(2.50)
-AC_INIT(src/display.c)
+AC_INIT([metacity], [2.9.1],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_SRCDIR(src/display.c)
+AC_CONFIG_HEADERS(config.h)
 
-AM_INIT_AUTOMAKE(metacity, 2.9.1)
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
 
 # Honor aclocal flags
-ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+AC_SUBST(ACLOCAL_AMFLAGS, "\${ACLOCAL_FLAGS}")
 
 GETTEXT_PACKAGE=metacity
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
-
-AM_MAINTAINER_MODE
 
 AC_PROG_INTLTOOL([0.21])
 AC_PROG_CC
@@ -99,37 +100,64 @@ changequote([,])dnl
 
 METACITY_PC_MODULES='gtk+-2.0 >= 2.2.0 pango >= 1.2.0'
 
-AC_ARG_ENABLE(config-dialog,      [  --enable-config-dialog      enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)],,enable_config_dialog=no)
+AC_ARG_ENABLE(config-dialog,
+  AC_HELP_STRING([--enable-config-dialog],
+                 [enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)]),,
+  enable_config_dialog=no)
 
 AM_CONDITIONAL(BUILD_CONFIG_DIALOG, test x$enable_config_dialog = xyes)
 if test x$enable_config_dialog = xyes; then
     AC_DEFINE(BUILD_CONFIG_DIALOG,1,[Build configuration dialog])
 fi
 
-AC_ARG_ENABLE(gconf,              [  --disable-gconf             disable gconf usage, for embedded/size-sensitive non-GNOME builds],,enable_gconf=yes)
+AC_ARG_ENABLE(gconf,
+  AC_HELP_STRING([--disable-gconf],
+                 [disable gconf usage, for embedded/size-sensitive non-GNOME builds]),,
+  enable_gconf=yes)
 
 if test x$enable_gconf = xyes; then
     AC_DEFINE(HAVE_GCONF,1,[Build with gconf support])
     METACITY_PC_MODULES="$METACITY_PC_MODULES gconf-2.0 >= 1.2.0"
 fi
 
-AC_ARG_ENABLE(verbose-mode,       [  --disable-verbose             disable metacity's ability to do verbose logging, for embedded/size-sensitive custom builds],,enable_verbose_mode=yes)
+AC_ARG_ENABLE(verbose-mode,
+  AC_HELP_STRING([--disable-verbose],
+                 [disable metacity's ability to do verbose logging, for embedded/size-sensitive custom builds]),,
+  enable_verbose_mode=yes)
 
 if test x$enable_verbose_mode = xyes; then
     AC_DEFINE(WITH_VERBOSE_MODE,1,[Build with verbose mode support])
 fi
 
-AC_ARG_ENABLE(sm,       [  --disable-sm             disable metacity's session management support, for embedded/size-sensitive custom non-GNOME builds],,enable_sm=auto)
+AC_ARG_ENABLE(sm,
+  AC_HELP_STRING([--disable-sm],
+                 [disable metacity's session management support, for embedded/size-sensitive custom non-GNOME builds]),,
+  enable_sm=auto)
 
-AC_ARG_ENABLE(startup-notification,   [  --disable-startup-notification             disable metacity's startup notification support, for embedded/size-sensitive custom non-GNOME builds],,enable_startup_notification=auto)
+AC_ARG_ENABLE(startup-notification,
+  AC_HELP_STRING([--disable-startup-notification],
+                 [disable metacity's startup notification support, for embedded/size-sensitive custom non-GNOME builds]),,
+  enable_startup_notification=auto)
 
-AC_ARG_ENABLE(compositor,   [  --disable-compositor             disable metacity's compositing manager],,enable_compositor=auto)
+AC_ARG_ENABLE(compositor,
+  AC_HELP_STRING([--disable-compositor],
+                 [disable metacity's compositing manager]),,
+  enable_compositor=auto)
 
-AC_ARG_ENABLE(xsync,       [  --disable-xsync             disable metacity's use of the XSync extension],,enable_xsync=auto)
+AC_ARG_ENABLE(xsync,
+  AC_HELP_STRING([--disable-xsync],
+                 [disable metacity's use of the XSync extension]),,
+  enable_xsync=auto)
 
-AC_ARG_ENABLE(render,       [  --disable-render             disable metacity's use of the RENDER extension],,enable_render=auto)
+AC_ARG_ENABLE(render,
+  AC_HELP_STRING([--disable-render],
+                 [disable metacity's use of the RENDER extension]),,
+  enable_render=auto)
 
-AC_ARG_ENABLE(shape,       [  --disable-shape             disable metacity's use of the shaped window extension],,enable_shape=auto)
+AC_ARG_ENABLE(shape,
+  AC_HELP_STRING([--disable-shape],
+                 [disable metacity's use of the shaped window extension]),,
+  enable_shape=auto)
 
 ## try definining HAVE_BACKTRACE
 AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
@@ -251,8 +279,10 @@ ALL_X_LIBS="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 metacity_save_cppflags="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $X_CFLAGS"
 
-AC_ARG_ENABLE(xinerama,[  --disable-xinerama          disable metacity's use of the Xinerama extension],
-              try_xinerama=$enable_xinerama,try_xinerama=yes)
+AC_ARG_ENABLE(xinerama,
+  AC_HELP_STRING([--disable-xinerama],
+                 [disable metacity's use of the Xinerama extension]),
+  try_xinerama=$enable_xinerama,try_xinerama=yes)
 
 use_solaris_xinerama=no
 use_xfree_xinerama=no
@@ -429,7 +459,7 @@ if test x$enable_gconf = xyes; then
    AM_GCONF_SOURCE_2
 fi
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 doc/Makefile
 src/Makefile
@@ -439,6 +469,8 @@ src/tools/Makefile
 src/themes/Makefile
 po/Makefile.in
 ])
+
+AC_OUTPUT
 
 if test x$enable_gconf = xno; then
         echo "*** WARNING WARNING WARNING WARNING WARNING"
