@@ -422,18 +422,17 @@ rects_overlap_horizontally (const MetaRectangle *a,
     return TRUE;
 }
 
-int
-meta_window_find_next_vertical_edge (MetaWindow *window,
-                                     gboolean    right)
+static void
+get_vertical_edges (MetaWindow *window,
+                    int       **edges_p,
+                    int        *n_edges_p)
 {
   GSList *windows;
   GSList *tmp;
-  int left_edge, right_edge;
   int n_windows;
   int *edges;
   int i;
   int n_edges;
-  int retval;
   MetaRectangle rect;
   
   windows = get_windows_on_same_workspace (window, &n_windows);
@@ -482,6 +481,85 @@ meta_window_find_next_vertical_edge (MetaWindow *window,
   /* Sort */
   qsort (edges, n_edges, sizeof (int), intcmp);
 
+  *edges_p = edges;
+  *n_edges_p = n_edges;
+}  
+
+static void
+get_horizontal_edges (MetaWindow *window,
+                      int       **edges_p,
+                      int        *n_edges_p)
+{
+  GSList *windows;
+  GSList *tmp;
+  int n_windows;
+  int *edges;
+  int i;
+  int n_edges;
+  MetaRectangle rect;
+  
+  windows = get_windows_on_same_workspace (window, &n_windows);
+
+  i = 0;
+  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
+  edges = g_new (int, n_edges);
+
+  /* workspace/screen edges */
+  edges[i] = window->screen->active_workspace->workarea.y;
+  ++i;
+  edges[i] =
+    window->screen->active_workspace->workarea.y +
+    window->screen->active_workspace->workarea.height;
+  ++i;
+  edges[i] = 0;
+  ++i;
+  edges[i] = window->screen->height;
+  ++i;
+
+  g_assert (i == 4);
+
+  meta_window_get_outer_rect (window, &rect);
+  
+  /* get window edges */
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle w_rect;
+
+      meta_window_get_outer_rect (w, &w_rect);
+      
+      if (rects_overlap_horizontally (&rect, &w_rect))
+        {
+          window_get_edges (w, NULL, NULL, &edges[i], &edges[i+1]);
+          i += 2;
+        }
+
+      tmp = tmp->next;
+    }
+  n_edges = i;
+  
+  g_slist_free (windows);
+
+  /* Sort */
+  qsort (edges, n_edges, sizeof (int), intcmp);
+
+  *edges_p = edges;
+  *n_edges_p = n_edges;  
+}
+
+int
+meta_window_find_next_vertical_edge (MetaWindow *window,
+                                     gboolean    right)
+{
+  int left_edge, right_edge;
+  int *edges;
+  int i;
+  int n_edges;
+  int retval;
+
+  get_vertical_edges (window, &edges, &n_edges);
+  
   /* Find next */
   meta_window_get_position (window, &retval, NULL);
 
@@ -542,62 +620,14 @@ int
 meta_window_find_next_horizontal_edge (MetaWindow *window,
                                        gboolean    down)
 {
-  GSList *windows;
-  GSList *tmp;
   int top_edge, bottom_edge;
-  int n_windows;
   int *edges;
   int i;
   int n_edges;
   int retval;
-  MetaRectangle rect;
+
+  get_horizontal_edges (window, &edges, &n_edges);
   
-  windows = get_windows_on_same_workspace (window, &n_windows);
-
-  i = 0;
-  n_edges = n_windows * 2 + 4; /* 4 = workspace/screen edges */
-  edges = g_new (int, n_edges);
-
-  /* workspace/screen edges */
-  edges[i] = window->screen->active_workspace->workarea.y;
-  ++i;
-  edges[i] =
-    window->screen->active_workspace->workarea.y +
-    window->screen->active_workspace->workarea.height;
-  ++i;
-  edges[i] = 0;
-  ++i;
-  edges[i] = window->screen->height;
-  ++i;
-
-  g_assert (i == 4);
-
-  meta_window_get_outer_rect (window, &rect);
-  
-  /* get window edges */
-  tmp = windows;
-  while (tmp != NULL)
-    {
-      MetaWindow *w = tmp->data;
-      MetaRectangle w_rect;
-
-      meta_window_get_outer_rect (w, &w_rect);
-      
-      if (rects_overlap_horizontally (&rect, &w_rect))
-        {
-          window_get_edges (w, NULL, NULL, &edges[i], &edges[i+1]);
-          i += 2;
-        }
-
-      tmp = tmp->next;
-    }
-  n_edges = i;
-  
-  g_slist_free (windows);
-
-  /* Sort */
-  qsort (edges, n_edges, sizeof (int), intcmp);
-
   /* Find next */
   meta_window_get_position (window, NULL, &retval);
 
@@ -650,6 +680,149 @@ meta_window_find_next_horizontal_edge (MetaWindow *window,
     }
 
   g_free (edges);
+  
+  return retval;
+}
+
+
+int
+meta_window_find_nearest_vertical_edge (MetaWindow *window,
+                                        int         x_pos)
+{
+  int *edges;
+  int i;
+  int n_edges;
+  int *positions;
+  int n_positions;
+  int retval;
+  
+  get_vertical_edges (window, &edges, &n_edges);
+
+  /* Create an array of all snapped positions our window could have */
+  n_positions = n_edges * 2;
+  positions = g_new (int, n_positions);
+  
+  i = 0;
+  while (i < n_edges)
+    {
+      int left_pos, right_pos;
+
+      left_pos = edges[i];
+      if (window->frame)
+        left_pos += window->frame->child_x;
+
+      if (window->frame)
+        {
+          right_pos = edges[i] - window->frame->rect.width;
+          right_pos += window->frame->child_x;
+        }
+      else
+        {
+          right_pos = edges[i] - window->rect.width;
+        }
+
+      positions[i * 2] = left_pos;
+      positions[i * 2 + 1] = right_pos;
+      
+      ++i;
+    }
+
+  g_free (edges);
+
+  /* Sort */
+  qsort (positions, n_positions, sizeof (int), intcmp);
+  
+  /* Find nearest */
+
+  retval = positions[0];
+    
+  i = 1;
+  while (i < n_positions)
+    {
+      int delta;
+      int best_delta;
+
+      delta = ABS (x_pos - positions[i]);
+      best_delta = ABS (x_pos - retval);
+
+      if (delta < best_delta)
+        retval = positions[i];
+      
+      ++i;
+    }
+  
+  g_free (positions);
+  
+  return retval;
+}
+
+int
+meta_window_find_nearest_horizontal_edge (MetaWindow *window,
+                                          int         y_pos)
+{
+  int *edges;
+  int i;
+  int n_edges;
+  int *positions;
+  int n_positions;
+  int retval;
+  
+  get_horizontal_edges (window, &edges, &n_edges);
+
+  /* Create an array of all snapped positions our window could have */
+  n_positions = n_edges * 2;
+  positions = g_new (int, n_positions);
+  
+  i = 0;
+  while (i < n_edges)
+    {
+      int top_pos, bottom_pos;
+
+      top_pos = edges[i];
+      if (window->frame)
+        top_pos += window->frame->child_y;
+
+      if (window->frame)
+        {
+          bottom_pos = edges[i] - window->frame->rect.height;
+          bottom_pos += window->frame->child_y;
+        }
+      else
+        {
+          bottom_pos = edges[i] - window->rect.height;
+        }
+
+      positions[i * 2] = top_pos;
+      positions[i * 2 + 1] = bottom_pos;
+      
+      ++i;
+    }
+
+  g_free (edges);
+
+  /* Sort */
+  qsort (positions, n_positions, sizeof (int), intcmp);
+  
+  /* Find nearest */
+
+  retval = positions[0];
+    
+  i = 1;
+  while (i < n_positions)
+    {
+      int delta;
+      int best_delta;
+
+      delta = ABS (y_pos - positions[i]);
+      best_delta = ABS (y_pos - retval);
+
+      if (delta < best_delta)
+        retval = positions[i];
+      
+      ++i;
+    }
+  
+  g_free (positions);
   
   return retval;
 }

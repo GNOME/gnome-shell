@@ -32,10 +32,27 @@ void meta_window_place (MetaWindow *window,
                         int        *new_x,
                         int        *new_y);
 
+/* Returns the position to move the window to in order
+ * to snap it to the next edge in the given direction,
+ * while moving.
+ */
 int meta_window_find_next_vertical_edge   (MetaWindow *window,
                                            gboolean    right);
 int meta_window_find_next_horizontal_edge (MetaWindow *window,
                                            gboolean    down);
+
+/* Returns the position to move the window to in order
+ * to snap it to the nearest edge, while moving.
+ */
+int meta_window_find_nearest_vertical_edge (MetaWindow *window,
+                                            int         x_pos);
+
+int meta_window_find_nearest_horizontal_edge (MetaWindow *window,
+                                              int         y_pos);
+
+/* FIXME need edge-snap functions for resizing as well, those
+ * behave somewhat differently.
+ */
 
 #endif
 

@@ -1149,10 +1149,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                event->x_root,
                                event->y_root);
     }
-  else if (((control == META_FRAME_CONTROL_TITLE ||
-             control == META_FRAME_CONTROL_NONE) &&
-            event->button == 1) ||
-           event->button == 2)
+  else if ((control == META_FRAME_CONTROL_TITLE ||
+            control == META_FRAME_CONTROL_NONE) &&
+           event->button == 1)
     {
       MetaFrameFlags flags;
       

@@ -3717,18 +3717,28 @@ window_query_root_pointer (MetaWindow *window,
 
 static void
 update_move (MetaWindow  *window,
+             unsigned int mask,
              int          x,
              int          y)
 {
   int dx, dy;
+  int new_x, new_y;
   
   dx = x - window->display->grab_root_x;
   dy = y - window->display->grab_root_y;
 
   window->user_has_moved = TRUE;
-  meta_window_move (window, 
-                    window->display->grab_initial_window_pos.x + dx,
-                    window->display->grab_initial_window_pos.y + dy);
+  new_x = window->display->grab_initial_window_pos.x + dx;
+  new_y = window->display->grab_initial_window_pos.y + dy;
+
+  if (mask & ShiftMask)
+    {
+      /* snap to edges */
+      new_x = meta_window_find_nearest_vertical_edge (window, new_x);
+      new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
+    }
+  
+  meta_window_move (window, new_x, new_y);
 }
 
 static void
@@ -3829,7 +3839,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
       switch (window->display->grab_op)
         {
         case META_GRAB_OP_MOVING:
-          update_move (window, event->xbutton.x_root, event->xbutton.y_root);
+          update_move (window, event->xbutton.state,
+                       event->xbutton.x_root, event->xbutton.y_root);
           break;
           
         case META_GRAB_OP_RESIZING_E:
@@ -3855,7 +3866,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
           {
             int x, y;
             window_query_root_pointer (window, &x, &y);
-            update_move (window, x, y);
+            update_move (window,
+                         event->xbutton.state,
+                         x, y);
           }
           break;
           

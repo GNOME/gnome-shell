@@ -365,20 +365,22 @@ meta_display_process_key_event (MetaDisplay *display,
   KeySym keysym;
   gboolean handled;
 
-  g_return_if_fail (window != NULL);
+  /* window may be NULL */
   
   keysym = XKeycodeToKeysym (display->xdisplay, event->xkey.keycode, 0);
   
   meta_verbose ("Processing key %s event, keysym: %s state: 0x%x window: %s\n",
                 event->type == KeyPress ? "press" : "release",
                 XKeysymToString (keysym), event->xkey.state,
-                window->desc);
+                window ? window->desc : "(no window)");
 
-  if (!window->all_keys_grabbed)
+  if (window == NULL || !window->all_keys_grabbed)
     {
       /* Do the normal keybindings */
-      process_event (screen_bindings, display, window, event, keysym);
-      process_event (window_bindings, display, window, event, keysym);
+      process_event (screen_bindings, display, NULL, event, keysym);
+
+      if (window)
+        process_event (window_bindings, display, window, event, keysym);
       return;
     }
 

@@ -647,8 +647,7 @@ event_callback (XEvent   *event,
     {
     case KeyPress:
     case KeyRelease:
-      if (window)
-        meta_display_process_key_event (display, window, event);
+      meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
       if ((grab_op_is_mouse (display->grab_op) &&
@@ -662,17 +661,22 @@ event_callback (XEvent   *event,
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
         }      
-      else if (window)
+      else if (window && display->grab_op == META_GRAB_OP_NONE)
         {
+          gboolean begin_move = FALSE;
+          
           if (event->xbutton.button == 1)
             {
               meta_window_raise (window);
               meta_window_focus (window, event->xbutton.time);
+
+              /* frames.c handles it if frame was receiver */
+              if (!frame_was_receiver)
+                begin_move = TRUE;
             }
           else if (event->xbutton.button == 2)
             {
-              /* FIXME begin move */
-
+              begin_move = TRUE;
             }
           else if (event->xbutton.button == 3)
             {
@@ -681,6 +685,19 @@ event_callback (XEvent   *event,
                                      event->xbutton.y_root,
                                      event->xbutton.button,
                                      event->xbutton.time);
+            }
+
+          if (begin_move && window->has_move_func)
+            {
+              meta_display_begin_grab_op (display,
+                                          window,
+                                          META_GRAB_OP_MOVING,
+                                          TRUE,
+                                          event->xbutton.button,
+                                          0,
+                                          event->xbutton.time,
+                                          event->xbutton.x_root,
+                                          event->xbutton.y_root);
             }
         }
       break;
@@ -1012,6 +1029,18 @@ focus_mode (int m)
   return mode;
 }
 
+static char*
+key_event_description (Display *xdisplay,
+                       XEvent  *event)
+{
+  KeySym keysym;
+  
+  keysym = XKeycodeToKeysym (xdisplay, event->xkey.keycode, 0);  
+
+  return g_strdup_printf ("Key '%s' state 0x%x", 
+                          XKeysymToString (keysym), event->xkey.state);
+}
+
 static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
@@ -1030,9 +1059,11 @@ meta_spew_event (MetaDisplay *display,
         {
         case KeyPress:
           name = "KeyPress";
+          extra = key_event_description (display->xdisplay, event);
           break;
         case KeyRelease:
           name = "KeyRelease";
+          extra = key_event_description (display->xdisplay, event);
           break;
         case ButtonPress:
           name = "ButtonPress";
@@ -1502,6 +1533,8 @@ meta_display_grab_window_buttons (MetaDisplay *display,
   /* Grab Alt + button1 and Alt + button2 for moving window,
    * and Alt + button3 for popping up window menu.
    */
+  meta_verbose ("Grabbing window buttons for 0x%lx\n", xwindow);
+  
   {
     int i = 1;
     while (i < 4)
