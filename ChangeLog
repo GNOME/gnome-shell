@@ -1,3 +1,9 @@
+2001-10-26  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_grab_window_buttons): fix for 
+	ignoring NumLock on Alt-windowclick (previous NumLock fix 
+	was only for key grabs not button grabs)
+
 2001-10-25  Havoc Pennington  <hp@redhat.com>
 
 	* src/window.c (meta_window_new): set the current workspace hint

@@ -55,5 +55,5 @@ if test -z "$ONLY_WM"; then
 fi
 
 if test -z "$ONLY_SETUP"; then
-  METACITY_DEBUG_BUTTON_GRABS=1 METACITY_DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity $OPTIONS
+  METACITY_DEBUG_BUTTON_GRABS=1 METACITY_DISPLAY=:1 exec libtool --mode=execute $DEBUG ./metacity $OPTIONS
 fi

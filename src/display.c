@@ -88,7 +88,6 @@ meta_display_open (const char *name)
   Display *xdisplay;
   GSList *screens;
   GSList *tmp;
-  int i;
   /* Remember to edit code that assigns each atom to display struct
    * when adding an atom name here.
    */
@@ -1601,6 +1600,56 @@ meta_display_end_grab_op (MetaDisplay *display,
   display->grab_op = META_GRAB_OP_NONE;
 }
 
+#define IGNORED_MODIFIERS (LockMask | Mod2Mask | Mod3Mask | Mod4Mask | Mod5Mask)
+#define INTERESTING_MODIFIERS (~IGNORED_MODIFIERS)
+
+static void
+meta_change_button_grab (MetaDisplay *display,
+                         Window       xwindow,
+                         gboolean     grab,
+                         int          button,
+                         int          modmask)
+{
+  int ignored_mask;
+
+  g_return_if_fail ((modmask & INTERESTING_MODIFIERS) == modmask);
+
+  ignored_mask = 0;
+  while (ignored_mask < IGNORED_MODIFIERS)
+    {
+      int result;
+      
+      if (ignored_mask & INTERESTING_MODIFIERS)
+        {
+          /* Not a combination of IGNORED_MODIFIERS
+           * (it contains some non-ignored modifiers)
+           */
+          ++ignored_mask;
+          continue;
+        }
+  
+      meta_error_trap_push (display);
+      if (grab)
+        XGrabButton (display->xdisplay, button, modmask | ignored_mask,
+                     xwindow, False,
+                     ButtonPressMask | ButtonReleaseMask |    
+                     PointerMotionMask | PointerMotionHintMask,
+                     GrabModeAsync, GrabModeAsync,
+                     False, None);
+      else
+        XUngrabButton (display->xdisplay, button, modmask | ignored_mask,
+                       xwindow);
+        
+      result = meta_error_trap_pop (display);
+
+      if (result != Success)
+        meta_warning ("Failed to grab button %d with mask 0x%x for window 0x%lx error code %d\n",
+                      button, modmask | ignored_mask, xwindow, result);
+      
+      ++ignored_mask;
+    }
+}
+
 void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
@@ -1616,48 +1665,23 @@ meta_display_grab_window_buttons (MetaDisplay *display,
    */
   
   {
+    gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
     int i = 1;
     while (i < 4)
       {
-        int result;
+        meta_change_button_grab (display,
+                                 xwindow,
+                                 TRUE,
+                                 i, Mod1Mask);
+                                 
 
-        /* Note: changing the modifier for this keybinding also
-         * requires a change to the button press handling
-         * in the display event handler
+        /* This is for debugging, since I end up moving the Xnest
+         * otherwise ;-)
          */
-        
-        meta_error_trap_push (display);
-        XGrabButton (display->xdisplay, i, Mod1Mask,
-                     xwindow, False,
-                     ButtonPressMask | ButtonReleaseMask |    
-                     PointerMotionMask | PointerMotionHintMask,
-                     GrabModeAsync, GrabModeAsync,
-                     False, None);
-        result = meta_error_trap_pop (display);
-
-        if (result != Success)
-          meta_warning ("Failed to grab button %d with Mod1Mask for window 0x%lx error code %d\n",
-                        i, xwindow, result);
-        
-
-        if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
-          {
-            /* This is just for debugging, since I end up moving
-             * the Xnest otherwise ;-)
-             */
-            meta_error_trap_push (display);
-            result = XGrabButton (display->xdisplay, i, ControlMask,
-                                  xwindow, False,
-                                  ButtonPressMask | ButtonReleaseMask |    
-                                  PointerMotionMask | PointerMotionHintMask,
-                                  GrabModeAsync, GrabModeAsync,
-                                  False, None);
-            result = meta_error_trap_pop (display);
-            
-            if (result != Success)
-              meta_warning ("Failed to grab button %d with ControlMask for window 0x%lx error code %d\n",
-                            i, xwindow, result);
-          }
+        if (debug)
+          meta_change_button_grab (display, xwindow,
+                                   TRUE,
+                                   i, ControlMask);
         
         ++i;
       }
@@ -1668,30 +1692,15 @@ void
 meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                      Window       xwindow)
 {
-  /* FIXME If we ignored errors here instead of spewing, we could
-   * put one big error trap around the loop and avoid a bunch of
-   * XSync()
-   */
+  gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
   int i = 1;
   while (i < 4)
     {
-      int result;
-      
-      meta_error_trap_push (display);
-      XUngrabButton (display->xdisplay, i, Mod1Mask, xwindow);
-      result = meta_error_trap_pop (display);
-
-      if (result != Success)
-        meta_warning ("Failed to ungrab button %d with Mod1Mask for window 0x%lx error code %d\n",
-                      i, xwindow, result);
-
-      meta_error_trap_push (display);
-      XUngrabButton (display->xdisplay, i, ControlMask, xwindow);
-      result = meta_error_trap_pop (display);
-      
-      if (result != Success)
-        meta_warning ("Failed to ungrab button %d with ControlMask for window 0x%lx error code %d\n",
-                      i, xwindow, result);
+      meta_change_button_grab (display, xwindow,
+                               FALSE, i, Mod1Mask);
+      if (debug)
+        meta_change_button_grab (display, xwindow,
+                                 FALSE, i, ControlMask);
       
       ++i;
     }
