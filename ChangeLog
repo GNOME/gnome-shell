@@ -1,3 +1,22 @@
+2002-07-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (meta_display_open): put _NET_DESKTOP_NAMES in the 
+	array of atom names, so desktop names might work and we don't read
+	uninitialized memory.
+
+	* src/main.c (main): add VERSION/timestamp verbose message.
+
+	* src/keybindings.c: implement cycle_windows cycle_panels
+
+	* src/metacity.schemas.in: add the cycle_windows cycle_panels
+	keybindings
+
+	* src/prefs.h (META_KEYBINDING_FOCUS_PREVIOUS): replace
+	FOCUS_PREVIOUS key binding with CYCLE_WINDOWS and CYCLE_PANELS
+	(not good names really, but I don't have ideas).
+
+	* src/common.h: add a grab op for alt+esc window cycling
+
 2002-07-05  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Makefile.am (THEMES): Take Gorilla out until it gets

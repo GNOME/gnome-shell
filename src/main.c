@@ -39,6 +39,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>
+#include <time.h>
 
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 static GMainLoop *meta_main_loop = NULL;
@@ -98,6 +99,15 @@ main (int argc, char **argv)
   if (g_getenv ("METACITY_DEBUG"))
     meta_set_debugging (TRUE);
   meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
+
+  {
+    char buf[256];
+    GDate d;
+    g_date_clear (&d, 1);
+    g_date_set_time (&d, time (NULL));
+    g_date_strftime (buf, sizeof (buf), "%x", &d);
+    meta_verbose ("Metacity version %s running on %s\n", VERSION, buf);
+  }
   
   {
     const char *charset;
@@ -105,7 +115,7 @@ main (int argc, char **argv)
     meta_verbose ("Running in locale \"%s\" with encoding \"%s\"\n",
                   setlocale (LC_ALL, NULL), charset);
   }
-
+  
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
@@ -269,7 +279,6 @@ main (int argc, char **argv)
   g_log_set_handler ("GThread",
                      G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                      log_handler, NULL);
-
 #endif
 
   if (g_getenv ("METACITY_G_FATAL_WARNINGS") != NULL)

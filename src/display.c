@@ -226,7 +226,8 @@ meta_display_open (const char *name)
     "MULTIPLE",
     "TIMESTAMP",
     "VERSION",
-    "ATOM_PAIR"
+    "ATOM_PAIR",
+    "_NET_DESKTOP_NAMES"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -783,6 +784,8 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+    case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
+    case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
       return TRUE;
       break;
@@ -2297,11 +2300,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
   switch (op)
     {
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+    case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
       meta_screen_ensure_tab_popup (screen,
                                     META_TAB_LIST_NORMAL);
       break;
 
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+    case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
       meta_screen_ensure_tab_popup (screen,
                                     META_TAB_LIST_DOCKS);
       break;
@@ -2324,11 +2329,15 @@ void
 meta_display_end_grab_op (MetaDisplay *display,
                           Time         timestamp)
 {
+  meta_verbose ("Ending grab op %d at time %ld\n", display->grab_op, timestamp);
+  
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
 
   if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
       display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK ||
       display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING)
     {
       meta_ui_tab_popup_free (display->grab_screen->tab_popup);

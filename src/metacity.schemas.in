@@ -729,7 +729,8 @@ you set
       <locale name="C">
          <short>Move focus between windows</short>
          <long>
-          The keybinding used to move focus between windows.
+          The keybinding used to move focus between windows, using 
+          a popup window.
           (Traditionally &lt;Alt&gt;Tab)
 
           The format looks like "&lt;Control&gt;a" or
@@ -754,7 +755,7 @@ you set
          <short>Move focus between panels and the desktop</short>
          <long>
           The keybinding used to move focus between panels and 
-          the desktop.
+          the desktop, using a popup window.
 
           The format looks like "&lt;Control&gt;a" or
           "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -769,16 +770,17 @@ you set
     </schema>
 
     <schema>
-      <key>/schemas/apps/metacity/global_keybindings/focus_previous_window</key>
-      <applyto>/apps/metacity/global_keybindings/focus_previous_window</applyto>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_windows</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_windows</applyto>
       <owner>metacity</owner>
       <type>string</type>
       <default>&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus to the previously-focused window</short>
+         <short>Move focus between windows</short>
          <long>
-          The keybinding used to move focus back to the window which last 
-          had the focus.
+          The keybinding used to move focus between windows without 
+          a popup window.
+          (Traditionally &lt;Alt&gt;Escape)
 
           The format looks like "&lt;Control&gt;a" or
           "&lt;Shift&gt;&lt;Alt&gt;F1.
@@ -791,7 +793,30 @@ you set
          </long>
       </locale>
     </schema>
+        
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_panels</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_panels</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Control&gt;&lt;Alt&gt;Escape</default>
+      <locale name="C">
+         <short>Move focus between panels and the desktop</short>
+         <long>
+          The keybinding used to move focus between panels and 
+          the desktop, without a popup window.
 
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
 
     <schema>
       <key>/schemas/apps/metacity/global_keybindings/show_desktop</key>

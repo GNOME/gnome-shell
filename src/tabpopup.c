@@ -299,9 +299,12 @@ meta_ui_tab_popup_set_showing (MetaTabPopup *popup,
     }
   else
     {
-      meta_verbose ("Hiding tab popup window\n");
-      gtk_widget_hide (popup->window);
-      meta_core_increment_event_serial (gdk_display);
+      if (GTK_WIDGET_VISIBLE (popup->window))
+        {
+          meta_verbose ("Hiding tab popup window\n");
+          gtk_widget_hide (popup->window);
+          meta_core_increment_event_serial (gdk_display);
+        }
     }
 }
 

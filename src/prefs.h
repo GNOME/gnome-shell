@@ -82,7 +82,8 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 #define META_KEYBINDING_WORKSPACE_DOWN       "switch_to_workspace_down"
 #define META_KEYBINDING_SWITCH_WINDOWS       "switch_windows"
 #define META_KEYBINDING_SWITCH_PANELS        "switch_panels"
-#define META_KEYBINDING_FOCUS_PREVIOUS       "focus_previous_window"
+#define META_KEYBINDING_CYCLE_WINDOWS        "cycle_windows"
+#define META_KEYBINDING_CYCLE_PANELS         "cycle_panels"
 #define META_KEYBINDING_SHOW_DESKTOP         "show_desktop"
 
 /* Window bindings */
@@ -134,7 +135,8 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_WORKSPACE_DOWN,
   META_KEYBINDING_ACTION_SWITCH_WINDOWS,
   META_KEYBINDING_ACTION_SWITCH_PANELS,
-  META_KEYBINDING_ACTION_FOCUS_PREVIOUS,
+  META_KEYBINDING_ACTION_CYCLE_WINDOWS,
+  META_KEYBINDING_ACTION_CYCLE_PANELS,
   META_KEYBINDING_ACTION_SHOW_DESKTOP
 } MetaKeyBindingAction;
 

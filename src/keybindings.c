@@ -50,7 +50,7 @@ static void handle_tab_forward        (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
-static void handle_focus_previous     (MetaDisplay    *display,
+static void handle_cycle_forward      (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
@@ -184,8 +184,10 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
   { META_KEYBINDING_SWITCH_PANELS, handle_tab_forward,
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
-  { META_KEYBINDING_FOCUS_PREVIOUS, handle_focus_previous,
-    NULL },
+  { META_KEYBINDING_CYCLE_WINDOWS, handle_cycle_forward,
+    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
+  { META_KEYBINDING_CYCLE_PANELS, handle_cycle_forward,
+    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
   { META_KEYBINDING_SHOW_DESKTOP, handle_toggle_desktop,
     NULL },
   { NULL, NULL, NULL }
@@ -1188,11 +1190,14 @@ meta_display_process_key_event (MetaDisplay *display,
 
         case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
         case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+        case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
+        case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard tabbing\n");
+                      "Processing event for keyboard tabbing/cycling\n");
           g_assert (window != NULL);
           handled = process_tab_grab (display, window, event, keysym);
           break;
+          
         case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard workspace switching\n");
@@ -1701,7 +1706,8 @@ process_tab_grab (MetaDisplay *display,
 {
   MetaScreen *screen;
   MetaKeyBindingAction action;
-
+  gboolean popup_not_showing;
+  
   window = NULL; /* be sure we don't use this, it's irrelevant */
 
   screen = display->grab_window->screen;
@@ -1754,18 +1760,45 @@ process_tab_grab (MetaDisplay *display,
   action = meta_prefs_get_keybinding_action (keysym,
                                              display->grab_mask);
 
+  /* FIXME weird side effect here is that you can use the Escape
+   * key while tabbing, or the tab key while escaping
+   */
+  
+  popup_not_showing = FALSE;
   switch (action)
     {
+    case META_KEYBINDING_ACTION_CYCLE_PANELS:
+    case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
+      popup_not_showing = TRUE;
+      /* FALL THRU */
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Key pressed, moving tab focus in popup\n");
+
       if (event->xkey.state & ShiftMask)
         meta_ui_tab_popup_backward (screen->tab_popup);
       else
         meta_ui_tab_popup_forward (screen->tab_popup);
 
-      /* continue grab */
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Tab key pressed, moving tab focus in popup\n");
+      if (popup_not_showing)
+        {
+          /* We can't actually change window focus, due to the grab.
+           * but raise the window.
+           */
+          Window target_xwindow;
+          MetaWindow *target_window;
+          
+          target_xwindow =
+            (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
+          target_window =
+            meta_display_lookup_x_window (display, target_xwindow);
+          
+          if (target_window)
+            {
+              meta_window_raise (target_window);
+            }
+        }
       return TRUE;
       break;
 
@@ -1775,7 +1808,7 @@ process_tab_grab (MetaDisplay *display,
 
   /* end grab */
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ending tabbing, uninteresting key pressed\n");
+              "Ending tabbing/cycling, uninteresting key pressed\n");
   return FALSE;
 }
 
@@ -1997,7 +2030,7 @@ handle_activate_menu (MetaDisplay    *display,
 }
 
 static MetaGrabOp
-op_from_tab_type (MetaTabList type)
+tab_op_from_tab_type (MetaTabList type)
 {
   switch (type)
     {
@@ -2012,11 +2045,28 @@ op_from_tab_type (MetaTabList type)
   return 0;
 }
 
+static MetaGrabOp
+cycle_op_from_tab_type (MetaTabList type)
+{
+  switch (type)
+    {
+    case META_TAB_LIST_NORMAL:
+      return META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL;
+    case META_TAB_LIST_DOCKS:
+      return META_GRAB_OP_KEYBOARD_ESCAPING_DOCK;
+    }
+
+  g_assert_not_reached ();
+  
+  return 0;
+}
+
 static void
-handle_tab_forward (MetaDisplay    *display,
-                    MetaWindow     *event_window,
-                    XEvent         *event,
-                    MetaKeyBinding *binding)
+do_choose_window (MetaDisplay    *display,
+                  MetaWindow     *event_window,
+                  XEvent         *event,
+                  MetaKeyBinding *binding,
+                  gboolean        show_popup)
 {
   MetaWindow *window;
   MetaTabList type;
@@ -2025,7 +2075,7 @@ handle_tab_forward (MetaDisplay    *display,
   type = GPOINTER_TO_INT (binding->handler->data);
   
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Tab type = %d\n", type);
+              "Tab list = %d show_popup = %d\n", type, show_popup);
 
   /* backward if shift is down, this isn't configurable */
   backward = (event->xkey.state & ShiftMask) != 0;
@@ -2066,13 +2116,15 @@ handle_tab_forward (MetaDisplay    *display,
   if (window)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Starting tab between windows, showing popup\n");
+                  "Starting tab/cycle between windows\n");
       
       if (meta_display_begin_grab_op (window->display,
                                       window->screen,
                                       display->focus_window ?
                                       display->focus_window : window,
-                                      op_from_tab_type (type),
+                                      show_popup ?
+                                      tab_op_from_tab_type (type) :
+                                      cycle_op_from_tab_type (type),
                                       FALSE,
                                       0,
                                       event->xkey.state & ~(display->ignored_modifier_mask),
@@ -2081,84 +2133,32 @@ handle_tab_forward (MetaDisplay    *display,
         {
           meta_ui_tab_popup_select (window->screen->tab_popup,
                                     (MetaTabEntryKey) window->xwindow);
-          /* only after selecting proper window */
-          meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                         TRUE);
+
+          if (show_popup)
+            meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                           TRUE);
+          else
+            meta_window_raise (window);
         }
     }
 }
 
-static MetaWindow *
-get_previous_focus_window (MetaDisplay *display,
-                           MetaScreen  *screen)
+static void
+handle_tab_forward (MetaDisplay    *display,
+                    MetaWindow     *event_window,
+                    XEvent         *event,
+                    MetaKeyBinding *binding)
 {
-  MetaWindow *window = NULL;
-
-  /* get previously-focused window, front of list is currently
-   * focused window
-   */
-  if (display->mru_list &&
-      display->mru_list->next)
-    {
-      window = display->mru_list->next->data;
-    }
-
-  if (window &&
-      !meta_window_visible_on_workspace (window,
-                                         screen->active_workspace))
-    {
-      window = NULL;
-    }
-  
-  if (window == NULL)
-    {
-      /* Pick first window in tab order */      
-      window = meta_display_get_tab_next (screen->display,
-                                          META_TAB_LIST_NORMAL,
-                                          screen,					  
-                                          screen->active_workspace,
-                                          NULL,
-                                          TRUE);
-    }
-
-  if (window &&
-      !meta_window_visible_on_workspace (window,
-                                         screen->active_workspace))
-    {
-      window = NULL;
-    }
-
-  return window;
+  do_choose_window (display, event_window, event, binding, TRUE);
 }
 
 static void
-handle_focus_previous (MetaDisplay    *display,
-                       MetaWindow     *event_window,
-                       XEvent         *event,
-                       MetaKeyBinding *binding)
+handle_cycle_forward (MetaDisplay    *display,
+                      MetaWindow     *event_window,
+                      XEvent         *event,
+                      MetaKeyBinding *binding)
 {
-  MetaWindow *window;
-  MetaScreen *screen;      
-  
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Focus previous window\n");
-
-  screen = meta_display_screen_for_root (display,
-                                         event->xkey.root);
-
-  if (screen == NULL)
-    return;
-
-  window = get_previous_focus_window (display, screen);
-
-  if (window)
-    {
-      meta_window_raise (window);
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing %s due to 'focus previous' keybinding\n",
-                  window->desc);
-      meta_window_focus (window, event->xkey.time);
-    }
+  do_choose_window (display, event_window, event, binding, FALSE); 
 }
 
 static void
@@ -2405,7 +2405,7 @@ handle_workspace_switch  (MetaDisplay    *display,
       
       meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
       
-      /* only after selecting proper window */
+      /* only after selecting proper space */
       meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
     }
 }

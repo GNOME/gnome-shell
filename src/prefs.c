@@ -1,7 +1,7 @@
 /* Metacity preferences */
 
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2001 Havoc Pennington, Copyright (C) 2002 Red Hat Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -819,7 +819,8 @@ static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_WORKSPACE_DOWN, 0, 0 },
   { META_KEYBINDING_SWITCH_WINDOWS, 0, 0 },
   { META_KEYBINDING_SWITCH_PANELS, 0, 0 },
-  { META_KEYBINDING_FOCUS_PREVIOUS, 0, 0 },
+  { META_KEYBINDING_CYCLE_WINDOWS, 0, 0 },
+  { META_KEYBINDING_CYCLE_PANELS, 0, 0 },
   { META_KEYBINDING_SHOW_DESKTOP, 0, 0 },
   { NULL, 0, 0 }
 };
