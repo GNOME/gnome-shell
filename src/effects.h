@@ -25,7 +25,7 @@
 #include "util.h"
 #include "screen.h"
 
-#define META_MINIMIZE_ANIMATION_LENGTH 0.35
+#define META_MINIMIZE_ANIMATION_LENGTH 0.25
 #define META_SHADE_ANIMATION_LENGTH 0.2
 
 typedef enum
