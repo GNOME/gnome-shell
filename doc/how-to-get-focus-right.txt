@@ -79,9 +79,26 @@ to alert the user that there is a window to work with:
 Additionally, the user may decide to use the keyboard instead of the mouse
 to navigate between windows (referred to as "keynav").  This poses no
 problems for click-to-focus (because the same invariant can be
-maintained), but for sloppy and mouse focus it means that EnterNotify
-and LeaveNotify events should be ignored (they can be generated
-without using the mouse, for example, by grabs).
+maintained), but for sloppy and mouse focus it requires extra work to
+attempt to handle the INHERENTLY CONFLICTING CONSTRAINTS.  Metacity does
+this by having a mouse_mode boolean used to determine which of the two
+sets of invariants holds.  This mode is set according to which method was
+most recently used to choose a focus window:
+  1) When receiving EnterNotify/LeaveNotify events from mouse movement, set
+     mouse_mode to TRUE.
+  2) When using keynav to choose a focus window (e.g. alt-tab, alt-esc,
+     move-window-to-workspace keybindings), set mouse_mode to FALSE.
+  3) When handling events that don't choose a focus window but rather need
+     a focus_window chosen for them (e.g. switch-to-workspace keybindings),
+     don't change the mouse_mode and just use the current value.
+Note that grabs present a special case since they can generate EnterNotify
+and LeaveNotify events without using the mouse, thus these events should be
+ignored when the crossing mode is NotifyGrab or NotifyUngrab.  THIS
+MOUSENAV/KEYNAV MODERATION METHOD IS NOT PERFECT--there are corner cases
+when trying to mix-and-match between mousenav and keynav simultaneously
+that cause problems; but it appears to be the most reasonable tradeoff and
+works well in most cases, especially if the user sticks to just mousenav
+for a long time or just keynav for a long time.
 
 Finally, windows of type WM_DOCK or WM_DESKTOP (e.g. the desktop and
 the panel) present a special case, at least partially due to the lack
@@ -103,7 +120,8 @@ To read more about the bugs that inspired these choices:
     Also, the EWMH spec, especially the parts relating to _NET_WM_USER_TIME
   - Modal vs. non-modal dialogs that get denied focus when mapped
     http://bugzilla.gnome.org/show_bug.cgi?id=151996
-  - Ignoring EnterNotify and LeaveNotify events during keynav
+  - Mousenav vs. Keynav in mouse and sloppy focus modes
+    http://bugzilla.gnome.org/show_bug.cgi?id=167545
     http://bugzilla.gnome.org/show_bug.cgi?id=101190
   - Not focusing panels
     http://bugzilla.gnome.org/show_bug.cgi?id=160470
@@ -121,6 +139,7 @@ the ones I'm the most familiar with):
   bug  95747  should ignore EnterNotify events with NotifyInferior detail set
   bug  97635  sticky windows always keep focus when switching workspaces
   bug 102665  a window unminimized from the tasklist should be focused
+  bug 107347  focus windows that manually position themselves too
   bug 108643  focus in MRU order instead of stack order
   bug 110970  moving a window to another workspace loses focus
   bug 112031  closing a dialog can result in a strange focus window
@@ -128,6 +147,7 @@ the ones I'm the most familiar with):
   bug 120100  panel shouldn't be focused after workspace applet usage
   bug 123803  need final EnterNotify after workspace switch (see also 124798)
   bug 124981  focus clicked window in pager only if on current workspace
+  bug 125492  catch the xserver unfocusing everything and fix its braindeadedness
   bug 128200  focus correct window on libwnck window minimize (see 107681 too)
   bug 131582  fix race condition on window minimize/close
   bug 133120  wrong window focused when changing workspaces
@@ -148,6 +168,18 @@ the ones I'm the most familiar with):
   bug 151990  prevent focus inconsistencies by only providing one focus method
   bug 151996  modal dialogs denied focus should not be lowered
   bug 152000  fix race on window close followed by rapid mouse movement
+  bug 152004  ways to handle new window versus mouse invariants
+  bug 153220  catch the root window getting focus and reset to default window
+  bug 157360  focus parents of dismissed transient windows in preference to
+              the window that most recently had focus
+  bug 159257  focus the desktop when showing it
+  bug 160470  don't focus panels on click
+  bug 163450  correct highlighting in workspace switcher popup
+  bug 164716  refuse to focus a window with a modal transient, and focus
+              the transient instead
+  bug 166524  avoid new windows being obscured by the focus window
+  bug 167545  mousenav vs. keynav in mouse and sloppy focus modes
+  <a massive heap of bugs relating to focus stealing prevention...>
 
 
 Addendum on sloppy and mouse focus
@@ -156,7 +188,7 @@ Addendum on sloppy and mouse focus
 
   1) Keynav doesn't maintain the same invariants as mouse navigation
      for these focus modes; switching back and forth between
-     navigation methods, therefore, may appear to have
+     navigation methods, therefore, may have or appear to have
      inconsistencies.  Examples:
      a) If the user uses Alt-Tab to change the window with focus, then
         starts to move the mouse, at that moment the window where the
@@ -182,6 +214,15 @@ Addendum on sloppy and mouse focus
         containing the menu) but is one of those hard-to-get-right
         keynav and mouse focus mixture cases.  (See bug 101190 for
         more details)
+     d) Similar to (c), moving the mouse off the menu doesn't immediately
+        focus the window that the mouse goes over, due to an application
+        grab (we couldn't change this and wouldn't want to, but
+        technically it does break the invariant).
+     e) If mouse_mode is off and the user does something to cause focus to
+        change (e.g. switch workspaces, close or minimize a window, etc.)
+        and simultaneously tries to move the mouse, the choice of which
+        window to focus is inherently race-y.  (You probably can't satisfy
+        both keynav and mousenav invariants simultaneously...)
   2) The sloppy/mouse invariants are often not strictly maintained;
      for example, we provide an exception to the invariant for newly
      mapped windows.  (Most find that not allowing this exception is

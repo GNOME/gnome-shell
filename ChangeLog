@@ -1,3 +1,33 @@
+2005-02-21  Elijah Newren  <newren@gmail.com>
+
+	Handle keynav vs. mousenav in mouse and sloppy focus modes.  Fixes
+	#167545.
+
+	* doc/how-to-get-focus-right.txt: Update due to this new method
+	for handling keynav vs. mousenav, plus various other updates that
+	I previously forgot.
+
+	* src/display.h: (struct _MetaDisplay): add a mouse_mode boolean
+
+	* src/display.c: (meta_display_open): initialize mouse_mode to
+	true, (event_callback): have EnterNotify and LeaveNotify events
+	set mouse_mode to true when focusing a window
+
+	* src/keybindings.c: (process_tab_grab): set mouse_mode to false
+	when using alt-tab/alt-esc, (do_choose_window): likewise,
+	(do_handle_move_to_workspace): set mouse_mode to false on
+	move-window-to-workspace-<n> keybindings
+
+	* src/window.c (idle_calc_showing): if we're in keynav mode while
+	using sloppy or mouse focus, use metacity_sentinel to avoid
+	EnterNotify events being generated from events other than mouse
+	movement.
+
+	* src/workspace.c (meta_workspace_activate_with_focus): add a
+	FIXME in a potentially duplicate section of code,
+	(meta_workspace_focus_default_window): use the same focus choice
+	as click-to-focus if in keynav mode.
+
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
 	* src/display.c: (event_callback): Handle _NET_CURRENT_DESKTOP

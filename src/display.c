@@ -343,6 +343,8 @@ meta_display_open (const char *name)
   display->expected_focus_window = NULL;
   display->grab_old_window_stacking = NULL;
 
+  display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
+
 #ifdef HAVE_XSYNC
   display->grab_sync_request_alarm = None;
 #endif
@@ -1785,10 +1787,15 @@ event_callback (XEvent   *event,
                   window->type != META_WINDOW_DESKTOP)
                 {
                   meta_topic (META_DEBUG_FOCUS,
-                              "Focusing %s due to enter notify with serial %lu\n",
-                              window->desc, event->xany.serial);
+                              "Focusing %s due to enter notify with serial %lu "
+                              "at time %lu, and setting display->mouse_mode to "
+                              "TRUE.\n",
+                              window->desc, 
+                              event->xany.serial,
+                              event->xcrossing.time);
 
-		  meta_window_focus (window, event->xcrossing.time);
+                  display->mouse_mode = TRUE;
+                  meta_window_focus (window, event->xcrossing.time);
 
 		  /* stop ignoring stuff */
 		  reset_ignores (display);
@@ -1822,16 +1829,28 @@ event_callback (XEvent   *event,
           switch (meta_prefs_get_focus_mode ())
             {
             case META_FOCUS_MODE_MOUSE:
-              if (window == display->expected_focus_window &&
-                  (window->frame == NULL || frame_was_receiver) &&
+              if ((window->frame == NULL || frame_was_receiver) &&
 		  event->xcrossing.mode != NotifyGrab && 
 		  event->xcrossing.mode != NotifyUngrab &&
 		  event->xcrossing.detail != NotifyInferior)
                 {
-                  meta_verbose ("Unsetting focus from %s due to LeaveNotify\n",
-                                window->desc);
-                  meta_display_focus_the_no_focus_window (display, 
-                                                          event->xcrossing.time);
+                  if (window == display->expected_focus_window)
+                    {
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Unsetting focus from %s due to LeaveNotify\n",
+                                  window->desc);
+                      meta_display_focus_the_no_focus_window (display, 
+                                                              event->xcrossing.time);
+                    }
+                  if (window->type != META_WINDOW_DOCK &&
+                      window->type != META_WINDOW_DESKTOP)
+                    {
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Setting display->mouse_mode to TRUE due to "
+                                  "LeaveNotify at time %lu.\n",
+                                  event->xcrossing.time);
+                      display->mouse_mode = TRUE;
+                    }
                 }
               break;
             case META_FOCUS_MODE_SLOPPY:

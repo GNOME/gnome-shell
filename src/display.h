@@ -204,6 +204,11 @@ struct _MetaDisplay
   /* last user interaction time in any app */
   Time last_user_time;
 
+  /* whether we're using mousenav (only relevant for sloppy&mouse focus modes;
+   * !mouse_mode means "keynav mode")
+   */
+  guint mouse_mode : 1;
+
   guint static_gravity_works : 1;
   
   /*< private-ish >*/

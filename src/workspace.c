@@ -317,6 +317,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
 
+  /* FIXME: Why do we need this?!?  Isn't it handled in the lines above? */
   if (move_window)
       /* Removes window from other spaces */
       meta_window_change_workspace (move_window, workspace);
@@ -800,7 +801,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
     }
 
 
-  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
+      !workspace->screen->display->mouse_mode)
     focus_ancestor_or_mru_window (workspace, not_this_one, timestamp);
   else
     {

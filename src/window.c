@@ -1471,6 +1471,25 @@ idle_calc_showing (gpointer data)
       tmp = tmp->next;
     }
 
+  if (meta_prefs_get_focus_mode () != META_FOCUS_MODE_CLICK)
+    {
+      /* When display->mouse_mode is false, we want to ignore
+       * EnterNotify events unless they come from mouse motion.  To do
+       * that, we set a sentinel property on the root window if we're
+       * not in mouse_mode.
+       */
+      tmp = should_show;
+      while (tmp != NULL)
+        {
+          MetaWindow *window = tmp->data;
+          
+          if (!window->display->mouse_mode)
+            meta_display_increment_focus_sentinel (window->display);
+
+          tmp = tmp->next;
+        }
+    }
+
   g_slist_free (copy);
 
   g_slist_free (unplaced);

@@ -2378,8 +2378,10 @@ process_tab_grab (MetaDisplay *display,
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target window\n");
 
-          meta_topic (META_DEBUG_FOCUS, "Activating %s due to tab popup selection\n",
+          meta_topic (META_DEBUG_FOCUS, "Activating %s due to tab popup "
+                      "selection and turning mouse_mode off\n",
                       target_window->desc);
+          display->mouse_mode = FALSE;
           meta_window_activate (target_window, event->xkey.time);
 
           meta_topic (META_DEBUG_KEYBINDINGS,
@@ -2993,8 +2995,11 @@ do_choose_window (MetaDisplay    *display,
           /* If no modifiers, we can't do the "hold down modifier to keep
            * moving" thing, so we just instaswitch by one window.
            */
-          meta_topic (META_DEBUG_FOCUS, "Activating %s due to switch/cycle windows with no modifiers\n",
+          meta_topic (META_DEBUG_FOCUS,
+                      "Activating %s and turning off mouse_mode due to "
+                      "switch/cycle windows with no modifiers\n",
                       initial_selection->desc);
+          display->mouse_mode = FALSE;
           meta_window_activate (initial_selection, event->xkey.time);
         }
       else if (meta_display_begin_grab_op (display,
@@ -3017,9 +3022,13 @@ do_choose_window (MetaDisplay    *display,
                * before we establish the grab. must end grab
                * prior to trying to focus a window.
                */
-              meta_topic (META_DEBUG_FOCUS, "Ending grab and activating %s due to switch/cycle windows where modifier was released prior to grab\n",
+              meta_topic (META_DEBUG_FOCUS, 
+                          "Ending grab, activating %s, and turning off "
+                          "mouse_mode due to switch/cycle windows where "
+                          "modifier was released prior to grab\n",
                           initial_selection->desc);
               meta_display_end_grab_op (display, event->xkey.time);
+              display->mouse_mode = FALSE;
               meta_window_activate (initial_selection, event->xkey.time);
             }
           else
@@ -3275,7 +3284,15 @@ do_handle_move_to_workspace  (MetaDisplay    *display,
       /* Activate second, so the window is never unmapped */
       meta_window_change_workspace (window, workspace);
       if (flip)
-        meta_workspace_activate_with_focus (workspace, window, event->xkey.time);
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Resetting mouse_mode to FALSE due to "
+                      "do_handle_move_to_workspace() call with flip set.\n");
+          workspace->screen->display->mouse_mode = FALSE;
+          meta_workspace_activate_with_focus (workspace,
+                                              window,
+                                              event->xkey.time);
+        }
     }
   else
     {
