@@ -1,3 +1,15 @@
+2002-01-04  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_free): set event mask on root window
+	to 0 so other window managers (such as ourselves restarting) can
+	start up; addresses race condition on restart where the old WM
+	still had RedirectMask when the new WM was trying to start up.
+
+	* src/display.c (meta_display_close): free each screen
+	
+	* src/window.c (meta_window_show): always focus new windows in
+	click-to-focus mode
+
 2002-01-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c: use meta_XFree not XFree

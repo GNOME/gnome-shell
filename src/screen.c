@@ -242,7 +242,7 @@ meta_screen_new (MetaDisplay *display,
 
 void
 meta_screen_free (MetaScreen *screen)
-{
+{  
   meta_prefs_remove_listener (prefs_changed_callback, screen);
   
   meta_screen_ungrab_keys (screen);
@@ -250,6 +250,12 @@ meta_screen_free (MetaScreen *screen)
   meta_ui_free (screen->ui);
 
   meta_stack_free (screen->stack);
+
+  meta_error_trap_push (screen->display);
+  XSelectInput (screen->display->xdisplay, screen->xroot, 0);
+  if (meta_error_trap_pop (screen->display) != Success)
+    meta_warning (_("Could not release screen %d on display '%s'\n"),
+                  screen->number, screen->display->name);
   
   g_free (screen->screen_name);
   g_free (screen);

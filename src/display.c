@@ -433,6 +433,18 @@ meta_display_close (MetaDisplay *display)
                              event_callback,
                              display);
 #endif
+
+  /* Free all screens */
+  tmp = display->screens;
+  while (tmp != NULL)
+    {
+      MetaScreen *screen = tmp->data;
+      meta_screen_free (screen);
+      tmp = tmp->next;
+    }
+
+  g_slist_free (display->screens);
+  display->screens = NULL;
   
   /* Must be after all calls to meta_window_free() since they
    * unregister windows

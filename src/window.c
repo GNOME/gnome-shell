@@ -1108,6 +1108,11 @@ meta_window_show (MetaWindow *window)
                                  meta_display_get_current_time (window->display));
             }
         }
+
+      /* Always focus new windows in click-to-focus */
+      if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+        meta_window_focus (window,
+                           meta_display_get_current_time (window->display));
     }
 }
 
