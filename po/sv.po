@@ -1,14 +1,14 @@
 # Swedish messages for metacity.
 # Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001, 2002.
+# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003.
 #
 # $Id$
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-03 12:54-0400\n"
-"PO-Revision-Date: 2003-02-12 00:23+0100\n"
+"POT-Creation-Date: 2003-05-08 01:02+0200\n"
+"PO-Revision-Date: 2003-05-08 01:03+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -123,13 +123,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=FILNAMN] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAMN] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -668,11 +667,11 @@ msgstr "Kör ett angivet kommando"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Visa panelmenyn"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Visa panelens kördialogfönster"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -774,11 +773,11 @@ msgstr "Systemsignalen är ljudlig"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Ta en skärmdump"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Ta en skärmdump av ett fönster"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -809,25 +808,22 @@ msgstr ""
 "tangentbindningen för run_command_N kommer att köra command_N."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Nycklarna /apps/metacity/global_keybindings/run_command_N anger "
-"tangentbindningar som motsvarar dessa kommandon. Att trycka "
-"tangentbindningen för run_command_N kommer att köra command_N."
+"Nyckeln /apps/metacity/global_keybindings/run_command_screenshot anger en "
+"tangentbindning som gör att det kommando som anges av denna inställning körs."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Nycklarna /apps/metacity/global_keybindings/run_command_N anger "
-"tangentbindningar som motsvarar dessa kommandon. Att trycka "
-"tangentbindningen för run_command_N kommer att köra command_N."
+"Nyckeln /apps/metacity/global_keybindings/run_command_window_screenshot "
+"anger en tangentbindning som gör att det kommando som anges av denna "
+"inställning körs."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1661,7 +1657,6 @@ msgstr ""
 "för denna åtgärd."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1670,15 +1665,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Tangentbindningen som används för att stänga ett fönster. Formatet ser ut "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
-"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
-"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
-"specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
-"för denna åtgärd."
+"Tangentbindningen som visar panelens \"Kör program\"-dialogruta. Formatet "
+"ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken "
+"är ganska tillåtande och tillåter gemener och versaler och även "
+"förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+"alternativet till specialsträngen \"disabled\" kommer det inte att finnas en "
+"tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1687,15 +1681,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Tangentbindningen som används för att stänga ett fönster. Formatet ser ut "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
-"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
-"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
-"specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
-"för denna åtgärd."
+"Tangentbindningen som startar panelens skärmdumpsverktyg för att ta en "
+"skärmdump av ett fönster. Formatet ser ut som \"&lt;Control&gt;a\" eller "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och tillåter "
+"gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och \"&lt;"
+"Ctrl&gt;\". Om du ställer in alternativet till specialsträngen \"disabled\" "
+"kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1704,15 +1697,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Tangentbindningen som växlar till arbetsyta 9. Formatet ser ut som \"&lt;"
-"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
-"tillåtande och tillåter gemener och versaler och även förkortningar som "
-"\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
+"Tangentbindningen som startar panelens skärmdumpsverktyg. Formatet ser ut "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
+"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
+"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
 "specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
 "för denna åtgärd."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1720,10 +1712,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Tangentbindningen som används för att aktivera fönstermenyn. Formatet ser ut "
-"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är "
-"ganska tillåtande och tillåter gemener och versaler och även förkortningar "
-"som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
+"Tangentbindningen som visar panelens huvudmeny. Formatet ser ut som \"&lt;"
+"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska "
+"tillåtande och tillåter gemener och versaler och även förkortningar som "
+"\"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till "
 "specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning "
 "för denna åtgärd."
 
@@ -1733,7 +1725,7 @@ msgstr "Namnet på en arbetsyta."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Skärmdumpskommandot"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1766,7 +1758,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Fönsterskärmdumpskommandot"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
