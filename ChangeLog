@@ -1,5 +1,10 @@
 2002-07-13  Havoc Pennington  <hp@pobox.com>
 
+	* src/workspace.c (meta_workspace_new): don't put a newline after
+	the default workspace name
+
+2002-07-13  Havoc Pennington  <hp@pobox.com>
+
 	* src/keybindings.c: adapt to virtual modifiers
 	(meta_display_process_mapping_event): we need to reload the
 	binding tables now when the modmap changes.

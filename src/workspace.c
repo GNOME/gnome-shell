@@ -48,7 +48,7 @@ meta_workspace_new (MetaScreen *screen)
   workspace->work_area.height = screen->height;
   workspace->work_area_invalid = TRUE;
 
-  workspace->name = g_strdup_printf (_("Workspace %d\n"),
+  workspace->name = g_strdup_printf (_("Workspace %d"),
                                      meta_workspace_index (workspace) + 1);
   
   /* Update hint for current number of workspaces */
