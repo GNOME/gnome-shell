@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.mn\n"
-"POT-Creation-Date: 2003-01-08 06:05+0100\n"
+"POT-Creation-Date: 2003-03-26 21:27-0500\n"
 "PO-Revision-Date: 2003-01-21 07:43+0100\n"
 "Last-Translator: Ochirbat Batzaya <buuvei@yahoo.com>\n"
 "Language-Team: Mongolian <mn@li.org>\n"
@@ -50,15 +50,17 @@ msgstr "Диалог-Үзүүлэх процессд алдаа гарлаа: %s
 
 #: src/delete.c:331
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Х-Программыг алахад асуугддаг Metacity-Диалог үйлдэлд алдаа гарлаа: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Х-Программыг алахад асуугддаг Metacity-Диалог үйлдэлд алдаа гарлаа: %s\n"
 
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Хостын нэрийг олж чадсангүй: %s\n"
 
-#: src/display.c:279
+#: src/display.c:286
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Цонхны системийн дэлгэц »%s« нээгдсэнгүй\n"
@@ -98,29 +100,32 @@ msgstr "Цонх томсгох"
 msgid "Unmaximize Window"
 msgstr "Цонх хаах"
 
-#: src/keybindings.c:870
+#: src/keybindings.c:973
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Өөр нэг программ %s товчийг %x modifier-ын хамтаар товчлуурын комбинац хэлбэрээр хэрэглэж бйна "
-"\n"
+"Өөр нэг программ %s товчийг %x modifier-ын хамтаар товчлуурын комбинац "
+"хэлбэрээр хэрэглэж бйна \n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2393
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа гарлаа: %s\n"
+msgstr ""
+"Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа "
+"гарлаа: %s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2424
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
 
 #: src/main.c:64
+#, fuzzy
 msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
 "metacity [--хаах-sm] [--sm-хадгалах-файл=ӨГӨГДЛИЙН НЭР] [--дэлгэц=ДЭЛГЭЦ] [--"
 "солих] [--хувилбар]\n"
@@ -138,14 +143,18 @@ msgstr ""
 "metacity %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., ба бусад\n"
 "Энэ бол үнэгүй программ; хуулбарлах нөхцлийг эх кодоос хар \n"
-"Ямар нэгэн ХУДАЛДААНЫ болон тодорхой зорилгод тохируулахад ямар ч баталгаа олгохгүй.\n"
+"Ямар нэгэн ХУДАЛДААНЫ болон тодорхой зорилгод тохируулахад ямар ч баталгаа "
+"олгохгүй.\n"
 
-#: src/main.c:326
+#: src/main.c:345
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Сэдэв олдсонгүй! Энд %s оршихоос гадна энгийн сэдвийг дотроо агуулсан эсэхийг шалгана уу."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Сэдэв олдсонгүй! Энд %s оршихоос гадна энгийн сэдвийг дотроо агуулсан "
+"эсэхийг шалгана уу."
 
-#: src/main.c:374
+#: src/main.c:393
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Шинэ эхлэл амжилтүй боллоо: %s\n"
@@ -192,7 +201,7 @@ msgstr "_Бүх ажлын талбар дээр тавих"
 msgid "Only on _This Workspace"
 msgstr "Зөвхөн _энэ ажлын талбар дээр "
 
-#: src/menu.c:152 src/prefs.c:1649
+#: src/menu.c:152 src/prefs.c:1814
 #, c-format
 msgid "Workspace %d"
 msgstr "Ажлын талбар %d"
@@ -333,7 +342,9 @@ msgstr "Анги"
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr "Эдгээр цонхнууд одоогийн тохиргоонуудыг хадгалахад оролцохгүй бөгөөд дараагийн асаалтаар гараар шинээр эхлэх хэрэгтэй."
+msgstr ""
+"Эдгээр цонхнууд одоогийн тохиргоонуудыг хадгалахад оролцохгүй бөгөөд "
+"дараагийн асаалтаар гараар шинээр эхлэх хэрэгтэй."
 
 #: src/metacity-dialog.c:276
 #, c-format
@@ -350,7 +361,9 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Гүйцэлдүүлээгүй) Навигаци цонхны бус хэрэглээний нөхцөлдүүлэгтэй ажиллаж байна"
+msgstr ""
+"(Гүйцэлдүүлээгүй) Навигаци цонхны бус хэрэглээний нөхцөлдүүлэгтэй ажиллаж "
+"байна"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -363,10 +376,10 @@ msgid ""
 msgstr ""
 "Цонхны нэрийг бичихэд хэрэглэгддэг бичлэгийн тайлбар мөр. Энэ тайлбарын "
 "хэмжээ нь зөвхөн »titlebar_font_size« 0 дээр тохируулсан үед хэрэглэгдэнэ. "
-"Үүнээс гадна энэ функц нь »titlebar_uses_desktop_font« »ҮНЭН« үед ажиллахгүй. "
-"Стандарт тохиргоонд бол нэрийн шрифтийг тохируулагүй байдаг тул "
-"titlebar_uses_desktop_font »ХУДАЛ« байсан ч Metacity өөрийн эрхгүй desktop_font-ыг "
-"ашиглахад хүргэдэг."
+"Үүнээс гадна энэ функц нь »titlebar_uses_desktop_font« »ҮНЭН« үед "
+"ажиллахгүй. Стандарт тохиргоонд бол нэрийн шрифтийг тохируулагүй байдаг тул "
+"titlebar_uses_desktop_font »ХУДАЛ« байсан ч Metacity өөрийн эрхгүй "
+"desktop_font-ыг ашиглахад хүргэдэг."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -389,9 +402,11 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
-"Товчлууруудыг нэрийн мөрөн дээр байрлуулах. Утга нь мөр байх ёстой. Ж-нь: \"цэс:агшаах,томсгох,хаах\";"
-"хоёр цэг зүүн буланг баруун булангаас ялгаж өгөх ба товчлууруудын нэрс таслалаар тусгаарлагдсан. Товчлуур давтагдаж болохгүй."
-"Цаашид шинээр зохиогдох metacity-ийн хувилбарууд өмнөхтэйгөө зөрчилдөхөөс сэргийлж үл таних товчлуурын нэр ямар нэгэн мэдэгдэлгүйгээр үгүйсгэгдэнэ "
+"Товчлууруудыг нэрийн мөрөн дээр байрлуулах. Утга нь мөр байх ёстой. Ж-нь: "
+"\"цэс:агшаах,томсгох,хаах\";хоёр цэг зүүн буланг баруун булангаас ялгаж өгөх "
+"ба товчлууруудын нэрс таслалаар тусгаарлагдсан. Товчлуур давтагдаж болохгүй."
+"Цаашид шинээр зохиогдох metacity-ийн хувилбарууд өмнөхтэйгөө зөрчилдөхөөс "
+"сэргийлж үл таних товчлуурын нэр ямар нэгэн мэдэгдэлгүйгээр үгүйсгэгдэнэ "
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -404,8 +419,9 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Энэ товчлуур дараастай байх хооронд цонх зөөгдөнө (зүүн товчлуур), цонхны хэмжээг тохируулна (голын товчлуур), эсвэл цонхны цэсийг харуулах (баруун товчлуур)"
-"Modifier нь дараахи хэлбэрээр илэрхийлэгдэнэ »&lt;Alt&gt;«."
+"Энэ товчлуур дараастай байх хооронд цонх зөөгдөнө (зүүн товчлуур), цонхны "
+"хэмжээг тохируулна (голын товчлуур), эсвэл цонхны цэсийг харуулах (баруун "
+"товчлуур)Modifier нь дараахи хэлбэрээр илэрхийлэгдэнэ »&lt;Alt&gt;«."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -423,34 +439,46 @@ msgstr "Өнөөдрийн сэдэв"
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Программ өөрөө эхлэхэд үүсэх миллисекундын хоцролт"
 
-# CHECK - Miss-Features?
 #: src/metacity.schemas.in.h:13
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Эвдрэлтэй болоод хуучин программуудад хэрэглэгддэг »Misfeatures« -иийг идэвхгүйжүүлэх"
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
 
+# CHECK - Miss-Features?
 #: src/metacity.schemas.in.h:14
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr ""
+"Эвдрэлтэй болоод хуучин программуудад хэрэглэгддэг »Misfeatures« -иийг "
+"идэвхгүйжүүлэх"
+
+#: src/metacity.schemas.in.h:15
+msgid "Enable Visual Bell"
+msgstr ""
+
+#: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
 msgstr "Бүх цонхнуудыг далдалж ажлын дэлгэцийг хараалах"
 
-#: src/metacity.schemas.in.h:15
+#: src/metacity.schemas.in.h:17
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
 "Хэрэв үнэн болоод фокус-горим \"sloppy\" эсвэл \"mouse\"бол хараалагдсан "
-"цонх нь хойшлогдсон хугацааны дараа өөрөө ажиллана"
-"(хойшлогдох хугацаа нь автоматаар эхлэхэд зориулсан үйлдлийн товчлуураар тодорхойлогдоно)"
+"цонх нь хойшлогдсон хугацааны дараа өөрөө ажиллана(хойшлогдох хугацаа нь "
+"автоматаар эхлэхэд зориулсан үйлдлийн товчлуураар тодорхойлогдоно)"
 
-#: src/metacity.schemas.in.h:16
+#: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Хэрэв үнэн бол гарчгийн_шрифт сонголтыг үгүйсгэн цонхны нэрийн үсгэнд стандарт "
-" программын шрифтийг ашигла."
+"Хэрэв үнэн бол гарчгийн_шрифт сонголтыг үгүйсгэн цонхны нэрийн үсгэнд "
+"стандарт  программын шрифтийг ашигла."
 
-#: src/metacity.schemas.in.h:17
+#: src/metacity.schemas.in.h:19
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -462,175 +490,185 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Хэрэв үнэн бол Metacity нь цонхоор биш х.программ дээр тулгуурлаж ажиллана"
-"Энэ зарчим нь бага зэрэг хийсвэр ч ерөнхийд нь үзэхэд хэрэглээнд  чиглэсэн "
-"тохируулга нь Windows-ийг бодвол Mac-тай ихэд төстэй. Хэрэв та хэрэглээний зориулалттай "
-"горимд цонхыг хараалах(focus) бол ашиглалтанд байгаа бүх цонхууд дэлгэгдэнэ. Үүнээс гадна  "
-"хэрэглээний горимд хараалах(focus) товчлуурын даралтууд (click) өөр application-ий "
-"цонхнуудад нөлөөлөхгүй. Энэ тохируулга нь бага зэрэг эргэлзээтэй ч давуу тал нь бүх "
-"хэрэглээний зориулалттай мөн цонхоор төлөөлсөн ж-нь. click-ийг цааш нь нөлөөлөх эсэхийг "
-"нэг бүрчлэн хийж өгдөггүйд оршино. Иймд хэрэглээнд чиглэсэн горимыг одоогийн байдлаар "
-"бараг хэрэглэдээгүй гэж болно."
+"Хэрэв үнэн бол Metacity нь цонхоор биш х.программ дээр тулгуурлаж "
+"ажилланаЭнэ зарчим нь бага зэрэг хийсвэр ч ерөнхийд нь үзэхэд хэрэглээнд  "
+"чиглэсэн тохируулга нь Windows-ийг бодвол Mac-тай ихэд төстэй. Хэрэв та "
+"хэрэглээний зориулалттай горимд цонхыг хараалах(focus) бол ашиглалтанд "
+"байгаа бүх цонхууд дэлгэгдэнэ. Үүнээс гадна  хэрэглээний горимд хараалах"
+"(focus) товчлуурын даралтууд (click) өөр application-ий цонхнуудад "
+"нөлөөлөхгүй. Энэ тохируулга нь бага зэрэг эргэлзээтэй ч давуу тал нь бүх "
+"хэрэглээний зориулалттай мөн цонхоор төлөөлсөн ж-нь. click-ийг цааш нь "
+"нөлөөлөх эсэхийг нэг бүрчлэн хийж өгдөггүйд оршино. Иймд хэрэглээнд чиглэсэн "
+"горимыг одоогийн байдлаар бараг хэрэглэдээгүй гэж болно."
 
-#: src/metacity.schemas.in.h:18
+#: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
 msgstr "Цонхыг бусад цонхуудын цагуур шургуулах"
 
-#: src/metacity.schemas.in.h:19
+#: src/metacity.schemas.in.h:21
 msgid "Maximize a window"
 msgstr "Цонхыг томсгох "
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:22
 msgid "Maximize window horizontally"
 msgstr "Цонхыг хэвтээ чигт томсгох "
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:23
 msgid "Maximize window vertically"
 msgstr "Цонхыг босоо чигт томсгох "
 
-#: src/metacity.schemas.in.h:22
+#: src/metacity.schemas.in.h:24
 msgid "Minimize a window"
 msgstr "Цонхыг агшаах"
 
-#: src/metacity.schemas.in.h:23
+#: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
 msgstr "Сайжруулсан цонхон дээр товшиход хэрэглэгдэх туслах товчлуур"
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:26
 msgid "Move a window"
 msgstr "Цонхыг зөөх"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:27
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Самбар ажлын талбар хоёрын хооронд ухрах"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:28
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Самбар ажлын талбар хоёрын хооронд ухрахдаа цонхны цэсийг үзүүлэх"
 
-#: src/metacity.schemas.in.h:27
+#: src/metacity.schemas.in.h:29
 msgid "Move backwards between windows immediately"
 msgstr "Цонхнуудын хооронд шууд ухарч очих"
 
-#: src/metacity.schemas.in.h:28
+#: src/metacity.schemas.in.h:30
 msgid "Move between panels and the desktop immediately"
 msgstr "Шууд самбар ажлын талбарын хооронд очих"
 
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop with popup"
 msgstr "Самбар ажлын талбарын хооронд ухраахдаа цонхны цэсийг үзүүлэх"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:32
 msgid "Move between windows immediately"
 msgstr "Цонхнуудын хооронд шууд ухарч очих"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:33
 msgid "Move between windows with popup"
 msgstr "Цэсийг дэлгэж харуулсан байдлаар цонхнуудын хооронд очих"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:34
 msgid "Move focus backwards between windows using popup display"
 msgstr "Цэсний туслалцаатайгаар цонхнуудын хооронд ухарч очих"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
 msgstr "Цонхыг нэг ажлын талбараар ухраах"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
 msgstr "Цонхыг нэг ажлын талбараар зүүн гар тийш шилжүүлэх"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
 msgstr "Цонхыг нэг ажлын талбараар баруун гар тийш шилжүүлэх"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
 msgstr "Цонхыг ажлын талбараар дээш нь шилжүүлэх"
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
 msgstr "Цонхыг нэг ажлын талбар 1 дээр гаргах"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
 msgstr "Цонхыг нэг ажлын талбар 10 дээр гаргах"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 11"
 msgstr "Цонхыг нэг ажлын талбар 11 дээр гаргах"
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 12"
 msgstr "Цонхыг нэг ажлын талбар 12 дээр гаргах"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 2"
 msgstr "Цонхыг нэг ажлын талбар 2 дээр гаргах"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 3"
 msgstr "Цонхыг нэг ажлын талбар 3 дээр гаргах"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 4"
 msgstr "Цонхыг нэг ажлын талбар 4 дээр гаргах"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 5"
 msgstr "Цонхыг нэг ажлын талбар 5 дээр гаргах"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 6"
 msgstr "Цонхыг нэг ажлын талбар 6 дээр гаргах"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 7"
 msgstr "Цонхыг нэг ажлын талбар 7 дээр гаргах"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 8"
 msgstr "Цонхыг нэг ажлын талбар 8 дээр гаргах"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 9"
 msgstr "Цонхыг нэг ажлын талбар 9 дээр гаргах"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:51
 msgid "Name of workspace"
 msgstr "Ажлын талбарын нэр"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:52
 msgid "Number of workspaces"
 msgstr "Ажлын талбарын тоо"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:53
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Ажлын талбарын тоо. Энэ тоо тэгээс их болоод тодорхой нэг максимум утгатай байх (ажлын "
-"талбарын тоо санаандгүй хэдэн арван сая болж дэлгэцийн талбарыг гэмтээхээс сэргийлэх "
-"зорилгоор) ёстой."
+"Ажлын талбарын тоо. Энэ тоо тэгээс их болоод тодорхой нэг максимум утгатай "
+"байх (ажлын талбарын тоо санаандгүй хэдэн арван сая болж дэлгэцийн талбарыг "
+"гэмтээхээс сэргийлэх зорилгоор) ёстой."
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:54
 msgid "Raise obscured window, otherwise lower"
-msgstr "Цонх хэт доор шигдсэн бол нааш нь товойлгож эсрэг тохиолдолд цонхыг шигтгэх"
+msgstr ""
+"Цонх хэт доор шигдсэн бол нааш нь товойлгож эсрэг тохиолдолд цонхыг шигтгэх"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
 msgstr "Цонхыг бусад цонхны өмнө гаргах"
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:56
 msgid "Resize a window"
 msgstr "Цонхны хэмжээг өөрчлөх"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
 msgstr "Тодорхой команд гүйцэтгэх"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:58
+msgid "Show the panel menu"
+msgstr ""
+
+#: src/metacity.schemas.in.h:59
+msgid "Show the panel run dialog"
+msgstr ""
+
+#: src/metacity.schemas.in.h:60
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -645,94 +683,139 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"Зарим нэгэн х. программууд зориулалтаа зөрчсөнөөс цонхны менежерт алдаа гарах "
-"тохиолдол байдаг. Ж-нь: Metacity-ийн тохируулгаар бол бүх диалогийн байршил нь "
-"өөрийн харьяалагдах (эх) цонхтой зохицсон байршилтай гарч ирэх учиртай. Энэ нь "
-"цаанаа х.программаасаа өгөгдсөн диалогийн байршлыг үгүйсгэж байна гэсэн үг. "
-"Гэвч үүний хажуугаар Java/Swing-ийн зарим хувилбарууд цонхны цэсээ диалог хэлбэрээр "
-"илэрхийлж Metaciy-ийг диалог байршуулах зарчмаа өөрчилж цэсийг Java-ийн "
-"алдаатай х. программуудын орчинд ажиллахад хүргэдэг. Үүний адил бас бс жишээнүүд "
-"тохиолдоно. Энэ хэлбэр нь Metacity-ийг ямар ч алдагүй ажиллагааны горимд "
-"шилжүүлж магадгүй та согоггүй х. программ ажиллуулахгүй тохиолдолд танд харин"
-"илүү таатай UI олгож болох. Харамсалтай нь дутагдлыг ямар ч гэсэн зайлшгүй засварах болдог. "
-"Амьдралын үнэн гашуун үү. Зарим дутагдлууд нь хэрэглээний зорилгоос хамаарсан байдаг учраас "
+"Зарим нэгэн х. программууд зориулалтаа зөрчсөнөөс цонхны менежерт алдаа "
+"гарах тохиолдол байдаг. Ж-нь: Metacity-ийн тохируулгаар бол бүх диалогийн "
+"байршил нь өөрийн харьяалагдах (эх) цонхтой зохицсон байршилтай гарч ирэх "
+"учиртай. Энэ нь цаанаа х.программаасаа өгөгдсөн диалогийн байршлыг үгүйсгэж "
+"байна гэсэн үг. Гэвч үүний хажуугаар Java/Swing-ийн зарим хувилбарууд цонхны "
+"цэсээ диалог хэлбэрээр илэрхийлж Metaciy-ийг диалог байршуулах зарчмаа "
+"өөрчилж цэсийг Java-ийн алдаатай х. программуудын орчинд ажиллахад хүргэдэг. "
+"Үүний адил бас бс жишээнүүд тохиолдоно. Энэ хэлбэр нь Metacity-ийг ямар ч "
+"алдагүй ажиллагааны горимд шилжүүлж магадгүй та согоггүй х. программ "
+"ажиллуулахгүй тохиолдолд танд харинилүү таатай UI олгож болох. Харамсалтай "
+"нь дутагдлыг ямар ч гэсэн зайлшгүй засварах болдог. Амьдралын үнэн гашуун "
+"үү. Зарим дутагдлууд нь хэрэглээний зорилгоос хамаарсан байдаг учраас "
 "программын өөрийн төрөлд гөр хүрэлгүйгээр алдааг засварлах боломж байдаггүй."
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
 msgstr "Ажлын талбар 1 дээр очих"
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
 msgstr "Ажлын талбар 10 дээр очих"
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
 msgstr "Ажлын талбар 11 дээр очих"
 
-#: src/metacity.schemas.in.h:60
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
 msgstr "Ажлын талбар 12 дээр очих"
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
 msgstr "Ажлын талбар 2 дээр очих"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
 msgstr "Ажлын талбар 3 дээр очих"
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
 msgstr "Ажлын талбар 4 дээр очих"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
 msgstr "Ажлын талбар 5 дээр очих"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
 msgstr "Ажлын талбар 6 дээр очих"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
 msgstr "Ажлын талбар 7 дээр очих"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
 msgstr "Ажлын талбар 8 дээр очих"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
 msgstr "Ажлын талбар 9 дээр очих"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:73
 msgid "Switch to workspace above this one"
 msgstr "Идэвхтэй байгаа ажлын талбарын дээд талын талбар дээр очих"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:74
 msgid "Switch to workspace below this one"
 msgstr "Идэвхтэй байгаа ажлын талбарын доод талын талбар дээр очих"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
 msgstr "Идэвхтэй байгаа ажлын талбарын зүүн гар талын талбар дээр очих"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
 msgstr "Идэвхтэй байгаа ажлын талбарын баруун гар талын талбар дээр очих"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:77
+msgid "System Bell is Audible"
+msgstr ""
+
+#: src/metacity.schemas.in.h:78
+msgid "Take a screenshot"
+msgstr ""
+
+#: src/metacity.schemas.in.h:79
+msgid "Take a screenshot of a window"
+msgstr ""
+
+#: src/metacity.schemas.in.h:80
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг гүйцэтгэх "
-"товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын хувилбарыг оруулснаар "
-"command_N гүйцэтгэгдэнэ."
+"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
+"гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
+"хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:82
+#, fuzzy
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
+"гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
+"хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
+
+#: src/metacity.schemas.in.h:83
+#, fuzzy
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"»/apps/metacity/global_keybindings/run_command_N«-код нь энэ командыг "
+"гүйцэтгэх товчлуурын хослолыг тодорхойлно. run_command_N товчлуурын "
+"хувилбарыг оруулснаар command_N гүйцэтгэгдэнэ."
+
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -742,13 +825,13 @@ msgid ""
 "there will be no keybinding for this action."
 msgstr ""
 "Харгалзсан дугаартай /apps/metacity/keybinding_commands командыг гүйцэтгэх "
-"товчлуурын комбинаци. Бичих хэлбэр нь »&lt;Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
-"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
-"комбинаци тавигдахгүй."
+"товчлуурын комбинаци. Бичих хэлбэр нь »&lt;Control&gt;« эсвэл »&lt;Shift&gt;"
+"&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
+"бичих болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -757,14 +840,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын өмнүүр (дээгүүр) оруулж "
-"идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;Control&gt;« (Ctrl-ийн хувьд ) "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
-"бөгөөд том жижгээр бичих болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
-"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
-"комбинаци тавигдахгүй."
+"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын өмнүүр (дээгүүр) "
+"оруулж идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;"
+"Control&gt;« (Ctrl-ийн хувьд ) эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих болон товчлол "
+"хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
+"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -773,14 +857,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын доогуур(араар) оруулж "
-"идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;Control&gt;« эсвэл »&lt; "
-"Shift&gt;&lt;Alt&gt;F1«. (Ctrl-ийн хувьд ). Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
-"бөгөөд том жижгээр бичих болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt; "
-"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
-"комбинаци тавигдахгүй."
+"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын доогуур(араар) "
+"оруулж идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;"
+"Control&gt;« эсвэл »&lt; Shift&gt;&lt;Alt&gt;F1«. (Ctrl-ийн хувьд ). "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих болон товчлол "
+"хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt; Ctrl&gt;«. Харин мөрийг "
+"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -789,14 +874,14 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын зүүн талд нь оруулж "
-"идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын зүүн талд нь "
+"оруулж идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;"
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -805,14 +890,14 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын баруун талд нь оруулж "
-"идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Өгөгдсөн ажлын талбарыг одоо идэвхтэй байгаа ажлын талбарын баруун талд нь "
+"оруулж идэвхжүүлэх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt;"
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -820,12 +905,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 1-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 1-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -833,12 +919,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 10-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 10-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -846,12 +933,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 11-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 11-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -859,12 +947,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 12-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 12-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -872,12 +961,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 2-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 2-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -885,12 +975,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 3-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 3-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -898,12 +989,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 4-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 4-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -911,12 +1003,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 5-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 5-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -924,12 +1017,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 6-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 6-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -937,12 +1031,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 7-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 7-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -950,12 +1045,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 8-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 8-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -963,12 +1059,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Ажлын талбар 9-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Ажлын талбар 9-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -976,12 +1073,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхны цэсийг идэвхжүүлж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхны цэсийг идэвхжүүлж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -990,11 +1088,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1003,13 +1102,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"»Зөөх«-горимд шилжүүлэн цонхыг гарын (keyboard) тусламжтайгаар зөөж боломжтой "
-"болгодог товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"»Зөөх«-горимд шилжүүлэн цонхыг гарын (keyboard) тусламжтайгаар зөөж "
+"боломжтой болгодог товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« эсвэл "
+"»&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд "
+"том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл "
+"»&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1019,12 +1119,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "»Хэмжээ өөрчлөх«-горимд шилжүүлэн цонхны үзэгдэх хэмжээг гарын (keyboard) "
-"тусламжтайгаар өөрчлөх боломжтой болгодог товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"тусламжтайгаар өөрчлөх боломжтой болгодог товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1033,12 +1134,13 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Бүх энгийн цонхыг далдалж дэлгэцийн арыг идэвхжүүлэх товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
-"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр "
-"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг "
-"»disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Бүх энгийн цонхыг далдалж дэлгэцийн арыг идэвхжүүлэх товчлуурын комбинаци. "
+"Хэлбэр нь »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт "
+"нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
+"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« "
+"дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1046,13 +1148,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхны хэмжээг томсгох товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны хэмжээг томсгох товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« "
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1060,13 +1162,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхны хэмжээг багасгах товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны хэмжээг багасгах товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« "
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -1075,13 +1177,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Цонхны байршлыг нэг ажлын талбараар доошлуулах (ухраах ) товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны байршлыг нэг ажлын талбараар доошлуулах (ухраах ) товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1090,13 +1193,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Цонхны байршлыг нэг ажлын талбараар зүүн гар тийш зөөж шилжүүлэх товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны байршлыг нэг ажлын талбараар зүүн гар тийш зөөж шилжүүлэх товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1105,13 +1209,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Цонхны байршлыг нэг ажлын талбараар баруун тийш зөөж шилжүүлэх товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны байршлыг нэг ажлын талбараар баруун тийш зөөж шилжүүлэх товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1119,13 +1224,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхны байршлыг нэг ажлын талбараар өөд нь зөөж шилжүүлэх товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхны байршлыг нэг ажлын талбараар өөд нь зөөж шилжүүлэх товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1133,13 +1239,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 1 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 1 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1147,13 +1253,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 10 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 10 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1161,13 +1267,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 11 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 11 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1175,13 +1281,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 12 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 12 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1189,13 +1295,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 2 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 2 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1203,13 +1309,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 3 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 3 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1217,13 +1323,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 4 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 4 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1231,13 +1337,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 5 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 5 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1245,13 +1351,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 6 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 6 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1259,13 +1365,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 7 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 7 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1273,13 +1379,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 8 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 8 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1287,13 +1393,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг ажлын байр 9 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  "
-"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
-"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
-"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
-"товчлуурын комбинаци тавигдахгүй."
+"Цонхыг ажлын байр 9 дээр аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1302,13 +1408,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Popup цонхны хамт фокусыг ухраан ажлын самбар ажлын desktop хоёрын хооронд  аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-" Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхны хамт фокусыг ухраан ажлын самбар ажлын desktop хоёрын хооронд  "
+"аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
+"Shift&gt;&lt;Alt&gt;F1«.  Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том "
+"жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1317,13 +1424,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Popup цонхгүйгээр фокусыг ухраан ажлын самбар ажлын desktop хоёрын хооронд  аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-" Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхгүйгээр фокусыг ухраан ажлын самбар ажлын desktop хоёрын хооронд  "
+"аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
+"Shift&gt;&lt;Alt&gt;F1«.  Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том "
+"жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1333,13 +1441,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Popup цонхгүйгээр фокусыг ухраан ажлын цонхнуудын хооронд аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-" Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхгүйгээр фокусыг ухраан ажлын цонхнуудын хооронд аваачих товчлуурын "
+"комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;"
+"F1«.  Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1350,12 +1459,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Popup цонх ашиглан фокусыг ухраан ажлын цонхнуудын хооронд аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-" Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«.  Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр "
+"бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1364,13 +1474,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Popup цонхны тусламжтайгаар фокусыг самбар-ажлын талбар хоёрын хооронд аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-" Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхны тусламжтайгаар фокусыг самбар-ажлын талбар хоёрын хооронд "
+"аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
+"Shift&gt;&lt;Alt&gt;F1«.  Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том "
+"жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1379,13 +1490,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд "
+"аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
+"Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том "
+"жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1395,13 +1507,14 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд аваачих "
-"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Popup цонхны тусламжгүйгээр фокусыг самбар-ажлын талбар хоёрын хооронд "
+"аваачих товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;« эсвэл »&lt;"
+"Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том "
+"жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;"
+"Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1411,15 +1524,15 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Popup цонхны тусламжтайгаар фокусыг цонхны хооронд аваачих "
-"товчлуурын комбинаци. (Уламжлалт хэлбэр нь &lt;Alt&gt;Escape) "
-"хөдөлгөөнийг эсрэг чиглэлд хийхийн тулд shift товчлуурыг дараастай "
-"дээрх үйлдлийг хийнэ. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«."
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"Popup цонхны тусламжтайгаар фокусыг цонхны хооронд аваачих товчлуурын "
+"комбинаци. (Уламжлалт хэлбэр нь &lt;Alt&gt;Escape) хөдөлгөөнийг эсрэг "
+"чиглэлд хийхийн тулд shift товчлуурыг дараастай дээрх үйлдлийг хийнэ. Хэлбэр "
+"нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«.Хөрвүүлэлт нь тун "
+"чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1427,14 +1540,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Бүтэн дэлгэцийн горимд оруулж гаргах товчлуурын комбинаци. "
-"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"Бүтэн дэлгэцийн горимд оруулж гаргах товчлуурын комбинаци. Хэлбэр нь  »&lt; "
+"Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1442,14 +1554,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг томсгох товчлуурын комбинаци. "
-"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг томсгох товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл "
+"»&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд "
+"том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл "
+"»&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч "
+"товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1457,14 +1568,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг хуйлж буцаан дэлгэхэд хэрэглэдэг товчлуурын комбинаци. "
-"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"Цонхыг хуйлж буцаан дэлгэхэд хэрэглэдэг товчлуурын комбинаци. Хэлбэр нь  "
+"»&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1473,14 +1583,14 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Цонхыг бүх ажлын хавтгай дээр эсвэл бүгд дээр байршуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг бүх ажлын хавтгай дээр эсвэл бүгд дээр байршуулахад ашиглах "
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1488,34 +1598,100 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг хэмжээг багасгах товчлуурын комбинаци. "
-"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"Цонхыг хэмжээг багасгах товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« "
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
+
+#: src/metacity.schemas.in.h:137
+#, fuzzy
+msgid ""
+"The keybinding which display's the panel's \"Run Program\" dialog box. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
+
+#: src/metacity.schemas.in.h:138
+#, fuzzy
+msgid ""
+"The keybinding which invokes the panel's screenshot utility to take a "
+"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"Цонхыг хаах үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; Control&gt;« "
+"эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй зохиогдсон "
+"бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« "
+"эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд "
+"ямар ч товчлуурын комбинаци тавигдахгүй."
+
+#: src/metacity.schemas.in.h:139
+#, fuzzy
+msgid ""
+"The keybinding which invokes the panel's screenshot utility. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
+"is fairly liberal and allows lower or upper case, and also abbreviations "
+"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Ажлын талбар 9-т хүргэж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь »&lt; "
+"Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй "
+"зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. Ж-нь: "
+"»&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
 "тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:140
+#, fuzzy
+msgid ""
+"The keybinding which shows the panel's main menu. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Цонхны цэсийг идэвхжүүлж өгөх үүрэгтэй  товчлуурын комбинаци. Хэлбэр нь "
+"»&lt; Control&gt;« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. Хөрвүүлэлт нь тун "
+"чөлөөтэй зохиогдсон бөгөөд том жижгээр бичих  болон товчлол хийх боломжтой. "
+"Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
+"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+
+#: src/metacity.schemas.in.h:141
 msgid "The name of a workspace."
 msgstr "Ажлын талбарын нэр."
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:142
+msgid "The screenshot command"
+msgstr ""
+
+#: src/metacity.schemas.in.h:143
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
-"Энд цонхны жааз, хүрээ(хөвөө), нэрийн хэсгийн үзэмжийг "
-"тохируулах зэргийн сэдвүүд агуулагдана."
+"Энд цонхны жааз, хүрээ(хөвөө), нэрийн хэсгийн үзэмжийг тохируулах зэргийн "
+"сэдвүүд агуулагдана."
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
-"auto_raise нь true дээр тохируулагдсан тохиолдолд өгөгдсөн цонх идэвхжихэд гарах цагийн "
-"хоцролт. Энэхүү хоцролт  мянганы нэг секундын нэгжээр өгөгдөнө."
+"auto_raise нь true дээр тохируулагдсан тохиолдолд өгөгдсөн цонх идэвхжихэд "
+"гарах цагийн хоцролт. Энэхүү хоцролт  мянганы нэг секундын нэгжээр өгөгдөнө."
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1523,12 +1699,17 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
-"Цонхыг хараалах (фокуслах) горим нь цонх өөрөө хэрхэн идэвхжихийг тодорхойлж өгнө. "
-"Энд 3 боломжит хувилбарууд байна: »click« нь цонхыг фокуслахын (хараалахын)тулд нэг click  "
-"хийх, »sloppy« нь заагуур цонхон дээр очингуут идэвхжих, »mouse« заагуур цонхон дээр "
-"очингуут идэвхжиж цонхны талбараас гарангуут эргэж идэвхгүй байдалд орох үйлдлүүдийг заана."
+"Цонхыг хараалах (фокуслах) горим нь цонх өөрөө хэрхэн идэвхжихийг тодорхойлж "
+"өгнө. Энд 3 боломжит хувилбарууд байна: »click« нь цонхыг фокуслахын "
+"(хараалахын)тулд нэг click  хийх, »sloppy« нь заагуур цонхон дээр очингуут "
+"идэвхжих, »mouse« заагуур цонхон дээр очингуут идэвхжиж цонхны талбараас "
+"гарангуут эргэж идэвхгүй байдалд орох үйлдлүүдийг заана."
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:146
+msgid "The window screenshot command"
+msgstr ""
+
+#: src/metacity.schemas.in.h:147
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1539,14 +1720,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Цонхыг бусад цонхнуудын өмнүүр эсвэл араар нь байршуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг бусад цонхнуудын өмнүүр эсвэл араар нь байршуулахад ашиглах "
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1554,14 +1735,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг бусад цонхнуудын араар байршуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг бусад цонхнуудын араар байршуулахад ашиглах товчлуурын комбинаци. "
+"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1569,14 +1750,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Цонхыг бусад цонхнуудын өмнүүр байршуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг бусад цонхнуудын өмнүүр байршуулахад ашиглах товчлуурын комбинаци. "
+"Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  болон "
+"товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин "
+"мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци "
+"тавигдахгүй."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1585,14 +1766,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Цонхыг хэвтээ чиглэлд байгаа боломжит бүх зайг эзлэн байрлуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг хэвтээ чиглэлд байгаа боломжит бүх зайг эзлэн байрлуулахад ашиглах "
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1601,66 +1782,77 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Цонхыг босоо чиглэлд байгаа боломжит бүх зайг эзлэн байрлуулахад ашиглах товчлуурын "
-"комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон "
-"бөгөөд том жижгээр бичих  болон товчлол хийх "
-"боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. Харин мөрийг »disabled« дээр "
-"тохируулахад энэ үйлдэлд ямар ч товчлуурын комбинаци тавигдахгүй."
+"Цонхыг босоо чиглэлд байгаа боломжит бүх зайг эзлэн байрлуулахад ашиглах "
+"товчлуурын комбинаци. Хэлбэр нь  »&lt; Control&gt;а« эсвэл »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Хөрвүүлэлт нь тун чөлөөтэй  зохиогдсон бөгөөд том жижгээр бичих  "
+"болон товчлол хийх боломжтой. Ж-нь: »&lt;Ctl&gt;« эсвэл »&lt;Ctrl&gt;«. "
+"Харин мөрийг »disabled« дээр тохируулахад энэ үйлдэлд ямар ч товчлуурын "
+"комбинаци тавигдахгүй."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"Цонхны нэрийн талбар дээр давхар товшиход (double click) ямар үйлдэл хийгдэхийг "
-"тодорхойлно. Үүнд дараахи үйлдлүүд орно: »toggle_shade« гэвэл цонх хуйлагдан "
-"эсвэл эсрэгээр дэлгэгдэж харин »toggle_maximize« гэвэл цонхыг томсгож багасгах болно."
+"Цонхны нэрийн талбар дээр давхар товшиход (double click) ямар үйлдэл "
+"хийгдэхийг тодорхойлно. Үүнд дараахи үйлдлүүд орно: »toggle_shade« гэвэл "
+"цонх хуйлагдан эсвэл эсрэгээр дэлгэгдэж харин »toggle_maximize« гэвэл цонхыг "
+"томсгож багасгах болно."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
 msgstr "Бүтэн дэлгэц гаргах горимыг асааж унтраах"
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:154
 msgid "Toggle maximization state"
-msgstr ""
-"Томсгосон хэлбэрийг асааж унтраах"
-"Maximierungszustand ein-/ausschalten"
+msgstr "Томсгосон хэлбэрийг асааж унтраахMaximierungszustand ein-/ausschalten"
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:155
 msgid "Toggle shaded state"
 msgstr "Цонхыг дэлгэн буцааж хуйлах "
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:156
 msgid "Toggle window on all workspaces"
 msgstr "Цонхуудыг бүх ажлын талбар дээр харагдхаар тохируулах"
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:157
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments, or when 'audible bell' is off."
+msgstr ""
+
+#: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
 msgstr "Цонхыг багасгах"
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:159
 msgid "Use standard system font in window titles"
 msgstr "Цонхны нэрэнд стандарт үсгийн хэв ашигла"
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:160
+msgid "Visual Bell Type"
+msgstr ""
+
+#: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
 msgstr "Цонхны фокусын горим"
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:162
 msgid "Window title font"
 msgstr "Цонхны нэрийн үсгийн хэв"
 
-#: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
-#: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
-#: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
-#: src/prefs.c:618 src/prefs.c:635 src/prefs.c:651 src/prefs.c:667
+#: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
+#: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
+#: src/prefs.c:582 src/prefs.c:598 src/prefs.c:614 src/prefs.c:630
+#: src/prefs.c:646 src/prefs.c:663 src/prefs.c:679 src/prefs.c:695
+#: src/prefs.c:727
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-key »%s«-д хүчингүй төрөл өгөгдсөн байна\n"
 
-#: src/prefs.c:712
+#: src/prefs.c:771
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1669,51 +1861,53 @@ msgstr ""
 "Конфигурацийн сангаас олдсон »%s« утга нь хулганын товчлуурын сэлгүүрт "
 "тохирох утга биш\n"
 
-#: src/prefs.c:736 src/prefs.c:1103
+#: src/prefs.c:795 src/prefs.c:1205
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-key »%s«-д хүчингүй утга өгөгдсөн байна\n"
 
-#: src/prefs.c:820
+#: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Фонтын тайлбар »%s«-ыг GConf-key %s-с ялгаж чадсангүй\n"
 
-#: src/prefs.c:1005
+#: src/prefs.c:1107
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"%d нь GConf-key %s дотор хадгалагдсан ба ажлын талбарын тоог үнэмшилтэйгээр төлөөлж чадахгүй; "
-"одоогоор максимум утга %d байна\n"
+"%d нь GConf-key %s дотор хадгалагдсан ба ажлын талбарын тоог үнэмшилтэйгээр "
+"төлөөлж чадахгүй; одоогоор максимум утга %d байна\n"
 
-#: src/prefs.c:1065
+#: src/prefs.c:1167
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Эвдрэлтэй х.программын Workarounds-ийг идэвхгүйжүүллээ. "
-"Магадгүй зарим х.программууд буруу ажиллаж магадгүй.\n"
+"Эвдрэлтэй х.программын Workarounds-ийг идэвхгүйжүүллээ. Магадгүй зарим х."
+"программууд буруу ажиллаж магадгүй.\n"
 
-#: src/prefs.c:1130
+#: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
+msgstr ""
+"%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
 
-#: src/prefs.c:1222
+#: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "%d дээрхи ажлын талбарын тоог оруулахад алдаа гарлаа: %s\n"
 
-#: src/prefs.c:1440
+#: src/prefs.c:1578
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr "Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
+msgstr ""
+"Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
 
-#: src/prefs.c:1730
+#: src/prefs.c:1895
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өөрчлөхөд алдаа гарлаа: %s\n"
@@ -1723,32 +1917,35 @@ msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өө�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:407
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d дэлгэц Display »%s« дээрх байгаа ба хүчингүй байна\n"
 
-#: src/screen.c:408
+#: src/screen.c:423
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"%d дэлгэц нь Display »%s« дээр байгаа ба "
-"хэдийн цонхны менежер олгогдсон байна; »--replace«-ийг сонгож одоо актуаль "
-"байгаа цонхны менежерийг сольж туршина уу\n"
+"%d дэлгэц нь Display »%s« дээр байгаа ба хэдийн цонхны менежер олгогдсон "
+"байна; »--replace«-ийг сонгож одоо актуаль байгаа цонхны менежерийг сольж "
+"туршина уу\n"
 
-#: src/screen.c:449
+#: src/screen.c:464
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "дэлгэц %d-ийн (Display »%s« дээрх ) цонхны менежерийн тэмдэглэл хүлээж авахад алдаа гарлаа\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"дэлгэц %d-ийн (Display »%s« дээрх ) цонхны менежерийн тэмдэглэл хүлээж "
+"авахад алдаа гарлаа\n"
 
-#: src/screen.c:505
+#: src/screen.c:520
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d » (%s« джжрхи) цонхны менежертэй байна\n"
 
-#: src/screen.c:673
+#: src/screen.c:690
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d нь »%s« дэлгэцэн дээр гаргагдаж чадсангүй\n"
@@ -1831,8 +2028,8 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Session management-тэй ажилладаггүй программыг таньж анхааруулах Metacity диалог "
-"эхлэхэд алдаа гарлаа: %s\n"
+"Session management-тэй ажилладаггүй программыг таньж анхааруулах Metacity "
+"диалог эхлэхэд алдаа гарлаа: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -1872,16 +2069,14 @@ msgstr "Boolean утгууд »%s« биш »true« эсвэл »false« ёст�
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
-"Өнцгийн утга 0.0 ба 360.0 хоёрын хооронд байх ёстой, "
-"%g байсан\n"
+msgstr "Өнцгийн утга 0.0 ба 360.0 хоёрын хооронд байх ёстой, %g байсан\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"Альфа-гйин утга 0.0 (үл үзэгдэх) ба 1.0 (бүтэн дүүргэсэн) хоёрын хооронд байх ёстой, "
-"%g байсан\n"
+"Альфа-гйин утга 0.0 (үл үзэгдэх) ба 1.0 (бүтэн дүүргэсэн) хоёрын хооронд "
+"байх ёстой, %g байсан\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1889,8 +2084,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Хаягийн хүчингүй хэмжээ »%s« (xx-small, x-small, small, medium, large, "
-"x-large oder xx-large эдгээрийн аль нэг нь байх ёстой)\n"
+"Хаягийн хүчингүй хэмжээ »%s« (xx-small, x-small, small, medium, large, x-"
+"large oder xx-large эдгээрийн аль нэг нь байх ёстой)\n"
 
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
@@ -1924,7 +2119,8 @@ msgstr "Элемент <%s>-ийн геометр харьцаа »%s« өгөг
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> ямар нэгэн геометрийн харьцаа эсвэл түүнийг агуулсан эхийг оруулна уу"
+msgstr ""
+"<%s> ямар нэгэн геометрийн харьцаа эсвэл түүнийг агуулсан эхийг оруулна уу"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -1954,7 +2150,9 @@ msgstr "»%s«-цэсийн эмблемийн үл мэдэгдэх нөхцө�
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Энэ сэдэв хэдийнэ үйлдэл %s, нөхцөл байдал %s-д тохирох цэсийн эмблемтэй байна"
+msgstr ""
+"Энэ сэдэв хэдийнэ үйлдэл %s, нөхцөл байдал %s-д тохирох цэсийн эмблемтэй "
+"байна"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
@@ -1980,7 +2178,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> элементэд ямар ч »value« аттрибут алга"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "button_width/button_height болон товчлууруудын талуудын харьцааг тодорхойлж "
 "чадахгүй байна"
@@ -2236,12 +2435,15 @@ msgstr "»%s« бол »resize« аттрибутад тохирох утга б
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr "Томсгох/хуйлсан хэлбэрүүдэд тохирох <%s> элемент »resize« аттрибуттай байх учиргүй"
+msgstr ""
+"Томсгох/хуйлсан хэлбэрүүдэд тохирох <%s> элемент »resize« аттрибуттай байх "
+"учиргүй"
 
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Нөхцөл %s, фокус, хэмжээ %s, %s-д зориулсан стиль хэдийнэ өгөгдсөн байна"
+msgstr ""
+"Нөхцөл %s, фокус, хэмжээ %s, %s-д зориулсан стиль хэдийнэ өгөгдсөн байна"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
@@ -2253,35 +2455,36 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<piece> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт "
-"нэг draw_ops-attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
+"<piece> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт нэг draw_ops-"
+"attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
 
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<button> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт "
-"нэг draw_ops-attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
+"<button> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт нэг "
+"draw_ops-attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
 
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"<menu_icon> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт "
-"нэг draw_ops-attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
+"<menu_icon> элементэд хоёр draw_ops утга авч чадахгүй байна (сэдэвт нэг "
+"draw_ops-attribute мөн нэг <draw_ops>-элемент эсвэл хоёр Elemente an оржээ)"
 
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr ""
-"Элементийн хамгийн гадна хүрээний сэдэв нь <%s> дотор бус харин <metacity_theme> дотор л "
-"орших ёстой"
+"Элементийн хамгийн гадна хүрээний сэдэв нь <%s> дотор бус харин "
+"<metacity_theme> дотор л орших ёстой"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Элемент <%s> нь name/author/date/description элемент дотор орших ёсгүй"
 
 #: src/theme-parser.c:3684
@@ -2291,7 +2494,8 @@ msgstr "Элемент <%s> нь <constant> элемент дотор орших
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Элемент <%s> нь distance/border/aspect_ratio-element дотор орших ёсгүй"
 
 #: src/theme-parser.c:3718
@@ -2396,8 +2600,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Өнгөний GTK-өгөгдөл нь дөрвөлжин хаалтанд байх ёстой. Ж-нЬ: "
-"gtk:fg[NORMAL], энд NORMAL гэдэг нь байгаа нөхцөл; »%s« боловсруулагдсангүй"
+"Өнгөний GTK-өгөгдөл нь дөрвөлжин хаалтанд байх ёстой. Ж-нЬ: gtk:fg[NORMAL], "
+"энд NORMAL гэдэг нь байгаа нөхцөл; »%s« боловсруулагдсангүй"
 
 #: src/theme.c:989
 #, c-format
@@ -2405,8 +2609,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Өнгөний GTK-өгөгдөл нь дөрвөлжин хаалтанд байх ёстой. Ж-нЬ: "
-"gtk:fg[NORMAL], энд NORMAL гэдэг нь байгаа байдал; »%s«-г боловсруулж чадсангүй"
+"Өнгөний GTK-өгөгдөл нь дөрвөлжин хаалтанд байх ёстой. Ж-нЬ: gtk:fg[NORMAL], "
+"энд NORMAL гэдэг нь байгаа байдал; »%s«-г боловсруулж чадсангүй"
 
 #: src/theme.c:1000
 #, c-format
@@ -2423,7 +2627,9 @@ msgstr "Өнгөний өгөгдөл дэх бүрэлдэхүүн хэсгүү
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr "Холих формат : »холих/суурь өнгө/нүүрэн өнгө/alpha«; »%s« энэ форматанд тохирохгүй байна"
+msgstr ""
+"Холих формат : »холих/суурь өнгө/нүүрэн өнгө/alpha«; »%s« энэ форматанд "
+"тохирохгүй байна"
 
 #: src/theme.c:1054
 #, c-format
@@ -2437,13 +2643,17 @@ msgstr "Хосолсон өнгөний альфа тоо »%s« 0.0-1.0 тоо�
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Өнгө холих формат нь »холих/үндсэн өнгө/фактор«; »%s« энэ форматанд тохирохгүй"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Өнгө холих формат нь »холих/үндсэн өнгө/фактор«; »%s« энэ форматанд "
+"тохирохгүй"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Өнгө хослуулах фактор »%s« нь хосолсон өнгө дотор боловсруулагдаж чадсангүй"
+msgstr ""
+"Өнгө хослуулах фактор »%s« нь хосолсон өнгө дотор боловсруулагдаж чадсангүй"
 
 #: src/theme.c:1132
 #, c-format
@@ -2465,19 +2675,24 @@ msgstr "Координатын илэрхийлэлд хориотой тэмд�
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Координатын илэрхийлэлд болоьсруулах бололцоогүй хөвөгч таслалтай »%s« тоо байна"
+msgstr ""
+"Координатын илэрхийлэлд болоьсруулах бололцоогүй хөвөгч таслалтай »%s« тоо "
+"байна"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Координатын илэрхийлэл боловсруулах бололцоогүй »%s« бүхэл тоо агуулж байна"
+msgstr ""
+"Координатын илэрхийлэл боловсруулах бололцоогүй »%s« бүхэл тоо агуулж байна"
 
 #: src/theme.c:1531
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Координатын илэрхийлэл дараахи текстийн эхэнд үл мэдэгдэх оператор агуулж байна: »%s«"
+msgstr ""
+"Координатын илэрхийлэл дараахи текстийн эхэнд үл мэдэгдэх оператор агуулж "
+"байна: »%s«"
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2488,13 +2703,18 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Координатын илэрхийллийн хариуны хуваарь нь  \"тэг\" тоо байна"
 
 #: src/theme.c:1779
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Координатын илэрхийлэл хөвөгч таслалтай тоонд модулийн операторыг хэрэглэж үзэж байна."
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Координатын илэрхийлэл хөвөгч таслалтай тоонд модулийн операторыг хэрэглэж "
+"үзэж байна."
 
 #: src/theme.c:1836
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Координатын илэрхийлэл дотор операнд байх ёстой байранд опеоатор »%s« байна"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Координатын илэрхийлэл дотор операнд байх ёстой байранд опеоатор »%s« байна"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -2502,23 +2722,26 @@ msgstr "Координатын илэрхийлэл дотор оператор�
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Координатын илэрхийллийн төгсгөлд операнд байх ёстой атал Оператор байна"
+msgstr ""
+"Координатын илэрхийллийн төгсгөлд операнд байх ёстой атал Оператор байна"
 
 #: src/theme.c:1863
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "Координатын илэрхийлэл дотор »%c« ба »%c« операторууд байна, гэхдээ ямар ч операнд энэ дунд алга"
+msgstr ""
+"Координатын илэрхийлэл дотор »%c« ба »%c« операторууд байна, гэхдээ ямар ч "
+"операнд энэ дунд алга"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Координатын илэрхийллийн хөрвүүлэгчийн buffer хязгаартаа тулсан байна., "
-"Энэ бол Metacity-ийн алдаа байна; Танд үнэхээр ийм том хэмжээний "
-"илэрхийлэл хэрэгтэй гэж үү?"
+"Координатын илэрхийллийн хөрвүүлэгчийн buffer хязгаартаа тулсан байна., Энэ "
+"бол Metacity-ийн алдаа байна; Танд үнэхээр ийм том хэмжээний илэрхийлэл "
+"хэрэгтэй гэж үү?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -2527,7 +2750,9 @@ msgstr "Координатын илэрхийлэлд зөвхөн хаасан 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Координатын илэрхийлэл нь үл мэдэгдэх хувьсагч эсвэл тогтмол агуулсан байна »%s«"
+msgstr ""
+"Координатын илэрхийлэл нь үл мэдэгдэх хувьсагч эсвэл тогтмол агуулсан байна "
+"»%s«"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -2535,7 +2760,9 @@ msgstr "Координатын илэрхийлэл дотор зөвхөн нэ
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Координатын илэрхийлэл нь оператор болон операндын аль алийг нь агуулаагүй байна"
+msgstr ""
+"Координатын илэрхийлэл нь оператор болон операндын аль алийг нь агуулаагүй "
+"байна"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
@@ -2553,8 +2780,11 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"юу ч хамаагүй\"/> дутаж байна"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"юу ч хамаагүй\"/> "
+"дутаж байна"
 
 #: src/theme.c:4445
 #, c-format
@@ -2582,17 +2812,16 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"Энэ сэдэвт <menu_icon function=\"%s\" state=\"%s\" draw_ops="
-"\"юу ч хамаагүй\"/> өгөгдсөн байх ёстой"
+"Энэ сэдэвт <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"юу ч хамаагүй"
+"\"/> өгөгдсөн байх ёстой"
 
-#: src/theme.c:5038 src/theme.c:5100
+#: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Хэрэглэгчийн оруулсан тогтмол нь том үсгээр эхлэх ёстой; »%s« "
-"хийхгүй"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Хэрэглэгчийн оруулсан тогтмол нь том үсгээр эхлэх ёстой; »%s« хийхгүй"
 
-#: src/theme.c:5046 src/theme.c:5108
+#: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Тогтмол »%s« хэдийнэ сонгогдсон байна"
@@ -2656,13 +2885,13 @@ msgstr "Цонхны менежерийн анхааруулга:"
 msgid "Window manager error: "
 msgstr "Цонхны менежерийн алдаа:"
 
-#: src/window-props.c:161
+#: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4893
+#: src/window.c:4540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2684,15 +2913,15 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5453
+#: src/window.c:5223
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Цонх %s MWM дохиогоор хэмжээг нь өөрчилж болохгүй гэдгийг анхааруулсан боловч "
-"хамгийн бага хэмжээ %d x %d-дээр эсвэл максимум %d x %d -дээр тавьсан; "
-"энэ үйлдэл утга учиргүй.\n"
+"Цонх %s MWM дохиогоор хэмжээг нь өөрчилж болохгүй гэдгийг анхааруулсан "
+"боловч хамгийн бага хэмжээ %d x %d-дээр эсвэл максимум %d x %d -дээр "
+"тавьсан; энэ үйлдэл утга учиргүй.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2716,6 +2945,7 @@ msgstr "Онцлог %s. 0x%lx цонхон дээр буруу UTF-8 агуул
 
 #: src/xprops.c:479
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"
-
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"

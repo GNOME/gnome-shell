@@ -1,3 +1,9 @@
+2003-03-26  Havoc Pennington  <hp@pobox.com>
+
+	* NEWS: update
+
+	* configure.in: release 2.5.0
+
 Sun Mar 23 23:04:06 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* src/display.c (meta_spew_event): just return if we are not

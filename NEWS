@@ -1,3 +1,39 @@
+2.5.0
+===
+
+ Thanks to Rob Adams, Owen Taylor, Frederic Crozat, Arvind Samptur,
+ Bill Haneman, Akira Tagoh for help with fixes in this release.
+
+ - many new translations
+ - fix an infinite loop while holding a server grab triggered by 
+   some recent Qt versions doing weird stuff
+ - fix bug where Alt+rightclick repeatedly on titlebar resulted 
+   in zillions of menus
+ - fix Alt+Tab to *actually* put minimized windows at the end, 
+   though this was always intended
+ - rewrite size/positions constraint code (currently known 
+   to be quite buggy, e.g. xmms is hosed)
+ - enforce size of at least 1x1 on windows
+ - reduce latency of managing new windows still further 
+   by using async properties code in more places
+ - don't grab keybindings on docks, so gnome-panel 
+   can handle them
+ - suck in the panel's screenshot and run dialog global 
+   bindings
+ - lots of improvements to window placement
+ - sync max number of workspaces with pager applet
+ - fix to keep focus when inside window frame in 
+   strict mouse focus mode
+ - make it possible to start a reverse tab with 
+   shift+alt+tab (vs. alt+tab then shift)
+ - fix a multihead issue with constraints between two 
+   windows on different heads
+ - require GTK+ 2.2.0 and fontconfig
+ - default theme is now Simple
+ - add visual bell feature
+ - incorporate many fixes from 2.4.34
+ - other stuff
+
 2.4.13
 ===
 

@@ -5,13 +5,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity CVS-20020905\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
+"POT-Creation-Date: 2003-03-26 21:27-0500\n"
 "PO-Revision-Date: 2002-09-05 17:24+0900\n"
 "Last-Translator: Akira TAGOH <tagoh@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr ""
 
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
@@ -48,7 +57,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ホスト名の取得に失敗しました: %s\n"
 
-#: src/display.c:270
+#: src/display.c:286
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Xウィンドウシステムのディスプレイ '%s' のオープンに失敗しました\n"
@@ -69,27 +78,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ディスプレイ '%3$s' 上で致命的なIOエラー %1$d (%2$s) が発生しました\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "ウィンドウを閉じる"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "ウィンドウメニュー"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元のサイズに戻す"
 
-#: src/keybindings.c:870
+#: src/keybindings.c:973
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -98,14 +107,14 @@ msgstr ""
 "別のプログラムですでにバインディングとしてモディファイアキー %2$x で キー %1"
 "$s を使っています\n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2393
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "コマンドについてのエラーを表示するためのmetacity-dialogが起動中にエラーが発生"
 "しました: %s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2424
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %dは定義されていません\n"
@@ -113,8 +122,8 @@ msgstr "コマンド %dは定義されていません\n"
 #: src/main.c:64
 #, fuzzy
 msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
 "metacity [--disable-sm] [--sm-save-file=ファイル名] [--display=ディスプレイ] "
 "[--replace]\n"
@@ -129,7 +138,7 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:326
+#: src/main.c:345
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -137,7 +146,7 @@ msgstr ""
 "テーマが見つかりませんでした! %s が存在して普通のテーマが含まれていることを確"
 "認してください"
 
-#: src/main.c:374
+#: src/main.c:393
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "リスタートに失敗しました: %s\n"
@@ -186,7 +195,7 @@ msgstr "すべてのワークスペースに含める(_A)"
 msgid "Only on _This Workspace"
 msgstr "このワークスペースにだけ含める(_T)"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1814
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
@@ -417,16 +426,26 @@ msgid "Delay in milliseconds for the auto raise option"
 msgstr "自動表示オプションの遅延時間(ms)"
 
 #: src/metacity.schemas.in.h:13
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+
+#: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "古いあるいは仕様に準拠していないアプリケーションが要求する不要な機能を無効に"
 "する"
 
-#: src/metacity.schemas.in.h:14
+#: src/metacity.schemas.in.h:15
+msgid "Enable Visual Bell"
+msgstr ""
+
+#: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
 msgstr "すべてのウィンドウを隠しデスクトップにフォーカスを移す"
 
-#: src/metacity.schemas.in.h:15
+#: src/metacity.schemas.in.h:17
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
@@ -436,7 +455,7 @@ msgstr ""
 "フォーカスされたウィンドウは(auto_raise_delayキーによって指定された)遅延時間"
 "の後自動的に手前に表示されます"
 
-#: src/metacity.schemas.in.h:16
+#: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -444,7 +463,7 @@ msgstr ""
 "この値がtrueの場合，titlebar_fontオプションを無視してウィンドウタイトルに標準"
 "的なアプリケーションフォントを使います"
 
-#: src/metacity.schemas.in.h:17
+#: src/metacity.schemas.in.h:19
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -467,150 +486,150 @@ msgstr ""
 "定を持つよりも望ましいといえます．また，アプリケーションベースモードは現在の"
 "ところ大部分が未実装です．"
 
-#: src/metacity.schemas.in.h:18
+#: src/metacity.schemas.in.h:20
 msgid "Lower window below other windows"
 msgstr "一番奥にウィンドウを移動"
 
-#: src/metacity.schemas.in.h:19
+#: src/metacity.schemas.in.h:21
 msgid "Maximize a window"
 msgstr "ウィンドウを最大化"
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:22
 #, fuzzy
 msgid "Maximize window horizontally"
 msgstr "ウィンドウを最大化"
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:23
 #, fuzzy
 msgid "Maximize window vertically"
 msgstr "ウィンドウを最大化"
 
-#: src/metacity.schemas.in.h:22
+#: src/metacity.schemas.in.h:24
 msgid "Minimize a window"
 msgstr "ウィンドウを最小化"
 
-#: src/metacity.schemas.in.h:23
+#: src/metacity.schemas.in.h:25
 msgid "Modifier to use for modified window click actions"
 msgstr ""
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:26
 msgid "Move a window"
 msgstr "ウィンドウを移動"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:27
 #, fuzzy
 msgid "Move backward between panels and the desktop immediately"
 msgstr "パネルとデスクトップのフォーカスを切替える"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:28
 #, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "パネルとデスクトップのフォーカスを切替える"
 
-#: src/metacity.schemas.in.h:27
+#: src/metacity.schemas.in.h:29
 #, fuzzy
 msgid "Move backwards between windows immediately"
 msgstr "ウィンドウ間でフォーカスを移動"
 
-#: src/metacity.schemas.in.h:28
+#: src/metacity.schemas.in.h:30
 #, fuzzy
 msgid "Move between panels and the desktop immediately"
 msgstr "パネルとデスクトップのフォーカスを切替える"
 
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:31
 #, fuzzy
 msgid "Move between panels and the desktop with popup"
 msgstr "パネルとデスクトップのフォーカスを切替える"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:32
 #, fuzzy
 msgid "Move between windows immediately"
 msgstr "ウィンドウ間でフォーカスを移動"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:33
 #, fuzzy
 msgid "Move between windows with popup"
 msgstr "ウィンドウ間でフォーカスを移動"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:34
 #, fuzzy
 msgid "Move focus backwards between windows using popup display"
 msgstr "ウィンドウ間でフォーカスを移動"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:35
 msgid "Move window one workspace down"
 msgstr "1つ下のワークスペースへウィンドウを移動"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:36
 msgid "Move window one workspace to the left"
 msgstr "左側のワークスペースにウィンドウを移動"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:37
 msgid "Move window one workspace to the right"
 msgstr "右側のワークスペースにウィンドウを移動"
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:38
 msgid "Move window one workspace up"
 msgstr "1つ上のワークスペースへウィンドウを移動"
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 1"
 msgstr "ワークスペース1へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 10"
 msgstr "ワークスペース10へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 11"
 msgstr "ワークスペース11へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 12"
 msgstr "ワークスペース12へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 2"
 msgstr "ワークスペース2へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 3"
 msgstr "ワークスペース3へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 4"
 msgstr "ワークスペース4へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 5"
 msgstr "ワークスペース5へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 6"
 msgstr "ワークスペース6へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 7"
 msgstr "ワークスペース7へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:49
 msgid "Move window to workspace 8"
 msgstr "ワークスペース8へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:50
 msgid "Move window to workspace 9"
 msgstr "ワークスペース9へウィンドウを移動"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:51
 #, fuzzy
 msgid "Name of workspace"
 msgstr "ワークスペースの数"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:52
 msgid "Number of workspaces"
 msgstr "ワークスペースの数"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:53
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -620,26 +639,34 @@ msgstr ""
 "ペースを要求してデスクトップを誤って破損するのを予防するために)最大数は固定さ"
 "れます"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:54
 #, fuzzy
 msgid "Raise obscured window, otherwise lower"
 msgstr ""
 "ウィンドウが隠れている場合には手前に表示し，手前に表示されている場合には奥に"
 "表示"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:55
 msgid "Raise window above other windows"
 msgstr "一番手前にウィンドウを表示"
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:56
 msgid "Resize a window"
 msgstr "ウィンドウサイズを変更"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:57
 msgid "Run a defined command"
 msgstr "定義されたコマンドを実行"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:58
+msgid "Show the panel menu"
+msgstr ""
+
+#: src/metacity.schemas.in.h:59
+msgid "Show the panel run dialog"
+msgstr ""
+
+#: src/metacity.schemas.in.h:60
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -667,73 +694,96 @@ msgstr ""
 "仕様自体の制限に対する次善策もあるため，仕様を修正しない限り非次善策モードに"
 "おけるバグを修正できないこともあります"
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 1"
 msgstr "ワークスペース1へ切替える"
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 10"
 msgstr "ワークスペース10へ切替える"
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 11"
 msgstr "ワークスペース11へ切替える"
 
-#: src/metacity.schemas.in.h:60
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 12"
 msgstr "ワークスペース12へ切替える"
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 2"
 msgstr "ワークスペース2へ切替える"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 3"
 msgstr "ワークスペース3へ切替える"
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 4"
 msgstr "ワークスペース4へ切替える"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 5"
 msgstr "ワークスペース5へ切替える"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 6"
 msgstr "ワークスペース6へ切替える"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 7"
 msgstr "ワークスペース7へ切替える"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 8"
 msgstr "ワークスペース8へ切替える"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 9"
 msgstr "ワークスペース9へ切替える"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:73
 #, fuzzy
 msgid "Switch to workspace above this one"
 msgstr "現在のスペースの上のワークスペースに切替える"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:74
 #, fuzzy
 msgid "Switch to workspace below this one"
 msgstr "現在のスペースの下のワークスペースに切替える"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
 msgstr "左側のワークスペースへ切替える"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace on the right"
 msgstr "右側のワークスペースへ切替える"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:77
+msgid "System Bell is Audible"
+msgstr ""
+
+#: src/metacity.schemas.in.h:78
+msgid "Take a screenshot"
+msgstr ""
+
+#: src/metacity.schemas.in.h:79
+msgid "Take a screenshot of a window"
+msgstr ""
+
+#: src/metacity.schemas.in.h:80
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -743,7 +793,28 @@ msgstr ""
 "するキーバインドを定義します．run_command_Nのキーバインドを押すとcommand_Nが"
 "実行されます．"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:82
+#, fuzzy
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"/apps/metacity/global_keybindings/runs_command_Nキーはこれらのコマンドに対応"
+"するキーバインドを定義します．run_command_Nのキーバインドを押すとcommand_Nが"
+"実行されます．"
+
+#: src/metacity.schemas.in.h:83
+#, fuzzy
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"/apps/metacity/global_keybindings/runs_command_Nキーはこれらのコマンドに対応"
+"するキーバインドを定義します．run_command_Nのキーバインドを押すとcommand_Nが"
+"実行されます．"
+
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -759,7 +830,7 @@ msgstr ""
 "\"disabled\"をオプションに設定した場合は，この動作のキーバインドはなくなりま"
 "す．"
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -774,7 +845,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -789,7 +860,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -804,7 +875,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -819,7 +890,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -833,7 +904,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -847,7 +918,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -861,7 +932,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -875,7 +946,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -889,7 +960,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -903,7 +974,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -917,7 +988,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -931,7 +1002,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -945,7 +1016,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -959,7 +1030,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -973,7 +1044,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -987,7 +1058,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1001,7 +1072,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1015,7 +1086,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1031,7 +1102,7 @@ msgstr ""
 "特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバインドは"
 "なくなります．"
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1047,7 +1118,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1063,7 +1134,7 @@ msgstr ""
 "特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバインドは"
 "なくなります．"
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1077,7 +1148,7 @@ msgstr ""
 "Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設"
 "定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1091,7 +1162,7 @@ msgstr ""
 "Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設"
 "定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -1106,7 +1177,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1121,7 +1192,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1136,7 +1207,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1150,7 +1221,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1164,7 +1235,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1178,7 +1249,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1192,7 +1263,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1206,7 +1277,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1220,7 +1291,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1234,7 +1305,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1248,7 +1319,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1262,7 +1333,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1276,7 +1347,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1290,7 +1361,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1304,7 +1375,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1318,7 +1389,7 @@ msgstr ""
 "\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
 "ションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:124
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1335,7 +1406,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:125
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1352,7 +1423,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:126
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
@@ -1370,7 +1441,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:127
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
@@ -1388,7 +1459,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1404,7 +1475,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1420,7 +1491,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:130
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
@@ -1438,7 +1509,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:131
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
@@ -1456,7 +1527,7 @@ msgstr ""
 "\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
 "合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1470,7 +1541,7 @@ msgstr ""
 "Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設"
 "定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1484,7 +1555,7 @@ msgstr ""
 "もできます．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作"
 "のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1498,7 +1569,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプショ"
 "ンに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1514,7 +1585,7 @@ msgstr ""
 "\"disabled\"をオプションに設定した場合は，この動作のキーバインドはなくなりま"
 "す．"
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1528,18 +1599,85 @@ msgstr ""
 "Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設"
 "定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:137
+#, fuzzy
+msgid ""
+"The keybinding which display's the panel's \"Run Program\" dialog box. The "
+"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"ウィンドウを閉じるために使うキーバインドを指定します．フォーマットは\"&lt;"
+"Control&gt;a\"あるいは\"&lt;Shift&gt;&lt;Alt&gt;F1のようにします．パーサは完"
+"全に自由で大文字や小文字を許可します．そして\"&lt;Ctl&gt;\"や\"&lt;Ctrl&gt;"
+"\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
+"合は，この動作のキーバインドはなくなります．"
+
+#: src/metacity.schemas.in.h:138
+#, fuzzy
+msgid ""
+"The keybinding which invokes the panel's screenshot utility to take a "
+"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
+"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+"\". If you set the option to the special string \"disabled\", then there "
+"will be no keybinding for this action."
+msgstr ""
+"ウィンドウを閉じるために使うキーバインドを指定します．フォーマットは\"&lt;"
+"Control&gt;a\"あるいは\"&lt;Shift&gt;&lt;Alt&gt;F1のようにします．パーサは完"
+"全に自由で大文字や小文字を許可します．そして\"&lt;Ctl&gt;\"や\"&lt;Ctrl&gt;"
+"\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
+"合は，この動作のキーバインドはなくなります．"
+
+#: src/metacity.schemas.in.h:139
+#, fuzzy
+msgid ""
+"The keybinding which invokes the panel's screenshot utility. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
+"is fairly liberal and allows lower or upper case, and also abbreviations "
+"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"ワークスペース9へ切替えるキーバインドを指定します．フォーマットは\"&lt;"
+"Control&gt;a\"あるいは\"&lt;Shift&gt;&lt;Alt&gt;F1のようにします．パーサは完"
+"全に自由で大文字や小文字を許可します．そして\"&lt;Ctl&gt;\"や\"&lt;Ctrl&gt;"
+"\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設定した場"
+"合は，この動作のキーバインドはなくなります．"
+
+#: src/metacity.schemas.in.h:140
+#, fuzzy
+msgid ""
+"The keybinding which shows the panel's main menu. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"ウィンドウメニューをアクティブにするために使うキーバインドを指定します．"
+"フォーマットは\"&lt;Control&gt;a\"あるいは\"&lt;Shift&gt;&lt;Alt&gt;F1のよう"
+"にします．パーサは完全に自由で大文字や小文字を許可します．そして\"&lt;Ctl&gt;"
+"\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプ"
+"ションに設定した場合は，この動作のキーバインドはなくなります．"
+
+#: src/metacity.schemas.in.h:141
 #, fuzzy
 msgid "The name of a workspace."
 msgstr "ワークスペースの数"
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:142
+msgid "The screenshot command"
+msgstr ""
+
+#: src/metacity.schemas.in.h:143
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "テーマはウィンドウの境界やタイトルバーなどの外観を決定します"
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1547,7 +1685,7 @@ msgstr ""
 "auto_raiseがtrueに設定されている場合に，ウィンドウを手前に表示するまでの遅延"
 "時間を指定します．この遅延は1000分の1秒単位で指定します"
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1562,7 +1700,11 @@ msgstr ""
 "ドウがフォーカスされ，マウスがウィンドウから出る時にフォーカスが解除されるこ"
 "とを意味します"
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:146
+msgid "The window screenshot command"
+msgstr ""
+
+#: src/metacity.schemas.in.h:147
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1582,7 +1724,7 @@ msgstr ""
 "す．もし特別な文字\"disabled\"をオプションに設定した場合は，この動作のキーバ"
 "インドはなくなります．"
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1596,7 +1738,7 @@ msgstr ""
 "Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled\"をオプションに設"
 "定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1610,7 +1752,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:150
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
@@ -1626,7 +1768,7 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:151
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
@@ -1642,55 +1784,67 @@ msgstr ""
 "Ctl&gt;\"や\"&lt;Ctrl&gt;\"のような省略もできます．もし特別な文字\"disabled"
 "\"をオプションに設定した場合は，この動作のキーバインドはなくなります．"
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:153
 msgid "Toggle fullscreen mode"
 msgstr "フルスクリーンモードを切替える"
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:154
 msgid "Toggle maximization state"
 msgstr "最大化の状態を切替える"
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:155
 msgid "Toggle shaded state"
 msgstr "シェードの状態を切替える"
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:156
 #, fuzzy
 msgid "Toggle window on all workspaces"
 msgstr "すべてのワークスペース上にウィンドウを含めるかどうかを切替える"
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:157
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments, or when 'audible bell' is off."
+msgstr ""
+
+#: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
 msgstr "最大化したウィンドウを元のサイズに戻す"
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:159
 msgid "Use standard system font in window titles"
 msgstr "ウィンドウタイトルで標準のシステムフォントを使う"
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:160
+msgid "Visual Bell Type"
+msgstr ""
+
+#: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
 msgstr "ウィンドウフォーカスモード"
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:162
 msgid "Window title font"
 msgstr "ウィンドウタイトルのフォント"
 
-#: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
-#: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
-#: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
-#: src/prefs.c:618 src/prefs.c:635 src/prefs.c:651 src/prefs.c:667
+#: src/prefs.c:450 src/prefs.c:466 src/prefs.c:482 src/prefs.c:498
+#: src/prefs.c:514 src/prefs.c:534 src/prefs.c:550 src/prefs.c:566
+#: src/prefs.c:582 src/prefs.c:598 src/prefs.c:614 src/prefs.c:630
+#: src/prefs.c:646 src/prefs.c:663 src/prefs.c:679 src/prefs.c:695
+#: src/prefs.c:727
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConfキー \"%s\" は無効なタイプが設定されています\n"
 
-#: src/prefs.c:712
+#: src/prefs.c:771
 #, fuzzy, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1698,17 +1852,17 @@ msgid ""
 msgstr ""
 "設定データベースで発見した\"%s\"はキーバインド\"%s\"に有効な値ではありません"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:795 src/prefs.c:1205
 #, fuzzy, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConfキー '%s' は無効な値が設定されています"
 
-#: src/prefs.c:820
+#: src/prefs.c:922
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConfキー %2$s からフォントの記述 \"%1$s\" をパースできませんでした\n"
 
-#: src/prefs.c:1005
+#: src/prefs.c:1107
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1717,7 +1871,7 @@ msgstr ""
 "GConfキー %2$s に保存されている %1$d は妥当なワークスペース数ではありません，"
 "現在の最大値は %3$d です\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1167
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1725,17 +1879,17 @@ msgstr ""
 "仕様に準拠していないアプリケーションに対する次善策は無効になっています．一部"
 "のアプリケーションは正常に動作しない可能性があります\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1232
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "GConfキー %2$s に保存されている %1$d は0から%3$dの範囲内にありません\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1336
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1578
 #, fuzzy, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1743,7 +1897,7 @@ msgid ""
 msgstr ""
 "設定データベースで発見した\"%s\"はキーバインド\"%s\"に有効な値ではありません"
 
-#: src/prefs.c:1720
+#: src/prefs.c:1895
 #, fuzzy, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
@@ -1753,12 +1907,12 @@ msgstr "ワークスペース数を %d に設定中にエラーが発生しま�
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:392
+#: src/screen.c:407
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: src/screen.c:408
+#: src/screen.c:423
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1768,7 +1922,7 @@ msgstr ""
 "ています; 現在のウィンドウマネージャを上書きするために--replaceオプションの使"
 "用を試してください\n"
 
-#: src/screen.c:449
+#: src/screen.c:464
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1776,14 +1930,14 @@ msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャの選択を取得"
 "できませんでした\n"
 
-#: src/screen.c:505
+#: src/screen.c:520
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャを持っ"
 "ています\n"
 
-#: src/screen.c:673
+#: src/screen.c:690
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
@@ -2646,13 +2800,13 @@ msgstr ""
 "このテーマは <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "を指定する必要があります"
 
-#: src/theme.c:5038 src/theme.c:5100
+#: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ユーザ定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: src/theme.c:5046 src/theme.c:5108
+#: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" はすでに定義されています"
@@ -2701,33 +2855,29 @@ msgstr "ログファイル %s の fdopen() に失敗しました: %s\n"
 msgid "Opened log file %s\n"
 msgstr "ログファイル %s をオープンしました\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
 msgstr "ウィンドウマネージャ: "
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr "ウィンドウマネージャのバグ: "
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "ウィンドウマネージャの警告: "
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr "ウィンドウマネージャのエラー: "
 
-#: src/window-props.c:161
+#: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の_NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2743,7 +2893,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5223
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2753,21 +2903,24 @@ msgstr ""
 "ズ %d x %d と最大サイズ %d x %dも設定しています．これはあまり意味がありませ"
 "ん\n"
 
-#: src/xprops.c:124
-#, c-format
+#: src/xprops.c:153
+#, fuzzy, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
 "ウィンドウ 0x%1$lx には type %5$s format %6$d n_items %7$d のプロパティ %2$s "
 "が指定されていますが，本来これは type %3$s format %4$d でなければなりません\n"
 
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "ウィンドウ 0x%2$lx 上のプロパティ %1$s は無効なUTF-8を含んでいました\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
