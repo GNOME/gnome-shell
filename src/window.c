@@ -157,6 +157,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       /* Only manage if WM_STATE is IconicState or NormalState */
       gulong state;
 
+      /* FIXME WM_STATE isn't a cardinal, it's type WM_STATE */
       if (!(get_cardinal (display, xwindow,
                           display->atom_wm_state,
                           &state) &&
