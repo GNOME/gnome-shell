@@ -4118,7 +4118,8 @@ meta_window_notify_focus (MetaWindow *window,
            * with some things you might do inside the focused window, by
            * causing the client to get funky enter/leave events.
            */
-          meta_display_ungrab_focus_window_button (window->display, window);
+          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+            meta_display_ungrab_focus_window_button (window->display, window);
         }
     }
   else if (event->type == FocusOut ||
@@ -4157,8 +4158,9 @@ meta_window_notify_focus (MetaWindow *window,
           meta_window_update_layer (window);
 
           /* Re-grab for click to focus, if necessary */
-          meta_display_grab_focus_window_button (window->display, window);
-        }
+          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+            meta_display_grab_focus_window_button (window->display, window);
+       }
     }
 
   /* Now set _NET_ACTIVE_WINDOW hint */

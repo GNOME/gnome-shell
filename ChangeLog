@@ -1,3 +1,19 @@
+2003-01-04  Rob Adams  <readams@readams.net>
+
+	Maintain the button grab for sloppy and mouse focus all the time.
+	This fixes a number of problem introduced by trying to drop the
+	grab; we now do this only for click to focus mode.  This has the
+	unfortunate effect that #102209 reappears for sloppy and mouse
+	focus, but this seems unavoidable, because of limitations in the X
+	protocol.  See #115072.
+
+	* src/display.c (meta_display_grab_focus_window_button): #if 0 the
+	section on not grabbing unless in click-to-focus mode.
+
+	* src/window.c (meta_window_notify_focus): drop focus button grab
+	on FocusIn and acquire it on FocusOut only when in click-to-focus
+	mode.
+	
 2004-01-03  Robert Sedak  <robert.sedak@sk.htnet.hr>
 
         * configure.in: Added "hr" in ALL_LINGUAS.

@@ -1371,7 +1371,7 @@ event_callback (XEvent   *event,
 
                   /* Raise on clicking the client area always or only
                    * in click to focus mode? The debate rages.
-                   * Feel free to change TRUE to FALSE
+                   * Feel free to change TRUE to FALSE or vice versa
                    */
                   if (TRUE /* meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK */) 
                     {
@@ -3303,6 +3303,8 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
   /* Grab button 1 for activating unfocused windows */
   meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
 
+#if 0
+  /* FIXME:115072 */
   /* Don't grab at all unless in click to focus mode. In click to
    * focus, we may sometimes be clever about intercepting and eating
    * the focus click. But in mouse focus, we never do that since the
@@ -3314,6 +3316,7 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
       meta_verbose (" (well, not grabbing since not in click to focus mode)\n");
       return;
     }
+#endif
   
   if (window->have_focus_click_grab)
     {
