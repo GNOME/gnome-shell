@@ -1,3 +1,20 @@
+2002-06-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_get_current_xinerama): implement
+
+	* src/place.c (meta_window_place): cascade windows on the active
+	Xinerama screen
+
+	* src/window.c (meta_window_move_resize_internal): strip out the
+	#if 0 cruft about guessing fullscreen mode
+	(constrain_position, constrain_size): fullscreen/maximize to the
+	Xinerama head, not the whole screen
+	(meta_window_get_work_area): autocreate struts at the Xinerama
+	physical screen edges for the screen the window is on.
+
+	* src/screen.c (meta_screen_get_xinerama_for_window): someone
+	snuck in a for loop, fix it. ;-)
+
 2002-06-06  James M. Cape <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Increase the border size

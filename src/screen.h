@@ -63,6 +63,9 @@ struct _MetaScreen
   MetaXineramaScreenInfo *xinerama_infos;
   int n_xinerama_infos;
 
+  /* Cache the current Xinerama */
+  int last_xinerama_index;
+  
   guint work_area_idle;
 
   int rows_of_workspaces;

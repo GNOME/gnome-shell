@@ -331,6 +331,8 @@ meta_display_open (const char *name)
    */
   display->leader_window = None;
   display->no_focus_window = None;
+
+  display->xinerama_cache_invalidated = TRUE;
   
   screens = NULL;
 
@@ -873,10 +875,11 @@ event_callback (XEvent   *event,
   
   if (dump_events)
     meta_spew_event (display, event);
-
+  
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
-
+  display->xinerama_cache_invalidated = TRUE;
+  
   modified = event_get_modified_window (display, event);
   
   if (event->type == ButtonPress)

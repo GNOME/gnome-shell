@@ -236,6 +236,8 @@ meta_screen_new (MetaDisplay *display,
   screen->xinerama_infos = NULL;
   screen->n_xinerama_infos = 0;
 
+  screen->last_xinerama_index = 0;
+  
 #ifdef HAVE_XINERAMA
   if (XineramaQueryExtension (display->xdisplay,
                               &xinerama_event_base,
@@ -265,6 +267,14 @@ meta_screen_new (MetaDisplay *display,
               screen->xinerama_infos[i].y_origin = infos[i].y_org;
               screen->xinerama_infos[i].width = infos[i].width;
               screen->xinerama_infos[i].height = infos[i].height;
+
+              meta_topic (META_DEBUG_XINERAMA,
+                          "Xinerama %d is %d,%d %d x %d\n",
+                          screen->xinerama_infos[i].number,
+                          screen->xinerama_infos[i].x_origin,
+                          screen->xinerama_infos[i].y_origin,
+                          screen->xinerama_infos[i].width,
+                          screen->xinerama_infos[i].height);              
               
               ++i;
             }
@@ -809,24 +819,28 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
 
   best_xinerama = 0;
   xinerama_score = 0;
-  
-  for (i = 0; i < screen->n_xinerama_infos; i++) {
-    MetaRectangle dest, screen_info;
 
-    screen_info.x = screen->xinerama_infos[i].x_origin;
-    screen_info.y = screen->xinerama_infos[i].y_origin;
-    screen_info.width = screen->xinerama_infos[i].width;
-    screen_info.height = screen->xinerama_infos[i].height;
+  i = 0;
+  while (i < screen->n_xinerama_infos)
+    {
+      MetaRectangle dest, screen_info;
+      
+      screen_info.x = screen->xinerama_infos[i].x_origin;
+      screen_info.y = screen->xinerama_infos[i].y_origin;
+      screen_info.width = screen->xinerama_infos[i].width;
+      screen_info.height = screen->xinerama_infos[i].height;
+      
+      if (meta_rectangle_intersect (&screen_info, &window->rect, &dest))
+        {
+          if (dest.width * dest.height > xinerama_score)
+            {
+              xinerama_score = dest.width * dest.height;
+              best_xinerama = i;
+            }
+        }
 
-    if (meta_rectangle_intersect (&screen_info, &window->rect, &dest))
-      {
-	if (dest.width * dest.height > xinerama_score)
-	  {
-	    xinerama_score = dest.width * dest.height;
-	    best_xinerama = i;
-	  }
-      }
-  }
+      ++i;
+    }
 
   return &screen->xinerama_infos[best_xinerama];
 }
@@ -834,9 +848,54 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
 const MetaXineramaScreenInfo*
 meta_screen_get_current_xinerama (MetaScreen *screen)
 {
-  /* FIXME how do we decide which is current? */
+  if (screen->n_xinerama_infos == 1)
+    return 0;
+
+  /* Sadly, we have to do it this way. Yuck.
+   */
   
-  return &screen->xinerama_infos[0];
+  if (screen->display->xinerama_cache_invalidated)
+    {
+      Window root_return, child_return;
+      int root_x_return, root_y_return;
+      int win_x_return, win_y_return;
+      unsigned int mask_return;
+      int i;
+      
+      screen->display->xinerama_cache_invalidated = FALSE;
+      
+      XQueryPointer (screen->display->xdisplay,
+                     screen->xroot,
+                     &root_return,
+                     &child_return,
+                     &root_x_return,
+                     &root_y_return,
+                     &win_x_return,
+                     &win_y_return,
+                     &mask_return);
+
+      screen->last_xinerama_index = 0;
+      i = 0;
+      while (i < screen->n_xinerama_infos)
+        {
+          if ((root_x_return >= screen->xinerama_infos[i].x_origin &&
+               root_x_return < (screen->xinerama_infos[i].x_origin + screen->xinerama_infos[i].width) &&
+               root_y_return >= screen->xinerama_infos[i].y_origin &&
+               root_y_return < (screen->xinerama_infos[i].y_origin + screen->xinerama_infos[i].height)))
+          {
+            screen->last_xinerama_index = i;
+            break;
+          }
+          
+          ++i;
+        }
+      
+      meta_topic (META_DEBUG_XINERAMA,
+                  "Rechecked current Xinerama, now %d\n",
+                  screen->last_xinerama_index);
+    }
+
+  return &screen->xinerama_infos[screen->last_xinerama_index];
 }
 
 #define _NET_WM_ORIENTATION_HORZ 0

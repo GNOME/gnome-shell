@@ -246,6 +246,7 @@ meta_window_place (MetaWindow        *window,
                    int               *new_y)
 {
   GList *windows;
+  const MetaXineramaScreenInfo *xi;
   
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry. But remember fgeom == NULL
@@ -360,10 +361,9 @@ meta_window_place (MetaWindow        *window,
     {
       /* Center on screen */
       int w, h;
-      const MetaXineramaScreenInfo *xi;
 
-      /* I think whole screen will look nicer than workarea */
-      xi = meta_screen_get_current_xinerama (window->screen);      
+      /* Warning, this function is a round trip! */
+      xi = meta_screen_get_current_xinerama (window->screen);
 
       w = xi->width;
       h = xi->height;
@@ -404,10 +404,13 @@ meta_window_place (MetaWindow        *window,
         tmp = tmp->next;
       }
   }
+
+  /* Warning, this is a round trip! */
+  xi = meta_screen_get_current_xinerama (window->screen);
   
   /* "Origin" placement algorithm */
-  x = 0;
-  y = 0;
+  x = xi->x_origin;
+  y = xi->y_origin;
 
   /* Cascade */
   find_next_cascade (window, fgeom, windows, x, y, &x, &y);

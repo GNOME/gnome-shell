@@ -1862,49 +1862,10 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   int client_move_x;
   int client_move_y;
-  const MetaXineramaScreenInfo *xinerama;
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
-
-#if 0
-  xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                  window);
-
-  /* Try to guess if a client meant to be fullscreen (or not) and
-   * toggle the real fullscreen state in response. This is
-   * probably a bit dubious.
-   */
-  if (is_configure_request &&
-      !window->decorated &&
-      window->has_fullscreen_func &&
-      w == xinerama->width &&
-      h == xinerama->height &&
-      root_x_nw == xinerama->x_origin &&
-      root_y_nw == xinerama->y_origin)
-    {
-      /* This queues a move resize again, which is why it's
-       * called before the following unqueue_move_resize
-       */
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Guessing that window %s meant to be fullscreen\n",
-                  window->desc);
-      meta_window_make_fullscreen (window);
-    }
-  else if (is_configure_request &&
-           window->fullscreen &&
-           (w != xinerama->width ||
-            h != xinerama->height ||
-            root_x_nw != xinerama->x_origin ||
-            root_y_nw != xinerama->y_origin))
-    {
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Guessing that window %s no longer wants to be fullscreen\n",
-                  window->desc);
-      meta_window_unmake_fullscreen (window);
-    }
-#endif
   
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);  
@@ -4999,10 +4960,21 @@ constrain_size (MetaWindow *window,
   meta_window_get_work_area (window, &work_area);
   
   /* Get the allowed size ranges, considering maximized, etc. */
-  if (window->fullscreen ||
-      window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
+  if (window->fullscreen)
     {
+      const MetaXineramaScreenInfo *xinerama;
+
+      xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                      window);
+
+
+      fullw = xinerama->width;
+      fullh = xinerama->height;
+    }
+  else if (window->type == META_WINDOW_DESKTOP ||
+           window->type == META_WINDOW_DOCK)
+    {
+      
       fullw = window->screen->width;
       fullh = window->screen->height;
     }
@@ -5137,16 +5109,28 @@ constrain_position (MetaWindow *window,
     }
   else if (window->fullscreen)
     {
-      x = 0;
-      y = 0;
+      const MetaXineramaScreenInfo *xinerama;
+
+      xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                      window);
+      
+      x = xinerama->x_origin;
+      y = xinerama->y_origin;
 
       /* If the window's geometry gridding (e.g. for a terminal)
        * prevents fullscreen, center the window within
        * the screen area.
        */
-      x += (window->screen->width - window->rect.width) / 2;
+      x += (xinerama->width - window->rect.width) / 2;
+      y += (xinerama->height - window->rect.height) / 2;
 
-      y += (window->screen->height - window->rect.height) / 2;
+      /* If the window is somehow larger than the screen be paranoid
+       * and fix the resulting negative coords
+       */
+      if (x < xinerama->x_origin)
+        x = xinerama->x_origin;
+      if (y < xinerama->y_origin)
+        y = xinerama->y_origin;      
     }
   else if (window->maximized)
     {
@@ -5670,12 +5654,21 @@ meta_window_get_work_area (MetaWindow    *window,
 {
   MetaRectangle space_area;
   GList *tmp;
+  const MetaXineramaScreenInfo *xinerama;  
+  
+  int left_strut;
+  int right_strut;
+  int top_strut;
+  int bottom_strut;  
 
-  int left_strut = 0;
-  int right_strut = 0;
-  int top_strut = 0;
-  int bottom_strut = 0;  
+  xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                  window);
 
+  left_strut = xinerama->x_origin;
+  right_strut = window->screen->width - xinerama->width - xinerama->x_origin;
+  top_strut = xinerama->y_origin;
+  bottom_strut = window->screen->height - xinerama->height - xinerama->y_origin;
+  
   tmp = meta_window_get_workspaces (window);
   
   while (tmp != NULL)
@@ -5691,7 +5684,7 @@ meta_window_get_work_area (MetaWindow    *window,
       
       tmp = tmp->next;
     }
-
+  
   area->x = left_strut;
   area->y = top_strut;
   area->width = window->screen->width - left_strut - right_strut;
