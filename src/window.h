@@ -69,7 +69,13 @@ struct _MetaWindow
   guint delete_window : 1;
   /* Globally active / No input */
   guint input : 1;
-  
+
+  /* MWM hints */
+  guint decorated : 1;
+  guint has_close_func : 1;
+  guint has_minimize_func : 1;
+  guint has_maximize_func : 1;
+
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus
    */

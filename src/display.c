@@ -79,7 +79,12 @@ meta_display_open (const char *name)
     "WM_TAKE_FOCUS",
     "WM_DELETE_WINDOW",
     "WM_STATE",
-    "_NET_CLOSE_WINDOW"
+    "_NET_CLOSE_WINDOW",
+    "_NET_WM_STATE",
+    "MOTIF_WM_HINTS",
+    "_NET_WM_STATE_SHADED",
+    "_NET_WM_STATE_MAXIMIZED_HORZ",
+    "_NET_WM_STATE_MAXIMIZED_VERT"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -157,7 +162,12 @@ meta_display_open (const char *name)
   display->atom_wm_delete_window = atoms[3];
   display->atom_wm_state = atoms[4];
   display->atom_net_close_window = atoms[5];
-
+  display->atom_net_wm_state = atoms[6];
+  display->atom_motif_wm_hints = atoms[7];
+  display->atom_net_wm_state_shaded = atoms[8];
+  display->atom_net_wm_state_maximized_horz = atoms[9];
+  display->atom_net_wm_state_maximized_vert = atoms[10];
+  
   display->double_click_time = 250;
   display->last_button_time = 0;
   display->last_button_xwindow = None;
@@ -499,6 +509,8 @@ event_queue_callback (MetaEventQueue *queue,
           xwc.height = event->xconfigurerequest.height;
           xwc.border_width = event->xconfigurerequest.border_width;
 
+          meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d\n",
+                        xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
           XConfigureWindow (display->xdisplay, event->xconfigurerequest.window,
                             xwcm, &xwc);
         }

@@ -36,6 +36,8 @@ static int      update_size_hints         (MetaWindow     *window);
 static int      update_title              (MetaWindow     *window);
 static int      update_protocols          (MetaWindow     *window);
 static int      update_wm_hints           (MetaWindow     *window);
+static int      update_net_wm_state       (MetaWindow     *window);
+static int      update_mwm_hints          (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
 static void     send_configure_notify     (MetaWindow     *window);
@@ -148,6 +150,11 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   window->minimized = FALSE;
   window->iconic = FALSE;
   window->mapped = FALSE;
+
+  window->decorated = TRUE;
+  window->has_close_func = TRUE;
+  window->has_minimize_func = TRUE;
+  window->has_maximize_func = TRUE;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
@@ -155,7 +162,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
   update_title (window);
   update_protocols (window);  
   update_wm_hints (window);
-
+  update_net_wm_state (window);
+  update_mwm_hints (window);
+  
   if (window->initially_iconic)
     {
       /* WM_HINTS said minimized */
@@ -171,8 +180,9 @@ meta_window_new (MetaDisplay *display, Window xwindow)
    * change it again.
    */
   set_wm_state (window, window->iconic ? IconicState : NormalState);
-  
-  meta_window_ensure_frame (window);
+
+  if (window->decorated)
+    meta_window_ensure_frame (window);
 
   meta_workspace_add_window (window->screen->active_workspace, window);
   
@@ -293,8 +303,10 @@ meta_window_show (MetaWindow *window)
   if (window->shaded)
     {
       window->mapped = FALSE;
+      meta_error_trap_push (window->display);
       XUnmapWindow (window->display->xdisplay, window->xwindow);
-
+      meta_error_trap_pop (window->display);
+      
       if (!window->iconic)
         {
           window->iconic = TRUE;
@@ -304,8 +316,10 @@ meta_window_show (MetaWindow *window)
   else
     {
       window->mapped = TRUE;
+      meta_error_trap_push (window->display);
       XMapWindow (window->display->xdisplay, window->xwindow);
-
+      meta_error_trap_pop (window->display);
+      
       if (window->iconic)
         {
           window->iconic = FALSE;
@@ -715,6 +729,18 @@ process_property_notify (MetaWindow     *window,
       if (window->frame)
         meta_frame_queue_recalc (window->frame);
     }
+  else if (event->atom == window->display->atom_motif_wm_hints)
+    {
+      update_mwm_hints (window);
+      
+      if (window->decorated)
+        meta_window_ensure_frame (window);
+      else
+        meta_window_destroy_frame (window);
+
+      if (window->frame)
+        meta_frame_queue_recalc (window->frame);
+    }
   
   return TRUE;
 }
@@ -857,7 +883,7 @@ static int
 update_size_hints (MetaWindow *window)
 {
   int x, y, w, h;
-
+  
   /* Save the last ConfigureRequest, which we put here.
    * Values here set in the hints are supposed to
    * be ignored.
@@ -873,7 +899,7 @@ update_size_hints (MetaWindow *window)
   XGetNormalHints (window->display->xdisplay,
                    window->xwindow,
                    &window->size_hints);
-
+  
   /* Put it back. */
   window->size_hints.x = x;
   window->size_hints.y = y;
@@ -991,7 +1017,7 @@ update_size_hints (MetaWindow *window)
       window->size_hints.win_gravity = NorthWestGravity;
       window->size_hints.flags |= PWinGravity;
     }
-  
+
   return meta_error_trap_pop (window->display);
 }
 
@@ -1141,6 +1167,149 @@ update_wm_hints (MetaWindow *window)
     }
   
   return meta_error_trap_pop (window->display);
+}
+
+static int
+update_net_wm_state (MetaWindow *window)
+{
+  /* We know this is only on initial window creation,
+   * clients don't change the property.
+   */
+  Atom type;
+  gint format;
+  gulong n_atoms;
+  gulong bytes_after;
+  Atom *atoms;
+  int result;
+  int i;
+
+  window->shaded = FALSE;
+  window->maximized = FALSE;
+  
+  meta_error_trap_push (window->display);
+  XGetWindowProperty (window->display->xdisplay, window->xwindow,
+		      window->display->atom_net_wm_state,
+                      0, G_MAXLONG,
+		      False, XA_ATOM, &type, &format, &n_atoms,
+		      &bytes_after, (guchar **)&atoms);  
+
+  result = meta_error_trap_pop (window->display);
+  if (result != Success)
+    return result;
+  
+  if (type != XA_ATOM)
+    return -1; /* whatever */
+
+  i = 0;
+  while (i < n_atoms)
+    {
+      if (atoms[i] == window->display->atom_net_wm_state_shaded)
+        window->shaded = TRUE;
+      else if (atoms[i] == window->display->atom_net_wm_state_maximized_horz)
+        window->maximized = TRUE;
+      else if (atoms[i] == window->display->atom_net_wm_state_maximized_vert)
+        window->maximized = TRUE;
+      
+      ++i;
+    }
+  
+  XFree (atoms);
+
+  return Success;
+}
+
+
+/* I don't know of any docs anywhere on what the
+ * hell most of this means. Copied from Lesstif by
+ * way of GTK
+ */
+typedef struct {
+    unsigned long flags;
+    unsigned long functions;
+    unsigned long decorations;
+    long input_mode;
+    unsigned long status;
+} MotifWmHints, MwmHints;
+
+#define MWM_HINTS_FUNCTIONS     (1L << 0)
+#define MWM_HINTS_DECORATIONS   (1L << 1)
+#define MWM_HINTS_INPUT_MODE    (1L << 2)
+#define MWM_HINTS_STATUS        (1L << 3)
+
+#define MWM_FUNC_ALL            (1L << 0)
+#define MWM_FUNC_RESIZE         (1L << 1)
+#define MWM_FUNC_MOVE           (1L << 2)
+#define MWM_FUNC_MINIMIZE       (1L << 3)
+#define MWM_FUNC_MAXIMIZE       (1L << 4)
+#define MWM_FUNC_CLOSE          (1L << 5)
+
+#define MWM_DECOR_ALL           (1L << 0)
+#define MWM_DECOR_BORDER        (1L << 1)
+#define MWM_DECOR_RESIZEH       (1L << 2)
+#define MWM_DECOR_TITLE         (1L << 3)
+#define MWM_DECOR_MENU          (1L << 4)
+#define MWM_DECOR_MINIMIZE      (1L << 5)
+#define MWM_DECOR_MAXIMIZE      (1L << 6)
+
+#define MWM_INPUT_MODELESS 0
+#define MWM_INPUT_PRIMARY_APPLICATION_MODAL 1
+#define MWM_INPUT_SYSTEM_MODAL 2
+#define MWM_INPUT_FULL_APPLICATION_MODAL 3
+#define MWM_INPUT_APPLICATION_MODAL MWM_INPUT_PRIMARY_APPLICATION_MODAL
+
+#define MWM_TEAROFF_WINDOW	(1L<<0)
+
+static int
+update_mwm_hints (MetaWindow *window)
+{
+  MotifWmHints *hints;
+  Atom type;
+  gint format;
+  gulong nitems;
+  gulong bytes_after;
+  int result;
+
+  window->decorated = TRUE;
+  window->has_close_func = TRUE;
+  window->has_minimize_func = TRUE;
+  window->has_maximize_func = TRUE;
+  
+  meta_error_trap_push (window->display);
+  XGetWindowProperty (window->display->xdisplay, window->xwindow,
+		      window->display->atom_motif_wm_hints,
+                      0, sizeof (MotifWmHints)/sizeof (long),
+		      False, AnyPropertyType, &type, &format, &nitems,
+		      &bytes_after, (guchar **)&hints);
+
+  result = meta_error_trap_pop (window->display);
+
+  if (result != Success)
+    return result;
+  
+  if (type == None)
+    return -1; /* whatever */
+
+  /* We support MWM hints deemed non-stupid */
+  
+  if (hints->flags & MWM_HINTS_DECORATIONS)
+    {
+      if (hints->decorations == 0)
+        window->decorated = FALSE;
+    }
+
+  if (hints->flags & MWM_HINTS_FUNCTIONS)
+    {
+      if ((hints->functions & MWM_FUNC_CLOSE) == 0)
+        window->has_close_func = FALSE;
+      if ((hints->functions & MWM_FUNC_MINIMIZE) == 0)
+        window->has_minimize_func = FALSE;
+      if ((hints->functions & MWM_FUNC_MAXIMIZE) == 0)
+        window->has_maximize_func = FALSE;
+    }
+
+  XFree (hints);
+  
+  return Success;
 }
 
 static void
