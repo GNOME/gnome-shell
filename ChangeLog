@@ -1,3 +1,8 @@
+2002-05-01  Havoc Pennington  <hp@redhat.com>
+
+	* src/screen.c (meta_screen_new): Xlib doesn't like NULL for out
+	arguments; fix for #80472 from lbedford
+
 2002-04-30  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c: finish mopping up mode_switch_mask field

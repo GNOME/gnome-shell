@@ -38,9 +38,13 @@ if test -n "$DEMO_TEST"; then
   TEST_CLIENT='./tools/metacity-window-demo'
 fi
 
+if test -n "$XINERAMA"; then
+  XINERAMA_FLAGS='+xinerama'
+fi
+
 if test -z "$ONLY_WM"; then
   echo "Launching Xnest"
-  Xnest -ac $XNEST_DISPLAY -scrns $SCREENS -geometry 640x480 -bw 15 &
+  Xnest -ac $XNEST_DISPLAY -scrns $SCREENS -geometry 640x480 -bw 15 $XINERAMA_FLAGS &
   ## usleep 800000
   sleep 1
 
