@@ -448,7 +448,7 @@ set_clone_restart_commands (void)
   char *session_file;
 
   session_file = g_strconcat (g_get_home_dir (),
-                              ".metacity/sessions/",
+                              "/.metacity/sessions/",
                               client_id,
                               NULL);
   
@@ -701,7 +701,7 @@ save_state (void)
                     int n;
                     n = meta_workspace_screen_index (w->data);
                     fprintf (outfile,
-                             "<workspace index=\"%d\"/>\n", n);
+                             "    <workspace index=\"%d\"/>\n", n);
 
                     w = w->next;
                   }
@@ -796,8 +796,8 @@ load_state (const char *previous_id)
   char *session_file;
 
   session_file = g_strconcat (g_get_home_dir (),
-                              ".metacity/sessions/",
-                              client_id,
+                              "/.metacity/sessions/",
+                              previous_id,
                               NULL);
 
   error = NULL;
@@ -845,7 +845,7 @@ load_state (const char *previous_id)
   g_free (text);
 }
 
-
+/* FIXME this isn't very robust against bogus session files */
 static void
 start_element_handler  (GMarkupParseContext *context,
                         const gchar         *element_name,
@@ -858,7 +858,11 @@ start_element_handler  (GMarkupParseContext *context,
 
   pd = user_data;
 
-  if (strcmp (element_name, "window") == 0)
+  if (strcmp (element_name, "metacity_session") == 0)
+    {
+      /* do nothing */
+    }
+  else if (strcmp (element_name, "window") == 0)
     {
       int i;
       
@@ -1051,8 +1055,7 @@ get_possible_matches (MetaWindow *window)
 
       info = tmp->data;
       
-      if (both_null_or_matching (info->id,
-                                 window->sm_client_id) && 
+      if (both_null_or_matching (info->id, window->sm_client_id) && 
           both_null_or_matching (info->res_class, window->res_class) &&
           both_null_or_matching (info->res_name, window->res_name) &&
           both_null_or_matching (info->role, window->role))
@@ -1065,7 +1068,37 @@ get_possible_matches (MetaWindow *window)
 
           retval = g_slist_prepend (retval, info);
         }
-        
+      else
+        {
+          if (meta_is_verbose ())
+            {
+              if (!both_null_or_matching (info->id, window->sm_client_id))
+                meta_verbose ("Window %s has SM client ID %s, saved state has %s, no match\n",
+                              window->desc,
+                              window->sm_client_id ? window->sm_client_id : "(none)",
+                              info->id ? info->id : "(none)");
+              else if (!both_null_or_matching (info->res_class, window->res_class))
+                meta_verbose ("Window %s has class %s doesn't match saved class %s, no match\n",
+                              window->desc,
+                              window->res_class ? window->res_class : "(none)",
+                              info->res_class ? info->res_class : "(none)");
+
+              else if (!both_null_or_matching (info->res_name, window->res_name))
+                meta_verbose ("Window %s has name %s doesn't match saved name %s, no match\n",
+                              window->desc,
+                              window->res_name ? window->res_name : "(none)",
+                              info->res_name ? info->res_name : "(none)");
+              else if (!both_null_or_matching (info->role, window->role))
+                meta_verbose ("Window %s has role %s doesn't match saved role %s, no match\n",
+                              window->desc,
+                              window->role ? window->role : "(none)",
+                              info->role ? info->role : "(none)");
+              else
+                meta_verbose ("???? should not happen - window %s doesn't match saved state %s for no good reason\n",
+                              window->desc, info->id);
+            }
+        }
+      
       tmp = tmp->next;
     }
 
@@ -1129,14 +1162,21 @@ meta_window_lookup_saved_state (MetaWindow *window)
    * situations other than on session restore.
    */
   if (window->sm_client_id == NULL)
-    return NULL;
+    {
+      meta_verbose ("Window %s is not session managed, not checking for saved state\n", window->desc);
+      return NULL;
+    }
 
   possibles = get_possible_matches (window);
 
   if (possibles == NULL)
-    return NULL;
+    {
+      meta_verbose ("Window %s has no possible matches in the list of saved window states\n",
+                    window->desc);
+      return NULL;
+    }
 
-  info = find_best_match (possibles, window);  
+  info = find_best_match (possibles, window);
   
   g_slist_free (possibles);
   

@@ -28,14 +28,39 @@ typedef struct _MetaWindowSessionInfo MetaWindowSessionInfo;
 
 struct _MetaWindowSessionInfo
 {
-  int workspace;
+  /* Fields we use to match against */
 
+  char *id;
+  char *res_class;
+  char *res_name;
+  char *title;
+  char *role;
+  MetaWindowType type;
+
+  /* Information we restore */
+  
+  GSList *workspace_indices;  
+  
+  /* width/height should be multiplied by resize inc and
+   * added to base size; position should be interpreted in
+   * light of gravity. This preserves semantics of the
+   * window size/pos, even if fonts/themes change, etc.
+   */
+  int gravity;
+  MetaRectangle rect;
+  guint on_all_workspaces : 1;
+
+  guint geometry_set : 1;
+  guint on_all_workspaces_set : 1;
 };
 
-void meta_window_lookup_saved_state (MetaWindow *window,
-                                     MetaWindowSessionInfo *info);
+/* If lookup_saved_state returns something, it should be used,
+ * and then released when you're done with it.
+ */
+const MetaWindowSessionInfo* meta_window_lookup_saved_state  (MetaWindow                  *window);
+void                         meta_window_release_saved_state (const MetaWindowSessionInfo *info);
 
-void meta_session_init             (const char *previous_id);
+void meta_session_init (const char *previous_id);
 
 
 #endif

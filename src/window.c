@@ -28,6 +28,7 @@
 #include "keybindings.h"
 #include "ui.h"
 #include "place.h"
+#include "session.h"
 
 #include <X11/Xatom.h>
 
@@ -85,6 +86,10 @@ static gboolean get_cardinal (MetaDisplay *display,
                               gulong      *val);
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
+
+static void meta_window_apply_session_info (MetaWindow                  *window,
+                                            const MetaWindowSessionInfo *info);
+
 
 MetaWindow*
 meta_window_new (MetaDisplay *display, Window xwindow,
@@ -451,6 +456,19 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   meta_stack_add (window->screen->stack, 
                   window);
 
+  /* Now try applying saved stuff from the session */
+  {
+    const MetaWindowSessionInfo *info;
+
+    info = meta_window_lookup_saved_state (window);
+
+    if (info)
+      {
+        meta_window_apply_session_info (window, info);
+        meta_window_release_saved_state (info);
+      }
+  }
+  
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
   
@@ -459,6 +477,72 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   meta_display_ungrab (display);
   
   return window;
+}
+
+/* This function should only be called from the end of meta_window_new () */
+static void
+meta_window_apply_session_info (MetaWindow *window,
+                                const MetaWindowSessionInfo *info)
+{
+  if (info->on_all_workspaces_set)
+    {
+      window->on_all_workspaces = info->on_all_workspaces;
+      meta_verbose ("Restoring sticky state %d for window %s\n",
+                    window->on_all_workspaces, window->desc);
+    }
+  
+  if (info->workspace_indices)
+    {
+      GSList *tmp;
+      GSList *spaces;      
+
+      spaces = NULL;
+      
+      tmp = info->workspace_indices;
+      while (tmp != NULL)
+        {
+          MetaWorkspace *space;          
+
+          space =
+            meta_display_get_workspace_by_screen_index (window->display,
+                                                        window->screen,
+                                                        GPOINTER_TO_INT (tmp->data));
+          
+          if (space)
+            spaces = g_slist_prepend (spaces, space);
+          
+          tmp = tmp->next;
+        }
+
+      if (spaces)
+        {
+          /* This briefly breaks the invariant that we are supposed
+           * to always be on some workspace. But we paranoically
+           * ensured that one of the workspaces from the session was
+           * indeed valid, so we know we'll go right back to one.
+           */
+          while (window->workspaces)
+            meta_workspace_remove_window (window->workspaces->next->data, window);
+
+          tmp = spaces;
+          while (tmp != NULL)
+            {
+              MetaWorkspace *space;
+
+              space = tmp->data;
+              
+              meta_workspace_add_window (space, window);              
+
+              meta_verbose ("Restoring saved window %s to workspace %d\n",
+                            window->desc,
+                            meta_workspace_screen_index (space));
+              
+              tmp = tmp->next;
+            }
+
+          g_slist_free (spaces);
+        }
+    }
 }
 
 void
