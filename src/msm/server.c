@@ -43,6 +43,11 @@
 
 #include "server.h"
 
+/* FIXME we need to time out anytime we're waiting for a client
+ * response, such as InteractDone, SaveYourselfDone, ConnectionClosed
+ * (after sending Die)
+ */
+
 struct _MsmServer
 {
   GList *clients;
@@ -374,8 +379,24 @@ set_properties_callback (SmsConn     cnxn,
                          int         numProps,
                          SmProp    **props)
 {
-  
+  int i;
+  MsmClient *client;
+  MsmServer *server;
 
+  client = manager_data;
+  server = msm_client_get_server (client);
+  
+  i = 0;
+  while (i < numProps)
+    {
+      msm_client_set_property (client, props[i]);
+
+      SmFreeProperty (props[i]);
+
+      ++i;
+    }
+
+  free (props);
 }
 
 static void
@@ -384,17 +405,34 @@ delete_properties_callback (SmsConn     cnxn,
                             int         numProps,
                             char      **propNames)
 {
+  int i;
+  MsmClient *client;
+  MsmServer *server;
 
+  client = manager_data;
+  server = msm_client_get_server (client);
+  
+  i = 0;
+  while (i < numProps)
+    {
+      msm_client_unset_property (propNames[i]);
+
+      ++i;
+    }
 }
 
 static void
 get_properties_callback (SmsConn     cnxn,
                          SmPointer   manager_data)
 {
+  MsmClient *client;
+  MsmServer *server;
 
+  client = manager_data;
+  server = msm_client_get_server (client);
 
+  msm_client_send_properties (client);
 }
-
 
 static Status
 new_client_callback                   (SmsConn         cnxn,
@@ -800,6 +838,8 @@ accept_connection (GIOChannel *channel,
    *
    * If this causes problems, we can try adding a g_main_iteration()
    * in here.
+   *
+   * FIXME time this out eventually
    */
   cstatus = IceConnectionStatus (cnxn);
   while (cstatus == IceConnectPending)
