@@ -8,10 +8,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.5.2\n"
+"Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-21 00:49+0200\n"
-"PO-Revision-Date: 2003-06-21 00:42+0200\n"
+"POT-Creation-Date: 2003-08-09 10:34+0200\n"
+"PO-Revision-Date: 2003-08-09 10:27+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
 
-#: src/display.c:280
+#: src/display.c:286
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
@@ -109,7 +109,7 @@ msgstr "Agrandir la fenêtre"
 msgid "Unmaximize Window"
 msgstr "Annuler l'agrandissement"
 
-#: src/keybindings.c:978
+#: src/keybindings.c:984
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -118,14 +118,14 @@ msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x comme "
 "liaisons\n"
 
-#: src/keybindings.c:2407
+#: src/keybindings.c:2413
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erreur pendant le lancement de metacity-dialog pour afficher un message "
 "d'erreur pour la commande : %s\n"
 
-#: src/keybindings.c:2438
+#: src/keybindings.c:2444
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
@@ -209,7 +209,7 @@ msgstr "Placer sur _tous les espaces de travail"
 msgid "Only on _This Workspace"
 msgstr "Uniquement sur _cet espace de travail"
 
-#: src/menu.c:152 src/prefs.c:1814
+#: src/menu.c:152 src/prefs.c:1815
 #, c-format
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
@@ -323,31 +323,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:84
+#: src/metacity-dialog.c:85
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "La fenêtre « %s » ne répond pas."
 
-#: src/metacity-dialog.c:92
+#: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Forcer cette application à quitter causera la perte de toutes les "
 "modifications non enregistrées."
 
-#: src/metacity-dialog.c:102
+#: src/metacity-dialog.c:103
 msgid "_Force Quit"
 msgstr "_Forcer quitter"
 
-#: src/metacity-dialog.c:196
+#: src/metacity-dialog.c:197
 msgid "Title"
 msgstr "Titre"
 
-#: src/metacity-dialog.c:208
+#: src/metacity-dialog.c:209
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:232
+#: src/metacity-dialog.c:233
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -356,7 +356,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:287
+#: src/metacity-dialog.c:288
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -781,7 +781,7 @@ msgstr "Passer à l'espace de travail au-dessus de celui-ci"
 
 #: src/metacity.schemas.in.h:74
 msgid "Switch to workspace below this one"
-msgstr "Passer à l'espace de travail au dessous de celui-ci"
+msgstr "Passer à l'espace de travail au-dessous de celui-ci"
 
 #: src/metacity.schemas.in.h:75
 msgid "Switch to workspace on the left"
@@ -1665,6 +1665,23 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:132
 msgid ""
+"The keybinding used to toggle always on top. A window that is always on top "
+"will always be visible over other overlapping windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"La combinaison de touches utilisée pour être toujours au-dessus. Une fenêtre "
+"qui est toujours au-dessus sera toujours visible au-dessus des autres "
+"fenêtres. Le format ressemble à « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
+"Alt&gt;F1 ». L'analyseur est trés libéral et n'est pas sensible à la casse "
+"ou aux abbréviations tel que « &lt;Ctl&gt; » ou « &lt;Ctrl&gt; ». Si vous "
+"définissez l'option à la chaîne spécial « disabled », alors il n'y aura "
+"aucune combinaison de touches pour cette action."
+
+#: src/metacity.schemas.in.h:133
+msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
 "and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
@@ -1679,7 +1696,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1695,7 +1712,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1712,7 +1729,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1730,7 +1747,7 @@ msgstr ""
 "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
 "combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1746,7 +1763,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1762,7 +1779,7 @@ msgstr ""
 "définissez l'option à la chaîne spéciale « disabled »; alors il n'y aura "
 "aucune combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1778,7 +1795,7 @@ msgstr ""
 "« <Ctrl> ». Si vous définissez l'option à la chaîne spéciale « disabled », "
 "alors il n'y aura aucune combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1794,7 +1811,7 @@ msgstr ""
 "l'option à la chaîne spéciale « disabled », alors il n'y aura aucune "
 "combinaison de touches associée à cette action."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1809,15 +1826,15 @@ msgstr ""
 "à la chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
 "touches associée à cette action."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
 msgstr "Le nom d'un espace de travail."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
 msgstr "La commande de capture d'écran"
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1825,7 +1842,7 @@ msgstr ""
 "Le thème détermine l'apparence des bordures, de la barre de titre, etc. de "
 "la fenêtre."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1833,7 +1850,7 @@ msgstr ""
 "Le délai avant la mise au premier plan de la fenêtre si l'option auto_raise "
 "a la valeur vrai. Il est indiqué en millièmes de secondes."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:146
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1848,11 +1865,11 @@ msgstr ""
 "mouse » (« souris »), signifie que les fenêtres sont activées lorsque la "
 "souris s'y place et désactivées lorsqu'elle les quitte."
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
 msgstr "La commande de capture d'écran de fenêtre"
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:148
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1873,7 +1890,7 @@ msgstr ""
 "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:149
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1889,7 +1906,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:150
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1905,7 +1922,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:151
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1922,7 +1939,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1939,7 +1956,7 @@ msgstr ""
 "». Si vous définissez l'option sur la chaîne spéciale « disabled "
 "» (désactivé), il n'y aura pas de combinaison de touches pour cette action."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1950,23 +1967,27 @@ msgstr ""
 "fenêtre à son titre, « toggle_maximize » qui maximise la fenêtre ou la remet "
 "à la taille précédente aprés maximisation."
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:154
+msgid "Toggle always on top state"
+msgstr "Basculer dans l'état toujours au-dessus"
+
+#: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
 msgstr "Basculer en mode plein écran"
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 msgid "Toggle maximization state"
 msgstr "Basculer l'agrandissement"
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 msgid "Toggle shaded state"
 msgstr "Réduire à la barre de titre/restaurer la fenêtre à sa taille normale"
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle window on all workspaces"
 msgstr "Basculer l'affichage de la fenêtre sur tous les espaces de travail"
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1976,23 +1997,23 @@ msgstr ""
 "un bip ; utile pour les malentendants et pour une utilisation dans des "
 "environnements bruyants, ou lorsque « audible bell » est off."
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
 msgstr "Restaurer une fenêtre à sa taille initiale"
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Use standard system font in window titles"
 msgstr "Utiliser la police standard du système dans les titres des fenêtres"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
 msgstr "Type de sonnerie visuelle"
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
 msgstr "Mode de focus des fenêtres"
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Window title font"
 msgstr "Police de titre des fenêtres"
 
@@ -2055,7 +2076,7 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erreur de définition du nombre d'espaces de travail sur %d : %s\n"
 
-#: src/prefs.c:1578
+#: src/prefs.c:1579
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2064,7 +2085,7 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour la combinaison de touches « %s »\n"
 
-#: src/prefs.c:1895
+#: src/prefs.c:1896
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2075,12 +2096,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:389
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "L'écran %d sur le visuel « %s » n'est pas valide\n"
 
-#: src/screen.c:405
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2090,7 +2111,7 @@ msgstr ""
 "d'utiliser l'option --replace pour remplacer le gestionnaire de fenêtres "
 "courant.\n"
 
-#: src/screen.c:446
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2098,12 +2119,12 @@ msgstr ""
 "Impossible d'avoir la sélection du gestionnaire de fenêtres sur l'écran %d "
 "du visuel « %s »\n"
 
-#: src/screen.c:502
+#: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur le visuel « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: src/screen.c:672
+#: src/screen.c:675
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur le visuel « %s »\n"
@@ -3082,7 +3103,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4509
+#: src/window.c:4534
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3098,7 +3119,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5071
+#: src/window.c:5195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3130,7 +3151,7 @@ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 "La propriété %s de la fenêtre 0x%lx contenait un code UTF-8 non valide\n"
 
-#: src/xprops.c:479
+#: src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
