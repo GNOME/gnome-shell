@@ -209,7 +209,7 @@ get_standalone_layer (MetaWindow *window)
       else if (window->fullscreen)
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)
-        layer = META_LAYER_TOP;
+        layer = META_LAYER_DOCK;
       else
         layer = META_LAYER_NORMAL;
       break;

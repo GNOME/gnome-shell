@@ -1,5 +1,10 @@
 2002-10-01  Havoc Pennington  <hp@pobox.com>
 
+	* src/stack.c (get_standalone_layer): put ABOVE windows in same
+	layer as docks.
+
+2002-10-01  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (meta_screen_resize_func): make it static
 
 	* src/stack.c (get_standalone_layer): put above/below windows 
