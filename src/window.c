@@ -104,6 +104,8 @@ static GList*   meta_window_get_workspaces (MetaWindow    *window);
 static gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                                MetaRectangle *rect);
 
+static void     meta_window_save_rect         (MetaWindow    *window);
+
 static void adjust_for_gravity               (MetaWindow        *window,
                                               MetaFrameGeometry *fgeom,
                                               gboolean           coords_assume_border,
@@ -1625,6 +1627,21 @@ meta_window_unminimize (MetaWindow  *window)
     }
 }
 
+static void
+meta_window_save_rect (MetaWindow *window)
+{
+  if (!(window->maximized || window->fullscreen))
+    {
+      /* save size/pos as appropriate args for move_resize */
+      window->saved_rect = window->rect;
+      if (window->frame)
+        {
+          window->saved_rect.x += window->frame->rect.x;
+          window->saved_rect.y += window->frame->rect.y;
+        }
+    }
+}
+
 void
 meta_window_maximize (MetaWindow  *window)
 {
@@ -1635,19 +1652,13 @@ meta_window_maximize (MetaWindow  *window)
 
       if (window->shaded)
         meta_window_unshade (window);
+
+      meta_window_save_rect (window);
       
       window->maximized = TRUE;
 
       /* FIXME why did I put this here? */
-      meta_window_raise (window);
-      
-      /* save size/pos as appropriate args for move_resize */
-      window->saved_rect = window->rect;
-      if (window->frame)
-        {
-          window->saved_rect.x += window->frame->rect.x;
-          window->saved_rect.y += window->frame->rect.y;
-        }
+      meta_window_raise (window);      
       
       /* move_resize with new maximization constraints
        */
@@ -1689,6 +1700,8 @@ meta_window_make_fullscreen (MetaWindow  *window)
 
       if (window->shaded)
         meta_window_unshade (window);
+
+      meta_window_save_rect (window);
       
       window->fullscreen = TRUE;
 
@@ -1697,14 +1710,6 @@ meta_window_make_fullscreen (MetaWindow  *window)
       
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
-      
-      /* save size/pos as appropriate args for move_resize */
-      window->saved_rect = window->rect;
-      if (window->frame)
-        {
-          window->saved_rect.x += window->frame->rect.x;
-          window->saved_rect.y += window->frame->rect.y;
-        }
       
       /* move_resize with new constraints
        */

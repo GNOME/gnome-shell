@@ -1,5 +1,12 @@
 2002-09-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (meta_window_save_rect): new function, 
+	only saves rect after checking current state, #93795
+	(meta_window_make_fullscreen): use new function
+	(meta_window_maximize): use new function
+
+2002-09-24  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (meta_window_update_layer): new function
 
 	* src/stack.c (compute_layer): put focused window in a layer above
