@@ -5043,11 +5043,9 @@ constrain_position (MetaWindow *window,
        * prevents fullscreen, center the window within
        * the screen area.
        */
-      x += (window->screen->width - window->rect.width -
-            (window->frame ? (fgeom->left_width + fgeom->right_width) : 0)) / 2;
+      x += (window->screen->width - window->rect.width) / 2;
 
-      y += (window->screen->height - window->rect.height -
-            (window->frame ? (fgeom->top_height + fgeom->bottom_height) : 0)) / 2;
+      y += (window->screen->height - window->rect.height) / 2;
     }
   else if (window->maximized)
     {

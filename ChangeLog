@@ -1,3 +1,8 @@
+2002-05-21  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (constrain_position): fix positioning in fullscreen
+	mode, patch from Gustavo Giráldez
+
 2002-05-20  Alessio Frusciante  <algol@firenze.linux.it>
 
 	* configure.in: Added Italian to ALL_LINGUAS. 
