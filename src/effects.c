@@ -28,37 +28,56 @@ typedef struct
   
   GC gc;
 
-  int step;
-  int steps;
+  double millisecs_duration;
+  GTimeVal start_time;
+
+  gboolean first_time;
+
+  MetaRectangle start_rect;
+  MetaRectangle end_rect;
+
+  /* rect to erase */
+  MetaRectangle last_rect;
   
-  double current_x, current_y;
-  double current_width, current_height;
-  
-  double delta_x, delta_y;
-  double delta_width, delta_height;
 } BoxAnimationContext;
 
 static gboolean
 effects_draw_box_animation_timeout (BoxAnimationContext *context)
 {
-  if (context->step == 0)
-    {
-      /* It's our first time, grab the X server */
-      meta_display_grab (context->screen->display);
-    }
-  else
+  double elapsed;
+  GTimeVal current_time;
+  MetaRectangle draw_rect;
+  double fraction;
+  
+  if (!context->first_time)
     {
       /* Restore the previously drawn background */
       XDrawRectangle (context->screen->display->xdisplay,
                       context->screen->xroot,
                       context->gc,
-                      context->current_x, context->current_y,
-                      context->current_width, context->current_height);
+                      context->last_rect.x, context->last_rect.y,
+                      context->last_rect.width, context->last_rect.height);
     }
 
-  /* Return if we're done */
-  if (context->step == context->steps)
+  context->first_time = FALSE;
+
+  g_get_current_time (&current_time);
+  
+  /* We use milliseconds for all times */
+  elapsed =
+    ((((double)current_time.tv_sec - context->start_time.tv_sec) * G_USEC_PER_SEC +
+      (current_time.tv_usec - context->start_time.tv_usec))) / 1000.0;
+  
+  if (elapsed < 0)
     {
+      /* Probably the system clock was set backwards? */
+      meta_warning ("System clock seemed to go backwards?\n");
+      elapsed = G_MAXDOUBLE; /* definitely done. */
+    }
+
+  if (elapsed > context->millisecs_duration)
+    {
+      /* All done */
       meta_display_ungrab (context->screen->display);
       XFreeGC (context->screen->display->xdisplay,
                context->gc);
@@ -66,19 +85,31 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
       return FALSE;
     }
 
-  context->current_x += context->delta_x;
-  context->current_y += context->delta_y;
-  context->current_width += context->delta_width;
-  context->current_height += context->delta_height;
-	
+  g_assert (context->millisecs_duration > 0.0);
+  fraction = elapsed / context->millisecs_duration;
+  
+  draw_rect = context->start_rect;
+  
+  /* Now add a delta proportional to elapsed time. */
+  draw_rect.x += (context->end_rect.x - context->start_rect.x) * fraction;
+  draw_rect.y += (context->end_rect.y - context->start_rect.y) * fraction;
+  draw_rect.width += (context->end_rect.width - context->start_rect.width) * fraction;
+  draw_rect.height += (context->end_rect.height - context->start_rect.height) * fraction;
+
+  /* don't confuse X with bogus rectangles */
+  if (draw_rect.width < 1)
+    draw_rect.width = 1;
+  if (draw_rect.height < 1)
+    draw_rect.height = 1;
+  
+  context->last_rect = draw_rect;
+  
   /* Draw the rectangle */
   XDrawRectangle (context->screen->display->xdisplay,
                   context->screen->xroot,
                   context->gc,
-                  context->current_x, context->current_y,
-                  context->current_width, context->current_height);  
-
-  context->step += 1;
+                  draw_rect.x, draw_rect.y,
+                  draw_rect.width, draw_rect.height);
 
   return TRUE;
 }
@@ -87,12 +118,16 @@ void
 meta_effects_draw_box_animation (MetaScreen *screen,
                                  MetaRectangle *initial_rect,
                                  MetaRectangle *destination_rect,
-                                 int steps,
-                                 int delay)
+                                 double         seconds_duration)
 {
   BoxAnimationContext *context;
   XGCValues gc_values;
 
+  g_return_if_fail (seconds_duration > 0.0);
+
+  if (g_getenv ("METACITY_DEBUG_EFFECTS"))
+    seconds_duration *= 10; /* slow things down */
+  
   /* Create the animation context */
   context = g_new (BoxAnimationContext, 1);
 	
@@ -105,20 +140,20 @@ meta_effects_draw_box_animation (MetaScreen *screen,
                            screen->xroot,
                            GCSubwindowMode | GCFunction,
                            &gc_values);
-  context->step = 0;
-  context->steps = steps;
-  context->delta_x = (destination_rect->x - initial_rect->x) / (double)steps;
-  context->delta_y = (destination_rect->y - initial_rect->y) / (double)steps;
-  context->delta_width = (destination_rect->width - initial_rect->width) / (double)steps;
-  context->delta_height = (destination_rect->height - initial_rect->height) / (double)steps;
+
+  context->millisecs_duration = seconds_duration * 1000.0;
+  g_get_current_time (&context->start_time);
+  context->first_time = TRUE;
+  context->start_rect = *initial_rect;
+  context->end_rect = *destination_rect;
   
-  context->current_x = initial_rect->x;
-  context->current_y = initial_rect->y;
-  context->current_width = initial_rect->width;
-  context->current_height = initial_rect->height;
+  /* Grab the X server to avoid screen dirt */
+  meta_display_grab (context->screen->display);
   
-  /* Add the timeout */
-  g_timeout_add (delay,
+  /* Add the timeout - a short one, could even use an idle,
+   * but this is maybe more CPU-friendly.
+   */
+  g_timeout_add (15,
                  (GSourceFunc)effects_draw_box_animation_timeout,
                  context);
 }

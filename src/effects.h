@@ -25,16 +25,12 @@
 #include "util.h"
 #include "screen.h"
 
-#define META_MINIMIZE_ANIMATION_STEPS 16
-#define META_MINIMIZE_ANIMATION_DELAY 20
-
-#define META_SHADE_ANIMATION_STEPS 7
-#define META_SHADE_ANIMATION_DELAY 15
+#define META_MINIMIZE_ANIMATION_LENGTH 0.3
+#define META_SHADE_ANIMATION_LENGTH 0.15
 
 void meta_effects_draw_box_animation (MetaScreen    *screen,
                                       MetaRectangle *initial_rect,
                                       MetaRectangle *destination_rect,
-                                      int            steps,
-                                      int            delay);
+                                      double         seconds_duration);
 
 #endif /* META_EFFECTS_H */

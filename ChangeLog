@@ -1,5 +1,11 @@
 2001-08-06  Havoc Pennington  <hp@pobox.com>
 
+	* src/effects.c (meta_effects_draw_box_animation): 
+	modify to be smoother (at least theoretically) by 
+	syncing to current time and "dropping frames" 
+	as appropriate. A precursor to flashier animations
+	that take more CPU to do.
+
 	* src/window.c (meta_window_shade): draw animation 
 	for shading too
 
