@@ -1,3 +1,7 @@
+2003-12-20  Arafat Medini <lumina@silverpen.de>
+
+	* configure.in: Added Arabic locale "ar" to ALL_LINGUAS
+
 2003-12-17  Rob Adams  <readams@readams.net>
 
 	* src/display.c (meta_display_open): initialize
