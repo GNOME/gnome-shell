@@ -16,6 +16,7 @@ typedef enum ClutterPhotoGridState
   CLTR_PHOTO_GRID_STATE_ZOOMED        ,
   CLTR_PHOTO_GRID_STATE_ZOOM_OUT      ,
   CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE   ,
+  CLTR_PHOTO_GRID_STATE_SCROLLED_MOVE ,
 } 
 ClutterPhotoGridState;
 
@@ -51,6 +52,7 @@ struct ClutterPhotoGrid
 
   int            n_rows;
   int            n_cols;
+  int            row_offset; 	/* for scrolling */
 
   int            cell_width;
   int            cell_height;
@@ -58,16 +60,19 @@ struct ClutterPhotoGrid
   GList         *cells_tail;
   GList         *cell_active;
 
-  /* animation stuff  */
+  /* animation / zoom etc stuff  */
 
   int            anim_n_steps, anim_step;
 
   float          zoom_min, zoom_max, zoom_step;
 
-  /* below needs better naming */
   float          view_min_x, view_max_x, view_min_y, view_max_y; 
 
+  float          scroll_dist;
+
   ClutterPhotoGridState  state;
+
+  int                    scroll_state, scroll_step; /* urg */
 
 };
 

@@ -41,6 +41,9 @@ cltr_texture_render_to_gl_quad(CltrTexture *texture,
   qwidth  = x2-x1;
   qheight = y2-y1;
 
+  if (texture->tiles == NULL)
+    cltr_texture_realize(texture);
+
   for (x=0; x < texture->n_x_tiles; x++)
     {
       lasty = 0;
@@ -200,8 +203,6 @@ init_tiles (CltrTexture *texture)
 		  texture->tile_y_size,
 		  texture->tile_y_waste);
   
-  texture->tiles = g_new (GLuint, texture->n_x_tiles * texture->n_y_tiles);
-  glGenTextures (texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
 
 #if 0
   /* debug info */
@@ -233,23 +234,25 @@ init_tiles (CltrTexture *texture)
 
 /* End borrowed luminocity code */
 
-CltrTexture*
-cltr_texture_new(Pixbuf *pixb)
+void
+cltr_texture_unrealize(CltrTexture *texture)
 {
-  CltrTexture *texture;
+  if (texture->tiles == NULL)
+    return;
+
+  glDeleteTextures(texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
+  g_free(texture->tiles);
+
+  texture->tiles = NULL;
+}
+
+void
+cltr_texture_realize(CltrTexture *texture)
+{
   int        x, y, i = 0;
 
-  CLTR_MARK();
-
-  texture = g_malloc0(sizeof(CltrTexture));
-
-  texture->width  = pixb->width;
-  texture->height = pixb->height;
-  texture->pixb   = pixb;
-
-  pixbuf_ref(pixb);
-
-  init_tiles (texture);
+  texture->tiles = g_new (GLuint, texture->n_x_tiles * texture->n_y_tiles);
+  glGenTextures (texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
 
   for (x=0; x < texture->n_x_tiles; x++)
     for (y=0; y < texture->n_y_tiles; y++)
@@ -306,6 +309,27 @@ cltr_texture_new(Pixbuf *pixb)
 	i++;
 
       }
+}
+
+CltrTexture*
+cltr_texture_new(Pixbuf *pixb)
+{
+  CltrTexture *texture;
+
+
+  CLTR_MARK();
+
+  texture = g_malloc0(sizeof(CltrTexture));
+
+  texture->width  = pixb->width;
+  texture->height = pixb->height;
+
+  /* maybe we should copy the pixbuf - a change to refed one would explode */
+  texture->pixb   = pixb;
+
+  pixbuf_ref(pixb);
+
+  init_tiles (texture);
 
   return texture;
 }

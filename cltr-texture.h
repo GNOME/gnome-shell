@@ -7,6 +7,12 @@ CltrTexture*
 cltr_texture_new(Pixbuf *pixb);
 
 void
+cltr_texture_unrealize(CltrTexture *texture);
+
+void
+cltr_texture_realize(CltrTexture *texture);
+
+void
 cltr_texture_render_to_gl_quad(CltrTexture *texture, 
 			       int          x1, 
 			       int          y1, 

@@ -314,7 +314,7 @@ main(int argc, char **argv)
 
   win = cltr_window_new(640, 480);
 
-  grid = cltr_photo_grid_new(win, 5, 5, argv[1]);
+  grid = cltr_photo_grid_new(win, 3, 3, argv[1]);
 
   Grid = grid; 			/* laaaaaazy globals */
 

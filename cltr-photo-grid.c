@@ -57,6 +57,7 @@ cltr_photo_grid_append_cell(ClutterPhotoGrid     *grid,
 
 } 
 
+/* relative */
 static void
 ctrl_photo_grid_cell_to_coords(ClutterPhotoGrid *grid,
 			       GList            *cell,
@@ -65,7 +66,9 @@ ctrl_photo_grid_cell_to_coords(ClutterPhotoGrid *grid,
 {
   int idx;
 
-  idx = g_list_position(grid->cells_tail, cell);
+  idx = g_list_position(grid->cells_tail, cell);  
+
+  /* idx -= (grid->row_offset * grid->n_cols);  */
 
   *y = idx / grid->n_cols;
   *x = idx % grid->n_cols;
@@ -87,6 +90,33 @@ ctrl_photo_grid_get_zoomed_coords(ClutterPhotoGrid *grid,
 
   *tx = (float)grid->cell_width  * (grid->zoom_max) * x * -1.0;
   *ty = (float)grid->cell_height * (grid->zoom_max) * y * -1.0;
+
+}
+
+static gboolean
+cell_is_offscreen(ClutterPhotoGrid *grid,
+		  GList            *cell,
+		  CltrDirection    *where)
+{
+  int idx;
+
+  idx = g_list_position(grid->cells_tail, cell);  
+
+  CLTR_DBG("idx %i, rows*cols %i", idx, grid->n_cols * grid->n_rows);
+
+  if (idx < (grid->row_offset * grid->n_cols))
+    {
+      if (where) *where = CLTR_NORTH;
+      return TRUE; 		/* scroll up */
+    }
+
+  if (idx >= ((grid->row_offset * grid->n_cols)+(grid->n_cols * grid->n_rows)))
+    {
+      if (where) *where = CLTR_SOUTH;
+      return TRUE; 		/* scroll down */
+    }
+
+  return FALSE;
 }
 
 gboolean
@@ -103,6 +133,7 @@ cltr_photo_grid_idle_cb(gpointer data)
     case CLTR_PHOTO_GRID_STATE_ZOOM_IN:
     case CLTR_PHOTO_GRID_STATE_ZOOM_OUT:
     case CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE:
+    case CLTR_PHOTO_GRID_STATE_SCROLLED_MOVE:
       return TRUE;
     case CLTR_PHOTO_GRID_STATE_ZOOMED:
     case CLTR_PHOTO_GRID_STATE_BROWSE:        
@@ -140,12 +171,45 @@ cltr_photo_grid_navigate(ClutterPhotoGrid *grid,
 
   if (cell_orig != grid->cell_active) /* we've moved */
     {
-      int   x, y;
-      float zoom = grid->zoom_min;
+      int           x, y;
+      float         zoom = grid->zoom_min;
+      CltrDirection where;
+
+      if (cell_is_offscreen(grid, grid->cell_active, &where))
+	{
+	  GList *cell_item = NULL;
+
+	  cell_item = g_list_nth(grid->cells_tail, 
+				 grid->n_cols * grid->row_offset);
+
+	  if (grid->state != CLTR_PHOTO_GRID_STATE_ZOOMED)
+	    grid->state = CLTR_PHOTO_GRID_STATE_SCROLLED_MOVE;
+	  
+	  /* scroll */
+	  if (where == CLTR_NORTH)
+	    { 		/* up */
+	      grid->scroll_dist = grid->cell_height;
+	      grid->row_offset--;
+	    }
+	  else
+	    {
+	      grid->scroll_dist = - grid->cell_height;
+	      grid->row_offset++;
+	    }
+	  
+	  if (grid->state != CLTR_PHOTO_GRID_STATE_ZOOMED)	      
+	    g_idle_add(cltr_photo_grid_idle_cb, grid);
+	}
 
       if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED)
 	{
 	  grid->state      = CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE;
+
+	  /* 
+	     XXX view_min|max should be view_start|end
+
+	  */
+
 	  grid->view_min_x = grid->view_max_x; 
 	  grid->view_min_y = grid->view_max_y ;
 	  grid->anim_step  = 0;
@@ -173,14 +237,16 @@ cltr_photo_grid_activate_cell(ClutterPhotoGrid *grid)
     {
       grid->state = CLTR_PHOTO_GRID_STATE_ZOOM_IN;
 
+
       g_idle_add(cltr_photo_grid_idle_cb, grid);
     }
   else if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED)
     {
       grid->state = CLTR_PHOTO_GRID_STATE_ZOOM_OUT;
 	/* reset - zoomed moving will have reset */
+
       grid->view_min_x = 0.0; 
-      grid->view_min_y = 0.0;
+      grid->view_min_y = 0.0; /*- (grid->row_offset * grid->cell_height);*/
 
       g_idle_add(cltr_photo_grid_idle_cb, grid);
     }
@@ -218,11 +284,6 @@ cltr_photo_grid_populate(gpointer data)
     }
 
   CLTR_DBG("estamited %i pixb's\n", n_pixb);
-
-  /*
-  grid->texs = util_malloc0(sizeof(GLuint)*n_pixb);
-  glGenTextures(n_pixb, grid->texs);
-  */
 
   g_dir_rewind (dir);
 
@@ -275,7 +336,7 @@ cltr_photo_grid_populate(gpointer data)
 void
 cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 {
-  int x = 0, y = 0, rows = grid->n_rows, cols = 0, i =0;
+  int x = 0, y = 0, rows = grid->n_rows+1, cols = 0, i =0;
   GList *cell_item;
   float zoom, trans_x, trans_y;
 
@@ -323,12 +384,17 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
   /* Assume zoomed out */
   zoom    = grid->zoom_min;
   trans_x = grid->view_min_x;
-  trans_y = grid->view_min_y;
+  trans_y = grid->view_min_y - (grid->row_offset * grid->cell_height);
+
+  y = grid->row_offset * grid->cell_height;
+
+  cell_item = g_list_nth(grid->cells_tail, grid->n_cols * grid->row_offset);
 
   if (grid->state != CLTR_PHOTO_GRID_STATE_BROWSE
       && grid->state != CLTR_PHOTO_GRID_STATE_LOADING
       && grid->state != CLTR_PHOTO_GRID_STATE_LOAD_COMPLETE)
     {
+      float scroll_min_y_offset = (float)(grid->row_offset * grid->cell_height);
       /* Assume zoomed in */
       zoom    = grid->zoom_max; 
       trans_x = grid->view_max_x;
@@ -349,9 +415,13 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	    {
 	      float f = (float)grid->anim_step/grid->anim_n_steps;
 
+	      scroll_min_y_offset *= grid->zoom_max;
+
 	      zoom = grid->zoom_min + ((grid->zoom_max - grid->zoom_min) * f);
 	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
-	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+	      trans_y = (grid->view_max_y - grid->view_min_y  +  scroll_min_y_offset) * f;
+	      y = 0;
+
 	    }
 	
 	} 
@@ -364,7 +434,7 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 	      zoom            = grid->zoom_min;
 	      grid->anim_step = 0;
 	      trans_x         = grid->view_min_x;
-	      trans_y         = grid->view_min_y;
+	      trans_y         = grid->view_min_y - scroll_min_y_offset; 
 	      grid->state     = CLTR_PHOTO_GRID_STATE_BROWSE;
 	    }
 	  else 
@@ -373,8 +443,13 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 		        / grid->anim_n_steps;
 
 	      zoom = grid->zoom_min + (grid->zoom_max - grid->zoom_min) * f;
+	      scroll_min_y_offset *= grid->zoom_max;
 	      trans_x = (grid->view_max_x - grid->view_min_x) * f;
-	      trans_y = (grid->view_max_y - grid->view_min_y) * f;
+	      trans_y = ((grid->view_max_y - grid->view_min_y +  scroll_min_y_offset) * f)   ;
+	      y = 0;
+
+	      printf("%f,%f, %f\n", grid->view_max_y, grid->view_min_y, scroll_min_y_offset);
+	     
 	    }
 	}
       else if (grid->state == CLTR_PHOTO_GRID_STATE_ZOOMED_MOVE)
@@ -395,14 +470,40 @@ cltr_photo_grid_redraw(ClutterPhotoGrid *grid)
 
 	    }
 	}
+      else if (grid->state == CLTR_PHOTO_GRID_STATE_SCROLLED_MOVE)
+	{
+	  zoom    = grid->zoom_min;
+	  trans_x = grid->view_min_x;
+	  trans_y = grid->view_min_y - (grid->row_offset * grid->cell_height);
 
+	  grid->anim_step++;
 
+	  if (grid->anim_step >= grid->anim_n_steps)
+	    {
+	      grid->state = CLTR_PHOTO_GRID_STATE_BROWSE;
+	      grid->anim_step = 0;
+	    }
+	  else
+	    {
+	      float f = (float)grid->anim_step / grid->anim_n_steps;
+	      trans_y += (grid->scroll_dist * f);
+
+	      if (grid->scroll_dist > 0) /* up */
+		{
+		  y = (grid->row_offset-1) * grid->cell_height;
+		  /* cell_item = g_list_nth(grid->cells_tail, grid->n_cols * (grid->row_offset+1));*/
+		}
+	      else 		/* down */
+		{
+		  cell_item = g_list_nth(grid->cells_tail, grid->n_cols * (grid->row_offset-1));
+		  // rows++;
+		}
+	    }
+	}
     }
 
   glTranslatef( trans_x, trans_y, 0.0);
   glScalef( zoom, zoom, 0.0);
-
-  cell_item = g_list_first(grid->cells_tail);
 
   while (rows--)
     {
@@ -552,12 +653,14 @@ cltr_photo_grid_new(ClutterWindow *win,
      grid->zoom      = 1.0;
   */
   grid->zoom_min  = 1.0;		      
-  grid->view_min_x = 0.0;
+  grid->view_min_x = (grid->width - (grid->zoom_min * grid->width))/2.0;
   grid->view_min_y = 0.0;
 
 
   /* Assmes cols == rows */
-  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0) - 0.3;
+  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0); //  - 0.3;
+
+  grid->row_offset = 0;
 
   /* Below needs to go else where - some kind of texture manager/helper */
 
