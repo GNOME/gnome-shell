@@ -632,7 +632,7 @@ meta_core_set_screen_cursor (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
 
-  meta_screen_set_cursor (window->screen, cursor);
+  meta_frame_set_screen_cursor (window->frame, cursor);
 }
 
 void

@@ -43,6 +43,8 @@ struct _MetaFrame
   /* reparent window */
   Window xwindow;
 
+  MetaCursor current_cursor;
+
   /* This rect is trusted info from where we put the
    * frame, not the result of ConfigureNotify
    */
@@ -71,6 +73,8 @@ void meta_frame_sync_to_window     (MetaFrame         *frame,
                                     gboolean           need_move,
                                     gboolean           need_resize);
 
+void meta_frame_set_screen_cursor (MetaFrame	*frame,
+				   MetaCursor	cursor);
 
 #endif
 

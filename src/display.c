@@ -2247,6 +2247,8 @@ xcursor_for_op (MetaDisplay *display,
       break;
     }
 
+  if (cursor == META_CURSOR_DEFAULT)
+    return None;
   return meta_display_create_x_cursor (display, cursor);
 }
 
@@ -2305,7 +2307,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
     }
 #undef GRAB_MASK
   
-  XFreeCursor (display->xdisplay, cursor);
+  if (cursor != None)
+    XFreeCursor (display->xdisplay, cursor);
 }
 
 gboolean

@@ -54,6 +54,7 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->child_y = 0;
   frame->bottom_height = 0;
   frame->right_width = 0;
+  frame->current_cursor = 0;
 
   frame->mapped = FALSE;
   
@@ -351,3 +352,21 @@ meta_frame_queue_draw (MetaFrame *frame)
   meta_ui_queue_frame_draw (frame->window->screen->ui,
                             frame->xwindow);
 }
+
+void meta_frame_set_screen_cursor (MetaFrame	*frame,
+				   MetaCursor	cursor)
+{
+  Cursor xcursor;
+  if (cursor == frame->current_cursor)
+    return;
+  frame->current_cursor = cursor;
+  if (cursor == META_CURSOR_DEFAULT)
+    XUndefineCursor (frame->window->display->xdisplay, frame->xwindow);
+  else
+    { 
+      xcursor = meta_display_create_x_cursor (frame->window->display, cursor);
+      XDefineCursor (frame->window->display->xdisplay, frame->xwindow, xcursor);
+      XFreeCursor (frame->window->display->xdisplay, xcursor);
+    }
+}
+
