@@ -150,11 +150,11 @@ msgstr "Dji n' a nén savou renonder: %s\n"
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr "Å pus gr_and"
+msgstr "Å pus _ptit"
 
 #: src/menu.c:53
 msgid "Ma_ximize"
-msgstr "Å pus _ptit"
+msgstr "Å pus gr_and"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
