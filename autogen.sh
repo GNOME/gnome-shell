@@ -112,14 +112,18 @@ do
 	echo "Running libtoolize..."
 	libtoolize --force --copy
       fi
+
       echo "Running $ACLOCAL $aclocalinclude ..."
       $ACLOCAL $aclocalinclude
+
       if grep "^AM_CONFIG_HEADER" configure.in >/dev/null; then
 	echo "Running autoheader..."
 	autoheader
       fi
+
       echo "Running $AUTOMAKE --gnu $am_opt ..."
       $AUTOMAKE --add-missing --gnu $am_opt
+
       echo "Running autoconf ..."
       autoconf
     )

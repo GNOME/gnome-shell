@@ -627,6 +627,24 @@ meta_window_new (MetaDisplay *display, Window xwindow,
           outer.height >= workarea.height)
         meta_window_maximize (window);
     }
+  /* Assume screen-size undecorated windows are intended to be
+   * fullscreen
+   */
+  else if (window->has_fullscreen_func && !window->decorated &&
+           !window->maximized)
+    {
+      const MetaXineramaScreenInfo *xinerama;
+      MetaRectangle outer;
+
+      xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                      window);
+      
+      meta_window_get_outer_rect (window, &outer);
+      
+      if (outer.width >= xinerama->width &&
+          outer.height >= xinerama->height)
+        meta_window_make_fullscreen (window);
+    }
   
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -1661,6 +1679,7 @@ meta_window_shade (MetaWindow  *window)
               "Shading %s\n", window->desc);
   if (!window->shaded)
     {
+#if 0
       if (window->mapped)
         {
           /* Animation */
@@ -1682,7 +1701,8 @@ meta_window_shade (MetaWindow  *window)
                                            META_SHADE_ANIMATION_LENGTH,
                                            META_BOX_ANIM_SLIDE_UP);
         }
-
+#endif
+      
       window->shaded = TRUE;
 
       meta_window_queue_move_resize (window);
@@ -2785,25 +2805,35 @@ meta_window_focus (MetaWindow  *window,
 void
 meta_window_change_workspace (MetaWindow    *window,
                               MetaWorkspace *workspace)
-{  
+{
+  GList *next;
+  
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
   
   /* See if we're already on this space. If not, make sure we are */
   if (g_list_find (window->workspaces, workspace) == NULL)
-    {
-      meta_workspace_add_window (workspace, window);
-    }
+    meta_workspace_add_window (workspace, window);
+
   /* unstick if stuck */
   if (window->on_all_workspaces)
     meta_window_unstick (window);
   
-  /* Lamely rely on prepend */
-  g_assert (window->workspaces->data == workspace);  
-  
   /* Remove from all other spaces */
-  while (window->workspaces->next) /* while list size > 1 */
-    meta_workspace_remove_window (window->workspaces->next->data, window);
+  next = window->workspaces;
+  while (next != NULL)
+    {
+      MetaWorkspace *remove;
+      remove = next->data;
+      next = next->next;
+
+      if (remove != workspace)
+        meta_workspace_remove_window (remove, window);
+    }
+
+  /* list size == 1 */
+  g_assert (window->workspaces != NULL);
+  g_assert (window->workspaces->next == NULL);
 }
 
 void

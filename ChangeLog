@@ -1,3 +1,20 @@
+2002-07-28  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_shade): disable animation when shading
+	windows, just doesn't really convey the idea anyway.
+
+	* src/effects.c: Move to using a shaped window instead of
+	IncludeInferiors to do the animations, looks a lot better
+	because we don't have to grab the server.
+
+	* src/window.c (meta_window_change_workspace): remove bogus
+	assertion that was causing a crash
+	(meta_window_new): auto-fullscreen huge undecorated windows.
+
+	* src/keybindings.c (switch_to_workspace): use
+	meta_window_change_workspace() to avoid same bug in cut-and-paste
+	code from there
+	
 2002-08-06  He Qiangqiang  <carton@linux.net.cn>
 
 	* configure.in: Added "zh_CN" to ALL_LINGUAS.

@@ -24,13 +24,28 @@
 
 #include "util.h"
 #include "window.h"
+#include "frame.h"
+
+typedef enum
+{
+  META_RESIZE_LEFT_OR_TOP,
+  META_RESIZE_CENTER,
+  META_RESIZE_RIGHT_OR_BOTTOM
+} MetaResizeDirection;
 
 void meta_window_constrain (MetaWindow          *window,
                             MetaFrameGeometry   *fgeom,
-                            int                  resize_gravity,
                             const MetaRectangle *orig,
+                            int                  x_move_delta,
+                            int                  y_move_delta,
+                            MetaResizeDirection  x_direction,
+                            int                  x_delta,
+                            MetaResizeDirection  y_direction,
+                            int                  y_delta,
                             MetaRectangle       *new);
 
+MetaResizeDirection meta_x_direction_from_gravity (int gravity);
+MetaResizeDirection meta_y_direction_from_gravity (int gravity);
 
 #endif /* META_CONSTRAINTS_H */
 

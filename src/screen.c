@@ -535,6 +535,7 @@ meta_screen_free (MetaScreen *screen)
   g_free (screen->screen_name);
   g_free (screen);
 
+  XFlush (display->xdisplay);
   meta_display_ungrab (display);
 }
 

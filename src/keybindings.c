@@ -729,6 +729,8 @@ meta_display_init_keys (MetaDisplay *display)
 void
 meta_display_shutdown_keys (MetaDisplay *display)
 {
+  /* Note that display->xdisplay is invalid in this function */
+  
   meta_prefs_remove_listener (bindings_changed_callback, display);
 
   if (display->keymap)
@@ -1995,12 +1997,8 @@ switch_to_workspace (MetaDisplay *display,
 
   if (move_window)
     {
-      /* Lamely rely on prepend */
-      g_assert (move_window->workspaces->data == workspace);
-                
-      while (move_window->workspaces->next) /* while list size > 1 */
-        meta_workspace_remove_window (move_window->workspaces->next->data,
-                                      move_window);
+      /* Removes window from other spaces */
+      meta_window_change_workspace (move_window, workspace);
     }
 }
 

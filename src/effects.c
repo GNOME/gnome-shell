@@ -19,9 +19,22 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include "effects.h"
 #include "display.h"
 #include "ui.h"
+
+#ifdef HAVE_SHAPE
+#include <X11/extensions/shape.h>
+#endif
+
+typedef enum
+{
+  META_ANIMATION_DRAW_ROOT,
+  META_ANIMATION_WINDOW_WIREFRAME,
+  META_ANIMATION_WINDOW_OPAQUE
+
+} MetaAnimationStyle;
 
 typedef struct
 {
@@ -41,11 +54,14 @@ typedef struct
   /* used instead of the global flag, since
    * we don't want to change midstream.
    */
-  gboolean use_opaque;
+  MetaAnimationStyle style;
   
-  /* For wireframe */
+  /* For wireframe drawn on root window */
   GC gc;
 
+  /* For wireframe window */
+  Window wireframe_xwindow;
+  
   /* For opaque */
   MetaImageWindow *image_window;
   GdkPixbuf       *orig_pixbuf;
@@ -53,6 +69,61 @@ typedef struct
   MetaBoxAnimType anim_type;
   
 } BoxAnimationContext;
+
+static void
+update_wireframe_window (MetaDisplay         *display,
+                         Window               xwindow,
+                         const MetaRectangle *rect)
+{
+  XMoveResizeWindow (display->xdisplay,
+                     xwindow,
+                     rect->x, rect->y,
+                     rect->width, rect->height);
+
+#ifdef HAVE_SHAPE  
+
+#define OUTLINE_WIDTH 3
+  
+  if (rect->width > OUTLINE_WIDTH * 2 &&
+      rect->height > OUTLINE_WIDTH * 2)
+    {
+      XRectangle xrect;
+      Region inner_xregion;
+      Region outer_xregion;
+      
+      inner_xregion = XCreateRegion ();
+      outer_xregion = XCreateRegion ();
+
+      xrect.x = 0;
+      xrect.y = 0;
+      xrect.width = rect->width;
+      xrect.height = rect->height;
+  
+      XUnionRectWithRegion (&xrect, outer_xregion, outer_xregion);
+  
+      xrect.x += OUTLINE_WIDTH;
+      xrect.y += OUTLINE_WIDTH;
+      xrect.width -= OUTLINE_WIDTH * 2;
+      xrect.height -= OUTLINE_WIDTH * 2;  
+  
+      XUnionRectWithRegion (&xrect, inner_xregion, inner_xregion);
+
+      XSubtractRegion (outer_xregion, inner_xregion, outer_xregion);
+
+      XShapeCombineRegion (display->xdisplay, xwindow,
+                           ShapeBounding, 0, 0, outer_xregion, ShapeSet);
+  
+      XDestroyRegion (outer_xregion);
+      XDestroyRegion (inner_xregion);
+    }
+  else
+    {
+      /* Unset the shape */
+      XShapeCombineMask (display->xdisplay, xwindow,
+                         ShapeBounding, 0, 0, None, ShapeSet);
+    }
+#endif
+}
 
 static gboolean
 effects_draw_box_animation_timeout (BoxAnimationContext *context)
@@ -64,7 +135,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   
   if (!context->first_time)
     {
-      if (!context->use_opaque)
+      if (context->style == META_ANIMATION_DRAW_ROOT)
         {
           /* Restore the previously drawn background */
           XDrawRectangle (context->screen->display->xdisplay,
@@ -94,17 +165,22 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   if (elapsed > context->millisecs_duration)
     {
       /* All done */
-      if (context->use_opaque)
+      if (context->style == META_ANIMATION_WINDOW_OPAQUE)
         {
           g_object_unref (G_OBJECT (context->orig_pixbuf));
           meta_image_window_free (context->image_window);
         }
-      else
+      else if (context->style == META_ANIMATION_DRAW_ROOT)
         {
           meta_display_ungrab (context->screen->display);
           meta_ui_pop_delay_exposes (context->screen->ui);
           XFreeGC (context->screen->display->xdisplay,
                    context->gc);
+        }
+      else if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
+        {
+          XDestroyWindow (context->screen->display->xdisplay,
+                          context->wireframe_xwindow);
         }
       
       g_free (context);
@@ -130,7 +206,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   
   context->last_rect = draw_rect;
 
-  if (context->use_opaque)
+  if (context->style == META_ANIMATION_WINDOW_OPAQUE)
     {
       GdkPixbuf *scaled;
 
@@ -174,7 +250,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
           g_object_unref (G_OBJECT (scaled));
         }
     }
-  else
+  else if (context->style == META_ANIMATION_DRAW_ROOT)
     {
       /* Draw the rectangle */
       XDrawRectangle (context->screen->display->xdisplay,
@@ -182,6 +258,12 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
                       context->gc,
                       draw_rect.x, draw_rect.y,
                       draw_rect.width, draw_rect.height);
+    }
+  else if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
+    {
+      update_wireframe_window (context->screen->display,
+                               context->wireframe_xwindow,
+                               &draw_rect);
     }
 
   /* kick changes onto the server */
@@ -198,7 +280,7 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
  * and unmapping of windows that's going on.
  */
  
-static gboolean use_opaque_animations = FALSE;
+static MetaAnimationStyle animation_style = META_ANIMATION_WINDOW_WIREFRAME;
 
 void
 meta_effects_draw_box_animation (MetaScreen     *screen,
@@ -225,9 +307,14 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
   context->end_rect = *destination_rect;
   context->anim_type = anim_type;
 
-  context->use_opaque = use_opaque_animations;
+  context->style = animation_style;
 
-  if (context->use_opaque)
+#ifndef HAVE_SHAPE
+  if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
+    context->style = META_ANIMATION_DRAW_ROOT;
+#endif
+  
+  if (context->style == META_ANIMATION_WINDOW_OPAQUE)
     {
       GdkPixbuf *pix;
       
@@ -242,7 +329,7 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
       if (pix == NULL)
         {
           /* Fall back to wireframe */
-          context->use_opaque = FALSE;
+          context->style = META_ANIMATION_WINDOW_WIREFRAME;
         }
       else
         {
@@ -258,7 +345,36 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
     }
 
   /* Not an else, so that fallback works */
-  if (!context->use_opaque)
+  if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
+    {
+      XSetWindowAttributes attrs;
+
+      attrs.override_redirect = True;
+      attrs.background_pixel = BlackPixel (screen->display->xdisplay,
+                                           screen->number);
+      
+      context->wireframe_xwindow = XCreateWindow (screen->display->xdisplay,
+                                                  screen->xroot,
+                                                  initial_rect->x,
+                                                  initial_rect->y,
+                                                  initial_rect->width,
+                                                  initial_rect->height,
+                                                  0,
+                                                  CopyFromParent,
+                                                  CopyFromParent,
+                                                  CopyFromParent,
+                                                  CWOverrideRedirect | CWBackPixel,
+                                                  &attrs);
+
+      update_wireframe_window (screen->display,
+                               context->wireframe_xwindow,
+                               initial_rect);
+
+      XMapWindow (screen->display->xdisplay,
+                  context->wireframe_xwindow);
+    }
+  
+  if (context->style == META_ANIMATION_DRAW_ROOT)
     {
       XGCValues gc_values;
       

@@ -633,6 +633,8 @@ meta_display_close (MetaDisplay *display)
   if (display->leader_window != None)
     XDestroyWindow (display->xdisplay, display->leader_window);
 
+  XFlush (display->xdisplay);
+  
 #ifndef USE_GDK_DISPLAY
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);
