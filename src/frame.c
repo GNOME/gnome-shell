@@ -203,24 +203,35 @@ MetaFrameFlags
 meta_frame_get_flags (MetaFrame *frame)
 {
   MetaFrameFlags flags;
-  
-  flags = META_FRAME_ALLOWS_MENU;
-  
-  if (frame->window->has_close_func)
-    flags |= META_FRAME_ALLOWS_DELETE;
-  
-  if (frame->window->has_maximize_func)
-    flags |= META_FRAME_ALLOWS_MAXIMIZE;
 
-  if (frame->window->has_minimize_func)
-    flags |= META_FRAME_ALLOWS_MINIMIZE;
+  flags = 0;
 
-  if (frame->window->has_shade_func)
-    flags |= META_FRAME_ALLOWS_SHADE;
-
+  if (frame->window->border_only)
+    {
+      ; /* FIXME this may disable the _function_ as well as decor
+         * in some cases, which is sort of wrong.
+         */
+    }
+  else
+    {
+      flags |= META_FRAME_ALLOWS_MENU;
+      
+      if (frame->window->has_close_func)
+        flags |= META_FRAME_ALLOWS_DELETE;
+      
+      if (frame->window->has_maximize_func)
+        flags |= META_FRAME_ALLOWS_MAXIMIZE;
+      
+      if (frame->window->has_minimize_func)
+        flags |= META_FRAME_ALLOWS_MINIMIZE;
+      
+      if (frame->window->has_shade_func)
+        flags |= META_FRAME_ALLOWS_SHADE;
+    }  
+  
   if (frame->window->has_move_func)
     flags |= META_FRAME_ALLOWS_MOVE;
-
+  
   if (frame->window->has_resize_func &&
       !frame->window->maximized &&
       !frame->window->shaded)

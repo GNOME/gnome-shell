@@ -363,6 +363,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->unmaps_pending = 0;
   
   window->mwm_decorated = TRUE;
+  window->mwm_border_only = FALSE;
   window->mwm_has_close_func = TRUE;
   window->mwm_has_minimize_func = TRUE;
   window->mwm_has_maximize_func = TRUE;
@@ -4091,6 +4092,7 @@ update_mwm_hints (MetaWindow *window)
   MotifWmHints *hints;
 
   window->mwm_decorated = TRUE;
+  window->mwm_border_only = FALSE;
   window->mwm_has_close_func = TRUE;
   window->mwm_has_minimize_func = TRUE;
   window->mwm_has_maximize_func = TRUE;
@@ -4117,6 +4119,9 @@ update_mwm_hints (MetaWindow *window)
 
       if (hints->decorations == 0)
         window->mwm_decorated = FALSE;
+      /* some input methods use this */
+      else if (hints->decorations == MWM_DECOR_BORDER)
+        window->mwm_border_only = TRUE;
     }
   else
     meta_verbose ("Decorations flag unset\n");
@@ -4903,6 +4908,7 @@ recalc_window_features (MetaWindow *window)
 {
   /* Use MWM hints initially */
   window->decorated = window->mwm_decorated;
+  window->border_only = window->mwm_border_only;
   window->has_close_func = window->mwm_has_close_func;
   window->has_minimize_func = window->mwm_has_minimize_func;
   window->has_maximize_func = window->mwm_has_maximize_func;

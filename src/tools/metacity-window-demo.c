@@ -151,6 +151,37 @@ set_gtk_window_type (GtkWindow  *window,
                          type);
 }
 
+static void
+set_gdk_window_border_only (GdkWindow *window)
+{
+  gdk_window_set_decorations (window, GDK_DECOR_BORDER);
+}
+
+static void
+on_realize_set_border_only (GtkWindow *window,
+                            gpointer   data)
+{
+  g_return_if_fail (GTK_WIDGET_REALIZED (window));
+  
+  set_gdk_window_border_only (GTK_WIDGET (window)->window);
+}
+
+static void
+set_gtk_window_border_only (GtkWindow  *window)
+{
+  g_signal_handlers_disconnect_by_func (G_OBJECT (window),
+                                        on_realize_set_border_only,
+                                        NULL);
+                                
+  g_signal_connect_after (G_OBJECT (window),
+                          "realize",
+                          G_CALLBACK (on_realize_set_border_only),
+                          NULL);
+
+  if (GTK_WIDGET_REALIZED (window))
+    set_gdk_window_border_only (GTK_WIDGET (window)->window);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -327,6 +358,31 @@ override_redirect_cb (gpointer             callback_data,
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
   label = gtk_label_new ("This is an override\nredirect window\nand should not be managed");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  gtk_widget_show_all (window);
+}
+
+static void
+border_only_cb (gpointer             callback_data,
+                guint                callback_action,
+                GtkWidget           *widget)
+{
+  GtkWidget *window;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  set_gtk_window_border_only (GTK_WINDOW (window));
+  gtk_window_set_title (GTK_WINDOW (window), "Border only");
+  
+  gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (callback_data));
+  
+  vbox = gtk_vbox_new (FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  label = gtk_label_new ("This window is supposed to have a border but no titlebar.");
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   
   gtk_widget_show_all (window);
@@ -567,7 +623,8 @@ static GtkItemFactoryEntry menu_items[] =
   { "/Windows/Des_ktop",      NULL,          desktop_cb,              0, NULL },
   { "/Windows/Me_nu",         NULL,          menu_cb,                 0, NULL },
   { "/Windows/Tool_bar",      NULL,          toolbar_cb,              0, NULL },
-  { "/Windows/Override Redirect",      NULL,          override_redirect_cb,              0, NULL }
+  { "/Windows/Override Redirect",      NULL,          override_redirect_cb,              0, NULL },
+  { "/Windows/Border Only",      NULL,          border_only_cb,              0, NULL }
 };
 
 static void

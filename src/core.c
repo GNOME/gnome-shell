@@ -66,6 +66,7 @@ meta_core_get_frame_type (Display *xdisplay,
 {
   MetaDisplay *display;
   MetaWindow *window;
+  MetaFrameType base_type;
   
   display = meta_display_for_x_display (xdisplay);
   window = meta_display_lookup_x_window (display, frame_xwindow);
@@ -73,26 +74,28 @@ meta_core_get_frame_type (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
 
+  base_type = META_FRAME_TYPE_LAST;
+  
   switch (window->type)
     {
     case META_WINDOW_NORMAL:
-      return META_FRAME_TYPE_NORMAL;
+      base_type = META_FRAME_TYPE_NORMAL;
       break;
       
     case META_WINDOW_DIALOG:
-      return META_FRAME_TYPE_DIALOG;
+      base_type = META_FRAME_TYPE_DIALOG;
       break;
       
     case META_WINDOW_MODAL_DIALOG:
-      return META_FRAME_TYPE_MODAL_DIALOG;
+      base_type = META_FRAME_TYPE_MODAL_DIALOG;
       break;
       
     case META_WINDOW_MENU:
-      return META_FRAME_TYPE_MENU;
+      base_type = META_FRAME_TYPE_MENU;
       break;
 
     case META_WINDOW_UTILITY:
-      return META_FRAME_TYPE_UTILITY;
+      base_type = META_FRAME_TYPE_UTILITY;
       break;
       
     case META_WINDOW_DESKTOP:
@@ -100,12 +103,16 @@ meta_core_get_frame_type (Display *xdisplay,
     case META_WINDOW_TOOLBAR:
     case META_WINDOW_SPLASHSCREEN:
       /* No frame */
-      return META_FRAME_TYPE_LAST;
+      base_type = META_FRAME_TYPE_LAST;
       break;
     }
 
-  g_assert_not_reached ();
-  return META_FRAME_TYPE_LAST;
+  if (base_type == META_FRAME_TYPE_LAST)
+    return META_FRAME_TYPE_LAST; /* can't add border if undecorated */
+  else if (window->border_only)
+    return META_FRAME_TYPE_BORDER; /* override base frame type */
+  else
+    return base_type;
 }
 
 GdkPixbuf*

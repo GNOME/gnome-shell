@@ -3690,7 +3690,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
     {
       GdkRectangle rect;
       GdkRectangle combined_clip;
-
+      
       switch ((MetaFramePiece) i)
         {
         case META_FRAME_PIECE_ENTIRE_BACKGROUND:
@@ -5119,6 +5119,8 @@ meta_frame_type_from_string (const char *str)
     return META_FRAME_TYPE_UTILITY;
   else if (strcmp ("menu", str) == 0)
     return META_FRAME_TYPE_MENU;
+  else if (strcmp ("border", str) == 0)
+    return META_FRAME_TYPE_BORDER;
 #if 0
   else if (strcmp ("toolbar", str) == 0)
     return META_FRAME_TYPE_TOOLBAR;
@@ -5142,6 +5144,8 @@ meta_frame_type_to_string (MetaFrameType type)
       return "utility";
     case META_FRAME_TYPE_MENU:
       return "menu";
+    case META_FRAME_TYPE_BORDER:
+      return "border";
 #if 0
     case META_FRAME_TYPE_TOOLBAR:
       return "toolbar";

@@ -1,3 +1,21 @@
+2002-06-21  Havoc Pennington  <hp@pobox.com>
+
+        Theme breakage! Themes have to implement "border" frames 
+	now, see Atlanta for an example. Fixes #84285
+	
+	* src/tools/metacity-window-demo.c (do_appwindow): add a
+	border-only window
+
+	* src/window.c (update_mwm_hints): read border only from the MWM
+	hints
+
+	* src/window.h (struct _MetaWindow): add border_only flag
+
+	* src/core.c (meta_core_get_frame_type): report border type if
+	required
+
+	* src/common.h (enum): add META_FRAME_TYPE_BORDER
+
 2002-06-20  Mark McLoughlin  <mark@skynet.ie>
 
 	* src/window.c: (meta_window_visible_on_workspace): sticky

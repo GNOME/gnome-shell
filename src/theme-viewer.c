@@ -318,6 +318,36 @@ menu_contents (void)
 }
 
 static GtkWidget*
+border_only_contents (void)
+{
+  GtkWidget *event_box;
+  GtkWidget *vbox;
+  GtkWidget *w;
+  GdkColor color;
+
+  event_box = gtk_event_box_new ();
+
+  color.red = 40000;
+  color.green = 0;
+  color.blue = 40000;
+  gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &color);
+  
+  vbox = gtk_vbox_new (FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 3);
+  
+  w = gtk_label_new ("Border-only window");
+  gtk_box_pack_start (GTK_BOX (vbox), w, FALSE, FALSE, 0);
+  w = gtk_button_new_with_label ("Bar");
+  gtk_box_pack_start (GTK_BOX (vbox), w, FALSE, FALSE, 0);
+
+  gtk_container_add (GTK_CONTAINER (event_box), vbox);
+  
+  gtk_widget_show_all (event_box);
+  
+  return event_box;
+}
+
+static GtkWidget*
 get_window_contents (MetaFrameType  type,
                      const char   **title)
 {
@@ -348,6 +378,11 @@ get_window_contents (MetaFrameType  type,
       return menu_contents ();
       break;
 
+    case META_FRAME_TYPE_BORDER:
+      *title = "Border";
+      return border_only_contents ();
+      break;
+      
     case META_FRAME_TYPE_LAST:
       g_assert_not_reached ();
       break;
@@ -392,6 +427,9 @@ get_window_flags (MetaFrameType type)
                  META_FRAME_ALLOWS_MAXIMIZE);
       break;
 
+    case META_FRAME_TYPE_BORDER:
+      break;
+      
     case META_FRAME_TYPE_LAST:
       g_assert_not_reached ();
       break;

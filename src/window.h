@@ -131,6 +131,7 @@ struct _MetaWindow
   
   /* MWM hints about features of window */
   guint mwm_decorated : 1;
+  guint mwm_border_only : 1;
   guint mwm_has_close_func : 1;
   guint mwm_has_minimize_func : 1;
   guint mwm_has_maximize_func : 1;
@@ -139,6 +140,7 @@ struct _MetaWindow
   
   /* Computed features of window */
   guint decorated : 1;
+  guint border_only : 1;
   guint always_sticky : 1;
   guint has_close_func : 1;
   guint has_minimize_func : 1;
