@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-13 22:16+0100\n"
-"PO-Revision-Date: 2004-02-11 19:46+0100\n"
+"POT-Creation-Date: 2004-03-09 09:57+0100\n"
+"PO-Revision-Date: 2004-03-09 10:41+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
-#: src/display.c:296
+#: src/display.c:297
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -99,7 +99,7 @@ msgstr "Maksimer vindu"
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
-#: src/keybindings.c:987
+#: src/keybindings.c:989
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,14 +108,14 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2518
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Feil under oppstart av metacity-dialog for å skrive ut en feil om en "
 "kommando: %s\n"
 
-#: src/keybindings.c:2627
+#: src/keybindings.c:2591
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
@@ -160,83 +160,83 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
 
-#: src/menu.c:53
+#: src/menu.c:54
 msgid "Mi_nimize"
 msgstr "Mi_nimer"
 
-#: src/menu.c:54
+#: src/menu.c:55
 msgid "Ma_ximize"
 msgstr "Ma_ksimer"
 
-#: src/menu.c:55
+#: src/menu.c:56
 msgid "Unma_ximize"
 msgstr "G_jenopprett"
 
-#: src/menu.c:56
+#: src/menu.c:57
 msgid "Roll _Up"
 msgstr "Rull _opp"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Unroll"
 msgstr "R_ull ned"
 
-#: src/menu.c:58 src/menu.c:59
+#: src/menu.c:59 src/menu.c:60
 msgid "On _Top"
 msgstr "_Over"
 
-#: src/menu.c:60
+#: src/menu.c:61
 msgid "_Move"
 msgstr "_Flytt"
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "_Resize"
 msgstr "End_re størrelse"
 
 #. separator
-#: src/menu.c:63
+#: src/menu.c:64
 msgid "_Close"
 msgstr "_Lukk"
 
 #. separator
-#: src/menu.c:65
+#: src/menu.c:66
 msgid "Put on _All Workspaces"
 msgstr "Plasser på _alle arbeidsområder"
 
-#: src/menu.c:66
+#: src/menu.c:67
 msgid "Only on _This Workspace"
 msgstr "Kun på de_tte arbeidsområdet"
 
-#: src/menu.c:67
+#: src/menu.c:68
 msgid "Move to Workspace _Left"
 msgstr "Flytt til arbeidsområdet ti_l venstre"
 
-#: src/menu.c:68
+#: src/menu.c:69
 msgid "Move to Workspace R_ight"
 msgstr "Flytt til a_rbeidsområdet til høyre"
 
-#: src/menu.c:69
+#: src/menu.c:70
 msgid "Move to Workspace _Up"
 msgstr "Flytt til arbeidsområdet _over"
 
-#: src/menu.c:70
+#: src/menu.c:71
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
-#: src/menu.c:159 src/prefs.c:1854
+#: src/menu.c:160 src/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: src/menu.c:168
+#: src/menu.c:169
 msgid "Workspace 1_0"
 msgstr "Arbeidsområde 1_0"
 
-#: src/menu.c:170
+#: src/menu.c:171
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: src/menu.c:365
+#: src/menu.c:366
 msgid "Move to Another _Workspace"
 msgstr "Flytt til et annet ar_beidsområde"
 
@@ -417,7 +417,7 @@ msgid ""
 "Duplicate buttons are not allowed. Unknown button names are silently ignored "
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
-msgstr ""
+msgstr "Plassering av knapper på tittellinjen. Verdien skal være en streng av type «menu:minimize,maximize,close»; kolon skiller venstre hjørne av vinduet fra høyre hjørne, og knappenavnene skilles av komma. Duplisering av knapper er ikke lovlig. Ukjente knapper ignoreres uten tilbakemelding slik at knapper kan legges til i fremtidige versjoner uten å ødelegge for eldre versjoner."
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
@@ -429,7 +429,7 @@ msgid ""
 "(left click), resize the window (middle click), or show the window menu "
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
-msgstr ""
+msgstr "Klikk på et vindu mens denne endringstasten holdes nede vil aktivere flytting av vindu (venstreklikk), endring av størrelse på vindu (klikk med midterste knapp), eller vise vindusmenyen (høyreklikk). Endringstasten uttrykkes som for eksempel «&lt;Alt&gt;» eller «&lt;Super&gt;»."
 
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
@@ -472,13 +472,15 @@ msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
-msgstr ""
+msgstr "Hvis denne er sann og fokusmodus er enten «sloppy» eller «mouse» vil fokusert vindu heves automatisk etter en pause (pausen spesifiseres av nøkkelen auto_raise_delay)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
-msgstr "Hvis denne settes vil «titlebar_font» ignoreres og forvalgt skrift vil brukes for vindustitler."
+msgstr ""
+"Hvis denne settes vil «titlebar_font» ignoreres og forvalgt skrift vil "
+"brukes for vindustitler."
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -487,7 +489,7 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
-msgstr ""
+msgstr "Hvis denne er sann vil metacity gi bruker mindre informasjon og inntrykk av «direkte manipulasjon», ved å vise kun ramme ved flytting og å unngå animasjoner. Dette er en betydelig reduksjon i brukervennlighet for mange brukere, men kan la eldre applikasjoner og termialtjenere fungere på en bedre måte."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -500,11 +502,11 @@ msgid ""
 "questionable. But it's better than having settings for all the specific "
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr ""
+msgstr "Hvis denne settes til sann vil Metacity forholde seg til applikasjoner i stedet for vinduer. Konseptet er litt abstrakt, men i praksis er applikasjonsbasert oppsett mer likt Mac, og mindre likt Windows. Når du fokuserer et vindu i applikasjonsbasert modus vil alle vinduer i applikasjonen heves. I tillegg vil ikke fokusklikk sendes gjennom til vinduer i andre applikasjoner i applikasjonsbasert modus. Det kan stilles spørsmål ved denne nøkkelens eksistens, men det er bedre enn å ha innstillinger for alle spesifikke detaljer for applikasjonsbasert kontra vindusbasert. For eksempel om klikk skal sendes gjennom. I tillegg er applikasjonsbasert modus i stor grad ikke implementert ennå."
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "Hvis sann, prioriter ressursbruk fremfor brukervennlighet"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -644,7 +646,10 @@ msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr "Antall arbeidsområder. Må være større enn null og har et fast maksimum (for å hindre at noen ødelegger skrivebordet ved å be om 34 millioner arbeidsområder ved en feiltagelse)."
+msgstr ""
+"Antall arbeidsområder. Må være større enn null og har et fast maksimum (for "
+"å hindre at noen ødelegger skrivebordet ved å be om 34 millioner "
+"arbeidsområder ved en feiltagelse)."
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
@@ -684,7 +689,7 @@ msgid ""
 "world is an ugly place. Some of the workarounds are workarounds for "
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
-msgstr ""
+msgstr "Noen applikasjoner bryter spesifikasjoner på måter som resulterer i at vindushåndterere implementerer dårlige funksjoner for å støtte dette. Ideelt sett vil Metacity plassere alle dialoger på en konsistent måte i forhold til opphavsvinduet. Dette krever at applikasjonsspesifiserte posisjoner for dialoger ignoreres, men noen versjoner av Java/Swing merker sine oppsprettmenyer som dialoger, så Metacity må deaktivere dialogplassering for å la menyer fungere i disse Java-applikasjonene. Det er flere eksempler på dette. Dette alternativet setter Metacity i korrekt modus hvilket kanskje gir et noe bedre brukergrensesnitt hvis du ikke trenger å kjøre noen av disse dårlige applikasjonene. Beklageligvis må dette være aktivert som forvalg; den virkelige verden er et stygt sted. Noe av dette er også for å komme rundt begrensninger i standarder, så noen ganger vil man måtte rette opp spesifikasjoner for å komme rundt problemer i korrekt modus."
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 1"
@@ -771,27 +776,27 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr ""
+msgstr "Forteller Metacity hvordan synlig tilbakemelding på at systempip eller andre applikasjonsspesifikke pip har vært aktivert. Det er to gyldige verdier; «fullscreen» som forårsaker et sort/hvitt blink over hele skjermen, og «frame_flash», som forårsaker at tittellinjen i applikasjonen som sendte pipet blinker. Hvis applikasjonen som sendte pipet er ukjent (hvilket er tilfelle for forvalgt «systempip») vil tittellinjen i fokusert vindu blinke."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
-msgstr ""
+msgstr "Nøklene /apps/metacity/global_keybindings/run_command_N definerer tastaturbindinger som korresponderer til disse kommandoene. Aktivering av tastaturbinding for run_command_N vil utføre kommando_N."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
+msgstr "Nøkkelen /apps/metacity/global_keybindings/run_command_screenshot definerer en tataturbinding som medfører at kommandoen som oppgis av denne innstillingen kjøres."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
-msgstr ""
+msgstr "Nøkkelen /apps/metacity/global_keybindings/run_command_window_screenshot definerer en tastaturbinding som medfører at kommandoen som oppgis av denne innstillingen kjøres."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -1724,7 +1729,7 @@ msgid ""
 "them, \"sloppy\" means windows are focused when the mouse enters the window, "
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
-msgstr ""
+msgstr "Fokusmodus for vindu indikerer hvordan vinduer aktiveres. Denne har tre mulige verdier; «click» betyr at vinduer må klikkes for å fokusere dem, «sloppy» betyr at vinduer fokuseres når muspekeren er over vinduet, og «mus» betyr at vinduer fokuseres når muspekeren er over vinduet og at fokus fjernes når muspekeren forlater vinduet."
 
 #: src/metacity.schemas.in.h:149
 msgid "The window screenshot command"
@@ -1816,7 +1821,7 @@ msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr ""
+msgstr "Dette alternativet bestemmer effekten av dobbeltklikk på tittellinjen. Gyldige alternativer er «toggle_shade», hvilket vil rulle ned/opp vinduet, og «toggle_maximizes» som vil maksimere/gjenopprette vinduet."
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
@@ -1843,7 +1848,7 @@ msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
-msgstr ""
+msgstr "Aktiverer en synlig indikator når en applikasjon eller systemet lager et pip; nyttig for hørselsskadde og for bruk i støyende miljøer, eller når hørbart pip er slått av."
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize a window"
@@ -1939,12 +1944,12 @@ msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:415
+#: src/screen.c:399
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: src/screen.c:431
+#: src/screen.c:415
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1953,19 +1958,19 @@ msgstr ""
 "Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
 "flagget --replace for å erstatte aktiv vindushåndterer.\n"
 
-#: src/screen.c:455
+#: src/screen.c:439
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
 
-#: src/screen.c:513
+#: src/screen.c:497
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
 
-#: src/screen.c:704
+#: src/screen.c:688
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
@@ -3093,7 +3098,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4730
+#: src/window.c:4743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3109,7 +3114,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5392
+#: src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
