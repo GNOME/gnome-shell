@@ -188,6 +188,10 @@ struct _MetaDisplay
    */
   MetaWindow *focus_window;
 
+ /* Window that was the actual window from focus events before focus_window
+  */
+  MetaWindow *previously_focused_window;
+
   /* window we are expecting a FocusIn event for
    */
   MetaWindow *expected_focus_window;

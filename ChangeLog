@@ -1,3 +1,21 @@
+2004-09-15  Elijah Newren  <newren@math.utah.edu>
+
+	Focus correct window after minimizing via the tasklist (fixes
+	#128200; see also #107681)
+
+	* src/display.h (struct _MetaDisplay): track the
+	previously_focused_window
+
+	* src/display.c (meta_display_open): initialize
+	previously_focused_window
+
+	* src/window.c (meta_window_free): clear the
+	previously_focused_window if it's being freed,
+	(meta_window_client_message): if we get a request to minimize the
+	previously_focused_window and the focus_window is a dock or the
+	desktop, focus the default window, (meta_window_notify_focus):
+	update the previously_focused_window
+
 2004-09-13  Rob Adams  <readams@readams.net>
 
 	* configure.in: post-release increment
