@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.377\n"
-"POT-Creation-Date: 2002-06-09 23:42-0400\n"
+"POT-Creation-Date: 2002-06-13 20:29+0900\n"
 "PO-Revision-Date: 2002-04-17 09:50+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -994,22 +994,24 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to override the current window manager.\n"
 msgstr ""
+"디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다; 현재 "
+"창 관리자를 무시하는 -- 바꿈 옵션을 사용해보십시오.\n"
 
 #: src/screen.c:252
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "디스플레이 '%2$s'의 화면 %1$d를 떼어 놓을수 없습니다\n"
+msgstr "디스플레이 \"%2$s\"의 화면 %1$d에 창 관리 선택을 가질 수 없습니다\n"
 
 #: src/screen.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "디스플레이 '%2$s'의 화면 %1$d는 이미 창 관리자가 실행되고 있습니다\n"
+msgstr "디스플레이 \"%2$s\"의 화면 %1$d는 이미 창 관리자가 실행되고 있습니다\n"
 
 #: src/screen.c:510
-#, fuzzy, c-format
+#, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "디스플레이 '%2$s'의 화면 %1$d를 떼어 놓을수 없습니다\n"
+msgstr "디스플레이 \"%2$s\"의 화면 %1$d를 떼어 놓을수 없습니다\n"
 
 #: src/session.c:273
 #, c-format
@@ -1118,18 +1120,17 @@ msgstr ""
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "버튼의 가로세로 비 %g 가 적당하지 않습니다"
 
 #: src/theme.c:290
-#, fuzzy
 msgid "Frame geometry does not specify size of buttons"
-msgstr "프레임 위치가 \"%s\"차원으로 지정되지 않았습니다"
+msgstr "프레임 위치가 버튼의 크기로 지정되지 않았습니다"
 
-#: src/theme.c:654
+#: src/theme.c:655
 msgid "Gradients should have at least two colors"
 msgstr "서서히 변하는 색으로 지정하려면 최소 2색이 필요합니다"
 
-#: src/theme.c:780
+#: src/theme.c:781
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1138,7 +1139,7 @@ msgstr ""
 "GTK 색상 지정은 중괄호안에 있어야 합니다, 예: gtk:fg[NORMAL] NORMAL은 값; \"%"
 "s\"를 분석할 수 없습니다"
 
-#: src/theme.c:794
+#: src/theme.c:795
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1147,17 +1148,17 @@ msgstr ""
 "GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다, 예: gtk:fg[NORMAL]NORMAL"
 "은 값; \"%s\"를 분석할 수 없습니다"
 
-#: src/theme.c:805
+#: src/theme.c:806
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "색상 지정의 \"%s\" 값을 이해할 수 없습니다"
 
-#: src/theme.c:818
+#: src/theme.c:819
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "색상 지정의 색상 구성요소 \"%s\"를 이해할 수 없습니다"
 
-#: src/theme.c:848
+#: src/theme.c:849
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1166,57 +1167,55 @@ msgstr ""
 "섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"는 형식에 맞지 않"
 "습니다"
 
-#: src/theme.c:859
+#: src/theme.c:860
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "색상 섞기에서 알파 값 \"%s\"를 분석할 수 없습니다"
 
-#: src/theme.c:869
+#: src/theme.c:870
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "색상 섞기에서 알파 값 \"%s\"는 0.0 과 1.0사이의 값이 아닙니다"
 
-#: src/theme.c:916
-#, fuzzy, c-format
+#: src/theme.c:917
+#, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"는 형식에 맞지 않"
-"습니다"
 
-#: src/theme.c:927
-#, fuzzy, c-format
+#: src/theme.c:928
+#, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "색상 섞기에서 알파 값 \"%s\"를 분석할 수 없습니다"
+msgstr ""
 
-#: src/theme.c:937
+#: src/theme.c:938
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr ""
 
-#: src/theme.c:966
+#: src/theme.c:967
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "색상 \"%s\"을 분석할 수 없습니다"
 
-#: src/theme.c:1228
+#: src/theme.c:1229
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "좌표식에 허용되지 않는 문자 '%s'가 포함되어 있습니다"
 
-#: src/theme.c:1255
+#: src/theme.c:1256
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "좌표식에 분석할 수 없는 부동소수점 숫자 '%s'가 포함되어 있습니다"
 
-#: src/theme.c:1269
+#: src/theme.c:1270
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "좌표식에 분석할 수 없는 정수 '%s'가 포함되어 있습니다"
 
-#: src/theme.c:1336
+#: src/theme.c:1337
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1224,34 +1223,34 @@ msgid ""
 msgstr ""
 "좌표식에 이 글자 시작부분에 알수없는 연산자가 포함되어 있습니다: \"%s\""
 
-#: src/theme.c:1393
+#: src/theme.c:1394
 msgid "Coordinate expression was empty or not understood"
 msgstr "좌표식이 비어있거나 이해할 수 없습니다"
 
-#: src/theme.c:1532 src/theme.c:1542 src/theme.c:1576
+#: src/theme.c:1533 src/theme.c:1543 src/theme.c:1577
 msgid "Coordinate expression results in division by zero"
 msgstr "좌표식의 결과 값이 0로 나누었습니다"
 
-#: src/theme.c:1584
+#: src/theme.c:1585
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "좌표식에서 부동소수점 수에 나머지 연산을 하려 합니다"
 
-#: src/theme.c:1641
+#: src/theme.c:1642
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "좌표식에서 피연산자가 들어갈 곳에 연산자 \"%s\"가 있습니다"
 
-#: src/theme.c:1650
+#: src/theme.c:1651
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "좌표식에서 연산자가 들어갈 곳에 피연산자가 있습니다"
 
-#: src/theme.c:1658
+#: src/theme.c:1659
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "좌표식에서 피연산자 대신에 연산자로 끝나있습니다"
 
-#: src/theme.c:1668
+#: src/theme.c:1669
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1259,7 +1258,7 @@ msgid ""
 msgstr ""
 "좌표식에서 피연산자가 없는 연산자 \"%2$c\"다음에 연산자 \"%1$c\"가 있습니다"
 
-#: src/theme.c:1787
+#: src/theme.c:1788
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -1267,29 +1266,29 @@ msgstr ""
 "좌표식 분석기의 버퍼가 넘쳤습니다. 이것은 Metacity의 벌레입니다, 하지만 혹시 "
 "그와 같은 아주 큰 표현식이 필요합니까?"
 
-#: src/theme.c:1816
+#: src/theme.c:1817
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "좌표식에 닫는 괄호는 있지만 여는 괄호가 없습니다"
 
-#: src/theme.c:1879
+#: src/theme.c:1880
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "좌표식에 알 수 없는 변수나 상수 \"%s\"가 있습니다"
 
-#: src/theme.c:1936
+#: src/theme.c:1937
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "좌표식에 여는 괄호는 있지만 닫는 괄호가 없습니다"
 
-#: src/theme.c:1947
+#: src/theme.c:1948
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
 
-#: src/theme.c:2191 src/theme.c:2213 src/theme.c:2234
+#: src/theme.c:2192 src/theme.c:2214 src/theme.c:2235
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "테마가 오류 값을 내는 표현 \"%s\"을 포함하고 있습니다: %s\n"
 
-#: src/theme.c:3564
+#: src/theme.c:3565
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1298,7 +1297,7 @@ msgstr ""
 "이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
 "\"/>가 지정되어야 합니다"
 
-#: src/theme.c:3973 src/theme.c:4005
+#: src/theme.c:3975 src/theme.c:4007
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1306,37 +1305,37 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
 "다"
 
-#: src/theme.c:4056
+#: src/theme.c:4058
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "테마 \"%s\"를 읽을 수 없습니다: %s\n"
 
-#: src/theme.c:4202
+#: src/theme.c:4204
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "테마 \"%s\"의 이름이 없습니다"
 
-#: src/theme.c:4209
+#: src/theme.c:4211
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "테마 \"%s\"에 저작자가 표시되어 있지 않습니다"
 
-#: src/theme.c:4216
+#: src/theme.c:4218
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "테마 \"%s\"에 만든 날짜가 표시되어 있지 않습니다"
 
-#: src/theme.c:4223
+#: src/theme.c:4225
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "테마 \"%s\" 에 설명이 없습니다"
 
-#: src/theme.c:4230
+#: src/theme.c:4232
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "테마 \"%s\"에 저작권이 없습니다"
 
-#: src/theme.c:4240
+#: src/theme.c:4242
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1345,7 +1344,7 @@ msgstr ""
 "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
 "type=\"%3$s\" style_set=\"whatever\"/> 요소를 추가하십시오"
 
-#: src/theme.c:4262
+#: src/theme.c:4264
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1354,14 +1353,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> 가 이 테마에 "
 "지정되어 있어야 합니다"
 
-#: src/theme.c:4645 src/theme.c:4705
+#: src/theme.c:4647 src/theme.c:4707
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "사용자 정의 상수는 대문자로 시작되어야 합니다; \"%s\"는 그렇지 않습니다"
 
-#: src/theme.c:4653 src/theme.c:4713
+#: src/theme.c:4655 src/theme.c:4715
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "상수 \"%s\" 는 이미 지정되어 있습니다"
@@ -1520,9 +1519,9 @@ msgid "Distance \"%s\" is unknown"
 msgstr "거리 \"%s\"를 알수 없습니다"
 
 #: src/theme-parser.c:1402
-#, fuzzy, c-format
+#, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "거리 \"%s\"를 알수 없습니다"
+msgstr "가로세로비 \"%s\"를 알수 없습니다"
 
 #: src/theme-parser.c:1446
 #, c-format
@@ -1636,9 +1635,9 @@ msgid "No \"filename\" attribute on element <%s>"
 msgstr "요소 <%s>에 \"filename\"속성이 없습니다"
 
 #: src/theme-parser.c:2316 src/theme-parser.c:2763
-#, fuzzy, c-format
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "<%2$s>요소의 state \"%1$s\"를 이해할 수 없습니다"
+msgstr "<%2$s>요소의 채우기 형식 \"%1$s\"를 이해할 수 없습니다"
 
 #: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
 #, c-format
@@ -1819,10 +1818,10 @@ msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<constant> 요소 안에서 요소 <%s>가 허용되지 않습니다"
 
 #: src/theme-parser.c:3632
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "distance/border 요소 안에서 요소 <%s>가 허용되지 않습니다"
+msgstr ""
 
 #: src/theme-parser.c:3654
 #, c-format
@@ -1921,12 +1920,11 @@ msgstr "메타시티"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Change how focus is moved from one window to another"
-msgstr ""
+msgstr "창에서 다른 창으로 초점을 옮기는 방식"
 
 #: src/tools/metacity-properties.desktop.in.h:2
-#, fuzzy
 msgid "Window Focus"
-msgstr "창 초점 모드"
+msgstr "창 초점"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
