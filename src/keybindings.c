@@ -358,8 +358,7 @@ rebuild_screen_binding_table (MetaDisplay *display)
   dest = 0;
   while (src < n_bindings)
     {
-      if (prefs[src].keysym != None &&
-          prefs[src].mask != 0)
+      if (prefs[src].keysym != None)
         {
           display->screen_bindings[dest].name = prefs[src].name;
           display->screen_bindings[dest].keysym = prefs[src].keysym;
@@ -395,8 +394,7 @@ rebuild_window_binding_table (MetaDisplay *display)
   dest = 0;
   while (src < n_bindings)
     {
-      if (prefs[src].keysym != None &&
-          prefs[src].mask != 0)
+      if (prefs[src].keysym != None)
         {
           display->window_bindings[dest].name = prefs[src].name;
           display->window_bindings[dest].keysym = prefs[src].keysym;
@@ -589,13 +587,6 @@ meta_change_keygrab (MetaDisplay *display,
    * all combinations of ignored modifiers.
    * X provides no better way to do this.
    */
-
-  if ((modmask & ~(display->ignored_modifier_mask)) == 0)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Unable to grab/ungrab keybinding because it has no modifiers\n");
-      return;
-    }
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "%s keybinding %s mask 0x%x\n",

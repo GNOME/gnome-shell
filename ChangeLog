@@ -1,3 +1,10 @@
+2002-05-25 Erwann Chenede - <erwann.chenede@sun.com>
+
+	* src/keybindings.c (rebuild_screen_binding_table,
+			     rebuild_window_binding_table,
+			     meta_change_keygrab): allow key grabbing for 
+	unmodified keys (e.g F1, etc) fix #82630
+	
 2002-05-25  Anders Carlsson  <andersca@gnu.org>
 
 	* src/place.c: (get_vertical_edges), (get_horizontal_edges):
