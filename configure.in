@@ -197,8 +197,8 @@ fi
 
 if test x$have_xcomposite = xyes; then
   echo "Building with CompositeExt"
-  METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender"
-  AC_DEFINE(HAVE_XCOMPOSITEENSIONS, , [Building with compositing manager support])
+  METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
+  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, , [Building with compositing manager support])
 else
   echo "Building without compositing manager"
 fi

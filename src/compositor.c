@@ -180,19 +180,48 @@ meta_compositor_add_window (MetaCompositor    *compositor,
                             XWindowAttributes *attrs)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+  g_print ("compositor adding window 0x%lx\n", xwindow);
+  
   if (!compositor->enabled)
     return; /* no extension */
-
-  
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
+void
+meta_compositor_remove_window (MetaCompositor    *compositor,
+                               Window             xwindow)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  g_print ("compositor removing window 0x%lx\n", xwindow);
+  
+  if (!compositor->enabled)
+    return; /* no extension */
 
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+}
 
+void
+meta_compositor_manage_screen (MetaCompositor *compositor,
+                               MetaScreen     *screen)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (!compositor->enabled)
+    return; /* no extension */
 
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+}
 
+void
+meta_compositor_unmanage_screen (MetaCompositor *compositor,
+                                 MetaScreen     *screen)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (!compositor->enabled)
+    return; /* no extension */
 
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+}
 
 
 

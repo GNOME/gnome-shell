@@ -34,6 +34,7 @@
 #include "keybindings.h"
 #include "stack.h"
 #include "xprops.h"
+#include "compositor.h"
 
 #ifdef HAVE_SOLARIS_XINERAMA
 #include <X11/extensions/xinerama.h>
@@ -654,9 +655,12 @@ meta_screen_new (MetaDisplay *display,
     if (space != NULL)
       meta_workspace_activate (space);
   }
+
+  meta_compositor_manage_screen (screen->display->compositor,
+                                 screen);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
-                screen->number, screen->screen_name, screen->xroot);  
+                screen->number, screen->screen_name, screen->xroot);
   
   return screen;
 }
@@ -672,6 +676,9 @@ meta_screen_free (MetaScreen *screen)
   
   meta_display_grab (display);
 
+  meta_compositor_unmanage_screen (screen->display->compositor,
+                                   screen);
+  
   meta_display_unmanage_windows_for_screen (display, screen);
   
   meta_prefs_remove_listener (prefs_changed_callback, screen);
@@ -749,7 +756,27 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   i = 0;
   while (i < n_children)
     {
-      meta_window_new (screen->display, children[i], TRUE);
+      XWindowAttributes attrs;
+      
+      meta_error_trap_push_with_return (screen->display);
+      
+      XGetWindowAttributes (screen->display->xdisplay,
+                            children[i], &attrs);
+      
+      if (meta_error_trap_pop_with_return (screen->display, TRUE) != Success)
+        {
+          meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                        children[i]);
+        }
+      else
+        {
+          meta_window_new_with_attrs (screen->display, children[i], TRUE,
+                                      &attrs);
+          
+          if (attrs.map_state == IsViewable)
+            meta_compositor_add_window (screen->display->compositor,
+                                        children[i], &attrs);
+        }
 
       ++i;
     }

@@ -1,5 +1,12 @@
 2003-11-20  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (meta_window_new_with_attrs): new function
+
+	* src/display.c, src/screen.c: create the compositor and feed
+	windows and events to it
+
+2003-11-20  Havoc Pennington  <hp@redhat.com>
+
 	* src/window.c (meta_window_notify_focus): revert the change here
 	
 2003-11-17  Rob Adams  <readams@readams.net

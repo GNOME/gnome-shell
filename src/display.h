@@ -53,6 +53,7 @@ struct _MetaRectangle
   int height;
 };
 
+typedef struct MetaCompositor  MetaCompositor;
 typedef struct _MetaDisplay    MetaDisplay;
 typedef struct _MetaFrame      MetaFrame;
 typedef struct _MetaKeyBinding MetaKeyBinding;
@@ -293,6 +294,9 @@ struct _MetaDisplay
 
   /* Managed by group-props.c */
   MetaGroupPropHooks *group_prop_hooks;
+
+  /* Managed by compositor.c */
+  MetaCompositor *compositor;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   SnDisplay *sn_display;

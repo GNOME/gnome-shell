@@ -25,8 +25,6 @@
 #include "util.h"
 #include "display.h"
 
-typedef struct MetaCompositor MetaCompositor;
-
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
 void            meta_compositor_unref         (MetaCompositor    *compositor);
 void            meta_compositor_process_event (MetaCompositor    *compositor,
@@ -35,6 +33,13 @@ void            meta_compositor_process_event (MetaCompositor    *compositor,
 void            meta_compositor_add_window    (MetaCompositor    *compositor,
                                                Window             xwindow,
                                                XWindowAttributes *attrs);
+void            meta_compositor_remove_window (MetaCompositor    *compositor,
+                                               Window             xwindow);
+
+void meta_compositor_manage_screen   (MetaCompositor *compositor,
+                                      MetaScreen     *screen);
+void meta_compositor_unmanage_screen (MetaCompositor *compositor,
+                                      MetaScreen     *screen);
 
 
 #endif /* META_COMPOSITOR_H */

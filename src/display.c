@@ -36,6 +36,7 @@
 #include "workspace.h"
 #include "bell.h"
 #include "effects.h"
+#include "compositor.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
 #ifdef HAVE_SOLARIS_XINERAMA
@@ -530,6 +531,8 @@ meta_display_open (const char *name)
 #else  /* HAVE_SHAPE */
   meta_verbose ("Not compiled with Shape support\n");
 #endif /* !HAVE_SHAPE */
+
+  display->compositor = meta_compositor_new (display);
   
   screens = NULL;
   
@@ -750,6 +753,8 @@ meta_display_close (MetaDisplay *display)
   all_displays = g_slist_remove (all_displays, display);
 
   meta_display_shutdown_keys (display);
+
+  meta_compositor_unref (display->compositor);
   
   g_free (display);
 
@@ -1652,6 +1657,9 @@ event_callback (XEvent   *event,
         }
       break;
     case UnmapNotify:
+      meta_compositor_remove_window (display->compositor,
+                                     modified);
+      
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&
@@ -1687,6 +1695,29 @@ event_callback (XEvent   *event,
         }
       break;
     case MapNotify:
+      {
+        /* If a window becomes viewable, then we need to
+         * add it to the compositor
+         */
+        XWindowAttributes attrs;
+  
+        meta_error_trap_push_with_return (display);
+        
+        XGetWindowAttributes (display->xdisplay,
+                              modified, &attrs);
+        
+        if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+          {
+            meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                          modified);
+          }
+        else
+          {
+            if (attrs.map_state == IsViewable)
+              meta_compositor_add_window (display->compositor,
+                                          modified, &attrs);
+          }
+      }
       break;
     case MapRequest:
       if (window == NULL)

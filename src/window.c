@@ -172,8 +172,44 @@ meta_window_new (MetaDisplay *display,
                  Window       xwindow,
                  gboolean     must_be_viewable)
 {
-  MetaWindow *window;
   XWindowAttributes attrs;
+  MetaWindow *window;
+  
+  meta_display_grab (display);
+  meta_error_trap_push (display); /* Push a trap over all of window
+                                   * creation, to reduce XSync() calls
+                                   */
+  
+  meta_error_trap_push_with_return (display);
+  
+  XGetWindowAttributes (display->xdisplay,
+                        xwindow, &attrs);
+  
+  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
+    {
+      meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                    xwindow);
+      meta_error_trap_pop (display, TRUE);
+      meta_display_ungrab (display);
+      return NULL;
+    }
+  window = meta_window_new_with_attrs (display, xwindow,
+                                       must_be_viewable, &attrs);
+
+
+  meta_error_trap_pop (display, FALSE);
+  meta_display_ungrab (display);
+
+  return window;
+}
+
+MetaWindow*
+meta_window_new_with_attrs (MetaDisplay       *display,
+                            Window             xwindow,
+                            gboolean           must_be_viewable,
+                            XWindowAttributes *attrs)
+{
+  MetaWindow *window;
   GSList *tmp;
   MetaWorkspace *space;
   gulong existing_wm_state;
@@ -182,7 +218,8 @@ meta_window_new (MetaDisplay *display,
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   gboolean has_shape;
-  
+
+  g_assert (attrs != NULL);
   g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
@@ -193,48 +230,32 @@ meta_window_new (MetaDisplay *display,
                     xwindow);
       return NULL;
     }
+
+  if (attrs->override_redirect)
+    {
+      meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
+      return NULL;
+    }
   
   /* Grab server */
   meta_display_grab (display);
   meta_error_trap_push (display); /* Push a trap over all of window
                                    * creation, to reduce XSync() calls
                                    */
-  
-  meta_error_trap_push_with_return (display);
-  
-  XGetWindowAttributes (display->xdisplay,
-                        xwindow, &attrs);
 
-  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
-    {
-      meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                    xwindow);
-      meta_error_trap_pop (display, TRUE);
-      meta_display_ungrab (display);
-      return NULL;
-    }
-  
-  if (attrs.override_redirect)
-    {
-      meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
-      meta_error_trap_pop (display, TRUE);
-      meta_display_ungrab (display);
-      return NULL;
-    }
-
-  meta_verbose ("must_be_viewable = %d attrs.map_state = %d (%s)\n",
+  meta_verbose ("must_be_viewable = %d attrs->map_state = %d (%s)\n",
                 must_be_viewable,
-                attrs.map_state,
-                (attrs.map_state == IsUnmapped) ?
+                attrs->map_state,
+                (attrs->map_state == IsUnmapped) ?
                 "IsUnmapped" :
-                (attrs.map_state == IsViewable) ?
+                (attrs->map_state == IsViewable) ?
                 "IsViewable" :
-                (attrs.map_state == IsUnviewable) ?
+                (attrs->map_state == IsUnviewable) ?
                 "IsUnviewable" :
                 "(unknown)");
   
   existing_wm_state = WithdrawnState;
-  if (must_be_viewable && attrs.map_state != IsViewable)
+  if (must_be_viewable && attrs->map_state != IsViewable)
     {
       /* Only manage if WM_STATE is IconicState or NormalState */
       gulong state;
@@ -293,11 +314,11 @@ meta_window_new (MetaDisplay *display,
 #endif
 
   /* Get rid of any borders */
-  if (attrs.border_width != 0)
+  if (attrs->border_width != 0)
     XSetWindowBorderWidth (display->xdisplay, xwindow, 0);
 
   /* Get rid of weird gravities */
-  if (attrs.win_gravity != NorthWestGravity)
+  if (attrs->win_gravity != NorthWestGravity)
     {
       XSetWindowAttributes set_attrs;
       
@@ -318,7 +339,7 @@ meta_window_new (MetaDisplay *display,
       return NULL;
     }
 
-  g_assert (!attrs.override_redirect);
+  g_assert (!attrs->override_redirect);
   
   window = g_new (MetaWindow, 1);
 
@@ -343,7 +364,7 @@ meta_window_new (MetaDisplay *display,
     {
       MetaScreen *scr = tmp->data;
 
-      if (scr->xroot == attrs.root)
+      if (scr->xroot == attrs->root)
         {
           window->screen = tmp->data;
           break;
@@ -367,17 +388,17 @@ meta_window_new (MetaDisplay *display,
   window->has_shape = has_shape;
   
   /* Remember this rect is the actual window size */
-  window->rect.x = attrs.x;
-  window->rect.y = attrs.y;
-  window->rect.width = attrs.width;
-  window->rect.height = attrs.height;
+  window->rect.x = attrs->x;
+  window->rect.y = attrs->y;
+  window->rect.width = attrs->width;
+  window->rect.height = attrs->height;
 
   /* And border width, size_hints are the "request" */
-  window->border_width = attrs.border_width;
-  window->size_hints.x = attrs.x;
-  window->size_hints.y = attrs.y;
-  window->size_hints.width = attrs.width;
-  window->size_hints.height = attrs.height;
+  window->border_width = attrs->border_width;
+  window->size_hints.x = attrs->x;
+  window->size_hints.y = attrs->y;
+  window->size_hints.width = attrs->width;
+  window->size_hints.height = attrs->height;
   /* initialize the remaining size_hints as if size_hints.flags were zero */
   meta_set_normal_hints (window, NULL);
 
@@ -385,9 +406,9 @@ meta_window_new (MetaDisplay *display,
   window->saved_rect = window->rect;
   window->user_rect = window->rect;
   
-  window->depth = attrs.depth;
-  window->xvisual = attrs.visual;
-  window->colormap = attrs.colormap;
+  window->depth = attrs->depth;
+  window->xvisual = attrs->visual;
+  window->colormap = attrs->colormap;
   
   window->title = NULL;
   window->icon_name = NULL;
@@ -410,7 +431,7 @@ meta_window_new (MetaDisplay *display,
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
   window->iconic = FALSE;
-  window->mapped = attrs.map_state != IsUnmapped;
+  window->mapped = attrs->map_state != IsUnmapped;
   /* if already mapped we don't want to do the placement thing */
   window->placed = window->mapped;
   if (window->placed)
@@ -688,7 +709,7 @@ meta_window_new (MetaDisplay *display,
   return window;
 }
 
-/* This function should only be called from the end of meta_window_new () */
+/* This function should only be called from the end of meta_window_new_with_attrs () */
 static void
 meta_window_apply_session_info (MetaWindow *window,
                                 const MetaWindowSessionInfo *info)
