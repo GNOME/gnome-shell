@@ -6,8 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2002-12-25 18:33+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-26 10:30+0200\n"
+"PO-Revision-Date: 2003-06-25 09:47+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -118,13 +119,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er blevet defineret.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=FILNAVN] [--display=TERMINAL] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAVN] [--"
+"display=TERMINAL] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -141,7 +141,7 @@ msgstr ""
 "Der er INGEN garanti; ikke engang for SALGBARHED eller EGNETHED TIL NOGET "
 "FORMÅL.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -149,7 +149,7 @@ msgstr ""
 "Kunne ikke finde et tema! Sikr dig at %s eksisterer og indeholder de "
 "sædvanlige temaer."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Kunne ikke genstarte: %s\n"
@@ -313,16 +313,18 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Vinduet \"%s\" svarer ikke."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Hvis du tvinger dette program til at afslutte, vil du miste evt. ugemte "
+"ændringer."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Tving til at afslutte"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -340,7 +342,7 @@ msgstr ""
 "Disse vinduer understøtter ikke gemning af deres opsætning og skal "
 "genstartes manuelt næste gang du logger på."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -437,6 +439,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Bestemmer om programmer eller systemet kan generere hørbare bip; kan bruges "
+"sammen med visuelt bip til at opnå lydløse bip"
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -445,7 +449,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Aktivér visuelt bip"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -652,11 +656,11 @@ msgstr "Kør en defineret kommando"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Vis panelmenuen"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Vis panelets \"Kør program\"-vindue"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -754,15 +758,15 @@ msgstr "Skift til arbejdsområdet til højre"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Systembip er hørbart"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Gem skærmbillede"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Gem skærmbillede for et vindue"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -774,6 +778,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Angiver hvordan den visuelle indikering af at bip hør lydt skal vises. I "
+"øjeblikket er der to gyldige værdier, \"fullscreen\", som forårsager at hele "
+"skærmen skifter mellem sort og hvid, og \"frame_flash\" som forårsager at "
+"titellinjen for vinduet blinker. Hvis programmet som sendte bippet ikke er "
+"kendt (som det som regel er for standardsystembippet), vil titellinjen for "
+"det aktuelt fokuserede vindue blinke."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -786,25 +796,23 @@ msgstr ""
 "for run_command_N udføres command_N."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"Nøglerne /apps/metacity/global_keybindings/run_command_N definerer "
-"tastebindinger der svarer til disse kommandoer. Ved tryk på tastebindingen "
-"for run_command_N udføres command_N."
+"Nøglen /apps/metacity/global_keybindings/run_command_screenshot definerer en "
+"tastebinding der forårsager at kommandoen for denne indstilling bliver "
+"udført."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"Nøglerne /apps/metacity/global_keybindings/run_command_N definerer "
-"tastebindinger der svarer til disse kommandoer. Ved tryk på tastebindingen "
-"for run_command_N udføres command_N."
+"Nøglen /apps/metacity/global_keybindings/run_command_screenshot_window "
+"definerer en tastebinding der forårsager at kommandoen for denne indstilling "
+"bliver udført."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1628,7 +1636,6 @@ msgstr ""
 "til denne handling."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1637,14 +1644,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Denne tastaturgenvej lukker et vindue. Formatet ser ud som \"&lt;Control&gt;a"
-"\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og "
-"tillader både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" "
-"og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng "
-"\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
+"Denne tastaturgenvej viser panelets \"Kør program\"-vindue. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
+"denne handling."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1653,14 +1660,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Denne tastaturgenvej lukker et vindue. Formatet ser ud som \"&lt;Control&gt;a"
-"\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og "
-"tillader både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" "
-"og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng "
-"\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
+"Denne tastaturgenvej starter panelets skærmbilledeprogram til et gemme et "
+"skærmbillede for et vindue. Formatet ser ud som \"&lt;Control&gt;a\" eller "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke kræsen og tillader både "
+"store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
+"Ctrl&gt;\". Hvis du sætter indstillingen til den specielle streng \"disabled"
+"\", vil der ikke være nogen tastaturgenvej til denne handling."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1669,15 +1676,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Denne tastaturgenvej skifter til arbejdsområde 9. Formatet ser ud som \"&lt;"
-"Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
-"kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
-"Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
+"Denne tastaturgenvej starter panelets skærmbilledeprogram. Formatet ser ud "
+"som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er "
+"ikke kræsen og tillader både store og små bogstaver, samt forkortelser som "
+"\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
 "specielle streng \"disabled\", vil der ikke være nogen tastaturgenvej til "
 "denne handling."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1685,7 +1691,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Denne tastaturgenvej aktiverer vinduesmenuen. Formatet ser ud som \"&lt;"
+"Denne tastaturgenvej aktiverer panelets hovedmenu. Formatet ser ud som \"&lt;"
 "Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. Fortolkeren er ikke "
 "kræsen og tillader både store og små bogstaver, samt forkortelser som \"&lt;"
 "Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
@@ -1698,7 +1704,7 @@ msgstr "Arbejdsområdets navn."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Kommando for skærmbillede"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1730,7 +1736,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Kommando for vinduesskærmbillede"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1846,6 +1852,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Slår en visuel indikering når et program eller systemet udsender et bip, "
+"til; anvendeligt for svagthørende eller for brug i støjende omgivelser eller "
+"når hørbart bip er slået fra"
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -1857,7 +1866,7 @@ msgstr "Benyt standardskrifttypen i vinduestitler"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Visuel bip-type"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
@@ -1941,12 +1950,12 @@ msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal '%s' er ugyldig\n"
 
-#: src/screen.c:423
+#: src/screen.c:408
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1955,7 +1964,7 @@ msgstr ""
 "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering; prøv "
 "tilvalget --replace for at erstatte den aktuelle vindueshåndtering.\n"
 
-#: src/screen.c:464
+#: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1963,12 +1972,12 @@ msgstr ""
 "Kunne ikke fremskaffe vindueshåndteringvælgeren på skærm %d på terminal \"%s"
 "\"\n"
 
-#: src/screen.c:520
+#: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering\n"
 
-#: src/screen.c:690
+#: src/screen.c:675
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
@@ -2901,7 +2910,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4506
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2917,7 +2926,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5165
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2954,15 +2963,6 @@ msgid ""
 msgstr ""
 "Egenskaben %s for vinduet 0x%lx indeholdt ugyldig UTF-8 for element %d i "
 "listen\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Kan ikke komme i kontakt med vinduet \"%s\".\n"
-#~ "Tving dette program til at afslutte\n"
-#~ "(alle åbne dokumenter mistes)?"
 
 #~ msgid "Kill application"
 #~ msgstr "Dræb program"
