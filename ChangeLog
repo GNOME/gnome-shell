@@ -1,5 +1,11 @@
 2004-01-17  Rob Adams  <readams@readams.net>
 
+	* src/metacity.schemas.in: Default binding removed for
+	toggle_shaded, since we don't have anything in the graphical UI
+	for it any more.
+
+2004-01-17  Rob Adams  <readams@readams.net>
+
 	* src/window.c (meta_window_show_menu): Don't show
 	left/right/up/down if a window is sticky.  Make "On Top"
 	insensitive for docks, splash screens, and desktops since it has

@@ -410,7 +410,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/toggle_shaded</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>&lt;Alt&gt;F12</default>
+      <default>disabled</default>
       <locale name="C">
          <short>Toggle shaded state</short>
          <long>
