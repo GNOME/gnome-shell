@@ -22,6 +22,7 @@
 #include "frame.h"
 #include "errors.h"
 #include "uislave.h"
+#include "colors.h"
 
 static void
 meta_frame_init_info (MetaFrame     *frame,
@@ -36,6 +37,7 @@ meta_frame_init_info (MetaFrame     *frame,
   info->title = frame->window->title;
   info->width = frame->rect.width;
   info->height = frame->rect.height;
+  info->colors = &(frame->window->screen->colors);
 }
 
 static void
@@ -119,8 +121,9 @@ meta_frame_calc_geometry (MetaFrame *frame,
   geom.right_width = 0;
   geom.top_height = 0;
   geom.bottom_height = 0;
-  geom.background_pixel = BlackPixel (window->display->xdisplay,
-                                      window->screen->number);
+  geom.background_pixel =
+    meta_screen_get_x_pixel (frame->window->screen,
+                             &frame->window->screen->colors.bg[META_STATE_NORMAL]);
 
   geom.shape_mask = None;
 

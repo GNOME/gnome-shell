@@ -28,8 +28,13 @@
 
 #include "screen.h"
 #include "util.h"
+#include "api.h"
+gulong              meta_screen_get_x_pixel      (MetaScreen         *screen,
+                                                  const PangoColor   *color);
+void                meta_screen_init_visual_info (MetaScreen         *screen);
+void                meta_screen_set_ui_colors    (MetaScreen         *screen,
+                                                  const MetaUIColors *colors);
+void                meta_screen_init_ui_colors   (MetaScreen         *screen);
 
-gulong meta_screen_get_x_pixel (MetaScreen       *screen,
-                                const PangoColor *color);
 
 #endif

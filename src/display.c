@@ -148,26 +148,56 @@ meta_display_open (const char *name)
 }
 
 static void
-free_window (gpointer key, gpointer value, gpointer data)
+listify_func (gpointer key, gpointer value, gpointer data)
 {
-  MetaWindow *window;
+  GSList **listp;
 
-  window = value;
+  listp = data;
+  *listp = g_slist_prepend (*listp, value);
+}
 
-  meta_window_free (window);
+static gint
+ptrcmp (gconstpointer a, gconstpointer b)
+{
+  if (a < b)
+    return -1;
+  else if (a > b)
+    return 1;
+  else
+    return 0;
 }
 
 void
 meta_display_close (MetaDisplay *display)
 {
+  GSList *winlist;
+  GSList *tmp;
+  
   if (display->error_traps)
     meta_bug ("Display closed with error traps pending\n");
-  
+
+  winlist = NULL;
   g_hash_table_foreach (display->window_ids,
-                        free_window,
-                        NULL);
+                        listify_func,
+                        &winlist);
   
   g_hash_table_destroy (display->window_ids);
+
+  winlist = g_slist_sort (winlist, ptrcmp);
+
+  tmp = winlist;
+  while (tmp != NULL)
+    {
+      /* If the next node doesn't contain this window
+       * a second time, delete the window.
+       */
+      if (tmp->next == NULL ||
+          (tmp->next && tmp->next->data != tmp->data))
+        meta_window_free (tmp->data);
+      
+      tmp = tmp->data;
+    }
+  g_slist_free (winlist);
   
   meta_event_queue_free (display->events);
   XCloseDisplay (display->xdisplay);

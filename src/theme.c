@@ -23,14 +23,24 @@
 #include "api.h"
 
 typedef struct _DefaultFrameData DefaultFrameData;
+typedef struct _DefaultScreenData DefaultScreenData;
 
 struct _DefaultFrameData
 {
   PangoLayout *layout;
-  GC text_gc;
-  GC fg_gc;
   int title_height;
 };
+
+struct _DefaultScreenData
+{
+  GC text_gc;
+  GC fg_gc;
+  GC light_gc;
+  GC dark_gc;
+};
+
+/* FIXME store this on the screen */
+static DefaultScreenData *screen_data = NULL;
 
 static gpointer
 default_acquire_frame (MetaFrameInfo *info)
@@ -38,7 +48,39 @@ default_acquire_frame (MetaFrameInfo *info)
   DefaultFrameData *d;
   PangoFontDescription *desc;
   XGCValues vals;
-  PangoColor color;
+  
+  if (screen_data == NULL)
+    {
+      screen_data = g_new (DefaultScreenData, 1);      
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->fg[META_STATE_NORMAL]);
+      /* FIXME memory-inefficient, could use the same one for all frames
+       * w/ the same root window
+       */
+      screen_data->text_gc = XCreateGC (info->display,
+                                        RootWindowOfScreen (info->screen),
+                                        GCForeground,
+                                        &vals);
+      screen_data->fg_gc = XCreateGC (info->display,
+                                      RootWindowOfScreen (info->screen),
+                                      GCForeground,
+                                      &vals);
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->light[META_STATE_NORMAL]);
+      screen_data->light_gc = XCreateGC (info->display,
+                                         RootWindowOfScreen (info->screen),
+                                         GCForeground,
+                                         &vals);
+
+      vals.foreground = meta_get_x_pixel (info->screen,
+                                          &info->colors->dark[META_STATE_NORMAL]);
+      screen_data->dark_gc = XCreateGC (info->display,
+                                        RootWindowOfScreen (info->screen),
+                                        GCForeground,
+                                        &vals);
+    }
   
   d = g_new (DefaultFrameData, 1);
 
@@ -46,27 +88,14 @@ default_acquire_frame (MetaFrameInfo *info)
   d->layout = pango_layout_new (meta_get_pango_context (info->screen,
                                                         desc,
                                                         info->frame));
-
-  color.red = color.green = color.blue = 0xffff;
-  vals.foreground = meta_get_x_pixel (info->screen, &color);
-  /* FIXME memory-inefficient, could use the same one for all frames
-   * w/ the same root window
-   */
-  d->text_gc = XCreateGC (info->display,
-                          RootWindowOfScreen (info->screen),
-                          GCForeground,
-                          &vals);
-  d->fg_gc = XCreateGC (info->display,
-                        RootWindowOfScreen (info->screen),
-                        GCForeground,
-                        &vals);
+  pango_font_description_free (desc);
   
   d->title_height = 0;
   
   return d;
 }
 
-void
+static void
 default_release_frame (MetaFrameInfo *info,
                        gpointer       frame_data)
 {
@@ -76,9 +105,6 @@ default_release_frame (MetaFrameInfo *info,
 
   if (d->layout)
     g_object_unref (G_OBJECT (d->layout));
-
-  XFreeGC (info->display, d->text_gc);
-  XFreeGC (info->display, d->fg_gc);
   
   g_free (d);
 }
@@ -87,14 +113,14 @@ default_release_frame (MetaFrameInfo *info,
 #define LEFT_WIDTH 15
 #define RIGHT_WIDTH 15
 #define BOTTOM_HEIGHT 20
-void
+#define SPACER_SPACING 3
+static void
 default_fill_frame_geometry (MetaFrameInfo *info,
                              MetaFrameGeometry *geom,
                              gpointer       frame_data)
 {
   DefaultFrameData *d;
   PangoRectangle rect;
-  PangoColor color;
   
   d = frame_data;
       
@@ -111,13 +137,46 @@ default_fill_frame_geometry (MetaFrameInfo *info,
   geom->left_width = LEFT_WIDTH;
   geom->right_width = RIGHT_WIDTH;
   geom->bottom_height = BOTTOM_HEIGHT;
-
-  color.red = color.blue = color.green = 0;
   
-  geom->background_pixel = meta_get_x_pixel (info->screen, &color);
+  geom->background_pixel = meta_get_x_pixel (info->screen,
+                                             &info->colors->bg[META_STATE_NORMAL]);
 }
 
-void
+static void
+draw_vline (MetaFrameInfo *info,
+            Drawable       drawable,
+            GC             light_gc,
+            GC             dark_gc,
+            int            y1,
+            int            y2,
+            int            x)
+{
+  int thickness_light;
+  int thickness_dark;
+  int i;
+  
+  thickness_light = 1;
+  thickness_dark = 1;  
+
+  for (i = 0; i < thickness_dark; i++)
+    {
+      XDrawLine (info->display, drawable, light_gc,
+                 x + i, y2 - i - 1, x + i, y2);
+      XDrawLine (info->display, drawable, dark_gc,
+                 x + i, y1, x + i, y2 - i - 1);
+    }
+  
+  x += thickness_dark;
+  for (i = 0; i < thickness_light; i++)
+    {
+      XDrawLine (info->display, drawable, dark_gc,
+                 x + i, y1, x + i, y1 + thickness_light - i);
+      XDrawLine (info->display, drawable, light_gc,
+                 x + i, y1 + thickness_light - i, x + i, y2);
+    }
+}
+
+static void
 default_expose_frame (MetaFrameInfo *info,
                       int x, int y,
                       int width, int height,
@@ -125,21 +184,28 @@ default_expose_frame (MetaFrameInfo *info,
 {
   DefaultFrameData *d;
   int close_size;
+  XGCValues vals;
   
   d = frame_data;
   
   pango_x_render_layout (info->display,
                          info->frame,
-                         d->text_gc,
+                         screen_data->text_gc,
                          d->layout,
                          LEFT_WIDTH,
                          VERTICAL_TEXT_PAD);
 
   close_size = d->title_height;
+
+  vals.line_width = 2;
+  XChangeGC (info->display,
+             screen_data->fg_gc,
+             GCLineWidth,
+             &vals);
   
   XDrawLine (info->display,
              info->frame,
-             d->fg_gc,
+             screen_data->fg_gc,
              info->width - RIGHT_WIDTH - close_size,
              VERTICAL_TEXT_PAD,
              info->width - RIGHT_WIDTH,
@@ -147,15 +213,28 @@ default_expose_frame (MetaFrameInfo *info,
 
   XDrawLine (info->display,
              info->frame,
-             d->fg_gc,
+             screen_data->fg_gc,
              info->width - RIGHT_WIDTH,
              VERTICAL_TEXT_PAD,
              info->width - RIGHT_WIDTH - close_size,
              d->title_height - VERTICAL_TEXT_PAD);
+
+  vals.line_width = 0;
+  XChangeGC (info->display,
+             screen_data->fg_gc,
+             GCLineWidth,
+             &vals);
+  
+  draw_vline (info, info->frame,
+              screen_data->light_gc,
+              screen_data->dark_gc,
+              VERTICAL_TEXT_PAD,
+              d->title_height - VERTICAL_TEXT_PAD,
+              info->width - RIGHT_WIDTH - close_size - SPACER_SPACING);
 }
 
 #define RESIZE_EXTENDS 10
-MetaFrameControl
+static MetaFrameControl
 default_get_control (MetaFrameInfo *info,
                      int x, int y,
                      gpointer frame_data)
@@ -178,6 +257,17 @@ default_get_control (MetaFrameInfo *info,
     return META_FRAME_CONTROL_RESIZE_SE;
   
   return META_FRAME_CONTROL_NONE;
+}
+
+/* FIXME add this to engine vtable */
+static void
+default_release_screen (Screen *screen)
+{
+  if (screen_data)
+    {
+      XFreeGC (DisplayOfScreen (screen), screen_data->text_gc);
+      XFreeGC (DisplayOfScreen (screen), screen_data->fg_gc);
+    }
 }
 
 MetaThemeEngine meta_default_engine = {

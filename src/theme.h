@@ -27,6 +27,7 @@
  */
 #include <X11/Xlib.h>
 #include <glib.h>
+#include "api.h"
 
 typedef struct _MetaFrameInfo       MetaFrameInfo;
 typedef struct _MetaFrameGeometry   MetaFrameGeometry;
@@ -72,6 +73,8 @@ struct _MetaFrameInfo
 
   const char *title;  
 
+  const MetaUIColors *colors;
+  
   /* Equal to child size before fill_frame_geometry
    * has been called
    */

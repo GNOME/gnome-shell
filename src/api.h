@@ -28,10 +28,36 @@
 #include <X11/Xlib.h>
 #include <pango/pangox.h>
 
-PangoContext* meta_get_pango_context (Screen                     *xscreen,
-                                      const PangoFontDescription *desc,
-                                      Window                      frame);
-gulong        meta_get_x_pixel       (Screen                     *xscreen,
-                                      const PangoColor           *color);
+/* Colors/state stuff matches GTK since we get the info from
+ * the GTK UI slave
+ */
+typedef struct _MetaUIColors MetaUIColors;
+
+typedef enum
+{
+  META_STATE_NORMAL,
+  META_STATE_ACTIVE,
+  META_STATE_PRELIGHT,
+  META_STATE_SELECTED,
+  META_STATE_INSENSITIVE
+} MetaUIState;
+
+struct _MetaUIColors
+{
+  PangoColor fg[5];
+  PangoColor bg[5];
+  PangoColor light[5];
+  PangoColor dark[5];
+  PangoColor mid[5];
+  PangoColor text[5];
+  PangoColor base[5];
+  PangoColor text_aa[5];
+};
+
+PangoContext*       meta_get_pango_context (Screen                     *xscreen,
+                                            const PangoFontDescription *desc,
+                                            Window                      frame);
+gulong              meta_get_x_pixel       (Screen                     *xscreen,
+                                            const PangoColor           *color);
 
 #endif

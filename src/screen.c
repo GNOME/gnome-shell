@@ -25,6 +25,7 @@
 #include "window.h"
 #include "colors.h"
 #include "uislave.h"
+#include "frame.h"
 
 #include <X11/cursorfont.h>
 #include <locale.h>
@@ -98,6 +99,9 @@ meta_screen_new (MetaDisplay *display,
   
   screen->engine = &meta_default_engine;
 
+  meta_screen_init_visual_info (screen);
+  meta_screen_init_ui_colors (screen);
+  
   screen->uislave = meta_ui_slave_new (screen->screen_name,
                                        ui_slave_func,
                                        screen);
@@ -331,4 +335,77 @@ get_screen_name (MetaDisplay *display,
   g_free (dname);
 
   return scr;
+}
+
+static gint
+ptrcmp (gconstpointer a, gconstpointer b)
+{
+  if (a < b)
+    return -1;
+  else if (a > b)
+    return 1;
+  else
+    return 0;
+}
+
+static void
+listify_func (gpointer key, gpointer value, gpointer data)
+{
+  GSList **listp;
+  
+  listp = data;
+
+  *listp = g_slist_prepend (*listp, value);
+}
+
+void
+meta_screen_foreach_window (MetaScreen *screen,
+                            MetaScreenWindowFunc func,
+                            gpointer data)
+{
+  GSList *winlist;
+  GSList *tmp;
+
+  /* If we end up doing this often, just keeping a list
+   * of windows might be sensible.
+   */
+  
+  winlist = NULL;
+  g_hash_table_foreach (screen->display->window_ids,
+                        listify_func,
+                        &winlist);
+  
+  winlist = g_slist_sort (winlist, ptrcmp);
+  
+  tmp = winlist;
+  while (tmp != NULL)
+    {
+      /* If the next node doesn't contain this window
+       * a second time, delete the window.
+       */
+      if (tmp->next == NULL ||
+          (tmp->next && tmp->next->data != tmp->data))
+        {
+          MetaWindow *window = tmp->data;
+
+          if (window->screen == screen)
+            (* func) (screen, window, data);
+        }
+      
+      tmp = tmp->data;
+    }
+  g_slist_free (winlist);
+}
+
+static void
+queue_draw (MetaScreen *screen, MetaWindow *window, gpointer data)
+{
+  if (window->frame)
+    meta_frame_queue_draw (window->frame);
+}
+
+void
+meta_screen_queue_frame_redraws (MetaScreen *screen)
+{
+  meta_screen_foreach_window (screen, queue_draw, NULL);
 }

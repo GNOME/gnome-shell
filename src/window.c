@@ -620,9 +620,8 @@ update_title (MetaWindow *window)
     {
       g_free (window->title);
       window->title = NULL;
-    }
-  
-  /* FIXME How does memory management for text.value work? */
+    }  
+
   XGetTextProperty (window->display->xdisplay,
                     window->xwindow,
                     &text,
@@ -638,6 +637,9 @@ update_title (MetaWindow *window)
       window->title = g_strdup (text.value);
     }
 
+  if (text.nitems > 0)
+    XFree (text.value);
+  
   if (window->title == NULL &&
       text.nitems > 0)
     meta_warning ("_NET_WM_NAME property for %s contained invalid UTF-8\n",
@@ -674,12 +676,15 @@ update_title (MetaWindow *window)
                           window->desc, text.value);
 
           window->title = str;
+
+          XFree (text.value);
         }
     }
   
   if (window->title == NULL)
     window->title = g_strdup ("");
-  
+
+  g_free (window->desc);
   window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
   
   return meta_error_trap_pop (window->display);
