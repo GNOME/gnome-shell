@@ -37,7 +37,8 @@ typedef enum
   META_PREF_APPLICATION_BASED,
   META_PREF_WINDOW_KEYBINDINGS,
   META_PREF_SCREEN_KEYBINDINGS,
-  META_PREF_DISABLE_WORKAROUNDS
+  META_PREF_DISABLE_WORKAROUNDS,
+  META_PREF_COMMANDS
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -60,6 +61,10 @@ gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
+
+const char*                 meta_prefs_get_command            (int i);
+
+char*                       meta_prefs_get_gconf_key_for_command (int i);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 
@@ -85,6 +90,18 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 #define META_KEYBINDING_CYCLE_WINDOWS        "cycle_windows"
 #define META_KEYBINDING_CYCLE_PANELS         "cycle_panels"
 #define META_KEYBINDING_SHOW_DESKTOP         "show_desktop"
+#define META_KEYBINDING_COMMAND_1            "run_command_1"
+#define META_KEYBINDING_COMMAND_2            "run_command_2"
+#define META_KEYBINDING_COMMAND_3            "run_command_3"
+#define META_KEYBINDING_COMMAND_4            "run_command_4"
+#define META_KEYBINDING_COMMAND_5            "run_command_5"
+#define META_KEYBINDING_COMMAND_6            "run_command_6"
+#define META_KEYBINDING_COMMAND_7            "run_command_7"
+#define META_KEYBINDING_COMMAND_8            "run_command_8"
+#define META_KEYBINDING_COMMAND_9            "run_command_9"
+#define META_KEYBINDING_COMMAND_10           "run_command_10"
+#define META_KEYBINDING_COMMAND_11           "run_command_11"
+#define META_KEYBINDING_COMMAND_12           "run_command_12"
 
 /* Window bindings */
 #define META_KEYBINDING_WINDOW_MENU          "activate_window_menu"
@@ -137,7 +154,19 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_SWITCH_PANELS,
   META_KEYBINDING_ACTION_CYCLE_WINDOWS,
   META_KEYBINDING_ACTION_CYCLE_PANELS,
-  META_KEYBINDING_ACTION_SHOW_DESKTOP
+  META_KEYBINDING_ACTION_SHOW_DESKTOP,
+  META_KEYBINDING_ACTION_COMMAND_1,
+  META_KEYBINDING_ACTION_COMMAND_2,
+  META_KEYBINDING_ACTION_COMMAND_3,
+  META_KEYBINDING_ACTION_COMMAND_4,
+  META_KEYBINDING_ACTION_COMMAND_5,
+  META_KEYBINDING_ACTION_COMMAND_6,
+  META_KEYBINDING_ACTION_COMMAND_7,
+  META_KEYBINDING_ACTION_COMMAND_8,
+  META_KEYBINDING_ACTION_COMMAND_9,
+  META_KEYBINDING_ACTION_COMMAND_10,
+  META_KEYBINDING_ACTION_COMMAND_11,
+  META_KEYBINDING_ACTION_COMMAND_12,
 } MetaKeyBindingAction;
 
 typedef struct

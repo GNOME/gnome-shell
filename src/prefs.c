@@ -25,6 +25,7 @@
 #include "util.h"
 #include <gconf/gconf-client.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* If you add a key, it needs updating in init() and in the gconf
  * notify listener and of course in the .schemas file
@@ -39,6 +40,7 @@
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 #define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
 
+#define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 
@@ -55,6 +57,9 @@ static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
+#define NUM_COMMANDS 12
+static char *commands[NUM_COMMANDS] = { NULL, NULL, NULL, NULL, NULL, NULL,
+                                        NULL, NULL, NULL, NULL, NULL, NULL };
 
 static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
@@ -72,6 +77,9 @@ static gboolean update_screen_binding     (const char *name,
 static void     init_bindings             (void);
 static gboolean update_binding            (MetaKeyPref *binding,
                                            const char  *value);
+static gboolean update_command            (const char  *name,
+                                           const char  *value);
+static void     init_commands             (void);
 
 static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
@@ -284,6 +292,9 @@ meta_prefs_init (void)
   
   /* Load keybindings prefs */
   init_bindings ();
+
+  /* commands */
+  init_commands ();
   
   gconf_client_notify_add (default_client, "/apps/metacity",
                            change_notify,
@@ -505,6 +516,23 @@ change_notify (GConfClient    *client,
 
       if (update_auto_raise_delay (d))
         queue_changed (META_PREF_AUTO_RAISE_DELAY);
+    
+    }
+  else if (str_has_prefix (key, KEY_COMMAND_PREFIX))
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_command (key, str))
+        queue_changed (META_PREF_COMMANDS);
     }
   else
     {
@@ -767,6 +795,9 @@ meta_preference_to_string (MetaPreference pref)
       
     case META_PREF_AUTO_RAISE_DELAY:
       return "AUTO_RAISE_DELAY";
+
+    case META_PREF_COMMANDS:
+      return "COMMANDS";
     }
 
   return "(unknown)";
@@ -822,6 +853,18 @@ static MetaKeyPref screen_bindings[] = {
   { META_KEYBINDING_CYCLE_WINDOWS, 0, 0 },
   { META_KEYBINDING_CYCLE_PANELS, 0, 0 },
   { META_KEYBINDING_SHOW_DESKTOP, 0, 0 },
+  { META_KEYBINDING_COMMAND_1, 0, 0 },
+  { META_KEYBINDING_COMMAND_2, 0, 0 },
+  { META_KEYBINDING_COMMAND_3, 0, 0 },
+  { META_KEYBINDING_COMMAND_4, 0, 0 },
+  { META_KEYBINDING_COMMAND_5, 0, 0 },
+  { META_KEYBINDING_COMMAND_6, 0, 0 },
+  { META_KEYBINDING_COMMAND_7, 0, 0 },
+  { META_KEYBINDING_COMMAND_8, 0, 0 }, 
+  { META_KEYBINDING_COMMAND_9, 0, 0 },
+  { META_KEYBINDING_COMMAND_10, 0, 0 },
+  { META_KEYBINDING_COMMAND_11, 0, 0 },
+  { META_KEYBINDING_COMMAND_12, 0, 0 },
   { NULL, 0, 0 }
 };
 
@@ -898,6 +941,33 @@ init_bindings (void)
       update_binding (&screen_bindings[i], str_val);
 
       g_free (str_val);      
+      g_free (key);
+
+      ++i;
+    }
+}
+
+static void
+init_commands (void)
+{
+  int i;
+  GError *err;
+  
+  i = 0;
+  while (i < NUM_COMMANDS)
+    {
+      char *str_val;
+      char *key;
+
+      key = meta_prefs_get_gconf_key_for_command (i);
+
+      err = NULL;
+      str_val = gconf_client_get_string (default_client, key, &err);
+      cleanup_error (&err);
+
+      update_command (key, str_val);
+
+      g_free (str_val);    
       g_free (key);
 
       ++i;
@@ -1002,6 +1072,68 @@ update_screen_binding (const char *name,
                        const char *value)
 {
   return find_and_update_binding (screen_bindings, name, value);
+}
+
+static gboolean
+update_command (const char  *name,
+                const char  *value)
+{
+  char *p;
+  int i;
+  
+  p = strrchr (name, '_');
+  if (p == NULL)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Command %s has no underscore?\n", name);
+      return FALSE;
+    }
+  
+  ++p;
+
+  if (!g_ascii_isdigit (*p))
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Command %s doesn't end in number?\n", name);
+      return FALSE;
+    }
+  
+  i = atoi (p);
+  i -= 1; /* count from 0 not 1 */
+  
+  if (i >= NUM_COMMANDS)
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Command %d is too highly numbered, ignoring\n", i);
+      return FALSE;
+    }
+
+  g_free (commands[i]);
+  commands[i] = g_strdup (value);
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Updated command %d to \"%s\"\n",
+              i, commands[i] ? commands[i] : "none");
+  
+  return TRUE;
+}
+
+const char*
+meta_prefs_get_command (int i)
+{
+  g_return_val_if_fail (i >= 0 && i < NUM_COMMANDS, NULL);
+  
+  return commands[i];
+}
+
+char*
+meta_prefs_get_gconf_key_for_command (int i)
+{
+  char *key;
+  
+  key = g_strdup_printf (KEY_COMMAND_PREFIX"%d", i + 1);
+  
+  return key;
 }
 
 void

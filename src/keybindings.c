@@ -102,6 +102,10 @@ static void handle_raise_or_lower     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_run_command        (MetaDisplay    *display,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 
 /* debug */
 static void handle_spew_mark          (MetaDisplay *display,
@@ -190,6 +194,30 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
   { META_KEYBINDING_SHOW_DESKTOP, handle_toggle_desktop,
     NULL },
+  { META_KEYBINDING_COMMAND_1, handle_run_command,
+    GINT_TO_POINTER (0) },
+  { META_KEYBINDING_COMMAND_2, handle_run_command,
+    GINT_TO_POINTER (1) },
+  { META_KEYBINDING_COMMAND_3, handle_run_command,
+    GINT_TO_POINTER (2) },
+  { META_KEYBINDING_COMMAND_4, handle_run_command,
+    GINT_TO_POINTER (3) },
+  { META_KEYBINDING_COMMAND_5, handle_run_command,
+    GINT_TO_POINTER (4) },
+  { META_KEYBINDING_COMMAND_6, handle_run_command,
+    GINT_TO_POINTER (5) },
+  { META_KEYBINDING_COMMAND_7, handle_run_command,
+    GINT_TO_POINTER (6) },
+  { META_KEYBINDING_COMMAND_8, handle_run_command,
+    GINT_TO_POINTER (7) },
+  { META_KEYBINDING_COMMAND_9, handle_run_command,
+    GINT_TO_POINTER (8) },
+  { META_KEYBINDING_COMMAND_10, handle_run_command,
+    GINT_TO_POINTER (9) },
+  { META_KEYBINDING_COMMAND_11, handle_run_command,
+    GINT_TO_POINTER (10) },
+  { META_KEYBINDING_COMMAND_12, handle_run_command,
+    GINT_TO_POINTER (11) },
   { NULL, NULL, NULL }
 };
   
@@ -1890,6 +1918,86 @@ handle_activate_workspace (MetaDisplay    *display,
   else
     {
       /* We could offer to create it I suppose */
+    }
+}
+
+static void
+error_on_command (int         command_index,
+                  const char *command,
+                  const char *message)
+{
+  GError *err;
+  char *argv[6];
+  char *key;
+  
+  meta_warning ("Error on command %d \"%s\": %s\n",
+                command_index, command, message);  
+
+  key = meta_prefs_get_gconf_key_for_command (command_index);
+  
+  argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
+  argv[1] = "--command-failed-error";
+  argv[2] = key;
+  argv[3] = (char*) (command ? command : "");
+  argv[4] = (char*) message;
+  argv[5] = NULL;
+  
+  err = NULL;
+  if (!g_spawn_async_with_pipes ("/",
+                                 argv,
+                                 NULL,
+                                 0,
+                                 NULL, NULL,
+                                 NULL,
+                                 NULL,
+                                 NULL,
+                                 NULL,
+                                 &err))
+    {
+      meta_warning (_("Error launching metacity-dialog to print an error about a command: %s\n"),
+                    err->message);
+      g_error_free (err);
+    }
+  
+  g_free (key);
+}
+
+static void
+handle_run_command (MetaDisplay    *display,
+                    MetaWindow     *window,
+                    XEvent         *event,
+                    MetaKeyBinding *binding)
+{
+  int which;
+  const char *command;
+  GError *err;
+  
+  which = GPOINTER_TO_INT (binding->handler->data);
+ 
+  command = meta_prefs_get_command (which);
+
+  if (command == NULL)
+    {
+      char *s;
+
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "No command %d to run in response to keybinding press\n",
+                  which);
+      
+      s = g_strdup_printf (_("No command %d has been defined.\n"),
+                           which + 1);
+      error_on_command (which, NULL, s);
+      g_free (s);
+      
+      return;
+    }
+
+  err = NULL;
+  if (!g_spawn_command_line_async (command, &err))
+    {
+      error_on_command (which, command, err->message);
+      
+      g_error_free (err);
     }
 }
 

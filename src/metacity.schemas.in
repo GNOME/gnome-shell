@@ -1231,6 +1231,71 @@ you set
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/run_command</key>
+      <applyto>/apps/metacity/global_keybindings/run_command_1</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_2</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_3</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_4</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_5</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_6</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_7</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_8</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_9</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_10</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_11</applyto>
+      <applyto>/apps/metacity/global_keybindings/run_command_12</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Run a defined command</short>
+         <long>
+          The keybinding that runs the correspondingly-numbered
+          command in /apps/metacity/keybinding_commands
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <!-- commands to run with the run_command keybindings -->
+
+    <schema>
+      <key>/schemas/apps/metacity/keybinding_commands/command</key>
+      <applyto>/apps/metacity/keybinding_commands/command_1</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_2</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_3</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_4</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_5</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_6</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_7</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_8</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_9</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_10</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_11</applyto>
+      <applyto>/apps/metacity/keybinding_commands/command_12</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+         <short>Commands to run in response to keybindings</short>
+         <long>
+         The /apps/metacity/global_keybindings/run_command_N 
+         keys define keybindings that correspond to these commands.
+         Pressing the keybinding for run_command_N will 
+         execute command_N.
+         </long>
+      </locale>
+    </schema>
+
     <!-- Not used and/or crackrock -->
 
     <schema>

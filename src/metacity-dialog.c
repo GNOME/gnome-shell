@@ -259,6 +259,35 @@ warn_about_no_sm_support (char **lame_apps)
   return 0;
 }
 
+static int
+error_about_command (const char *gconf_key,
+                     const char *command,
+                     const char *error)
+{
+  GtkWidget *dialog;
+
+  /* FIXME offer to change the value of the command's gconf key */
+
+  if (*command != '\0')
+    dialog = gtk_message_dialog_new (NULL, 0,
+                                     GTK_MESSAGE_ERROR,
+                                     GTK_BUTTONS_CLOSE,
+                                     _("There was an error running \"%s\":\n"
+                                       "%s."),
+                                     command, error);
+  else
+    dialog = gtk_message_dialog_new (NULL, 0,
+                                     GTK_MESSAGE_ERROR,
+                                     GTK_BUTTONS_CLOSE,
+                                     "%s", error);
+  
+  gtk_dialog_run (GTK_DIALOG (dialog));
+
+  gtk_widget_destroy (dialog);
+  
+  return 0;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -295,7 +324,21 @@ main (int argc, char **argv)
 
       return warn_about_no_sm_support (&argv[2]);
     }
+  else if (strcmp (argv[1], "--command-failed-error") == 0)
+    {
 
+      /* the args are the gconf key of the failed command, the text of
+       * the command, and the error message
+       */
+      if (argc != 5)
+        {
+          g_printerr ("bad args to metacity-dialog\n");
+          return 1;
+        }
+
+      return error_about_command (argv[2], argv[3], argv[4]);
+    }
+  
   g_printerr ("bad args to metacity-dialog\n");
   return 1;
 } 
