@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-02 10:00+0100\n"
-"PO-Revision-Date: 2005-02-02 09:59+0100\n"
+"POT-Creation-Date: 2005-02-05 20:59+0100\n"
+"PO-Revision-Date: 2005-02-05 20:58+0100\n"
 "Last-Translator: Frank Arnold <frank@scirocco-5v-turbo.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -524,7 +524,7 @@ msgid ""
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages"
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Falls dieser Schlüssel wahr ist, gibt Metacity dem Benutzer weniger "
 "Rückmeldungen und weniger Möglichkeiten zur »direkten Manipulation«, indem z."
@@ -532,8 +532,8 @@ msgstr ""
 "signifikante Verschlechterung in Sachen Benutzerfreundlichkeit, erlaubt es "
 "jedoch Anwendungen und Terminal-Servern von Drittanbietern, auch dann zu "
 "funktionieren, wenn dies sonst nicht möglich wäre. Die Drahtrahmenfunktion "
-"wird jedoch nicht verwendet, wenn die Barrierefreiheit eingeschaltet ist, "
-"umeigenartige Einflüsse auf den Desktop zu vermeiden."
+"wird jedoch nicht verwendet, wenn die Barrierefreiheit eingeschaltet ist, um "
+"eigenartige Einflüsse auf den Desktop zu vermeiden."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -3258,7 +3258,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %ld angegeben\n"
 
 #. first time through
-#: ../src/window.c:4911
+#: ../src/window.c:4912
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3280,7 +3280,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5582
+#: ../src/window.c:5583
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
