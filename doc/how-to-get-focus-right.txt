@@ -77,11 +77,11 @@ without using the mouse, for example, by grabs).
 
 Finally, windows of type WM_DOCK or WM_DESKTOP (e.g. the desktop and
 the panel) present a special case.  For all focus modes, we only focus
-these windows if the user clicks on them.  (Well, erm, actually they
-can be focused in click and sloppy focus modes if no other window
-besides these are found, but there shouldn't be any difference in
-behavior between doing this and focusing the designated
-"no_focus_window")
+these windows if the user clicks on them or uses Ctrl-Alt-Tab to
+navigate to them.  (Well, erm, actually they can be focused in click
+and sloppy focus modes if no other window besides these are found, but
+there shouldn't be any difference in behavior between doing this and
+focusing the designated "no_focus_window")
 
 
 
