@@ -1,3 +1,8 @@
+2004-12-06  Benjamin Kahn <xkahn@novell.com>
+
+	* src/default_icon.png: Use a better default application
+	icon.  Fixes bug #160373
+
 2004-11-16  Marco Pesenti Gritti  <marco@gnome.org>
 
 	* src/Makefile.am:
