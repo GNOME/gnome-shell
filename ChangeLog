@@ -1,3 +1,11 @@
+2002-10-04  Arvind Samptur <arvind.samptur@wipro.com>
+	* src/window.c (meta_window_change_workspace): call meta_window_unstick
+	before adding window to workspace.
+	(menu_callback): call meta_workspace_activate before meta_window_change_workspace.
+	This would avoid us running an extra loop for determining the window workspace list.
+
+	Patches from Jeyasudha and Arvind. Fixes #92575
+
 2002-10-03  Havoc Pennington  <hp@pobox.com>
 
 	* src/themes/Esco/metacity-theme-1.xml: only specify the 

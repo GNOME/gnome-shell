@@ -2899,13 +2899,16 @@ meta_window_change_workspace (MetaWindow    *window,
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
   
+  /* unstick if stuck. meta_window_unstick would call 
+   * meta_window_change_workspace recursively if the window
+   * is not in the active workspace.
+   */
+  if (window->on_all_workspaces)
+    meta_window_unstick (window);
+
   /* See if we're already on this space. If not, make sure we are */
   if (g_list_find (window->workspaces, workspace) == NULL)
     meta_workspace_add_window (workspace, window);
-
-  /* unstick if stuck */
-  if (window->on_all_workspaces)
-    meta_window_unstick (window);
   
   /* Remove from all other spaces */
   next = window->workspaces;
@@ -5919,9 +5922,9 @@ menu_callback (MetaWindowMenu *menu,
 
             if (workspace)
               {
+                meta_workspace_activate (workspace);
                 meta_window_change_workspace (window,
                                               workspace);
-                meta_workspace_activate (workspace);
                 meta_window_raise (window);
               }
             else
