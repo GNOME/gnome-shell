@@ -1,419 +1,1073 @@
-# metatheme ko.po
-# Copyright (C) 2000 Free Software Foundation, Inc.
-# Young-Ho, Cha <ganadist@chollian.net>, 2000, 2002.
+# metacity korean translation
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Young-Ho, Cha <ganadist@chollian.net>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metatheme 0.9.5\n"
-"POT-Creation-Date: 2002-04-18 22:33+0900\n"
-"PO-Revision-Date: 2002-04-18 13:47+0900\n"
+"Project-Id-Version: metacity 2.3.89\n"
+"POT-Creation-Date: 2002-04-24 22:25+0900\n"
+"PO-Revision-Date: 2002-04-17 09:50+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <gnome-kr-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: capplet/capplet.c:93
-msgid "Set the current theme."
-msgstr "현재 테마 설정"
-
-#: capplet/capplet.c:146
-msgid "Desktop theme selector"
-msgstr "바탕화면 테마 선택기"
-
-#: capplet/mtm-control-list.c:129
-msgid "Manage Themes..."
-msgstr "테마 관리..."
-
-#: capplet/mtm-control-list.c:133
-msgid "Edit..."
-msgstr "편집..."
-
-#: capplet/mtm-control-list.c:137
-msgid "New..."
-msgstr "새 테마..."
-
-#: capplet/mtm-sel.glade.h:1
-msgid "Advanced"
-msgstr "고급"
-
-#: capplet/mtm-sel.glade.h:2
-msgid "Basic"
-msgstr "기본"
-
-#: capplet/mtm-sel.glade.h:3
-msgid "Edit Theme..."
-msgstr "테마 편집..."
-
-#: capplet/mtm-sel.glade.h:4
-msgid "Enable the following extensions:"
-msgstr "다음의 확장자 가능:"
-
-#: capplet/mtm-sel.glade.h:5
-msgid "Grab Screenshot..."
-msgstr "화면 잡기..."
-
-#: capplet/mtm-sel.glade.h:6
-msgid "Images"
-msgstr "그림"
-
-#: capplet/mtm-sel.glade.h:7
-msgid "List"
-msgstr "목록"
-
-#: capplet/mtm-sel.glade.h:8
-msgid "New Theme..."
-msgstr "새 테마..."
-
-#: capplet/mtm-sel.glade.h:9
-msgid "Preview Image:"
-msgstr "미리보기 그림:"
-
-#: capplet/mtm-sel.glade.h:10
-msgid "Remove Theme"
-msgstr "테마 제거"
-
-#: capplet/mtm-sel.glade.h:11
-msgid "Save Config..."
-msgstr "설정 저장..."
-
-#: capplet/mtm-sel.glade.h:12
-msgid "Theme Description"
-msgstr "테마 설명"
-
-#: capplet/mtm-sel.glade.h:13
-msgid "Theme Description:"
-msgstr "테마 설명:"
-
-#: capplet/mtm-sel.glade.h:14
-msgid "Theme Name:"
-msgstr "테마 이름:"
-
-#: capplet/mtm-sel.glade.h:15
-msgid "Update Theme"
-msgstr "테마 업데이트"
-
-#: capplet/mtm-sel.glade.h:16
-msgid "View as:"
-msgstr "보기:"
-
-#: capplet/mtm-selector.c:301
+#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/theme-parser.c:466
 #, c-format
-msgid "Applying theme \"%s\", please wait ..."
-msgstr "테마 \"%s\"적용중입니다, 잠시 기다리십시오..."
+msgid "Could not parse \"%s\" as an integer"
+msgstr "정수값 \"%s\"을 분석할 수 없습니다"
 
-#: capplet/mtm-selector.glade.h:1
-msgid "Basics"
-msgstr "기본"
-
-#: capplet/mtm-selector.glade.h:2
-msgid "Extensions"
-msgstr "확장자"
-
-#: capplet/mtm-selector.glade.h:3
-msgid "Manage themes..."
-msgstr "테마 관리..."
-
-#: capplet/mtm-selector.glade.h:4
-msgid "Metatheme:"
-msgstr "메타테마:"
-
-#: capplet/mtm-selector.glade.h:5 libbackground/preview-file-selection.c:198
-#: metatheme-edit/metatheme-edit.glade.h:4 plugins/background/translatable.c:8
-#: plugins/gtk-2/gtk-config-gui.c:136 plugins/xmms/xmms-config-gui.c:111
-msgid "Preview"
-msgstr "미리보기" 
-
-#: capplet/mtm-view-author.c:54
-msgid "Unknown"
-msgstr "알수 없음"
-
-#: capplet/mtm-view-extensions-selector.c:124
-msgid "Use"
-msgstr "사용"
-
-#: capplet/mtm-view-extensions-selector.c:124
-msgid "File"
-msgstr "파일"
-
-#: capplet/mtm-view-extensions-selector.c:124 libbackground/applier.c:239
-msgid "Type"
-msgstr "형식"
-
-#: libbackground/applier.c:240
-msgid ""
-"Type of bg_applier: BG_APPLIER_ROOT for root window or BG_APPLIER_PREVIEW "
-"for preview"
-msgstr ""
-"bg_applier 형식: 루트 창의 BG_APPLIER_ROOT 또는 미리보기의 BG_APPLIER_PREVIEW"
-
-#: libbackground/applier.c:247
-msgid "Preview Width"
-msgstr "미리보기 너비"
-
-#: libbackground/applier.c:248
-msgid "Width if applier is a preview: Defaults to 64."
-msgstr "사용할 미리보기의 너비: 기본값은 64"
-
-#: libbackground/applier.c:255
-msgid "Preview Height"
-msgstr "미리보기 높이"
-
-#: libbackground/applier.c:256
-msgid "Height if applier is a preview: Defaults to 48."
-msgstr "사용할 미리보기의 높이: 기본값은 48"
-
-#: libbackground/applier.c:454
+#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/theme-parser.c:475 src/theme-parser.c:529
 #, c-format
-msgid "Could not load pixbuf \"%s\"; disabling wallpaper."
-msgstr "pixbuf \"%s\"를 읽을 수 없음; 바탕화면 배경 사용 않음."
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "문자열 \"%2$s\"에서 이어진 문자 \"%1$s\"를 이해할 수 없습니다"
 
-#: libbackground/applier.c:533
-msgid "Disabled"
-msgstr "사용 않음"
-
-#: libbackground/preview-file-selection.c:193
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "hbox를 찾을 수 없습니다, 보통 파일 선택을 사용합니다"
-
-#: metatheme-edit/editor-main-page.c:145
-msgid ""
-"Select an existing metatheme for your desktop, or create your own. To edit a "
-"theme, change the settings in the following tabs, and press \"Save\"."
-msgstr ""
-"바탕화면용 메타테마를 선택하거나 만드십시오. 테마를 편집하려면, 다음 탭에서 "
-"설정을 바꾸고 \"저장\"을 누르십시오."
-
-#: metatheme-edit/editor-page.c:172
-msgid "[No information available]"
-msgstr "[아무 정보 없음]"
-
-#: metatheme-edit/editor-shell.c:69
-msgid "Metatheme"
-msgstr "메타테마"
-
-#: metatheme-edit/main.c:34
+#: src/delete.c:127
 #, c-format
-msgid "%s - Metatheme Editor"
-msgstr "%s - 메타테마 편집기"
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "대화상자 진행에서 메세지 \"%s\"를 분석하는데 실패했습니다\n"
 
-#: metatheme-edit/main.c:35
-msgid "Unnamed"
-msgstr "이름 없음"
+#: src/delete.c:262
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "대화상자 보여주기 진행중에 읽기 오류: %s\n"
 
-#: metatheme-edit/metatheme-edit.glade.h:1
-msgid "Enabled"
-msgstr "사용"
-
-#: metatheme-edit/metatheme-edit.glade.h:2
-msgid "Grab Preview from Screen"
-msgstr "화면에서 미리보기 잡음"
-
-#: metatheme-edit/metatheme-edit.glade.h:3
-msgid "Metatheme Editor"
-msgstr "메타테마 편집기"
-
-#: metatheme-edit/metatheme-edit.glade.h:5
-#: plugins/sawfish/sawfish-plugin.c:286
-msgid "Sawfish"
-msgstr "소피시"
-
-#: metatheme-edit/metatheme-edit.glade.h:6
-msgid "Sawfish theme: "
-msgstr "소피시 테마: "
-
-#: metatheme-edit/metatheme-edit.glade.h:7
-msgid "Theme name: "
-msgstr "테마 이름: "
-
-#: metatheme-edit/save.c:19
+#: src/delete.c:333
+#, c-format
 msgid ""
-"Unable to save the metatheme. Please check to make sure you have write "
-"permissions to the directory specified."
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"메타테마를 저장할 수 없습니다. 지정한 디렉토리의 쓰기 권한이 있는지 "
-"확인하십시오."
+"응용 프로그램을 강제로 마치기는데 물어보기 위해 metacity-dialog를 실행하는 "
+"중 오류가 발생했습니다: %s\n"
 
-#: metatheme-edit/save.c:125
-msgid "Theme unsaved. Save before exiting?"
-msgstr "테마를 저장하지 않았습니다. 저장할까요?"
+#: src/delete.c:431
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "호스트 이름 얻기 실패: %s\n"
 
-#: plugins/background/background-plugin.c:163
-msgid "Gnome Background Image"
-msgstr "그놈 배경 그림"
+#: src/display.c:221
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "X 윈도 시스템 디스플레이 '%s'를 여는데 실패하였습니다\n"
 
-#: plugins/background/background-plugin.c:171
-msgid "Background"
-msgstr "배경"
-
-#: plugins/background/background-plugin.c:172
+#: src/errors.c:154
+#, c-format
 msgid ""
-"Your background is composed of two parts: the background image, and the "
-"background pattern, which appears behind the background image."
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
 msgstr ""
-"배경은 배경 그림과 배경 그림 뒤에 나타나는 배경 무늬로 구성됩니다."
+"디스플레이 '%s'에 대한 연결을 잃었습니다;\n"
+"아마도 X 서버가 종료되었거나 창 관리자가 종료/강제 종료\n"
+"되었을 것입니다.\n"
 
-#: plugins/background/bg-config-gui.c:179
-msgid "Please select a background image"
-msgstr "배경 그림을 선택하십시오"
+#: src/errors.c:161
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "디스플레이 '%3$s'에서 치명적인 입출력 오류 %1$d (%2$s).\n"
 
-#: plugins/background/bg-ext-handler.c:203
-msgid "Primary Color"
-msgstr "기본 색상"
+#: src/frames.c:661
+msgid "Close Window"
+msgstr "창 닫기"
 
-#: plugins/background/bg-ext-handler.c:203
-msgid "Secondary Color"
-msgstr "2차 색상"
+#: src/frames.c:664
+msgid "Window Menu"
+msgstr "창 메뉴"
 
-#: plugins/background/bg-ext-handler.c:203
-msgid "Use Gradient"
-msgstr "서서히 변하는 색상 사용"
+#: src/frames.c:667
+msgid "Minimize Window"
+msgstr "창 최소화"
 
-#: plugins/background/bg-ext-handler.c:203
-msgid "Gradient Type"
-msgstr "서서히 변하는 색상 형식"
+#: src/frames.c:670
+msgid "Maximize Window"
+msgstr "창 최대화"
 
-#: plugins/background/bg-ext-handler.c:203
-msgid "Wallpaper Layout Type"
-msgstr "벽지 배치 형식"
+#: src/frames.c:673
+msgid "Unmaximize Window"
+msgstr "창 최대화 취소"
 
-#.
-#. * Translatable strings file generated by Glade.
-#. * Add this file to your project's POTFILES.in.
-#. * DO NOT compile it as part of your application.
-#.
-#: plugins/background/translatable.c:7
-msgid "window1"
-msgstr "창1"
-
-#: plugins/background/translatable.c:9
-msgid "Pattern"
-msgstr "무늬"
-
-#: plugins/background/translatable.c:10
-msgid "Type:"
-msgstr "형식:"
-
-#: plugins/background/translatable.c:11
-msgid "Solid color"
-msgstr "단색"
-
-#: plugins/background/translatable.c:12
-msgid "Vertical gradient"
-msgstr "세로로 서서히 변하는 색상 사용"
-
-#: plugins/background/translatable.c:13
-msgid "Horizontal gradient"
-msgstr "가로로 서서히 변하는 색상 사용"
-
-#: plugins/background/translatable.c:14
-msgid "Highlight color:"
-msgstr "강조 색상:"
-
-#: plugins/background/translatable.c:15 plugins/background/translatable.c:17
-msgid "Pick a color"
-msgstr "색상 선택"
-
-#: plugins/background/translatable.c:16
-msgid "Primary color:"
-msgstr "기본 색상"
-
-#: plugins/background/translatable.c:18
-msgid "Image alignment"
-msgstr "그림 정렬"
-
-#: plugins/background/translatable.c:19
-msgid "Tiled"
-msgstr "타일"
-
-#: plugins/background/translatable.c:20
-msgid "Centered"
-msgstr "가운데"
-
-#: plugins/background/translatable.c:21
-msgid "Scaled"
-msgstr "크기 조정"
-
-#: plugins/background/translatable.c:22
-msgid "Scaled (Keep aspect ratio)"
-msgstr "크기 조정(비율 유지)"
-
-#: plugins/gtk-2/gtk-plugin.c:190
-msgid "Gtk+/GNOME 2.0 widgets"
-msgstr "Gtk+/그놈 2.0 위젯"
-
-#: plugins/gtk-2/gtk-plugin.c:199
-msgid "Gtk"
-msgstr "Gtk"
-
-#: plugins/gtk-2/gtk-plugin.c:200
+#: src/keybindings.c:237
+#, c-format
 msgid ""
-"Gtk widgets are the building blocks which control the overall look of "
-"applications. The Gtk+ theme also controls the icons used by applications."
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
 msgstr ""
-"Gtk 위젯은 응용프로그램의 전체 모양과 아이콘을 바꿉니다."
+"몇몇 다른 프로그램에서 이미 단축 글쇠로 변경키 %2$x와 글쇠 %1$s를 사용하고 있"
+"습니다\n"
 
-#: plugins/gtk/gtk-plugin.c:461
-msgid "Gtk+/GNOME widgets"
-msgstr "Gtk+/그놈 위젯"
+#: src/main.c:273
+#, c-format
+msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
+msgstr ""
+"테마를 찾을 수 없습니다! %s에 사용할 수 있는 테마가 있는지 확인하십시오."
 
-#: plugins/gtk/gtk-plugin.c:470
-msgid "Gtk (1.x)"
-msgstr "Gtk (1.x)"
+#: src/main.c:319
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "재시작 실패: %s\n"
 
-#: plugins/gtk/gtk-plugin.c:471
+#: src/menu.c:49
+msgid "_Close"
+msgstr "닫기(_C)"
+
+#: src/menu.c:50
+msgid "_Minimize"
+msgstr "최소화(_M)"
+
+#: src/menu.c:51
+msgid "Ma_ximize"
+msgstr "최대화(_x)"
+
+#: src/menu.c:52
+msgid "_Unmaximize"
+msgstr "최대화 취소(_U)"
+
+#: src/menu.c:53
+msgid "_Shade"
+msgstr "숨김(_S)"
+
+#: src/menu.c:54
+msgid "U_nshade"
+msgstr "숨김 취소(_n)"
+
+#: src/menu.c:55
+msgid "Mo_ve"
+msgstr "이동(_v)"
+
+#: src/menu.c:56
+msgid "_Resize"
+msgstr "크기 조절(_R)"
+
+#. separator
+#: src/menu.c:58
+msgid "Put on _All Workspaces"
+msgstr "모든 작업공간에 놓기(_A)"
+
+#: src/menu.c:59
+msgid "Only on _This Workspace"
+msgstr "이 작업공간에만 놓기(_T)"
+
+#: src/menu.c:298
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "작업공간 %s%d에만 놓기"
+
+#: src/menu.c:301
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "작업공간 %s%d로 이동"
+
+#: src/metacity-dialog.c:86
+#, c-format
 msgid ""
-"Gtk widgets are the building blocks which control the overall look of "
-"applications. This extension only applies to older (1.x) gtk+ applications."
+"The window \"%s\" is not responding.\n"
+"Force this application to exit?\n"
+"(Any open documents will be lost.)"
 msgstr ""
-"Gtk 위젯은 응용프로그램의 전체 모양을 바꿉니다. 이 것은 이전 gtk+ (1.x) "
-"응용 프로그램에만 적용됩니다."
+"창 \"%s\"가 반응이 없습니다.\n"
+"강제로 이 응용프로그램을 마칠까요?\n"
+"(모든 열린 문서는 잃어버릴 것입니다.)"
 
+#: src/metacity-dialog.c:94
+msgid "Kill application"
+msgstr "응용프로그램 강제 종료"
 
-#: plugins/nautilus/nautilus-config-gui.c:169
-#: plugins/sawfish/sawfish-config-gui.c:149
-msgid "Information"
-msgstr "정보"
+#: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
+#: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf 키 \"%s\"가 잘못된 형식으로 설정되어 있습니다\n"
 
-#: plugins/nautilus/nautilus-plugin.c:170
-msgid "Nautilus file manager"
-msgstr "노틸러스 파일 관리자"
+#: src/prefs.c:415
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "GConf 키 '%s' 가 잘못된 값으로 설정되어 있습니다"
 
-#: plugins/nautilus/nautilus-plugin.c:181
-msgid "Nautilus"
-msgstr "노틸러스"
+#: src/prefs.c:487
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "GConf키 %2$s 에서 글꼴 지정 \"%1$s\"을 분석할 수 없습니다\n"
 
-#: plugins/nautilus/nautilus-plugin.c:182
+#: src/prefs.c:524
+#, c-format
+msgid "%d stored in GConf key %s is not a valid font size\n"
+msgstr "GConf 키 %2$s에 저장된 %1$d는 올바른 글꼴크기가 아닙니다\n"
+
+#: src/prefs.c:550
+#, c-format
 msgid ""
-"Nautilus is the GNOME file manager. Nautilus also controls the appearance "
-"and behavior of desktop icons."
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
 msgstr ""
-"노틸러스는 그놈 파일 관리자 입니다. 노틸러스는 또한 바탕화면 아이콘의 "
-"모양과 행동을 조정합니다."
+"Gconf 키 %2$s에 저장된 %1$d 는 사용할 수 없는 작업공간 번호 입니다, 현재 최대"
+"값은 %3$d 입니다\n"
 
-#: plugins/sawfish/sawfish-plugin.c:277
-msgid "Sawfish Window Manager"
-msgstr "소피시 창 관리자"
+#: src/prefs.c:639
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "작업 공간의 수를 %d로 설정하는 중 오류: %s\n"
 
-#: plugins/sawfish/sawfish-plugin.c:287
+#: src/resizepopup.c:168
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: src/screen.c:184
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "디스플레이 '%2$s'의 화면 %1$d는 잘못되었습니다\n"
+
+#: src/screen.c:200
+#, c-format
+msgid "Screen %d on display '%s' already has a window manager\n"
+msgstr "디스플레이 '%2$s'의 화면 %1$d는 이미 창 관리자가 실행되고 있습니다\n"
+
+#: src/screen.c:347
+#, c-format
+msgid "Could not release screen %d on display '%s'\n"
+msgstr "디스플레이 '%2$s'의 화면 %1$d를 떼어 놓을수 없습니다\n"
+
+#: src/session.c:766 src/session.c:773
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "디렉토리 '%s'를 만들수 없습니다: %s\n"
+
+#: src/session.c:783
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "세션 파일 '%s'를 쓰기위해 열 수 없습니다: %s\n"
+
+#: src/session.c:915
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "세션 파일 '%s'를 쓰는 중 오류: %s\n"
+
+#: src/session.c:920
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "세션 파일 '%s'를 닫는 중 오류: %s\n"
+
+#: src/session.c:993
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "저장된 세션 파일 %s를 읽기 실패: %s\n"
+
+#: src/session.c:1028
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "저장된 세션파일을 분석하기 실패: %s\n"
+
+#: src/session.c:1077
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "<metacity_session> 속성이 보이지만 이미 session ID를 가지고 있습니다"
+
+#: src/session.c:1090
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr "<metacity_session> 요소에 알수 없는 속성 %s"
+
+#: src/session.c:1107
+msgid "nested <window> tag"
+msgstr "포함된 <window> 태그"
+
+#: src/session.c:1157 src/session.c:1189
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "<window> 요소에 알수 없는 속성 %s"
+
+#: src/session.c:1249
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "<geometry> 요소에 알수 없는 속성 %s"
+
+#: src/session.c:1269
+#, c-format
+msgid "Unknown element %s"
+msgstr "알수 없는 속성 %s"
+
+#: src/theme.c:351
+msgid "top"
+msgstr "맨 위"
+
+#: src/theme.c:353
+msgid "bottom"
+msgstr "맨 아래"
+
+#: src/theme.c:355
+msgid "left"
+msgstr "왼쪽"
+
+#: src/theme.c:357
+msgid "right"
+msgstr "오른쪽"
+
+#: src/theme.c:371
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "프레임 위치가 \"%s\"차원으로 지정되지 않았습니다"
+
+#: src/theme.c:390
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr ""
+"프레임 위치가 가장자리 \"%2$s\" 가장자리의 \"%1$s\"차원으로 지정되지 않았습니"
+"다."
+
+#: src/theme.c:744
+msgid "Gradients should have at least two colors"
+msgstr "서서히 변하는 색으로 지정하려면 최소 2색이 필요합니다"
+
+#: src/theme.c:834
+#, c-format
 msgid ""
-"Sawfish is a window manager which controls the appearance and behavior of "
-"your windows."
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"소피시는 창의 모양과 행동을 조절하는 창 관리자 입니다."
+"GTK 색상 지정은 중괄호안에 있어야 합니다, 예: gtk:fg[NORMAL] NORMAL은 값; \"%"
+"s\"를 분석할 수 없습니다"
 
-#: plugins/xmms/xmms-plugin.c:173
-msgid "XMMS plugin"
-msgstr "XMMS 플러그인"
+#: src/theme.c:848
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다, 예: gtk:fg[NORMAL]NORMAL"
+"은 값; \"%s\"를 분석할 수 없습니다"
 
-#: plugins/xmms/xmms-plugin.c:188
-msgid "XMMS skins"
-msgstr "XMMS 스킨"
+#: src/theme.c:859
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "색상 지정의 \"%s\" 값을 이해할 수 없습니다"
 
-#: plugins/xmms/xmms-plugin.c:197
-msgid "XMMS"
-msgstr "XMMS"
+#: src/theme.c:872
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "색상 지정의 색상 구성요소 \"%s\"를 이해할 수 없습니다"
 
-#: plugins/xmms/xmms-plugin.c:198
-msgid "XMMS is a cross-platform media player."
-msgstr "XMMS는 크로스플랫폼 미디어 연주기 입니다."
+#: src/theme.c:902
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"는 형식에 맞지 않"
+"습니다"
+
+#: src/theme.c:913
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "색상 섞기에서 알파 값 \"%s\"를 분석할 수 없습니다"
+
+#: src/theme.c:923
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "색상 섞기에서 알파 값 \"%s\"는 0.0 과 1.0사이의 값이 아닙니다"
+
+#: src/theme.c:962
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "색상 \"%s\"을 분석할 수 없습니다"
+
+#: src/theme.c:1212
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "좌표식에 허용되지 않는 문자 '%s'가 포함되어 있습니다"
+
+#: src/theme.c:1239
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "좌표식에 분석할 수 없는 부동소수점 숫자 '%s'가 포함되어 있습니다"
+
+#: src/theme.c:1253
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "좌표식에 분석할 수 없는 정수 '%s'가 포함되어 있습니다"
+
+#: src/theme.c:1320
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"좌표식에 이 글자 시작부분에 알수없는 연산자가 포함되어 있습니다: \"%s\""
+
+#: src/theme.c:1377
+msgid "Coordinate expression was empty or not understood"
+msgstr "좌표식이 비어있거나 이해할 수 없습니다"
+
+#: src/theme.c:1516 src/theme.c:1526 src/theme.c:1560
+msgid "Coordinate expression results in division by zero"
+msgstr "좌표식의 결과 값이 0로 나누었습니다"
+
+#: src/theme.c:1568
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "좌표식에서 부동소수점 수에 나머지 연산을 하려 합니다"
+
+#: src/theme.c:1625
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "좌표식에서 피연산자가 들어갈 곳에 연산자 \"%s\"가 있습니다"
+
+#: src/theme.c:1634
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "좌표식에서 연산자가 들어갈 곳에 피연산자가 있습니다"
+
+#: src/theme.c:1642
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "좌표식에서 피연산자 대신에 연산자로 끝나있습니다"
+
+#: src/theme.c:1652
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"좌표식에서 피연산자가 없는 연산자 \"%2$c\"다음에 연산자 \"%1$c\"가 있습니다"
+
+#: src/theme.c:1771
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+"좌표식 분석기의 버퍼가 넘쳤습니다. 이것은 Metacity의 벌레입니다, 하지만 혹시 "
+"그와 같은 아주 큰 표현식이 필요합니까?"
+
+#: src/theme.c:1800
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "좌표식에 닫는 괄호는 있지만 여는 괄호가 없습니다"
+
+#: src/theme.c:1863
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "좌표식에 알 수 없는 변수나 상수 \"%s\"가 있습니다"
+
+#: src/theme.c:1920
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "좌표식에 여는 괄호는 있지만 닫는 괄호가 없습니다"
+
+#: src/theme.c:1931
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
+
+#: src/theme.c:2175 src/theme.c:2197 src/theme.c:2218
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "테마가 오류 값을 내는 표현 \"%s\"을 포함하고 있습니다: %s\n"
+
+#: src/theme.c:3485
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
+"\"/>가 지정되어야 합니다"
+
+#: src/theme.c:3894 src/theme.c:3926
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
+"다"
+
+#: src/theme.c:3977
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "테마 \"%s\"를 읽을 수 없습니다: %s\n"
+
+#: src/theme.c:4123
+#, c-format
+msgid "No <name> set for theme \"%s\""
+msgstr "테마 \"%s\"의 이름이 없습니다"
+
+#: src/theme.c:4130
+#, c-format
+msgid "No <author> set for theme \"%s\""
+msgstr "테마 \"%s\"에 저작자가 표시되어 있지 않습니다"
+
+#: src/theme.c:4137
+#, c-format
+msgid "No <date> set for theme \"%s\""
+msgstr "테마 \"%s\"에 만든 날짜가 표시되어 있지 않습니다"
+
+#: src/theme.c:4144
+#, c-format
+msgid "No <description> set for theme \"%s\""
+msgstr "테마 \"%s\" 에 설명이 없습니다"
+
+#: src/theme.c:4151
+#, c-format
+msgid "No <copyright> set for theme \"%s\""
+msgstr "테마 \"%s\"에 저작권이 없습니다"
+
+#: src/theme.c:4161
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
+"type=\"%3$s\" style_set=\"whatever\"/> 요소를 추가하십시오"
+
+#: src/theme.c:4183
+#, c-format
+msgid ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
+msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops\"whatever\"/> 가 이 테마에 "
+"지정되어 있어야 합니다"
+
+#: src/theme.c:4566 src/theme.c:4626
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"사용자 정의 상수는 대문자로 시작되어야 합니다; \"%s\"는 그렇지 않습니다"
+
+#: src/theme.c:4574 src/theme.c:4634
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "상수 \"%s\" 는 이미 지정되어 있습니다"
+
+#: src/theme-parser.c:223 src/theme-parser.c:241
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "%d 줄 %d 문자: %s"
+
+#: src/theme-parser.c:395
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "같은 요소 <%2$s>에 \"%1$s\"속성이 두번 겹쳐져 있습니다"
+
+#: src/theme-parser.c:413 src/theme-parser.c:438
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "이 문맥의 <%2$s> 요소에 속성 \"%1$s\"는 올바르지 않습니다"
+
+#: src/theme-parser.c:484
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "정수 %ld는 양수여야 합니다"
+
+#: src/theme-parser.c:492
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "정수 %ld가 너무 큽니다, 현재 최대값은 %d 입니다"
+
+#: src/theme-parser.c:520
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "부동소수점 수 \"%s\"로 분석할 수 없습니다"
+
+#: src/theme-parser.c:551
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "Boolean 값은 \"true\"이거나 \"false\"만 됩니다 \"%s\"는 안됩니다"
+
+#: src/theme-parser.c:571
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "각도 값은 0.0과 360.0 사이여야 합니다, %g 로 되어 있습니다\n"
+
+#: src/theme-parser.c:591
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr ""
+"알파 값은 0.0(보이지 않음)과 1.0(완전 불투명)사이여야 합니다, %g로 되어있습니"
+"다\n"
+
+#: src/theme-parser.c:624
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"잘못된 제목 확대 \"%s\" (xx-small, x-small, small, medium, large, x-large, "
+"xx-large중에 하나여야 합니다)\n"
+
+#: src/theme-parser.c:669 src/theme-parser.c:677 src/theme-parser.c:2641
+#: src/theme-parser.c:2730 src/theme-parser.c:2737 src/theme-parser.c:2744
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "요소 <%2$s> 에 \"%1$s\" 속성 없음"
+
+#: src/theme-parser.c:735 src/theme-parser.c:799 src/theme-parser.c:837
+#: src/theme-parser.c:914 src/theme-parser.c:964 src/theme-parser.c:972
+#: src/theme-parser.c:1028 src/theme-parser.c:1036
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr "<%2$s> 요소에 \"%1$s\" 속성 없음"
+
+#: src/theme-parser.c:751 src/theme-parser.c:807 src/theme-parser.c:845
+#: src/theme-parser.c:922
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "<%s> 이름 \"%s\" 가 두번 사용되었습니다"
+
+#: src/theme-parser.c:763 src/theme-parser.c:857 src/theme-parser.c:934
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "<%s> 부모 \"%s\" 는 이미 지정되어 있습니다"
+
+#: src/theme-parser.c:870
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "<%s> 위치 \"%s\" 는 이미 지정되어 있습니다"
+
+#: src/theme-parser.c:883
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> 는 위치나 위치를 가지는 부모를 지정하여야 합니다"
+
+#: src/theme-parser.c:982
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "<%2$s> 요소에 알수 없는 형식 \"%1$s\""
+
+#: src/theme-parser.c:993
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "<%2$s> 요소에 알수 없는 스티일 셋 \"%1$s\""
+
+#: src/theme-parser.c:1001
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "창 형식 \"%s\" 는 이미 스타일 셋으로 지정되어 있습니다"
+
+#: src/theme-parser.c:1045
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr "메뉴 아이콘의 알수 없는 기능 \"%s\""
+
+#: src/theme-parser.c:1054
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr "메뉴 아이콘의 알수 없는 상태 \"%s\""
+
+#: src/theme-parser.c:1062
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr "테마에 기능 %s 상태 %s에 대한 메뉴아이콘이 있습니다"
+
+#: src/theme-parser.c:1079 src/theme-parser.c:2949 src/theme-parser.c:3028
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "이름 \"%s\"를 가지는 <draw_ops>가 지정되지 않았습니다"
+
+#: src/theme-parser.c:1094 src/theme-parser.c:1158 src/theme-parser.c:1356
+#: src/theme-parser.c:2829 src/theme-parser.c:2883 src/theme-parser.c:3043
+#: src/theme-parser.c:3220 src/theme-parser.c:3258 src/theme-parser.c:3296
+#: src/theme-parser.c:3334
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "요소 <%s>가 <%s>아래에 허용되지 않습니다"
+
+#: src/theme-parser.c:1184 src/theme-parser.c:1258
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr "<%s>요소에 \"name\" 속성이 없습니다"
+
+#: src/theme-parser.c:1191
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"value\" 속성이 없습니다"
+
+#: src/theme-parser.c:1221
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "거리 \"%s\"를 알수 없습니다"
+
+#: src/theme-parser.c:1265
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"top\"속성이 없습니다"
+
+#: src/theme-parser.c:1272
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"bottom\"속성이 없습니다"
+
+#: src/theme-parser.c:1279
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"left\"속성이 없습니다"
+
+#: src/theme-parser.c:1286
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"right\"속성이 없습니다"
+
+#: src/theme-parser.c:1318
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "가장자리 \"%s\"를 알수 없습니다"
+
+#: src/theme-parser.c:1466 src/theme-parser.c:1576 src/theme-parser.c:1679
+#: src/theme-parser.c:1866 src/theme-parser.c:2574
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"color\"속성이 없습니다"
+
+#: src/theme-parser.c:1473
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"x1\"속성이 없습니다"
+
+#: src/theme-parser.c:1480 src/theme-parser.c:2437
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"y1\"속성이 없습니다"
+
+#: src/theme-parser.c:1487
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"x2\"속성이 없습니다"
+
+#: src/theme-parser.c:1494 src/theme-parser.c:2444
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"y2\"속성이 없습니다"
+
+#: src/theme-parser.c:1583 src/theme-parser.c:1686 src/theme-parser.c:1792
+#: src/theme-parser.c:1873 src/theme-parser.c:1975 src/theme-parser.c:2068
+#: src/theme-parser.c:2206 src/theme-parser.c:2332 src/theme-parser.c:2430
+#: src/theme-parser.c:2501 src/theme-parser.c:2581
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"x\"속성이 없습니다"
+
+#: src/theme-parser.c:1590 src/theme-parser.c:1693 src/theme-parser.c:1799
+#: src/theme-parser.c:1880 src/theme-parser.c:1982 src/theme-parser.c:2075
+#: src/theme-parser.c:2213 src/theme-parser.c:2339 src/theme-parser.c:2508
+#: src/theme-parser.c:2588
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"y\"속성이 없습니다"
+
+#: src/theme-parser.c:1597 src/theme-parser.c:1700 src/theme-parser.c:1806
+#: src/theme-parser.c:1887 src/theme-parser.c:1989 src/theme-parser.c:2082
+#: src/theme-parser.c:2220 src/theme-parser.c:2346 src/theme-parser.c:2515
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"width\"속성이 없습니다"
+
+#: src/theme-parser.c:1604 src/theme-parser.c:1707 src/theme-parser.c:1813
+#: src/theme-parser.c:1894 src/theme-parser.c:1996 src/theme-parser.c:2089
+#: src/theme-parser.c:2227 src/theme-parser.c:2353 src/theme-parser.c:2522
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"height\"속성이 없습니다"
+
+#: src/theme-parser.c:1714
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"start_angle\"속성이 없습니다"
+
+#: src/theme-parser.c:1721
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"extent_angle\"속성이 없습니다"
+
+#: src/theme-parser.c:1901
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"alpha\"속성이 없습니다"
+
+#: src/theme-parser.c:1968
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"type\"속성이 없습니다"
+
+#: src/theme-parser.c:2020
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "서서히 변하는 색 형식 값 \"%s\"를 이해할 수 없습니다"
+
+#: src/theme-parser.c:2096
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"filename\"속성이 없습니다"
+
+#: src/theme-parser.c:2185 src/theme-parser.c:2318 src/theme-parser.c:2423
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"state\"속성이 없습니다"
+
+#: src/theme-parser.c:2192 src/theme-parser.c:2325
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"shadow\"속성이 없습니다"
+
+#: src/theme-parser.c:2199
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr "요소 <%s>에 \"arrow\"속성이 없습니다"
+
+#: src/theme-parser.c:2252 src/theme-parser.c:2374 src/theme-parser.c:2462
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "<%2$s>요소의 state \"%1$s\"를 이해할 수 없습니다"
+
+#: src/theme-parser.c:2262 src/theme-parser.c:2384
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "<%2$s>요소의 shadow \"%1$s\"를 이해할 수 없습니다"
+
+#: src/theme-parser.c:2272
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "<%2$s>요소의 arrow \"%1$s\"를 이해할 수 없습니다"
+
+#: src/theme-parser.c:2667 src/theme-parser.c:2783
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "\"%s\"라 불리는 <draw_ops>는 정의되지 않았습니다"
+
+#: src/theme-parser.c:2679 src/theme-parser.c:2795
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "draw_ops 를 포함하는 \"%s\"가 자기 자신을 참조하고 있습니다"
+
+#: src/theme-parser.c:2858
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"value\"속성이 없습니다"
+
+#: src/theme-parser.c:2915
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"position\"속성이 없습니다"
+
+#: src/theme-parser.c:2924
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "프레임 조각에 대한 알수 없는 위치 \"%s\""
+
+#: src/theme-parser.c:2932
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "프레임 스타일은 이미 %s 위치에 조각이 있습니다"
+
+#: src/theme-parser.c:2977
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"function\"속성이 없습니다"
+
+#: src/theme-parser.c:2985 src/theme-parser.c:3089
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"state\"속성이 없습니다"
+
+#: src/theme-parser.c:2994
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "버튼에 알수없는 기능 \"%s\""
+
+#: src/theme-parser.c:3003
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "버튼에 알수없는 상태 \"%s\""
+
+#: src/theme-parser.c:3011
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "프레임 스타일에 버튼의 기능 %s 상태 %s가 이미 있습니다"
+
+#: src/theme-parser.c:3081
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"focus\"속성이 없습니다"
+
+#: src/theme-parser.c:3097
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr "<%s> 요소에 \"style\"속성이 없습니다"
+
+#: src/theme-parser.c:3106
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" 는 focus 속성에 대한 올바른 값이 아닙니다"
+
+#: src/theme-parser.c:3115
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\"는 state 속성에 대한 올바른 값이 아닙니다"
+
+#: src/theme-parser.c:3125
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "\"%s\"라는 스타일은 정의되지 않았습니다"
+
+#: src/theme-parser.c:3135
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "<%s>요소에 \"resize\"속성이 없습니다"
+
+#: src/theme-parser.c:3145
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "resize 속성에 \"%s\"는 올바른 값이 아닙니다"
+
+#: src/theme-parser.c:3155
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"maximized/shaded 상태에서 <%s> 요소는 \"resize\" 속성을 가지지 않습니다"
+
+#: src/theme-parser.c:3169
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "스타일에 상태 %s 크기 조절 %s 초점 %s에 대해 이미 지정되어 있습니다"
+
+#: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "스타일에 상태 %s 초점 %s에 대해 이미 지정되어 있습니다"
+
+#: src/theme-parser.c:3241
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"<piece> 요소에 두개의 draw_ops를 가질수 없습니다 (테마에 draw_ops 속성과 "
+"<draw_ops>요소를 지정했거나 두 요소를 지정했습니다"
+
+#: src/theme-parser.c:3279
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"<button> 요소에 두개의 draw_ops를 가질수 없습니다 (테마에 draw_ops 속성과 "
+"<draw_ops>요소를 지정했거나 두 요소를 지정했습니다"
+
+#: src/theme-parser.c:3317
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"<menu_icon> 요소에 두개의 draw_ops를 가질수 없습니다 (테마에 draw_ops 속성과 "
+"<draw_ops>요소를 지정했거나 두 요소를 지정했습니다"
+
+#: src/theme-parser.c:3364
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "테마의 Outermost 요소는 <%s>가 아니라 <metacity_theme>여야 합니다"
+
+#: src/theme-parser.c:3384
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "name/author/date/description 요소 안에서 요소 <%s>가 허용되지 않습니다"
+
+#: src/theme-parser.c:3389
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "<constant> 요소 안에서 요소 <%s>가 허용되지 않습니다"
+
+#: src/theme-parser.c:3400
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border element"
+msgstr "distance/border 요소 안에서 요소 <%s>가 허용되지 않습니다"
+
+#: src/theme-parser.c:3422
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "draw operation 요소 안에서 요소 <%s>가 허용되지 않습니다"
+
+#: src/theme-parser.c:3432 src/theme-parser.c:3462 src/theme-parser.c:3467
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "<%2$s>요소 안에서 요소 <%1$s>가 허용되지 않습니다"
+
+#: src/theme-parser.c:3684
+msgid "No draw_ops provided for frame piece"
+msgstr "프레임 조각에 draw_ops가 제공하지 않습니다"
+
+#: src/theme-parser.c:3699
+msgid "No draw_ops provided for button"
+msgstr "버튼에 draw_ops가 제공되지 않습니다"
+
+#: src/theme-parser.c:3714
+msgid "No draw_ops provided for menu icon"
+msgstr "메뉴 아이콘에 draw_ops가 제공되지 않습니다"
+
+#: src/theme-parser.c:3754
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "요소 <%s>안에 텍스트가 허용되지 않습니다"
+
+#: src/theme-parser.c:3809
+msgid "<name> specified twice for this theme"
+msgstr "이 테마에서 <name>이 두번 지정되었습니다"
+
+#: src/theme-parser.c:3820
+msgid "<author> specified twice for this theme"
+msgstr "이 테마에서 <author>가 두번 지정되었습니다"
+
+#: src/theme-parser.c:3831
+msgid "<copyright> specified twice for this theme"
+msgstr "이 테마에서 <copyright>가 두번 지정되었습니다"
+
+#: src/theme-parser.c:3842
+msgid "<date> specified twice for this theme"
+msgstr "이 테마에서 <date>가 두번 지정되었습니다"
+
+#: src/theme-parser.c:3853
+msgid "<description> specified twice for this theme"
+msgstr "이 테마에서 <description>가 두번 지정되었습니다"
+
+#: src/theme-parser.c:4055
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr "파일 %s에서 테마 읽기 실패: %s\n"
+
+#: src/theme-parser.c:4110
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "테마 파일 %s가 root <metacity_theme> 요소를 포함하지 않습니다"
+
+#: src/util.c:59
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "디버그 로그 열기 실패: %s\n"
+
+#: src/util.c:69
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "로그 파일 %s를 fdopen()하기 실패: %s\n"
+
+#: src/util.c:75
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "로그 파일 %s를 엽니다\n"
+
+#: src/window.c:425
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld를 설정하였습니다\n"
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and "
+"actually has type %s format %d n_items %d\n"
+msgstr ""
+"창 0x%lx의 등록 정보 %s에 형식 %s %d가 들어있어야 하는데 실제로는 형식 %s %d "
+"n_items %d가 들어있습니다\n"
+
+#: src/xprops.c:281
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "창 0x%2$lx 의 등록 정보 %1$s는 잘못된 UTF-8을 포함하고 있습니다\n"
