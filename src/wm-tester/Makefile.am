@@ -13,9 +13,13 @@ focus_window_SOURCES=				\
 test_resizing_SOURCES=				\
 	test-resizing.c
 
-noinst_PROGRAMS=wm-tester test-gravity test-resizing focus-window
+test_size_hints_SOURCES=			\
+	test-size-hints.c
+
+noinst_PROGRAMS=wm-tester test-gravity test-resizing focus-window test-size-hints
 
 wm_tester_LDADD= @METACITY_LIBS@
 test_gravity_LDADD= @METACITY_LIBS@
 test_resizing_LDADD= @METACITY_LIBS@
+test_size_hints_LDADD= @METACITY_LIBS@
 focus_window_LDADD= @METACITY_LIBS@

@@ -1,5 +1,10 @@
 2003-09-29  Havoc Pennington  <hp@redhat.com>
 
+	* src/wm-tester/test-size-hints.c: a little program to test size
+	hints, for now just a 0x0 min size to verify bug #113320
+
+2003-09-29  Havoc Pennington  <hp@redhat.com>
+
 	* src/async-getprop.c (async_get_property_handler): attempt to fix
 	this to return the data as an array of long even on 64-bit as with
 	XGetWindowProperty() breakage, bug #114035, credit to Gwenole
